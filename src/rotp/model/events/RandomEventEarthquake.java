@@ -69,12 +69,12 @@ public class RandomEventEarthquake extends AbstractRandomEvent  {
         float prevFact = targetColony.industry().factories();
 
         float newPop = prevPop * (1-popLossPct);
-        float newFact = prevFact * (1-factLossPct);
+        //float newFact = prevFact * (1-factLossPct);
 
         popKilled = max(1, (int) prevPop - (int) newPop);
 
         targetColony.setPopulation(newPop);
-        targetColony.industry().factories(newFact);
+        targetColony.industry().removeFactories(prevFact * factLossPct);
         if (player().knowsOf(empId)
         && !player().sv.name(sysId).isEmpty())
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Earthquake");

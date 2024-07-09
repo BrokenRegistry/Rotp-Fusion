@@ -118,7 +118,7 @@ public class AIGovernor implements Base, Governor {
         int prevDef = col.defense().allocation();
         int prevInd = col.industry().allocation();
         int prevEco = col.ecology().allocation();
-        int prevRes = col.research().allocation();
+        //int prevRes = col.research().allocation();
 
         int cleanEco = col.ecology().cleanupAllocationNeeded();
         int maxInd = col.industry().maxAllocationNeeded();
@@ -239,7 +239,9 @@ public class AIGovernor implements Base, Governor {
         // # of turns we could make ship with 100% ship
         float shipTurns = maxShipBCNeeded/(currentNet*shipPctSpending);
         // pct increase of factories we could make with 100% industry
-        float maxNewFactories = min(col.industry().maxUseableFactories()-col.industry().factories(), currentNet/col.industry().newFactoryCost());
+        // BR: Repatriated the method
+        float maxNewFactories = col.industry().maxNewFactories(currentNet);
+        //float maxNewFactories = min(col.industry().maxUseableFactories()-col.industry().factories(), currentNet/col.industry().newFactoryCost());
         float factoryIncreasePct = maxNewFactories/col.industry().factories();
 
         suggestMissileBaseCount(col);

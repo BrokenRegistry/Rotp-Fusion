@@ -528,8 +528,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		if (emp.isPlayer() || !challengeMode) {
 	        setPopulation(50);
 	        previousPopulation = population();
-	        industry().factories(30);
-	        industry().previousFactories(30);
+	        industry().resetFactories(30);
+	        //industry().previousFactories(30);
 	
 	        galaxy().ships.buildShips(emp.id, starSystem().id, scout.id(), 2);
 	        galaxy().ships.buildShips(emp.id, starSystem().id, colony.id(), 1);
@@ -541,8 +541,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		if (emp.isAI() && challengeMode) {
 	        setPopulation(80);
 	        previousPopulation = population();
-	        industry().factories(80);
-	        industry().previousFactories(80);
+	        industry().resetFactories(80);
+	        //industry().previousFactories(80);
 	
 	        galaxy().ships.buildShips(emp.id, starSystem().id, scout.id(), 4);
 	        galaxy().ships.buildShips(emp.id, starSystem().id, colony.id(), 2);
@@ -561,16 +561,16 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		if (emp.isPlayer() || !challengeMode) {
 	        setPopulation(30);
 	        previousPopulation = population();
-	        industry().factories(20);
-	        industry().previousFactories(20);
+	        industry().resetFactories(20);
+	        //industry().previousFactories(20);
 		}
 		// modnar: add extra starting resources, if challengeMode and AI
 		// increase pop/factories to approximately double initial production
 		if (emp.isAI() && challengeMode) {
 	        setPopulation(50);
 	        previousPopulation = population();
-	        industry().factories(50);
-	        industry().previousFactories(50);
+	        industry().resetFactories(50);
+	        //industry().previousFactories(50);
 		}
     }
 
@@ -1593,20 +1593,20 @@ public final class Colony implements Base, IMappedObject, Serializable {
     }
     public void takeTargetedCollateralDamage(float damage) {
         float newPop = max(0, population() - (damage / TARGETED_DAMAGE_FOR_POPLOSS));
-        float newFact = max(0, industry().factories() - (damage / TARGETED_DAMAGE_FOR_FACTLOSS));
+        // float newFact = max(0, industry().factories() - (damage / TARGETED_DAMAGE_FOR_FACTLOSS));
 
         setPopulation(newPop);
-        industry().factories(newFact);
+        industry().removeFactories(damage / TARGETED_DAMAGE_FOR_FACTLOSS);
 
         if (population() <= 0)
             destroy();
     }
     public void takeUntargetedCollateralDamage(float damage) {
         float newPop = max(0, population() - (damage / UNTARGETED_DAMAGE_FOR_POPLOSS));
-        float newFact = max(0, industry().factories() - (damage / UNTARGETED_DAMAGE_FOR_FACTLOSS));
+        //float newFact = max(0, industry().factories() - (damage / UNTARGETED_DAMAGE_FOR_FACTLOSS));
 
         setPopulation(newPop);
-        industry().factories(newFact);
+        industry().removeFactories(damage / UNTARGETED_DAMAGE_FOR_FACTLOSS);
 
         if (population() <= 0)
             destroy();
@@ -1635,7 +1635,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
         rebels = 0;
         captives = 0;
         rebellion = false;
-        planet.addAlienFactories(empire.id, (int) industry().factories());
+        industry().addToAlienFactories();
+        //planet.addAlienFactories(empire.id, (int) industry().factories());
 
         transport = null;
         clearReserveIncome();
@@ -1664,7 +1665,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
         rebels = 0;
         captives = 0;
         rebellion = false;
-        planet.addAlienFactories(empire.id, (int) industry().factories());
+        //planet.addAlienFactories(empire.id, (int) industry().factories());
+        industry().addToAlienFactories();
 
         transport = null;
         clearReserveIncome();

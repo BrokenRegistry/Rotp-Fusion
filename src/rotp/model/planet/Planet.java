@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import rotp.model.colony.Colony;
+import rotp.model.colony.ColonyIndustry2.Factories;
 import rotp.model.empires.Empire;
 import rotp.model.events.SystemTerraformingEvent;
 import rotp.model.galaxy.IMappedObject;
@@ -100,6 +101,7 @@ public class Planet implements Base, IMappedObject, Serializable {
     private float oceanPct = 0;
     private int cloudThickness = 0;  //200 nothing, 550 all white, 400-450 terran
     private final int[] alienFactories;
+    private final Factories[] alienPlants;
 
     // vars used for sprite drawing
     public Color terrainColor1 = Color.green;
@@ -250,7 +252,14 @@ public class Planet implements Base, IMappedObject, Serializable {
         COUNT++;
         system = s;
         rotationDirection = random() < 0.5 ? -1 : 1;
-        alienFactories = new int[galaxy().numEmpires()];
+        if (options().alternativeIndustry()) {
+            alienFactories = null;
+            alienPlants = new Factories[galaxy().numEmpires()];
+        }
+        else {
+            alienFactories = new int[galaxy().numEmpires()];
+            alienPlants = null;
+        }
     }
     public void initPlanetType(String ptype) {
         type = null;
@@ -264,23 +273,55 @@ public class Planet implements Base, IMappedObject, Serializable {
 //        cloudThickness = pt.randomCloudThickness();
 //        initColors();
     }
-    public int alienFactories(int empId)  { return alienFactories[empId]; }
-    public void addAlienFactories(int empId, int factories) {
-        alienFactories[empId] += factories;
+    public int alienFactories(int empId)    {
+    	if (alienFactories== null)
+    		return (int) alienPlants[empId].factories();
+    	else
+    		return alienFactories[empId];
     }
-    public void removeAlienFactories(int empId) { alienFactories[empId] = 0; }
+    public Factories alienPlants(int empId) { return alienPlants[empId]; }
+    public void addAlienFactories(int empId, int factories) {
+    	if (alienFactories== null)
+    		alienPlants[empId].cut(-factories);
+    	else
+    		alienFactories[empId] += factories;
+    }
+    public void addAlienFactories(int empId, Factories factories) {
+        alienPlants[empId] = factories;
+    }
+    public void removeAlienFactories(int empId) {
+    	if (alienFactories == null)
+    		alienPlants[empId] = null;
+    	else
+    		alienFactories[empId] = 0;
+    }
     public int numAlienFactories() {
-        int numFactories = 0;
+    	int numFactories = 0;
         for (int i:alienFactories)
             numFactories += i;
+        return numFactories;
+    }
+    public float numAlienPlants() {
+    	float numFactories = 0;
+		for (Factories f:alienPlants)
+			if (f != null)
+				numFactories += f.factories();
         return numFactories;
     }
     public int randomAlienFactoryEmpire() {
         int num = 0;
         int[] empIds = new int[alienFactories.length];
-        for (int i=0;i<alienFactories.length;i++) {
-            if (alienFactories[i] >0)
-                empIds[num++] = i;
+        if (alienFactories == null) {
+	        for (int i=0;i<alienPlants.length;i++) {
+	            if (alienPlants[i] != null)
+	                empIds[num++] = i;
+	        }        	
+        }
+        else {
+	        for (int i=0;i<alienFactories.length;i++) {
+	            if (alienFactories[i] >0)
+	                empIds[num++] = i;
+	        }
         }
         if (num == 0)
             return Empire.NULL_ID;
@@ -397,7 +438,7 @@ public class Planet implements Base, IMappedObject, Serializable {
         if (founderId == Empire.NULL_ID)
             founderId = c.id;
         colony = new Colony(c, this);
-        colony.industry().factories(alienFactories(c.id));
+        colony.industry().resetFactories(alienFactories(c.id));
         removeAlienFactories(c.id);
         return colony;
     }

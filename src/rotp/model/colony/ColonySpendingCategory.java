@@ -92,7 +92,7 @@ public abstract class ColonySpendingCategory implements Base, Serializable {
     public Empire empire()            { return colony().empire(); }
     public TechTree tech()            { return empire().tech(); }
     public String name()              { return ""; }
-    public float orderedValue()      { return colony.locked(categoryType()) ? pct() : 0; }
+    public float orderedValue()       { return colony.locked(categoryType()) ? pct() : 0; }
     public void removeSpendingOrders() { }
     public boolean canLowerMaintenance() { return false; }
     public void lowerMaintenance()       { }

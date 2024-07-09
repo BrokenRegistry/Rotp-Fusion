@@ -364,7 +364,10 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 	ParamBoolean looseNeighborhood	= new ParamBoolean( MOD_UI, "LOOSE_NEIGHBORHOOD", false);
 	default boolean looseNeighborhood()			{ return looseNeighborhood.get(); }
 	default ParamBoolean getLooseNeighborhood()	{ return looseNeighborhood; }
-	// ==================== GUI List Declarations ====================
+
+	ParamBoolean alternativeIndustry	= new ParamBoolean( MOD_UI, "ALTERNATIVE_INDUSTRY", false);
+	default boolean alternativeIndustry()		{ return alternativeIndustry.get(); }
+// ==================== GUI List Declarations ====================
 	//
 	static SafeListPanel preGameOptionsMap()	{
 		SafeListPanel map = new SafeListPanel();

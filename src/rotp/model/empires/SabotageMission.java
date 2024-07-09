@@ -89,7 +89,7 @@ public class SabotageMission implements Base, Serializable {
             DiplomaticTreaty treaty = spies.owner().treaty(spies.empire());
             if (treaty != null)
                 treaty.loseFactories(spies.empire(), factoriesDestroyed);
-            sys.colony().industry().factories(factories-factoriesDestroyed);
+            sys.colony().industry().removeFactories(factoriesDestroyed);
             SabotageFactoriesIncident.addIncident(this);
             spies.checkForTreatyBreak();
             spies.owner().sv.refreshFullScan(sys.id);

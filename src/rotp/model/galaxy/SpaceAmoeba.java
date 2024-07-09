@@ -38,7 +38,7 @@ public class SpaceAmoeba extends SpaceMonster {
         Colony col = sys.colony();
         if (col != null) {
             float prevFact = col.industry().factories();
-            col.industry().factories(prevFact*0.1f);
+            col.industry().removeFactories(prevFact*0.9f);
             sys.empire().lastAttacker(this);
             col.destroy();
         }

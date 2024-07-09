@@ -20,6 +20,7 @@ import rotp.model.empires.Empire;
 
 public final class TechRoboticControls extends Tech {
     public static final int BASE_ROBOT_CONTROLS = 2;
+    public static final int MAX_ROBOT_CONTROLS  = 7;
     public int mark;
 
     public TechRoboticControls (String typeId, int lv, int seq, boolean b, TechCategory c) {

@@ -23,7 +23,6 @@ import rotp.model.colony.ColonySpendingCategory;
 import rotp.model.empires.Empire;
 import rotp.model.empires.SystemView;
 import rotp.model.galaxy.StarSystem;
-import rotp.model.game.GameSession;
 import rotp.model.planet.Planet;
 import rotp.util.Base;
 
@@ -119,7 +118,7 @@ public class AIGovernor implements Base, Governor {
         int prevDef = col.defense().allocation();
         int prevInd = col.industry().allocation();
         int prevEco = col.ecology().allocation();
-        int prevRes = col.research().allocation();
+        //int prevRes = col.research().allocation();
 
         int cleanEco = col.ecology().cleanupAllocationNeeded();
         int maxInd = col.industry().maxAllocationNeeded();
@@ -240,7 +239,9 @@ public class AIGovernor implements Base, Governor {
         // # of turns we could make ship with 100% ship
         float shipTurns = maxShipBCNeeded/(currentNet*shipPctSpending);
         // pct increase of factories we could make with 100% industry
-        float maxNewFactories = min(col.industry().maxUseableFactories()-col.industry().factories(), currentNet/col.industry().newFactoryCost());
+        // BR: Repatriated the method
+        float maxNewFactories = col.industry().maxNewFactories(currentNet);
+        //float maxNewFactories = min(col.industry().maxUseableFactories()-col.industry().factories(), currentNet/col.industry().newFactoryCost());
         float factoryIncreasePct = maxNewFactories/col.industry().factories();
 
         suggestMissileBaseCount(col);
@@ -382,8 +383,9 @@ public class AIGovernor implements Base, Governor {
         else if (empire.sv.isRich(sys.id))
             baseMultiplier *= 1.5f;
         
-        if (sys == null)  // this can happen at startup
-            col.defense().maxBases(0);
+        // BR: would have crashed before getting there!
+        // if (sys == null)  // this can happen at startup
+        //     col.defense().maxBases(0);
         else if (empire.sv.isAttackTarget(sys.id))
             col.defense().maxBases(max(currBases, (int)(baseMultiplier * col.production()/40))); // modnar: reduce
         else if (empire.sv.isBorderSystem(sys.id))

@@ -41,7 +41,7 @@ public class SpacePirates extends SpaceMonster {
             sys.empire().lastAttacker(this);
 			float prevPop = col.population();
             col.setPopulation(prevPop*0.5f); // half population
-            col.industry().factories(0.0f); // remove all factories
+            col.industry().removeFactories(col.industry().factories()); // remove all factories
             float maxWaste = sys.planet().maxWaste(); // produce max waste
             sys.planet().addWaste(maxWaste);
             sys.planet().removeExcessWaste();
