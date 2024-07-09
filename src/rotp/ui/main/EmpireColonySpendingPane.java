@@ -315,35 +315,24 @@ public class EmpireColonySpendingPane extends BasePanel {
             if (category == Colony.INDUSTRY)  {
             	ColonyIndustry industry = colony.industry();
             	Float[] factoryBalance = industry.factoryBalance();
-            	Float balance	= factoryBalance[0];
-            	// float upcoming	= factoryBalance[1];
-            	// float needed	= factoryBalance[2];
-            	// float factories	= factoryBalance[3];
-            	// float max		= factoryBalance[4];
+		float balance   = factoryBalance[0];
+		Float refitFlag = factoryBalance[1];
             	String indStr = "";
-            	boolean rightAmount;
-            	if (balance == null)
-            		rightAmount = false;
-            	else {
-            		indStr	= df1.format(Math.abs(balance));
-            		rightAmount	= (balance == 0);
-            	}
+		boolean rightAmount = (balance == 0);
             	boolean warning = !rightAmount && !colony.isGovernor();
             	if (warning) {
-            		if (balance == null) {
-                 		indStr = text("MAIN_COLONY_SPENDING_REFIT");
-                 		g.setColor(Color.LIGHT_GRAY);
-            		}
-            		else if (balance > 0) {
-                		indStr = text("MAIN_COLONY_SPENDING_UNUSED_FACT", df1.format(balance));
-                		g.setColor(Color.ORANGE);
-                		g.fill(fillRect);
-    	            	g.setColor(Color.GRAY);
+			if (balance > 0) {
+				indStr = text("MAIN_COLONY_SPENDING_UNUSED_FACT", df1.format(balance));
+				g.setColor(Color.ORANGE);
+				g.fill(fillRect);
+				g.setColor(Color.GRAY);
                 	}
                 	else {
-                		indStr = text("MAIN_COLONY_SPENDING_NEEDED_FACT", df1.format(-balance));
-    	            	g.setColor(Color.LIGHT_GRAY);
+				indStr = text("MAIN_COLONY_SPENDING_NEEDED_FACT", df1.format(-balance));
+				g.setColor(Color.LIGHT_GRAY);
                 	}
+			if (refitFlag == null)
+				indStr = text("MAIN_COLONY_SPENDING_REFIT") + " " + indStr;
 	            	g.setFont(narrowFont(14));
 	            	int sw1 = g.getFontMetrics().stringWidth(indStr);
 	            	int x1 = (boxW-sw1)/2;

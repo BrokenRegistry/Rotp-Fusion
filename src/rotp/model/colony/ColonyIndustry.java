@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2020 Ray Fowler
- * 
+ *
  * Licensed under the GNU General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.gnu.org/licenses/gpl-3.0.html
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,10 +50,10 @@ public class ColonyIndustry extends ColonySpendingCategory {
     public int deltaFactories()            { return (int)factories - (int)previousFactories; }
     protected int robotControls()          { return robotControls; }
     public float newFactoryCost()          { return tech().newFactoryCost(robotControls()); }
-    public int effectiveRobotControls()    { 
+    public int effectiveRobotControls()    {
         if(empire().ignoresFactoryRefit())
             return maxRobotControls();
-        return robotControls() + empire().robotControlsAdj(); 
+        return robotControls() + empire().robotControlsAdj();
     }
     public int maxRobotControls()          { return tech().topRobotControls() + empire().robotControlsAdj(); }
     @Override
@@ -98,11 +98,11 @@ public class ColonyIndustry extends ColonySpendingCategory {
     public void nextTurn(float totalProd, float totalReserve) {
         if (factories < 0) // correct possible data issue
             factories = 0;
-        
+
         // correct for any captured errors in existing saves where a
         // captured colony had higher controls
         robotControls = min(robotControls, tech().topRobotControls());
-        
+
         previousFactories = factories;
         // prod gets planetary bonus, but not reserve
         float prodBC = pct()* totalProd * planet().productionAdj();
@@ -110,11 +110,11 @@ public class ColonyIndustry extends ColonySpendingCategory {
         float newBC = prodBC+rsvBC+industryReserveBC;
         industryReserveBC = 0;
         newFactories = 0;
-        
+
         while ((newBC > 0) && (robotControls <= tech().topRobotControls())) {
             // how many total factories can we have at current controls?
-            float buildableFactories = maxBuildableFactories(robotControls);        
-            // if we already have that many factories, then upgrade robotic controls if possible 
+            float buildableFactories = maxBuildableFactories(robotControls);
+            // if we already have that many factories, then upgrade robotic controls if possible
             if (buildableFactories <= (factories+newFactories)) {
                 if (robotControls == tech().topRobotControls())
                     break; // no more robotic control upgrades, so quit
@@ -135,7 +135,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
                         buildableFactories = maxBuildableFactories(robotControls);
                     }
                 }
-            }          
+            }
             // first, try to convert existing alien factories to our max build limit
             if ((newFactories+factories) < buildableFactories) {
                 while (convertableAlienFactories() > 0 && (newBC > factoryConversionCost()) && (newFactories + factories < buildableFactories)) {
@@ -165,7 +165,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
             orderAmt = max(orderAmt, c.orderAmount(Colony.Orders.FACTORIES));
             c.removeColonyOrder(Colony.Orders.FACTORIES);
         }
-        
+
         c.addFollowUpSpendingOrder(orderAmt);
     }
     public void commitTurn() {
@@ -178,18 +178,18 @@ public class ColonyIndustry extends ColonySpendingCategory {
     public float excessSpending()    {
         if (colony().allocation(categoryType()) == 0)
             return 0;
-        
+
         float prodBC = pct()* colony().totalProductionIncome() * planet().productionAdj();
         float rsvBC = pct() * colony().maxReserveIncome();
-        float totalBC = prodBC+rsvBC+industryReserveBC;        
-        
+        float totalBC = prodBC+rsvBC+industryReserveBC;
+
         // deduct cost to convert alien factories
         float convertCost = totalAlienConversionCost();
         if (totalBC <= convertCost)
             return 0;
 
         totalBC -= convertCost;
-        
+
         // deduct cost to build remaining factories at current robot controls level
         float maxBuildable = maxBuildableFactories(robotControls);
         float possibleNewFactories = 0;
@@ -198,7 +198,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
             float buildCost = possibleNewFactories*newFactoryCost();
             if (totalBC <= buildCost)
                 return 0;
-            totalBC -= buildCost;      
+            totalBC -= buildCost;
         }
 
         int colonyControls = robotControls;
@@ -209,7 +209,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
             if (!empire().ignoresFactoryRefit())
                 upgradeCost = factoriesToUpgrade * tech().bestFactoryCost() / 2;
             // not enough to upgrade? save off BC for next turn and exit
-            if (upgradeCost > totalBC) 
+            if (upgradeCost > totalBC)
                 return 0;
             // pay to upgrade all factories to new RC at once
             totalBC -= upgradeCost;
@@ -241,18 +241,18 @@ public class ColonyIndustry extends ColonySpendingCategory {
 
         if (newBC <= 0)
             return text(noneText);
- 
+
         // cost to build up to max useable factories
 
         float possibleNewFactories = 0;
- 
+
         int previouslyConvertedFactories = 0;
-        
+
         while ((newBC > 0) && (colonyControls <= tech().topRobotControls())) {
             // how many total factories can we have at current controls?
             float buildableFactories = maxBuildableFactories(colonyControls);
-            
-            // if we already have that many factories, then upgrade robotic controls if possible 
+
+            // if we already have that many factories, then upgrade robotic controls if possible
             if (buildableFactories <= builtFactories) {
                 if (colonyControls == tech().topRobotControls())
                     break; // no more robotic control upgrades, so quit
@@ -262,7 +262,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
                     if (!empire().ignoresFactoryRefit())
                         upgradeCost = factoriesToRefit * tech().bestFactoryCost() / 2;
                     // not enough to upgrade? save off BC for next turn and exit
-                    if (upgradeCost > newBC) 
+                    if (upgradeCost > newBC)
                         return text(refitFactoriesText);
                     else {
                         // pay to upgrade all factories to new RC at once
@@ -271,7 +271,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
                         buildableFactories = maxBuildableFactories(colonyControls);
                     }
                 }
-            }          
+            }
             // first, try to convert existing alien factories to our max build limit
             if (builtFactories < buildableFactories) {
                 int convertableFactories = convertableAlienFactories(colonyControls)-previouslyConvertedFactories;
@@ -294,7 +294,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
                 float delta = buildCost/costPerFactory;
                 possibleNewFactories += delta;
                 builtFactories += delta;
-                newBC -= buildCost;             
+                newBC -= buildCost;
             }
         }
 
@@ -309,12 +309,12 @@ public class ColonyIndustry extends ColonySpendingCategory {
 
         float totalCost = 0;
         int previouslyConvertedFactories = 0;
-        
+
         while (colonyControls <= tech().topRobotControls()) {
             // how many total factories can we have at current controls?
             float buildableFactories = maxBuildableFactories(colonyControls);
-            
-            // if we already have that many factories, then upgrade robotic controls if possible 
+
+            // if we already have that many factories, then upgrade robotic controls if possible
             if (buildableFactories <= builtFactories) {
                 if (colonyControls == tech().topRobotControls())
                     break; // no more robotic control upgrades, so quit
@@ -323,7 +323,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
                     totalCost += refitCost;
                 }
                 colonyControls++;
-            }          
+            }
             // first, try to convert existing alien factories to our max build limit
             if (builtFactories < buildableFactories) {
                 int convertableFactories = convertableAlienFactories(colonyControls)-previouslyConvertedFactories;
@@ -347,7 +347,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
         }
 
         totalCost = max(0, totalCost-industryReserveBC);
- 
+
         // adjust cost for planetary production
         // assume any amount over current production comes from reserve (no adjustment)
         float totalBC = (colony().totalProductionIncome() * planet().productionAdj()) + colony().maxReserveIncome();
@@ -384,7 +384,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
     	float maxNeededFactories = maxFactories - factories - upcomingFactories;
     	float neededFactories    = maxNeededFactories - expectedMissingPopulation * robotControls;
     	Float factoryBalance     = -neededFactories;
- 
+
     	if (robotControls != tech().topRobotControls()
     			|| convertableAlienFactories() != 0) { // check for refit
         	factoryBalance = null;
@@ -413,15 +413,15 @@ public class ColonyIndustry extends ColonySpendingCategory {
     	return expectedPopulation;
     }
     protected float factoryConversionCost()    { return 2; }
-    protected float totalAlienConversionCost() { 
-        return convertableAlienFactories() * factoryConversionCost(); 
+    protected float totalAlienConversionCost() {
+        return convertableAlienFactories() * factoryConversionCost();
     }
-    protected int convertableAlienFactories()  { 
+    protected int convertableAlienFactories()  {
         return convertableAlienFactories(robotControls);
     }
-    protected int convertableAlienFactories(int rc) { 
+    protected int convertableAlienFactories(int rc) {
         float alienFactories = planet().numAlienFactories();
-        return (int) max(0, min(alienFactories,maxBuildableFactories(rc)-factories)); 
+        return (int) max(0, min(alienFactories,maxBuildableFactories(rc)-factories));
     }
     protected void convertRandomAlienFactory() {
         float num = convertableAlienFactories();
@@ -441,17 +441,17 @@ public class ColonyIndustry extends ColonySpendingCategory {
         float builtFactories = factories;
         int colonyControls = robotControls;
         float expectedMissingPopulation = planet().currentSize() - expectedPopulation();
-        float notTobuild = expectedMissingPopulation * tech().topRobotControls();
+        float notTobuild = expectedMissingPopulation * maxRobotControls();
         builtFactories += notTobuild;
 
         float totalCost = 0;
         int previouslyConvertedFactories = 0;
-        
+
         // Cost of all
         while (colonyControls <= tech().topRobotControls()) {
             // how many total factories can we have at current controls?
             float buildableFactories = maxBuildableFactories(colonyControls);
-            
+
             if (colonyControls == tech().topRobotControls()) {
             	// no more robotic control upgrades Take account of given limit.
             	buildableFactories -= notTobuild;
@@ -468,7 +468,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
             		colonyControls++;
             	}
             }
-            
+
             // first, try to convert existing alien factories to our max build limit
             if (builtFactories < buildableFactories) {
                 int convertableFactories = convertableAlienFactories(colonyControls)-previouslyConvertedFactories;
@@ -491,7 +491,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
             }
         }
         totalCost = max(0, totalCost-industryReserveBC);
- 
+
         // adjust cost for planetary production
         // assume any amount over current production comes from reserve (no adjustment)
         float totalBC = (colony().totalProductionIncome() * planet().productionAdj()) + colony().maxReserveIncome();
@@ -502,6 +502,42 @@ public class ColonyIndustry extends ColonySpendingCategory {
 
         return totalCost;
     }
+    public int minAllocationNeeded() {
+        float needed = spendingNeeded();
+        if (needed <= 0)
+            return 0;
+        float pctNeeded = min(1, needed / colony().totalIncome());
+        int ticks = (int) Math.ceil(pctNeeded * MAX_TICKS);
+        return ticks;
+    }
+    private float expectedPopulation() {
+    	float curentPopulation	 = colony().population();
+       	float upcomingPopGrowth  = colony().ecology().upcomingPopGrowth(); // Next Turn
+    	float expectedPopulation = curentPopulation + upcomingPopGrowth;
+    	expectedPopulation		 = min(expectedPopulation, colony().maxSize());
+    	return expectedPopulation;
+    }
+    public Float[] factoryBalance()	 {
+    	// Population expectation
+    	float expectedPopulation = expectedPopulation();
+    	float expectedMissingPopulation = planet().currentSize() - expectedPopulation;
+    	// Factories
+    	float maxFactories	     = maxBuildableFactories();
+    	float upcomingFactories  = upcomingFactories();
+    	float maxNeededFactories = maxFactories - factories - upcomingFactories;
+	float neededFactories    = maxNeededFactories - expectedMissingPopulation * maxRobotControls();
+	float factoryBalance     = -neededFactories;
+	Float refitFlag = 0f;
+
+    	if (robotControls != tech().topRobotControls()
+    			|| convertableAlienFactories() != 0) { // check for refit
+		refitFlag = null;
+    	}
+	return new Float[] {factoryBalance, refitFlag};
+    }
+    //
+    // PRIVATE METHODS
+    //
     private float upcomingFactories() {
         if (colony().allocation(categoryType()) == 0)
             return 0;
@@ -514,17 +550,17 @@ public class ColonyIndustry extends ColonySpendingCategory {
 
         if (newBC <= 0)
             return 0;
- 
+
         // cost to build up to max usable factories
         float possibleNewFactories = 0;
- 
+
         int previouslyConvertedFactories = 0;
-        
+
         while ((newBC > 0) && (colonyControls <= tech().topRobotControls())) {
             // how many total factories can we have at current controls?
             float buildableFactories = maxBuildableFactories(colonyControls);
-            
-            // if we already have that many factories, then upgrade robotic controls if possible 
+
+            // if we already have that many factories, then upgrade robotic controls if possible
             if (buildableFactories <= builtFactories) {
                 if (colonyControls == tech().topRobotControls())
                     break; // no more robotic control upgrades, so quit
@@ -534,7 +570,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
                     if (!empire().ignoresFactoryRefit())
                         upgradeCost = factoriesToRefit * tech().bestFactoryCost() / 2;
                     // not enough to upgrade? save off BC for next turn and exit
-                    if (upgradeCost > newBC) 
+                    if (upgradeCost > newBC)
                         return possibleNewFactories;
                     else {
                         // pay to upgrade all factories to new RC at once
@@ -543,7 +579,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
                         buildableFactories = maxBuildableFactories(colonyControls);
                     }
                 }
-            }          
+            }
             // first, try to convert existing alien factories to our max build limit
             if (builtFactories < buildableFactories) {
                 int convertableFactories = convertableAlienFactories(colonyControls)-previouslyConvertedFactories;
@@ -566,7 +602,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
                 float delta = buildCost/costPerFactory;
                 possibleNewFactories += delta;
                 builtFactories += delta;
-                newBC -= buildCost;             
+                newBC -= buildCost;
             }
         }
         return possibleNewFactories;
