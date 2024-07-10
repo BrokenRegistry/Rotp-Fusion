@@ -27,10 +27,6 @@ import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
 import rotp.model.empires.GalacticCouncil;
 import rotp.model.empires.Leader;
-import static rotp.model.empires.Leader.Objective.DIPLOMAT;
-import static rotp.model.empires.Leader.Personality.AGGRESSIVE;
-import static rotp.model.empires.Leader.Personality.HONORABLE;
-import static rotp.model.empires.Leader.Personality.PACIFIST;
 import rotp.model.empires.SpyNetwork;
 import rotp.model.empires.SpyReport;
 import rotp.model.empires.TreatyWar;
@@ -104,7 +100,10 @@ public class AIDiplomat implements Base, Diplomat {
         return !offerAidAmounts().isEmpty();
     }
     public boolean canOfferTechnology(Empire e)  { 
-        if (!diplomats(id(e)) || empire.atWarWith(id(e)) || !empire.inEconomicRange(id(e)))
+        if (!diplomats(id(e))
+        		|| empire.atWarWith(id(e))
+        		|| !empire.inEconomicRange(id(e))
+        		|| !options().canOfferTechs(empire, e) )
             return false;
                 
         return !offerableTechnologies(e).isEmpty();

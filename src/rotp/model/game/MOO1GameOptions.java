@@ -664,8 +664,21 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     public boolean canTradeTechs(Empire e1, Empire e2) {
         switch(selectedTechTradeOption()) {
             case TECH_TRADING_YES: return true;
-            case TECH_TRADING_NO:  return false;
-            case TECH_TRADING_ALLIES: return e1.alliedWith(e2.id);
+            case TECH_TRADING_NO:
+            case TECH_TRADING_NO_AID:  return false;
+            case TECH_TRADING_ALLIES:
+            case TECH_TRADING_ALLIES_AID: return e1.alliedWith(e2.id);
+        }
+        return true;
+    }
+    @Override
+    public boolean canOfferTechs(Empire e1, Empire e2) {
+        switch(selectedTechTradeOption()) {
+            case TECH_TRADING_YES:
+            case TECH_TRADING_NO:
+            case TECH_TRADING_ALLIES: return true;
+            case TECH_TRADING_NO_AID: return false;
+            case TECH_TRADING_ALLIES_AID: return e1.alliedWith(e2.id);
         }
         return true;
     }

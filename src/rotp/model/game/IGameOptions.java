@@ -132,9 +132,11 @@ public interface IGameOptions extends IModOptions {
     	}
     }
     
-    public static final String TECH_TRADING_YES     = "SETUP_TECH_TRADING_YES";
-    public static final String TECH_TRADING_ALLIES  = "SETUP_TECH_TRADING_ALLIES";
-    public static final String TECH_TRADING_NO      = "SETUP_TECH_TRADING_NO";
+    public static final String TECH_TRADING_YES        = "SETUP_TECH_TRADING_YES";
+    public static final String TECH_TRADING_ALLIES     = "SETUP_TECH_TRADING_ALLIES";
+    public static final String TECH_TRADING_ALLIES_AID = "SETUP_TECH_TRADING_ALLIES_AID";
+    public static final String TECH_TRADING_NO         = "SETUP_TECH_TRADING_NO";
+    public static final String TECH_TRADING_NO_AID     = "SETUP_TECH_TRADING_NO_AID";
 
     public static final String GALAXY_AGE_NORMAL = "SETUP_GALAXY_AGE_NORMAL";
     public static final String GALAXY_AGE_YOUNG  = "SETUP_GALAXY_AGE_YOUNG";
@@ -374,6 +376,7 @@ public interface IGameOptions extends IModOptions {
     public List<Integer> possibleColors();
     public float researchCostBase(int techLevel);
     public boolean canTradeTechs(Empire e1, Empire e2);
+    public boolean canOfferTechs(Empire e1, Empire e2);
     public int warpSpeed(TechEngineWarp tech);
     public boolean allowRandomEvent(RandomEvent ev);
     public String randomStarType();
@@ -754,7 +757,9 @@ public interface IGameOptions extends IModOptions {
         List<String> list = new ArrayList<>();
         list.add(TECH_TRADING_YES);
         list.add(TECH_TRADING_ALLIES);
+        list.add(TECH_TRADING_ALLIES_AID);
         list.add(TECH_TRADING_NO);
+        list.add(TECH_TRADING_NO_AID);
         return list;
     }
     public static List<String> getTerraformingOptions() {

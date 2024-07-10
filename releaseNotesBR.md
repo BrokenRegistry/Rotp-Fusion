@@ -3,21 +3,8 @@ Info for Mac Users: Applications/games/rotp/ is a good place to run it smoothly!
 
 <b><ins>Very last changes:</ins></b>
 
-- Spending PaneL:
-  - Fixed factory estimation error.
-  - Factory estimation will show refit requirement.
-  - Added smart-set min factory requirement for next turn growth.
-  - Added help for "smart-max".
-  - Added Help for Colony order Toggle.
-  - Both smooth and smart Min/Max are now available. smart respond to the Shift key.
-  - "Refresh" activated by "Ctrl-Click" using the "Next-Turn" logic.
-  - "Smart all" activated by "Shift -Ctrl-Click".
-  - Improved the help description.
-
-- Fixed a small bug preventing you from selecting your first opponent.
-- New Governor option to promote atmosphere and soil enrichment, as well as planet terraforming.
-  - Could be used before a council, to boost your vote power.
-  - Currently only available in the compact sub panel.
+- - Display refit+needed/over in industry spending slider plus swap to maxRobotControls (Cybersol)
+- Added possibilities to "Tech Trade Limitation" to also limit technology aid.
 
 
 <b><ins>Updates since last Reddit announcement:</ins></b>

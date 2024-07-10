@@ -1518,10 +1518,14 @@ SETUP_RESEARCH_RATE_LETHARGIC_HELP | Research costs factors:<br>141% at level 2;
 SETUP_RESEARCH_RATE_LETHARGIC      | Impeded
 SETUP_TECH_TRADING_YES            | Yes
 SETUP_TECH_TRADING_ALLIES         | Allies Only
+SETUP_TECH_TRADING_ALLIES_AID     | Allies Only**
 SETUP_TECH_TRADING_NO             | No
+SETUP_TECH_TRADING_NO_AID         | No**
 SETUP_TECH_TRADING_YES_HELP       | Anyone can trade with anyone, as long as their relationship is good enough.<br>Empires at war won't trade!
 SETUP_TECH_TRADING_ALLIES_HELP    | Trade is limited between allies only.
+SETUP_TECH_TRADING_ALLIES_AID_HELP | Trade and aid are limited between allies only.
 SETUP_TECH_TRADING_NO_HELP        | Trade is disabled.
+SETUP_TECH_TRADING_NO_AID_HELP    | Both trade and aid are disabled.
 SETUP_WARP_SPEED_NORMAL_HELP      | Warp Speed progression: 1, 2, 3, 4, 5,  6,  7,  8,  9
 SETUP_WARP_SPEED_NORMAL           | Normal
 SETUP_WARP_SPEED_FAST_HELP        | Warp Speed progression: 1, 2, 3, 5, 7, 10, 13, 17, 21
@@ -2043,8 +2047,8 @@ SETTINGS_RANDOM_EVENTS_HELP       | There are twenty random events in Remnants o
 SETTINGS_RANDOM_EVENTS_DESC       | Space Monsters are random events and considerable mid-game threats.<br> Turn off space monsters or all random events. 
 SETTINGS_WARP_SPEED_DESC          | Increase the speed of more advanced warp technologies. This can be desirable on very large maps.
 SETTINGS_GALAXY_AGE_DESC          | Compared to normal galaxies, young galaxies have more white and blue stars while old galaxies have more red and neutron stars.
-SETTINGS_TECH_TRADING_HELP        | Tech trading is the other common way to learn a technology. The AI factions will trade technologies with each other, so you might as well get in on the action.<br>You can turn off all technology trades or restrict these trades to allies.
-SETTINGS_TECH_TRADING_DESC        | Turn off all technology trades or restrict these trades to allies.
+SETTINGS_TECH_TRADING_HELP        | Tech trading is the other common way to learn a technology. The AI factions will trade technologies with each other, so you might as well get in on the action.<br>You can turn off all technology trades or restrict these trades to allies, this limitation can also be extended to aid.
+SETTINGS_TECH_TRADING_DESC        | Turn off all technology trades or restrict these trades to allies. **To restrict aid too.
 SETTINGS_STAR_DENSITY_DESC        | Set to high to reduce the chance of empires being stranded early in the game.
 SETTINGS_RESEARCH_RATE_HELP       | If you like savoring your new technologies, if you want to delay being distracted by science's newest shinies, you can slow the rate of research
 SETTINGS_RESEARCH_RATE_DESC       | Slow the research rate of new technologies, lengthening the useful life of current technologies.<br> [Asymptotic in modnar MOD]

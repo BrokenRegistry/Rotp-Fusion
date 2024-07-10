@@ -100,7 +100,10 @@ public class AIDiplomat implements Base, Diplomat {
         return !offerAidAmounts().isEmpty();
     }
     public boolean canOfferTechnology(Empire e)  { 
-        if (!diplomats(id(e)) || empire.atWarWith(id(e)) || !empire.inEconomicRange(id(e)))
+        if (!diplomats(id(e))
+        		|| empire.atWarWith(id(e))
+        		|| !empire.inEconomicRange(id(e))
+        		|| !options().canOfferTechs(empire, e) )
             return false;
                 
         return !offerableTechnologies(e).isEmpty();
@@ -1583,8 +1586,8 @@ public class AIDiplomat implements Base, Diplomat {
         return random() < 0.90f + powerBonus; // modnar: add powerBonus
     }
     // ----------------------------------------------------------
-// PRIVATE METHODS
-// ----------------------------------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------------------------------
     private float previousVoteBonus(Empire c) {
         return c.id == empire.lastCouncilVoteEmpId() ? 0.6f : 0;
     }
@@ -1939,6 +1942,4 @@ public class AIDiplomat implements Base, Diplomat {
         inc.duration = 50;
         return true;
     }
-
-
 }

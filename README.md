@@ -67,6 +67,12 @@ Later:
 
 ## What's New
 
+2024.07.09 (BR)
+- Added possibilities to "Tech Trade Limitation" to also limit technology aid.
+
+2024.07.08 (Cybersol)
+- Display refit+needed/over in industry spending slider plus swap to maxRobotControls
+
 2024.07.04 (BR)
 - Fixed a small bug preventing you from selecting your first opponent.
 - New Governor option to promote atmosphere and soil enrichment, as well as planet terraforming.

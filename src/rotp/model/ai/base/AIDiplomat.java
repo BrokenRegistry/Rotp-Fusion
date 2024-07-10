@@ -100,7 +100,10 @@ public class AIDiplomat implements Base, Diplomat {
         return !offerAidAmounts().isEmpty();
     }
     public boolean canOfferTechnology(Empire e)  { 
-        if (!diplomats(id(e)) || empire.atWarWith(id(e)) || !empire.inEconomicRange(id(e)))
+        if (!diplomats(id(e))
+        		|| empire.atWarWith(id(e))
+        		|| !empire.inEconomicRange(id(e))
+        		|| !options().canOfferTechs(empire, e) )
             return false;
                 
         return !offerableTechnologies(e).isEmpty();
