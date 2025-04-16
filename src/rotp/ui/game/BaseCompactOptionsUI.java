@@ -38,6 +38,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JTextPane;
 
 import rotp.model.game.IGameOptions;
+import rotp.model.game.IMainOptions;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.ui.BasePanel;
@@ -47,6 +48,7 @@ import rotp.ui.design.DesignUI;
 import rotp.ui.main.EmpireColonySpendingPane;
 import rotp.ui.main.GovernorOptionsPanel;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.options.AllSubUI;
 import rotp.ui.util.IParam;
 import rotp.ui.util.ParamList;
 import rotp.util.FontManager;
@@ -113,6 +115,8 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	private boolean isLeftAlign	 = false;
 	//private boolean isRightAlign = false;
 	private boolean isJustified	 = false;
+	private boolean closing	 = false;
+	
 	// ========== Constructors and initializers ==========
 	//
 	public BaseCompactOptionsUI() {
@@ -125,19 +129,17 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 	}
-	public void initUI(String guiTitle_ID, String guiId, SafeListPanel paramList) {
+	public void initUI(String guiTitle_ID, String guiId) {
 		init_0();
 		guiTitleID = guiTitle_ID;
-		GUI_ID = guiId;
-		optionsList = paramList;
-		reInit();
+		this.GUI_ID = guiId;
+		clearOptionsList();
+		reInit(false);
 	}
-	public void initUI(String guiTitle_ID, String guiId, SafeListPanel paramList,
-						boolean hovering, Rectangle location) {
+	public void initUI(String guiTitle_ID, String guiId, boolean hovering, Rectangle location) {
 		init_0();
 		guiTitleID = guiTitle_ID;
-		GUI_ID = guiId;
-		optionsList	  = paramList;
+		this.GUI_ID = guiId;
 		xFull = location.x;
 		yFull = location.y;
 		wFull = location.width;
@@ -150,13 +152,32 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		hGist = hFull;
 		rGist = xGist + wGist;
 		bGist = yGist + hGist;
-		reInit();
-		this.hovering = hovering;
+		clearOptionsList();
+		reInit(hovering);
 	}
-	
-	private SafeListPanel getList() { return optionsList; }
-	@Override protected void singleInit() {
-		optionsList		= getList();
+	public void reloadUI()	{
+		if (closing)
+			return;
+
+		for (ModText bt : btListLeft)
+			bt.removeBoxFromList();
+		for (ModText bt : btListRight)
+			bt.removeBoxFromList();
+		hoverBox = null;
+		clearOptionsList();
+		singleInit();
+		forceUpdate(true);
+
+		repaint();
+	}
+	private void clearOptionsList()	{ optionsList	= null; }
+	private void vadidOptionsList()	{
+		if (optionsList == null)
+			optionsList = AllSubUI.getHandle(GUI_ID).optionsMap();
+	}
+	@Override protected void singleInit()	{
+		vadidOptionsList();
+		lastRowList.clear();
 		activeList		= new SafeListParam(optionsList.name);
 		duplicateList	= new SafeListParam(optionsList.name);
 		paramList		= new SafeListParam(optionsList.name);
@@ -164,6 +185,9 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		hSettingsTotal	= 0;
 		numColumns = optionsList.size();
 		numRows    = 0;
+		btListLeft.clear();
+		btListRight.clear();
+		btListBoth.clear();
 		for (SafeListParam list : optionsList) {
 			int hSettings = 0;
 			totalRows += list.size();
@@ -180,9 +204,9 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 					else
 						paramList.add(param);
 				}
-				else {
-					System.err.println("Null Param Error: " + guiTitleID);
-				}
+//				else {
+//					System.err.println("Null Param Error: " + guiTitleID);
+//				}
 			}
 			hSettingsTotal = max(hSettingsTotal, hSettings);
 		}
@@ -190,13 +214,11 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		btListBoth.addAll(btListRight);
 	}
 	private void init_0() {
-		optionsList	= null;
+		closing = false;
+		clearOptionsList();
 		lastRowList.clear();
-		btListLeft.clear();
-		btListRight.clear();
-		btListBoth.clear();
 		imgList.clear();
-		forceUpdate	= true;
+		forceUpdate(true);
 		numColumns	= 0;
 		numRows		= 0;
 		hSettingsTotal	= 0;
@@ -213,19 +235,22 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		callPreview	= false;
 		callParam	= null;
 	}
-	@Override protected void terminate()	{ RotPUI.releaseOptionPanel(); }
+	@Override protected void terminate()	{
+		parentUI = null;
+		RotPUI.releaseOptionPanel();
+	}
 
 	// ========== Optimization Methods ==========
 	//
-    @Override protected void initBackImg() {
-    	// Background image is FullWindow width
+	@Override protected void initBackImg() {
+		// Background image is FullWindow width
 		long timeStart = System.currentTimeMillis();
 		backImg = newOpaqueImage(wFull, hFull);
 		Graphics2D g = (Graphics2D) backImg.getGraphics();
 		// modnar: use (slightly) better upsampling
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
+		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
@@ -277,24 +302,19 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 
 		yDesc = defaultBox.y - ( descHeigh + buttonPadV);
 		
-        initButtonBackImg();
-        g.dispose();
+		initButtonBackImg();
+		g.dispose();
 		if (showTiming) 
 			System.out.println("initBackImg() Time = " + (System.currentTimeMillis()-timeStart));
-    }
+	}
 	// ========== Other Methods ==========
 	//
-    private boolean forceUpdate()		{ return forceUpdate; }
-    @Override protected void forceUpdate(boolean b)	{
-    	forceUpdate = b;
-    	if (forceUpdate)
-    		clearIcons();
-    }
-    private void clearIcons()			{
-    	subMenuIcon		= null;
-    	subMenuMoreIcon	= null;
-    	eyeIcon			= null;
-    }
+	private boolean forceUpdate()		{ return forceUpdate; }
+	private void clearIcons()			{
+		subMenuIcon		= null;
+		subMenuMoreIcon	= null;
+		eyeIcon			= null;
+	}
 	private BufferedImage subMenuIcon() {
 		// subMenuIcon = null; // TO DO BR: Comment
 		if (subMenuIcon == null)
@@ -533,6 +553,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			ySetting += hSetting;
 	}
 	private void mouseCommon(MouseEvent e, MouseWheelEvent w) {
+		//System.out.println("BaseCompactOptionUI.mouseCommon()");
 		for (int i=0; i<activeList.size(); i++) {
 			if (hoverBox == btListLeft.get(i).box()
 					|| hoverBox == btListRight.get(i).box() ) {
@@ -541,14 +562,15 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 					if (e == null)
 						return;
 					super.close();
-			        param.updated(true);
-			        btListLeft.get(i).mouseExit();
-			        btListRight.get(i).mouseExit();
-			        disableGlassPane();
-			        param.toggle(e, GUI_ID, this);
+					param.updated(true);
+					btListLeft.get(i).mouseExit();
+					btListRight.get(i).mouseExit();
+					disableGlassPane();
+					param.toggle(e, GUI_ID, this);
 					return;
-				}			
-				forceUpdate(forceUpdate() || param.toggle(e, w, this));
+				}
+				// ! toggle may change forceUpdate value... Do not swap ! 
+				forceUpdate(param.toggle(e, w, this) || forceUpdate());
 				param.updated(true);
 				setValueColor(i);
 				btListLeft.get(i).repaint(activeList.get(i).getGuiDisplay(0));
@@ -638,6 +660,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		}
 	}
 	@Override protected void close() {
+		closing = true;
 		super.close();
 		hoverBox = null;
 		prevHover = null;
@@ -667,7 +690,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		case CTRL:			// Cancel and exit
 		case CTRL_SHIFT:	// Cancel and exit
 			guiOptions().updateAllNonCfgFromFile(LIVE_OPTIONS_FILE);
-			UserPreferences.load();
+			UserPreferences.reload();
 			break;
 		case SHIFT:			// Apply
 			guiOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
@@ -686,7 +709,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			break;
 		case SHIFT: // setLocalUserKey
 		default: // setGlobalUserKey
-			UserPreferences.load();
+			UserPreferences.reload();
 			break; 
 		}
 		super.doUserBoxAction();
@@ -695,7 +718,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		switch (ModifierKeysState.get()) {
 		case CTRL:
 		case CTRL_SHIFT: // cancelKey
-			UserPreferences.load();
+			UserPreferences.reload();
 			break;
 		default: // setLocalDefaultKey
 			setLocalToDefault(false, true);
@@ -708,11 +731,16 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		switch (ModifierKeysState.get()) {
 		case SHIFT: // setLocalLastKey
 		default: // setGlobalLastKey
-			UserPreferences.load();
+			UserPreferences.reload();
 		}
 		super.doLastBoxAction();
 	}
-	@Override public void refreshGui(int level)	{
+	@Override protected void forceUpdate(boolean b)	{
+		forceUpdate = b;
+		if (forceUpdate)
+			clearIcons();
+	}
+	@Override public void refreshGui(int level)		{
 		super.refreshGui(level);
 		for (int i=0; i<activeList.size(); i++) {
 			setValueColor(i);
@@ -729,7 +757,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		long timeStart = System.currentTimeMillis();
 		super.paintComponent(g0);
 		Graphics2D g = (Graphics2D) g0;
-		IGameOptions opts = options();
+		IGameOptions opts = guiOptions();
 		isCentered	 = opts.optionPanelIsCentered();
 		isLeftAlign	 = opts.optionPanelIsLeftAlign();
 		//isRightAlign = opts.optionPanelIsRightAlign();
@@ -754,12 +782,17 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			paintSetting(g, param);
 			goToNextSetting(param);
 		}
+			mouseMoved(null); // to select again a box that have been changed by reloadUI
 		if (callPreview) {
 			parentUI.preview("quickGenerate", callParam);
 			callPreview = false;
 			callParam = null;
 		}
-		forceUpdate(false);
+		if (forceUpdate()) {
+			System.out.println("forceUpdate(false)");
+			forceUpdate(false);
+		}
+//		forceUpdate(false);
 		g.setStroke(prev);
 		showGuide(g);
 		if (showTiming)
@@ -778,6 +811,15 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_ESCAPE:
 				doExitBoxAction();
+				return;
+			case KeyEvent.VK_A:
+				if (e.isShiftDown())
+					IMainOptions.optionPanelAlignment.prev();
+				else
+					IMainOptions.optionPanelAlignment.next();
+				//refreshGui(0);
+				forceUpdate(true);
+				repaint();
 				return;
 			case KeyEvent.VK_C:
 				if (e.isControlDown()) {
@@ -811,9 +853,10 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		repaint();
 	}
 	@Override public void mouseMoved(MouseEvent e)		{
-		//super.mouseMoved(e);
-		mX = e.getX();
-		mY = e.getY();
+		if (e != null) { // to select again a box that have been changed by reloadUI
+			mX = e.getX();
+			mY = e.getY();
+		}
 		if (hoverBox != null && hoverBox.contains(mX,mY)) {
 			hoverChanged = false;
 			return;
@@ -826,9 +869,10 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 				repaint();
 				break;
 			}
-		for (Box box : boxBaseList)
+		for (Box box : boxBaseList) {
 			if (box.checkIfHovered(descBox))
 				break;
+		}
 		if (prevHover != null) {
 			prevHover.mouseExit();
 			if (hoverBox == null)

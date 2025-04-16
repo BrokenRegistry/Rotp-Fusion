@@ -62,6 +62,7 @@ public interface IConvenienceOptions extends IMapOptions {
 						AUTOBOMBARD_INVADE
 						),
 				AUTOBOMBARD_NO);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getCfgValue() { return UserPreferences.autoBombardToSettingName(get()); }

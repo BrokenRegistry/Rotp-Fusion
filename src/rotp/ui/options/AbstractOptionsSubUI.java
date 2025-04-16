@@ -10,8 +10,8 @@ import rotp.ui.util.ParamSubUI;
 public abstract class AbstractOptionsSubUI implements IModOptions {
 	private boolean hasExtraParam = false;
 	
-	abstract String optionId();
-	abstract SafeListPanel optionsMap();
+	public abstract String optionId();
+	public abstract SafeListPanel optionsMap();
 
 	// Generally overridden
 	SafeListParam	minorList()	{ return new SafeListParam(uiMinorKey()); }
@@ -28,7 +28,7 @@ public abstract class AbstractOptionsSubUI implements IModOptions {
 		return new ParamSubUI(
 				headId(),
 				uiNameKey(),
-				optionsMap(),
+//				optionsMap(),
 				uiTitleKey(),
 				optionId()
 				).isCfgFile(isCfgFile());
@@ -44,10 +44,10 @@ public abstract class AbstractOptionsSubUI implements IModOptions {
 	final String uiMinorKey()		{ return optionId() + "_MINOR"; }
 	final String uiCallKey()		{ return optionId() + "_MAJOR2"; }
 
-	final SafeListParam getListNoSpacer()				{ return optionsMap().getListNoSpacer(); }
-	final SafeListParam getUiAll(boolean relevant)		{ return buildList(fullList(), uiFullKey(), relevant); }
-	final SafeListParam getUiMajor(boolean relevant)	{ return buildList(majorList(), uiMajorKey(), relevant); }
-	final SafeListParam getUiMinor(boolean relevant)	{ return buildList(minorList(), uiMinorKey(), relevant); }
+	final SafeListParam getListNoSpacer()					{ return optionsMap().getListNoSpacer(); }
+	public final SafeListParam getUiAll(boolean relevant)	{ return buildList(fullList(), uiFullKey(), relevant); }
+	final SafeListParam getUiMajor(boolean relevant)		{ return buildList(majorList(), uiMajorKey(), relevant); }
+	final SafeListParam getUiMinor(boolean relevant)		{ return buildList(minorList(), uiMinorKey(), relevant); }
 	private SafeListParam buildList (SafeListParam list, String key, boolean relevant) {
 		int fullSize = optionsMap().listSizeNoSpacer();
 		int listSize = list.sizeNoSpacer();

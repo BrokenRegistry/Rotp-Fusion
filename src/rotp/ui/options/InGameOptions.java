@@ -2,7 +2,6 @@ package rotp.ui.options;
 
 import java.util.Arrays;
 
-import rotp.model.game.IGalaxyOptions;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.ui.util.ParamTitle;
@@ -18,7 +17,7 @@ public final class InGameOptions extends AbstractOptionsSubUI {
 		SafeListPanel map = new SafeListPanel(OPTION_ID);
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("GAME_DIFFICULTY"),
-				IGalaxyOptions.getDifficultySelection(), customDifficulty,
+				difficultySelection, customDifficulty,
 				dynamicDifficulty, challengeMode,
 
 				HEADER_SPACER_50,

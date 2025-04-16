@@ -200,7 +200,7 @@ public class BaseText implements Base {
         depressed = false;
     }
     public int stringWidth(Graphics g) {
-        int sw1 = g.getFontMetrics(font()).stringWidth(text);
+        int sw1 = text == null ? 0 : g.getFontMetrics(font()).stringWidth(text);
         int sw2 = hoverText == null ? sw1 : g.getFontMetrics(font()).stringWidth(hoverText);
         return max(sw1,sw2);
     }

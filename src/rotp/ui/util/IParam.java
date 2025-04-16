@@ -30,64 +30,64 @@ import rotp.ui.game.BaseModPanel;
 import rotp.util.LabelManager;
 
 public interface IParam extends InterfaceOptions{
-	public static final String LABEL_DESCRIPTION = "_DESC";
-	public static final String LABEL_HELP		 = "_HELP";
-	public static final String LABEL_GOV_LABEL	 = "_LABEL";
-	public static final String END				 = "   ";
-	public static final int INIT_DEPENDENCIES	 = 0;
-	public static final int VALID_DEPENDENCIES	 = 1;
+	static final String LABEL_DESCRIPTION = "_DESC";
+	static final String LABEL_HELP		 = "_HELP";
+	static final String LABEL_GOV_LABEL	 = "_LABEL";
+	static final String END				 = "   ";
+	static final int INIT_DEPENDENCIES	 = 0;
+	static final int VALID_DEPENDENCIES	 = 1;
 
 	/**
 	 * To be used after starting RotP or loading options
 	 * @param level: "0" for list initialization, "1" for value validation
 	 */
-	public default void initDependencies(int level)	{}
+	default void initDependencies(int level)	{}
 	// user input
-	public default boolean next() { return false; } // Return forceUpdate
-	public default boolean prev() { return false; } // Return forceUpdate
-	public default boolean toggle(MouseWheelEvent e) { return false; } // Return forceUpdate
-	public default boolean toggle(MouseEvent e, BaseModPanel frame) { return false; } // Return forceUpdate
-	public default boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame) { return false; } // Return forceUpdate
-	public default boolean toggle(MouseEvent e, String p, BaseModPanel frame) { return false; } // Return forceUpdate
-	public default boolean toggle(MouseEvent e, String p, BaseModPanel pUI, BaseModPanel frame) { return false; } // Return forceUpdate
-	public default void	updated(boolean updated)	{}
+	default boolean next()						{ return false; } // Return forceUpdate
+	default boolean prev()						{ return false; } // Return forceUpdate
+	default boolean toggle(MouseWheelEvent e)	{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, BaseModPanel frame)					{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame)	{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, String p, BaseModPanel frame)			{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, String p, BaseModPanel pUI, BaseModPanel frame)	{ return false; } // Return forceUpdate
+	default void	updated(boolean updated)	{}
 	// State
-	public default boolean	isDuplicate()			{ return false; }
-	public default boolean	isCfgFile()				{ return false; }
-	public default boolean	isTitle()				{ return false; }
-	public default boolean	isSubMenu()				{ return false; }
-	public default boolean	isDefaultValue()		{ return false; }
-	public default int		getUnseen()				{ return 0; }
+	default boolean	isDuplicate()			{ return false; }
+	default boolean	isCfgFile()				{ return false; }
+	default boolean	isTitle()				{ return false; }
+	default boolean	isSubMenu()				{ return false; }
+	default boolean	isDefaultValue()		{ return false; }
+	default int		getUnseen()				{ return 0; }
 	/**
 	 * To check if the currently set value is still locally valid
 	 */
-	public default boolean	isValidValue()			{ return true; }
-	public default boolean	isActive()				{ return true; }
-	public default boolean	updated()				{ return true; }
-	public default boolean	trueChange()			{ return true;}
+	default boolean	isValidValue()			{ return true; }
+	default boolean	isActive()				{ return true; }
+	default boolean	updated()				{ return true; }
+	default boolean	trueChange()			{ return true;}
 	// Display
-	public default void setFromCfgValue(String val) {}
-	public default String	getCfgValue()			{ return ""; }
-	public default String	getCfgLabel()			{ return ""; }
-	public default String	getGuiDisplay()			{ return ""; } // Name, value, ... and more
-	public default String	getGuiDisplay(int id)	{ return ""; }
-	public default String	getGuiDescription()		{ return ""; }
-	public default String	guideValue()			{ return ""; } // Only the value, (player view)
-	public default String	guideSelectedValue()	{ return guideValue(); }
-	public default String	guideDefaultValue()		{ return ""; }
-	public default String	guideMinimumValue()		{ return ""; }
-	public default String	guideMaximumValue()		{ return ""; }
-	public default String	guideMinMaxHelp()		{ return ""; }
-	public default int		getIndex()				{ return -1; }
-	public default String	getToolTip()			{ return getGuiDescription(); }
-	public default String	getToolTip(int id)		{ return "";  }
-	public default String   getGuiValue(int id)		{ return guideValue(); }
-	public default String	getLangLabel()			{ return ""; }
-	public default String	getLangLabel(int id)	{ return ""; }
-	public default String[]	getModifiers()			{ return null; }
-	public default float	heightFactor()			{ return 1f; }
+	default void setFromCfgValue(String val) {}
+	default String	getCfgValue()			{ return ""; }
+	default String	getCfgLabel()			{ return ""; }
+	default String	getGuiDisplay()			{ return ""; } // Name, value, ... and more
+	default String	getGuiDisplay(int id)	{ return ""; }
+	default String	getGuiDescription()		{ return ""; }
+	default String	guideValue()			{ return ""; } // Only the value, (player view)
+	default String	guideSelectedValue()	{ return guideValue(); }
+	default String	guideDefaultValue()		{ return ""; }
+	default String	guideMinimumValue()		{ return ""; }
+	default String	guideMaximumValue()		{ return ""; }
+	default String	guideMinMaxHelp()		{ return ""; }
+	default int		getIndex()				{ return -1; }
+	default String	getToolTip()			{ return getGuiDescription(); }
+	default String	getToolTip(int id)		{ return ""; }
+	default String	getGuiValue(int id)		{ return guideValue(); }
+	default String	getLangLabel()			{ return ""; }
+	default String	getLangLabel(int id)	{ return ""; }
+	default String[] getModifiers()			{ return null; }
+	default float	heightFactor()			{ return 1f; }
 
-	public default void drawBox(Graphics2D g, int x0, int y0, int w, int h, int indent, int blankW) {
+	default void drawBox(Graphics2D g, int x0, int y0, int w, int h, int indent, int blankW) {
 		int x1 = x0+w;
 		g.drawLine(x0, y0, x0+indent, y0);
 		g.drawLine(x0+indent+blankW, y0, x1, y0);
@@ -100,30 +100,30 @@ public interface IParam extends InterfaceOptions{
 	}
 
 	// For Governor ToolTips & labels
-	public default String govTooltips()			{ return "<html>" + getDescription() + "</html>"; };
-	public default String govLabelTxt()			{ return langGovLabel(getLangLabel()); };
+	default String govTooltips()			{ return "<html>" + getDescription() + "</html>"; };
+	default String govLabelTxt()			{ return langGovLabel(getLangLabel()); };
 
 	// Limited size for toolTip boxes
-	public default String getDescription()		{
+	default String getDescription()			{
 		if (getToolTip().isEmpty())
 			return getGuiDescription();
 		return getToolTip();
 	};
 	// Bigger Description for auto pop up help (guide)
-	public default String getHeadGuide()		{
+	default String getHeadGuide()			{
 		String help = headerHelp(true);
 		help += defaultValueHelp();
 		help += modifierHelp();
 		return help;
 	}
-	public default String getGuide(int id)		{ return getHeadGuide() + valueGuide(id); };
-	public default String getGuide()			{ return getHeadGuide() + selectionGuide(); }
+	default String getGuide(int id)			{ return getHeadGuide() + valueGuide(id); };
+	default String getGuide()				{ return getHeadGuide() + selectionGuide(); }
 	// Full help for "F1" requests
-	public default String getFullHelp()			{ return getGuide(); };
-	public default String getHelp()				{ return getDescription(); };
+	default String getFullHelp()			{ return getGuide(); };
+	default String getHelp()				{ return getDescription(); };
 
 	// ===== Local Help and guide Tools =====
-	public default String headerHelp(String label, boolean sep)	{
+	default String headerHelp(String label, boolean sep)	{
 		String name  = langLabel(label, "");
 		String help  = langHelp(label);
 		if (help.isEmpty())
@@ -134,9 +134,8 @@ public interface IParam extends InterfaceOptions{
 		else
 			return help;
 	}
-	public default String headerHelp(boolean sep)	{ return headerHelp(getLangLabel(), sep); }
-//	public default String headerHelp()			{ return headerHelp(getLangLabel(), true); }
-	public default String defaultValueHelp()	{
+	default String headerHelp(boolean sep)	{ return headerHelp(getLangLabel(), sep); }
+	default String defaultValueHelp()		{
 		String help = labelFormat(langLabel("GUIDE_DEFAULT_VALUE_LABEL")) + guideDefaultValue();
 		if (!showVIPPanel.get())
 			help += htmlTuneFont(-2, "&ensp<i>" + langLabel("GUIDE_SET_WITH_MID_CLICK") + "</i>");
@@ -144,7 +143,7 @@ public interface IParam extends InterfaceOptions{
 		help += baseSeparator();
 		return help;
 	}
-	public default String minMaxValuesHelp()	{
+	default String minMaxValuesHelp()		{
 		String help = labelFormat(langLabel("GUIDE_MINIMUM_VALUE_LABEL")) + guideMinimumValue();
 		help += "&emsp" + labelFormat(langLabel("GUIDE_MAXIMUM_VALUE_LABEL")) + guideMaximumValue();
 //		help += baseSeparator();
@@ -152,13 +151,13 @@ public interface IParam extends InterfaceOptions{
 	}
 	
 	// The value in help format
-	public default String getSelectionStr()		{ return labelFormat(guideSelectedValue()); }
-	public default String getValueStr(int id)	{
+	default String getSelectionStr()		{ return labelFormat(guideSelectedValue()); }
+	default String getValueStr(int id)		{
 		if (id<0)
 			return "";
 		 return labelFormat(getGuiValue(id));
 	}
-	public default String getRowGuide(int id)	{
+	default String getRowGuide(int id)		{
 		if (id<0)
 			return "";
 		String help = realHelp(id);
@@ -168,16 +167,17 @@ public interface IParam extends InterfaceOptions{
 			help = "";
 		return rowFormat(labelFormat(name(id)), help);
 	}
-	public default String valueGuide(int id)	{ return "";}
-	public default String selectionGuide()		{
-		String val  = labelFormat(langLabel("GUIDE_SELECTED_VALUE_LABEL")) + guideSelectedValue();
+	default String valueGuide(int id)		{ return "";}
+	default String selectionGuide()			{
+		String guideSelectedValue = guideSelectedValue();
+		String val  = labelFormat(langLabel("GUIDE_SELECTED_VALUE_LABEL")) + guideSelectedValue;
 		if (getIndex() < 0) // not a list
 			return val;
 		// this is a list
 		String help = valueGuide(getIndex());
 		return val + baseSeparator() + help;
 	}
-	public default String modifierHelp()		{
+	default String modifierHelp()			{
 		if (showVIPPanel.get())
 			return "";
 		String[] mod = getModifiers();
@@ -198,35 +198,35 @@ public interface IParam extends InterfaceOptions{
 		return help;
 	}
 	// ===== Upper level language tools =====
-	public default String name(int id)				{
+	default String name(int id)				{
 		if (id<0)
 			return "";
 		return langName(getLangLabel(id));
 	}
-	public default String realDescription(int id)	{
+	default String realDescription(int id)	{
 		if (id<0)
 			return "";
 		return langDesc(getLangLabel(id));
 	}
-	public default String realHelp(int id)			{
+	default String realHelp(int id)			{
 		if (id<0)
 			return "";
 		return langHelp(getLangLabel(id));
 	}
 	// ===== Formatters =====
-	public static String tableFormat(String str)	{ return str; }
-	public static String rowFormat(String... strA)	{
+	static String tableFormat(String str)	{ return str; }
+	static String rowFormat(String... strA)	{
 		String row = "";
 		for (String str : strA)
 			row += str + "&emsp ";
 		return row;
 	}
-	public static String htmlTuneFont(int deltaSize, String str)	{
-		int newSize = RotPUI.scaledSize(guideFontSize + deltaSize);
+	static String htmlTuneFont(int deltaSize, String str)	{
+		int newSize = RotPUI.scaledSize(guideFontSize() + deltaSize);
 		String head = "<span style=\"font-size:" + newSize + ".0pt\">";
 		return head + str + "</span>";
 	}
-	public static String getSeparator(int top, int thick, int down, String color)	{
+	static String getSeparator(int top, int thick, int down, String color)	{
 		String sOpen	= "<div style=\" height: ";
 		String sMid		= "px; font-size:0";
 		String sClose	= "; \"></div>";
@@ -235,24 +235,24 @@ public interface IParam extends InterfaceOptions{
 				+ sOpen + thick + sMid + sColor + color + sClose
 				+ sOpen + down	+ sMid + sClose;
 	}
-	public static String baseSeparator()			{ return getSeparator(5, 2, 3, "7f7f7f"); }
-	public static String rowsSeparator()			{ return getSeparator(4, 1, 2, "9F9F9F"); }
-	public static String labelFormat(String str)	{
+	static String baseSeparator()			{ return getSeparator(5, 2, 3, "7f7f7f"); }
+	static String rowsSeparator()			{ return getSeparator(4, 1, 2, "9F9F9F"); }
+	static String labelFormat(String str)	{
 		if (str.isEmpty())
 			return str;
 		return "<b>" + str + ":</b>&nbsp "; // Make it bold
 	}
 	// ===== Lower level language tools =====
-	public static String langName(String key)		{
+	static String langName(String key)		{
 		if (key == null)
 			return "";
 		String name = realLangLabel(key);
-//		name = langLabel(key); // TO DO BR: For debug... comment! or not
+//		String name = langLabel(key); // TODO BR: For debug... comment! or not
 		if (name == null)
 			return "";
 		return name.split("%1")[0];
 	}
-	public static String langGovLabel(String key)		{
+	static String langGovLabel(String key)	{
 		if (key == null)
 			return "";
 //		System.out.println("langDesc: key+LABEL_GOV_LABEL = " + key+LABEL_GOV_LABEL);
@@ -263,33 +263,34 @@ public interface IParam extends InterfaceOptions{
 //		System.out.println("label = " + label);
 		return label;
 	}
-	public static String langDesc(String key)		{
+	static String langDesc(String key)		{
 		if (key == null)
 			return "";
 //		System.out.println("langDesc: key+LABEL_DESCRIPTION = " + key+LABEL_DESCRIPTION);
 		String desc = realLangLabel(key+LABEL_DESCRIPTION);
-//		desc = langLabel(key+LABEL_DESCRIPTION); // TO DO BR: For debug... comment!
+//		String desc = langLabel(key+LABEL_DESCRIPTION); // TODO BR: For debug... comment!
 		if (desc == null)
 			return "";
 //		System.out.println("desc = " + desc);
 		return desc;
 	}
-	public static String langHelp(String key)		{
+	static String langHelp(String key)		{
 		if (key == null)
 			return "";
 //		System.out.println("langHelp: key+LABEL_HELP = " + key+LABEL_HELP);
 		String help = realLangLabel(key+LABEL_HELP);
+//		String help = langLabel(key+LABEL_HELP); // TO DO BR: For debug... comment!
 		if (help == null)
 			return langDesc(key);
 //		System.out.println("help = " + help);
 		return help;
 	}
-	public static String langLabel(String key)		{
+	static String langLabel(String key)		{
 		if (key == null)
 			return "";
 		return LabelManager.current().label(key);
 	}
-	public static String langLabel(String key, String... vals) {
+	static String langLabel(String key, String... vals) {
 		if (key == null)
 			return "";
 		String str = langLabel(key);
@@ -297,7 +298,7 @@ public interface IParam extends InterfaceOptions{
 			str = str.replace(textSubs[i], vals[i]);
 		return str;
 	}
-	public static String realLangLabel(String key) {
+	static String realLangLabel(String key) {
 		if (key == null)
 			return "";
 		return LabelManager.current().realLabel(key);

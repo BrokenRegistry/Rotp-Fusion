@@ -70,6 +70,7 @@ public class UserPreferences implements IMainOptions {
 	private static int selectedScreen = -1; // BR: to specify the destination display
 	private static int backupTurns = 5; // modnar: change default turns between backups to 5
 	private static List<IParam> optionList;
+	private static boolean readyToSave = false;
 	private static List<IParam> optionList() {
 		if (optionList == null) {
 			optionList = AllSubUI.allCfgOptions(false);
@@ -158,23 +159,22 @@ public class UserPreferences implements IMainOptions {
 	public	static void		disableAdvisor(boolean b)		{ disableAdvisor = b; }
 	private	static void		uiTexturePct(int i)				{ uiTexturePct = i / 100.0f; }
 	static	float			uiTexturePct()					{ return uiTexturePct; }
-	static void loadAndSave() {
-		load();
+	public static void loadAndSave() {
+		// System.out.println("UserPreferences: loadAndSave()");
+		reload();
+		readyToSave = true;
 		save();
 	}
-	@SuppressWarnings("null")
-	public static void load() {
-		
-		//System.out.println("UserPreferences: load()");
+	public static void reload()					{ load (false); }
+	public static void load(boolean coreOnly)	{
+		// System.out.println("UserPreferences: load() " + coreOnly);
 		String path = Rotp.jarPath();
 		File configFile = new File(path, PREFERENCES_FILE);
 		// modnar: change to InputStreamReader, force UTF-8
 		try ( BufferedReader in = new BufferedReader( new InputStreamReader( new FileInputStream(configFile), "UTF-8"));) {
 			String input;
-			if (in != null) {
-				while ((input = in.readLine()) != null)
-					loadPreferenceLine(input.trim());
-			}
+			while ((input = in.readLine()) != null)
+				loadPreferenceLine(input.trim(), coreOnly);
 		}
 		catch (FileNotFoundException e) {
 			rotp.Rotp.hadCfgFile = false;
@@ -185,6 +185,10 @@ public class UserPreferences implements IMainOptions {
 		}
 	}
 	public static int save() {
+		if (!readyToSave) {
+			// System.out.println("UserPreferences: save() when not ready to save... Save Aborted");
+			return 0;
+		}
 		// System.out.println("UserPreferences: save()");
 		String path = Rotp.jarPath();
 		try (FileOutputStream fout = new FileOutputStream(new File(path, PREFERENCES_FILE));
@@ -236,7 +240,7 @@ public class UserPreferences implements IMainOptions {
 
 	private static String keyFormat(String s)  { return String.format(keyFormat, s); }
 
-	private static void loadPreferenceLine(String line) {
+	private static void loadPreferenceLine(String line, boolean coreOnly) {
 		if (line.isEmpty())
 			return;
 		if (!line.contains(":"))
@@ -269,11 +273,18 @@ public class UserPreferences implements IMainOptions {
 			case "SOUND_VOLUME": setSoundVolume(val); return;
 			case "SAVE_DIR":     saveDir  = fullVal.trim(); return;
 			case "BACKUP_TURNS": backupTurns  = Integer.valueOf(val); return;
-			// case "AUTOCOLONIZE": autoColonize = yesOrNo(val); return;
-			// case "AUTOBOMBARD":  autoBombardMode = autoBombardFromSettingName(val); return;
 			case "TEXTURES":     texturesMode = texturesFromSettingName(val); return;
 			case "SENSITIVITY":  sensitivityMode = sensitivityFromSettingName(val); return;
 			case "SHOW_MEMORY":  showMemory = yesOrNo(val); return;
+			case "SCREEN_SIZE_PCT": setScreenSizePct(Integer.valueOf(val)); return;
+			case "SELECTED_SCREEN": setSelectedScreen(Integer.valueOf(val)); return;
+			case "UI_TEXTURE_LEVEL": uiTexturePct(Integer.valueOf(val)); return;
+			case "LANGUAGE": selectLanguage(val); return;
+		}
+		if (coreOnly)
+			return;
+
+		switch(key) {
 			case "DISPLAY_YEAR": displayYear = yesOrNo(val); return;
 			case "DEFAULT_MAX_BASES": defaultMaxBases = Integer.valueOf(val); return;
 			case "GOVERNOR_ON_BY_DEFAULT":  governorOnByDefault = yesOrNo(val); return;
@@ -282,18 +293,10 @@ public class UserPreferences implements IMainOptions {
 			case "LEGACY_GROWTH": legacyGrowth = yesOrNo(val); return; // BR:
 			case "GOVERNOR_AUTO_APPLY": governorAutoApply = yesOrNo(val); return; // BR:
 			case "DISABLE_ADVISOR": disableAdvisor = yesOrNo(val); return;
-			case "SCREEN_SIZE_PCT": setScreenSizePct(Integer.valueOf(val)); return;
-			case "SELECTED_SCREEN": setSelectedScreen(Integer.valueOf(val)); return;
-			case "UI_TEXTURE_LEVEL": uiTexturePct(Integer.valueOf(val)); return;
-			case "LANGUAGE": selectLanguage(val); return;
 			default:
 			// BR: Global Mod GUI
 				for (IParam param : optionList()) {
 					if (param != null && key.equalsIgnoreCase(param.getCfgLabel())) {
-//						if (param instanceof ParamSpeciesName) {
-//							System.out.print(param.getCfgLabel());
-//							System.out.println(param.getCfgValue());
-//						}
 						if (param instanceof ParamString)
 							param.setFromCfgValue(fullVal.trim());
 						else

@@ -150,7 +150,7 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 		}
 		@Override public Integer set(Integer value)	{
 			super.set(value);
-			if (RotPUI.instance() != null)
+			if (Rotp.initialized())
 				RotPUI.setupGalaxyUI().postGalaxySizeSelection(false);
 			return value;
 		}
@@ -181,7 +181,7 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 			return forceUpdate;
 		}
 		@Override public String getGuiDisplay(int idx)	{
-			if (!opts().sizeSelection().get().equals(IGalaxyOptions.SIZE_DYNAMIC))
+			if (!IGalaxyOptions.sizeSelection.get().equals(IGalaxyOptions.SIZE_DYNAMIC))
 				return "---";
 			return super.getGuiDisplay(idx);
 		}

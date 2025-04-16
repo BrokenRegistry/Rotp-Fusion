@@ -2,7 +2,6 @@ package rotp.ui.options;
 
 import java.util.Arrays;
 
-import rotp.model.game.IGalaxyOptions;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.ui.util.ParamTitle;
@@ -46,7 +45,7 @@ final class SystemsOptions extends AbstractOptionsSubUI {
 				HEADER_SPACER_50,
 				new ParamTitle("LINKED_OPTIONS"),
 				starDensity,
-				IGalaxyOptions.getSizeSelection(),
+				sizeSelection,
 				dynStarsPerEmpire
 				)));
 		return map;

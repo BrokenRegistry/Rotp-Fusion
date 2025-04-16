@@ -363,7 +363,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			.put(LOAD_SAVE_NORMAL,	MOD_UI + "LOAD_SAVE_NORMAL")
 			.put(LOAD_SAVE_WIDE,	MOD_UI + "LOAD_SAVE_WIDE")
 			.put(LOAD_SAVE_FULL,	MOD_UI + "LOAD_SAVE_FULL");
-	default int loadSaveWidth()	{
+	static int loadSaveWidth()	{
 		String val = (loadSaveWidth.get().toUpperCase());
 		if (val.equals(LOAD_SAVE_NORMAL))
 			return 650;
@@ -374,7 +374,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		else
 			return 650;
 	}
-	default boolean isLoadSaveWidthNormal()	{ return loadSaveWidth.get().equals(LOAD_SAVE_NORMAL); }
+	static boolean isLoadSaveWidthNormal()	{ return loadSaveWidth.get().equals(LOAD_SAVE_NORMAL); }
 
 	ParamList compactOptionOnly = new ParamList( MOD_UI, "COMPACT_OPTION_ONLY", "Yes")
 			.isCfgFile(true)

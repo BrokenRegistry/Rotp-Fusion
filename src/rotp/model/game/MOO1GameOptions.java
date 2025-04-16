@@ -15,6 +15,8 @@
  */
 package rotp.model.game;
 
+import static rotp.model.game.IGalaxyOptions.galaxySizeMap;
+
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.io.BufferedInputStream;
@@ -39,22 +41,9 @@ import rotp.Rotp;
 import rotp.model.empires.Empire;
 import rotp.model.empires.Race;
 import rotp.model.events.RandomEvent;
-import rotp.model.galaxy.GalaxyBitmapShape;
-import rotp.model.galaxy.GalaxyBullseyeShape; // modnar, custom shape, long generation times
-import rotp.model.galaxy.GalaxyClusterShape; // modnar, custom shape
-import rotp.model.galaxy.GalaxyEllipticalShape;
-import rotp.model.galaxy.GalaxyFractalShape; // modnar, custom shape, long generation times
-import rotp.model.galaxy.GalaxyGridShape; // modnar, custom shape
-import rotp.model.galaxy.GalaxyLorenzShape; // modnar, custom shape, long generation times
-import rotp.model.galaxy.GalaxyMazeShape; // modnar, custom shape
-import rotp.model.galaxy.GalaxyRectangularShape;
+import rotp.model.galaxy.AllShapes;
 import rotp.model.galaxy.GalaxyShape;
-import rotp.model.galaxy.GalaxyShurikenShape; // modnar, custom shape, long generation times
-import rotp.model.galaxy.GalaxySpiralArmsShape; // modnar, custom shape
-import rotp.model.galaxy.GalaxySpiralShape;
-import rotp.model.galaxy.GalaxySwirlClustersShape; // modnar, custom shape
-// modnar: add new map shapes
-import rotp.model.galaxy.GalaxyTextShape; // modnar, custom shape
+import rotp.model.galaxy.GalaxyTextShape;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.galaxy.StarType;
 import rotp.model.planet.Planet;
@@ -88,20 +77,16 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     // GalaxyUI
     private String selectedGalaxySize;
     private String selectedGalaxyShape;
-    private String selectedGalaxyShapeOption1;
-    private String selectedGalaxyShapeOption2;
+//	private String selectedGalaxyShapeOption1;	// Kept for backward compatibility and restart
+//	private String selectedGalaxyShapeOption2;	// Kept for backward compatibility and restart
     private String selectedGameDifficulty;
     private int selectedNumberOpponents;
     private String selectedStarDensityOption;
     private String selectedOpponentAIOption;
     private final String[] specificOpponentAIOption = new String[maxOpponents()+1];
     private String[] specificOpponentCROption = new String[maxOpponents()+1];
+    // private boolean communityAI = false;  // unused
 
-    @SuppressWarnings("unused")
-	private boolean communityAI = false;  // unused
-    @SuppressWarnings("unused")
-	private boolean disableColonizePrompt = false; // unused
-   
     // Advanced Options UI
     private String selectedGalaxyAge;
     private String selectedResearchRate;
@@ -123,10 +108,11 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
 
     private transient GalaxyShape galaxyShape;
     private transient int id = UNKNOWN_ID;
+	private transient ListShapeParam shapeParamList;
 
 	public MOO1GameOptions()					{ init(); }
 	public MOO1GameOptions(boolean init)		{ if(init) init(); }
-	private void init()	{
+	void init()	{
 		randomizeColors();
 		setBaseSettingsToDefault();
 	}
@@ -161,18 +147,38 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         if (selectedNumberOpponents() == prevNumOpp)
             selectedNumberOpponents(defaultOpponentsOptions());
     }
+	@Override
+	public boolean isShapeTextGalaxy()	{ return selectedGalaxyShape.equals(GalaxyTextShape.NAME); }
     @Override
     public String selectedGalaxyShape()          { return selectedGalaxyShape; }
-    @Override
-    public void selectedGalaxyShape(String s)    { selectedGalaxyShape = s; setGalaxyShape(); }
-    @Override
-    public String selectedGalaxyShapeOption1()       { return selectedGalaxyShapeOption1; }
-    @Override
-    public void selectedGalaxyShapeOption1(String s) { selectedGalaxyShapeOption1 = s; }
-    @Override
-    public String selectedGalaxyShapeOption2()       { return selectedGalaxyShapeOption2; }
-    @Override
-    public void selectedGalaxyShapeOption2(String s) { selectedGalaxyShapeOption2 = s; }
+	@Override public void selectedGalaxyShape(String s)		{
+		selectedGalaxyShape = s;
+		System.out.println("selectedGalaxyShape(" + selectedGalaxyShape + ")"); // TODO BR: REMOVE
+		setGalaxyShape();
+	}
+	public IShapeOption ShapeParam(int id)	{
+		if (shapeParamList == null)
+			shapeParamList = galaxyShape().paramList();
+		return shapeParamList.get(id-1);
+	}
+	@Override public String selectedGalaxyShapeOption1()	{
+//		if (selectedGalaxyShapeOption1 == null)
+			return ShapeParam(1).gettoString();
+//		return selectedGalaxyShapeOption1;
+	}
+	@Override public String selectedGalaxyShapeOption2()	{
+//		if (selectedGalaxyShapeOption2 == null)
+			return ShapeParam(2).gettoString();
+//		return selectedGalaxyShapeOption2;
+	}
+//	@Override public void selectedGalaxyShapeOption1(String s)	{
+//		ShapeParam(1).setString(s);
+//		selectedGalaxyShapeOption1 = s;	// Keep it for restart
+//	}
+//	@Override public void selectedGalaxyShapeOption2(String s)	{
+//		ShapeParam(2).setString(s);
+//		selectedGalaxyShapeOption2 = s;	// Keep it for restart
+//	}
     @Override
     public String selectedGalaxyAge()           { return selectedGalaxyAge; }
     @Override
@@ -250,13 +256,12 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         if (n < specificOpponentAIOption.length)
             specificOpponentAIOption[n] = s;
     }
-    @Override 
-    public String specificOpponentCROption(int n)  {
-            if ((specificOpponentCROption == null) || (specificOpponentCROption.length < n))
-                return selectedUseGlobalCROptions();
-            else
-                return specificOpponentCROption[n];
-    }
+	@Override public String specificOpponentCROption(int n)	{
+		if ((specificOpponentCROption == null) || (specificOpponentCROption.length < n))
+			return globalCROptions.get();
+		else
+			return specificOpponentCROption[n];
+	}
     @Override
     public void specificOpponentCROption(String s, int n) { 
         if (n < specificOpponentCROption.length)
@@ -339,24 +344,19 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     public String name() { return "SETUP_RULESET_ORION"; }
     @Override
     public void copyForRestart(IGameOptions oldOpt) { // BR for Restart with new options
-        if (!(oldOpt instanceof MOO1GameOptions))
-            return;
-        MOO1GameOptions opt = (MOO1GameOptions) oldOpt;
-        selectedGalaxySize			= opt.selectedGalaxySize;
-        selectedGalaxyShape			= opt.selectedGalaxyShape;
-        selectedGalaxyShapeOption1	= opt.selectedGalaxyShapeOption1;
-        selectedGalaxyShapeOption2	= opt.selectedGalaxyShapeOption2;
-        selectedNebulaeOption		= opt.selectedNebulaeOption;
-        selectedNumberOpponents		= opt.selectedNumberOpponents;
-        
+		MOO1GameOptions opt		= (MOO1GameOptions) oldOpt;
+		selectedGalaxySize		= opt.selectedGalaxySize;
+		selectedGalaxyShape		= opt.selectedGalaxyShape;
+		selectedNebulaeOption	= opt.selectedNebulaeOption;
+		selectedNumberOpponents	= opt.selectedNumberOpponents;
         SafeListParam list = AllSubUI.systemSubUI().optionsList();
         for (IParam param : list)
         	param.copyOption(oldOpt, this, true, 5);
+		list = AllSubUI.getHandle(GALAXY_SHAPES_UI_KEY).getUiAll(false).getNoSpacer();
+		for (IParam param : list)
+			param.copyOption(oldOpt, this, true, 5);
 
-        setGalaxyShape(); 
-        selectedGalaxyShapeOption1 = opt.selectedGalaxyShapeOption1;
-        selectedGalaxyShapeOption2 = opt.selectedGalaxyShapeOption2;
-        
+		setGalaxyShape(); 
         String label = getFirstRingSystemNumberLabel();
         int num = opt.dynOptions().getInteger(label, 2);
         setFirstRingSystemNumber(num);
@@ -368,129 +368,41 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     @Override
     public GalaxyShape galaxyShape()   {
    		if (galaxyShape == null)
-        	setGalaxyShape(selectedGalaxyShapeOption1, selectedGalaxyShapeOption2);
-            //setGalaxyShape();
+        	//setGalaxyShape(selectedGalaxyShapeOption1, selectedGalaxyShapeOption2);
+            setGalaxyShape();
         return galaxyShape;
     }
-    private void setGalaxyShape(String option1, String option2) {
-    	setBaseGalaxyShape();
-    	if (option1 == null)
-    		selectedGalaxyShapeOption1 = galaxyShape.defaultOption1();
-    	else
-    		selectedGalaxyShapeOption1 = option1;
-    	if (option2 == null)
-    		selectedGalaxyShapeOption2 = galaxyShape.defaultOption2();
-    	else
-    		selectedGalaxyShapeOption2 = option2;
-    }
-    private void setGalaxyShape() {
-    	if(isRandomGalaxy()) {
-    		setRandomGalaxyShape();
-    		return;
-    	}
-    	setBaseGalaxyShape();
-        selectedGalaxyShapeOption1 = galaxyShape.defaultOption1();
-        selectedGalaxyShapeOption2 = galaxyShape.defaultOption2();
-    }
+	private void setGalaxyShape()	{
+		if(isRandomGalaxy()) {
+			setRandomGalaxyShape();
+			return;
+		}
+		setBaseGalaxyShape();
+	}
+	private void setBaseGalaxyShape() { // BR: Init and restore sub options
+		galaxyShape = AllShapes.getShape(selectedGalaxyShape, this, null);
+		if (!Rotp.initialized())
+			return;
+		shapeParamList = galaxyShape.paramList();
+	}
+	private void setRandomGalaxyShape() {
+		Rand rand = new Rand(galaxyRandSource.get());
+		for (int i=0; i<100; i++)
+			rand.nextInt();
+		boolean bigList = !selectedGalaxyShape.equals(SHAPE_RANDOM);
+		List<String> shapesNames = rotp.model.galaxy.AllShapes.getNamesForRandom(bigList);
+		String randomName = rand.random(shapesNames);
+		galaxyShape = AllShapes.getShape(randomName, this, null);
+		if (Rotp.noOptions("setRandomGalaxyShape()"))
+			return;
+	}
+
     @Override public float densitySizeFactor() {
     	return densitySizeFactor(selectedStarDensityOption());
     }
     @Override public boolean isRandomGalaxy() {
     	return selectedGalaxyShape.equals(SHAPE_RANDOM)
     			|| selectedGalaxyShape.equals(SHAPE_RANDOM_2);
-    }
-    private void setRandomGalaxyShape() {
-		Rand rand = new Rand(selectedGalaxyRandSource());
-		int rnd;
-		for (int i=0; i<100; i++) {
-			rnd = rand.nextInt(12);
-			// System.out.println("setRandomGalaxyShape() rand = " + rnd);
-		}
-		if (selectedGalaxyShape.equals(SHAPE_RANDOM))
-			rnd = rand.nextInt(6);
-		else
-			rnd = rand.nextInt(12);
-		// System.out.println("setRandomGalaxyShape() rand = " + rnd);
-		if (galaxyShape == null) // BR: to avoid crash!
-			galaxyShape = new GalaxyRectangularShape(this);
-        selectedGalaxyShapeOption1 = galaxyShape.randomOption();
-        selectedGalaxyShapeOption2 = galaxyShape.randomOption();
-    	switch (rnd) {
-			case 11:
-	            galaxyShape = new GalaxyLorenzShape(this); break;
-			case 10:
-	            galaxyShape = new GalaxySwirlClustersShape(this); break;
-			case 9:
-	            galaxyShape = new GalaxyGridShape(this); break;
-			case 8:
-	            galaxyShape = new GalaxyMazeShape(this); break;
-			case 7:
-	            galaxyShape = new GalaxyFractalShape(this); break;
-			case 6:
-	            galaxyShape = new GalaxyBullseyeShape(this); break;
-			case 5:
-	            galaxyShape = new GalaxyShurikenShape(this); break;
-			case 4:
-	            galaxyShape = new GalaxyClusterShape(this); break;
-			case 3:
-	            galaxyShape = new GalaxySpiralArmsShape(this); break;
-	        case 2:
-	            galaxyShape = new GalaxySpiralShape(this); break;
-	        case 1:
-	            galaxyShape = new GalaxyEllipticalShape(this); break;
-	        case 0:
-	        default:
-	            galaxyShape = new GalaxyRectangularShape(this);
-    	}
-        if (rotp.Rotp.noOptions("setRandomGalaxyShape()"))
-        	return;
-		shapeOption1().reInit(new ArrayList<>()); // New shape -> Reset the list
-		shapeOption1().defaultValue(galaxyShape.randomOption());
-		shapeOption2().reInit(new ArrayList<>()); // New shape -> Reset the list
-		shapeOption2().defaultValue(galaxyShape.randomOption());
-//        selectedGalaxyShapeOption1 = galaxyShape.randomOption();
-//        selectedGalaxyShapeOption2 = galaxyShape.randomOption();
-    }
-
-    private void setBaseGalaxyShape() { // BR: Init and rest sub options
-        switch(selectedGalaxyShape) {
-            case SHAPE_ELLIPTICAL:
-                galaxyShape = new GalaxyEllipticalShape(this); break;
-            case SHAPE_SPIRAL:
-                galaxyShape = new GalaxySpiralShape(this); break;
-            // modnar: add new map shapes
-            case SHAPE_TEXT:
-                galaxyShape = new GalaxyTextShape(this); break;
-            case SHAPE_CLUSTER:
-                galaxyShape = new GalaxyClusterShape(this); break;
-			case SHAPE_SWIRLCLUSTERS:
-                galaxyShape = new GalaxySwirlClustersShape(this); break;
-			case SHAPE_GRID:
-                galaxyShape = new GalaxyGridShape(this); break;
-			case SHAPE_SPIRALARMS:
-                galaxyShape = new GalaxySpiralArmsShape(this); break;
-			case SHAPE_MAZE:
-                galaxyShape = new GalaxyMazeShape(this); break;
-			case SHAPE_SHURIKEN:
-                galaxyShape = new GalaxyShurikenShape(this); break;
-			case SHAPE_BULLSEYE:
-                galaxyShape = new GalaxyBullseyeShape(this); break;
-			case SHAPE_LORENZ:
-                galaxyShape = new GalaxyLorenzShape(this); break;
-			case SHAPE_FRACTAL:
-                galaxyShape = new GalaxyFractalShape(this); break;
-			case SHAPE_BITMAP:
-                galaxyShape = new GalaxyBitmapShape(this); break;
-            case SHAPE_RECTANGLE:
-            default:
-                galaxyShape = new GalaxyRectangularShape(this);
-        }
-        if (rotp.Rotp.noOptions("setBaseGalaxyShape()"))
-        	return;
-		shapeOption1().reInit(galaxyShapeOptions1()); // New shape -> Reset the list
-		shapeOption1().defaultValue(galaxyShape.defaultOption1());
-		shapeOption2().reInit(galaxyShapeOptions2()); // New shape -> Reset the list
-		shapeOption2().defaultValue(galaxyShape.defaultOption2());
     }
     @Override
     public int numGalaxyShapeOption1() {
@@ -504,56 +416,13 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     		return 0;
     	return galaxyShape.numOptions2();
     }
-    @Override
-    public int numberStarSystems() {  // BR: For Profile Manager comments
-    	return numberStarSystems(selectedGalaxySize());
-    }
-    @Override
-    public int numberStarSystems(String size) { return galaxySizeMap(true, this).get(size); }
-
-//    @Override
-//    public int numberStarSystems(String size) { // BR: For Profile Manager comments
-//        // MOO Strategy Guide, Table 3-2, p.50
-//	    /*
-//	    switch (selectedGalaxySize()) {
-//	            case SIZE_SMALL:  return 24;
-//	            case SIZE_MEDIUM: return 48;
-//	            case SIZE_LARGE1:  return 70;
-//	            case SIZE_HUGE:   return 108;
-//	            default: return 48;
-//	    }
-//	    */
-//	    switch (size) {
-//	        case SIZE_MICRO:      return 24; // BR: added original moo small size
-//	        case SIZE_TINY:       return 33;
-//	        case SIZE_SMALL:      return 50;
-//	        case SIZE_SMALL2:     return 70;
-//	        case SIZE_MEDIUM:     return 100;
-//	        case SIZE_MEDIUM2:    return 150;
-//	        case SIZE_LARGE:      return 225;
-//	        case SIZE_LARGE2:     return 333;
-//	        case SIZE_HUGE:       return 500;
-//	        case SIZE_HUGE2:      return 700;
-//	        case SIZE_MASSIVE:    return 1000;
-//	        case SIZE_MASSIVE2:   return 1500;
-//	        case SIZE_MASSIVE3:   return 2250;
-//	        case SIZE_MASSIVE4:   return 3333;
-//	        case SIZE_MASSIVE5:   return 5000;
-//	        case SIZE_INSANE:     return 10000;
-//	        case SIZE_LUDICROUS:  return 100000;
-//	        case SIZE_MAXIMUM:    return maximumSystems();
-//	        case SIZE_DYNAMIC: // BR: Added an option to select from the opponents number
-//	        default:
-//	        	return min(maximumSystems(), 
-//	        			1 + Math.round(selectedDynStarsPerEmpire() // +1 for Orion
-//	        					* (selectedNumberOpponents()+1))); // +1 for player
-//	    }
-//	}
+	@Override public int numberStarSystems()	{ return numberStarSystems(selectedGalaxySize()); }
+	@Override public int numberStarSystems(String size)	{ return galaxySizeMap(true, this).get(size); }
     @Override
     public int numberNebula() {
         if (selectedNebulaeOption().equals(NEBULAE_NONE))
             return 0;
-        
+
         float freq = 1.0f;
         switch(selectedNebulaeOption()) {
             case NEBULAE_RARE:     freq = 0.25f; break;
@@ -575,7 +444,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         int nStars = numberStarSystems();
         float sizeMult = nebulaSizeMult();
         int nNeb = (int) nStars/20;
-        
+
         return (int) (freq*nNeb/sizeMult/sizeMult);
     }
     @Override
@@ -880,7 +749,8 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     @Override
     public List<Integer> possibleColors()	  { return new ArrayList<>(colors); }
     @Override public void setAndGenerateGalaxy() {
-       	setGalaxyShape(selectedGalaxyShapeOption1, selectedGalaxyShapeOption2);
+//       	setGalaxyShape(selectedGalaxyShapeOption1, selectedGalaxyShapeOption2);
+       	setGalaxyShape();
     	if(isRandomGalaxy()) {
     		setRandomGalaxyShape();
     		generateGalaxy();
@@ -1158,18 +1028,18 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     }
     // ========== Race Menu Options ==========
     @Override public void setRandomPlayerRace() { // BR:
-    	if (rotp.Rotp.noOptions("setBaseRaceSettingsToDefault()")) {
+    	if (Rotp.noOptions()) {
     		selectedPlayerRace(random(baseRaceOptions()));
     		return;
     	}
-        if (selectedShowNewRaces()) // BR: limit randomness
+        if (showNewRaces.get()) // BR: limit randomness
         	selectedPlayerRace(random(allRaceOptions()));
         else
         	selectedPlayerRace(random(baseRaceOptions()));
         player.update(this);
     }
     private void setBaseRaceSettingsToDefault() { // BR:
-//    	if (!rotp.Rotp.noOptions("setBaseRaceSettingsToDefault()"))
+//    	if (!Rotp.noOptions()("setBaseRaceSettingsToDefault()"))
 //    		playerIsCustom.setFromDefault(false, false);
      	setRandomPlayerRace();
         selectedPlayerColor(0);
@@ -1180,19 +1050,13 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     }
     // ========== Galaxy Menu Options ==========
     private void setBaseGalaxySettingsToDefault() { // BR:
-        selectedGalaxySize = SIZE_SMALL;
-        selectedGalaxyShape = SHAPE_RECTANGLE;
+		selectedGalaxySize	= SIZE_DEFAULT;
+		selectedGalaxyShape	= SHAPE_DEFAULT;
         setGalaxyShape();
         selectedNumberOpponents = defaultOpponentsOptions();
         for (int i=0;i<opponentRaces.length;i++)
         	opponentRaces[i] = null;
-        
-//        if (rotp.Rotp.noOptions("setBaseGalaxySettingsToDefault()"))
-//        	selectedPlayerRace(random(allRaceOptions()));
-//        else if (selectedShowNewRaces()) // BR: limit randomness
-//        	selectedPlayerRace(random(allRaceOptions()));
-//        else
-//        	selectedPlayerRace(random(baseRaceOptions()));
+
         selectedGameDifficulty = DIFFICULTY_NORMAL;
         selectedOpponentAIOption = defaultAI.aliensKey;
         for (int i=0;i<specificOpponentAIOption.length;i++)
@@ -1206,7 +1070,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     private void copyBaseGalaxySettings(MOO1GameOptions dest) { // BR:
     	dest.selectedGalaxySize  = selectedGalaxySize;
     	dest.selectedGalaxyShape = selectedGalaxyShape;
-    	dest.setGalaxyShape(selectedGalaxyShapeOption1, selectedGalaxyShapeOption2);
+//    	dest.setGalaxyShape(selectedGalaxyShapeOption1, selectedGalaxyShapeOption2);
     	dest.selectedNumberOpponents = selectedNumberOpponents;
     	dest.selectedGameDifficulty	 = selectedGameDifficulty;
         for (int i=0; i<dest.opponentRaces.length; i++)
@@ -1337,10 +1201,10 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     }
     // ==================== New Options files public access ====================
     //
-    @Override public void loadStartupOptions() {
-        System.out.println("==================== reset all options() ====================");
-        resetAllNonCfgSettingsToDefault(true);
-        System.out.println("==================== loadStartupOptions() ====================");
+	@Override public void loadStartupOptions() {
+		Rotp.ifIDE("==================== reset all options() ====================");
+		resetAllNonCfgSettingsToDefault(true);
+		Rotp.ifIDE("==================== loadStartupOptions() ====================");
     	if (menuStartup.isUser()) {
     		updateAllNonCfgFromFile(USER_OPTIONS_FILE);
     		transfert(USER_OPTIONS_FILE, true);
@@ -1375,7 +1239,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     private void resetAllNonCfgSettingsToDefault(boolean first)	{
     	setAllNonCfgGameSettingsToDefault(first);
     	setAllNonCfgBaseSettingsToDefault();
-       	if (!Rotp.noOptions) // Better safe than sorry
+       	if (!Rotp.noOptions()) // Better safe than sorry
        		for (IParam param : AllSubUI.allModOptions(false))
         		param.initDependencies(IParam.VALID_DEPENDENCIES);
     }
@@ -1384,7 +1248,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     		boolean excludeCfg, boolean excludeSubMenu) {
     	setPanelGameSettingsToDefault(pList, excludeCfg, excludeSubMenu);
     	setPanelBaseSettingsToDefault(pList);
-       	if (!Rotp.noOptions) // Better safe than sorry
+       	if (!Rotp.noOptions()) // Better safe than sorry
        		for (IParam param : AllSubUI.allModOptions(false))
         		param.initDependencies(IParam.VALID_DEPENDENCIES);
     }
@@ -1423,7 +1287,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
 	       		}
        		}
        	}
-       	if (!Rotp.noOptions) // Better safe than sorry
+       	if (!Rotp.noOptions()) // Better safe than sorry
        		for (IParam param : AllSubUI.allModOptions(false))
         		param.initDependencies(IParam.VALID_DEPENDENCIES);
         source.copyAllBaseSettings(this);
@@ -1444,7 +1308,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
 	       		}
        		}
        	}
-       	if (!Rotp.noOptions) // Better safe than sorry
+       	if (!Rotp.noOptions()) // Better safe than sorry
        		for (IParam param : AllSubUI.allModOptions(false))
         		param.initDependencies(IParam.VALID_DEPENDENCIES);
         source.copyAllBaseSettings(this);
@@ -1482,7 +1346,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
 	       		}
 	       	}
     	}
-       	if (!Rotp.noOptions) // Better safe than sorry
+       	if (!Rotp.noOptions()) // Better safe than sorry
        		for (IParam param : AllSubUI.allModOptions(false))
         		param.initDependencies(IParam.VALID_DEPENDENCIES);
 
@@ -1499,7 +1363,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     	if (secure) {
     		// No computer info in game files... Folder path may contains player name!
     		dynOpts().setString(saveDirectory.getLangLabel(), "");
-    		dynOpts().setString(bitmapGalaxyLastFolder().getLangLabel(), "");
+    		dynOpts().setString(bitmapGalaxyLastFolder.getLangLabel(), "");
     	}
     }
     @Override public void UpdateOptionsTools() {
@@ -1510,7 +1374,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     			param.updateOptionTool();
     		}
     	}
-    	UserPreferences.load();
+    	UserPreferences.reload();
     }
     @Override public MOO1GameOptions copyAllOptions() {
 		try {

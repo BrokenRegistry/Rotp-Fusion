@@ -1507,7 +1507,7 @@ SETUP_RULESET_ANTARES             | Antarès
 SETUP_RULESET_SIRIUS              | Sirius
 SETUP_GALAXY_SIZE_LABEL           | Taille
 SETUP_RACE_MULTIPLIER             | x%1
-SETUP_GALAXY_SHAPE_LABEL          | Forme
+SETUP_GALAXY_SHAPE_LABEL          | Type de Galaxie
 
 SETUP_GALAXY_SIZE_HELP            | La taille de la galaxie déterminera le nombre d’étoiles et donc le nombre maximum de joueurs.<br>Notez qu’il y a plusieurs étoiles pour certains paramètres de taille. Par exemple, une galaxie de taille moyenne peut avoir 100 ou 150 étoiles. Une grande galaxie peut avoir 225 ou 333 étoiles.<br> Chaque sélection changera le nombre d’opposants à son paramètre par défaut, qui peut ensuite être ajusté sur le panneau «Sélectionner les opposants».
 SETUP_GALAXY_SIZE_DESC            | Sélectionnez la taille de la Galaxie
@@ -1543,15 +1543,11 @@ SETUP_GALAXY_SIZE_LUDICROUS       | Ridicule
 SETUP_GALAXY_SIZE_MAXIMUM         | Maximal
 SETUP_GALAXY_SHAPE_HELP           | Sélectionnez votre galaxie dans la liste des formes conventionnelles : champ stellaire, ellipse ou spirale.<br> Ou de la liste étendue ajoutée par des modders. Toutes les formes ont plusieurs variantes disponibles. Mais si vous n’aimez aucun d’elles, vous pouvez toujours essayer de créer votre propre forme à partir de textes ou de bitmaps !!!
 SETUP_GALAXY_SHAPE_DESC           | Sélectionnez la forme de la Galaxie
-SETUP_GALAXY_SHAPE                | Forme : %1
+SETUP_GALAXY_SHAPE                | Type de galaxie : %1
 SETUP_GALAXY_SHAPE_OPTION_1_DESC  | Sélectionnez la première option de forme de la Galaxie
 SETUP_GALAXY_SHAPE_OPTION_1       | Sélection de la première option de forme de la Galaxie %1
 SETUP_GALAXY_SHAPE_OPTION_2_DESC  | Sélectionnez la seconde option de forme de la Galaxie
 SETUP_GALAXY_SHAPE_OPTION_2       | Sélection de la seconde option de forme de la Galaxie %1
-SETUP_GALAXY_SHAPE_OPTION_4_DESC  | Sélectionnez la quatrième option de forme de la Galaxie
-SETUP_GALAXY_SHAPE_OPTION_4       | %1 lignes
-SETUP_GALAXY_SHAPE_LINE_SPACING_DESC | Sélectionnez l’espace séparant les lignes de la Galaxie en forme de Texte.
-SETUP_GALAXY_SHAPE_LINE_SPACING   | %1 pixels
 SETUP_GALAXY_SHAPE_RECTANGLE      | Rectangulaire
 SETUP_GALAXY_SHAPE_CIRCULAR       | Circulaire
 SETUP_GALAXY_SHAPE_RING           | Anneau
@@ -1573,12 +1569,15 @@ SETUP_GALAXY_SHAPE_LORENZ2        | Lorenz 2
 SETUP_GALAXY_SHAPE_FRACTAL        | Fractale
 SETUP_GALAXY_SHAPE_CHAOSGAME      | Chaotique
 SETUP_GALAXY_SHAPE_BITMAP         | Bitmap
+SETUP_GALAXY_SHAPE_RANDOMIZED		| Aléatoire
 SETUP_GALAXY_SHAPE_RANDOM         | Aléatoire Simple
 SETUP_GALAXY_SHAPE_RANDOM_2       | Aléatoire Toutes
 SETUP_SHAPE_OPTION_1              | Option 1 : %1
 SETUP_SHAPE_OPTION_1_DESC         | Choisir la première option pour cette forme de galaxie.
+SETUP_SHAPE_OPTION_1_NONE         | Cette galaxie n’offre aucun choix d’options<br>
 SETUP_SHAPE_OPTION_2              | Option 2 : %1
 SETUP_SHAPE_OPTION_2_DESC         | Choisir la seconde option pour cette forme de galaxie.
+SETUP_SHAPE_OPTION_2_NONE         | Cette galaxie ne possède pas d’option secondaire<br>
 SETUP_SHAPE_OPTION_3              | Option 3 : %1
 SETUP_SHAPE_OPTION_3_DESC         | Nom du fichier de l’image associée à la galaxie Bitmap.
 SETUP_SHAPE_OPTION_4              | Nombre de lines : %1
@@ -1895,12 +1894,10 @@ SETUP_VOID_5                      | Vide * 5
 SETUP_TEXT_0                      | Votre planète
 SETUP_TEXT_1                      | ROTP
 SETUP_TEXT_2                      | MoO1
-SETUP_1_LINE                      | Simple Ligne
-SETUP_2_LINE                      | Double Ligne
-SETUP_3_LINE                      | Triple Ligne
-SETUP_MULTI_LINE_LEFT             | Aligné à Gauche
-SETUP_MULTI_LINE_CENTER           | Centré
-SETUP_MULTI_LINE_RIGHT            | Aligné à Droite
+SETUP_MULTI_LINE_COPY			| Recopier le Texte
+SETUP_MULTI_LINE_LEFT			| Aligné à Gauche
+SETUP_MULTI_LINE_CENTER			| Centré
+SETUP_MULTI_LINE_RIGHT			| Aligné à Droite
 SETUP_BULLSEYE_0                  | Cible
 SETUP_BULLSEYE_1                  | Anneaux
 SETUP_BULLSEYE_2                  | Carrés
@@ -1952,6 +1949,15 @@ SETUP_BITMAP_SHARP2               | Aiguisé
 SETUP_BITMAP_SHARP3               | Affilé
 SETUP_BITMAP_SHARP4               | Comme un Rasoir
 SETUP_BITMAP_NO_SELECTION         | Sélection du fichier
+SETUP_RANDOMIZED_REAL_SHAPES		| Galaxies « Réelles »
+SETUP_RANDOMIZED_IMAGINARY_SHAPES	| Galaxies « Imaginaires »
+SETUP_RANDOMIZED_COMPLEX_SHAPES		| Galaxies « Complexes »
+SETUP_RANDOMIZED_ALL_SHAPES			| Toutes les galaxies
+SETUP_RANDOMIZED_KEEP_OPTIONS		| Mêmes options
+SETUP_RANDOMIZED_RANDOM_OPTIONS_1	| 1ère option aléatoire
+SETUP_RANDOMIZED_RANDOM_OPTIONS_2	| 2ème option aléatoire
+SETUP_RANDOMIZED_RANDOM_OPTIONS		| Options aléatoires
+
 SETUP_SPECIFIC_AI_DESC            | Choisir l’IA qui pilotera cet opposant.
 SETUP_SPECIFIC_AI                 | IA dédiée aux opposants
 SETUP_GLOBAL_AI_DESC              | Choisir une IA...
@@ -2275,7 +2281,7 @@ SETTINGS_RANDOM_EVENTS            | Événements aléatoires : %1
 SETTINGS_RESEARCH_RATE            | Vitesse de la recherche : %1
 SETTINGS_COUNCIL_WIN              | Victoire par élection : %1
 SETTINGS_RANDOMIZE_AI             | IA aléatoire : %1
-SETTINGS_AUTOPLAY                 | Seulement les IA : %1
+SETTINGS_AUTOPLAY                 | L'IA joue pour vous : %1
 SETTINGS_TECH_TRADING             | Échanges de technologies : %1
 SETTINGS_GALAXY_AGE               | Âge de la galaxie : %1
 SETTINGS_WARP_SPEED               | Vitesse de distorsion : %1
@@ -2306,7 +2312,7 @@ SETTINGS_COUNCIL_DESC             | Désactiver la victoire par le Haut Conseil,
 SETTINGS_RANDOMIZE_AI_HELP        | « Option avancée » originale pour changer aléatoirement les personnalités jouées par l’IA, les aptitudes des espèces ou les deux.<br><i>En cas de conflit avec les aptitudes sélectionnées dans le menu Galaxie, le menu Galaxie gagne.</i>(Doit être défini sur « Espèce originale » pour que cette option fonctionne.)
 SETTINGS_RANDOMIZE_AI_DESC        | Choisir au hasard les personnalités des joueurs IA, les aptitudes des espèces ou les deux.
 SETTINGS_AUTOPLAY_DESC            | Automatiser complètement le jeu en faisant jouer une IA pour le joueur. Ceci est utile pour une vue de première main du fonctionnement de l’IA.
-SETTINGS_AUTOPLAY_WARNING         | Avertissement ! Le jeu est en mode automatique. Utilisez «Options avancées» pour désactiver.
+SETTINGS_AUTOPLAY_WARNING         | Avertissement ! Le jeu est en mode automatique. Utilisez « →SETUP_BUTTON_MERGED_STATIC_SETTINGS← » pour désactiver.
 SETTINGS_FUEL_RANGE_HELP          | Augmente ou diminuer la gamme des technologies d’autonomie en carburant et les réservoirs de carburant. Les espèces tolérantes bénéficieront des autonomies réduites, tandis que les espèces à croissance rapide apprécieront des autonomies accrues...
 SETTINGS_FUEL_RANGE_DESC          | Augmente la portée des technologies de carburant et des réservoirs de carburant supplémentaires.
 SETTINGS_AI_HOSTILITY_DESC        | Augmente ou diminue le niveau général d’hostilité entre les espèces extraterrestres.
@@ -3635,7 +3641,7 @@ SETTINGS_MOD_AUTO_FLAG_VESTIGES_NONE     | Aucun : %1
 SETTINGS_MOD_AUTO_FLAG_IN_NEBULA         | Dans Nébuleuses : %1
 SETTINGS_MOD_AUTO_FLAG_NOT_NEBULA        | Hors Nébuleuse : %1
 
-SETTINGS_MOD_GALAXY_RAND_SOURCE_HELP     | Par défaut, l’aperçu ne donne qu’une idée globale de la galaxie que vous obtiendrez. En définissant une valeur autre que "Aléatoire", l’aperçu affichera la galaxie finale. Utilisez ceci pour éviter les configurations qui ne vous plairont pas... Trop loin d’Orion... Trop près du centre... ou trop loin ! etc...
+SETTINGS_MOD_GALAXY_RAND_SOURCE_HELP     | Par défaut, l’aperçu ne donne qu’une idée globale de la galaxie que vous obtiendrez. En définissant une valeur autre que "Aléatoire", l’aperçu affichera la galaxie finale. Utilisez cette option pour éviter les configurations qui pourraient vous déplaire... Trop loin d’Orion... Trop près ou trop loin du centre, etc...
 SETTINGS_MOD_GALAXY_RAND_SOURCE_DESC     | si <> 0, ce nombre sera utilisé comme source pour le générateur aléatoire de galaxies. La galaxie finale sera celle de prévisualisation.<br>Cette option débloquera la limitation de taille de prévisualisation de la galaxie (5000). Préparez-vous à un long temps de génération avec les galaxies « Insane » et supérieures !
 SETTINGS_MOD_GALAXY_RAND_SOURCE          | Aléatoire ou WYSIWYG : %1
 SETTINGS_MOD_GALAXY_RAND_RANDOM          | Aléatoire
@@ -5555,146 +5561,152 @@ SETUP_SELECT_CR_OPTIONS            | Aptitudes sélectionnables.
 ’Files Races’_DESC      | Aptitudes sélectionnées aléatoirement parmi les aptitudes des espèces originales et les fichiers d’espèces personnalisées, avec l’option « Disponible pour l’IA » activée.
 ’All’_DESC              | Aptitudes sélectionnées aléatoirement parmi les aptitudes des espèces originales et les fichiers d’espèces personnalisées, en ignorant l’option « Disponible pour l’IA ».
 
-SETUP_GALAXY_SHAPE_RECTANGLE_HELP    | Galaxie rectangulaire ou carrée originale avec jusqu’à cinq vides.
-SETUP_GALAXY_SHAPE_RECTANGLE_O1_HELP | Ajustement du rapport de forme.
-SETUP_GALAXY_SHAPE_RECTANGLE_O2_HELP | Sélection de la distribution des vides.
-SETUP_GALAXY_SHAPE_RECTANGLE_O1      | Première option champ d’étoiles.
-SETUP_GALAXY_SHAPE_RECTANGLE_O2      | Seconde option champ d’étoiles
-SETUP_RECTANGLE_0_HELP             | Galaxie de forme rectangulaire avec un rapport de 3:4.
-SETUP_RECTANGLE_1_HELP             | Galaxie de forme carrée.
-SETUP_VOID_0_HELP                  | Galaxie simple, sans vide.
-SETUP_VOID_1_HELP                  | Galaxie avec un vide central.
-SETUP_VOID_2_HELP                  | Galaxie avec deux vides en diagonale.
-SETUP_VOID_5_HELP                  | Ajouter cinq vides à la galaxie
-SETUP_GALAXY_SHAPE_ELLIPSE_HELP    | Galaxie originale de forme elliptiques, de circulaire à aplatie dans un rapport de 5:1. Un vide peut être placé au centre, de petit à annulaire.
-SETUP_GALAXY_SHAPE_ELLIPSE_O1_HELP | Ajustement du rapport de forme et de la symétrie.
-SETUP_GALAXY_SHAPE_ELLIPSE_O2_HELP | Sélection de la distribution des vides.
-SETUP_GALAXY_SHAPE_ELLIPSE_O1      | Première option de galaxie elliptique.
-SETUP_GALAXY_SHAPE_ELLIPSE_O2      | Seconde option de galaxie elliptique.
-SETUP_ELLIPSE_0_HELP               | Galaxie en forme de disque.
-SETUP_ELLIPSE_1_HELP               | Galaxie légèrement elliptique avec un rapport de 3:2.
-SETUP_ELLIPSE_2_HELP               | Galaxie elliptique avec un rapport de 2:1.
-SETUP_ELLIPSE_3_HELP               | Galaxie elliptique comprimée avec un rapport de 3:1.
-SETUP_ELLIPSE_4_HELP               | Galaxie elliptique aplatie avec un rapport de 5:1.
-SETUP_ELLIPSE_SYMMETRIC_HELP       | Galaxie à symétrie circulaire, chaque empire a le même type de monde d’origine et le même voisinage. Orion est au point central.
-SETUP_VOID_2_HELP                  | Galaxie avec un vide central plus grand.
-SETUP_VOID_3_HELP                  | Galaxie avec un vide central encore plus grand.
-SETUP_VOID_4_HELP                  | Galaxie annulaire.
-SETUP_GALAXY_SHAPE_SPIRAL_HELP     | Galaxie originales en forme de spirale, jusqu’à 8 bras et 7 niveaux de courbure. Cette galaxie a une option symétrique pour que chaque empire ait le même monde d’origine et le même voisinage, il y a autant de bras que d’empires.
-SETUP_GALAXY_SHAPE_SPIRAL_O1_HELP  | Sélection du nombre de bras.
-SETUP_GALAXY_SHAPE_SPIRAL_O2_HELP  | Réglage de la courbure des bras.
-SETUP_GALAXY_SHAPE_SPIRAL_O1       | Première option de la galaxie spirale.
-SETUP_GALAXY_SHAPE_SPIRAL_O2       | Seconde option de la  galaxie spirale.
-SETUP_SPIRAL_2_ARMS_HELP           | Galaxie classique à deux bras.
-SETUP_SPIRAL_3_ARMS_HELP           | Galaxie moins classique à trois bras.
-SETUP_SPIRAL_4_ARMS_HELP           | Une galaxie à quatre bras, semblable à la Voie Lactée.
-SETUP_SPIRAL_5_ARMS_HELP           | Une galaxie frénétique à cinq bras.
-SETUP_SPIRAL_6_ARMS_HELP           | Une galaxie surprenante à six bras.
-SETUP_SPIRAL_7_ARMS_HELP           | Une galaxie à sept bras très exotique.
-SETUP_SPIRAL_8_ARMS_HELP           | Une galaxie chanceuse à huit bras.
-SETUP_SPIRAL_SYMMETRIC_HELP        | Galaxie à symétrie circulaire, chaque empire a le même monde d’origine et le même voisinage. Orion est au point central.
-SETUP_SPIRAL_ROTATION_0_HELP       | Une galaxie droite.
-SETUP_SPIRAL_ROTATION_1_HELP       | Une galaxie légèrement courbée&nbsp <i>(~30°)</i>.
-SETUP_SPIRAL_ROTATION_2_HELP       | Une galaxie timidement courbée&nbsp <i>(~60°)</i>.
-SETUP_SPIRAL_ROTATION_3_HELP       | Une galaxie légèrement courbée&nbsp <i>(~90°)</i>.
-SETUP_SPIRAL_ROTATION_4_HELP       | Une galaxie bien courbée&nbsp <i>(~120°)</i>.
-SETUP_SPIRAL_ROTATION_5_HELP       | Une galaxie fortement courbée&nbsp <i>(~150°)</i>.
-SETUP_SPIRAL_ROTATION_6_HELP       | Une galaxie indécemment courbée&nbsp <i>(~180°)</i>.
-SETUP_GALAXY_SHAPE_TEXT_HELP       | La liste proposée est extraite du fichier "Galaxy.txt", n’hésitez pas à la compléter. Si vous voyez trop de cases vides essayez de paramétrer l’option "Utiliser la police Fusion"
-SETUP_GALAXY_SHAPE_TEXT_O1         | Première option de la galaxie en forme de Texte.
-SETUP_GALAXY_SHAPE_TEXT_O1_HELP    | Sélection du texte (à partir du fichier "Galaxy.txt").
-SETUP_GALAXY_SHAPE_TEXT_O2         | Seconde option de la galaxie en forme de Texte.
-SETUP_GALAXY_SHAPE_TEXT_O2_HELP    | Sélection du nombre de lignes.
-SETUP_1_LINE_HELP                  | Juste le texte sélectionné.
-SETUP_2_LINE_HELP                  | Le texte sélectionné est répété sur deux lignes.
-SETUP_3_LINE_HELP                  | Le texte sélectionné est répété sur trois lignes.
-SETUP_MULTI_LINE_LEFT_HELP         | Les lignes sélectionnées sont alignée à gauche.
-SETUP_MULTI_LINE_CENTER_HELP       | Les lignes sélectionnées sont centrées.
-SETUP_MULTI_LINE_RIGHT_HELP        | Les lignes sélectionnées sont alignée à droites.
-SETUP_GALAXY_SHAPE_LORENZ_HELP     | Une autre galaxie chaotique basée sur l’attracteur de Lorenz. <i>(Modèle de convection atmosphérique également connu sous le nom d’"effet papillon")</i>
-SETUP_GALAXY_SHAPE_LORENZ_O1       | Première option de la galaxie de Lorentz.
-SETUP_GALAXY_SHAPE_LORENZ_O2       | Seconde option de la galaxie de Lorentz.
-SETUP_GALAXY_SHAPE_LORENZ_O1_HELP  | Sélection de l’attracteur.
-SETUP_GALAXY_SHAPE_LORENZ_O2_HELP  | Sélection du point de vue.
-SETUP_LORENZ_0_HELP                | Premier attracteur.
-SETUP_LORENZ_1_HELP                | Deuxième attracteur.
-SETUP_VIEW_0_HELP                  | Premier point de vue.
-SETUP_VIEW_1_HELP                  | Deuxième point de vue.
-SETUP_VIEW_2_HELP                  | Troisième point de vue.
-SETUP_GALAXY_SHAPE_FRACTAL_HELP    | Galaxie ordonnée et désordonnée.
-SETUP_GALAXY_SHAPE_FRACTAL_O1      | Première option de la galaxie fractale.
-SETUP_GALAXY_SHAPE_FRACTAL_O2      | Seconde option de la galaxie fractale.
-SETUP_GALAXY_SHAPE_FRACTAL_O1_HELP | Type de fractale.
-SETUP_GALAXY_SHAPE_FRACTAL_O2_HELP | Spécificité fractale.
-SETUP_FRACTAL_0_HELP               | Triangle de Sierpiński
-SETUP_FRACTAL_1_HELP               | Jeu du chaos restreint
-SETUP_GALAXY_MAP_OPTION_A0_HELP    | tapis de Sierpiński.
-SETUP_GALAXY_MAP_OPTION_B0_HELP    | Jeu du chaos du tapis de Sierpiński.
-SETUP_GALAXY_MAP_OPTION_C0_HELP    | Barnsley Fern.
-SETUP_GALAXY_MAP_OPTION_A1_HELP    | Jeu du chaos restreint : Le sommet actuellement choisi ne peut pas être voisin du sommet précédemment choisi si les deux sommets précédemment choisis sont identiques.
-SETUP_GALAXY_MAP_OPTION_B1_HELP    | Jeu du chaos restreint : Le sommet actuel ne peut pas être choisi dans l’itération suivante.
-SETUP_GALAXY_MAP_OPTION_C1_HELP    | Jeu du chaos restreint : Le sommet actuel ne peut pas être à un endroit (dans le sens inverse des aiguilles d’une montre) du sommet précédemment choisi, cette fractale apparaît :
-SETUP_GALAXY_SHAPE_MAZE_HELP       | Galaxie étonnante générée à l’aide de l’algorithme de Prim.
-SETUP_GALAXY_SHAPE_MAZE_O1         | Option de galaxie labyrinthe
-SETUP_GALAXY_SHAPE_MAZE_O1_HELP    | Modificateur d’amorce pour le labyrinthe.
-SETUP_MAZE_0_HELP                  | Aucun modificateur.
-SETUP_MAZE_1_HELP                  | Lancé 10 fois.
-SETUP_MAZE_2_HELP                  | Lancé 20 fois.
-SETUP_GALAXY_SHAPE_SHURIKEN_HELP    | Un shuriken à six bras avec une forme de bras aléatoire.
-SETUP_GALAXY_SHAPE_SHURIKEN_O1      | Première option de la galaxie shuriken.
-SETUP_GALAXY_SHAPE_SHURIKEN_O2      | Seconde option de la galaxie shuriken.
-SETUP_GALAXY_SHAPE_SHURIKEN_O1_HELP | Ajustement de la complexité de la forme des bras.
-SETUP_GALAXY_SHAPE_SHURIKEN_O2_HELP | Sélection de la génération aléatoire des bras.
-SETUP_SHURIKEN_A_HELP               | Sept points.
-SETUP_SHURIKEN_0_HELP               | Neuf points.
-SETUP_SHURIKEN_1_HELP               | Onze points.
-SETUP_SHURIKEN_2_HELP               | Treize points.
-SETUP_SHURIKEN_3_HELP               | Quinze points.
-SETUP_SHURIKEN_4_HELP               | Dix-sept points.
-SETUP_SHURIKEN_ORIGINAL_HELP        | Bras originaux de forme étrange.
-SETUP_SHURIKEN_ALTERNATIVE_HELP     | Nouvelle forme de bras moins complexe.
-SETUP_GALAXY_SHAPE_BULLSEYE_HELP    | Galaxie en forme de cible de fléchettes.
-SETUP_GALAXY_SHAPE_BULLSEYE_O1      | Option galaxie en œil de bœuf.
-SETUP_GALAXY_SHAPE_BULLSEYE_O1_HELP | Sélection de la forme de la cible.
-SETUP_BULLSEYE_0_HELP               | Cible de fléchettes standard ; Ou exclusif.
-SETUP_BULLSEYE_1_HELP               | Cible en anneau concentrique
-SETUP_BULLSEYE_2_HELP               | Cible carrée concentrique
-SETUP_GALAXY_SHAPE_GRID_HELP        | Une autre forme surréaliste... Les galaxies sont alignées le long des lignes de la grille.
-SETUP_GALAXY_SHAPE_GRID_O1          | Option galaxie en grille.
-SETUP_GALAXY_SHAPE_GRID_O1_HELP     | Sélection de la distribution des galaxies.
-SETUP_GRID_0_HELP                   | Les galaxies ne se trouvent que sur certaines intersections.
-SETUP_GRID_1_HELP                   | Les galaxies sont à toutes les intersections.
-SETUP_GRID_2_HELP                   | Seulement les lignes de la grille !
-SETUP_GALAXY_SHAPE_CLUSTER_HELP     | Pourquoi ne pas répartir le combat sur plusieurs galaxies ? 3, 6 ou 8 amas sont disponibles.
-SETUP_GALAXY_SHAPE_CLUSTER_O1       | Option amas de galaxies.
-SETUP_GALAXY_SHAPE_CLUSTER_O1_HELP  | Sélection du nombre d’amas.
-SETUP_CLUSTER_0_HELP                | Les systèmes stellaires sont répartis sur 4 amas.
-SETUP_CLUSTER_1_HELP                | Les systèmes stellaires sont répartis sur 6 amas.
-SETUP_CLUSTER_2_HELP                | Les systèmes stellaires sont répartis sur 8 amas.
-SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_HELP    | Une autre forme surréaliste... Les galaxies sont alignées le long d’une ligne tourbillonnante.
-SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_O1      | Option amas de galaxies tourbillonnantes.
-SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_O1_HELP | Sélection de la position des galaxies.
-SETUP_SWIRLCLUSTERS_0_HELP            | La ligne tourbillonnante traverse les galaxies.
-SETUP_SWIRLCLUSTERS_1_HELP            | Les galaxies sont placées entre les lignes tourbillonnantes.
-SETUP_SWIRLCLUSTERS_2_HELP            | Seulement la ligne tourbillonnante !
-SETUP_GALAXY_SHAPE_SPIRALARMS_HELP    | Un autre type de galaxie spirale. Le nombre de bras est basé sur sa taille : <i>la quatrième racine du nombre de systèmes stellaires</i> ; sauf pour l’option symétrique, où il dépend du nombre d’empires.
-SETUP_GALAXY_SHAPE_SPIRALARMS_O1      | Première option de la galaxie à bras spiral.
-SETUP_GALAXY_SHAPE_SPIRALARMS_O2      | Seconde option de la galaxie à bras spiral.
-SETUP_GALAXY_SHAPE_SPIRALARMS_O1_HELP | Sélection de la courbure du bras.
-SETUP_GALAXY_SHAPE_SPIRALARMS_O2_HELP | Sélection normale ou symétrique.
-SETUP_SPIRALARMS_0_HELP               | Une galaxie spirale droite.
-SETUP_SPIRALARMS_1_HELP               | Une galaxie spirale très lâche <i>(~60°)</i>.
-SETUP_SPIRALARMS_2_HELP               | Une galaxie spirale lâche <i>(~120°)</i>.
-SETUP_SPIRALARMS_3_HELP               | Une galaxie spirale normale <i>(~1 tour)</i>.
-SETUP_SPIRALARMS_4_HELP               | Une galaxie spirale serrée <i>(~1,5 tour)</i>.
-SETUP_SPIRALARMS_NORMAL_HELP          | Normale, car non symétrique !
-SETUP_SPIRALARMS_SYMMETRIC_HELP       | Galaxie à symétrie circulaire, chaque empire a le même monde d’origine et le même voisinage. Orion est au point central.
+SETUP_GALAXY_SHAPE_RECTANGLE_HELP		| Galaxie rectangulaire ou carrée originale avec jusqu’à cinq vides.
+SETUP_GALAXY_SHAPE_RECTANGLE_O1_DESC	| Ajustement du rapport de forme.
+SETUP_GALAXY_SHAPE_RECTANGLE_O2_DESC	| Sélection de la distribution des vides.
+SETUP_GALAXY_SHAPE_RECTANGLE_O1			| Rapport de forme : %1
+SETUP_GALAXY_SHAPE_RECTANGLE_O2			| Nombre de vides : %1
+SETUP_RECTANGLE_0_HELP					| Galaxie de forme rectangulaire avec un rapport de 3:4.
+SETUP_RECTANGLE_1_HELP					| Galaxie de forme carrée.
+SETUP_VOID_0_HELP						| Galaxie simple, sans vide.
+SETUP_VOID_1_HELP						| Galaxie avec un vide central.
+SETUP_VOID_2_HELP						| Galaxie avec deux vides en diagonale.
+SETUP_VOID_5_HELP						| Ajouter cinq vides à la galaxie
+SETUP_GALAXY_SHAPE_ELLIPSE_HELP			| Galaxie originale de forme elliptiques, de circulaire à aplatie dans un rapport de 5:1. Un vide peut être placé au centre, de petit à annulaire.
+SETUP_GALAXY_SHAPE_ELLIPSE_O1_DESC		| Ajustement du rapport de forme et de la symétrie.
+SETUP_GALAXY_SHAPE_ELLIPSE_O2_DESC		| Sélection de la distribution des vides.
+SETUP_GALAXY_SHAPE_ELLIPSE_O1			| Rapport de forme : %1
+SETUP_GALAXY_SHAPE_ELLIPSE_O2			| Taille du vide : %1
+SETUP_ELLIPSE_0_HELP					| Galaxie en forme de disque.
+SETUP_ELLIPSE_1_HELP					| Galaxie légèrement elliptique avec un rapport de 3:2.
+SETUP_ELLIPSE_2_HELP					| Galaxie elliptique avec un rapport de 2:1.
+SETUP_ELLIPSE_3_HELP					| Galaxie elliptique comprimée avec un rapport de 3:1.
+SETUP_ELLIPSE_4_HELP					| Galaxie elliptique aplatie avec un rapport de 5:1.
+SETUP_ELLIPSE_SYMMETRIC_HELP			| Galaxie à symétrie circulaire, chaque empire a le même type de monde d’origine et le même voisinage. Orion est au point central.
+SETUP_VOID_2_HELP						| Galaxie avec un vide central plus grand.
+SETUP_VOID_3_HELP						| Galaxie avec un vide central encore plus grand.
+SETUP_VOID_4_HELP						| Galaxie annulaire.
+SETUP_GALAXY_SHAPE_SPIRAL_HELP			| Galaxie originales en forme de spirale, jusqu’à 8 bras et 7 niveaux de courbure. Cette galaxie a une option symétrique pour que chaque empire ait le même monde d’origine et le même voisinage, il y a autant de bras que d’empires.
+SETUP_GALAXY_SHAPE_SPIRAL_O1_DESC		| Sélection du nombre de bras.
+SETUP_GALAXY_SHAPE_SPIRAL_O2_DESC		| Réglage de la courbure des bras.
+SETUP_GALAXY_SHAPE_SPIRAL_O1			| Nombre de bras : %1
+SETUP_GALAXY_SHAPE_SPIRAL_O2			| Courbure des bras : %1
+SETUP_SPIRAL_2_ARMS_HELP				| Galaxie classique à deux bras.
+SETUP_SPIRAL_3_ARMS_HELP				| Galaxie moins classique à trois bras.
+SETUP_SPIRAL_4_ARMS_HELP				| Une galaxie à quatre bras, semblable à la Voie Lactée.
+SETUP_SPIRAL_5_ARMS_HELP				| Une galaxie frénétique à cinq bras.
+SETUP_SPIRAL_6_ARMS_HELP				| Une galaxie surprenante à six bras.
+SETUP_SPIRAL_7_ARMS_HELP				| Une galaxie à sept bras très exotique.
+SETUP_SPIRAL_8_ARMS_HELP				| Une galaxie chanceuse à huit bras.
+SETUP_SPIRAL_SYMMETRIC_HELP				| Galaxie à symétrie circulaire, chaque empire a le même monde d’origine et le même voisinage. Orion est au point central.
+SETUP_SPIRAL_ROTATION_0_HELP			| Une galaxie droite.
+SETUP_SPIRAL_ROTATION_1_HELP			| Une galaxie légèrement courbée&nbsp <i>(~30°)</i>.
+SETUP_SPIRAL_ROTATION_2_HELP			| Une galaxie timidement courbée&nbsp <i>(~60°)</i>.
+SETUP_SPIRAL_ROTATION_3_HELP			| Une galaxie légèrement courbée&nbsp <i>(~90°)</i>.
+SETUP_SPIRAL_ROTATION_4_HELP			| Une galaxie bien courbée&nbsp <i>(~120°)</i>.
+SETUP_SPIRAL_ROTATION_5_HELP			| Une galaxie fortement courbée&nbsp <i>(~150°)</i>.
+SETUP_SPIRAL_ROTATION_6_HELP			| Une galaxie indécemment courbée&nbsp <i>(~180°)</i>.
+SETUP_GALAXY_SHAPE_TEXT_HELP			| La liste proposée est extraite du fichier "Galaxy.txt", n’hésitez pas à la compléter. Si vous voyez trop de cases vides essayez de paramétrer l’option "Utiliser la police Fusion"
+SETUP_GALAXY_SHAPE_TEXT_O1				| Texte sélectionné :
+SETUP_GALAXY_SHAPE_TEXT_O1_DESC			| Sélection du texte (à partir du fichier "Galaxy.txt").
+SETUP_GALAXY_SHAPE_TEXT_O2				| Disposition du texte :
+SETUP_GALAXY_SHAPE_TEXT_O2_DESC			| Multiple copie du même texte ou alignement des lignes multiples.
+SETUP_GALAXY_SHAPE_TEXT_O3				| Nombre de lignes : %1 lignes
+SETUP_GALAXY_SHAPE_TEXT_O3_DESC			| Sélection du nombre de lignes.
+SETUP_GALAXY_SHAPE_TEXT_O4				| Séparation des lignes : %1 pixels
+SETUP_GALAXY_SHAPE_TEXT_O4_DESC			| Sélectionnez l’espace séparant les lignes de la Galaxie en forme de Texte.
+SETUP_GALAXY_SHAPE_LINE_SPACING			| %1 pixels
+SETUP_GALAXY_SHAPE_LINE_NUMBER			| %1 lignes
+SETUP_MULTI_LINE_COPY_HELP				| La ligne sélectionnée sera recopiée.
+SETUP_MULTI_LINE_LEFT_HELP				| Les lignes sélectionnées sont alignée à gauche.
+SETUP_MULTI_LINE_CENTER_HELP			| Les lignes sélectionnées sont centrées.
+SETUP_MULTI_LINE_RIGHT_HELP				| Les lignes sélectionnées sont alignée à droites.
+SETUP_GALAXY_SHAPE_LORENZ_HELP			| Une autre galaxie chaotique basée sur l’attracteur de Lorenz. <i>(Modèle de convection atmosphérique également connu sous le nom d’"effet papillon")</i>
+SETUP_GALAXY_SHAPE_LORENZ_O1			| Attracteur : %1
+SETUP_GALAXY_SHAPE_LORENZ_O2			| Point de vue : %1
+SETUP_GALAXY_SHAPE_LORENZ_O1_DESC		| Sélection de l’attracteur.
+SETUP_GALAXY_SHAPE_LORENZ_O2_DESC		| Sélection du point de vue.
+SETUP_LORENZ_0_HELP						| Premier attracteur.
+SETUP_LORENZ_1_HELP						| Deuxième attracteur.
+SETUP_VIEW_0_HELP						| Premier point de vue.
+SETUP_VIEW_1_HELP						| Deuxième point de vue.
+SETUP_VIEW_2_HELP						| Troisième point de vue.
+SETUP_GALAXY_SHAPE_FRACTAL_HELP			| Galaxie ordonnée et désordonnée.
+SETUP_GALAXY_SHAPE_FRACTAL_O1			| Type de fractale : %1
+SETUP_GALAXY_SHAPE_FRACTAL_O2			| Spécificité : %1
+SETUP_GALAXY_SHAPE_FRACTAL_O1_DESC		| Type de fractale.
+SETUP_GALAXY_SHAPE_FRACTAL_O2_DESC		| Spécificité fractale.
+SETUP_FRACTAL_0_HELP					| Triangle de Sierpiński
+SETUP_FRACTAL_1_HELP					| Jeu du chaos restreint
+SETUP_GALAXY_MAP_OPTION_A0_HELP			| Tapis de Sierpiński.
+SETUP_GALAXY_MAP_OPTION_B0_HELP			| Jeu du chaos du tapis de Sierpiński.
+SETUP_GALAXY_MAP_OPTION_C0_HELP			| Barnsley Fern.
+SETUP_GALAXY_MAP_OPTION_A1_HELP			| Jeu du chaos restreint : Le sommet actuellement choisi ne peut pas être voisin du sommet précédemment choisi si les deux sommets précédemment choisis sont identiques.
+SETUP_GALAXY_MAP_OPTION_B1_HELP			| Jeu du chaos restreint : Le sommet actuel ne peut pas être choisi dans l’itération suivante.
+SETUP_GALAXY_MAP_OPTION_C1_HELP			| Jeu du chaos restreint : Le sommet actuel ne peut pas être à un endroit (dans le sens inverse des aiguilles d’une montre) du sommet précédemment choisi, cette fractale apparaît :
+SETUP_GALAXY_SHAPE_MAZE_HELP			| Galaxie étonnante générée à l’aide de l’algorithme de Prim.
+SETUP_GALAXY_SHAPE_MAZE_O1				| Amorce du labyrinthe : %1
+SETUP_GALAXY_SHAPE_MAZE_O1_DESC			| Modificateur d’amorce pour le labyrinthe.
+SETUP_MAZE_0_HELP						| Aucun modificateur.
+SETUP_MAZE_1_HELP						| Lancé 10 fois.
+SETUP_MAZE_2_HELP						| Lancé 20 fois.
+SETUP_GALAXY_SHAPE_SHURIKEN_HELP		| Un shuriken à six bras avec une forme de bras aléatoire.
+SETUP_GALAXY_SHAPE_SHURIKEN_O1			| Complexité : %1
+SETUP_GALAXY_SHAPE_SHURIKEN_O2			| Génération : %1
+SETUP_GALAXY_SHAPE_SHURIKEN_O1_DESC		| Ajustement de la complexité de la forme des bras.
+SETUP_GALAXY_SHAPE_SHURIKEN_O2_DESC		| Sélection de la génération aléatoire des bras.
+SETUP_SHURIKEN_A_HELP					| Sept points.
+SETUP_SHURIKEN_0_HELP					| Neuf points.
+SETUP_SHURIKEN_1_HELP					| Onze points.
+SETUP_SHURIKEN_2_HELP					| Treize points.
+SETUP_SHURIKEN_3_HELP					| Quinze points.
+SETUP_SHURIKEN_4_HELP					| Dix-sept points.
+SETUP_SHURIKEN_ORIGINAL_HELP			| Bras originaux de forme étrange.
+SETUP_SHURIKEN_ALTERNATIVE_HELP			| Nouvelle forme de bras moins complexe.
+SETUP_GALAXY_SHAPE_BULLSEYE_HELP		| Galaxie en forme de cible de fléchettes.
+SETUP_GALAXY_SHAPE_BULLSEYE_O1			| forme de la cible : %1
+SETUP_GALAXY_SHAPE_BULLSEYE_O1_DESC		| Sélection de la forme de la cible.
+SETUP_BULLSEYE_0_HELP					| Cible de fléchettes standard ; Ou exclusif.
+SETUP_BULLSEYE_1_HELP					| Cible en anneau concentrique
+SETUP_BULLSEYE_2_HELP					| Cible carrée concentrique
+SETUP_GALAXY_SHAPE_GRID_HELP			| Une autre forme surréaliste... Les galaxies sont alignées le long des lignes de la grille.
+SETUP_GALAXY_SHAPE_GRID_O1				| Distribution des galaxies : %1
+SETUP_GALAXY_SHAPE_GRID_O1_DESC			| Sélection de la distribution des galaxies.
+SETUP_GRID_0_HELP						| Les galaxies ne se trouvent que sur certaines intersections.
+SETUP_GRID_1_HELP						| Les galaxies sont à toutes les intersections.
+SETUP_GRID_2_HELP						| Seulement les lignes de la grille !
+SETUP_GALAXY_SHAPE_CLUSTER_HELP			| Pourquoi ne pas répartir le combat sur plusieurs galaxies ? 3, 6 ou 8 amas sont disponibles.
+SETUP_GALAXY_SHAPE_CLUSTER_O1			| Nombre d'amas : %1
+SETUP_GALAXY_SHAPE_CLUSTER_O1_DESC		| Sélection du nombre d’amas.
+SETUP_CLUSTER_0_HELP					| Les systèmes stellaires sont répartis sur 4 amas.
+SETUP_CLUSTER_1_HELP					| Les systèmes stellaires sont répartis sur 6 amas.
+SETUP_CLUSTER_2_HELP					| Les systèmes stellaires sont répartis sur 8 amas.
+SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_HELP	| Une autre forme surréaliste... Les galaxies sont alignées le long d’une ligne tourbillonnante.
+SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_O1		| Position des galaxies : %1
+SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_O1_DESC | Sélection de la position des galaxies.
+SETUP_SWIRLCLUSTERS_0_HELP				| La ligne tourbillonnante traverse les galaxies.
+SETUP_SWIRLCLUSTERS_1_HELP				| Les galaxies sont placées entre les lignes tourbillonnantes.
+SETUP_SWIRLCLUSTERS_2_HELP				| Seulement la ligne tourbillonnante !
+SETUP_GALAXY_SHAPE_SPIRALARMS_HELP		| Un autre type de galaxie spirale. Le nombre de bras est basé sur sa taille : <i>la quatrième racine du nombre de systèmes stellaires</i> ; sauf pour l’option symétrique, où il dépend du nombre d’empires.
+SETUP_GALAXY_SHAPE_SPIRALARMS_O1		| Courbure des bras : %1
+SETUP_GALAXY_SHAPE_SPIRALARMS_O2		| Spécificité : %1
+SETUP_GALAXY_SHAPE_SPIRALARMS_O1_DESC	| Sélection de la courbure des bras.
+SETUP_GALAXY_SHAPE_SPIRALARMS_O2_DESC	| Sélection normale ou symétrique.
+SETUP_SPIRALARMS_0_HELP					| Une galaxie spirale droite.
+SETUP_SPIRALARMS_1_HELP					| Une galaxie spirale très lâche <i>(~60°)</i>.
+SETUP_SPIRALARMS_2_HELP					| Une galaxie spirale lâche <i>(~120°)</i>.
+SETUP_SPIRALARMS_3_HELP					| Une galaxie spirale normale <i>(~1 tour)</i>.
+SETUP_SPIRALARMS_4_HELP					| Une galaxie spirale serrée <i>(~1,5 tour)</i>.
+SETUP_SPIRALARMS_NORMAL_HELP			| Normale, car non symétrique !
+SETUP_SPIRALARMS_SYMMETRIC_HELP			| Galaxie à symétrie circulaire, chaque empire a le même monde d’origine et le même voisinage. Orion est au point central.
 
 SETUP_GALAXY_SHAPE_BITMAP_HELP    | Construisez votre propre forme de galaxie, basée sur un bitmap.<ul><li>Des prises de vue réelles de galaxies donnent de bons résultats.</li><li>Vous pouvez dessiner vos propres galaxies, en nuances de gris ou en couleurs.</li><li>Avec des galaxies colorées, vous pouvez définir des régions où les systèmes stellaires Orion, Player et Aliens devraient se trouver.</li><li>Un mode couleur avancé vous permet de définir les régions de chaque Aliens, ainsi que les régions de nébuleuses !</li><li>Quelques exemples peuvent être trouvés dans BitmapGalaxyExamples.zip</li></ul>Utilisez de préférence une petite image bitmap pour définir la galaxie ; la taille VGA est largement suffisante... Les galaxies sont toujours générées aléatoirement !
-SETUP_GALAXY_SHAPE_BITMAP_O1      | Première option de galaxie bitmap.
-SETUP_GALAXY_SHAPE_BITMAP_O2      | Seconde option de galaxie bitmap.
-SETUP_GALAXY_SHAPE_BITMAP_O1_HELP | Comment convertir le fichier image.
-SETUP_GALAXY_SHAPE_BITMAP_O2_HELP | Réglage fin de l’image.
+SETUP_GALAXY_SHAPE_BITMAP_O1      | Conversion de l'image : %1
+SETUP_GALAXY_SHAPE_BITMAP_O2      | Réglages fins : %1
+SETUP_GALAXY_SHAPE_BITMAP_O2      | Fichier : %1
+SETUP_GALAXY_SHAPE_BITMAP_O1_DESC | Comment convertir le fichier image.
+SETUP_GALAXY_SHAPE_BITMAP_O2_DESC | Réglages fins de l’image.
+SETUP_GALAXY_SHAPE_BITMAP_O3_DESC | Nom du fichier contenant l’image.
 SETUP_BITMAP_GREY_SUM_DESC        | Les images en couleur seront converties en niveaux de gris en additionnant les trois couleurs. (Méthodes standard)
 SETUP_BITMAP_GREY_MAX_DESC        | Les images en couleur seront converties en niveaux de gris avec le maximum des trois couleurs. (Cela donne parfois de meilleurs résultats)
 SETUP_BITMAP_GREY_INVERSE_DESC    | Parce que certaines belles images ont un fond blanc.
@@ -5710,6 +5722,21 @@ SETUP_BITMAP_SHARP3_HELP          | Augmenter fortement le contraste.
 SETUP_BITMAP_SHARP4_HELP          | Presque convertir l’image en noir et blanc !
 SETUP_GALAXY_SHAPE_RANDOM_HELP    | Galaxie sélectionnée aléatoirement parmi des galaxies d’étoiles groupées.<br>→SETUP_GALAXY_SHAPE_RECTANGLE←, →SETUP_GALAXY_SHAPE_ELLIPSE←, →SETUP_GALAXY_SHAPE_SPIRAL←, →SETUP_GALAXY_SHAPE_CLUSTER←, →SETUP_GALAXY_SHAPE_SPIRALARMS←, →SETUP_GALAXY_SHAPE_SHURIKEN← <br>(Se combine bien avec l’option galaxie sombre)
 SETUP_GALAXY_SHAPE_RANDOM_2_HELP  | Galaxie sélectionnée au hasard parmi presque toutes les galaxies.<br>Exclus : →SETUP_GALAXY_SHAPE_TEXT←, →SETUP_GALAXY_SHAPE_BITMAP←. <br>(Se marie bien avec l’option galaxie sombre)
+
+SETUP_GALAXY_SHAPE_RANDOMIZED_DESC		| Galaxie sélectionnée aléatoirement. (Le type Bitmap ne fait pas partie de la liste)
+SETUP_GALAXY_SHAPE_RANDOMIZED_O1_DESC	| Liste des galaxies disponibles pour la sélection aléatoire.
+SETUP_GALAXY_SHAPE_RANDOMIZED_O1		| Liste des Galaxies : %1
+SETUP_RANDOMIZED_REAL_SHAPES_DESC		| Galaxies pouvant vaguement sembler réelles. (Avec un peu d'imagination)
+SETUP_RANDOMIZED_IMAGINARY_SHAPES_DESC	| Il n’y a aucune chance que ces galaxies ressemblent à la réalité.
+SETUP_RANDOMIZED_COMPLEX_SHAPES_DESC	| Inclu →SETUP_RANDOMIZED_REAL_SHAPES← et →SETUP_RANDOMIZED_IMAGINARY_SHAPES←.
+SETUP_RANDOMIZED_ALL_SHAPES_DESC		| La galaxie →SETUP_GALAXY_SHAPE_TEXT← est ajouté à la liste →SETUP_RANDOMIZED_COMPLEX_SHAPES←.
+SETUP_GALAXY_SHAPE_RANDOMIZED_O2_DESC	| Qu’advient t’il des otions de la galaxie sélectionnée aléatoirement?
+SETUP_GALAXY_SHAPE_RANDOMIZED_O2		| Gestion des options : %1
+SETUP_RANDOMIZED_KEEP_OPTIONS_DESC		| Utiliser les dernières options sélectionnées de la galaxie sélectionnée aléatoirement.
+SETUP_RANDOMIZED_RANDOM_OPTIONS_1_DESC	| Uniquement sélectionner aléatoirement la première option, les autres restant inchangées.
+SETUP_RANDOMIZED_RANDOM_OPTIONS_2_DESC	| Uniquement sélectionner aléatoirement la seconde option, les autres restant inchangées.
+SETUP_RANDOMIZED_RANDOM_OPTIONS_DESC	| Toutes les options seront sélectionnées aléatoirement.
+
 
 // Shortcuts / Hotkeys list  (use cross-references →←) →HK_←
 // Shortcuts Cross referenced

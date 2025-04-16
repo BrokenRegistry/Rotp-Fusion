@@ -50,7 +50,7 @@ public class GameStatus implements Base, Serializable {
 
     String key() { return status.toString(); }
     public boolean inProgress()    {
-    	if (status != Status.NO_GAME && status != Status.IN_PROGRESS && options().debugAutoRun())
+    	if (status != Status.NO_GAME && status != Status.IN_PROGRESS && IDebugOptions.debugAutoRun())
     		return GameSession.instance().galaxy().numActiveEmpires() > 1;
     	if (GameSession.instance().galaxy() != null
     			&& (GameSession.instance().aFewMoreTurns() || options().continueAnyway()))

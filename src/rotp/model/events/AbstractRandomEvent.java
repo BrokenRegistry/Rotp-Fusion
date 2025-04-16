@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rotp.model.empires.Empire;
+import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
 import rotp.ui.util.ParamInteger;
 import rotp.util.Base;
@@ -82,14 +83,14 @@ abstract class AbstractRandomEvent implements RandomEvent, Base, Serializable {
 	}	
 	@Override public void addPendingEvents(Empire emp) {
 		empireIdPendingEvents.add(emp.id);
-		if (options().debugAutoRun() && options().debugLogEvents())
-        	turnLog(IGameOptions.AUTORUN_EVENTS, "Pending: " + emp.name() + " # " + notificationText());
+		if (IDebugOptions.debugAutoRun() && IDebugOptions.debugLogEvents())
+			turnLog(IGameOptions.AUTORUN_EVENTS, "Pending: " + emp.name() + " # " + notificationText());
 	}
 	boolean	isEventDisabled()					{
 		// Specific Event disabled ?
 		if (delayTurn().get() < 0)
 			return true;
-		String reo = options().selectedRandomEventOption();
+		String reo = guiOptions().selectedRandomEventOption();
 		switch (reo) {
 		case IGameOptions.RANDOM_EVENTS_OFF:
 			return true;

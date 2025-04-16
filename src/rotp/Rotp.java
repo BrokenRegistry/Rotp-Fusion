@@ -37,15 +37,24 @@ import javax.swing.JOptionPane;
 import rotp.model.game.GameSession;
 import rotp.model.game.IModOptions;
 import rotp.model.game.MOO1GameOptions;
+import rotp.model.game.RulesetManager;
+import rotp.model.planet.PlanetFactory;
+import rotp.model.ships.ShipLibrary;
+import rotp.model.tech.TechLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.SwingExceptionHandler;
 import rotp.ui.UserPreferences;
-import rotp.ui.options.AllSubUI;
+import rotp.ui.diplomacy.DialogueManager;
+import rotp.ui.util.planets.PlanetImager;
+import rotp.util.AnimationManager;
 import rotp.util.FontManager;
 import rotp.util.ImageManager;
+import rotp.util.LanguageManager;
+import rotp.util.Logger;
 import rotp.util.OSUtil;
 import rotp.util.Rand;
+import rotp.util.sound.SoundManager;
 
 public class Rotp {
     private static final int MB = 1048576;
@@ -55,7 +64,8 @@ public class Rotp {
     public static final String repName   = RotpGovernor.governorRepName();
     public static final int IMG_W = 1229;
     public static final int IMG_H = 768;
-    public static boolean noOptions = true; // BR: Options are not ready to be called
+    private static boolean noOptions		= true; // BR: Options are not ready to be called
+	private static boolean initialized	= false; // BR: Options are not ready to be called
     private static Rand random = new Rand(); // BR: to allow RNG reset
     public static Rand rand()		{ return random; }
     public static void rand(Rand r)	{ random = r; }
@@ -89,14 +99,18 @@ public class Rotp {
 
     private static GraphicsDevice device;
 
+	public static boolean initialized()	{ return initialized; }
 	public static JFrame getFrame()		{ return frame; }
-    public static boolean memoryLow() { return memoryTracker.memoryLow(); }
+	public static boolean memoryLow()	{ return memoryTracker.memoryLow(); }
     public static String getMemoryInfo(boolean screen) { return(memoryTracker.getMemoryInfo(screen)); }
-    public static boolean noOptions(String id) {
-    	if (noOptions)
-    		System.out.println("### noOptions() usefully called from " + id + " ###");
-    	return noOptions;
-    }
+	public static boolean noOptions(String id)	{
+		if (noOptions)
+			ifIDE("### noOptions() usefully called from " + id + " ###");
+		return noOptions;
+	}
+	public static void noOptions(boolean noOpt)	{ noOptions = noOpt; }
+	public static boolean noOptions()			{ return noOptions; }
+	public static boolean noUI()				{ return RotPUI.instance() == null; }
 
     public static void main(String[] args) {
         frame = new JFrame("Remnants of the Precursors");
@@ -116,17 +130,30 @@ public class Rotp {
         stopIfInsufficientMemory(frame, (int)maxHeapMemory);
         Thread.setDefaultUncaughtExceptionHandler(new SwingExceptionHandler());
         frame.addWindowListener(new ExitCloseWindowAdapter());
+		frame.setLayout(new BorderLayout());
 
-        // BR: To initialize all mod static parameters in a controlled order
-        AllSubUI.allModOptions(true);
-        new MOO1GameOptions(false);
-        AllSubUI.allModOptions(true);
-        
-        // note: referencing the RotPUI class executes its static block
-        // which loads in sounds, images, etc
-        frame.setLayout(new BorderLayout());
-        frame.add(RotPUI.instance(), BorderLayout.CENTER);
-        noOptions = false; // BR:  Session Options are ready to be called
+		// BR: Split the static initialization to get some control over it.
+		// note: referencing the RotPUI class was executing its static block
+		// which loads in sounds, images, etc
+		// Init Self Instanced Utility classes
+		initUtils();
+
+		// Init the interfaces that create all the options tools
+		// This will create newGameOptions
+		RulesetManager.current();
+
+		// Create all the UI panels stored in RotPUI
+		RotPUI rotpUI = new RotPUI();
+
+		// Assign the UI to the Frame
+		frame.add(rotpUI, BorderLayout.CENTER);
+
+		// Initialize the UI panels
+		rotpUI.initModel(); // TODO BR: Validate
+		initialized = true;
+
+		// Initialize the option tools
+		rotpUI.init(); // TODO BR: Validate
 
         // modnar: change to cleaner icon set
         List<Image> iconImages = new ArrayList<Image>();
@@ -171,7 +198,7 @@ public class Rotp {
         // this will not catch 32-bit JREs on all platforms, but better than nothing
         String bits = System.getProperty("sun.arch.data.model").trim();
         if (bits.equals("32"))
-            RotPUI.instance().mainUI().showJava32BitPrompt();
+            rotpUI.mainUI().showJava32BitPrompt();
         else if (reloadRecentSave)
             GameSession.instance().loadRecentSession(false);
         else if (!loadSaveFile.isEmpty())
@@ -179,8 +206,8 @@ public class Rotp {
 
         becomeVisible();
         installGCMonitoring();
-		System.out.println("OS = " + OSUtil.getOS());
-        isIDE();
+		System.out.println("OS = " + OSUtil.getOS()); // To initialize the value
+        isIDE(); // To initialize the value
     }
     private static void installGCMonitoring() { memoryTracker = new MemoryTracker(maxHeapMemory); }
     private static GraphicsDevice device() {
@@ -201,8 +228,8 @@ public class Rotp {
     }
     public static void becomeVisible() { frame.setVisible(true); }
     public static void setVisible(boolean b) { frame.setVisible(b); } // BR: used by command console only
-   
-    public static boolean containsArg(String[] argList, String key) {
+
+    private static boolean containsArg(String[] argList, String key) {
         for (String s: argList) {
             if (s.equalsIgnoreCase(key))
                 return true;
@@ -260,15 +287,28 @@ public class Rotp {
         }
         return startupDir;
     }
-    public	static boolean isUnderTest() { return underTest && isIDE(); }
-    public	static boolean isIDE()		 {
-    	if (isIDE == null) {
-    		isIDE = jarPath().toUpperCase().endsWith("TARGET");
-    		if (isIDE)
-    			System.out.println("IDE detected");
-    	}
-    	return isIDE;
-    }
+	public	static boolean isUnderTest()	{ return underTest && isIDE(); }
+	public	static boolean isIDE()			{
+		if (isIDE == null) {
+			isIDE = jarPath().toUpperCase().endsWith("TARGET");
+			ifIDE("IDE detected");
+		}
+		return isIDE;
+	}
+	public	static boolean ifIDE(String out)		{
+		if (isIDE()) {
+			System.out.println("@ " + out);
+			return true;
+		}
+		return false;
+	}
+	public	static boolean ifUnderTest(String out)	{
+		if (isUnderTest()) {
+			System.out.println("^@ " + out);
+			return true;
+		}
+		return false;
+	}
     private static void stopIfInsufficientMemory(JFrame frame, int allocMb) {
         if (allocMb < 260) {
             JOptionPane.showMessageDialog(frame, "Error starting game: Not enough free memory to play");
@@ -297,23 +337,16 @@ public class Rotp {
         restartWithMoreMemory(frame, true);
     }
 
-//	@SuppressWarnings("deprecation")
 	private static boolean restartWithMoreMemory(JFrame frame, boolean reload) {
         // MXBeans are not supported by GraalVM Native, so skip this part
         if (RotpGovernor.GRAALVM_NATIVE) {
             System.out.println("Running as GraalVM Native image");
             return false;
         }
-//        @SuppressWarnings("restriction")
-//		long memorySize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory
-//                        .getOperatingSystemMXBean()).getTotalPhysicalMemorySize();
 		long memorySize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory
-                        .getOperatingSystemMXBean()).getTotalMemorySize();
-//        @SuppressWarnings("restriction")
-//		long freeMemory = ((com.sun.management.OperatingSystemMXBean) ManagementFactory
-//                        .getOperatingSystemMXBean()).getFreePhysicalMemorySize();
+							.getOperatingSystemMXBean()).getTotalMemorySize();
 		long freeMemory = ((com.sun.management.OperatingSystemMXBean) ManagementFactory
-                        .getOperatingSystemMXBean()).getFreeMemorySize();
+							.getOperatingSystemMXBean()).getFreeMemorySize();
         int maxMb = (int) (memorySize / MB);
         long allocMb = Runtime.getRuntime().maxMemory() / MB;
         int freeMb = (int) (freeMemory / MB);
@@ -352,9 +385,69 @@ public class Rotp {
         }
         return false;
     }
- 
+
+	public static Throwable startupException;
+	private static void initUtils()	{
+		Logger.registerLogListener(Logger::logToFile);
+		// needed for opening ui
+		try { UserPreferences.load(true); }
+		catch (Throwable t) {
+			startupException = t;
+			System.out.println("Err: UserPreferences init " + t.getMessage());
+		}
+		try { TechLibrary.current(); }
+		catch (Throwable t) {
+			startupException = t;
+			System.out.println("Err: TechLibrary init: " + t.getMessage());
+		}
+		try { LanguageManager.current().selectedLanguageName(); }
+		catch (Throwable t) {
+			System.out.println("Err: LanguageManager init: " + t.getMessage());
+		}
+		try { SoundManager.current(); }
+		catch (Throwable t) {
+			startupException = t;
+			System.out.println("Err: SoundManager init: " + t.getMessage());
+		}
+		try { ImageManager.current(); }
+		catch (Throwable t) {
+			startupException = t;
+			System.out.println("Err: ImageManager init: " + t.getMessage());
+		}
+		try { AnimationManager.current(); }
+		catch (Throwable t) {
+			startupException = t;
+			System.out.println("Err: AnimationManager init: " + t.getMessage());
+		}
+		try { DialogueManager.current(); }
+		catch (Throwable t) {
+			startupException = t;
+			System.out.println("Err: DialogueManager init: " + t.getMessage());
+		}
+		try { ShipLibrary.current(); }
+		catch (Throwable t) {
+			startupException = t;
+			System.out.println("Err: ShipLibrary init: " + t.getMessage());
+		}
+		try { PlanetImager.current(); }
+		catch (Throwable t) {
+			startupException = t;
+			System.out.println("Err: PlanetImager init: " + t.getMessage());
+		}
+		try { PlanetFactory.current(); }
+		catch (Throwable t) {
+			startupException = t;
+			System.out.println("Err: PlanetFactory init: " + t.getMessage());
+		}
+		// IGameOption statics elements creation
+		try { new MOO1GameOptions(false); }
+		catch (Throwable t) {
+			startupException = t;
+			System.out.println("Err: IGameOption statics elements creation: " + t.getMessage());
+		}
+	}
 	private static class ExitCloseWindowAdapter extends WindowAdapter {
-    	@Override public void windowClosing(WindowEvent e) { System.exit(0); }
-    }
+		@Override public void windowClosing(WindowEvent e) { System.exit(0); }
+	}
 }
 class ModOptions implements IModOptions { }

@@ -99,6 +99,7 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 	private String value = null;
 	private int index    = -1;
 	private int initialIndex;
+	private int indexMax;
 	private JList<Object> list;
 	private List<String> alternateReturn;
 	private Frame frame;
@@ -227,6 +228,7 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 		this.alternateReturn = alternateReturn;
 		this.param 			 = param;
 		this.initialValue	 = initialValue;
+		indexMax			 = data.length -1;
 		dialGuide			 = BaseModPanel.showGuide(); // Always reinitialize.
 		getRootPane().setDefaultButton(setButton);
 
@@ -240,7 +242,7 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 			renderer.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		list.addListSelectionListener(new DialListSelectionListener(panel));
-		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		//list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		if (longValue != null)
 			list.setPrototypeCellValue(longValue); //get extra space
 		if (isVerticalWrap)
@@ -273,21 +275,37 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 		if (dialGuide && param != null)// For Help
 			showHelp(index);
 	}
-	public String getValue()		{ return value; }
+	//public String getValue()		{ return value; }
 	public String showDialog(int refreshLevel)	{ // Can only be called once.
 		value = null;
 		index = -1;
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setVisible(true);
 		if (alternateReturn != null && index >= 0) {
-			index = Math.max(0,  index);
+			index = Math.max(0, index);
 			value = alternateReturn.get(index);
 		}
-        ModifierKeysState.reset();
-        baseModPanel.initButtonBackImg();
-        baseModPanel.refreshGui(refreshLevel);
+		ModifierKeysState.reset();
+		baseModPanel.initButtonBackImg();
+		baseModPanel.refreshGui(refreshLevel);
 		return value;
 	}
-	private void setValue(String newValue)		{
+	public int showDialogGetId(int refreshLevel, int idx)	{ // Can only be called once.
+		initialIndex = Math.min(Math.max(0, idx), indexMax);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+//		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		list.setSelectedIndex(initialIndex);
+		initialValue = (String) list.getSelectedValue();
+		value = null;
+		index = -1;
+		setVisible(true);
+		ModifierKeysState.reset();
+		baseModPanel.initButtonBackImg();
+		baseModPanel.refreshGui(refreshLevel);
+		return index;
+	}
+	private void setValue(String newValue)	{
 		value = newValue;
 		list.setSelectedValue(value, true);
 		index = Math.max(0, list.getSelectedIndex());
@@ -383,23 +401,23 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 		private final InterfacePreview panel;
 		private DialListSelectionListener(InterfacePreview panel) { this.panel = panel; }
 		@Override public void valueChanged(ListSelectionEvent e) {
-	    	value = (String) list.getSelectedValue();
-	    	if (value != null) {
-    			index = Math.max(0, list.getSelectedIndex());
-	    		if (panel != null) { // For Preview
-	    			if (alternateReturn != null)
-		    			value = alternateReturn.get(index);
-	    			
-	    			if (param != null)
-	    				param.setFromCfgValue(value);
+			value = (String) list.getSelectedValue();
+			if (value != null) {
+				index = Math.max(0, list.getSelectedIndex());
+				if (panel != null) { // For Preview
+					if (alternateReturn != null)
+						value = alternateReturn.get(index);
 
-		    		panel.preview(value, param);
-	    		}
-	    		if (dialGuide && param != null) { // For Help
-	    			showHelp(index);
-	    		}
-	    	}
-	    }		
+					if (param != null)
+						param.setFromCfgValue(value);
+
+					panel.preview(value, param);
+				}
+				if (dialGuide && param != null) { // For Help
+					showHelp(index);
+				}
+			}
+		}		
 	}
 	private class DialMouseAdapter extends MouseAdapter {
 		private final JButton setButton;

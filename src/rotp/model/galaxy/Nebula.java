@@ -134,7 +134,7 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
     }
     public Nebula() { }
     Nebula(float sizeMult, boolean buildImage) {
-    	requestedQuality = options().selectedRealNebulaSize();
+    	requestedQuality = guiOptions().selectedRealNebulaSize();
     	currentQuality	 = requestedQuality;
         size = max(1, sizeMult);
     	if (isRealNebula()) {
@@ -189,7 +189,7 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
             sysId = sys.id;
     }
     void enrichCentralSystem() {
-    	IGameOptions opts = options();
+    	IGameOptions opts = guiOptions();
         if (numStars < opts.nebulaEnrichmentInsideStar())
             return;
         if (galaxy().numStarSystems() <= opts.nebulaEnrichmentGalaxySize())
@@ -283,7 +283,7 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
         return image;
     }
     private BufferedImage buildImage() {
-    	requestedQuality = options().selectedRealNebulaSize();
+    	requestedQuality = guiOptions().selectedRealNebulaSize();
     	currentQuality	 = requestedQuality;
     	if (requestedQuality > 0)
     		return buildNebulaImage();
@@ -332,7 +332,7 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
         Rectangle mShape = mapShape(map);
         
         if (isRealNebula()) {
-        	float opacity = options().realNebulaeOpacity();
+        	float opacity = guiOptions().realNebulaeOpacity();
             Composite prevComp = g2.getComposite();
             Composite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER , opacity);
             g2.setComposite(comp );
@@ -426,7 +426,7 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
         int y1 = (int) (y0 + height * factor);
         //System.out.println("Nebula x=" + fmt(x, 1) + " y=" + fmt(y, 1));
         if (isRealNebula()) {
-        	float opacity = options().realNebulaeOpacity();
+        	float opacity = guiOptions().realNebulaeOpacity();
             Composite prevComp = g2.getComposite();
             Composite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER , opacity);
             g2.setComposite(comp );

@@ -33,11 +33,11 @@ import rotp.ui.game.BaseModPanel;
 
 public class ParamList extends AbstractParam<String> {
 
-	private final IndexableMap valueLabelMap;
+	protected final IndexableMap valueLabelMap;
 	private boolean showFullGuide = false;
-	private int	refreshLevel = 0;
-	private int	boxPosX	= -1;
-	private int	boxPosY	= -1;
+	protected int refreshLevel = 0;
+	protected int boxPosX = -1;
+	protected int boxPosY = -1;
 	
 	// ===== Constructors =====
 	//
@@ -54,19 +54,6 @@ public class ParamList extends AbstractParam<String> {
 	 * @param gui  The label header
 	 * @param name The name
 	 * @param defaultCfgLabel The default CfgLabel
-	 * @param list keys for map table
-	 * @param header The label Header
-	 */
-/*	public ParamList(String gui, String name, String defaultCfgLabel, ArrayList<String> list, String mid) {
-		super(gui, name, defaultCfgLabel);
-		valueLabelMap = new IndexableMap();
-		for (String element : list)
-			put(element, mid + element.toUpperCase());
-	} */
-	/**
-	 * @param gui  The label header
-	 * @param name The name
-	 * @param defaultCfgLabel The default CfgLabel
 	 * @param optionLabelMap  existing IndexableMap
 	 */
 	public ParamList(String gui, String name, String defaultCfgLabel, IndexableMap optionLabelMap) {
@@ -78,65 +65,20 @@ public class ParamList extends AbstractParam<String> {
 	 * @param name The name
 	 * @param list keys for map table
 	 * @param defaultIndex index to the default value
-	 * @param isDuplicate if true the option already exist 
-	 */
-/*	public ParamList(String gui, String name, List<String> list, int defaultIndex, boolean isDuplicate) {
-		super(gui, name, list.get(defaultIndex));
-		isDuplicate(isDuplicate);
-		valueLabelMap = new IndexableMap();
-		for (String element : list)
-			put(element, element); // Temporary; needs to be further initialized
-	} */
-	/**
-	 * Initializer for Duplicate
-	 * @param gui  The label header
-	 * @param name The name
-	 * @param list keys for map table
-	 * @param defaultIndex index to the default value
-	 */
-/*	public ParamList(String gui, String name, List<String> list, int defaultIndex) {
-		super(gui, name, list.get(defaultIndex));
-		isDuplicate(true);
-		valueLabelMap = new IndexableMap();
-		for (String element : list)
-			put(element, element); // Temporary; needs to be further initialized
-	} */
-	/**
-	 * @param gui  The label header
-	 * @param name The name
-	 * @param list keys for map table
-	 * @param defaultIndex index to the default value
-	 * @param isDuplicate if true the option already exist 
-	 */
-/*	public ParamList(String gui, String name, List<String> list, String defaultValue, boolean isDuplicate) {
-		super(gui, name, defaultValue);
-		isDuplicate(isDuplicate);
-		valueLabelMap = new IndexableMap();
-		for (String element : list)
-			put(element, element); // Temporary; needs to be further initialized
-	} */
-	/**
-	 * Initializer for Duplicate
-	 * @param gui  The label header
-	 * @param name The name
-	 * @param list keys for map table
-	 * @param defaultIndex index to the default value
 	 */
 	public ParamList(String gui, String name, List<String> list, String defaultValue) {
 		super(gui, name, defaultValue);
-		isDuplicate(true);
 		valueLabelMap = new IndexableMap();
 		for (String element : list)
 			put(element, element); // Temporary; needs to be further initialized
 	}
 	/**
-	 * Initializer for Duplicate Dynamic (shape options)
+	 * Initializer for shape options
 	 * @param gui  The label header
 	 * @param name The name
 	 */
 	public ParamList(String gui, String name) {
 		super(gui, name, "");
-		isDuplicate(true);
 		valueLabelMap = new IndexableMap();
 	}
 	
@@ -144,7 +86,7 @@ public class ParamList extends AbstractParam<String> {
 	//
 	public ParamList showFullGuide(boolean show) { showFullGuide = show; return this; }
 	public ParamList refreshLevel(int level)	 { refreshLevel = level; return this; }
- 	public void setPosition (int x, int y)		 { boxPosX = x; boxPosY = y; }
+	public void setPosition (int x, int y)		 { boxPosX = x; boxPosY = y; }
 	public void reInit(List<String> list)		 {
 		valueLabelMap.clear();
 		for (String element : list)
@@ -153,9 +95,9 @@ public class ParamList extends AbstractParam<String> {
 	// ===== Overriders =====
 	//
 	@Override public ParamList forcedRefresh(boolean b)	{ super.forcedRefresh(b); return this; }
-	@Override public ParamList isValueInit(boolean is)	{ super.isValueInit(is) ; return this; }
-	@Override public ParamList isDuplicate(boolean is)	{ super.isDuplicate(is) ; return this; }
-	@Override public ParamList isCfgFile(boolean is)	{ super.isCfgFile(is)   ; return this; }
+	@Override public ParamList isValueInit(boolean is)	{ super.isValueInit(is)	; return this; }
+	@Override public ParamList isDuplicate(boolean is)	{ super.isDuplicate(is)	; return this; }
+	@Override public ParamList isCfgFile(boolean is)	{ super.isCfgFile(is)	; return this; }
 	@Override public ParamList setDefaultValue(String key, String value) {
 		super.setDefaultValue(key, value);
 		return this;
@@ -176,7 +118,7 @@ public class ParamList extends AbstractParam<String> {
 	@Override protected boolean isInvalidLocalMax(String value)	{ return isInvalidLocalValue(value); }
 	@Override protected boolean isInvalidLocalMin(String value)	{ return isInvalidLocalValue(value); }
 	@Override public boolean next()						{
-		set(valueLabelMap.getNextLangLabelIgnoreCase(get()));
+		set(valueLabelMap.getNextValueIgnoreCase(get()));
 		return false;
 	}
 	@Override public boolean prev()						{
@@ -301,7 +243,7 @@ public class ParamList extends AbstractParam<String> {
 	}
 	// ===== Private Methods =====
 	//
-	private void initGuiTexts() {
+	protected void initGuiTexts() {
 		int id = defaultValueIndex();
 		initMapGuiTexts();
 		if (id >= 0)
@@ -312,7 +254,7 @@ public class ParamList extends AbstractParam<String> {
 	 * @param key the entry to check
 	 * @return a valid value, preferably the value to test
 	 */
-	private String validateValue(String key)	{
+	protected String validateValue(String key)	{
 		if (valueLabelMap.valuesContainsIgnoreCase(key))
 			return key;
 		if (valueLabelMap.valuesContainsIgnoreCase(defaultValue()))
@@ -320,11 +262,11 @@ public class ParamList extends AbstractParam<String> {
 		return valueLabelMap.getCfgValue(0);
 	}
 	protected int listSize()					{ return valueLabelMap.listSize(); }
-	private String currentOption()				{
+	protected String currentOption()				{
 		int index = Math.max(0, getIndex());
 		return valueLabelMap.guiTextList.get(index);
 	}
-	private void setFromList(BaseModPanel frame){
+	protected void setFromList(BaseModPanel frame){
 		String message	= "<html>" + getGuiDescription() + "</html>";
 		String title	= langLabel(getLangLabel(), "");
 		initGuiTexts();
@@ -349,6 +291,17 @@ public class ParamList extends AbstractParam<String> {
 		if (input != null && valueLabelMap.getValueIndexIgnoreCase(input) >= 0)
 			set(input);
 	}
+	protected int defaultValueIndex()			{
+		int id = getIndex(defaultValue());
+		if (id < 0)
+			if (listSize()==0)
+				return -1;
+			else
+				return 0;
+		return id;
+	}
+	// ===== Private Methods =====
+	//
 	private String getTableHelp()				{
 		int size = listSize();
 		String rows = "";
@@ -371,17 +324,7 @@ public class ParamList extends AbstractParam<String> {
 		for (String label : valueLabelMap.langLabelList)
 			valueLabelMap.guiTextList.add(langLabel(label));
 	}
-	
-	protected int defaultValueIndex()			{
-		int id = getIndex(defaultValue());
-		if (id < 0)
-			if (listSize()==0)
-				return -1;
-			else
-				return 0;
-		return id;
-	}
-	public int	getRawIndex()					{
+	private int	getRawIndex()					{
 		String value = get();
 		if (isDuplicate()) {
 			int idx = valueLabelMap.getLangLabelIndexIgnoreCase(value);
@@ -399,7 +342,7 @@ public class ParamList extends AbstractParam<String> {
 			id = defaultValueIndex();
 		return id;		
 	}
-	private int getValidIndex(int id)			{
+	protected int getValidIndex(int id)			{
 		if (id < 0)
 			return getValidIndex();
 		return id;
@@ -408,9 +351,9 @@ public class ParamList extends AbstractParam<String> {
 	//
 	public static class IndexableMap{
 		
-		private final SafeList cfgValueList	 = new SafeList(); // also key list
-		private final SafeList langLabelList = new SafeList();
-		private final SafeList guiTextList	 = new SafeList();
+		final StringList cfgValueList	= new StringList(); // also key list
+		final StringList langLabelList	= new StringList();
+		final StringList guiTextList	= new StringList();
 
 		
 		// ========== Constructors and Initializers ==========
@@ -429,6 +372,11 @@ public class ParamList extends AbstractParam<String> {
 		// ========== Getters ==========
 		//
 		private boolean isValid(String option)	{ return cfgValueList.contains(option); }
+		boolean isValidValue(int id, String str)	{
+			if (id < 0 || id >= listSize())
+				return false;
+			return cfgValueList.get(id).equals(str);
+		}
 		private int	   validId(int id)	{
 			if (id < 0)
 				return 0;
@@ -437,27 +385,18 @@ public class ParamList extends AbstractParam<String> {
 			return id;
 		}
 		private int    listSize()			{ return cfgValueList.size(); }
-		private String getCfgValue(int id)	{ return cfgValueList.get(validId(id)); }
+		String getCfgValue(int id)	{ return cfgValueList.get(validId(id)); }
 		private String getLangLabel(int id)	{ return langLabelList.get(validId(id)); }
 		private String getLangLabelFromValue(String value) {
 			int index = getValueIndexIgnoreCase(value);
 			return langLabelList.get(index);
 		}
-//		/**
-//		 * get the value from the langLabel
-//		 * @param langLabel The langLabel to search
-//		 * @return the corresponding value
-//		 */
-//		private String getValueFromLangLabel(String langLabel) {
-//			int index = getLangLabelIndexIgnoreCase(langLabel);
-//			return cfgValueList.get(index);
-//		}
 		/**
 		 * search for value regardless of the case and return the previous key
 		 * @param value The value to search
 		 * @return the previous value, looping at the beginning, the last if string is not found
 		 */
-		private String getPrevValueIgnoreCase(String value) {
+		String getPrevValueIgnoreCase(String value) {
 			int index = getValueIndexIgnoreCase(value)-1;
 			if (index < 0)
 				return cfgValueList.get(cfgValueList.size()-1);
@@ -468,7 +407,7 @@ public class ParamList extends AbstractParam<String> {
 		 * @param value The value to search
 		 * @return the next value, looping at the end, the first if string is not found
 		 */
-		private String getNextLangLabelIgnoreCase(String value) {
+		String getNextValueIgnoreCase(String value) {
 			int index = getValueIndexIgnoreCase(value) + 1;
 			if (index >= cfgValueList.size())
 				return cfgValueList.get(0);
@@ -482,29 +421,24 @@ public class ParamList extends AbstractParam<String> {
 		private boolean valuesContainsIgnoreCase(String value) {
 			return getValueIndexIgnoreCase(value) != -1;
 		}
-//		/**
-//		 * search for the value position in the guiText list
-//		 * @param value The value to search regardless of the case
-//		 * @return the value index, -1 if none
-//		 */
-//		private int getGuiTextIndexIgnoreCase(String value) {
-//			int index = 0;
-//			for (String entry : guiTextList) {
-//				if (entry.equalsIgnoreCase(value))
-//					return index;
-//				index++;
-//			}
-//			return -1;
-//		}
 		/**
 		 * search for the value position in the cfgValue list
 		 * @param value The value to search regardless of the case
 		 * @return the value index, -1 if none
 		 */
-		private int getValueIndexIgnoreCase(String value) {
+		int getValueIndexIgnoreCase(String value) {
 			int index = 0;
 			for (String entry : cfgValueList) {
 				if (entry.equalsIgnoreCase(value))
+					return index;
+				index++;
+			}
+			return -1;
+		}
+		int getValueIndex(String value) {
+			int index = 0;
+			for (String entry : cfgValueList) {
+				if (entry.equals(value))
 					return index;
 				index++;
 			}
@@ -515,7 +449,7 @@ public class ParamList extends AbstractParam<String> {
 		 * @param langLabel The label to search regardless of the case
 		 * @return the key index, -1 if none
 		 */
-		private int getLangLabelIndexIgnoreCase(String langLabel) {
+		int getLangLabelIndexIgnoreCase(String langLabel) {
 			int index = 0;
 			for (String entry : langLabelList) {
 				if (entry.equalsIgnoreCase(langLabel))
@@ -523,16 +457,6 @@ public class ParamList extends AbstractParam<String> {
 				index++;
 			}
 			return -1;
-		}
-		class SafeList extends ArrayList<String> {
-			private static final long serialVersionUID = 1L;
-			@Override public String get(int id) {
-				if (id<0 || size() == 0)
-					return "";
-				if (id>=size())
-					return super.get(0);
-				return super.get(id);
-			}
 		}
 	}
 }

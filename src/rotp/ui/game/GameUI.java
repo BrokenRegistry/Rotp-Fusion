@@ -51,6 +51,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import rotp.Rotp;
 import rotp.model.game.GameSession;
+import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseText;
@@ -517,8 +518,8 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     public void init() {
         slideshowFade = SLIDESHOW_MAX;
         rotp.ui.main.GovernorOptionsPanel.close();
-    	RotPUI.updateOptionsFromGame();      
-//    	RotPUI.currentOptions(IGameOptions.SETUP_ID);
+		if (session().options() != null)
+			rulesetManager().updateOptionsFromGame();      
         resetSlideshowTimer();
 		ModifierKeysState.reset();
     }
@@ -1017,8 +1018,8 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
             case KeyEvent.VK_E:
             case KeyEvent.VK_X:  exitGame();		return;
             case KeyEvent.VK_Z:  hideText = true;	repaint();	return;
-            case KeyEvent.VK_PAGE_UP:	options().showVIPPanel(true);  return;
-            case KeyEvent.VK_PAGE_DOWN:	options().showVIPPanel(false); return;
+            case KeyEvent.VK_PAGE_UP:	IDebugOptions.showVIPPanel(true);  return;
+            case KeyEvent.VK_PAGE_DOWN:	IDebugOptions.showVIPPanel(false); return;
             case KeyEvent.VK_HOME:
             	File file = new File (Rotp.jarPath());
             	Desktop desktop = Desktop.getDesktop();
@@ -1124,8 +1125,8 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         if (canRecenStart()) {
             buttonClick();
            	session().loadRecentStartGame(true);
-        	RotPUI.currentOptions(IGameOptions.GAME_ID);
-        	UserPreferences.load();
+			rulesetManager().setAsGameMode();
+			UserPreferences.reload();
             RotPUI.instance().selectMainPanel();
             RotPUI.instance().mainUI().showDisplayPanel();
             if (gameName == "")
@@ -1139,8 +1140,8 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
             	session().loadLastSavedGame(true);
             	// session().loadRecentSession(true);
             }
-        	RotPUI.currentOptions(IGameOptions.GAME_ID);
-        	UserPreferences.load();
+			rulesetManager().setAsGameMode();
+			UserPreferences.reload();
 
 			if (session().galaxy().playerSwapRequest())
 				session().galaxy().swapPlayerEmpire();

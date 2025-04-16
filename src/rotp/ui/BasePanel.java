@@ -41,6 +41,7 @@ import javax.swing.border.Border;
 import rotp.Rotp;
 import rotp.model.Sprite;
 import rotp.model.galaxy.StarType;
+import rotp.model.game.IDebugOptions;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.util.InterfacePreview;
@@ -247,7 +248,7 @@ public class BasePanel extends JPanel implements Base, InterfacePreview {
         int w = getWidth();
         int h = getHeight();
         int bdrW = s7;
-        boolean autoRun = options().debugAutoRun();
+        boolean autoRun = IDebugOptions.debugAutoRun();
 
         g.setColor(backShade);
         if (shading && !autoRun) // BR: No shading when auto-run

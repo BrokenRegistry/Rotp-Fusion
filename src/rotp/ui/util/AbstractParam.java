@@ -37,7 +37,7 @@ import javax.swing.SwingUtilities;
 import rotp.model.game.DynamicOptions;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IGameOptions;
-import rotp.ui.RotPUI;
+import rotp.model.game.RulesetManager;
 import rotp.ui.UserPreferences;
 import rotp.ui.game.BaseModPanel;
 import rotp.util.sound.SoundManager;
@@ -291,7 +291,7 @@ public abstract class AbstractParam <T> implements IParam {
 		else
 			return linkValue(get()).isPositiveDiff(value);
 	}
-	protected IGameOptions   opts()		{ return RotPUI.currentOptions(); }
+	protected IGameOptions   opts()		{ return RulesetManager.current().currentOptions(); }
 	private	  DynamicOptions dynOpts()	{ return opts().dynOpts(); }
 	protected T last()					{ return value; }
 	protected AbstractParam<T> formerName(String link)	{
@@ -428,7 +428,7 @@ public abstract class AbstractParam <T> implements IParam {
 	 * @param string Source of Integer
 	 * @return Integer value, or <b>null</b> on error
 	 */
-	static Integer stringToInteger(String string) {
+	protected static Integer stringToInteger(String string) {
 		try {
 			return Integer.valueOf(string.trim());
 		}

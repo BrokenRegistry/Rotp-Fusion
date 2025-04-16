@@ -17,32 +17,47 @@ package rotp.model.galaxy;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+
+import rotp.model.game.IGalaxyOptions.IShapeOption;
+import rotp.model.game.IGalaxyOptions.ShapeOptionList;
 import rotp.model.game.IGameOptions;
 
 // modnar: custom map shape, Cluster
 public class GalaxyClusterShape extends GalaxyShape {
-    public static final List<String> options1;
-    //public static final List<String> options2;
-    private static final long serialVersionUID = 1L;
-    static {
-        options1 = new ArrayList<>();
-        options1.add("SETUP_CLUSTER_0");
-        options1.add("SETUP_CLUSTER_1");
-        options1.add("SETUP_CLUSTER_2");
-        options1.add(RANDOM_OPTION);
-        //options2 = new ArrayList<>();
-        //options2.add("SETUP_NOT_AVAILABLE");
-    }
-    
+	private static final long serialVersionUID = 1L;
+	private	static final String SHORT_NAME	= "CLUSTER";
+	private	static final String BASE_NAME	= ROOT_NAME + SHORT_NAME;
+	public	static final String NAME		= UI_KEY + BASE_NAME;
+	private	static final int DEFAULT_OPT_1	= 0;
+	private static ShapeOptionList param1;
+
+	public static ShapeOptionList param1()	{
+		if (param1 == null) {
+			param1 = new ShapeOptionList(
+			BASE_NAME, 1,
+			new ArrayList<String>(Arrays.asList(
+				"SETUP_CLUSTER_0",
+				"SETUP_CLUSTER_1",
+				"SETUP_CLUSTER_2",
+				RANDOM_OPTION
+				) ),
+			DEFAULT_OPT_1);
+		}
+		return param1;
+	}
+
 	private Point.Float cc1, cc2, cc3, cc4, cc5, cc6, cc7, cc8;
 	
-    public GalaxyClusterShape(IGameOptions options) {
-    	super(options);
-    }
-    @Override protected float minEmpireFactor() { return 4f; }
-    @Override
-    public float maxScaleAdj()               { return 0.95f; }
+	public GalaxyClusterShape(IGameOptions options, boolean[] rndOpt)	{ super(options, rndOpt); }
+
+	@Override public IShapeOption paramOption1()	{ return param1(); }
+	@Override public void setOption1(String value)	{ param1().set(value); }
+	@Override public String name()					{ return NAME; }
+	@Override public GalaxyShape get()				{ return this; }
+
+	@Override public float maxScaleAdj()			{ return 0.95f; }
+	@Override protected float minEmpireFactor()		{ return 4f; }
     @Override
     protected int galaxyWidthLY() { 
         return (int) (Math.sqrt(1.7*4.0/3.0*opts.numberStarSystems()*adjustedSizeFactor()));
@@ -51,23 +66,10 @@ public class GalaxyClusterShape extends GalaxyShape {
     protected int galaxyHeightLY() { 
         return (int) (Math.sqrt(1.7*3.0/4.0*opts.numberStarSystems()*adjustedSizeFactor()));
     }
-	@Override
-    public List<String> options1()  { return options1; }
-    //@Override
-    //public List<String> options2()  { return options2; }
-    @Override
-    public String defaultOption1()  { return options1.get(0); }
-    //@Override
-    //public String defaultOption2()  { return options2.get(0); }
     @Override
     public void init(int n) {
         super.init(n);
-        
-//        int option1 = max(0, options1.indexOf(opts.selectedGalaxyShapeOption1()));
-//        //int option2 = max(0, options2.indexOf(opts.selectedGalaxyShapeOption2()));
-//        if (option1 == options1.size()-1)
-//        	option1 = random.nextInt(options1.size()-1);
-		
+
 		cc1 = new Point.Float();
 		cc2 = new Point.Float();
 		cc3 = new Point.Float();
@@ -76,7 +78,7 @@ public class GalaxyClusterShape extends GalaxyShape {
 		cc6 = new Point.Float();
 		cc7 = new Point.Float();
 		cc8 = new Point.Float();
-		
+
 		// choose cluster locations with options1
 		switch(option1) {
             case 0: {
@@ -142,15 +144,10 @@ public class GalaxyClusterShape extends GalaxyShape {
                 break;
             }
         }
-		
+
         // reset w/h vars since aspect ratio may have changed
         initWidthHeight();
     }
-//    @Override
-//	public void setRandom(Point.Float pt) {
-//        pt.x = randomLocation(fullWidth, galaxyEdgeBuffer());
-//        pt.y = randomLocation(fullHeight, galaxyEdgeBuffer());
-//    }
     @Override
     public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
         setRandom(pt);
@@ -166,53 +163,18 @@ public class GalaxyClusterShape extends GalaxyShape {
 		float dcc6 = distance(x,y,cc6.x,cc6.y);
 		float dcc7 = distance(x,y,cc7.x,cc7.y);
 		float dcc8 = distance(x,y,cc8.x,cc8.y);
-		
+
 		// cRadius defines approx. cluster radius
 		// using two for variety
 		float cRadius1 = 0.22f*galaxyHeightLY();
 		float cRadius2 = 0.15f*galaxyHeightLY();
-		
+
 		float min_dcc = min(dcc1/cRadius1, dcc2/cRadius1, dcc3/cRadius1, dcc4/cRadius1, dcc5/cRadius2, dcc6/cRadius2, dcc7/cRadius2, dcc8/cRadius2);
-		
+
 		// accept based on distance vs radius (not worth doing ?)
 		// more likely if closer to center, less likely further away		
         return (rand.nextFloat() >= min_dcc);
     }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }
-
-//    @Override float randomLocation(float max, float buff) {
-//        return buff + (random() * (max-buff-buff));
-//    }
-//    @Override
-//    protected float sizeFactor(String size) {
-//        float adj = 1.0f;
-//        switch (opts.selectedStarDensityOption()) {
-//            case IGameOptions.STAR_DENSITY_LOWEST:  adj = 1.3f; break;
-//            case IGameOptions.STAR_DENSITY_LOWER:   adj = 1.2f; break;
-//            case IGameOptions.STAR_DENSITY_LOW:     adj = 1.1f; break;
-//            case IGameOptions.STAR_DENSITY_HIGH:    adj = 0.9f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHER:  adj = 0.8f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHEST: adj = 0.7f; break;
-//        }
-//        switch (opts.selectedGalaxySize()) {
-//            case IGameOptions.SIZE_TINY:      return adj*10; 
-//            case IGameOptions.SIZE_SMALL:     return adj*15; 
-//            case IGameOptions.SIZE_SMALL2:    return adj*17;
-//            case IGameOptions.SIZE_MEDIUM:    return adj*19; 
-//            case IGameOptions.SIZE_MEDIUM2:   return adj*20; 
-//            case IGameOptions.SIZE_LARGE:     return adj*21; 
-//            case IGameOptions.SIZE_LARGE2:    return adj*22; 
-//            case IGameOptions.SIZE_HUGE:      return adj*23; 
-//            case IGameOptions.SIZE_HUGE2:     return adj*24; 
-//            case IGameOptions.SIZE_MASSIVE:   return adj*25; 
-//            case IGameOptions.SIZE_MASSIVE2:  return adj*26; 
-//            case IGameOptions.SIZE_MASSIVE3:  return adj*27; 
-//            case IGameOptions.SIZE_MASSIVE4:  return adj*28; 
-//            case IGameOptions.SIZE_MASSIVE5:  return adj*29; 
-//            case IGameOptions.SIZE_INSANE:    return adj*32; 
-//            case IGameOptions.SIZE_LUDICROUS: return adj*36; 
-//            default:             return adj*19; 
-//        }
-//    }
 }

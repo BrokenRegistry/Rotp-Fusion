@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.incidents.BreakAllianceIncident;
 import rotp.model.incidents.BreakPactIncident;
@@ -691,8 +692,8 @@ public class DiplomaticEmbassy implements Base, Serializable {
             else if (owner().isPlayerControlled())
                 galaxy().giveAdvice("MAIN_ADVISOR_DIPLOMACY", empire(), empire().raceName());
 
-            if (options().debugAutoRun() && owner().isPlayer()) {
-            	writeToFile( IGameOptions.NOTIF_LOGFILE,
+			if (IDebugOptions.debugAutoRun() && owner().isPlayer()) {
+				writeToFile( IGameOptions.NOTIF_LOGFILE,
 						concat(getTurn(),
 								" | First contact with : ", empire().leader().name(),
 								" Leader of ", empire().raceName(),

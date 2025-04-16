@@ -1548,10 +1548,6 @@ SETUP_GALAXY_SHAPE_OPTION_1_DESC  | Select The First Galaxy Shape Option
 SETUP_GALAXY_SHAPE_OPTION_1       | Galaxy Shape First Option Selection %1
 SETUP_GALAXY_SHAPE_OPTION_2_DESC  | Select The Second Galaxy Shape Option
 SETUP_GALAXY_SHAPE_OPTION_2       | Galaxy Shape Second Option Selection %1
-SETUP_GALAXY_SHAPE_OPTION_4_DESC  | Select The Fourth Galaxy Shape Option
-SETUP_GALAXY_SHAPE_OPTION_4       | %1 lines
-SETUP_GALAXY_SHAPE_LINE_SPACING_DESC | Select The Galaxy Text Shape line separator
-SETUP_GALAXY_SHAPE_LINE_SPACING   | %1 pixels
 SETUP_GALAXY_SHAPE_RECTANGLE      | Star Field
 SETUP_GALAXY_SHAPE_CIRCULAR       | Circular
 SETUP_GALAXY_SHAPE_RING           | Ring
@@ -1573,12 +1569,15 @@ SETUP_GALAXY_SHAPE_LORENZ2        | Lorenz 2
 SETUP_GALAXY_SHAPE_FRACTAL        | Fractal
 SETUP_GALAXY_SHAPE_CHAOSGAME      | Chaos Game
 SETUP_GALAXY_SHAPE_BITMAP         | Bitmap
+SETUP_GALAXY_SHAPE_RANDOMIZED		| Random
 SETUP_GALAXY_SHAPE_RANDOM         | Random Simple
 SETUP_GALAXY_SHAPE_RANDOM_2       | Random All
 SETUP_SHAPE_OPTION_1              | Option 1: %1
 SETUP_SHAPE_OPTION_1_DESC         | Select the first shape option.
+SETUP_SHAPE_OPTION_1_NONE         | This shape do not have options<br>
 SETUP_SHAPE_OPTION_2              | Option 2: %1
 SETUP_SHAPE_OPTION_2_DESC         | Select the second shape option
+SETUP_SHAPE_OPTION_2_NONE         | This shape do not have a secondary option<br>
 SETUP_SHAPE_OPTION_3              | Option 3: %1
 SETUP_SHAPE_OPTION_3_DESC         | File name associated with the Bitmap Galaxy.
 SETUP_SHAPE_OPTION_4              | Number of lines: %1
@@ -1895,12 +1894,10 @@ SETUP_VOID_5                      | Void 5
 SETUP_TEXT_0                      | Homeworld Name
 SETUP_TEXT_1                      | RotP
 SETUP_TEXT_2                      | MoO1
-SETUP_1_LINE                      | Single Line
-SETUP_2_LINE                      | Double Line
-SETUP_3_LINE                      | Triple Line
-SETUP_MULTI_LINE_LEFT             | Align Left
-SETUP_MULTI_LINE_CENTER           | Align Center
-SETUP_MULTI_LINE_RIGHT            | Align Right
+SETUP_MULTI_LINE_COPY			| Copy Text
+SETUP_MULTI_LINE_LEFT			| Align Left
+SETUP_MULTI_LINE_CENTER			| Align Center
+SETUP_MULTI_LINE_RIGHT			| Align Right
 SETUP_BULLSEYE_0                  | Dartboard
 SETUP_BULLSEYE_1                  | Rings
 SETUP_BULLSEYE_2                  | Squares
@@ -1952,6 +1949,15 @@ SETUP_BITMAP_SHARP2               | Sharper
 SETUP_BITMAP_SHARP3               | Sharpest
 SETUP_BITMAP_SHARP4               | Razor like
 SETUP_BITMAP_NO_SELECTION         | Click here to select a file
+SETUP_RANDOMIZED_REAL_SHAPES		| "Real" shapes
+SETUP_RANDOMIZED_IMAGINARY_SHAPES	| "Imaginary" shapes
+SETUP_RANDOMIZED_COMPLEX_SHAPES		| "Complex" shapes
+SETUP_RANDOMIZED_ALL_SHAPES			| All shapes
+SETUP_RANDOMIZED_KEEP_OPTIONS		| Keep Options
+SETUP_RANDOMIZED_RANDOM_OPTIONS_1	| Random 1st option
+SETUP_RANDOMIZED_RANDOM_OPTIONS_2	| Random 2nd option
+SETUP_RANDOMIZED_RANDOM_OPTIONS		| Random options
+
 SETUP_SPECIFIC_AI_DESC            | Select the AI that will control this opponent.
 SETUP_SPECIFIC_AI                 | Opponent Specific AI
 SETUP_GLOBAL_AI_DESC              | Select one AI...
@@ -2306,7 +2312,7 @@ SETTINGS_COUNCIL_DESC             | Disable the council victory condition or all
 SETTINGS_RANDOMIZE_AI_HELP        | Original "Advanced Option" to Randomize the AI played personalities, racial abilities, or both.<br><i>In case of conflict with the selected abilities in the Galaxy menu, The Galaxy menu win.</i>(Should be set to 'Original Species' for this option to works.)
 SETTINGS_RANDOMIZE_AI_DESC        | Randomize the AI player personalities, racial abilities, or both.
 SETTINGS_AUTOPLAY_DESC            | Completely automate the game by having an AI play for the player.<br> This is useful for a first-hand view of how the AI works.
-SETTINGS_AUTOPLAY_WARNING         | Warning! Auto play is currently enabled which will prevent user gameplay.<br> Use "Advanced Options" to disable.
+SETTINGS_AUTOPLAY_WARNING         | Warning! Auto play is currently enabled which will prevent user gameplay.<br> Use "→SETUP_BUTTON_MERGED_STATIC_SETTINGS←" to disable.
 SETTINGS_FUEL_RANGE_HELP          | Increase or decrease the range of fuel range technologies and reserve fuel tanks. tolerant species will benefit from reduced ranges, while fast growing species will appreciate increased ranges...
 SETTINGS_FUEL_RANGE_DESC          | Increase the range of fuel range technologies and reserve fuel tanks.
 SETTINGS_AI_HOSTILITY_DESC        | Increase or decrease the general level of hostility between alien species.<br>When the hostility between two empires reach the level 30, a war declaration will follow!
@@ -5555,146 +5561,152 @@ SETUP_SELECT_CR_OPTIONS		      | Selectable Abilities.
 'Files Races'_DESC      | Abilities randomly selected within the original species abilities and the customized species files, having the "Available to AI" option enabled.
 'All'_DESC              | Abilities randomly selected within the original species abilities and the customized species files, ignoring the "Available to AI" option.
 
-SETUP_GALAXY_SHAPE_RECTANGLE_HELP    | Original rectangular or square Galaxies with up to five voids.
-SETUP_GALAXY_SHAPE_RECTANGLE_O1_HELP | Shape ratio adjustment.
-SETUP_GALAXY_SHAPE_RECTANGLE_O2_HELP | Void distribution selection.
-SETUP_GALAXY_SHAPE_RECTANGLE_O1      | First Star Field option.
-SETUP_GALAXY_SHAPE_RECTANGLE_O2      | Second Star Field option
-SETUP_RECTANGLE_0_HELP        | Rectangular shaped galaxy with a ratio of 3:4.
-SETUP_RECTANGLE_1_HELP        | Square shaped galaxy.
-SETUP_VOID_0_HELP             | Plain galaxy, no void.
-SETUP_VOID_1_HELP             | Galaxy with a central void.
-SETUP_VOID_2_HELP             | Galaxy with two diagonal voids.
-SETUP_VOID_5_HELP             | Add five voids to the galaxy
-SETUP_GALAXY_SHAPE_ELLIPSE_HELP    | Original Elliptical shaped Galaxies, from circular to a flattened 5:1 ratio. A void can be placed at the center, from small to ring like.
-SETUP_GALAXY_SHAPE_ELLIPSE_O1_HELP | Shape ratio and symmetry adjustment.
-SETUP_GALAXY_SHAPE_ELLIPSE_O2_HELP | Void distribution selection.
-SETUP_GALAXY_SHAPE_ELLIPSE_O1      | First elliptical galaxy option.
-SETUP_GALAXY_SHAPE_ELLIPSE_O2      | Second elliptical galaxy option.
-SETUP_ELLIPSE_0_HELP          | Disk shaped galaxy.
-SETUP_ELLIPSE_1_HELP          | Slightly elliptical galaxy with a ratio of 3:2.
-SETUP_ELLIPSE_2_HELP          | Elliptical galaxy with a ratio of 2:1.
-SETUP_ELLIPSE_3_HELP          | Squeezed elliptical galaxy with a ratio of 3:1.
-SETUP_ELLIPSE_4_HELP          | Flattened elliptical galaxy with a ratio of 5:1.
-SETUP_ELLIPSE_SYMMETRIC_HELP  | Galaxy with circular symmetry, each empire has the same home world and the same neighborhood. Orion is at the center point.
-SETUP_VOID_2_HELP             | Galaxy with a bigger central void.
-SETUP_VOID_3_HELP             | Galaxy with an even bigger central void.
-SETUP_VOID_4_HELP             | Ring galaxy.
-SETUP_GALAXY_SHAPE_SPIRAL_HELP    | Original Spiral shaped Galaxies, up to 8 arms and 7 levels of curvature. This galaxy has a symmetric option to gives each empire has the same home world, and the same neighborhood, there are as many arms as empires.
-SETUP_GALAXY_SHAPE_SPIRAL_O1_HELP | Arm number selection.
-SETUP_GALAXY_SHAPE_SPIRAL_O2_HELP | Arm curvature adjustment.
-SETUP_GALAXY_SHAPE_SPIRAL_O1      | First spiral galaxy option.
-SETUP_GALAXY_SHAPE_SPIRAL_O2      | Second spiral galaxy option.
-SETUP_SPIRAL_2_ARMS_HELP      | Very common two-armed galaxy.
-SETUP_SPIRAL_3_ARMS_HELP      | Less common three-armed galaxy.
-SETUP_SPIRAL_4_ARMS_HELP      | A four-armed galaxy, similar to the Milky Way.
-SETUP_SPIRAL_5_ARMS_HELP      | A frenetic five-armed galaxy.
-SETUP_SPIRAL_6_ARMS_HELP      | A surprizing six-armed galaxy.
-SETUP_SPIRAL_7_ARMS_HELP      | A very exotic seven-armed galaxy.
-SETUP_SPIRAL_8_ARMS_HELP      | A lucky eight-armed galaxy.
-SETUP_SPIRAL_SYMMETRIC_HELP   | Galaxy with circular symmetry, each empire has the same home world and the same neighborhood. Orion is at the center point.
-SETUP_SPIRAL_ROTATION_0_HELP  | A straight galaxy.
-SETUP_SPIRAL_ROTATION_1_HELP  | A slightly curved galaxy&nbsp <i>(~30°)</i>.
-SETUP_SPIRAL_ROTATION_2_HELP  | A shyly curved galaxy&nbsp <i>(~60°)</i>.
-SETUP_SPIRAL_ROTATION_3_HELP  | A mildly curved galaxy&nbsp <i>(~90°)</i>.
-SETUP_SPIRAL_ROTATION_4_HELP  | A well curved galaxy&nbsp <i>(~120°)</i>.
-SETUP_SPIRAL_ROTATION_5_HELP  | A strongly curved galaxy&nbsp <i>(~150°)</i>.
-SETUP_SPIRAL_ROTATION_6_HELP  | An indecently curved galaxy&nbsp <i>(~180°)</i>.
-SETUP_GALAXY_SHAPE_TEXT_HELP    | The proposed list is extracted from the "Galaxy.txt" file, do not hesitate to complete it. If you see to many blank squares try to set the option "Use Fusion Font"
-SETUP_GALAXY_SHAPE_TEXT_O1      | First Text Shaped galaxy option.
-SETUP_GALAXY_SHAPE_TEXT_O1_HELP | Text selection (from the "Galaxy.txt" file).
-SETUP_GALAXY_SHAPE_TEXT_O2      | Second Text Shaped galaxy option.
-SETUP_GALAXY_SHAPE_TEXT_O2_HELP | Number of line Selection.
-SETUP_1_LINE_HELP             | Just the selected text.
-SETUP_2_LINE_HELP             | The selected text is repeated over two lines.
-SETUP_3_LINE_HELP             | The selected text is repeated over three lines.
-SETUP_MULTI_LINE_LEFT_HELP    | The selected lines will be aligned to the left.
-SETUP_MULTI_LINE_CENTER_HELP  | The selected lines will be aligned to the center.
-SETUP_MULTI_LINE_RIGHT_HELP   | The selected lines will be aligned to the right.
-SETUP_GALAXY_SHAPE_LORENZ_HELP    | Another chaotic Galaxy based on Lorenz attractor. <i>(Atmospheric convection model also known as "Butterfly effect")</i>
-SETUP_GALAXY_SHAPE_LORENZ_O1      | First Lorentz galaxy option.
-SETUP_GALAXY_SHAPE_LORENZ_O2      | Second Lorentz galaxy option.
-SETUP_GALAXY_SHAPE_LORENZ_O1_HELP | Attractor selection.
-SETUP_GALAXY_SHAPE_LORENZ_O2_HELP | Point of view selection.
-SETUP_LORENZ_0_HELP           | First attractor.
-SETUP_LORENZ_1_HELP           | Second attractor.
-SETUP_VIEW_0_HELP             | First point of view.
-SETUP_VIEW_1_HELP             | Second point of view.
-SETUP_VIEW_2_HELP             | Third point of view.
-SETUP_GALAXY_SHAPE_FRACTAL_HELP    | Ordered disordered Galaxies.
-SETUP_GALAXY_SHAPE_FRACTAL_O1      | First fractal galaxy option.
-SETUP_GALAXY_SHAPE_FRACTAL_O2      | Second fractal galaxy option.
-SETUP_GALAXY_SHAPE_FRACTAL_O1_HELP | Fractal type.
-SETUP_GALAXY_SHAPE_FRACTAL_O2_HELP | Fractal specificity.
-SETUP_FRACTAL_0_HELP            | Sierpinski Triangle
-SETUP_FRACTAL_1_HELP            | Restricted chaos game
-SETUP_GALAXY_MAP_OPTION_A0_HELP | Sierpinski Carpet.
-SETUP_GALAXY_MAP_OPTION_B0_HELP | Sierpinski Carpet chaos game.
-SETUP_GALAXY_MAP_OPTION_C0_HELP | Barnsley Fern.
-SETUP_GALAXY_MAP_OPTION_A1_HELP | Restricted chaos game: The currently chosen vertex cannot neighbor the previously chosen vertex if the two previously chosen vertices are the same.
-SETUP_GALAXY_MAP_OPTION_B1_HELP | Restricted chaos game: The current vertex cannot be chosen in the next iteration.
-SETUP_GALAXY_MAP_OPTION_C1_HELP | Restricted chaos game: The current vertex cannot be one place away (anti-clockwise) from the previously chosen vertex, this fractal appears:
-SETUP_GALAXY_SHAPE_MAZE_HELP      | Amazing Galaxy generated using Prim's algorithm.
-SETUP_GALAXY_SHAPE_MAZE_O1        | Maze galaxy option
-SETUP_GALAXY_SHAPE_MAZE_O1_HELP   | Seed modifier for the maze.
-SETUP_MAZE_0_HELP             | No modifier.
-SETUP_MAZE_1_HELP             | Rolled 10 times.
-SETUP_MAZE_2_HELP             | Rolled 20 times.
-SETUP_GALAXY_SHAPE_SHURIKEN_HELP    | A six-armed shuriken with random arm shape.
-SETUP_GALAXY_SHAPE_SHURIKEN_O1      | First shuriken galaxy option.
-SETUP_GALAXY_SHAPE_SHURIKEN_O2      | Second shuriken galaxy option.
-SETUP_GALAXY_SHAPE_SHURIKEN_O1_HELP | Arm shape complexity adjustment.
-SETUP_GALAXY_SHAPE_SHURIKEN_O2_HELP | Arm randomization selection.
-SETUP_SHURIKEN_A_HELP           | Seven points.
-SETUP_SHURIKEN_0_HELP           | Nine points.
-SETUP_SHURIKEN_1_HELP           | Eleven points.
-SETUP_SHURIKEN_2_HELP           | Thirteen points.
-SETUP_SHURIKEN_3_HELP           | Fifteen points.
-SETUP_SHURIKEN_4_HELP           | Seventeen points.
-SETUP_SHURIKEN_ORIGINAL_HELP    | Original strangely shaped arms.
-SETUP_SHURIKEN_ALTERNATIVE_HELP | New, less complex arm shape.
-SETUP_GALAXY_SHAPE_BULLSEYE_HELP    | Dart target shaped Galaxies.
-SETUP_GALAXY_SHAPE_BULLSEYE_O1      | Bull-eye galaxy option.
-SETUP_GALAXY_SHAPE_BULLSEYE_O1_HELP | Target shape selection.
-SETUP_BULLSEYE_0_HELP           | Standard dart board; Exclusive Or.
-SETUP_BULLSEYE_1_HELP           | Concentric ring target
-SETUP_BULLSEYE_2_HELP           | Concentric square target
-SETUP_GALAXY_SHAPE_GRID_HELP        | Another surrealistic shape... Galaxies are aligned along grid lines.
-SETUP_GALAXY_SHAPE_GRID_O1          | Grid galaxy option.
-SETUP_GALAXY_SHAPE_GRID_O1_HELP     | Galaxies distribution selection.
-SETUP_GRID_0_HELP            | The galaxies are only on some intersections.
-SETUP_GRID_1_HELP            | The galaxies are on every intersections.
-SETUP_GRID_2_HELP            | Only the grid lines!
-SETUP_GALAXY_SHAPE_CLUSTER_HELP     | Why not spread the fight over several galaxies? 3, 6, or 8 clusters are available.
-SETUP_GALAXY_SHAPE_CLUSTER_O1       | Cluster galaxy option.
-SETUP_GALAXY_SHAPE_CLUSTER_O1_HELP  | Number of cluster selection.
-SETUP_CLUSTER_0_HELP         | Star systems are spread over 4 clusters.
-SETUP_CLUSTER_1_HELP         | Star systems are spread over 6 clusters.
-SETUP_CLUSTER_2_HELP         | Star systems are spread over 8 clusters.
-SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_HELP    | Another surrealistic shape... Galaxies are aligned along a swirl line.
-SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_O1      | Swirl cluster galaxy option.
-SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_O1_HELP | Galaxies position selection.
-SETUP_SWIRLCLUSTERS_0_HELP   | The swirl line cross the galaxies.
-SETUP_SWIRLCLUSTERS_1_HELP   | The galaxies are placed between the swirl lines.
-SETUP_SWIRLCLUSTERS_2_HELP   | Only the swirl line!
-SETUP_GALAXY_SHAPE_SPIRALARMS_HELP    | Another type of spiral galaxy. The number of arms is based on its size: <i>the fourth root of the number of star systems</i>; except for the symmetric option, where it depends on the number of empires.
-SETUP_GALAXY_SHAPE_SPIRALARMS_O1      | First spiral arm galaxy option.
-SETUP_GALAXY_SHAPE_SPIRALARMS_O2      | Second spiral arm galaxy option.
-SETUP_GALAXY_SHAPE_SPIRALARMS_O1_HELP | Arm curvature selection.
-SETUP_GALAXY_SHAPE_SPIRALARMS_O2_HELP | Normal versus Symmetric selection.
-SETUP_SPIRALARMS_0_HELP         | A straight spiral galaxy.
-SETUP_SPIRALARMS_1_HELP         | A very Loose spiral galaxy <i>(~60°)</i>.
-SETUP_SPIRALARMS_2_HELP         | A loose spiral galaxy <i>(~120°)</i>.
-SETUP_SPIRALARMS_3_HELP         | A normal spiral galaxy <i>(~1 turn)</i>.
-SETUP_SPIRALARMS_4_HELP         | A tight spiral galaxy <i>(~1.5 turns)</i>.
-SETUP_SPIRALARMS_NORMAL_HELP    | Normal, as non symmetric!
-SETUP_SPIRALARMS_SYMMETRIC_HELP | Galaxy with circular symmetry, each empire has the same home world and the same neighborhood. Orion is at the center point.
+SETUP_GALAXY_SHAPE_RECTANGLE_HELP		| Original rectangular or square Galaxies with up to five voids.
+SETUP_GALAXY_SHAPE_RECTANGLE_O1_DESC	| Shape ratio adjustment.
+SETUP_GALAXY_SHAPE_RECTANGLE_O2_DESC	| Void distribution selection.
+SETUP_GALAXY_SHAPE_RECTANGLE_O1			| Shape ratio: %1
+SETUP_GALAXY_SHAPE_RECTANGLE_O2			| Void distribution: %1
+SETUP_RECTANGLE_0_HELP					| Rectangular shaped galaxy with a ratio of 3:4.
+SETUP_RECTANGLE_1_HELP					| Square shaped galaxy.
+SETUP_VOID_0_HELP						| Plain galaxy, no void.
+SETUP_VOID_1_HELP						| Galaxy with a central void.
+SETUP_VOID_2_HELP						| Galaxy with two diagonal voids.
+SETUP_VOID_5_HELP						| Add five voids to the galaxy
+SETUP_GALAXY_SHAPE_ELLIPSE_HELP			| Original Elliptical shaped Galaxies, from circular to a flattened 5:1 ratio. A void can be placed at the center, from small to ring like.
+SETUP_GALAXY_SHAPE_ELLIPSE_O1_DESC		| Shape ratio and symmetry adjustment.
+SETUP_GALAXY_SHAPE_ELLIPSE_O2_DESC		| Void distribution selection.
+SETUP_GALAXY_SHAPE_ELLIPSE_O1			| Shape ratio: %1
+SETUP_GALAXY_SHAPE_ELLIPSE_O2			| Void distribution: %1
+SETUP_ELLIPSE_0_HELP					| Disk shaped galaxy.
+SETUP_ELLIPSE_1_HELP					| Slightly elliptical galaxy with a ratio of 3:2.
+SETUP_ELLIPSE_2_HELP					| Elliptical galaxy with a ratio of 2:1.
+SETUP_ELLIPSE_3_HELP					| Squeezed elliptical galaxy with a ratio of 3:1.
+SETUP_ELLIPSE_4_HELP					| Flattened elliptical galaxy with a ratio of 5:1.
+SETUP_ELLIPSE_SYMMETRIC_HELP			| Galaxy with circular symmetry, each empire has the same home world and the same neighborhood. Orion is at the center point.
+SETUP_VOID_2_HELP						| Galaxy with a bigger central void.
+SETUP_VOID_3_HELP						| Galaxy with an even bigger central void.
+SETUP_VOID_4_HELP						| Ring galaxy.
+SETUP_GALAXY_SHAPE_SPIRAL_HELP			| Original Spiral shaped Galaxies, up to 8 arms and 7 levels of curvature. This galaxy has a symmetric option to gives each empire has the same home world, and the same neighborhood, there are as many arms as empires.
+SETUP_GALAXY_SHAPE_SPIRAL_O1_DESC		| Arm number selection.
+SETUP_GALAXY_SHAPE_SPIRAL_O2_DESC		| Arm curvature adjustment.
+SETUP_GALAXY_SHAPE_SPIRAL_O1			| Arm number: %1
+SETUP_GALAXY_SHAPE_SPIRAL_O2			| Arm curvature: %1
+SETUP_SPIRAL_2_ARMS_HELP				| Very common two-armed galaxy.
+SETUP_SPIRAL_3_ARMS_HELP				| Less common three-armed galaxy.
+SETUP_SPIRAL_4_ARMS_HELP				| A four-armed galaxy, similar to the Milky Way.
+SETUP_SPIRAL_5_ARMS_HELP				| A frenetic five-armed galaxy.
+SETUP_SPIRAL_6_ARMS_HELP				| A surprizing six-armed galaxy.
+SETUP_SPIRAL_7_ARMS_HELP				| A very exotic seven-armed galaxy.
+SETUP_SPIRAL_8_ARMS_HELP				| A lucky eight-armed galaxy.
+SETUP_SPIRAL_SYMMETRIC_HELP				| Galaxy with circular symmetry, each empire has the same home world and the same neighborhood. Orion is at the center point.
+SETUP_SPIRAL_ROTATION_0_HELP			| A straight galaxy.
+SETUP_SPIRAL_ROTATION_1_HELP			| A slightly curved galaxy&nbsp <i>(~30°)</i>.
+SETUP_SPIRAL_ROTATION_2_HELP			| A shyly curved galaxy&nbsp <i>(~60°)</i>.
+SETUP_SPIRAL_ROTATION_3_HELP			| A mildly curved galaxy&nbsp <i>(~90°)</i>.
+SETUP_SPIRAL_ROTATION_4_HELP			| A well curved galaxy&nbsp <i>(~120°)</i>.
+SETUP_SPIRAL_ROTATION_5_HELP			| A strongly curved galaxy&nbsp <i>(~150°)</i>.
+SETUP_SPIRAL_ROTATION_6_HELP			| An indecently curved galaxy&nbsp <i>(~180°)</i>.
+SETUP_GALAXY_SHAPE_TEXT_HELP			| The proposed list is extracted from the "Galaxy.txt" file, do not hesitate to complete it. If you see to many blank squares try to set the option "Use Fusion Font"
+SETUP_GALAXY_SHAPE_TEXT_O1				| Selected text:
+SETUP_GALAXY_SHAPE_TEXT_O1_DESC			| Text selection (from the "Galaxy.txt" file).
+SETUP_GALAXY_SHAPE_TEXT_O2				| Text layout:
+SETUP_GALAXY_SHAPE_TEXT_O2_DESC			| Multiple copies of the same text or multiple line alignment.
+SETUP_GALAXY_SHAPE_TEXT_O3				| Number of lines: %1 lines
+SETUP_GALAXY_SHAPE_TEXT_O3_DESC			| Number of line Selection.
+SETUP_GALAXY_SHAPE_TEXT_O4				| Lines separator: %1 pixels
+SETUP_GALAXY_SHAPE_TEXT_O4_DESC			| Select The Galaxy Text Shape lines separator
+SETUP_GALAXY_SHAPE_LINE_SPACING			| %1 pixels
+SETUP_GALAXY_SHAPE_LINE_NUMBER			| %1 lines
+SETUP_MULTI_LINE_COPY_HELP				| The selected line will be copied.
+SETUP_MULTI_LINE_LEFT_HELP				| The selected lines will be aligned to the left.
+SETUP_MULTI_LINE_CENTER_HELP			| The selected lines will be aligned to the center.
+SETUP_MULTI_LINE_RIGHT_HELP				| The selected lines will be aligned to the right.
+SETUP_GALAXY_SHAPE_LORENZ_HELP			| Another chaotic Galaxy based on Lorenz attractor. <i>(Atmospheric convection model also known as "Butterfly effect")</i>
+SETUP_GALAXY_SHAPE_LORENZ_O1			| Attractor: %1
+SETUP_GALAXY_SHAPE_LORENZ_O2			| Point of view: %1
+SETUP_GALAXY_SHAPE_LORENZ_O1_DESC		| Attractor selection.
+SETUP_GALAXY_SHAPE_LORENZ_O2_DESC		| Point of view selection.
+SETUP_LORENZ_0_HELP						| First attractor.
+SETUP_LORENZ_1_HELP						| Second attractor.
+SETUP_VIEW_0_HELP						| First point of view.
+SETUP_VIEW_1_HELP						| Second point of view.
+SETUP_VIEW_2_HELP						| Third point of view.
+SETUP_GALAXY_SHAPE_FRACTAL_HELP			| Ordered disordered Galaxies.
+SETUP_GALAXY_SHAPE_FRACTAL_O1			| Fractal type: %1
+SETUP_GALAXY_SHAPE_FRACTAL_O2			| Fractal specificity: %1
+SETUP_GALAXY_SHAPE_FRACTAL_O1_DESC		| Fractal type.
+SETUP_GALAXY_SHAPE_FRACTAL_O2_DESC		| Fractal specificity.
+SETUP_FRACTAL_0_HELP					| Sierpinski Triangle
+SETUP_FRACTAL_1_HELP					| Restricted chaos game
+SETUP_GALAXY_MAP_OPTION_A0_HELP			| Sierpinski Carpet.
+SETUP_GALAXY_MAP_OPTION_B0_HELP			| Sierpinski Carpet chaos game.
+SETUP_GALAXY_MAP_OPTION_C0_HELP			| Barnsley Fern.
+SETUP_GALAXY_MAP_OPTION_A1_HELP			| Restricted chaos game: The currently chosen vertex cannot neighbor the previously chosen vertex if the two previously chosen vertices are the same.
+SETUP_GALAXY_MAP_OPTION_B1_HELP			| Restricted chaos game: The current vertex cannot be chosen in the next iteration.
+SETUP_GALAXY_MAP_OPTION_C1_HELP			| Restricted chaos game: The current vertex cannot be one place away (anti-clockwise) from the previously chosen vertex, this fractal appears:
+SETUP_GALAXY_SHAPE_MAZE_HELP			| Amazing Galaxy generated using Prim's algorithm.
+SETUP_GALAXY_SHAPE_MAZE_O1				| Maze seed modifier %1
+SETUP_GALAXY_SHAPE_MAZE_O1_DESC			| Seed modifier for the maze.
+SETUP_MAZE_0_HELP						| No modifier.
+SETUP_MAZE_1_HELP						| Rolled 10 times.
+SETUP_MAZE_2_HELP						| Rolled 20 times.
+SETUP_GALAXY_SHAPE_SHURIKEN_HELP		| A six-armed shuriken with random arm shape.
+SETUP_GALAXY_SHAPE_SHURIKEN_O1			| Shape complexity %1
+SETUP_GALAXY_SHAPE_SHURIKEN_O2			| Shape generation %1
+SETUP_GALAXY_SHAPE_SHURIKEN_O1_DESC		| Arm shape complexity adjustment.
+SETUP_GALAXY_SHAPE_SHURIKEN_O2_DESC		| Arm randomization selection.
+SETUP_SHURIKEN_A_HELP					| Seven points.
+SETUP_SHURIKEN_0_HELP					| Nine points.
+SETUP_SHURIKEN_1_HELP					| Eleven points.
+SETUP_SHURIKEN_2_HELP					| Thirteen points.
+SETUP_SHURIKEN_3_HELP					| Fifteen points.
+SETUP_SHURIKEN_4_HELP					| Seventeen points.
+SETUP_SHURIKEN_ORIGINAL_HELP			| Original strangely shaped arms.
+SETUP_SHURIKEN_ALTERNATIVE_HELP			| New, less complex arm shape.
+SETUP_GALAXY_SHAPE_BULLSEYE_HELP		| Dart target shaped Galaxies.
+SETUP_GALAXY_SHAPE_BULLSEYE_O1			| Target shape: %1
+SETUP_GALAXY_SHAPE_BULLSEYE_O1_DESC		| Target shape selection.
+SETUP_BULLSEYE_0_HELP					| Standard dart board; Exclusive Or.
+SETUP_BULLSEYE_1_HELP					| Concentric ring target
+SETUP_BULLSEYE_2_HELP					| Concentric square target
+SETUP_GALAXY_SHAPE_GRID_HELP			| Another surrealistic shape... Galaxies are aligned along grid lines.
+SETUP_GALAXY_SHAPE_GRID_O1				| Galaxies distribution: %1
+SETUP_GALAXY_SHAPE_GRID_O1_DESC			| Galaxies distribution selection.
+SETUP_GRID_0_HELP						| The galaxies are only on some intersections.
+SETUP_GRID_1_HELP						| The galaxies are on every intersections.
+SETUP_GRID_2_HELP						| Only the grid lines!
+SETUP_GALAXY_SHAPE_CLUSTER_HELP			| Why not spread the fight over several galaxies? 3, 6, or 8 clusters are available.
+SETUP_GALAXY_SHAPE_CLUSTER_O1			| Number of cluster: %1
+SETUP_GALAXY_SHAPE_CLUSTER_O1_DESC		| Number of cluster selection.
+SETUP_CLUSTER_0_HELP					| Star systems are spread over 4 clusters.
+SETUP_CLUSTER_1_HELP					| Star systems are spread over 6 clusters.
+SETUP_CLUSTER_2_HELP					| Star systems are spread over 8 clusters.
+SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_HELP	| Another surrealistic shape... Galaxies are aligned along a swirl line.
+SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_O1		| Galaxies position: %1
+SETUP_GALAXY_SHAPE_SWIRLCLUSTERS_O1_DESC | Galaxies position selection.
+SETUP_SWIRLCLUSTERS_0_HELP				| The swirl line cross the galaxies.
+SETUP_SWIRLCLUSTERS_1_HELP				| The galaxies are placed between the swirl lines.
+SETUP_SWIRLCLUSTERS_2_HELP				| Only the swirl line!
+SETUP_GALAXY_SHAPE_SPIRALARMS_HELP		| Another type of spiral galaxy. The number of arms is based on its size: <i>the fourth root of the number of star systems</i>; except for the symmetric option, where it depends on the number of empires.
+SETUP_GALAXY_SHAPE_SPIRALARMS_O1		| Arm curvature: %1
+SETUP_GALAXY_SHAPE_SPIRALARMS_O2		| Specificity: %1
+SETUP_GALAXY_SHAPE_SPIRALARMS_O1_DESC	| Arm curvature selection.
+SETUP_GALAXY_SHAPE_SPIRALARMS_O2_DESC	| Normal versus Symmetric selection.
+SETUP_SPIRALARMS_0_HELP					| A straight spiral galaxy.
+SETUP_SPIRALARMS_1_HELP					| A very Loose spiral galaxy <i>(~60°)</i>.
+SETUP_SPIRALARMS_2_HELP					| A loose spiral galaxy <i>(~120°)</i>.
+SETUP_SPIRALARMS_3_HELP					| A normal spiral galaxy <i>(~1 turn)</i>.
+SETUP_SPIRALARMS_4_HELP					| A tight spiral galaxy <i>(~1.5 turns)</i>.
+SETUP_SPIRALARMS_NORMAL_HELP			| Normal, as non symmetric!
+SETUP_SPIRALARMS_SYMMETRIC_HELP			| Galaxy with circular symmetry, each empire has the same home world and the same neighborhood. Orion is at the center point.
 
 SETUP_GALAXY_SHAPE_BITMAP_HELP      | Build your own galaxy shape, based on a Bitmap.<ul><li>Real shots of galaxies gives nice results.</li><li>You can draw your own galaxies, in shades of gray or colors.</li><li>With colored galaxies, you can define regions where Orion, Player and Aliens stars systems should be.</li><li>An advanced color mode allows you to define the regions of each Aliens, as well as Nebula regions!</li><li>Some examples can be found in BitmapGalaxyExamples.zip</li></ul>Preferably use a small bitmap image to define the galaxy; VGA size is more than enough... Galaxies are still randomly generated!
-SETUP_GALAXY_SHAPE_BITMAP_O1        | First bitmap galaxy option.
-SETUP_GALAXY_SHAPE_BITMAP_O2        | Second bitmap galaxy option.
-SETUP_GALAXY_SHAPE_BITMAP_O1_HELP   | How to convert the Image file.
-SETUP_GALAXY_SHAPE_BITMAP_O2_HELP   | Fine tuning of the Image.
+SETUP_GALAXY_SHAPE_BITMAP_O1        | Image conversion: %1
+SETUP_GALAXY_SHAPE_BITMAP_O2        | Fine tuning: %1
+SETUP_GALAXY_SHAPE_BITMAP_O3        | File: %1
+SETUP_GALAXY_SHAPE_BITMAP_O1_DESC   | How to convert the Image file.
+SETUP_GALAXY_SHAPE_BITMAP_O2_DESC   | Fine tuning of the Image.
+SETUP_GALAXY_SHAPE_BITMAP_O3_DESC   | Bitmap file to load.
 SETUP_BITMAP_GREY_SUM_DESC      | Color bitmaps will be converted to grayscale by adding the three colors together. (Standard ways)
 SETUP_BITMAP_GREY_MAX_DESC      | Color bitmaps will be converted to grayscale with the maximum of the three colors. (Sometimes gives better results)
 SETUP_BITMAP_GREY_INVERSE_DESC  | Because some nice pictures have a white background.
@@ -5710,6 +5722,21 @@ SETUP_BITMAP_SHARP3_HELP         | Sharply increase the contrast.
 SETUP_BITMAP_SHARP4_HELP         | Almost convert the bitmap to black and white!
 SETUP_GALAXY_SHAPE_RANDOM_HELP   | Galaxy randomly selected from grouped stars galaxies.<br>→SETUP_GALAXY_SHAPE_RECTANGLE←, →SETUP_GALAXY_SHAPE_ELLIPSE←, →SETUP_GALAXY_SHAPE_SPIRAL←, →SETUP_GALAXY_SHAPE_CLUSTER←, →SETUP_GALAXY_SHAPE_SPIRALARMS←, →SETUP_GALAXY_SHAPE_SHURIKEN← <br>(Pairs well with the dark galaxy option)
 SETUP_GALAXY_SHAPE_RANDOM_2_HELP | Galaxy randomly selected from almost all galaxies.<br> Excluded: →SETUP_GALAXY_SHAPE_TEXT←, →SETUP_GALAXY_SHAPE_BITMAP←. <br>(Pairs well with dark galaxy option)
+
+SETUP_GALAXY_SHAPE_RANDOMIZED_DESC		| Galaxy randomly selected. (BitMap are never chosen)
+SETUP_GALAXY_SHAPE_RANDOMIZED_O1_DESC	| List of galaxies available for random selection.
+SETUP_GALAXY_SHAPE_RANDOMIZED_O1		| Galaxy list: %1
+SETUP_RANDOMIZED_REAL_SHAPES_DESC		| Galaxies that may vaguely appear real. (With a little imagination)
+SETUP_RANDOMIZED_IMAGINARY_SHAPES_DESC	| There's no way these galaxies are anything like reality.
+SETUP_RANDOMIZED_COMPLEX_SHAPES_DESC	| Includes both →SETUP_RANDOMIZED_REAL_SHAPES← and →SETUP_RANDOMIZED_IMAGINARY_SHAPES←.
+SETUP_RANDOMIZED_ALL_SHAPES_DESC		| The Galaxy →SETUP_GALAXY_SHAPE_TEXT← is added to the →SETUP_RANDOMIZED_COMPLEX_SHAPES← list.
+SETUP_GALAXY_SHAPE_RANDOMIZED_O2_DESC	| What happens to the randomly selected galaxy options?
+SETUP_GALAXY_SHAPE_RANDOMIZED_O2		| Options management: %1
+SETUP_RANDOMIZED_KEEP_OPTIONS_DESC		| Use the last selected options from the randomly selected galaxy.
+SETUP_RANDOMIZED_RANDOM_OPTIONS_1_DESC	| Only randomly select the first option, the others remaining unchanged.
+SETUP_RANDOMIZED_RANDOM_OPTIONS_2_DESC	| Only randomly select the second option, the others remaining unchanged.
+SETUP_RANDOMIZED_RANDOM_OPTIONS_DESC	| All options will be selected randomly.
+
 
 // Shortcuts / Hotkeys list  (use cross-references →←) →HK_←
 // Shortcuts Cross referenced

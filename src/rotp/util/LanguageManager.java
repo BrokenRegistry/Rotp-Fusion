@@ -39,7 +39,7 @@ import rotp.ui.main.EmpireColonySpendingPane;
 import rotp.ui.planets.MultiColonySpendingPane;
 
 public class LanguageManager implements Base {
-    static LanguageManager instance = new LanguageManager();
+    private static LanguageManager instance = new LanguageManager();
     public static LanguageManager current() { return instance; }
 
     public static int DEFAULT_LANGUAGE = 0;

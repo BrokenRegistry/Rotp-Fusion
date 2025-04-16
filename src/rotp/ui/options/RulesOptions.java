@@ -1,9 +1,9 @@
 package rotp.ui.options;
 
 import rotp.Rotp;
+import rotp.model.game.RulesetManager;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
-import rotp.ui.RotPUI;
 
 public final class RulesOptions extends AbstractOptionsSubUI {
 	static final String OPTION_ID = RULES_OPTIONS_UI_KEY;
@@ -54,7 +54,7 @@ public final class RulesOptions extends AbstractOptionsSubUI {
 		list.add(RELEVANT_TITLE);
 		list.add(AllSubUI.getHandle(IN_GAME_OPTIONS_UI_KEY).getUI());
 		list.add(HEADER_SPACER_50);
-		if (!Rotp.noOptions && RotPUI.setupMode())
+		if (!Rotp.noOptions() && RulesetManager.current().isSetupMode())
 			list.addAll(AllSubUI.getHandle(SETTINGS_OPTIONS_UI_KEY).getUiMinor(false));
 		else
 			list.add(AllSubUI.getHandle(SETTINGS_OPTIONS_UI_KEY).getUI());

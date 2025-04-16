@@ -1,9 +1,9 @@
 package rotp.model.game;
 
+import static rotp.model.game.IGalaxyOptions.sizeSelection;
 import static rotp.model.game.IPreGameOptions.dynStarsPerEmpire;
 
 import rotp.Rotp;
-import rotp.ui.RotPUI;
 import rotp.ui.util.LinkData;
 import rotp.ui.util.LinkValue;
 import rotp.ui.util.ParamBoolean;
@@ -179,8 +179,8 @@ public interface ISystemsOptions extends IBaseOptsTools {
 
 	static Integer radiusToNumStars(float radius) {
 		float systemBuffer = 1.9f;
-		if (!Rotp.noOptions) {
-			IGameOptions opts = RotPUI.currentOptions();
+		if (!Rotp.noOptions()) {
+			IGameOptions opts = RulesetManager.current().currentOptions();
 			systemBuffer = opts.systemBuffer(opts.selectedStarDensityOption());
 		}
 		float root = radius / (systemBuffer * surfaceSecurityFactor);
@@ -189,8 +189,8 @@ public interface ISystemsOptions extends IBaseOptsTools {
 	}
 	static Float numStarsToRadius(int num) {
 		float systemBuffer = 1.9f;
-		if (!Rotp.noOptions) {
-			IGameOptions opts = RotPUI.currentOptions();
+		if (!Rotp.noOptions()) {
+			IGameOptions opts = RulesetManager.current().currentOptions();
 			systemBuffer = opts.systemBuffer(opts.selectedStarDensityOption());
 		}
 		float radius = (float) (systemBuffer * Math.sqrt(num) * surfaceSecurityFactor);
@@ -249,11 +249,11 @@ public interface ISystemsOptions extends IBaseOptsTools {
 			if (level == 0) {
 				resetLinks();
 				addLink(secondRingRadius,		DO_FOLLOW, GO_UP,   GO_UP,   "Radius");
-				addLink(opts().sizeSelection(),	DO_FOLLOW, GO_UP,   GO_UP,   "Size");
+				addLink(sizeSelection,			DO_FOLLOW, GO_UP,   GO_UP,   "Size");
 				addLink(dynStarsPerEmpire,		DO_FOLLOW, GO_UP,   GO_UP,   "Dyn");
 				addLink(secondRingHabitable,	DO_FOLLOW, GO_DOWN, GO_DOWN, "Habitable");
 				addLink(firstRingSystemNumber,	DO_FOLLOW, GO_DOWN, GO_DOWN, "Number");
-				addLink(opts().sizeSelection(),	DO_FOLLOW, GO_DOWN, GO_DOWN, "Size");
+				addLink(sizeSelection,			DO_FOLLOW, GO_DOWN, GO_DOWN, "Size");
 				addLink(opts().starDensity(),	DO_REFRESH);
 			}
 			else

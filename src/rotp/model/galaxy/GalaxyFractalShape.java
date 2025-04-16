@@ -17,60 +17,75 @@ package rotp.model.galaxy;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import rotp.model.game.IGalaxyOptions.IShapeOption;
+import rotp.model.game.IGalaxyOptions.ShapeOptionList;
 import rotp.model.game.IGameOptions;
 
 // modnar: custom map shape, Fractal
 public class GalaxyFractalShape extends GalaxyShape {
-    public static final List<String> options1;
-    public static final List<String> options2;
-    private static final long serialVersionUID = 1L;
-    static {
-        options1 = new ArrayList<>();
-        options1.add("SETUP_FRACTAL_0");
-        options1.add("SETUP_FRACTAL_1");
-        options1.add(RANDOM_OPTION);
-        options2 = new ArrayList<>();
-        options2.add("SETUP_GALAXY_MAP_OPTION_A");
-        options2.add("SETUP_GALAXY_MAP_OPTION_B");
-        options2.add("SETUP_GALAXY_MAP_OPTION_C");
-        options2.add(RANDOM_OPTION);
-    }
+	private static final long serialVersionUID = 1L;
+	private	static final String SHORT_NAME	= "FRACTAL";
+	private	static final String BASE_NAME	= ROOT_NAME + SHORT_NAME;
+	public	static final String NAME		= UI_KEY + BASE_NAME;
+	private	static final int DEFAULT_OPT_1	= 0;
+	private	static final int DEFAULT_OPT_2	= 0;
+	private static ShapeOptionList param1;
+	private static ShapeOptionList param2;
+
+	public static ShapeOptionList param1()	{
+		if (param1 == null) {
+			param1 = new ShapeOptionList(
+			BASE_NAME, 1,
+			new ArrayList<String>(Arrays.asList(
+				"SETUP_FRACTAL_0",
+				"SETUP_FRACTAL_1",
+				RANDOM_OPTION
+				) ),
+			DEFAULT_OPT_1);
+		}
+		return param1;
+	}
+	public static ShapeOptionList param2()	{
+		if (param2 == null) {
+			param2 = new ShapeOptionList(
+			BASE_NAME, 2,
+			new ArrayList<String>(Arrays.asList(
+				"SETUP_GALAXY_MAP_OPTION_A",
+				"SETUP_GALAXY_MAP_OPTION_B",
+				"SETUP_GALAXY_MAP_OPTION_C",
+				RANDOM_OPTION
+				) ),
+			DEFAULT_OPT_2);
+		}
+		return param2;
+	}
+
 	float adjust_density = 2.0f; // modnar: adjust stellar density
 
-//    private int option1;
-//    private int option2;
+	public GalaxyFractalShape(IGameOptions options, boolean[] rndOpt)	{ super(options, rndOpt); }
 
-    public GalaxyFractalShape(IGameOptions options) {
-    	super(options);
-    }
-    @Override protected float   minEmpireFactor() { return 4f; }
-    @Override protected boolean allowExtendedPreview()  { return false; }
-    @Override
-    public List<String> options1()  { return options1; }
-    @Override
-    public List<String> options2()  { return options2; }
-    @Override
-    public String defaultOption1()  { return options1.get(0); }
-    @Override
-    public String defaultOption2()  { return options2.get(0); }
+	@Override public IShapeOption paramOption1()	{ return param1(); }
+	@Override public IShapeOption paramOption2()	{ return param2(); }
+	@Override public void setOption1(String value)	{ param1().set(value); }
+	@Override public void setOption2(String value)	{ param2().set(value); }
+	@Override public List<String> options1()		{ return param1().getOptions(); }
+	@Override public List<String> options2()		{ return param2().getOptions(); }
+	@Override public String name()					{ return NAME; }
+	@Override public GalaxyShape get()				{ return this; }
+
+	@Override public float maxScaleAdj()			{ return 0.95f; }
+	@Override protected float	minEmpireFactor()	{ return 4f; }
+	@Override protected boolean	allowExtendedPreview()	{ return false; }
     @Override
     public void init(int n) {
         super.init(n);
-//        option1 = max(0, options1.indexOf(opts.selectedGalaxyShapeOption1()));
-//        option2 = max(0, options2.indexOf(opts.selectedGalaxyShapeOption2()));
-//        
-//        if (option1 == options1.size()-1)
-//        	option1 = random.nextInt(options1.size()-1);
-//        if (option2 == options2.size()-1)
-//        	option2 = random.nextInt(options2.size()-1);
         // reset w/h vars since aspect ratio may have changed
         initWidthHeight();
     }
-    @Override
-    public float maxScaleAdj()               { return 0.95f; }
-	
+
     @Override
     protected int galaxyWidthLY() { 
 		return (int) (Math.sqrt(adjust_density
@@ -83,12 +98,12 @@ public class GalaxyFractalShape extends GalaxyShape {
 				* Math.max(33, opts.numberStarSystems())
 				* adjustedSizeFactor()));
     }
-	
+
 	// returns the midpoint of point1 and point2
 	private static Point.Float midPoint(Point.Float point1, Point.Float point2) {
         return new Point.Float((point1.x + point2.x) / 2.0f, (point1.y + point2.y) / 2.0f);
     }
-	
+
 	// returns the point between point1 and point2, two-third of the way to point2
 	private static Point.Float twothirdPoint(Point.Float point1, Point.Float point2) {
         return new Point.Float(point1.x/3.0f + 2.0f*point2.x/3.0f, point1.y/3.0f + 2.0f*point2.y/3.0f);
@@ -96,11 +111,6 @@ public class GalaxyFractalShape extends GalaxyShape {
 	
     @Override
     public void setRandom(Point.Float pt) {
-
-    	// BR: Moved to init!
-    	// int option1 = max(0, options1.indexOf(opts.selectedGalaxyShapeOption1()));
-    	// int option2 = max(0, options2.indexOf(opts.selectedGalaxyShapeOption2()));
-        
         // choose fractal type with options1
 		switch(option1) {
             case 0: {
@@ -113,21 +123,20 @@ public class GalaxyFractalShape extends GalaxyShape {
                         // Sierpinski Triangle
                         // set Sierpinski dimensions
                         float triangleWidth = (float) galaxyWidthLY();
-//                        float triangleWidth = (float) galaxyWidthLY() - 8*galaxyEdgeBuffer();
                         float triangleHeight = (float) Math.ceil(triangleWidth * Math.sqrt(3.0f/4.0f));
 
                         // outer Sierpinski triangle vertex points
                         Point.Float p1 = new Point.Float(0.0f, triangleHeight+0.05f*galaxyHeightLY());
                         Point.Float p2 = new Point.Float(triangleWidth/2.0f, 0.0f+0.05f*galaxyHeightLY());
                         Point.Float p3 = new Point.Float(triangleWidth, triangleHeight+0.05f*galaxyHeightLY());
-                        
+
                         // initial start point for chaos game, take middle point with some variation
                         Point.Float pnew = new Point.Float(triangleWidth/2.0f+randX.symFloat(), triangleHeight/2.0f+randY.symFloat());
-                        
+
                         // scale number of iterations with stars
                         int n = (int) Math.ceil(rand.nextDouble() * 1.5 * maxStars);
                         int i = 0;
-                        
+
                         // iterate through chaos game for Sierpinski randomly
                         while (i < n)
                         {
@@ -144,20 +153,16 @@ public class GalaxyFractalShape extends GalaxyShape {
                             }
                             i++;
                         }
-                        
+
                         pt.x = (float) pnew.x + galaxyEdgeBuffer() + randX.sym(0.5f);
                         pt.y = (float) pnew.y + galaxyEdgeBuffer() + randY.sym(0.5f);
-//                        pt.x = (float) pnew.x + 4.0f*galaxyEdgeBuffer() + randX.sym(0.5f);
-//                        pt.y = (float) pnew.y + 4.0f*galaxyEdgeBuffer() + randY.sym(0.5f);
                         break;
                     }
-                    
+
                     case 1: {
                         // Sierpinski Carpet
                         // (?) perhaps too "full"? maybe use Vicsek fractal (?)
                         // set Chaos game boundary dimensions
-//                        float boxWidth = (float) galaxyWidthLY() - 8*galaxyEdgeBuffer();
-//                        float boxHeight = (float) galaxyHeightLY() - 8*galaxyEdgeBuffer();
                         float boxWidth = (float) galaxyWidthLY();
                         float boxHeight = (float) galaxyHeightLY();
 
@@ -170,16 +175,16 @@ public class GalaxyFractalShape extends GalaxyShape {
                         Point.Float p6 = new Point.Float(0.0f, 0.5f*boxHeight);
                         Point.Float p7 = new Point.Float(boxWidth, 0.5f*boxHeight);
                         Point.Float p8 = new Point.Float(0.5f*boxWidth, boxHeight);
-                        
+
                         // initial start point for chaos game, take near middle point with some variation
                         Point.Float pnew = new Point.Float(boxWidth/3.0f+randX.sym(0.5f), boxHeight/3.0f+randY.sym(0.5f));
-                        
+
                         // scale number of iterations with stars
                         int n = (int) Math.ceil(rand.nextDouble() * 1.5 * maxStars);
                         int i = 0;
-                        // selection verticies
+                        // selection vertices
                         int newVertex = 0;
-                        
+
                         // sierpinski carpet chaos game
                         while (i < n)
                         {
@@ -218,14 +223,12 @@ public class GalaxyFractalShape extends GalaxyShape {
                             }
                             i++;
                         }
-                        
-//                        pt.x = (float) pnew.x + 4.0f*galaxyEdgeBuffer() + randX.sym(0.1f);
-//                        pt.y = (float) pnew.y + 4.0f*galaxyEdgeBuffer() + randY.sym(0.1f);
+
                         pt.x = (float) pnew.x + galaxyEdgeBuffer() + randX.sym(0.1f);
                         pt.y = (float) pnew.y + galaxyEdgeBuffer() + randY.sym(0.1f);
                         break;
                     }
-                    
+
                     case 2: {
                         // Barnsley Fern
                         // scale number of iterations with stars
@@ -268,8 +271,6 @@ public class GalaxyFractalShape extends GalaxyShape {
                         
                         pt.x = (float) ((pnew.x-0.55f)*1.9f+0.55f)*(galaxyWidthLY()) + randX.sym(0.25f);
                         pt.y = (float) (pnew.y+0.02f)*0.95f*(galaxyHeightLY()) + randY.sym(0.25f);
-//                        pt.x = (float) ((pnew.x-0.55f)*1.9f+0.55f)*(galaxyWidthLY()-8.0f*galaxyEdgeBuffer()) + 4.0f*galaxyEdgeBuffer() + randX.sym(0.25f);
-//                        pt.y = (float) (pnew.y+0.02f)*0.95f*(galaxyHeightLY()-8.0f*galaxyEdgeBuffer()) + 4.0f*galaxyEdgeBuffer() + randY.sym(0.25f);
                         break;
                     }
                 }
@@ -282,25 +283,23 @@ public class GalaxyFractalShape extends GalaxyShape {
                 // set Chaos game boundary dimensions
                 float boxWidth = (float) galaxyWidthLY();
                 float boxHeight = (float) galaxyHeightLY();
-//                float boxWidth = (float) galaxyWidthLY() - 8*galaxyEdgeBuffer();
-//                float boxHeight = (float) galaxyHeightLY() - 8*galaxyEdgeBuffer();
 
                 // box vertex points
                 Point.Float p1 = new Point.Float(0.0f, 0.0f);
                 Point.Float p2 = new Point.Float(boxWidth, 0.0f);
                 Point.Float p3 = new Point.Float(boxWidth, boxHeight);
                 Point.Float p4 = new Point.Float(0.0f, boxHeight);
-                
+
                 // initial start point for chaos game, take near middle point with some variation
                 Point.Float pnew = new Point.Float(boxWidth/2.0f+randX.sym(0.5f), boxHeight/2.0f+randY.sym(0.5f));
-                
+
                 // scale number of iterations with stars
                 int n = (int) Math.ceil(rand.nextDouble() * 1.5 * maxStars);
                 int i = 0;
-                // selection verticies
+                // selection vertices
                 int newVertex = 0;
                 int oldVertex = 0; int oldVertex2 = 1;
-                
+
                 // iterate through chaos game, with different rules
                 // choose with option2
                 switch(option2) {
@@ -396,11 +395,9 @@ public class GalaxyFractalShape extends GalaxyShape {
                         break;
                     }
                 }
-                
+
                 pt.x = (float) pnew.x + galaxyEdgeBuffer() + randX.sym(0.5f);
                 pt.y = (float) pnew.y + galaxyEdgeBuffer() + randY.sym(0.5f);
-//                pt.x = (float) pnew.x + 4.0f*galaxyEdgeBuffer() + randX.sym(0.5f);
-//                pt.y = (float) pnew.y + 4.0f*galaxyEdgeBuffer() + randY.sym(0.5f);
                 break;
             }
 		}
@@ -412,43 +409,4 @@ public class GalaxyFractalShape extends GalaxyShape {
     }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }
-
-//    @Override
-//    public boolean valid(float x, float y) {
-//        return true;
-//    }
-//    @Override float randomLocation(float max, float buff) {
-//        return buff + (random() * (max-buff-buff));
-//    }
-//    @Override
-//    protected float sizeFactor(String size) {
-//        float adj = 1.0f;
-//        switch (opts.selectedStarDensityOption()) {
-//            case IGameOptions.STAR_DENSITY_LOWEST:  adj = 1.3f; break;
-//            case IGameOptions.STAR_DENSITY_LOWER:   adj = 1.2f; break;
-//            case IGameOptions.STAR_DENSITY_LOW:     adj = 1.1f; break;
-//            case IGameOptions.STAR_DENSITY_HIGH:    adj = 0.9f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHER:  adj = 0.8f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHEST: adj = 0.7f; break;
-//        }
-//        switch (opts.selectedGalaxySize()) {
-//            case IGameOptions.SIZE_TINY:      return adj*10; 
-//            case IGameOptions.SIZE_SMALL:     return adj*15; 
-//            case IGameOptions.SIZE_SMALL2:    return adj*17;
-//            case IGameOptions.SIZE_MEDIUM:    return adj*19; 
-//            case IGameOptions.SIZE_MEDIUM2:   return adj*20; 
-//            case IGameOptions.SIZE_LARGE:     return adj*21; 
-//            case IGameOptions.SIZE_LARGE2:    return adj*22; 
-//            case IGameOptions.SIZE_HUGE:      return adj*23; 
-//            case IGameOptions.SIZE_HUGE2:     return adj*24; 
-//            case IGameOptions.SIZE_MASSIVE:   return adj*25; 
-//            case IGameOptions.SIZE_MASSIVE2:  return adj*26; 
-//            case IGameOptions.SIZE_MASSIVE3:  return adj*27; 
-//            case IGameOptions.SIZE_MASSIVE4:  return adj*28; 
-//            case IGameOptions.SIZE_MASSIVE5:  return adj*29; 
-//            case IGameOptions.SIZE_INSANE:    return adj*32; 
-//            case IGameOptions.SIZE_LUDICROUS: return adj*36; 
-//            default:             return adj*19; 
-//        }
-//    }
 }

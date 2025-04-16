@@ -91,6 +91,7 @@ import rotp.model.game.DynOptions;
 import rotp.model.game.GameSession;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.RulesetManager;
 import rotp.model.tech.Tech;
 import rotp.model.tech.TechLibrary;
 import rotp.ui.BasePanel;
@@ -125,16 +126,17 @@ public interface Base extends InputEventUtil {
     public static ImageColorizer colorizer = new ImageColorizer();
     public static String[] textSubs = { "%1", "%2", "%3", "%4", "%5", "%6", "%7", "%8", "%9", "%0" };
 
-    public default GameSession session()   { return GameSession.instance(); }
-    public default Galaxy galaxy()         { return session().galaxy(); }
-    public default IGameOptions options()  { return session().options(); }
-    public default Empire player()         { return galaxy().player(); }
-    public default boolean isPlayer(Empire e) { return galaxy().isPlayer(e); }
-    public default LabelManager labels()   { return LabelManager.current(); }
-    public default IGameOptions newGameOptions() { return RotPUI.newOptions(); }
-    public default IGameOptions guiOptions()	 { return RotPUI.currentOptions(); }
-    public default DynOptions   dynOptions()	 { return guiOptions().dynOpts(); }
-    public default GovernorOptions govOptions()	 { return GameSession.instance().getGovernorOptions(); }
+	default RulesetManager rulesetManager()	{ return RulesetManager.current(); }
+	default GameSession session()			{ return GameSession.instance(); }
+	default Galaxy galaxy()					{ return session().galaxy(); }
+	default Empire player()					{ return galaxy().player(); }
+	default boolean isPlayer(Empire e)		{ return galaxy().isPlayer(e); }
+	default LabelManager labels()			{ return LabelManager.current(); }
+	default IGameOptions options()			{ return session().options(); }
+	default IGameOptions newGameOptions()	{ return rulesetManager().newOptions(); }
+	default IGameOptions guiOptions()		{ return rulesetManager().currentOptions(); }
+	default DynOptions   dynOptions()		{ return guiOptions().dynOpts(); }
+	default GovernorOptions govOptions()	{ return GameSession.instance().getGovernorOptions(); }
 
     public default Object sessionVar(String key) {
         return session().var(key);
@@ -177,7 +179,7 @@ public interface Base extends InputEventUtil {
     public default int id(Empire e)       { return e == null ? Empire.NULL_ID : e.id; }
     public default int id(StarSystem s)   { return s == null ? StarSystem.NULL_ID : s.id; }
     public default String text(String key) {
-        if ((galaxy() == null) || (player() == null))
+        if (!Rotp.initialized() || (galaxy() == null) || (player() == null))
             return labels().label(key);
         else
             return player().race().text(key);
@@ -646,7 +648,7 @@ public interface Base extends InputEventUtil {
         catch (NumberFormatException e) {
             err("Base.parseDouble (2) -- error parsing: " + s);
             throw e;
-    }
+        }
     }
     public default List<String> parsedValues(String s, char delim) {
         // used for parsing delimited text file lines that may be commented
@@ -812,15 +814,15 @@ public interface Base extends InputEventUtil {
         }
 
         boolean exists = (fis != null) || (zipStream != null);
-        
+
         try {
             if (fis != null) 
-                fis.close();    
+                fis.close();
             else if (zipStream != null)
                 zipStream.close();
         }
         catch(IOException e) {};
-        
+
         return exists;
     }
     public default BufferedReader reader(String n) {
@@ -972,9 +974,9 @@ public interface Base extends InputEventUtil {
             char[] oldDigits = LanguageManager.latinDigits;
             char[] newDigits = LanguageManager.customDigits;
             int n = min(oldDigits.length, newDigits.length);
-            for (int j=0;j<n;j++) 
-                s = s.replace(oldDigits[j], newDigits[j]);           
-        }           
+            for (int j=0;j<n;j++)
+                s = s.replace(oldDigits[j], newDigits[j]);
+        }
         return s;
     }
     public default String strFormat(String fmt, int n) { return String.format(fmt, n);  }
@@ -1118,7 +1120,6 @@ public interface Base extends InputEventUtil {
         int indent = line1Indent;
         String currentLine = "";
 
-        
         if (LanguageManager.current().currentLogographic()) {
             for (int i=0;i<text.length();i++) {
                 String newLine = currentLine;
@@ -1131,7 +1132,7 @@ public interface Base extends InputEventUtil {
                     currentLine = word;
                 }
                 else
-                    currentLine = newLine;                
+                    currentLine = newLine;
             }
         }
         else { // BR: added forced lines '\n' management 
@@ -1381,7 +1382,7 @@ public interface Base extends InputEventUtil {
                 g.setColor(brighter);
             else
                 g.setColor(brightest);
-			
+
             if ((roll > 95) && (random() < .2))
                 g.fillRoundRect(x1, y1, s2, s2, s2, s2);
             else if (random() < .1)
@@ -1466,18 +1467,18 @@ public interface Base extends InputEventUtil {
     public default void drawBackgroundNebula(BufferedImage img) {
         int imgW = img.getWidth();
         int imgH = img.getHeight();
-        
+
         int nebR = 0;
         int nebG = 0;
         int nebB = roll(160,255);
 
         //int centerX = w/2;
         //int centerY = h/2;
-        
+
         FastImage fImg = PlanetImager.current().terrainBase().copy();
         int w = fImg.getWidth();
         int h = fImg.getHeight();
-        
+
         int floor = 255;
         int ceiling = 0;
         for (int y=0;y<h;y++)    for (int x=0;x<w;x++) {
@@ -1502,9 +1503,9 @@ public interface Base extends InputEventUtil {
             int newPixel = (alpha << 24) | (nebR << 16) | (nebG << 8) | nebB;
             fImg.setRGB(x, y, newPixel);
         }
-        
+
         BufferedImage back = fImg.image();
-        
+
         Graphics g = img.getGraphics();
         g.drawImage(back, 0, 0, imgW, imgH, null);
         g.dispose();
@@ -1547,7 +1548,7 @@ public interface Base extends InputEventUtil {
     public default void writeToFile(String fileName, String s, boolean newLine, boolean append) {
         File saveFile = file(fileName);
         FileWriter fw = null;
-        
+
 		try {
 			fw = new FileWriter(saveFile, append);
 			fw.write(s);
@@ -1560,7 +1561,7 @@ public interface Base extends InputEventUtil {
             	fw.close();
             }
             catch(IOException ex) {}
-        }        
+        }
     }
     public default String getTurn() {
     	return concat("Turn:", String.format("% 4d", galaxy().currentTurn()));

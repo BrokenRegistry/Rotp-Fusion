@@ -47,6 +47,7 @@ import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.IConvenienceOptions;
+import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.BasePanel;
@@ -106,11 +107,11 @@ public class MainUI extends BasePanel implements IMapHandler {
     public static final Color limeAlertC   = new Color(160,255,0,192);
     public static final Color orangeAlertC = new Color(255,160,0,192);
     public static final Color purpleAlertC = new Color(180,0,255,192);
-    
+
     public static int panelWidth, panelHeight;
     static LinearGradientPaint alertBack;
     static Location center = new Location();
-    
+
     JLayeredPane layers = new JLayeredPane();
 
     MapOverlayNone overlayNone;
@@ -331,7 +332,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         repaint();
     }
     public void showColonizationPrompt(int sysId, ShipFleet fl, ShipDesign d) {
-    	if (options().selectedShowVIPPanel()) {
+    	if (IDebugOptions.selectedShowVIPPanel()) {
     		VIPConsole.colonizeMenu.openColonyPrompt(sysId, fl);
     		return;
     	}
@@ -358,7 +359,7 @@ public class MainUI extends BasePanel implements IMapHandler {
             repaint();
     }
     public void showSystemsScouted(HashMap<String, List<StarSystem>> newSystems) {
-    	if (options().selectedShowVIPPanel()) {
+    	if (IDebugOptions.selectedShowVIPPanel()) {
     		VIPConsole.reportMenu.openScoutReport(newSystems);
     		return;
     	}
@@ -366,7 +367,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         overlaySystemsScouted.init(newSystems);
     }
     public void allocateSystems(HashMap<StarSystem,List<String>> newSystems) {
-    	if (options().selectedShowVIPPanel()) {
+    	if (IDebugOptions.selectedShowVIPPanel()) {
     		session().resumeNextTurnProcessing();
     		return;
     	}

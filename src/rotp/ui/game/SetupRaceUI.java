@@ -78,7 +78,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
     private int w10Or = scaled(200);
     private int w6Ext = scaled(80);
     private int w6Ext() { return isOS()? 0 : w6Ext; }
-    
+
     // Left Frame
     private int xLeftFrame() { return scaled(220) - w6Ext; }
     private int yLeftFrame = scaled(110);
@@ -109,7 +109,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
     private int yColors = yRightFrame + hRightFrame - scaled(40);
     private int wColors = s21;  // modnar: add new colors, change color box sizes
     private int hColors = s15;
-    
+
     // Species Parameters
     private int iconSize	= s95;
     private int yIcon		= yRightFrame + s10;
@@ -266,7 +266,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 		yBox = s20;
 		sp   = helpUI.addBrownHelpText(xBox, yBox, wBox, nL, txt);
 		lH   = HelpUI.lineH();
-		
+
 		int yShift = s40;
 		int xShift = s40;
 		dest = exitBox;
@@ -282,7 +282,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         xe   = dest.x + dest.width/2;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
-        
+
 		dest = cancelBox;
 		txt  = dest.getDescription();
         nL   = 2;
@@ -295,7 +295,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         xe   = dest.x + dest.width/2;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
-        
+
 		dest = defaultBox;
 		txt  = dest.getDescription();
         nL   = 3;
@@ -308,7 +308,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         xe   = dest.x + dest.width - xShift;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
-        
+
 		dest = lastBox;
 		txt  = dest.getDescription();
         nL   = 3;
@@ -321,7 +321,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         xe   = dest.x + dest.width/2;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
-        
+
 		dest = userBox;
 		txt  = dest.getDescription();
         nL   = 2;
@@ -360,7 +360,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 		xe   = dest.x + dest.width*1/2;
 		ye   = dest.y;
 		sp.setLine(xb, yb, xe, ye);
-		
+
 		dest = playerRaceSettingBox;
 		txt  = dest.getDescription();
         nL   = 3;
@@ -373,7 +373,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         xe   = dest.x + dest.width*3/4;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
-        
+
 		dest = shipSetBox;
 		txt  = dest.getDescription();
         nL   = 3;
@@ -393,7 +393,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 		int ty = dest.y - margin;
 		int rx = lx + dest.width + margin;
 		int by = shipBox[MAX_SHIP-1].y + dest.height + margin;
-        
+
         sp.setLineArr(xb+s30, yBox,
         		lx, ty + scaled(120),
         		lx, ty,
@@ -473,7 +473,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 	        g.setStroke(stroke1);
 	        g.drawOval(helpBox.x, helpBox.y, helpBox.width, helpBox.height);
     	}
-	
+
         g.setFont(bigButtonFont(false));
 		// left button
         if (hoverBox == cancelBox || all) {
@@ -486,7 +486,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 	        g.setStroke(stroke1);
 	        g.drawRoundRect(cancelBox.x, cancelBox.y, cancelBox.width, cancelBox.height, cnr, cnr);
         }
-        
+
         // BR: Player Race Customization
         // far left button
         if (hoverBox == playerRaceSettingBox || all) {
@@ -500,7 +500,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 	        g.setStroke(stroke1);
 	        g.drawRoundRect(playerRaceSettingBox.x, playerRaceSettingBox.y, playerRaceSettingBox.width, playerRaceSettingBox.height, cnr, cnr);
         }
-	        
+
         // BR: Race customization check box
         if (hoverBox == checkBox || all) {
 	        int checkW = s16;
@@ -876,7 +876,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
             g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
     		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
     		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-    		
+
             String selRace = newGameOptions().selectedPlayerRace();
     		BufferedImage img = newBufferedImage(Race.keyed(selRace).setupImage());
             int imgW = img.getWidth(null);
@@ -974,7 +974,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         backImg = newOpaqueImage(w, h);
         Graphics2D g = (Graphics2D) backImg.getGraphics();
         setFontHints(g);
-        
+
 		// modnar: use (slightly) better upsampling
         // BR: Even better for unique rendering
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -1024,7 +1024,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 
         float fog = newGameOptions().noFogOnIcons()? 1.0f : 0.3f;
         Composite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER , fog);
-        
+
         for (int i=0; i<5; i++) {
         	int y = (yLeftFrame + scaled(12 + i * 95));
         	int x = xL;
@@ -1050,7 +1050,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         int hC = hColors;
         for (int i=0;i<MAX_COLORS;i++) {
             int yC1 = i%2 == 0 ? yC : yC+hC+s5;
-            Color c = options().color(i);
+            Color c = guiOptions().color(i);
             Color c0 = new Color(c.getRed(), c.getGreen(), c.getBlue(), 160); // modnar: less transparent unselected color
             g.setColor(c0);
             g.fillRect(xC, yC1, wC, hC);
@@ -1117,7 +1117,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
     }
     private void initRaceMugImg() {
 		long timeStart = System.currentTimeMillis();
-		
+
         List<String> races = newGameOptions().startingRaceOptions();
 		BufferedImage back = raceBackImg();
 		int bW = back.getWidth();
@@ -1136,7 +1136,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
             g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
     		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
     		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-	        
+
 	        g.drawImage(back, 0, 0, rbW, rbH, null); // modnar: 80% size box for newRaces
 
 	        BufferedImage img = newBufferedImage(Race.keyed(races.get(num)).diploMugshotQuiet());
@@ -1212,7 +1212,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
     private void goToPlayerRaceCustomization() {
         buttonClick();
         EditCustomRaceUI.instance().open(this);
-		setVisible(false);      
+		setVisible(false);
     }
     private void goToRenameSpecies() {
         buttonClick();

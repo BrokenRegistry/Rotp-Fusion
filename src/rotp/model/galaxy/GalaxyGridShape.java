@@ -17,52 +17,55 @@ package rotp.model.galaxy;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
+import rotp.model.game.IGalaxyOptions.IShapeOption;
+import rotp.model.game.IGalaxyOptions.ShapeOptionList;
 import rotp.model.game.IGameOptions;
 
 // modnar: custom map shape, Grid
 public class GalaxyGridShape extends GalaxyShape {
-    public static final List<String> options1;
-    //public static final List<String> options2;
-    private static final long serialVersionUID = 1L;
-    static {
-        options1 = new ArrayList<>();
-        options1.add("SETUP_GRID_0");
-        options1.add("SETUP_GRID_1");
-        options1.add("SETUP_GRID_2");
-        options1.add(RANDOM_OPTION);
-        //options2 = new ArrayList<>();
-        //options2.add("SETUP_NOT_AVAILABLE");
-    }
-	// private int option1;
-	//private int option2;
+	private static final long serialVersionUID = 1L;
+	private	static final String SHORT_NAME	= "GRID";
+	private	static final String BASE_NAME	= ROOT_NAME + SHORT_NAME;
+	public	static final String NAME		= UI_KEY + BASE_NAME;
+	private	static final int DEFAULT_OPT_1	= 0;
+	private static ShapeOptionList param1;
+	
+	public static ShapeOptionList param1()	{
+		if (param1 == null) {
+			param1 = new ShapeOptionList(
+			BASE_NAME, 1,
+			new ArrayList<String>(Arrays.asList(
+				"SETUP_GRID_0",
+				"SETUP_GRID_1",
+				"SETUP_GRID_2",
+				RANDOM_OPTION
+				) ),
+			DEFAULT_OPT_1);
+		}
+		return param1;
+	}
+
 	private float gW, gH, nGrid, clusterR;
 	private int nClusters, numSteps, horizontalSteps;
 	private ArrayList<Integer> clusterList;
 
-    public GalaxyGridShape(IGameOptions options) {
-    	super(options);
-    }
-    @Override protected float minEmpireFactor() { return 4f; }
-	@Override
-    public List<String> options1()  { return options1; }
-    //@Override
-    //public List<String> options2()  { return options2; }
-    @Override
-    public String defaultOption1()  { return options1.get(0); }
-    //@Override
-    //public String defaultOption2()  { return options2.get(0); }
+	public GalaxyGridShape(IGameOptions options, boolean[] rndOpt)	{ super(options, rndOpt); }
+
+	@Override public IShapeOption paramOption1()	{ return param1(); }
+	@Override public void setOption1(String value)	{ param1().set(value); }
+	@Override public String name()					{ return NAME; }
+	@Override public GalaxyShape get()				{ return this; }
+
+	@Override public float maxScaleAdj()			{ return 1.1f; }
+	@Override protected float minEmpireFactor()		{ return 4f; }
     @Override
     public void init(int n) {
 		int maxClusters;
         super.init(n);
         // reset w/h vars since aspect ratio may have changed
         initWidthHeight();
-//        option1 = max(0, options1.indexOf(opts.selectedGalaxyShapeOption1()));
-//        // option2 = max(0, options2.indexOf(opts.selectedGalaxyShapeOption2()));
-//        if (option1 == options1.size()-1)
-//        	option1 = random.nextInt(options1.size()-1);
  
 		// choose number of grids, clusters, and cluster radii with option1
 		// scale up the number of grid lines with size of map
@@ -92,18 +95,16 @@ public class GalaxyGridShape extends GalaxyShape {
 	            clusterR = (float) (nGrid + 5.0f) / 2.0f;
 	            break;
 		}
-		
-//		gW = (float) galaxyWidthLY() - 2.0f*clusterR - 2.0f*galaxyEdgeBuffer();
-//		gH = (float) galaxyHeightLY() - 2.0f*clusterR - 2.0f*galaxyEdgeBuffer();
+
 		gW = (float) galaxyWidthLY() - 2.0f*clusterR;
 		gH = (float) galaxyHeightLY() - 2.0f*clusterR;
 		gW = Math.max(5, gW); // BR: for very small galaxies
 		gH = Math.max(5, gH); // BR: for very small galaxies
-		
+
 		// scale the resolution of the grid with map dimensions and number of grids
 		numSteps = (int) (10*(gW+gH)*(nGrid+1));
 		horizontalSteps = (int) (10*gW*(nGrid+1));
-		
+
 		// randomly assign clusters at intersections
 		// but use map size and number of opponents as seed to ensure same sequence
 		// use shuffle list to ensure unique draws
@@ -116,8 +117,6 @@ public class GalaxyGridShape extends GalaxyShape {
 		// System.out.println("maxClusters = " + maxClusters + "  nClusters = " + nClusters);
     }
     @Override
-    public float maxScaleAdj()               { return 1.1f; }
-    @Override
     protected int galaxyWidthLY() { 
         return (int) (Math.sqrt(1.5*opts.numberStarSystems()*adjustedSizeFactor()));
     }
@@ -129,7 +128,6 @@ public class GalaxyGridShape extends GalaxyShape {
     public void setRandom(Point.Float pt) {		
 		// switch between populating the grid vs cluster
     	if (option1==2 || rand.nextBoolean()) {
-//			int stepSelect = (int) Math.floor(rand.nextDouble()*numSteps);
 			int stepSelect = rand.nextInt(numSteps);
 				// horizontal grids
 				if (stepSelect < horizontalSteps) { 
@@ -144,19 +142,18 @@ public class GalaxyGridShape extends GalaxyShape {
 					pt.y = (float) (clusterR + galaxyEdgeBuffer() + gH*(stepSelect-horizontalSteps-gridColumn*(10*gH))/(10*gH));
 				}
     	} else {
-//				int clusterSelect = (int) Math.floor(rand.nextDouble(nClusters));
 				int clusterSelect = rand.nextInt(nClusters);
-				
+
 				int clusterPos = clusterList.get(clusterSelect);
                 int clusterX = (int) (clusterPos % (nGrid+1));
 				int clusterY = (int) Math.floor(clusterPos / (nGrid+1));
-				
+
 				float xCluster = (float) ((clusterX/nGrid)*gW + clusterR + galaxyEdgeBuffer());
 				float yCluster = (float) ((clusterY/nGrid)*gH + clusterR + galaxyEdgeBuffer());
-				
+
 				double phiCluster = randY.nextDouble(2 * Math.PI);
 				double radiusSelect = Math.sqrt(randX.nextDouble()) * clusterR;
-				
+
 				pt.x = (float) (radiusSelect * Math.cos(phiCluster) + xCluster);
 				pt.y = (float) (radiusSelect * Math.sin(phiCluster) + yCluster);
         }

@@ -303,7 +303,7 @@ public interface IGameOptions extends IModOptions {
     	return list;
     }
     public default boolean isAutoPlay()           { return !selectedAutoplayOption().equals(AUTOPLAY_OFF); }
-	public default boolean autoRunAILocked()      { return debugAutoRun() && !isAutoPlay(); }
+	public default boolean autoRunAILocked()      { return IDebugOptions.debugAutoRun() && !isAutoPlay(); }
     //public default boolean communityAI()        { return false; }
     public default boolean selectableAI()         { return selectedOpponentAIOption().equals(OPPONENT_AI_SELECTABLE); }
     //public default boolean usingExtendedRaces() { return (selectedNumberOpponents()+1) > startingRaceOptions().size(); }
@@ -388,6 +388,7 @@ public interface IGameOptions extends IModOptions {
 
     public String selectedGalaxySize();
     public void selectedGalaxySize(String s);
+	boolean isShapeTextGalaxy();
     public String selectedGalaxyShape();
     public void selectedGalaxyShape(String s);
     public String selectedGalaxyAge();
@@ -436,9 +437,9 @@ public interface IGameOptions extends IModOptions {
     public void specificOpponentCROption(String s, int empId);
 
     public String selectedGalaxyShapeOption1();
-    public void selectedGalaxyShapeOption1(String s);
+//    public void selectedGalaxyShapeOption1(String s);
     public String selectedGalaxyShapeOption2();
-    public void selectedGalaxyShapeOption2(String s);
+//    public void selectedGalaxyShapeOption2(String s);
 
     public int numGalaxyShapeOption1();
     public int numGalaxyShapeOption2();
@@ -611,7 +612,7 @@ public interface IGameOptions extends IModOptions {
         }
     }
     default List<String> getNewRacesOnOffList() {
-		if (showNewRaces().get()) {
+		if (showNewRaces.get()) {
 			return allRaceOptions();
 		}
 		return baseRaceOptions();

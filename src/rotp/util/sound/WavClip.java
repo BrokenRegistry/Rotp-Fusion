@@ -36,6 +36,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import rotp.Rotp;
+import rotp.model.game.IGameOptions;
 import rotp.util.Base;
 
 public class WavClip  implements SoundClip, Base {
@@ -106,9 +107,10 @@ public class WavClip  implements SoundClip, Base {
         filename	= fn;
         gain		= vol;
         shipSize	= hullSize;
-        msHullDelay	= options().echoSoundHullDelay();
-        msDelay		= options().echoSoundDelay() + shipSize*msHullDelay;
-        decay		= options().echoSoundDecay();
+        IGameOptions opts = guiOptions();
+        msHullDelay	= opts.echoSoundHullDelay();
+        msDelay		= opts.echoSoundDelay() + shipSize*msHullDelay;
+        decay		= opts.echoSoundDecay();
         loaded		= false;
         
         AudioInputStream ais = null;

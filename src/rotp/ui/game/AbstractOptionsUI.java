@@ -384,7 +384,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 			switch (ModifierKeysState.get()) {
 			case CTRL:
 			case CTRL_SHIFT: // cancelKey
-				UserPreferences.load();
+				UserPreferences.reload();
 				break;
 			default: // setLocalDefaultKey
 				setLocalToDefault(false, isSubMenu); // Main panels (Race & Galaxy) reset their sub menus

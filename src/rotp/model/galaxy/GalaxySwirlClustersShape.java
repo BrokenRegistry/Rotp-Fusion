@@ -17,52 +17,53 @@ package rotp.model.galaxy;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import rotp.model.game.IGalaxyOptions.IShapeOption;
+import rotp.model.game.IGalaxyOptions.ShapeOptionList;
 import rotp.model.game.IGameOptions;
 
 // modnar: custom map shape, Swirl Clusters
 public class GalaxySwirlClustersShape extends GalaxyShape {
-    public static final List<String> options1;
-    //public static final List<String> options2;
-    private static final long serialVersionUID = 1L;
-    static {
-        options1 = new ArrayList<>();
-        options1.add("SETUP_SWIRLCLUSTERS_0");
-        options1.add("SETUP_SWIRLCLUSTERS_1");
-        options1.add("SETUP_SWIRLCLUSTERS_2");
-        options1.add(RANDOM_OPTION);
-        //options2 = new ArrayList<>();
-        //options2.add("SETUP_NOT_AVAILABLE");
-    }
-    //private int option1;
-    
-    public GalaxySwirlClustersShape(IGameOptions options) {
-    	super(options);
-    }
-    @Override protected float minEmpireFactor() { return 4f; }
-    @Override
-    public List<String> options1()  { return options1; }
-    //@Override
-    //public List<String> options2()  { return options2; }
-    @Override
-    public String defaultOption1()  { return options1.get(0); }
-    //@Override
-    //public String defaultOption2()  { return options2.get(0); }
+	private static final long serialVersionUID = 1L;
+	private	static final String SHORT_NAME	= "SWIRLCLUSTERS";
+	private	static final String BASE_NAME	= ROOT_NAME + SHORT_NAME;
+	public	static final String NAME		= UI_KEY + BASE_NAME;
+	private	static final int DEFAULT_OPT_1	= 0;
+	private static ShapeOptionList param1;
+
+	public static ShapeOptionList param1()	{
+		if (param1 == null) {
+			param1 = new ShapeOptionList(
+			BASE_NAME, 1,
+			new ArrayList<String>(Arrays.asList(
+				"SETUP_SWIRLCLUSTERS_0",
+				"SETUP_SWIRLCLUSTERS_1",
+				"SETUP_SWIRLCLUSTERS_2",
+				RANDOM_OPTION
+				) ),
+			DEFAULT_OPT_1);
+		}
+		return param1;
+	}
+
+	public GalaxySwirlClustersShape(IGameOptions options, boolean[] rndOpt)	{ super(options, rndOpt); }
+
+	@Override public IShapeOption paramOption1()	{ return param1(); }
+	@Override public void setOption1(String value)	{ param1().set(value); }
+	@Override public List<String> options1()		{ return param1().getOptions(); }
+	@Override public String name()					{ return NAME; }
+	@Override public GalaxyShape get()				{ return this; }
+
+	@Override public float maxScaleAdj()			{ return 1.1f; }
+	@Override protected float minEmpireFactor()		{ return 4f; }
     @Override
     public void init(int n) {
         super.init(n);
-
-//        option1 = max(0, options1.indexOf(opts.selectedGalaxyShapeOption1()));
-//        
-//        if (option1 == options1.size()-1)
-//        	option1 = random.nextInt(options1.size()-1);
-
         // reset w/h vars since aspect ratio may have changed
         initWidthHeight();
     }
-    @Override
-    public float maxScaleAdj()               { return 1.1f; }
     @Override
     protected int galaxyWidthLY() { 
         return (int) (Math.sqrt(1.8*opts.numberStarSystems()*adjustedSizeFactor()));
@@ -73,13 +74,8 @@ public class GalaxySwirlClustersShape extends GalaxyShape {
     }
     @Override
     public void setRandom(Point.Float pt) {
-		
-        // int option1 = max(0, options1.indexOf(opts.selectedGalaxyShapeOption1()));
-        //int option2 = max(0, options2.indexOf(opts.selectedGalaxyShapeOption2()));
-        
 		float gW = (float) galaxyWidthLY();
-		//float gH = (float) galaxyHeightLY();
-		
+
 		// modnar: choose swirl size, number of clusters, and cluster radii with options1
 		// scale up the swirl size with size of map
 		// scale up number of clusters with size of map
@@ -89,7 +85,7 @@ public class GalaxySwirlClustersShape extends GalaxyShape {
 		float clusterR = (float) (numSwirls + 4.0f) / 1.5f;
 		float swirlWidth = 0.05f;
 		float clusterDelta = 0.0f; // distance to displace cluster
-		
+
 		switch(option1) {
             case 0: {
                 // clusters distributed along spiral
@@ -117,57 +113,52 @@ public class GalaxySwirlClustersShape extends GalaxyShape {
             }
         }
         numClusters = Math.max(1, numClusters); // BR: for very small galaxies
-		
+
 		int numSteps = (int) (200*numSwirls*numSwirls);
 		// drop a cluster "every" clusterSteps
 		// not quite since distance along swirl is not uniform with steps
 		int clusterSteps = (int) Math.floor(2*numSteps / (max(1, numClusters-1)));
-//		int stepSelect = ThreadLocalRandom.current().nextInt(2*numSteps)+1;
 		int stepSelect = randX.nextInt(2*numSteps)+1;
 		// select cluster position non-uniformally
-//		int clusterRandom = ThreadLocalRandom.current().nextInt(numClusters);
 		int clusterRandom = rand.nextInt(numClusters);
 		int clusterSelect = (int) Math.floor(Math.sqrt(clusterRandom)*Math.sqrt(numClusters-1)*clusterSteps);
-		
-		// switch between populating the swirl vs cluster
-//		switch (ThreadLocalRandom.current().nextInt(2)) {
+
 		switch (rand.nextInt(2)) {
             case 0:
                 float xSwirl = (float) (0.5f*gW + galaxyEdgeBuffer() + 0.225f*gW*stepSelect*Math.cos(numSwirls*stepSelect*Math.PI/numSteps)/numSteps);
 				float ySwirl = (float) (0.5f*gW + galaxyEdgeBuffer() + 0.225f*gW*stepSelect*Math.sin(numSwirls*stepSelect*Math.PI/numSteps)/numSteps);
-				
+
 				double phiSwirl = randY.nextDouble(2 * Math.PI);
 				double radiusSwirl = Math.sqrt(randX.nextDouble()) * swirlWidth;
-				
+
 				pt.x = (float) (radiusSwirl * Math.cos(phiSwirl) + xSwirl);
 				pt.y = (float) (radiusSwirl * Math.sin(phiSwirl) + ySwirl);
-		
+
                 break;
             case 1:
                 float xDelta = (float) (0.225f*gW*clusterSelect*Math.cos(numSwirls*clusterSelect*Math.PI/numSteps)/numSteps);
 				float yDelta = (float) (0.225f*gW*clusterSelect*Math.sin(numSwirls*clusterSelect*Math.PI/numSteps)/numSteps);
-				
+
 				float xCluster = (float) (0.5f*gW + galaxyEdgeBuffer() + xDelta);
 				float yCluster = (float) (0.5f*gW + galaxyEdgeBuffer() + yDelta);
-				
+
 				float dCluster = (float) Math.sqrt(xDelta*xDelta + yDelta*yDelta);
-				
+
 				// move cluster a distance clusterDelta closer to center, if they are sufficently far away
 				if ((dCluster > clusterR) && (clusterDelta > 0.1f)) {
-					
 					xCluster = (float) ((clusterDelta/dCluster)*(0.5f*gW + galaxyEdgeBuffer()) + (1.0f - (clusterDelta/dCluster))*(0.5f*gW + galaxyEdgeBuffer() + xDelta));
 					yCluster = (float) ((clusterDelta/dCluster)*(0.5f*gW + galaxyEdgeBuffer()) + (1.0f - (clusterDelta/dCluster))*(0.5f*gW + galaxyEdgeBuffer() + yDelta));
 				}
-				
+
 				double phiCluster = randY.nextDouble(2 * Math.PI);
 				double radiusSelect = Math.sqrt(randX.nextDouble()) * clusterR;
-				
+
 				pt.x = (float) (radiusSelect * Math.cos(phiCluster) + xCluster);
 				pt.y = (float) (radiusSelect * Math.sin(phiCluster) + yCluster);
-				
+
                 break;
         }
-		
+
     }
     @Override
     public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
@@ -177,40 +168,6 @@ public class GalaxySwirlClustersShape extends GalaxyShape {
     public boolean valid(float x, float y) {
         return true;
     }
-//    float randomLocation(float max, float buff) {
-//        return buff + (random() * (max-buff-buff));
-//    }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }
-//    @Override
-//    protected float sizeFactor(String size) {
-//        float adj = 1.0f;
-//        switch (opts.selectedStarDensityOption()) {
-//            case IGameOptions.STAR_DENSITY_LOWEST:  adj = 1.3f; break;
-//            case IGameOptions.STAR_DENSITY_LOWER:   adj = 1.2f; break;
-//            case IGameOptions.STAR_DENSITY_LOW:     adj = 1.1f; break;
-//            case IGameOptions.STAR_DENSITY_HIGH:    adj = 0.9f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHER:  adj = 0.8f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHEST: adj = 0.7f; break;
-//        }
-//        switch (opts.selectedGalaxySize()) {
-//            case IGameOptions.SIZE_TINY:      return adj*10; 
-//            case IGameOptions.SIZE_SMALL:     return adj*12; 
-//            case IGameOptions.SIZE_SMALL2:    return adj*13;
-//            case IGameOptions.SIZE_MEDIUM:    return adj*13; 
-//            case IGameOptions.SIZE_MEDIUM2:   return adj*14; 
-//            case IGameOptions.SIZE_LARGE:     return adj*16; 
-//            case IGameOptions.SIZE_LARGE2:    return adj*18; 
-//            case IGameOptions.SIZE_HUGE:      return adj*20; 
-//            case IGameOptions.SIZE_HUGE2:     return adj*22; 
-//            case IGameOptions.SIZE_MASSIVE:   return adj*24; 
-//            case IGameOptions.SIZE_MASSIVE2:  return adj*26; 
-//            case IGameOptions.SIZE_MASSIVE3:  return adj*28; 
-//            case IGameOptions.SIZE_MASSIVE4:  return adj*30; 
-//            case IGameOptions.SIZE_MASSIVE5:  return adj*32; 
-//            case IGameOptions.SIZE_INSANE:    return adj*36; 
-//            case IGameOptions.SIZE_LUDICROUS: return adj*40; 
-//            default:             return adj*19; 
-//        }
-//    }
 }

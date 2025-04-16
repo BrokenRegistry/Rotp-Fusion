@@ -81,17 +81,17 @@ public abstract class BaseModPanel extends BasePanel
 	private	  static int	 exitButtonWidth, guideButtonWidth,
 							 userButtonWidth, defaultButtonWidth, lastButtonWidth;
 	protected static int	 mX, mY;
-//	protected static int	 w, h;
 	protected static int	 smallButtonMargin, smallButtonH;
 	protected static int	 miniButtonMargin, miniButtonH;
 	protected static int	 cnr;
 
-	public	  static int	 guideFontSize;
-	public	  static void 	 showGuide(boolean b) { showGuide.set(b); }
-	public	  static boolean showGuide() 		  { return showGuide.get(); }
-//	public	  static boolean showGuide	= false; // To disable automated Guide
-	public	  static boolean dialGuide	= false; // To disable automated Guide on dialog list
-	private	  static boolean contextHlp	= false; // The time to show  the contextual help
+	private	static int	guideFontSize;
+	public	static int	guideFontSize()			{ return guideFontSize; }
+	public	static void	guideFontSize(int size)	{ guideFontSize = size; }
+	public	static void	showGuide(boolean b)	{ showGuide.set(b); }
+	public	static boolean showGuide() 			{ return showGuide.get(); }
+	public	static boolean dialGuide	= false; // To disable automated Guide on dialog list
+	private	static boolean contextHlp	= false; // The time to show  the contextual help
 
 	private	  final LinkedList<PolyBox>	polyBoxList	= new LinkedList<>();
 	protected final LinkedList<Box>		boxBaseList	= new LinkedList<>();
@@ -176,11 +176,11 @@ public abstract class BaseModPanel extends BasePanel
 
 	protected boolean globalOptions	= false; // No preferred button and Saved to remnant.cfg
 
-	protected BaseModPanel () {
+	protected BaseModPanel ()	{
 		guidePopUp = new GuidePopUp();
 		guidePopUp.init();
 	}
-	protected void reInit()	{
+	protected void reInit(boolean hover)		{
 		boxBaseList.clear();
 		exitBox		= newExitBox();
 		defaultBox	= new Box(defaultButton);
@@ -192,22 +192,14 @@ public abstract class BaseModPanel extends BasePanel
 		isSubMenu	= true;
 		isOnTop		= true;
 		retina		= false;
-		hovering	= false;
+		hovering	= hover;
 		cnrR		= cnr;
 		initialised	= false;
 		backImg		= null;
 		buttonBackImg	= null;
 		bg	= null;
 	}
-	protected void terminate() {
-		reInit();
-//		removeMouseListener(this);
-//		removeMouseMotionListener(this);
-//		if (guidePopUp != null)
-//			guidePopUp.terminate();
-//		initialised = false;
-		// System.out.println("terminate() " + "Base Mod Panel");
-	}
+	protected void terminate()	{ reInit(false); }
 	protected abstract String GUI_ID();
 	protected void forceUpdate(boolean b)	{}
 	protected SafeListParam localOptions()	{ return activeList; };
@@ -260,21 +252,24 @@ public abstract class BaseModPanel extends BasePanel
 		miniButtonH		  = s22;
 		cnr				  = s5;
 		if (!initialised) {
-			if (isSubMenu) {
-				defaultBox	= new Box(defaultSubButton);
-				lastBox		= new Box(lastSubButton);
-				userBox		= new Box(userSubButton);
-			}
-			else {
-				defaultBox	= new Box(defaultButton);
-				lastBox		= new Box(lastButton);
-				userBox		= new Box(userButton);
-			}
-			guideBox	= new Box(guideKey);
-			singleInit();
-			initialised = true;
+			initBoxes();
 		}
 		isOnTop = true;
+	}
+	protected void initBoxes() {
+		if (isSubMenu) {
+			defaultBox	= new Box(defaultSubButton);
+			lastBox		= new Box(lastSubButton);
+			userBox		= new Box(userSubButton);
+		}
+		else {
+			defaultBox	= new Box(defaultButton);
+			lastBox		= new Box(lastButton);
+			userBox		= new Box(userButton);
+		}
+		guideBox	= new Box(guideKey);
+		singleInit();
+		initialised = true;
 	}
 	public void clearImages() {
 		buttonBackImg = null;
@@ -384,13 +379,13 @@ public abstract class BaseModPanel extends BasePanel
 		g.setFont(smallButtonFont(retina));
 		g.setPaint(GameUI.buttonBackgroundColor());
 	}
-    public BufferedImage initButtonBackImg() {
-    	initButtonPosition();
+	public BufferedImage initButtonBackImg() {
+		initButtonPosition();
 		buttonBackImg = new BufferedImage(retina(wButton), retina(hButton), TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) buttonBackImg.getGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
+		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
@@ -409,9 +404,9 @@ public abstract class BaseModPanel extends BasePanel
 
 		drawButtons(g, true); // init = true; local = true
 		return buttonBackImg;
-    }
+	}
 
-    // ==================== Guide Button ====================
+	// ==================== Guide Button ====================
 	//
 	protected String guideButtonKey() { return guideKey; }
 	private void initGuideButtonWidth(Graphics2D g) {
@@ -672,9 +667,9 @@ public abstract class BaseModPanel extends BasePanel
 	}
 
 	// ---------- Events management
-    @Override public void advanceHelp() { cancelHelp(); }
+	@Override public void advanceHelp() { cancelHelp(); }
 	@Override public void cancelHelp()  { RotPUI.helpUI().close(); }
-    @Override public void showHelp()    { showHotKeys(); }
+	@Override public void showHelp()    { showHotKeys(); }
 	@Override public void showHotKeys() {
 		Rectangle hotKeysBox  = new Rectangle(mX, mY, 0, 0);
 		String    hotKeysText = text("MOD_OPTIONS_HELP_HK");
@@ -779,10 +774,10 @@ public abstract class BaseModPanel extends BasePanel
 		if (hoverBox == null)
 			return false; // ==> panel help
 		
-	  	if (!guidePopUp.setDest(hoverBox, true, getGraphics()))
-	  		return false; // ==> panel help
-	  	contextHlp = true;
-	  	return true;
+		if (!guidePopUp.setDest(hoverBox, true, getGraphics()))
+			return false; // ==> panel help
+		contextHlp = true;
+		return true;
 	}
 	protected void showGuide(Graphics g)	{
 		if (!(showGuide.get() || dialGuide || contextHlp))
@@ -824,11 +819,19 @@ public abstract class BaseModPanel extends BasePanel
 			this(param);
 			mouseBoxIndex(mouseBoxIndex);
 		}
-		private	void removeFromList()		 { boxBaseList.remove(this); }
-		private void addToList() 			 { boxBaseList.add(this); }
+		private	void removeFromList()		 {
+			boxBaseList.remove(this);
+			//System.out.println("Removed " + boxBaseList.size() + " " + getDescription());
+		}
+		private void addToList() 			 {
+			boxBaseList.add(this);
+			//System.out.println("added " + boxBaseList.size() + " " + getDescription());
+		}
 		private void initGuide(String label) { this.label = label; }
-		private void initGuide(IParam param) { this.param = param; }
+		public  void initGuide(IParam param) { this.param = param; }
 		private void mouseBoxIndex(int idx)	 { mouseBoxIndex = idx; }
+		public String getLabel()			 { return label; }
+		public IParam getParam()			 { return param; }
 
 		// ========== Doers ==========
 		//
@@ -978,7 +981,7 @@ public abstract class BaseModPanel extends BasePanel
 			box = new Box(this, add);
 			baseFontsize = fSize;
 		}
-	    public void    fontMult(float fMult)	{ super.newFontSize((int) (baseFontsize * fMult)); }
+		public void    fontMult(float fMult)	{ super.newFontSize((int) (baseFontsize * fMult)); }
 		public void	   removeBoxFromList()		{ box.removeFromList(); }
 		public ModText initGuide(IParam param)	{ box.initGuide(param); return this; }
 		public ModText initGuide(String label)	{ box.initGuide(label); return this; }
@@ -1020,9 +1023,8 @@ public abstract class BaseModPanel extends BasePanel
 			pane.setContentType("text/html");
 			pane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
 			hide();
-			guideFontSize = FONT_SIZE;
+			guideFontSize(FONT_SIZE);
 			initialised = true;
-			// System.out.println("init_0() " + "Guide PopUp");
 		}
 		private void setText(String newText)	{
 			text = newText;
@@ -1037,6 +1039,7 @@ public abstract class BaseModPanel extends BasePanel
 			init(dest);
 		}
 		public  void setDest(Rectangle dest, String text, Graphics g0)	{
+			guideFontSize(FONT_SIZE);
 			lineArr = null;
 			setFullHelp(dest.width == 0);
 			setText(text);
@@ -1045,33 +1048,45 @@ public abstract class BaseModPanel extends BasePanel
 		private boolean setDest(Box dest, boolean fullHelp, Graphics g0){
 			if (dest == null)
 				return false;
+			guideFontSize(FONT_SIZE);
 			String txt;
 			if (fullHelp)
-			  	txt = dest.getFullHelp();
+				txt = dest.getFullHelp();
 			else
-			  	txt = dest.getGuide();
+				txt = dest.getGuide();
 			if (txt == null || txt.isEmpty())
-		  		return false;
+				return false;
 			setFullHelp(fullHelp);
 			setText(txt);
 			setDest(dest);
+			if (guideFontSize() < FONT_SIZE) { // To update header size
+				if (fullHelp)
+					txt = dest.getFullHelp();
+				else
+					txt = dest.getGuide();
+				if (txt == null || txt.isEmpty())
+					return false;
+				setFullHelp(fullHelp);
+				setText(txt);
+				setDest(dest);
+			}
 			return true;
 		}
 		// ========== Shared Methods ==========
 		//
-	    private void setVisible()		{
-	    	if(pane.isVisible())
-	    		return;
+		private void setVisible()		{
+			if(pane.isVisible())
+				return;
 			border.setVisible(true);
 			margin.setVisible(true);
-	    	pane.setVisible(true);
-	    }
-	    private void hide()				{
-	    	border.setVisible(false);
-	    	margin.setVisible(false);
-	    	pane.setVisible(false);
-	    }
-	    public void clear()		{ hide(); }
+			pane.setVisible(true);
+		}
+		private void hide()				{
+			border.setVisible(false);
+			margin.setVisible(false);
+			pane.setVisible(false);
+		}
+		public void clear()		{ hide(); }
 		// ========== Private Methods ==========
 		//
 		private void paintGuide(Graphics g0)	{
@@ -1085,12 +1100,12 @@ public abstract class BaseModPanel extends BasePanel
 			border.setBounds(x-s8, y-s8, w+s16, h+s16);
 			margin.setBackground(bgC);
 			margin.setBounds(x-s3, y-s3, w+s6, h+s6);
-			pane.setFont(plainFont(guideFontSize));
+			pane.setFont(plainFont(guideFontSize()));
 			pane.setBackground(bgC);
 			pane.setBounds(x, y, w, h);
 			drawLines(g);
 		}
-        private void setLineArr(int... arr)		{ lineArr = arr; }
+		private void setLineArr(int... arr)		{ lineArr = arr; }
 		private void drawLines(Graphics2D g)	{
 			if (lineArr != null) {
 				Stroke prev = g.getStroke();
@@ -1105,92 +1120,90 @@ public abstract class BaseModPanel extends BasePanel
 			}			
 		}
 		private void autoSize(int width)		{
-    		int iW = scaled(Rotp.IMG_W - 20);
-    		int iH = scaled(Rotp.IMG_H - 20);
-    		int testW, preTest;
+			int iW = scaled(Rotp.IMG_W - 20);
+			int iH = scaled(Rotp.IMG_H - 20);
+			int testW, preTest;
 			bgC  = fullHelp ? helpColor : GameUI.setupFrame();
 			bdrC = new Color(bgC.getRed(), bgC.getGreen(), bgC.getBlue(), 160);
 			w = Short.MAX_VALUE;
-			guideFontSize = FONT_SIZE+1;
-			guideFontSize = FONT_SIZE;
 			boolean go = true;
 			while (go) {
-				pane.setFont(plainFont(guideFontSize));
+				pane.setFont(plainFont(guideFontSize()));
 				h = Short.MAX_VALUE;
 				preTest = -1;
-				testW = width;
+				testW = width - 1; // to prevent rounding errors
 				while (h > iH && preTest != testW && testW < iW) {
 					preTest = testW;
-		    		pane.setSize(new Dimension(testW, Short.MAX_VALUE));
-		    		pane.setText(text);
-		    		Dimension paneSize = pane.getPreferredSize();
-		    		w = min(testW, paneSize.width);
-		    		h = paneSize.height;
-	    			testW *= (float) h /iH;
+					pane.setSize(new Dimension(testW, Short.MAX_VALUE));
+					pane.setText(text);
+					Dimension paneSize = pane.getPreferredSize();
+					w = min(testW, paneSize.width);
+					h = paneSize.height;
+					testW *= (float) h /iH;
 				}
 				go = (w > iW || h > iH);
 				if (go) {
-					guideFontSize = max (1, min(guideFontSize-1,
-												(int)(guideFontSize * (float)iH/h -1)));
-					go = guideFontSize > 1;
+					guideFontSize (max (1, min(guideFontSize()-1, (int)(guideFontSize() * (float)iH/h -1))));
+					go = guideFontSize() > 1;
 				}
 			}
-    		margin.setSize(new Dimension(w+s6, h+s6));
-    		border.setSize(new Dimension(w+s16, h+s16));
-    		pane.setSize(new Dimension(w, h));
+			w += 1;
+			margin.setSize(new Dimension(w+s6, h+s6));
+			border.setSize(new Dimension(w+s16, h+s16));
+			pane.setSize(new Dimension(w, h));
 		}
 		private void init(Rectangle dest)		{ init(dest, s20, s20); }
 		private void init(Rectangle dest, int xShift, int yShift) {
 			init(dest, xShift, yShift, s10, s10); }
-        private void init(Rectangle dest, int xShift, int yShift, int xCover, int yCover) {
-        	init(dest, xShift, yShift, xCover, yCover, s10, s10); }
-        private void init(Rectangle dest,
-        		int xShift, int yShift, int xCover, int yCover, int xMargin, int yMargin) {
-    		int xb, xd, yb, yd;
-    		int iW = scaled(Rotp.IMG_W);
-    		int iH = scaled(Rotp.IMG_H);
-    		autoSize(maxWidth);
-    		// relative position
-    		// find X location
-     		if (2*dest.x + dest.width  > iW) { // put box to the left
-    			x = dest.x - w - xShift;
-    			if (x < xMargin)
-    				x = xMargin;
-    			xb = x + w;
-	   			xd = dest.x + xCover;
-	   			if (xd < xb)
-	   				xd = xb + s10;
-    		}
-    		else { // put box to the right
-    			x = dest.x + dest.width + xShift;
-    			if (x+w > iW-xMargin)
-    				x = iW-xMargin - w;
-	   			xb = x;
-	   			xd = dest.x + dest.width - xCover;
-	   			if (xd > xb)
-	   				xd = xb - s10;
-    		}
-    		// find Y location
-     		if (2*dest.y + dest.width  > iH) { // put box to the top
-    			y = dest.y - h - yShift;
-    			if (y < yMargin)
-    				y = yMargin;
-    			yb = y + h;
-	   			yd = dest.y + yCover;
-	   			if (yd < yb)
-	   				yb = yd + s10;
-    		}
-    		else { // put box to the bottom
-    			y = dest.y + dest.height + yShift;
-    			if (y+h > iH-yMargin)
-    				y = iH-yMargin - h;
-	   			yb = y;
-	   			yd = dest.y + dest.height - yCover;
-	   			if (yd > yb)
-	   				yb = yd - s10;
-    		}
-     		if (dest.width>0) // no line for Hotkeys help
-     			setLineArr(xb, yb, xd, yd);
-        }
+		private void init(Rectangle dest, int xShift, int yShift, int xCover, int yCover) {
+			init(dest, xShift, yShift, xCover, yCover, s10, s10); }
+		private void init(Rectangle dest,
+				int xShift, int yShift, int xCover, int yCover, int xMargin, int yMargin) {
+			int xb, xd, yb, yd;
+			int iW = scaled(Rotp.IMG_W);
+			int iH = scaled(Rotp.IMG_H);
+			autoSize(maxWidth);
+			// relative position
+			// find X location
+			if (2*dest.x + dest.width  > iW) { // put box to the left
+				x = dest.x - w - xShift;
+				if (x < xMargin)
+					x = xMargin;
+				xb = x + w;
+				xd = dest.x + xCover;
+				if (xd < xb)
+					xd = xb + s10;
+			}
+			else { // put box to the right
+				x = dest.x + dest.width + xShift;
+				if (x+w > iW-xMargin)
+					x = iW-xMargin - w;
+				xb = x;
+				xd = dest.x + dest.width - xCover;
+				if (xd > xb)
+					xd = xb - s10;
+			}
+			// find Y location
+			if (2*dest.y + dest.width  > iH) { // put box to the top
+				y = dest.y - h - yShift;
+				if (y < yMargin)
+					y = yMargin;
+				yb = y + h;
+				yd = dest.y + yCover;
+				if (yd < yb)
+					yb = yd + s10;
+			}
+			else { // put box to the bottom
+				y = dest.y + dest.height + yShift;
+				if (y+h > iH-yMargin)
+					y = iH-yMargin - h;
+				yb = y;
+				yd = dest.y + dest.height - yCover;
+				if (yd > yb)
+					yb = yd - s10;
+			}
+			if (dest.width>0) // no line for Hotkeys help
+				setLineArr(xb, yb, xd, yd);
+		}
 	}
 }

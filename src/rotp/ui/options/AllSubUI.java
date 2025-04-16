@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
-import rotp.model.game.IGalaxyOptions;
+import rotp.model.game.IMainOptions;
 import rotp.model.game.SafeListParam;
 import rotp.ui.util.IParam;
 import rotp.ui.util.ParamSubUI;
@@ -26,6 +26,7 @@ public final class AllSubUI {
 	private void put(AbstractOptionsSubUI ui)	{ uiMap.put(ui.optionId(), ui); }
 	private void init()							{
 		// Level 0 Panels
+		put(new AdvancedSystems());
 		put(new AutoSendFleetOption());
 		put(new BackupOptions());
 		put(new ColonyRules());
@@ -37,6 +38,7 @@ public final class AllSubUI {
 		put(new DiplomacyOptions());
 		put(new FlagOptions());
 		put(new GalaxyRules());
+		put(new GalaxyShapesOptions());
 		put(new GameDifficulty());
 		put(new GameMenuPreferences());
 		put(new GNNandPopupFilter());
@@ -92,13 +94,13 @@ public final class AllSubUI {
 			LinkedHashSet<IParam> allOptions = new LinkedHashSet<>();
 			for (AbstractOptionsSubUI ui : instance().uiMap.values())
 				allOptions.addAll(ui.getListNoSpacer());
-			allOptions.add(IGalaxyOptions.getGalaxyShapeOption4());
-			allOptions.add(IGalaxyOptions.getGalaxyShapeLineSpacing());
+//			allOptions.add(IGalaxyOptions.shapeOption4); // TODO BR: Validate
+//			allOptions.add(IGalaxyOptions.shapeLineSpacing);
 			// Remove the line separators
 			allOptions.remove(null);
 			// Then create the final list 
 			allModOptions = new SafeListParam(ALL_MOD_OPTIONS);
-			allModOptions.add(rotp.model.game.IMainOptions.showGuide);
+			allModOptions.add(IMainOptions.showGuide);
 			allModOptions.addAll(allOptions);
 		}
 		return allModOptions;

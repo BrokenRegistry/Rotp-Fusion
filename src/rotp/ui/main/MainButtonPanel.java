@@ -28,6 +28,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 
+import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
@@ -185,7 +186,7 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
     		label = text("MAIN_NAVIGATION_AUTO_RUN_PAUSE");
         else {
         	String key;
-        	if (opts.debugAutoRun())
+        	if (IDebugOptions.debugAutoRun())
 	        	key = "MAIN_NAVIGATION_AUTO_RUN";
 	        else if (opts.displayYear())
 	        	key = "MAIN_NAVIGATION_NEXT_YEAR";

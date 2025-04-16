@@ -42,7 +42,9 @@ import rotp.model.galaxy.StarSystem;
 import rotp.model.galaxy.Transport;
 import rotp.model.game.GameSession;
 import rotp.model.game.IAdvOptions;
-import rotp.model.game.IGameOptions;
+import rotp.model.game.IGalaxyOptions;
+import rotp.model.game.IInGameOptions;
+import rotp.model.game.IPreGameOptions;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
@@ -422,7 +424,7 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 				newEntryRequest(entry);
 		}
 		private void newEntryReply(String entry)	{
-			if (entry.equalsIgnoreCase("x") && Rotp.isIDE()) { // TODO BR: COMMENT
+			if (entry.equalsIgnoreCase("x") && Rotp.isIDE()) { // TO DO BR: COMMENT
 				commandField.setText("");
 				resultPane.setText(parentUI.getMessage());
 				return;
@@ -1560,7 +1562,7 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 				File file = new File(dirPath, fileName); // Force the correct extension
 				// Remove sensitive info that should not be shared in game file
 				// (May contains player name)
-				RotPUI.currentOptions(IGameOptions.GAME_ID);
+				rulesetManager().setAsGameMode();
 				options().prepareToSave(true);
 				options().saveOptionsToFile(GAME_OPTIONS_FILE);
 				options().saveOptionsToFile(LIVE_OPTIONS_FILE);
@@ -1702,17 +1704,16 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 	private class GalaxyMenu extends CommandMenu {
 		GalaxyMenu  (String name, CommandMenu parent) {
 			super(name, parent);
-			IGameOptions opts = options();
 			addMenu(new CommandMenu("Advanced Options Menu", this, IAdvOptions.advancedOptions()));
-			addSetting(opts.sizeSelection());
-			addSetting(rotp.model.game.IPreGameOptions.dynStarsPerEmpire);
-			addSetting(opts.shapeSelection());
-			addSetting(opts.shapeOption1());
-			addSetting(opts.shapeOption2());
-			addSetting(opts.difficultySelection());
-			addSetting(rotp.model.game.IInGameOptions.customDifficulty);
-			addSetting(opts.aliensNumber());
-			addSetting(opts.showNewRaces());
+			addSetting(IGalaxyOptions.sizeSelection);
+			addSetting(IPreGameOptions.dynStarsPerEmpire);
+			addSetting(IGalaxyOptions.shapeSelection);
+//			addSetting(IGalaxyOptions.shapeOption1);
+//			addSetting(IGalaxyOptions.shapeOption2);
+			addSetting(IGalaxyOptions.difficultySelection);
+			addSetting(IInGameOptions.customDifficulty);
+			addSetting(IGalaxyOptions.aliensNumber);
+			addSetting(IGalaxyOptions.showNewRaces);
 			addSetting(RotPUI.setupGalaxyUI().opponentAI);
 			addSetting(RotPUI.setupGalaxyUI().globalAbilities);
 			addCmd(new CmdStartGame("Start Game", GAME_START, "start"));

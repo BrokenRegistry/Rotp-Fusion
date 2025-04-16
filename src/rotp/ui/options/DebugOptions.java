@@ -2,6 +2,7 @@ package rotp.ui.options;
 
 import java.util.Arrays;
 
+import rotp.Rotp;
 import rotp.model.game.GameSession;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
@@ -38,11 +39,13 @@ final class DebugOptions extends AbstractOptionsSubUI {
 				menuStartup,
 				continueAnyway
 				));
-		GameSession session = GameSession.instance();
-		if (session.status().inProgress()) {
-			list.add(HEADER_SPACER_100);
-			list.add(HEADER_SPACER_100);
-			list.add(debugPlayerEmpire);
+		if (!Rotp.noOptions()) {
+			GameSession session = GameSession.instance();
+			if (session != null && session.status().inProgress()) {
+				list.add(HEADER_SPACER_100);
+				list.add(HEADER_SPACER_100);
+				list.add(debugPlayerEmpire);
+			}
 		}
 		map.add(list);
 		return map;

@@ -97,7 +97,7 @@ public final class FleetUI extends BasePanel implements IMapHandler, ActionListe
     public HashMap<ShipDesign, BufferedImage> designImageCache = new HashMap<>();
     private GalaxyMapPanel map;
     private LinearGradientPaint backGradient;
-    private boolean chainRally = options().defaultChainRally();
+    private Boolean chainRally;
 
     private final List<Sprite> controls = new ArrayList<>();
 
@@ -170,8 +170,12 @@ public final class FleetUI extends BasePanel implements IMapHandler, ActionListe
         resetAllFleetFilters();
         showQueryPanel();
     }
-    public boolean chainRally()            { return chainRally; }
-    public void toggleChainRally()         { chainRally = !chainRally; }
+	public boolean chainRally()				{
+		if (chainRally == null)
+			chainRally = options().defaultChainRally();
+		return chainRally;
+	}
+	public void toggleChainRally()			{ chainRally = !chainRally(); }
     public boolean showingQueryPanel()     { return currentPane.equals(QUERY_PANEL); }
     public boolean showingRallyPanel()     { return currentPane.equals(RALLY_PANEL); }
     public boolean showingTransportPanel() { return currentPane.equals(TRANSPORT_PANEL); }

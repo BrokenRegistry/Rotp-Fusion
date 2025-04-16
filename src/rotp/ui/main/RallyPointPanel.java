@@ -50,9 +50,17 @@ public class RallyPointPanel extends SystemPanel {
     private static final long serialVersionUID = 1L;
     private List<StarSystem> lastPreviewChain;
     private BasePanel topPane;
-    private boolean chainRally = options().defaultChainRally();
-    
-    public RallyPointPanel(SpriteDisplayPanel p) {
+	private Boolean chainRally;
+
+	private void defaultChainRally()	{ chainRally = options().defaultChainRally(); }
+	private boolean chainRally()		{
+		if (chainRally == null)
+			defaultChainRally();
+		return chainRally;
+	}
+	private void toggleChainRally()		{ chainRally = !chainRally(); }
+
+	public RallyPointPanel(SpriteDisplayPanel p) {
         parentSpritePanel = p;
         init();
     }
@@ -75,7 +83,7 @@ public class RallyPointPanel extends SystemPanel {
             return false;
         ShipRelocationSprite sprite = (ShipRelocationSprite) parentSpritePanel.spriteToDisplay();
         
-    	if (chainRally) {
+    	if (chainRally()) {
             Empire player = player();
         	IGameOptions options = options();
     		StarSystem from = sprite.from();
@@ -203,7 +211,7 @@ public class RallyPointPanel extends SystemPanel {
         relocationSprite().clear();
 		if (lastPreviewChain != null)
 			player().processChainRally(lastPreviewChain, SystemView.CLEAR_PREVIEW);
-        chainRally = options().defaultChainRally();
+		defaultChainRally();
         lastPreviewChain = null;
         parentSpritePanel.parent.clickedSprite(sys);
         parentSpritePanel.parent.repaint();
@@ -217,7 +225,7 @@ public class RallyPointPanel extends SystemPanel {
 			player().processChainRally(lastPreviewChain, SystemView.CLEAR_PREVIEW);
 		StarSystem from = spr.from();
 		StarSystem dest = spr.starSystem();
-        if (chainRally && isPlayer(dest.empire())) {
+        if (chainRally() && isPlayer(dest.empire())) {
             Empire player = player();
         	IGameOptions options = options();
     		ColonyShipyard shipyard = sys.colony().shipyard();
@@ -232,7 +240,7 @@ public class RallyPointPanel extends SystemPanel {
         else {
             player().sv.rallySystem(sys.id, spr.starSystem());
         }
-        chainRally = options().defaultChainRally();
+        defaultChainRally();
         lastPreviewChain = null;
         parentSpritePanel.parent.clickedSprite(sys);
         parentSpritePanel.parent.repaint();
@@ -240,7 +248,7 @@ public class RallyPointPanel extends SystemPanel {
     public void cancelRelocationPath() {
         StarSystem sys = relocationSprite().homeSystemView();
         player().sv.stopRally(sys.id);
-        chainRally = options().defaultChainRally();
+        defaultChainRally();
         lastPreviewChain = null;
         parentSpritePanel.parent.clickedSprite(sys);
         parentSpritePanel.parent.repaint();
@@ -376,7 +384,7 @@ public class RallyPointPanel extends SystemPanel {
                 g.setColor(Color.yellow);
                 g.draw(chainRallyBox);
             }
-            if (chainRally) {
+            if (chainRally()) {
                 g.setColor(SystemPanel.whiteText);
                 g.drawLine(checkX-s1, y0-s6, checkX+s3, y0-s3);
                 g.drawLine(checkX+s3, y0-s3, checkX+checkW, y0-s12);
@@ -421,7 +429,7 @@ public class RallyPointPanel extends SystemPanel {
                 return;
             }
             else if (chainRallyBox.contains(x,y)) {
-            	chainRally = !chainRally;
+            	toggleChainRally();
                 softClick();
                 repaint();
                 return;

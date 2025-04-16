@@ -19,36 +19,62 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import rotp.model.game.IGalaxyOptions.IShapeOption;
+import rotp.model.game.IGalaxyOptions.ShapeOptionList;
 import rotp.model.game.IGameOptions;
 
 public class GalaxySpiralShape extends GalaxyShape {
-    private static final long serialVersionUID = 1L;
-    public static final List<String> options1;
-    public static final List<String> options2;
-    private static final String SYMMETRIC = "SETUP_SPIRAL_SYMMETRIC"; // BR: This label for a better ID in Profiles 
-    static {
-        options1 = new ArrayList<>();
-        options1.add("SETUP_SPIRAL_2_ARMS");
-        options1.add("SETUP_SPIRAL_3_ARMS");
-        options1.add("SETUP_SPIRAL_4_ARMS");
-        options1.add("SETUP_SPIRAL_5_ARMS");
-        options1.add("SETUP_SPIRAL_6_ARMS");
-        options1.add("SETUP_SPIRAL_7_ARMS");
-        options1.add("SETUP_SPIRAL_8_ARMS");
-        options1.add(SYMMETRIC); // BR:
-        options1.add(RANDOM_OPTION);
-        options2 = new ArrayList<>();
-        options2.add("SETUP_SPIRAL_ROTATION_0");
-        options2.add("SETUP_SPIRAL_ROTATION_1");
-        options2.add("SETUP_SPIRAL_ROTATION_2");
-        options2.add("SETUP_SPIRAL_ROTATION_3");
-        options2.add("SETUP_SPIRAL_ROTATION_4");
-        options2.add("SETUP_SPIRAL_ROTATION_5");
-        options2.add("SETUP_SPIRAL_ROTATION_6");
-        options2.add(RANDOM_OPTION);
-    }
+	private static final long serialVersionUID = 1L;
+	private static final String SYMMETRIC	= "SETUP_SPIRAL_SYMMETRIC";
+	private	static final String SHORT_NAME	= "SPIRAL";
+	private	static final String BASE_NAME	= ROOT_NAME + SHORT_NAME;
+	public	static final String NAME		= UI_KEY + BASE_NAME;
+	private	static final int DEFAULT_OPT_1	= 2;
+	private	static final int DEFAULT_OPT_2	= 3;
+	private static ShapeOptionList param1;
+	private static ShapeOptionList param2;
+
+	public static ShapeOptionList param1()	{
+		if (param1 == null) {
+			param1 = new ShapeOptionList(
+			BASE_NAME, 1,
+			new ArrayList<String>(Arrays.asList(
+					"SETUP_SPIRAL_2_ARMS",
+					"SETUP_SPIRAL_3_ARMS",
+					"SETUP_SPIRAL_4_ARMS",
+					"SETUP_SPIRAL_5_ARMS",
+					"SETUP_SPIRAL_6_ARMS",
+					"SETUP_SPIRAL_7_ARMS",
+					"SETUP_SPIRAL_8_ARMS",
+				SYMMETRIC,
+				RANDOM_OPTION
+				) ),
+			DEFAULT_OPT_1);
+		}
+		return param1;
+	}
+	public static ShapeOptionList param2()	{
+		if (param2 == null) {
+			param2 = new ShapeOptionList(
+			BASE_NAME, 2,
+			new ArrayList<String>(Arrays.asList(
+				"SETUP_SPIRAL_ROTATION_0",
+				"SETUP_SPIRAL_ROTATION_1",
+				"SETUP_SPIRAL_ROTATION_2",
+				"SETUP_SPIRAL_ROTATION_3",
+				"SETUP_SPIRAL_ROTATION_4",
+				"SETUP_SPIRAL_ROTATION_5",
+				"SETUP_SPIRAL_ROTATION_6",
+				RANDOM_OPTION
+				) ),
+			DEFAULT_OPT_2);
+		}
+		return param2;
+	}
+
     public static int numOptions1 = 8;
     public static int numOptions2 = 7;
     float numArms = 8;
@@ -63,11 +89,10 @@ public class GalaxySpiralShape extends GalaxyShape {
 
     float randomX = 0;
     float randomY = 0;
-    
-    public GalaxySpiralShape(IGameOptions options) {
-    	super(options);
-    }
-    // BR: for symmetric galaxy
+
+	public GalaxySpiralShape(IGameOptions options, boolean[] rndOpt)	{ super(options, rndOpt); }
+
+	// BR: for symmetric galaxy
     private CtrPoint getRandomSymmetric(double minRay) {
         double ray = randX.nextDouble(minRay, 1); 
         ray *= ray; // to favor short ray
@@ -75,8 +100,7 @@ public class GalaxySpiralShape extends GalaxyShape {
         armOffset = (armOffset - armOffsetMax/2) / ray;
         armOffset *= armOffset * Math.signum(armOffset); // to Squeeze the arm
         double angle = armOffset + ray * rotationFactor;
-    	return new CtrPoint(ray * galaxyRay())
-    			.rotate(angle + randomOrientation);
+		return new CtrPoint(ray * galaxyRay()).rotate(angle + randomOrientation);
     }
     @Override public CtrPoint getValidRandomSymmetric() {
     	CtrPoint pt = getRandomSymmetric(minRandRay);
@@ -84,36 +108,23 @@ public class GalaxySpiralShape extends GalaxyShape {
 			pt = getRandomSymmetric(minRandRay);
     	return pt;
     }
-	@Override public CtrPoint getPlayerSymmetricHomeWorld() {
-    	double minHomeRay = Math.sqrt(empireBuffer * numEmpires / twoPI / galaxyRay());
-//    	if (opts.selectedMaximizeSpacing()) {
-//    		minHomeRay = Math.max(minHomeRay, (galaxyRay() - sysBuffer)/galaxyRay()) ;
-//    	}
-    	return getRandomSymmetric(minHomeRay);
+	@Override public CtrPoint getPlayerSymmetricHomeWorld()	{
+		double minHomeRay = Math.sqrt(empireBuffer * numEmpires / twoPI / galaxyRay());
+		return getRandomSymmetric(minHomeRay);
 	}
-//	@Override public boolean isSymmetric()         {
-//		return opts.selectedGalaxyShapeOption1().equals(SYMMETRIC);
-//	}
-//	@Override public boolean isCircularSymmetric() { return isSymmetric(); }
-	// \BR:
-    @Override
-    public List<String> options1()  { return options1; }
-    @Override
-    public List<String> options2()  { return options2; }
-    @Override
-    public String defaultOption1()  { return options1.get(2); }
-    @Override
-    public String defaultOption2()  { return options2.get(3); }
+	@Override public IShapeOption paramOption1()	{ return param1(); }
+	@Override public IShapeOption paramOption2()	{ return param2(); }
+	@Override public void setOption1(String value)	{ param1().set(value); }
+	@Override public void setOption2(String value)	{ param2().set(value); }
+	@Override public List<String> options1()		{ return param1().getOptions(); }
+	@Override public List<String> options2()		{ return param2().getOptions(); }
+	@Override public String name()					{ return NAME; }
+	@Override public GalaxyShape get()				{ return this; }
+
+	@Override public float maxScaleAdj()			{ return 1.1f; }
     @Override
     public void init(int n) {
         super.init(n);
-//        int option1 = max(0, options1.indexOf(opts.selectedGalaxyShapeOption1()));
-//        int option2 = max(0, options2.indexOf(opts.selectedGalaxyShapeOption2()));
-//
-//        if (option1 == options1.size()-1)
-//        	option1 = random.nextInt(options1.size()-2); // No Random Symmetric
-//        if (option2 == options2.size()-1)
-//        	option2 = random.nextInt(options2.size()-1);
 
         numArms = option1+2;
     	// BR: For symmetric galaxy
@@ -137,12 +148,10 @@ public class GalaxySpiralShape extends GalaxyShape {
 
         rotationFactor = option2;
         armSeparationDistance = 2 * (float)Math.PI / numArms;
-        
+
         circle = new Ellipse2D.Float(0,0,galaxyWidthLY(), galaxyHeightLY());
         initWidthHeight();
     }
-    @Override
-    public float maxScaleAdj()               { return 1.1f; }
     @Override // BR: added adjust_density for the void in symmetric galaxies
     protected int galaxyWidthLY() {
         return (int) (Math.sqrt(adjust_density*maxStars*adjustedSizeFactor()));
@@ -156,18 +165,18 @@ public class GalaxySpiralShape extends GalaxyShape {
         float buff = galaxyEdgeBuffer();
         float adjW = fullWidth-buff-buff;
         float adjH = fullHeight-buff-buff;
-        
+
         float dist = randX.nextFloat();
         dist = dist * dist;
-        
+
         float angle = (float) randY.nextDouble(2*Math.PI);
         float armOffset = rand.nextFloat(armOffsetMax);
         armOffset = (armOffset - armOffsetMax/2)/dist;
         armOffset = armOffset > 0 ? armOffset*armOffset : -1*armOffset*armOffset;
-        
+
         float rotation = dist * rotationFactor;
         angle = (int)(angle/armSeparationDistance)*armSeparationDistance+armOffset+rotation;
-        
+
         float rX = (float)(Math.cos(angle)*dist);
         float rY = (float)(Math.sin(angle)*dist);
         pt.x = buff+(adjW*(1+rX)/2);
@@ -186,14 +195,6 @@ public class GalaxySpiralShape extends GalaxyShape {
     }
     @Override protected float sizeFactor(String size) {
         float adj = densitySizeFactor();
-//        switch (opts.selectedStarDensityOption()) {
-//            case IGameOptions.STAR_DENSITY_LOWEST:  adj = 1.3f; break;
-//            case IGameOptions.STAR_DENSITY_LOWER:   adj = 1.2f; break;
-//            case IGameOptions.STAR_DENSITY_LOW:     adj = 1.1f; break;
-//            case IGameOptions.STAR_DENSITY_HIGH:    adj = 0.9f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHER:  adj = 0.8f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHEST: adj = 0.7f; break;
-//        }
         switch (opts.selectedGalaxySize()) {
             case IGameOptions.SIZE_TINY:      return adj*24; 
             case IGameOptions.SIZE_SMALL:     return adj*24; 

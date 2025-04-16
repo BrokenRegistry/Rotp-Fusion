@@ -44,7 +44,7 @@ public final class SettingsOptions extends AbstractOptionsSubUI {
 		list.addAll(AllSubUI.getHandle(SETTING_MENU_PREF_UI_KEY).getUiMinor(false));
 		list.add(HEADER_SPACER_50);
 		list.addAll(AllSubUI.getHandle(ZOOM_OPTIONS_UI_KEY).getUiMinor(false));
-		if (!Rotp.noOptions) {
+		if (!Rotp.noOptions()) {
 			String langDir = LanguageManager.selectedLanguageDir();
 			if (langDir.equalsIgnoreCase("EN")) {
 				list.add(HEADER_SPACER_50);

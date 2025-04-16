@@ -21,58 +21,73 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import rotp.model.game.IGalaxyOptions.IShapeOption;
+import rotp.model.game.IGalaxyOptions.ShapeOptionList;
 import rotp.model.game.IGameOptions;
 
 public class GalaxyRectangularShape extends GalaxyShape {
-    // modnar: add options for StarField
-    public static final List<String> options1;
-    public static final List<String> options2;
-    private static final long serialVersionUID = 1L;
-    static {
-        options1 = new ArrayList<>();
-        options1.add("SETUP_RECTANGLE_0");
-        options1.add("SETUP_RECTANGLE_1");
-        options1.add("SETUP_RANDOM_OPTION");
-        options2 = new ArrayList<>();
-        options2.add("SETUP_VOID_0");
-        options2.add("SETUP_VOID_1");
-        options2.add("SETUP_VOID_2");
-        options2.add("SETUP_VOID_5");
-        options2.add("SETUP_RANDOM_OPTION");
-    }
-	
-    Shape block, circle;
+	private	static final long serialVersionUID = 1L;
+	private	static final String SHORT_NAME	= "RECTANGLE";
+	private	static final String BASE_NAME	= ROOT_NAME + SHORT_NAME;
+	public	static final String NAME		= UI_KEY + BASE_NAME;
+	private	static final int DEFAULT_OPT_1	= 0;
+	private	static final int DEFAULT_OPT_2	= 0;
+	private static ShapeOptionList param1;
+	private static ShapeOptionList param2;
+
+	public static ShapeOptionList param1()	{
+		if (param1 == null) {
+			param1 = new ShapeOptionList(
+					BASE_NAME, 1,
+					new ArrayList<String>(Arrays.asList(
+						"SETUP_RECTANGLE_0",
+						"SETUP_RECTANGLE_1",
+						RANDOM_OPTION
+						) ),
+					DEFAULT_OPT_1);
+		}
+		return param1;
+	}
+	public static ShapeOptionList param2()	{
+		if (param2 == null) {
+			param2 = new ShapeOptionList(
+					BASE_NAME, 2,
+					new ArrayList<String>(Arrays.asList(
+						"SETUP_VOID_0",
+						"SETUP_VOID_1",
+						"SETUP_VOID_2",
+						"SETUP_VOID_5",
+						RANDOM_OPTION
+						) ),
+					DEFAULT_OPT_2);
+		}
+		return param2;
+	}
+
+	Shape block, circle;
 	Area totalArea, blockArea, circleArea;
 	float adjust_density = 0.75f; // modnar: adjust stellar density
     float rectangleRatio = 4.0f/3.0f;
     int voids = 0;
-	
-    public GalaxyRectangularShape(IGameOptions options) {
-    	super(options);
-    }
-    @Override
-    public List<String> options1()  { return options1; }
-    @Override
-    public List<String> options2()  { return options2; }
-    @Override
-    public String defaultOption1()  { return options1.get(0); }
-    @Override
-    public String defaultOption2()  { return options2.get(0); }
-    @Override
-    public float maxScaleAdj()      { return 0.95f; }
+
+	public GalaxyRectangularShape(IGameOptions options, boolean[] rndOpt)	{ super(options, rndOpt); }
+
+	@Override public IShapeOption paramOption1()	{ return param1(); }
+	@Override public IShapeOption paramOption2()	{ return param2(); }
+	@Override public void setOption1(String value)	{ param1().set(value); }
+	@Override public void setOption2(String value)	{ param2().set(value); }
+	@Override public List<String> options1()		{ return param1().getOptions(); }
+	@Override public List<String> options2()		{ return param2().getOptions(); }
+	@Override public String name()					{ return NAME; }
+	@Override public GalaxyShape get()				{ return this; }
+
+	@Override public float maxScaleAdj()			{ return 0.95f; }
     @Override
     public void init(int n) {
         super.init(n);
-
-//        int option1 = max(0, options1.indexOf(opts.selectedGalaxyShapeOption1()));
-//        int option2 = max(0, options2.indexOf(opts.selectedGalaxyShapeOption2()));
-//        
-//        if (option1 == options1.size()-1)
-//        	option1 = random.nextInt(options1.size()-1);
-//        if (option2 == options2.size()-1)
-//        	option2 = random.nextInt(options2.size()-1);
 
         switch(option1) {
             case 0: {
@@ -85,10 +100,10 @@ public class GalaxyRectangularShape extends GalaxyShape {
             }
             default: rectangleRatio = 4.0f/3.0f; break;
         }
-		
+
         // reset w/h vars since aspect ratio may have changed
         initWidthHeight();
-        
+
 		// modnar: choose void configurations with option2
         switch(option2) {
             case 0: {
@@ -96,7 +111,7 @@ public class GalaxyRectangularShape extends GalaxyShape {
                 adjust_density = 0.75f;
                 // reset w/h vars since aspect ratio may have changed
                 initWidthHeight();
-                
+
                 float gE = (float) galaxyEdgeBuffer();
                 float gW = (float) galaxyWidthLY();
                 float gH = (float) galaxyHeightLY();
@@ -111,15 +126,15 @@ public class GalaxyRectangularShape extends GalaxyShape {
                 adjust_density = 1.75f;
                 // reset w/h vars since aspect ratio may have changed
                 initWidthHeight();
-                
+
                 float gE = (float) galaxyEdgeBuffer();
                 float gW = (float) galaxyWidthLY();
                 float gH = (float) galaxyHeightLY();
-                
+
                 block = new Rectangle2D.Float(gE, gE, gW, gH);
                 blockArea = new Area(block);
                 totalArea = blockArea;
-                
+
                 circle = new Ellipse2D.Float(gE+0.5f*gW-0.44f*gH, gE+0.06f*gH, 0.88f*gH, 0.88f*gH);
                 circleArea = new Area(circle);
                 totalArea.subtract(circleArea);
@@ -130,19 +145,19 @@ public class GalaxyRectangularShape extends GalaxyShape {
                 adjust_density = 1.2f;
                 // reset w/h vars since aspect ratio may have changed
                 initWidthHeight();
-                
+
                 float gE = (float) galaxyEdgeBuffer();
                 float gW = (float) galaxyWidthLY();
                 float gH = (float) galaxyHeightLY();
-                
+
                 block = new Rectangle2D.Float(gE, gE, gW, gH);
                 blockArea = new Area(block);
                 totalArea = blockArea;
-                
+
                 circle = new Ellipse2D.Float(gE+0.05f*gW, gE+0.05f*gH, 0.45f*gW, 0.45f*gW);
                 circleArea = new Area(circle);
                 totalArea.subtract(circleArea);
-                
+
                 circle = new Ellipse2D.Float(gE+0.5f*gW, gE+0.95f*gH-0.45f*gW, 0.45f*gW, 0.45f*gW);
                 circleArea = new Area(circle);
                 totalArea.subtract(circleArea);
@@ -153,31 +168,31 @@ public class GalaxyRectangularShape extends GalaxyShape {
                 adjust_density = 1.5f;
                 // reset w/h vars since aspect ratio may have changed
                 initWidthHeight();
-                
+
                 float gE = (float) galaxyEdgeBuffer();
                 float gW = (float) galaxyWidthLY();
                 float gH = (float) galaxyHeightLY();
-                
+
                 block = new Rectangle2D.Float(gE, gE, gW, gH);
                 blockArea = new Area(block);
                 totalArea = blockArea;
-                
+
                 circle = new Ellipse2D.Float(gE+0.26f*gW, gE+0.5f*gH-0.24f*gW, 0.48f*gW, 0.48f*gW);
                 circleArea = new Area(circle);
                 totalArea.subtract(circleArea);
-                
+
                 circle = new Ellipse2D.Float(gE+0.05f*gW, gE+0.067f*gH, 0.3f*gH, 0.3f*gH);
                 circleArea = new Area(circle);
                 totalArea.subtract(circleArea);
-                
+
                 circle = new Ellipse2D.Float(gE+0.05f*gW, gE+0.633f*gH, 0.3f*gH, 0.3f*gH);
                 circleArea = new Area(circle);
                 totalArea.subtract(circleArea);
-                
+
                 circle = new Ellipse2D.Float(gE+0.95f*gW-0.3f*gH, gE+0.067f*gH, 0.3f*gH, 0.3f*gH);
                 circleArea = new Area(circle);
                 totalArea.subtract(circleArea);
-                
+
                 circle = new Ellipse2D.Float(gE+0.95f*gW-0.3f*gH, gE+0.633f*gH, 0.3f*gH, 0.3f*gH);
                 circleArea = new Area(circle);
                 totalArea.subtract(circleArea);
@@ -194,22 +209,6 @@ public class GalaxyRectangularShape extends GalaxyShape {
     protected int galaxyHeightLY() { 
         return (int) (Math.sqrt(adjust_density*(1/rectangleRatio)*opts.numberStarSystems()*adjustedSizeFactor()));
     }
-//    @Override
-//    public void setRandom(Point.Float pt) {
-//        // modnar: use quasi-random low-discrepancy additive recurrence sequence instead of random()
-//        // based on generalised golden ratio values, in 2D this is the plastic number
-//        // http://extremelearning.com.au/unreasonable-effectiveness-of-quasirandom-sequences/
-//        // currently not better than random(), but could in principle allow better separated star systems
-//        
-//        double c1 = 0.7548776662466927600495; // inverse of plastic number
-//        double c2 = 0.5698402909980532659114; // square inverse of plastic number
-//        
-//        Random rand = new Random();
-//        int rand_int = rand.nextInt(20*opts.numberStarSystems());
-//        
-//        pt.x = galaxyEdgeBuffer() + (fullWidth - 2*galaxyEdgeBuffer()) * (float)( (0.5 + c1*rand_int)%1 );
-//        pt.y = galaxyEdgeBuffer() + (fullHeight - 2*galaxyEdgeBuffer()) * (float)( (0.5 + c2*rand_int)%1 );
-//    }
     @Override
     public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
         setRandom(pt);
@@ -229,14 +228,6 @@ public class GalaxyRectangularShape extends GalaxyShape {
     }
     @Override protected float sizeFactor(String size) {
         float adj = densitySizeFactor();
-//        switch (opts.selectedStarDensityOption()) {
-//            case IGameOptions.STAR_DENSITY_LOWEST:  adj = 1.3f; break;
-//            case IGameOptions.STAR_DENSITY_LOWER:   adj = 1.2f; break;
-//            case IGameOptions.STAR_DENSITY_LOW:     adj = 1.1f; break;
-//            case IGameOptions.STAR_DENSITY_HIGH:    adj = 0.9f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHER:  adj = 0.8f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHEST: adj = 0.7f; break;
-//        }
         switch (opts.selectedGalaxySize()) {
         	case IGameOptions.SIZE_MICRO:     return adj*8; 
         	case IGameOptions.SIZE_TINY:      return adj*10; 

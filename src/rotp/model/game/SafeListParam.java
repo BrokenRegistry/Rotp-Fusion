@@ -6,7 +6,7 @@ import java.util.Collection;
 import rotp.ui.util.IParam;
 import rotp.ui.util.ParamSpacer;
 
-public class SafeListParam extends ArrayList<IParam>{
+public class SafeListParam extends ArrayList<IParam> {
 	private static final long serialVersionUID = 1L;
 	public final String name;
     public SafeListParam(String name) { this.name = name; }
@@ -14,7 +14,7 @@ public class SafeListParam extends ArrayList<IParam>{
     	this(name);
     	addAll(c);
     }
-    public SafeListParam(Collection<IParam> c) {
+    public SafeListParam(Collection<IParam> c)	{
     	this("");
     	addAll(c);
     }
@@ -25,19 +25,19 @@ public class SafeListParam extends ArrayList<IParam>{
     		return size() == list.size();
     	return false;
     }
-	@Override public IParam get(int id) 		{
+	@Override public IParam get(int id)			{
 		if (id<0 || size() == 0)
 			return null;
 		if (id>=size())
 			return super.get(0);
 		return super.get(id);
 	}
-	@Override public boolean addAll(Collection<? extends IParam> c) 	{
+	@Override public boolean addAll(Collection<? extends IParam> c)	{
 		if (c == null)
 			return false;
 		return super.addAll(c);
 	}
-	SafeListParam getNoNull() {
+	public SafeListParam getNoNull() {
 		SafeListParam list = new SafeListParam(name);
 		for (IParam param : this)
 			if (param != null)
@@ -79,5 +79,4 @@ public class SafeListParam extends ArrayList<IParam>{
 				size++;
 		return size;
 	}
-
 }

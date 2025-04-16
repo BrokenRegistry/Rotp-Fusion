@@ -127,6 +127,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class GalaxyAge extends ParamList {
 		GalaxyAge() {
 			super(ADV_UI, "GALAXY_AGE", getGalaxyAgeOptions(), GALAXY_AGE_NORMAL);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -142,6 +143,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class StarDensity extends ParamList {
 		StarDensity() {
 			super(ADV_UI, "STAR_DENSITY", getStarDensityOptions(), STAR_DENSITY_NORMAL);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public void initDependencies(int level)	{
@@ -208,6 +210,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class Nebulae extends ParamList {
 		Nebulae() {
 			super(ADV_UI, "NEBULAE", getNebulaeOptions(), NEBULAE_NORMAL);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -223,6 +226,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class RandomEvents extends ParamList {
 		RandomEvents() {
 			super(ADV_UI, "RANDOM_EVENTS", getRandomEventOptions(), RANDOM_EVENTS_NO_MONSTERS);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -237,6 +241,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class PlanetQuality extends ParamList {
 		PlanetQuality() {
 			super(ADV_UI, "PLANET_QUALITY", getPlanetQualityOptions(), PLANET_QUALITY_NORMAL);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -251,6 +256,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class Terraforming extends ParamList {
 		Terraforming() {
 			super(ADV_UI, "TERRAFORMING", getTerraformingOptions(), TERRAFORMING_NORMAL);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -265,6 +271,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class Colonizing extends ParamList {
 		Colonizing() {
 			super(ADV_UI, "COLONIZING", getColonizingOptions(), COLONIZING_NORMAL);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -279,7 +286,8 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class CouncilWin extends ParamList {
 		CouncilWin() {
 			super(ADV_UI, "COUNCIL_WIN", getCouncilWinOptions(), COUNCIL_REBELS);
-			this.setDefaultValue(MOO1_DEFAULT, COUNCIL_IMMEDIATE);
+			setDefaultValue(MOO1_DEFAULT, COUNCIL_IMMEDIATE);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -297,6 +305,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class RandomizeAI extends ParamList {
 		RandomizeAI() {
 			super(ADV_UI, "RANDOMIZE_AI", getRandomizeAIOptions(), RANDOMIZE_AI_NONE);
+			isDuplicate(true);
 			showFullGuide(false);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -311,8 +320,8 @@ public interface IAdvOptions extends IBaseOptsTools {
 	default ParamList autoplay()	{ return autoplay; }
 	class Autoplay extends ParamList {
 		Autoplay() {
-			super(ADV_UI, "AUTOPLAY",
-					IGameOptions.autoPlayAIset().getAutoPlay(), AUTOPLAY_OFF);
+			super(ADV_UI, "AUTOPLAY", IGameOptions.autoPlayAIset().getAutoPlay(), AUTOPLAY_OFF);
+			isDuplicate(true);
 			showFullGuide(false);
 		}
 		@Override public void reInit(List<String> list) {
@@ -333,6 +342,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class ResearchRate extends ParamList {
 		ResearchRate() {
 			super(ADV_UI, "RESEARCH_RATE", getResearchRateOptions(), RESEARCH_NORMAL);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -347,6 +357,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class WarpSpeed extends ParamList {
 		WarpSpeed() {
 			super(ADV_UI, "WARP_SPEED", getWarpSpeedOptions(), WARP_SPEED_NORMAL);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -361,6 +372,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class FuelRange extends ParamList {
 		FuelRange() {
 			super(ADV_UI, "FUEL_RANGE", getFuelRangeOptions(), FUEL_RANGE_NORMAL);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -377,6 +389,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class TechTrading extends ParamList {
 		TechTrading() {
 			super(ADV_UI, "TECH_TRADING", getTechTradingOptions(), TECH_TRADING_YES);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {
@@ -391,6 +404,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 	class AiHostility extends ParamList {
 		AiHostility() {
 			super(ADV_UI, "AI_HOSTILITY", getAiHostilityOptions(), AI_HOSTILITY_NORMAL);
+			isDuplicate(true);
 			showFullGuide(true);
 		}
 		@Override public String getOptionValue(IGameOptions options) {

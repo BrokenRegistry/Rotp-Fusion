@@ -16,47 +16,116 @@
 package rotp.model.galaxy;
 
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import rotp.model.game.IGalaxyOptions.IShapeOption;
+import rotp.model.game.IGalaxyOptions.ShapeOptionList;
+import rotp.model.game.IGalaxyOptions.ShapeOptionString;
 import rotp.model.game.IGameOptions;
+import rotp.ui.RotPUI;
+import rotp.ui.game.BaseModPanel;
+
+class ShapeOptionFile extends ShapeOptionString {
+	public ShapeOptionFile(String name, int option, String defaultValue) {
+		super(name, option, defaultValue);
+	}
+	@Override public boolean toggle(MouseEvent e, BaseModPanel frame)	{
+		RotPUI.setupGalaxyUI().selectBitmapFromList();
+		return false;
+	}
+	@Override public String getGuiDisplay(int idx)	{
+		String str = super.getGuiDisplay(idx);
+		switch(idx) {
+		case 1:
+			return getNameFromPath(str);
+		default:
+			return str;
+		}
+	}
+	private String getNameFromPath(String path) {
+		File file = new File(path);
+		if (file.exists())
+			return file.getName();
+		return path;
+	}
+
+}
 
 public class GalaxyBitmapShape extends GalaxyShape {
-	public static final List<String> options1;
-	public static final List<String> options2;
 	private static final long serialVersionUID = 1L;
+	private	static final String SHORT_NAME	= "BITMAP";
+	private	static final String BASE_NAME	= ROOT_NAME + SHORT_NAME;
+	public	static final String NAME		= UI_KEY + BASE_NAME;
+	private	static final int DEFAULT_OPT_1	= 0;
+	private	static final int DEFAULT_OPT_2	= 0;
+	private	static final String DEFAULT_OPT_3 = "";
+
+	private	static final String SETUP_BITMAP_GREY_SUM		= "SETUP_BITMAP_GREY_SUM";
+	private	static final String SETUP_BITMAP_GREY_MAX		= "SETUP_BITMAP_GREY_MAX";
+	private	static final String SETUP_BITMAP_GREY_INVERSE	= "SETUP_BITMAP_GREY_INVERSE";
+	private	static final String SETUP_BITMAP_COLOR			= "SETUP_BITMAP_COLOR";
+	private	static final String SETUP_BITMAP_ADVANCED		= "SETUP_BITMAP_ADVANCED";
+	private	static final String SETUP_BITMAP_ADVANCED_MASK	= "SETUP_BITMAP_ADVANCED_MASK";
+	private	static final String SETUP_BITMAP_ADVANCED_MASK2	= "SETUP_BITMAP_ADVANCED_MASK2";
+	private	static final String SETUP_BITMAP_NORMAL			= "SETUP_BITMAP_NORMAL";
+	private	static final String SETUP_BITMAP_SHARP1			= "SETUP_BITMAP_SHARP1";
+	private	static final String SETUP_BITMAP_SHARP2			= "SETUP_BITMAP_SHARP2";
+	private	static final String SETUP_BITMAP_SHARP3			= "SETUP_BITMAP_SHARP3";
+	private	static final String SETUP_BITMAP_SHARP4			= "SETUP_BITMAP_SHARP4";
+	private static ShapeOptionList param1;
+	private static ShapeOptionList param2;
+	private static ShapeOptionFile param3;
+
+	public static ShapeOptionList param1()	{
+		if (param1 == null) {
+			param1 = new ShapeOptionList(
+			BASE_NAME, 1,
+			new ArrayList<String>(Arrays.asList(
+				SETUP_BITMAP_GREY_SUM,
+				SETUP_BITMAP_GREY_MAX,
+				SETUP_BITMAP_GREY_INVERSE,
+				SETUP_BITMAP_COLOR,
+				SETUP_BITMAP_ADVANCED,
+				SETUP_BITMAP_ADVANCED_MASK,
+				SETUP_BITMAP_ADVANCED_MASK2
+				) ),
+			DEFAULT_OPT_1);
+		}
+		return param1;
+	}
+	public static ShapeOptionList param2()	{
+		if (param2 == null) {
+			param2 = new ShapeOptionList(
+			BASE_NAME, 2,
+			new ArrayList<String>(Arrays.asList(
+				SETUP_BITMAP_NORMAL,
+				SETUP_BITMAP_SHARP1,
+				SETUP_BITMAP_SHARP2,
+				SETUP_BITMAP_SHARP3,
+				SETUP_BITMAP_SHARP4
+				) ),
+			DEFAULT_OPT_2);
+		}
+		return param2;
+	}
+	public static ShapeOptionFile param3()	{
+		if (param3 == null) {
+			param3 = new ShapeOptionFile( BASE_NAME, 3, DEFAULT_OPT_3);
+		}
+		return param3;
+	}
+
 	private static final int GX = 127;
 	private static final int GY = 127;
 	private static final float GS = 127f/6f;
-	private static enum Option1Enum {
-		SETUP_BITMAP_GREY_SUM,
-		SETUP_BITMAP_GREY_MAX,
-		SETUP_BITMAP_GREY_INVERSE,
-		SETUP_BITMAP_COLOR,
-		SETUP_BITMAP_ADVANCED,
-		SETUP_BITMAP_ADVANCED_MASK,
-		SETUP_BITMAP_ADVANCED_MASK2
-	}
-	private static enum Option2Enum {
-		SETUP_BITMAP_NORMAL,
-		SETUP_BITMAP_SHARP1,
-		SETUP_BITMAP_SHARP2,
-		SETUP_BITMAP_SHARP3,
-		SETUP_BITMAP_SHARP4,
-	}
-	static {
-		options1 = new ArrayList<>();
-		for (Option1Enum o : Option1Enum.values())
-			options1.add(o.toString());
-		options2 = new ArrayList<>();
-		for (Option2Enum o : Option2Enum.values())
-			options2.add(o.toString());
-	}
 	private float adjustDensity;
 	private float aspectRatio;
 	private float densityFactor;
@@ -78,9 +147,21 @@ public class GalaxyBitmapShape extends GalaxyShape {
 	private boolean isSum, isInverted, isColor, isAdvanced, isMask;
 	private boolean isSharp;
 
-	public GalaxyBitmapShape(IGameOptions options) {
-		super(options);
-	}
+	public GalaxyBitmapShape(IGameOptions options, boolean[] rndOpt)	{ super(options, rndOpt); }
+
+	@Override public IShapeOption paramOption1()	{ return param1(); }
+	@Override public IShapeOption paramOption2()	{ return param2(); }
+	@Override public IShapeOption paramOption3()	{ return param3(); }
+	@Override public String getOption3()			{ return param3().get(); }
+	@Override public void setOption1(String value)	{ param1().set(value); }
+	@Override public void setOption2(String value)	{ param2().set(value); }
+	@Override public List<String> options1()		{ return param1().getOptions(); }
+	@Override public List<String> options2()		{ return param2().getOptions(); }
+	@Override public String name()					{ return NAME; }
+	@Override public GalaxyShape get()				{ return this; }
+
+	@Override public float maxScaleAdj()			{ return 1.1f; }
+
 	private float sqr(float x) { return x*x;}
 	private void genGaussian(int sx, int sy, float sigma) {
 		// Bad file, Generate a working grey Map
@@ -167,10 +248,10 @@ public class GalaxyBitmapShape extends GalaxyShape {
 			redPD   = new float[yBM][xBM];
 			greenPD = new float[yBM][xBM];
 			bluePD  = new float[yBM][xBM];
-		}  else if (isSharp) {
-			sharpPD = new float[yBM][xBM];
 		}
-		
+		if (isSharp)
+			sharpPD = new float[yBM][xBM];
+
 		for (int y = 0; y < image.getHeight(); y++) {
 			for (int x = 0; x < image.getWidth(); x++) {
 				int pixel = image.getRGB(x, y);
@@ -178,7 +259,7 @@ public class GalaxyBitmapShape extends GalaxyShape {
 				int green = (pixel >> 8) & 0xff;
 				int blue  = (pixel) & 0xff;
 				int grey  = getGrey(red, green, blue);
-				
+
 				starsPD[y][x] = grey;
 				if (isColor) {
 					redPD  [y][x] = red;
@@ -194,9 +275,9 @@ public class GalaxyBitmapShape extends GalaxyShape {
 			normalizeToOne(redPD);
 			normalizeToOne(greenPD);
 			normalizeToOne(bluePD);
-		} else if (isSharp) {
-			normalizeToOne(sharpPD);
 		}
+		if (isSharp)
+			normalizeToOne(sharpPD);
 	}
 	private void setRandom(float[][] cD, Point.Float pt) {
 		float source = rand.nextFloat();
@@ -225,7 +306,7 @@ public class GalaxyBitmapShape extends GalaxyShape {
 		float vol = cumulativeDensity(starsPD, greyCD);
 		if (vol == 0)
 			return false; // Not a valid Multiple
-		
+
 		// Locate black lines
 		List<Integer> blakLines = new ArrayList<>();
 		blakLines.add(-1); // No black lines required at start
@@ -256,7 +337,7 @@ public class GalaxyBitmapShape extends GalaxyShape {
 		// StarMap
 		int starsStart = startList.get(0);
 		yBM = stopList.get(0) - starsStart;
-		
+
 		starsCD = new float[yBM][xBM];
 		starsPD = new float[yBM][xBM];
 		for (int row=0; row<yBM; row++) // full copy to be able to retrieve greenPD as Mask
@@ -280,7 +361,7 @@ public class GalaxyBitmapShape extends GalaxyShape {
 		if (blockCount == mapId)
 			return true; // Incomplete, but valid Multiple
 		nebulaeCD = getSubMap(startList.get(mapId), stopList.get(mapId), starsStart);
-		
+
 		// Orion Map
 		mapId += 1;
 		if (blockCount == mapId)
@@ -341,13 +422,7 @@ public class GalaxyBitmapShape extends GalaxyShape {
 	}
 	private void setOption1() {
 		//String finalOption1 = opts.selectedGalaxyShapeOption1();
-		Option1Enum opt1 = Option1Enum.values()[0];
-		for (Option1Enum o1 : Option1Enum.values())
-			if(finalOption1.endsWith(o1.toString())) {
-				opt1 = o1;
-				break;
-			}
-		switch (opt1) {
+		switch (finalOption1) {
 			case SETUP_BITMAP_GREY_MAX:
 				isSum		= false;
 				isInverted	= false;
@@ -408,32 +483,26 @@ public class GalaxyBitmapShape extends GalaxyShape {
 	}
 	private void setOption2() {
 		//String finalOption2 = opts.selectedGalaxyShapeOption2();
-		Option2Enum opt2 = Option2Enum.values()[0];
-		for (Option2Enum o2 : Option2Enum.values())
-			if(finalOption2.endsWith(o2.toString())) {
-				opt2 = o2;
-				break;
-			}
-		switch (opt2) {
+		switch (finalOption2) {
 			case SETUP_BITMAP_NORMAL:
 				isSharp = false;
-			   	sharpNb = 0;
+				sharpNb = 0;
 				break;
 			case SETUP_BITMAP_SHARP1:
-			   	isSharp = true;
-			   	sharpNb = 1;
+				isSharp = true;
+				sharpNb = 1;
 				break;
 			case SETUP_BITMAP_SHARP2:
-			   	isSharp = true;
-			   	sharpNb = 2;
+				isSharp = true;
+				sharpNb = 2;
 				break;
 			case SETUP_BITMAP_SHARP3:
-			   	isSharp = true;
-			   	sharpNb = 3;
+				isSharp = true;
+				sharpNb = 3;
 				break;
 			case SETUP_BITMAP_SHARP4:
-			   	isSharp = true;
-			   	sharpNb = 4;
+				isSharp = true;
+				sharpNb = 4;
 				break;
 		}
 	}
@@ -443,7 +512,6 @@ public class GalaxyBitmapShape extends GalaxyShape {
 		densityFactor = (float) Math.pow(volumeFactor, 1.0/3.0);
 		densityFactor = (float) (volumeFactor/3.0);
 		adjustDensity = sqrt(densityFactor);
-		
 	}
     @Override protected float   minEmpireFactor() { return 4f; }
     @Override protected boolean allowExtendedPreview()  { return true; }
@@ -455,7 +523,8 @@ public class GalaxyBitmapShape extends GalaxyShape {
 		setOption2();
 
 		// Get bitmap (Normalized to One)
-		String option3 = opts.selectedGalaxyShapeOption3();
+//		String option3 = shapeOption3.get();
+		String option3 = param3.get();
 		if(option3==null || option3.equals(""))
 			genGaussian(GX, GY, GS);
 		else
@@ -476,9 +545,9 @@ public class GalaxyBitmapShape extends GalaxyShape {
 			processOption2(redPD);
 			processOption2(greenPD);
 			processOption2(bluePD);
-		} else if (isSharp) {
-			processOption2(sharpPD);			
 		}
+		if (isSharp)
+			processOption2(sharpPD);			
 
 		// Normalize and validate bitmap
 		starsCD = new float[yBM][xBM];
@@ -498,7 +567,8 @@ public class GalaxyBitmapShape extends GalaxyShape {
 			alienCD[0] = userCD;
 			orionCD	= userCD;
 			nebulaeCD  = userCD;
-		} else {
+		}
+		else {
 			alienCD[0] = starsCD;
 			userCD	 = starsCD;
 			orionCD	= starsCD;
@@ -510,7 +580,8 @@ public class GalaxyBitmapShape extends GalaxyShape {
 			if (redVol == 0) { // Empty ==> star map
 				redPD	  = starsPD;
 				alienCD[0] = starsCD;
-			} else
+			}
+			else
 				normalizeCDToOne(alienCD(), redVol);
 
 			userCD = new float[yBM][xBM];
@@ -518,7 +589,8 @@ public class GalaxyBitmapShape extends GalaxyShape {
 			if (greenVol == 0) { // Empty ==> star map
 				greenPD = starsPD;
 				userCD  = starsCD;
-			} else
+			}
+			else
 				normalizeCDToOne(userCD, greenVol);
 
 			orionCD = new float[yBM][xBM];
@@ -526,7 +598,8 @@ public class GalaxyBitmapShape extends GalaxyShape {
 			if (blueVol == 0) { // Empty ==> star map
 				bluePD  = starsPD;
 				orionCD = starsCD;
-			} else
+			}
+			else
 				normalizeCDToOne(orionCD, blueVol);
 		}
 
@@ -539,10 +612,6 @@ public class GalaxyBitmapShape extends GalaxyShape {
 		bluePD  = null;
 		starsCD  = nebulaeCD;
 	}
-	@Override public List<String> options1()  { return options1; }
-	@Override public List<String> options2()  { return options2; }
-	@Override public String defaultOption1()  { return options1.get(0); }
-	@Override public String defaultOption2()  { return options2.get(0); }
 	@Override public void init(int n) {
 		super.init(n);
 		// reset w/h vars since aspect ratio may have changed
@@ -551,7 +620,6 @@ public class GalaxyBitmapShape extends GalaxyShape {
 		xMult  = (float) width/xBM;
 		yMult  = (float) height/yBM;
 	}
-	@Override public float maxScaleAdj()	{ return 1.1f; }
 	@Override protected int galaxyWidthLY() { 
 		return (int) (Math.sqrt(opts.numberStarSystems()*adjustDensity*adjustedSizeFactor()*aspectRatio));
 	}
@@ -570,7 +638,7 @@ public class GalaxyBitmapShape extends GalaxyShape {
 			return;
 		}
 		// Aliens homeworlds
-   		setRandom(alienCD(empSystems.size()-1), pt);
+		setRandom(alienCD(empSystems.size()-1), pt);
 	}
 	@Override public boolean valid(float x, float y) {
 		if (x<0)		  return false;

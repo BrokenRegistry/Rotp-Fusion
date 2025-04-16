@@ -41,6 +41,7 @@ import javax.swing.SwingUtilities;
 
 import rotp.model.game.DynamicOptions;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.RulesetManager;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.BaseModPanel.ModText;
@@ -263,8 +264,7 @@ public class SettingBase<T> implements IParam {
 	
 	// ========== Tools for overriders ==========
 	//
-//	protected void options(DynamicOptions srcOptions)	{ dynOpts = srcOptions; }
-	protected DynamicOptions dynOpts()					{ return RotPUI.currentOptions().dynOpts(); }
+	protected DynamicOptions dynOpts()	{ return RulesetManager.current().currentOptions().dynOpts(); }
 	// ========== Overridable Methods ==========
 	//
 	public boolean showFullGuide()			{ return showFullGuide; }

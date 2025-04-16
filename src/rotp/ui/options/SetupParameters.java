@@ -3,9 +3,9 @@ package rotp.ui.options;
 import java.util.Arrays;
 
 import rotp.Rotp;
+import rotp.model.game.RulesetManager;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
-import rotp.ui.RotPUI;
 import rotp.ui.util.ParamTitle;
 
 public final class SetupParameters extends AbstractOptionsSubUI {
@@ -44,7 +44,9 @@ public final class SetupParameters extends AbstractOptionsSubUI {
 				autoplay
 				)));
 		list.add(HEADER_SPACER_100);
-		if (!Rotp.noOptions && RotPUI.setupMode())
+		list.add(AllSubUI.getHandle(SETTING_MENU_PREF_UI_KEY).getUI());
+		list.add(HEADER_SPACER_100);
+		if (!Rotp.noOptions() && RulesetManager.current().isSetupMode())
 			list.addAll(AllSubUI.getHandle(PRE_GAME_OPTIONS_UI_KEY).getUiMinor(false));
 		else
 			list.add(AllSubUI.getHandle(PRE_GAME_OPTIONS_UI_KEY).getUI());

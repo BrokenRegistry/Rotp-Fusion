@@ -23,6 +23,7 @@ import java.util.Random;
 
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.SpaceMonster;
+import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
 import rotp.util.Base;
 
@@ -127,13 +128,13 @@ public class RandomEvents implements Base, Serializable {
 	public boolean isActiveEvent(RandomEvent ev)	{ return activeEvents.contains(ev); }
 	public void removeActiveEvent(RandomEvent ev)	{
 		activeEvents.remove(ev);
-		if (options().debugAutoRun() && options().debugLogEvents()) {
+		if (IDebugOptions.debugAutoRun() && IDebugOptions.debugLogEvents()) {
 			turnLog(IGameOptions.AUTORUN_EVENTS, "Remove Event: " + ev.notificationText());
 		}
 		if (ev.hasPendingEvents()) { // BR: May only happen with "fixed Event mode"
 			Empire emp = ev.getPendingEmpire();
 			ev.trigger(emp);
-			if (options().debugAutoRun() && options().debugLogEvents()) {
+			if (IDebugOptions.debugAutoRun() && IDebugOptions.debugLogEvents()) {
 				turnLog(IGameOptions.AUTORUN_EVENTS, "Get Pending Event for: " + emp.name());
 				turnLog(IGameOptions.AUTORUN_EVENTS, ev.notificationText());
 			}
@@ -224,7 +225,7 @@ public class RandomEvents implements Base, Serializable {
 		
 		lastEvent = triggeredEvent; // modnar: keep track of last event
 	   
-		if (opts.debugAutoRun() && opts.debugLogEvents())
+		if (IDebugOptions.debugAutoRun() && IDebugOptions.debugLogEvents())
 			turnLog(IGameOptions.AUTORUN_EVENTS, triggeredEvent.notificationText());
 	}
 	public RandomEvent activeEventForKey(String key) {

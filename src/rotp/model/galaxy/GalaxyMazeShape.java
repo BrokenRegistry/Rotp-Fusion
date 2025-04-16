@@ -19,58 +19,60 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
-import java.util.LinkedList;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.LinkedList;
+
+import rotp.model.game.IGalaxyOptions.IShapeOption;
+import rotp.model.game.IGalaxyOptions.ShapeOptionList;
 import rotp.model.game.IGameOptions;
 
 // modnar: custom map shape, Maze
 public class GalaxyMazeShape extends GalaxyShape {
-    public static final List<String> options1;
-    //public static final List<String> options2;
-    private static final long serialVersionUID = 1L;
-    static {
-        options1 = new ArrayList<>();
-        options1.add("SETUP_MAZE_0");
-        options1.add("SETUP_MAZE_1");
-        options1.add("SETUP_MAZE_2");
-        options1.add(RANDOM_OPTION);
-        //options2 = new ArrayList<>();
-        //options2.add("SETUP_NOT_AVAILABLE");
-    }
-    
+	private static final long serialVersionUID = 1L;
+	private	static final String SHORT_NAME	= "MAZE";
+	private	static final String BASE_NAME	= ROOT_NAME + SHORT_NAME;
+	public	static final String NAME		= UI_KEY + BASE_NAME;
+	private	static final int DEFAULT_OPT_1	= 0;
+	private static ShapeOptionList param1;
+
+	public static ShapeOptionList param1()	{
+		if (param1 == null) {
+			param1 = new ShapeOptionList(
+			BASE_NAME, 1,
+			new ArrayList<String>(Arrays.asList(
+				"SETUP_MAZE_0",
+				"SETUP_MAZE_1",
+				"SETUP_MAZE_2",
+				RANDOM_OPTION
+				) ),
+			DEFAULT_OPT_1);
+		}
+		return param1;
+	}
+
 	Shape block;
 	Area totalArea, blockArea;
-	
-    public GalaxyMazeShape(IGameOptions options) {
-    	super(options);
-    }
-    @Override protected float   minEmpireFactor() { return 4f; }
-    @Override protected boolean allowExtendedPreview()  { return false; }
-    @Override
-    public float maxScaleAdj()               { return 0.95f; }
-	@Override
-    public List<String> options1()  { return options1; }
-    //@Override
-    //public List<String> options2()  { return options2; }
-    @Override
-    public String defaultOption1()  { return options1.get(0); }
-    //@Override
-    //public String defaultOption2()  { return options2.get(0); }
-    @Override
-	public void init(int n) {
-        super.init(n);
-        
-//        int option1 = max(0, options1.indexOf(opts.selectedGalaxyShapeOption1()));
-//        //int option2 = max(0, options2.indexOf(opts.selectedGalaxyShapeOption2()));
-//        if (option1 == options1.size()-1)
-//        	option1 = random.nextInt(options1.size()-1);
-		
+
+	public GalaxyMazeShape(IGameOptions options, boolean[] rndOpt)	{ super(options, rndOpt); }
+
+	@Override public IShapeOption paramOption1()	{ return param1(); }
+	@Override public void setOption1(String value)	{ param1().set(value); }
+	@Override public String name()					{ return NAME; }
+	@Override public GalaxyShape get()				{ return this; }
+
+	@Override public float maxScaleAdj()			{ return 0.95f; }
+
+	@Override protected float   minEmpireFactor()	{ return 4f; }
+	@Override protected boolean allowExtendedPreview()	{ return false; }
+	@Override public void init(int n)	{
+		super.init(n);
+
 		float gE = (float) galaxyEdgeBuffer();
 		float gW = (float) galaxyWidthLY();
 		float gH = (float) galaxyHeightLY();
 		int adjust_seed = 1;
-		
+
 		// modnar: choose different mazes (different random initial conditions) with option1
 		switch(option1) {
             case 0: {
@@ -88,7 +90,7 @@ public class GalaxyMazeShape extends GalaxyShape {
         }
     	for (int i=0; i<adjust_seed; i++) // new way to change the seed
     		rand.nextDouble();
-		
+
 		// determine maze size with numberStarSystems
 		int width = (int) Math.max(1, 4*Math.ceil(1.5*Math.log(opts.numberStarSystems())-5));
 		int height = (int) Math.max(1, 3*Math.ceil(1.5*Math.log(opts.numberStarSystems())-5));
@@ -97,11 +99,11 @@ public class GalaxyMazeShape extends GalaxyShape {
 		boolean WALL = false;
 		boolean PASSAGE = !WALL;
 		boolean[][] map = new boolean[width][height];
-		
+
 		block = new Rectangle2D.Float();
 		blockArea = new Area(block);
 		totalArea = blockArea;
-		
+
 		LinkedList<int[]> frontiers = new LinkedList<>();
         // Random randnum = new Random();
 		// keep same random number seed
@@ -110,7 +112,7 @@ public class GalaxyMazeShape extends GalaxyShape {
         int x = randX.nextInt(width);
         int y = randY.nextInt(height);
         frontiers.add(new int[]{x,y,x,y});
-		
+
 		// maze generation with Prim's algorithm
         while ( !frontiers.isEmpty() ){
             int[] f = frontiers.remove( rand.nextInt( frontiers.size() ) );
@@ -119,7 +121,7 @@ public class GalaxyMazeShape extends GalaxyShape {
             if ( map[x][y] == WALL )
             {
                 map[f[0]][f[1]] = map[x][y] = PASSAGE;
-				
+
 				// maze passage to be filled with stars
 				block = new Rectangle2D.Float(gE+f[0]*deltaW,gE+f[1]*deltaH,deltaW,deltaH);
 				blockArea = new Area(block);
@@ -127,7 +129,7 @@ public class GalaxyMazeShape extends GalaxyShape {
 				block = new Rectangle2D.Float(gE+x*deltaW,gE+y*deltaH,deltaW,deltaH);
 				blockArea = new Area(block);
 				totalArea.add(blockArea);
-				
+
 				// maze walls are meaningless for our purposes
                 if ( x >= 2 && map[x-2][y] == WALL )
                     frontiers.add( new int[]{x-1,y,x-2,y} );
@@ -139,11 +141,11 @@ public class GalaxyMazeShape extends GalaxyShape {
                     frontiers.add( new int[]{x,y+1,x,y+2} );
             }
         }
-        
+
         // reset w/h vars since aspect ratio may have changed
         initWidthHeight();
     }
-	
+
     @Override
     protected int galaxyWidthLY() { 
         return (int) (Math.sqrt(0.75*4.0/3.0*opts.numberStarSystems()*adjustedSizeFactor()));
@@ -152,11 +154,6 @@ public class GalaxyMazeShape extends GalaxyShape {
     protected int galaxyHeightLY() { 
         return (int) (Math.sqrt(0.75*3.0/4.0*opts.numberStarSystems()*adjustedSizeFactor()));
     }
-//    @Override
-//    public void setRandom(Point.Float pt) {
-//        pt.x = randomLocation(fullWidth, galaxyEdgeBuffer());
-//        pt.y = randomLocation(fullHeight, galaxyEdgeBuffer());
-//    }
     @Override
     public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
         setRandom(pt);
@@ -167,39 +164,4 @@ public class GalaxyMazeShape extends GalaxyShape {
     }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }
-
-//    @Override float randomLocation(float max, float buff) {
-//        return buff + (random() * (max-buff-buff));
-//    }
-//    @Override
-//    protected float sizeFactor(String size) {
-//        float adj = 1.0f;
-//        switch (opts.selectedStarDensityOption()) {
-//            case IGameOptions.STAR_DENSITY_LOWEST:  adj = 1.3f; break;
-//            case IGameOptions.STAR_DENSITY_LOWER:   adj = 1.2f; break;
-//            case IGameOptions.STAR_DENSITY_LOW:     adj = 1.1f; break;
-//            case IGameOptions.STAR_DENSITY_HIGH:    adj = 0.9f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHER:  adj = 0.8f; break;
-//            case IGameOptions.STAR_DENSITY_HIGHEST: adj = 0.7f; break;
-//        }
-//        switch (opts.selectedGalaxySize()) {
-//            case IGameOptions.SIZE_TINY:      return adj*10; 
-//            case IGameOptions.SIZE_SMALL:     return adj*15; 
-//            case IGameOptions.SIZE_SMALL2:    return adj*17;
-//            case IGameOptions.SIZE_MEDIUM:    return adj*19; 
-//            case IGameOptions.SIZE_MEDIUM2:   return adj*20; 
-//            case IGameOptions.SIZE_LARGE:     return adj*21; 
-//            case IGameOptions.SIZE_LARGE2:    return adj*22; 
-//            case IGameOptions.SIZE_HUGE:      return adj*23; 
-//            case IGameOptions.SIZE_HUGE2:     return adj*24; 
-//            case IGameOptions.SIZE_MASSIVE:   return adj*25; 
-//            case IGameOptions.SIZE_MASSIVE2:  return adj*26; 
-//            case IGameOptions.SIZE_MASSIVE3:  return adj*27; 
-//            case IGameOptions.SIZE_MASSIVE4:  return adj*28; 
-//            case IGameOptions.SIZE_MASSIVE5:  return adj*29; 
-//            case IGameOptions.SIZE_INSANE:    return adj*32; 
-//            case IGameOptions.SIZE_LUDICROUS: return adj*36; 
-//            default:             return adj*19; 
-//        }
-//    }
 }

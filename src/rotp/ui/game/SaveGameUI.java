@@ -42,14 +42,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.IMainOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseTextField;
 import rotp.ui.NoticeMessage;
@@ -109,7 +112,7 @@ public final class SaveGameUI extends BasePanel implements MouseListener, MouseW
         newFileField.setFont(narrowFont(20));
         newFileField.setText(GameUI.gameName);                
         saving = false;
-        RotPUI.currentOptions(IGameOptions.GAME_ID);
+        rulesetManager().setAsGameMode();
         sortListing();
     }
     private void sortListing() {
@@ -316,7 +319,7 @@ public final class SaveGameUI extends BasePanel implements MouseListener, MouseW
         buttonClick();
         // Remove sensitive info that should not be shared in game file
         // (May contains player name)
-        RotPUI.currentOptions(IGameOptions.GAME_ID);
+        rulesetManager().setAsGameMode();
         options().prepareToSave(true);
         options().saveOptionsToFile(GAME_OPTIONS_FILE);
         options().saveOptionsToFile(LIVE_OPTIONS_FILE);
@@ -393,7 +396,7 @@ public final class SaveGameUI extends BasePanel implements MouseListener, MouseW
             end = min(saveFiles.size(), start+saveFiles.size());
 
             //int w0 = scaled(650);
-            int w0 = scaled(options().loadSaveWidth());
+            int w0 = scaled(IMainOptions.loadSaveWidth());
             int x0 = (w-w0)/2;
             int h0 = s5+(MAX_FILES*lineH);
             int y0 = scaled(180);

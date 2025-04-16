@@ -24,14 +24,14 @@ public interface InterfaceOptions {
 	 * Set the option tools value from specific options. 
 	 * Used when switching between Game and settings
 	 */
-	public default void prepareToSave(IGameOptions o) {};
-	public void updateOptionTool();
+	default void prepareToSave(IGameOptions o)	{}
+	void updateOptionTool();
 	// For settings only
-	public default void updateOptionTool(DynamicOptions options) {};
+	default void updateOptionTool(DynamicOptions options)	{}
 	// For settings only
-	public default void updateOption(DynamicOptions options) {};
-	public default void setFromDefault(boolean excludeCfg, boolean excludeSubMenu) { }
+	default void updateOption(DynamicOptions options)	{}
+	default void setFromDefault(boolean excludeCfg, boolean excludeSubMenu)	{ }
 	// cascadeSubMenu as integer to avoid infinite loop!
-	public default void copyOption(IGameOptions src, IGameOptions dest,
-									boolean updateTool, int cascadeSubMenu) {}
+	default void copyOption(IGameOptions src, IGameOptions dest,
+							boolean updateTool, int cascadeSubMenu)	{}
 }

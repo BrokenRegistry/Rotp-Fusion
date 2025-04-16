@@ -20,7 +20,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import rotp.Rotp;
+import rotp.model.game.IBaseOptsTools;
+import rotp.model.game.IGalaxyOptions;
+import rotp.model.game.IGalaxyOptions.IShapeOption;
+import rotp.model.game.IGalaxyOptions.ListShapeParam;
 import rotp.model.game.IGameOptions;
 import rotp.util.Base;
 import rotp.util.Rand;
@@ -35,7 +41,9 @@ public abstract class GalaxyShape implements Base, Serializable {
 	private static final float absMinEmpireBuffer = 3.8f;
 	private static final int   MaxPreviewSystems  = 5000;
 	private static final int   MaxEmpireTentative = 100;
-    protected static final String RANDOM_OPTION   = "SETUP_RANDOM_OPTION";
+	protected static final String RANDOM_OPTION   = "SETUP_RANDOM_OPTION";
+	protected static final String UI_KEY		  = IBaseOptsTools.BASE_UI;
+	protected static final String ROOT_NAME		  = "GALAXY_SHAPE_";
 
 	static final double twoPI = Math.PI * 2.0; // BR:
 	private static float orionBuffer = 10;
@@ -64,58 +72,122 @@ public abstract class GalaxyShape implements Base, Serializable {
 	private float sysBuffer = 1.9f;
 	int numEmpires;
 	private int numOpponents;
-	private Rand randRnd = new Rand(rng().nextLong()); // For random option selection purpose
-	Rand rand	 = new Rand(randRnd.nextLong()); // For other than location purpose
-	Rand randX	 = new Rand(randRnd.nextLong()); // For X and R
-	Rand randY	 = new Rand(randRnd.nextLong());  // for Y and Angle
+	protected Rand randRnd = new Rand(rng().nextLong()); // For random option selection purpose
+	protected Rand rand	 = new Rand(randRnd.nextLong()); // For other than location purpose
+	protected Rand randX = new Rand(randRnd.nextLong()); // For X and R
+	protected Rand randY = new Rand(randRnd.nextLong()); // for Y and Angle
 	private long tm0; // for timing computation
 	// \BR
 	
 	private float dynamicGrowth = 1f;
 	private int   currentEmpire = 0;
 	private int   loopReserve   = 0;
-	private int	  homeStarNum	= 3;
+	protected int homeStarNum	= 3;
 	
-	protected String finalOption1;
-	protected String finalOption2;
-	protected int option1;
-	protected int option2;
+	protected String finalOption1, finalOption2, finalOption3, finalOption4;
+	protected int option1, option2, option3, option4;
+	protected boolean[] randomizeShapeOptions;
 	protected boolean isSymmetric;
 	private boolean looseLimits;
-	
-	GalaxyShape (IGameOptions options) {
+
+	protected abstract String name();
+	protected abstract GalaxyShape get();
+	GalaxyShape (IGameOptions options, boolean[] rndOpt) {
+		if (options == null)
+			return; // BR: used to create empty shape to query shape info
 		opts = options;
+		if (rndOpt == null)
+			randomizeShapeOptions = new boolean[4];
+		else
+			randomizeShapeOptions = rndOpt;
 		init0();
 	}
 	private void init0() {
-		randRnd = new Rand(opts.selectedGalaxyRandSource());
+		randRnd = new Rand(IGalaxyOptions.galaxyRandSource.get());
 		rand	= randRnd;
 		randX	= randRnd;
 		randY	= randRnd;
+		initFinalOption1();
+		initFinalOption2();
+		initFinalOption3();
+		initFinalOption4();
 
-		finalOption1 = opts.selectedGalaxyShapeOption1();
-		finalOption2 = opts.selectedGalaxyShapeOption2();
-		
-		if (RANDOM_OPTION.equals(finalOption1)) {
-			List<String> optionList = new ArrayList<>(options1());
-			optionList.remove(RANDOM_OPTION);
-			finalOption1 = randRnd.random(optionList);
-		}
-		if (RANDOM_OPTION.equals(finalOption2)) {
-			List<String> optionList = new ArrayList<>(options2());
-			optionList.remove(RANDOM_OPTION);
-			finalOption2 = randRnd.random(optionList);
-		}
-        option1 = max(0, options1().indexOf(finalOption1));
-        option2 = max(0, options2().indexOf(finalOption2));
         isSymmetric = (finalOption1 != null && finalOption1.contains("SYMMETRIC"))
         		|| (finalOption2 != null && finalOption2.contains("SYMMETRIC"));
         homeStarNum = opts.secondRingSystemNumber()+1;
 	}
-	public String randomOption()	{ return RANDOM_OPTION; }
-	public int width()	{ return fullWidth; }
-	public int height() { return fullHeight; }
-	boolean fullyInit() { return fullyInit; }
+	protected void initFinalOption1()	{
+		finalOption1 = getOption1();
+		if (RANDOM_OPTION.equals(finalOption1) || randomizeShapeOptions[0]) {
+			List<String> optionList = new ArrayList<>(options1());
+			optionList.remove(RANDOM_OPTION);
+			finalOption1 = randRnd.random(optionList);
+		}
+		option1 = max(0, options1().indexOf(finalOption1));
+	}
+	protected void initFinalOption2()	{
+		finalOption2 = getOption2();
+		if (RANDOM_OPTION.equals(finalOption2) || randomizeShapeOptions[1]) {
+			List<String> optionList = new ArrayList<>(options2());
+			optionList.remove(RANDOM_OPTION);
+			finalOption2 = randRnd.random(optionList);
+		}
+		option2 = max(0, options2().indexOf(finalOption2));
+	}
+	protected void initFinalOption3()	{ finalOption3 = getOption3(); }
+	protected void initFinalOption4()	{ finalOption4 = getOption4(); }
+	
+	public int width()					{ return fullWidth; }
+	public int height()					{ return fullHeight; }
+	protected boolean fullyInit()		{ return fullyInit; }
+
+	// ========== Methods to query shape info ==========
+	void registerOptions(Map<String, ListShapeParam> shapesMap)	{
+		shapesMap.put(name(), new ListShapeParam(name(), paramList()));
+	}
+	public ListShapeParam paramList()	{
+		ListShapeParam list = new ListShapeParam(name());
+		// ListShapeParam ignore null entries
+		list.add(paramOption1());
+		list.add(paramOption2());
+		list.add(paramOption3());
+		list.add(paramOption4());
+		return list;
+	}
+	public IShapeOption paramOption1()	{ return null; }
+	public IShapeOption paramOption2()	{ return null; }
+	public IShapeOption paramOption3()	{ return null; }
+	public IShapeOption paramOption4()	{ return null; }
+
+	public void setOption1(String value)	{}
+	public void setOption2(String value)	{}
+//	public String defaultOption1()	{ return null; }
+//	public String defaultOption2()	{ return null; }
+	public List<String> options1()	{ return new ArrayList<>(); }
+	public List<String> options2()	{ return new ArrayList<>(); }
+	public int numOptions1()		{ return options1().size(); }
+	public int numOptions2()		{ return options2().size(); }
+	public String getOption1()		{
+		if (paramOption1() == null || Rotp.noOptions())
+			return "";
+		return paramOption1().getCfgValue();
+	}
+	public String getOption2()		{
+		if (paramOption2() == null || Rotp.noOptions())
+			return "";
+		return paramOption2().getCfgValue();
+	}
+	public String getOption3()		{
+		if (paramOption3() == null || Rotp.noOptions())
+			return "";
+		return paramOption3().getCfgValue();
+	}
+	public String getOption4()		{
+		if (paramOption4() == null || Rotp.noOptions())
+			return "";
+		return paramOption4().getCfgValue();
+	}
+
 	// ========== abstract and overridable methods ==========
 	protected abstract int galaxyWidthLY();
 	protected abstract int galaxyHeightLY();
@@ -123,10 +195,10 @@ public abstract class GalaxyShape implements Base, Serializable {
 	//	public boolean nebulaeHasStar(float x, float y, float buffer) {
 	//		return isTooNearExistingSystem(x, y, buffer);
 	//	}
-	public void getPointFromRandomStarSystem(Point.Float pt) {
+	private void getPointFromRandomStarSystem(Point.Float pt) {
 		int numSysPerEmpire	 = empSystems.get(0).numSystems();
 		int numEmpireSystems = numEmpires * numSysPerEmpire;
-		if (options().neverNebulaHomeworld()) {
+		if (guiOptions().neverNebulaHomeworld()) {
 			numEmpireSystems = 0; // Don't even think to start over one!
 		}
 		int numUnsettledSys	 = numberStarSystems();
@@ -179,7 +251,7 @@ public abstract class GalaxyShape implements Base, Serializable {
     } */
 	// modnar: add possibility for specific placement of homeworld/orion locations
 	// indexWorld variable will be used by setSpecific in each Map Shape for locations
-	public abstract void setSpecific(Point.Float p);
+    protected abstract void setSpecific(Point.Float p);
 	int indexWorld;
 
 	protected float   minEmpireFactor()        { return 3f; }
@@ -202,7 +274,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	}
 	// BR: ========== Getter Methods ==========
 	//
-	public int numCompanionWorld()	{return numCompanions; }
+	public int numCompanionWorld()	{ return numCompanions; }
 	public int numberStarSystems()	{ return num; }
 	// modnar: add option to start game with additional colonies
 	// modnar: these colonies are in addition to number of stars chosen in galaxy
@@ -210,21 +282,14 @@ public abstract class GalaxyShape implements Base, Serializable {
 		return num + homeStars
 			+ opts.selectedCompanionWorlds()*(opts.selectedNumberOpponents()+1);
 	}
-	public List<EmpireSystem> empireSystems() { return empSystems; }
-	float adjustedSizeFactor()	{ // BR: to converge more quickly
+	public List<EmpireSystem> empireSystems()	{ return empSystems; }
+	protected float adjustedSizeFactor()	{ // BR: to converge more quickly
 		float factor = sizeFactor(opts.selectedGalaxySize());
 		float adjFactor = factor * dynamicGrowth;
 		return adjFactor;
 	}
 
-	public List<String> options1()	{ return new ArrayList<>(); }
-	public List<String> options2()	{ return new ArrayList<>(); }
-	public int numOptions1()		{ return options1().size(); }
-	public int numOptions2()		{ return options2().size(); }
-	public String defaultOption1()	{ return ""; }
-	public String defaultOption2()	{ return ""; }
-
-	float systemBuffer() { return opts.systemBuffer(opts.selectedStarDensityOption()); }
+	protected float systemBuffer() { return opts.systemBuffer(opts.selectedStarDensityOption()); }
 /*	public static float systemBuffer(String StarDensityOption) {
 		switch (StarDensityOption) {
 			case IGameOptions.STAR_DENSITY_LOWEST:  return 2.5f;
@@ -390,9 +455,9 @@ public abstract class GalaxyShape implements Base, Serializable {
 		return attempts;
 	}
 	// \BR
-	boolean valid(Point.Float p) { return valid(p.x, p.y); }
-	public float maxScaleAdj()			   { return 1.0f; }
-	public void coords(int n, Point.Float pt) {
+	private boolean valid(Point.Float p)	{ return valid(p.x, p.y); }
+	public float maxScaleAdj()				{ return 1.0f; }
+	public void coords(int n, Point.Float pt)	{
 		if (n == 0) { // BR: Fixed Orion at the wrong place with regions
 			if (orionXY == null) // BR: I don't know why this happen!!!
 				return;
@@ -436,18 +501,6 @@ public abstract class GalaxyShape implements Base, Serializable {
 		float vanillaBuffer = min(maxMinEmpireBuffer, max(minEmpireBuffer, minMaxEmpireBuffer));
 		float spreadBuffer  = vanillaBuffer * opts.selectedEmpireSpreadingFactor();
 		return max(spreadBuffer, absMinEmpireBuffer);
-//		if (opts.isCustomEmpireSpreadingFactor()) {
-//			minEmpireBuffer    *= opts.selectedEmpireSpreadingFactor();
-//			maxMinEmpireBuffer *= opts.selectedEmpireSpreadingFactor();
-//		}
-//		minEmpireBuffer    = max(minEmpireBuffer, absMinEmpireBuffer);
-//		maxMinEmpireBuffer = max(maxMinEmpireBuffer, absMinEmpireBuffer);
-//		// the stars/empires ratio for the most "densely" populated galaxy is about 8:1
-//		// we want to set the minimum distance between empires to half that in ly, with a minimum
-//		// of 6 ly... this means that it will not increase until there is at least a 12:1
-//		// ratio. However, the minimum buffer will never exceed the "MAX_MIN", to ensure that
-//		// massive maps don't always GUARANTEE hundreds of light-years of space to expand uncontested
-//		return min(maxMinEmpireBuffer, max(minEmpireBuffer, minMaxEmpireBuffer));
 	}
 	protected void singleInit(boolean full) {
 		if (full)
@@ -480,7 +533,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 		fullyInit = false;
 		init(min(MaxPreviewSystems, opts.numberStarSystems()));
 	}
-	public void init(int numStars) {
+	protected void init(int numStars) {
 		// System.out.println("========== GalaxyShape.init(): genAttempt = " + genAttempt);
 		numOpponents = opts.selectedNumberOpponents();
 		numEmpires = numOpponents + 1;
@@ -509,18 +562,11 @@ public abstract class GalaxyShape implements Base, Serializable {
 			y = new float[maxStars];
 		}
 	}
-	void initWidthHeight() {
+	protected void initWidthHeight() {
 		width  = galaxyWidthLY();
 		height = galaxyHeightLY();
 		fullWidth  = width  + (2 * galaxyEdgeBuffer());
 		fullHeight = height + (2 * galaxyEdgeBuffer());
-//		if (opts.looseNeighborhood()) {
-//			float radius2 = opts.secondRingRadius();
-//			int shrink	= (int) (0*radius2);
-//			int minSize	= (int) Math.ceil(empireBuffer);
-//			fullWidth	= max(minSize, fullWidth+shrink);
-//			fullHeight	= max(minSize, fullHeight+shrink);
-//		}
 		// BR: for symmetric galaxy
 		cx = fullWidth  / 2.0f;
 		cy = fullHeight / 2.0f;
@@ -532,7 +578,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	}
 	public boolean quickGenerate() {
 		boolean valid;
-		if (opts.selectedGalaxyRandSource() == 0 || !allowExtendedPreview())
+		if (IGalaxyOptions.galaxyRandSource.get() == 0 || !allowExtendedPreview())
 			valid = generateValid(false);
 		else
 			valid = generateValid(true);
@@ -574,7 +620,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 		// Some issues... Switch to an easy shape
 		System.err.println("Failed generateValid(" + full + ") " + genAttempt + " attempts");
 		clean();
-		opts.shapeSelection().setFromDefault(false, false);
+		IGalaxyOptions.shapeSelection.setFromDefault(false, false);
 		if (generate(full)) {
 			System.out.println("default generateValid(" + full + ") " + genAttempt + " attempts");
 			return true;
@@ -833,7 +879,7 @@ public abstract class GalaxyShape implements Base, Serializable {
         // existing nebulae (add their images) when making
         // new nebulae
         int MAX_UNIQUE_NEBULAS = 16;
-        boolean looseNebula = options().looseNebula();
+        boolean looseNebula = guiOptions().looseNebula();
         Point.Float pt	 = new Point.Float();
         getPointFromRandomStarSystem(pt);
         
@@ -863,12 +909,12 @@ public abstract class GalaxyShape implements Base, Serializable {
             if (!valid(x, y+h))
             	return neb.cancel();
         }
-        if (options().neverNebulaHomeworld())
+        if (guiOptions().neverNebulaHomeworld())
 	        for (EmpireSystem sys : empSystems)
 	            if (sys.inNebula(neb))
 	            	return neb.cancel();
 
-        if (options().selectedRealNebula()) {
+        if (guiOptions().selectedRealNebula()) {
             // don't add nebulae to close to an existing nebula
             for (Nebula existingNeb: nebulas)
                 if (existingNeb.isToClose(neb))
@@ -882,6 +928,7 @@ public abstract class GalaxyShape implements Base, Serializable {
         }    	
         return neb;
     }
+
 	// ========================================================================
 	// Nested Classes
 	//
@@ -918,8 +965,8 @@ public abstract class GalaxyShape implements Base, Serializable {
 			y = Arrays.copyOf(y, size);
 		}
 	}
-	@SuppressWarnings("serial")
 	public final class EmpireSystem implements Serializable {
+		private static final long serialVersionUID = 1L;
 		private final float[] x = new float[homeStarNum];
 		private final float[] y = new float[homeStarNum];
 		private int num = 0;
@@ -976,13 +1023,13 @@ public abstract class GalaxyShape implements Base, Serializable {
 			valid = true;
 			return valid;
 		}
-		public int numSystems() { return num; }
+		public int numSystems()	{ return num; }
 		public float x(int i)	{ return x[i]; }
 		public float y(int i)	{ return y[i]; }
 		float colonyX()   { return x[0]; }
 		float colonyY()   { return y[0]; }
 
-		public boolean inNebula(Nebula neb) {
+		private boolean inNebula(Nebula neb)	{
 			for (int i=0;i<num;i++) {
 				if (neb.contains(x[i], y[i]))
 					return true;
@@ -1145,25 +1192,16 @@ public abstract class GalaxyShape implements Base, Serializable {
 	   	 * @param ye referenced to the edge
 	   	 */
 	   	CtrPoint(float xe, float ye) { x = xe - cx; y = ye - cy; }
-	   	/**
-	   	 * @param pt referenced to the edge
-	   	 */
-//	   	CtrPoint(Point.Float pt) { x = pt.x - cx; y = pt.y - cy; }
-	   	private /**
-	   	 * @param pt referenced to center
-	   	 */
-	   	CtrPoint(CtrPoint pt) { x = pt.x; y = pt.y; }
+		/**
+		 * @param pt referenced to center
+		 */
+		private CtrPoint(CtrPoint pt) { x = pt.x; y = pt.y; }
 
 	   	// ========== Getters ==========
 	   	//
 	   	private Point.Float get()   { return new Point.Float((float)x + cx, (float)y + cy); }   	
 	   	float getX()        { return (float) x + cx; }   	
 	   	float getY()        { return (float) y + cy; }   	
-//		double ray()        { return Math.sqrt(x*x + y*y); }
-//		double angle()      { return Math.atan2(y, x); } // yes y and x in this order!!!
-//		CtrPoint mirrorX()  { return new CtrPoint(-x, y); }
-//		CtrPoint mirrorY()  { return new CtrPoint(x, -y); }
-//		CtrPoint mirrorXY() { return new CtrPoint(-x, -y); }
 		CtrPoint rotate(double angle) {
 			return new CtrPoint(Math.cos(angle) * x + Math.sin(angle) * y,
 								Math.cos(angle) * y - Math.sin(angle) * x);
@@ -1171,9 +1209,6 @@ public abstract class GalaxyShape implements Base, Serializable {
 		CtrPoint shift(CtrPoint shift) {
 			return new CtrPoint(x + shift.x, y + shift.y);
 		}
-//		CtrPoint shift(double dx, double dy) {
-//			return new CtrPoint(x + dx, y + dy);
-//		}
 		@Override protected CtrPoint clone() { return new CtrPoint(this); }
 	   	// ========== Other Methods ==========
 	   	//
@@ -1186,15 +1221,5 @@ public abstract class GalaxyShape implements Base, Serializable {
 			}
 			return result;
 		}
-
-	   	// ========== Point.Float Methods ==========
-	   	//
-//		private float ray(float x, float y)   { return distance(cx, cy, x, y); }
-//		float ray(Point.Float pt)     { return ray(pt.x, pt.y); }
-//		private float angle(float x, float y) { return (float) Math.atan2(y- cy, x - cx); }
-//		float angle(Point.Float pt)   { return angle(pt.y, pt.x); }
-//		Point.Float mirrorX(Point.Float pt)  { return new Point.Float(fullWidth - pt.x, pt.y); }
-//		Point.Float mirrorY(Point.Float pt)  { return new Point.Float(pt.x, fullHeight - pt.y); }
-//		Point.Float mirrorXY(Point.Float pt) { return new Point.Float(fullWidth - pt.x, fullHeight - pt.y); }
 	}
 }

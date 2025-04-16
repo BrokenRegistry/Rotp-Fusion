@@ -22,8 +22,8 @@ import static rotp.ui.util.IParam.langLabel;
 
 import rotp.model.empires.Race;
 import rotp.model.game.IBaseOptsTools;
+import rotp.model.game.RulesetManager;
 import rotp.model.ships.ShipLibrary;
-import rotp.ui.RotPUI;
 
 public class PlayerShipSet extends ParamList {
 	
@@ -91,7 +91,7 @@ public class PlayerShipSet extends ParamList {
 	 */
 	public int realShipSetId() {
 		int index;
-		Race r =  Race.keyed(RotPUI.newOptions().selectedPlayerRace());
+		Race r =  Race.keyed(RulesetManager.current().newOptions().selectedPlayerRace());
 		if (playerIsCustom.get() && isOriginal()) {
 		   	String preferredShipSet = preferredShipSet();
 		   	if (preferredShipSet.equalsIgnoreCase(DISPLAY_RACE_SET))

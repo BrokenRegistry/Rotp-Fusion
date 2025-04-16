@@ -39,6 +39,7 @@ import rotp.model.galaxy.GalaxyShape.EmpireSystem;
 import rotp.model.galaxy.StarSystem.SystemBaseData;
 import rotp.model.game.DynOptions;
 import rotp.model.game.GameSession;
+import rotp.model.game.IGalaxyOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.MOO1GameOptions;
 import rotp.model.planet.Planet;
@@ -564,11 +565,11 @@ public class GalaxyFactory implements Base {
 				String selectedAbility = options().specificOpponentCROption(h+1);
 				SpecificCROption ability = SpecificCROption.set(selectedAbility);
 
-				if (!opts.selectedUseSelectableAbilities()
+				if (!IGalaxyOptions.useSelectableAbilities.get()
 						|| ability.isSelection()) { // Then Check for Global ability
 					// the global setting will be used
-					selectedAbility = opts.selectedUseGlobalCROptions();
-					ability = opts.globalCROptions().getEnu();
+					selectedAbility = IGalaxyOptions.globalCROptions.get();
+					ability = IGalaxyOptions.globalCROptions.getEnu();
 				}
 
 				switch (ability) {

@@ -16,13 +16,14 @@ public final class GalaxyMenuOptions extends AbstractOptionsSubUI {
 		map.add(optionsGalaxy());
 		return map;
 	}
-	static SafeListParam optionsGalaxy() {
-		GalaxyOption gal = GalaxyOption.instance();
+	static SafeListParam optionsGalaxy()	{
 		return new SafeListParam(GALAXY_ID,
 			Arrays.asList(
-					gal.showNewRaces, gal.globalCROptions,
-					gal.useSelectableAbilities, gal.shapeOption3,
-					gal.galaxyRandSource, gal.previewNebula,
+					showNewRaces,
+					globalCROptions,
+					useSelectableAbilities,
+					galaxyRandSource,
+					previewNebula,
 					empiresSpreadingFactor,
 					dynStarsPerEmpire // This one is a duplicate, but it helps readability
 					));

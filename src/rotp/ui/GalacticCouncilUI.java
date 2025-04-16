@@ -43,6 +43,7 @@ import java.util.List;
 
 import rotp.model.empires.Empire;
 import rotp.model.empires.GalacticCouncil;
+import rotp.model.game.IDebugOptions;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.vipconsole.IVIPListener;
@@ -126,7 +127,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         	s += council.leader().name();
         }
         writeToFile(AUTORUN_OTHERFILE, s, true, true);
-    	if (options().consoleAutoRun())
+    	if (IDebugOptions.consoleAutoRun())
     		System.out.println(s);
     }
     @Override

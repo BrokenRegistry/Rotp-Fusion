@@ -55,6 +55,7 @@ import rotp.Rotp;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.IMainOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.NoticeMessage;
 import rotp.ui.RotPUI;
@@ -87,7 +88,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
     int end = 0;
     private GalaxyCopy oldGalaxy;
     private boolean restart;
-    
+
     int sortOrder = SORT_DT_UP;
     int buttonW, button1X, button2X;
 
@@ -139,7 +140,11 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
         saveSizes.clear();
         saveDates.clear();
         String ext = GameSession.SAVEFILE_EXTENSION;
-        SimpleDateFormat fileDateFmt = options().isLoadSaveWidthNormal()? fileDateFmtN : fileDateFmtY;
+		SimpleDateFormat fileDateFmt;
+		if (IMainOptions.isLoadSaveWidthNormal())
+			fileDateFmt = fileDateFmtN;
+		else
+			fileDateFmt = fileDateFmtY;
 
         // check for autosave
         String saveDirPath = UserPreferences.saveDirectoryPath();
@@ -147,10 +152,10 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
         File saveDir = new File(saveDirPath);
         File backupDir = new File(backupDirPath);
         hasBackupDir = backupDir.exists() && backupDir.isDirectory();
-        
+
         FilenameFilter filter = (File dir, String name1) -> name1.toLowerCase().endsWith(ext);
         File[] fileList = saveDir.listFiles(filter);
-        
+
         // fileList = null if prefs pointing to an invalid folder...default to jarPath 
         if (fileList == null) {
             saveDirPath = Rotp.jarPath();
@@ -168,22 +173,22 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
         if (hasBackupDir) {
             long bSize = backupDir.listFiles(filter).length;
             backupDirInfo = text("LOAD_GAME_BACKUP_DIR", (int)bSize);
-        }       
+        }
 
-        File[] filesList;           
+        File[] filesList;
         if (showingBackups) 
             filesList = backupDir.listFiles(filter);
         else 
             filesList = saveDir.listFiles(filter);
-        
+
         File autoSave = new File(saveDir, GameSession.RECENT_SAVEFILE);
         if (!showingBackups && autoSave.isFile()) {
             hasAutosave = true;
             saveFiles.add(text("LOAD_GAME_AUTOSAVE"));
             saveDates.add(fileDateFmt.format(autoSave.lastModified()));
-            saveSizes.add(autoSave.length());        
+            saveSizes.add(autoSave.length());
         }
-        
+
         switch(sortOrder) {
             case SORT_FN_UP : Arrays.sort(filesList, FILE_NAME); break;
             case SORT_FN_DN : Arrays.sort(filesList, Collections.reverseOrder(FILE_NAME)); break;
@@ -225,7 +230,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
         if (fn.endsWith(ext)
         && !fn.equalsIgnoreCase(GameSession.RECENT_SAVEFILE)) {
             List<String> parts = substrings(fn, '.');
-            if (!parts.get(0).trim().isEmpty()) 
+            if (!parts.get(0).trim().isEmpty())
                 return fn.substring(0, fn.length()-ext.length());
         }
         return "";
@@ -431,7 +436,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
             try (InputStream file = new FileInputStream(saveFile)) {
                 newSession = loadObjectData(file);
             }
-            
+
             // if newSession is null, see if it is zipped
             if (newSession == null) {
                 try (ZipFile zipFile = new ZipFile(saveFile)) {
@@ -442,6 +447,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
                         throw new RuntimeException(text("LOAD_GAME_BAD_VERSION", filename));
                 }
             }
+            session().options(newSession.options()); // Will be updated later
             oldGalaxy.copy(newSession);
          }
         catch(IOException e) {
@@ -462,8 +468,8 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
     		selectRestartEmpireUI.open();
             restart	  = false;
             oldGalaxy = null;
-        };        	
-        SwingUtilities.invokeLater(load);        	
+        };
+        SwingUtilities.invokeLater(load);	
     }
     public void loadGame(String s) {
         if (!canLoad())
@@ -479,10 +485,10 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
         	return;
         }
 
-        final Runnable load = () -> {           
+        final Runnable load = () -> {
             GameSession.instance().loadSession(dirName, s, false);
-        };        	
-        SwingUtilities.invokeLater(load);        	
+        };
+        SwingUtilities.invokeLater(load);
     }
     public void cancelLoad() {
         buttonClick();
@@ -531,8 +537,8 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
             end = min(saveFiles.size(), start+MAX_FILES);
 
             //int w0 = scaled(650);
-            boolean showYear = !options().isLoadSaveWidthNormal();
-            int w0 = scaled(options().loadSaveWidth());
+            boolean showYear = !IMainOptions.isLoadSaveWidthNormal();
+            int w0 = scaled(IMainOptions.loadSaveWidth());
             int x0 = (w-w0)/2;
             int h0 = s5+(MAX_FILES*lineH);
             int y0 = scaled(180);
@@ -543,7 +549,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
             int wBottom = s80;
             g.setColor(GameUI.loadListMask());
             g.fillRect(x0-wSide, y0-wTop, w0+wSide+wSide, h0+lineH+wTop+wBottom);
-            
+
             // draw dir info
             if (hasBackupDir) {
                 g.setFont(narrowFont(20));
@@ -559,7 +565,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
                 else
                     g.setColor(SystemPanel.blackText);
                 drawString(g,saveDirInfo, x0+s10, y0-s10);
-            
+
                 int sw1 = g.getFontMetrics().stringWidth(backupDirInfo);
                 int x1 = x0+sw0+s30;
                 backupDirBox.setRoundRect(x1, y0-s30, sw1+s20, s30, s8, s8);
@@ -573,14 +579,14 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
                 else
                     g.setColor(SystemPanel.blackText);
                 drawString(g,backupDirInfo, x1+s10, y0-s10);
-                
+
                 g.setColor(GameUI.loadHoverBackground());
                 g.fillRect(x0,y0-s3,w0,s3);
             }
 
             g.setColor(GameUI.raceCenterColor());
             g.fillRect(x0, y0, w0, h0+lineH);
-            
+
             g.setColor(GameUI.sortLabelBackColor());
             g.fillRect(x0, y0, w0, lineH);
             drawFilenameButton(g, x0+s30, y0+lineH);
@@ -715,7 +721,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
             g.setClip(null);
             if (sw0 > maxW)
                 drawString(g,text("LOAD_GAME_TOO_LONG"), x+s25+maxW, y+h-s8);
-            
+
             String szStr = shortFmt(sz);
             int sw1 = g.getFontMetrics().stringWidth(szStr);
 //            drawString(g,szStr, x+w-scaled(150)-sw1, y+h-s8);

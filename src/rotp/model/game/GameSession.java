@@ -285,15 +285,16 @@ public final class GameSession implements Base, Serializable {
         }
 
     }
-    public GameSession() {
-        System.out.println("==================== Create Options (In-Game) ====================");
-        options(RulesetManager.current().defaultRuleset());
-    }
+	private GameSession() {
+		Rotp.ifIDE("==================== Create GameSession ====================");
+//		System.out.println("==================== Create Options (In-Game) ====================");
+		//options(Rotp.rulesetManager().defaultRuleset());
+	}
     public void startGame(IGameOptions newGameOptions) {
         stopCurrentGame();
 
         options(newGameOptions.copyAllOptions());
-    	RotPUI.currentOptions(IGameOptions.GAME_ID);
+		rulesetManager().setAsGameMode();
     	instance.getGovernorOptions().gameStarted();
         startExecutors();
 
@@ -316,7 +317,7 @@ public final class GameSession implements Base, Serializable {
     public void restartGame(IGameOptions newGameOptions, GalaxyCopy src) {
     	stopCurrentGame();
         options(src.options().copyAllOptions());
-    	RotPUI.currentOptions(IGameOptions.GAME_ID);
+		rulesetManager().setAsGameMode();
     	instance.getGovernorOptions().gameStarted();
         startExecutors();
 
@@ -390,7 +391,7 @@ public final class GameSession implements Base, Serializable {
         }
     }
     public void nextTurn() {
-    	if (options.debugAutoRun())
+    	if (IDebugOptions.debugAutoRun())
     		autoRunning = true;
     	nextTurnLoop();
     }
@@ -433,12 +434,12 @@ public final class GameSession implements Base, Serializable {
         		          " | ", Rotp.getMemoryInfo(false),
         		          " | File size:", String.format("%10d", fileSize),
         		          " | ", time);   	
-        if (options.debugConsoleMemory())
-        	System.out.println(memS);
-        if (options.debugFileMemory())
-        	writeToFile(MEMORY_LOGFILE, memS, true, append);        
-        if (options.debugAutoRun()) {
-        	String s = concat(turn,
+		if (IDebugOptions.debugConsoleMemory())
+			System.out.println(memS);
+		if (IDebugOptions.debugFileMemory())
+			writeToFile(MEMORY_LOGFILE, memS, true, append);        
+		if (IDebugOptions.debugAutoRun()) {
+			String s = concat(turn,
 					" | Col:", String.format("%5d", player().numColonies()),
 					"/", StringUtils.rightPad(String.valueOf(galaxy().numColonizedSystems()), 5),
 					" | Aliens:", String.format("%3d", player().numContacts()),
@@ -448,11 +449,11 @@ public final class GameSession implements Base, Serializable {
 					" | ", new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date()),
 					" | ", duration
 					);
-        	writeToFile(AUTORUN_LOGFILE, s, true, append);
-        	if (options.consoleAutoRun())
-        		System.out.println(s);
+			writeToFile(AUTORUN_LOGFILE, s, true, append);
+			if (IDebugOptions.consoleAutoRun())
+				System.out.println(s);
         }
-        if (options.debugShowMoreMemory()) {
+        if (IDebugOptions.debugShowMoreMemory()) {
             memLog();
             RotPUI.instance().mainUI().showMemoryLowPrompt(); // TO DO BR: Comment
         }
@@ -553,7 +554,7 @@ public final class GameSession implements Base, Serializable {
                 RotPUI.instance().selectMainPanel();
 
                 gal.council().nextTurn();
-                if (!options.debugAutoRun()) {
+                if (!IDebugOptions.debugAutoRun()) {
                 	GNNRankingNoticeCheck.nextTurn();
                     GNNExpansionEvent.nextTurn();
                 }
@@ -633,7 +634,7 @@ public final class GameSession implements Base, Serializable {
                 NoticeMessage.resetSubstatus(text("TURN_REFRESHING"));
                 validate();
                 //BR: Tentative to fix range area errors
-                if (!options().debugAutoRun()) {
+                if (!IDebugOptions.debugAutoRun()) {
                 	RotPUI.instance().mainUI().map().resetRangeAreas();
                     player().setEmpireMapAvgCoordinates();
                 }
@@ -656,7 +657,7 @@ public final class GameSession implements Base, Serializable {
                 notifications().clear();
                 // ensure Next Turn takes at least a minimum time
                 long spentMs = timeMs() - startMs;
-                if (spentMs < MINIMUM_NEXT_TURN_TIME && !options.debugAutoRun()) {
+                if (spentMs < MINIMUM_NEXT_TURN_TIME && !IDebugOptions.debugAutoRun()) {
                     try { Thread.sleep(MINIMUM_NEXT_TURN_TIME - spentMs);
                     } catch (InterruptedException e) { }
                 }
@@ -679,12 +680,12 @@ public final class GameSession implements Base, Serializable {
                 // handle game over possibility
                 // Follow turn limit request
                 if(benchmarkBreakAndContinue()) {
-                	options().debugBMContinue();
+                	IDebugOptions.debugBMContinue();
                 	RotPUI.instance().selectGameOverPanel();
                 	performingTurn = false;
                 	return;
                 }
-                if (autoRunning && options().debugAutoRun()) {
+                if (autoRunning && IDebugOptions.debugAutoRun()) {
                 	// Auto Run Mode Stop if:
                    	// 1) Easy case: the player won
                    	// 2) The player lost with option StopOnLoss
@@ -696,7 +697,7 @@ public final class GameSession implements Base, Serializable {
                 		performingTurn = false;
                 		return;
                 	}
-                 	if(status().lost() && options().debugARStopOnLoss()) {
+                 	if(status().lost() && IDebugOptions.debugARStopOnLoss()) {
                 		RotPUI.instance().selectGameOverPanel();
                 		performingTurn = false;
                 		return;
@@ -731,23 +732,23 @@ public final class GameSession implements Base, Serializable {
                         RotPUI.instance().selectGameOverPanel();                	
                 }
                 performingTurn = false;
-                if (options.selectedShowVIPPanel() && status().inProgress())
+                if (IDebugOptions.selectedShowVIPPanel() && status().inProgress())
                 	VIPConsole.turnCompleted(galaxy().currentTurn());
             }
         };
     }
-    private boolean benchmarkBreakAndContinue() {
-    	if (options().debugBMBreak())
-    		return true;
-    	if (!options().debugBenchmark())
-    		return false;
+	private boolean benchmarkBreakAndContinue() {
+		if (IDebugOptions.debugBMBreak())
+			return true;
+		if (!IDebugOptions.debugBenchmark())
+			return false;
 		int turn = galaxy().currentTurn();
-		int maxTurns = options().debugBMMaxTurns();
+		int maxTurns = IDebugOptions.debugBMMaxTurns();
 		if (maxTurns > 0 && turn > maxTurns) {
 			System.err.println("maxTurns > 0 && turn > maxTurns");
 			return true;
 		}
-		int maxLostTurns = options().debugBMLostTurns();
+		int maxLostTurns = IDebugOptions.debugBMLostTurns();
 		if (maxLostTurns > 0 && status().lost()) {
 			if (lastTurnAlive == null)
 				lastTurnAlive = player().status().lastTurnAlive();
@@ -1156,7 +1157,7 @@ public final class GameSession implements Base, Serializable {
         if (instance.aFewMoreTurns() &&  GameOverUI.gameOverTitleKey().isEmpty())
         	instance.aFewMoreTurns(false);
         
-        if (options.selectedShowVIPPanel())
+        if (IDebugOptions.selectedShowVIPPanel())
         	VIPConsole.updateConsole();
     }
 	private void showInfo(Galaxy g) { // BR: for debug
@@ -1216,7 +1217,7 @@ public final class GameSession implements Base, Serializable {
         return concat(leader,dash,race,dash,gShape,dash,gSize,dash,diff,dash,opp,dash,turn,SAVEFILE_EXTENSION);
     }
     public long saveRecentSession(boolean playerTurn) {
-    	boolean allowAutoSave = !options().debugNoAutoSave();
+    	boolean allowAutoSave = !IDebugOptions.debugNoAutoSave();
     	long ufs = -1;
     	if (allowAutoSave && !playerTurn) // BR: Always keep a copy of starting turn
     		saveRecentStartSession();
@@ -1318,7 +1319,7 @@ public final class GameSession implements Base, Serializable {
     }
     // BR: added option to restart with new options
     public void loadSession(String dir, String filename, boolean startUp) {
-        RotPUI.currentOptions(IGameOptions.GAME_ID);
+//        RotPUI.currentOptions(IGameOptions.GAME_ID);
         try {
             log("Loading game from file: ", filename);
             File saveFile = dir.isEmpty() ? new File(filename) : new File(dir, filename);
@@ -1339,12 +1340,14 @@ public final class GameSession implements Base, Serializable {
                 }
             }
 
-            GameSession.instance = newSession;
+		GameSession.instance = newSession;
+		rulesetManager().setAsGameMode();
+
             if (Rotp.isIDE()) {
             	if (newSession.governorOptions == null)
-            		System.err.println("newSession.governorOptions == null ==> Not RotP-Fusion");
+            		System.err.println("@ newSession.governorOptions == null ==> Not RotP-Fusion");
             	if (newSession.options.dynOpts() == null)
-            		System.err.println("newSession.options.dynOpts() == null ==> Not RotP-Fusion");
+            		System.err.println("@  newSession.options.dynOpts() == null ==> Not RotP-Fusion");
 				String version = ((MOO1GameOptions)newSession.options).getVersion();
 				System.out.println("@ Version = " + version);
             }
@@ -1352,7 +1355,7 @@ public final class GameSession implements Base, Serializable {
 			// BR: save the last loaded game initial parameters
 			instance.options().setAsGame();
 			resolveOptionsDiscrepansies(newSession);
-			RotPUI.currentOptions(IGameOptions.GAME_ID);
+			rulesetManager().setAsGameMode();
 
 			if (instance.galaxy.playerSwapRequest())
 				instance.galaxy.swapPlayerEmpire();
@@ -1361,7 +1364,7 @@ public final class GameSession implements Base, Serializable {
 
             loadPreviousSession(newSession, startUp);
             newSession.ironmanValidation();
-        	if (!options().debugNoAutoSave()) {
+        	if (!IDebugOptions.debugNoAutoSave()) {
                 // do not autosave the current session if that is the file we are trying to reload            
                 if (!filename.equalsIgnoreCase(RECENT_SAVEFILE))
                     saveRecentSession();
@@ -1452,9 +1455,9 @@ public final class GameSession implements Base, Serializable {
         // BR: Backward compatibility tentative
         galaxy().validateOnLoad();
         ((MOO1GameOptions) options).validateOnLoad();
-        if (options.selectedShowVIPPanel())
+        if (IDebugOptions.selectedShowVIPPanel())
         	VIPConsole.updateConsole();
-        if (options.debugShowMoreMemory()) {
+        if (IDebugOptions.debugShowMoreMemory()) {
             memLog();
             // RotPUI.instance().mainUI().showMemoryLowPrompt(); // TO DO BR: Comment
         }

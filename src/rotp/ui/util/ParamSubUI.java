@@ -34,13 +34,14 @@ import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseCompactOptionsUI;
 import rotp.ui.game.BaseModPanel;
+import rotp.ui.options.AllSubUI;
 
 
 public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	
 	private final String GUI_TITLE_ID;
 	private final String GUI_ID;
-	private final SafeListPanel optionsMap;
+	private SafeListPanel optionsMap;
 	private final SafeListParam optionsList;
 	private int unSeen = 0;
 	
@@ -49,18 +50,16 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	/**
 	 * @param gui  The label header
 	 * @param name The name
-	 * @param optionsMap Full map of options
 	 * @param guiTitleID Label for the GUI Title
-	 * @param guiID Unique GUI ID for load and save
+	 * @param guiId Unique GUI ID for load and save
 	 */
 	public ParamSubUI(String gui, String name,
-			SafeListPanel optionsMap,
-			String guiTitleID, String guiID)
+			String guiTitleID, String guiId)
 	{
-		super(gui, name, optionsMap);
+		super(gui, name, null);
 		GUI_TITLE_ID	= gui + guiTitleID;
-		GUI_ID			= guiID;
-		this.optionsMap	= optionsMap;
+		GUI_ID			= guiId;
+		optionsMap = AllSubUI.getHandle(guiId).optionsMap();
 		optionsList		= new SafeListParam(GUI_ID);
 		for (SafeListParam list : optionsMap) {
 			for (IParam param : list) {
@@ -72,20 +71,12 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	/**
 	 * @param gui  The label header
 	 * @param name The name
-	 * @param optionsMap Full map of options
 	 * @param guiTitleID Label for the GUI Title
 	 * @param guiID Unique GUI ID for load and save
 	 */
-	public ParamSubUI(String gui, String guiId, SafeListPanel optionsMap) {
-		this(gui, guiId+"_UI", optionsMap, guiId+"_TITLE", guiId);
+	public ParamSubUI(String gui, String guiId) {
+		this(gui, guiId+"_UI", guiId+"_TITLE", guiId);
 	}
-//	public ParamSubUI(String gui, String guiId) {
-//		this(gui,
-//				guiId+"_UI",
-//				AllSubUI.getHandle(guiId).optionsMap(),
-//				guiId+"_TITLE",
-//				guiId);
-//	}
 	// ===== Overriders =====
 	//
 	@Override public ParamSubUI isValueInit(boolean is) { super.isValueInit(is) ; return this; }
@@ -139,7 +130,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	@Override public boolean toggle(MouseEvent e, String p, BaseModPanel pUI) {
 		updated(true);
 		BaseCompactOptionsUI ui = RotPUI.getOptionPanel();
-		ui.initUI(GUI_TITLE_ID, GUI_ID, optionsMap);
+		ui.initUI(GUI_TITLE_ID, GUI_ID);//, optionsMap);
 		ui.start(p, pUI);
 		return false;
 	};
@@ -162,13 +153,13 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	public void hovering(BaseModPanel pUI, Rectangle location)	{
 		updated(true);
 		BaseCompactOptionsUI ui = RotPUI.getOptionPanel();
-		ui.initUI(GUI_TITLE_ID, GUI_ID, optionsMap, true, location);
+		ui.initUI(GUI_TITLE_ID, GUI_ID, true, location);
 		ui.start("", pUI);
 	}
 	public void start(BasePanel pUI)	{
 		updated(true);
 		BaseCompactOptionsUI ui = RotPUI.getOptionPanel();
-		ui.initUI(GUI_TITLE_ID, GUI_ID, optionsMap);
+		ui.initUI(GUI_TITLE_ID, GUI_ID);//, optionsMap);
 		ui.start("", pUI);
 	}
 	public String titleId() { return GUI_TITLE_ID; }
