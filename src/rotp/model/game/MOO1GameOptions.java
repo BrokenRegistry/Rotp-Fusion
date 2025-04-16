@@ -153,7 +153,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     public String selectedGalaxyShape()          { return selectedGalaxyShape; }
 	@Override public void selectedGalaxyShape(String s)		{
 		selectedGalaxyShape = s;
-		System.out.println("selectedGalaxyShape(" + selectedGalaxyShape + ")"); // TODO BR: REMOVE
+//		System.out.println("selectedGalaxyShape(" + selectedGalaxyShape + ")"); // TODO BR: REMOVE
 		setGalaxyShape();
 	}
 	public IShapeOption ShapeParam(int id)	{

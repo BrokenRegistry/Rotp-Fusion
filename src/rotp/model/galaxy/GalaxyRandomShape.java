@@ -82,6 +82,9 @@ public class GalaxyRandomShape extends GalaxyShape {
 		newRandomizedShape();
 	}
 	private void newRandomizedShape()	{
+		finalShape = null;
+		initFinalOption1();
+		initFinalOption2();
 		List<String> names	= AllShapes.getNamesForRandom(finalOption1);
 		String shapeName	= randRnd.random(names);
 		finalShape = AllShapes.getShape(shapeName, opts, randomizeShapeOptions);
@@ -104,34 +107,32 @@ public class GalaxyRandomShape extends GalaxyShape {
 	@Override public int height()				{ return finalShape.height(); }
 	@Override protected boolean fullyInit()		{ return finalShape.fullyInit(); }
 	@Override protected void initFinalOption1()	{
-		if (finalShape==null)
-			super.initFinalOption1();
+		if (finalShape==null) {
+			finalOption1 = getOption1();
+			option1 = max(0, options1().indexOf(finalOption1));
+		}
 		else
 			finalShape.initFinalOption1();
 	}
 	@Override protected void initFinalOption2()	{
 		if (finalShape==null) {
-			super.initFinalOption2();
-			if (RANDOM_OPTION.equals(finalOption2) || randomizeShapeOptions[1]) {
-				List<String> optionList = new ArrayList<>(options2());
-				optionList.remove(RANDOM_OPTION);
-				finalOption2 = randRnd.random(optionList);
-				switch (finalOption2) {
-				case KEEP_OPTIONS:
-					return;
-				case RANDOM_OPTIONS_1:
-					randomizeShapeOptions[0] = true;
-					return;
-				case RANDOM_OPTIONS_2:
-					randomizeShapeOptions[1] = true;
-					return;
-				case RANDOM_OPTIONS:
-					randomizeShapeOptions[0] = true;
-					randomizeShapeOptions[1] = true;
-					randomizeShapeOptions[2] = true;
-					randomizeShapeOptions[3] = true;
-					return;
-				}
+			finalOption2 = getOption2();
+			option2 = max(0, options2().indexOf(finalOption2));
+			switch (finalOption2) {
+			case KEEP_OPTIONS:
+				return;
+			case RANDOM_OPTIONS_1:
+				randomizeShapeOptions[0] = true;
+				return;
+			case RANDOM_OPTIONS_2:
+				randomizeShapeOptions[1] = true;
+				return;
+			case RANDOM_OPTIONS:
+				randomizeShapeOptions[0] = true;
+				randomizeShapeOptions[1] = true;
+				randomizeShapeOptions[2] = true;
+				randomizeShapeOptions[3] = true;
+				return;
 			}
 		}
 		else

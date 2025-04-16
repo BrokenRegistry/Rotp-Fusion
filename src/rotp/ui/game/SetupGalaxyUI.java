@@ -322,6 +322,8 @@ public final class SetupGalaxyUI  extends BaseModPanel implements MouseWheelList
 		globalAbilitiesArray = globalAbilitiesList.toArray(new String[globalAbilitiesList.size()]);
 	}
 	public	void refreshShapeOptions(ListShapeParam optionsList)	{
+		if (optionsList == null)
+			return;
 		shapeOptionsList = opts.galaxyShape().paramList();
 		switch (shapeOptionsList.size()) {
 			case 4:

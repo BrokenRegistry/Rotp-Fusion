@@ -3641,7 +3641,7 @@ SETTINGS_MOD_AUTO_FLAG_VESTIGES_NONE     | None Color: %1
 SETTINGS_MOD_AUTO_FLAG_IN_NEBULA         | In Nebula Color: %1
 SETTINGS_MOD_AUTO_FLAG_NOT_NEBULA        | Not In Nebula Color: %1
 
-SETTINGS_MOD_GALAXY_RAND_SOURCE_HELP     | By default, the preview gives only an global idea of the galaxy you will get. By setting a value other than "Random", the preview will display the final galaxy. Use this to avoid configurations you won't like... To far from Orion... To close to the center... or tor far! etc...
+SETTINGS_MOD_GALAXY_RAND_SOURCE_HELP     | By default, the preview only gives a rough idea of ​​the galaxy you'll get. Setting it to something other than "Random" will cause the preview to display the final galaxy. Use this to avoid configurations you won't like... Too far from Orion... Too close or too far from the center, etc...
 SETTINGS_MOD_GALAXY_RAND_SOURCE_DESC     | if <> 0, this number will be used as source for the galaxy random generator. The final galaxy will be the preview one.<br>This option will unlock the galaxy preview size limitation (5000). Be ready for long generation time with "Insane" and above galaxies!
 SETTINGS_MOD_GALAXY_RAND_SOURCE          | Random or WYSIWYG: %1
 SETTINGS_MOD_GALAXY_RAND_RANDOM          | Random
