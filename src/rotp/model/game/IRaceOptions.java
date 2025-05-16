@@ -71,6 +71,7 @@ public interface IRaceOptions extends IBaseOptsTools {
 	default void selectedPlayerIsCustom(boolean is)	{ playerIsCustom.set(is); }
 
 	ParamCR		playerCustomRace	= new ParamCR(MOD_UI, defaultRace);
+	default DynOptions playerCustomRaceOption()				 { return (DynOptions) playerCustomRace.get(); }
 	default ParamCR playerCustomRace()						 { return playerCustomRace; }
 	default Serializable selectedPlayerCustomRace()			 { return playerCustomRace.get(); }
 	default void selectedPlayerCustomRace(Serializable race) { playerCustomRace.set(race); }

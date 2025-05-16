@@ -234,10 +234,10 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         g.setColor(Color.black);
         Shape rect = new RoundRectangle2D.Float(x,y,w,h,w/8, h/8);
         g.fill(rect);
-        
+
         BufferedImage backImg = parent.raceIconBackImg();
         g.drawImage(backImg, x,y, null);
-        
+
         int x1 = x + w/10;
         int w1 = w * 8/10;
         int y1 = y + h/10;
@@ -374,7 +374,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
     private void drawRelationsMeter(Graphics2D g, Empire emp, int x, int y, int w, int h) {
         g.setColor(RacesUI.darkBrown);
         g.fillRect(x, y, w, h);
-        
+
         EmpireView view = player().viewForEmpire(emp);
         if (view == null)
             return;
@@ -385,7 +385,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         String str = text("RACES_DIPLOMACY_RELATIONS_METER");
         this.drawShadowedString(g, str, 1,  x0, y0, SystemPanel.blackText, SystemPanel.whiteText);
         int leftW = g.getFontMetrics().stringWidth(str);
-        
+
         if (emp.masksDiplomacy()) {
             g.setFont(narrowFont(15));
             g.setColor(SystemPanel.blackText);
@@ -410,10 +410,10 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         i = bounds(0,i,relationIds.length-1);
         String rel = text(relationIds[i]);
         int rightW = g.getFontMetrics().stringWidth(rel);
-        
+
         int x1 = x+w-rightW-s20;
         drawString(g,rel, x1, y0);
-        
+
         int x2 = x0+leftW+s30;
         int w2 = x+w-x2-rightW-s30;
         int y2 = y+s12;
@@ -443,7 +443,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         String year = options().displayYear() ? text("RACES_DIPLOMACY_EVENT_YEAR") :  text("RACES_DIPLOMACY_EVENT_TURN");
         int sw = g.getFontMetrics().stringWidth(year);
         drawShadowedString(g, year, 1, x0+(w1-sw)/2, y0+s23, Color.black, SystemPanel.whiteText);
-        
+
         //race
         g.setFont(narrowFont(20));
         int x2 = x1+w1;
@@ -451,11 +451,11 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         String race = text("RACES_DIPLOMACY_EVENT_RACE");
         sw = g.getFontMetrics().stringWidth(race);
         drawShadowedString(g, race, 1, x2+(w2-sw)/2, y0+s23, Color.black, SystemPanel.whiteText);
-        
-        // scrollbar
+
+        // scroll bar
         int w5 = s20;
         int x5 = x0+w0-w5;
-        
+
         // effect
         g.setFont(narrowFont(20));
         String effect = text("RACES_DIPLOMACY_EVENT_EFFECT");
@@ -463,15 +463,15 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         int w4 = s60;
         int x4 = x5-w4;
         drawShadowedString(g, effect, 1, x4+(w4-sw)/2, y0+s23, Color.black, SystemPanel.whiteText);
-        
+
         g.setFont(narrowFont(22));
         int x3 = x2+w2;
         int w3 = x4-x3;
         String title = text("RACES_DIPLOMACY_EVENT_TITLE");
         sw = g.getFontMetrics().stringWidth(title);
         drawShadowedString(g, title, 1, x3+(w3-sw)/2, y0+s23, Color.black, SystemPanel.whiteText);
-        
-        
+
+
         // data area
         g.setColor(RacesUI.darkBrown);
         int y1 = y0+h0;
@@ -526,7 +526,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         }
 
         g.setClip(null);
-        
+
         incidentListBox.setBounds(x0,y1,w0,listH);
         if ((hoverShape == incidentListBox) 
         && (fullListH > listH)) {
@@ -552,7 +552,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         int x2 = x1+w1;
         int x3 = x2+w2;
         int x4 = x3+w3;
-        
+
         int y1 = y+s8;
 
         // year or turn
@@ -563,7 +563,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         int x0 = x1+(w1-sw)/2;
         int y0 = y+s25;
         drawString(g,year, x0, y0);
-       
+
         // race
         g.setFont(narrowFont(18));
         g.setColor(Color.black);
@@ -610,14 +610,14 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
     private void drawPlayerDiplomacyBureau(Graphics2D g, Empire emp, int x, int y, int w, int h) {
         g.setColor(RacesUI.darkBrown);
         g.fillRect(x, y, w, h);
-        
+
         List<EmpireView> views = player().contacts();
         int recalls = 0;
         for (EmpireView v: views) {
             if (v.embassy().diplomatGone())
                 recalls++;
         }
-        
+
         g.setColor(SystemPanel.whiteText);
         g.setFont(narrowFont(24));
         String title = text("RACES_DIPLOMACY_BUREAU");
@@ -625,7 +625,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         int x0 = x+((w-sw)/2);
         int y0 = y+s25;
         drawShadowedString(g, title, 1, x0, y0, SystemPanel.blackText, SystemPanel.whiteText);
-        
+
         g.setColor(SystemPanel.blackText);
         g.setFont(narrowFont(15));
         String desc = text("RACES_DIPLOMACY_BUREAU_DESC1");
@@ -635,34 +635,34 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             y1 += s16;
             drawString(g,line, x+s20, y1);
         }
-        
+
         g.setFont(narrowFont(18));
         String spies = text("RACES_DIPLOMACY_KNOWN_EMPIRES");
         int y2 = y0+s85;
         drawString(g,spies, x+s20, y2);
-        
+
         g.setFont(narrowFont(16));
         String str2 = str(views.size());
         int sw2 = g.getFontMetrics().stringWidth(str2);
         drawString(g,str2, x+w-s20-sw2, y2);
-        
+
         y2 += s20;
         g.setFont(narrowFont(18));
         String spending = text("RACES_DIPLOMACY_RECALLED_DIPLOMAT");
         drawString(g,spending, x+s20, y2);
         // int amt = (int) 0;
-        
+
         g.setFont(narrowFont(16));
         str2 = str(recalls);
         sw2 = g.getFontMetrics().stringWidth(str2);
         drawString(g,str2, x+w-s20-sw2, y2);
-        
+
         drawManageDiplomatsButton(g, x+s20,y+h-s45,w-s40,s25);
     }
     private void drawPlayerCounterIntelligenceBureau(Graphics2D g, Empire emp, int x, int y, int w, int h) {
         g.setColor(RacesUI.darkBrown);
         g.fillRect(x, y, w, h);
-        
+
         g.setColor(SystemPanel.whiteText);
         g.setFont(narrowFont(24));
         String title = text("RACES_DIPLOMACY_COUNTER_BUREAU");
@@ -672,7 +672,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         int x0 = x+((w-sw)/2);
         int y0 = y+s25;
         drawShadowedString(g, title, 1, x0, y0, SystemPanel.blackText, SystemPanel.whiteText);
-        
+
         g.setColor(SystemPanel.blackText);
         g.setFont(narrowFont(15));
         String desc = text("RACES_DIPLOMACY_COUNTER_DESC");
@@ -682,39 +682,39 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             y1 += s16;
             drawString(g,line, x+s20, y1);
         }
-        
+
         g.setFont(narrowFont(18));
         String spies = text("RACES_INTEL_SECURITY_BONUS");
         int y2 = y0+s70;
         drawString(g,spies, x+s20, y2);
-        
+
         g.setFont(narrowFont(16));
         int amt = (int) (100*player().totalInternalSecurityPct());
         String s = amt == 0 ? text("RACES_INTEL_SECURITY_BONUS_NONE") : text("RACES_INTEL_SECURITY_BONUS_AMT", str(amt));
         sw = g.getFontMetrics().stringWidth(s);
         drawString(g,s, x+w-s20-sw, y2);
-        
+
         y2 += s20;
         g.setFont(narrowFont(18));
         String spending = text("RACES_INTEL_TOTAL_SPENDING");
         drawString(g,spending, x+s20, y2);
-        
+
         g.setFont(narrowFont(16));
         amt = (int) internalSecurityCost;
         s = text("RACES_INTEL_SPENDING_ANNUAL", str(amt));
         sw = g.getFontMetrics().stringWidth(s);
         drawString(g,s, x+w-s20-sw, y2);
-        
+
         g.setFont(narrowFont(15));
         desc = text("RACES_DIPLOMACY_COUNTER_DESC2");
         lines = wrappedLines(g, desc, w-s30);
-        
+
         int y3 = y+h-s20-(s16*3);
         for (String line: lines) {
             drawString(g,line, x+s20, y3);
             y3 += s16;
         }
-        
+
         g.setFont(narrowFont(16));
         int y4 = y+h-s20;
         String taxStr = text("RACES_INTEL_SECURITY_TAX");
@@ -737,7 +737,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         // draw spending bar
         int h1 = h; // height of bar
         int w1 = w; // width of bar
-        
+
         EmpireView view = player().viewForEmpire(parent.selectedEmpire());
         float pct = view == null ? player().internalSecurityPct() : view.spies().allocationPct();
         int w1a = (int)(pct * w1); // width of spending
@@ -776,7 +776,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             buttonIncr.addPoint(ptX[i], ptY[i]);
         buttonC = hoverShape == buttonIncr ? SystemPanel.yellowText :  Color.black;
         drawShadedPolygon(g, ptX, ptY, buttonC, s1, -s1);
-        
+
         if (!parent.selectedEmpire().isPlayer()) {
             g.setColor(SystemPanel.whiteText);
             g.setFont(narrowFont(15));
@@ -790,7 +790,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
     private void drawPlayerIntelligenceBureau(Graphics2D g, Empire emp, int x, int y, int w, int h) {
         g.setColor(RacesUI.darkBrown);
         g.fillRect(x, y, w, h);
-        
+
         g.setColor(SystemPanel.whiteText);
         g.setFont(narrowFont(24));
         String title = text("RACES_INTEL_BUREAU_TITLE");
@@ -798,7 +798,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         int x0 = x+((w-sw)/2);
         int y0 = y+s25;
         drawShadowedString(g, title, 1, x0, y0, SystemPanel.blackText, SystemPanel.whiteText);
-        
+
         g.setColor(SystemPanel.blackText);
         g.setFont(narrowFont(15));
         String desc = text("RACES_INTEL_BUREAU_DESC");
@@ -808,28 +808,28 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             y1 += s16;
             drawString(g,line, x+s20, y1);
         }
-        
+
         g.setFont(narrowFont(18));
         String spies = text("RACES_INTEL_BUREAU_SPIES");
         int y2 = y+h-s85;
         drawString(g,spies, x+s20, y2);
-        
+
         g.setFont(narrowFont(16));
         String str2 = str(player().totalActiveSpies());
         int sw2 = g.getFontMetrics().stringWidth(str2);
         drawString(g,str2, x+w-s20-sw2, y2);
-        
+
         y2 += s20;
         g.setFont(narrowFont(18));
         String spending = text("RACES_INTEL_BUREAU_SPENDING");
         drawString(g,spending, x+s20, y2);
         int amt = (int) externalSpyingCost;
-        
+
         g.setFont(narrowFont(16));
         str2 = amt == 0 ? text("RACES_INTEL_SECURITY_BONUS_NONE") : text("RACES_INTEL_SPENDING_ANNUAL", str(amt));
         sw2 = g.getFontMetrics().stringWidth(str2);
         drawString(g,str2, x+w-s20-sw2, y2);
-        
+
         y2 += s20;
         drawManageSpiesButton(g, x+s20,y2,w-s40,s25);
     }
@@ -956,7 +956,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         String effect = text("RACES_DIPLOMACY_EVENT_EFFECT");
         int sw2 = g.getFontMetrics().stringWidth(effect);
         drawShadowedString(g, effect, 1, x0+w0-sw2-s30, y0+s23, Color.black, SystemPanel.whiteText);
-        
+
         // data area
         g.setColor(RacesUI.darkBrown);
         int y1 = y0+h0;
@@ -1012,7 +1012,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             }
         }
         g.setClip(null);
-        
+
         incidentListBox.setBounds(x1,y1,w1,listH);
         if ((hoverShape == incidentListBox) 
         && (fullListH > listH)) {
@@ -1054,7 +1054,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             else
                 drawString(g,line, x1, y1);
         }
-        
+
         // year
         g.setFont(narrowFont(18));
         g.setColor(Color.black);
@@ -1092,10 +1092,10 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         int x0 = x+((w-sw)/2);
         int y0 = y+s25;
         drawShadowedString(g, title, 1, x0, y0, SystemPanel.blackText, SystemPanel.whiteText);
-        
+
         boolean finalWar = player().viewForEmpire(emp).embassy().finalWar();
         boolean outOfRange = !player().viewForEmpire(emp).inEconomicRange();
-        
+
         g.setColor(SystemPanel.blackText);
         g.setFont(narrowFont(15));
         String desc;
@@ -1107,14 +1107,14 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             desc = text("RACES_DIPLOMACY_BUREAU_DESC");
             desc = emp.replaceTokens(desc, "alien");
         }
-        
+
         List<String> lines = wrappedLines(g, desc, w-s30);
         int y1 = y0+s7;
         for (String line: lines) {
             y1 += s16;
             drawString(g,line, x+s15, y1);
         }
-        
+
         embassyBox.setBounds(0,0,0,0);
         if (!finalWar && !outOfRange)
             drawEmbassyButton(g, x+s20,y+h-s38,w-s40,s28);
@@ -1129,14 +1129,14 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         int x0 = x+((w-sw)/2);
         int y0 = y+s25;
         drawShadowedString(g, title, 1, x0, y0, SystemPanel.blackText, SystemPanel.whiteText);
-        
+
         boolean finalWar = player().viewForEmpire(emp).embassy().finalWar();
         boolean outOfRange = !player().viewForEmpire(emp).inEconomicRange();
-        
+
         g.setColor(SystemPanel.blackText);
         g.setFont(narrowFont(15));
         String desc;
-        
+
         if (finalWar)
             desc = text("RACES_DIPLOMACY_TRADE_DESC_FINAL");
         else if (outOfRange)
@@ -1145,18 +1145,18 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             desc = text("RACES_DIPLOMACY_TRADE_DESC");
             desc = emp.replaceTokens(desc, "alien");
         }
-        
+
         List<String> lines = wrappedLines(g, desc, w-s30);
         int y1 = y0+s10;
         for (String line: lines) {
             y1 += s16;
             drawString(g,line, x+s15, y1);
         }
-        
+
         EmpireView view = player().viewForEmpire(emp);
         if (view == null)
             return;
-        
+
         boolean canOfferTradeTreaty = player().diplomatAI().canOfferTradeTreaty(emp);
         g.setFont(narrowFont(18));
         String label = text("RACES_DIPLOMACY_TRADE_TREATY");
@@ -1164,18 +1164,18 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         	label += "*";
         int y2 = lines.size() <= 5 ? y0+h-s65 : y0+h-s55;
         drawString(g, label, x+s20, y2);
-        
+
         g.setFont(narrowFont(16));
         String s2 = text("RACES_DIPLOMACY_TRADE_AMT", view.trade().level());
         int sw2 = g.getFontMetrics().stringWidth(s2);
         drawString(g,s2, x+w-s20-sw2, y2);
-        
+
         y2 += s22;
         g.setFont(narrowFont(18));
         String spending = text("RACES_DIPLOMACY_CURRENT_TRADE");
         drawString(g,spending, x+s20, y2);
         int amt = (int) view.trade().profit();
-        
+
         g.setFont(narrowFont(16));
         s2 = text("RACES_DIPLOMACY_TRADE_AMT", str(amt));
         sw2 = g.getFontMetrics().stringWidth(s2);
@@ -1209,10 +1209,10 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             y1 += s16;
             drawString(g,line, x+s15, y1);
         }
-        
+
         if (outOfRange)
             return;
-        
+
         int x2 = x+s10;
         int y2 = y1+s10;
         int w2 = w-s20;
@@ -1220,7 +1220,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         g.setColor(RacesUI.brown);
         g.fillRect(x2,y2,w2,listH);
         relationsListBox.setBounds(x2,y2,w2,listH);
-        
+
         g.setClip(x2,y2+s1,w2,listH-s2);
         int y3 = y2-relationsY;
         int x3 = x2+s10;
@@ -1245,7 +1245,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
                 int x3b = x2+w2-sw1-rightM;
                 drawString(g,str, x3b, y3);
             }
-        }      
+        }
         relationsYMax = max(0, fullListH-listH);
         if (relationsYMax == 0)
             relationsScroller.setBounds(0,0,0,0);
@@ -1290,7 +1290,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             Color[] colors2 = {brownEdgeC, brownMidC, brownEdgeC};
             embassyDisabledBackground = new LinearGradientPaint(ptStart, ptEnd, dist, colors2);
         }
-        
+
         Stroke prev = g.getStroke();
         g.setStroke(stroke3);
         g.setColor(Color.black);
@@ -1301,7 +1301,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             g.setPaint(embassyBackground);
         else
             g.setPaint(embassyDisabledBackground);
-        
+
         g.fillRect(x,y,w,h);
 
         Color c0 = SystemPanel.whiteText;
@@ -1326,13 +1326,13 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         EmpireView view = player().viewForEmpire(parent.selectedEmpire());
         if (view == null)
             return;
-                
+
         if (view.embassy().diplomatGone()) {
             view.embassy().reopenEmbassy();
             parent.repaint();
             return;
         }
-        
+
         if (!view.diplomats())
             return;
         
@@ -1366,7 +1366,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
 		String leaderName = emp.leader().name();
 		String nameTitle  = emp.raceText("_nameTitle");
 		String specieName  = emp.raceName();
-		System.out.println(nameTitle + " / " + specieName);
+		//System.out.println(nameTitle + " / " + specieName);
 		String dlgTitle = text("RACES_DIPLOMACY_LEADER_DIALOG_TITLE", nameTitle, specieName);
 		String dlgLabel = text("RACES_DIPLOMACY_LEADER_DIALOG_LABEL", nameTitle, specieName);
 		StringDialogUI dlg = RotPUI.instance().stringDialog();

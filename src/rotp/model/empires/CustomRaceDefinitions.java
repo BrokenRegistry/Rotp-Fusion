@@ -51,7 +51,7 @@ import rotp.ui.util.SettingFloat;
 import rotp.ui.util.SettingInteger;
 import rotp.ui.util.SettingString;
 
-public class CustomRaceDefinitions implements ISpecies {
+public class CustomRaceDefinitions {
 	
 	public	static final String ROOT	= "CUSTOM_RACE_";
 	private	static final String PLANET	= "PLANET_";
@@ -235,11 +235,11 @@ public class CustomRaceDefinitions implements ISpecies {
 		setSettingTools(loadOptions(path, fileName));
 		
 	}
-	private String fileName() { return race.id + EXT; }
+	private String fileName() { return race.id() + EXT; }
 	public void saveRace() { saveSettingList(Rotp.jarPath(), fileName()); }
 	public void loadRace() {
-		if (R_M.isValidKey(race.id))
-			setRace(race.id);
+		if (SpeciesManager.instance().isBaseSpecies(race.id()))
+			setRace(race.id());
 		else
 			loadSettingList(Rotp.jarPath(), fileName());
 	}
@@ -265,7 +265,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	 * @param raceKey the new race
 	 */
 	public void setRace(String raceKey) {
-		race = R_M.keyed(raceKey).copy();
+		race = SpeciesManager.instance().keyed(raceKey).copy();
 		pullSettings();
 	}
 	public int getCount() {
@@ -391,7 +391,7 @@ public class CustomRaceDefinitions implements ISpecies {
 		return -malus;
 	}
 	private void pushSettings() {
-		race = R_M.keyed(baseRace).copy();
+		race = SpeciesManager.instance().keyed(baseRace).copy();
 		for (SettingBase<?> setting : settingList) {
 			setting.pushSetting();
 		}
@@ -578,14 +578,14 @@ public class CustomRaceDefinitions implements ISpecies {
 			CustomRaceDefinitions cr = new CustomRaceDefinitions(opt);
 			Race dr = cr.getRace();
 			String cfgValue	 = dr.setupName;
-			String langLabel = dr.id;
+			String langLabel = dr.id();
 			String tooltipKey = dr.getDescription3();
 			float cost = cr.getTotalCost();
 			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
 		}
 		private void add(String raceKey) {
-			Race dr = R_M.keyed(raceKey);	    	
-			String cfgValue	  = dr.id;
+			Race dr = SpeciesManager.instance().keyed(raceKey);	    	
+			String cfgValue	  = dr.id();
 			String langLabel  = BASE_RACE_MARKER + dr.setupName();
 			String tooltipKey = dr.getDescription3();
 			CustomRaceDefinitions cr = new CustomRaceDefinitions(dr);
@@ -643,7 +643,7 @@ public class CustomRaceDefinitions implements ISpecies {
 				return;
 			}
 			if (index()>=listSize()-16) { // Base Race
-				race = R_M.keyed(getCfgValue(settingValue())).copy();
+				race = SpeciesManager.instance().keyed(getCfgValue(settingValue())).copy();
 				pullSettings();
 				updateSettings();
 				return;
@@ -664,8 +664,8 @@ public class CustomRaceDefinitions implements ISpecies {
 			inputMessage("Enter the Race File Name");
 			randomStr(RANDOMIZED_RACE_KEY);
 		}
-		@Override public void pushSetting() { race.id = settingValue(); }
-		@Override public void pullSetting() { set(race.id); }
+		@Override public void pushSetting() { race.id(settingValue()); }
+		@Override public void pullSetting() { set(race.id()); }
 	}
 	// ==================== RaceName ====================
 	//
@@ -690,7 +690,7 @@ public class CustomRaceDefinitions implements ISpecies {
 		private EmpireName() {
 			super(ROOT, "RACE_EMPIRE_NAME", "Custom Empire", 1);
 			inputMessage("Enter the Empire Designation");
-			randomStr(CR_EMPIRE_NAME_RANDOM);
+			randomStr(ISpecies.CR_EMPIRE_NAME_RANDOM);
 		}
 		@Override public void pushSetting() { race.empireTitle(settingValue()); }
 		@Override public void pullSetting() {

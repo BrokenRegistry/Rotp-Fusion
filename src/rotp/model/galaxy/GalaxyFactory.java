@@ -16,10 +16,8 @@
 package rotp.model.galaxy;
 
 import static rotp.model.empires.CustomRaceDefinitions.RANDOM_RACE_KEY;
-import static rotp.model.empires.CustomRaceDefinitions.fileToAlienRace;
 import static rotp.model.empires.CustomRaceDefinitions.getAllAlienRaces;
 import static rotp.model.empires.CustomRaceDefinitions.getAllowedAlienRaces;
-import static rotp.model.empires.CustomRaceDefinitions.optionToAlienRace;
 import static rotp.model.empires.CustomRaceDefinitions.raceFileExist;
 import static rotp.model.game.IBaseOptsTools.GAME_OPTIONS_FILE;
 
@@ -32,9 +30,10 @@ import java.util.List;
 import rotp.model.empires.CustomRaceDefinitions;
 import rotp.model.empires.Empire;
 import rotp.model.empires.Empire.EmpireBaseData;
-import rotp.model.empires.ISpecies;
 import rotp.model.empires.Leader;
 import rotp.model.empires.Race;
+import rotp.model.empires.Species;
+import rotp.model.empires.SpeciesManager;
 import rotp.model.galaxy.Galaxy.GalaxyBaseData;
 import rotp.model.galaxy.GalaxyShape.EmpireSystem;
 import rotp.model.galaxy.StarSystem.SystemBaseData;
@@ -49,7 +48,7 @@ import rotp.ui.util.SpecificCROption;
 import rotp.ui.util.planets.PlanetImager;
 import rotp.util.Base;
 
-public class GalaxyFactory implements ISpecies, Base {
+public class GalaxyFactory implements Base {
 	private static GalaxyFactory instance = new GalaxyFactory();
 	public  static GalaxyFactory current() { return instance; }
 	/**
@@ -63,7 +62,7 @@ public class GalaxyFactory implements ISpecies, Base {
 
 	public Galaxy newGalaxy(GalaxyCopy src) {
 		GalaxyBaseData gc = src.galSrc;
-		for (Race r: R_M.races()) {
+		for (Race r: SpeciesManager.instance().baseSpecies()) {
 			r.loadNameList();
 			r.loadLeaderList();
 			r.loadHomeworldList();
@@ -83,7 +82,7 @@ public class GalaxyFactory implements ISpecies, Base {
 		g.swappedPositions = src.swappedPositions();
 		GameSession.instance().galaxy(g);
 		
-		Race playerRace = R_M.keyed(gc.empires[0].raceKey, gc.empires[0].raceOptions);
+		Race playerRace = SpeciesManager.instance().keyed(gc.empires[0].raceKey, gc.empires[0].raceOptions);
 		addNebulas(g, src);
 		List<String> systemNames = playerRace.systemNames();
 		shuffle(systemNames);
@@ -97,7 +96,7 @@ public class GalaxyFactory implements ISpecies, Base {
 		return g;
 	}
 	public Galaxy newGalaxy() {
-		for (Race r: R_M.races()) {
+		for (Race r: SpeciesManager.instance().baseSpecies()) {
 			r.loadNameList();
 			r.loadLeaderList();
 			r.loadHomeworldList();
@@ -113,7 +112,7 @@ public class GalaxyFactory implements ISpecies, Base {
 
 		Galaxy g = new Galaxy(shape);
 		GameSession.instance().galaxy(g);
-		Race playerRace = R_M.keyed(opts.selectedPlayerRace());
+		Race playerRace = SpeciesManager.instance().keyed(opts.selectedPlayerRace());
 
 		LinkedList<String> alienRaces = buildAlienRaces();
 
@@ -180,9 +179,9 @@ public class GalaxyFactory implements ISpecies, Base {
 			StarSystem sys = g.system(id);
 			Leader boss = emp.leader();
 			System.out.println(
-					String.format("%-16s", emp.empireRaceName())
+					String.format("%-16s", emp.species().speciesName(0))
 					+ String.format("%-12s", sys.name())
-					+ String.format("%-16s", emp.dataRaceName())
+					+ String.format("%-16s", emp.species().abilitiesName())
 					+ String.format("%-12s", boss.personality())
 					+ String.format("%-15s", boss.objective())
 					+ String.format("%-22s", emp.diplomatAI())
@@ -379,16 +378,10 @@ public class GalaxyFactory implements ISpecies, Base {
 		}
 
 		IGameOptions opts = GameSession.instance().options();
+		// Get Race key for animations
 		String raceKey = opts.selectedPlayerRace();
-		Race playerRace = R_M.keyed(raceKey);
-		String defaultName = playerRace.nextAvailableHomeworld();
-		String systemName = options().selectedHomeWorldName();
-		if (systemName.isEmpty())
-			systemName = defaultName;
-		String leaderName = opts.selectedLeaderName();
-		Integer color = options().selectedPlayerColor();
 
-		// Create DataRace
+		// Get DataRace key for abilities
 		playerDataRaceKey = raceKey;
 		DynOptions options = null;
 		String restartChangesPlayerRace = opts.selectedRestartChangesPlayerRace();
@@ -400,12 +393,35 @@ public class GalaxyFactory implements ISpecies, Base {
 			playerDataRaceKey = empSrc.dataRaceKey;
 			options = empSrc.raceOptions;
 		}
-		Race playerDataRace = R_M.keyed(playerDataRaceKey, options);
+
+		// Get Species
+		Species playerSpecies = new Species(raceKey, playerDataRaceKey, options);
+
+		//Race playerRace = SpeciesManager.current().keyed(raceKey);
+		String systemName = options().selectedHomeWorldName();
+		if (systemName.isEmpty())
+			systemName = playerSpecies.race().nextAvailableHomeworld();
+		String leaderName = opts.selectedLeaderName();
+		Integer color = options().selectedPlayerColor();
+
+		// Create DataRace
+//		playerDataRaceKey = raceKey;
+//		DynOptions options = null;
+//		String restartChangesPlayerRace = opts.selectedRestartChangesPlayerRace();
+//		if (opts.selectedPlayerIsCustom())
+//			playerDataRaceKey = CustomRaceDefinitions.CUSTOM_RACE_KEY;
+//		if (src != null && !opts.selectedRestartAppliesSettings()
+//				&& !restartChangesPlayerRace.equals("GuiLast")
+//				&& !restartChangesPlayerRace.equals("GuiSwap")) { // Use Restart info
+//			playerDataRaceKey = empSrc.dataRaceKey;
+//			options = empSrc.raceOptions;
+//		}
+//		Race playerDataRace = SpeciesManager.current().keyed(playerDataRaceKey, options);
 
 		// create home system for player
 		StarSystem sys;
 		EmpireSystem empSystem = null;
-		sys = StarSystemFactory.current().newSystemForPlayer(playerRace, playerDataRace , g);
+		sys = StarSystemFactory.current().newSystemForPlayer(playerSpecies , g);
 
 		if (src == null) { // Start
 			empSystem = empSystems.get(id);
@@ -452,7 +468,7 @@ public class GalaxyFactory implements ISpecies, Base {
 		// modnar: add option to start game with additional colonies
 		// modnar: compSysId is the System ID array for these additional colonies
 		// BR: Added dataRaceKey
-		Empire emp = new Empire(g, id, playerRace, playerDataRace, sys, compSysId, color, leaderName, empSrc);
+		Empire emp = new Empire(g, id, playerSpecies, sys, compSysId, color, leaderName, empSrc);
 		g.addEmpire(emp);
 
 		//log("Adding star system: ", sys.name(), " - ", playerRace.id, " : ", fmt(sys.x(),2), "@", fmt(sys.y(),2));
@@ -539,7 +555,8 @@ public class GalaxyFactory implements ISpecies, Base {
 		}
 
 		// since we may have more races than colors we will need to reset the
-		// color list each time we run out. 
+		// color list each time we run out.
+		// Get Race key for animations
 		for (int h=0; h<maxRaces; h++) {
 			StarSystem sys;
 			String raceKey;
@@ -550,13 +567,13 @@ public class GalaxyFactory implements ISpecies, Base {
 				raceKey = eSrc.raceKey;
 			}
 
-			Race race = R_M.keyed(raceKey);
+			//Race race = SpeciesManager.current().keyed(raceKey);
 			if (raceColors.isEmpty()) 
 				raceColors = opts.possibleColors();
 			Integer colorId = raceColors.remove(0);
 
-			// Create DataRace
-			Race dataRace;
+			// Get dataRace key for abilities & Create Species
+			Species species;
 			if (src == null || opts.selectedRestartAppliesSettings()) { // Start and some restart
 				// First check the specific box
 				String selectedAbility = options().specificOpponentCROption(h+1);
@@ -571,77 +588,164 @@ public class GalaxyFactory implements ISpecies, Base {
 
 				switch (ability) {
 					case USER_CHOICE:
-						dataRace = fileToAlienRace(selectedAbility);
+						species = new Species(raceKey, null, selectedAbility);
 						break;
 					case REWORKED:
 						if(raceFileExist(raceKey))
-							dataRace = fileToAlienRace(raceKey);
+							species = new Species(raceKey, null, raceKey);
 						else
-							dataRace = R_M.keyed(raceKey);
+							species = new Species(raceKey, raceKey);
 						break;
 					case PLAYER:
-						dataRace = optionToAlienRace(g.empire(0).raceOptions());
+						species = new Species(raceKey, g.empire(0).raceOptions(), false);
 						break;
 					case RANDOM: // Create a random race
-						dataRace = R_M.keyed(RANDOM_RACE_KEY);
+						species = new Species(raceKey, RANDOM_RACE_KEY);
 						break;
 					case RANDOM_BASE: // Choose randomly in the base list
-						dataRace = R_M.keyed(random(opts.baseRaceOptions()));
+						species = new Species(raceKey, random(opts.baseRaceOptions()));
 						break;
 					case RANDOM_MOD: // Choose randomly including the Modnar Races
-						dataRace = R_M.keyed(random(opts.allRaceOptions()));
+						species = new Species(raceKey, random(opts.allRaceOptions()));
 						break;
 					case FILES_FLT:
 						if (allowedRaceList.isEmpty())
-							dataRace = R_M.keyed(raceKey);
+							species = new Species(raceKey, raceKey);
 						else
-							dataRace = fileToAlienRace(random(allowedRaceList));
+							species = new Species(raceKey, null, random(allowedRaceList));
 						break;
 					case FILES_NO_FLT:
 						if (alienRaceList.isEmpty())
-							dataRace = R_M.keyed(raceKey);
+							species = new Species(raceKey, raceKey);
 						else
-							dataRace = fileToAlienRace(random(alienRaceList));
+							species = new Species(raceKey, null, random(alienRaceList));
 						break;
 					case FILES_RACES:
 						if (rng().nextBoolean())
 							if (allowedRaceList.isEmpty())
-								dataRace = R_M.keyed(random(opts.allRaceOptions()));
+								species = new Species(raceKey, random(opts.allRaceOptions()));
 							else
-								dataRace = fileToAlienRace(random(allowedRaceList));
+								species = new Species(raceKey, null, random(allowedRaceList));
 						else
-							dataRace = R_M.keyed(random(opts.allRaceOptions()));
+							species = new Species(raceKey, random(opts.allRaceOptions()));
 						break;
 					case ALL:
 						if (rng().nextBoolean())
 							if (rng().nextBoolean())
 								if (allowedRaceList.isEmpty())
-									dataRace = optionToAlienRace(g.empire(0).raceOptions());
+									species = new Species(raceKey, g.empire(0).raceOptions(), false);
 								else
-									dataRace = fileToAlienRace(random(allowedRaceList));
+									species = new Species(raceKey, null, random(allowedRaceList));
 							else
-								dataRace = optionToAlienRace(g.empire(0).raceOptions());
+								species = new Species(raceKey, g.empire(0).raceOptions(), false);
 						else if (rng().nextBoolean())
-							dataRace = R_M.keyed(random(opts.allRaceOptions()));
+							species = new Species(raceKey, random(opts.allRaceOptions()));
 						else
-							dataRace = R_M.keyed(RANDOM_RACE_KEY);
+							species = new Species(raceKey, RANDOM_RACE_KEY);
 						break;
 					case BASE_RACE: // default as vanilla
 					default:
 						if (options().randomizeAIAbility()) // original Advanced Option random abilities
-							dataRace = R_M.keyed(random(opts.baseRaceOptions()));
+							species = new Species(raceKey, random(opts.baseRaceOptions()));
 						else
-							dataRace = R_M.keyed(raceKey);
+							species = new Species(raceKey, raceKey);
 						break;
 				}
-			} else // Restart
+			} 
+			else // Restart
 				if(eSrc.raceOptions == null)
-					dataRace = R_M.keyed(eSrc.dataRaceKey);
+					species = new Species(raceKey, eSrc.dataRaceKey);
 				else
-					dataRace = optionToAlienRace(eSrc.raceOptions);
- 
+					species = new Species(raceKey, eSrc.raceOptions, false);
+
+//			// Create DataRace
+//			Race dataRace;
+//			if (src == null || opts.selectedRestartAppliesSettings()) { // Start and some restart
+//				// First check the specific box
+//				String selectedAbility = options().specificOpponentCROption(h+1);
+//				SpecificCROption ability = SpecificCROption.set(selectedAbility);
+//
+//				if (!IGalaxyOptions.useSelectableAbilities.get()
+//						|| ability.isSelection()) { // Then Check for Global ability
+//					// the global setting will be used
+//					selectedAbility = IGalaxyOptions.globalCROptions.get();
+//					ability = IGalaxyOptions.globalCROptions.getEnu();
+//				}
+//
+//				switch (ability) {
+//					case USER_CHOICE:
+//						dataRace = fileToAlienRace(selectedAbility);
+//						break;
+//					case REWORKED:
+//						if(raceFileExist(raceKey))
+//							dataRace = fileToAlienRace(raceKey);
+//						else
+//							dataRace = SpeciesManager.current().keyed(raceKey);
+//						break;
+//					case PLAYER:
+//						dataRace = optionToAlienRace(g.empire(0).raceOptions());
+//						break;
+//					case RANDOM: // Create a random race
+//						dataRace = SpeciesManager.current().keyed(RANDOM_RACE_KEY);
+//						break;
+//					case RANDOM_BASE: // Choose randomly in the base list
+//						dataRace = SpeciesManager.current().keyed(random(opts.baseRaceOptions()));
+//						break;
+//					case RANDOM_MOD: // Choose randomly including the Modnar Races
+//						dataRace = SpeciesManager.current().keyed(random(opts.allRaceOptions()));
+//						break;
+//					case FILES_FLT:
+//						if (allowedRaceList.isEmpty())
+//							dataRace = SpeciesManager.current().keyed(raceKey);
+//						else
+//							dataRace = fileToAlienRace(random(allowedRaceList));
+//						break;
+//					case FILES_NO_FLT:
+//						if (alienRaceList.isEmpty())
+//							dataRace = SpeciesManager.current().keyed(raceKey);
+//						else
+//							dataRace = fileToAlienRace(random(alienRaceList));
+//						break;
+//					case FILES_RACES:
+//						if (rng().nextBoolean())
+//							if (allowedRaceList.isEmpty())
+//								dataRace = SpeciesManager.current().keyed(random(opts.allRaceOptions()));
+//							else
+//								dataRace = fileToAlienRace(random(allowedRaceList));
+//						else
+//							dataRace = SpeciesManager.current().keyed(random(opts.allRaceOptions()));
+//						break;
+//					case ALL:
+//						if (rng().nextBoolean())
+//							if (rng().nextBoolean())
+//								if (allowedRaceList.isEmpty())
+//									dataRace = optionToAlienRace(g.empire(0).raceOptions());
+//								else
+//									dataRace = fileToAlienRace(random(allowedRaceList));
+//							else
+//								dataRace = optionToAlienRace(g.empire(0).raceOptions());
+//						else if (rng().nextBoolean())
+//							dataRace = SpeciesManager.current().keyed(random(opts.allRaceOptions()));
+//						else
+//							dataRace = SpeciesManager.current().keyed(RANDOM_RACE_KEY);
+//						break;
+//					case BASE_RACE: // default as vanilla
+//					default:
+//						if (options().randomizeAIAbility()) // original Advanced Option random abilities
+//							dataRace = SpeciesManager.current().keyed(random(opts.baseRaceOptions()));
+//						else
+//							dataRace = SpeciesManager.current().keyed(raceKey);
+//						break;
+//				}
+//			} else // Restart
+//				if(eSrc.raceOptions == null)
+//					dataRace = SpeciesManager.current().keyed(eSrc.dataRaceKey);
+//				else
+//					dataRace = optionToAlienRace(eSrc.raceOptions);
+
+			
 			EmpireSystem empSystem = null;
-			sys = StarSystemFactory.current().newSystemForRace(race, dataRace, g);
+			sys = StarSystemFactory.current().newSystemForRace(species, g);
 			if (src == null) { // Start
 				empSystem = empSystems.get(h);
 				sys.setXY(empSystem.colonyX(), empSystem.colonyY());
@@ -649,9 +753,9 @@ public class GalaxyFactory implements ISpecies, Base {
 				SystemBaseData ref = empSrc[empId].homeSys;
 				sys.setXY(ref.x, ref.y);
 			}
-			sys.name(dataRace.worldsPrefix() +
-					race.nextAvailableHomeworld() +
-					dataRace.worldsSuffix());
+			sys.name(species.dataRace().worldsPrefix() +
+					species.race().nextAvailableHomeworld() +
+					species.dataRace().worldsSuffix());
 			g.addStarSystem(sys);
 
 			// modnar: add option to start game with additional colonies
@@ -672,8 +776,9 @@ public class GalaxyFactory implements ISpecies, Base {
 						compSysId[i] = sysComp.id;
 					}
 				}
-				emp = new Empire(g, empId, race, dataRace, sys, compSysId, colorId, null, null);
-			} else { // Restart
+				emp = new Empire(g, empId, species, sys, compSysId, colorId, null, null);
+			}
+			else { // Restart
 				numCompWorlds = galSrc.numCompWorlds;
 				compSysId = new int[numCompWorlds];
 				if (numCompWorlds > 0) {
@@ -686,7 +791,7 @@ public class GalaxyFactory implements ISpecies, Base {
 						compSysId[i] = sysComp.id;
 					}
 				}
-				emp = new Empire(g, empId, race, dataRace, sys, compSysId, colorId, null, empSrc[empId]);
+				emp = new Empire(g, empId, species, sys, compSysId, colorId, null, empSrc[empId]);
 			}
 			g.addEmpire(emp);
 			empId++;

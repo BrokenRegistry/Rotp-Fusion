@@ -18,25 +18,65 @@ package rotp.model.empires;
 import static rotp.model.empires.CustomRaceDefinitions.getAlienRace;
 import static rotp.model.empires.CustomRaceDefinitions.keyToRace;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import rotp.model.game.DynOptions;
 import rotp.util.Base;
 
-public class SpeciesManager implements Base, Serializable {
+public final class SpeciesManager implements Base, Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final String CUSTOM_RACE_DESCRIPTION	= "CUSTOM_RACE_DESCRIPTION";
+	private static final String RACE_LIST_FILE	= "races/listing.txt";
+	private static SpeciesManager instance;
+	private static boolean initialized = false;
+	final RaceFactory factory	= new RaceFactory();
+	private final SpeciesMap baseSpeciesMap		= new SpeciesMap();
+	private final SpeciesMap customSpeciesMap	= new SpeciesMap();
 
-	private Map<String, Race> raceMap = new HashMap<>();
-	boolean isValidKey(String s) {
-		return raceMap.get(s) != null;
+	public static SpeciesManager instance()	{
+		if (instance == null)
+			instance = new SpeciesManager();
+		return instance;
 	}
-	public Race keyed(String s) {
-		Race race = raceMap.get(s);
+	private SpeciesManager() {}
+	
+	public void resetRaceLangFiles()	{
+		if (!initialized)
+			loadBaseDataFiles();
+		for (Race r : baseSpecies())
+			r.raceLabels().resetDialogue();
+	}
+	public void loadBaseDataFiles()		{
+		log("Loading Races: ", RACE_LIST_FILE);
+		BufferedReader in = reader(RACE_LIST_FILE);
+		if (in == null)
+			return;
+		try {
+			String input;
+			while ((input = in.readLine()) != null)
+				factory.loadRaceDataFile(input.trim());
+			in.close();
+		}
+		catch (IOException e) {
+			err("RaceFactory.loadRaces -- IOException: ", e.toString());
+		}
+	}
+	public void loadRaceLangFiles(String langDir)			{
+		for (Race r : baseSpecies()) {
+			r.raceLabels().resetDialogue();
+			loadRaceLangFiles(r, langDir);
+		}
+	}
+	public void loadRaceLangFiles(Race r, String langDir)	{ factory.loadRaceLangFiles(r, langDir); }
+	public Race reloadRaceDataFile(String raceDirPath)		{ return factory.reloadRaceDataFile(raceDirPath); }
+
+	public Race keyed(String s)		{
+		Race race = baseSpeciesMap.get(s);
 		if (race == null) { // BR: Add custom race if missing
 			race = keyToRace(s);
 			race.isCustomRace(true);
@@ -44,18 +84,25 @@ public class SpeciesManager implements Base, Serializable {
 		}
 		return race;
 	}
-	public Race keyed(String s, DynOptions options) {
-		Race race = raceMap.get(s);
+	public Race keyed(String s, DynOptions options)	{
+		Race race = baseSpeciesMap.get(s);
 		if (race == null) { // BR: get the custom race
 			race = getAlienRace(s, options);
 			race.isCustomRace(true);
 		}
 		return race;
 	}
-	void addRace(Race r) { raceMap.put(r.id(), r);}
-	public List<Race> races() {
-		List<Race> races = new ArrayList<>();
-		races.addAll(raceMap.values());
-		return races;
-	}
+	boolean isBaseSpecies(String key)	{ return baseSpeciesMap.contains(key); }
+	boolean isCustomSpecies(String key)	{ return customSpeciesMap.contains(key); }
+	Race addBaseSpecies(Race r)			{ return baseSpeciesMap.put(r); }
+	Race addCustomSpecies(Race r)		{ return customSpeciesMap.put(r); }
+	public List<Race> baseSpecies()		{ return baseSpeciesMap.getList(); }
+	public List<Race> customSpecies()	{ return customSpeciesMap.getList(); }
+}
+
+final class SpeciesMap extends HashMap<String, Race> {
+	private static final long serialVersionUID = 1L;
+	Race put(Race race)			{ return put(race.id(), race); }
+	List<Race> getList()		{ return new ArrayList<>(values()); }
+	boolean contains(String s)	{ return containsKey(s); }
 }

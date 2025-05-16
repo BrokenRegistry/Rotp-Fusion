@@ -324,6 +324,8 @@ final class GalaxyTextShape extends GalaxyShape {
 	}
 	private String finalStr(String sep)					{
 		String baseStr = finalOption1;
+		if (baseStr.isBlank())
+			baseStr = "?";
 		String str	= baseStr;
 		int num		= option3;
 

@@ -100,7 +100,7 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	// Using the news parameters
 	private boolean autoShipsByDefault = true;
 	
-	// ========== Constructor And Initializers ==========AbstractParam <T>
+	// ========== Constructor And Initializers ==========
 	public GovernorOptions() {
 		//System.out.println("GovernorOptions() " + autoShipsByDefault);
 		for (IParam param : AllSubUI.governorSubUI().optionsList()) {

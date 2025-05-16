@@ -45,14 +45,16 @@ public final class SettingsOptions extends AbstractOptionsSubUI {
 		list.add(HEADER_SPACER_50);
 		list.addAll(AllSubUI.getHandle(ZOOM_OPTIONS_UI_KEY).getUiMinor(false));
 		if (!Rotp.noOptions()) {
-			String langDir = LanguageManager.selectedLanguageDir();
-			if (langDir.equalsIgnoreCase("EN")) {
-				list.add(HEADER_SPACER_50);
-				list.add(AllSubUI.getHandle(NAME_OPTIONS_UI_KEY).getUI());
-			}
-			else if (langDir.equalsIgnoreCase("FR")) {
-				list.add(HEADER_SPACER_50);
-				list.add(AllSubUI.getHandle(NAME_OPTIONS_FR_UI_KEY).getUI());
+			if (LanguageManager.selectedLanguage() >=0) {
+				String langDir = LanguageManager.selectedLanguageDir();
+				if (langDir.equalsIgnoreCase("EN")) {
+					list.add(HEADER_SPACER_50);
+					list.add(AllSubUI.getHandle(NAME_OPTIONS_UI_KEY).getUI());
+				}
+				else if (langDir.equalsIgnoreCase("FR")) {
+					list.add(HEADER_SPACER_50);
+					list.add(AllSubUI.getHandle(NAME_OPTIONS_FR_UI_KEY).getUI());
+				}
 			}
 		}
 		map.add(list);

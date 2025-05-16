@@ -20,7 +20,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,10 +37,12 @@ import rotp.util.ImageTransformer;
 import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
 
-public class Race implements ISpecies, Base, Serializable {
-	private static final long serialVersionUID = 1L;
+public class Race implements ISpecies, Base {
+	private static final int PERSONALITY_COUNT	= Personality.values().length;
+	private static final int OBJECTIVE_COUNT	= Objective.values().length;
+	private static final int DESIGN_MODS_COUNT	= 28;
 
-	String id;
+	private String id;
 	public String setupName; // BR: was never used
 	private String empireTitle; // BR: for custom Races
 	private String racePrefix = ""; // BR: for custom Races
@@ -133,6 +134,7 @@ public class Race implements ISpecies, Base, Serializable {
 	private String planetRessource = "Normal";
 	private String planetEnvironment = "Normal";
 	// Custom Races:
+	private boolean isAbilities = false;
 	private boolean isCustomRace = false;
 	private DynOptions raceOptions	= null;
 	// \BR:
@@ -183,9 +185,6 @@ public class Race implements ISpecies, Base, Serializable {
 	private int diploXOffset, diploYOffset;
 	private int flagW, flagH;
 
-	private static final int PERSONALITY_COUNT	= Personality.values().length;
-	private static final int OBJECTIVE_COUNT	= Objective.values().length;
-	private static final int DESIGN_MODS_COUNT	= 28;
 	private float[] personalityPct	= new float[PERSONALITY_COUNT];
 	private float[] objectivePct	= new float[OBJECTIVE_COUNT];
 	private float[] shipDesignMods	= new float[DESIGN_MODS_COUNT];
@@ -194,16 +193,19 @@ public class Race implements ISpecies, Base, Serializable {
 	private transient Image transportImg;
 	private transient BufferedImage diploMug, wideDiploMug;
 
-	public String defaultHomeworldName()   {
+	public String defaultHomeworldName(){
 		if (homeSystemNames.isEmpty())
 			return "Empty";
 		return homeSystemNames.get(0);
 	}
+	public boolean hasHomeworldNames()	{ return !homeSystemNames.isEmpty(); }
 	public String homeworldPlanetType()	{ return homeworldPlanetType; }
 	void homeworldPlanetType(String s)	{ homeworldPlanetType = s; }
 
 	String id()							{ return id; }
 	void id(String s)					{ id = s; }
+	boolean isAbilities()				{ return isAbilities; }
+	void isAbilities(boolean is)		{ isAbilities = is; }
 	int colonistDelay()					{ return colonistDelay; }
 	int colonistStartX()				{ return colonistX1; }
 	int colonistStartY()				{ return colonistY1; }
@@ -370,6 +372,7 @@ public class Race implements ISpecies, Base, Serializable {
 	RaceCombatAnimation troopDeath4H()	{ return troopDeath4H; }
 
 	String directoryName()				{ return directoryName; }
+	String lalelsFileName(String s)		{ return isAbilities? s : langKey + "." + s; }
 	String langKey()					{ return langKey; }
 	void langKey(String s)				{ langKey = s; }
 	public List<String> systemNames()	{ return systemNames; }
@@ -425,7 +428,7 @@ public class Race implements ISpecies, Base, Serializable {
     // BR: for race customization
     // Get a Copy the current race
     protected Race copy() {
-    	Race copy = RaceFactory.current().reloadRaceDataFile(directoryName);
+    	Race copy = SpeciesManager.instance().reloadRaceDataFile(directoryName);
     	labels.copy(labels, copy.labels);
     	copy.setupName	  = setupName();
     	copy.empireTitle  = empireTitle();
@@ -433,13 +436,13 @@ public class Race implements ISpecies, Base, Serializable {
     	copy.description2 = description2;
     	copy.description3 = description3;
     	copy.description4 = description4;
-    	copy.raceNames.addAll(raceNames);
-    	copy.homeSystemNames.addAll(homeSystemNames);
-    	copy.leaderNames.addAll(leaderNames);
-    	copy.shipNamesSmall.addAll(shipNamesSmall);
-    	copy.shipNamesMedium.addAll(shipNamesMedium);
-     	copy.shipNamesLarge.addAll(shipNamesLarge);
-    	copy.shipNamesHuge.addAll(shipNamesHuge);
+//		copy.raceNames.addAll(raceNames);
+//		copy.homeSystemNames.addAll(homeSystemNames);
+//		copy.leaderNames.addAll(leaderNames);
+//		copy.shipNamesSmall.addAll(shipNamesSmall);
+//		copy.shipNamesMedium.addAll(shipNamesMedium);
+//	 	copy.shipNamesLarge.addAll(shipNamesLarge);
+//		copy.shipNamesHuge.addAll(shipNamesHuge);
 
 		// useless for abilities
 		copy.troopNormal(null);
@@ -453,47 +456,67 @@ public class Race implements ISpecies, Base, Serializable {
 		copy.troopDeath3H(null);
 		copy.troopDeath4H(null);
 		return copy;
-    }
-    public void loadNameList()  {
-        List<String> secondaryNames =  new ArrayList<>(raceNames);
-        remainingRaceNames.clear();
-        remainingRaceNames.add(secondaryNames.remove(0));
-        remainingRaceNames.addAll(secondaryNames);
-    }
-    public void loadLeaderList()  {
-        List<String> secondaryNames =  new ArrayList<>(leaderNames);
-        remainingLeaderNames.clear();
-        remainingLeaderNames.add(secondaryNames.remove(0));
-        Collections.shuffle(secondaryNames);
-        remainingLeaderNames.addAll(secondaryNames);
-    }
-    public void loadHomeworldList() {
-        List<String> homeNames =  new ArrayList<>(homeSystemNames);
-        remainingHomeworldNames.clear();
-        remainingHomeworldNames.add(homeNames.remove(0));
-        Collections.shuffle(homeNames);
-        remainingHomeworldNames.addAll(homeNames);
-    }
-    String nextAvailableName() {
-        if (remainingRaceNames.isEmpty()) 
-            loadNameList();
-        String name = remainingRaceNames.remove(0);
-        return name;
-    }
-    int nameIndex(String n) {
-        return raceNames.indexOf(n);
-    }
-    String nameVariant(int i)  { return raceNames.get(i); }
-    String nextAvailableLeader() {
-        if (remainingLeaderNames.isEmpty())
-            loadLeaderList();
-        return remainingLeaderNames.remove(0);
-    }
-    public String nextAvailableHomeworld() {
-        if (remainingHomeworldNames.isEmpty())
-            loadHomeworldList();
-        return remainingHomeworldNames.remove(0);
-    }
+	}
+	public void loadNameList()  {
+		remainingRaceNames.clear();
+		List<String> secondaryNames =  new ArrayList<>(raceNames);
+		if (secondaryNames.isEmpty())
+			return;
+		remainingRaceNames.clear();
+		remainingRaceNames.add(secondaryNames.remove(0));
+		Collections.shuffle(secondaryNames);
+		remainingRaceNames.addAll(secondaryNames);
+	}
+	public void loadLeaderList()  {
+		remainingLeaderNames.clear();
+		List<String> secondaryNames =  new ArrayList<>(leaderNames);
+		if (secondaryNames.isEmpty())
+			return;
+		remainingLeaderNames.add(secondaryNames.remove(0));
+		Collections.shuffle(secondaryNames);
+		remainingLeaderNames.addAll(secondaryNames);
+	}
+	public void loadHomeworldList() {
+		remainingHomeworldNames.clear();
+		List<String> homeNames =  new ArrayList<>(homeSystemNames);
+		if (homeNames.isEmpty())
+			return;
+		remainingHomeworldNames.clear();
+		remainingHomeworldNames.add(homeNames.remove(0));
+		Collections.shuffle(homeNames);
+		remainingHomeworldNames.addAll(homeNames);
+	}
+	// =========================================================
+	// for Species only
+	//
+	String nextAvailableName() {
+		if (remainingRaceNames.isEmpty()) {
+			loadNameList();
+			if (remainingRaceNames.isEmpty()) 
+				return null;
+		}
+		return remainingRaceNames.remove(0);
+	}
+	int nameIndex(String n)			{ return raceNames.indexOf(n); }
+	String nameVariant(int i)		{ return i>= raceNames.size()? null : raceNames.get(i); }
+	String nextAvailableLeader()	{
+		if (remainingLeaderNames.isEmpty()) {
+			loadLeaderList();
+			if (remainingLeaderNames.isEmpty()) 
+				return null;
+		}
+		return remainingLeaderNames.remove(0);
+	}
+	public String nextAvailableHomeworld() {
+		if (remainingHomeworldNames.isEmpty()) {
+			loadHomeworldList();
+			if (remainingHomeworldNames.isEmpty()) 
+				return null;
+		}
+		return remainingHomeworldNames.remove(0);
+	}
+	// =========================================================
+
     LabelManager raceLabels()				{ return labels; }
     @Override public String toString()		{ return concat("Race:", id); }
 	String diplomacyTheme()					{ return diplomacyTheme; }
@@ -517,11 +540,11 @@ public class Race implements ISpecies, Base, Serializable {
     }
 
 	List<String> customIntroduction() {
-		List<String> introLines = new ArrayList<>();
 		if (isCustomRace) {
+			List<String> introLines = new ArrayList<>();
 			log("loading Custom Species Intro");
 			String filename = CUSTOM_SPECIES_FOLDER +  id + INTRO_FILE_EXTENSION;
-			BufferedReader in = reader(filename);
+			BufferedReader in = reader(filename, false);
 			if (in != null) {
 				try {
 					String input;
@@ -538,10 +561,9 @@ public class Race implements ISpecies, Base, Serializable {
 					} catch (IOException e) {}
 				}
 			}
+			if (!introLines.isEmpty())
+				return introLines;
 		}
-		if (!introLines.isEmpty())
-			return introLines;
-
 		// return race-specific dialogue if present
 		// else return default dialog
 		if (raceLabels().hasIntroduction())
