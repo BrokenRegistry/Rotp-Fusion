@@ -506,9 +506,8 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         String aiKey = options().selectedAutoplayOption();
         out += galaxy().currentTurn() + sep + "Player " + text(aiKey);
         // out += "Turn:" + galaxy().currentTurn() + sep + "Player " + text(aiKey);
-        for (Empire emp: sortedEmpires) {
-        	out   += sep + emp.raceType() + ": " + emp.benchmark();
-        }
+		for (Empire emp: sortedEmpires)
+			out += sep + emp.species().nameVariant(0) + ": " + emp.benchmark();
         for (Empire emp: sortedEmpires) {
         	aiKey = emp.getAiKey();
         	String aiName = text(aiKey).replace("AI: ", "");

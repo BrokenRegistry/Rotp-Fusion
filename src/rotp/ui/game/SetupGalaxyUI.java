@@ -18,7 +18,6 @@ package rotp.ui.game;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.model.empires.CustomRaceDefinitions.BASE_RACE_MARKER;
 import static rotp.model.empires.CustomRaceDefinitions.fileToAlienRace;
-import static rotp.model.empires.CustomRaceDefinitions.getAllowedAlienRaces;
 import static rotp.model.empires.CustomRaceDefinitions.getBaseRaceList;
 import static rotp.model.game.DefaultValues.MOO1_DEFAULT;
 import static rotp.model.game.DefaultValues.ROTP_DEFAULT;
@@ -104,8 +103,8 @@ import rotp.Rotp;
 import rotp.model.ai.AIList;
 import rotp.model.empires.CustomRaceDefinitions;
 import rotp.model.empires.Empire;
-import rotp.model.empires.ISpecies;
 import rotp.model.empires.Race;
+import rotp.model.empires.SpeciesManager;
 import rotp.model.galaxy.AllShapes;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.galaxy.GalaxyShape;
@@ -133,7 +132,7 @@ import rotp.util.FontManager;
 import rotp.util.LabelManager;
 import rotp.util.ModifierKeysState;
 
-public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, MouseWheelListener {
+public final class SetupGalaxyUI  extends BaseModPanel implements MouseWheelListener {
 	private static final long serialVersionUID = 1L;
     // public  static final String guiTitleID	= "SETUP_GALAXY";
 	private	static final String GUI_ID       = "START_GALAXY";
@@ -327,14 +326,14 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		specificAbilitiesList.clear();
 		specificAbilitiesList.addAll(SpecificCROption.options());
 		specificAbilitiesList.removeLast(); // The blank one (USER_CHOICE)
-		specificAbilitiesList.addAll(getAllowedAlienRaces());
+		specificAbilitiesList.addAll(SpeciesManager.current().getAllowedAlienCustomSpecies());
 		specificAbilitiesList.addAll(getBaseRaceList());
 		specificAbilities.reInit(specificAbilitiesList);
 		specificAbilitiesArray = specificAbilitiesList.toArray(new String[specificAbilitiesList.size()]);
 		// global Abilities
 		globalAbilitiesList.clear();
 		globalAbilitiesList.addAll(globalCROptions.getBaseOptions());
-		globalAbilitiesList.addAll(getAllowedAlienRaces());
+		globalAbilitiesList.addAll(SpeciesManager.current().getAllowedAlienCustomSpecies());
 		globalAbilitiesList.addAll(getBaseRaceList());
 		globalAbilities.reInit(globalAbilitiesList);
 		globalAbilitiesArray = globalAbilitiesList.toArray(new String[globalAbilitiesList.size()]);
@@ -499,7 +498,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		if (selOpp == null)
 			rivalMugs[i] = nullMug();
 		else {
-			BufferedImage diplo = R_M.keyed(selOpp).diploMugshotQuiet();
+			BufferedImage diplo = SpeciesManager.current().keyed(selOpp).diploMugshotQuiet();
 			rivalMugs[i] = getMug(diplo, backMug());
 		}
 	}
@@ -1878,7 +1877,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	private BufferedImage playerRaceImg()	{
 		if (playerMug == null) {
 			String selRace = opts.selectedPlayerRace();
-			playerMug = newBufferedImage(R_M.keyed(selRace).diploMug());
+			playerMug = newBufferedImage(SpeciesManager.current().keyed(selRace).diploMug());
 		}
 		return playerMug;
 	}
@@ -2234,11 +2233,11 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		Race race;
 		String setupName;
 		if (opts.selectedPlayerIsCustom()) {
-			race = R_M.keyed(CustomRaceDefinitions.CUSTOM_RACE_KEY, null);
+			race = SpeciesManager.current().keyed(CustomRaceDefinitions.CUSTOM_RACE_KEY, null);
 			setupName = race.setupName;
 		}
 		else {
-			race = R_M.keyed(opts.selectedPlayerRace());
+			race = SpeciesManager.current().keyed(opts.selectedPlayerRace());
 			setupName = race.setupName();
 		}
 
@@ -3034,7 +3033,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			String key = get();
 			if (key == null || key.equals(opponentRandom))
 				return "Random";
-			Race race = R_M.keyed(key);
+			Race race = SpeciesManager.current().keyed(key);
 			String name = race.setupName();
 			return name; 
 		}
@@ -3045,7 +3044,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			if (key == null || key.equals(opponentRandom))
 				help = labelFormat(opponentRandom) + "Surprise me!";
 			else {
-				Race   race		= R_M.keyed(key);
+				Race   race		= SpeciesManager.current().keyed(key);
 				String raceName = race.setupName();
 				help = labelFormat(raceName) + race.getDescription1()
 						+ "<br>" + race.getDescription2()
@@ -3061,7 +3060,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			if (key == null || key.equals(opponentRandom))
 				help = "Surprise me!";
 			else {
-				Race   race		= R_M.keyed(key);
+				Race   race		= SpeciesManager.current().keyed(key);
 				String raceName = race.setupName();
 				help = labelFormat(raceName) + race.getDescription1()
 						+ "<br>" + race.getDescription2()

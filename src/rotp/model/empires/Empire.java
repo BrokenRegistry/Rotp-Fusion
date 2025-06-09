@@ -95,7 +95,7 @@ import rotp.ui.notifications.PlunderTechNotification;
 import rotp.util.Base;
 import rotp.util.Rand;
 
-public final class Empire implements ISpecies, Base, NamedObject, Serializable {
+public final class Empire implements Base, NamedObject, Serializable {
     private static final long serialVersionUID = 1L;
     private static final float SHIP_MAINTENANCE_PCT = .02f;
     private static final float SECURITY_COST_RATIO = 2f;
@@ -172,6 +172,7 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
     private transient boolean[] canSeeShips;
     private transient Race race;
     private transient Race dataRace;
+    private transient Species species;
     private transient BufferedImage shipImage;
     private transient BufferedImage shipImageLarge;
     private transient BufferedImage shipImageHuge;
@@ -287,25 +288,27 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
 	public float diploScale()						{ return race().diploScale(); }
 	public float labFlagX()							{ return race().labFlagX(); }
 
-	private String unparsedRaceName()				{
-		if (isPlayer() && isCustomRace())
-			return dataRace().setupName;
-		return race().nameVariant(raceNameIndex);
-	}
-	public String empireRaceName()					{return race().name(); }
-	public String dataRaceName()					{return race().name(); } // For debug only
-	public String raceName()						{
-		if (isPlayer() && isCustomRace())
-			return dataRace().setupName;
-		if (id < 0)
-			return "Orion";
-		return raceName(0);
-	}
+//	private String unparsedRaceName()				{ // TOD BR: REMOVE
+//		if (isPlayer() && isCustomRace())
+//			return dataRace().setupName;
+//		return race().nameVariant(raceNameIndex);
+//	}
+//	public String empireRaceName()					{return race().name(); }
+//	public String dataRaceName()					{return race().name(); } // For debug only
+//	public String raceName()						{
+//		if (isPlayer() && isCustomRace())
+//			return dataRace().setupName;
+//		if (id < 0)
+//			return "Orion";
+//		return raceName(0);
+//	}
+	public String raceName()						{ return species().familyName(); }
 	public String diplomacyTheme()					{ return race().diplomacyTheme(); }
 	public String shipAudioKey()					{ return race().shipAudioKey(); }
 	public String ambienceKey()						{ return race().ambienceKey(); }
-	public String randomLeaderName()				{ return race().randomLeaderName(); }
-	public String randomSystemName(Empire e)		{ return race().randomSystemName(e); }
+//	public String randomLeaderName()				{ return race().randomLeaderName(); }
+//	public String randomSystemName(Empire e)		{ return race().randomSystemName(e); } // TODO BR: Remove
+	public String randomSystemName()				{ return species().randomSystemName(); }
 	public String dialogue(String key)				{ return race().dialogue(key); }
 	public String title()							{
 		if (isPlayer() && isCustomRace()) {
@@ -323,25 +326,25 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
 		}
 		return race().fullTitle();
 	}
-	public String raceId()							{ return race().id; }
+	public String raceId()							{ return race().id(); }
 	public String lossSplashKey()					{ return race().lossSplashKey(); }
 	public String winSplashKey()					{ return race().winSplashKey(); }
 	public String raceText(String key, String... s)	{ return race().text(key, s); }
 	private String raceName(int i)					{
 		String rn;
-		List<String> names = substrings(unparsedRaceName(), '|');
+		List<String> names = substrings(species.speciesName(), '|');
 		if (i >= names.size() || names.get(i).isEmpty())
 			rn = names.get(0);
 		else
 			rn = names.get(i);
 		return racePrefix() + rn + raceSuffix(); // BR: for custom Races
 	}
-	public String raceType()						{
-		if (isCustomRace())
-			return dataRace().setupName;
-		else
-			return dataRace().nameVariant(0);
-	}
+//	public String raceType()						{// TODO BR: REMOVE
+//		if (isCustomRace())
+//			return dataRace().setupName;
+//		else
+//			return dataRace().nameVariant(0);
+//	}
 
 	public List<String> introduction()				{
 		if (isPlayer() && isCustomRace()) {
@@ -351,7 +354,7 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
 		}
 		return race().introduction();
 	}
-	public List<String> shipNames(int size)			{ return race.shipNames(size); }
+	public List<String> shipNames(int size)			{ return race().shipNames(size); }
 
 	public List<Image> sabotageMissileFrames()		{ return race().sabotageMissileFrames(); }
 	public List<Image> sabotageFactoryFrames()		{ return race().sabotageFactoryFrames(); }
@@ -555,23 +558,39 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
         }
         return canSeeShips[empId];
     }
-	private void setRace(Race r)		{ race = r; }
-	private void setDataRace(Race r)	{ dataRace = r; }
-	private Race race()		{
+	private void setSpecies(Species sp)	{ species = sp; }
+	public Species species()	{
+		if (species == null)
+			setSpecies(new Species(this, galaxy()));
+		return species;
+	}
+	private Race race()			{ // TODO BR: TEMPORARY, to be removed
 		if (race == null)
-			setRace(R_M.keyed(raceKey()));
+			setRace(species().race());
 		return race;
 	}
-	private Race dataRace()	{
+	private Race dataRace()		{ // TODO BR: TEMPORARY, to be removed
 		if (dataRace == null)
-			if (raceOptions != null)
-				setDataRace(CustomRaceDefinitions.optionToAlienRace(raceOptions));
-			else if (dataRaceKey() == null)
-				setDataRace(R_M.keyed(raceKey()));
-			else
-				setDataRace(R_M.keyed(dataRaceKey(), raceOptions()));
+			setDataRace(species().dataRace());
 		return dataRace;
 	}
+	private void setRace(Race r)		{ race = r; }
+	private void setDataRace(Race r)	{ dataRace = r; }
+//	private Race race()		{ TODO BR: REMOVE
+//		if (race == null)
+//			setRace(R_M.keyed(raceKey()));
+//		return race;
+//	}
+//	private Race dataRace()	{
+//		if (dataRace == null)
+//			if (raceOptions != null)
+//				setDataRace(CustomRaceDefinitions.optionToAlienRace(raceOptions));
+//			else if (dataRaceKey() == null)
+//				setDataRace(R_M.keyed(raceKey()));
+//			else
+//				setDataRace(R_M.keyed(dataRaceKey(), raceOptions()));
+//		return dataRace;
+//	}
     public BufferedImage scoutImage() {
         if (scoutImage == null)
             scoutImage = ShipLibrary.current().scoutImage(shipColorId());
@@ -658,77 +677,83 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
 	public void resetDivertColonyExcessToResearch()	{
 		divertColonyExcessToResearch = options().divertColonyExcessToResearch();
 	}
-    // modnar: add option to start game with additional colonies
-    // modnar: compId is the System ID array for these additional colonies
-    // BR: For Restart with new options and random races
-    public Empire(Galaxy g, int empId, Race r, Race dr, StarSystem s,
-    		int[] compId, Integer cId, String name, EmpireBaseData empSrc) {
-        log("creating empire for ",  r.id);
-        if (empSrc == null)
-        	randomSource = rng().nextLong();
-        else
-        	randomSource = empSrc.randomSource();
+	// modnar: add option to start game with additional colonies
+	// modnar: compId is the System ID array for these additional colonies
+	public Empire(Galaxy gal, int empId, Species sp, StarSystem sys,
+			int[] compId, Integer cId, String name, EmpireBaseData empSrc) {
+		log("creating empire for ",  sp.id());
+		if (empSrc == null)
+			randomSource = rng().nextLong();
+		else
+			randomSource = empSrc.randomSource();
 
-        id = empId;
-        raceKey = r.id;
-        dataRaceKey = dr.id;
-        raceOptions(dr.raceOptions()); // BR: for custom races
-        homeSysId = capitalSysId = s.id;
-        compSysId = compId; // modnar: add option to start game with additional colonies
-        if (empSrc != null							// Restart
-        		&& empId != Empire.PLAYER_ID		// Is Alien
-        		&& !options().selectedRestartChangesAliensAI())	// Don't changes AI
-        	selectedAI = empSrc.raceAI();
+		id = empId;
+		sp.empire(this);
+		setSpecies(sp);
+		raceKey		= sp.animationsKey();
+		dataRaceKey	= sp.abilitiesKey();
+		raceOptions(sp.speciesOptions()); // BR: for custom species
+		homeSysId	= capitalSysId = sys.id;
+		compSysId	= compId; // modnar: add option to start game with additional colonies
+		if (empSrc != null							// Restart
+				&& !isPlayer()		// Is Alien
+				&& !options().selectedRestartChangesAliensAI())	// Don't changes AI
+			selectedAI = empSrc.raceAI();
 
-        empireViews = new EmpireView[options().selectedNumberOpponents()+1];
-        status = new EmpireStatus(this);
-        sv = new SystemInfo(this);
-        // many things need to know if this is the player civ, so set it early
-        if (empId == Empire.PLAYER_ID) {
+		empireViews	= new EmpireView[options().selectedNumberOpponents() + 1];
+		status		= new EmpireStatus(this);
+		sv			= new SystemInfo(this);
+		String leaderName = null;
+		// many things need to know if this is the player civ, so set it early
+		if (isPlayer()) {
 			resetDivertColonyExcessToResearch();
-            g.player(this);
-        }
+			gal.player(this);
+			leaderName = options().selectedLeaderName();
+		}
+		else
+			leaderName = sp.nextAvailableLeader();
 
-        colorId(cId);
-		setRace(r);
-		setDataRace(dr);
-        String raceName = r.nextAvailableName();
-        raceNameIndex = r.nameIndex(raceName);
-        String leaderName = name;
+		colorId(cId);
+		raceNameIndex = sp.speciesNameIndex();
 		if (leaderName == null)
-			leaderName = leaderPrefix() + r.nextAvailableLeader() + leaderSuffix();
-        leader = new Leader(this, leaderName);
-        if (empSrc != null && empId != Empire.PLAYER_ID
-        		&& !options().selectedRestartAppliesSettings()) { // BR: For Restart with new options 
-        	leader.personality = empSrc.personality;
-        	leader.objective   = empSrc.objective;
-        }
-        shipLab = new ShipDesignLab();
-    }
-    public Empire(Galaxy g, int empId, int sysId, int cId, String name) {
-        log("creating Monster empire for ",  name);
-        id			= empId;
-        selectedAI	= IGameOptions.BASE;
-        raceKey		= "RACE_PSILON";
-        dataRaceKey	= "RACE_PSILON";
-		setRace(R_M.keyed(raceKey));
-		setDataRace(R_M.keyed(raceKey));
-        raceOptions(dataRace.raceOptions());
-        homeSysId	= capitalSysId = sysId;
+			leaderName =  sp.nextAvailableLeader();
+		leader = new Leader(this, leaderName);
+		if (empSrc != null && empId != Empire.PLAYER_ID
+				&& !options().selectedRestartAppliesSettings()) { // BR: For Restart with new options 
+			leader.personality = empSrc.personality;
+			leader.objective   = empSrc.objective;
+		}
+		shipLab = new ShipDesignLab();
+	}
+	public Empire(Galaxy g, int empId, int sysId, int cId, String name) {
+		log("creating Monster empire for ", name);
+		id			= empId;
+		selectedAI	= IGameOptions.BASE;
+		String key	= "RACE_PSILON";
+		raceKey		= key;
+		dataRaceKey	= key;
+		setSpecies(new Species(key, key, galaxy()));
+		species().empire(this);
+		species().speciesName("Orion");
+//		setRace(R_M.keyed(key));
+//		setDataRace(R_M.keyed(key));
+		raceOptions(species().dataRace().raceOptions());
+//		raceOptions(dataRace.raceOptions());
+		homeSysId	= capitalSysId = sysId;
 		compSysId	= new int[0];
-        empireViews	= new EmpireView[0];;
-        status		= null;
-        sv			= null;
-        bannerColor	= cId;
+		empireViews	= new EmpireView[0];;
+		status		= null;
+		sv			= null;
+		bannerColor	= cId;
 		setRace(null);
 		setDataRace(null);
-        leader		= new Leader(this, name);
-        shipLab		= new ShipDesignLab();
-        loadStartingTechs();
-        loadStartingShipDesigns();
-        raceNameIndex = 0;
-        tech().learnAll();
-    }
+		leader		= new Leader(this, name);
+		shipLab		= new ShipDesignLab();
+		loadStartingTechs();
+		loadStartingShipDesigns();
+		raceNameIndex = 0;
+		tech().learnAll();
+	}
 
     public void setBounds(float x1, float x2, float y1, float y2) {
         minX = x1;
@@ -816,38 +841,9 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
     public int shipCount(int hullSize) {
         return galaxy().ships.hullSizeCount(id, hullSize);
     }
-    @Override
-    public String toString()   { return concat("Empire: ", raceName()); }
-
-    // TODO BR: complete replaceTokens for custom races
-    public String replaceTokens(String s, String key) {
-    	if (key.equals("player")) // BR: many confusion in translations
-    		s = replaceTokens(s, "my");
-        List<String> tokens = this.varTokens(s, key);
-        String s1 = s;
-        for (String token: tokens) {
-            String replString = concat("[",key, token,"]");
-            // leader name is special case, not in dictionary
-            if (token.equals("_name")) 
-                s1 = s1.replace(replString, leader().name());
-            else if (token.equals("_home"))
-                s1 = s1.replace(replString, sv.name(capitalSysId()));   
-            else if (isCustomPlayer() && !isRandomized() && token.equals("_race"))
-                    s1 = s1.replace(replString, dataRace().setupName);              
-            else if (isCustomPlayer() && !isRandomized() && token.equals("_empire"))
-                    s1 = s1.replace(replString, empireTitle());
-            else {
-                List<String> values = substrings(race().text(token), ',');
-                String value = raceNameIndex < values.size() ? values.get(raceNameIndex) : values.get(0);
-                s1 = s1.replace(replString, value);
-            }
-        }
-        return s1;
-    }
-    public String label(String token) {
-        List<String> values = substrings(race().text(token), ',');
-        return raceNameIndex < values.size() ? values.get(raceNameIndex) : values.get(0);      
-    }
+	@Override public String toString()				{ return "Empire: " + raceName(); }
+	public String replaceTokens(String s, String k)	{ return species().replaceTokens(s, k); }
+	public String label(String token)				{ return species().label(token); }
     public boolean canSendTransportsFrom(StarSystem sys) {
         if (sys == null)
             return false;
@@ -3473,8 +3469,9 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
     }
 	// BR: Custom Races
 	public void initCRToShow(CustomRaceDefinitions cr)	{ cr.setFromRaceToShow(dataRace());}
-	public String  raceKey()				{ return raceKey; }
-	public String  dataRaceKey()			{ return dataRaceKey; }
+	String raceKey()						{ return raceKey; }
+	String dataRaceKey()					{ return dataRaceKey; }
+	int raceNameIndex()						{ return raceNameIndex; }
 	public boolean isCustomRace()			{ return dataRace().isCustomRace(); }
 	public boolean isCustomPlayer()			{ return isPlayer() && isCustomRace(); }
 	public boolean isRandomized()			{ return dataRace().isRandomized(); }
@@ -3482,12 +3479,12 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
 	public void raceOptions(DynOptions opt)	{ raceOptions = opt; }
 	public String description4()			{ return dataRace().getDescription4(); }
 	public DynOptions dynamicOptions()		{ return dynamicOptions; }
-	public String worldsPrefix()			{ return dataRace().worldsPrefix(); }
-	public String worldsSuffix()			{ return dataRace().worldsSuffix(); }
+//	public String worldsPrefix()			{ return dataRace().worldsPrefix(); }
+//	public String worldsSuffix()			{ return dataRace().worldsSuffix(); }
 	public String racePrefix()				{ return dataRace().racePrefix(); }
 	public String raceSuffix()				{ return dataRace().raceSuffix(); }
-	public String leaderPrefix()			{ return dataRace().leaderPrefix(); }
-	public String leaderSuffix()			{ return dataRace().leaderSuffix(); }
+//	private String leaderPrefix()			{ return dataRace().leaderPrefix(); }
+//	private String leaderSuffix()			{ return dataRace().leaderSuffix(); }
 	public String empireTitle()				{ return dataRace().empireTitle(); }
 	public float shipDesignMods(int i)		{ return dataRace().shipDesignMods(i); }
 	public float[] shipDesignMods()			{ return dataRace().shipDesignMods(); }

@@ -31,6 +31,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -40,6 +41,7 @@ import java.util.zip.ZipOutputStream;
 import rotp.Rotp;
 import rotp.model.empires.Empire;
 import rotp.model.empires.Race;
+import rotp.model.empires.Species;
 import rotp.model.events.RandomEvent;
 import rotp.model.galaxy.AllShapes;
 import rotp.model.galaxy.GalaxyShape;
@@ -642,17 +644,21 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             checkForArtifacts(p, s);
         return p;
     }
-    @Override
-    public String randomPlayerStarType(Race r)     { return StarType.YELLOW; }
-    @Override
-    public String randomRaceStarType(Race r)       { 
-        List<String> types = new ArrayList<>();
-        types.add(StarType.RED);
-        types.add(StarType.ORANGE);
-        types.add(StarType.YELLOW);
-
-        return random(types); 
-    }
+//    @Override
+//    public String randomPlayerStarType(Race r)     { return StarType.YELLOW; } // TODO BR: REMOVE
+	@Override public String randomPlayerStarType(Species species)	{ return StarType.YELLOW; }
+	@Override public String randomRaceStarType(Species species)		{
+		return random(Arrays.asList(StarType.RED, StarType.ORANGE, StarType.YELLOW)); 
+	}
+//    @Override
+//    public String randomRaceStarType(Race r)       {  // TODO BR: REMOVE
+//        List<String> types = new ArrayList<>();
+//        types.add(StarType.RED);
+//        types.add(StarType.ORANGE);
+//        types.add(StarType.YELLOW);
+//
+//        return random(types); 
+//    }
     @Override
     public String randomOrionStarType()       { 
         List<String> types = new ArrayList<>();
@@ -674,8 +680,6 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         p.initPlanetType(r.homeworldPlanetType());
         return p;
     }
-    // @Override public List<String> galaxySizeOptions()     { return IGameOptions.getGalaxySizeOptions(); }
-    // @Override public List<String> galaxyShapeOptions()    { return IGameOptions.getGalaxyShapeOptions(); }
 	@Override public List<String> galaxyShapeOptions1()   { return galaxyShape().options1(); }
 	@Override public List<String> galaxyShapeOptions2()   { return galaxyShape().options2(); }
     @Override public List<String> galaxyAgeOptions()      { return IGameOptions.getGalaxyAgeOptions(); }
@@ -988,7 +992,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         	selectedPlayerRace(random(allRaceOptions()));
         else
         	selectedPlayerRace(random(baseRaceOptions()));
-        player.update(this);
+        player.setRandom(this);
     }
     private void setBaseRaceSettingsToDefault() { // BR:
      	setRandomPlayerRace();

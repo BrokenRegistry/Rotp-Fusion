@@ -32,29 +32,7 @@ import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
 import rotp.util.PixelShifter;
 
-public enum RaceFactory implements ISpecies, Base {
-    INSTANCE;
-    public static RaceFactory current()   { return INSTANCE; }
-
-    private static final String raceListFile = "races/listing.txt";
-    private  RaceFactory() {
-        loadDataFiles();
-    }
-    public void loadDataFiles() {
-        log("Loading Races: ", raceListFile);
-        BufferedReader in = reader(raceListFile);
-        if (in == null)
-            return;
-        try {
-            String input;
-            while ((input = in.readLine()) != null)
-                loadRaceDataFile(input.trim());
-            in.close();
-        }
-        catch (IOException e) {
-            err("RaceFactory.loadRaces -- IOException: ", e.toString());
-        }
-    }
+class RaceFactory implements Base {
     // BR: The safest way to copy a race!
     private static List<String> reloadedSettings() {
     	List<String> list = new ArrayList<>();
@@ -209,13 +187,13 @@ public enum RaceFactory implements ISpecies, Base {
 
 	return newRace;
 	}
-    private void loadRaceDataFile(String raceDirName) {
+    void loadRaceDataFile(String raceDirName) {
         if (isComment(raceDirName))
             return;
 
         // try to open the race file
         String raceDirPath = concat("races/", raceDirName);
-        String filename = raceDirPath+"/definition.txt";
+        String filename = raceDirPath + "/definition.txt";
         BufferedReader in = reader(filename);
         if (in == null) {
             err("Could not open file: ", filename);
@@ -228,36 +206,26 @@ public enum RaceFactory implements ISpecies, Base {
             while ((input = in.readLine()) != null)
                 loadRaceDataLine(newRace, input);
             in.close();
-            ImageManager.current().loadImageList(raceDirPath+"/images.txt");
-            AnimationManager.current().loadAnimationList(raceDirPath+"/animations.txt");
+            ImageManager.current().loadImageList(raceDirPath + "/images.txt");
+            AnimationManager.current().loadAnimationList(raceDirPath + "/animations.txt");
         }
         catch (IOException e) {
             err("RaceFactory.loadRaceDataFile(", filename, ") -- IOException: ", e.toString());
         }
-        R_M.addRace(newRace);
+        SpeciesManager.current().addBaseSpecies(newRace);
     }
-    public void resetRaceLangFiles() {
-        for (Race r : R_M.races())
-            r.raceLabels().resetDialogue();
-    }
-    public void loadRaceLangFiles(String langDir) {
-        for (Race r : R_M.races()) {
-        	r.raceLabels().resetDialogue();
-        	loadRaceLangFiles(r, langDir);
-        }
-    }
-    public void loadRaceLangFiles(Race r, String langDir) {
-		String dir = concat("lang/", langDir, "/races/");
-		List<String> sNames = readSystemNames(dir+r.langKey()+".systems.txt");
+	void loadRaceLangFiles(Race r, String langDir, String dir) {
+		//String dir = concat("lang/", langDir, "/races/");
+		List<String> sNames = readSystemNames(dir+r.lalelsFileName("systems.txt"));
 		if (sNames != null)
 			r.systemNames(sNames);
 		LabelManager labels = r.raceLabels();
 		//
 		// Load Species Labels
 		//
-		labels.labelFile(r.langKey()+".labels.txt");
-		labels.dialogueFile(r.langKey()+".dialogue.txt");
-		labels.introFile(r.langKey()+".intro.txt");
+		labels.labelFile(r.lalelsFileName("labels.txt"));
+		labels.dialogueFile(r.lalelsFileName("dialogue.txt"));
+		labels.introFile(r.lalelsFileName("intro.txt"));
         labels.loadIntroFile(dir);
         labels.loadDialogueFile(dir);
         labels.loadLabelFile(dir);
@@ -270,8 +238,8 @@ public enum RaceFactory implements ISpecies, Base {
         String speciesName = "";
         if (selectedLanguage <= 0) {
             HashMap<String, ParamSpeciesName> map = IGameOptions.speciesNameMap;
-            ParamSpeciesName param = map.get(r.id);
-            speciesNames = param==null? null : param.getValid();        	
+            ParamSpeciesName param = map.get(r.id());
+            speciesNames = param==null? null : param.getValid();	
             if (speciesNames != null) {
             	labels.replaceFirstVal("_empire",		speciesNames[0]);
             	labels.replaceFirstVal("_race",			speciesNames[1]);
@@ -281,7 +249,7 @@ public enum RaceFactory implements ISpecies, Base {
         }
         else if (langId.equals("fr")) {
             HashMap<String, ParamSpeciesName> map = IGameOptions.speciesNameMapFr;
-            ParamSpeciesName param = map.get(r.id + "_FR");
+            ParamSpeciesName param = map.get(r.id() + "_FR");
             speciesNames = param==null? null : param.getValid();        	
             if (speciesNames != null) {
             	labels.replaceFirstVal("_empire",			 speciesNames[0]);
@@ -299,7 +267,7 @@ public enum RaceFactory implements ISpecies, Base {
         //
         // Load Species Names
         //
-		String filename = dir+r.langKey()+".names.txt";
+		String filename = dir+r.lalelsFileName("names.txt");
         BufferedReader in = reader(filename);
         if (in == null)
             return;
@@ -314,9 +282,8 @@ public enum RaceFactory implements ISpecies, Base {
 		catch (IOException e) {
 			err("RaceFactory.loadRaceLangFile(", r.directoryName()+") -- IOException: ", e.toString());
 		}
-        if (speciesNames != null) { // Update Species names if required.
+		if (speciesNames != null) // Update Species names if required.
 			r.raceNames().set(0, speciesName);
-        }
         if (Rotp.countWords)
             log("WORDS - "+filename+": "+wc);
 
@@ -337,7 +304,7 @@ public enum RaceFactory implements ISpecies, Base {
         }
         else 
 			shipset = r.name();
-        String key = PlayerShipSet.rootLabelKey() + r.id.replace("RACE_", "");
+        String key = PlayerShipSet.rootLabelKey() + r.id().replace("RACE_", "");
         LabelManager.current().addLabel(key, shipset);
     }
     private void loadRaceDataLine(Race r, String input) {
@@ -351,7 +318,7 @@ public enum RaceFactory implements ISpecies, Base {
         String key = vals.get(0);
         String value = vals.get(1);
 
-		if (key.equalsIgnoreCase("key"))				{ r.id = value; return; }
+		if (key.equalsIgnoreCase("key"))				{ r.id(value); return; }
 		if (key.equalsIgnoreCase("langKey"))			{ r.langKey(value); return; }
 		if (key.equalsIgnoreCase("year"))				{ r.startingYear(parseInt(value)); return; }
 		if (key.equalsIgnoreCase("homestarType"))		{ r.homeworldStarType(value); return; }

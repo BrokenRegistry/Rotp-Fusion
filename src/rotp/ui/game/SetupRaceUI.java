@@ -44,8 +44,9 @@ import java.util.List;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import rotp.model.empires.ISpecies;
 import rotp.model.empires.Race;
+import rotp.model.empires.Species;
+import rotp.model.empires.SpeciesManager;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IRaceOptions;
 import rotp.model.ships.ShipImage;
@@ -61,7 +62,7 @@ import rotp.util.FontManager;
 import rotp.util.LanguageManager;
 import rotp.util.ModifierKeysState;
 
-public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWheelListener, IRaceOptions {
+public final class SetupRaceUI extends BaseModPanel implements MouseWheelListener, IRaceOptions {
     private static final long serialVersionUID	= 1L;
 	private static final String guiTitleID		= "SETUP_SELECT_RACE";
 	private static final String GUI_ID          = "START_RACE";
@@ -125,7 +126,6 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
     private BufferedImage raceIconImg; // For the little icon
     private BufferedImage raceBackImg; // For race Mug
     private BufferedImage[] raceMugs = new BufferedImage[MAX_RACES];
-    private Race dataRace;
 
     // Other Parameters
     private final int FIELD_W		= scaled(160);
@@ -157,7 +157,6 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
     private int buttonSep	= s15;
     private Box	helpBox		= new Box("SETTINGS_BUTTON_HELP");
     private Box	cancelBox	= new Box("SETUP_RACE_CANCEL");
-//    private boolean drawAllButtons = true;
 	public ParamList playerSpecies() {
 		return new ParamListPlayerSpecies( // For Guide
 				BASE_UI, "PLAYER_SPECIES", guiOptions().getNewRacesOnOffList(), IRaceOptions.defaultRace);
@@ -579,7 +578,6 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
 
 		drawButtons(g);
         drawFixButtons(g, false);
-//      drawAllButtons = false;
 
         // selected race center img
 		if (retina) {
@@ -631,30 +629,19 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
         else
         	g.drawImage(raceIcon(), xIcon(), yIcon, null);
 
-        // draw race name
-        Race race = R_M.keyed(newGameOptions().selectedPlayerRace());
+		// draw species name
         int x0 = colorBox[0].x;
         int y0 = scaled(240); // BR: squeezed
-        // BR: show custom race name and descriptions
-        String raceName, desc1, desc2, desc3, desc4;
-		if (playerIsCustom.get()) {
-			raceName = dataRace.setupName;
-			desc1 = dataRace.getDescription1();
-			desc2 = dataRace.getDescription2();
-			desc3 = dataRace.getDescription3(raceName);
-			desc4 = dataRace.getDescription4();
-		}
-		else {
-			raceName = race.setupName();
-			desc1 = race.getDescription1();
-			desc2 = race.getDescription2();
-			desc3 = race.getDescription3();
-			desc4 = race.getDescription4();
-		}
-        // \BR:
-        int fs = scaledFontSize(g, raceName, scaled(200), 30, 10);
+		IGameOptions opts = newGameOptions();
+		Species species = opts.selectedPlayer().getPlayer(opts);
+		String speciesName = species.setupName();
+		String desc1 = species.getDescription1();
+		String desc2 = species.getDescription2();
+		String desc3 = species.getDescription3(speciesName);
+		String desc4 = species.getDescription4();
+        int fs = scaledFontSize(g, speciesName, scaled(200), 30, 10);
         g.setFont(font(fs));
-        drawBorderedString(g0, raceName, 1, x0, y0, Color.black, Color.white);
+        drawBorderedString(g0, speciesName, 1, x0, y0, Color.black, Color.white);
 
         int dy = s16;
         String language = LanguageManager.current().selectedLanguageName();
@@ -804,7 +791,6 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
     }
 	@Override public void clearImages() {
 		super.clearImages();
-//        backImg			= null;
         raceImg			= null;
         raceIconImg		= null;
         raceBackImg		= null;
@@ -837,22 +823,23 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
         repaint();
    }
     private void checkBoxChanged() {
+		IGameOptions opts = newGameOptions();
+		opts.selectedPlayer().update(opts);
     	shipSetChanged();
     	repaint();
     }
-    void raceChanged() {
-        Race r   =  R_M.keyed(newGameOptions().selectedPlayerRace());
-      	dataRace = playerCustomRace.getRace(); // BR:
-        r.resetSetupImage();
-        r.resetMugshot();
-        shipSetChanged();
-        leaderName.setText(r.randomLeaderName());
-        newGameOptions().selectedLeaderName(leaderName.getText());
-        homeWorld.setText(r.defaultHomeworldName());
-        newGameOptions().selectedHomeWorldName(homeWorld.getText());
-        raceImg = null;
-        raceIconImg = null;
-    }
+	void raceChanged() {
+		IGameOptions opts = newGameOptions();
+		opts.selectedPlayer().update(opts);
+		Species species = opts.selectedPlayer().getPlayer(opts);
+		species.resetSetupImage();
+		species.resetMugshot();
+		shipSetChanged();
+		leaderName.setText(opts.selectedLeaderName());
+		homeWorld.setText(opts.selectedHomeWorldName());
+		raceImg = null;
+		raceIconImg = null;
+	}
     private void selectColor(int i) {
         int selColor = newGameOptions().selectedPlayerColor();
         if (selColor != i) {
@@ -885,7 +872,7 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
     		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
             String selRace = newGameOptions().selectedPlayerRace();
-    		BufferedImage img = newBufferedImage(R_M.keyed(selRace).setupImage());
+    		BufferedImage img = newBufferedImage(SpeciesManager.current().keyed(selRace).setupImage());
             int imgW = img.getWidth(null);
             int imgH = img.getHeight(null);
     		g.drawImage(img, 0, 0, newW, newH, 0, 0, imgW, imgH, null);
@@ -899,7 +886,7 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
             int newW = retina(iconSize);
             int newH = retina(iconSize);
             String selRace = newGameOptions().selectedPlayerRace();
-    		Image image = R_M.keyed(selRace).flagNorm();
+    		Image image = SpeciesManager.current().keyed(selRace).flagNorm();
             raceIconImg = resizeImage(image, newW, newH);
         }
         return raceIconImg;
@@ -1132,7 +1119,7 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
 
 	        g.drawImage(back, 0, 0, rbW, rbH, null); // modnar: 80% size box for newRaces
 
-	        BufferedImage img = newBufferedImage(R_M.keyed(races.get(num)).diploMugshotQuiet());
+	        BufferedImage img = newBufferedImage(SpeciesManager.current().keyed(races.get(num)).diploMugshotQuiet());
             int imgW = img.getWidth();
             int imgH = img.getHeight();
     		g.drawImage(img, 0, 0, rbW, rbH, 0, 0, imgW, imgH, null);
@@ -1385,7 +1372,7 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
 			if (help != null)
 				return rowFormat(labelFormat(name(id)), help);
 
-			Race   race		= R_M.keyed(key);
+			Race   race		= SpeciesManager.current().keyed(key);
 			String raceName = race.setupName();
 			if (key.startsWith(BASE_RACE_MARKER))
 				help = labelFormat(name(id)) + "<i>(Original species)</i>&nbsp " + race.getDescription1();
@@ -1414,12 +1401,12 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
 		}
 		@Override protected void setOptionValue(IGameOptions options, String value)	{
 			options.selectedHomeWorldName(value);
-            repaint();
+			repaint();
 		}
 		@Override public String	guideValue()	{ return text(get()); }
 		@Override public String	defaultValue()	{
-	        Race r = R_M.keyed(newGameOptions().selectedPlayerRace());
-			return r.defaultHomeworldName();
+			IGameOptions opts = newGameOptions();
+			return opts.selectedPlayer().getPlayer(opts).defaultHomeworldName();
 		}
 	}
 	private class ParamStringPlayerLeader extends ParamString {
@@ -1436,7 +1423,7 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
 		}
 		@Override public String	guideValue()	{ return text(get()); }
 		@Override public String	defaultValue()	{
-	        Race r = R_M.keyed(newGameOptions().selectedPlayerRace());
+			Race r = SpeciesManager.current().keyed(newGameOptions().selectedPlayerRace());
 			return r.randomLeaderName();
 		}
 	}

@@ -239,7 +239,7 @@ public class WavClip  implements SoundClip, Base {
         clip.stop();
     }
     public static InputStream wavFileStream(String n) {
-        String fullString = "../rotp/" +n;
+        String fullString = ROOT_FOLDER + n;
 
         try { return new FileInputStream(new File(Rotp.jarPath(), n)); } 
         catch (FileNotFoundException e) {

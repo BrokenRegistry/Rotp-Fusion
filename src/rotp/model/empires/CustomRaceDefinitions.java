@@ -17,6 +17,7 @@
 package rotp.model.empires;
 
 import static rotp.Rotp.rand;
+import static rotp.model.empires.SpeciesManager.SPECIES_EXT;
 import static rotp.model.game.IPreGameOptions.randomAlienRaces;
 import static rotp.model.game.IPreGameOptions.randomAlienRacesMax;
 import static rotp.model.game.IPreGameOptions.randomAlienRacesMin;
@@ -29,7 +30,6 @@ import static rotp.ui.util.SettingBase.CostFormula.DIFFERENCE;
 import static rotp.ui.util.SettingBase.CostFormula.NORMALIZED;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,11 +51,10 @@ import rotp.ui.util.SettingFloat;
 import rotp.ui.util.SettingInteger;
 import rotp.ui.util.SettingString;
 
-public class CustomRaceDefinitions implements ISpecies {
+public class CustomRaceDefinitions {
 	
 	public	static final String ROOT	= "CUSTOM_RACE_";
 	private	static final String PLANET	= "PLANET_";
-	private	static final String EXT		= ".race";
 	private static final String baseRace = defaultRace;
 	private	static final String RANDOMIZED_RACE_KEY	= "RANDOMIZED_RACE";
 	public	static final String RANDOM_RACE_KEY		= "RANDOM_RACE_KEY";
@@ -106,7 +105,7 @@ public class CustomRaceDefinitions implements ISpecies {
 		pushSettings();
 	}
 	private CustomRaceDefinitions(String fileName) {
-		this(loadOptions(Rotp.jarPath(), fileName + EXT));
+		this(loadOptions(Rotp.jarPath(), fileName + SPECIES_EXT));
 	}
 
 	// -------------------- Static Methods --------------------
@@ -121,14 +120,13 @@ public class CustomRaceDefinitions implements ISpecies {
 		DynOptions opts = DynOptions.loadOptions(path, fileName);
 		return opts;
 	}
-	private static DynOptions loadOptions(File saveFile) {
+	static DynOptions loadOptions(File saveFile) {
 		DynOptions opts =  DynOptions.loadOptions(saveFile);
 		backwardComp(opts);
 		return opts;
 	}
-
 	public static boolean raceFileExist(String fileName) {
-		File f = new File(Rotp.jarPath(), fileName + EXT);
+		File f = new File(Rotp.jarPath(), fileName + SPECIES_EXT);
 		return (f.exists() && !f.isDirectory());
 	}
 	public static Race fileToAlienRace(String fileName) {
@@ -159,17 +157,17 @@ public class CustomRaceDefinitions implements ISpecies {
 		else
 			return new CustomRaceDefinitions(options).getRace();
 	}
-	static Race keyToRace(String raceKey) {
-		if (raceKey.equalsIgnoreCase(RANDOM_RACE_KEY)) {
-			return getRandomAlienRace();
-		}
-		if (raceKey.equalsIgnoreCase(CUSTOM_RACE_KEY)) {
-			DynOptions opt = (DynOptions) IGameOptions.playerCustomRace.get();
-			return new CustomRaceDefinitions(opt).getRace();
-		}
-		// load from file
-		return new CustomRaceDefinitions(raceKey).getRace();
-	}
+//	static Race keyToRace(String raceKey) {
+//		if (raceKey.equalsIgnoreCase(RANDOM_RACE_KEY)) {
+//			return getRandomAlienRace();
+//		}
+//		if (raceKey.equalsIgnoreCase(CUSTOM_RACE_KEY)) {
+//			DynOptions opt = (DynOptions) IGameOptions.playerCustomRace.get();
+//			return new CustomRaceDefinitions(opt).getRace();
+//		}
+//		// load from file
+//		return new CustomRaceDefinitions(raceKey).getRace();
+//	}
 	public static DynOptions getDefaultOptions() {
 		return new CustomRaceDefinitions(baseRace).getAsOptions();
 	}
@@ -187,12 +185,12 @@ public class CustomRaceDefinitions implements ISpecies {
 	private static LinkedList<String> getRaceFileList() {
 		return new CustomRaceDefinitions().new RaceList().getLabels();
 	}
-	public static LinkedList<String> getAllowedAlienRaces() {
-		return new CustomRaceDefinitions().new RaceList().getAllowedAlienRaces();
-	}
-	public static LinkedList<String> getAllAlienRaces() {
-		return new CustomRaceDefinitions().new RaceList().getAllAlienRaces();
-	}
+//	public static List<String> getAllowedAlienRaces() {
+//		return spMgr().getAllowedAlienCustomSpecies();
+//	}
+//	public static List<String> getAllAlienRaces() {
+//		return spMgr().getAllCustomSpecies();
+//	}
 	// ========== Options Management ==========
 	//
 	/**
@@ -225,24 +223,25 @@ public class CustomRaceDefinitions implements ISpecies {
 		this.race = race;
 		pullSettings();
 	}
-	private void saveSettingList(String path, String fileName) {
+	private void saveSettingList(String path, String fileName)	{
 		getAsOptions().save(path, fileName);
 	}
+	private String fileName()	{ return race.id() + SPECIES_EXT; }
 	/**
 	 * DynOptions to settings and race
 	 */
-	private void loadSettingList(String path, String fileName) {
-		setSettingTools(loadOptions(path, fileName));
-		
-	}
-	private String fileName() { return race.id + EXT; }
-	public void saveRace() { saveSettingList(Rotp.jarPath(), fileName()); }
-	public void loadRace() {
-		if (R_M.isValidKey(race.id))
-			setRace(race.id);
-		else
-			loadSettingList(Rotp.jarPath(), fileName());
-	}
+//	private void loadSettingList(String path, String fileName) {
+//		setSettingTools(loadOptions(path, fileNamIES_EXT; }
+//	public void saveRace() { saveSettingList(Rotp.jarPath(), fileName()); }
+//	public void loadRace() {
+//		if (spMgr().isBaseSpecies(race.id()))
+//			setRace(race.id());
+//		else
+//			loadSettingList(Rotp.jarPath(), fileName());
+//	}
+	public void saveRace()	{ saveSettingList(spMgr().customSpeciesFolder(), fileName()); }
+	public void loadRace()	{ setRace(race.id()); }
+	private SpeciesManager spMgr()	{ return SpeciesManager.current(); }
 	// ========== Main Getters ==========
 	//
 	public LinkedList<SettingBase<?>> settingList()	{ return settingList; }
@@ -265,7 +264,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	 * @param raceKey the new race
 	 */
 	public void setRace(String raceKey) {
-		race = R_M.keyed(raceKey).copy();
+		race = spMgr().keyed(raceKey).copy();
 		pullSettings();
 	}
 	public int getCount() {
@@ -391,7 +390,7 @@ public class CustomRaceDefinitions implements ISpecies {
 		return -malus;
 	}
 	private void pushSettings() {
-		race = R_M.keyed(baseRace).copy();
+		race = spMgr().keyed(baseRace).copy();
 		for (SettingBase<?> setting : settingList) {
 			setting.pushSetting();
 		}
@@ -545,53 +544,86 @@ public class CustomRaceDefinitions implements ISpecies {
 			String currentValue = settingValue();
 			clearLists();
 			clearOptionsText();
-			// Add Current race
+			// Add Current player species
 			add((DynOptions) IGameOptions.playerCustomRace.get());
 			defaultIndex(0);
-			// Add existing files
-			File[] fileList = loadListing();
-			if (fileList != null)
-				for (File file : fileList) {
-					DynOptions opt = loadOptions(file);
-					if (opt.size() == 0)
-						System.err.println("Empty race file: " + file.getName());
-					else
-						add(opt);
-				}
 
-			// Add Game races
-			for (String raceKey : IGameOptions.allRaceOptions)
-				add(raceKey);
+			// Reload files, the player may have updated them
+			SpeciesManager sMgr = spMgr();
+			sMgr.loadCustomSpeciesDataFiles();
+			for (Race abilities : sMgr.customSpecies()) {
+				add(abilities, "");
+			}
+
+			// Add Game species
+			for (Race abilities : sMgr.baseSpecies()) {
+				add(abilities, BASE_RACE_MARKER);
+			}
 
 			initOptionsText();
 			reload = true;
 			set(currentValue);
 		}
-		private File[] loadListing() {
-		    String path	= Rotp.jarPath();
-		    File saveDir = new File(path);
-		    FilenameFilter filter = (File dir, String name1) -> name1.toLowerCase().endsWith(EXT);
-		    File[] fileList = saveDir.listFiles(filter);
-		    return fileList;
-		}
+//		public void reload() {
+//			String currentValue = settingValue();
+//			clearLists();
+//			clearOptionsText();
+//			// Add Current race
+//			add((DynOptions) IGameOptions.playerCustomRace.get());
+//			defaultIndex(0);
+//			// Add existing files
+//			File[] fileList = loadListing();
+//			if (fileList != null)
+//				for (File file : fileList) {
+//					DynOptions opt = loadOptions(file);
+//					if (opt.size() == 0)
+//						System.err.println("Empty race file: " + file.getName());
+//					else
+//						add(opt);
+//				}
+//
+//			// Add Game races
+//			for (String raceKey : IGameOptions.allRaceOptions)
+//				add(raceKey);
+//
+//			initOptionsText();
+//			reload = true;
+//			set(currentValue);
+//		}
+//		private File[] loadListing() {
+//		    String path	= Rotp.jarPath();
+//		    File saveDir = new File(path);
+//		    FilenameFilter filter = (File dir, String name1) -> name1.toLowerCase().endsWith(EXT);
+//		    File[] fileList = saveDir.listFiles(filter);
+//		    return fileList;
+//		}
 		private void add(DynOptions opt) {
 			CustomRaceDefinitions cr = new CustomRaceDefinitions(opt);
 			Race dr = cr.getRace();
 			String cfgValue	 = dr.setupName;
-			String langLabel = dr.id;
+			String langLabel = dr.id();
 			String tooltipKey = dr.getDescription3();
 			float cost = cr.getTotalCost();
 			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
 		}
-		private void add(String raceKey) {
-			Race dr = R_M.keyed(raceKey);	    	
-			String cfgValue	  = dr.id;
-			String langLabel  = BASE_RACE_MARKER + dr.setupName();
-			String tooltipKey = dr.getDescription3();
-			CustomRaceDefinitions cr = new CustomRaceDefinitions(dr);
+		private void add(Race abilities, String marker) {
+			String cfgValue		= abilities.id();
+			String langLabel	= marker + cfgValue;
+			String tooltipKey	= abilities.getDescription3();
+			DynOptions options	= abilities.raceOptions();
+			CustomRaceDefinitions cr = new CustomRaceDefinitions(options);
 			float cost = cr.getTotalCost();
 			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
 		}
+//		private void add(String raceKey) {
+//			Race dr = spMgr().keyed(raceKey);	    	
+//			String cfgValue	  = dr.id();
+//			String langLabel  = BASE_RACE_MARKER + dr.setupName();
+//			String tooltipKey = dr.getDescription3();
+//			CustomRaceDefinitions cr = new CustomRaceDefinitions(dr);
+//			float cost = cr.getTotalCost();
+//			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
+//		}
 		private String getBaseRace(String key) {
 			return getCfgValue(key);
 		}
@@ -602,27 +634,33 @@ public class CustomRaceDefinitions implements ISpecies {
 			}
 			return false;
 		}
-		public LinkedList<String> getAllowedAlienRaces() {
-			LinkedList<String> list = new LinkedList<>();
-			File[] fileList = loadListing();
-			if (fileList != null)
-				for (File file : fileList) {
-					CustomRaceDefinitions cr = new CustomRaceDefinitions(loadOptions(file));
-					if (cr.availableAI.settingValue())
-						list.add(cr.raceKey.settingValue());
-				}
-			return list;
-		}
-		public LinkedList<String> getAllAlienRaces() {
-			LinkedList<String> list = new LinkedList<>();
-			File[] fileList = loadListing();
-			if (fileList != null)
-				for (File file : fileList) {
-					CustomRaceDefinitions cr = new CustomRaceDefinitions(loadOptions(file));
-					list.add(cr.raceKey.settingValue());
-				}
-			return list;
-	    }
+//		public LinkedList<String> getAllowedAlienRaces() {
+//			LinkedList<String> list = new LinkedList<>();
+//			File[] fileList = loadListing();
+//			if (fileList != null)
+//				for (File file : fileList) {
+//					CustomRaceDefinitions cr = new CustomRaceDefinitions(loadOptions(file));
+//					if (cr.availableAI.settingValue())
+//						list.add(cr.raceKey.settingValue());
+//				}
+//			return list;
+//		}
+//		public LinkedList<String> getAllAlienRaces() {
+//			LinkedList<String> list = new LinkedList<>();
+//			File[] fileList = loadListing();
+//			if (fileList != null)
+//				for (File file : fileList) {
+//					CustomRaceDefinitions cr = new CustomRaceDefinitions(loadOptions(file));
+//					list.add(cr.raceKey.settingValue());
+//				}
+//			return list;
+//		}
+//		public List<String> getAllowedAlienRaces()	{
+//			return spMgr().getAllCustomSpecies();
+//		}
+//		public List<String> getAllAlienRaces()	{
+//			return spMgr().getAllowedAlienCustomSpecies();
+//		}
 		// ---------- Overriders ----------
 		//
 		@Override public String guideValue() {
@@ -642,18 +680,22 @@ public class CustomRaceDefinitions implements ISpecies {
 				newValue = true;
 				return;
 			}
-			if (index()>=listSize()-16) { // Base Race
-				race = R_M.keyed(getCfgValue(settingValue())).copy();
-				pullSettings();
-				updateSettings();
-				return;
-			}
-			File file = new File(Rotp.jarPath(), settingValue()+EXT);
-			if (file.exists()) {
-				setSettingTools(loadOptions(file));
-				newValue = true;
-				return;
-			}
+			race = spMgr().keyed(getCfgValue(settingValue())).copy();
+			pullSettings();
+			updateSettings();
+//			if (index()>=listSize()-16) { // Base Race
+//				race = spMgr().keyed(getCfgValue(settingValue())).copy();
+//				pullSettings();
+//				updateSettings();
+//				return;
+//			}
+//
+//			File file = new File(Rotp.jarPath(), settingValue()+EXT);
+//			if (file.exists()) {
+//				setSettingTools(loadOptions(file));
+//				newValue = true;
+//				return;
+//			}
 		}
 	}
 	// ==================== RaceKey ====================
@@ -664,8 +706,8 @@ public class CustomRaceDefinitions implements ISpecies {
 			inputMessage("Enter the Race File Name");
 			randomStr(RANDOMIZED_RACE_KEY);
 		}
-		@Override public void pushSetting() { race.id = settingValue(); }
-		@Override public void pullSetting() { set(race.id); }
+		@Override public void pushSetting() { race.id(settingValue()); }
+		@Override public void pullSetting() { set(race.id()); }
 	}
 	// ==================== RaceName ====================
 	//
@@ -690,7 +732,7 @@ public class CustomRaceDefinitions implements ISpecies {
 		private EmpireName() {
 			super(ROOT, "RACE_EMPIRE_NAME", "Custom Empire", 1);
 			inputMessage("Enter the Empire Designation");
-			randomStr(CR_EMPIRE_NAME_RANDOM);
+			randomStr(ISpecies.CR_EMPIRE_NAME_RANDOM);
 		}
 		@Override public void pushSetting() { race.empireTitle(settingValue()); }
 		@Override public void pullSetting() {

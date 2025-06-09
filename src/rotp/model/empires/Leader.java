@@ -52,7 +52,7 @@ public class Leader implements Base, Serializable {
     private Empire empire;
 
     public String name()      { return name; }
-    
+
     // BR:
     /**
      * Change the leader Name
@@ -61,22 +61,20 @@ public class Leader implements Base, Serializable {
     public void setName(String newName) {
     	name = newName;
     } // \BR
-    
-    public Leader(Empire c) {
-        this(c, c.randomLeaderName());
-    }
-    public Leader(Empire c, String s) {
-        empire = c;
-        name = s;
-        if (!c.isPlayerControlled() && options().randomizeAIPersonality()) {
-            personality = random(Personality.values());
-            objective = random(Objective.values());
-        }
-        else { // BR: depend now on dataRace
+
+	Leader(Empire emp)	{ this(emp, emp.species().randomLeaderName()); }
+	Leader(Empire emp, String s)	{
+		empire = emp;
+		name = s;
+		if (!emp.isPlayerControlled() && options().randomizeAIPersonality()) {
+			personality = random(Personality.values());
+			objective = random(Objective.values());
+		}
+		else { // BR: depend now on dataRace
 			personality = Personality.values()[empire.randomLeaderAttitude()];
 			objective = Objective.values()[empire.randomLeaderObjective()];
-        }
-    }
+		}
+	}
     public String objective()   { return text(objective.label); }
     public String personality() { return text(personality.label); }
 
@@ -94,9 +92,9 @@ public class Leader implements Base, Serializable {
     public boolean isExpansionist() { return (objective == Objective.EXPANSIONIST); }
     public boolean isTechnologist() { return (objective == Objective.TECHNOLOGIST); }
 
-    public String dialogueContactType() {
+    String dialogueContactType() {
         Personality p = personality;
-        
+
         // when using the random personality option, use the most common attitude for  
         // contact dialogue since there is not text for every race/attitude combination
         if (options().randomizeAIPersonality() || empire.diplomatAI().masksDiplomacy())
@@ -186,11 +184,11 @@ public class Leader implements Base, Serializable {
             default:         return objMod*1;
         }
     }
-    @SuppressWarnings("incomplete-switch")
 	public int oathBreakerDuration() {
         int objMod = 1;
         switch(objective) {
             case DIPLOMAT:  objMod = 2;
+            default:
         }
         switch(personality) {
             case PACIFIST:   return objMod*50;
@@ -234,7 +232,7 @@ public class Leader implements Base, Serializable {
             case EXPANSIONIST:  b = 10; break;
             case TECHNOLOGIST:  b = -10; break;
             default:            b = 0; break;
-        }        
+        }
         return a+b;
     }
     public float acceptPeaceTreatyMod() {
@@ -256,7 +254,7 @@ public class Leader implements Base, Serializable {
             case EXPANSIONIST:  b = -5; break;
             case TECHNOLOGIST:  b = 5; break;
             default:            b = 0; break;
-        }        
+        }
         return a+b;
     }
     public float acceptPactMod(Empire other) {
@@ -278,7 +276,7 @@ public class Leader implements Base, Serializable {
             case EXPANSIONIST:  b = -5; break;
             case TECHNOLOGIST:  b = 0; break;
             default:            b = 0; break;
-        }     
+        }
         c = 10*affinityMod(personality, other.leader().personality);
         return a+b+c;
     }
@@ -301,7 +299,7 @@ public class Leader implements Base, Serializable {
             case EXPANSIONIST:  b = 10; break;
             case TECHNOLOGIST:  b = 0; break;
             default:            b = 0; break;
-        }        
+        }
         c = 10*affinityMod(personality, other.leader().personality);
         return a+b+c;
     }
@@ -324,7 +322,7 @@ public class Leader implements Base, Serializable {
             case EXPANSIONIST:  b = 0; break;
             case TECHNOLOGIST:  b = 0; break;
             default:            b = 0; break;
-        }        
+        }
         return a+b;
     }
     public float hateWarThreshold() {
@@ -357,7 +355,7 @@ public class Leader implements Base, Serializable {
             case EXPANSIONIST:  b = 10; break;
             case TECHNOLOGIST:  b = -10; break;
             default:            b = 0; break;
-        }        
+        }
         return a+b;
     }
     public float preserveTreatyMod() {
@@ -379,7 +377,7 @@ public class Leader implements Base, Serializable {
             case EXPANSIONIST:  b = 0; break;
             case TECHNOLOGIST:  b = 0; break;
             default:            b = 0; break;
-        }        
+        }
         return a+b;
     }
     public int affinityMod(Personality p1, Personality p2) {
@@ -387,7 +385,7 @@ public class Leader implements Base, Serializable {
         int like = 1;
         int neutral = 0;
         int dislike = -1;
-                
+
         switch(p1) {
             case PACIFIST:
                 switch(p2) {
@@ -436,6 +434,6 @@ public class Leader implements Base, Serializable {
                 }
             default:
                 return neutral;
-        }        
+        }
     }
 }

@@ -29,9 +29,8 @@ import java.util.List;
 import java.util.Locale;
 
 import rotp.Rotp;
-import rotp.model.empires.ISpecies;
 import rotp.model.empires.Race;
-import rotp.model.empires.RaceFactory;
+import rotp.model.empires.SpeciesManager;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IGovOptions;
 import rotp.ui.RotPUI;
@@ -149,7 +148,7 @@ public class LanguageManager implements Base {
     		return;
     	boolean valid = true;
     	System.out.println("Start Dialogue Tokens Validation");    	
-    	for (Race r : ISpecies.R_M.races()) {
+    	for (Race r : SpeciesManager.current().baseSpecies()) {
     		valid &= r.validateDialogueTokens();
     	}
     	if (valid)
@@ -160,7 +159,7 @@ public class LanguageManager implements Base {
     public void reloadLanguage()      { loadLanguage(selectedLanguage()); } // BR: to reload labels without having to restart
     public void reloadRace(Race race) { // BR: to reload Selected race labels
     	Language newLang = languages().get(selectedLanguage);
-    	RaceFactory.current().loadRaceLangFiles(race, newLang.directory);
+    	SpeciesManager.current().loadRaceLangFiles(race, newLang.directory);
     }
     public void loadLanguage(int i)   {
         Language defLang = languages().get(DEFAULT_LANGUAGE); // BR: Uncommented
@@ -171,7 +170,7 @@ public class LanguageManager implements Base {
 
         // reset dialogue maps in label managers
         labels().resetDialogue();
-        RaceFactory.current().resetRaceLangFiles();
+        SpeciesManager.current().resetRaceLangFiles();
 
         // reload default labels, since that is assured of completeness
         String currDir;
@@ -180,7 +179,7 @@ public class LanguageManager implements Base {
         labels().loadLabelFile(currDir); // BR: Uncommented
         labels().loadDialogueFile(currDir); // BR: Uncommented
         labels().loadTechsFile(currDir); // BR: Uncommented
-        RaceFactory.current().loadRaceLangFiles(defLang.directory); // BR: Uncommented
+		SpeciesManager.current().loadRaceLangFiles(defLang.directory); // BR: Uncommented
 
         // now overwrite those with labels for the selected language
         selectedLanguage(i);
@@ -191,7 +190,7 @@ public class LanguageManager implements Base {
             currDir = baseDir+newLang.directory+"/";
             labels().resetDialogue(); // To avoid mixing languages
             labels().load(currDir);
-            RaceFactory.current().loadRaceLangFiles(newLang.directory);
+			SpeciesManager.current().loadRaceLangFiles(newLang.directory);
         }
     } 
     public String defaultLangDir()    { return langDir(DEFAULT_LANGUAGE); }

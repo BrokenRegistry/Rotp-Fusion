@@ -34,6 +34,7 @@ import java.util.List; // modnar: change to cleaner icon set
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import rotp.model.empires.SpeciesManager;
 import rotp.model.game.GameSession;
 import rotp.model.game.MOO1GameOptions;
 import rotp.model.game.RulesetManager;
@@ -397,9 +398,17 @@ public final class Rotp {
 			startupException = t;
 			System.out.println("Err: TechLibrary init: " + t.getMessage());
 		}
+		try { SpeciesManager.current().loadBaseDataFiles(); }
+		catch (Throwable t) {
+			System.out.println("Err: SpeciesManager loadBaseDataFiles: " + t.getMessage());
+		}
 		try { LanguageManager.current().selectedLanguageName(); }
 		catch (Throwable t) {
 			System.out.println("Err: LanguageManager init: " + t.getMessage());
+		}
+		try { SpeciesManager.current().loadCustomSpeciesDataFiles(); }
+		catch (Throwable t) {
+			System.out.println("Err: SpeciesManager loadBaseDataFiles: " + t.getMessage());
 		}
 		try { SoundManager.current(); }
 		catch (Throwable t) {

@@ -32,8 +32,8 @@ import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.Empire;
 import rotp.model.empires.Empire.EmpireBaseData;
 import rotp.model.empires.GalacticCouncil;
-import rotp.model.empires.ISpecies;
 import rotp.model.empires.Race;
+import rotp.model.empires.SpeciesLabels;
 import rotp.model.events.RandomEvents;
 import rotp.model.galaxy.StarSystem.SystemBaseData;
 import rotp.model.game.DynOptions;
@@ -67,7 +67,7 @@ public final class Galaxy implements Base, Serializable {
     private final List<StarSystem> abandonedSystems = new ArrayList<>();
 
     private Empire playerEmpire;
-	private Empire orionEmpire;
+	private transient Empire orionEmpire;
     private final int widthLY;
     private final int heightLY;
     private float maxScaleAdj = 1.0f;
@@ -86,6 +86,12 @@ public final class Galaxy implements Base, Serializable {
     private boolean	requestToSwapPlayer;
     private int		requestedSwapPlayer;
     boolean	ironmanLockedOptions;
+
+	private Map<String, SpeciesLabels> customSpeciesNames = new HashMap<>();
+	private transient ShipCombatManager shipCombat = new ShipCombatManager();
+	private transient Map<String, List<String>> raceSystemNames = new HashMap<>();
+	private transient Map<String, Integer> raceSystemCtr = new HashMap<>();
+	private transient List<SpaceMonster> spaceMonsters = null;
 
     public	Integer nextHashCodeDiplomaticIncident() {
     	if (lastHashCodeDiplomaticIncident!=null)
@@ -108,11 +114,6 @@ public final class Galaxy implements Base, Serializable {
     	return lastHashCodeShip;
     }
 
-    private transient ShipCombatManager shipCombat = new ShipCombatManager();
-    private transient Map<String, List<String>> raceSystemNames = new HashMap<>();
-    private transient Map<String, Integer> raceSystemCtr = new HashMap<>();
-    private transient List<SpaceMonster> spaceMonsters;
-    
     public Empire orionEmpire()				 {
     	if (orionEmpire == null)
     		orionEmpire = new Empire(this, -2, orionId(), 0, "Orion");
@@ -238,12 +239,17 @@ public final class Galaxy implements Base, Serializable {
             shipCombat = new ShipCombatManager();
         return shipCombat;
     }
-    private Map<String, List<String>> raceSystemNames() {
+    public Map<String, SpeciesLabels> customSpeciesNames() {
+        if (customSpeciesNames == null)
+        	customSpeciesNames = new HashMap<>();
+        return customSpeciesNames;
+    }
+    public Map<String, List<String>> raceSystemNames() {
         if (raceSystemNames == null)
             raceSystemNames = new HashMap<>();
         return raceSystemNames;
     }
-    private Map<String, Integer> raceSystemCtr() {
+    public Map<String, Integer> raceSystemCtr() {
         if (raceSystemCtr == null)
             raceSystemCtr = new HashMap<>();
         return raceSystemCtr;
@@ -777,31 +783,31 @@ public final class Galaxy implements Base, Serializable {
         }
         return systems;
     }
-    public String nextSystemName(String rId) {
-        if (!raceSystemNames().containsKey(rId))
-            loadRaceNames(rId, 0);
-
-        List<String> remainingNames = raceSystemNames().get(rId);
-        if (remainingNames.isEmpty()) {
-            int nextSeq = raceSystemCtr().get(rId) + 1;
-            loadRaceNames(rId, nextSeq);
-            remainingNames = raceSystemNames().get(rId);
-        }
-
-        String nextName = remainingNames.remove(0);
-        int seq = raceSystemCtr().get(rId);
-        if (seq > 1)
-            nextName = nextName + " " + Base.letter[seq];
-
-        return nextName;
-    }
-    private void loadRaceNames(String rId, int i) {
-        Race r = ISpecies.R_M.keyed(rId);
-        List<String> names = new ArrayList<>(r.systemNames());
-        shuffle(names);
-        raceSystemNames().put(rId, names);
-        raceSystemCtr().put(rId, i);
-    }
+//    public String nextSystemName(String rId) {
+//        if (!raceSystemNames().containsKey(rId))
+//            loadRaceNames(rId, 0);
+//
+//        List<String> remainingNames = raceSystemNames().get(rId);
+//        if (remainingNames.isEmpty()) {
+//            int nextSeq = raceSystemCtr().get(rId) + 1;
+//            loadRaceNames(rId, nextSeq);
+//            remainingNames = raceSystemNames().get(rId);
+//        }
+//
+//        String nextName = remainingNames.remove(0);
+//        int seq = raceSystemCtr().get(rId);
+//        if (seq > 1)
+//            nextName = nextName + " " + Base.letter[seq];
+//
+//        return nextName;
+//    }
+//    private void loadRaceNames(String rId, int i) {
+//        Race r = SpeciesManager.current().keyed(rId);
+//        List<String> names = new ArrayList<>(r.systemNames());
+//        shuffle(names);
+//        raceSystemNames().put(rId, names);
+//        raceSystemCtr().put(rId, i);
+//    }
     public boolean tooCloseToHomeWorld(StarSystem s, float lim) {
     	for (Empire e : empires) {
     		if (e == null)

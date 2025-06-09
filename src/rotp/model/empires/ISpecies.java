@@ -9,8 +9,6 @@ public interface ISpecies {
 	String INTRO_FILE_EXTENSION		= ".intro.txt";
 	String CR_EMPIRE_NAME_RANDOM	= "Randomized";
 
-	SpeciesManager R_M = new SpeciesManager();
-	
 	// Exclusions keys
 	List<String> notTalking	= new ArrayList<>(Arrays.asList("Mouth"));
 	List<String> closed		= new ArrayList<>(Arrays.asList("Open"));

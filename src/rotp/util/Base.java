@@ -43,17 +43,14 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
@@ -70,8 +67,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -84,7 +79,7 @@ import org.apache.commons.math3.util.FastMath;
 
 import rotp.Rotp;
 import rotp.model.empires.Empire;
-import rotp.model.empires.ISpecies;
+import rotp.model.empires.SpeciesManager;
 import rotp.model.galaxy.Galaxy;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.DynOptions;
@@ -125,6 +120,8 @@ public interface Base extends InputEventUtil {
     public static int MB = 1048576;
     public static ImageColorizer colorizer = new ImageColorizer();
     public static String[] textSubs = { "%1", "%2", "%3", "%4", "%5", "%6", "%7", "%8", "%9", "%0" };
+
+	String ROOT_FOLDER = "../rotp/";
 
 	default RulesetManager rulesetManager()	{ return RulesetManager.current(); }
 	default GameSession session()			{ return GameSession.instance(); }
@@ -787,7 +784,7 @@ public interface Base extends InputEventUtil {
         return new File(Rotp.jarPath(), n);
     }
     public default InputStream fileInputStream(String n) {
-        String fullString = "../rotp/" +n;
+        String fullString = ROOT_FOLDER + n;
 
         try { return new FileInputStream(new File(Rotp.jarPath(), n)); } 
         catch (FileNotFoundException e) {
@@ -798,7 +795,7 @@ public interface Base extends InputEventUtil {
         }
     }
     public default boolean readerExists(String n) {
-        String fullString = "../rotp/" +n;
+        String fullString = ROOT_FOLDER + n;
         FileInputStream fis = null;
         // InputStreamReader in = null;
         InputStream zipStream = null;
@@ -825,8 +822,9 @@ public interface Base extends InputEventUtil {
 
         return exists;
     }
-    public default BufferedReader reader(String n) {
-        String fullString = "../rotp/" +n;
+	public default BufferedReader reader(String n)	{ return reader(n, true); }
+	public default BufferedReader reader(String n, boolean reportError)	{
+        String fullString = ROOT_FOLDER + n;
         FileInputStream fis = null;
         InputStreamReader in = null;
         InputStream zipStream = null;
@@ -846,18 +844,19 @@ public interface Base extends InputEventUtil {
                 in = new InputStreamReader(fis, "UTF-8");
             else if (zipStream != null)
                 in = new InputStreamReader(zipStream, "UTF-8");
-            else
-                err("Base.reader() -- FileNotFoundException:", n);
-        } catch (IOException ex) {
-            err("Base.reader() -- UnsupportedEncodingException: ", n);
-        }
-
+			else if (reportError)
+				err("Base.reader() -- FileNotFoundException:", n);
+		}
+		catch (IOException ex) {
+			if (reportError)
+				err("Base.reader() -- UnsupportedEncodingException: ", n);
+		}
         if (in == null)
             return null;
 
         return new BufferedReader(in);
     }
-    public default PrintWriter writer(String n) {
+    /* public default PrintWriter writer(String n) {
         String fullString = "src/rotp/" +n;
         try {
             FileOutputStream fout = new FileOutputStream(new File(fullString));
@@ -868,8 +867,8 @@ public interface Base extends InputEventUtil {
             e.printStackTrace();
             return null;
         }
-    }
-    public default InputStream inputStream(String n) {
+    } */
+    /* public default InputStream inputStream(String n) {
         InputStream stream = null;
         File fontFile = new File(n);
         if (fontFile.exists())
@@ -898,8 +897,8 @@ public interface Base extends InputEventUtil {
             }
         }
         return stream;
-    }
-    public default OutputStream outputStream(String s) throws IOException {
+    } */
+    /* public default OutputStream outputStream(String s) throws IOException {
         try {
             OutputStream file = new FileOutputStream(s);
             OutputStream buffer = new BufferedOutputStream(file);
@@ -910,7 +909,7 @@ public interface Base extends InputEventUtil {
             log(e.getMessage());
             throw(e);
         }
-    }
+    } */
     public static int compare(int a, int b)        { return Integer.compare(a,b); }
     public static int compare(float a, float b)  { return Float.compare(a, b); }
     public default Color newColor(int r, int g, int b) {
@@ -1515,7 +1514,7 @@ public interface Base extends InputEventUtil {
 		if (playerIsCustom.get())
 			name = playerCustomRace.getRace().setupName;
 		else
-			name = ISpecies.R_M.keyed(newGameOptions().selectedPlayerRace()).setupName();
+			name = SpeciesManager.current().keyed(newGameOptions().selectedPlayerRace()).setupName();
 		name +=   " - " + text(newGameOptions().selectedGalaxySize())
 				+ " - " + text(newGameOptions().selectedGameDifficulty());
 		// modnar: add custom difficulty level option, set in Remnants.cfg
@@ -1530,7 +1529,7 @@ public interface Base extends InputEventUtil {
 		if (options.selectedPlayerIsCustom())
 			name = options.playerCustomRace().getRace().setupName;
 		else
-			name = ISpecies.R_M.keyed(options.selectedPlayerRace()).setupName();
+			name = SpeciesManager.current().keyed(options.selectedPlayerRace()).setupName();
 		name +=   " - " + text(options.selectedGalaxySize())
 				+ " - " + text(options.selectedGameDifficulty());
 		// modnar: add custom difficulty level option, set in Remnants.cfg

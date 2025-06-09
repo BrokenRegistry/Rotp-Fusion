@@ -1199,9 +1199,9 @@ public final class GameSession implements Base, Serializable {
 			StarSystem sys = g.system(id);
 			Leader boss = emp.leader();
 			System.out.println(
-					String.format("%-16s", emp.empireRaceName())
+					String.format("%-16s", emp.species().speciesName(0))
 					+ String.format("%-12s", sys.name())
-					+ String.format("%-16s", emp.dataRaceName())
+					+ String.format("%-16s", emp.species().abilitiesName())
 					+ String.format("%-12s", boss.personality())
 					+ String.format("%-15s", boss.objective())
 					+ String.format("%-22s", emp.diplomatAI())

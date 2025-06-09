@@ -17,8 +17,9 @@ package rotp.model.game;
 
 import java.io.Serializable;
 
-import rotp.model.empires.ISpecies;
-import rotp.model.empires.Race;
+import rotp.model.empires.CustomRaceDefinitions;
+import rotp.model.empires.Empire.EmpireBaseData;
+import rotp.model.empires.Species;
 
 public class NewPlayer implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -26,33 +27,48 @@ public class NewPlayer implements Serializable {
     private String leaderName;
     private String homeWorldName;
     private int	   color = 0;
-
-    // BR: No initialization needed 
-    // Avoid too early access to options
-//    public NewPlayer() {
-//        Race def = Race.races().get(0);
-//        race = def.id;
-//        leaderName = def.randomLeaderName();
-//        homeWorldName = def.defaultHomeworldName();
-//        color = 0;	
-//    }
-    public void copy(NewPlayer p) {
-        race = p.race;
-        leaderName = p.leaderName;
-        homeWorldName = p.homeWorldName;
-        color = p.color;
-    }
-    public String leaderName()					{ return leaderName; }
-    public void	  leaderName(String name)		{ leaderName = name; }
-    public String homeWorldName()				{ return homeWorldName; }
-    public void	  homeWorldName(String name)	{ homeWorldName = name; }
-    public int	  color()						{ return color; }
-    public void	  color(int r)					{ color = r; }
-    public String race()						{ return race; }
-    public void	  race(String name)				{ race = name; }
-    public void	  update(IGameOptions opts)		{
-        Race r = ISpecies.R_M.keyed(race());
-        homeWorldName(r.defaultHomeworldName());
-        leaderName(r.randomLeaderName());
-    }
+	private transient Species species;
+	private void initSpecies(IGameOptions options, EmpireBaseData empSrc)	{
+		// Get abilities parameters
+		String abilitiesKey = race();
+		DynOptions crOptions = null;
+		String restartChangesPlayerRace = options.selectedRestartChangesPlayerRace();
+		if (options.selectedPlayerIsCustom()) {
+			abilitiesKey = CustomRaceDefinitions.CUSTOM_RACE_KEY;
+			crOptions = options.playerCustomRaceOption();
+		}
+		if (empSrc != null && !options.selectedRestartAppliesSettings()
+				&& !restartChangesPlayerRace.equals("GuiLast")
+				&& !restartChangesPlayerRace.equals("GuiSwap")) { // Use Restart info
+			abilitiesKey = empSrc.dataRaceKey;
+			crOptions = empSrc.raceOptions;
+		}
+		// Get Species
+		species = new Species(race(), abilitiesKey, crOptions, null);
+	}
+	public Species getPlayer(IGameOptions options, EmpireBaseData empSrc)	{
+		initSpecies(options, empSrc);
+		return species;
+	}
+	public Species getPlayer(IGameOptions options)	{
+		if (species == null)
+			initSpecies(options, null);
+		return species;
+	}
+	public void update(IGameOptions options)	{
+		initSpecies(options, null);
+		homeWorldName(species.defaultHomeworldName());
+		leaderName(species.randomLeaderName());
+	}
+	public void setRandom(IGameOptions options)	{
+		species = null;
+	}
+	public void race(String name)		{ race = name; }
+	String leaderName()					{ return leaderName; }
+	void leaderName(String name)		{ leaderName = name; }
+	String homeWorldName()				{ return homeWorldName; }
+	void homeWorldName(String name)		{ homeWorldName = name; }
+	int color()							{ return color; }
+	void color(int r)					{ color = r; }
+	String race()						{ return race; }
 }

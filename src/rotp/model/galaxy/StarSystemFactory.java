@@ -15,7 +15,7 @@
  */
 package rotp.model.galaxy;
 
-import rotp.model.empires.Race;
+import rotp.model.empires.Species;
 import rotp.model.galaxy.StarSystem.SystemBaseData;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
@@ -41,29 +41,34 @@ public class StarSystemFactory implements Base {
         sys.name(text("PLANET_ORION"));
         return sys;
     }
-    StarSystem newSystemForRace(Race r, Race dr, Galaxy gal) { // BR: added dataRace
-        IGameOptions opts = GameSession.instance().options();
-        String type;
-        // BR: if symmetric all race have same home system type
-        if (opts.galaxyShape().isSymmetric()) {
-        	int id = gal.empire(0).homeSysId();
-            type = gal.system(id).starType().key();
-        } else {
-            type = opts.randomRaceStarType(r);
-        }
-        StarSystem sys = StarSystem.create(type, gal);
-        // BR: added player identification
-        sys.planet(PlanetFactory.createHomeworld(r, dr, sys, session().populationBonus(), false));
-        return sys;
-    }
-    StarSystem newSystemForPlayer(Race r, Race dr, Galaxy gal) { // BR: added dataRace
-        IGameOptions opts = GameSession.instance().options();
-        String type = opts.randomPlayerStarType(dr);
-        StarSystem sys = StarSystem.create(type, gal);
-        // BR: added player identification for extra
-        sys.planet(PlanetFactory.createHomeworld(r, dr, sys, session().populationBonus(), true));
-        return sys;
-    }
+	StarSystem newSystemForRace(Species species, Galaxy gal) { // BR: added dataRace
+		IGameOptions opts = GameSession.instance().options();
+		String type;
+		// BR: if symmetric all race have same home system type
+		if (opts.galaxyShape().isSymmetric()) {
+			int id = gal.empire(0).homeSysId();
+		    type = gal.system(id).starType().key();
+		} else
+		    type = opts.randomRaceStarType(species);
+		StarSystem sys = StarSystem.create(type, gal);
+		sys.planet(PlanetFactory.createHomeworld(species, sys, session().populationBonus(), false));
+		return sys;
+	}
+	StarSystem newSystemForPlayer(Species species, Galaxy gal) {
+		IGameOptions opts = GameSession.instance().options();
+		String type = opts.randomPlayerStarType(species);
+		StarSystem sys = StarSystem.create(type, gal);
+		sys.planet(PlanetFactory.createHomeworld(species, sys, session().populationBonus(), true));
+		return sys;
+	}
+//    StarSystem newSystemForPlayer(Race r, Race dr, Galaxy gal) { // BR: added dataRace
+//        IGameOptions opts = GameSession.instance().options();
+//        String type = opts.randomPlayerStarType(dr);
+//        StarSystem sys = StarSystem.create(type, gal);
+//        // BR: added player identification for extra
+//        sys.planet(PlanetFactory.createHomeworld(r, dr, sys, session().populationBonus(), true));
+//        return sys;
+//    }
     // modnar: add option to start game with additional colonies
     // modnar: use orion star type (red, orange, yellow)
     // BR: for symmetric galaxies add option to copy player characteristics

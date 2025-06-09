@@ -23,6 +23,7 @@ import rotp.model.ai.AIEntry;
 import rotp.model.ai.AIList;
 import rotp.model.empires.Empire;
 import rotp.model.empires.Race;
+import rotp.model.empires.Species;
 import rotp.model.events.RandomEvent;
 import rotp.model.galaxy.GalaxyShape;
 import rotp.model.galaxy.StarSystem;
@@ -347,8 +348,10 @@ public interface IGameOptions extends IModOptions {
 	public int extendedWarp(TechEngineWarp tech);
     public boolean allowRandomEvent(RandomEvent ev);
     public String randomStarType();
-    public String randomPlayerStarType(Race r);
-    public String randomRaceStarType(Race r);
+	//public String randomPlayerStarType(Race r); // TODO BR: REMOVE
+	public String randomPlayerStarType(Species species);
+	public String randomRaceStarType(Species species);
+	// public String randomRaceStarType(Race r); // TODO BR: REMOVE
     public String randomOrionStarType();
     public Planet randomPlanet(StarSystem s);
     public Planet randomPlayerPlanet(Race r, StarSystem s);

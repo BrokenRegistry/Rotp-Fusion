@@ -37,7 +37,7 @@ import javax.swing.SwingUtilities;
 
 import rotp.model.empires.CustomRaceDefinitions;
 import rotp.model.empires.Empire.EmpireBaseData;
-import rotp.model.empires.ISpecies;
+import rotp.model.empires.SpeciesManager;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.game.GameSession;
 import rotp.ui.BasePanel;
@@ -132,7 +132,7 @@ final class SelectRestartEmpireUI  extends BasePanel implements MouseListener, M
 			if (e.isCustomRace)
 				cr = new CustomRaceDefinitions(e.raceOptions);
 			else
-				cr = new CustomRaceDefinitions(ISpecies.R_M.keyed(e.dataRaceKey));
+				cr = new CustomRaceDefinitions(SpeciesManager.current().keyed(e.dataRaceKey));
 			
 			empireList.add(name);
 			valueList.add(Math.round(cr.getTotalCost()));

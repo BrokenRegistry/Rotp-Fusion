@@ -26,6 +26,7 @@
 - if you have hyperspace comms you should be able to immediately redirect retreating ships (Still not back to the same planet)
 - Split the ship stacks so that they fill two front lines…
 - Option to increase the size of the combat screen.
+- Option to start the retreat timer when the retreat request is done.
 
 ### Later:
 
@@ -52,3 +53,13 @@
     - if i'm trying to expand rapidly, that size 30 poor at the edge of my fuel range might be more valuable than a size 60 abundant in my core 
   - 3rd colonization weight for "flight time" would be useful as well.  if I've got 2 worlds building ships and 2 worlds to colonize, the first ship built might fly to the planet over by the 2nd shipbuilding world.
   - Colonize closest.
+
+It will never show you [X]k invasion troops...
+The text is:
+%1 [alien_race] troops are orbiting or in transit to this colony.
+%1 is replaced by a number in Million people
+
+If you want to send 2000 troops, you can... but it will not be written as 2k
+The AI will not send this many.
+
+Too much realism can kill the fun
