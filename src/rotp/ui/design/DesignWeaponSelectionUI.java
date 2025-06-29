@@ -16,7 +16,9 @@
 package rotp.ui.design;
 
 import java.util.List;
+
 import javax.swing.JLabel;
+
 import rotp.model.ships.ShipComponent;
 import rotp.model.ships.ShipWeapon;
 
@@ -71,20 +73,21 @@ public class DesignWeaponSelectionUI extends DesignSelectionUI {
     List<? extends ShipComponent> baseComponents() { return player().shipLab().weapons(); }
     @Override
     ShipComponent selectedComponent()              { return selectedDesign.weapon(bank); }
-    @Override
-    void select(int compNum)   { 
-        ShipComponent newComp = (ShipWeapon)components().get(compNum);
-        int minCount = newComp.isNone() ? 0 : 1;
-        String valStr = value(compNum, 1, bank);
-        int val = max(minCount,Integer.valueOf(valStr));
-        selectedDesign.weapon(bank, (ShipWeapon)newComp); 
-        int emptyBanks = 1;
-        for(int i = bank; i >= 0; i--)
-        {
-            if(selectedDesign.weapon(i).isNone())
-                emptyBanks++;
-        }
+	@Override void select(int compNum)	{
+		// BR: Clicking quickly on the field may lead to a too high component index
+		if (components().size() > compNum) {
+			ShipComponent newComp = (ShipWeapon)components().get(compNum);
+			int minCount = newComp.isNone() ? 0 : 1;
+			String valStr = value(compNum, 1, bank);
+			int val = max(minCount,Integer.valueOf(valStr));
+			selectedDesign.weapon(bank, (ShipWeapon)newComp); 
+			int emptyBanks = 1;
+			for(int i = bank; i >= 0; i--) {
+				if(selectedDesign.weapon(i).isNone())
+					emptyBanks++;
+			}
         selectedDesign.wpnCount(bank, Integer.valueOf(val) / emptyBanks);
+		}
     }
 }
 

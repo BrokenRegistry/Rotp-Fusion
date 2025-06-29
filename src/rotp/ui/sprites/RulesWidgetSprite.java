@@ -43,7 +43,7 @@ public class RulesWidgetSprite extends MapControlSprite {
 	public boolean acceptDoubleClicks()		 { return false; }
 	@Override
 	public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-		setModifierKeysState(e);
+		checkForChange(e);
 		if (options().isGameOptionsAllowed()) {
 			ParamSubUI optionsUI = AllSubUI.rulesSubUI();
 			optionsUI.start(null);

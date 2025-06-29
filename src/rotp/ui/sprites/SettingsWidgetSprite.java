@@ -43,7 +43,7 @@ public class SettingsWidgetSprite extends MapControlSprite {
 	public boolean acceptDoubleClicks()		 { return false; }
 	@Override
 	public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-		setModifierKeysState(e);
+		checkForChange(e);
 		ParamSubUI optionsUI = AllSubUI.settingsSubUI();
 		optionsUI.start(null);
 	}

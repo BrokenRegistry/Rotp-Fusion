@@ -555,7 +555,7 @@ public final class GameSession implements Base, Serializable {
                 clearNotificationLimits();
                 RotPUI.instance().repaint();
                 // BR: This could be called quite often, better make it quick.
-                Ships.rallyPassByCombat = options.rallyPassByCombat();
+                Ships.rallyTransitJoinCombat = options.rallyTransitJoinCombat();
                 processNotifications();
                 gal.preNextTurn(); // Launching deployed fleets
 
@@ -1369,8 +1369,8 @@ public final class GameSession implements Base, Serializable {
                 }
             }
 
-		GameSession.instance = newSession;
-		rulesetManager().setAsGameMode();
+			GameSession.instance = newSession;
+			rulesetManager().setAsGameMode();
 
             if (Rotp.isIDE()) {
             	if (newSession.governorOptions == null)
@@ -1400,7 +1400,7 @@ public final class GameSession implements Base, Serializable {
                 else
                 	saveRecentStartSession(); // BR: to keep a copy of the beginning of the turn
         	}
-         }
+        }
         catch(IOException e) {
             throw new RuntimeException(text("LOAD_GAME_BAD_VERSION", filename));
         }

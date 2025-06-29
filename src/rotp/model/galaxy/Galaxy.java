@@ -350,7 +350,7 @@ public final class Galaxy implements Base, Serializable {
         ships.reloadBombs();
         for (StarSystem sys: starSystems)
         	if(sys != null && sys.colony() != null)
-        		sys.colony().shipyard().clearFleetsCopy();
+        		sys.colony().shipyard().clearFleetsCopies();
     }
     public void postNextTurn1() {
         // check ship combat & invasions at each system
@@ -455,7 +455,7 @@ public final class Galaxy implements Base, Serializable {
         NoticeMessage.resetSubstatus(text("TURN_ASSESS"));
         for (Empire e: empires)
             e.assessTurn();
-        ships.disembarkRalliedFleets();
+        ships.launchRalliedFleets();
         NoticeMessage.resetSubstatus(text("TURN_DIPLOMACY"));
         for (Empire e: empires)
             e.makeDiplomaticOffers();
@@ -595,14 +595,6 @@ public final class Galaxy implements Base, Serializable {
 	            if (sh.arrivalTimeAdjusted() > currentTime)
 	                break;
 	            ships.arriveFleet(sh);
-        	}
-        }
-
-        // BR: Merge and Memorize copy of fleets in case of combat
-        IGameOptions opts = options();
-        if (opts.rallyPassByCombat() || !opts.rallyLossDefense()) {
-        	for (StarSystem sys : player().allColonizedSystems()) {
-        		ships.mergeRallyAndOrbitFleets(sys);
         	}
         }
     }

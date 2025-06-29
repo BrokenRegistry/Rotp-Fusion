@@ -3152,8 +3152,12 @@ SETTINGS_MOD_TRANSPORT_AUTO_ECO_LAST      | Dernier
 SETTINGS_MOD_SPY_OVERSPEND_DESC          | Utiliser tout le budget disponible pour espionner, ou arrêter de dépenser une fois le réseau au complet.
 SETTINGS_MOD_SPY_OVERSPEND               | Excédent Espionnage : %1
 
-SETTINGS_MOD_DEFAULT_FORWARD_RALLY_DESC  | Action par défaut lors de la configuration d’un rallye : les autres flottes ralliées entrantes doivent-elles être propagée ?
-SETTINGS_MOD_DEFAULT_FORWARD_RALLY       | Propager Ralliements: %1
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY_DESC		| Action par défaut lors de la configuration d’un point de ralliement : faut-ils également rediriger les flottes ralliant cette colonie ?
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY			| Propager Ralliements: %1
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY_YES		| Propager
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY_NO		| Local
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY_YES_DESC	| Les vaisseaux nouvellement construits, ainsi que les flottes ralliant cette colonies, seront dirigés vers le point de ralliement.
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY_NO_DESC	| Seuls les vaisseaux nouvellement construits seront dirigés vers le point de ralliement.
 
 SETTINGS_MOD_DEFAULT_CHAIN_RALLY_DESC    | Valeur par défaut pour les rassemblements enchaînés à travers les portes des étoiles pour minimiser le temps de trajet ?
 SETTINGS_MOD_DEFAULT_CHAIN_RALLY         | Ralliements en chaîne: %1

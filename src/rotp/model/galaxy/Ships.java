@@ -31,7 +31,7 @@ import rotp.util.Base;
 
 public class Ships implements Base, Serializable {
     private static final long serialVersionUID = 1L;
-    public static boolean rallyPassByCombat = false;
+    public static boolean rallyTransitJoinCombat = false;
     private final List<ShipFleet> allFleets = new ArrayList<>();
     private List<ShipFleet> allFleetsCopy() { return new ArrayList<>(allFleets); }
 
@@ -42,8 +42,8 @@ public class Ships implements Base, Serializable {
 
         ShipFleet rallyingFleet = rallyingFleet(empId, sysId, rallySysId);
         // if none, create one
-        boolean deployRallyingFleet = rallyingFleet == null;
-        if (deployRallyingFleet) {
+        boolean newFleet = rallyingFleet == null;
+        if (newFleet) {
             StarSystem sys = galaxy().system(sysId);
             rallyingFleet = new ShipFleet(empId, sys);
             rallyingFleet.rallySysId(rallySysId);
@@ -70,16 +70,18 @@ public class Ships implements Base, Serializable {
             		defenseCount = orbitingCount - rallyCount;
             	}
             }
-            rallyingFleet.addShips(i, rallyCount);
-            orbitingFleet.removeShips(i, rallyCount, true);
+			if (rallyCount > 0) {
+				rallyingFleet.addShips(i, rallyCount);
+				orbitingFleet.removeShips(i, rallyCount, true);
+			}
         	orbitCopy.num(i, defenseCount);
         }
-        if (deployRallyingFleet && rallyingFleet.numShips() >0) {
+        // Deploy fleet if new fleet
+        if (newFleet && rallyingFleet.numShips() >0) {
             rallyingFleet.makeDeployed();
             allFleets.add(rallyingFleet);
         }
     }
-
     public void rallyOrbitingShips(int empId, int sysId, int designId, int count, int rallySysId) {
         ShipFleet orbitingFleet = orbitingFleet(empId, sysId);
         if (orbitingFleet == null)
@@ -554,9 +556,9 @@ public class Ships implements Base, Serializable {
         	if (fl != null)
         		fl.reloadBombs();
     }
-    void disembarkRalliedFleets() {
+    void launchRalliedFleets()	{
         List<ShipFleet> fleetsAll = allFleetsCopy();
-        
+
         for (ShipFleet fl: fleetsAll) {
             if (fl != null && fl.isDeployed() && fl.isRallied()) {
                 fl.destSysId(fl.rallySysId());
@@ -579,11 +581,12 @@ public class Ships implements Base, Serializable {
 		if (fleet.isRallied() && isPlayer(sys.empire())) {
         	ShipRelocationSprite spr = sys.rallySprite();
             if (spr.isActive() && spr.forwardRallies()) {
-                if (rallyPassByCombat) {	// Memorize the transit
+                if (rallyTransitJoinCombat) {	// Memorize the transit
+                	// System.out.println("arriveFleet addToRallyFleetCopy " + fleet.toString()); // TO DO BR: comment
                 	sys.colony().shipyard().addToRallyFleetCopy(fleet);
                 	// Then continue to make them orbiting
                 }
-                else {
+                else { // Rally transit ignore combat
                 	fleet.arrive(sys, true);
 	            	forwardRallyFleet(fleet, fleet.empId(), sys.id, spr.rallySystem().id);
 	            	return false;
@@ -620,19 +623,6 @@ public class Ships implements Base, Serializable {
             sys.empire().scanFleet(orbitingFleet);
         return false;
     }
-    void mergeRallyAndOrbitFleets(StarSystem sys) {
-    	ColonyShipyard shipYard = sys.colony().shipyard();
-    	int empId = player().id;
-	    ShipFleet orbitingFleet = orbitingFleet(empId, sys.id);
-		if (orbitingFleet != null) {
-	        shipYard.saveOrbitFleetCopy(orbitingFleet);
-			shipYard.addToRallyFleetCopy(null); // to init if empty
-		}
-    }
-    /* public List<ShipFleet> visibleFleets(int empId) { // ???
-        List<ShipFleet> fleets = new ArrayList<>();
-        return fleets;
-    } */
     ShipFleet anyFleetAtSystem(int empId, int sysId) {
         List<ShipFleet> fleetsAll = allFleetsCopy();
         

@@ -16,7 +16,9 @@
 package rotp.ui.design;
 
 import java.util.List;
+
 import javax.swing.JLabel;
+
 import rotp.model.ships.ShipComponent;
 import rotp.model.ships.ShipComputer;
 
@@ -59,6 +61,9 @@ public class DesignComputerSelectionUI extends DesignSelectionUI {
     List<? extends ShipComponent> baseComponents() { return player().shipLab().computers(); }
     @Override
     ShipComponent selectedComponent()              { return selectedDesign.computer(); }
-    @Override
-    void select(int compNum)   { selectedDesign.computer((ShipComputer)components().get(compNum)); }
+	@Override void select(int compNum)	{
+		// BR: Clicking quickly on the field may lead to a too high component index
+		if (components().size() > compNum)
+			selectedDesign.computer((ShipComputer)components().get(compNum));
+	}
 }

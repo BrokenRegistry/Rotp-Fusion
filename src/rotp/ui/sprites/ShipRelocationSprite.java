@@ -33,8 +33,6 @@ public class ShipRelocationSprite extends MapSprite {
     private void init(StarSystem tr) {
         source(tr);
         from = tr;
-        if (player().id == from.empId())
-        	setForwardRallies(options().defaultForwardRally());
     }
     public void clear() {
         pathSprite = null;
@@ -70,7 +68,6 @@ public class ShipRelocationSprite extends MapSprite {
     public StarSystem homeSystemView()        { return (StarSystem) source(); }
     public boolean forwardRallies()           { return player().sv.forwardRallies(from.id); }
     public void toggleForwardRallies()        { player().sv.toggleForwardRallies(from.id); }
-    private void setForwardRallies(boolean b) { player().sv.setForwardRallies(from.id, b); }
 
     private FlightPathSprite pathSprite() {
         if (pathSprite == null)

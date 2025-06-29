@@ -44,10 +44,11 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-25-05-30 (BR)
-- Fixed Some AI not expanding when using the Warp Speed Multiplier below 100%.
-- Fixed the speed in nebulae not following the Warp Speed Multiplier.
-- Fixed the transport speed not being limited by the Warp Speed Multiplier.
+25-06-28 (BR)
+- Fixed new ships not always rallying when transit was forwarded.
+  - Regrouped and commented Shipyard rally related methods.
+- Fixed Rules and setting panel showing (sometime) the wrong button set after reload...
+- Fixed local colony option "Forward incoming rallies" being reset to the default value when loading a game.
 
 
 ### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

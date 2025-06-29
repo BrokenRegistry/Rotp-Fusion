@@ -2,6 +2,27 @@
 
 ## What's New
 
+25-06-28 (BR)
+- Fixed new ships not always rallying when transit was forwarded.
+  - Regrouped and commented Shipyard rally related methods.
+- Fixed Rules and setting panel showing (sometime) the wrong button set after reload...
+- Fixed local colony option "Forward incoming rallies" being reset to the default value when loading a game.
+
+25-06-26 (BR)
+- Fixed crashing bug when opening browser for Reddit page too.
+
+25-06-23 (BR)
+- Fixed crashing bug when opening browser in some linux versions.
+  - On linux OS without gnome, when trying to reach github download.
+
+25-06-12 (BR)
+- Fixed crashing bug in Ship Design UI.
+  - Clicking quickly on components fields selection may result in a too high component index.
+
+2025.06.08 (Xilmi)
+- Fixed an issue where the AI considered the top-ship of it's stack at full health when calculating whether it should kite missiles or retreat from them.
+- Fixed an issue where the AI wouldn't try to kite missiles when this could potentially save their top-stack from losing ships.
+
 25-05-30 (BR)
 - Fixed Some AI not expanding when using the Warp Speed Multiplier below 100%.
 - Fixed the speed in nebulae not following the Warp Speed Multiplier.

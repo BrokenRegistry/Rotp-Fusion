@@ -884,10 +884,10 @@ public class AIShipCaptain implements Base, ShipCaptain {
                     hitPct = (5 + miss.attackLevel - miss.target.missileDefense()) / 10;
                     hitPct = max(.05f, hitPct);
                     hitPct = min(hitPct, 1.0f);
-                    killPct += ((miss.maxDamage()-miss.target.shieldLevel())*miss.num*hitPct)/(miss.target.maxStackHits()*miss.target.num);
+                    killPct += ((miss.maxDamage()-miss.target.shieldLevel())*miss.num*hitPct)/(miss.target.maxStackHits()*(miss.target.num - 1) + currStack.hits());
                     maxHit += (miss.maxDamage() - currStack.shieldLevel()) * miss.num; //don't use hitPct for max-hit as we have to expect the worst in this case
                     //System.out.println(currStack.fullName()+" will be hit by missiles for approx "+killPct+" dmg: "+maxHit+" hp: "+currStack.hits()+" threshold: "+(1.0f / miss.missile.shots()));
-                    if((killPct > 1.0f / miss.missile.shots() && maxHit >= currStack.hits()) || (currStack.num == 1 && maxHit >= currStack.hits()))
+                    if(maxHit >= currStack.hits())
                     {
                         Point safestPoint = findSafestPoint(currStack);
                         if(miss.maxMove * Math.max(1.0, miss.moveRate) + 0.7 < miss.distanceTo((float)safestPoint.x, (float)safestPoint.y))
@@ -895,7 +895,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                             kiteMissiles = true;
                             //System.out.println(currStack.fullName()+" should kite missiles because "+(miss.maxMove*miss.moveRate+0.7)+" at x:"+miss.x()+" y:"+miss.y()+" < "+miss.distanceTo((float)safestPoint.x, (float)safestPoint.y)+" to x:"+safestPoint.x+" y: "+safestPoint.y+" Moverate: "+miss.moveRate );
                         }
-                        else
+                        else if(killPct > 1.0f / miss.missile.shots() || currStack.num == 1)
                         {
                             retreatImmediately = true; //when we have incoming missiles we can't do damage first
                             return true;

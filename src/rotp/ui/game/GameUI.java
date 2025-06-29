@@ -72,9 +72,9 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 
     public static final int BG_DURATION = 80;
     public static final float SLIDESHOW_MAX = 15f;
-    
+
     public  static String gameName = "";
-    
+
     private static final Color langShade[] = { new Color(0,0,0,128), new Color(128,0,0,96) };
     // private static final Color menuHover[] = {  new Color(255,220,181), new Color(255,255,210) };
     private static final Color menuDepressed[] = { new Color(156,96,77), new Color(110,110,110) };
@@ -122,7 +122,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     private static Border saveGameBorder;
     private static Border saveListBorder;
     private static int colorSet = 0;
-    
+
     int fuzz = 8;
     int fuzzSc = 2;
     int diff = s60;
@@ -880,7 +880,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     	String[] strings = version.split("-|\\.");
     	if (strings.length < 4)
     		return val;
-    	
+
     	Long year  = getLong(strings[0]);
     	if (year == null)
     		return val;
@@ -986,12 +986,16 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     	checkModifierKey(e);
         int k = e.getKeyCode();
         switch (k) {
+			case KeyEvent.VK_B:
+				if (e.isControlDown())
+					openUrlPage("https://github.com/BrokenRegistry/Rotp-Fusion/releases/latest");
+				return;
             case KeyEvent.VK_MINUS:
-                if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) // BR: updated deprecated
+                if (e.isControlDown())
                     shrinkFrame(); 
                 return;
-            case KeyEvent.VK_EQUALS: 
-                if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) // BR: updated deprecated
+            case KeyEvent.VK_EQUALS:
+                if (e.isControlDown())
                     expandFrame(); 
                 return;
             case KeyEvent.VK_H:
@@ -1055,18 +1059,29 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
             repaint();
        }    
     }
-    private void openRedditPage() {
-        try {
-            buttonClick();
-            Desktop.getDesktop().browse(new URL("http://www.reddit.com/r/rotp").toURI());
-        } catch (IOException | URISyntaxException e) {}
-    }
-    private void openUrlPage(String url) {
-        try {
-            buttonClick();
-            Desktop.getDesktop().browse(new URL(url).toURI());
-        } catch (IOException | URISyntaxException e) {}
-    }
+	private void openRedditPage()	{ openUrlPage("http://www.reddit.com/r/rotp"); }
+	private void openUrlPage(String url)	{
+		buttonClick();
+		String myOS = System.getProperty("os.name").toLowerCase();
+		try {
+			if(Desktop.isDesktopSupported()) { // Probably Windows
+				Desktop desktop = Desktop.getDesktop();
+				desktop.browse(new URL(url).toURI());
+			}
+			else { // Definitely Non-windows
+				Runtime runtime = Runtime.getRuntime();
+				if(myOS.contains("mac"))	// Apples
+					runtime.exec("open " + url);
+				else if(myOS.contains("nix") || myOS.contains("nux"))	// Linux flavors
+					runtime.exec("xdg-open " + url);
+				else
+					misClick();
+			}
+		}
+		catch (IOException | URISyntaxException | UnsupportedOperationException e) {
+			misClick();
+		}
+	}
     private void openManual() {
         try {
             buttonClick();

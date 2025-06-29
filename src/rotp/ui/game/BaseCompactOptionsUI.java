@@ -599,12 +599,12 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		if (hovering)
 			if (scaled(minWidth) > wGist)
 				minH = minH + buttonPadV + smallButtonH;
-			if (minH > hGist) {
-				hGist = max(hGist, minH);
-				hFull = hGist;
-				bGist = yGist + hGist;
-				bFull = bGist;
-			}
+		if (minH > hGist) {
+			hGist = max(hGist, minH);
+			hFull = hGist;
+			bGist = yGist + hGist;
+			bFull = bGist;
+		}
 		else {
 			xGist = columnPad;
 			rGist = wFull - columnPad;

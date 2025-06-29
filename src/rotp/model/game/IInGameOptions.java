@@ -306,10 +306,10 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 			.setDefaultValue(FUSION_DEFAULT, RALLY_COMBAT_ALL)
 			.setDefaultValue(MOO1_DEFAULT,   RALLY_COMBAT_BUILT)
 			.setDefaultValue(ROTP_DEFAULT,   RALLY_COMBAT_BUILT);
-	default boolean rallyCombat()		{ return !rallyCombat.get().equals(RALLY_COMBAT_NEVER); }
-	default boolean rallyBuiltCombat()	{ return rallyCombat.get().equals(RALLY_COMBAT_BUILT) || rallyAllCombat(); }
-	default boolean rallyPassByCombat()	{ return rallyCombat.get().equals(RALLY_COMBAT_PASS_BY) || rallyAllCombat(); }
-	default boolean rallyAllCombat()	{ return rallyCombat.get().equals(RALLY_COMBAT_ALL); }
+	default boolean rallyJoinCombat()		{ return !rallyCombat.get().equals(RALLY_COMBAT_NEVER); }
+	default boolean rallyBuiltJoinCombat()	{ return rallyCombat.get().equals(RALLY_COMBAT_BUILT) || rallyAllJoinCombat(); }
+	default boolean rallyTransitJoinCombat(){ return rallyCombat.get().equals(RALLY_COMBAT_PASS_BY) || rallyAllJoinCombat(); }
+	default boolean rallyAllJoinCombat()	{ return rallyCombat.get().equals(RALLY_COMBAT_ALL); }
 
 	String COMBAT_LOSS_DEFENSES	= "COMBAT_LOSS_DEFENSE";
 	String COMBAT_LOSS_RALLY	= "COMBAT_LOSS_RALLY";

@@ -57,6 +57,9 @@ final class DesignArmorSelectionUI extends DesignSelectionUI {
     List<? extends ShipComponent> baseComponents() { return player().shipLab().armors(); }
     @Override
     ShipComponent selectedComponent()              { return selectedDesign.armor(); }
-    @Override
-    void select(int compNum)   { selectedDesign.armor((ShipArmor)components().get(compNum)); }
+	@Override void select(int compNum)	{
+		// BR: Clicking quickly on the field may lead to a too high component index
+		if (components().size() > compNum)
+			selectedDesign.armor((ShipArmor)components().get(compNum));
+	}
 }

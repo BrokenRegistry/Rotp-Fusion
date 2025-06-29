@@ -3152,8 +3152,12 @@ SETTINGS_MOD_TRANSPORT_AUTO_ECO_LAST      | Last
 SETTINGS_MOD_SPY_OVERSPEND_DESC          | Use all the available budget to by spy, or stop spending once the team is complete.
 SETTINGS_MOD_SPY_OVERSPEND               | Spy Overspend: %1
 
-SETTINGS_MOD_DEFAULT_FORWARD_RALLY_DESC  | Default action when setting up a rally: Should other incoming rallied fleets be forwarded?
-SETTINGS_MOD_DEFAULT_FORWARD_RALLY       | Default Forward Rally: %1
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY_DESC		| Default action when setting a rally point: should fleets rallying to this colony also be redirected?
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY			| Default Forward Rally: %1
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY_YES		| Forward
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY_NO		| Local
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY_YES_DESC	| Newly constructed ships, as well as fleets joining this colony, will be directed to the rally point.
+SETTINGS_MOD_DEFAULT_FORWARD_RALLY_NO_DESC	| Only newly constructed ships will be directed to the rally point.
 
 SETTINGS_MOD_DEFAULT_CHAIN_RALLY_DESC    | Default value for Chained rallies through stargates to minimize the travel time?
 SETTINGS_MOD_DEFAULT_CHAIN_RALLY         | Default Chain Rally: %1

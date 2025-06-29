@@ -1,5 +1,6 @@
 ## What's New
 
-2024.08.10 (Xilmi)
-- Instead of a static 100% score-bonus for being able to kill at least one ship in an enemy-stack, the score is now divided by the hitpoints of the first ship of the stack if not at least one ship can be killed.
-This shall help prevent the AI from shooting at big tanky ships that will just retreat once their health drops too far instead of attempting to secure kills on smaller ships.
+2025.06.08 (Xilmi)
+Fixed an issue where the AI considered the top-ship of it's stack at full health when calculating whether it should kite missiles or retreat from them.
+
+Fixed an issue where the AI wouldn't try to kite missiles when this could potentially save their top-stack from losing ships.

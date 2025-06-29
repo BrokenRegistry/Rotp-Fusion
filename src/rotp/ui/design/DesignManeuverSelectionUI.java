@@ -16,7 +16,9 @@
 package rotp.ui.design;
 
 import java.util.List;
+
 import javax.swing.JLabel;
+
 import rotp.model.ships.ShipComponent;
 import rotp.model.ships.ShipManeuver;
 
@@ -59,6 +61,9 @@ public class DesignManeuverSelectionUI  extends DesignSelectionUI {
     List<? extends ShipComponent> baseComponents() { return selectedDesign.availableManeuvers(); }
     @Override
     ShipComponent selectedComponent()              { return selectedDesign.maneuver(); }
-    @Override
-    void select(int compNum)   { selectedDesign.maneuver((ShipManeuver)components().get(compNum)); }
+	@Override void select(int compNum)	{
+		// BR: Clicking quickly on the field may lead to a too high component index
+		if (components().size() > compNum)
+			selectedDesign.maneuver((ShipManeuver)components().get(compNum));
+	}
 }

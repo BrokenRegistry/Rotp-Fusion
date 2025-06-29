@@ -183,7 +183,7 @@ public class LanguageManager implements Base {
 
         // now overwrite those with labels for the selected language
         selectedLanguage(i);
-        
+
         customDigits = newLang.digits;
 
         if (i != DEFAULT_LANGUAGE) {  // BR: Uncommented
@@ -192,7 +192,7 @@ public class LanguageManager implements Base {
             labels().load(currDir);
 			SpeciesManager.current().loadRaceLangFiles(newLang.directory);
         }
-    } 
+    }
     public String defaultLangDir()    { return langDir(DEFAULT_LANGUAGE); }
     public String currentLanguage()   { return language(selectedLanguage()); }
     public String currentLangDir()    { return langDir(selectedLanguage()); }
@@ -210,7 +210,7 @@ public class LanguageManager implements Base {
     	}
     	return null;
     }
-    
+
     protected void loadLanguages() {
         loadInstalledLanguages();
         File langDir = new File(Rotp.jarPath()+"/lang");
@@ -232,7 +232,7 @@ public class LanguageManager implements Base {
             }
         }
     }
-    
+
     protected String languageDisplayName(String fn) {
         FileInputStream fis;
         try {
@@ -246,23 +246,25 @@ public class LanguageManager implements Base {
         } catch (UnsupportedEncodingException ex) {
             return null;
         }
- 
-        BufferedReader in = new BufferedReader(isr);
-        try {
-            String input;
-            while ((input = in.readLine()) != null) {
-                String[] vars = input.split(",");
-                if ((vars.length > 1) && vars[0].equalsIgnoreCase("name")) {
-                    return vars[1].trim();
-                }
-            }
-            in.close();
-            isr.close();
-            fis.close();
-        }
-        catch (IOException e) {
-            err("LanguageManager.languageDisplayName()2 -- IOException: ", e.toString());
-        }
+
+		try (BufferedReader in = new BufferedReader(isr)) {
+			try {
+				String input;
+				while ((input = in.readLine()) != null) {
+					String[] vars = input.split(",");
+					if ((vars.length > 1) && vars[0].equalsIgnoreCase("name"))
+						return vars[1].trim();
+				}
+				in.close();
+				isr.close();
+				fis.close();
+			}
+			catch (IOException e) {
+				err("LanguageManager.languageDisplayName()2 -- IOException: ", e.toString());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         return null;
     }
     protected void loadInstalledLanguages() {
@@ -284,7 +286,7 @@ public class LanguageManager implements Base {
     protected void loadInstalledLanguageLine(String input) {
         if (isComment(input))
             return;
-        
+
         // BR: Added option for token replacement
         List<String> entry = substrings(input, ';', 0);
         input = entry.remove(0);
@@ -298,7 +300,7 @@ public class LanguageManager implements Base {
         String fontString = strings.get(3);
         String logoString = strings.get(4);
         char[] digitsString = strings.size() > 5 ? strings.get(5).toCharArray() : null;
-         
+
         boolean logo = logoString.equalsIgnoreCase("Y");
 
         languages.add(new Language(dirString, subdirString, nameString, orientString, fontString, logo, digitsString, tokenMap));
