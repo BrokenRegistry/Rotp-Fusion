@@ -927,6 +927,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
             glassPane().keyReleased(e);
         else if (selectedPanel != null)
             selectedPanel.keyReleased(e);
+		e.consume(); // BR: To fix some "Alt"-Key problems 
     }
     @Override
     public void keyTyped(KeyEvent e) {

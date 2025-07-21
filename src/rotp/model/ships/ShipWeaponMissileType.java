@@ -40,9 +40,9 @@ public class ShipWeaponMissileType extends ShipWeapon {
     public int shots()                    { return 1; }
     public float speed()                  { return 1; }
     public Image image(int num)           { return null; }
-    public void dealDamage(CombatStack target, float damage, float shieldMod) {
-        target.takeMissileDamage(damage, shieldMod);
-    }
+//    public void dealDamage(CombatStack target, float damage, float shieldMod) {
+//        target.takeMissileDamage(damage, shieldMod);
+//    }
     @Override
     public float estimatedBombardDamage(CombatStack source, CombatStackColony target) {
         // missiles always do max damage on bombardment

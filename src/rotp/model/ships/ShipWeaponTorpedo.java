@@ -52,10 +52,10 @@ public final class ShipWeaponTorpedo extends ShipWeaponMissileType {
     public int minDamage()                { return tech().damage(); }
     @Override
     public int maxDamage()                { return tech().damage(); }
-    @Override
-    public void dealDamage(CombatStack target, float damage, float shieldMod) {
-        target.takeTorpedoDamage(damage, shieldMod);
-    }
+//    @Override
+//    public void dealDamage(CombatStack target, float damage, float shieldMod) {
+//        target.takeTorpedoDamage(damage, shieldMod);
+//    }
     @Override
     public float estimatedBombardDamage(CombatStack source, CombatStackColony target) {
         return super.estimatedBombardDamage(source, target) * target.torpedoDamageMod();

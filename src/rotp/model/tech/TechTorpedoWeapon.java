@@ -15,12 +15,16 @@
  */
 package rotp.model.tech;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+
+import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
 import rotp.model.ships.ShipWeaponTorpedo;
+import rotp.ui.combat.ShipBattleUI;
 
 public final class TechTorpedoWeapon extends Tech {
     public static List<String> missileTypes = new ArrayList<>();
@@ -148,5 +152,23 @@ public final class TechTorpedoWeapon extends Tech {
             return TechMissileWeapon.missileIcons.get(i);
         else
             return new ArrayList<>();
+    }
+    @Override
+    public void drawSuccessfulAttack(CombatStack nullStack, CombatStack target, int wpnNum, float dmg, int count) {
+        ShipBattleUI ui = target.mgr.ui;
+        if (ui == null)
+            return;
+
+        int stW = ui.stackW();
+        int stH = ui.stackH();
+        int st1X = ui.stackX(target);
+        int st1Y = ui.stackY(target);
+
+        int x1 = st1X+stW/2;
+        int y1 = st1Y+stH/2;
+
+        Graphics2D g = (Graphics2D) ui.getGraphics();
+        target.drawAttackResult(g,x1,y1,x1, dmg,text("SHIP_COMBAT_MISS"));   
+        ui.paintAllImmediately();
     }
 }

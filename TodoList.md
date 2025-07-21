@@ -28,6 +28,7 @@
 - Option to increase the size of the combat screen.
 - Would it be possible to have a governor option to extend autospend - to prioritise artifacts planets with spending?
   - (and on a similar topic, per-planet taxes? maybe that's kinda weird idk)
+- Limit / Customize the flag colors (to be changed when scrolling over them)
 
 ### Later:
 

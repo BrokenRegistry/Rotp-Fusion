@@ -262,6 +262,10 @@
 
 ### Fixes:
 
+- Fixed "Alt"-Key glitch in Galaxy Map panel.
+  - Which resulted in the info-panel being locked on a system or fleet.
+- Fixed Torpedoes not displaying successful attack results.
+- Fixed Meklar Intro.
 - Fixed local colony option "Forward incoming rallies" being reset to the default value when loading a game.
 - Fixed Rules and setting panel showing (sometime) the wrong button set after reload...
 - Fixed new ships not always rallying when transit was forwarded.
