@@ -636,8 +636,9 @@ public class MainUI extends BasePanel implements IMapHandler {
             Sprite fpShip = (Sprite) fp.ship();
             if (isClicked(fpShip) || isHovering(fpShip))
                 return true;
-            if (isClicked((Sprite) fp.destination()))
-                return true;
+			StarSystem dest = fp.destination();
+			if (isClicked(dest) || isHovering(dest))
+				return true;
             if (FlightPathSprite.workingPaths().contains(fp))
                 return true;
             if (map.showAllFlightPaths())
@@ -645,7 +646,26 @@ public class MainUI extends BasePanel implements IMapHandler {
             if (map.showImportantFlightPaths())
                 return fp.isPlayer() || fp.aggressiveToPlayer();
             return false;
-        }      
+        }
+		if (s instanceof SystemTransportSprite) {
+			SystemTransportSprite sts = (SystemTransportSprite) s;
+			StarSystem dest = sts.starSystem();
+			if (dest == null)
+				return false;
+			FlightPathSprite path = sts.pathSpriteTo(dest);
+			if (path == null)
+				return false;
+			if (map.showAllFlightPaths())
+				return true;
+			if (isClicked(dest) || isHovering(dest))
+				return true;
+			StarSystem from = sts.homeSystem();
+			if (isClicked(from) || isHovering(from))
+				return true;
+			if (map.showImportantFlightPaths())
+				return path.isPlayer() || path.aggressiveToPlayer();
+			return false;
+		}
         return true;
     }
     @Override

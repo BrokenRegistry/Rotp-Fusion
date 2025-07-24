@@ -959,7 +959,7 @@ MAIN_RALLY_START                  | Démarrer le Rallye
 MAIN_RALLY_STOP                   | Arrêter le Rallye
 
 // Transport labels
-MAIN_TRANSPORTS_EMPIRE            | Transports [empire_race]
+MAIN_TRANSPORTS_EMPIRE            | Transports [empire_race_pluraladjec]
 MAIN_TRANSPORTS_COUNT             | %1 Transports
 MAIN_TRANSPORTS_CANCEL            | Annuler
 MAIN_TRANSPORTS_SHOW_DEST         | Durée du trajet vers %1 : %2 Années
@@ -3518,7 +3518,7 @@ NAME_RACE_MRRSHAN_FR      | Fiershan: %1
 NAME_RACE_PSILON_FR       | Mentaran: %1
 NAME_RACE_SAKKRA_FR       | Ssslaura: %1
 NAME_RACE_SILICOID_FR     | Cryslonoid: %1
-NAME_DESC0                | Saisissez les nouveaux "Empire name, Species name, Species Plural Name" pour cette espèce. Laissez vide pour conserver le nom actuel.<br>Example : Human Triumvirate, Human, Humans.NAME_DESC                 | →NAME_DESC0← (Invalid settings are displayed in red)
+NAME_DESC0                | Saisissez les nouveaux "Empire name, Species name, Species Plural Name" pour cette espèce. Laissez vide pour conserver le nom actuel.<br>Example : Human Triumvirate, Human, Humans.
 NAME_DESC                 | →NAME_DESC0← (Les paramètres non valides sont affichés en rouge)
 NAME_RACE_ALKARI_DESC     | →NAME_DESC←
 NAME_RACE_BULRATHI_DESC   | →NAME_DESC←

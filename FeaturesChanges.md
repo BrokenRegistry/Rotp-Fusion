@@ -177,6 +177,7 @@
 
 ### Miscellaneous:
 
+- Flight path to hovered systems are now always shown. (Was only true for selected colonies)
 - Error Message will display the best save game to be sent.
 - Added Version identification in game files. 
 - Added some installation instructions.
@@ -262,6 +263,10 @@
 
 ### Fixes:
 
+25-07-23 (BR)
+- Fixed Transport Flight path between colonies not following the Display settings.
+- Transport Display: Empires are now displayed in the selected language.
+- Fixed Betelguese -> Betelgeuse.
 - Fixed "Alt"-Key glitch in Galaxy Map panel.
   - Which resulted in the info-panel being locked on a system or fleet.
 - Fixed Torpedoes not displaying successful attack results.
