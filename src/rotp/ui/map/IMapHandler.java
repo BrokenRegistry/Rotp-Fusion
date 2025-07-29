@@ -64,8 +64,9 @@ public interface IMapHandler {
     default public void mouseWheelMoved(MouseWheelEvent e)  { }
     default public boolean dragSelect(int x0, int y0, int x1, int y, boolean shift) { return false; }
 
-    default public void hoveringOverSprite(Sprite o)              { };
-    default public void clickingOnSprite(Sprite o, int cnt, boolean right, boolean click, boolean middleClick, MouseEvent e)       { };
+	default void hoveringOverSprite(Sprite o, boolean bypassMouse)	{ hoveringOverSprite(o); };
+	default void hoveringOverSprite(Sprite o)						{ };
+	default void clickingOnSprite(Sprite o, int cnt, boolean right, boolean click, boolean middleClick, MouseEvent e) { };
     default public void clickingOnSprite(Sprite o, int cnt, boolean right, boolean click, InputEvent e) { };
     default public void clickingNull(int cnt, boolean right) {  };
     default public boolean masksMouseOver(int x, int y)       { return false; }

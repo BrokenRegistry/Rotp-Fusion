@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
+import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -593,19 +594,26 @@ public class MainUI extends BasePanel implements IMapHandler {
             player().changeRalliesFromAToB((StarSystem)clickedSprite(), (StarSystem)s);
         }
     }
-    @Override
-    public void hoveringOverSprite(Sprite o) {
-    	boolean altDown = isAltDown();
-        if (o == lastHoveringSprite() && altDown==lastHoverAltDown)
-            return;
-        lastHoverAltDown = altDown;
+	@Override public void hoveringOverSprite(Sprite o)	{ hoveringOverSprite(o, false); }
+	@Override public void hoveringOverSprite(Sprite o, boolean bypassMouse)	{
+		boolean altDown	= isAltDown();
+		boolean sameAlt	= altDown==lastHoverAltDown;
+		lastHoverAltDown = altDown;
 
-        if (lastHoveringSprite() != null)
-            lastHoveringSprite().mouseExit(map);
-        
-        if ((o instanceof StarSystem) 
-        && (lastHoveringSprite() instanceof StarSystem)
-        && (clickedSprite() instanceof ShipFleet)) {
+		boolean validChange = bypassMouse || map.getMousePosition() != null;
+		if (!validChange)
+			return;
+
+		if (o == lastHoveringSprite()) {
+			if (sameAlt)
+				return;
+		}
+		else if (lastHoveringSprite() != null)
+			lastHoveringSprite().mouseExit(map);
+
+		if ((o instanceof StarSystem) 
+				&& (lastHoveringSprite() instanceof StarSystem)
+				&& (clickedSprite() instanceof ShipFleet)) {
             lastHoveringSprite().mouseExit(map);
             map.clearHoverSprite();
             lastHoveringSprite(null);
@@ -616,7 +624,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         lastHoveringSprite(o);
         if (overlay.hoveringOverSprite(o))
             return;
-        
+
         boolean used = (displayPanel != null) && displayPanel.useHoveringSprite(o);
         if (!used) {
             if (hoveringSprite() != null)

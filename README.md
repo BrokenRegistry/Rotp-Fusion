@@ -44,13 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-25-07-23 (BR)
-- Fixed Transport Flight path between colonies not following the Display settings.
-- Flight path to hovered systems are now always shown. (Was only true for selected colonies)
-- Transport Display: Empires are now displayed in the selected language.
-
-25-07-22 (BR)
-- Fixed Betelguese -> Betelgeuse.
+25-07-28 (BR)
+- Fixed a potential issue during a key or mouse event that occurs when swapping information panels.
+- Fixed a possible misselection of the info-panel when the Alt key is activated.
 
 
 ### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

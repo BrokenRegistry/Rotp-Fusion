@@ -757,6 +757,8 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
 			}
 			int playerId = player().id;
 			ShipFleet fl = selectedFleet();
+			if (fl == null)
+				return;
 			for (int i=0; i<ShipDesignLab.MAX_DESIGNS; i++) {
 				ShipDesign d = fl.visibleDesign(playerId, i);
 				if(d!=null) {
@@ -774,6 +776,8 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         private void selectAll() {
         	int playerId = player().id;
         	ShipFleet fl = selectedFleet();
+			if (fl == null)
+				return;
         	for (int i=0; i<ShipDesignLab.MAX_DESIGNS; i++) {
         		ShipDesign d = fl.visibleDesign(playerId, i);
         		if(d!=null) {
@@ -788,6 +792,8 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         private void selectNone() {
         	int playerId = player().id;
         	ShipFleet fl = selectedFleet();
+			if (fl == null)
+				return;
         	for (int i=0; i<ShipDesignLab.MAX_DESIGNS; i++) {
         		ShipDesign d = fl.visibleDesign(playerId, i);
         		if(d!=null) {
@@ -891,7 +897,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 scaledFont(g, selectAll, wsa, 22, 15);
                 int sw = g.getFontMetrics().stringWidth(selectAll);
                 int dx = s3+(wsa-sw)/2;
-                
+
                 g.drawString(selectAll, xa+dx, ya+s15);
                 scaledFont(g, title, w-s20, 22, 15);
                 b[0]=ya-s6;  b[1]=ya-s12; b[2]=ya;

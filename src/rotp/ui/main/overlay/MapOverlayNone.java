@@ -365,14 +365,14 @@ public class MapOverlayNone extends MapOverlay {
     }
     private void goToSystem(StarSystem system) {
         if (parent.clickedSprite() instanceof SystemTransportSprite) {
-            parent.hoveringOverSprite(system);
+			parent.hoveringOverSprite(system, true);
             parent.clickingOnSprite(system, 1, false, false, false, null);
         }
         else if (parent.clickedSprite() instanceof ShipRelocationSprite) {
-            parent.hoveringOverSprite(system);
+			parent.hoveringOverSprite(system, true);
         }
         else {
-            parent.hoveringOverSprite(system);
+			parent.hoveringOverSprite(system, true);
             parent.clickedSprite(system);
             parent.map().recenterMapOn(system);
         }
