@@ -194,6 +194,15 @@ public class MapOverlayAllocateSystems extends MapOverlay {
         drawString(g,actionStr, x1d, y1d);
 
         // draw reasons info
+		if (orderedSystems.size() <= systemIndex) {
+			// BR: This should never happen... But already happened
+			// ==> Security to avoid crash
+			System.err.println("MapOverlayAllocateSystems Error: orderedSystems.size() <= systemIndex "
+								+ orderedSystems.size() +" <= " + systemIndex);
+			System.err.println("    ==> Spending Adjustments display terminated");
+			advanceMap();
+			return;
+		}
         StarSystem sv = orderedSystems.get(systemIndex);
         List<String> reasons = systemsToAllocate.get(sv);
         int lineH = BasePanel.s15;

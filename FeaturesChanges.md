@@ -263,6 +263,8 @@
 
 ### Fixes:
 
+- Partially fixed a crashing bug, when displaying a non-existent "expense adjustment notice".
+  - A security has been added to bypass the faulty notice, but the origin of this is still unknown.
 - Fixed a possible misselection of the info-panel when the Alt key is activated.
 - Fixed a potential issue during a key or mouse event that occurs when swapping information panels.
 - Fixed Transport Flight path between colonies not following the Display settings.
