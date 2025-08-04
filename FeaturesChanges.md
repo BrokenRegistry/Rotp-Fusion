@@ -177,6 +177,10 @@
 
 ### Miscellaneous:
 
+25-08-03 (BR)
+- Improved the Error message readability
+  - Long lines will be split to fit the screen
+  - Removed last line, to be able to display instructions.
 - Flight path to hovered systems are now always shown. (Was only true for selected colonies)
 - Error Message will display the best save game to be sent.
 - Added Version identification in game files. 

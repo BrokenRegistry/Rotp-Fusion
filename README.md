@@ -44,13 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-25-07-30 (BR)
-- Partially fixed a crashing bug, when displaying a non-existent "expense adjustment notice".
-  - A security has been added to bypass the faulty notice, but the origin of this is still unknown.
-
-25-07-28 (BR)
-- Fixed a potential issue during a key or mouse event that occurs when swapping information panels.
-- Fixed a possible misselection of the info-panel when the Alt key is activated.
+25-08-03 (BR)
+- Improved the Error message readability
+  - Long lines will be split to fit the screen
+  - Removed last line, to be able to display instructions.
 
 
 ### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

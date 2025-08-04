@@ -73,9 +73,9 @@ public final class ErrorUI extends BasePanel implements MouseListener, MouseMoti
 
         g.setColor(Color.lightGray);
 
-		int x0 = w/10;
-		int w0 = w*4/5;
-		int y0 = BasePanel.s50;
+		int x0 = w/16;
+		int w0 = w*7/8;
+		int y0 = s50;
 		g.setFont(narrowFont(40));
 		String title = BASE_TITLE + mode[errorMode];
 		drawString(g, title, x0, y0);
@@ -84,21 +84,13 @@ public final class ErrorUI extends BasePanel implements MouseListener, MouseMoti
 		int sw = g.getFontMetrics().stringWidth(osTxt);
 		drawString(g, osTxt, (w-x0-sw), y0);
 
-        w0 = w*4/5;
-        y0 = BasePanel.s80;
-        g.setFont(narrowFont(30));
+		y0 = s80;
+		g.setFont(narrowFont(30));
 		String desc = DESC_1 + file[errorMode] + DESC_2;
-		List<String> lines = wrappedLines(g, desc, w0);
-        int lineCount = 0;
-        for (String line : lines) {
-            y0 += BasePanel.s35;
-            if (lineCount < 10)
-                drawString(g,line, x0, y0);
-            lineCount++;
-        }
+		y0 = drawString(g, desc, x0, y0, w0, s35);
 
-        g.setFont(narrowFont(24));
-        y0 += BasePanel.s60;
+		g.setFont(narrowFont(24));
+		y0 += s50;
 		String str = "Email: Broken.Registry@protonmail.com";
 		//String str = "Email: ail.st@gmx.de";
 		sw = g.getFontMetrics().stringWidth(str);
@@ -107,13 +99,14 @@ public final class ErrorUI extends BasePanel implements MouseListener, MouseMoti
 		str = "Reddit: www.Reddit.com/r/rotp";
 		drawString(g, str, x0+sw+BasePanel.s50, y0);
 
-        g.setFont(narrowFont(24));
-        y0 += BasePanel.s60;
-        drawString(g, exception.toString(), x0, y0);
-        for (StackTraceElement line : exception.getStackTrace()) {
-            y0 += BasePanel.s27;
-            drawString(g, line.toString(), x0, y0);
-        }
+		g.setFont(narrowFont(24));
+		y0 = drawString(g, exception.toString(), x0, y0+s23, w0, s27);
+		int maxY = h-s60;
+		for (StackTraceElement line : exception.getStackTrace()) {
+			y0 = drawString(g, line.toString(), x0, y0, w0, s27);
+			if (y0>maxY)
+				break;
+		}
 
         g.setFont(narrowFont(20));
         String ver = "Version:"+ Rotp.releaseId;
@@ -123,6 +116,17 @@ public final class ErrorUI extends BasePanel implements MouseListener, MouseMoti
         drawMemory(g);
         drawSkipText(g, true);
     }
+	int drawString(Graphics g, String str, int x0, int y0, int w0, int step) {
+		List<String> lines = wrappedLines(g, str, w0);
+		int lineCount = 0;
+		for (String line : lines) {
+			y0 += step;
+			if (lineCount < 10)
+				drawString(g,line, x0, y0);
+			lineCount++;
+		}
+		return y0;
+	}
     @Override
     public boolean displayMemory() {
         return true;
