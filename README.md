@@ -44,10 +44,8 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-25-08-03 (BR)
-- Improved the Error message readability
-  - Long lines will be split to fit the screen
-  - Removed last line, to be able to display instructions.
+25-08-18 (BR)
+- Fixed Guide displayed info on the current default set; MoO1 and Fusion were swapped.
 
 
 ### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

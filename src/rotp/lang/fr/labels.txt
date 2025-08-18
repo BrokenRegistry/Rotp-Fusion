@@ -684,9 +684,9 @@ FUSION_HK      | RotP-Fusion
 CURRENT_DEF_HK | <br>(Les valeurs par défaut sélectionnées proviennent de
 SETTINGS_MOD_DEFAULT_SETTINGS       | Paramètres par défaut : %1
 SETTINGS_MOD_DEFAULT_IS_FUSION      | Fusion
-SETTINGS_MOD_DEFAULT_IS_FUSION_NOW  | →CURRENT_DEF_HK← →MOO1_HK←).
+SETTINGS_MOD_DEFAULT_IS_FUSION_NOW  | →CURRENT_DEF_HK← →FUSION_HK←).
 SETTINGS_MOD_DEFAULT_IS_MOO1        | MoO1
-SETTINGS_MOD_DEFAULT_IS_MOO1_NOW    | →CURRENT_DEF_HK← →FUSION_HK←).
+SETTINGS_MOD_DEFAULT_IS_MOO1_NOW    | →CURRENT_DEF_HK← →MOO1_HK←).
 SETTINGS_MOD_DEFAULT_IS_ROTP        | RotP
 SETTINGS_MOD_DEFAULT_IS_ROTP_NOW    | →CURRENT_DEF_HK← →CLASSIC_HK←).
 SETTINGS_MOD_DEFAULT_SETTINGS_DESC  | Sélectionnez les paramètres par défaut à appliquer avec le bouton du milieu de la souris ou le bouton «Par défaut».

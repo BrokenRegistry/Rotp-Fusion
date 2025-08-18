@@ -267,6 +267,7 @@
 
 ### Fixes:
 
+- Fixed Guide displayed info on the current default set; MoO1 and Fusion were swapped.
 - Partially fixed a crashing bug, when displaying a non-existent "expense adjustment notice".
   - A security has been added to bypass the faulty notice, but the origin of this is still unknown.
 - Fixed a possible misselection of the info-panel when the Alt key is activated.
