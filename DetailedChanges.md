@@ -2,6 +2,10 @@
 
 ## What's New
 
+25-08-26 (BR)
+- Fixed a strange display bug caused by a null pointer exception.
+  - To reproduce the bug hover with mouse over the blue enemy fleet on Zibalia and then once the fleet contents are displayed, click on the Feral ship type. --> Crash on Linux OS but not on Windows OS.
+
 25-08-18 (BR)
 - Fixed Guide displayed info on the current default set; MoO1 and Fusion were swapped.
 

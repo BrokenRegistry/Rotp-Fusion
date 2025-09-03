@@ -913,6 +913,8 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		int y = y0-h/2;
 
 		ShipDesign d = fleet.visibleDesign(empire.id, desId);
+		if (d == null)
+			return;
 		Image img = d.image();
 		int imgW = img.getWidth(null);
 		int imgH = img.getHeight(null);

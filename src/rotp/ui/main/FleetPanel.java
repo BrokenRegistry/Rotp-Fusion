@@ -1190,6 +1190,8 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
 
             Empire pl = player();
             ShipDesign d = origFl.visibleDesign(pl.id,i);
+			if(d == null)
+				return;
             Image img = d.image();
             if (!contact) {
                 String iconKey = ShipLibrary.current().shipKey(pl.shipLab().shipStyleIndex(), d.size(), 0);
@@ -1426,6 +1428,8 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 return;
             
             ShipDesign d = fl.visibleDesign(player().id, hoverStackNum);
+			if(d == null)
+				return;
             int index = d.id();
             int stackNum = fl.num(index);
             int currAdj = stackAdjustment[index];

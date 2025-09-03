@@ -266,7 +266,8 @@
 
 
 ### Fixes:
-
+- Fixed a strange display bug caused by a null pointer exception.
+  - To reproduce the bug hover with mouse over an undeployed enemy fleet, and then once the fleet contents are displayed, click on a ship design. --> Crash on Linux OS but not on Windows OS.
 - Fixed Guide displayed info on the current default set; MoO1 and Fusion were swapped.
 - Partially fixed a crashing bug, when displaying a non-existent "expense adjustment notice".
   - A security has been added to bypass the faulty notice, but the origin of this is still unknown.

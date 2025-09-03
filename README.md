@@ -44,8 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-25-08-18 (BR)
-- Fixed Guide displayed info on the current default set; MoO1 and Fusion were swapped.
+25-08-26 (BR)
+- Fixed a strange display bug caused by a null pointer exception.
+  - To reproduce the bug hover with mouse over an undeployed enemy fleet, and then once the fleet contents are displayed, click on a ship design. --> Crash on Linux OS but not on Windows OS.
 
 
 ### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)
