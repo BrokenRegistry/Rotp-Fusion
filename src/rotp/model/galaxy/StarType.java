@@ -20,7 +20,10 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import rotp.ui.sprites.RoundGradientPaint;
 import rotp.util.Base;
 
@@ -32,10 +35,23 @@ public class StarType implements Base {
     public static final String WHITE = "WHITE";
     public static final String BLUE = "BLUE";
     public static final String PURPLE = "PURPLE";
-	
+	public static final String RANDOM = "RANDOM";
+
     private static RoundGradientPaint rgp;
     private static final HashMap<String, StarType> typeMap = new HashMap<>();
     public static StarType keyed(String s)       { return typeMap.get(s); }
+	public static String validType(String s)	{
+		s = s.toUpperCase();
+		if (typeMap.containsKey(s))
+			return s;
+		return RANDOM;
+	}
+	public static List<String> empireStarTypeList()	{
+		List<String> list = new ArrayList<>();
+		list.add(RANDOM);
+		list.addAll(typeMap.keySet());
+		return list;
+	}
     private static void addStarType(String s)    { typeMap.put(s, new StarType(s)); }
     private RoundGradientPaint rgp() {
         if (rgp == null) 

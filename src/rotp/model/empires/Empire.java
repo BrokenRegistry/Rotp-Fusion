@@ -3525,7 +3525,7 @@ public final class Empire implements Base, NamedObject, Serializable {
     public int shipDefenseBonus()              { return dataRace().shipDefenseBonus(); }
     public int shipInitiativeBonus()           { return dataRace().shipInitiativeBonus(); }
     public boolean ignoresPlanetEnvironment()  { return dataRace().ignoresPlanetEnvironment(); }
-    public boolean acceptedPlanetEnvironment(PlanetType pt)  {
+    public boolean acceptedPlanetEnvironment(PlanetType pt)  { // TODO BR: Move this to species abilities
         switch (dataRace().acceptedPlanetEnvironment()) {
             case "Limited":
                 switch (pt.key()) {

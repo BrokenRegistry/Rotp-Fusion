@@ -79,7 +79,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private static final int	costOffset		= s25; // Offset from title
 	private static final int	titlePad		= s80; // Offset of first setting
 	private static final int	raceAIH			= s18;
-	
+
 	private static final Color	frameC			= SystemPanel.blackText; // Setting frame color
 	private static final Color	settingNegC		= SettingBase.settingNegC; // Setting name color
 	private static final Color	settingC		= SettingBase.settingC; // Setting name color
@@ -111,7 +111,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	LinkedList<SettingBase<?>>  commonList;
 	protected LinkedList<SettingBase<?>> settingList;
 	protected LinkedList<SettingBase<?>> mouseList;
-	
+
 	protected String guiTitleID;
 
 	private int numColumns	= 0;
@@ -153,14 +153,12 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		descBox.setOpaque(true);
 		descBox.setContentType("text/html");
 		descBox.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-	    totalCostText = new ModText(this, costFontSize, 
-	    		costC, costC, hoverC, depressedC, costC, false);
-	    malusCostText = new ModText(this, costFontSize, 
-	    		malusC, malusC, hoverC, depressedC, malusC, false);
+		totalCostText = new ModText(this, costFontSize, 
+				costC, costC, hoverC, depressedC, costC, false);
+		malusCostText = new ModText(this, costFontSize, 
+				malusC, malusC, hoverC, depressedC, malusC, false);
 	}
-	public static ShowCustomRaceUI instance() {
-		return instance.init0();
-	}
+	public static ShowCustomRaceUI instance()	{ return instance.init0(); }
 	private ShowCustomRaceUI init0() {
 		if (initialized)
 			return this;
@@ -168,14 +166,14 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		cr(new CustomRaceDefinitions());		
 		maxLeftM	= scaled(80);
 		guiTitleID	= ROOT + "SHOW_TITLE";
-	    commonList	= settingList;
-	    mouseList	= settingList;
+		commonList	= settingList;
+		mouseList	= settingList;
 		addMouseListener(this);
 		addMouseMotionListener(this);
-	    initGUI();		
+		initGUI();		
 		return this;
 	}
-	public void loadRace(IGameOptions options)		{ // For Race Diplomatic UI Panel
+	public void loadRace(IGameOptions options)	{ // For Race Diplomatic UI Panel
 		forceUpdate = true;
 		raceUI.selectedEmpire().initCRToShow(cr);
 	}
@@ -610,7 +608,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 
 		// Tool tip
 		paintDescriptions(g);
-		
+
 		// Total cost
 		totalCostText.displayText(totalCostStr());
 		totalCostText.setScaledXY(xCost, yCost);
@@ -620,7 +618,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		malusCostText.displayText(malusCostStr());
 		malusCostText.setScaledXY(xCost + sw + s2, yCost);
 		malusCostText.draw(g);
-		
+
 		// Loop thru the parameters
 		xLine = leftM+s10;
 		yLine = yTop;
@@ -699,8 +697,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 			repaint();
 		}
 		// Check if cursor is in a box
-		checkForHoveredSettings(mouseList);;
-
+		checkForHoveredSettings(mouseList);
 	}
 	@Override public void mouseReleased(MouseEvent e) {
 		if (e.getButton() > 3)

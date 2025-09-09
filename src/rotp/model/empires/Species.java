@@ -3,6 +3,7 @@ package rotp.model.empires;
 import static rotp.model.empires.CustomRaceDefinitions.fileToAlienRace;
 import static rotp.model.empires.CustomRaceDefinitions.optionToAlienRace;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -119,6 +120,17 @@ public final class Species implements Base {
 	boolean isCustomRace()			{ return isCustomSpecies; }
 	int speciesNameIndex()			{ return nameIndex; }
 	void speciesName(String name)	{ speciesName = name; }
+
+	// =========================================================
+	// Custom Species Edition
+	//
+	void setDescription(String desc, int id)	{
+		if (isCustomSpecies && !isRandomized) { // For security! Should always be the case.
+			speciesAbilities.setDescription(desc, id);
+			File folder = SpeciesManager.current().customLangFolder(speciesAbilities);
+		}
+	}
+
 
 	// =========================================================
 	// Species Conditional

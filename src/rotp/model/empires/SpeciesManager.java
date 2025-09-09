@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 import rotp.Rotp;
 import rotp.model.game.DynOptions;
 import rotp.util.Base;
+import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
 
 public final class SpeciesManager implements Base, Serializable {
@@ -71,6 +72,22 @@ public final class SpeciesManager implements Base, Serializable {
 		}
 		//loadCustomSpeciesLangFiles(langDir);
 	}
+	File customLangFolder(Race cs)	{
+		File langFolder = new File(Rotp.jarPath() + "/" + getLangFolder(cs));
+		if (!langFolder.exists() || !langFolder.isDirectory())
+			return null;
+		return langFolder;
+	}
+	File customNamesFile(Race cs)	{
+		File langFolder = customLangFolder(cs);
+		if (langFolder == null)
+			return null;
+		String filename = langFolder+cs.lalelsFileName(LabelManager.NAMES_FILE);
+		File namesFile = new File(filename);
+		if (namesFile.exists())
+			return namesFile;
+		return null;
+	}
 	public void loadCustomSpeciesLangFiles()	{
 		String langDir = LanguageManager.selectedLanguageDir();
 		for (Race cs : customSpecies()) {
@@ -85,7 +102,7 @@ public final class SpeciesManager implements Base, Serializable {
 			factory.loadRaceLangFiles(cs, langDir, folderName);
 			String root = CustomRaceDefinitions.ROOT;
 			DynOptions opts = cs.raceOptions();
-			System.out.println("Desc1: " + opts.getString(root + "RACE_DESC_1"));
+			System.out.println("Desc1: " + opts.getString(root + "RACE_DESC_1")); // TODO BR: REMOVE
 			System.out.println("Desc2: " + opts.getString(root + "RACE_DESC_2"));
 			System.out.println("Desc3: " + opts.getString(root + "RACE_DESC_3"));
 			System.out.println("Desc4: " + opts.getString(root + "RACE_DESC_4"));
@@ -135,7 +152,7 @@ public final class SpeciesManager implements Base, Serializable {
 		String dir = "lang/" + langDir + "/races/";
 		factory.loadRaceLangFiles(r, langDir, dir);
 	}
-	public Race reloadRaceDataFile(String raceDirPath)		{ return factory.reloadRaceDataFile(raceDirPath); }
+//	public Race reloadRaceDataFile(String raceDirPath)		{ return factory.reloadRaceDataFile(raceDirPath); }
 
 	// =========================================================
 	// Main Getters

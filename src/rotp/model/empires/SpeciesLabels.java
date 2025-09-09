@@ -103,8 +103,8 @@ public final class SpeciesLabels implements Base, Serializable {
 	}
 	String defaultHomeworldName()	{ return homeSystemNames.isEmpty()? "Empty" : homeSystemNames.get(0); }
 	boolean hasHomeworldNames()		{ return !homeSystemNames.isEmpty(); }
-	void parseRaceNames(String names)	{
+	void parseRaceNames(String str)	{
 		raceNames.clear();
-		raceNames.addAll(substrings(names, ','));
+		raceNames.addAll(substrings(str, ','));
 	}
 }

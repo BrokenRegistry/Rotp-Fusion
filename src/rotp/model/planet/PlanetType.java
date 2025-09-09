@@ -53,6 +53,7 @@ public class PlanetType implements Base {
     public static final String OCEAN = "PLANET_OCEAN";
     public static final String JUNGLE = "PLANET_JUNGLE";
     public static final String TERRAN = "PLANET_TERRAN";
+	public static final String RANDOM = "RANDOM";
 
     public static final int HOSTILITY_NONE = 99;
     public static final int HOSTILITY_RADIATED = 12;
@@ -85,6 +86,31 @@ public class PlanetType implements Base {
     			JUNGLE,
     			TERRAN
     			});
+	public static List<String> empirePlanetTypeList()	{
+		List<String> list = Arrays.asList(new String[] {
+				RANDOM,
+				TERRAN,
+				JUNGLE,
+				OCEAN,
+				ARID,
+				STEPPE,
+				DESERT,
+				MINIMAL,
+				BARREN,
+				TUNDRA,
+				RADIATED,
+				DEAD,
+				INFERNO,
+				TOXIC
+				});
+		return list;
+	}
+	public static String validType(String s)	{
+		s = s.toUpperCase();
+		if (planetTypes.contains(s))
+			return s;
+		return RANDOM;
+	}
 
     private String key;
     private String descBiological;

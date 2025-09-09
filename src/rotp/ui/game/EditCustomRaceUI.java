@@ -53,7 +53,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	private static final String saveCurrentKey	= ROOT + "GUI_SAVE";
 	private static final String loadCurrentKey	= ROOT + "GUI_LOAD";
 	private static final int	raceListW		= RotPUI.scaledSize(180);
-	
+
 	private static final ParamButtonHelp loadButtonHelp = new ParamButtonHelp( // For Help Do not add the list
 			"CUSTOM_RACE_BUTTON_LOAD",
 			saveCurrentKey,
@@ -61,7 +61,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 			loadCurrentKey,
 			"");
 	private	static final EditCustomRaceUI instance		= new EditCustomRaceUI();
-	
+
 	private final Box selectBox		= new Box(selectKey);
 	private final Box randomBox		= new Box(randomKey);
 	private final Box randomGetBox	= new Box(randomGetKey);
@@ -71,7 +71,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	private LinkedList<SettingBase<?>> guiList;
 	private RaceList raceList;
 	private int yRandB, yRandGetB, xRandPushB;
-	
+
 	// ========== Constructors and initializers ==========
 	//
 	private EditCustomRaceUI() {}
@@ -127,14 +127,14 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	}
 	private void saveCurrentRace() { cr().saveRace(); }
 	private void loadCurrentRace() { cr().loadRace(); }
-	private void doLoadBoxAction() { // Local to panel
+	private void doSaveBoxAction() { // Local to panel
 		buttonClick();
 		switch (ModifierKeysState.get()) {
 		case CTRL:
-		case CTRL_SHIFT: // Save
+		case CTRL_SHIFT:// Load
 			loadCurrentRace();
 			break;
-		default: // Load
+		default: // Save 
 			saveCurrentRace();
 			break; 
 		}
@@ -408,7 +408,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		loadBox.fillButtonBackImg(g);
 		// draw GUIDE button
 		guideBox.fillButtonBackImg(g);
-		
+
 		drawButtons(g, true); // init = true; local = true
 		return buttonBackImg;
     }
@@ -648,18 +648,18 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		g.setStroke(stroke2);
 		paintSetting(g, raceList);
 		g.setStroke(prev);
-	
+
 		// Randomize Options
 		xLine = xDesc  + labelPad;
 		yLine = yRandB - labelPad;
 		ModText bt;
-	    for(SettingBase<?> setting : guiList) {
+		for(SettingBase<?> setting : guiList) {
 			bt = setting.settingText();
 			bt.displayText(setting.guiSettingDisplayStr());
 			bt.setScaledXY(xLine, yLine);
 			bt.draw(g);
 			yLine -= labelH;
-	    }
+		}
 		if (showTiming)
 			System.out.println("EditCustomRace paintComponent() Time = " + (System.currentTimeMillis()-timeStart));	
 	}
@@ -701,7 +701,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 			return;
 		}
 		if (hoverBox == loadBox) {
-			doLoadBoxAction();			
+			doSaveBoxAction();			
 			return;
 		}
 		if (hoverBox == randomBox) {
@@ -718,7 +718,5 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		}
 		mouseCommon(e, null);
 	}
-	@Override public void mouseWheelMoved(MouseWheelEvent e) {
-		mouseCommon(null, e);
-	}
+	@Override public void mouseWheelMoved(MouseWheelEvent e)	{ mouseCommon(null, e); }
 }

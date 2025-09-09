@@ -35,7 +35,7 @@ import rotp.util.ImageTransformer;
 import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
 
-public class Race implements ISpecies, Base {
+public class SpeciesAnimations implements ISpecies, Base {
 	private static final int PERSONALITY_COUNT	= Personality.values().length;
 	private static final int OBJECTIVE_COUNT	= Objective.values().length;
 	private static final int DESIGN_MODS_COUNT	= 28;
@@ -191,7 +191,7 @@ public class Race implements ISpecies, Base {
 	private transient Image transportImg;
 	private transient BufferedImage diploMug, wideDiploMug;
 
-	Race () {
+	SpeciesAnimations () {
 		speciesLabels.leaderNames.add("Leader");
 		for (int i=0; i<PERSONALITY_COUNT; i++)
 			personalityPct(i, 1);
@@ -199,12 +199,12 @@ public class Race implements ISpecies, Base {
 			objectivePct(i, 1);
 	}
 
-	Race(String dirPath) {
+	SpeciesAnimations(String dirPath) {
 		directoryName = dirPath;
 		labels = new LabelManager();
 	}
 
-	protected Race ( Race src) {
+	protected SpeciesAnimations ( SpeciesAnimations src) {
 		id	= src.id;
 		setupName		= src.setupName;
 		empireTitle		= src.empireTitle;;
@@ -366,7 +366,7 @@ public class Race implements ISpecies, Base {
 		shipDesignMods	= src.shipDesignMods.clone();
 	}
 
-	protected Race copy()	{ return new Race(this); }
+	protected SpeciesAnimations copy()	{ return new SpeciesAnimations(this); }
 
 	public String homeworldPlanetType()	{ return homeworldPlanetType; }
 	void homeworldPlanetType(String s)	{ homeworldPlanetType = s; }
@@ -880,7 +880,7 @@ public class Race implements ISpecies, Base {
 	void fullTitle(String s)			{ fullTitle = s; }
 	// BR: Custom Races
 	boolean isCustomRace()				{ return isCustomRace; }
-	Race isCustomRace(boolean val)		{ isCustomRace = val; return this;}
+	SpeciesAnimations isCustomRace(boolean val)		{ isCustomRace = val; return this;}
 	boolean isRandomized()				{ return CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
 	DynOptions raceOptions()			{ return raceOptions; }
 	void raceOptions(DynOptions val)	{ raceOptions = val; }
@@ -955,7 +955,7 @@ public class Race implements ISpecies, Base {
 
     float defaultRaceRelations()       { return defaultRaceRelations; }
     void defaultRaceRelations(int d)   { defaultRaceRelations = d; }
-    float baseRelations(Race r) {
+    float baseRelations(SpeciesAnimations r) {
         float definedRelations = raceRelations.containsKey(r.id) ? raceRelations.get(r.id) : defaultRaceRelations();
         return definedRelations + options().baseAIRelationsAdj();
     }

@@ -706,8 +706,14 @@ public class CustomRaceDefinitions {
 			inputMessage("Enter the Race File Name");
 			randomStr(RANDOMIZED_RACE_KEY);
 		}
-		@Override public void pushSetting() { race.id(settingValue()); }
-		@Override public void pullSetting() { set(race.id()); }
+		@Override public void pushSetting() {
+			System.out.println("RaceKey pushSetting(): From " + race.id() + " To " + settingValue()); // TODO BR: REMOVE
+			race.id(settingValue());
+		}
+		@Override public void pullSetting() {
+			System.out.println("RaceKey pullSetting(): From " + settingValue() + " To " + race.id()); // TODO BR: REMOVE
+			set(race.id());
+		}
 	}
 	// ==================== RaceName ====================
 	//
@@ -751,7 +757,7 @@ public class CustomRaceDefinitions {
 			randomStr("Randomized");
 		}
 		@Override public void pushSetting() {
-			race.setDescription1(settingValue());
+			race.setDescription(settingValue(), 1);
 		}
 		@Override public void pullSetting() {
 			set(race.getDescription1());		
@@ -765,7 +771,7 @@ public class CustomRaceDefinitions {
 			inputMessage("Enter the Description");
 			randomStr("Randomized");
 		}
-		@Override public void pushSetting() { race.setDescription2(settingValue()); }
+		@Override public void pushSetting() { race.setDescription(settingValue(), 2); }
 		@Override public void pullSetting() { set(race.getDescription2()); }
 	}
 	// ==================== RaceDescription3 ====================
@@ -776,7 +782,7 @@ public class CustomRaceDefinitions {
 			inputMessage("Enter the Description");
 			randomStr("Randomized");
 		}
-		@Override public void pushSetting() { race.setDescription3(settingValue()); }
+		@Override public void pushSetting() { race.setDescription(settingValue(), 3); }
 		@Override public void pullSetting() { set(race.getDescription3()); }
 	}
 	// ==================== RaceDescription4 ====================
@@ -787,7 +793,7 @@ public class CustomRaceDefinitions {
 			inputMessage("Enter the Description");
 			randomStr("Randomized");
 		}
-		@Override public void pushSetting() { race.setDescription4(settingValue()); }
+		@Override public void pushSetting() { race.setDescription(settingValue(), 4); }
 		@Override public void pullSetting() { set(race.getDescription4()); }
 	}
 	// ==================== RacePrefix ====================

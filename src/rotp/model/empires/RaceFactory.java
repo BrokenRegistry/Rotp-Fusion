@@ -33,6 +33,7 @@ import rotp.util.LanguageManager;
 import rotp.util.PixelShifter;
 
 class RaceFactory implements Base {
+/*
     // BR: The safest way to copy a race!
     private static List<String> reloadedSettings() {
     	List<String> list = new ArrayList<>();
@@ -145,48 +146,49 @@ class RaceFactory implements Base {
     	return false;
     }
     // BR: The safest way to copy a race!
-    Race reloadRaceDataFile(String raceDirPath) {
-        String filename = raceDirPath+"/definition.txt";
-        List<String> loadList = reloadedSettings();
-        BufferedReader in = reader(filename);
-        if (in == null) {
-            err("Could not open file: ", filename);
-            return null;
-        }
-        Race newRace = new Race(raceDirPath);
-        try {
-            String input;
-            while ((input = in.readLine()) != null) {
-            	// load only what is mandatory 
-            	if (isComment(input))
-            		continue;
-                List<String> vals = substrings(input, ':');
-                if (vals.size() < 2)
-                	continue;
-                if (isInList(vals.get(0), loadList))
-                	loadRaceDataLine(newRace, input);
-            }
-            in.close();
-            //ImageManager.current().loadImageList(raceDirPath+"/images.txt");
-            //AnimationManager.current().loadAnimationList(raceDirPath+"/animations.txt");
-        }
-        catch (IOException e) {
-            err("RaceFactory.loadRaceDataFile(", filename, ") -- IOException: ", e.toString());
-        }
-		// useless for abilities
-		newRace.troopNormal(null);
-		newRace.troopHostile(null);
-		newRace.troopDeath1(null);
-		newRace.troopDeath2(null);
-		newRace.troopDeath3(null);
-		newRace.troopDeath4(null);
-		newRace.troopDeath1H(null);
-		newRace.troopDeath2H(null);
-		newRace.troopDeath3H(null);
-		newRace.troopDeath4H(null);
-
-	return newRace;
-	}
+//    Race reloadRaceDataFile(String raceDirPath) {
+//        String filename = raceDirPath+"/definition.txt";
+//        List<String> loadList = reloadedSettings();
+//        BufferedReader in = reader(filename);
+//        if (in == null) {
+//            err("Could not open file: ", filename);
+//            return null;
+//        }
+//        Race newRace = new Race(raceDirPath);
+//        try {
+//            String input;
+//            while ((input = in.readLine()) != null) {
+//            	// load only what is mandatory 
+//            	if (isComment(input))
+//            		continue;
+//                List<String> vals = substrings(input, ':');
+//                if (vals.size() < 2)
+//                	continue;
+//                if (isInList(vals.get(0), loadList))
+//                	loadRaceDataLine(newRace, input);
+//            }
+//            in.close();
+//            //ImageManager.current().loadImageList(raceDirPath+"/images.txt");
+//            //AnimationManager.current().loadAnimationList(raceDirPath+"/animations.txt");
+//        }
+//        catch (IOException e) {
+//            err("RaceFactory.loadRaceDataFile(", filename, ") -- IOException: ", e.toString());
+//        }
+//		// useless for abilities
+//		newRace.troopNormal(null);
+//		newRace.troopHostile(null);
+//		newRace.troopDeath1(null);
+//		newRace.troopDeath2(null);
+//		newRace.troopDeath3(null);
+//		newRace.troopDeath4(null);
+//		newRace.troopDeath1H(null);
+//		newRace.troopDeath2H(null);
+//		newRace.troopDeath3H(null);
+//		newRace.troopDeath4H(null);
+//
+//	return newRace;
+//	}
+*/
     void loadRaceDataFile(String raceDirName) {
         if (isComment(raceDirName))
             return;
@@ -223,9 +225,9 @@ class RaceFactory implements Base {
 		//
 		// Load Species Labels
 		//
-		labels.labelFile(r.lalelsFileName("labels.txt"));
-		labels.dialogueFile(r.lalelsFileName("dialogue.txt"));
-		labels.introFile(r.lalelsFileName("intro.txt"));
+//		labels.labelFile(r.lalelsFileName("labels.txt"));
+//		labels.dialogueFile(r.lalelsFileName("dialogue.txt"));
+//		labels.introFile(r.lalelsFileName("intro.txt"));
         labels.loadIntroFile(dir);
         labels.loadDialogueFile(dir);
         labels.loadLabelFile(dir);
@@ -267,7 +269,7 @@ class RaceFactory implements Base {
         //
         // Load Species Names
         //
-		String filename = dir+r.lalelsFileName("names.txt");
+		String filename = dir+r.lalelsFileName(LabelManager.NAMES_FILE);
         BufferedReader in = reader(filename);
         if (in == null)
             return;
@@ -437,7 +439,51 @@ class RaceFactory implements Base {
 
 	err("unknown key->", input);
 	}
+	private void saveRaceLangFiles(Race r, String langDir, String dir)	{ // TODO BR: saveRaceLangFiles
+		writeIntroFile(r, langDir, dir);	// TODO BR: NOT FINAL
+		writeDialogueFile(r, langDir, dir);	// TODO BR: NOT FINAL
+		writeLabelFile(r, langDir, dir);	// TODO BR: NOT FINAL
+		writeNamesFile(r, langDir, dir);	// TODO BR: NOT FINAL
+	}
+	private void writeIntroFile(Race r, String langDir, String dir) {
+		List<String> strList = r.introduction();
+		writeFile(strList, dir, r.lalelsFileName(LabelManager.INTRO_FILE));
+	}
+	private void writeDialogueFile(Race r, String langDir, String dir) {	// TODO BR: NOT FINAL
+//		List<String> strList = r.dialogue(dir);
+//		writeFile(strList, dir, r.lalelsFileName(LabelManager.DIALOGUE_FILE));
+	}
+	private void writeLabelFile(Race r, String langDir, String dir) {	// TODO BR: NOT FINAL
+//		List<String> strList = r.introduction();
+//		writeFile(strList, dir, r.lalelsFileName(LabelManager.LABEL_FILE));
+	}
+	private void writeNamesFile(Race r, String langDir, String dir) {
+		List<String> strList = new ArrayList<>();
+		strList.add("// All possible names");
+		strList.add(labelLine("name", join(r.raceNames())));
+		strList.add("");
+		strList.add(labelLine("desc1", r.getDescription1()));
+		strList.add(labelLine("desc2", r.getDescription2()));
+		strList.add(labelLine("desc3", r.getDescription3()));
+		strList.add(labelLine("desc4", r.getDescription4()));
+		strList.add("");
+		strList.add("// Possible home system names");
+		strList.add(labelLine("home", join(r.homeSystemNames())));
+		strList.add("");
+		strList.add(labelLine("title", r.title()));
+		strList.add(labelLine("fulltitle", r.fullTitle()));
+		strList.add("");
+		strList.add("// Possible leader names");
+		strList.add(labelLine("leader", join(r.leaderNames())));
+		strList.add("");
+		strList.add("// Ship names, by size: 1-small, 2-medium, 3-large, 4-huge");
+		strList.add(labelLine("ship1", join(r.shipNamesSmall())));
+		strList.add(labelLine("ship2", join(r.shipNamesMedium())));
+		strList.add(labelLine("ship3", join(r.shipNamesLarge())));
+		strList.add(labelLine("ship4", join(r.shipNamesHuge())));
 
+		writeFile(strList, dir, r.lalelsFileName(LabelManager.NAMES_FILE));
+	}
     private int loadRaceLangLine(Race r, String input, String langDir) {
         if (isComment(input))
             return 0;
@@ -454,10 +500,10 @@ class RaceFactory implements Base {
             wc = substrings(value,',').size();  // uncomment 
 
 		if (key.equalsIgnoreCase("name"))	{ r.parseRaceNames(value); return wc; }
-		if (key.equalsIgnoreCase("desc1"))	{ r.setDescription1(value); return wc; }
-		if (key.equalsIgnoreCase("desc2"))	{ r.setDescription2(value); return wc; }
-		if (key.equalsIgnoreCase("desc3"))	{ r.setDescription3(value); return wc; }
-		if (key.equalsIgnoreCase("desc4"))	{ r.setDescription4(value); return wc; } // modnar: add desc4
+		if (key.equalsIgnoreCase("desc1"))	{ r.setDescription(value, 1); return wc; }
+		if (key.equalsIgnoreCase("desc2"))	{ r.setDescription(value, 2); return wc; }
+		if (key.equalsIgnoreCase("desc3"))	{ r.setDescription(value, 3); return wc; }
+		if (key.equalsIgnoreCase("desc4"))	{ r.setDescription(value, 4); return wc; } // modnar: add desc4
 		if (key.equalsIgnoreCase("home"))	{ r.homeSystemNames().clear(); r.homeSystemNames().addAll(substrings(value, ',')); return wc; }
 		if (key.equalsIgnoreCase("title"))	{ r.title(value.trim()); return wc; }
 		if (key.equalsIgnoreCase("fulltitle"))	{ r.fullTitle(value.trim()); return wc; }

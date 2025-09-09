@@ -47,10 +47,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
@@ -647,6 +649,17 @@ public interface Base extends InputEventUtil {
             throw e;
         }
     }
+	default boolean parseBoolean(String input)	{
+		switch(input.toLowerCase()) {
+			case "yes":
+			case "true":
+			case "1":
+				return true;
+		}
+		return false;
+	}
+	default String yesOrNo(boolean b)		{ return b ? "yes" : "no"; }
+	default String trueOrFalse(boolean b)	{ return b ? "true" : "false"; }
     public default List<String> parsedValues(String s, char delim) {
         // used for parsing delimited text file lines that may be commented
         // null means EOF... preserve that
@@ -668,6 +681,8 @@ public interface Base extends InputEventUtil {
         }
     }
 
+	default int toPct(float val)		{ return round(val * 100); }
+	default float parsePct(String s)	{ return parseInt(s) / 100f; }
     public default int parseInt(String s0) throws NumberFormatException {
         String s = s0.trim();
         if (s.isEmpty())
@@ -856,60 +871,28 @@ public interface Base extends InputEventUtil {
 
         return new BufferedReader(in);
     }
-    /* public default PrintWriter writer(String n) {
-        String fullString = "src/rotp/" +n;
-        try {
-            FileOutputStream fout = new FileOutputStream(new File(fullString));
-            return new PrintWriter(fout, true);
-        }
-        catch (FileNotFoundException e) {
-            err("Base.writer -- " + e);
-            e.printStackTrace();
-            return null;
-        }
-    } */
-    /* public default InputStream inputStream(String n) {
-        InputStream stream = null;
-        File fontFile = new File(n);
-        if (fontFile.exists())
-            try {
-                stream = new FileInputStream(fontFile);
-            }
-            catch (FileNotFoundException e) {
-                err("Base.fileStream -- FileNotFoundException: " + n);
-            }
-        else {
-            JarFile jarFile = null;
-            try {
-                jarFile = new JarFile(Rotp.jarFileName);
-                ZipEntry ze = jarFile.getEntry(n);
-                if (ze != null)
-                    stream = jarFile.getInputStream(ze);
-            }
-            catch (IOException e) {
-                err("Base.fileStream -- IOException: " + n);
-            }
-            finally {
-                try {
-                    if (jarFile != null)
-                        jarFile.close();
-                } catch (IOException e) {}
-            }
-        }
-        return stream;
-    } */
-    /* public default OutputStream outputStream(String s) throws IOException {
-        try {
-            OutputStream file = new FileOutputStream(s);
-            OutputStream buffer = new BufferedOutputStream(file);
-            return buffer;
-        }
-        catch(IOException e){
-            log("Cannot create output file: ", s);
-            log(e.getMessage());
-            throw(e);
-        }
-    } */
+	default void writeFile(String str, String dir, String filename)	{
+		try (FileOutputStream fout = new FileOutputStream(new File(dir, filename));
+				PrintWriter out = new PrintWriter(new OutputStreamWriter(fout, "UTF-8")); ) {
+				out.println(str);
+			}
+			catch (IOException e) {
+				System.err.println("UserPreferences.save -- IOException: "+ e.toString());
+			}
+	}
+	default void writeFile(List<String> strList, String dir, String filename)	{
+		writeFile(join(strList, System.lineSeparator()), dir, filename);
+	}
+	default String join(List<String> list, String sep)		{ return StringUtils.join(list, sep); }
+	default String join(List<String> list)					{ return StringUtils.join(list, ", "); }
+	default String labelLine(String label, float f, int n)	{ return labelLine(label, fmt(f, n)); }
+	default String labelLine(String label, float val)		{ return labelLine(label, fmt(val)); }
+	default String labelLine(String label, int val)			{ return labelLine(label, str(val)); }
+	default String labelLine(String label, boolean b)		{ return labelLine(label, yesOrNo(b)); }
+	default String labelLine(String lbl, List<String> lst)	{ return labelLine(lbl, join(lst)); }
+	default String labelLine(String label, String val)		{ return labelFormat(label) + val; }
+	String LABEL_FORMAT = "%-20s: ";
+	default String labelFormat(String s)					{ return String.format(LABEL_FORMAT, s); }
     public static int compare(int a, int b)        { return Integer.compare(a,b); }
     public static int compare(float a, float b)  { return Float.compare(a, b); }
     public default Color newColor(int r, int g, int b) {

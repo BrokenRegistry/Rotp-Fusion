@@ -29,6 +29,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 import rotp.Rotp;
+import rotp.model.empires.Race;
 
 public class LabelManager implements Base {
     static LabelManager instance = new LabelManager();
@@ -36,10 +37,11 @@ public class LabelManager implements Base {
 	public static boolean validate = false; // BR: for debug purpose
 	private static String lastDir = "";
 
-    private String labelFile = "labels.txt";
-    private String dialogueFile = "dialogue.txt";
-    private final String techsFile = "techs.txt";
-    private String introFile = "intro.txt";
+	public static final String DIALOGUE_FILE = "dialogue.txt";
+	public static final String LABEL_FILE = "labels.txt";
+	public static final String TECHS_FILE = "techs.txt";
+	public static final String INTRO_FILE = "intro.txt";
+	public static final String NAMES_FILE = "names.txt";
     private final HashMap<String,byte[]> labelMap = new HashMap<>();
     private final HashMap<String,List<String>> dialogueMap = new HashMap<>();
     private final List<String> introLines = new ArrayList<>();
@@ -49,13 +51,13 @@ public class LabelManager implements Base {
     public boolean hasIntroduction()       { return !introLines.isEmpty(); }
     public List<String> introduction()     { return introLines; }
     
-    public void dialogueFile(String s)    { dialogueFile = s; }
-    public void labelFile(String s)       { labelFile = s; }
-    public void introFile(String s)       { introFile = s; }
+//    public void dialogueFile(String s)    { dialogueFile = s; }
+//    public void labelFile(String s)       { labelFile = s; }
+//    public void introFile(String s)       { introFile = s; }
     public void copy(LabelManager src, LabelManager dest)	{
-    	dest.labelFile	  = src.labelFile;
-    	dest.dialogueFile = src.dialogueFile;
-    	dest.introFile	  = src.introFile;
+//    	dest.labelFile	  = src.labelFile;
+//    	dest.dialogueFile = src.dialogueFile;
+//    	dest.introFile	  = src.introFile;
     	dest.introLines.addAll(src.introLines);
     	for (Entry<String, byte[]> entry : src.labelMap.entrySet())
     		dest.labelMap.put(entry.getKey(), entry.getValue().clone());
@@ -99,11 +101,11 @@ public class LabelManager implements Base {
     }
     public void loadIntroFile(String dir) {
     	lastDir = dir;
-        log("loading Intro: ", dir, introFile);
-        String filename = dir+introFile;
+        log("loading Intro: ", dir, INTRO_FILE);
+        String filename = dir+INTRO_FILE;
         BufferedReader in = reader(filename);
         if (in == null) {
-            err("can't find intro file! ", dir, introFile);
+            err("can't find intro file! ", dir, INTRO_FILE);
             return;
         }
 
@@ -136,11 +138,11 @@ public class LabelManager implements Base {
     }
     public void loadLabelFile(String dir) {
     	lastDir = dir;
-        log("loading Labels: ", dir, labelFile);
-        String filename = dir+labelFile;
+        log("loading Labels: ", dir, LABEL_FILE);
+        String filename = dir+LABEL_FILE;
         BufferedReader in = reader(filename);
         if (in == null) {
-            err("can't find label file! ", dir, labelFile);
+            err("can't find label file! ", dir, LABEL_FILE);
             return;
         }
 
@@ -168,12 +170,12 @@ public class LabelManager implements Base {
     }
     public void loadDialogueFile(String dir) {
     	lastDir = dir;
-        log("loading Dialogue: ", dir, dialogueFile);
+        log("loading Dialogue: ", dir, DIALOGUE_FILE);
         
-        String filename = dir+dialogueFile;
+        String filename = dir+DIALOGUE_FILE;
         BufferedReader in = reader(filename);
         if (in == null) {
-            err("can't find dialogue file! ", dir, dialogueFile);
+            err("can't find dialogue file! ", dir, DIALOGUE_FILE);
             return;
         }
 
@@ -197,12 +199,12 @@ public class LabelManager implements Base {
             log("WORDS - "+filename+": "+wc);
     }
     public void loadTechsFile(String dir) {
-        log("loading Techs: ", dir, techsFile);
+        log("loading Techs: ", dir, TECHS_FILE);
         
-        String filename = dir+techsFile;
+        String filename = dir+TECHS_FILE;
         BufferedReader in = reader(filename);
         if (in == null) {
-            err("can't find techs file! ", dir, techsFile);
+            err("can't find techs file! ", dir, TECHS_FILE);
             return;
         }
 
@@ -233,10 +235,10 @@ public class LabelManager implements Base {
         if (vals.size() < 2) {
         	if (validate) {
             	if (input.contains("|")) {
-            		validateError("Orphan label keyword: " + input + " / " + labelFile);
+            		validateError("Orphan label keyword: " + input + " / " + LABEL_FILE);
             	}
             	else if (!input.trim().isEmpty()) {
-            		validateError(labelFile + " / Orphan label text: " + input);
+            		validateError(LABEL_FILE + " / Orphan label text: " + input);
             	}
         	}
             return 0;
@@ -246,7 +248,7 @@ public class LabelManager implements Base {
         String val = vals.get(1);
         if (validate) {
             if (val.trim().isEmpty()) {
-            	validateError("Orphan label keyword: " + input + " / " + labelFile);
+            	validateError("Orphan label keyword: " + input + " / " + LABEL_FILE);
             }
             else {
             	testForDialogueFont(val);
@@ -278,10 +280,10 @@ public class LabelManager implements Base {
         if (vals.size() < 2) {
         	if (validate) {
             	if (input.contains("|")) {
-            		validateError("Orphan dialogue keyword: " + input + " / " + dialogueFile);
+            		validateError("Orphan dialogue keyword: " + input + " / " + DIALOGUE_FILE);
             	}
             	else if (!input.trim().isEmpty()) {
-            		validateError(dialogueFile + " / Orphan dialogue text: " + input);
+            		validateError(DIALOGUE_FILE + " / Orphan dialogue text: " + input);
             	}
         	}
             return 0;
@@ -294,7 +296,7 @@ public class LabelManager implements Base {
         String val = vals.get(1);
         if (validate) {
             if (val.trim().isEmpty()) {
-            	validateError("Orphan dialogue keyword: " + input + " / " + dialogueFile);
+            	validateError("Orphan dialogue keyword: " + input + " / " + DIALOGUE_FILE);
             }
             else {
             	testForDialogueFont(val);
