@@ -56,7 +56,8 @@ final class CombatOptions extends AbstractOptionsSubUI {
 				HEADER_SPACER_50,
 				new ParamTitle("GAME_OTHER"),
 				maxCombatTurns,
-				retreatRestrictions, retreatRestrictionTurns
+				retreatRestrictions, retreatRestrictionTurns,
+				moo1RetreatRules
 				)));
 		return map;
 	};

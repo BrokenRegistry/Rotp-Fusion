@@ -197,9 +197,9 @@ public class MapOverlayAllocateSystems extends MapOverlay {
 		if (orderedSystems.size() <= systemIndex) {
 			// BR: This should never happen... But already happened
 			// ==> Security to avoid crash
-			System.err.println("MapOverlayAllocateSystems Error: orderedSystems.size() <= systemIndex "
-								+ orderedSystems.size() +" <= " + systemIndex);
-			System.err.println("    ==> Spending Adjustments display terminated");
+			// System.err.println("MapOverlayAllocateSystems Error: orderedSystems.size() <= systemIndex "
+			// 					+ orderedSystems.size() +" <= " + systemIndex);
+			// System.err.println("    ==> Spending Adjustments display terminated");
 			advanceMap();
 			return;
 		}

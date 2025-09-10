@@ -48,6 +48,7 @@ public final class InGameOptions extends AbstractOptionsSubUI {
 				new ParamTitle("GAME_COMBAT"),
 				maxCombatTurns,
 				retreatRestrictions, retreatRestrictionTurns,
+				moo1RetreatRules,
 				missileBaseModifier, missileShipModifier,
 				targetBombard, bombingTarget,
 				scrapRefundOption, scrapRefundFactor,

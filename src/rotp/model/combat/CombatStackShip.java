@@ -59,6 +59,8 @@ public class CombatStackShip extends CombatStack {
 	private boolean usingAI = true;
 	private int repulsorRange = 0;
 	private CombatStack ward;
+	private boolean markedForRetreat  = false;
+	private StarSystem retreatTarget;
 
 	@Override public int shotsRemaining(int idx)	{ return shotsRemaining[idx]; }
 	public void shotsRemaining(int idx, int val)	{ shotsRemaining[idx] = val; }
@@ -66,6 +68,12 @@ public class CombatStackShip extends CombatStack {
 	public int roundsRemaining(int idx)	{ return roundsRemaining[idx]; }
 	public int wpnTurnsToFire(int idx)	{ return wpnTurnsToFire[idx]; }
 	public ShipFleet fleet()			{ return fleet; }
+	public  StarSystem retreatTarget()	{ return retreatTarget; }
+	@Override public boolean markedForRetreat()	{ return markedForRetreat; }
+	public void markForRetreat(StarSystem s)	{
+		markedForRetreat = true;
+		retreatTarget = s;
+	}
 
     @Override
     public String toString() {
@@ -151,6 +159,8 @@ public class CombatStackShip extends CombatStack {
     public boolean canScan()        { return design.allowsScanning(); }
     @Override
     public boolean canRetreat()     {
+		if (markedForRetreat())
+			return false;
         boolean checkRetreatTurn = false;
         int retreatRestrictions = options().selectedRetreatRestrictions();
         if(empire().isAIControlled()) {

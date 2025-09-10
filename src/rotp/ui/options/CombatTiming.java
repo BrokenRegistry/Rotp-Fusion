@@ -15,7 +15,8 @@ final class CombatTiming extends AbstractOptionsSubUI {
 		map.add(new SafeListParam(Arrays.asList(
 				maxCombatTurns,
 				retreatRestrictions,
-				retreatRestrictionTurns
+				retreatRestrictionTurns,
+				moo1RetreatRules
 				)));
 		return map;
 	}
@@ -24,7 +25,8 @@ final class CombatTiming extends AbstractOptionsSubUI {
 				Arrays.asList(
 						maxCombatTurns,
 						retreatRestrictions,
-						retreatRestrictionTurns
+						retreatRestrictionTurns,
+						moo1RetreatRules
 						));
 		return majorList;
 	}

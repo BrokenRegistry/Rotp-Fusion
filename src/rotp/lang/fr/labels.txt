@@ -2705,7 +2705,11 @@ SETTINGS_MOD_RETREAT_BOTH_HELP       | Personne ne peut battre en retraite aussi
 SETTINGS_MOD_RETREAT_RESTRICTION_TURNS	| Retraite restreinte pendant %1 tours
 SETTINGS_MOD_MAX_COMBAT_TURNS			| Tours de combat max. : %1
 SETTINGS_MOD_MOO1_SHIELD_RULES_DESC		| Lorsque certaines armes réduisent l’efficacité des boucliers, RotP conserve la partie fractionaire, alors que MoO1 arrondi le résultat vers le bas. 
-SETTINGS_MOD_MOO1_SHIELD_RULES			| Règles des boucliers de MoO1: : %1
+SETTINGS_MOD_MOO1_SHIELD_RULES			| Règles des boucliers de MoO1 : %1
+SETTINGS_MOD_MOO1_RETREAT_DESC			| Retraite différée de MoO1 ou retraite immédiate de RotP ? Dans les deux cas, si vous remportez la victoire, les vaisseaux rejoindront votre flotte immédiatement après le combat.
+ETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Le bouton « Retraite » permet de retirer le vaisseau actuel du combat. L’ennemi aura un tour pour tirer sur votre vaisseau pendant qu’il se retire de l’écran.
+ETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Le bouton « Retraite » retire instantanément le vaisseau actuel du combat. L’ennemi ne pourra pas tirer sur votre vaisseau pendant qu’il se retire de l’écran.
+SETTINGS_MOD_MOO1_RETREAT				| Règles de retraite de MoO1 : %1
 
 SETTINGS_MOD_HOME_ORION              | Planète mère avec Vestiges : %1
 SETTINGS_MOD_HOME_ARTIFACT           | Planète mère avec Artéfact : %1
@@ -2755,9 +2759,9 @@ HEADERS_RETREAT_RULES_DESC				| Paramètres des flottes en retraite sur la carte
 SETTINGS_MOD_RETREAT_DESTINATION		| Destination de retraite : %1
 SETTINGS_MOD_RETREAT_DESTINATION_DESC	| Quelles sont les possibles destinations des flottes battant en retraite ?
 SETTINGS_MOD_CLOSEST_COLONY				| Colonie la plus proche
-SETTINGS_MOD_CLOSEST_COLONY_DESC		| La plus proche des colonies de l'empire battant en retraite.
+SETTINGS_MOD_CLOSEST_COLONY_DESC		| La plus proche des colonies de l’empire battant en retraite.
 SETTINGS_MOD_CLOSEST_ALLY				| Allié le plus proche
-SETTINGS_MOD_CLOSEST_ALLY_DESC			| La colonie la plus proche, appartenant soit à l'empire en retraite, soit à l'un de ses alliés.
+SETTINGS_MOD_CLOSEST_ALLY_DESC			| La colonie la plus proche, appartenant soit à l’empire en retraite, soit à l’un de ses alliés.
 SETTINGS_MOD_ANY_ALLY					| Tout allié
 SETTINGS_MOD_ANY_ALLY_DESC				| Toute colonie de l’empire en retraite ou de l’un de ses alliés est acceptable.
 SETTINGS_MOD_ANY_STAR_SYSTEM			| N’importe où
@@ -3219,7 +3223,7 @@ SETTINGS_MOD_AGGRESSIV_AI_NO_WAR_DESC	| Une IA ne peut pas déclarer la guerre, 
 SETTINGS_MOD_AGGRESSIV_AI_NO_WAR		| L’IA ne déclare pas la guerre
 SETTINGS_MOD_AGGRESSIV_NEVER_WAR_DESC	| Même le joueur ne peut pas déclarer la guerre.
 SETTINGS_MOD_AGGRESSIV_NEVER_WAR		| Les guerres sont interdites
-SETTINGS_MOD_AGGRESSIV_ALWAYS_WAR_DESC	| Tous les empires sont en guerre permanente, soit dès le début de la partie, soit dès le tour suivant son activation. Désactiver cette option n'arrêtera pas immédiatement les guerres ; les diplomates jugeront du moment opportun.
+SETTINGS_MOD_AGGRESSIV_ALWAYS_WAR_DESC	| Tous les empires sont en guerre permanente, soit dès le début de la partie, soit dès le tour suivant son activation. Désactiver cette option n’arrêtera pas immédiatement les guerres ; les diplomates jugeront du moment opportun.
 SETTINGS_MOD_AGGRESSIV_ALWAYS_WAR		| Guerre totale
 SETTINGS_MOD_AGGRESSIV_ALLIANCE_DESC	| Tous les empires vivent en symbiose et deviennent alliés dès le premier contact, sans possibilité de rompre le pacte.
 SETTINGS_MOD_AGGRESSIV_ALLIANCE			| Symbiose
@@ -4398,7 +4402,7 @@ SHIP_DESIGN_SPECIAL_SPACE         | Espace
 
 // Auto tag Design
 AUTO_SD_AUTO_TAG_COLON			| Colons auto reconnus : %1
-AUTO_SD_AUTO_TAG_COLON_DESC		| Les vaisseaux dotés d'un module de colonisation, et qui ne sont pas trop armés, seront identifiés en tant que colonisateurs automatisés lors de leur activation.
+AUTO_SD_AUTO_TAG_COLON_DESC		| Les vaisseaux dotés d’un module de colonisation, et qui ne sont pas trop armés, seront identifiés en tant que colonisateurs automatisés lors de leur activation.
 AUTO_SD_AUTO_TAG_SCOUT			| Éclaireurs auto reconnus : %1
 AUTO_SD_AUTO_TAG_SCOUT_DESC		| Les vaisseaux de petite et moyenne taille, avec réservoir supplémentaire, seront identifiés en tant qu’éclaireurs automatisés lors de leur activation.
 
@@ -5577,6 +5581,7 @@ GUIDE_KEY_MODIFIER_CTRL           | Ctrl
 GUIDE_KEY_MODIFIER_CTRL_SHIFT     | Ctrl+Maj
 GUIDE_KEY_MODIFIER_SEPARATOR      | &nbsp : &nbsp
 GUIDE_INTEGER_PCT_VALUE           | %1 %
+GUIDE_INTEGER_PER_MILLE_VALUE     | %1 ‰
 
 // Common Guides and Help
 SETTINGS_BUTTON_EXIT_DESC         | Quitter / Appliquer / Annuler <br> (Basculer avec « Ctrl » ou « Maj »)

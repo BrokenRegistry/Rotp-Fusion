@@ -168,8 +168,14 @@ public class CombatStack implements Base {
     public ShipComponent weapon(int i)   { return null; }
     public ShipDesign design()       { return null; }
     public float designCost()          { return 0; }
-
-    public void performTurn()        { captain.performTurn(this); }
+    public boolean markedForRetreat()	{ return false; }
+	public void performTurn()        {
+		if (markedForRetreat())	{
+			mgr.retreatStack((CombatStackShip) this);
+			return;
+		}
+		captain.performTurn(this);
+	}
     public boolean wantToRetreat()   { return captain.wantToRetreat(this); }
 
     public void  streamProjectorHits(float val)	{ streamProjectorHits = val; } // BR:
@@ -267,6 +273,9 @@ public class CombatStack implements Base {
         List<CombatStackMissile> missiles = new ArrayList<>(targetingMissiles);
         for (CombatStackMissile miss : missiles)
             miss.beginTurn();
+		if (markedForRetreat())	{
+			mgr.retreatStack((CombatStackShip) this);
+		}
     }
     public void reloadWeapons() { };
     public void attemptToHeal() {

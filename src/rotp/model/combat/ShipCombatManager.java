@@ -60,7 +60,7 @@ public class ShipCombatManager implements Base {
     private boolean finished = false;
     public static final int maxX = 9;
     public static final int maxY = 7;
-    private int turnCounter = 0;
+    private int turnCounter = -1;
     private final int[] startingPosn = { 30,40,20,50,10,60,0 };
     private final double[][] riskMap = new double[maxX+1][maxY+1];
     private int[][] initialMap       = new int[maxX+1][maxY+1];
@@ -425,7 +425,7 @@ public class ShipCombatManager implements Base {
     private void setupBattle(Empire emp1, Empire emp2) {
         raiseHostilityLevels();
 
-        turnCounter = 0;
+		turnCounter = -1;
         interdiction = false;
         performingStackTurn = false;
         autoComplete = false;
@@ -434,6 +434,7 @@ public class ShipCombatManager implements Base {
         showAnimations = true;
         redrawMap = true;
         initCombatStacks(emp1, emp2);
+		turnCounter = 0;
 
         if (combatIsFinished())
             return;
@@ -448,7 +449,7 @@ public class ShipCombatManager implements Base {
         currentStack.beginTurn();
     }
     private void setupBattle(Empire emp, SpaceMonster monster) {
-        turnCounter = 0;
+		turnCounter = -1;
         interdiction = false;
         performingStackTurn = false;
         autoComplete = false;
@@ -456,6 +457,7 @@ public class ShipCombatManager implements Base {
         showAnimations = true;
         redrawMap = true;
         initCombatStacks(emp, monster);
+		turnCounter = 0;
 
         if (combatIsFinished())
             return;
@@ -484,7 +486,7 @@ public class ShipCombatManager implements Base {
                 else
                 {
                     turnCounter = MAX_TURNS(); //Set turn-counter to max-turns so retreating works in this case
-                    retreatStack(sh, dest);
+                    endTurnsRetreat(sh, dest);
                 }
                 showAnimations = prevShow;
             }
@@ -524,7 +526,22 @@ public class ShipCombatManager implements Base {
         if (logIncidents)
             results.logIncidents();
     }
-    public boolean retreatStack(CombatStackShip stack, StarSystem s) {
+	public void retreatStack(CombatStackShip stack, StarSystem s) {
+		if (options().selectedMoo1RetreatRules() && !stack.markedForRetreat())	{
+			stack.markForRetreat(s);
+			turnDone(stack);
+		}
+		else {
+			stack.markForRetreat(s);
+			retreatStack(stack);
+		}
+	}
+	public void endTurnsRetreat(CombatStackShip stack, StarSystem s) {
+		stack.markForRetreat(s);
+		retreatStack(stack);
+	}
+	public void retreatStack(CombatStackShip stack)	{
+		StarSystem s = stack.retreatTarget();
         log("Retreating: ", stack.fullName());
         performingStackTurn = true;
         stack.drawRetreat();
@@ -533,7 +550,6 @@ public class ShipCombatManager implements Base {
         stack.retreatToSystem(s);
         //turnDone(stack);
         performingStackTurn = false;
-        return true;
     }
     public void destroyStack(CombatStack stack) {
         log("Destroyed: ", stack.fullName());
@@ -773,7 +789,7 @@ public class ShipCombatManager implements Base {
             }
         }
     }
-    private void trimAsteroids() {
+    private void trimAsteroids() { // TODO BR: add new option to change triming speed
     	if (options().asteroidsVanish()) {
             for (int x=0; x<=maxX; x++) {
                 for (int y=0;y<=maxY; y++) {
