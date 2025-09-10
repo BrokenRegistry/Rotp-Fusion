@@ -31,6 +31,7 @@ public class ParamInteger extends AbstractParam<Integer> {
 	private boolean specialNegative	= false;
 	private boolean specialZero		= false;
 	private boolean pctValue		= false;
+	private boolean perMilleValue	= false;
 	private String	negativeLabel	= "";
 	private String	zeroLabel		= "";
 	private LinkedHashMap<Integer, String> specialMap = new LinkedHashMap<>();
@@ -113,6 +114,10 @@ public class ParamInteger extends AbstractParam<Integer> {
 	}
 	public ParamInteger pctValue(boolean pctValue) {
 		this.pctValue = pctValue;
+		return this;
+	}
+	public ParamInteger perMilleValue(boolean perMilleValue) {
+		this.perMilleValue = perMilleValue;
 		return this;
 	}
 	// ===== Overriders =====
@@ -250,6 +255,8 @@ public class ParamInteger extends AbstractParam<Integer> {
 			return langLabel(specialMap.get(get()));
 		if (pctValue && addPct)
 			return langLabel("GUIDE_INTEGER_PCT_VALUE", String.valueOf(val));
+		if (perMilleValue && addPct)
+			return langLabel("GUIDE_INTEGER_PER_MILLE_VALUE", String.valueOf(val));
 		return String.valueOf(val);
 	}
 	private boolean next(int i) {

@@ -21,6 +21,9 @@
 
 ### Features:
 
+- New combat option to retreat the same way as MoO1: The enemy will have one turn to fire on the ship as it retreats off the screen.
+  - Currently unfair to AI, which does not (yet) know this rule.
+- New option to adjust the speed at which asteroids disappear from the battle screen.
 - "Auto Run" is now compatible with "A few more turns..."
   - After selecting "A few more turns...", "Auto Run" will be set on "pause" before returning to the galaxy map screen.
 - Star system in nearby and Midrange radii are no longer limited by "Star Density" option.
@@ -266,6 +269,8 @@
 
 
 ### Fixes:
+- Fixed retreat restriction when "Restricted" with turn = 0
+  - The fleet will now be forced to enter combat. (but will be able to retreat immediately)
 - Fixed a strange display bug caused by a null pointer exception.
   - To reproduce the bug hover with mouse over an undeployed enemy fleet, and then once the fleet contents are displayed, click on a ship design. --> Crash on Linux OS but not on Windows OS.
 - Fixed Guide displayed info on the current default set; MoO1 and Fusion were swapped.

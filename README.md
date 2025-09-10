@@ -49,6 +49,7 @@ java -jar target/rotp-<timestamp>-mini.jar
   - The fleet will now be forced to enter combat. (but will be able to retreat immediately)
 - New combat option to retreat the same way as MoO1: The enemy will have one turn to fire on the ship as it retreats off the screen.
   - Currently unfair to AI, which does not (yet) know this rule.
+- New option to adjust the speed at which asteroids disappear from the battle screen.
 
 
 ### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

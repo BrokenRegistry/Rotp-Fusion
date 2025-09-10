@@ -3309,6 +3309,9 @@ SETTINGS_MOD_MIN_HIGH_ASTEROIDS_DESC     | Densité d’astéroïdes élevée :
 SETTINGS_MOD_MAX_HIGH_ASTEROIDS          | Élevée Max : %1
 SETTINGS_MOD_MAX_HIGH_ASTEROIDS_DESC     | Densité d’astéroïdes élevée : nombre maximal d’astéroïdes pouvant apparaître sur l’écran de bataille.
 
+SETTINGS_MOD_ASTEROIDS_VANISH_PROB			| Probabilité de disparition : %1‰
+SETTINGS_MOD_ASTEROIDS_VANISH_PROB_DESC		| Probabilité à chaque tour que chaque astéroïde disparaisse.<br>Mais jamais plus qu'un astéroide par colonne.
+
 SETTINGS_MOD_SHIELD_TYPE_NONE_DESC       | Aucune animation de bouclier (pour les ordinateurs de faible puissance)
 SETTINGS_MOD_SHIELD_TYPE_NONE            | Aucune
 SETTINGS_MOD_SHIELD_TYPE_3D_DESC         | Animations de boucliers semi-transparents en 3D. (Peut rencontrer des problèmes sur Mac OS)
@@ -5581,7 +5584,7 @@ GUIDE_KEY_MODIFIER_CTRL           | Ctrl
 GUIDE_KEY_MODIFIER_CTRL_SHIFT     | Ctrl+Maj
 GUIDE_KEY_MODIFIER_SEPARATOR      | &nbsp : &nbsp
 GUIDE_INTEGER_PCT_VALUE           | %1 %
-GUIDE_INTEGER_PER_MILLE_VALUE     | %1 ‰
+GUIDE_INTEGER_PER_MILLE_VALUE		| %1 ‰
 
 // Common Guides and Help
 SETTINGS_BUTTON_EXIT_DESC         | Quitter / Appliquer / Annuler <br> (Basculer avec « Ctrl » ou « Maj »)

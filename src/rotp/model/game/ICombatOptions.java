@@ -225,7 +225,13 @@ public interface ICombatOptions extends IBaseOptsTools {
 	default boolean moo1PlanetLocation()		{ return moo1PlanetLocation.get(); }
 	default boolean moo1AsteroidsLocation()		{ return moo1AsteroidsLocation.get(); }
 	default boolean moo1AsteroidsProperties()	{ return moo1AsteroidsProperties.get(); }
-	
+
+	ParamInteger asteroidsVanishProbPerMille	= new ParamInteger(MOD_UI, "ASTEROIDS_VANISH_PROB", 50)
+			.setLimits(0, 1000)
+			.setIncrements(1, 5, 20)
+			.perMilleValue(true);
+	default float asteroidsVanishProbPerMille()	{ return asteroidsVanishProbPerMille.get()/1000; }
+
 	ParamInteger baseNoAsteroidsProbPct		= new ParamInteger(MOD_UI, "BASE_NO_ASTEROIDS", 46)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20)

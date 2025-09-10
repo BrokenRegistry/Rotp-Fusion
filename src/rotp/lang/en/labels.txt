@@ -3309,6 +3309,9 @@ SETTINGS_MOD_MIN_HIGH_ASTEROIDS_DESC     | High Asteroid Density: Minimum number
 SETTINGS_MOD_MAX_HIGH_ASTEROIDS          | High Max: %1
 SETTINGS_MOD_MAX_HIGH_ASTEROIDS_DESC     | High Asteroid Density: Maximum number of asteroids that can appear on the battle screen.
 
+SETTINGS_MOD_ASTEROIDS_VANISH_PROB			| Vanish probability: %1‰
+SETTINGS_MOD_ASTEROIDS_VANISH_PROB_DESC		| Probability that each asteroid will disappear on each turn.<br>But never more than one asteroid per column.
+
 SETTINGS_MOD_SHIELD_TYPE_NONE_DESC       | No shield animations (for low power computers)
 SETTINGS_MOD_SHIELD_TYPE_NONE            | None
 SETTINGS_MOD_SHIELD_TYPE_3D_DESC         | 3D semi transparent shield animations. (May glitch on mac OS)
@@ -5581,7 +5584,7 @@ GUIDE_KEY_MODIFIER_CTRL           | Ctrl
 GUIDE_KEY_MODIFIER_CTRL_SHIFT     | Ctrl+Shift
 GUIDE_KEY_MODIFIER_SEPARATOR      | &nbsp : &nbsp
 GUIDE_INTEGER_PCT_VALUE           | %1%
-GUIDE_INTEGER_PER_MILLE_VALUE     | %1‰
+GUIDE_INTEGER_PER_MILLE_VALUE		| %1‰
 
 // Common Guides and Help
 SETTINGS_BUTTON_EXIT_DESC         | Exit / Apply / Cancel <br> (Switch with "Ctrl" or "Shift")

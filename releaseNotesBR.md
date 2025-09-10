@@ -7,10 +7,12 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
-25-08-26 (BR)
-- Fixed a strange display bug caused by a null pointer exception.
-  - To reproduce the bug hover with mouse over an undeployed enemy fleet, and then once the fleet contents are displayed, click on a ship design. --> Crash on Linux OS but not on Windows OS.
-
+25-09-10 (BR)
+- Fixed retreat restriction when "Restricted" with turn = 0
+  - The fleet will now be forced to enter combat. (but will be able to retreat immediately)
+- New combat option to retreat the same way as MoO1: The enemy will have one turn to fire on the ship as it retreats off the screen.
+  - Currently unfair to AI, which does not (yet) know this rule.
+- New option to adjust the speed at which asteroids disappear from the battle screen.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

@@ -39,7 +39,8 @@ final class CombatOptions extends AbstractOptionsSubUI {
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("ASTEROIDS"),
 				moo1PlanetLocation, moo1AsteroidsLocation,
-				asteroidsVanish, moo1AsteroidsProperties,
+				asteroidsVanish, asteroidsVanishProbPerMille,
+				moo1AsteroidsProperties,
 				HEADER_SPACER_50,
 				minLowAsteroids, maxLowAsteroids,
 				minHighAsteroids, maxHighAsteroids,

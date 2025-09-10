@@ -18,6 +18,7 @@ final class CombatAsteroids extends AbstractOptionsSubUI {
 				moo1PlanetLocation,
 				moo1AsteroidsLocation,
 				asteroidsVanish,
+				asteroidsVanishProbPerMille,
 				moo1AsteroidsProperties
 				)));
 		map.add(new SafeListParam(Arrays.asList(
@@ -44,6 +45,7 @@ final class CombatAsteroids extends AbstractOptionsSubUI {
 						moo1PlanetLocation,
 						moo1AsteroidsLocation,
 						asteroidsVanish,
+						asteroidsVanishProbPerMille,
 						moo1AsteroidsProperties
 						));
 		return majorList;

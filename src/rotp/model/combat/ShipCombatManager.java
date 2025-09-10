@@ -789,11 +789,12 @@ public class ShipCombatManager implements Base {
             }
         }
     }
-    private void trimAsteroids() { // TODO BR: add new option to change triming speed
+    private void trimAsteroids() {
     	if (options().asteroidsVanish()) {
+			float prob = options().asteroidsVanishProbPerMille();
             for (int x=0; x<=maxX; x++) {
                 for (int y=0;y<=maxY; y++) {
-                    if (asteroidMap[x][y] && (random() < .05)) {
+					if (asteroidMap[x][y] && (random() < prob)) {
                         asteroidMap[x][y] = false;
                         redrawMap = true;
                         break;
