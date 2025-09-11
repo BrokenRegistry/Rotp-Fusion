@@ -497,25 +497,25 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="7" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="autoScoutShipCount" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoScoutShipCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoScout" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="6" max="32767" attributes="0"/>
+                  <EmptySpace pref="7" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="autoColonize" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoColonyShipCount" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoColonyShipCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="6" max="32767" attributes="0"/>
+                  <EmptySpace pref="7" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="autoAttackShipCount" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoAttackShipCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoAttack" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="8" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -646,9 +646,9 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="terraformEarly" min="-2" pref="55" max="-2" attributes="0"/>
+                                  <Component id="terraformEarly" max="32767" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="terraformEarlyLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="terraformEarlyLabel" max="32767" attributes="0"/>
                               </Group>
                               <Component id="shipbuilding" alignment="0" max="-2" attributes="0"/>
                               <Component id="shieldWithoutBases" alignment="0" min="-2" max="-2" attributes="0"/>

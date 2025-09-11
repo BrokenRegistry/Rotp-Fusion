@@ -7,6 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+25-09-11 (BR)
+- Fixed Governor panel minor resizing glitch.
+
 25-09-10 (BR)
 - Fixed retreat restriction when "Restricted" with turn = 0
   - The fleet will now be forced to enter combat. (but will be able to retreat immediately)
