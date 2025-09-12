@@ -4,8 +4,6 @@
 
 ### Bug to fix:
 
-- Fix Mass deploy including fleets going from the target to the target marked as deployed with 0 ETA.
-- Check phantom empires, when still alive without colony, but with transports.
 - Check Stasis Weapon when one empire stack remains.
 
 
@@ -23,7 +21,6 @@
   - Starting factions (Stronger than alliance, but breakable at very low diplomacy level)
   - Immuable faction (Like final war)
 - Search tools for options.
-- if you have hyperspace comms you should be able to immediately redirect retreating ships (Still not back to the same planet)
 - Split the ship stacks so that they fill two front lines…
 - Option to increase the size of the combat screen.
 - Would it be possible to have a governor option to extend autospend - to prioritise artifacts planets with spending?

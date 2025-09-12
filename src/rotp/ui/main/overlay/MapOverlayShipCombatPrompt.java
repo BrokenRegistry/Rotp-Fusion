@@ -336,8 +336,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
         smartResolveButton.mapY(battleButton.mapY());
         smartResolveButton.draw(parent.map(), g);
 
-        if(options().selectedRetreatRestrictions() < 2
-				|| options().selectedRetreatRestrictionTurns() == 0) {
+        if(options().selectedRetreatRestrictions() < 2) {
             parent.addNextTurnControl(retreatButton);
             retreatButton.init(this, g);
             retreatButton.mapX(smartResolveButton.mapX()+smartResolveButton.width()+s7);
