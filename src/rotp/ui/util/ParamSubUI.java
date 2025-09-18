@@ -54,9 +54,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	 * @param guiTitleID Label for the GUI Title
 	 * @param guiId Unique GUI ID for load and save
 	 */
-	public ParamSubUI(String gui, String name,
-			String guiTitleID, String guiId)
-	{
+	public ParamSubUI(String gui, String name, String guiTitleID, String guiId) {
 		super(gui, name, null);
 		GUI_TITLE_ID	= gui + guiTitleID;
 		GUI_ID			= guiId;
@@ -80,11 +78,13 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	}
 	// ===== Overriders =====
 	//
+	@Override public boolean equals(Object p)	{
+		if (p instanceof ParamSubUI)
+			return ((ParamSubUI)p).GUI_TITLE_ID.equals(GUI_TITLE_ID);
+		return false;
+	}
 	@Override public IParam getSearchResult()	{ return bestSearchResult; }
 	@Override public ParamSearchResult processSearch(ParamSearchList paramSet, IParam ui, String flt, int min, boolean stripAccents)	{
-//		if (rawSearchLabel().equals("Computer Options")) { // TO DO BR: REMOVE
-//			System.out.println(this.rawSearchLabel());
-//		}
 		// Process the container
 		ParamSearchResult uiPsr = new ParamSearchResult(this, ui, flt, min, stripAccents);
 		bestSearchResult = this;

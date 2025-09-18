@@ -46,6 +46,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 25-09-18 (BR)
 - New search feature in the options panels.
+- Search Tool: Fixed possible duplicate of subpanels.
 
 
 ### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

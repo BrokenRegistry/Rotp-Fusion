@@ -352,7 +352,7 @@ public interface IParam extends InterfaceOptions{
 		}
 		private ParamSearchResult containsSameParam(IParam p)	{
 			for (ParamSearchResult psr : this)
-				if (psr.param == p)
+				if (psr.param.equals(p))
 					return psr;
 			return null;
 		}
