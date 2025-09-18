@@ -3490,6 +3490,8 @@ SETTINGS_MOD_COMMON_OPTIONS_TITLE        | Paramètres étendus
 SETTINGS_MOD_COMMON_OPTIONS_UI           | Paramètres étendus « Remnant.cfg »
 SETTINGS_MOD_COMMON_OPTIONS_UI_DESC      | Ouvre un sous-menu contenant les paramètres« Remnant.cfg » et d’autres paramètres de performances et de présentation communs à tous les jeux.
 
+SETTINGS_MOD_SEARCH_RESULT_THIS_PANEL	| Cet écran
+
 SETTINGS_MOD_NAME_OPTIONS_TITLE          | Désignation nominale des espèces de base
 SETTINGS_MOD_NAME_OPTIONS_UI             | Désignation des espèces de base
 SETTINGS_MOD_NAME_OPTIONS_UI_DESC        | Ouvrez le sous-menu pour afficher les désignations nominales des espèces de base. (Pour la configuration en anglais uniquement)
@@ -5611,6 +5613,7 @@ SETTINGS_LOCAL_USER_SET_DESC      | Définir les options de ce panneau en foncti
 SETTINGS_GLOBAL_USER_SET_DESC     | Définir les options de toutes les interfaces utilisateur graphiques en fonction des valeurs préférées de l’utilisateur (à partir du fichier).
 SETTINGS_LOCAL_USER_SAVE_DESC     | Enregistrer les options de ce panneau comme valeurs préférées de l’utilisateur (vers le fichier).
 SETTINGS_GLOBAL_USER_SAVE_DESC    | Enregistrer les options de toutes les interfaces utilisateur graphiques comme valeurs préférées de l’utilisateur (vers le fichier).
+SETTINGS_SEARCH_HELP			| Trouver une option.
 
 // Race Menu Guides and Help
 SETUP_RACE_MAIN_DESC              | VUE D’ENSEMBLE<br> Cet écran vous permet de régler les paramètres de l’Empire du joueur de base.<br> Utilisez « Ctrl » et « Maj » pour modifier la fonctionnalité des boutons.<br> Global = Toutes les options. Local = Options de ce panneau.<br>« R » sélectionnera une nouvelle espèce au hasard.

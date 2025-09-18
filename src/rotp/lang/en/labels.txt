@@ -3490,6 +3490,8 @@ SETTINGS_MOD_COMMON_OPTIONS_TITLE        | Extended Settings
 SETTINGS_MOD_COMMON_OPTIONS_UI           | Extended Remnant.cfg Settings
 SETTINGS_MOD_COMMON_OPTIONS_UI_DESC      | Opens a submenu containing Remnant.cfg settings and some other performance and presentation settings common to all gameplay.
 
+SETTINGS_MOD_SEARCH_RESULT_THIS_PANEL	| This panel
+
 SETTINGS_MOD_NAME_OPTIONS_TITLE          | Base Species Nominal Names
 SETTINGS_MOD_NAME_OPTIONS_UI             | Base Species Names
 SETTINGS_MOD_NAME_OPTIONS_UI_DESC        | Open Sub Menu to view base species nominal names. (For English configuration only)
@@ -5611,6 +5613,7 @@ SETTINGS_LOCAL_USER_SET_DESC      | Set options in this panel based on the User'
 SETTINGS_GLOBAL_USER_SET_DESC     | Set options for all GUIs based on the User's preferred values (From File).
 SETTINGS_LOCAL_USER_SAVE_DESC     | Save options in this panel to the User's preferred values (To File).
 SETTINGS_GLOBAL_USER_SAVE_DESC    | Save options for all GUIs to User's preferred values (To File).
+SETTINGS_SEARCH_HELP			| Find an option.
 
 // Race Menu Guides and Help
 SETUP_RACE_MAIN_DESC              | OVERVIEW<br> This screen allows you to adjust Base Player Empire parameters.<br> Use "Ctrl" and "Shift" to change the buttons functions.<br> Global = All options. Local = Options from this panel.<br>"R" will select a new species randomly.

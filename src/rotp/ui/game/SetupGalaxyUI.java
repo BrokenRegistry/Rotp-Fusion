@@ -2681,11 +2681,13 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
     		initBackImg();
     		repaint();
             return;
-    	case KeyEvent.VK_F:
-            noFogChanged();
-            return;
+		case KeyEvent.VK_F:
+			if (!e.isAltDown())
+				noFogChanged();
+			return;
 		case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
-			goToMainMenu();
+			if (!e.isAltDown())
+				goToMainMenu();
 			return;
 		case KeyEvent.VK_T:
 			goToTuneGalaxyOptions();

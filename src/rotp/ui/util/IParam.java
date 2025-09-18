@@ -24,7 +24,13 @@ import static rotp.util.Base.textSubs;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
+import me.xdrop.fuzzywuzzy.FuzzySearch;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseModPanel;
 import rotp.util.LabelManager;
@@ -213,6 +219,25 @@ public interface IParam extends InterfaceOptions{
 			return "";
 		return langHelp(getLangLabel(id));
 	}
+	// ===== Search tools =====
+	default IParam getSearchResult()		{ return this; }
+	default String rawSearchLabel()			{
+		String str = langLabel(getLangLabel(), "", "");
+		str = str.replace(":", "").strip();
+		return str;
+	}
+	default String getSearchLabel(boolean stripAccents)	{
+		String str = rawSearchLabel();
+		if (stripAccents)
+			str = StringUtils.stripAccents(str);
+		return str.toLowerCase();
+	}
+	default ParamSearchResult processSearch(ParamSearchList paramSet, IParam ui, String flt, int min, boolean stripAccents) {
+		ParamSearchResult psr = new ParamSearchResult(this, ui, flt, min, stripAccents);
+		if (psr.isGoodEnough())
+			paramSet.add(psr);
+		return psr;
+	}
 	// ===== Formatters =====
 	static String tableFormat(String str)	{ return str; }
 	static String rowFormat(String... strA)	{
@@ -302,5 +327,98 @@ public interface IParam extends InterfaceOptions{
 		if (key == null)
 			return "";
 		return LabelManager.current().realLabel(key);
+	}
+
+	class ParamSearchList extends ArrayList<ParamSearchResult>	{
+		private static final long serialVersionUID = 1L;
+		private static final ResultComparator resultComparator = new ResultComparator();
+		private static final RatioComparator ratioComparator = new RatioComparator();
+		private static final PartialRatioComparator partialRatioComparator = new PartialRatioComparator();
+		public void sort()	{
+			sort(resultComparator);
+			sort(ratioComparator);
+			sort(partialRatioComparator);
+		}
+		public void smartAdd(ParamSearchResult psr)	{
+			ParamSearchResult containsSameParam = containsSameParam(psr.param);
+			if (containsSameParam == null) {
+				add(0, psr);
+				return;
+			}
+			if (containsSameParam.ui == null) {
+				remove(containsSameParam);
+				add(0, psr);
+			}
+		}
+		private ParamSearchResult containsSameParam(IParam p)	{
+			for (ParamSearchResult psr : this)
+				if (psr.param == p)
+					return psr;
+			return null;
+		}
+		public String toString(String lineSep, boolean reverse)	{
+			List<String> list = new ArrayList<>();
+			if (reverse)
+				for (ParamSearchResult p : this)
+					list.add(0, p.toString());
+			else
+				for (ParamSearchResult p : this)
+					list.add(p.toString());
+			return String.join(lineSep, list);
+		}
+		public ParamSearchResult getFirst()	{ return isEmpty()? null : get(0); }
+		public ParamSearchResult getLast()	{ return isEmpty()? null : get(size()-1); }
+		@Override public String toString()	{ return toString(", ", false); }
+	}
+	class ResultComparator implements Comparator<ParamSearchResult>	{
+		@Override public int compare(ParamSearchResult p1, ParamSearchResult p2)	{
+			return Integer.compare(p2.result, p1.result);
+		}
+	}
+	class RatioComparator implements Comparator<ParamSearchResult>	{
+		@Override public int compare(ParamSearchResult p1, ParamSearchResult p2)	{
+			return Integer.compare(p2.ratio, p1.ratio);
+		}
+	}
+	class PartialRatioComparator implements Comparator<ParamSearchResult>	{
+		@Override public int compare(ParamSearchResult p1, ParamSearchResult p2)	{
+			return Integer.compare(p2.partialRatio, p1.partialRatio);
+		}
+	}
+	class ParamSearchResult {
+		public static final String COL_SEP = " |-> ";
+		public final IParam param;
+		public final IParam ui;
+		private int ratio;
+		private int partialRatio;
+		private int min;
+		int result;
+
+		ParamSearchResult(IParam param, IParam ui, String flt, int min, boolean stripAccents)	{
+			this.param	= param;
+			this.ui		= ui;
+			this.min	= min;
+			String label = param.getSearchLabel(stripAccents);
+			ratio = FuzzySearch.ratio(flt, label);
+			if (ratio < 100)
+				partialRatio = FuzzySearch.partialRatio(flt, label);
+			else
+				partialRatio = ratio;
+			result = ratio + partialRatio;
+		}
+		public boolean isGoodEnough()			{ return result >= min; }
+		
+		@Override public String toString()		{
+			return format(ui) + COL_SEP + format(param);
+//			return format(ui) + COL_SEP + format(param) + " (" + result + "/" + partialRatio + "/" + ratio + ")";
+		}
+		private String subPanelFormat(String s)	{ return "[" + s.strip() + "]"; }
+		private String format(IParam p)			{
+			if (p == null)
+				return subPanelFormat(langLabel("SETTINGS_MOD_SEARCH_RESULT_THIS_PANEL"));
+			if (p.isSubMenu())
+				return subPanelFormat(p.getGuiDisplay());
+			return p.getGuiDisplay();
+		}
 	}
 }

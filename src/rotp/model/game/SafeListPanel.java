@@ -2,6 +2,9 @@ package rotp.model.game;
 
 import java.util.ArrayList;
 
+import rotp.ui.util.IParam;
+import rotp.ui.util.IParam.ParamSearchList;
+
 public class SafeListPanel extends ArrayList<SafeListParam>{
 	private static final long serialVersionUID = 1L;
 	public final String name;
@@ -50,5 +53,11 @@ public class SafeListPanel extends ArrayList<SafeListParam>{
 		for ( SafeListParam list : this )
 			size += list.sizeNoSpacer();
 		return size;
+	}
+	public ParamSearchList getSearchList(IParam ui, String toSearch, int min, boolean stripAccents)	{
+		ParamSearchList paramSet = new ParamSearchList();
+		for (SafeListParam list : this)
+			paramSet.addAll(list.getSearchList(ui, toSearch, min, stripAccents));
+		return paramSet;
 	}
 }

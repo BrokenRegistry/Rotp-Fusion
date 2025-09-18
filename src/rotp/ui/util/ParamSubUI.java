@@ -44,6 +44,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	private SafeListPanel optionsMap;
 	private final SafeListParam optionsList;
 	private int unSeen = 0;
+	private IParam bestSearchResult;
 	
 	// ===== Constructors =====
 	//
@@ -79,6 +80,37 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	}
 	// ===== Overriders =====
 	//
+	@Override public IParam getSearchResult()	{ return bestSearchResult; }
+	@Override public ParamSearchResult processSearch(ParamSearchList paramSet, IParam ui, String flt, int min, boolean stripAccents)	{
+//		if (rawSearchLabel().equals("Computer Options")) { // TO DO BR: REMOVE
+//			System.out.println(this.rawSearchLabel());
+//		}
+		// Process the container
+		ParamSearchResult uiPsr = new ParamSearchResult(this, ui, flt, min, stripAccents);
+		bestSearchResult = this;
+		// Process the content
+		ParamSearchList localSet = optionsList.getSearchList(this, flt, min, stripAccents);
+		if (localSet.isEmpty()) {
+			bestSearchResult = this;
+			if (uiPsr.isGoodEnough())
+				paramSet.add(uiPsr);
+			return uiPsr;
+		}
+
+		localSet.sort();
+		ParamSearchResult bestLocal = localSet.getLast();
+		if (bestLocal.result >= uiPsr.result) {
+			bestSearchResult = bestLocal.param;
+			if (bestSearchResult.isSubMenu()) {
+				// Only keep subMenu
+				bestSearchResult = null;
+				return uiPsr;
+			}
+		}
+
+		paramSet.addAll(localSet);
+		return uiPsr;
+	}
 	@Override public ParamSubUI isValueInit(boolean is) { super.isValueInit(is) ; return this; }
 	@Override public ParamSubUI isDuplicate(boolean is) { super.isDuplicate(is) ; return this; }
 	@Override public ParamSubUI isCfgFile(boolean is)	{ super.isCfgFile(is)   ; return this; }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import rotp.ui.util.IParam;
+import rotp.ui.util.IParam.ParamSearchList;
 import rotp.ui.util.ParamSpacer;
 
 public class SafeListParam extends ArrayList<IParam> {
@@ -78,5 +79,12 @@ public class SafeListParam extends ArrayList<IParam> {
 			if (param != null && !param.isTitle() && !(param instanceof ParamSpacer))
 				size++;
 		return size;
+	}
+	public ParamSearchList getSearchList(IParam ui, String toSearch, int min, boolean stripAccents)	{
+		ParamSearchList paramSet = new ParamSearchList();
+		for (IParam param : this)
+			if (param != null && !param.isTitle() && !(param instanceof ParamSpacer))
+				param.processSearch(paramSet, ui, toSearch, min, stripAccents);
+		return paramSet;
 	}
 }

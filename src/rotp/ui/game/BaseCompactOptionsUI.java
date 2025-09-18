@@ -19,10 +19,14 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.model.game.IBaseOptsTools.LIVE_OPTIONS_FILE;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
@@ -36,6 +40,7 @@ import java.util.LinkedList;
 
 import javax.swing.JEditorPane;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IMainOptions;
@@ -66,6 +71,9 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	private static final Color	subMenuIconColor	= disabledColor;
 	private static final Color	subMenuIconColor2	= Color.YELLOW;
 	private static final Color	subMenuIconColor3	= Color.BLACK;
+	private static final Color	descriptionColor	= GameUI.setupFrame();
+	private static final Color	searchFieldColor	= GameUI.setupFrame();
+	private static final Color	resultsFieldColor	= GameUI.titleColor();
 	private static final int	rowPad			= s10;
 	private	static final int	descPadM		= s5;
 	private static final int	buttonPadV		= rowPad;
@@ -89,9 +97,13 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	private static final int	subMenuIconW	= subMenuIconH;
 	private static final int	subMenuIconPad	= s3;
 	private static final int	maxColumnWidth	= RotPUI.scaledSize(300);
+	private static final int	SEARCH_FONT_SZ	= 16;
+	private static final int	SEARCH_WIDTH	= RotPUI.scaledSize(150);
+	private static final int	SEARCH_HEIGHT	= s20;
 	private	static final Font	descFont		= FontManager.current().narrowFont(descFontSize);
 	private	static final Font	titleFont		= FontManager.current().narrowFont(titleFontSize);
-	
+	private	static final Font	SEARCH_FONT		= FontManager.current().narrowFont(SEARCH_FONT_SZ);
+
 	private	final	JTextPane	descBox			= new JTextPane();
 	private int yTop;
 	private int numColumns, numRows, hSettingsTotal;
@@ -99,13 +111,14 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	private int settingLeft, xSetting, ySetting, columnWidth, extraSep; // settings var
 	private int index, column;
 	private int xDesc, yDesc, descWidth;
+	private int xSearch, ySearch;
 	
 	private final LinkedList<Integer>	lastRowList	= new LinkedList<>();
 	private final LinkedList<ModText>	btListLeft	= new LinkedList<>(); // left part
 	private final LinkedList<ModText>	btListRight	= new LinkedList<>(); // right part
 	private final LinkedList<ModText>	btListBoth	= new LinkedList<>();
 	private final LinkedHashMap<Integer, BufferedImage>	imgList	= new LinkedHashMap<>();
-	private	BufferedImage subMenuIcon, subMenuMoreIcon, eyeIcon;
+	private	BufferedImage subMenuIcon, subMenuMoreIcon, eyeIcon, searchIcon;
 	private SafeListPanel optionsList;
 	private BasePanel parentUI;
 	private boolean forceUpdate	 = true;
@@ -113,10 +126,13 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	private IParam  callParam	 = null;
 	private boolean isCentered	 = true;
 	private boolean isLeftAlign	 = false;
-	//private boolean isRightAlign = false;
 	private boolean isJustified	 = false;
-	private boolean closing	 = false;
-	
+	private boolean closing		 = false;
+	private Box	searchBox		 = new Box("SETTINGS_SEARCH_HELP");
+	private Box	searchResultsBox = new Box("SETTINGS_SEARCH_RESULTS_HELP");
+	private SearchTextField searchField;
+	private ResultTextArea resultField;
+
 	// ========== Constructors and initializers ==========
 	//
 	public BaseCompactOptionsUI() {
@@ -172,8 +188,10 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	}
 	private void clearOptionsList()	{ optionsList	= null; }
 	private void vadidOptionsList()	{
-		if (optionsList == null)
+		if (optionsList == null) {
 			optionsList = AllSubUI.getHandle(GUI_ID).optionsMap();
+			searchField.setOptions(optionsList);
+		}
 	}
 	@Override protected void singleInit()	{
 		vadidOptionsList();
@@ -231,12 +249,45 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		descWidth	= 0;
 		callPreview	= false;
 		callParam	= null;
+		initSearchField();
+		initResultField();
 	}
 	@Override protected void terminate()	{
 		parentUI = null;
 		RotPUI.releaseOptionPanel();
 	}
-
+	private void initSearchField() {
+		searchField = new SearchTextField(this);
+		searchField.setLimit(50);
+		searchField.setBackground(searchFieldColor);
+		searchField.setBorder(newEmptyBorder(s2, s2, s2, s2));
+		searchField.setMargin(new Insets(0, 0, 0, 0));
+		searchField.setPreferredSize(new Dimension(SEARCH_WIDTH, SEARCH_HEIGHT));
+		searchField.setFont(SEARCH_FONT);
+		searchField.setForeground(SystemPanel.blackText);
+		searchField.setCaretColor(SystemPanel.blackText);
+		searchField.putClientProperty("caretWidth", s3);
+		searchField.setFocusTraversalKeysEnabled(false);
+		searchField.setVisible(true);
+		searchField.setLocation(extraSep, yDesc);
+		searchField.addMouseListener(this);
+		add(searchField, 0);
+	}
+	private void initResultField() {
+		resultField = searchField.resultField;
+		resultField.setEditable(false);
+		resultField.setFocusable(false);
+		resultField.setBackground(resultsFieldColor);
+		resultField.setBorder(newEmptyBorder(s3, s3, s3, s3));
+		resultField.setMargin(new Insets(0, 0, 0, 0));
+		resultField.setFont(SEARCH_FONT);
+		resultField.setForeground(SystemPanel.blackText);
+		resultField.setCaretColor(SystemPanel.blackText);
+		resultField.setFocusTraversalKeysEnabled(false);
+		resultField.setVisible(false);
+		resultField.setLocation(extraSep, yDesc);
+		add(resultField, 0);
+	}
 	// ========== Optimization Methods ==========
 	//
 	@Override protected void initBackImg() {
@@ -271,7 +322,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		// buttons location
 		// buttons are referenced to absolute location
 		int sep = s9;
-		int sep2 = s30;
+		int sep2 = s20;
 		int exitWidth = scaled(180);
 		int optButtonWidth = 2*defaultButtonWidth(g) + userButtonWidth(g);
 		int limWith = 4*sep + exitWidth + optButtonWidth + guideButtonWidth(g);
@@ -282,12 +333,12 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		smallButtonW = guideButtonWidth(g);
 		guideBox.setBounds(xFull+xGist+sep, yButton, smallButtonW, smallButtonH);
 		smallButtonW = defaultButtonWidth(g);
-		if (hovering && wGist<limWith) {
+		if (hovering && wGist<limWith) { // over two rows
 			sep2 = (wGist-optButtonWidth-2*sep)/2;
 			xPos = xFull+rGist-smallButtonW-sep;
 			ypos = yButton-smallButtonH-sep;
 		}
-		else {
+		else { // Single row
 			xPos = exitBox.x-smallButtonW-sep2;
 			ypos = yButton;
 		}
@@ -298,7 +349,6 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		userBox.setBounds(lastBox.x-smallButtonW-sep2, defaultBox.y, smallButtonW, smallButtonH);
 
 		yDesc = defaultBox.y - ( descHeigh + buttonPadV);
-		
 		initButtonBackImg();
 		g.dispose();
 		if (showTiming) 
@@ -332,6 +382,12 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			eyeIcon = eyeIcon(retina(subMenuIconW), retina(subMenuIconH), subMenuIconColor2, true);
 		return eyeIcon;
 	}
+	private BufferedImage searchIcon() {
+		//searchIcon = null; // TODO BR: Comment
+		if (searchIcon == null)
+			searchIcon = magnifierIcon(retina(SEARCH_HEIGHT), SystemPanel.blackText);
+		return searchIcon;
+	}
 
 	private ModText newBT(boolean disabled) {
 		ModText bt = new ModText(this, settingFontSize, enabledColor,
@@ -351,7 +407,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	}
 	private void paintDescriptions(Graphics2D g) {
 		descBox.setFont(descFont);
-		descBox.setBackground(GameUI.setupFrame());
+		descBox.setBackground(descriptionColor);
 		descBox.setBounds(xDesc, yDesc, descWidth, descHeigh);
 	}
 	private void setValueColor(int index) {
@@ -549,6 +605,24 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		} else
 			ySetting += hSetting;
 	}
+	void searchMouseAction(MouseEvent e, MouseWheelEvent w, IParam param) {
+		if (param.isSubMenu()) {
+			if (e == null)
+				return;
+			super.close();
+			param.updated(true);
+			disableGlassPane();
+			param.toggle(e, GUI_ID, this);
+			return;
+		}
+		// ! toggle may change forceUpdate value... Do not swap ! 
+		forceUpdate(param.toggle(e, w, this) || forceUpdate());
+		param.updated(true);
+		if (showGuide())
+			loadGuide();
+		repaint();
+		return;
+	}
 	private void mouseCommon(MouseEvent e, MouseWheelEvent w) {
 		//System.out.println("BaseCompactOptionUI.mouseCommon()");
 		for (int i=0; i<activeList.size(); i++) {
@@ -661,6 +735,10 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		super.close();
 		hoverBox = null;
 		prevHover = null;
+		remove(searchField);
+		remove(resultField);
+		resultField = null;
+		searchField = null;
 
 		if (parentUI != null) {
 			if (parentUI instanceof BaseCompactOptionsUI)
@@ -759,11 +837,12 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		isLeftAlign	 = opts.optionPanelIsLeftAlign();
 		//isRightAlign = opts.optionPanelIsRightAlign();
 		isJustified	 = opts.optionPanelIsJustified();
-		
-        // background image
-        g.drawImage(backImg(), xFull, yFull, this);
+
+		// background image
+		g.drawImage(backImg(), xFull, yFull, this);
 		// Buttons background image
-        drawButtons(g);
+		drawButtons(g);
+
 		// Tool tip
 		paintDescriptions(g);
 
@@ -779,6 +858,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			paintSetting(g, param);
 			goToNextSetting(param);
 		}
+		if (hoverBox != searchBox)
 			mouseMoved(null); // to select again a box that have been changed by reloadUI
 		if (callPreview) {
 			parentUI.preview("quickGenerate", callParam);
@@ -788,8 +868,20 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		forceUpdate(false);
 		g.setStroke(prev);
 		showGuide(g);
+
+		// Search Box
+		xSearch = guideBox.x + guideBox.width + s20;
+		ySearch = guideBox.y + (guideBox.height - SEARCH_HEIGHT)/2;
+		g.drawImage(searchIcon(), xSearch, ySearch, this);
+		xSearch += SEARCH_HEIGHT + subMenuIconPad;
+		searchField.setCaretPosition(searchField.getText().length());
+		searchField.setLocation(xSearch, ySearch);
+		resultField.setLocation(xSearch, ySearch - resultField.getHeight());
+		searchResultsBox.setBounds(xSearch, ySearch - resultField.getHeight(), resultField.getWidth(), resultField.getHeight());
+		searchBox.setBounds(xSearch, ySearch, searchField.getWidth(), searchField.getHeight());
+
 		if (showTiming)
-			System.out.println("Compact paintComponent() Time = " + (System.currentTimeMillis()-timeStart));	
+			System.out.println("Compact paintComponent() Time = " + (System.currentTimeMillis()-timeStart));
 	}
 	@Override public void keyReleased(KeyEvent e)		{
 		if(checkModifierKey(e))
@@ -841,10 +933,43 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		}
 	}
 	@Override public void mouseEntered(MouseEvent e)	{
-		//super.mouseEntered(e);
 		setModifierKeysState(e);
+		if (e.getComponent() == searchField) {
+			hoverBox = searchBox;
+			searchField.search();
+			searchField.requestFocus();
+		}
+		if (e.getComponent() == resultField) {
+			resultField.requestFocus();
+			hoverBox = searchResultsBox;
+		}
 		repaint();
 	}
+	@Override public void mouseExited(MouseEvent e)		{
+		super.mouseExited(e);
+		Point loc = MouseInfo.getPointerInfo().getLocation();
+		if (loc != null) {
+			SwingUtilities.convertPointFromScreen(loc, this);
+			mX = loc.x;
+			mY = loc.y;
+		}
+		if (e.getComponent() == searchField) {
+			if (!resultField.getBounds().contains(mX, mY)) {
+				searchField.clearResult();
+				RotPUI.instance().requestFocus();
+			}
+		}
+		if (e.getComponent() == resultField) {
+			if (!searchField.getBounds().contains(mX, mY)) {
+				searchField.clearResult();
+				RotPUI.instance().requestFocus();
+			}
+		}
+		if (hoverBox != null) {
+			hoverBox = null;
+			repaint();
+		}
+    }
 	@Override public void mouseMoved(MouseEvent e)		{
 		if (e != null) { // to select again a box that have been changed by reloadUI
 			mX = e.getX();

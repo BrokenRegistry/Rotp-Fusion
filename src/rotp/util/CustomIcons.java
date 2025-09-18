@@ -111,6 +111,10 @@ public class CustomIcons implements Base {
 		BufferedImage img = localDefaultDesignImage(96, 96, lineCol);
 		return resizeImage(img, side, side);
 	}
+	@Override public BufferedImage magnifierIcon(int side, Color lineCol) {
+		BufferedImage img = magnifierImage(96, 96, lineCol);
+		return resizeImage(img, side, side);
+	}
 
 	private BufferedImage optionsIconBG() {
 		int cnr = 3;
@@ -520,6 +524,27 @@ public class CustomIcons implements Base {
 		g.drawOval(xCtr-rayIris+1, yCtr-rayIris, diaIris, diaIris);
 		g.setColor(Color.black);
 		g.fillOval(xCtr-rayPup+1, yCtr-rayPup, diaPup, diaPup);
+
+		g.dispose();
+		return img;
+	}
+	private BufferedImage magnifierImage(int width, int height, Color lineCol) {
+		int stroke_	= width/24;
+		int strokeW	= stroke_+stroke_;
+		int ray = width*5/16 + 1;
+		int dia	= ray+ray;
+		int ctr = ray + stroke_;
+		int junction = ctr + stroke_ + round(ray / Math.sqrt(2))+1;
+
+		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
+		Graphics2D g = getGraphicsRH(img);
+		g.setColor(lineCol);
+		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		g.drawOval(width-ctr-ray, ctr-ray, dia, dia);
+
+		strokeW	= width/6;
+		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		g.drawLine(width-junction, junction, 0, height);
 
 		g.dispose();
 		return img;

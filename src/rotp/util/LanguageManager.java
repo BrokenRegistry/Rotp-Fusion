@@ -59,7 +59,7 @@ public class LanguageManager implements Base {
     	if (i >= 0)
     		currentLanguage  = languages.get(i);
     }
-
+	public static boolean isDefaultLanguage()	{ return selectedLanguage == DEFAULT_LANGUAGE; }
     private List<Language> languages()  {
         if (languages.isEmpty()) {
             loadLanguages();

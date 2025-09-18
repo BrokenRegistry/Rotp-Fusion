@@ -77,7 +77,6 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 		GUI_ID = guiId;
 	}
 	@Override protected void singleInit() {
-		System.out.println("AbstractOptionsUI SingleInit()");
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);

@@ -1238,17 +1238,20 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
     	checkModifierKey(e);
     	int k = e.getKeyCode();
         switch(k) {
-	    	case KeyEvent.VK_F:
-	        	noFogChanged();
-	            return;
-	    	case KeyEvent.VK_N:
-	    		goToRenameSpecies();
+			case KeyEvent.VK_F:
+				if (!e.isAltDown())
+					noFogChanged();
 				return;
-	    	case KeyEvent.VK_R:
-	    		playerIsCustom.set(false);
-	        	newGameOptions().setRandomPlayerRace();
-	        	raceChanged();
-	        	repaint();
+			case KeyEvent.VK_N:
+				goToRenameSpecies();
+				return;
+			case KeyEvent.VK_R:
+				if (!e.isAltDown()) {
+					playerIsCustom.set(false);
+					newGameOptions().setRandomPlayerRace();
+					raceChanged();
+					repaint();
+				}
 				return;
         	case KeyEvent.VK_ESCAPE:
             	doCancelBoxAction();

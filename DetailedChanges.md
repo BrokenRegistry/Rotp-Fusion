@@ -2,6 +2,9 @@
 
 ## What's New
 
+25-09-18 (BR)
+- New search feature in the options panels
+
 25-09-12 (BR)
 - Fixed retreat restriction when "Restricted" with turn = 0
   - The player was still able to avoid combat...

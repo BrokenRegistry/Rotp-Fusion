@@ -250,6 +250,7 @@
 
 ### Guide and Help:
 
+- New search feature in the options panels
 - Improved Empire intelligence help texts.
 - Completed help for new Alt-Scroll in Design UI
 - Added Help for new auto fleet sending features.
