@@ -48,6 +48,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 - New search feature in the options panels.
 - Search Tool: Fixed possible duplicate of subpanels.
 
+25-09-19 (BR)
+- Search Tool: Added contextual help on the magnifier Icon.
+
 
 ### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)
 

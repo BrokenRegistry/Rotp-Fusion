@@ -98,11 +98,13 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	private static final int	subMenuIconPad	= s3;
 	private static final int	maxColumnWidth	= RotPUI.scaledSize(300);
 	private static final int	SEARCH_FONT_SZ	= 16;
-	private static final int	SEARCH_WIDTH	= RotPUI.scaledSize(150);
+	private static final int	SEARCH_WIDTH	= RotPUI.scaledSize(120);
 	private static final int	SEARCH_HEIGHT	= s20;
+	private static final int	SEARCH_ICON_W	= SEARCH_HEIGHT + subMenuIconPad;
 	private	static final Font	descFont		= FontManager.current().narrowFont(descFontSize);
 	private	static final Font	titleFont		= FontManager.current().narrowFont(titleFontSize);
 	private	static final Font	SEARCH_FONT		= FontManager.current().narrowFont(SEARCH_FONT_SZ);
+	private static final String SEARCH_KEY		= "SETTINGS_SEARCH_ICON";
 
 	private	final	JTextPane	descBox			= new JTextPane();
 	private int yTop;
@@ -128,8 +130,9 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	private boolean isLeftAlign	 = false;
 	private boolean isJustified	 = false;
 	private boolean closing		 = false;
-	private Box	searchBox		 = new Box("SETTINGS_SEARCH_HELP");
-	private Box	searchResultsBox = new Box("SETTINGS_SEARCH_RESULTS_HELP");
+	private Box	searchIconBox	 = new Box();
+	private Box	searchBox		 = new Box();
+	private Box	searchResultsBox = new Box();
 	private SearchTextField searchField;
 	private ResultTextArea resultField;
 
@@ -199,7 +202,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		activeList		= new SafeListParam(optionsList.name);
 		duplicateList	= new SafeListParam(optionsList.name);
 		paramList		= new SafeListParam(optionsList.name);
-		int totalRows   = 0;
+		int totalRows	= 0;
 		hSettingsTotal	= 0;
 		numColumns = optionsList.size();
 		numRows    = 0;
@@ -228,7 +231,11 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		btListBoth.addAll(btListLeft);
 		btListBoth.addAll(btListRight);
 	}
-	private void init_0() {
+	@Override protected void reInit(boolean hover)	{
+		super.reInit(hover);
+		searchIconBox = new Box(SEARCH_KEY);
+	}
+	private void init_0()	{
 		closing = false;
 		clearOptionsList();
 		lastRowList.clear();
@@ -872,13 +879,14 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		// Search Box
 		xSearch = guideBox.x + guideBox.width + s20;
 		ySearch = guideBox.y + (guideBox.height - SEARCH_HEIGHT)/2;
+		searchIconBox.setBounds(xSearch, ySearch, SEARCH_ICON_W, SEARCH_HEIGHT);
 		g.drawImage(searchIcon(), xSearch, ySearch, this);
-		xSearch += SEARCH_HEIGHT + subMenuIconPad;
-		searchField.setCaretPosition(searchField.getText().length());
+		xSearch += SEARCH_ICON_W;
+		//searchField.setCaretPosition(searchField.getText().length());
 		searchField.setLocation(xSearch, ySearch);
+		searchBox.setBounds(xSearch, ySearch, searchField.getWidth(), searchField.getHeight());
 		resultField.setLocation(xSearch, ySearch - resultField.getHeight());
 		searchResultsBox.setBounds(xSearch, ySearch - resultField.getHeight(), resultField.getWidth(), resultField.getHeight());
-		searchBox.setBounds(xSearch, ySearch, searchField.getWidth(), searchField.getHeight());
 
 		if (showTiming)
 			System.out.println("Compact paintComponent() Time = " + (System.currentTimeMillis()-timeStart));

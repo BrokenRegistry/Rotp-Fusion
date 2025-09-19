@@ -3310,7 +3310,7 @@ SETTINGS_MOD_MAX_HIGH_ASTEROIDS          | Élevée Max : %1
 SETTINGS_MOD_MAX_HIGH_ASTEROIDS_DESC     | Densité d’astéroïdes élevée : nombre maximal d’astéroïdes pouvant apparaître sur l’écran de bataille.
 
 SETTINGS_MOD_ASTEROIDS_VANISH_PROB			| Probabilité de disparition : %1‰
-SETTINGS_MOD_ASTEROIDS_VANISH_PROB_DESC		| Probabilité à chaque tour que chaque astéroïde disparaisse.<br>Mais jamais plus qu'un astéroide par colonne.
+SETTINGS_MOD_ASTEROIDS_VANISH_PROB_DESC		| Probabilité à chaque tour que chaque astéroïde disparaisse.<br>Mais jamais plus qu’un astéroide par colonne.
 
 SETTINGS_MOD_SHIELD_TYPE_NONE_DESC       | Aucune animation de bouclier (pour les ordinateurs de faible puissance)
 SETTINGS_MOD_SHIELD_TYPE_NONE            | Aucune
@@ -5613,7 +5613,8 @@ SETTINGS_LOCAL_USER_SET_DESC      | Définir les options de ce panneau en foncti
 SETTINGS_GLOBAL_USER_SET_DESC     | Définir les options de toutes les interfaces utilisateur graphiques en fonction des valeurs préférées de l’utilisateur (à partir du fichier).
 SETTINGS_LOCAL_USER_SAVE_DESC     | Enregistrer les options de ce panneau comme valeurs préférées de l’utilisateur (vers le fichier).
 SETTINGS_GLOBAL_USER_SAVE_DESC    | Enregistrer les options de toutes les interfaces utilisateur graphiques comme valeurs préférées de l’utilisateur (vers le fichier).
-SETTINGS_SEARCH_HELP			| Trouver une option.
+SETTINGS_SEARCH_ICON_DESC		| Une recherche floue vous donnera une liste de 10 résultats maximum, le plus pertinent apparaissant en bas de la liste.<br>Cliquez sur un [Panneau] ou un [Sous-panneau] pour l’ouvrir. Cliquez sur une option pour modifier sa valeur. Utilisez la roulette n’importe où sur une ligne pour modifier la valeur de l’option.
+SETTINGS_SEARCH_ICON_HELP		| Une recherche floue vous donnera une liste de 10 résultats maximum, le plus pertinent apparaissant en bas de la liste.<br>Les résultats sont affichés soit :<br>[Panneau] |-> Option<br>ou<br>[Panneau] |-> [Sous-panneau]<br><br>Cliquez sur un [Panneau] ou un [Sous-panneau] pour l’ouvrir.<br>Cliquez sur une option pour modifier sa valeur.<br>Utilisez la roulette n’importe où sur une ligne pour modifier la valeur de l’option.<br><br>La recherche est effectuée à partir du panneau actuel et de ses sous-panneaux.<br>La recherche est effectuée dans la langue sélectionnée.
 
 // Race Menu Guides and Help
 SETUP_RACE_MAIN_DESC              | VUE D’ENSEMBLE<br> Cet écran vous permet de régler les paramètres de l’Empire du joueur de base.<br> Utilisez « Ctrl » et « Maj » pour modifier la fonctionnalité des boutons.<br> Global = Toutes les options. Local = Options de ce panneau.<br>« R » sélectionnera une nouvelle espèce au hasard.

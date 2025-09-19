@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -228,8 +229,9 @@ public class LabelManager implements Base {
     private int loadLabelLine(String input) {
     	if (isComment(input))
             return 0;
- 
-        List<String> vals = substrings(input, '|');
+
+		//List<String> vals = substrings(input, '|');
+		List<String> vals = Arrays.asList(input.split("\\|", 2));
         if (vals.size() < 2) {
         	if (validate) {
             	if (input.contains("|")) {
@@ -243,7 +245,7 @@ public class LabelManager implements Base {
        }
         
         int wc = 0;
-        String val = vals.get(1);
+        String val = vals.get(1).trim();
         if (validate) {
             if (val.trim().isEmpty()) {
             	validateError("Orphan label keyword: " + input + " / " + labelFile);
@@ -253,7 +255,7 @@ public class LabelManager implements Base {
             }
         }
         try {
-            labelMap.put(vals.get(0), val.getBytes("UTF-8"));
+            labelMap.put(vals.get(0).trim(), val.getBytes("UTF-8"));
             if (Rotp.countWords)
                 wc = substrings(val, ' ').size();
         }

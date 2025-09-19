@@ -5613,7 +5613,8 @@ SETTINGS_LOCAL_USER_SET_DESC      | Set options in this panel based on the User'
 SETTINGS_GLOBAL_USER_SET_DESC     | Set options for all GUIs based on the User's preferred values (From File).
 SETTINGS_LOCAL_USER_SAVE_DESC     | Save options in this panel to the User's preferred values (To File).
 SETTINGS_GLOBAL_USER_SAVE_DESC    | Save options for all GUIs to User's preferred values (To File).
-SETTINGS_SEARCH_HELP			| Find an option.
+SETTINGS_SEARCH_ICON_DESC		| A fuzzy search will give you a list of up to 10 results, with the most relevant one at the bottom of the list.<br>Click on a [Panel] or [Sub-panel] to open it. Click on an option to change its value. Scroll anywhere on a line to change the value of the option.
+SETTINGS_SEARCH_ICON_HELP		| A fuzzy search will give you a list of up to 10 results, with the most relevant one at the bottom of the list.<br>The results are shown either:<br>[Panel] |-> Option<br>or<br>[Panel] |-> [Sub-panel]<br><br>Click on a [Panel] or [Sub-panel] to open it.<br>Click on an option to change its value.<br>Scroll anywhere on a line to change the value of the option.<br><br>The search is performed from the current panel and its subpanels.<br>The search takes into account the selected language.
 
 // Race Menu Guides and Help
 SETUP_RACE_MAIN_DESC              | OVERVIEW<br> This screen allows you to adjust Base Player Empire parameters.<br> Use "Ctrl" and "Shift" to change the buttons functions.<br> Global = All options. Local = Options from this panel.<br>"R" will select a new species randomly.
