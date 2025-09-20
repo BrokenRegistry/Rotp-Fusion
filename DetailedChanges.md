@@ -2,6 +2,9 @@
 
 ## What's New
 
+25-09-20 (BR)
+- Fixed space pirates becoming way too powerful!
+
 25-09-18 (BR)
 - New search feature in the options panels
 

@@ -270,6 +270,7 @@
 
 
 ### Fixes:
+- Fixed space pirates becoming way too powerful!
 - Fixed Governor panel minor resizing glitch.
 - Fixed retreat restriction when "Restricted" with turn = 0
   - The fleet will now be forced to enter combat. (but will be able to retreat immediately)

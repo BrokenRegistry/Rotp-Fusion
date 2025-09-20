@@ -124,7 +124,7 @@ public class SpacePirates extends SpaceMonster {
 				break;
 
 			case 2:
-				weaponScale		= stackLevel() * (maxTechLvl + 10.0f)/20.0f;// gradually scale weapon count
+				weaponScale		= stackLevel() *  (maxTechLvl + 5.0f)/20.0f;// gradually scale weapon count
 				attackLevel		= round(weaponScale * 4);
 				beamDefense		= round(weaponScale * 4);
 				missileDefense	= round(weaponScale * 5);
@@ -159,7 +159,7 @@ public class SpacePirates extends SpaceMonster {
 				break;
 
 			case 4:
-				weaponScale		= stackLevel() * (maxTechLvl + 10.0f)/20.0f;// gradually scale weapon count
+				weaponScale		= stackLevel() * (maxTechLvl + 0.0f)/20.0f;// gradually scale weapon count
 				attackLevel		= round(weaponScale * 6);
 				beamDefense		= round(weaponScale * 7);
 				missileDefense	= round(weaponScale * 10);
@@ -177,7 +177,7 @@ public class SpacePirates extends SpaceMonster {
 				break;
 
 			case 5:
-				weaponScale		= stackLevel() * (maxTechLvl + 10.0f)/20.0f;// gradually scale weapon count
+				weaponScale		= stackLevel() * (maxTechLvl - 5.0f)/20.0f;// gradually scale weapon count
 				attackLevel		= round(weaponScale * 7);
 				beamDefense		= round(weaponScale * 8);
 				missileDefense	= round(weaponScale * 12);
@@ -195,7 +195,7 @@ public class SpacePirates extends SpaceMonster {
 				break;
 
 			case 6:
-				weaponScale		= stackLevel() * (maxTechLvl + 10.0f)/20.0f;// gradually scale weapon count
+				weaponScale		= stackLevel() * (maxTechLvl - 15.0f)/20.0f;// gradually scale weapon count
 				attackLevel		= round(weaponScale * 8);
 				beamDefense		= round(weaponScale * 9);
 				missileDefense	= round(weaponScale * 14);
@@ -214,7 +214,7 @@ public class SpacePirates extends SpaceMonster {
 				break;
 
 			case 7:
-				weaponScale		= stackLevel() * (maxTechLvl + 10.0f)/20.0f;// gradually scale weapon count
+				weaponScale		= stackLevel() * (maxTechLvl - 20.0f)/20.0f;// gradually scale weapon count
 				attackLevel		= round(weaponScale * 9);
 				beamDefense		= round(weaponScale * 10);
 				missileDefense	= round(weaponScale * 15);
@@ -233,7 +233,7 @@ public class SpacePirates extends SpaceMonster {
 				break;
 
 			case 8:
-				weaponScale		= stackLevel() * (maxTechLvl + 10.0f)/20.0f;// gradually scale weapon count
+				weaponScale		= stackLevel() * (maxTechLvl - 25.0f)/20.0f;// gradually scale weapon count
 				attackLevel		= round(weaponScale * 10);
 				beamDefense		= round(weaponScale * 11);
 				missileDefense	= round(weaponScale * 16);
@@ -252,7 +252,7 @@ public class SpacePirates extends SpaceMonster {
 				break;
 
 			case 9:
-				weaponScale		= stackLevel() * (maxTechLvl + 10.0f)/20.0f;// gradually scale weapon count
+				weaponScale		= stackLevel() * (maxTechLvl - 30.0f)/20.0f;// gradually scale weapon count
 				attackLevel		= round(weaponScale * 11);
 				beamDefense		= round(weaponScale * 13);
 				missileDefense	= round(weaponScale * 18);
@@ -271,10 +271,10 @@ public class SpacePirates extends SpaceMonster {
 				break;
 
 			case 10:
-				weaponScale		= stackLevel() * (maxTechLvl + 10.0f)/20.0f;// gradually scale weapon count
-				attackLevel		= 12;
-				beamDefense		= 14;
-				missileDefense	= 22;
+				weaponScale		= stackLevel() * (maxTechLvl - 35.0f)/20.0f;// gradually scale weapon count
+				attackLevel		= round(weaponScale * 12);
+				beamDefense		= round(weaponScale * 14);
+				missileDefense	= round(weaponScale * 20);
 
 				design = lab.newBlankDesign(maxSpecials, 72);
 				design.engine	(engines.get(6));
@@ -290,9 +290,9 @@ public class SpacePirates extends SpaceMonster {
 				break;
 
 			default:
-				attackLevel		= round(weaponScale * 12);
-				beamDefense		= round(weaponScale * 14);
-				missileDefense	= round(weaponScale * 20);
+				attackLevel		= 12;
+				beamDefense		= 14;
+				missileDefense	= 22;
 
 				int hp = (int)(stackLevel() * 9 * Math.ceil(maxTechLvl/5));
 				design = lab.newBlankDesign(maxSpecials, hp);

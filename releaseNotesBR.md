@@ -7,12 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
-25-09-18 (BR)
-- New search feature in the options panels.
-- Search Tool: Fixed possible duplicate of subpanels.
+25-09-20 (BR)
+- Fixed space pirates becoming way too powerful!
 
-25-09-19 (BR)
-- Search Tool: Added contextual help on the magnifier Icon.
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)
 
