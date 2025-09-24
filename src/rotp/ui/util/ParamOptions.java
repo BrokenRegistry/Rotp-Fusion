@@ -16,7 +16,7 @@
 
 package rotp.ui.util;
 
-import static rotp.model.game.IBaseOptsTools.*;
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
 
 
 public class ParamOptions extends ParamList {
@@ -64,6 +64,10 @@ public class ParamOptions extends ParamList {
 	@Override public ParamOptions isValueInit(boolean is) { super.isValueInit(is) ; return this; }
 	@Override public ParamOptions isDuplicate(boolean is) { super.isDuplicate(is) ; return this; }
 	@Override public ParamOptions isCfgFile(boolean is)	  { super.isCfgFile(is)   ; return this; }
+	@Override public ParamOptions setUpdateParameters(IUpdated method, String id)	{
+		super.setUpdateParameters(method, id);
+		return this;
+	}
 
 	// ===== Specific Public Methods =====
 	//

@@ -24,6 +24,7 @@ import static rotp.util.Base.textSubs;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
+import rotp.Rotp;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseModPanel;
 import rotp.util.LabelManager;
@@ -48,6 +50,17 @@ public interface IParam extends InterfaceOptions{
 	 * @param level: "0" for list initialization, "1" for value validation
 	 */
 	default void initDependencies(int level)	{}
+	// remote call
+	interface IUpdated { public void valueUpdated(String id); }
+	default void setUpdatedMethod(IUpdated method)	{}
+	default IUpdated getUpdatedMethod()				{ return null; }
+	default void setUpdatedId(String id)			{}
+	default String getUpdatedId()					{ return null; }
+	default void callUpdatedMethod()				{
+		IUpdated method = getUpdatedMethod();
+		if (method != null && Rotp.initialized())
+			method.valueUpdated(getUpdatedId());
+	}
 	// user input
 	default boolean next()						{ return false; } // Return forceUpdate
 	default boolean prev()						{ return false; } // Return forceUpdate
@@ -60,10 +73,13 @@ public interface IParam extends InterfaceOptions{
 	// State
 	default boolean	isDuplicate()			{ return false; }
 	default boolean	isCfgFile()				{ return false; }
+	default boolean	isImage()				{ return false; }
 	default boolean	isTitle()				{ return false; }
 	default boolean	isSubMenu()				{ return false; }
 	default boolean	isDefaultValue()		{ return false; }
 	default int		getUnseen()				{ return 0; }
+	default void	paint(Graphics2D g, int x, int y, int w, int h)	{ }
+	default BufferedImage getImage(int width, int height)	{ return null; }
 	/**
 	 * To check if the currently set value is still locally valid
 	 */

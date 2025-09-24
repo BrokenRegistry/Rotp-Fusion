@@ -82,9 +82,12 @@ public class SafeListParam extends ArrayList<IParam> {
 	}
 	public ParamSearchList getSearchList(IParam ui, String toSearch, int min, boolean stripAccents)	{
 		ParamSearchList paramSet = new ParamSearchList();
-		for (IParam param : this)
-			if (param != null && !param.isTitle() && !(param instanceof ParamSpacer))
+		for (IParam param : this) {
+//			if (param.toString().contains("MODE_IMAGE"))
+//				System.out.println(param.toString());
+			if (param != null && !param.isTitle() && !(param instanceof ParamSpacer) && !param.isImage())
 				param.processSearch(paramSet, ui, toSearch, min, stripAccents);
+		}
 		return paramSet;
 	}
 }

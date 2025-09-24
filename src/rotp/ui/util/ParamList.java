@@ -104,6 +104,10 @@ public class ParamList extends AbstractParam<String> {
 		super.setDefaultValue(key, value);
 		return this;
 	}
+	@Override public ParamList setUpdateParameters(IUpdated method, String id)	{
+		super.setUpdateParameters(method, id);
+		return this;
+	}
 
 	@Override public boolean isActive()					{ return listSize()>0; }
 	@Override public String guideDefaultValue()			{ return name(defaultValueIndex()); }

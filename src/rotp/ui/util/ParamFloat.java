@@ -93,6 +93,11 @@ public class ParamFloat extends AbstractParam<Float> {
 		super.setDefaultValue(key, value);
 		return this;
 	}
+	@Override public ParamFloat setUpdateParameters(IUpdated method, String id)	{
+		super.setUpdateParameters(method, id);
+		return this;
+	}
+
 	@Override public String guideDefaultValue()	{ return getString(defaultValue()); }
 	@Override public String[] getModifiers()	{
 		if (baseInc().equals(shiftInc()))

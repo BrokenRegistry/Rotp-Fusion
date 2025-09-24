@@ -130,6 +130,10 @@ public class ParamInteger extends AbstractParam<Integer> {
 		super.setDefaultValue(key, value);
 		return this;
 	}
+	@Override public ParamInteger setUpdateParameters(IUpdated method, String id)	{
+		super.setUpdateParameters(method, id);
+		return this;
+	}
 
 	@Override public String[] getModifiers()	{
 		if (baseInc().equals(shiftInc()))

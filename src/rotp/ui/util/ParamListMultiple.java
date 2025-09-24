@@ -64,6 +64,11 @@ public class ParamListMultiple extends ParamList {
 		super.reInit(list);
 		checkValidity(true);
 	}
+	@Override public ParamListMultiple setUpdateParameters(IUpdated method, String id)	{
+		super.setUpdateParameters(method, id);
+		return this;
+	}
+
 	// ===== Overriders =====
 	//
 	@Override public String	valueGuide(int id)		{ return values().get(id); }

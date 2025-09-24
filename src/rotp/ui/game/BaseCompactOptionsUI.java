@@ -390,7 +390,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		return eyeIcon;
 	}
 	private BufferedImage searchIcon() {
-		//searchIcon = null; // TODO BR: Comment
+		//searchIcon = null; // TO DO BR: Comment
 		if (searchIcon == null)
 			searchIcon = magnifierIcon(retina(SEARCH_HEIGHT), SystemPanel.blackText);
 		return searchIcon;
@@ -535,6 +535,15 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 				txtLeft.setScaledXY(xSetting + invRetina(bLeft), ySetting+s7);
 				txtLeft.updateBounds(g);
 				txtLeft.forceHover  = false;
+			}
+			else if (param.isImage()) { // TODO BR: debug
+				int imgX = retina(margin);
+				int imgY = 0;
+				int imgWidth = img.getWidth()-imgX-imgX;
+				int imgHeight = img.getHeight();
+				param.paint(gi, imgX, imgY, imgWidth, imgHeight);
+				gi.dispose();
+				g.drawImage(img, xSetting, ySetting, null);
 			}
 			else { // Not sub-menu
 				setFontSize(gi, width, minFontSize, txtLeft, txtRight);

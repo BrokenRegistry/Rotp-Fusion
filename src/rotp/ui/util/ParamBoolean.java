@@ -74,6 +74,10 @@ public class ParamBoolean extends AbstractParam<Boolean> {
 		super.setDefaultValue(key, value);
 		return this;
 	}
+	@Override public ParamBoolean setUpdateParameters(IUpdated method, String id)	{
+		super.setUpdateParameters(method, id);
+		return this;
+	}
 	
 	@Override public String	getFullHelp()		{ return getHeadGuide() + getTableHelp(); }
 	@Override public String	valueGuide(int id)	{ return getTableHelp(); }

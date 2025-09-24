@@ -44,8 +44,8 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-25-09-20 (BR)
-- Fixed space pirates becoming way too powerful!
+25-09-24 (BR)
+- New Options tool to reset remote variable and to add images in option panels.
 
 
 ### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

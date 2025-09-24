@@ -34,6 +34,7 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import rotp.Rotp;
 import rotp.model.game.DynamicOptions;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IGameOptions;
@@ -69,6 +70,17 @@ public abstract class AbstractParam <T> implements IParam {
 	private List<LinkData> linkList;
 	private boolean processingToggle = false;
 	private boolean	forcedRefresh	 = false;
+	private IUpdated valueUpdatedMethod;
+	private String valueUpdatedMethodId;
+
+	@Override public void setUpdatedMethod(IUpdated method)	{ valueUpdatedMethod = method; }
+	@Override public IUpdated getUpdatedMethod()			{ return valueUpdatedMethod; }
+	@Override public void setUpdatedId(String id)			{ valueUpdatedMethodId = id; }
+	@Override public String getUpdatedId()					{ return valueUpdatedMethodId; }
+	@Override public void callUpdatedMethod()				{
+		if (valueUpdatedMethod != null && Rotp.initialized())
+			valueUpdatedMethod.valueUpdated(valueUpdatedMethodId);
+	}
 
 	@Override public void updated(boolean val)	{ updated = val; }
 	@Override public boolean updated()			{ return updated; }
@@ -368,6 +380,12 @@ public abstract class AbstractParam <T> implements IParam {
 		forcedRefresh = forced;
 		return this;
 	}
+	public AbstractParam<T> setUpdateParameters(IUpdated method, String id)	{
+		setUpdatedMethod(method);
+		setUpdatedId(id);
+		return this;
+	}
+
 	/**
 	 * For backward compatibility
 	 * <br>Old save game are initialized with:

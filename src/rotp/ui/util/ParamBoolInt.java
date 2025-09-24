@@ -50,6 +50,10 @@ public class ParamBoolInt extends ParamInteger {
 	@Override public ParamBoolInt isValueInit(boolean is) { super.isValueInit(is) ; return this; }
 	@Override public ParamBoolInt isDuplicate(boolean is) { super.isDuplicate(is) ; return this; }
 	@Override public ParamBoolInt isCfgFile(boolean is)	  { super.isCfgFile(is)   ; return this; }
+	@Override public ParamBoolInt setUpdateParameters(IUpdated method, String id)	{
+		super.setUpdateParameters(method, id);
+		return this;
+	}
 
 	@Override public String getGuiDisplay()		{
 	    String val;
