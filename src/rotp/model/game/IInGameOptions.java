@@ -1,5 +1,14 @@
 package rotp.model.game;
 
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
+import org.knowm.xchart.QuickChart;
+import org.knowm.xchart.XYChart;
+import org.knowm.xchart.style.XYStyler;
+
 import rotp.model.colony.Colony;
 import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
@@ -7,10 +16,13 @@ import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.planet.Planet;
 import rotp.model.ships.ShipDesign;
+import rotp.ui.util.IParam;
 import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamFloat;
+import rotp.ui.util.ParamImage;
 import rotp.ui.util.ParamInteger;
 import rotp.ui.util.ParamList;
+import rotp.ui.util.XChartRotpTheme;
 
 public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICombatOptions, IShipDesignOption {
 
@@ -53,8 +65,224 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 			.pctValue(true);
 	default int selectedCustomDifficulty()		{ return customDifficulty.get(); }
 
+	String DYNAMIC_DIFFICULTY_UPDATE_ID	= "turnMod";
 	ParamBoolean dynamicDifficulty	= new ParamBoolean(MOD_UI, "DYNAMIC_DIFFICULTY", false);
 	default boolean selectedDynamicDifficulty()	{ return dynamicDifficulty.get(); }
+
+	ParamInteger dynamicDifficultyDelay	= new ParamInteger(MOD_UI, "DYNAMIC_DIFFICULTY_DELAY", 150)
+			.setLimits(20, 500)
+			.setIncrements(1, 5, 20)
+			.setUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
+	default int dynamicDifficultyDelay()		{ return dynamicDifficultyDelay.get(); }
+
+	ParamInteger dynamicDifficultyRange	= new ParamInteger(MOD_UI, "DYNAMIC_DIFFICULTY_RANGE", 10)
+			.setLimits(0, 500)
+			.setIncrements(1, 5, 20)
+			.setUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
+	default int dynamicDifficultyRange()		{ return dynamicDifficultyRange.get(); }
+
+	ParamInteger dynamicDifficultySpan	= new ParamInteger(MOD_UI, "DYNAMIC_DIFFICULTY_SPAN", 100)
+			.setLimits(10, 500)
+			.setIncrements(1, 5, 20)
+			.setUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
+	default float dynamicDifficultySpan()		{ return dynamicDifficultySpan.get()/100f; }
+
+	static double dynamicDifficultyBaseTurnMod(int turn, int delay, int range)	{
+		if (range == 0) { 
+			if (turn == delay)
+				return 0.5;
+			if (turn > delay)
+				return 1;
+			return 0;
+		}
+		return 0.5 + Math.atan((double)(turn-delay)/range)/Math.PI;
+	}
+	static double dynamicDifficultyTurnMod(int turn, int delay, int range)	{
+		double mod = dynamicDifficultyBaseTurnMod(turn, delay, range);
+		if (turn >= delay)
+			return mod;
+		double shift = dynamicDifficultyBaseTurnMod(5, delay, range);// -.0219177f;
+		return (mod - shift) / (0.5f - shift) / 2;
+	}
+	default double dynamicDifficultyTurnMod(int turn)	{
+		int delay = dynamicDifficultyDelay();
+		int range = dynamicDifficultyRange();
+		double turnMod = dynamicDifficultyTurnMod(turn, delay, range);
+		return turnMod;
+	}
+	
+	class ParamDynDiffTurnImage extends ParamImage {
+		public ParamDynDiffTurnImage() {
+			super(MOD_UI, "DYNAMIC_DIFFICULTY_TURN_IMAGE");
+		}
+		@Override public boolean updated()	{
+			return true;
+			//return dynamicDifficultyMode.updated() || dynamicDifficultySpan.updated();
+		}
+		@Override public float heightFactor()	{ return 8f; }
+		@Override public void paint(Graphics2D g, int x, int y, int w, int h)	{
+			BufferedImage img = getImage(w, h);
+			g.drawImage(img, x, y, null);
+		}
+		@Override public BufferedImage getImage(int width, int height)	{
+			BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
+			Graphics2D g = (Graphics2D) img.getGraphics();
+			XYChart chart = getChart();
+			chart.paint(g, width, height);
+			g.dispose();
+			return img;
+		}
+		public XYChart getChart() {
+			int delay = dynamicDifficultyDelay.get();
+			int range = dynamicDifficultyRange.get();
+			return getChart(delay, range);
+		}
+		public XYChart getChart(int delay, int range)	{
+			String xTitle = IParam.langLabel("GRAPH_DYN_DIFF_DELAY_X_AXIS_LABEL");
+			String yTitle = IParam.langLabel("GRAPH_DYN_DIFF_DELAY_Y_AXIS_LABEL");
+			String TitleHead;
+			if (dynamicDifficulty.get())
+				TitleHead = IParam.langLabel("GRAPH_DYN_DIFF_DELAY_HEAD_TITLE");
+			else
+				TitleHead = IParam.langLabel("GRAPH_DYN_DIFF_DELAY_HEAD_TITLE_OFF");
+			int xMax = (Math.max(2*delay, delay+3*range))/100;
+			xMax = Math.max(3, xMax)*100;
+			double yMax = 1;
+			int step = 5;
+			double xStart = 5;
+			int iSh = (int) (xStart/step);
+			int n = (int) (xMax/step - iSh);
+			double[] xP = new double[n];
+			double[] yP = new double[n];
+			for (int i=0; i<n; i++) {
+				int x = step * (i+iSh);
+				xP[i] = x;
+				yP[i] = dynamicDifficultyTurnMod(x, delay, range);
+			}
+			XYChart chart = QuickChart.getChart(TitleHead, xTitle, yTitle, null, xP, yP);
+			XYStyler styler = chart.getStyler();
+			styler.setTheme(new XChartRotpTheme());
+			styler.setLegendVisible(false);
+			styler.setYAxisMin(0.0);
+			styler.setYAxisMax(yMax);
+			styler.setXAxisMin(0.0);
+			styler.setXAxisMax((double) xMax);
+			return chart;
+		}
+	}
+	ParamDynDiffTurnImage dynamicDifficultyTurnImage	= new ParamDynDiffTurnImage();
+
+	class ParamDynamicDifficulty extends ParamList {
+		private static final String UNFAIR_TO_PLAYER	= "DYN_DIFF_UNFAIR_TO_PLAYER";
+		private static final String UNFAIR_TO_AI		= "DYN_DIFF_UNFAIR_TO_AI";
+		private static final String FAIR_BOUND			= "DYN_DIFF_FAIR_BOUND";
+		private static final String FAIR_UNBOUND		= "DYN_DIFF_FAIR_UNBOUND";
+		private static final String QUICK_ENDING		= "DYN_DIFF_QUICK_ENDING";
+
+		public ParamDynamicDifficulty() {
+			super(MOD_UI, "DYNAMIC_DIFFICULTY_MODE", UNFAIR_TO_PLAYER);
+			showFullGuide(true);
+			put(UNFAIR_TO_PLAYER,	MOD_UI + UNFAIR_TO_PLAYER);
+			put(UNFAIR_TO_AI,		MOD_UI + UNFAIR_TO_AI);
+			put(FAIR_BOUND,			MOD_UI + FAIR_BOUND);
+			put(FAIR_UNBOUND,		MOD_UI + FAIR_UNBOUND);
+			put(QUICK_ENDING,		MOD_UI + QUICK_ENDING);
+			setUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
+		}
+		public double getScaleMod(double r)	{ return getScaleMod(r, dynamicDifficultySpan.get() / 100.0, get());
+		}
+		public double getScaleMod(double r, double span, String mode)	{
+			double ratioExp = 1/span;
+			double ratio = Math.pow(r, ratioExp);
+			double scale;
+
+			switch (mode) {
+				case UNFAIR_TO_PLAYER:	scale = unfairToPlayer(ratio);	break;
+				case UNFAIR_TO_AI:		scale = unfairToAI(ratio);		break;
+				case FAIR_BOUND:		scale = fairBound(ratio);		break;
+				case FAIR_UNBOUND:		scale = fairUnbound(ratio);		break;
+				case QUICK_ENDING:		scale = quickEnd(ratio);		break;
+				default:				scale = unfairToPlayer(ratio);	break;
+			}
+			return Math.pow(scale, span);
+		}
+		public XYChart getChart()	{
+			double span = dynamicDifficultySpan.get() / 100.0;
+			String mode = get();
+			String subTitle = guideValue();
+			return getChart(span, mode, subTitle);
+		}
+		public XYChart getChart(double span, String mode, String subTitle)	{
+			String xTitle = IParam.langLabel("GRAPH_DYN_DIFF_MODE_X_AXIS_LABEL");
+			String yTitle = "";
+			String TitleHead;
+			if (dynamicDifficulty.get())
+				TitleHead = IParam.langLabel("GRAPH_DYN_DIFF_MODE_HEAD_TITLE", subTitle);
+			else
+				TitleHead = IParam.langLabel("GRAPH_DYN_DIFF_MODE_HEAD_TITLE_OFF");
+			String[] names = new String[] {
+					IParam.langLabel("GRAPH_DYN_DIFF_MODE_LEGEND_1"),
+					IParam.langLabel("GRAPH_DYN_DIFF_MODE_LEGEND_2"),
+					IParam.langLabel("GRAPH_DYN_DIFF_MODE_LEGEND_3"),
+					IParam.langLabel("GRAPH_DYN_DIFF_MODE_LEGEND_4")};
+			double xMax = 2.5;
+			double yMax = 2.5;
+			double step = .05;
+			double xStart = .1;
+			int iSh = (int) (xStart/step);
+			int n = (int) (xMax/step - iSh);
+			double[] xP = new double[n];
+			double[][] yP = new double[4][n];
+			for (int i=0; i<n; i++) {
+				xP[i] = step * (i+iSh);
+				yP[0][i] = 1;
+				yP[1][i] = getScaleMod(xP[i], span, mode);
+				yP[2][i] = xP[i];
+				yP[3][i] = xP[i]*yP[1][i];
+			}
+			XYChart chart = QuickChart.getChart(TitleHead, xTitle, yTitle, names, xP, yP);
+			XYStyler styler = chart.getStyler();
+			styler.setTheme(new XChartRotpTheme());
+			styler.setYAxisMin(0.0);
+			styler.setYAxisMax(yMax);
+			styler.setXAxisMin(0.0);
+			styler.setXAxisMax(xMax);
+			return chart;
+		}
+		private double bound(double r)			{ return (1 + Math.pow(r-1, 3) / (Math.pow(r-1, 2) + 0.25)) / r; }
+		private double unbound(double r)		{ return (1.01 - 1.01/(100*r+1)) * bound(r); }
+		private double fairUnbound(double r)	{ return r > 1.0? 1/unbound(1/r) : unbound(r); }
+		private double fairBound(double r)		{ return r > 1.0? bound(r) : 1/bound(1/r); }
+		private double unfairToAI(double r)		{ return r > 1.0? 1/unbound(1/r) : 1/bound(1/r); }
+		private double unfairToPlayer(double r)	{ return r > 1.0? bound(r) : unbound(r); }
+		private double quickEnd(double r)		{ return 1/fairUnbound(r); }
+	}
+	ParamDynamicDifficulty dynamicDifficultyMode	= new ParamDynamicDifficulty();
+	default double getDynamicDifficultyScale(double r_empInd)	{ return dynamicDifficultyMode.getScaleMod(r_empInd); }
+
+	class ParamDynDiffModeImage extends ParamImage {
+		public ParamDynDiffModeImage() {
+			super(MOD_UI, "DYNAMIC_DIFFICULTY_MODE_IMAGE");
+		}
+		@Override public boolean updated()	{
+			return true;
+			//return dynamicDifficultyMode.updated() || dynamicDifficultySpan.updated();
+		}
+		@Override public float heightFactor()	{ return 8f; }
+		@Override public void paint(Graphics2D g, int x, int y, int w, int h)	{
+			BufferedImage img = getImage(w, h);
+			g.drawImage(img, x, y, null);
+		}
+		@Override public BufferedImage getImage(int width, int height)	{
+			BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
+			Graphics2D g = (Graphics2D) img.getGraphics();
+			XYChart chart = dynamicDifficultyMode.getChart();
+			chart.paint(g, width, height);
+			g.dispose();
+			return img;
+		}
+	}
+	ParamDynDiffModeImage dynamicDifficultyModeImage	= new ParamDynDiffModeImage();
 
 	ParamList scrapRefundOption		= new ParamList(MOD_UI, "SCRAP_REFUND", "All")
 			.showFullGuide(true)

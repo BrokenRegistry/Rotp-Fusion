@@ -536,14 +536,14 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 				txtLeft.updateBounds(g);
 				txtLeft.forceHover  = false;
 			}
-			else if (param.isImage()) { // TODO BR: debug
+			else if (param.isImage()) {
 				int imgX = retina(margin);
 				int imgY = 0;
 				int imgWidth = img.getWidth()-imgX-imgX;
 				int imgHeight = img.getHeight();
 				param.paint(gi, imgX, imgY, imgWidth, imgHeight);
 				gi.dispose();
-				g.drawImage(img, xSetting, ySetting, null);
+				g.drawImage(img, xSetting, ySetting-rowPad, null);
 			}
 			else { // Not sub-menu
 				setFontSize(gi, width, minFontSize, txtLeft, txtRight);

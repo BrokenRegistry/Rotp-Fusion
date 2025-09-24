@@ -569,6 +569,7 @@ public final class GameSession implements Base, Serializable {
 
                 // all intra-empire events: civ turns, ship movement, etc
                 gal.advanceTime();	// Clock only
+				Empire.updateDynValues();
                 gal.moveShipsInTransit(); // Move and arrival
 
                 gal.events().nextTurn();
@@ -701,6 +702,7 @@ public final class GameSession implements Base, Serializable {
             }
             finally {
                 RotPUI.instance().mainUI().restoreMapState();
+				Empire.updateDynValues();
                 if (Rotp.memoryLow())
                     RotPUI.instance().mainUI().showMemoryLowPrompt();
                 // handle game over possibility

@@ -2441,6 +2441,8 @@ HEADERS_ASTEROIDS                    | ~~~ ASTÉROÏDES ~~~
 
 HEADERS_DIRECT_DIFFICULTY_DESC       | Ajustement du niveau de jeu au moyen d’avantages ou de handicaps.
 HEADERS_DIRECT_DIFFICULTY            | ~~~ NIVEAU DE JEU ~~~
+HEADERS_DYNAMIC_DIFFICULTY_DESC		| Ajustement dynamique du niveau de jeu au moyen d’avantages ou de handicaps.
+HEADERS_DYNAMIC_DIFFICULTY			| ~~~ NIVEAU DE JEU DYNAMIQUE ~~~
 HEADERS_GAME_VARIANS_DESC            | Ajustement de la difficulté en variant les règles du jeu.
 HEADERS_GAME_VARIANS                 | ~~~ VARIANTES DU JEU ~~~
 
@@ -2683,7 +2685,28 @@ SETTINGS_MOD_BATTLE_SCOUT            | Éclaireur de combat : %1
 SETTINGS_MOD_COMPANION_WORLDS        | Mondes compagnons : %1
 SETTINGS_MOD_RANDOM_TECH_START       | Tech de démarrage : %1
 SETTINGS_MOD_CUSTOM_DIFFICULTY       | Difficulté personnalisée : %1 %
-SETTINGS_MOD_DYNAMIC_DIFFICULTY      | Difficulté dynamique : %1
+SETTINGS_MOD_DYNAMIC_DIFFICULTY			| Difficulté dynamique : %1
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_DELAY	| Délai pour demi amplitude : %1 Tours
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_RANGE	| Étendue de la transition : %1 Tours
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_SPAN	| Étendue du plateau : %1 %
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_MODE	| Modèle dynamique : %1 %
+SETTINGS_MOD_DYN_DIFF_UNFAIR_TO_PLAYER	| Injuste pour le joueur
+SETTINGS_MOD_DYN_DIFF_UNFAIR_TO_AI		| Injuste pour l’IA
+SETTINGS_MOD_DYN_DIFF_FAIR_BOUND		| Équitable et limité
+SETTINGS_MOD_DYN_DIFF_FAIR_UNBOUND		| Équitable sans limites
+SETTINGS_MOD_DYN_DIFF_QUICK_ENDING		| Terminer rapidement la partie
+GRAPH_DYN_DIFF_DELAY_HEAD_TITLE			| Évolution de la Difficulté Dynamique
+GRAPH_DYN_DIFF_DELAY_HEAD_TITLE_OFF		| ! Difficulté Dynamique inactivée !
+GRAPH_DYN_DIFF_DELAY_X_AXIS_LABEL		| Tours
+GRAPH_DYN_DIFF_DELAY_Y_AXIS_LABEL		| Niveau d'ajustement
+GRAPH_DYN_DIFF_MODE_HEAD_TITLE			| Modèle : %1
+GRAPH_DYN_DIFF_MODE_HEAD_TITLE_OFF		| ! Difficulté Dynamique inactivée !
+GRAPH_DYN_DIFF_MODE_X_AXIS_LABEL		| Rapport des Niveau Industriels (IA/Joueur)
+GRAPH_DYN_DIFF_MODE_LEGEND_1			| Normal Multiplier
+GRAPH_DYN_DIFF_MODE_LEGEND_2			| Dynamic Multiplier
+GRAPH_DYN_DIFF_MODE_LEGEND_3			| Normal Production
+GRAPH_DYN_DIFF_MODE_LEGEND_4			| Dynamic Production
+
 SETTINGS_MOD_SCRAP_REFUND            | Casse pour vaisseaux : %1
 SETTINGS_MOD_SCRAP_REFUND_ALL        | Partout
 SETTINGS_MOD_SCRAP_REFUND_EMPIRE     | Dans l’Empire
@@ -2727,7 +2750,16 @@ SETTINGS_MOD_COMPANION_WORLDS_HELP     | Ajoute 0 à 6 colonies supplémentaires
 SETTINGS_MOD_COMPANION_WORLDS_DESC     | Ajoute 0 à 6 colonies supplémentaires, en début de partie, à tous les mondes d’origine. (Valeur négative pour la disposition d’origine)
 SETTINGS_MOD_RANDOM_TECH_START_DESC    | En début de partie, donne aléatoirement à <b>TOUS<\b> les empires 2 technologies de premier niveau. Aucune planète artéfact ne sera alors présente dans la galaxie. (Les technologies peuvent différer d’un empire à l’autre.)
 SETTINGS_MOD_CUSTOM_DIFFICULTY_DESC    | Définit le Modificateur de Production de l’IA de 20 % à 500 %. Assurez-vous de sélectionner "Difficulté : Personnalisé". (Presser Maj / Ctrl, puis faire défiler la molette de la souris pour changer en unités de 5 % / 20 %.)
-SETTINGS_MOD_DYNAMIC_DIFFICULTY_DESC   | Adapte la production des IA à la force du joueur. L’effet augmente vers le 150ème tour. (L’ajustement n’est pas infini. Les Empires d’IA très forts seront presque inchangés.)
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_DESC		| Adapte la production des IA à la force du joueur. L’effet augmente vers le 150ème tour. (L’ajustement n’est pas infini. Les Empires d’IA très forts seront presque inchangés.)
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_DELAY_DESC	| Tour auquel la difficulté dynamique est à 50% de son potentiel.
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_RANGE_DESC	| Nombre de tours nécessaires à la difficulté dynamique pour passer de 50% à 75% de son potentiel.
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_SPAN_DESC	| Pour ajuster la durée pendant laquelle la productivité de l’IA correspondra à celle du joueur.
+SETTINGS_MOD_DYN_DIFF_UNFAIR_TO_PLAYER_DESC	| Le renforcement du joueur est limité, contrairement à celui des IAs.
+SETTINGS_MOD_DYN_DIFF_UNFAIR_TO_AI_DESC		| Le renforcement des IAs est limité, contrairement à celui du joueur.
+SETTINGS_MOD_DYN_DIFF_FAIR_BOUND_DESC		| Le renforcement du joueur et de l’IA est limité.
+SETTINGS_MOD_DYN_DIFF_FAIR_UNBOUND_DESC		| Le renforcement du joueur et de l’IA est illimité.
+SETTINGS_MOD_DYN_DIFF_QUICK_ENDING_DESC		| Augmente l’écart de production.
+
 SETTINGS_MOD_SCRAP_REFUND_DESC          | La valeur de la ferraille sera-t-elle récupérée sur les vaisseaux déclassés partout dans la galaxie ?
 SETTINGS_MOD_SCRAP_REFUND_ALL_DESC      | Option classique. Toute la ferraille sera récupérée.
 SETTINGS_MOD_SCRAP_REFUND_EMPIRE_DESC   | Seuls les vaisseaux en orbite sur les mondes de l’empire seront valorisés.

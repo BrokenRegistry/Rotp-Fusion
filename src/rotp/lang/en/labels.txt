@@ -2439,8 +2439,10 @@ HEADERS_SHIELD_ANIMATIONS            | ~~~ SHIELD ANIMATIONS ~~~
 HEADERS_ASTEROIDS_DESC               | To set Asteroids placements and properties.
 HEADERS_ASTEROIDS                    | ~~~ ASTEROIDS ~~~
 
-HEADERS_DIRECT_DIFFICULTY_DESC       | Adjust the level of play using advantages or handicaps.
-HEADERS_DIRECT_DIFFICULTY            | ~~~ GAME LEVEL ~~~
+HEADERS_DIRECT_DIFFICULTY_DESC		| Adjust the level of play by means of advantages or handicaps.
+HEADERS_DIRECT_DIFFICULTY			| ~~~ GAME LEVEL ~~~
+HEADERS_DYNAMIC_DIFFICULTY_DESC		| Dynamic adjustment of the level of play by means of advantages or handicaps.
+HEADERS_DYNAMIC_DIFFICULTY			| ~~~ DYNAMIC GAME LEVEL ~~~
 HEADERS_GAME_VARIANS_DESC            | Adjust the difficulty by varying the rules of the game.
 HEADERS_GAME_VARIANS                 | ~~~ GAME VARIANS ~~~
 
@@ -2683,7 +2685,28 @@ SETTINGS_MOD_BATTLE_SCOUT            | Battle Scout: %1
 SETTINGS_MOD_COMPANION_WORLDS        | Companion Worlds: %1
 SETTINGS_MOD_RANDOM_TECH_START       | Random Tech Start: %1
 SETTINGS_MOD_CUSTOM_DIFFICULTY       | Custom Difficulty: %1%
-SETTINGS_MOD_DYNAMIC_DIFFICULTY      | Dynamic Difficulty: %1
+SETTINGS_MOD_DYNAMIC_DIFFICULTY			| Dynamic Difficulty: %1
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_DELAY	| Lead time for Half Factor: %1 Turns
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_RANGE	| Extent of the transition: %1 Turns
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_SPAN	| Extent of the plateau: %1%
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_MODE	| Dynamic Model: %1
+SETTINGS_MOD_DYN_DIFF_UNFAIR_TO_PLAYER	| Unfair to the Player
+SETTINGS_MOD_DYN_DIFF_UNFAIR_TO_AI		| Unfair to the AI
+SETTINGS_MOD_DYN_DIFF_FAIR_BOUND		| Fair and limited
+SETTINGS_MOD_DYN_DIFF_FAIR_UNBOUND		| Fair and unlimited
+SETTINGS_MOD_DYN_DIFF_QUICK_ENDING		| End the game quickly
+GRAPH_DYN_DIFF_DELAY_HEAD_TITLE			| Dynamic Difficulty Evolution
+GRAPH_DYN_DIFF_DELAY_HEAD_TITLE_OFF		| ! Dynamic Difficulty is disabled !
+GRAPH_DYN_DIFF_DELAY_X_AXIS_LABEL		| Turns
+GRAPH_DYN_DIFF_DELAY_Y_AXIS_LABEL		| Turn Modifier
+GRAPH_DYN_DIFF_MODE_HEAD_TITLE			| Model: %1
+GRAPH_DYN_DIFF_MODE_HEAD_TITLE_OFF		| ! Dynamic Difficulty is disabled !
+GRAPH_DYN_DIFF_MODE_X_AXIS_LABEL		| Industrial Power Ratio (AI/Player)
+GRAPH_DYN_DIFF_MODE_LEGEND_1			| Normal Multiplier
+GRAPH_DYN_DIFF_MODE_LEGEND_2			| Dynamic Multiplier
+GRAPH_DYN_DIFF_MODE_LEGEND_3			| Normal Production
+GRAPH_DYN_DIFF_MODE_LEGEND_4			| Dynamic Production
+
 SETTINGS_MOD_SCRAP_REFUND            | Ship Refund: %1
 SETTINGS_MOD_SCRAP_REFUND_ALL        | Everywhere
 SETTINGS_MOD_SCRAP_REFUND_EMPIRE     | Empire Worlds
@@ -2727,7 +2750,16 @@ SETTINGS_MOD_COMPANION_WORLDS_HELP   | Give 0 to 6 additional Colonies around AL
 SETTINGS_MOD_COMPANION_WORLDS_DESC   | Give 0 to 6 additional Colonies around ALL Empire Home worlds at start of game. (Negative value for original disposition)
 SETTINGS_MOD_RANDOM_TECH_START_DESC  | Give ALL Empires 2 random first Tier Techs at start of game. No Artifact Planets will be generated in the Galaxy. (Techs can differ from Empire to Empire.)
 SETTINGS_MOD_CUSTOM_DIFFICULTY_DESC  | Sets the AI Production Modifier from 20% to 500%. Make sure to select "Difficulty: Custom". (Hold down Shift/Ctrl, then scroll the mouse wheel to change in units of 5%/20%.)
-SETTINGS_MOD_DYNAMIC_DIFFICULTY_DESC | Scales the AI Production up/down when weaker/stronger than the Player. Effect ramps up at around Turn-150. (Will not infinitely scale, very strong AI Empires will be almost un-changed.)
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_DESC		| Scales the AI Production up/down when weaker/stronger than the Player. Effect ramps up at around Turn-150. (Will not infinitely scale, very strong AI Empires will be almost un-changed.)
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_DELAY_DESC	| Turn at which the dynamic difficulty level is at 50% of its potential.
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_RANGE_DESC	| Number of turns required for dynamic difficulty to increase from 50% to 75% of its potential.
+SETTINGS_MOD_DYNAMIC_DIFFICULTY_SPAN_DESC	| To ajust how long the AI productivity will match the player one.
+SETTINGS_MOD_DYN_DIFF_UNFAIR_TO_PLAYER_DESC	| The player's reinforcement is limited, unlike that of the AIs.
+SETTINGS_MOD_DYN_DIFF_UNFAIR_TO_AI_DESC		| The AI's reinforcement is limited, unlike that of the player.
+SETTINGS_MOD_DYN_DIFF_FAIR_BOUND_DESC		| Player and AI reinforcement is limited.
+SETTINGS_MOD_DYN_DIFF_FAIR_UNBOUND_DESC		| Player and AI reinforcement is unlimited.
+SETTINGS_MOD_DYN_DIFF_QUICK_ENDING_DESC		| Increase the production gap.
+
 SETTINGS_MOD_SCRAP_REFUND_DESC          | Will scrap value be recovered from decommissioned ships everywhere in the galaxy?
 SETTINGS_MOD_SCRAP_REFUND_ALL_DESC      | Vanilla option. Every scrap metal will be recovered.
 SETTINGS_MOD_SCRAP_REFUND_EMPIRE_DESC   | Only ships orbiting on empire worlds will be valuably salvaged.

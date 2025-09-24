@@ -34,7 +34,7 @@ public class ParamImage extends AbstractParam<BufferedImage> {
 	@Override public boolean isImage()			{ return true; }
 	@Override public boolean isDefaultValue()	{ return true; }
 	@Override public String getGuide()			{ return headerHelp(false); }
-	@Override public float heightFactor()		{ return 20f; } // TODO BR: continue
+	@Override public float heightFactor()		{ return 6f; }
 	@Override protected BufferedImage getOptionValue(IGameOptions options)	{ return null; }
 	@Override protected void setOptionValue(IGameOptions options, BufferedImage value)	{}
 

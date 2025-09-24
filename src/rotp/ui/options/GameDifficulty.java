@@ -17,12 +17,29 @@ final class GameDifficulty extends AbstractOptionsSubUI {
 				new ParamTitle("DIRECT_DIFFICULTY"),
 				difficultySelection,
 				customDifficulty,
-				dynamicDifficulty
-				)));
-		map.add(new SafeListParam(Arrays.asList(
+
+				HEADER_SPACER_50,
+				new ParamTitle("DYNAMIC_DIFFICULTY"),
+				dynamicDifficulty,
+
+				HEADER_SPACER_50,
 				new ParamTitle("GAME_VARIANS"),
 				challengeMode,
 				darkGalaxy
+				)));
+		map.add(new SafeListParam(Arrays.asList(
+				new ParamTitle("DYNAMIC_DIFFICULTY"),
+				dynamicDifficultyMode,
+				dynamicDifficultySpan,
+
+				dynamicDifficultyModeImage
+				)));
+		map.add(new SafeListParam(Arrays.asList(
+				new ParamTitle("DYNAMIC_DIFFICULTY"),
+				dynamicDifficultyDelay,
+				dynamicDifficultyRange,
+
+				dynamicDifficultyTurnImage
 				)));
 		return map;
 	}

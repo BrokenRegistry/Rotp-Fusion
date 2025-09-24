@@ -112,8 +112,38 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
     public static final int SHAPE_TRIANGLE2 = 4;
 
     public static Empire thePlayer() { return Galaxy.current().player(); }
-
     public static long[] times = new long[6];
+	// Dynamic difficulty
+	private static Double turnMod; // for dynamic difficulty
+	private static long turnModCounter = 1;
+	private transient float dynaMod;
+	private transient long dynaModCounter = 0;
+	public static void updateDynValues()	{ valueUpdated("turnMod"); }
+	public static void valueUpdated(String id)	{
+		if (id.equals("turnMod")) {
+			turnMod = null;
+			turnModCounter += 1;
+		}
+	}
+	private Double turnMod()	{
+		if (turnMod == null) {
+			turnMod = options().dynamicDifficultyTurnMod(galaxy().currentTurn());
+			//System.out.println("-------------------------- turnMod = " + turnMod); // TO DO BR: REMOVE
+		}
+		return turnMod;
+	}
+	public float dynaMod()	{
+		if (turnModCounter > dynaModCounter) {
+			double empIndPowerLevel = nonDynaIndPowerLevel();
+			double playerIndPowerLevel = player().nonDynaIndPowerLevel();
+			double r_empInd = empIndPowerLevel / playerIndPowerLevel;
+			dynaMod = (float) (1.0 + (options().getDynamicDifficultyScale(r_empInd) - 1.0) * turnMod());
+			dynaModCounter = turnModCounter;
+			//System.out.println("dynaMod = " + dynaMod); // TO DO BR: REMOVE
+		}
+		return dynaMod;
+	}
+
 
     public int selectedAI = -1;
     public final int id;

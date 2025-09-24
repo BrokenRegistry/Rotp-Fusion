@@ -21,6 +21,20 @@
 
 ### Features:
 
+- New Dynamic difficulty customization.
+  - Turn at which the dynamic difficulty level is at 50% of its potential.
+  - Number of turns required for dynamic difficulty to increase from 50% to 75% of its potential.
+  - Dynamic evolution model:
+    - Unfair to the Player (default)
+      - The player's reinforcement is limited, unlike that of the AIs.
+    - Unfair to the AI
+      - The AI's reinforcement is limited, unlike that of the player.
+    - Fair and limited
+      - Player and AI reinforcement is limited. (No correction When the power difference is high)
+    - Fair and unlimited
+      - Player and AI reinforcement is unlimited.
+    - End the game quickly
+      - Increase the production gap.- Added an exception in low graphic level to keep minimalistic animations.
 - New combat option to retreat the same way as MoO1: The enemy will have one turn to fire on the ship as it retreats off the screen.
   - Currently unfair to AI, which does not (yet) know this rule.
 - New option to adjust the speed at which asteroids disappear from the battle screen.
@@ -199,6 +213,7 @@
 
 ### User Interfaces:
 
+- New Options tool to reset remote variable and to add images in option panels.
 - Added an exception in low graphic level to keep minimalistic animations.
 - Species Setup Panel: The leader's name no longer changes when returning from the Galaxy Setup Panel.
 - Game Diplomacy: The leader's name can now be changed. (Click on "Leader")
