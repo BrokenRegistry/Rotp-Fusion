@@ -23,6 +23,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
       - Player and AI reinforcement is unlimited.
     - End the game quickly
       - Increase the production gap.
+- New parameter to reduce (or increase!?) the Spaces Pirates level.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

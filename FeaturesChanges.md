@@ -194,7 +194,7 @@
 
 ### Miscellaneous:
 
-25-08-03 (BR)
+- New parameter to reduce (or increase!?) the Spaces Pirates level.
 - Improved the Error message readability
   - Long lines will be split to fit the screen
   - Removed last line, to be able to display instructions.

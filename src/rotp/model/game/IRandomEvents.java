@@ -77,6 +77,11 @@ public interface IRandomEvents extends IBaseOptsTools {
 	
 	// ========================================================================
 	// BR: RANDOM EVENT MONSTERS PARAMETERS
+	ParamInteger piratesLevelMultiplier	= new ParamInteger(MOD_UI, "PIRATES_LEVEL_MULT", 100)
+			.setLimits(10, 500)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
+	default float	piratesLevelMultiplier()	{ return piratesLevelMultiplier.get()/100f; }
 	ParamInteger piratesDelayTurn	= new ParamInteger(MOD_UI, "PIRATES_DELAY_TURN",  25)
 			.setLimits(-1, MAX_DELAY_TURN)
 			.setIncrements(1, 5, 20)

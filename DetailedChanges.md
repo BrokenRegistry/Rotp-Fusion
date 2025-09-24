@@ -18,6 +18,7 @@
       - Player and AI reinforcement is unlimited.
     - End the game quickly
       - Increase the production gap.
+- New parameter to reduce (or increase!?) the Spaces Pirates level.
 
 25-09-20 (BR)
 - Fixed space pirates becoming way too powerful!

@@ -60,7 +60,8 @@ public class SpacePirates extends SpaceMonster {
 			sys.planet().removeExcessWaste();
 		}		
 	}
-	@Override protected void initDesigns()		{
+	@Override protected Float stackLevel()	{ return super.stackLevel() * options().piratesLevelMultiplier(); }
+	@Override protected void initDesigns()	{
 		super.initDesigns();
 		float numLevel	 = stackLevel();
 		float maxTechLvl = maxTechLvl();

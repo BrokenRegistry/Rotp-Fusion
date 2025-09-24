@@ -60,8 +60,8 @@ java -jar target/rotp-<timestamp>-mini.jar
       - Player and AI reinforcement is unlimited.
     - End the game quickly
       - Increase the production gap.
+- New parameter to reduce (or increase!?) the Spaces Pirates level.
     
-
 
 ### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)
 

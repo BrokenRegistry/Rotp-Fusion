@@ -28,6 +28,7 @@ final class RandomEventsOptions extends AbstractOptionsSubUI {
 				HEADER_SPACER_50,
 				new ParamTitle("RANDOM_EVENTS_MONSTERS"),
 				piratesDelayTurn, piratesReturnTurn, piratesMaxSystems,
+				piratesLevelMultiplier,
 				HEADER_SPACER_50,
 				amoebaDelayTurn, amoebaReturnTurn, amoebaMaxSystems,
 				HEADER_SPACER_50,
