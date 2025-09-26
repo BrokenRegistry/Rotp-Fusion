@@ -298,10 +298,10 @@ public final class Colony implements Base, IMappedObject, Serializable {
 
         // empires of orbiting fleets should see ownership change
         StarSystem sys = starSystem();
-        List<ShipFleet> fleets = sys.orbitingFleets();
+        List<ShipFleet> fleets = sys.orbitingFleetsNoMonster();
         for (ShipFleet fl: fleets) {
             Empire flEmp = fl.empire();
-            if (flEmp != empire)
+            if (flEmp != empire && flEmp.sv != null)
                 flEmp.sv.refreshFullScan(sys.id);
         }
 		if (empire().isPlayer())
@@ -1815,7 +1815,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         empire.sv.refreshFullScan(sys.id);
 
         // empires of orbiting fleets should see ownership change
-        List<ShipFleet> fleets = sys.orbitingFleets();
+        List<ShipFleet> fleets = sys.orbitingFleetsNoMonster();
         for (ShipFleet fl: fleets) {
             Empire flEmp = fl.empire();
             if ((flEmp != loser) && (flEmp != empire))
@@ -1900,7 +1900,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         planet.setColony(null);
         // update system views of civs that would notice
         empire.sv.refreshFullScan(sys.id);
-        List<ShipFleet> fleets = sys.orbitingFleets();
+        List<ShipFleet> fleets = sys.orbitingFleetsNoMonster();
         for (ShipFleet fl : fleets) 
             fl.empire().sv.refreshFullScan(sys.id);
 
@@ -1929,7 +1929,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         planet.setColony(null);
         // update system views of civs that would notice
         empire.sv.refreshFullScan(sys.id);
-        List<ShipFleet> fleets = sys.orbitingFleets();
+        List<ShipFleet> fleets = sys.orbitingFleetsNoMonster();
         for (ShipFleet fl : fleets) 
             fl.empire().sv.refreshFullScan(sys.id);
 

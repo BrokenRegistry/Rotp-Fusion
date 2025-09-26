@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+25-09-26 (BR)
+- Minor change to reduce the risk of concurrent error.
+
 25-09-24 (BR)
 - New Options tool to reset remote variable and to add images in option panels.
 - New Dynamic difficulty customization.
