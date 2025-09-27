@@ -437,9 +437,8 @@ public final class GameOverUI extends FadeInPanel
     }
     @Override
     public void animate() {
-        advanceFade();
-
-        repaint();
+		if (advanceFade())
+			repaint();
     }
     @Override
     public String ambienceSoundKey() { 

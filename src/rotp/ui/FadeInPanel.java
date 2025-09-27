@@ -40,9 +40,12 @@ public class FadeInPanel extends BasePanel {
         }
     }
     public void endFade()   { msRemaining = 0; }
-    public void advanceFade() {
-        if (stillFading())
-            msRemaining = targetTime - System.currentTimeMillis();
+    public boolean advanceFade() {
+        if (stillFading()) {
+        	msRemaining = targetTime - System.currentTimeMillis();
+        	return true;
+        }
+        return false;
     }
     public void drawOverlay(Graphics g) {
         BufferedImage img = fadeInOverlay();
