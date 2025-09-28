@@ -2091,8 +2091,9 @@ CUSTOM_RACE_IGNORES_ECO           | Espèce Ignore Eco
 CUSTOM_RACE_PROPERTIE             | Propriétés de l’espèce
 CUSTOM_RACE_CREDIT_DESC           | De l’argent facile ! À chaque tour, vous obtenez : Population * Bonus de crédit / 100
 CUSTOM_RACE_CREDIT                | Bonus de Crédits
-CUSTOM_RACE_HIT_POINTS_DESC       | Capacité de la coque à encaisser un pourcentage de dégâts.
-CUSTOM_RACE_HIT_POINTS            | Facteur de points de vie
+CUSTOM_RACE_HIT_POINTS_HELP       | Influence la quantité de dégâts que vos navires peuvent subir avant d'être détruits.<br>Les →SHIP_DESIGN_HIT_POINTS_LABEL← du →SHIP_DESIGN_ARMOR_TITLE← seront multipliés par ce facteur.<br>Les bases de missiles ne sont pas affectées par ce paramètre, leur HP de base restera de 50 (la moitié de celle d'un navire à grande coque standard).
+CUSTOM_RACE_HIT_POINTS_DESC       | Influence la quantité de dégâts que vos navires peuvent subir avant d'être détruits.<br>Les →SHIP_DESIGN_HIT_POINTS_LABEL← du →SHIP_DESIGN_ARMOR_TITLE← seront multipliés par ce facteur.
+CUSTOM_RACE_HIT_POINTS            | Durabilité de la coque
 CUSTOM_RACE_MAINTENANCE_DESC      | Pourcentage du coût de la flotte.
 CUSTOM_RACE_MAINTENANCE           | Facteur de maintenance
 CUSTOM_RACE_SHIP_SPACE_DESC       | Espace disponible pour les composants, dans les vaisseaux. (Pourcentage)
@@ -2698,7 +2699,7 @@ SETTINGS_MOD_DYN_DIFF_QUICK_ENDING		| Terminer rapidement la partie
 GRAPH_DYN_DIFF_DELAY_HEAD_TITLE			| Évolution de la Difficulté Dynamique
 GRAPH_DYN_DIFF_DELAY_HEAD_TITLE_OFF		| ! Difficulté Dynamique inactivée !
 GRAPH_DYN_DIFF_DELAY_X_AXIS_LABEL		| Tours
-GRAPH_DYN_DIFF_DELAY_Y_AXIS_LABEL		| Niveau d'ajustement
+GRAPH_DYN_DIFF_DELAY_Y_AXIS_LABEL		| Niveau d’ajustement
 GRAPH_DYN_DIFF_MODE_HEAD_TITLE			| Modèle : %1
 GRAPH_DYN_DIFF_MODE_HEAD_TITLE_OFF		| ! Difficulté Dynamique inactivée !
 GRAPH_DYN_DIFF_MODE_X_AXIS_LABEL		| Rapport des Niveau Industriels (IA/Joueur)
@@ -2841,6 +2842,24 @@ SETTINGS_MOD_COUNCIL_PLAYER_VOTE_SIZE_DESC  | Le joueur votera après les empire
 SETTINGS_MOD_COUNCIL_PLAYER_VOTE_SIZE       | Par population
 SETTINGS_MOD_COUNCIL_PLAYER_VOTE_LAST_DESC  | Le joueur votera toujours en dernier.
 SETTINGS_MOD_COUNCIL_PLAYER_VOTE_LAST       | En dernier
+
+HK_END_OF_GAME								| Fin de la Partie
+HK_END_OF_GAME_COND							| Si le jeu n’est pas terminé à la fin du tour spécifié :<br>
+SETTINGS_MOD_END_OF_GAME_DESC				| Conditions requises pour terminer la partie.
+SETTINGS_MOD_END_OF_GAME					| →HK_END_OF_GAME← : %1
+SETTINGS_MOD_END_OF_GAME_NORMAL_DESC		| La fin de partie classique : par domination ou par un majorité suffisante au conseil.
+SETTINGS_MOD_END_OF_GAME_NORMAL				| Classique
+SETTINGS_MOD_END_OF_GAME_TURN_COUNCIL_DESC	| →HK_END_OF_GAME_COND←Le conseil se réunira et le gagnant sera élu à la majorité simple.
+SETTINGS_MOD_END_OF_GAME_TURN_COUNCIL		| Council vote
+SETTINGS_MOD_END_OF_GAME_TURN_POP_DESC		| →HK_END_OF_GAME_COND←L’empire ayant la population la plus importante sera déclaré vainqueur.
+SETTINGS_MOD_END_OF_GAME_TURN_POP			| Population
+SETTINGS_MOD_END_OF_GAME_TURN_TEC_IND_DESC	| →HK_END_OF_GAME_COND←L’empire disposant de la plus grande puissance techno-industrielle sera déclaré vainqueur. (= produit du niveau technologique et de la production totale)
+SETTINGS_MOD_END_OF_GAME_TURN_TEC_IND		| Techno-industriel
+SETTINGS_MOD_END_OF_GAME_TURN_POWER_DESC	| →HK_END_OF_GAME_COND←L’empire disposant de la plus grande puissance totale sera déclaré vainqueur.
+SETTINGS_MOD_END_OF_GAME_TURN_POWER			| Puissance Totale
+
+SETTINGS_MOD_END_OF_GAME_TURN_DESC			| N'est actif que lorsque « →HK_END_OF_GAME← » n'est pas « →SETTINGS_MOD_END_OF_GAME_NORMAL← »<br>Tour auquel la partie se terminera, et un vainqueur sera désigné.
+SETTINGS_MOD_END_OF_GAME_TURN				| (Nombre maximal de tours) : %1
 
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR_HELP | Pour ajuster l’écartement des mondes d’origine de l’Empire ; (la valeur d’origine est de 100 %).<br>Une petite valeur permettra aux mondes d’origine d’être plus proches, ce qui entraînera une grande variété de distances.<br>L’augmentation de cette valeur éloignera les mondes d’origine, ce qui entraînera des distances plus uniformes.<br>Ce paramètre peut être ajusté sur l’aperçu de la carte de la galaxie.
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR_DESC | Distance minimale entre les mondes d’Empire Home Facteur en %. (Non autorisé sur les « galaxies complexes »)
@@ -4964,6 +4983,7 @@ COUNCIL_ADJOURN                   | Le vote est terminé et aucun des candidats 
 COUNCIL_ADJOURN_MOD               | Le vote est terminé et aucun des candidats n’a recueilli  %1 % des voix. Aucun dirigeant n’a été nommé. Le Haut Conseil se réunira à nouveau pour un autre vote dans 25 ans.
 COUNCIL_SUMMARY_TITLE             | Résumé des candidats
 COUNCIL_SUMMARY                   | Les votes sont exprimés par ordre de population. %1 votes sont requis pour remporter l’élection.
+COUNCIL_SUMMARY_END_BY_TURN		| Les votes sont exprimés par ordre de population. La majorité simple suffit pour remporter l’élection.
 COUNCIL_BEGIN_VOTING              | Commencer à voter
 COUNCIL_SHOW_VOTING               | Continuer de voter
 COUNCIL_SKIP_TO_PLAYER            | Passer au vote [player_raceadjec]

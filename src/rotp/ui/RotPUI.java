@@ -514,6 +514,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         	String aiName = text(aiKey).replace("AI: ", "");
         	out   += sep + aiName;
         }
+		IGameOptions.showGuide.set(false);
     	selectGamePanel();
         writeToFile(AUTORUN_BENCHMARK, out, true, true);        	
 		selectSetupRacePanel();

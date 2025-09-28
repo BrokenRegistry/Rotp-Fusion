@@ -24,6 +24,7 @@ import rotp.model.galaxy.Galaxy;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.GameStatus;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.IInGameOptions;
 import rotp.model.incidents.CouncilVoteIncident;
 import rotp.model.incidents.FinalWarIncident;
 import rotp.model.tech.Tech;
@@ -59,9 +60,9 @@ public class GalacticCouncil implements Base, Serializable {
     //convention variables - reset when convention starts
     private transient List<Empire> voters, empires;
     private transient int voteIndex = 0;
-    private transient int[] votes;
-    private transient int totalVotes, votes1, votes2, lastVotes, playerVotes;
-    private transient float playerVotesRatio;
+    private transient double[] votes; // BR: Double to avoid equality in forced end of game
+    private transient double totalVotes, votes1, votes2, lastVotes, playerVotes;
+    private transient double playerVotesRatio;
     private transient Empire candidate1, candidate2, lastVoter, lastVoted;
 
     public static float pctRequired()  { return IGameOptions.counciRequiredPct.get(); }  // BR:Made it adjustable
@@ -106,10 +107,33 @@ public class GalacticCouncil implements Base, Serializable {
         	return actionCountdown;
         }
     }
+	public boolean isForcedEndOfGame()	{
+		IGameOptions opts = options();
+		return opts.turnLimitedEndOfGame() &&
+				galaxy().currentTurn() > opts.selectedEndOfGameTurn();
+	}
     public void nextTurn() {
         voters = null;
         empires = null;
-        
+
+		if (isForcedEndOfGame()) {
+			if (galaxy().numActiveEmpires() >= 3 && options().turnLimitedCouncil()) {
+				actionCountdown = 0;
+				nextAction = CONVENE;
+				convene();
+				return;
+			}
+			else {
+				openConvention(); // to initialize variables.
+				leader = candidate1;
+				rebelLeader = candidate2;
+				votes1 = votes[0];
+				votes2 = votes[1];
+				end();
+				return;
+			}
+		}
+
         if (options().noGalacticCouncil())
             return;
         if (galaxy().numActiveEmpires() < 3)
@@ -159,19 +183,23 @@ public class GalacticCouncil implements Base, Serializable {
     }
     public boolean votingInProgress()  { return voteIndex < voters().size(); }
     public boolean hasVoted(Empire e)  { return voters().indexOf(e) < voteIndex; }
-    public int votes(Empire e)         { return votes[voters().indexOf(e)]; }
+	public long votes(Empire e)        { return (long) votes[voters().indexOf(e)]; }
     public Empire nextVoter()  { return voters().get(voteIndex); }
     public Empire candidate1() { return candidate1; }
     public Empire candidate2() { return candidate2; }
     public Empire lastVoter()  { return lastVoter; }
     public Empire lastVoted()  { return lastVoted; }
-    public int totalVotes()    { return totalVotes; }
+    public long totalVotes()    { return (long) totalVotes; }
 //    public int votesToElect()  { return (int) Math.ceil(totalVotes * 2 / 3.0); }
-    public int votesToElect()  { return (int) Math.ceil(totalVotes * pctRequired()); }
-    public int votes1()        { return votes1; }
-    public int votes2()        { return votes2; }
-    public int lastVotes()     { return lastVotes; }
-    public int nextVotes()     { return votes[voteIndex]; }
+	public int votesToElect()  {
+		if (isForcedEndOfGame())
+			return 0;
+		return (int) Math.ceil(totalVotes * pctRequired());
+	}
+	public long votes1()		{ return (long) votes1; }
+	public long votes2()		{ return (long) votes2; }
+	public long lastVotes()		{ return (long) lastVotes; }
+	public long nextVotes()		{ return (long) votes[voteIndex]; }
     public boolean hasLeader() { return leader != null; }
     public void castNextVote() {
         // will not cast vote for player
@@ -186,13 +214,15 @@ public class GalacticCouncil implements Base, Serializable {
         while (votingInProgress() && !nextVoter().isPlayerControlled())
             castNextVote();
     }
+    /*
+    // Never used not updated for new options!
     public boolean nextVoteWouldElect(Empire emp) {
         if ((emp != candidate1())
         && (emp != candidate2()))
             return false;
         int votesAlreadyCast = emp == candidate1() ? votes1() : votes2();
         return (nextVotes() + votesAlreadyCast) >= votesToElect();
-    }
+    } */
     private void castNextVote(Empire chosen) {
         lastVoter = empires.get(voteIndex);
         lastVotes = votes[voteIndex];
@@ -225,7 +255,7 @@ public class GalacticCouncil implements Base, Serializable {
         currentStatus = FINAL_WAR;
         rotp.ui.notifications.TradeTechNotification.showSkipTechButton = true;
         boolean playerhasAlliance = player().alliedWith(leader.id);
-        status.playerVotesRatio(playerVotesRatio);
+        status.playerVotesRatio((float)playerVotesRatio);
         if (leader.isPlayer()) {
         	status.playerStatus(GameStatus.playerIsLeader);
         	status.allianceWithLeader(false);
@@ -257,7 +287,10 @@ public class GalacticCouncil implements Base, Serializable {
 
         // if player won the vote and no rebels, game over
         if (leader.isPlayer()) {
-            if (rebels.isEmpty() || options().immediateCouncilWin() || options().realmsBeyondCouncil()) {
+            if (rebels.isEmpty()
+            		|| options().immediateCouncilWin()
+            		|| options().realmsBeyondCouncil()
+            		|| isForcedEndOfGame()) {
                 session().status().winDiplomatic();
                 return;
             }
@@ -344,24 +377,70 @@ public class GalacticCouncil implements Base, Serializable {
         initConventionVars();
 
         // calculate vote total for each empire
-        for (int i = 0; i <empires.size(); i++) {
-            Empire voter = empires.get(i);
-            votes[i] = (int) Math.ceil(voter.totalPlanetaryPopulation() / 100);
-            totalVotes += votes[i];
-            if (voter.isPlayer())
-            	playerVotes = votes[i];
-        }
+		if (isForcedEndOfGame()) {
+			switch (options().endOfGameCondition()) {
+				case IInGameOptions.END_OF_GAME_TURN_TEC_IND:
+					for (int i = 0; i <empires.size(); i++) {
+						Empire voter = empires.get(i);
+						votes[i] = voter.empireNonDynaTechnoIndPower() / 100;
+						totalVotes += votes[i];
+						if (voter.isPlayer())
+							playerVotes = votes[i];
+					}
+					break;
+				case IInGameOptions.END_OF_GAME_TURN_POWER:
+					for (int i = 0; i <empires.size(); i++) {
+						Empire voter = empires.get(i);
+						votes[i] = voter.empireNonDynaPower() / 100;
+						totalVotes += votes[i];
+						if (voter.isPlayer())
+							playerVotes = votes[i];
+					}
+					break;
+				default:
+					for (int i = 0; i <empires.size(); i++) {
+						Empire voter = empires.get(i);
+						votes[i] = voter.totalPlanetaryPopulation() / 100;
+						totalVotes += votes[i];
+						if (voter.isPlayer())
+							playerVotes = votes[i];
+					}
+					break;
+			}
+		}
+		else 
+			for (int i = 0; i <empires.size(); i++) {
+				Empire voter = empires.get(i);
+				votes[i] = (int) Math.ceil(voter.totalPlanetaryPopulation() / 100);
+				totalVotes += votes[i];
+				if (voter.isPlayer())
+					playerVotes = votes[i];
+			}
         playerVotesRatio = (float)playerVotes/totalVotes;
 
         log("Convening council. # empires: " + empires.size());
     }
     private void initEmpires() {
         empires = galaxy().activeEmpires();
-        Collections.sort(empires, Empire.TOTAL_POPULATION);
+		if (isForcedEndOfGame()) {
+			switch (options().endOfGameCondition()) {
+				case IInGameOptions.END_OF_GAME_TURN_TEC_IND:
+					Collections.sort(empires, Empire.NON_DYNA_TEC_IND);
+					break;
+				case IInGameOptions.END_OF_GAME_TURN_POWER:
+					Collections.sort(empires, Empire.NON_DYNA_POWER);
+					break;
+				default:
+					Collections.sort(empires, Empire.TOTAL_POPULATION);
+					break;
+			}
+		}
+		else
+			Collections.sort(empires, Empire.TOTAL_POPULATION);
     }
     private void initConventionVars() {
         initEmpires();
-        votes = new int[empires().size()];
+        votes = new double[empires().size()];
         votes1 = 0;
         votes2 = 0;
         candidate1 = empires.get(0);
@@ -384,15 +463,24 @@ public class GalacticCouncil implements Base, Serializable {
         int minVotes = this.votesToElect();
         leader = null;
         rebelLeader = null;
-
-        if (votes1 >= minVotes) {
+		if (votes1 > votes2) { // both can be above the threshold!
+			if (votes1 >= minVotes) {
+				leader = candidate1;
+				rebelLeader = candidate2;
+			}
+		}
+		else if (votes2 >= minVotes) {
+			leader = candidate2;
+			rebelLeader = candidate1;
+		}
+        /* if (votes1 >= minVotes) {
         	leader = candidate1;
         	rebelLeader = candidate2;
         }
         else if (votes2 >= minVotes) {
         	leader = candidate2;
         	rebelLeader = candidate1;
-        }
+        }*/
 
         List<Empire> allVoters = new ArrayList<>(empires);
         // if leader is elected, ask all empires to accept ruling

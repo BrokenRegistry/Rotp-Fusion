@@ -7,23 +7,15 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
-25-09-24 (BR)
-- New Options tool to reset remote variable and to add images in option panels.
-- New Dynamic difficulty customization.
-  - Turn at which the dynamic difficulty level is at 50% of its potential.
-  - Number of turns required for dynamic difficulty to increase from 50% to 75% of its potential.
-  - Dynamic evolution model:
-    - Unfair to the Player (default)
-      - The player's reinforcement is limited, unlike that of the AIs.
-    - Unfair to the AI
-      - The AI's reinforcement is limited, unlike that of the player.
-    - Fair and limited
-      - Player and AI reinforcement is limited. (No correction When the power difference is high)
-    - Fair and unlimited
-      - Player and AI reinforcement is unlimited.
-    - End the game quickly
-      - Increase the production gap.
-- New parameter to reduce (or increase!?) the Spaces Pirates level.
+25-09-27 (BR)
+- New option to set a maximal number of turns, with the following possible endings:
+  - Council vote: The council will meet and the winner will be elected by a simple majority.
+  - Population: The empire with the most population will be declared the winner.
+  - Techno-industrial: The empire with the greatest techno-industrial power will be declared the winner. (= product of technological level and total production)
+  - Total Power Total Power: The empire with the greatest power will be declared the winner.
+- Renamed "Hit Point Factor" to "Hull durability factor" and improved the guide content.
+- Fixed excessive refresh rate in the Game Over panel causing high CPU usage.
+- Minor change to reduce the risk of concurrent error.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

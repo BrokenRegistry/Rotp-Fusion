@@ -15,7 +15,11 @@ final class CouncilOptions extends AbstractOptionsSubUI {
 		map.add(new SafeListParam(Arrays.asList(
 				councilWin,
 				counciRequiredPct,
-				councilPlayerVote
+				councilPlayerVote,
+
+				HEADER_SPACER_50,
+				endOfGameCondition,
+				endOfGameTurn
 				)));
 		return map;
 	}
@@ -24,7 +28,8 @@ final class CouncilOptions extends AbstractOptionsSubUI {
 				Arrays.asList(
 						councilWin,
 						counciRequiredPct,
-						councilPlayerVote
+						endOfGameCondition,
+						endOfGameTurn
 						));
 		return majorList;
 	}

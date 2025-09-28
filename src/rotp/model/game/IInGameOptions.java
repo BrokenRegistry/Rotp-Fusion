@@ -421,6 +421,29 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	default boolean playerVotesFirst()	{ return councilPlayerVote.get().equalsIgnoreCase("First"); }
 	default boolean playerVotesLast()	{ return councilPlayerVote.get().equalsIgnoreCase("Last"); }
 
+	String END_OF_GAME				= "END_OF_GAME";
+	String END_OF_GAME_NORMAL		= END_OF_GAME + "_NORMAL";
+	String END_OF_GAME_TURN_COUNCIL	= END_OF_GAME + "_TURN_COUNCIL";
+	String END_OF_GAME_TURN_POP		= END_OF_GAME + "_TURN_POP";
+	String END_OF_GAME_TURN_TEC_IND	= END_OF_GAME + "_TURN_TEC_IND";
+	String END_OF_GAME_TURN_POWER	= END_OF_GAME + "_TURN_POWER";
+	ParamList endOfGameCondition	= new ParamList( MOD_UI, END_OF_GAME, END_OF_GAME_NORMAL)
+			.showFullGuide(true)
+			.put(END_OF_GAME_NORMAL,		MOD_UI + END_OF_GAME_NORMAL)
+			.put(END_OF_GAME_TURN_COUNCIL,	MOD_UI + END_OF_GAME_TURN_COUNCIL)
+			.put(END_OF_GAME_TURN_POP,		MOD_UI + END_OF_GAME_TURN_POP)
+			.put(END_OF_GAME_TURN_TEC_IND,	MOD_UI + END_OF_GAME_TURN_TEC_IND)
+			.put(END_OF_GAME_TURN_POWER,	MOD_UI + END_OF_GAME_TURN_POWER);
+	default boolean turnLimitedEndOfGame()	{ return !endOfGameCondition.get().equals(END_OF_GAME_NORMAL); }
+	default boolean turnLimitedCouncil()	{ return endOfGameCondition.get().equals(END_OF_GAME_TURN_COUNCIL); }
+	default String endOfGameCondition()		{ return endOfGameCondition.get(); }
+
+	ParamInteger endOfGameTurn		= new ParamInteger(MOD_UI, "END_OF_GAME_TURN", 200)
+			.setLimits(10, 10000)
+			.setIncrements(10, 50, 200)
+			.pctValue(false);
+	default int selectedEndOfGameTurn()		{ return endOfGameTurn.get(); }
+
 	ParamBoolean defaultForwardRally	= new ParamBoolean(MOD_UI, "DEFAULT_FORWARD_RALLY", true);
 	default boolean defaultForwardRally()	{ return defaultForwardRally.get(); }
 

@@ -190,6 +190,12 @@ public interface Base extends InputEventUtil {
             str = str.replace(textSubs[i], vals[i]);
         return str;
     }
+    public default String text(String key, long... vals) {
+        String str = text(key);
+        for (int i=0;i<vals.length;i++)
+            str = str.replace(textSubs[i],String.valueOf(vals[i]));
+        return str;
+    }
     public default String text(String key, int... vals) {
         String str = text(key);
         for (int i=0;i<vals.length;i++)
@@ -921,6 +927,7 @@ public interface Base extends InputEventUtil {
         return new Color(r,g,b,a);
     }
     public default String str(String s) { return s == null ? "null" : s; }
+    public default String str(long i)   { return Long.toString(i); }
     public default String str(int i)    { return Integer.toString(i); }
     public default String str(float i)  { return Float.toString(i); }
     public default BufferedImage flip(BufferedImage img) {

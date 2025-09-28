@@ -21,6 +21,12 @@
 
 ### Features:
 
+- New option to set a maximal number of turns, with the following possible endings:
+  - Council vote: The council will meet and the winner will be elected by a simple majority.
+  - Population: The empire with the most population will be declared the winner.
+  - Techno-industrial: The empire with the greatest techno-industrial power will be declared the winner. (= product of technological level and total production)
+  - Total Power Total Power: The empire with the greatest power will be declared the winner.
+- Minor change to reduce the risk of concurrent error.
 - New Dynamic difficulty customization.
   - Turn at which the dynamic difficulty level is at 50% of its potential.
   - Number of turns required for dynamic difficulty to increase from 50% to 75% of its potential.
@@ -192,6 +198,7 @@
 - When Alt is down, population display is replaced by workers display.
 - Changed Governor tooltip dismiss delay to 10 seconds
 
+
 ### Miscellaneous:
 
 - New parameter to reduce (or increase!?) the Spaces Pirates level.
@@ -285,6 +292,9 @@
 
 
 ### Fixes:
+
+- Fixed excessive refresh rate in the Game Over panel causing high CPU usage.
+- Minor change to reduce the risk of concurrent error.
 - Fixed space pirates becoming way too powerful!
 - Fixed Governor panel minor resizing glitch.
 - Fixed retreat restriction when "Restricted" with turn = 0

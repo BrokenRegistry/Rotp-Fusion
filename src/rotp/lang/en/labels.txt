@@ -2091,10 +2091,11 @@ CUSTOM_RACE_IGNORES_ECO           | Species Ignores Eco
 CUSTOM_RACE_PROPERTIE             | Species Properties
 CUSTOM_RACE_CREDIT_DESC           | Easy Money! Gives each turn: Population * Credit Bonus / 100
 CUSTOM_RACE_CREDIT                | Credits Bonus
-CUSTOM_RACE_HIT_POINTS_DESC       | Hull ability to get damage percentage.
-CUSTOM_RACE_HIT_POINTS            | Hit Point Factor
+CUSTOM_RACE_HIT_POINTS_HELP       | Affects how much damage your ships can take before being destroyed.<br>The ships "→SHIP_DESIGN_ARMOR_TITLE← →SHIP_DESIGN_HIT_POINTS_LABEL←" will be multiplied by this factor.<br>Missile bases are not affected by this parameter; their base HP will remain at 50 (half that of a standard large-hulled ship).
+CUSTOM_RACE_HIT_POINTS_DESC       | Affects how much damage your ships can take before being destroyed.<br>The ships "→SHIP_DESIGN_ARMOR_TITLE← →SHIP_DESIGN_HIT_POINTS_LABEL←" will be multiplied by this factor.
+CUSTOM_RACE_HIT_POINTS            | Hull Durability Factor
 CUSTOM_RACE_MAINTENANCE_DESC      | Fleet cost percentage.
-CUSTOM_RACE_MAINTENANCE           | Maintenance Factor
+CUSTOM_RACE_MAINTENANCE           | Ship Maintenance Factor
 CUSTOM_RACE_SHIP_SPACE_DESC       | Ship available space for components. (Percentage)
 CUSTOM_RACE_SHIP_SPACE            | Ship Space Factor
 CUSTOM_RACE_SHIP_ATTACK_DESC      | Ship attack bonus/malus.
@@ -2841,6 +2842,24 @@ SETTINGS_MOD_COUNCIL_PLAYER_VOTE_SIZE_DESC  | The player will vote after the mos
 SETTINGS_MOD_COUNCIL_PLAYER_VOTE_SIZE       | by Size
 SETTINGS_MOD_COUNCIL_PLAYER_VOTE_LAST_DESC  | The player will always vote last.
 SETTINGS_MOD_COUNCIL_PLAYER_VOTE_LAST       | Last
+
+HK_END_OF_GAME								| End of Game
+HK_END_OF_GAME_COND							| If the game is not over by the specified turn:<br>
+SETTINGS_MOD_END_OF_GAME_DESC				| Requirements to complete the game.
+SETTINGS_MOD_END_OF_GAME					| →HK_END_OF_GAME←: %1
+SETTINGS_MOD_END_OF_GAME_NORMAL_DESC		| The classic end: through domination or by a sufficient majority on the council.
+SETTINGS_MOD_END_OF_GAME_NORMAL				| Classic
+SETTINGS_MOD_END_OF_GAME_TURN_COUNCIL_DESC	| →HK_END_OF_GAME_COND←The council will meet and the winner will be elected by a simple majority.
+SETTINGS_MOD_END_OF_GAME_TURN_COUNCIL		| Council vote
+SETTINGS_MOD_END_OF_GAME_TURN_POP_DESC		| →HK_END_OF_GAME_COND←The empire with the most population will be declared the winner.
+SETTINGS_MOD_END_OF_GAME_TURN_POP			| Population
+SETTINGS_MOD_END_OF_GAME_TURN_TEC_IND_DESC	| →HK_END_OF_GAME_COND←The empire with the greatest techno-industrial power will be declared the winner. (= product of technological level and total production)
+SETTINGS_MOD_END_OF_GAME_TURN_TEC_IND		| Techno-industrial
+SETTINGS_MOD_END_OF_GAME_TURN_POWER_DESC	| →HK_END_OF_GAME_COND←The empire with the greatest power will be declared the winner.
+SETTINGS_MOD_END_OF_GAME_TURN_POWER			| Total Power
+
+SETTINGS_MOD_END_OF_GAME_TURN_DESC			| Only active when the "→HK_END_OF_GAME←" is not set to "→SETTINGS_MOD_END_OF_GAME_NORMAL←"<br>The turn at which the game will end, and a winner will be declared.
+SETTINGS_MOD_END_OF_GAME_TURN				| (Max Game Turns): %1
 
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR_HELP | To adjust the Empire Home worlds spreading; (Vanilla value is 100%).<br>A small value will allow home worlds to be closer, resulting in a great variety of distances.<br>Increasing this value will push away the home worlds, resulting in more uniformized distances.<br>This parameter can be adjusted on the Galaxy map preview.
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR_DESC | Minimum distance between Empire Home worlds Factor in %.(Not allowed on "complex galaxies")
@@ -4963,7 +4982,8 @@ COUNCIL_ADJOURN_TITLE             | The High Council Adjourns
 COUNCIL_ADJOURN                   | Voting has concluded and neither candidate has collected two-thirds of votes. No ruler has been named. The High Council will reconvene for another vote in 25 years.
 COUNCIL_ADJOURN_MOD               | Voting has concluded and neither candidate has collected %1% of votes. No ruler has been named. The High Council will reconvene for another vote in 25 years.
 COUNCIL_SUMMARY_TITLE             | Voter Summary
-COUNCIL_SUMMARY                   | Votes are cast in order of population. %1 votes are required to win election.
+COUNCIL_SUMMARY                   | Votes are cast in order of population.<br>%1 votes are required to win election.
+COUNCIL_SUMMARY_END_BY_TURN		| Votes are cast in order of population.<br>A simple majority is sufficient to win the election.
 COUNCIL_BEGIN_VOTING              | Begin Voting
 COUNCIL_SHOW_VOTING               | Continue Voting
 COUNCIL_SKIP_TO_PLAYER            | Skip to [player_race] Vote

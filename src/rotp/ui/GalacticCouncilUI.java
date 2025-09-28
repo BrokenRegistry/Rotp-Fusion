@@ -423,7 +423,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         int x3a = x1+s10;
         int x3b = x1+w1-s10-w3;
         
-        // council leader images shoud be 480x216... we want to show the middle 200x216 for this screen
+        // council leader images should be 480x216... we want to show the middle 200x216 for this screen
         BufferedImage backImg = raceBackImg();
         BufferedImage img1 = c.candidate1().councilLeader().getSubimage(140, 0, 200, 216);
         BufferedImage img2 = c.candidate2().councilLeader().getSubimage(140, 0, 200, 216);
@@ -808,7 +808,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.setColor(SystemPanel.blackText);
         g.setFont(narrowFont(15)); 
         
-        String prompt = text("COUNCIL_SUMMARY", str(c.votesToElect()));
+        String prompt = councilSummary();
         List<String> lines = wrappedLines(g, prompt, w1-leftW-s20);
         int y1b = y1+h1-s42-(s8*lines.size());
         
@@ -937,7 +937,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.drawImage(img2, x,y,imgW, imgH, null);
         
         boolean voted = c.hasVoted(voter);
-        int votes = c.votes(voter);
+        long votes = c.votes(voter);
         String voteStr;
         if (voted) {
             Empire votee = galaxy().empire(voter.lastCouncilVoteEmpId());
@@ -1605,11 +1605,18 @@ public final class GalacticCouncilUI extends FadeInPanel
         msg += " for " + c.candidate2().name();
         return msg;
     }
+	private String councilSummary()	{
+		GalacticCouncil c = galaxy().council();
+		if (c.isForcedEndOfGame())
+			return text("COUNCIL_SUMMARY_END_BY_TURN");
+		else
+			return text("COUNCIL_SUMMARY", str(c.votesToElect()));
+	}
     private String voterSummary() {
         GalacticCouncil c = galaxy().council();
         String msg = "";
-		msg += NEWLINE + voteTotals();
-        msg += NEWLINE + NEWLINE + text("COUNCIL_SUMMARY", str(c.votesToElect()));
+        msg += NEWLINE + voteTotals() + NEWLINE + NEWLINE;
+		msg += NEWLINE + NEWLINE + councilSummary();
         msg += NEWLINE;
         List<Empire> voters = c.voters();
 		for (Empire voter : voters) {
@@ -1620,7 +1627,7 @@ public final class GalacticCouncilUI extends FadeInPanel
     private String voterSummary(Empire e)	{
         GalacticCouncil c = galaxy().council();
         boolean voted = c.hasVoted(e);
-        int votes = c.votes(e);
+        long votes = c.votes(e);
         String voteStr;
         if (voted) {
             Empire votee = galaxy().empire(e.lastCouncilVoteEmpId());

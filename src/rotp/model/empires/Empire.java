@@ -214,6 +214,8 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
     private transient Color shipBorderColor;
     private transient Color scoutBorderColor;
     private transient Color empireRangeColor;
+    private transient double empireNonDynaPower; // BR: create unscaled Power for forced turn end
+    private transient double empireNonDynaTechnoIndPower; // BR: create unscaled techno-industrial Power for forced turn end
     private transient float totalEmpireProduction;
     private transient float totalEmpireNonDynaProduction; // modnar: create unscaled production, to avoid infinite recursion
     private transient float totalEmpireShipMaintenanceCost;
@@ -3781,6 +3783,8 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
         totalEmpireShipMaintenanceCost = -999;
         totalEmpireStargateCost = -999;
         totalEmpireMissileBaseCost = -999;
+        empireNonDynaTechnoIndPower = -999;
+        empireNonDynaPower = -999;
         inRange = -1;
     }
     public Float totalPlanetaryProduction() {
@@ -3829,6 +3833,20 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
         }
         return totalProductionBC;
     }
+	public double empireNonDynaTechnoIndPower() {
+		if (empireNonDynaTechnoIndPower <= 0)
+			empireNonDynaTechnoIndPower = nonDynaIndPowerLevel();
+		return empireNonDynaTechnoIndPower;
+	}
+	public double empireNonDynaPower() {
+		if (empireNonDynaPower <= 0) {
+			double tech = (float)Math.pow(1 / miniFastRate, tech().avgTechLevel());
+			double industrialPower = tech * nonDynaTotalProd();
+			double militaryPower   = tech * totalFleetSize();
+			empireNonDynaPower =  industrialPower + militaryPower;
+		}
+		return empireNonDynaPower;
+	}
     private float totalShipMaintenanceCost() {
         if (totalEmpireShipMaintenanceCost < 0) {
             int[] counts = galaxy().ships.shipDesignCounts(id);
@@ -4458,6 +4476,8 @@ public final class Empire implements ISpecies, Base, NamedObject, Serializable {
     public static Comparator<Empire> RACE_NAME        = (Empire o1, Empire o2) -> o1.raceName().compareTo(o2.raceName());
     public static Comparator<Empire> HISTORICAL_SIZE  = (Empire o1, Empire o2) -> Base.compare(o2.numColoniesHistory, o1.numColoniesHistory);
     public static Comparator<Empire> BENCHMARK        = (Empire o1, Empire o2) -> Base.compare(o2.benchmark, o1.benchmark);
+    public static Comparator<Empire> NON_DYNA_POWER   = (Empire o1, Empire o2) -> Double.compare(o2.empireNonDynaPower(), o1.empireNonDynaPower());
+    public static Comparator<Empire> NON_DYNA_TEC_IND = (Empire o1, Empire o2) -> Double.compare(o2.empireNonDynaTechnoIndPower(), o1.empireNonDynaTechnoIndPower());
 	// ==================== EmpireBaseData ====================
 	//
 	public static class EmpireBaseData {
