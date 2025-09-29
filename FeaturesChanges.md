@@ -295,6 +295,8 @@
 
 ### Fixes:
 
+- Fixed a bug that prevented pirate loot from being collected as announced!
+  - This occurred when the “Monsters gives loot” option was set to “No.” However, since the original pirates have default loot, it will now be awarded to you.
 - Fixed a bug that allowed a guarded planet to be colonized.
 - A victory against the Orion Guardian will now grant you the relationship bonus you are entitled to.
 - Fixed excessive refresh rate in the Game Over panel causing high CPU usage.

@@ -7,6 +7,8 @@
 - A victory against the Orion Guardian will now grant you the relationship bonus you are entitled to.
 - When you colonize Orion, the AIs will not complain about your expansion. (However, if you colonize other planets during the same turn, they will complain.)
 - The number of votes required to win will remain displayed during the council and will turn green if there is a winner.
+- Fixed a bug that prevented pirate loot from being collected as announced!
+  - This occurred when the “Monsters gives loot” option was set to “No.” However, since the original pirates have default loot, it will now be awarded to you.
 
 25-09-27 (BR)
 - New option to set a maximal number of turns, with the following possible endings:

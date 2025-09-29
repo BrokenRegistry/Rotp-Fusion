@@ -3850,7 +3850,7 @@ SETTINGS_MOD_FIXED_EVENTS_MODE           | Deterministic random events: %1
 
 SETTINGS_MOD_MONSTERS_GIVE_LOOTS_HELP    | Prestige is good, but it doesn't always make up for ship damage.<br>The valiant hero who defeats a monster will also be rewarded with some nice loot.
 SETTINGS_MOD_MONSTERS_GIVE_LOOTS_DESC     | Loot will be given when killing a monster.
-SETTINGS_MOD_MONSTERS_GIVE_LOOTS          | Monsters give Loots: %1
+SETTINGS_MOD_MONSTERS_GIVE_LOOTS          | Monsters drop Loot: %1
 SETTINGS_MOD_MONSTERS_GIVE_LOOTS_YES      | →BOOLEAN_YES←
 SETTINGS_MOD_MONSTERS_GIVE_LOOTS_NO       | →BOOLEAN_NO←
 SETTINGS_MOD_MONSTERS_GIVE_LOOTS_YES_DESC | BC, Tech, or Ship

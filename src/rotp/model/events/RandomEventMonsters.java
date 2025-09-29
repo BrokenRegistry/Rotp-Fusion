@@ -245,8 +245,12 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 			notifKey = event + "_PLUNDER";
 			saleAmount = lootMonster(true);
 			emp.addToTreasury(saleAmount);
-		} else
+		}
+		else {
 			saleAmount = lootMonster(false);
+			if (saleAmount != null)
+				emp.addToTreasury(saleAmount);
+		}
 		
 		if (player().knowsOf(targetEmpId) || !player().sv.name(targetSysId).isEmpty())
 			if (updateGNNAllowed(GNN_END)) {
