@@ -21,6 +21,8 @@
 
 ### Features:
 
+- When you colonize Orion, the AIs will not complain about your expansion. (However, if you colonize other planets during the same turn, they will complain.)
+- The number of votes required to win will remain displayed during the council and will turn green if there is a winner.
 - New option to set a maximal number of turns, with the following possible endings:
   - Council vote: The council will meet and the winner will be elected by a simple majority.
   - Population: The empire with the most population will be declared the winner.
@@ -293,6 +295,8 @@
 
 ### Fixes:
 
+- Fixed a bug that allowed a guarded planet to be colonized.
+- A victory against the Orion Guardian will now grant you the relationship bonus you are entitled to.
 - Fixed excessive refresh rate in the Game Over panel causing high CPU usage.
 - Minor change to reduce the risk of concurrent error.
 - Fixed space pirates becoming way too powerful!

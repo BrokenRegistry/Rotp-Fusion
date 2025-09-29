@@ -44,6 +44,12 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+25-09-29 (BR)
+- Fixed a bug that allowed a guarded planet to be colonized.
+- A victory against the Orion Guardian will now grant you the relationship bonus you are entitled to.
+- When you colonize Orion, the AIs will not complain about your expansion. (However, if you colonize other planets during the same turn, they will complain.)
+- The number of votes required to win will remain displayed during the council and will turn green if there is a winner.
+
 25-09-27 (BR)
 - New option to set a maximal number of turns, with the following possible endings:
   - Council vote: The council will meet and the winner will be elected by a simple majority.

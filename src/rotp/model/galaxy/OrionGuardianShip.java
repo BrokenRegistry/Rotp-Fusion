@@ -57,7 +57,7 @@ public class OrionGuardianShip extends GuardianMonsters {
 	@Override public SpaceMonster getCopy() { return new OrionGuardianShip(null, null); }
 	@Override public int maxMapScale()		{ return GalaxyMapPanel.MAX_FLEET_HUGE_SCALE; }
 	@Override public void plunder()			{ 
-        super.plunder();
+        notifyGalaxy();
         Empire emp = this.lastAttacker();
         for (String techId: techs)
             emp.plunderShipTech(tech(techId), -2); 

@@ -4991,6 +4991,7 @@ COUNCIL_COMPLETE_VOTING           | Complete All Voting
 COUNCIL_SHOW_RESULTS              | Show Results
 COUNCIL_VIEW_SUMMARY              | View Voter Summary
 COUNCIL_VOTES_REQUIRED            | %1 votes required to win election.
+COUNCIL_VOTES_REQUIRED_SIMPLE	| Simple majority required to win election.
 COUNCIL_CAST_PROMPT               | We must cast our %1 votes.
 COUNCIL_CAST_PROMPT_TITLE         | Select a candidate.
 COUNCIL_CHOICE_ABSTAIN            | Abstain

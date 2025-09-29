@@ -4991,6 +4991,7 @@ COUNCIL_COMPLETE_VOTING           | Finir le scrutin
 COUNCIL_SHOW_RESULTS              | Montrer les résultats
 COUNCIL_VIEW_SUMMARY              | Liste des candidats
 COUNCIL_VOTES_REQUIRED            | %1 votes requis pour remporter l’élection.
+COUNCIL_VOTES_REQUIRED_SIMPLE	| La majorité simple suffit pour remporter l’élection.
 COUNCIL_CAST_PROMPT               | Nous devons émettre nos %1 voix.
 COUNCIL_CAST_PROMPT_TITLE         | Sélectionnez un candidat.
 COUNCIL_CHOICE_ABSTAIN            | Abstention

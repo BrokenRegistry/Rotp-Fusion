@@ -528,11 +528,9 @@ public class Ships implements Base, Serializable {
     }
     public void deleteFleet(ShipFleet fl) {
         fl.clear();
-        allFleets.remove(fl);
-
-        Galaxy g = galaxy();
-        for (Empire emp: g.empires())
-            emp.visibleShips().remove(fl);
+		if (allFleets.remove(fl))
+			for (Empire emp: galaxy().empires())
+				emp.visibleShips().remove(fl);
     }
     void launchFleets() { // For session nextTurn
         List<ShipFleet> fleetsAll = allFleetsCopy();

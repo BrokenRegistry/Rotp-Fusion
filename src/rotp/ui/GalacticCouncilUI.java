@@ -170,36 +170,36 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.drawImage(background, 0, 0, w, h, null);
         g.setColor(maskC);
         g.fillRect(0, 0, w, h);
-        
+
         int lineTextSize = 15;
         g.setFont(narrowFont(lineTextSize));
         String text1 = text("COUNCIL_CONVENE");
         String text2 = getModedText("COUNCIL_CONVENE2");
         text2 = emp1.replaceTokens(text2, "first");
         text2 = emp2.replaceTokens(text2, "second");
-        
+
         int bdr = s10;
         int w1 =  scaled(430);
-        
+
         List<String> lines1 = wrappedLines(g, text1, w1-s20);
         List<String> lines2 = wrappedLines(g, text2, w1-s20);
-        
+
         int lineH = s16;
-        
+
         int h1a = scaled(70);
         int h1b = (lineH*(lines1.size()+lines2.size()))+s40;
         int h1c = scaled(40);  //button H
-       
+
         int w0 = w1+bdr+bdr;
         int h0 = bdr+h1a+s5+h1b+h1c+bdr;
         int x0 = (w-w0)/2; 
         int y0 = ((h-h0)/2)-s50;
-                
+
         int x1 = x0+bdr;
         int y1a = y0+bdr;
         int y1b = y1a+h1a+s5;
         int y1c = y0+h0-h1c;
-        
+
         g.setColor(MainUI.paneShadeC2);
         g.fillRect(x0, y0, w0, h0);
 
@@ -207,7 +207,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.fillRect(x1, y1a, w1, h1a);
         g.setColor(MainUI.paneBackground);
         g.fillRect(x1, y1b, w1, h1b);
-        
+
         // draw year/turn info
         String yearStr = displayYearOrTurn();
         g.setFont(narrowFont(40));
@@ -236,8 +236,8 @@ public final class GalacticCouncilUI extends FadeInPanel
         for (String line: lines2) {
             y2 += lineH;
             drawString(g,line, x2, y2);
-        }        
-        
+        }
+
         g.setFont(narrowFont(20));
         String button1Text = text("COUNCIL_VIEW_SUMMARY");
         String button2Text = text("COUNCIL_BEGIN_VOTING");
@@ -248,10 +248,10 @@ public final class GalacticCouncilUI extends FadeInPanel
         int button2X = (w/2)+s10;
         int buttonH = s30;
         int buttonY = y1c;
-       
+
         float[] dist = {0.0f, 0.5f, 1.0f};
         Color[] colors = {greenEdgeC, greenMidC, greenEdgeC};
-        
+
         summaryBox.setBounds(button1X, buttonY, buttonW, buttonH);
         Point2D ptStart = new Point2D.Float(button1X, 0);
         Point2D ptEnd = new Point2D.Float(button1X + buttonW, 0);
@@ -267,7 +267,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.setStroke(prevStr);
         int x2a = button1X + ((buttonW - sw1) / 2);
         drawBorderedString(g, button1Text, x2a, buttonY + buttonH - s9, SystemPanel.textShadowC, c0);  
-        
+
         continueBox.setBounds(button2X, buttonY, buttonW, buttonH);
         ptStart = new Point2D.Float(button2X, 0);
         ptEnd = new Point2D.Float(button2X + buttonW, 0);
@@ -289,12 +289,12 @@ public final class GalacticCouncilUI extends FadeInPanel
         int w = getWidth();
         int h = getHeight();
         g.drawImage(background, 0, 0, w, h, null);
-        
+
         drawViewSummaryButton(g);
         paintVoteTotals(g);
 
         String voteText;
-        
+
         if (c.lastVoted() == null) {
             voteText = text("COUNCIL_CAST_ABSTAIN", c.lastVotes());
             voteText = c.lastVoter().replaceTokens(voteText, "voter");
@@ -304,13 +304,12 @@ public final class GalacticCouncilUI extends FadeInPanel
             voteText = c.lastVoter().replaceTokens(voteText, "voter");
             voteText = c.lastVoted().replaceTokens(voteText, "candidate");
         }
-        
-        
+
         g.setFont(narrowFont(30));
         int sw1 = g.getFontMetrics().stringWidth(voteText);
         int x0 = (w-sw1)/2;
         drawBorderedString(g, voteText, 2, x0, h-s35, SystemPanel.textShadowC, SystemPanel.orangeText);
-        
+
         String contText = text("CLICK_CONTINUE");
         g.setFont(narrowFont(16));
         g.setColor(SystemPanel.whiteText);
@@ -331,14 +330,14 @@ public final class GalacticCouncilUI extends FadeInPanel
         LinearGradientPaint back = new LinearGradientPaint(ptStart, ptEnd, dist, colors);
         g.setPaint(back);
         g.fillRect(0, h-barH, w, barH);
-        
+
         // paint candidates
         int w3 = scaled(60);
         int h3 = scaled(65);
         int y3 = h-h3;
         int x3a = 0;
         int x3b = w-w3;
-        
+
         BufferedImage img1 = c.candidate1().diploMugshotQuiet();
         BufferedImage img2 = c.candidate2().diploMugshotQuiet();
 
@@ -347,15 +346,30 @@ public final class GalacticCouncilUI extends FadeInPanel
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g.drawImage(img1, x3a, y3, w3, h3, null);
         g.drawImage(img2, x3b, y3, w3, h3, null);
-        
-        g.setColor(SystemPanel.whiteText);
-        g.setFont(narrowFont(26));
-        String votes1 = text("COUNCIL_VOTE_COUNT", str(c.votes1()));
-        drawString(g,votes1, x3a+w3+s10, h-s20);
-        
-        String votes2 = text("COUNCIL_VOTE_COUNT", str(c.votes2()));
-        int sw = g.getFontMetrics().stringWidth(votes2);
-        drawString(g,votes2, x3b-sw-s10, h-s20);
+
+		long votesToElect = c.votesToElect();
+		long votes1 = c.votes1();
+		long votes2 = c.votes2();
+		boolean e1Win = votes1 >= votes2 && votes1 >= votesToElect;
+		boolean e2Win = votes2 > votes1  && votes2 >= votesToElect;
+
+		g.setFont(narrowFont(26));
+		Color foreColor = e1Win? SystemPanel.greenText : SystemPanel.whiteText;
+		String votes = text("COUNCIL_VOTE_COUNT", str(votes1));
+		drawBorderedString(g, votes, x3a+w3+s10, h-s20, SystemPanel.blackText, foreColor);
+
+		votes = text("COUNCIL_VOTE_COUNT", str(votes2));
+		foreColor = e2Win? SystemPanel.greenText : SystemPanel.whiteText;
+		int sw = g.getFontMetrics().stringWidth(votes);
+		drawBorderedString(g, votes, x3b-sw-s10, h-s20, SystemPanel.blackText, foreColor);
+
+		foreColor = e1Win || e2Win? SystemPanel.greenText : SystemPanel.whiteText;
+		if (c.isForcedEndOfGame())
+			votes = text("COUNCIL_VOTES_REQUIRED_SIMPLE");
+		else
+			votes = text("COUNCIL_VOTES_REQUIRED", str(votesToElect));
+		sw = g.getFontMetrics().stringWidth(votes);
+		drawBorderedString(g, votes , w-sw-s10, s30, SystemPanel.blackText, foreColor);
     }
     private void paintPlayerVoteMessage(Graphics2D g) {
         GalacticCouncil c = galaxy().council();
@@ -365,30 +379,30 @@ public final class GalacticCouncilUI extends FadeInPanel
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g.drawImage(background, 0, 0, w, h, null);
-        
+
         paintVoteTotals(g);
         g.setColor(maskC);
         g.fillRect(0, 0, w, h);
-        
+
         int lineTextSize = 15;
         g.setFont(narrowFont(lineTextSize));
         int bdr = s10;
         int w1 =  scaled(430);
-        
+
         int h1a = scaled(70);
         int h1b = scaled(261);
         int h1c = scaled(80);
-       
+
         int w0 = w1+bdr+bdr;
         int h0 = bdr+h1a+s5+h1b+h1c;
         int x0 = (w-w0)/2; 
         int y0 = ((h-h0)/2)-s50;
-                
+
         int x1 = x0+bdr;
         int y1a = y0+bdr;
         int y1b = y1a+h1a+s5;
         int y1c = y0+h0-h1c;
-        
+
         g.setColor(MainUI.paneShadeC2);
         g.fillRect(x0, y0, w0, h0);
 
@@ -396,7 +410,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.fillRect(x1, y1a, w1, h1a);
         g.setColor(MainUI.paneBackground);
         g.fillRect(x1, y1b, w1, h1b);
-        
+
         // draw year/turn info
         String yearStr = displayYearOrTurn();
         g.setFont(narrowFont(40));
@@ -411,18 +425,18 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.setColor(SystemPanel.blackText);
         g.setFont(narrowFont(15)); 
         drawString(g,prompt, x1b, y1a+h1a-s45);
-        
+
         String titleStr = text("COUNCIL_CAST_PROMPT_TITLE");
         g.setFont(narrowFont(22));
         drawShadowedString(g, titleStr, 3, x1b, y1a+h1a-s20, SystemPanel.textShadowC, SystemPanel.whiteText);
-        
+
         // paint candidates
         int w3 = scaled(200);
         int h3 = scaled(216);
         int y3 = y1b+s5;
         int x3a = x1+s10;
         int x3b = x1+w1-s10-w3;
-        
+
         // council leader images should be 480x216... we want to show the middle 200x216 for this screen
         BufferedImage backImg = raceBackImg();
         BufferedImage img1 = c.candidate1().councilLeader().getSubimage(140, 0, 200, 216);
@@ -432,16 +446,16 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.drawImage(img1, x3a, y3, w3, h3, null);
         g.drawImage(backImg, x3b, y3, w3, h3, null);
         g.drawImage(img2, x3b, y3, w3, h3, null);
-        
+
         float[] dist = {0.0f, 0.5f, 1.0f};
         Color[] colors = {greenEdgeC, greenMidC, greenEdgeC};
-        
+
         int button1X = x3a;
         int button2X = x3b;
         int buttonY = y3+h3+s5;
         int buttonW = w3;
         int buttonH = s30;
-        
+
         g.setFont(narrowFont(20));
         String button1Text = c.candidate1().leader().name();
         String button2Text = c.candidate2().leader().name();
@@ -463,7 +477,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.setStroke(prevStr);
         int x2a = button1X + ((buttonW - sw1) / 2);
         drawBorderedString(g, button1Text, x2a, buttonY + buttonH - s9, SystemPanel.textShadowC, c0);  
-        
+
         candidate2Box.setBounds(button2X, buttonY, buttonW, buttonH);
         ptStart = new Point2D.Float(button2X, 0);
         ptEnd = new Point2D.Float(button2X + buttonW, 0);
@@ -479,7 +493,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.setStroke(prevStr);
         int x2b = button2X + ((buttonW - sw2) / 2);
         drawBorderedString(g, button2Text, x2b, buttonY + buttonH - s9, SystemPanel.textShadowC, c0);    
-        
+
         Color[] colors2 = {grayEdgeC, grayMidC, grayEdgeC};
         int button3X = (w-buttonW)/2;
         int button3Y = y1c+s5;
@@ -541,32 +555,32 @@ public final class GalacticCouncilUI extends FadeInPanel
         paintVoteTotals(g);
         g.setColor(maskC);
         g.fillRect(0, 0, w, h);
-        
+
         int lineTextSize = 15;
         g.setFont(narrowFont(lineTextSize));
         String text1 = getModedText("COUNCIL_ADJOURN");
-        
+
         int bdr = s10;
         int w1 =  scaled(430);
-        
+
         List<String> lines1 = wrappedLines(g, text1, w1-s20);
-        
+
         int lineH = s16;
-        
+
         int h1a = scaled(70);
         int h1b = (lineH*lines1.size())+s20;
         int h1c = scaled(40);  //button H
-       
+
         int w0 = w1+bdr+bdr;
         int h0 = bdr+h1a+s5+h1b+h1c+bdr;
         int x0 = (w-w0)/2; 
         int y0 = ((h-h0)/2)-s50;
-                
+
         int x1 = x0+bdr;
         int y1a = y0+bdr;
         int y1b = y1a+h1a+s5;
         int y1c = y0+h0-h1c;
-        
+
         g.setColor(MainUI.paneShadeC2);
         g.fillRect(x0, y0, w0, h0);
 
@@ -574,8 +588,8 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.fillRect(x1, y1a, w1, h1a);
         g.setColor(MainUI.paneBackground);
         g.fillRect(x1, y1b, w1, h1b);
-        
-        
+
+
         // draw year/turn info
         String yearStr = displayYearOrTurn();
         g.setFont(narrowFont(40));
@@ -600,7 +614,7 @@ public final class GalacticCouncilUI extends FadeInPanel
             y2 += lineH;
             drawString(g,line, x2, y2);
         } 
-        
+
         g.setFont(narrowFont(20));
         String button1Text = text("COUNCIL_CONTINUE");
         int sw1 = g.getFontMetrics().stringWidth(button1Text);
@@ -608,10 +622,10 @@ public final class GalacticCouncilUI extends FadeInPanel
         int button1X = (w-buttonW)/2;
         int buttonH = s30;
         int buttonY = y1c;
-       
+
         float[] dist = {0.0f, 0.5f, 1.0f};
         Color[] colors = {greenEdgeC, greenMidC, greenEdgeC};
-        
+
         continueBox.setBounds(button1X, buttonY, buttonW, buttonH);
         Point2D ptStart = new Point2D.Float(button1X, 0);
         Point2D ptEnd = new Point2D.Float(button1X + buttonW, 0);
@@ -636,30 +650,30 @@ public final class GalacticCouncilUI extends FadeInPanel
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g.drawImage(background, 0, 0, w, h, null);
-        
+
         paintVoteTotals(g);
         g.setColor(maskC);
         g.fillRect(0, 0, w, h);
-        
+
         int lineTextSize = 15;
         g.setFont(narrowFont(lineTextSize));
         int bdr = s10;
         int w1 =  scaled(500);
-        
+
         int h1a = scaled(70);
         int h1b = scaled(226);
         int h1c = scaled(50);
-       
+
         int w0 = w1+bdr+bdr;
         int h0 = bdr+h1a+s5+h1b+h1c;
         int x0 = (w-w0)/2; 
         int y0 = ((h-h0)/2)-s50;
-                
+
         int x1 = x0+bdr;
         int y1a = y0+bdr;
         int y1b = y1a+h1a+s5;
         int y1c = y0+h0-h1c;
-        
+
         g.setColor(MainUI.paneShadeC2);
         g.fillRect(x0, y0, w0, h0);
 
@@ -667,7 +681,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.fillRect(x1, y1a, w1, h1a);
         g.setColor(MainUI.paneBackground);
         g.fillRect(x1, y1b, w1, h1b);
-        
+
         // draw year/turn info
         String yearStr = displayYearOrTurn();
         g.setFont(narrowFont(40));
@@ -681,19 +695,19 @@ public final class GalacticCouncilUI extends FadeInPanel
         String titleStr = text("COUNCIL_ELECTED_TITLE");
         g.setFont(narrowFont(26));
         drawShadowedString(g, titleStr, 3, x1b, y1a+h1a-s20, SystemPanel.textShadowC, SystemPanel.whiteText);
-        
+
         // paint candidates
         int w3 = scaled(480);
         int h3 = scaled(216);
         int y3 = y1b+s5;
         int x3a = x1+s10;
-       
+
         BufferedImage backImg = wideBackImg();
         BufferedImage img1 = c.leader().councilLeader();
 
         g.drawImage(backImg, x3a, y3, w3, h3, null);
         g.drawImage(img1, x3a, y3, w3, h3, null);
-        
+
         g.setFont(narrowFont(20));
         String button1Text = text("COUNCIL_ACCEPT_RULING");
         String button2Text = text("COUNCIL_REJECT_RULING");
@@ -707,11 +721,11 @@ public final class GalacticCouncilUI extends FadeInPanel
         int button2X = (w/2)+s10;
         int buttonH = s30;
         int buttonY = y1c+s10;
-       
+
         float[] dist = {0.0f, 0.5f, 1.0f};
         Color[] colors = {greenEdgeC, greenMidC, greenEdgeC};
         Color[] colors2 = {redEdgeC, redMidC, redEdgeC};
-        
+
         acceptBox.setBounds(button1X, buttonY, buttonW, buttonH);
         Point2D ptStart = new Point2D.Float(button1X, 0);
         Point2D ptEnd = new Point2D.Float(button1X + buttonW, 0);
@@ -727,7 +741,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.setStroke(prevStr);
         int x2a = button1X + ((buttonW - sw1) / 2);
         drawBorderedString(g, button1Text, x2a, buttonY + buttonH - s9, SystemPanel.textShadowC, c0);  
-        
+
         if (!options().realmsBeyondCouncil()) {
         	rejectBox.setBounds(button2X, buttonY, buttonW, buttonH);
             ptStart = new Point2D.Float(button2X, 0);
@@ -755,22 +769,22 @@ public final class GalacticCouncilUI extends FadeInPanel
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g.drawImage(background, 0, 0, w, h, null);
-        
+
         paintVoteTotals(g);
         g.setColor(maskC);
         g.fillRect(0, 0, w, h);      
-        
+
         int MAX_ROWS = 4;
         List<Empire> voters = c.voters();
         int rowsNeeded = (voters.size()+1)/2;
         boolean needsScroll = rowsNeeded > MAX_ROWS;
-        
+
         int empireBoxW = scaled(280);
         int empireBoxH = s95;
         int empireBoxSpace = s7;
         int rows = min(MAX_ROWS, rowsNeeded);
         int listH = (rows*empireBoxH)+((rows-1)*empireBoxSpace);
-        
+
         int scrollW = s12;
         int w0= scaled(585);
         if (needsScroll)
@@ -778,23 +792,23 @@ public final class GalacticCouncilUI extends FadeInPanel
         int h0= listH+scaled(135);
         int x0= (w-w0)/2;
         int y0= scaled(270)-(rows*s50);
-        
+
         int w1 = scaled(565);
         int h1 = s75;
         int x1 = x0+s10;
         int y1 = y0+s7;
-        
+
         int w2 = w1;
         int x2 = x1;
         int h2 = listH;
         int y2 = y1+h1+s10;
-        
+
         g.setColor(MainUI.paneShadeC2);
         g.fillRect(x0, y0, w0, h0);
 
         g.setColor(MainUI.paneBackground);
         g.fillRect(x1, y1, w1, h1);
-        
+
         // draw year/turn info
         String yearStr = displayYearOrTurn();
         g.setFont(narrowFont(40));
@@ -807,21 +821,21 @@ public final class GalacticCouncilUI extends FadeInPanel
         int x1b = x1+leftW+s10;
         g.setColor(SystemPanel.blackText);
         g.setFont(narrowFont(15)); 
-        
+
         String prompt = councilSummary();
         List<String> lines = wrappedLines(g, prompt, w1-leftW-s20);
         int y1b = y1+h1-s42-(s8*lines.size());
-        
+
         for (String line: lines) {
             drawString(g,line, x1b, y1b);
             y1b += s16;
         }
-        
+
         y1b += s15;
         String titleStr = text("COUNCIL_SUMMARY_TITLE");
         g.setFont(narrowFont(26));
         drawShadowedString(g, titleStr, 3, x1b, y1b, SystemPanel.textShadowC, SystemPanel.whiteText);
-        
+
         g.setClip(x2,y2,w2,h2);
         int y2a = needsScroll ? y2-scrollbarY : y2;
         int fullListH = 0;
@@ -837,7 +851,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.setClip(null);
         voterListBox.setBounds(x1,y2,w1,h2);
         scrollYMax = max(0, fullListH-listH);
-       
+
         if (scrollYMax == 0)
             scrollbar.setBounds(0,0,0,0);
         else if (needsScroll) {
@@ -855,19 +869,19 @@ public final class GalacticCouncilUI extends FadeInPanel
                 g.setStroke(prev);
             }
         }
-        
+
         g.setFont(narrowFont(20));
         int buttonH = s30;
         int buttonY = y2+h2+s7;       
         float[] dist = {0.0f, 0.5f, 1.0f};
         Color[] colors = {greenEdgeC, greenMidC, greenEdgeC};
-        
+
         String button1Text = c.votingInProgress() ? text("COUNCIL_SHOW_VOTING") : text("COUNCIL_SHOW_RESULTS");
         int sw1 = g.getFontMetrics().stringWidth(button1Text);
         int button1W = sw1+s40;
-        
+
         int gap = (w1-button1W)/2;
-        
+
         String button2Text = null;
         int button2W = 0;
         int button2X = x1;
@@ -883,7 +897,7 @@ public final class GalacticCouncilUI extends FadeInPanel
             button2W = sw2+s40;
             gap = (w1-button1W-button2W)/3;
         }
-        
+
         if (c.votingInProgress()) {
             button2X = x1+gap;
             skipBox.setBounds(button2X, buttonY, button2W, buttonH);
@@ -924,7 +938,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         GalacticCouncil c = galaxy().council();
         g.setColor(MainUI.paneBackground);
         g.fillRect(x, y, w, h);
-        
+
 		// modnar: use (slightly) better sampling
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -932,10 +946,10 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.drawImage(img, x, y, this);
         int imgW = img.getWidth();
         int imgH = img.getHeight();
-        
+
         BufferedImage img2 = voter.diploMugshotQuiet();
         g.drawImage(img2, x,y,imgW, imgH, null);
-        
+
         boolean voted = c.hasVoted(voter);
         long votes = c.votes(voter);
         String voteStr;
@@ -988,10 +1002,10 @@ public final class GalacticCouncilUI extends FadeInPanel
         int button1X = s10;
         int buttonH = s30;
         int buttonY = s20;
-       
+
         float[] dist = {0.0f, 0.5f, 1.0f};
         Color[] colors = {grayEdgeC, grayMidC, grayEdgeC};
-        
+
         summaryBox.setBounds(button1X, buttonY, buttonW, buttonH);
         Point2D ptStart = new Point2D.Float(button1X, 0);
         Point2D ptEnd = new Point2D.Float(button1X + buttonW, 0);
@@ -1642,7 +1656,7 @@ public final class GalacticCouncilUI extends FadeInPanel
             voteStr = text("COUNCIL_VOTE_COUNT", str(votes));
         String cand1Str = treatyString(e, c.candidate1());
         String cand2Str = treatyString(e, c.candidate2());
-        
+
         String msg = e.raceName();
         msg += SPACER + voteStr;
         msg += SPACER + cand1Str;

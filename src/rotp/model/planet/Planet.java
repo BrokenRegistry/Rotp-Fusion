@@ -260,7 +260,7 @@ public class Planet implements Base, IMappedObject, Serializable {
         }
 
         // update system views
-        List<ShipFleet> fleets = starSystem().orbitingFleets();
+        List<ShipFleet> fleets = starSystem().orbitingFleetsNoMonster();
         for (ShipFleet fl: fleets)
             fl.empire().sv.refreshFullScan(starSystem().id);
         if (systemEmp != null)

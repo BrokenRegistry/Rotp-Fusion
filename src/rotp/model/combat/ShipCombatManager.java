@@ -566,7 +566,7 @@ public class ShipCombatManager implements Base {
             turnDone(stack);
     }
     private void raiseHostilityLevels() {
-        List<ShipFleet> fleets = system.orbitingFleets();
+        List<ShipFleet> fleets = system.orbitingFleetsNoMonster();
         for (ShipFleet fl : fleets)
             fl.empire().sv.raiseHostility(system.id);
     }

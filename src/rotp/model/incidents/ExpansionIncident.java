@@ -15,7 +15,10 @@
  */
 package rotp.model.incidents;
 
+import java.util.List;
+
 import rotp.model.empires.EmpireView;
+import rotp.model.galaxy.StarSystem;
 import rotp.ui.diplomacy.DialogueManager;
 
 public class ExpansionIncident extends DiplomaticIncident {
@@ -64,7 +67,18 @@ public class ExpansionIncident extends DiplomaticIncident {
     @Override
     public String description()      { return decode(text("INC_EXPANSION_DESC")); }
     @Override
-    public String warningMessageId() { return  galaxy().empire(empYou).newSystems().isEmpty() ? "" :DialogueManager.WARNING_EXPANSION; }
+	public String warningMessageId() {
+		List<StarSystem> newSystems = galaxy().empire(empYou).newSystems();
+		if (newSystems.isEmpty())
+			return "";
+		if (newSystems.size() > 1)
+			return DialogueManager.WARNING_EXPANSION;
+		StarSystem newSys = newSystems.get(0);
+		if (newSys.id == galaxy().orionId())
+			// No warning when you colonize Orion
+			return "";
+		return DialogueManager.WARNING_EXPANSION;
+	}
     @Override
     public String key() {
         return concat("EmpireGrowth:", str(dateOccurred));

@@ -405,7 +405,7 @@ public final class Galaxy implements Base, Serializable {
         for (StarSystem sys: starSystems) {
         	if(sys != null) {
 	            Empire home = sys.empire();
-	            List<ShipFleet> fleets = sys.orbitingFleets();
+	            List<ShipFleet> fleets = sys.orbitingFleetsNoMonster();
 	            if ((home != null) && !fleets.isEmpty()){
 	                for (ShipFleet fl: fleets) {
 	                    if (fl != null && fl.isOrbiting() && !fl.retreating()) {
@@ -432,7 +432,7 @@ public final class Galaxy implements Base, Serializable {
         for (StarSystem sys: starSystems) {
             Empire home = sys.empire();
             List<ShipFleet> fleets = sys.orbitingFleetsNoMonster();
-            if ((home == null) && !fleets.isEmpty()){
+            if ((home == null) && !fleets.isEmpty() && !sys.hasMonster()){
                 for (ShipFleet fl: fleets) 
                     fl.checkColonize();
             }

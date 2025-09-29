@@ -22,7 +22,7 @@ public abstract class GuardianMonsters extends SpaceMonster {
 		super(name, empId, speed, level);
 	}
 
-	@Override public void	 plunder()			{ removeGuardian(); }
+	@Override public void	 plunder()			{ super.plunder(); removeGuardian(); }
 	@Override public boolean isFusionGuardian()	{ return true; }
 	@Override public boolean isOrionGuardian()	{ return true; }
 	@Override public StarSystem system()		{ return galaxy().system(sysId()); }

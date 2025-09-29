@@ -250,6 +250,7 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 	protected void removeGuardian()	{
 		// Remove the Monster from the system
 		system().monster(null);
+		galaxy().ships.deleteFleet(this);
         // all empires now know this system is no longer guarded
         for (Empire emp1: galaxy().empires()) 
             emp1.sv.view(sysId()).refreshSystemEntryScan();

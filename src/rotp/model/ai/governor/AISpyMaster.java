@@ -177,13 +177,22 @@ public class AISpyMaster implements Base, SpyMaster {
 			spies.maxSpies(0);
 			return;
 		}
-
+		if (governor.respectPromises() && !emb.anyWar() && v.timerIsActive()) {
+			if (spies.govShutdownSpy()) {
+				spies.beginHide();
+				spies.maxSpies(0);
+				return;
+			}
+			if (spies.govHideSpy()) {
+				spies.beginHide();
+				return;
+			}
+		}
 		// we've been warned and they are not our enemy (i.e. no war preparations)
-		
 		boolean canEspionage = !spies.possibleTechs().isEmpty();
 		Sabotage sabMission = bestSabotageChoice(v);
 		boolean canSabotage = spies.canSabotage() && (sabMission != null);
-		
+
 		// we are in a pact or at peace
 		// ail: according to official strategy-guide two spies is supposedly the ideal number for tech-stealing etc, so always setting it to two except for hiding
 		// let's see what happens, if we just nonchalantly spy on everyone regardless of anything considering they won't declare war unless they would do so anyways

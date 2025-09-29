@@ -536,7 +536,7 @@ public class ColonizePlanetUI extends FadeInPanel implements MouseListener, Mous
             switch(displayMode) {
                 case LANDING    : moveLandingShip(); break;
                 case CLAIMING   : moveClaimingSoldier(); break;
-                default: break;
+                default: return;
             }
             repaint();
         }
