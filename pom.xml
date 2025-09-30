@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<version>Fusion-2025-09-29</version>
 
 	<!-- Project Declaration -->
 	<groupId>com.rayfowler</groupId>
@@ -11,14 +12,13 @@
 		<name>1</name>
 	</organization>
 	<artifactId>rotp</artifactId>
-	<version>${revision}</version>
 	<packaging>jar</packaging>
 	
 	<!-- Variables Declaration -->
 	<properties>
 		<!-- File Name Format -->
 		<maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
-		<revision>Fusion-${maven.build.timestamp}</revision>
+		<revision>${project.version</revision>
 		<!-- EXE converter Format yyyy.M.d.H -->
 		<exeVersion>${current.time}</exeVersion>
 		<!-- Tag Format yyyy/MM/dd/HH/mm -->
@@ -134,7 +134,7 @@
 
 	<!-- Files generation -->
 	<build>
-		<!-- Ressources non-conventionnal location Declaration-->
+		<!-- Resources non-conventionnal location Declaration-->
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
 			<resource>

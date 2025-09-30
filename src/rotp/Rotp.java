@@ -204,7 +204,9 @@ public final class Rotp {
         becomeVisible();
         installGCMonitoring();
 		System.out.println("OS = " + OSUtil.getOS()); // To initialize the value
-        isIDE(); // To initialize the value
+//        isIDE(); // To initialize the value
+        if(isIDE())
+        	PomUpdater.updatePom();
     }
     private static void installGCMonitoring() { memoryTracker = new MemoryTracker(maxHeapMemory); }
     private static GraphicsDevice device() {
