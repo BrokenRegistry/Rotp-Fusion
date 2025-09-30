@@ -74,7 +74,7 @@
 
 	<!-- All the dependencies Declaration -->
 	<dependencies>
-		<!-- JUNIT dependencies -->
+		<!-- JUNIT dependencies
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
@@ -86,7 +86,7 @@
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>${junit.jupiter.version}</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 		<!-- Base and modders ROTP dependencies -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -217,13 +217,12 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.14.0</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
-			
 			<!-- images & sound compression, using antrun which is standard -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
