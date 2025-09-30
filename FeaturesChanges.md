@@ -203,6 +203,8 @@
 
 ### Miscellaneous:
 
+- New pom.xml version management.
+  - pom version has now to be a constant.
 - New parameter to reduce (or increase!?) the Spaces Pirates level.
 - Improved the Error message readability
   - Long lines will be split to fit the screen
@@ -295,6 +297,7 @@
 
 ### Fixes:
 
+- Fixed potential crash when undeploying fleets.
 - Fixed a bug that prevented pirate loot from being collected as announced!
   - This occurred when the “Monsters gives loot” option was set to “No.” However, since the original pirates have default loot, it will now be awarded to you.
 - Fixed a bug that allowed a guarded planet to be colonized.

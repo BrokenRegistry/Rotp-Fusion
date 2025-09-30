@@ -463,7 +463,9 @@ public class Ships implements Base, Serializable {
         }
         return cancelled;
     }
-    public boolean undeployFleet(ShipFleet sourceFleet) {
+	public boolean undeployFleet(ShipFleet sourceFleet) {
+		if (sourceFleet == null)
+			 return false;
         if (!sourceFleet.isDeployed() && !sourceFleet.isRalliedThisTurn())
             return false;
         // returns true if the source fleet was scrapped
@@ -489,8 +491,8 @@ public class Ships implements Base, Serializable {
         return true;
     }
     public void undeployFleet(ShipFleet sourceFleet, List<ShipDesign> designs) {
-        if (!sourceFleet.isDeployed())
-            return;
+		if (sourceFleet == null || !sourceFleet.isDeployed())
+			return;
         // returns true if the source fleet was scrapped
         StarSystem sys = sourceFleet.system();
         int empId = sourceFleet.empId();
@@ -527,6 +529,8 @@ public class Ships implements Base, Serializable {
         }
     }
     public void deleteFleet(ShipFleet fl) {
+		if (fl == null)
+			 return;
         fl.clear();
 		if (allFleets.remove(fl))
 			for (Empire emp: galaxy().empires())
