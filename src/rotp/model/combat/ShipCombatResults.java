@@ -193,7 +193,10 @@ public final class ShipCombatResults implements Base {
         startingFactories  = null;
 
         // set up default attacker/defender assignment
-        defender = emp;
+		if (monster.isFusionGuardian() || monster.isOrionGuardian())
+			attacker = emp;
+		else
+			defender = emp;
 
         // if system is colonized and one of the fleet is allied to it,
         // set it up as a defender

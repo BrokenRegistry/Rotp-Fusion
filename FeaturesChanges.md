@@ -298,6 +298,7 @@
 
 ### Fixes:
 
+- Fixed combat against guardian monster. In case of draw, the empire will now retreat.
 - Fixed potential crash when undeploying fleets.
 - Fixed a bug that prevented pirate loot from being collected as announced!
   - This occurred when the “Monsters gives loot” option was set to “No.” However, since the original pirates have default loot, it will now be awarded to you.
