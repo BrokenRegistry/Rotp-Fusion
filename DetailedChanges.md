@@ -2,6 +2,9 @@
 
 ## What's New
 
+25-10-01 (BR)
+- Some sub-options, which depend on other options for their values to be taken into account, are displayed semi-transparently when their values are not taken into account.
+
 25-09-30 (BR)
 - Fixed potential crash when undeploying fleets.
 - Clarification of the retreat options, naming and guide description.

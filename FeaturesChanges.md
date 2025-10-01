@@ -224,6 +224,7 @@
 
 ### User Interfaces:
 
+- Some sub-options, which depend on other options for their values to be taken into account, are displayed semi-transparently when their values are not taken into account.
 - New Options tool to reset remote variable and to add images in option panels.
 - Added an exception in low graphic level to keep minimalistic animations.
 - Species Setup Panel: The leader's name no longer changes when returning from the Galaxy Setup Panel.

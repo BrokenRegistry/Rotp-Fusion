@@ -18,6 +18,7 @@ package rotp.ui.game;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.model.game.IBaseOptsTools.LIVE_OPTIONS_FILE;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -461,6 +462,8 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			Graphics2D gi = (Graphics2D) img.getGraphics();
 			gi.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			gi.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
+			if (param.isGhost())
+				gi.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 			ModText txtLeft	 = btListLeft.get(index);
 			txtLeft.repaint(activeList.get(index).getGuiDisplay(0));
 			ModText txtRight = btListRight.get(index);

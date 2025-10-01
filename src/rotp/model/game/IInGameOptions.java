@@ -66,22 +66,29 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	default int selectedCustomDifficulty()		{ return customDifficulty.get(); }
 
 	String DYNAMIC_DIFFICULTY_UPDATE_ID	= "turnMod";
-	ParamBoolean dynamicDifficulty	= new ParamBoolean(MOD_UI, "DYNAMIC_DIFFICULTY", false);
+	ParamBoolean dynamicDifficulty	= new ParamBoolean(MOD_UI, "DYNAMIC_DIFFICULTY", false)
+			.setUpdateParameters(IInGameOptions::tagDynamicDifficulty, "");
 	default boolean selectedDynamicDifficulty()	{ return dynamicDifficulty.get(); }
 
-	ParamInteger dynamicDifficultyDelay	= new ParamInteger(MOD_UI, "DYNAMIC_DIFFICULTY_DELAY", 150)
+	final class ParamDynDiffInt extends ParamInteger	{
+		public ParamDynDiffInt(String gui, String name, Integer defaultValue) {
+			super(gui, name, defaultValue);
+		}
+		@Override public boolean isGhost()	{ return !dynamicDifficulty.get(); }
+	}
+	ParamInteger dynamicDifficultyDelay	= new ParamDynDiffInt(MOD_UI, "DYNAMIC_DIFFICULTY_DELAY", 150)
 			.setLimits(20, 500)
 			.setIncrements(1, 5, 20)
 			.setUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
 	default int dynamicDifficultyDelay()		{ return dynamicDifficultyDelay.get(); }
 
-	ParamInteger dynamicDifficultyRange	= new ParamInteger(MOD_UI, "DYNAMIC_DIFFICULTY_RANGE", 10)
+	ParamInteger dynamicDifficultyRange	= new ParamDynDiffInt(MOD_UI, "DYNAMIC_DIFFICULTY_RANGE", 10)
 			.setLimits(0, 500)
 			.setIncrements(1, 5, 20)
 			.setUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
 	default int dynamicDifficultyRange()		{ return dynamicDifficultyRange.get(); }
 
-	ParamInteger dynamicDifficultySpan	= new ParamInteger(MOD_UI, "DYNAMIC_DIFFICULTY_SPAN", 100)
+	ParamInteger dynamicDifficultySpan	= new ParamDynDiffInt(MOD_UI, "DYNAMIC_DIFFICULTY_SPAN", 100)
 			.setLimits(10, 500)
 			.setIncrements(1, 5, 20)
 			.setUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
@@ -111,8 +118,8 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 		return turnMod;
 	}
 	
-	class ParamDynDiffTurnImage extends ParamImage {
-		public ParamDynDiffTurnImage() {
+	final class ParamDynDiffTurnImage extends ParamImage {
+		public ParamDynDiffTurnImage()	{
 			super(MOD_UI, "DYNAMIC_DIFFICULTY_TURN_IMAGE");
 		}
 		@Override public boolean updated()	{
@@ -132,7 +139,8 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 			g.dispose();
 			return img;
 		}
-		public XYChart getChart() {
+		@Override public boolean isGhost()	{ return !dynamicDifficulty.get(); }
+		public XYChart getChart()	{
 			int delay = dynamicDifficultyDelay.get();
 			int range = dynamicDifficultyRange.get();
 			return getChart(delay, range);
@@ -172,14 +180,13 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	}
 	ParamDynDiffTurnImage dynamicDifficultyTurnImage	= new ParamDynDiffTurnImage();
 
-	class ParamDynamicDifficulty extends ParamList {
+	final class ParamDynamicDifficulty extends ParamList {
 		private static final String UNFAIR_TO_PLAYER	= "DYN_DIFF_UNFAIR_TO_PLAYER";
 		private static final String UNFAIR_TO_AI		= "DYN_DIFF_UNFAIR_TO_AI";
 		private static final String FAIR_BOUND			= "DYN_DIFF_FAIR_BOUND";
 		private static final String FAIR_UNBOUND		= "DYN_DIFF_FAIR_UNBOUND";
 		private static final String QUICK_ENDING		= "DYN_DIFF_QUICK_ENDING";
-
-		public ParamDynamicDifficulty() {
+		public ParamDynamicDifficulty()	{
 			super(MOD_UI, "DYNAMIC_DIFFICULTY_MODE", UNFAIR_TO_PLAYER);
 			showFullGuide(true);
 			put(UNFAIR_TO_PLAYER,	MOD_UI + UNFAIR_TO_PLAYER);
@@ -187,8 +194,8 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 			put(FAIR_BOUND,			MOD_UI + FAIR_BOUND);
 			put(FAIR_UNBOUND,		MOD_UI + FAIR_UNBOUND);
 			put(QUICK_ENDING,		MOD_UI + QUICK_ENDING);
-			setUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
 		}
+		@Override public boolean isGhost()	{ return !dynamicDifficulty.get(); }
 		public double getScaleMod(double r)	{ return getScaleMod(r, dynamicDifficultySpan.get() / 100.0, get());
 		}
 		public double getScaleMod(double r, double span, String mode)	{
@@ -260,14 +267,12 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	ParamDynamicDifficulty dynamicDifficultyMode	= new ParamDynamicDifficulty();
 	default double getDynamicDifficultyScale(double r_empInd)	{ return dynamicDifficultyMode.getScaleMod(r_empInd); }
 
-	class ParamDynDiffModeImage extends ParamImage {
+	final class ParamDynDiffModeImage extends ParamImage {
 		public ParamDynDiffModeImage() {
 			super(MOD_UI, "DYNAMIC_DIFFICULTY_MODE_IMAGE");
 		}
-		@Override public boolean updated()	{
-			return true;
-			//return dynamicDifficultyMode.updated() || dynamicDifficultySpan.updated();
-		}
+		@Override public boolean updated()		{ return true; }
+		@Override public boolean isGhost()		{ return !dynamicDifficulty.get(); }
 		@Override public float heightFactor()	{ return 8f; }
 		@Override public void paint(Graphics2D g, int x, int y, int w, int h)	{
 			BufferedImage img = getImage(w, h);
@@ -283,6 +288,12 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 		}
 	}
 	ParamDynDiffModeImage dynamicDifficultyModeImage	= new ParamDynDiffModeImage();
+	static void tagDynamicDifficulty(String id)	{
+		dynamicDifficultyMode.updated(true);
+		dynamicDifficultySpan.updated(true);
+		dynamicDifficultyRange.updated(true);
+		dynamicDifficultyDelay.updated(true);
+	}
 
 	ParamList scrapRefundOption		= new ParamList(MOD_UI, "SCRAP_REFUND", "All")
 			.showFullGuide(true)
@@ -429,6 +440,7 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	String END_OF_GAME_TURN_POWER	= END_OF_GAME + "_TURN_POWER";
 	ParamList endOfGameCondition	= new ParamList( MOD_UI, END_OF_GAME, END_OF_GAME_NORMAL)
 			.showFullGuide(true)
+			.setUpdateParameters(IInGameOptions::tagEndOfGameTurn, "")
 			.put(END_OF_GAME_NORMAL,		MOD_UI + END_OF_GAME_NORMAL)
 			.put(END_OF_GAME_TURN_COUNCIL,	MOD_UI + END_OF_GAME_TURN_COUNCIL)
 			.put(END_OF_GAME_TURN_POP,		MOD_UI + END_OF_GAME_TURN_POP)
@@ -438,11 +450,18 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	default boolean turnLimitedCouncil()	{ return endOfGameCondition.get().equals(END_OF_GAME_TURN_COUNCIL); }
 	default String endOfGameCondition()		{ return endOfGameCondition.get(); }
 
-	ParamInteger endOfGameTurn		= new ParamInteger(MOD_UI, "END_OF_GAME_TURN", 200)
-			.setLimits(10, 10000)
-			.setIncrements(10, 50, 200)
-			.pctValue(false);
+	final class ParamEndOfGameTurn extends ParamInteger	{
+		public ParamEndOfGameTurn()	{
+			super(MOD_UI, "END_OF_GAME_TURN", 200);
+			setLimits(10, 10000);
+			setIncrements(10, 50, 200);
+			pctValue(false);
+		}
+		@Override public boolean isGhost()	{ return endOfGameCondition.get().equals(END_OF_GAME_NORMAL); }
+	}
+	ParamEndOfGameTurn endOfGameTurn	= new ParamEndOfGameTurn();
 	default int selectedEndOfGameTurn()		{ return endOfGameTurn.get(); }
+	static void tagEndOfGameTurn(String id)	{ endOfGameTurn.updated(true); }
 
 	ParamBoolean defaultForwardRally	= new ParamBoolean(MOD_UI, "DEFAULT_FORWARD_RALLY", true);
 	default boolean defaultForwardRally()	{ return defaultForwardRally.get(); }
