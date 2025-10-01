@@ -1640,7 +1640,7 @@ SETUP_NEW_RACES_ON                | Toutes
 SETUP_NEW_RACES_OFF               | Original
 SETUP_OPPONENTS_HEADER_1          | %1 contre
 SETUP_OPPONENTS_HEADER_2          | Empires rivaux
-SETUP_OPPONENT_RANDOM             | ???
+SETUP_OPPONENT_RANDOM             | ???
 SETUP_OPPONENT_AI_DESC            | Sélectionnez l’IA qui sera utilisée par tous vos opposants.
 SETUP_OPPONENT_AI                 | IA adversaire :
 SETUP_OPPONENT_AI_BASE_HELP       | Famille IA : Base<br> Plus défensif que les autres base-famille-IA.
@@ -2231,9 +2231,9 @@ CUSTOM_RACE_INDUSTRIALIST         | Industriel
 CUSTOM_RACE_EXPANSIONIST          | Expansioniste
 CUSTOM_RACE_TECHNOLOGIST          | Technologue
 FR_RAND_PERSO_1                   | Probabilité relative qu’une « personnalité » aléatoire soit «
-FR_RAND_PERSO_2                   | ». (La personnalité maximale est utilisée pour les cas non aléatoires)
+FR_RAND_PERSO_2                   | ». (La personnalité maximale est utilisée pour les cas non aléatoires)
 FR_RAND_OBJ_1                     | Probabilité relative que l’« objectif » aléatoire soit «
-FR_RAND_OBJ_2                     | ». (L’objectif maximal est utilisé pour les cas non aléatoires)
+FR_RAND_OBJ_2                     | ». (L’objectif maximal est utilisé pour les cas non aléatoires)
 CUSTOM_RACE_ERRATIC_DESC          | →FR_RAND_PERSO_1← →CUSTOM_RACE_ERRATIC← →FR_RAND_PERSO_2←
 CUSTOM_RACE_PACIFIST_DESC         | →FR_RAND_PERSO_1← →CUSTOM_RACE_PACIFIST← →FR_RAND_PERSO_2←
 CUSTOM_RACE_HONORABLE_DESC        | →FR_RAND_PERSO_1← →CUSTOM_RACE_HONORABLE← →FR_RAND_PERSO_2←
@@ -2790,7 +2790,7 @@ SETTINGS_MOD_POP_GROWTH_REDUCED_DESC | Croissance démographique à 50 %, coût 
 HEADERS_RETREAT_RULES					| ~~~ RÈGLES DE RETRAITE ~~~
 HEADERS_RETREAT_RULES_DESC				| Paramètres des flottes en retraite sur la carte de la galaxie.
 SETTINGS_MOD_RETREAT_DESTINATION		| Destination de retraite : %1
-SETTINGS_MOD_RETREAT_DESTINATION_DESC	| Quelles sont les possibles destinations des flottes battant en retraite ?
+SETTINGS_MOD_RETREAT_DESTINATION_DESC	| Quelles sont les possibles destinations des flottes battant en retraite ?
 SETTINGS_MOD_CLOSEST_COLONY				| Colonie la plus proche
 SETTINGS_MOD_CLOSEST_COLONY_DESC		| La plus proche des colonies de l’empire battant en retraite.
 SETTINGS_MOD_CLOSEST_ALLY				| Allié le plus proche
@@ -2799,15 +2799,19 @@ SETTINGS_MOD_ANY_ALLY					| Tout allié
 SETTINGS_MOD_ANY_ALLY_DESC				| Toute colonie de l’empire en retraite ou de l’un de ses alliés est acceptable.
 SETTINGS_MOD_ANY_STAR_SYSTEM			| N’importe où
 SETTINGS_MOD_ANY_STAR_SYSTEM_DESC		| Tout système stellaire à portée.
-SETTINGS_MOD_HYPER_COM_RETREAT_EXT		| Retraite Hi-Tech : %1
-SETTINGS_MOD_HYPER_COM_RETREAT_EXT_DESC	| Le fait d’avoir la communication hyperspatiale permet-il à un empire de se retirer n’importe où ?
-SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING		| Retreat on Arrival : %1
-SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING_DESC	| Should "Retreat on Arrival" be tagged as "Retreating" or is just de treated as a game automation?
-SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING		| Diplomatic Retreat : %1
-SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING_DESC	| Should "Diplomatic Retreat" be tagged as "Retreating" or is just de treated as a game automation?
-SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION		| No Enemy Retreat : %1
-SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_DESC	| Can retreat destination have an enemy fleet orbiting, or be an enemy colony?
- 
+SETTINGS_MOD_HYPER_COM_RETREAT_EXT		| Repli Hi-Tech : %1
+SETTINGS_MOD_HYPER_COM_RETREAT_EXT_DESC	| Le fait d’avoir la communication hyperspatiale permet-il à un empire de se replier n’importe où ? (La limitation de repli vers l’ennemi continuera de s’appliquer)
+SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING		| Repli à l’arrivée : %1
+SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING_DESC	| L’option « Repli à l’arrivée » marque-t-elle les flottes comme « en retraite » ? Ou bien s’agit-il simplement d’une fonctionnalité automatisée visant à simplifier la vie du joueur ?
+SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING		| Repli Diplomatique : %1
+SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING_DESC	| L’option « Repli Diplomatique » marque-t-elle les flottes comme « en retraite » ? Ou bien s’agit-il simplement d’une fonctionnalité automatisée visant à simplifier la vie du joueur ?
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION		| Repli vers l’ennemi : %1
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_DESC	| Une destination de repli peut-elle être une colonie ennemie ? ou avoir une flotte ennemie en orbite.
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_YES		| Interdit
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_YES_DESC	| Destinations sécuritaires seulement.
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_NO		| Autorisé
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_NO_DESC	| Non limitatif.
+
 // BR: Second UI panel for MOD game options
 SETTINGS_MOD_TITLE_B                     | Options MOD secondaires
 SETTINGS_MOD_OPTION_NEVER                | Jamais
@@ -3794,7 +3798,7 @@ SETTINGS_MOD_PLAYER_SHIP_SET_DESC            | Sélection du graphisme des vaiss
 SETTINGS_MOD_PLAYER_SHIP_SET                 | Graphisme de votre armada : %1
 SETTINGS_MOD_PLAYER_SHIP_SET_ORIGINAL        | Modèles originaux
 SETTINGS_MOD_PLAYER_SHIP_SET_DISPLAY_SPECIES | Sans préférences
-SETTINGS_MOD_PLAYER_SHIP_SET_FORCED_SHIPSET  | » %1
+SETTINGS_MOD_PLAYER_SHIP_SET_FORCED_SHIPSET  | » %1
 SETTINGS_MOD_PLAYER_SHIP_SET_CUSTOM_SPECIES  | ep : %1
 SETTINGS_MOD_PLAYER_SHIP_SET_BASE_SPECIES    | [base_raceadjec]
 
@@ -4839,7 +4843,7 @@ RACES_INTEL_UNKNOWN_TECH_DESC     | Nos espions rapportent que les races étrang
 
 RACES_MILITARY_TITLE              | Flotte de vaisseaux [alien_race_pluraladjecF]
 RACES_MILITARY_SUBTITLE           | Vaisseaux par taille de coque
-RACES_MILITARY_UNSCANNED          | ??
+RACES_MILITARY_UNSCANNED          | ??
 RACES_MILITARY_UNSCANNED_LONG     | Non scanné
 RACES_MILITARY_SMALL              | Petit
 RACES_MILITARY_MEDIUM             | Moyen
@@ -4889,7 +4893,7 @@ RACES_STATUS_TECHNOLOGY_MAX       | Technologies Max
 RACES_STATUS_PLANETS              | Planètes
 RACES_STATUS_PRODUCTION           | Production
 RACES_STATUS_TOTAL_POWER          | Pouvoir total
-RACES_UNKNOWN_DATA                | ???
+RACES_UNKNOWN_DATA                | ???
 
 RACES_SET_COLOR_TITLE             | Choisissez une nouvelle couleur pour [alien_empire]
 RACES_SET_COLOR_DESC              | Si la couleur et la forme sélectionnées sont utilisées par un autre empire, les couleurs seront inversées.
@@ -5703,8 +5707,8 @@ SETUP_SELECT_CR_OPTIONS_DESC       | si "Oui", une ligne de sélection apparaît
 SETUP_SELECT_CR_OPTIONS_YES_DESC   | Une ligne de sélection apparaîtra en haut des cases de l’adversaire, permettant la sélection de l’aptitude individuelle.
 SETUP_SELECT_CR_OPTIONS_NO_DESC    | L’aptitude globale sélectionnée (à gauche) sera appliquée à tous les adversaires.
 SETUP_SELECT_CR_OPTIONS            | Aptitudes sélectionnables.
-???                                | ???
-???_DESC                           | ???_DESCXXX
+???                                | ???
+???_DESC                           | ???_DESCXXX
 
 ’Selection’_DESC        | Mêmes aptitudes que les aptitudes globales sélectionnées ci-dessus.
 ’Original Species’_DESC | Aptitudes originales de l’espèce sélectionnée (celle sur l’icône)

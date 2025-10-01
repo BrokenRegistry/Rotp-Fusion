@@ -2800,14 +2800,18 @@ SETTINGS_MOD_ANY_ALLY_DESC				| Any colony of the retreating empire or one of it
 SETTINGS_MOD_ANY_STAR_SYSTEM			| Any star system
 SETTINGS_MOD_ANY_STAR_SYSTEM_DESC		| Any star system within range.
 SETTINGS_MOD_HYPER_COM_RETREAT_EXT		| Hyper Comm Retreat: %1
-SETTINGS_MOD_HYPER_COM_RETREAT_EXT_DESC	| Does having hyperspace communication allow an empire to retreat anywhere?
+SETTINGS_MOD_HYPER_COM_RETREAT_EXT_DESC	| Does having hyperspace communication allow an empire to retreat anywhere? (Enemy limitation will still apply)
 SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING		| Retreat on Arrival: %1
-SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING_DESC	| Should "Retreat on Arrival" be tagged as "Retreating" or is just treated as a game automation?
+SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING_DESC	| Do the “Retreat on arrival” option mark fleets as “Retreated”? Or is it just an automation feature to simplify the player's life?
 SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING		| Diplomatic Retreat: %1
-SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING_DESC	| Should "Diplomatic Retreat" be tagged as "Retreating" or is just treated as a game automation?
-SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION		| No Enemy Retreat: %1
-SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_DESC	| Can retreat destination have an enemy fleet orbiting, or be an enemy colony?
- 
+SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING_DESC	| Do the “Diplomatic Retreat” option mark fleets as “Retreated”? Or is it just an automation feature to simplify the player's life?
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION			| Retreat toward enemy: %1
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_DESC		| Can a retreat destination be an enemy colony? Or have an enemy fleet in orbit?
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_YES		| Not allowed
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_YES_DESC	| Safe destination only.
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_NO		| Allowed
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_NO_DESC	| No limitations
+
 // BR: Second UI panel for MOD game options
 SETTINGS_MOD_TITLE_B                     | Secondary MOD Options
 SETTINGS_MOD_OPTION_NEVER                | Never

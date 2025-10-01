@@ -9,6 +9,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 25-09-30 (BR)
 - Fixed potential crash when undeploying fleets.
+- Clarification of the retreat options, naming and guide description.
 
 25-09-29 (BR)
 - New pom.xml version management.
