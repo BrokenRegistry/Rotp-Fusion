@@ -1,0 +1,3 @@
+#### How to ...
+
+[How to fully customize your opponents:](HowToCustomizeOpponentsSelection.md)

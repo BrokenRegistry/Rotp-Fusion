@@ -62,9 +62,11 @@ java -jar target/rotp-<timestamp>-mini.jar
   - This occurred when the "Monsters gives loot" option was set to "No." However, since the original pirates have default loot, it will now be awarded to you.
 
 
-### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)
+### [Features Historic](FeaturesChanges.md)
 
-### [Reverse Chronological Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/DetailedChanges.md)
+### [Reverse Chronological Historic](DetailedChanges.md)
 
 
-## [To-Do list](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/TodoList.md)
+## [To-Do list](TodoList.md)
+
+[How To](doc/HowTo.md)

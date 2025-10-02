@@ -2863,7 +2863,7 @@ SETTINGS_MOD_END_OF_GAME_TURN_POWER_DESC	| →HK_END_OF_GAME_COND←L’empire d
 SETTINGS_MOD_END_OF_GAME_TURN_POWER			| Puissance Totale
 
 SETTINGS_MOD_END_OF_GAME_TURN_DESC			| N'est actif que lorsque « →HK_END_OF_GAME← » n'est pas « →SETTINGS_MOD_END_OF_GAME_NORMAL← »<br>Tour auquel la partie se terminera, et un vainqueur sera désigné.
-SETTINGS_MOD_END_OF_GAME_TURN				| (Nombre maximal de tours) : %1
+SETTINGS_MOD_END_OF_GAME_TURN				| Nombre maximal de tours : %1
 
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR_HELP | Pour ajuster l’écartement des mondes d’origine de l’Empire ; (la valeur d’origine est de 100 %).<br>Une petite valeur permettra aux mondes d’origine d’être plus proches, ce qui entraînera une grande variété de distances.<br>L’augmentation de cette valeur éloignera les mondes d’origine, ce qui entraînera des distances plus uniformes.<br>Ce paramètre peut être ajusté sur l’aperçu de la carte de la galaxie.
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR_DESC | Distance minimale entre les mondes d’Empire Home Facteur en %. (Non autorisé sur les « galaxies complexes »)
