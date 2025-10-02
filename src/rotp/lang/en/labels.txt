@@ -2863,7 +2863,7 @@ SETTINGS_MOD_END_OF_GAME_TURN_POWER_DESC	| →HK_END_OF_GAME_COND←The empire w
 SETTINGS_MOD_END_OF_GAME_TURN_POWER			| Total Power
 
 SETTINGS_MOD_END_OF_GAME_TURN_DESC			| Only active when the "→HK_END_OF_GAME←" is not set to "→SETTINGS_MOD_END_OF_GAME_NORMAL←"<br>The turn at which the game will end, and a winner will be declared.
-SETTINGS_MOD_END_OF_GAME_TURN				| (Max Game Turns): %1
+SETTINGS_MOD_END_OF_GAME_TURN				| Max Game Turns: %1
 
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR_HELP | To adjust the Empire Home worlds spreading; (Vanilla value is 100%).<br>A small value will allow home worlds to be closer, resulting in a great variety of distances.<br>Increasing this value will push away the home worlds, resulting in more uniformized distances.<br>This parameter can be adjusted on the Galaxy map preview.
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR_DESC | Minimum distance between Empire Home worlds Factor in %.(Not allowed on "complex galaxies")

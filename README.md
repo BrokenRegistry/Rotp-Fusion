@@ -68,3 +68,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 
 ## [To-Do list](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/TodoList.md)
+
+
+[Fusion Manual](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FusionManual.md)
+
+
+
