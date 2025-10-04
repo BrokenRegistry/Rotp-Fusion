@@ -54,6 +54,7 @@ import rotp.ui.util.ParamList;
 import rotp.ui.util.ParamOptions;
 import rotp.ui.util.ParamSpeciesName;
 import rotp.ui.util.ParamString;
+import rotp.ui.util.RotpFileChooser;
 import rotp.util.FontManager;
 import rotp.util.LanguageManager;
 import rotp.util.sound.SoundManager;
@@ -297,7 +298,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 				set("");
 				return false;
 			}
-	        final JFileChooser fc = new JFileChooser();
+	        final JFileChooser fc = new RotpFileChooser();
 	        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	        File saveDir = new File(saveDirectoryPath());
 	        fc.setCurrentDirectory(saveDir);

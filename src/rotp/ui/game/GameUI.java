@@ -59,6 +59,7 @@ import rotp.ui.ErrorUI;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
 import rotp.ui.sprites.RoundGradientPaint;
+import rotp.ui.util.RotpFileChooser;
 import rotp.util.FontManager;
 import rotp.util.ImageManager;
 import rotp.util.LanguageManager;
@@ -1099,7 +1100,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     	String dirPath = Rotp.jarPath();
     	String ext = IGameOptions.OPTIONFILE_EXTENSION;
     	ext = ext.replace(".", "");
-    	JFileChooser chooser = new JFileChooser();
+    	JFileChooser chooser = new RotpFileChooser();
     	chooser.setCurrentDirectory(new File(dirPath));
     	chooser.setAcceptAllFileFilterUsed(false);
     	chooser.addChoosableFileFilter(new FileNameExtensionFilter("Options", ext));
@@ -1118,7 +1119,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     	String dirPath = Rotp.jarPath();
     	String ext = IGameOptions.OPTIONFILE_EXTENSION;
     	//ext = ext.replace(".", "");
-    	JFileChooser chooser = new JFileChooser();
+    	JFileChooser chooser = new RotpFileChooser();
     	chooser.setCurrentDirectory(new File(dirPath));
     	chooser.setAcceptAllFileFilterUsed(false);
     	chooser.addChoosableFileFilter(new FileNameExtensionFilter("Options", ext.replace(".", "")));

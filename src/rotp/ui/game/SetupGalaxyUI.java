@@ -61,15 +61,11 @@ import static rotp.ui.util.IParam.tableFormat;
 // modnar: needed for adding RenderingHints
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Composite;
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.HeadlessException;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -87,16 +83,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -128,9 +115,9 @@ import rotp.ui.util.ListDialogUI;
 import rotp.ui.util.ParamButtonHelp;
 import rotp.ui.util.ParamList;
 import rotp.ui.util.ParamSubUI;
+import rotp.ui.util.RotpFileChooser;
 import rotp.ui.util.SpecificCROption;
 import rotp.util.FontManager;
-import rotp.util.LabelManager;
 import rotp.util.ModifierKeysState;
 
 public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, MouseWheelListener {
@@ -877,51 +864,6 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		}
 		return -1;
 	}
-	@SuppressWarnings("rawtypes")
-	private void setFileChooserFont(Component[] comp) {
-		int topInset  = scaled(6);
-		int sideInset = scaled(15);
-	    for(int i=0; i<comp.length; i++)  {
-	    	if(comp[i] instanceof JPanel){
-	            ((JPanel)comp[i]).setBackground(GameUI.borderMidColor());
-	            if(((JPanel)comp[i]).getComponentCount() !=0){
-	            	setFileChooserFont(((JPanel)comp[i]).getComponents());
-	            }
-	        }
-	        if(comp[i] instanceof JTextField){
-	            ((JTextField)comp[i]).setBackground(GameUI.setupFrame());
-	        }
-	        if(comp[i] instanceof JToggleButton){
-	            ((JToggleButton)comp[i]).setBackground(GameUI.setupFrame());
-	        }
-	        if(comp[i] instanceof JButton){
-	            String txt = ((JButton)comp[i]).getText();
-	            String cancel = LabelManager.current().label("BUTTON_TEXT_CANCEL");
-	            String open = LabelManager.current().label("BUTTON_TEXT_OPEN");
-	            if (txt!=null && (cancel.equals(txt) || open.equals(txt))) {
-		            ((JButton)comp[i]).setMargin(new Insets(topInset, sideInset, 0, sideInset));
-		            ((JButton)comp[i]).setBackground(GameUI.buttonBackgroundColor());
-		            ((JButton)comp[i]).setForeground(GameUI.buttonTextColor());
-		            ((JButton)comp[i]).setVerticalAlignment(SwingConstants.TOP);
-	            }
-	        }
-	        if(comp[i] instanceof JScrollPane){
-	            ((JScrollPane)comp[i]).setBackground(GameUI.borderMidColor());
-	        }
-	        if(comp[i] instanceof JList){
-	            ((JList)comp[i]).setBackground(GameUI.setupFrame());
-	            ((JList)comp[i]).setSelectionBackground(GameUI.borderMidColor());
-	        }
-	        if(comp[i] instanceof JComboBox){
-	            ((JComboBox)comp[i]).setBackground(GameUI.setupFrame());
-	        }
-	        if(comp[i] instanceof Container)
-	        	setFileChooserFont(((Container)comp[i]).getComponents());
-	        try{comp[i].setFont(narrowFont(15));}
-	        catch(Exception e){}//do nothing
-	    }
-	}
-
 	private String getBitmapFile() {
 		String dirPath = bitmapGalaxyLastFolder.get();
 		File selectedFile = new File(opts.galaxyShape().getOption3());
@@ -930,8 +872,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			bitmapGalaxyLastFolder.set(dirPath);
 			UserPreferences.save();
 		}
-		BitmapFileChooser fileChooser = new BitmapFileChooser();
-		setFileChooserFont(fileChooser.getComponents());
+		JFileChooser fileChooser = new RotpFileChooser(300, 200, 420,470);
 		fileChooser.setCurrentDirectory(new File(dirPath));
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
@@ -3145,17 +3086,6 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			return help;
 		}
 	};
-	private class BitmapFileChooser extends JFileChooser {
-		private static final long serialVersionUID = 1L;
-		@Override protected JDialog createDialog(Component parent)
-				throws HeadlessException {
-			JDialog dlg = super.createDialog(parent);
-			dlg.setLocation(scaled(300), scaled(200));
-			dlg.setSize(scaled(420), scaled(470));
-			dlg.getContentPane().setBackground(GameUI.borderMidColor());
-			return dlg;
-		}
-	}
 	private class BMPropertyChangeListener implements PropertyChangeListener {
 		private final JFileChooser bmFileChooser;
 		private BMPropertyChangeListener(JFileChooser fileChooser) {
