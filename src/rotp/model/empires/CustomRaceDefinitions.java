@@ -245,6 +245,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	}
 	// ========== Main Getters ==========
 	//
+	public String getRaceKey()						{ return race.id; }
 	public LinkedList<SettingBase<?>> settingList()	{ return settingList; }
 	public LinkedList<SettingBase<?>> guiList()		{ return guiList; }
 	public LinkedList<Integer>		  spacerList()	{ return spacerList; }

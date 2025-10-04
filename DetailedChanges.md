@@ -2,6 +2,10 @@
 
 ## What's New
 
+25-10-04 (BR)
+- Custom Species Editor Fix:
+  - When you save a custom species that has already been selected as Player species, both the file and the player species will be updated. (Previously, you had to exit and reenter the panel)
+
 25-10-01 (BR)
 - Fixed combat against guardian monster. In case of draw, the empire will now retreat.
 - Some sub-options, which depend on other options for their values to be taken into account, are displayed semi-transparently when their values are not taken into account.

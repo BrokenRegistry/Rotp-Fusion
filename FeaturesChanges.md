@@ -298,6 +298,8 @@
 
 ### Fixes:
 
+- Custom Species Editor Fix:
+  - When you save a custom species that has already been selected as Player species, both the file and the player species will be updated. (Previously, you had to exit and reenter the panel)
 - Fixed combat against guardian monster. In case of draw, the empire will now retreat.
 - Fixed potential crash when undeploying fleets.
 - Fixed a bug that prevented pirate loot from being collected as announced!

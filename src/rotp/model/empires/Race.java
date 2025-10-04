@@ -202,7 +202,7 @@ public class Race implements ISpecies, Base, Serializable {
 	public String homeworldPlanetType()	{ return homeworldPlanetType; }
 	void homeworldPlanetType(String s)	{ homeworldPlanetType = s; }
 
-	String id()							{ return id; }
+	public String id()					{ return id; }
 	void id(String s)					{ id = s; }
 	int colonistDelay()					{ return colonistDelay; }
 	int colonistStartX()				{ return colonistX1; }

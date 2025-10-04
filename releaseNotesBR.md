@@ -7,22 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
-25-10-01 (BR)
-- Fixed combat against guardian monster. In case of draw, the empire will now retreat.
-- Some sub-options, which depend on other options for their values to be taken into account, are displayed semi-transparently when their values are not taken into account.
-
-25-09-30 (BR)
-- Fixed potential crash when undeploying fleets.
-- Clarification of the retreat options, naming and guide description.
-
-25-09-29 (BR)
-- New pom.xml version management.
-- Fixed a bug that allowed a guarded planet to be colonized.
-- A victory against the Orion Guardian will now grant you the relationship bonus you are entitled to.
-- When you colonize Orion, the AIs will not complain about your expansion. (However, if you colonize other planets during the same turn, they will complain.)
-- The number of votes required to win will remain displayed during the council and will turn green if there is a winner.
-- Fixed a bug that prevented pirate loot from being collected as announced!
-  - This occurred when the "Monsters gives loot" option was set to "No." However, since the original pirates have default loot, it will now be awarded to you.
+25-10-04 (BR)
+- Custom Species Editor Fix:
+  - When you save a custom species that has already been selected as Player species, both the file and the player species will be updated. (Previously, you had to exit and reenter the panel)
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

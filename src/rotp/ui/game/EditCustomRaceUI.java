@@ -33,12 +33,14 @@ import java.util.LinkedList;
 
 import rotp.model.empires.CustomRaceDefinitions;
 import rotp.model.empires.CustomRaceDefinitions.RaceList;
+import rotp.model.empires.Race;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.util.InterfaceOptions;
 import rotp.ui.util.ParamButtonHelp;
+import rotp.ui.util.ParamCR;
 import rotp.ui.util.SettingBase;
 import rotp.util.LabelManager;
 import rotp.util.ModifierKeysState;
@@ -125,7 +127,18 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 			return;
 		instance.guiOptions().selectedPlayerCustomRace(instance.cr().getAsOptions());
 	}
-	private void saveCurrentRace() { cr().saveRace(); }
+	private void saveCurrentRace() {
+		IGameOptions opts = guiOptions();
+		if (opts.selectedPlayerIsCustom()) {
+			ParamCR pl	 =  opts.playerCustomRace();
+			Race plRace	 = pl.getRace();
+			String plKey = plRace.id();
+			String crKey = cr().getRaceKey();
+			if (crKey.equals(plKey))
+				opts.selectedPlayerCustomRace(cr().getAsOptions());
+		}
+		cr().saveRace();
+	}
 	private void loadCurrentRace() { cr().loadRace(); }
 	private void doLoadBoxAction() { // Local to panel
 		buttonClick();
