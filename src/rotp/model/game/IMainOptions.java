@@ -286,7 +286,14 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		@Override public void	setOption(String s)	{ saveDir(s); }
 	}
 	ParamString saveDirectory = new SaveDirectory();
-	static String saveDirectoryPath()		{ return saveDirectory.get(); }
+	static String saveDirectoryPath()		{
+		String dir = saveDirectory.get();
+		if (dir.isEmpty()) {
+			dir = Rotp.jarPath();
+			saveDirectory.set(dir);
+		}
+		return dir;
+	}
 	static String	backupDirectoryPath()	{ return saveDirectoryPath() + "/" + GameSession.BACKUP_DIRECTORY; }
 
 	ParamBoolean disableAdvisor = new DisableAdvisor();
