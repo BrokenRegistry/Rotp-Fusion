@@ -2730,9 +2730,10 @@ SETTINGS_MOD_RETREAT_RESTRICTION_TURNS	| Retreat restricted turns: %1
 SETTINGS_MOD_MAX_COMBAT_TURNS			| Max combat turns: %1
 SETTINGS_MOD_MOO1_SHIELD_RULES_DESC		| When some weapons reduce shield effectiveness, RotP keeps the fractional part, while MoO1 rounds the result down.
 SETTINGS_MOD_MOO1_SHIELD_RULES			| MoO1 Shields Rules: %1
-SETTINGS_MOD_MOO1_RETREAT_DESC			| Delayed retreat from MoO1 or instant retreat from RotP. In both case, if you are victorious the ships will rejoin your fleet immediately after combat.<br> Currently unfair to AI, which does not (yet) know this rule.
-ETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Retreat Button will removes the current ship from combat. The enemy will have one turn to fire on your ship as it retreats off the screen.
-ETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Retreat Button will instantaneously removes the current ship from combat. The enemy will not be able to fire on your ship as it retreats off the screen.
+SETTINGS_MOD_MOO1_RETREAT_HELP			| Delayed retreat from MoO1 or instant retreat from RotP. In both case, if you are victorious the ships will rejoin your fleet immediately after combat.<br>To fully comply with MoO1 retreat mode:<br>- Retreating restricted for: Both<br>- Retreat restricted turns: 0<br>Currently unfair to AI, which does not (yet) know this rule.
+SETTINGS_MOD_MOO1_RETREAT_DESC			| Delayed retreat from MoO1 or instant retreat from RotP. In both case, if you are victorious the ships will rejoin your fleet immediately after combat.<br>Currently unfair to AI, which does not (yet) know this rule.
+SETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Retreat Button will removes the current ship from combat. The enemy will have one turn to fire on your ship as it retreats off the screen.
+SETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Retreat Button will instantaneously removes the current ship from combat. The enemy will not be able to fire on your ship as it retreats off the screen.
 SETTINGS_MOD_MOO1_RETREAT				| MoO1 Retreat Rules: %1
 
 SETTINGS_MOD_HOME_ORION              | Orion Ruin HomeWorld: %1

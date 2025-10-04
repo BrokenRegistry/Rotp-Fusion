@@ -2730,9 +2730,10 @@ SETTINGS_MOD_RETREAT_RESTRICTION_TURNS	| Retraite restreinte pendant %1 tours
 SETTINGS_MOD_MAX_COMBAT_TURNS			| Tours de combat max. : %1
 SETTINGS_MOD_MOO1_SHIELD_RULES_DESC		| Lorsque certaines armes réduisent l’efficacité des boucliers, RotP conserve la partie fractionaire, alors que MoO1 arrondi le résultat vers le bas. 
 SETTINGS_MOD_MOO1_SHIELD_RULES			| Règles des boucliers de MoO1 : %1
+SETTINGS_MOD_MOO1_RETREAT_HELP			| Retraite différée de MoO1 ou retraite immédiate de RotP ? Dans les deux cas, si vous remportez la victoire, les vaisseaux rejoindront votre flotte immédiatement après le combat.<br>Pour se conformer pleinement au mode de retraite MoO1 :<br>- Retraite restreinte pour : Tous.<br>- Retraite restreinte pendant 0 tours.
 SETTINGS_MOD_MOO1_RETREAT_DESC			| Retraite différée de MoO1 ou retraite immédiate de RotP ? Dans les deux cas, si vous remportez la victoire, les vaisseaux rejoindront votre flotte immédiatement après le combat.
-ETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Le bouton « Retraite » permet de retirer le vaisseau actuel du combat. L’ennemi aura un tour pour tirer sur votre vaisseau pendant qu’il se retire de l’écran.
-ETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Le bouton « Retraite » retire instantanément le vaisseau actuel du combat. L’ennemi ne pourra pas tirer sur votre vaisseau pendant qu’il se retire de l’écran.
+SETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Le bouton « Retraite » permet de retirer le vaisseau actuel du combat. L’ennemi aura un tour pour tirer sur votre vaisseau pendant qu’il se retire de l’écran.
+SETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Le bouton « Retraite » retire instantanément le vaisseau actuel du combat. L’ennemi ne pourra pas tirer sur votre vaisseau pendant qu’il se retire de l’écran.
 SETTINGS_MOD_MOO1_RETREAT				| Règles de retraite de MoO1 : %1
 
 SETTINGS_MOD_HOME_ORION              | Planète mère avec Vestiges : %1

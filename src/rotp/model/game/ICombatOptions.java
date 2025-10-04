@@ -190,7 +190,7 @@ public interface ICombatOptions extends IBaseOptsTools {
 	default boolean selectedMoo1RetreatRules()		{ return moo1RetreatRules.get(); }
 
 	ParamInteger retreatRestrictionTurns	= new ParamInteger(MOD_UI, "RETREAT_RESTRICTION_TURNS", 100)
-			.setDefaultValue(MOO1_DEFAULT, 1)
+			.setDefaultValue(MOO1_DEFAULT, 0)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20);
 	default int selectedRetreatRestrictionTurns()	{ return retreatRestrictionTurns.get(); }

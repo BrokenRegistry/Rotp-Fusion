@@ -3,6 +3,8 @@
 ## What's New
 
 25-10-04 (BR)
+- Fixed Guide text for MoO1 retreat option.
+- Fixed Compilation failing for not enough memory error.
 - Fixed a retreat options conflict that could cause Orion to be wrongly scouted.
 - New common param for directory selection.
 - Added RotP colors and fonts to files selector that were still OS like.
