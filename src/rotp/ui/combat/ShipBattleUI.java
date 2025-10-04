@@ -1776,7 +1776,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         hoverBox = null;
         paintAllImmediately();
 
-		if (options().selectedMoo1RetreatRules())
+		if (inCombat && options().selectedMoo1RetreatRules())
 			return;
         if (inCombat)
             finish();

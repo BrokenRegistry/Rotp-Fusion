@@ -44,10 +44,10 @@ import rotp.model.game.GameSession;
 import rotp.model.game.IAdvOptions;
 import rotp.model.game.IGalaxyOptions;
 import rotp.model.game.IInGameOptions;
+import rotp.model.game.IMainOptions;
 import rotp.model.game.IPreGameOptions;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.RotPUI;
-import rotp.ui.UserPreferences;
 import rotp.ui.design.VIPDesignView;
 import rotp.ui.game.GameUI;
 import rotp.ui.options.AllSubUI;
@@ -1541,7 +1541,7 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 				out += "No game in progress" + NEWLINE;
 				return mainMenu.open(out);
 			}
-			String dirPath = UserPreferences.saveDirectoryPath();
+			String dirPath = IMainOptions.saveDirectoryPath();
 			String fileName = GameUI.gameName + GameSession.SAVEFILE_EXTENSION;
 			JFileChooser chooser = new JFileChooser();
 			chooser.setAcceptAllFileFilterUsed(false);
@@ -1608,7 +1608,7 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 			return "";
 		}
 		@Override public String open(String out) {
-			String dirPath = UserPreferences.saveDirectoryPath();
+			String dirPath = IMainOptions.saveDirectoryPath();
 			JFileChooser chooser = new JFileChooser();
 			chooser.setCurrentDirectory(new File(dirPath));
 			chooser.setAcceptAllFileFilterUsed(false);

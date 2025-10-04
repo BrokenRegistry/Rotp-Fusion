@@ -299,6 +299,7 @@
 
 ### Fixes:
 
+- Fixed a retreat options conflict that could cause Orion to be wrongly scouted.
 - Custom Species Editor Fix:
   - When you save a custom species that has already been selected as Player species, both the file and the player species will be updated. (Previously, you had to exit and reenter the panel)
 - Fixed combat against guardian monster. In case of draw, the empire will now retreat.

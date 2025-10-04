@@ -644,12 +644,12 @@ GAME_SETTINGS_BACKUP_KEEP_DESC     | When automatic backup deletion is enabled, 
 GAME_SETTINGS_BACKUP_KEEP_ALL      | All
 GAME_SETTINGS_BACKUP_KEEP_ALL_DESC | Disable automatic backup deletion.
 
-GAME_SETTINGS_SAVEDIR             | Save Directory: %1
-GAME_SETTINGS_SAVEDIR_DEFAULT     | Default
-GAME_SETTINGS_SAVEDIR_CUSTOM      | Custom
-GAME_SETTINGS_SAVEDIR_HELP        | To select a custom directory to save your files: By default, it's the same directory as the game.
-GAME_SETTINGS_SAVEDIR_DESC1       | The save directory is currently set to the same directory as the game.
-GAME_SETTINGS_SAVEDIR_DESC2       | The save directory is currently set to: %1
+GAME_SETTINGS_SAVE_DIR				| Save Directory: %1
+GAME_SETTINGS_SAVE_DIR_DEFAULT		| Default
+GAME_SETTINGS_SAVE_DIR_CUSTOM		| Custom
+GAME_SETTINGS_SAVE_DIR_HELP			| To select a custom directory to save your files: By default, it's the same directory as the game.
+GAME_SETTINGS_SAVE_DIR_DESC1		| The save directory is currently set to the same directory as the game.
+GAME_SETTINGS_SAVE_DIR_DESC2		| The save directory is currently set to: %1
 
 GAME_SETTINGS_DISPLAY_YEAR        | Display Year: %1
 GAME_SETTINGS_DISPLAY_YEAR_DESC   | On the Galaxy map: Displays either the game's current turn or your empire's current year

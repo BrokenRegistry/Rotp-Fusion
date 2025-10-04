@@ -48,6 +48,7 @@ import rotp.ui.game.GameUI;
 import rotp.ui.game.MainOptionsUI;
 import rotp.ui.util.ParamBoolInt;
 import rotp.ui.util.ParamBoolean;
+import rotp.ui.util.ParamDirectory;
 import rotp.ui.util.ParamFloat;
 import rotp.ui.util.ParamInteger;
 import rotp.ui.util.ParamList;
@@ -275,45 +276,18 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 	default int backupKeep()		{ return backupKeep.get(); }
 	default boolean deleteBackup()	{ return !backupKeep.isSpecialNegative(); }
 
-	ParamString saveDirectory = new SaveDirectory();
-	final class SaveDirectory extends ParamString {
+	final class SaveDirectory extends ParamDirectory {
 		SaveDirectory() {
-			super(GAME_UI, "SAVEDIR", "");
+			super(GAME_UI, "SAVE_DIR");
 			isDuplicate(true);
 			isCfgFile(true);
 		}
-		@Override protected String descriptionId()	{
-			String es = get().isEmpty()? "1" : "2";
-			String label = super.descriptionId() + es;
-			return label;			
-		}
-		@Override public String getGuiDescription()	{ return langLabel(descriptionId(), get()); }
-		@Override public String guideValue()		{
-			String es = get().isEmpty()? "_DEFAULT" : "_CUSTOM";
-			String label = getLangLabel() + es;
-			return langLabel(label);
-		}
-		@Override public boolean toggle(MouseEvent e, BaseModPanel frame)	{
-			if (getDir(e) == 0) {
-				set("");
-				return false;
-			}
-	        final JFileChooser fc = new RotpFileChooser();
-	        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	        File saveDir = new File(saveDirectoryPath());
-	        fc.setCurrentDirectory(saveDir);
-	        int returnVal = fc.showOpenDialog(frame);
-	        if (returnVal == JFileChooser.APPROVE_OPTION) {
-	            String path = fc.getSelectedFile().getAbsolutePath();
-	            set(path);
-	        }
-			return false;
-	    }
-		@Override public String	getCfgLabel()		{ return "SAVE_DIR"; }
 		@Override public String	getOption()			{ return saveDir(); }
 		@Override public void	setOption(String s)	{ saveDir(s); }
 	}
-	//	default int saveDir()		{ return saveDirectory.get(); }
+	ParamString saveDirectory = new SaveDirectory();
+	static String saveDirectoryPath()		{ return saveDirectory.get(); }
+	static String	backupDirectoryPath()	{ return saveDirectoryPath() + "/" + GameSession.BACKUP_DIRECTORY; }
 
 	ParamBoolean disableAdvisor = new DisableAdvisor();
 	final class DisableAdvisor extends ParamBoolean {

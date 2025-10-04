@@ -1216,12 +1216,8 @@ public final class GameSession implements Base, Serializable {
 		}
 		System.out.println();
 	}
-    public String saveDir() {
-        return UserPreferences.saveDirectoryPath();
-    }
-    public String backupDir() {
-        return concat(saveDir(),"/",GameSession.BACKUP_DIRECTORY);
-    }
+	public String saveDir()		{ return IMainOptions.saveDirectoryPath(); }
+	public String backupDir()	{ return IMainOptions.backupDirectoryPath(); }
     public File saveFileNamed(String fileName) {
         return new File(saveDir(), fileName);
     }
