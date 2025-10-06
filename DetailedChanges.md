@@ -6,7 +6,7 @@
 - In the Species Customization pane, you can now select where the species Files are stored.
   - They can be organized in sub-folders, and will be displayed with their sub-folders.
   - The file Name (on the left) is used as key, and will be updated to include the sub-folders. This to avoid two species having the same key.
-- An introduction text file can be added to the same directory as the species, with the same file name and the extension “.intro.txt.”
+- An introduction text file can be added to the same directory as the species, with the same file name and the extension ".intro.txt."
   - It will be displayed when you start a new game with this species.
 
 25-10-04 (BR)
@@ -238,7 +238,7 @@
   - Made this option selectable in the "Ship Design Option" panel.
 
 25-04-30 (BR)
-- The Empire class takes over full ownership of the “race” and “datarace” calls.
+- The Empire class takes over full ownership of the "race" and "datarace" calls.
   - This is to prepare it for creating a "Species" class that will manage race, datarace, customrace, random race and abilities
 
 25-04-28 (BR)
@@ -693,7 +693,7 @@
 - Governor buttons are now available on Colony panel - Multiple selection.
 
 2025.01.08 (BR)
-- The default value of “Ship build limit ‘Take’ percentage”, for new colonies, can be set in Settings -> Governor Mandate -> Fine Tuning.
+- The default value of "Ship build limit 'Take' percentage", for new colonies, can be set in Settings -> Governor Mandate -> Fine Tuning.
 
 2025.01.07 (BR)
 - Colony panel: Spending priority can be set on multi selection.
@@ -836,7 +836,7 @@
 - Fixed masked yellow borders on left icon bar display bubbles.
 
 2024.11.30 (BR)
-- Fixed “half” selected fleets Bug. This could result in a fleet being unintentionally sent to the planet you clicked on.
+- Fixed "half" selected fleets Bug. This could result in a fleet being unintentionally sent to the planet you clicked on.
   - Selecting an orbiting fleet, followed by selecting its star system will show an unselected fleet, but the fleet management (the fleet panel on the right) will still identify it as selected.
   - Then, when hovering over another orbiting fleet, the buttons on the fleet panel will be incorrect.
   - Then, hovering over the planet will incorrectly activate the fleet sending information.

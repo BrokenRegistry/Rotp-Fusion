@@ -24,7 +24,7 @@
 - In the Species Customization pane, you can now select where the species Files are stored.
   - They can be organized in sub-folders, and will be displayed with their sub-folders.
   - The file Name (on the left) is used as key, and will be updated to include the sub-folders. This to avoid two species having the same key.
-- An introduction text file can be added to the same directory as the species, with the same file name and the extension “.intro.txt.”
+- An introduction text file can be added to the same directory as the species, with the same file name and the extension ".intro.txt."
   - It will be displayed when you start a new game with this species.
 - When you colonize Orion, the AIs will not complain about your expansion. (However, if you colonize other planets during the same turn, they will complain.)
 - The number of votes required to win will remain displayed during the council and will turn green if there is a winner.
@@ -194,7 +194,7 @@
   - to display production in green when "Pop/Factory ROI limit" has been reached.
   - to set auto-colonization planet distance vs value weighting.
 - Governor buttons are now available on Colony panel - Multiple selection.
-- The default value of “Ship build limit ‘Take’ percentage”, for new colonies, can be set in Settings -> Governor Mandate -> Fine Tuning.
+- The default value of "Ship build limit ‘Take’ percentage", for new colonies, can be set in Settings -> Governor Mandate -> Fine Tuning.
 - New Governor option to tell the rich colonies to build up their reserve.
 - Transport path from system to system will now be displayed for Governor sent troops.
 - Production per Worker (Factory) is displayed when Shift is down (instead of Production - Net (Gross))
@@ -312,7 +312,7 @@
 - Fixed combat against guardian monster. In case of draw, the empire will now retreat.
 - Fixed potential crash when undeploying fleets.
 - Fixed a bug that prevented pirate loot from being collected as announced!
-  - This occurred when the “Monsters gives loot” option was set to “No.” However, since the original pirates have default loot, it will now be awarded to you.
+  - This occurred when the "Monsters gives loot" option was set to "No." However, since the original pirates have default loot, it will now be awarded to you.
 - Fixed a bug that allowed a guarded planet to be colonized.
 - A victory against the Orion Guardian will now grant you the relationship bonus you are entitled to.
 - Fixed excessive refresh rate in the Game Over panel causing high CPU usage.
@@ -522,7 +522,7 @@
 - Fixed masked yellow borders on left icon bar display bubbles.
 
 2024.11.30 (BR)
-- Fixed “half” selected fleets Bug. This could result in a fleet being unintentionally sent to the planet you clicked on.
+- Fixed "half" selected fleets Bug. This could result in a fleet being unintentionally sent to the planet you clicked on.
   - Selecting an orbiting fleet, followed by selecting its star system will show an unselected fleet, but the fleet management (the fleet panel on the right) will still identify it as selected.
   - Then, when hovering over another orbiting fleet, the buttons on the fleet panel will be incorrect.
   - Then, hovering over the planet will incorrectly activate the fleet sending information.
