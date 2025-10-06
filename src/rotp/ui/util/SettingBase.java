@@ -562,6 +562,7 @@ public class SettingBase<T> implements IParam {
 		costList.clear();
 		valueList.clear();
 		tooltipList.clear();
+		bulletStart(0);
 	}
 	protected void clearOptionsText() {
 		if (optionsText == null)
@@ -760,7 +761,7 @@ public class SettingBase<T> implements IParam {
 		return cfgValidIndex(rawSelectedIndex());
 	}
 	private int cfgValidIndex(int index) {
-		if (index<0 || index>cfgValueList.size())
+		if (index<0 || index>=cfgValueList.size())
 			return valueValidDefaultIndex();
 		return index;
 	}

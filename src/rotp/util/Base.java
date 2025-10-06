@@ -63,6 +63,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -213,6 +214,7 @@ public interface Base extends InputEventUtil {
         str = str.replace("%2", val2);
         return str.replace("%3", String.valueOf(val3));
     }
+	public default Font fusionFont(int size) { return FontManager.current().loadFusionFont(scaled(size)); }
 	public default Font galaxyFont(int size) { return FontManager.current().galaxyFont(size); }
 	public default int scaledGalaxyFont(Graphics2D g2, String str, int maxWidth, int maxHeight, int desiredFont, int minFont) {
 		int size = desiredFont;
@@ -831,6 +833,37 @@ public interface Base extends InputEventUtil {
 
         return exists;
     }
+	public default BufferedReader directReader(String fullString) {
+		FileInputStream fis = null;
+		InputStreamReader in = null;
+		InputStream zipStream = null;
+
+		try {
+			fis = new FileInputStream(new File(fullString));
+		} catch (FileNotFoundException e) {
+			try {
+				fis = new FileInputStream(fullString);
+			} catch (FileNotFoundException ex) {
+				zipStream = Rotp.class.getResourceAsStream(fullString);
+			}
+		}
+
+		try {
+			if (fis != null)
+				in = new InputStreamReader(fis, "UTF-8");
+			else if (zipStream != null)
+				in = new InputStreamReader(zipStream, "UTF-8");
+			else
+				err("Base.reader() -- FileNotFoundException:", fullString);
+		} catch (IOException ex) {
+			err("Base.reader() -- UnsupportedEncodingException: ", fullString);
+		}
+
+		if (in == null)
+			return null;
+
+		return new BufferedReader(in);
+	}
     public default BufferedReader reader(String n) {
         String fullString = "../rotp/" +n;
         FileInputStream fis = null;
@@ -1829,4 +1862,17 @@ public interface Base extends InputEventUtil {
 
        	public Rectangle rectangle()	{ return new Rectangle(x, y, width, height); }
     }
+	static File newFile (String first, String... more) {
+		Path path = Paths.get(first, more);
+		Path parent = path.getParent();
+		if (parent == null)
+			return path.toFile();
+
+		File dir = parent.toFile();
+		if (dir.exists())
+			return path.toFile();
+
+		dir.mkdirs();
+		return path.toFile();
+	}
 }

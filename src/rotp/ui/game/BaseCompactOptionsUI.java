@@ -168,9 +168,9 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		bFull = yFull + hFull;
 		xGist = 0;
 		yGist = 0;
-		wGist = wFull;
+		wGist(wFull);
 		hGist = hFull;
-		rGist = xGist + wGist;
+		rGist = xGist + wGist();
 		bGist = yGist + hGist;
 		clearOptionsList();
 		reInit(hovering);
@@ -318,13 +318,13 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			g.drawImage(back, 0, 0, wFull, hFull, 0, 0, imgW, imgH, this);
 		}
 		g.setPaint(bg());
-		g.fillRect(xGist, yGist, wGist, hGist);
+		g.fillRect(xGist, yGist, wGist(), hGist);
 
 		// Title
 		g.setFont(titleFont);
 		String title = text(guiTitleID);
 		int sw = g.getFontMetrics().stringWidth(title);
-		int xTitle = xGist + (wGist-sw)/2;
+		int xTitle = xGist + (wGist()-sw)/2;
 		drawBorderedString(g, title, 1, xTitle, yTitle, Color.black, Color.white);
 
 		// buttons location
@@ -341,8 +341,8 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		smallButtonW = guideButtonWidth(g);
 		guideBox.setBounds(xFull+xGist+sep, yButton, smallButtonW, smallButtonH);
 		smallButtonW = defaultButtonWidth(g);
-		if (hovering && wGist<limWith) { // over two rows
-			sep2 = (wGist-optButtonWidth-2*sep)/2;
+		if (hovering && wGist() < limWith) { // over two rows
+			sep2 = (wGist() - optButtonWidth - 2*sep)/2;
 			xPos = xFull+rGist-smallButtonW-sep;
 			ypos = yButton-smallButtonH-sep;
 		}
@@ -690,7 +690,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		extraSep = 0;
 		int minH = titlePad + hSettingsTotal + descHeigh + buttonPadV + smallButtonH + bottomPad;
 		if (hovering)
-			if (scaled(minWidth) > wGist)
+			if (scaled(minWidth) > wGist())
 				minH = minH + buttonPadV + smallButtonH;
 		if (minH > hGist) {
 			hGist = max(hGist, minH);
@@ -701,27 +701,27 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		else {
 			xGist = columnPad;
 			rGist = wFull - columnPad;
-			wGist = rGist - xGist;
+			wGist(rGist - xGist);
 			hGist = minH;
 			yGist = (hFull - hGist) / 2;
 			bGist = yGist + hGist;
 
-			columnWidth = ((wGist-columnPad)/4); // Max Width allowed
+			columnWidth = ((wGist() - columnPad) /4); // Max Width allowed
 			if (numColumns < 4) { // to adjust the panel width
-				wGist = (columnWidth + columnPad) * 3; // below 3 the buttons will be squeezed!
-				xGist = (wFull - wGist)/2;
+				wGist((columnWidth + columnPad) * 3); // below 3 the buttons will be squeezed!
+				xGist = (wFull - wGist())/2;
 				rGist = wFull - xGist;
 				if (numColumns == 2)
 					extraSep = 6 * columnPad;
 			}
 		}
-		columnWidth	= ((wGist-columnPad)/numColumns);
+		columnWidth	= ((wGist() - columnPad) / numColumns);
 		int wCorr	= max(0, columnWidth - maxColumnWidth);
 		settingLeft	= xFull+xGist + columnPad/2 + wCorr*numColumns/2 - extraSep/2;
 		columnWidth	= min(columnWidth, maxColumnWidth);
 		yTitle		= yGist + titleOffset;
 		yTop		= yGist + titlePad; // First setting top position
-		descWidth	= wGist - 2 * columnPad;
+		descWidth	= wGist() - 2 * columnPad;
 		xDesc		= xFull + xGist + columnPad;		
 		yButton		= yFull + bGist - (smallButtonH + bottomPad);
 

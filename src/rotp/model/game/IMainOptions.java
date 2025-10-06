@@ -15,7 +15,6 @@ import static rotp.ui.UserPreferences.musicVolume;
 import static rotp.ui.UserPreferences.playMusic;
 import static rotp.ui.UserPreferences.playSounds;
 import static rotp.ui.UserPreferences.saveDir;
-import static rotp.ui.UserPreferences.saveDirectoryPath;
 import static rotp.ui.UserPreferences.selectedScreen;
 import static rotp.ui.UserPreferences.sensitivityMode;
 import static rotp.ui.UserPreferences.sensitivityToSettingName;
@@ -34,11 +33,8 @@ import static rotp.ui.util.IParam.langLabel;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
-
-import javax.swing.JFileChooser;
 
 import rotp.Rotp;
 import rotp.ui.RotPUI;
@@ -55,7 +51,6 @@ import rotp.ui.util.ParamList;
 import rotp.ui.util.ParamOptions;
 import rotp.ui.util.ParamSpeciesName;
 import rotp.ui.util.ParamString;
-import rotp.ui.util.RotpFileChooser;
 import rotp.util.FontManager;
 import rotp.util.LanguageManager;
 import rotp.util.sound.SoundManager;
@@ -97,10 +92,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		@Override public String getOption()			{ return displayMode(); }
 		@Override public void setOption(String s)	{ displayMode(s); }
 	}
-//	default boolean fullScreen()	{ return displayMode().equals(FULLSCREEN_MODE); }
-//	default boolean windowed()		{ return displayMode().equals(WINDOW_MODE); }
-//	default boolean borderless()	{ return displayMode().equals(BORDERLESS_MODE); }
-//	default String displayMode()	{ return displayMode.get(); }
 	
 	ParamList graphicsMode = new GraphicsMode();
 	final class GraphicsMode extends ParamList {
@@ -121,8 +112,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		@Override public String getOption()			{ return graphicsMode(); }
 		@Override public void setOption(String s)	{ graphicsMode(s); }
 	}
-//	default boolean playAnimations()	{ return !graphicsMode.get().equals(GRAPHICS_LOW); }
-//	default boolean antiAliasing()		{ return graphicsMode.get().equals(GRAPHICS_HIGH); }
 
 	ParamList texturesMode = new TexturesMode();
 	final class TexturesMode extends ParamList {
@@ -143,8 +132,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		@Override public String getOption()			{ return texturesMode(); }
 		@Override public void setOption(String s)	{ texturesMode(s); }
 	}
-//	default boolean texturesInterface()		{ return texturesInterface(); }
-//	default boolean texturesMap()			{ return texturesMap(); }
 
 	ParamList sensitivityMode = new SensitivityMode();
 	final class SensitivityMode extends ParamList {
@@ -164,8 +151,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		@Override public String getOption()			{ return sensitivityMode(); }
 		@Override public void setOption(String s)	{ sensitivityMode(s); }
 	}
-//	default boolean sensitivityMedium()		{ return sensitivityMedium(); }
-//	default boolean sensitivityLow()		{ return sensitivityLow(); }
 
 	// Do no use alone, Go through soundVolume
 	ParamBoolean playSounds = new PlaySounds();
@@ -199,8 +184,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			SoundManager.current().resetSoundVolumes();
 		}
 	}
-//	default int soundVolume()		{ return soundVolume.get(); }
-//	default boolean playSounds()	{ return playSounds.get(); }
 	
 	// Do no use alone, Go through musicVolume
 	ParamBoolean playMusic = new PlayMusic();
@@ -233,8 +216,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			SoundManager.current().resetMusicVolumes();
 		}
 	}
-//	default int musicVolume()		{ return musicVolume.get(); }
-//	default boolean playMusic()		{ return playMusic.get(); }
 
 	ParamInteger selectedScreen = new SelectedScreen();
 	final class SelectedScreen extends ParamInteger {
@@ -248,7 +229,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		@Override public Integer getOption()		{ return selectedScreen(); }
 		@Override public void setOption(Integer i)	{ selectedScreen(i); }
 	}
-//	default int selectedScreen()		{ return selectedScreen.get(); }
 
 	ParamInteger backupTurns = new BackupTurns();
 	final class BackupTurns extends ParamInteger {
@@ -265,7 +245,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		@Override public void setOption(Integer i)	{ backupTurns(i); }
 	}
 
-	//	default int backupTurns()		{ return backupTurns.get(); }
 	ParamInteger backupKeep	= new ParamInteger(GAME_UI, "BACKUP_KEEP", -1)
 			.setLimits(-1, 1000)
 			.setIncrements(1, 5, 20)
@@ -282,6 +261,11 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			isDuplicate(true);
 			isCfgFile(true);
 		}
+		@Override public String guideValue()		{
+			String es = isDefaultValue()? "_DEFAULT" : "_CUSTOM";
+			String label = getLangLabel() + es;
+			return langLabel(label);
+		}
 		@Override public String	getOption()			{ return saveDir(); }
 		@Override public void	setOption(String s)	{ saveDir(s); }
 	}
@@ -295,6 +279,9 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		return dir;
 	}
 	static String	backupDirectoryPath()	{ return saveDirectoryPath() + "/" + GameSession.BACKUP_DIRECTORY; }
+
+	ParamString speciesDirectory = new ParamDirectory(GAME_UI, "SPECIES_DIR");
+	static String speciesDirectoryPath()	{ return speciesDirectory.get(); }
 
 	ParamBoolean disableAdvisor = new DisableAdvisor();
 	final class DisableAdvisor extends ParamBoolean {

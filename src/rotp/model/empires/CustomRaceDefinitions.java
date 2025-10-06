@@ -17,6 +17,7 @@
 package rotp.model.empires;
 
 import static rotp.Rotp.rand;
+import static rotp.model.game.IMainOptions.speciesDirectoryPath;
 import static rotp.model.game.IPreGameOptions.randomAlienRaces;
 import static rotp.model.game.IPreGameOptions.randomAlienRacesMax;
 import static rotp.model.game.IPreGameOptions.randomAlienRacesMin;
@@ -32,12 +33,12 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import rotp.Rotp;
 import rotp.model.empires.Leader.Personality;
 import rotp.model.game.DynOptions;
 import rotp.model.game.DynamicOptions;
@@ -62,6 +63,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	public	static final String CUSTOM_RACE_KEY		= "CUSTOM_RACE_KEY";
 	public	static final String BASE_RACE_MARKER	= "*";
 	private static final boolean booleansAreBullet	= true;
+	private static final FilenameFilter SPECIES_FILTER = (File dir, String name1) -> name1.toLowerCase().endsWith(EXT);
 
 	private Race race; // !!! To be kept up to date !!!
 	private final LinkedList<SettingBase<?>> settingList = new LinkedList<>(); // !!! To be kept up to date !!!
@@ -106,7 +108,7 @@ public class CustomRaceDefinitions implements ISpecies {
 		pushSettings();
 	}
 	private CustomRaceDefinitions(String fileName) {
-		this(loadOptions(Rotp.jarPath(), fileName + EXT));
+		this(loadOptions(speciesDirectoryPath(), fileName + EXT));
 	}
 
 	// -------------------- Static Methods --------------------
@@ -128,7 +130,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	}
 
 	public static boolean raceFileExist(String fileName) {
-		File f = new File(Rotp.jarPath(), fileName + EXT);
+		File f = new File(speciesDirectoryPath(), fileName + EXT);
 		return (f.exists() && !f.isDirectory());
 	}
 	public static Race fileToAlienRace(String fileName) {
@@ -236,12 +238,12 @@ public class CustomRaceDefinitions implements ISpecies {
 		
 	}
 	private String fileName() { return race.id + EXT; }
-	public void saveRace() { saveSettingList(Rotp.jarPath(), fileName()); }
+	public void saveRace() { saveSettingList(speciesDirectoryPath(), fileName()); }
 	public void loadRace() {
 		if (R_M.isValidKey(race.id))
 			setRace(race.id);
 		else
-			loadSettingList(Rotp.jarPath(), fileName());
+			loadSettingList(speciesDirectoryPath(), fileName());
 	}
 	// ========== Main Getters ==========
 	//
@@ -250,7 +252,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	public LinkedList<SettingBase<?>> guiList()		{ return guiList; }
 	public LinkedList<Integer>		  spacerList()	{ return spacerList; }
 	public LinkedList<Integer>		  columnList()	{ return columnList; }
-	public RaceList initRaceList()	{ 
+	public RaceList initRaceList()		{ 
 		raceList = new RaceList();
 		return raceList;
 	}
@@ -523,6 +525,22 @@ public class CustomRaceDefinitions implements ISpecies {
 	}
 	private void endOfColumn()	{ columnList.add(settingList.size()); }
 	private void spacer()		{ spacerList.add(settingList.size()); }
+	private String fileToKey (File file)	{
+		String key = file.getPath();
+		key = key.substring(0, key.length() - EXT.length());
+		String dir = speciesDirectoryPath();
+		if (dir.length() <= key.length()) {
+			String parent = key.substring(0, dir.length());
+			boolean same = parent.equals(dir);
+			if(same) {
+				if (dir.length() == key.length())
+					key = "";
+				else
+					key = key.substring(dir.length()+1, key.length());
+			}
+		}
+		return key;
+	}
 	// ==================== Nested Classes ====================
 	//
 	// ==================== RaceList ====================
@@ -556,10 +574,16 @@ public class CustomRaceDefinitions implements ISpecies {
 					DynOptions opt = loadOptions(file);
 					if (opt.size() == 0)
 						System.err.println("Empty race file: " + file.getName());
-					else
+					else {
+						String key = RaceKey.getKey(opt);
+						String fileKey = fileToKey(file);
+						if (!key.equalsIgnoreCase(fileKey)) {
+							RaceKey.setKey(opt, fileKey);
+							DynOptions.saveOptions(opt, file);
+						}
 						add(opt);
+					}
 				}
-
 			// Add Game races
 			for (String raceKey : IGameOptions.allRaceOptions)
 				add(raceKey);
@@ -568,12 +592,21 @@ public class CustomRaceDefinitions implements ISpecies {
 			reload = true;
 			set(currentValue);
 		}
-		private File[] loadListing() {
-		    String path	= Rotp.jarPath();
-		    File saveDir = new File(path);
-		    FilenameFilter filter = (File dir, String name1) -> name1.toLowerCase().endsWith(EXT);
-		    File[] fileList = saveDir.listFiles(filter);
-		    return fileList;
+		private File[] loadListing()	{
+			File speciesDir = new File(speciesDirectoryPath());
+			List<File> speciesList = new ArrayList<>();
+			scanSubDir(speciesList, speciesDir);
+			return speciesList.toArray(new File[0]);
+		}
+		private void scanSubDir(List<File> speciesList, File speciesDir)	{
+			if (!speciesDir.exists() || !speciesDir.isDirectory())
+				return;
+			// Local files
+			speciesList.addAll(Arrays.asList(speciesDir.listFiles(SPECIES_FILTER)));
+			// Sub Dir files
+			File[] subDirectories = speciesDir.listFiles(File::isDirectory);
+			for (File subDir : subDirectories)
+				scanSubDir(speciesList, subDir);
 		}
 		private void add(DynOptions opt) {
 			CustomRaceDefinitions cr = new CustomRaceDefinitions(opt);
@@ -649,7 +682,7 @@ public class CustomRaceDefinitions implements ISpecies {
 				updateSettings();
 				return;
 			}
-			File file = new File(Rotp.jarPath(), settingValue()+EXT);
+			File file = new File(speciesDirectoryPath(), settingValue()+EXT);
 			if (file.exists()) {
 				setSettingTools(loadOptions(file));
 				newValue = true;
@@ -659,9 +692,13 @@ public class CustomRaceDefinitions implements ISpecies {
 	}
 	// ==================== RaceKey ====================
 	//
-	private class RaceKey extends SettingString {
+	private class RaceKey extends SettingString	{
+		private static final String RACE_KEY = "RACE_KEY";
+		static String getKey (DynOptions opts)				{ return opts.getString(ROOT + RACE_KEY); }
+		static void setKey (DynOptions opts, String key)	{ opts.setString(ROOT + RACE_KEY, key); }
+
 		private RaceKey() {
-			super(ROOT, "RACE_KEY", baseRace, 1);
+			super(ROOT, RACE_KEY, baseRace, 1);
 			inputMessage("Enter the Race File Name");
 			randomStr(RANDOMIZED_RACE_KEY);
 		}

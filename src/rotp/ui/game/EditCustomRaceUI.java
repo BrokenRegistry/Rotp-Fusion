@@ -18,6 +18,7 @@ package rotp.ui.game;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.model.empires.CustomRaceDefinitions.ROOT;
 import static rotp.model.game.IBaseOptsTools.LIVE_OPTIONS_FILE;
+import static rotp.ui.util.IParam.langLabel;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -31,11 +32,13 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
+import rotp.Rotp;
 import rotp.model.empires.CustomRaceDefinitions;
 import rotp.model.empires.CustomRaceDefinitions.RaceList;
 import rotp.model.empires.Race;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.IMainOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.util.InterfaceOptions;
@@ -55,6 +58,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	private static final String saveCurrentKey	= ROOT + "GUI_SAVE";
 	private static final String loadCurrentKey	= ROOT + "GUI_LOAD";
 	private static final int	raceListW		= RotPUI.scaledSize(180);
+	private static final int	speciesDirH		= s16;
 	
 	private static final ParamButtonHelp loadButtonHelp = new ParamButtonHelp( // For Help Do not add the list
 			"CUSTOM_RACE_BUTTON_LOAD",
@@ -73,6 +77,8 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	private LinkedList<SettingBase<?>> guiList;
 	private RaceList raceList;
 	private int yRandB, yRandGetB, xRandPushB;
+	
+	private	  final Box speciesDirBox	= new Box(ROOT + "SPECIES_DIR");
 	
 	// ========== Constructors and initializers ==========
 	//
@@ -116,7 +122,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 			raceList.optionText(optionBT(), bulletIdx);
 			raceList.optionText(bulletIdx).disabled(optionIdx == paramIdx);
 		}
-		init();
+		reInitFields();
 	}
 	// ========== Other Methods ==========
 	//
@@ -214,6 +220,14 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 				+ smallButtonMargin;
 	}
 	private void mouseCommon(MouseEvent e, MouseWheelEvent w) {
+		if (hoverBox == speciesDirBox) {
+			IMainOptions.speciesDirectory.toggle(e, w, this);
+			reloadRaceList();
+			//initSpeciesDirBound();
+			repaint(speciesDirBox);
+			//drawSpeciesDirButton();
+			return;
+		}
 		for (int settingIdx=0; settingIdx < mouseList.size(); settingIdx++) {
 			SettingBase<?> setting = mouseList.get(settingIdx);
 			if (setting.isBullet()) {
@@ -257,6 +271,48 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 				return;
 			} 
 		}
+	}
+	private String speciesDirButtonTxt()	{
+		String dir = IMainOptions.speciesDirectory.guideValue();
+		String jar = Rotp.jarPath();
+		if (jar.length() <= dir.length()) {
+			String sub = dir.substring(0, jar.length());
+			boolean same = sub.equals(jar);
+			if(same) {
+				if (jar.length() == dir.length()) {
+					String label = IMainOptions.speciesDirectory.getLangLabel() + "_DEFAULT";
+					dir = langLabel(label);
+				}
+				else
+					dir = dir.substring(jar.length()+1, dir.length());
+			}
+		}
+		return dir;
+	}
+	private void drawSpeciesDirButton(Graphics2D g)	{
+		// Button location and drawing
+		int imageW	= s20;
+		String text	= speciesDirButtonTxt();
+		int sw		= g.getFontMetrics().stringWidth(text);
+		int textW	= sw + miniButtonMargin;
+		int buttonW	= imageW + textW;
+		int xBox	= leftM + wGist() - columnPad - buttonW;
+		int yBox	= yCost - speciesDirH;// - s10;
+		speciesDirBox.setBounds(xBox, yBox, buttonW, miniButtonH);
+		g.setColor(GameUI.buttonBackgroundColor());
+		g.fillRoundRect(speciesDirBox.x, speciesDirBox.y, buttonW, miniButtonH, cnr, cnr);
+
+		// FolderText location and drawing
+		int xTxt = speciesDirBox.x + imageW + miniButtonMargin/2;
+		int yTxt = speciesDirBox.y + speciesDirBox.height * 75/100;
+		Color c = hoverBox == speciesDirBox ? Color.yellow : GameUI.borderBrightColor();
+		g.setColor(c);
+		g.drawString(text, xTxt, yTxt);
+
+		// Icon location and Drawing
+		xTxt -= imageW;
+		g.setFont(fusionFont(13));
+		drawBoldString(g,"📁", xTxt, yTxt);
 	}
 	// ========== Overriders ==========
 	//
@@ -308,7 +364,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 
 		// Exit Button
 		int buttonW	= exitButtonWidth(g);
-		xButton = leftM + wGist - buttonW - buttonPad;
+		xButton = leftM + wGist() - buttonW - buttonPad;
 		exitBox.setBounds(xButton, yButton+s2, buttonW, smallButtonH);
 
 		// Select Button
@@ -362,17 +418,22 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		xRandPushB = xButton + buttonW + buttonPad;
 		buttonW	   = g.getFontMetrics().stringWidth(text) + miniButtonMargin;
 		randomPushBox.setBounds(xRandPushB, yRandGetB, buttonW, miniButtonH);
+
+		// Species Directory Button
+		int xSD = leftM + wGist() - columnPad - buttonW;
+		int ySD	= yCost - speciesDirH - s10;
+		speciesDirBox.setBounds(xSD, ySD, buttonW, smallButtonH);
 	}
 	@Override protected void initFixButtons(Graphics2D g) {
 		// System.out.println("EDIT: initFixButtons(Graphics2D g) " + (randomBox.y-yButton));
 		// Randomize Button
-        Stroke prev = g.getStroke();
+		Stroke prev = g.getStroke();
 		setSmallButtonGraphics(g);
 		g.fillRoundRect(randomBox.x, randomBox.y, randomBox.width, randomBox.height, cnr, cnr);
 		g.fillRoundRect(randomGetBox.x, randomGetBox.y, randomGetBox.width, randomGetBox.height, cnr, cnr);
 		g.fillRoundRect(randomPushBox.x, randomPushBox.y, randomPushBox.width, randomPushBox.height, cnr, cnr);
-        drawFixButtons(g, true);
-        g.setStroke(prev);
+		drawFixButtons(g, true);
+		g.setStroke(prev);
 	}
 	@Override protected void drawButtons(Graphics2D g, boolean init) {
         Stroke prev = g.getStroke();
@@ -381,6 +442,8 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
         else
         	g.setFont(bigButtonFont(false));
         drawButton(g, init, exitBox,	text(exitButtonKey()));
+
+        //drawSpeciesDirButton(g);
 
         if (init)
         	g.setFont(smallButtonFont(retina));
@@ -479,7 +542,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		String text = text(exitButtonKey());
 		int sw = g.getFontMetrics().stringWidth(text);
 		int buttonW	= exitButtonWidth(g);
-		xButton = leftM + wGist - buttonW - buttonPad;
+		xButton = leftM + wGist() - buttonW - buttonPad;
 		g.setColor(GameUI.buttonBackgroundColor());
 		g.fillRoundRect(exitBox.x, exitBox.y, buttonW, smallButtonH, cnr, cnr);
 		int xT = exitBox.x+((exitBox.width-sw)/2);
@@ -666,13 +729,15 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		xLine = xDesc  + labelPad;
 		yLine = yRandB - labelPad;
 		ModText bt;
-	    for(SettingBase<?> setting : guiList) {
+		for(SettingBase<?> setting : guiList) {
 			bt = setting.settingText();
 			bt.displayText(setting.guiSettingDisplayStr());
 			bt.setScaledXY(xLine, yLine);
 			bt.draw(g);
 			yLine -= labelH;
-	    }
+		}
+		drawSpeciesDirButton(g);
+		//drawButtons(g);
 		if (showTiming)
 			System.out.println("EditCustomRace paintComponent() Time = " + (System.currentTimeMillis()-timeStart));	
 	}

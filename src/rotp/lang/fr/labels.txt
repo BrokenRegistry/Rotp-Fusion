@@ -644,12 +644,19 @@ GAME_SETTINGS_BACKUP_KEEP_DESC     | Lorsque la suppression automatique de sauve
 GAME_SETTINGS_BACKUP_KEEP_ALL      | Tous
 GAME_SETTINGS_BACKUP_KEEP_ALL_DESC | Désactiver la suppression automatique de sauvegarde.
 
-GAME_SETTINGS_SAVE_DIR				| Répertoire d’enregistrement : %1
+GAME_SETTINGS_SAVE_DIR				| Répertoire des parties : %1
 GAME_SETTINGS_SAVE_DIR_DEFAULT		| Défaut
 GAME_SETTINGS_SAVE_DIR_CUSTOM		| Personnalisé
-GAME_SETTINGS_SAVE_DIR_HELP			| Pour sélectionner un répertoire pour enregistrer vos fichiers : Par défaut, c’est le même répertoire que le jeu.
-GAME_SETTINGS_SAVE_DIR_DESC1		| Le répertoire de sauvegarde est actuellement défini sur le même répertoire que le jeu.
-GAME_SETTINGS_SAVE_DIR_DESC2		| Le répertoire de sauvegarde est actuellement défini sur : %1
+GAME_SETTINGS_SAVE_DIR_HELP			| Sélection du répertoire pour enregistrer vos parties : Par défaut, c’est celui de l’exécutable.
+GAME_SETTINGS_SAVE_DIR_DESC1		| Le répertoire des espèces est actuellement le même que celui de l’exécutable.
+GAME_SETTINGS_SAVE_DIR_DESC2		| Le répertoire de sauvegarde est actuellement : %1
+
+GAME_SETTINGS_SPECIES_DIR			| Répertoire des espèces : %1
+GAME_SETTINGS_SPECIES_DIR_DEFAULT	| Défaut
+GAME_SETTINGS_SPECIES_DIR_CUSTOM	| Personnalisé
+GAME_SETTINGS_SPECIES_DIR_HELP		| Sélection du répertoire pour enregistrer vos espèces personalisées : Par défaut, c’est celui de l’exécutable.
+GAME_SETTINGS_SPECIES_DIR_DESC1		| Le répertoire de sauvegarde est actuellement le même que celui de l’exécutable.
+GAME_SETTINGS_SPECIES_DIR_DESC2		| Le répertoire de sauvegarde est actuellement : %1
 
 GAME_SETTINGS_DISPLAY_YEAR        | Afficher l’Année : %1
 GAME_SETTINGS_DISPLAY_YEAR_DESC   | Sur l’écran Galaxie : Affiche soit le tour actuel du jeu ou l’année en cours de votre empire

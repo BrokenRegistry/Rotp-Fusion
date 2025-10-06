@@ -32,6 +32,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import rotp.util.Base;
 import rotp.util.ObjectCloner;
 
 public class DynOptions implements DynamicOptions, Serializable {
@@ -133,7 +134,7 @@ public class DynOptions implements DynamicOptions, Serializable {
     }
     // Save options to zip file
     public static void saveOptions(DynOptions options, String path, String fileName) {
-		File saveFile = new File(path, fileName);
+		File saveFile = Base.newFile(path, fileName);
 		try {
 			saveOptionsTE(options, saveFile);
 		} catch (IOException ex) {
@@ -159,7 +160,7 @@ public class DynOptions implements DynamicOptions, Serializable {
     // Load options from file
     public static DynOptions loadOptions(String path, String fileName) {
     	DynOptions newOptions;
-		File loadFile = new File(path, fileName);
+		File loadFile = Base.newFile(path, fileName);
 		if (loadFile.exists()) {
 			newOptions = loadOptionsTE(loadFile);
             if (newOptions == null) {

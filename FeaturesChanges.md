@@ -21,6 +21,11 @@
 
 ### Features:
 
+- In the Species Customization pane, you can now select where the species Files are stored.
+  - They can be organized in sub-folders, and will be displayed with their sub-folders.
+  - The file Name (on the left) is used as key, and will be updated to include the sub-folders. This to avoid two species having the same key.
+- An introduction text file can be added to the same directory as the species, with the same file name and the extension “.intro.txt.”
+  - It will be displayed when you start a new game with this species.
 - When you colonize Orion, the AIs will not complain about your expansion. (However, if you colonize other planets during the same turn, they will complain.)
 - The number of votes required to win will remain displayed during the council and will turn green if there is a winner.
 - New option to set a maximal number of turns, with the following possible endings:

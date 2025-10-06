@@ -1349,7 +1349,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     	saveOptions(options, Rotp.jarPath(), fileName);
     }
     private static void saveOptions(MOO1GameOptions options, String path, String fileName) {
-		File saveFile = new File(path, fileName);
+		File saveFile = Base.newFile(path, fileName);
 		try {
 			saveOptionsTE(options, saveFile);
 		} catch (IOException ex) {
@@ -1395,7 +1395,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     // BR: Load options from file
     private static MOO1GameOptions loadOptions(String path, String fileName) { // Just load, no param update
        	MOO1GameOptions newOptions;
-		File loadFile = new File(path, fileName);
+		File loadFile = Base.newFile(path, fileName);
 		if (loadFile.exists()) {
 			newOptions = loadOptionsTE(loadFile);
             if (newOptions == null) {

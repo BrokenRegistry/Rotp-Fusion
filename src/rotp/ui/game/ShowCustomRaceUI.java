@@ -122,7 +122,8 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private	int descHeigh	= descLines * descLineH + descPadM;
 
 	private int yTitle;
-	private int xCost, yCost;
+	private int xCost;
+	protected int yCost;
 	private int w;
 	private int h;
 	private int settingSize;
@@ -384,7 +385,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		String text = text(exitButtonKey());
 		int sw = g.getFontMetrics().stringWidth(text);
 		int buttonW	= exitButtonWidth(g);
-		xButton = leftM + wGist - buttonW - buttonPad;
+		xButton = leftM + wGist() - buttonW - buttonPad;
 //		exitBox.setBounds(xButton, yButton+s2, buttonW, smallButtonH);
 		g.setColor(GameUI.buttonBackgroundColor());
 		g.fillRoundRect(exitBox.x, exitBox.y, buttonW, smallButtonH, cnr, cnr);
@@ -420,7 +421,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		// Exit Button
 		String text = text(exitButtonKey());
 		int buttonW	= exitButtonWidth(g);
-		xButton = leftM + wGist - buttonW - buttonPad;
+		xButton = leftM + wGist() - buttonW - buttonPad;
 		exitBox.setBounds(xButton, yButton+s2, buttonW, smallButtonH);
 
 		// Guide Button
@@ -433,7 +434,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		text = "AI: Character";
 		int sw = g.getFontMetrics().stringWidth(text);
 		buttonW	= sw + smallButtonMargin;
-		int xAI = leftM + wGist - columnPad - buttonW;
+		int xAI = leftM + wGist() - columnPad - buttonW;
 		int yAI	= yCost - raceAIH - s10;
 		raceAIBox.setBounds(xAI, yAI, buttonW, smallButtonH);
 	}
@@ -512,7 +513,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		long timeStart = System.currentTimeMillis();
 		w	= getWidth();
 		h	= getHeight();
-		wGist	= getBackGroundWidth();
+		wGist(getBackGroundWidth());
 		hGist	= titlePad + columnsMaxH + tooltipPadV + descHeigh + buttonPadV + smallButtonH + buttonPadV;
 //		currentWith	 = wFirstColumn;
 //		descWidth = wBG - 2 * columnPad;
@@ -523,7 +524,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		yButton	= topM + hGist - buttonPadV - smallButtonH;
 		
 		yTop	= topM + titlePad; // First setting top position
-		leftM	= Math.min((w - wGist)/2, maxLeftM);
+		leftM	= Math.min((w - wGist())/2, maxLeftM);
 		yTitle	= topM + titleOffset;
 		yDesc	= yButton - buttonPadV - descHeigh;
 		yCost 	= yTitle + costOffset;
@@ -549,13 +550,13 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		g.drawImage(back, 0, 0, w, h, 0, 0, imgW, imgH, this);
 
 		g.setPaint(bg());
-		g.fillRect(leftM, topM, wGist, hGist);
+		g.fillRect(leftM, topM, wGist(), hGist);
 
 		// Title
 		g.setFont(titleFont);
 		String title = text(guiTitleID);
 		int sw = g.getFontMetrics().stringWidth(title);
-		int xTitle = leftM +(wGist-sw)/2;
+		int xTitle = leftM + (wGist() - sw)/2;
 		drawBorderedString(g, title, 1, xTitle, yTitle, Color.black, Color.white);
 		
 		initButtonsBounds(g);
@@ -567,9 +568,8 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		if (showTiming) 
 			System.out.println("initBackImg() Time = " + (System.currentTimeMillis()-timeStart));
     }
-	@Override protected void init() {
-		super.init();
-		for (SettingBase<?> setting : commonList) {
+    protected void reInitFields()	{
+    	for (SettingBase<?> setting : commonList) {
 			if (setting.isBullet()) {
 				setting.settingText().displayText(setting.guiSettingDisplayStr()); // The setting
 				int bulletStart	= setting.bulletStart();
@@ -588,6 +588,10 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		malusCostText.displayText(malusCostStr());
 		malusCostText.disabled(true);
 		descBox.setText("<b>Shift</b>&nbsp and <b>Ctrl</b>&nbsp can be used to change buttons, click and scroll functions");
+    }
+	@Override protected void init()	{
+		super.init();
+		reInitFields();
 	}
 	@Override public boolean checkModifierKey(InputEvent e) {
 		boolean change = checkForChange(e);
@@ -625,7 +629,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		xLine = leftM+s10;
 		yLine = yTop;
 		currentWidth	= wFirstColumn;
-		descWidth	= wGist - 2 * columnPad;
+		descWidth	= wGist() - 2 * columnPad;
 
 
 		// First column (left)

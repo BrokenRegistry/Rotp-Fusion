@@ -176,7 +176,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 		g.drawImage(back, 0, 0, wFull, hFull, 0, 0, imgW, imgH, this);
 
 		g.setPaint(bg());
-		g.fillRect(leftM, topM, wGist, hGist);
+		g.fillRect(leftM, topM, wGist(), hGist);
 
 		// Title
 		g.setFont(narrowFont(30));
@@ -354,8 +354,8 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 		super.init();
 		wFull	= RotPUI.setupRaceUI().getWidth();
 		hFull	= RotPUI.setupRaceUI().getHeight();
-		wGist	= wFull - (leftM + rightM);
-		wSetting = (wGist/numColumns)-columnPad;
+		wGist(wFull - (leftM + rightM));
+		wSetting = (wGist() / numColumns) - columnPad;
 		if (!globalOptions) // The new ways
 			guiOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
 		forceUpdate = true;

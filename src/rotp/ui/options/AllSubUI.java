@@ -100,6 +100,7 @@ public final class AllSubUI {
 			// Then create the final list 
 			allModOptions = new SafeListParam(ALL_MOD_OPTIONS);
 			allModOptions.add(IMainOptions.showGuide);
+			allModOptions.add(IMainOptions.speciesDirectory);
 			allModOptions.addAll(allOptions);
 		}
 		return allModOptions;

@@ -11,7 +11,7 @@ import rotp.Rotp;
 import rotp.ui.game.BaseModPanel;
 
 public class ParamDirectory extends ParamString	{
-	protected ParamDirectory(String gui, String name)	{
+	public ParamDirectory(String gui, String name)	{
 		super(gui, name, Rotp.jarPath());
 		isCfgFile(true);
 	}
@@ -21,11 +21,6 @@ public class ParamDirectory extends ParamString	{
 		return label;			
 	}
 	@Override public String getGuiDescription()	{ return langLabel(descriptionId(), get()); }
-	@Override public String guideValue()		{
-		String es = isDefaultValue()? "_DEFAULT" : "_CUSTOM";
-		String label = getLangLabel() + es;
-		return langLabel(label);
-	}
 	@Override public boolean toggle(MouseEvent e, BaseModPanel frame)	{
 		if (getDir(e) == 0) {
 			set(defaultValue());
@@ -41,5 +36,14 @@ public class ParamDirectory extends ParamString	{
 			set(path);
 		}
 		return false;
+	}
+	@Override public String get()	{ // Always return a valid directory
+		String dir = super.get();
+		File file = new File(dir);
+		if (!file.exists() || !file.isDirectory()) {
+			dir = Rotp.jarPath();
+			set(dir);
+		}
+		return dir;
 	}
 }

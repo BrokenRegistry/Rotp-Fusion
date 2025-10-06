@@ -120,7 +120,8 @@ public abstract class BaseModPanel extends BasePanel
 
 	protected int xButton, yButton, wButton, hButton; // absolute button position.
 	protected int xFull, yFull, wFull, hFull, rFull, bFull; // absolute panel window size and position (right, bottom)
-	protected int xGist, yGist, wGist, hGist, rGist, bGist; // relative Content size and position (right, bottom)
+	protected int xGist, yGist, hGist, rGist, bGist; // relative Content size and position (right, bottom)
+	private int wGist; // relative Content size and position (right, bottom)
 	protected BufferedImage buttonBackImg;
 	private	  LinearGradientPaint bg;
 	protected LinearGradientPaint bg() {
@@ -140,6 +141,8 @@ public abstract class BaseModPanel extends BasePanel
         }
         return backImg;
     }
+	protected int wGist()				{ return wGist; }
+	protected void wGist(int w)			{ wGist = w; }
 //	protected int retina(int val)		{ return (int) (val*retinaFactor); }
 //	protected int invRetina(int val)	{ return (int) (val/retinaFactor); }
 	protected int retina(int val)		{ return val*retinaFactor; }
@@ -243,9 +246,9 @@ public abstract class BaseModPanel extends BasePanel
 			bFull = yFull + hFull;
 			xGist = 0;
 			yGist = 0;
-			wGist = wFull;
+			wGist(wFull);
 			hGist = hFull;
-			rGist = xGist + wGist;
+			rGist = xGist + wGist();
 			bGist = yGist + hGist;
 		}
 		smallButtonMargin = s30;

@@ -250,7 +250,7 @@ public enum FontManager implements Base {
             err("FontManager.loadFont -- Exception: " + e.getMessage());
         }
     }
-    private Font loadFusionFont(int size) {
+    public Font loadFusionFont(int size) {
 		String filename = FUSION_FONT;
 		String fontDir = "lang/fonts/";
         InputStream is = fileInputStream(fontDir+filename);

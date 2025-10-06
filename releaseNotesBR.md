@@ -7,13 +7,12 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
-25-10-04 (BR)
-- Fixed Guide text for MoO1 retreat option.
-- Fixed Compilation failing for not enough memory error.
-- Fixed a retreat options conflict that could cause Orion to be wrongly scouted.
-- Added RotP colors and fonts to files selector that were still OS like.
-- Custom Species Editor Fix:
-  - When you save a custom species that has already been selected as Player species, both the file and the player species will be updated. (Previously, you had to exit and reenter the panel)
+25-10-06 (BR)
+- In the Species Customization pane, you can now select where the species Files are stored.
+  - They can be organized in sub-folders, and will be displayed with their sub-folders.
+  - The file Name (on the left) is used as key, and will be updated to include the sub-folders. This to avoid two species having the same key.
+- An introduction text file can be added to the same directory as the species, with the same file name and the extension “.intro.txt.”
+  - It will be displayed when you start a new game with this species.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

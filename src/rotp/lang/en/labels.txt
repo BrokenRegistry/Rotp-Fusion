@@ -651,6 +651,13 @@ GAME_SETTINGS_SAVE_DIR_HELP			| To select a custom directory to save your files:
 GAME_SETTINGS_SAVE_DIR_DESC1		| The save directory is currently set to the same directory as the game.
 GAME_SETTINGS_SAVE_DIR_DESC2		| The save directory is currently set to: %1
 
+GAME_SETTINGS_SPECIES_DIR			| Species Directory: %1
+GAME_SETTINGS_SPECIES_DIR_DEFAULT	| Default
+GAME_SETTINGS_SPECIES_DIR_CUSTOM	| Custom
+GAME_SETTINGS_SPECIES_DIR_HELP		| To select a custom directory to save your custom species: By default, it's the same directory as the game.
+GAME_SETTINGS_SPECIES_DIR_DESC1		| The species directory is currently set to the same directory as the game.
+GAME_SETTINGS_SPECIES_DIR_DESC2		| The species directory is currently set to: %1
+
 GAME_SETTINGS_DISPLAY_YEAR        | Display Year: %1
 GAME_SETTINGS_DISPLAY_YEAR_DESC   | On the Galaxy map: Displays either the game's current turn or your empire's current year
 

@@ -21,6 +21,8 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,6 +33,7 @@ import rotp.model.empires.Leader.Objective;
 import rotp.model.empires.Leader.Personality;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.DynOptions;
+import rotp.model.game.IMainOptions;
 import rotp.model.planet.PlanetType;
 import rotp.model.ships.ShipDesign;
 import rotp.util.Base;
@@ -520,8 +523,8 @@ public class Race implements ISpecies, Base, Serializable {
 		List<String> introLines = new ArrayList<>();
 		if (isCustomRace) {
 			log("loading Custom Species Intro");
-			String filename = CUSTOM_SPECIES_FOLDER +  id + INTRO_FILE_EXTENSION;
-			BufferedReader in = reader(filename);
+			Path path = Paths.get(IMainOptions.speciesDirectoryPath(), id + INTRO_FILE_EXTENSION);
+			BufferedReader in = directReader(path.toString());
 			if (in != null) {
 				try {
 					String input;

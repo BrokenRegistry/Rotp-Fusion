@@ -2,6 +2,13 @@
 
 ## What's New
 
+25-10-06 (BR)
+- In the Species Customization pane, you can now select where the species Files are stored.
+  - They can be organized in sub-folders, and will be displayed with their sub-folders.
+  - The file Name (on the left) is used as key, and will be updated to include the sub-folders. This to avoid two species having the same key.
+- An introduction text file can be added to the same directory as the species, with the same file name and the extension “.intro.txt.”
+  - It will be displayed when you start a new game with this species.
+
 25-10-04 (BR)
 - Fixed Guide text for MoO1 retreat option.
 - Fixed Compilation failing for not enough memory error.
