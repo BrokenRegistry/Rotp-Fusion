@@ -44,12 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-25-10-06 (BR)
-- In the Species Customization pane, you can now select where the species Files are stored.
-  - They can be organized in sub-folders, and will be displayed with their sub-folders.
-  - The file Name (on the left) is used as key, and will be updated to include the sub-folders. This to avoid two species having the same key.
-- An introduction text file can be added to the same directory as the species, with the same file name and the extension ".intro.txt."
-  - It will be displayed when you start a new game with this species.
+25-10-09 (BR)
+- Added field in custom Species: Bound AI and Species for animation.
+- Fixed Galaxy shape options fields not showing guide before changing the shape at least once.
 
 
 ### [Features Historic](FeaturesChanges.md)

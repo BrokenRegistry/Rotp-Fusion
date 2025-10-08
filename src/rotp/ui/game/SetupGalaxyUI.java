@@ -332,7 +332,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		return shapeOptionsList;
 	}
 	public	void refreshShapeOptions(ListShapeParam optionsList)	{
-		if (notActive())
+		if (notActive() && opts == null)
 			return;
 		shapeOptionsList = null;
 		switch (shapeOptionsList().size()) {
@@ -398,7 +398,6 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		playerMug  = null;
 		initAIandAbilitiesList();
 		opts.saveOptionsToFile(LIVE_OPTIONS_FILE);
-		refreshShapeOptions(opts.galaxyShape().paramList());
 		refreshGui(0);
 	}
 	@Override protected String GUI_ID() { return GUI_ID; }
