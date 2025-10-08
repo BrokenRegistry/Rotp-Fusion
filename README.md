@@ -47,6 +47,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 25-10-09 (BR)
 - Added field in custom Species: Bound AI and Species for animation.
 - Fixed Galaxy shape options fields not showing guide before changing the shape at least once.
+- Fixed Galaxy Setup Start Button being blank when "Shift" was down.
 
 
 ### [Features Historic](FeaturesChanges.md)

@@ -147,11 +147,11 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 
 	@Override protected ParamButtonHelp newExitButton() {
 		return new ParamButtonHelp(
-			"SETUP_START",
-			START_KEY,
-			"",
-			RESTART_KEY,
-			"");
+				"SETUP_START",
+				START_KEY,	 true,
+				START_KEY,	 false,
+				RESTART_KEY, true,
+				RESTART_KEY, false);
 	}
 	public final  ParamListOpponentAI opponentAI	= new ParamListOpponentAI( // For Guide
 			BASE_UI, "OPPONENT_AI",
