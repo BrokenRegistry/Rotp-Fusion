@@ -1,8 +1,8 @@
 // This is the label text file for Remnants of the Precursors
-// comment lines should start with ’/’  they are ignored
+// comment lines should start with '/'  they are ignored
 //
 // the format for each line is   key | label
-//    where ’key’ is the code used by the game to retrieve the label
+//    where 'key' is the code used by the game to retrieve the label
 //    You cannot create new keys! The game will not use them
 //    You can only use keys that the game is looking for.
 //
@@ -20,31 +20,31 @@
 // _HELP | The help text displayed in the Guide pop up. Can use some basic HTML controls <br> <i></i> <u></u> <b></b> etc...In the absence of _HELP, _DESC will be displayed.
 // Translators can always add a _HELP label even if not present in the English file.
 //
-// SETTINGS_MOD_Parameter              | The parameter’s name shown on the options panel. Try to limit their length to max 20 chars.
+// SETTINGS_MOD_Parameter              | The parameter's name shown on the options panel. Try to limit their length to max 20 chars.
 //
-// SETTINGS_MOD_Parameter_DESC         | The parameter’s description displayed in the two lines box at the bottom of the option panel. <br> can be used to force line split.
+// SETTINGS_MOD_Parameter_DESC         | The parameter's description displayed in the two lines box at the bottom of the option panel. <br> can be used to force line split.
 //
-// SETTINGS_MOD_Parameter_HELP         | A more complete parameter’s description, displayed in the Guide pop up. Can use some basic HTML controls. This label is optional and will be replaced by _DESC if missing.
+// SETTINGS_MOD_Parameter_HELP         | A more complete parameter's description, displayed in the Guide pop up. Can use some basic HTML controls. This label is optional and will be replaced by _DESC if missing.
 //
 // Label used by parameters of the type "List"
 //
 // SETTINGS_MOD_Parameter_Options      | The name of this parameter option, displayed at the right of the parameter name. It should be short, especially if the parameter name is long.
 //
-// SETTINGS_MOD_Parameter_Options_DESC | The description of the parameter’s option, displayed in the guide. <br> can be used to force line split.
+// SETTINGS_MOD_Parameter_Options_DESC | The description of the parameter's option, displayed in the guide. <br> can be used to force line split.
 //
 // SETTINGS_MOD_Parameter_Options_HELP | To replace _DESC if HTML control are used.
 //
 // Why both _DESC and _HELP instead of always _HELP ?
 // Only _DESC can be cross-referenced (with →←) by the « F1 » help, which does not support HTML.
-// So if _HELP is needed you it’s a good idea to also create a _DESC simplified text to be cross-referenced by the « F1 » help.
+// So if _HELP is needed you it's a good idea to also create a _DESC simplified text to be cross-referenced by the « F1 » help.
 //
 // Label used by parameters of the type "Boolean"
 //
 // SETTINGS_MOD_Parameter_YES          | The text to display when the parameter is "true". In its absence "BOOLEAN_YES" will be used.
 // SETTINGS_MOD_Parameter_NO           | The text to display when the parameter is "false". In its absence "BOOLEAN_NO" will be used.
 // SETTINGS_MOD_Parameter_YES_HELP or
-// SETTINGS_MOD_Parameter_YES_DESC     | The description of the parameter’s "true", displayed in the guide. In its absence "BOOLEAN_YES_HELP" will be used.
-// SETTINGS_MOD_Parameter_NO           | The description of the parameter’s "false", displayed in the guide. In its absence "BOOLEAN_NO_HELP" will be used.
+// SETTINGS_MOD_Parameter_YES_DESC     | The description of the parameter's "true", displayed in the guide. In its absence "BOOLEAN_YES_HELP" will be used.
+// SETTINGS_MOD_Parameter_NO           | The description of the parameter's "false", displayed in the guide. In its absence "BOOLEAN_NO_HELP" will be used.
 //
 // Label used by parameters of the type "Sub-Panel"
 //
@@ -2072,8 +2072,8 @@ CUSTOM_RACE_RANDOM_USE_TARGET_NO_DESC  | Ignorer les limites.
 CUSTOM_RACE_DESCRIPTION				| Espèce Personnalisée
 
 // BR: Ne pas traduire maintenant...
-//FR_REWORKED                     | « ’Retravaillées’ » →FR_REWORKED←
-FR_REWORKED                       | « ’Reworked’ »
+//FR_REWORKED                     | « 'Retravaillées' » →FR_REWORKED←
+FR_REWORKED                       | « 'Reworked' »
 CUSTOM_RACE_BASE_DATARACE         | Aptitudes de base
 CUSTOM_RACE_HOME_TYPE             | Type de planète
 CUSTOM_RACE_HOME_SIZE_DESC        | Taille de départ du monde d’origine de cet empire.
@@ -2084,8 +2084,18 @@ CUSTOM_RACE_HOME_RESOURCES_DESC   | Ce paramètre affecte la production du monde
 CUSTOM_RACE_HOME_RESOURCES        | Ressources planétaires
 CUSTOM_RACE_HOME_ENVIRONMENT_DESC | Ce paramètre affecte le taux de croissance du monde d’origine.
 CUSTOM_RACE_HOME_ENVIRONMENT      | Environnement planétaire
-CUSTOM_RACE_RACE_KEY              | Nom du fichier
-CUSTOM_RACE_RACE_KEY_DESC         | C’est ici que vous devez saisir le nom du fichier, il est également utilisé comme clé pour les espèces standard... Ne les utilisez pas ou conservez la valeur par défaut "SPECIES_xxx" pour définir les aptitudes →FR_REWORKED←.
+CUSTOM_RACE_RACE_KEY				| Nom du fichier (Clé)
+CUSTOM_RACE_RACE_KEY_DESC			| C’est ici que vous devez saisir le nom du fichier, il est également utilisé comme clé pour les espèces standard... Ne les utilisez pas ou conservez la valeur par défaut "RACE_xxx" pour définir les aptitudes →FR_REWORKED←.
+CUSTOM_RACE_RACE_KEY_INPUT			| Entrez le nom du fichier de l’espèce personnalisée.
+CUSTOM_RACE_REWORKED_RACE_KEY		| Espèce pour Animations
+CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| Espèce préférée pour l’affichage des animations. Lorsque l’option aptitudes →FR_REWORKED← est sélectionnée, cette aptitudes pourra être choisie au hasard.
+CUSTOM_RACE_REWORKED_RACE_KEY_INPUT	| Entrez le nom de l’espèce originale modifiable.
+CUSTOM_RACE_REWORKED_RACE_KEY_NONE	| Aucune
+CUSTOM_RACE_BOUND_AI				| IA liée
+CUSTOM_RACE_BOUND_AI_DESC			| Faut-il imposer une IA spécifique à cette espèce ? Si oui, laquelle ?
+CUSTOM_RACE_BOUND_AI_NONE_HELP		| L’IA sélectionnée dans le panneau de configuration des adversaires sera utilisée.
+CUSTOM_RACE_BOUND_AI_NONE			| Sans contraintes
+
 // Inutilisé pour le moment
 CUSTOM_RACE_RACE_TYPE             | Species Type
 CUSTOM_RACE_RACE_TERRAN           | Terran
@@ -2098,8 +2108,8 @@ CUSTOM_RACE_IGNORES_ECO           | Espèce Ignore Eco
 CUSTOM_RACE_PROPERTIE             | Propriétés de l’espèce
 CUSTOM_RACE_CREDIT_DESC           | De l’argent facile ! À chaque tour, vous obtenez : Population * Bonus de crédit / 100
 CUSTOM_RACE_CREDIT                | Bonus de Crédits
-CUSTOM_RACE_HIT_POINTS_HELP       | Influence la quantité de dégâts que vos navires peuvent subir avant d'être détruits.<br>Les →SHIP_DESIGN_HIT_POINTS_LABEL← du →SHIP_DESIGN_ARMOR_TITLE← seront multipliés par ce facteur.<br>Les bases de missiles ne sont pas affectées par ce paramètre, leur HP de base restera de 50 (la moitié de celle d'un navire à grande coque standard).
-CUSTOM_RACE_HIT_POINTS_DESC       | Influence la quantité de dégâts que vos navires peuvent subir avant d'être détruits.<br>Les →SHIP_DESIGN_HIT_POINTS_LABEL← du →SHIP_DESIGN_ARMOR_TITLE← seront multipliés par ce facteur.
+CUSTOM_RACE_HIT_POINTS_HELP       | Influence la quantité de dégâts que vos navires peuvent subir avant d’être détruits.<br>Les →SHIP_DESIGN_HIT_POINTS_LABEL← du →SHIP_DESIGN_ARMOR_TITLE← seront multipliés par ce facteur.<br>Les bases de missiles ne sont pas affectées par ce paramètre, leur HP de base restera de 50 (la moitié de celle d’un navire à grande coque standard).
+CUSTOM_RACE_HIT_POINTS_DESC       | Influence la quantité de dégâts que vos navires peuvent subir avant d’être détruits.<br>Les →SHIP_DESIGN_HIT_POINTS_LABEL← du →SHIP_DESIGN_ARMOR_TITLE← seront multipliés par ce facteur.
 CUSTOM_RACE_HIT_POINTS            | Durabilité de la coque
 CUSTOM_RACE_MAINTENANCE_DESC      | Pourcentage du coût de la flotte.
 CUSTOM_RACE_MAINTENANCE           | Facteur de maintenance
@@ -2178,10 +2188,12 @@ CUSTOM_RACE_RESEARCH_FORCEFIELD_DESC   | →FR_RESEARCH_CR← →TECH_FORCE_FIEL
 CUSTOM_RACE_RESEARCH_PLANET_DESC       | →FR_RESEARCH_CR← →TECH_PLANETOLOGY←→FR_RESEARCH_DISPLAY←
 CUSTOM_RACE_RESEARCH_PROPULSION_DESC   | →FR_RESEARCH_CR← →TECH_PROPULSION←→FR_RESEARCH_DISPLAY←
 CUSTOM_RACE_RESEARCH_WEAPON_DESC       | →FR_RESEARCH_CR← →TECH_WEAPONS←→FR_RESEARCH_DISPLAY←
-CUSTOM_RACE_RACE_NAME             | Nom de l’espèce
-CUSTOM_RACE_RACE_NAME_DESC        | Tous les noms possibles<br>La contrepartie du paramètre « _race » dans les fichiers Species.labels.txt et du paramètre « name » dans les fichiers Species.names.txt.
-CUSTOM_RACE_RACE_NAME_PLURAL      | Nom de l’espèce au pluriel
-CUSTOM_RACE_RACE_NAME_PLURAL_DESC | Le pluriel de tous les noms possibles<br>La contrepartie du paramètre "_race_plural" dans les fichiers Species.labels.txt
+CUSTOM_RACE_RACE_NAME				| Nom de l’espèce
+CUSTOM_RACE_RACE_NAME_DESC			| Tous les noms possibles<br>La contrepartie du paramètre « _race » dans les fichiers Species.labels.txt et du paramètre « name » dans les fichiers Species.names.txt.
+CUSTOM_RACE_RACE_NAME_INPUT			| Saisissez le nom de l’espèce.
+CUSTOM_RACE_RACE_NAME_PLURAL		| Nom de l’espèce au pluriel
+CUSTOM_RACE_RACE_NAME_PLURAL_DESC	| Le pluriel de tous les noms possibles<br>La contrepartie du paramètre "_race_plural" dans les fichiers Species.labels.txt
+CUSTOM_RACE_RACE_NAME_PLURAL_INPUT	| Saisissez le nom de l’espèce au pluriel.
 CUSTOM_RACE_LEADER_TITLE          | Titre du chef
 CUSTOM_RACE_LEADER_TITLE_DESC     | L’équivalent du paramètre « titre » dans les fichiers Species.names.txt.
 CUSTOM_RACE_LABEL_TITLE           | Titre du chef 2
@@ -2190,8 +2202,9 @@ CUSTOM_RACE_LEADER_FULLTITLE      | Titre du chef complet
 CUSTOM_RACE_LEADER_FULLTITLE_DESC | L’équivalent du paramètre « fulltitle » dans les fichiers Species.names.txt.
 CUSTOM_RACE_LEADER_NAMETITLE      | Titre du chef complet 2
 CUSTOM_RACE_LEADER_NAMETITLE_DESC | L’équivalent du paramètre « _nameTitle » dans les fichiers Species.labels.txt.
-CUSTOM_RACE_RACE_EMPIRE_NAME      | Désignation de l’empire
-CUSTOM_RACE_RACE_EMPIRE_NAME_DESC | Le pendant du paramètre « _empire » dans les fichiers Species.labels.txt.
+CUSTOM_RACE_RACE_EMPIRE_NAME 		| Désignation de l’empire
+CUSTOM_RACE_RACE_EMPIRE_NAME_DESC	| Le pendant du paramètre « _empire » dans les fichiers Species.labels.txt.
+CUSTOM_RACE_RACE_EMPIRE_NAME_INPUT	| Saisissez la désignation de l’empire.
 CUSTOM_RACE_HOME_WORLDS           | Mondes d’origines
 CUSTOM_RACE_HOME_WORLDS_DESC      | Noms possibles des systèmes domestiques.<br>L’équivalent du paramètre « home » dans les fichiers Species.names.txt
 CUSTOM_RACE_LEADER_NAMES          | Nom des chefs
@@ -2205,26 +2218,38 @@ CUSTOM_RACE_SHIP_NAME_3_DESC      | Tous les noms possibles de grands vaisseaux.
 CUSTOM_RACE_SHIP_NAME_4           | Noms des énormes vaisseaux
 CUSTOM_RACE_SHIP_NAME_4_DESC      | Tous les noms possibles d’énormes vaisseaux.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
 
-CUSTOM_RACE_RACE_DESC_1           | Description de l’humeur de l’espèce
-CUSTOM_RACE_RACE_DESC_1_DESC      | L’équivalent du paramètre « desc1 » dans les fichiers Species.names.txt
-CUSTOM_RACE_RACE_DESC_2           | Description des aptitudes de l’espèce
-CUSTOM_RACE_RACE_DESC_2_DESC      | L’équivalent du paramètre « desc2 » dans les fichiers Species.names.txt
-CUSTOM_RACE_RACE_DESC_3           | Description globale de l’espèce
-CUSTOM_RACE_RACE_DESC_3_DESC      | L’équivalent du paramètre « desc3 » dans les fichiers Species.names.txt
-CUSTOM_RACE_RACE_DESC_4           | Description spécifique de l’espèce
-CUSTOM_RACE_RACE_DESC_4_DESC      | L’équivalent du paramètre « desc4 » dans les fichiers Species.names.txt
-CUSTOM_RACE_RACE_PREFIX           | Préfixe de l’espèce
-CUSTOM_RACE_RACE_SUFFIX           | Suffixe de l’espèce
-CUSTOM_RACE_LEADER_PREFIX         | Préfixe du chef
-CUSTOM_RACE_LEADER_SUFFIX         | Suffixe du chef
-CUSTOM_RACE_WORLDS_PREFIX         | Préfixe des mondes
-CUSTOM_RACE_WORLDS_SUFFIX         | Suffixe des mondes
-CUSTOM_RACE_RACE_PREFIX_DESC      | Préfixe du nom de l’espèce, pour reconnaître facilement les espèces personnalisées.
-CUSTOM_RACE_RACE_SUFFIX_DESC      | Suffixe du nom de l’espèce, pour reconnaître facilement les espèces personnalisées.
-CUSTOM_RACE_LEADER_PREFIX_DESC    | Préfixe du nom du chef, pour reconnaître facilement les espèces personnalisées.
-CUSTOM_RACE_LEADER_SUFFIX_DESC    | Suffixe du nom du chef, pour reconnaître facilement les espèces personnalisées.
-CUSTOM_RACE_WORLDS_PREFIX_DESC    | Préfixe du nom des mondes, pour reconnaître facilement les espèces personnalisées.
-CUSTOM_RACE_WORLDS_SUFFIX_DESC    | Suffixe du nom des mondes, pour reconnaître facilement les espèces personnalisées.
+CUSTOM_RACE_RACE_DESC_1				| Description de l’humeur de l’espèce
+CUSTOM_RACE_RACE_DESC_1_DESC		| L’équivalent du paramètre « desc1 » dans les fichiers Species.names.txt
+CUSTOM_RACE_RACE_DESC_1_INPUT		| Saisissez la description de l’humeur de l’espèce.
+CUSTOM_RACE_RACE_DESC_2				| Description des aptitudes de l’espèce
+CUSTOM_RACE_RACE_DESC_2_DESC		| L’équivalent du paramètre « desc2 » dans les fichiers Species.names.txt
+CUSTOM_RACE_RACE_DESC_2_INPUT		| Description des aptitudes de l’espèce.
+CUSTOM_RACE_RACE_DESC_3				| Saisissez la dDescription globale de l’espèce
+CUSTOM_RACE_RACE_DESC_3_DESC		| L’équivalent du paramètre « desc3 » dans les fichiers Species.names.txt
+CUSTOM_RACE_RACE_DESC_3_INPUT		| Saisissez la description globale de l’espèce.
+CUSTOM_RACE_RACE_DESC_4				| Description spécifique de l’espèce
+CUSTOM_RACE_RACE_DESC_4_DESC		| L’équivalent du paramètre « desc4 » dans les fichiers Species.names.txt
+CUSTOM_RACE_RACE_DESC_4_INPUT		| Saisissez la description spécifique de l’espèce.
+
+CUSTOM_RACE_RACE_PREFIX				| Préfixe de l’espèce
+CUSTOM_RACE_RACE_PREFIX_DESC		| Préfixe du nom de l’espèce, pour reconnaître facilement les espèces personnalisées.
+CUSTOM_RACE_RACE_PREFIX_INPUT		| Saisissez le préfixe de l’espèce.
+CUSTOM_RACE_RACE_SUFFIX				| Suffixe de l’espèce
+CUSTOM_RACE_RACE_SUFFIX_DESC		| Suffixe du nom de l’espèce, pour reconnaître facilement les espèces personnalisées.
+CUSTOM_RACE_RACE_SUFFIX_INPUT		| Saisissez le suffixe de l’espèce.
+CUSTOM_RACE_LEADER_PREFIX			| Préfixe du chef
+CUSTOM_RACE_LEADER_PREFIX_DESC		| Préfixe du nom du chef, pour reconnaître facilement les espèces personnalisées.
+CUSTOM_RACE_LEADER_PREFIX_INPUT		| Saisissez le préfixe du chef.
+CUSTOM_RACE_LEADER_SUFFIX			| Suffixe du chef
+CUSTOM_RACE_LEADER_SUFFIX_DESC		| Suffixe du nom du chef, pour reconnaître facilement les espèces personnalisées.
+CUSTOM_RACE_LEADER_SUFFIX_INPUT		| Saisissez le suffixe du chef.
+CUSTOM_RACE_WORLDS_PREFIX			| Préfixe des mondes
+CUSTOM_RACE_WORLDS_PREFIX_DESC		| Préfixe du nom des mondes, pour reconnaître facilement les espèces personnalisées.
+CUSTOM_RACE_WORLDS_PREFIX_INPUT		| Saisissez le préfixe des mondes.
+CUSTOM_RACE_WORLDS_SUFFIX			| Suffixe des mondes
+CUSTOM_RACE_WORLDS_SUFFIX_DESC		| Suffixe du nom des mondes, pour reconnaître facilement les espèces personnalisées.
+CUSTOM_RACE_WORLDS_SUFFIX_INPUT		| Saisissez le suffixe des mondes.
+
 CUSTOM_RACE_ERRATIC               | Erratique
 CUSTOM_RACE_PACIFIST              | Pacifique
 CUSTOM_RACE_HONORABLE             | Honorable
@@ -2870,7 +2895,7 @@ SETTINGS_MOD_END_OF_GAME_TURN_TEC_IND		| Techno-industriel
 SETTINGS_MOD_END_OF_GAME_TURN_POWER_DESC	| →HK_END_OF_GAME_COND←L’empire disposant de la plus grande puissance totale sera déclaré vainqueur.
 SETTINGS_MOD_END_OF_GAME_TURN_POWER			| Puissance Totale
 
-SETTINGS_MOD_END_OF_GAME_TURN_DESC			| N'est actif que lorsque « →HK_END_OF_GAME← » n'est pas « →SETTINGS_MOD_END_OF_GAME_NORMAL← »<br>Tour auquel la partie se terminera, et un vainqueur sera désigné.
+SETTINGS_MOD_END_OF_GAME_TURN_DESC			| N’est actif que lorsque « →HK_END_OF_GAME← » n’est pas « →SETTINGS_MOD_END_OF_GAME_NORMAL← »<br>Tour auquel la partie se terminera, et un vainqueur sera désigné.
 SETTINGS_MOD_END_OF_GAME_TURN				| Nombre maximal de tours : %1
 
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR_HELP | Pour ajuster l’écartement des mondes d’origine de l’Empire ; (la valeur d’origine est de 100 %).<br>Une petite valeur permettra aux mondes d’origine d’être plus proches, ce qui entraînera une grande variété de distances.<br>L’augmentation de cette valeur éloignera les mondes d’origine, ce qui entraînera des distances plus uniformes.<br>Ce paramètre peut être ajusté sur l’aperçu de la carte de la galaxie.
@@ -3388,7 +3413,7 @@ SETTINGS_MOD_NEW_WEAPON_ANIMATION_DESC   | Afficher le bouclier et les effets de
 SETTINGS_MOD_NEW_WEAPON_ANIMATION        | Effets de boucliers : %1
 SETTINGS_MOD_NEW_WEAPON_SOUND_DESC       | Des sons de tir d’armes distinctifs au lieu de seulement deux !
 SETTINGS_MOD_NEW_WEAPON_SOUND            | Sons distinctifs : %1
-SETTINGS_MOD_PLAYER_SOUND_ECHO_DESC      | Ajout d’ échos au son des tirs d’armes lorsque le joueur est la cible.
+SETTINGS_MOD_PLAYER_SOUND_ECHO_DESC      | Ajout d’échos au son des tirs d’armes lorsque le joueur est la cible.
 SETTINGS_MOD_PLAYER_SOUND_ECHO           | Échos de tir : %1
 SETTINGS_MOD_ECHO_SOUND_DELAY_DESC       | Retard de base de l’écho; pour les coques de petites tailles.
 SETTINGS_MOD_ECHO_SOUND_DELAY            | Retard de l’écho : %1 ms.
@@ -3638,17 +3663,17 @@ NAME_RACE_PSILON_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SAKKRA_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SILICOID_FR_HELP | →NAME_FR_HELP←
 
-LIST_DIALOG_’SELECTION’        | ’Sélection’
-LIST_DIALOG_’ORIGINAL SPECIES’ | ’Espèces Originales’
-LIST_DIALOG_’REWORKED’         | ’Retravaillées’
-LIST_DIALOG_’PLAYER’           | ’Joueur’
-LIST_DIALOG_’RANDOM’           | ’Aléatoire’
-LIST_DIALOG_’RANDOM 10’        | ’Aléatoire 10’
-LIST_DIALOG_’RANDOM 16’        | ’Aléatoire 16’
-LIST_DIALOG_’FILES’            | ’Fichiers’
-LIST_DIALOG_’ALL FILES’        | ’Tous les Fichiers’
-LIST_DIALOG_’FILES RACES’      | ’Fichiers Espèces’
-LIST_DIALOG_’All’              | ’Toutes’
+LIST_DIALOG_'SELECTION'        | 'Sélection'
+LIST_DIALOG_'ORIGINAL SPECIES' | 'Espèces Originales'
+LIST_DIALOG_'REWORKED'         | 'Retravaillées'
+LIST_DIALOG_'PLAYER'           | 'Joueur'
+LIST_DIALOG_'RANDOM'           | 'Aléatoire'
+LIST_DIALOG_'RANDOM 10'        | 'Aléatoire 10'
+LIST_DIALOG_'RANDOM 16'        | 'Aléatoire 16'
+LIST_DIALOG_'FILES'            | 'Fichiers'
+LIST_DIALOG_'ALL FILES'        | 'Tous les Fichiers'
+LIST_DIALOG_'FILES RACES'      | 'Fichiers Espèces'
+LIST_DIALOG_'All'              | 'Toutes'
 
 SETTINGS_MOD_DEBUG_OPTIONS_TITLE         | Options pour les développeurs
 SETTINGS_MOD_DEBUG_OPTIONS_UI            | Options de débogage
@@ -4174,7 +4199,7 @@ SETTINGS_MOD_HELP_AND_ADVICE_TITLE       | Configuration de l’aide et des cons
 SETTINGS_MOD_HELP_AND_ADVICE_UI          | Aide et Conseils
 SETTINGS_MOD_HELP_AND_ADVICE_UI_DESC     | Ouvre un nouveau panneau de contrôle pour configurer l’aide et les conseils.
 
-SETTINGS_MOD_IRONMAN_LITTLE_TITLE        | Configuration d’ Ironman Léger.
+SETTINGS_MOD_IRONMAN_LITTLE_TITLE        | Configuration d’Ironman Léger.
 SETTINGS_MOD_IRONMAN_LITTLE_UI           | Ironman Léger
 SETTINGS_MOD_IRONMAN_LITTLE_UI_DESC      | Ouvre un nouveau panneau de contrôle pour configurer Ironman Léger.
 
@@ -5703,7 +5728,7 @@ SETUP_GALAXY_BACK_DESC            | Annuler les options et revenir au menu Optio
 SETUP_GALAXY_COMPACT_OPTIONS_HELP | Ces boutons ouvrent le menu Options avancées.<br> « →SETUP_BUTTON_MERGED_STATIC_SETTINGS← » contient des paramètres définis une fois au démarrage ou au redémarrage d’un jeu.<br> « →SETUP_BUTTON_MERGED_DYNAMIC_SETTINGS← » contient des paramètres réglables dans le jeu.<br>Pour revenir aux 6 menus d’options classiques :<br> - Appuyez sur « B » ou allez dans « →SETUP_BUTTON_MERGED_STATIC_SETTINGS← » et définissez « Afficher les options compactes » sur « Non ».
 SETUP_GALAXY_VANILLA_OPTIONS_HELP | Ce bouton ouvre le menu de configuration des options avancées.<br> Appuyez sur « B » pour basculer les boutons d’appel des sous-menus.
 SETUP_TUNE_GALAXY_OPTIONS_HELP    | Ce bouton ouvre un panneau de contrôle de survol pour affiner les paramètres de la galaxie. <br>L’aperçu de la carte de la galaxie sera mis à jour en direct.
-SETUP_GALAXY_ABILITIES_DESC       | Aptitudes par défaut des empires extraterrestres :<br> ’Espèce originale’ = Aptitudes originales de l’espèce sélectionnée (dans les cases ci-dessous) ;<br> ’Retravaillée’ = Nouvelles aptitudes que vous avez enregistrées avec le nom de l’espèce originale.<br> (ex : RACE_DARLOK pour les Nasloks) ;<br> *Espèce = Espèce originale spécifique ; ou toute autre espèce personnalisée que vous avez créée.
+SETUP_GALAXY_ABILITIES_DESC       | Aptitudes par défaut des empires extraterrestres :<br> 'Espèce originale' = Aptitudes originales de l’espèce sélectionnée (dans les cases ci-dessous) ;<br> 'Retravaillée' = Nouvelles aptitudes que vous avez enregistrées avec le nom de l’espèce originale.<br> (ex : RACE_DARLOK pour les Nasloks) ;<br> *Espèce = Espèce originale spécifique ; ou toute autre espèce personnalisée que vous avez créée.
 SETUP_GALAXY_SELECTABLE_DESC      | « Oui » => Une ligne de sélection apparaîtra en haut des cases ci-dessous, permettant la sélection d’une aptitude individuelle.
 SETUP_GALAXY_SELECTABLE            | Aptitudes sélectionnables
 SETUP_GALAXY_RACE_LIST_HELP        | <b>Sélection de la liste des espèces</b><br> Modnar a étendu la liste des espèces originales avec six nouvelles espèces. Si vous n’êtes pas d’humeur à les voir, vous pouvez les exclure de la sélection.<hr><b>Par défaut :</b>&nbsp Original<hr><b>Original :</b>&nbsp Les 6 espèces de Modnar sont exclues.<br> <b>Toutes les espèces</b> : Les 6 espèces de Modnar peuvent également être sélectionnées ou attribuées au hasard.

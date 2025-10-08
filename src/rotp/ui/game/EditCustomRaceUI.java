@@ -41,16 +41,16 @@ import rotp.model.game.IGameOptions;
 import rotp.model.game.IMainOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
+import rotp.ui.util.ICRSettings;
 import rotp.ui.util.InterfaceOptions;
 import rotp.ui.util.ParamButtonHelp;
 import rotp.ui.util.ParamCR;
-import rotp.ui.util.SettingBase;
 import rotp.util.LabelManager;
 import rotp.util.ModifierKeysState;
 
 public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 	private static final long serialVersionUID	= 1L;
-	public  static final String GUI_ID			= "CUSTOM_RACE";
+	private static final String GUI_ID			= "CUSTOM_RACE";
 	private static final String selectKey		= ROOT + "GUI_SELECT";
 	private static final String randomKey		= ROOT + "GUI_RANDOM";
 	private static final String randomGetKey	= ROOT + "GUI_RANDOM_GET";
@@ -74,7 +74,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	private final Box randomPushBox	= new Box(randomPushKey);
 	private final Box loadBox		= new Box(loadButtonHelp);
 
-	private LinkedList<SettingBase<?>> guiList;
+	private LinkedList<ICRSettings> guiList;
 	private RaceList raceList;
 	private int yRandB, yRandGetB, xRandPushB;
 	
@@ -97,7 +97,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	    initGUI();		
 
 		guiList = cr().guiList();
-	    for(SettingBase<?> setting : guiList)
+	    for(ICRSettings setting : guiList)
 	    	setting.settingText(new ModText(this, labelFontSize,
 					labelC, labelC, hoverC, depressedC, textC, false));
 	    raceList = cr().initRaceList();
@@ -112,8 +112,8 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	    mouseList.add(raceList);
 		return this;
 	}
-	private void reloadRaceList() {
-		raceList.reload();
+	private void reloadRaceList(boolean foldersRework) {
+		raceList.reload(foldersRework);
 		int paramIdx	= raceList.index();
 		int bulletStart	= raceList.bulletStart();
 		int bulletSize	= raceList.bulletBoxSize();
@@ -126,7 +126,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	}
 	// ========== Other Methods ==========
 	//
-	public static void updatePlayerCustomRace() {
+	static void updatePlayerCustomRace() {
 		if (instance == null)
 			return;
 		if (instance.cr() == null)
@@ -157,7 +157,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 			saveCurrentRace();
 			break; 
 		}
-		reloadRaceList();
+		reloadRaceList(false);
 		repaint();
 	}
 	private void doSelectBoxAction() {
@@ -168,11 +168,11 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		close();
 	}
 	public void updateCRGui(IGameOptions source) {
-        for (InterfaceOptions param : commonList)
+		for (InterfaceOptions param : commonList)
 			param.updateOptionTool(source.dynOpts());
 		writeLocalOptions(guiOptions());
 	}
-	public void writeLocalOptions(IGameOptions destination) {
+	private void writeLocalOptions(IGameOptions destination) {
 		for (InterfaceOptions param : commonList)
 			param.updateOption(destination.dynOpts());
 	}
@@ -220,16 +220,19 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 				+ smallButtonMargin;
 	}
 	private void mouseCommon(MouseEvent e, MouseWheelEvent w) {
-		if (hoverBox == speciesDirBox) {
-			IMainOptions.speciesDirectory.toggle(e, w, this);
-			reloadRaceList();
-			//initSpeciesDirBound();
-			repaint(speciesDirBox);
-			//drawSpeciesDirButton();
+		if (hoverBox == speciesDirBox && e != null) {
+			if (e.isControlDown())
+				reloadRaceList(true);
+			else {
+				IMainOptions.speciesDirectory.toggle(e, w, this);
+				reloadRaceList(false);
+			}
+			cr().loadRace();
+			repaint();
 			return;
 		}
 		for (int settingIdx=0; settingIdx < mouseList.size(); settingIdx++) {
-			SettingBase<?> setting = mouseList.get(settingIdx);
+			ICRSettings setting = mouseList.get(settingIdx);
 			if (setting.isBullet()) {
 				if (hoverBox == setting.settingText().box()) { // Check Setting
 					setting.toggle(e, w, this);
@@ -521,7 +524,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		cr().setSettingTools((DynOptions) guiOptions().selectedPlayerCustomRace());
 		guiOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
 		init();
-		reloadRaceList();
+		reloadRaceList(false);
 		repaint();
 	}
 	@Override protected String GUI_ID() { return GUI_ID; }
@@ -729,7 +732,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		xLine = xDesc  + labelPad;
 		yLine = yRandB - labelPad;
 		ModText bt;
-		for(SettingBase<?> setting : guiList) {
+		for(ICRSettings setting : guiList) {
 			bt = setting.settingText();
 			bt.displayText(setting.guiSettingDisplayStr());
 			bt.setScaledXY(xLine, yLine);

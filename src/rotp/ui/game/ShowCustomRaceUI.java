@@ -44,6 +44,7 @@ import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.races.RacesUI;
+import rotp.ui.util.ICRSettings;
 import rotp.ui.util.IParam;
 import rotp.ui.util.ListDialogUI;
 import rotp.ui.util.SettingBase;
@@ -108,9 +109,9 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private LinkedList<Integer> colSettingsCount;
 	private	LinkedList<Integer> spacerList;
 	private LinkedList<Integer> columnList;
-	LinkedList<SettingBase<?>>  commonList;
-	protected LinkedList<SettingBase<?>> settingList;
-	protected LinkedList<SettingBase<?>> mouseList;
+	LinkedList<ICRSettings>  commonList;
+	protected LinkedList<ICRSettings> settingList;
+	protected LinkedList<ICRSettings> mouseList;
 	
 	protected String guiTitleID;
 
@@ -139,12 +140,12 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private	  final Box raceAIBox		= new Box(ROOT + "RACE_AI");
 	private	  final JTextPane descBox	= new JTextPane();
 	protected ModText totalCostText;
-	protected ModText malusCostText;
+	private   ModText malusCostText;
 	private	  RacesUI  raceUI; // Parent panel
 	protected int maxLeftM;
-	private CustomRaceDefinitions cr;
+	private   CustomRaceDefinitions cr;
 	protected boolean initialized = false;
-	protected boolean forceUpdate = true;
+	private   boolean forceUpdate = true;
 
 	// ========== Constructors and initializers ==========
 	//
@@ -204,7 +205,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		}
 		endOfColumn();
 	}
-	protected void initSetting(SettingBase<?> setting) {
+	protected void initSetting(ICRSettings setting) {
 		if (setting.isBullet()) {
 			setting.settingText(settingBT());
 			columnH += settingH + frameSizePad;
@@ -215,6 +216,10 @@ public class ShowCustomRaceUI extends BaseModPanel {
 			for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
 				int optionIdx = bulletStart + bulletIdx;
 				setting.optionText(optionBT(), bulletIdx);
+				if (setting.optionText(bulletIdx) == null) {
+					System.out.println("setting.optionText(bulletIdx) == null");
+					ModText ot = setting.optionText(bulletIdx); 
+				}
 				setting.optionText(bulletIdx).disabled(optionIdx == paramIdx);
 				columnH	+= optionH;
 			}
@@ -237,7 +242,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	//
 	CustomRaceDefinitions cr()			{ return cr; }
 	void cr(CustomRaceDefinitions cr)	{ this.cr = cr; }
-	protected void setDesc(String tt)	{
+	private void setDesc(String tt)		{
 		descBox.setText(tt);
 		loadGuide();
 		if (hoverBox != null && hoverBox != prevHover)
@@ -307,15 +312,11 @@ public class ShowCustomRaceUI extends BaseModPanel {
 			alienAIBoxAction();
 		repaint();
 	}
-	protected  String totalCostStr()	{
-		return text(totalCostKey, Math.round(cr().getTotalCost()));
-	}
-	protected  String malusCostStr()	{
-		return text(malusCostKey, Math.round(cr().getMalusCost()));
-	}
+	protected  String totalCostStr()	{ return text(totalCostKey, Math.round(cr().getTotalCost())); }
+	private  String malusCostStr()		{ return text(malusCostKey, Math.round(cr().getMalusCost())); }
 
-	private boolean checkForHoveredSettings(LinkedList<SettingBase<?>> settings) {
-		for (SettingBase<?> setting : settings) {
+	private boolean checkForHoveredSettings(LinkedList<ICRSettings> settings) {
+		for (ICRSettings setting : settings) {
 			if (setting.settingText().contains(mX,mY)) {
 				hoverBox = setting.settingText().box();
 				setDesc(setting.getToolTip());
@@ -355,7 +356,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	protected int getBackGroundWidth()	{
 		return columnPad+wFirstColumn+columnPad + (wSetting+columnPad) * (numColumns-1);
 	}
-	protected void paintSetting(Graphics2D g, SettingBase<?> setting) {
+	protected void paintSetting(Graphics2D g, ICRSettings setting) {
 		boolean refresh = forceUpdate || setting.updated();
 		if (refresh)
 			setting.drawSetting(frameSizePad, frameEndPad, optionH, currentWidth,
@@ -386,7 +387,6 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		int sw = g.getFontMetrics().stringWidth(text);
 		int buttonW	= exitButtonWidth(g);
 		xButton = leftM + wGist() - buttonW - buttonPad;
-//		exitBox.setBounds(xButton, yButton+s2, buttonW, smallButtonH);
 		g.setColor(GameUI.buttonBackgroundColor());
 		g.fillRoundRect(exitBox.x, exitBox.y, buttonW, smallButtonH, cnr, cnr);
 		int xT = exitBox.x+((exitBox.width-sw)/2);
@@ -466,7 +466,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	//
 	@Override protected void close() {
 		super.close();
-		for (SettingBase<?> setting : settingList)
+		for (ICRSettings setting : settingList)
 			setting.clearImage();
 	}
 	@Override protected void drawButtons(Graphics2D g, boolean init) {
@@ -496,50 +496,44 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-		setBigButtonGraphics(g);
 		// draw EXIT button
+		setBigButtonGraphics(g);
 		exitBox.fillButtonBackImg(g);
-//		g.fillRoundRect(exitBox.x-xButton, exitBox.y-yButton, exitBox.width, exitBox.height, cnr, cnr);
 
-		setSmallButtonGraphics(g);
 		// draw GUIDE button
+		setSmallButtonGraphics(g);
 		guideBox.fillButtonBackImg(g);
-//		g.fillRoundRect(guideBox.x-xButton, guideBox.y-yButton, guideBox.width, guideBox.height, cnr, cnr);
 		
 		drawButtons(g, true); // init = true; local = true
 		return buttonBackImg;
     }
-    @Override protected void initBackImg() {
+	@Override protected void initBackImg() {
 		long timeStart = System.currentTimeMillis();
 		w	= getWidth();
 		h	= getHeight();
 		wGist(getBackGroundWidth());
 		hGist	= titlePad + columnsMaxH + tooltipPadV + descHeigh + buttonPadV + smallButtonH + buttonPadV;
-//		currentWith	 = wFirstColumn;
-//		descWidth = wBG - 2 * columnPad;
 
 		// Set the base top Margin
 		// Set the final High
 		topM	= (h - hGist)/2;
 		yButton	= topM + hGist - buttonPadV - smallButtonH;
-		
+
 		yTop	= topM + titlePad; // First setting top position
 		leftM	= Math.min((w - wGist())/2, maxLeftM);
 		yTitle	= topM + titleOffset;
 		yDesc	= yButton - buttonPadV - descHeigh;
 		yCost 	= yTitle + costOffset;
 		xCost	= leftM + columnPad/2;
-//		xLine	= leftM + columnPad/2;
-//		yLine	= yTop;
 		xDesc	= leftM + columnPad;
 
 		backImg = newOpaqueImage(w, h);
 		Graphics2D g = (Graphics2D) backImg.getGraphics();
 		g.setFont(descFont);
 		// modnar: use (slightly) better upsampling
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
+		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
@@ -558,18 +552,19 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		int sw = g.getFontMetrics().stringWidth(title);
 		int xTitle = leftM + (wGist() - sw)/2;
 		drawBorderedString(g, title, 1, xTitle, yTitle, Color.black, Color.white);
-		
+
 		initButtonsBounds(g);
 		initFixButtons(g);
 		drawFixButtons(g, true);
-		
-        initButtonBackImg();
-        g.dispose();
+
+		initButtonBackImg();
+		g.dispose();
 		if (showTiming) 
 			System.out.println("initBackImg() Time = " + (System.currentTimeMillis()-timeStart));
-    }
-    protected void reInitFields()	{
-    	for (SettingBase<?> setting : commonList) {
+	}
+	protected void reInitFields()	{
+		forceUpdate = true;
+		for (ICRSettings setting : commonList) {
 			if (setting.isBullet()) {
 				setting.settingText().displayText(setting.guiSettingDisplayStr()); // The setting
 				int bulletStart	= setting.bulletStart();
@@ -588,7 +583,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		malusCostText.displayText(malusCostStr());
 		malusCostText.disabled(true);
 		descBox.setText("<b>Shift</b>&nbsp and <b>Ctrl</b>&nbsp can be used to change buttons, click and scroll functions");
-    }
+	}
 	@Override protected void init()	{
 		super.init();
 		reInitFields();

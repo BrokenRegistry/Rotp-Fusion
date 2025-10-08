@@ -185,6 +185,8 @@ public class Race implements ISpecies, Base, Serializable {
 	private float diploScale, diploOpacity;
 	private int diploXOffset, diploYOffset;
 	private int flagW, flagH;
+	private String reworkableSpeciesKey;
+	private int preferredAI;
 
 	private static final int PERSONALITY_COUNT	= Personality.values().length;
 	private static final int OBJECTIVE_COUNT	= Objective.values().length;
@@ -240,8 +242,8 @@ public class Race implements ISpecies, Base, Serializable {
 	void diploXOffset(int i)			{ diploXOffset = i; }
 	int diploYOffset()					{ return diploYOffset; }
 	void diploYOffset(int i)			{ diploYOffset = i; }
-	int startingYear()					{ return startingYear; }
-	void startingYear(int i)			{ startingYear = i; }
+	int preferredAI()					{ return preferredAI; }
+	void preferredAI(int i)				{ preferredAI = i; }
 	int speciesType()					{ return speciesType; }
 	void speciesType(int i)				{ speciesType = i; }
 
@@ -253,6 +255,10 @@ public class Race implements ISpecies, Base, Serializable {
 	Color gnnTextColor()				{ return gnnTextColor; }
 	void gnnTextColor(Color c)			{ gnnTextColor = c; }
 
+	String reworkableSpeciesKey()		{ return reworkableSpeciesKey; }
+	void reworkableSpeciesKey(String s)	{ reworkableSpeciesKey = s; }
+	int startingYear()					{ return startingYear; }
+	void startingYear(int i)			{ startingYear = i; }
 	void empireTitle(String s)			{ empireTitle = s; }
 	String racePrefix()					{ return racePrefix; }
 	void racePrefix(String s)			{ racePrefix = s; }
@@ -268,6 +274,7 @@ public class Race implements ISpecies, Base, Serializable {
 	void worldsSuffix(String s)			{ worldsSuffix = s; }
 	public String preferredShipSet()	{ return preferredShipSet; }
 	void preferredShipSet(String s)		{ preferredShipSet = s; }
+	
 	String lossSplashKey()				{ return lossSplashKey; }
 	void lossSplashKey(String s)		{ lossSplashKey = s; }
 	String winSplashKey()				{ return winSplashKey; }

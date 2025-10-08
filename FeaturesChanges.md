@@ -1,22 +1,23 @@
 # Remnants of the Precursors
 
-[New Features](#Features)
 
-[AI Improvement](#AI-Improvement)
+[New Features](#features)
 
-[Governor](#Governor)
+[AI Improvement](#ai-improvement)
 
-[Miscellaneous](#Miscellaneous)
+[Governor](#governor)
 
-[User Interfaces](#User-Interfaces)
+[Miscellaneous](#miscellaneous)
 
-[Guide and Help](#Guide-and-Help)
+[User Interfaces](#user-interfaces)
 
-[Other Language](#Other-Language)
+[Guide and Help](#guide-and-help)
 
-[Fixes](#Fixes)
+[Other Language](#other-language)
 
-[To categorize](#To-categorize)
+[Fixes](#fixes)
+
+[To categorize](#to-categorize)
 
 
 ### Features:

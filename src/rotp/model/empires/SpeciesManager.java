@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import rotp.model.game.DynOptions;
 import rotp.util.Base;
@@ -57,5 +58,12 @@ public class SpeciesManager implements Base, Serializable {
 		List<Race> races = new ArrayList<>();
 		races.addAll(raceMap.values());
 		return races;
+	}
+	public Map<String, String> baseRacesNamesMap()	{
+		HashMap<String, String> map = new HashMap<>();
+		for (Entry<String, Race> r : raceMap.entrySet()) {
+			map.put(r.getKey(), r.getValue().setupName());
+		}
+		return map;
 	}
 }

@@ -2084,8 +2084,18 @@ CUSTOM_RACE_HOME_RESOURCES_DESC   | This selection will affect the production of
 CUSTOM_RACE_HOME_RESOURCES        | Planet Resources
 CUSTOM_RACE_HOME_ENVIRONMENT_DESC | This selection will affect the growth rate of the home world.
 CUSTOM_RACE_HOME_ENVIRONMENT      | Planet Environment
-CUSTOM_RACE_RACE_KEY              | File Name
-CUSTOM_RACE_RACE_KEY_DESC         | This is the place to enter the filename, it's also used as the key for the standard species... Don't use them, or keep the default "SPECIES_xxx" to set the "Reworked"-Abilities.
+CUSTOM_RACE_RACE_KEY				| File Name (Key)
+CUSTOM_RACE_RACE_KEY_DESC			| This is the place to enter the filename, it's also used as the key for the standard species... Don't use them, or keep the default "SPECIES_xxx" to set the "Reworked"-Abilities.
+CUSTOM_RACE_RACE_KEY_INPUT			| Enter the file name of the custom species.
+CUSTOM_RACE_REWORKED_RACE_KEY		| Species for Animations
+CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| This is the prefered Species choice for the displayed animations. When 'Reworked' Abilities is selected, this abilities can be randomly selected.
+CUSTOM_RACE_REWORKED_RACE_KEY_INPUT	| Enter the name of the original reworkable species.
+CUSTOM_RACE_REWORKED_RACE_KEY_NONE	| None
+CUSTOM_RACE_BOUND_AI				| Bound AI
+CUSTOM_RACE_BOUND_AI_DESC			| Should a specific AI be imposed on this species? If so, which one?
+CUSTOM_RACE_BOUND_AI_NONE_HELP		| The AI selected in the opponents' configuration panel will be used.
+CUSTOM_RACE_BOUND_AI_NONE			| Unbound
+
 // Unused for now
 CUSTOM_RACE_RACE_TYPE             | Species Type
 CUSTOM_RACE_RACE_TERRAN           | Terran
@@ -2178,10 +2188,11 @@ CUSTOM_RACE_RESEARCH_FORCEFIELD_DESC   | Cost multiplier for researching Force F
 CUSTOM_RACE_RESEARCH_PLANET_DESC       | Cost multiplier for researching Planet tech. Display: Cost multiplier -> Cost multiplier/ Revenue multiplier (Cost)
 CUSTOM_RACE_RESEARCH_PROPULSION_DESC   | Cost multiplier for researching Propulsion tech. Display: Cost multiplier -> Cost multiplier/ Revenue multiplier (Cost)
 CUSTOM_RACE_RESEARCH_WEAPON_DESC       | Cost multiplier for researching Weapon tech. Display: Cost multiplier -> Cost multiplier/ Revenue multiplier (Cost)
-CUSTOM_RACE_RACE_NAME             | Species Name
-CUSTOM_RACE_RACE_NAME_DESC        | All possible names<br>The counterpart of the "_race" parameter in Species.labels.txt files, and the "name" parameter in Species.names.txt files.
-CUSTOM_RACE_RACE_NAME_PLURAL      | Plural Species Name
-CUSTOM_RACE_RACE_NAME_PLURAL_DESC | The plural of all the possible names<br>The counterpart of the "_race_plural" parameter in Species.labels.txt files
+CUSTOM_RACE_RACE_NAME				| Species Name
+CUSTOM_RACE_RACE_NAME_DESC			| All possible names<br>The counterpart of the "_race" parameter in Species.labels.txt files, and the "name" parameter in CUSTOM_RACE_RACE_NAME_INPUT			| Enter the Species Name.
+CUSTOM_RACE_RACE_NAME_PLURAL		| Species Name in the plural
+CUSTOM_RACE_RACE_NAME_PLURAL_DESC	| The plural of all the possible names<br>The counterpart of the "_race_plural" parameter in Species.labels.txt files
+CUSTOM_RACE_RACE_NAME_PLURAL_INPUT	| Enter the name of the species in plural form.
 CUSTOM_RACE_LEADER_TITLE          | Leader Title
 CUSTOM_RACE_LEADER_TITLE_DESC     | The counterpart of the "title" parameter in Species.names.txt files.
 CUSTOM_RACE_LABEL_TITLE           | Leader Title 2
@@ -2190,8 +2201,9 @@ CUSTOM_RACE_LEADER_FULLTITLE      | Full Leader Title
 CUSTOM_RACE_LEADER_FULLTITLE_DESC | The counterpart of the "fulltitle" parameter in Species.names.txt files.
 CUSTOM_RACE_LEADER_NAMETITLE      | Full Leader Title 2
 CUSTOM_RACE_LEADER_NAMETITLE_DESC | The counterpart of the "_nameTitle" parameter in Species.labels.txt files.
-CUSTOM_RACE_RACE_EMPIRE_NAME      | Empire Designation
-CUSTOM_RACE_RACE_EMPIRE_NAME_DESC | The counterpart of the "_empire" parameter in Species.labels.txt files.
+CUSTOM_RACE_RACE_EMPIRE_NAME		| Empire Designation
+CUSTOM_RACE_RACE_EMPIRE_NAME_DESC	| The counterpart of the "_empire" parameter in Species.labels.txt files.
+CUSTOM_RACE_RACE_EMPIRE_NAME_INPUT	| Enter the Empire Designation
 CUSTOM_RACE_HOME_WORLDS           | Homes worlds
 CUSTOM_RACE_HOME_WORLDS_DESC      | Possible home system names.<br>The counterpart of the "home" parameter in Species.names.txt files
 CUSTOM_RACE_LEADER_NAMES          | Leader Names
@@ -2205,26 +2217,38 @@ CUSTOM_RACE_SHIP_NAME_3_DESC      | All possible large ships name.<br>The counte
 CUSTOM_RACE_SHIP_NAME_4           | Huge Ships Names
 CUSTOM_RACE_SHIP_NAME_4_DESC      | All possible huge ships name.<br>The counterpart of the "ship4" parameter in Species.names.txt files
 
-CUSTOM_RACE_RACE_DESC_1           | Species mood description
-CUSTOM_RACE_RACE_DESC_1_DESC      | The counterpart of the "desc1" parameter in Species.names.txt files
-CUSTOM_RACE_RACE_DESC_2           | Species abilities description
-CUSTOM_RACE_RACE_DESC_2_DESC      | The counterpart of the "desc2" parameter in Species.names.txt files
-CUSTOM_RACE_RACE_DESC_3           | Species global description
-CUSTOM_RACE_RACE_DESC_3_DESC      | The counterpart of the "desc3" parameter in Species.names.txt files
-CUSTOM_RACE_RACE_DESC_4           | Species specific description
-CUSTOM_RACE_RACE_DESC_4_DESC      | The counterpart of the "desc4" parameter in Species.names.txt files
-CUSTOM_RACE_RACE_PREFIX           | Species Prefix
-CUSTOM_RACE_RACE_SUFFIX           | Species Suffix
-CUSTOM_RACE_LEADER_PREFIX         | Leader Prefix
-CUSTOM_RACE_LEADER_SUFFIX         | Leader Suffix
-CUSTOM_RACE_WORLDS_PREFIX         | Worlds Prefix
-CUSTOM_RACE_WORLDS_SUFFIX         | Worlds Suffix
-CUSTOM_RACE_RACE_PREFIX_DESC      | Species Name Prefix, to easily recognize custom Species.
-CUSTOM_RACE_RACE_SUFFIX_DESC      | Species Name Suffix, to easily recognize custom Species.
-CUSTOM_RACE_LEADER_PREFIX_DESC    | Leader Name Prefix, to easily recognize custom Species.
-CUSTOM_RACE_LEADER_SUFFIX_DESC    | Leader Name Suffix, to easily recognize custom Species.
-CUSTOM_RACE_WORLDS_PREFIX_DESC    | Worlds Names Prefix, to easily recognize custom Species.
-CUSTOM_RACE_WORLDS_SUFFIX_DESC    | Worlds Names Suffix, to easily recognize custom Species.
+CUSTOM_RACE_RACE_DESC_1				| Species mood description
+CUSTOM_RACE_RACE_DESC_1_DESC		| The counterpart of the "desc1" parameter in Species.names.txt files
+CUSTOM_RACE_RACE_DESC_1_INPUT		| Enter the Species mood description.
+CUSTOM_RACE_RACE_DESC_2				| Species abilities description
+CUSTOM_RACE_RACE_DESC_2_DESC		| The counterpart of the "desc2" parameter in Species.names.txt files
+CUSTOM_RACE_RACE_DESC_2_INPUT		| Enter the Species abilities description.
+CUSTOM_RACE_RACE_DESC_3				| Species global description
+CUSTOM_RACE_RACE_DESC_3_DESC		| The counterpart of the "desc3" parameter in Species.names.txt files
+CUSTOM_RACE_RACE_DESC_3_INPUT		| Enter the Species global description.
+CUSTOM_RACE_RACE_DESC_4				| Species specific description
+CUSTOM_RACE_RACE_DESC_4_DESC		| The counterpart of the "desc4" parameter in Species.names.txt files
+CUSTOM_RACE_RACE_DESC_4_INPUT		| Enter the Species specific description.
+
+CUSTOM_RACE_RACE_PREFIX				| Species Prefix
+CUSTOM_RACE_RACE_PREFIX_DESC		| Species Name Prefix, to easily recognize custom Species.
+CUSTOM_RACE_RACE_PREFIX_INPUT		| Enter the Species Prefix
+CUSTOM_RACE_RACE_SUFFIX				| Species Suffix
+CUSTOM_RACE_RACE_SUFFIX_DESC		| Species Name Suffix, to easily recognize custom Species.
+CUSTOM_RACE_RACE_SUFFIX_INPUT		| Enter the Species Suffix
+CUSTOM_RACE_LEADER_PREFIX			| Leader Prefix
+CUSTOM_RACE_LEADER_PREFIX_DESC		| Leader Name Prefix, to easily recognize custom Species.
+CUSTOM_RACE_LEADER_PREFIX_INPUT		| Enter the Leader Prefix
+CUSTOM_RACE_LEADER_SUFFIX			| Leader Suffix
+CUSTOM_RACE_LEADER_SUFFIX_DESC		| Leader Name Suffix, to easily recognize custom Species.
+CUSTOM_RACE_LEADER_SUFFIX_INPUT		| Enter the Leader Suffix
+CUSTOM_RACE_WORLDS_PREFIX			| Worlds Prefix
+CUSTOM_RACE_WORLDS_PREFIX_DESC		| Worlds Names Prefix, to easily recognize custom Species.
+CUSTOM_RACE_WORLDS_PREFIX_INPUT		| Enter the Worlds Prefix
+CUSTOM_RACE_WORLDS_SUFFIX			| Worlds Suffix
+CUSTOM_RACE_WORLDS_SUFFIX_DESC		| Worlds Names Suffix, to easily recognize custom Species.
+CUSTOM_RACE_WORLDS_SUFFIX_INPUT		| Enter the Worlds Suffix
+
 CUSTOM_RACE_ERRATIC               | Erratic
 CUSTOM_RACE_PACIFIST              | Pacifist
 CUSTOM_RACE_HONORABLE             | Honorable

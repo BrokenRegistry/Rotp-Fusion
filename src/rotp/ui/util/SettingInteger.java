@@ -59,7 +59,7 @@ public class SettingInteger extends SettingBase<Integer> {
 	 * @param minValue The minimum value (null = none)
 	 * @param maxValue The maximum value (null = none)
 	 */
-	private SettingInteger(String guiLangLabel, String nameLangLabel, Integer defaultValue
+	protected SettingInteger(String guiLangLabel, String nameLangLabel, Integer defaultValue
 			, Integer minValue, Integer maxValue) {
 		super(guiLangLabel, nameLangLabel, defaultValue,
 				defaultIsList, defaultIsBullet, defaultLabelsAreFinals);

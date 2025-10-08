@@ -46,6 +46,7 @@ import rotp.model.planet.Planet;
 import rotp.model.tech.Tech; // modnar: add game mode to start all Empires with 2 random techs
 import rotp.model.tech.TechTree; // modnar: add game mode to start all Empires with 2 random techs
 import rotp.ui.util.SpecificCROption;
+import rotp.ui.util.StringList;
 import rotp.ui.util.planets.PlanetImager;
 import rotp.util.Base;
 
@@ -531,8 +532,8 @@ public class GalaxyFactory implements ISpecies, Base {
 		}
 
 		// Load list if needed
-		LinkedList<String> allowedRaceList	= null;
-		LinkedList<String> alienRaceList	= null;
+		StringList allowedRaceList	= null;
+		StringList alienRaceList	= null;
 		if ((opts.selectedRestartAppliesSettings() || src == null)) {
 			allowedRaceList	= getAllowedAlienRaces();
 			alienRaceList	= getAllAlienRaces();

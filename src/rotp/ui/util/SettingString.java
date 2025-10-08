@@ -29,7 +29,7 @@ import rotp.util.Base;
 public class SettingString extends SettingBase<String> implements Base{
 	
 	private String randomStr = "Randomized";
-	private String inputMessage = "Enter the value";
+//	private String inputMessage = "Enter the value";
 	
 	// ========== constructors  and Initializers ==========
 	//
@@ -49,9 +49,9 @@ public class SettingString extends SettingBase<String> implements Base{
 		initOptionsText();
 		getToolTip(); // to init the list
 	}
-	protected void inputMessage(String inputMessage) {
-		this.inputMessage = inputMessage;
-	}
+//	protected void inputMessage(String inputMessage) {
+//		this.inputMessage = inputMessage;
+//	}
 	protected void randomStr(String randomStr) {
 		this.randomStr = randomStr;
 	}
@@ -82,9 +82,10 @@ public class SettingString extends SettingBase<String> implements Base{
 	}
 	@Override public boolean next() {
 		Object prev = UIManager.get("OptionPane.minimumSize");
-		UIManager.put("OptionPane.minimumSize", new Dimension(scaled(800),scaled(90))); 
+		UIManager.put("OptionPane.minimumSize", new Dimension(scaled(800),scaled(90)));
+		String msg = getInputMessage();
 		String input;
-		input = JOptionPane.showInputDialog(settingText().panel() ,inputMessage, settingValue());
+		input = JOptionPane.showInputDialog(settingText().panel() ,msg, settingValue()); // TODO BR: Improve aspect
 		UIManager.put("OptionPane.minimumSize", prev); 
 		if (input == null)
 			return false; // cancelled

@@ -33,7 +33,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -47,7 +46,7 @@ import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.BaseModPanel.ModText;
 import rotp.ui.main.SystemPanel;
 
-public class SettingBase<T> implements IParam {
+public class SettingBase<T> implements ICRSettings {
 	
 	public enum CostFormula {DIFFERENCE, RELATIVE, NORMALIZED}
 	private static final Color settingPosC = SystemPanel.limeText;  // Setting name color
@@ -58,13 +57,13 @@ public class SettingBase<T> implements IParam {
 	private static final boolean defaultIsBullet		= false;
 	private static final boolean defaultLabelsAreFinals	= false;
 	private static final String  costFormat				= "%6s ";
+	private static final String  INPUT					= "_INPUT";
 
-	private final LinkedList<String> cfgValueList = new LinkedList<>();
-	private final LinkedList<String> labelList	  = new LinkedList<>();
-	private final LinkedList<Float>	 costList	  = new LinkedList<>();
-	private final LinkedList<T> 	 valueList	  = new LinkedList<>();
-	private final LinkedList<String> tooltipList  = new LinkedList<>();
-	private final SafeList			 guiTextList  = new SafeList();
+	private final StringList		cfgValueList = new StringList();
+	private final StringList		labelList	 = new StringList();
+	private final LinkedList<Float>	costList	 = new LinkedList<>();
+	private final LinkedList<T> 	valueList	 = new LinkedList<>();
+	private final StringList 		tooltipList  = new StringList();
 	private final String nameLabel;
 	private final String guiLabel;
 
@@ -116,7 +115,6 @@ public class SettingBase<T> implements IParam {
 		this.guiLabel	= guiLabel;
 		this.nameLabel	= nameLabel;
 	}
-	public	void settingText(ModText txt)	{ settingText = txt.initGuide(this); }
 	protected void maxBullet(int maxBullet)	{ bulletMax = maxBullet; }
 	void settingToolTip(String tt)			{ settingToolTip = tt; }
 	private	void loadSettingToolTip()		{
@@ -125,12 +123,10 @@ public class SettingBase<T> implements IParam {
 			settingToolTip = "";
 	}
 	private	void optionsText(ModText[] optionsText)		{ this.optionsText = optionsText; }
-	public	void optionText(ModText optionText, int i)	{ optionsText[i] = optionText; }
 	public	void initOptionsText()				{
 		if (bulletBoxSize() > 0)
 			optionsText(new ModText[bulletBoxSize()]);
 	}
-	public	void hasNoCost(boolean hasNoCost)	{ this.hasNoCost = hasNoCost; }
 	public	void isBullet(boolean isBullet)		{ this.isBullet = isBullet; }
 	public	void allowListSelect(boolean allow)	{ allowListSelect = allow; }
 	private	void isList(boolean isList)			{ this.isList = isList; }
@@ -138,10 +134,15 @@ public class SettingBase<T> implements IParam {
 	public	void showFullGuide(boolean show)	{ showFullGuide = show; }
 	protected void bulletHFactor(int factor)	{ bulletHFactor = factor; }
 	protected void refreshLevel(int level)		{ refreshLevel  = level; }
-	// ========== Public Interfaces ==========
+	protected String getInputMessage()			{ return text(getLangLabel() + INPUT); }
+	protected void setFromCfgLabel(String s)	{
+		int index = labelValidIndex(labelList.indexOfIgnoreCase(s));
+		selectedValue(valueList.get(index));
+	}
+	// ========== Public IParam Interfaces ==========
 	//
 	@Override public void setFromCfgValue(String cfgValue) {
-		int index = cfgValidIndex(indexOfIgnoreCase(cfgValue, cfgValueList));
+		int index = cfgValidIndex(cfgValueList.indexOfIgnoreCase(cfgValue));
 		selectedValue(valueList.get(index));
 	}
 	@Override public boolean next() {
@@ -250,7 +251,7 @@ public class SettingBase<T> implements IParam {
 	@Override public String	getGuide()				{
 		if(showFullGuide())
 			return getFullHelp();
-		return IParam.super.getGuide();
+		return ICRSettings.super.getGuide();
 	}
 	@Override public String	getFullHelp()			{
 		String help = getHeadGuide();
@@ -261,31 +262,14 @@ public class SettingBase<T> implements IParam {
 	@Override public String valueGuide(int id) 		{ return tableFormat(getRowGuide(id)); }
 	@Override public boolean updated()				{ return updated; }
 	@Override public void updated(boolean val)		{ updated = val; }
-	
-	// ========== Tools for overriders ==========
+
+	// ========== Public ICRSettings Interfaces ==========
 	//
-	protected DynamicOptions dynOpts()	{ return RulesetManager.current().currentOptions().dynOpts(); }
-	// ========== Overridable Methods ==========
-	//
-	public boolean showFullGuide()			{ return showFullGuide; }
-	public void enabledColor(float cost) 	{
-		if (cost == 0) 
-			settingText().enabledC(settingC);
-		else if (cost > 0)
-			settingText().enabledC(settingPosC);
-		else
-			settingText().enabledC(settingNegC);	
-	}
-	void resetOptionsToolTip()				{}
-	protected String getCfgValue(T value)	{
-		if (isList) {
-			int index = valueValidIndex(valueList.indexOf(value));
-			return cfgValueList.get(index);
-		}
-		return String.valueOf(value);
-	}
+	@Override public void settingText(ModText txt)		{ settingText = txt.initGuide(this); }
+	@Override public void hasNoCost(boolean hasNoCost)	{ this.hasNoCost = hasNoCost; }
+	@Override public void optionText(ModText optionText, int i)	{ optionsText[i] = optionText; }
 	// return true if needs to repaint
-	public boolean toggle(MouseEvent e, MouseWheelEvent w, int idx) { // For bullet
+	@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, int idx) { // For bullet
 		if (e == null) { // Mouse Wheel Event
 			if (getDir(w) > 0) { // prev
 				if (bulletStart > 0) {
@@ -309,160 +293,39 @@ public class SettingBase<T> implements IParam {
 			return false;
 		}
 	}
-	public void optionalInput()	{}
-	public void pushSetting()	{}
-	public void pullSetting()	{}
-	public void formatData(Graphics g, int maxWidth) {}
-	public float maxValueCostFactor() {
-		if (isList) {
-			return Collections.max(costList);
-		}
-		return 0f;
-	}
-	public float minValueCostFactor() {
-		if (isList) {
-			return Collections.min(costList);
-		}
-		return 0f;
-	}
-	public void updateGui() {  repaint(); }
-	private void repaint() { 
-		if (isSpacer())
-			return;
-		settingText().repaint();
-		int selectedIndex = cfgValidIndex();
-		int bulletSize	= bulletBoxSize();
-		for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
-			int optionIdx = bulletStart + bulletIdx;
-			optionText(bulletIdx).disabled(optionIdx == selectedIndex);
-			optionText(bulletIdx).repaint();
-		}
-	}
-	public float settingCost() {
+	@Override public void updateGui()		{  repaint(); }
+	@Override public float settingCost()	{
 		if (isSpacer() || hasNoCost)
 			return 0f;;
 		return costList.get(costValidIndex());
 	}
-	public T settingValue() {
-		if (selectedValue == null)
-			return defaultValue;
-		else
-			return selectedValue;
-	}
-	public SettingBase<?> set(T newValue) {
-		if (isList) {
-			selectedValue = newValue;
-			selectedValue(valueList.get(valueValidIndex()));
-		} else
-			selectedValue(newValue);
-		return this;
-	}
-	public String guiCostOptionStr(int idx) {
-		return guiCostOptionStr(idx, 0);
-	}
-	public int index() { return cfgValidIndex(); }
-	public void guiSelect() {
+	@Override public String guiCostOptionStr(int idx)	{ return guiCostOptionStr(idx, 0); }
+	@Override public int index()		{ return cfgValidIndex(); }
+	@Override public void guiSelect()	{
 		if (isSpacer())
 			return;
 		pushSetting();
 		updateGui();
 	}
-	public void setRandom(float min, float max, boolean gaussian) {
-		set(randomize(min, max, gaussian));
-	}
-	public SettingBase<?> index(int newIndex) {
-		selectedValue(valueList.get(cfgValidIndex(newIndex)));
-		return this;
-	}
-	protected T randomize(float rand) {
-		if (isList) {
-			if (rand > 0)
-				rand *= Collections.max(costList);
-			else
-				rand *= -Collections.min(costList);				
-			return getValueFromCost(rand);
-		}
-		return null; // Should be overridden
-	}
-	protected T getValueFromCost(float cost) {
-		if (isList) {
-			int bestIdx = 0;
-			float bestDev =  Math.abs(cost - costList.getFirst());
-			for (int i=1; i<costList.size(); i++) {
-				float dev = Math.abs(cost - costList.get(i));
-				if (dev < bestDev) {
-					bestIdx = i;
-					bestDev = dev;
-				}
-			}
-			return valueList.get(bestIdx);
-		}
-		return null; // Should be overridden
-	}
-	protected void selectedValue(T newValue) {
-		selectedValue = newValue;
-		updated = true;
-		if (isBullet && listSize()>bulletBoxSize()) {
-			// center the value
-			int boxSize	= bulletBoxSize();
-			int start	= Math.max(0, index()-boxSize/2);
-			int end		= Math.min(listSize(), start + boxSize);
-			bulletStart(end - boxSize);
-		}
-	}
-	// ========== Setter ==========
-	//
-	public void setRandom(float rand) {
+	@Override public void setRandom(float min, float max, boolean gaussian)	{ set(randomize(min, max, gaussian)); }
+	@Override public void setRandom(float rand)		{
 		lastRandomSource = rand;
 		set(randomize(rand));
 	}
-	public void setValueFromCost(float cost) {
-		set(getValueFromCost(cost));
-	}
-	public SettingBase<?> defaultIndex(int index) {
-		setDefaultIndex(bounds(0, index, cfgValueList.size()-1));
-		return this;
-	}
-	public SettingBase<?> defaultCfgValue(String defaultCfgValue) {
-		setDefaultIndex(cfgValidIndex(indexOfIgnoreCase(defaultCfgValue, cfgValueList)));
-		return this;
-	}
-	public String guiOptionValue(int index) { // For List
-		return String.valueOf(optionValue(index));
-	}
-	public void clearImage()			{ img = null; }
-	// ===== Getters =====
-	//
-	protected String defaultLangLabel()	{
-		return langLabel(labelList.get(valueValidDefaultIndex()));
-	}
-	protected String getSelLangLabel()	{ return langLabel(labelList.get(getIndex())); }
-	public BufferedImage getImage()		{ return img; }
-	public int deltaYLines()			{ return deltaYLines; }
-	protected T	defaultValue()			{ return defaultValue; }
-	protected String guiOptionLabel()	{ return guiOptionLabel(index()); }
-	protected String guiOptionLabel(int index) {
-		return langLabel(labelList.get(cfgValidIndex(index)));
-	}
-	public	String guiSettingDisplayStr() {
-		if (isBullet) 
-			return guiSettingLabelCostStr();
-		else
-			return guiSettingLabelValueCostStr();		
-	}
-	public	boolean isSpacer()			{ return isSpacer; }
-	public	boolean hasNoCost()			{ return hasNoCost; }
-	public	boolean isBullet()			{ return isBullet; }
-	public	String  getLabel()			{ return langLabel(getLangLabel()); }
-	public	int bulletStart()			{ return bulletStart; }
-	private	int bulletEnd()				{ return bulletStart + bulletBoxSize(); }
-	int	bulletHeightFactor()			{ return bulletHFactor; }
-	public	float	lastRandomSource()	{ return lastRandomSource; }
-	public	boolean	isDefaultIndex()	{ return cfgValidIndex() == rawDefaultIndex(); }
-	public	ModText	settingText()		{ return settingText; }
-	public	ModText[] optionsText()		{ return optionsText; }
-	public	ModText	optionText(int i)	{ return optionsText[i]; }
-	public	float	costFactor()		{
+	@Override public void setValueFromCost(float cost)	{ set(getValueFromCost(cost)); }
+	@Override public BufferedImage getImage()		{ return img; }
+	@Override public int deltaYLines()				{ return deltaYLines; }
+	@Override public void clearImage()				{ img = null; }
+	@Override public String guiSettingDisplayStr()	{ return isBullet ? guiSettingLabelCostStr() : guiSettingLabelValueCostStr(); }
+	@Override public boolean isSpacer()				{ return isSpacer; }
+	@Override public boolean hasNoCost()			{ return hasNoCost; }
+	@Override public boolean isBullet()				{ return isBullet; }
+	@Override public int bulletStart()				{ return bulletStart; }
+	@Override public float lastRandomSource()		{ return lastRandomSource; }
+	@Override public ModText settingText()			{ return settingText; }
+	@Override public ModText optionText(int i)		{ return optionsText[i]; }
+	@Override public ModText[] optionsText()		{ return optionsText; }
+	@Override public float	costFactor()			{
 		if (isList) {
 			if (lastRandomSource<0)
 				return -Collections.min(costList);
@@ -474,107 +337,8 @@ public class SettingBase<T> implements IParam {
 		else
 			return Math.max(maxValueCostFactor(), minValueCostFactor());
 	}
-	public	int listSize()				{ return valueList.size(); }
-	public	int bulletBoxSize()			{
-		if (isBullet())
-			return Math.min(listSize(), bulletMax);
-		else
-			return 0;
-	}
-	public	LinkedList<String> getOptions()	{
-		LinkedList<String> list = new LinkedList<String>();
-		list.addAll(cfgValueList);
-		return list;
-	}
-	public	LinkedList<String> getLabels()	{
-		LinkedList<String> list = new LinkedList<String>();
-		list.addAll(labelList);
-		return list;
-	}
-	private	String getFinalLabel(String rawLabel)	{
-		if (rawLabel == null)
-			return "";
-		if (labelsAreFinals)
-			return rawLabel;
-		return getLangLabel() +"_"+ rawLabel;
-	}
-	private	void addLabel(String rawLabel)	{ labelList.add(getFinalLabel(rawLabel)); }
-	private	String getToolTip(String label, boolean finalKey)	{
-		if (label == null || label.isEmpty())
-			return "";
-		if (finalKey)
-			return langLabel(label);
-		String tt = langHelp(getFinalLabel(label));
-		if (tt == null || tt.isEmpty()) {
-			// System.out.println("Missed TT: " + label);
-			return "";
-		}
-		return tt;
-	}
-	private	void addToolTip(String label, boolean finalKey)		{
-		tooltipList.add(getToolTip(label, finalKey));
-	}
-	// ===== Other Public Methods =====
-	//
-	/**
-	 * Add a new Option with its Label
-	 * @param cfgValue
-	 * @param langLabel
-	 * @param cost
-	 * @param value
-	 * @return this for chaining purpose
-	 */
-	public void put(String cfgValue, String langLabel, float cost, T value) {
-		isList(true);
-		cfgValueList.add(cfgValue);
-		costList.add(cost);
-		valueList.add(value);
-		addLabel(langLabel);
-		addToolTip(langLabel, false);
-	}
-	public void put(String cfgValue, String langLabel, float cost, T value, String tooltipKey) {
-		isList(true);
-		cfgValueList.add(cfgValue);
-		costList.add(cost);
-		valueList.add(value);
-		addLabel(langLabel);
-		addToolTip(tooltipKey, true);
-	}
-	void put(T value, String tooltipKey) {
-		cfgValueList.add("");
-		costList.add(0f);
-		valueList.add(value);
-		labelList.add("");
-		addToolTip(tooltipKey, true);
-	}
-	protected int getDir(MouseEvent e) {
-		if (SwingUtilities.isRightMouseButton(e)) return -1;
-		if (SwingUtilities.isLeftMouseButton(e)) return 1;
-		return 0;
-	}
-	protected int getDir(MouseWheelEvent e) {
-		if (e.getWheelRotation() < 0) return 1;
-		return -1;
-	}
-	protected void clearLists() {
-		cfgValueList.clear();
-		labelList.clear();
-		costList.clear();
-		valueList.clear();
-		tooltipList.clear();
-		bulletStart(0);
-	}
-	protected void clearOptionsText() {
-		if (optionsText == null)
-			return;
-		for (int i=0; i<optionsText.length; i++ )
-			if (optionsText[i] != null) {
-				optionsText[i].removeBoxFromList();
-				//optionsText[i] = null;
-			}
-	}
-	protected T optionValue(int index)	{ return valueList.get(valueValidIndex(index)); }
-	public void drawSetting(int sizePad, int endPad, int optionH, int currentdWith,
+	@Override public int bulletBoxSize()			{ return isBullet()? Math.min(listSize(), bulletMax) : 0; }
+	@Override public void drawSetting(int sizePad, int endPad, int optionH, int currentdWith,
 			Color frameC, int frameShift, int xLine, int yLine, int settingIndent,
 			int shift, int settingH, int frameTopPad, int wSetting, int optionIndent,
 			boolean retina, float retinaFactor) {
@@ -663,8 +427,233 @@ public class SettingBase<T> implements IParam {
 		}
 		g.dispose();
 	}
-	// ========== Private Methods ==========
+
+	// ========== Tools for overriders ==========
 	//
+	protected DynamicOptions dynOpts()	{ return RulesetManager.current().currentOptions().dynOpts(); }
+
+	// ========== Overridable Methods ==========
+	//
+	protected boolean showFullGuide()		{ return showFullGuide; }
+	public void enabledColor(float cost) 	{
+		if (cost == 0) 
+			settingText().enabledC(settingC);
+		else if (cost > 0)
+			settingText().enabledC(settingPosC);
+		else
+			settingText().enabledC(settingNegC);	
+	}
+	void resetOptionsToolTip()				{}
+	protected String getCfgValue(T value)	{
+		if (isList) {
+			int index = valueValidIndex(valueList.indexOf(value));
+			return cfgValueList.get(index);
+		}
+		return String.valueOf(value);
+	}
+	public void optionalInput()	{}
+	public void formatData(Graphics g, int maxWidth) {}
+	public float maxValueCostFactor() {
+		if (isList) {
+			return Collections.max(costList);
+		}
+		return 0f;
+	}
+	public float minValueCostFactor() {
+		if (isList) {
+			return Collections.min(costList);
+		}
+		return 0f;
+	}
+	private void repaint() { 
+		if (isSpacer())
+			return;
+		settingText().repaint();
+		int selectedIndex = cfgValidIndex();
+		int bulletSize	= bulletBoxSize();
+		for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
+			int optionIdx = bulletStart + bulletIdx;
+			optionText(bulletIdx).disabled(optionIdx == selectedIndex);
+			optionText(bulletIdx).repaint();
+		}
+	}
+	public T settingValue() {
+		if (selectedValue == null)
+			return defaultValue;
+		else
+			return selectedValue;
+	}
+	public SettingBase<?> set(T newValue) {
+		if (isList) {
+			selectedValue = newValue;
+			selectedValue(valueList.get(valueValidIndex()));
+		} else
+			selectedValue(newValue);
+		return this;
+	}
+	public SettingBase<?> index(int newIndex) {
+		selectedValue(valueList.get(cfgValidIndex(newIndex)));
+		return this;
+	}
+	protected T randomize(float rand) {
+		if (isList) {
+			if (rand > 0)
+				rand *= Collections.max(costList);
+			else
+				rand *= -Collections.min(costList);				
+			return getValueFromCost(rand);
+		}
+		return null; // Should be overridden
+	}
+	protected T getValueFromCost(float cost) {
+		if (isList) {
+			int bestIdx = 0;
+			float bestDev =  Math.abs(cost - costList.getFirst());
+			for (int i=1; i<costList.size(); i++) {
+				float dev = Math.abs(cost - costList.get(i));
+				if (dev < bestDev) {
+					bestIdx = i;
+					bestDev = dev;
+				}
+			}
+			return valueList.get(bestIdx);
+		}
+		return null; // Should be overridden
+	}
+	protected void selectedValue(T newValue) {
+		selectedValue = newValue;
+		updated = true;
+		if (isBullet && listSize()>bulletBoxSize()) {
+			// center the value
+			int boxSize	= bulletBoxSize();
+			int start	= Math.max(0, index()-boxSize/2);
+			int end		= Math.min(listSize(), start + boxSize);
+			bulletStart(end - boxSize);
+		}
+	}
+	protected StringList labelList()		{ return labelList; }
+	protected StringList guiTextsList()		{
+		StringList guiTextList = new StringList();
+		for (String label : labelList)
+			guiTextList.add(langLabel(label));
+		return guiTextList;
+	}
+	protected StringList altReturnList()	{ return cfgValueList; }
+	// ========== Setter ==========
+	//
+	public SettingBase<?> defaultIndex(int index) {
+		setDefaultIndex(bounds(0, index, cfgValueList.size()-1));
+		return this;
+	}
+	public SettingBase<?> defaultCfgValue(String defaultCfgValue) {
+		setDefaultIndex(cfgValidIndex(cfgValueList.indexOfIgnoreCase(defaultCfgValue)));
+		return this;
+	}
+	public String guiOptionValue(int index) { // For List
+		return String.valueOf(optionValue(index));
+	}
+	// ===== Getters =====
+	//
+	protected String defaultLangLabel()	{ return langLabel(labelList.get(valueValidDefaultIndex())); }
+	protected String getSelLangLabel()	{ return langLabel(labelList.get(getIndex())); }
+	protected T	defaultValue()			{ return defaultValue; }
+	protected String guiOptionLabel()	{ return guiOptionLabel(index()); }
+	protected String guiOptionLabel(int index)	{ return langLabel(labelList.get(cfgValidIndex(index))); }
+	public	String  getLabel()			{ return langLabel(getLangLabel()); }
+	private	int bulletEnd()				{ return bulletStart + bulletBoxSize(); }
+	int	bulletHeightFactor()			{ return bulletHFactor; }
+	public	boolean	isDefaultIndex()	{ return cfgValidIndex() == rawDefaultIndex(); }
+	public	int listSize()				{ return valueList.size(); }
+	public	StringList getOptions()		{ return new StringList(cfgValueList); }
+	public	StringList getLabels()		{ return new StringList(labelList); }
+	public	LinkedList<T> getValues()	{
+		LinkedList<T> list = new LinkedList<T>();
+		list.addAll(valueList);
+		return list;
+	}
+	private	String getFinalLabel(String rawLabel)	{
+		if (rawLabel == null)
+			return "";
+		if (labelsAreFinals)
+			return rawLabel;
+		return getLangLabel() +"_"+ rawLabel;
+	}
+	private	void addLabel(String rawLabel)	{ labelList.add(getFinalLabel(rawLabel)); }
+	private	String getToolTip(String label, boolean finalKey)	{
+		if (label == null || label.isEmpty())
+			return "";
+		if (finalKey)
+			return langLabel(label);
+		String tt = langHelp(getFinalLabel(label));
+		if (tt == null || tt.isEmpty()) {
+			// System.out.println("Missed TT: " + label);
+			return "";
+		}
+		return tt;
+	}
+	private	void addToolTip(String label, boolean finalKey)		{
+		tooltipList.add(getToolTip(label, finalKey));
+	}
+	// ===== Other Public Methods =====
+	//
+	/**
+	 * Add a new Option with its Label
+	 * @param cfgValue
+	 * @param langLabel
+	 * @param cost
+	 * @param value
+	 * @return this for chaining purpose
+	 */
+	public void put(String cfgValue, String langLabel, float cost, T value) {
+		isList(true);
+		cfgValueList.add(cfgValue);
+		costList.add(cost);
+		valueList.add(value);
+		addLabel(langLabel);
+		addToolTip(langLabel, false);
+	}
+	public void put(String cfgValue, String langLabel, float cost, T value, String tooltipKey) {
+		isList(true);
+		cfgValueList.add(cfgValue);
+		costList.add(cost);
+		valueList.add(value);
+		addLabel(langLabel);
+		addToolTip(tooltipKey, true);
+	}
+	void put(T value, String tooltipKey) {
+		cfgValueList.add("");
+		costList.add(0f);
+		valueList.add(value);
+		labelList.add("");
+		addToolTip(tooltipKey, true);
+	}
+	protected int getDir(MouseEvent e) {
+		if (SwingUtilities.isRightMouseButton(e)) return -1;
+		if (SwingUtilities.isLeftMouseButton(e)) return 1;
+		return 0;
+	}
+	protected int getDir(MouseWheelEvent e) {
+		if (e.getWheelRotation() < 0) return 1;
+		return -1;
+	}
+	protected void clearLists() {
+		cfgValueList.clear();
+		labelList.clear();
+		costList.clear();
+		valueList.clear();
+		tooltipList.clear();
+		bulletStart(0);
+	}
+	protected void clearOptionsText() {
+		if (optionsText == null)
+			return;
+		for (int i=0; i<optionsText.length; i++ )
+			if (optionsText[i] != null) {
+				optionsText[i].removeBoxFromList();
+				//optionsText[i] = null;
+			}
+	}
+	protected T optionValue(int index)	{ return valueList.get(valueValidIndex(index)); }
 	protected String getTableHelp()		{
 		int size = listSize();
 		String rows = "";
@@ -675,6 +664,9 @@ public class SettingBase<T> implements IParam {
 		}
 		return tableFormat(rows);
 	}
+	protected String getDefaultCfgValue()	{ return getCfgValue(defaultValue); }
+	// ========== Private Methods ==========
+	//
 	private void bulletStart(int start) {
 		bulletStart = start;
 		int idx = index();
@@ -711,12 +703,9 @@ public class SettingBase<T> implements IParam {
 	}
 	private float optionCost(int index)	{ return costList.get(index); }
 	private String descriptionId()		{ return getLangLabel() + LABEL_DESCRIPTION; }
-	private String getDefaultCfgValue() { return getCfgValue(defaultValue); }
 	private String settingCostString()	{ return settingCostString(1); } // default decimal number
-	private String settingCostString(int dec) { return costString(settingCost(), dec); }
-	private String optionCostStringIdx(int idx, int dec) {
-		return costString(optionCost(idx), dec);
-	}
+	private String settingCostString(int dec)				{ return costString(settingCost(), dec); }
+	private String optionCostStringIdx(int idx, int dec)	{ return costString(optionCost(idx), dec); }
 	private String guiSettingLabelCostStr() {
 		if (hasNoCost)
 			return getLabel();
@@ -754,73 +743,32 @@ public class SettingBase<T> implements IParam {
 		}
 		return str + ")";
 	}
-	private int bounds(int low, int val, int hi) {
-		return Math.min(Math.max(low, val), hi);
-	}
-	private int cfgValidIndex() {
-		return cfgValidIndex(rawSelectedIndex());
-	}
-	private int cfgValidIndex(int index) {
-		if (index<0 || index>=cfgValueList.size())
-			return valueValidDefaultIndex();
-		return index;
-	}
-	private int valueValidDefaultIndex() {
-		return bounds(0, rawDefaultIndex(), valueList.size()-1);
-	}
-	private int valueValidIndex() {
-		return valueValidIndex(rawSelectedIndex());
-	}	
-	private int valueValidIndex(int index) {
-		if (index<0 || index>valueList.size())
-			return valueValidDefaultIndex();
-		return index;
-	}	
-	private int costValidDefaultIndex() {
-		return bounds(0, rawDefaultIndex(), costList.size()-1);
-	}
-	private int rawSelectedIndex() {
-		return valueList.indexOf(selectedValue);
-	}
-	private int rawDefaultIndex() {
-		return valueList.indexOf(defaultValue);
-	}
-	private int costValidIndex() {
-		return costValidIndex(rawSelectedIndex());
-	}
-	private int costValidIndex(int index) {
-		if (index<0 || index>costList.size())
-			return costValidDefaultIndex();
-		return index;
-	}
+	private int bounds(int low, int val, int hi)	{ return Math.min(Math.max(low, val), hi); }
+	private int cfgValidIndex()				{ return cfgValidIndex(rawSelectedIndex()); }
+	private int cfgValidIndex(int index)	{ return cfgValueList.isValidIndex(index)? index : valueValidDefaultIndex(); }
+	private int labelValidIndex(int index)	{ return labelList.isValidIndex(index)? index : valueValidDefaultIndex(); }
+	private int valueValidDefaultIndex()	{ return bounds(0, rawDefaultIndex(), valueList.size()-1); }
+	private int valueValidIndex()			{ return valueValidIndex(rawSelectedIndex()); }	
+	private int valueValidIndex(int index)	{ return index<0 || index>valueList.size()? valueValidDefaultIndex() : index; }
+	private int costValidDefaultIndex()		{ return bounds(0, rawDefaultIndex(), costList.size()-1); }
+	private int rawSelectedIndex()			{ return valueList.indexOf(selectedValue); }
+	private int rawDefaultIndex()			{ return valueList.indexOf(defaultValue); }
+	private int costValidIndex()			{ return costValidIndex(rawSelectedIndex()); }
+	private int costValidIndex(int index)	{ return index<0 || index>costList.size()? costValidDefaultIndex() : index; }
 	private static String text(String key, String... vals) {
 		String str = langLabel(key);
 		for (int i=0;i<vals.length;i++)
 			str = str.replace(textSubs[i], vals[i]);
 		return str;
 	}
-	private int indexOfIgnoreCase(String string, LinkedList<String> list) {
-		int index = 0;
-		for (String entry : list) {
-			if (entry.equalsIgnoreCase(string))
-				return index;
-			index++;
-		}
-		return -1;
-	}
 	private int getValueIndexIgnoreCase(String value) {
 		int index = 0;
-		for (String entry : cfgValueList) {
+		for (String entry : altReturnList()) {
 			if (entry.equalsIgnoreCase(value))
 				return index;
 			index++;
 		}
 		return -1;
-	}
-	private void initMapGuiTexts() {
-		guiTextList.clear();
-		for (String label : labelList)
-			guiTextList.add(langLabel(label));
 	}
 	@SuppressWarnings("unchecked")
 	private void setFromList(BaseModPanel frame) {
@@ -828,7 +776,8 @@ public class SettingBase<T> implements IParam {
 		String title	= text(getLangLabel(), "");
 		// System.out.println("getIndex() = " + getIndex());
 		// System.out.println("currentOption() = " + currentOption());
-		initMapGuiTexts();
+		StringList guiTextList = guiTextsList();
+		//initMapGuiTexts();
 		String[] list = guiTextList.toArray(new String[listSize()]);
 		int height = 128 + (int)Math.ceil(18.5 * list.length);
 		height = Math.max(300, height);
@@ -842,24 +791,15 @@ public class SettingBase<T> implements IParam {
 				null, true,						// long Dialogue & isVertical
 				-1, -1,						// Position
 				RotPUI.scaledSize(360), RotPUI.scaledSize(height),	// size
-				null, null,		// Font, Preview
-				cfgValueList,	// Alternate return
-				this);			// help parameter
+				null, null,				// Font, Preview
+				altReturnList(),	// Alternate return
+				this);					// help parameter
 
 		String input = (String) dialog.showDialog(refreshLevel);
 		// System.out.println("input = " + input);
 		if (input != null && getValueIndexIgnoreCase(input) >= 0)
 			set((T) input);
+		// System.out.println("input = " + input);
 		// System.out.println("getIndex() = " + getIndex());
-	}
-	class SafeList extends ArrayList<String> {
-		private static final long serialVersionUID = 1L;
-		@Override public String get(int id) {
-			if (id<0 || size() == 0)
-				return "";
-			if (id>=size())
-				return super.get(0);
-			return super.get(id);
-		}
 	}
 }

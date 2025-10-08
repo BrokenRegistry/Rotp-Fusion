@@ -25,32 +25,40 @@ import static rotp.model.game.IPreGameOptions.randomAlienRacesSmoothEdges;
 import static rotp.model.game.IPreGameOptions.randomAlienRacesTargetMax;
 import static rotp.model.game.IPreGameOptions.randomAlienRacesTargetMin;
 import static rotp.model.game.IRaceOptions.defaultRace;
+import static rotp.ui.util.IParam.langLabel;
 import static rotp.ui.util.PlayerShipSet.DISPLAY_RACE_SET;
 import static rotp.ui.util.SettingBase.CostFormula.DIFFERENCE;
 import static rotp.ui.util.SettingBase.CostFormula.NORMALIZED;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import rotp.model.empires.Leader.Personality;
 import rotp.model.game.DynOptions;
 import rotp.model.game.DynamicOptions;
+import rotp.model.game.IBaseOptsTools;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.IRaceOptions;
 import rotp.model.planet.PlanetType;
 import rotp.model.ships.ShipLibrary;
+import rotp.ui.util.ICRSettings;
 import rotp.ui.util.PlayerShipSet;
 import rotp.ui.util.SettingBase;
 import rotp.ui.util.SettingBoolean;
 import rotp.ui.util.SettingFloat;
 import rotp.ui.util.SettingInteger;
 import rotp.ui.util.SettingString;
+import rotp.ui.util.StringList;
+import rotp.util.LabelManager;
 
 public class CustomRaceDefinitions implements ISpecies {
 	
@@ -66,8 +74,8 @@ public class CustomRaceDefinitions implements ISpecies {
 	private static final FilenameFilter SPECIES_FILTER = (File dir, String name1) -> name1.toLowerCase().endsWith(EXT);
 
 	private Race race; // !!! To be kept up to date !!!
-	private final LinkedList<SettingBase<?>> settingList = new LinkedList<>(); // !!! To be kept up to date !!!
-	private final LinkedList<SettingBase<?>> guiList	 = new LinkedList<>();
+	private final LinkedList<ICRSettings> settingList = new LinkedList<>(); // !!! To be kept up to date !!!
+	private final LinkedList<ICRSettings> guiList	 = new LinkedList<>();
 
 	public final SettingInteger randomTargetMax = new SettingInteger(
 			ROOT, "RANDOM_TARGET_MAX", 75, null, null, 1, 5, 20).pctValue(false);
@@ -105,7 +113,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	public CustomRaceDefinitions(DynOptions srcOptions) {
 		newSettingList();
 		setSettingTools(srcOptions);
-		pushSettings();
+		//pushSettings();
 	}
 	private CustomRaceDefinitions(String fileName) {
 		this(loadOptions(speciesDirectoryPath(), fileName + EXT));
@@ -175,26 +183,20 @@ public class CustomRaceDefinitions implements ISpecies {
 	public static DynOptions getDefaultOptions() {
 		return new CustomRaceDefinitions(baseRace).getAsOptions();
 	}
-	public static LinkedList<String> getBaseRaceList() {
+	public static StringList getBaseRaceList()	{
 		return getRaceFileList()
 				.stream()
 				.filter(c -> c.startsWith(BASE_RACE_MARKER))
-				.collect(Collectors.toCollection(LinkedList::new));
+				.collect(Collectors.toCollection(StringList::new));
 	}
 	private static Race getBaseRace(String key) {
 		CustomRaceDefinitions cr = new CustomRaceDefinitions();
 		cr.setRace(cr.new RaceList().getBaseRace(key));
 		return cr.getRace();
 	}
-	private static LinkedList<String> getRaceFileList() {
-		return new CustomRaceDefinitions().new RaceList().getLabels();
-	}
-	public static LinkedList<String> getAllowedAlienRaces() {
-		return new CustomRaceDefinitions().new RaceList().getAllowedAlienRaces();
-	}
-	public static LinkedList<String> getAllAlienRaces() {
-		return new CustomRaceDefinitions().new RaceList().getAllAlienRaces();
-	}
+	private static StringList getRaceFileList()		{ return new CustomRaceDefinitions().new RaceList().getLabels(); }
+	public static StringList getAllowedAlienRaces()	{ return new CustomRaceDefinitions().new RaceList().getAllowedAlienRaces(); }
+	public static StringList getAllAlienRaces()		{ return new CustomRaceDefinitions().new RaceList().getAllAlienRaces(); }
 	// ========== Options Management ==========
 	//
 	/**
@@ -203,9 +205,9 @@ public class CustomRaceDefinitions implements ISpecies {
 	 */
 	public DynOptions getAsOptions() {
 		DynOptions destOptions = new DynOptions();
-		for (SettingBase<?> setting : settingList)
+		for (ICRSettings setting : settingList)
 			setting.updateOption(destOptions);
-		for (SettingBase<?> setting : guiList)
+		for (ICRSettings setting : guiList)
 			setting.updateOption(destOptions);
 		return destOptions;
 	}
@@ -214,9 +216,9 @@ public class CustomRaceDefinitions implements ISpecies {
 	 * @param srcOptions
 	 */
 	public void setSettingTools(DynOptions srcOptions) {
-		for (SettingBase<?> setting : settingList)
+		for (ICRSettings setting : settingList)
 			setting.updateOptionTool(srcOptions);
-		for (SettingBase<?> setting : guiList)
+		for (ICRSettings setting : guiList)
 			setting.updateOptionTool(srcOptions);
 		pushSettings();
 	}
@@ -248,8 +250,8 @@ public class CustomRaceDefinitions implements ISpecies {
 	// ========== Main Getters ==========
 	//
 	public String getRaceKey()						{ return race.id; }
-	public LinkedList<SettingBase<?>> settingList()	{ return settingList; }
-	public LinkedList<SettingBase<?>> guiList()		{ return guiList; }
+	public LinkedList<ICRSettings> settingList()	{ return settingList; }
+	public LinkedList<ICRSettings> guiList()		{ return guiList; }
 	public LinkedList<Integer>		  spacerList()	{ return spacerList; }
 	public LinkedList<Integer>		  columnList()	{ return columnList; }
 	public RaceList initRaceList()		{ 
@@ -273,7 +275,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	}
 	public int getCount() {
 		int count = 0;
-		for (SettingBase<?> setting : settingList) {
+		for (ICRSettings setting : settingList) {
 			if (!setting.isSpacer()
 					&& !setting.hasNoCost())
 				count++;
@@ -289,7 +291,7 @@ public class CustomRaceDefinitions implements ISpecies {
 		float maxDiff	= Math.max(0.04f, Math.abs(targetMax-targetMin)/2);
 		float maxChange	= Math.max(0.1f, Math.abs(max-min));
 
-		List<SettingBase<?>> shuffledSettingList = new ArrayList<>(settingList);
+		List<ICRSettings> shuffledSettingList = new ArrayList<>(settingList);
 		// first pass full random
 		randomizeRace(min, max, gaussian, updateGui);
 		float cost = getTotalCost();
@@ -297,7 +299,7 @@ public class CustomRaceDefinitions implements ISpecies {
 		// second pass going smoothly to the target
 		for (int i=0; i<10; i++) {
 			Collections.shuffle(shuffledSettingList);
-			for (SettingBase<?> setting : shuffledSettingList) {
+			for (ICRSettings setting : shuffledSettingList) {
 				if (!setting.isSpacer() &&!setting.hasNoCost()) {
 					float difference = target - cost;
 					if (Math.abs(difference) <= maxDiff)
@@ -332,7 +334,7 @@ public class CustomRaceDefinitions implements ISpecies {
 		// third pass forcing the target
 		for (int i=0; i<5; i++) {
 			Collections.shuffle(shuffledSettingList);
-			for (SettingBase<?> setting : shuffledSettingList) {
+			for (ICRSettings setting : shuffledSettingList) {
 				if (!setting.isSpacer() &&!setting.hasNoCost()) {
 					cost -= setting.settingCost();
 					setting.setValueFromCost(target - cost);
@@ -349,7 +351,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	 * race is not up to date
 	 */
 	private void randomizeRace(float min, float max, boolean gaussian, boolean updateGui) {
-		for (SettingBase<?> setting : settingList) {
+		for (ICRSettings setting : settingList) {
 			if (!setting.isSpacer()) {
 				setting.setRandom(min, max, gaussian);
 				if (updateGui)
@@ -375,7 +377,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	}
 	public  float getTotalCost() {
 		float totalCost = 0;
-		for (SettingBase<?> setting : settingList) {
+		for (ICRSettings setting : settingList) {
 			if (setting.isSpacer())
 				continue;
 			totalCost += setting.settingCost();
@@ -384,7 +386,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	}
 	public  float getMalusCost() {
 		float malus = 0;
-		for (SettingBase<?> setting : settingList) {
+		for (ICRSettings setting : settingList) {
 			if (setting.isSpacer())
 				continue;
 			float cost = setting.settingCost();
@@ -395,17 +397,17 @@ public class CustomRaceDefinitions implements ISpecies {
 	}
 	private void pushSettings() {
 		race = R_M.keyed(baseRace).copy();
-		for (SettingBase<?> setting : settingList) {
+		for (ICRSettings setting : settingList) {
 			setting.pushSetting();
 		}
 	}
 	private void pullSettings() {
-		for (SettingBase<?> setting : settingList) {
+		for (ICRSettings setting : settingList) {
 			setting.pullSetting();
 		}
 	}
 	private float updateSettings() {
-		for (SettingBase<?> setting : settingList) {
+		for (ICRSettings setting : settingList) {
 			setting.updateGui();
 		}
 		return getTotalCost();
@@ -442,8 +444,10 @@ public class CustomRaceDefinitions implements ISpecies {
 		settingList.add(objective.technologist);
 		spacer();
 		settingList.add(availableAI);
+		settingList.add(new BoundAI());
 		settingList.add(new PreferredShipSize());
 		settingList.add(new PreferredShipSet());
+		settingList.add(new ReworkedRaceKey());
 		spacer();
 		settingList.add(new RacePrefix());
 		settingList.add(new RaceSuffix());
@@ -520,27 +524,11 @@ public class CustomRaceDefinitions implements ISpecies {
 	    guiList.add(randomTargetMin);
 	    guiList.add(randomTargetMax);
 	    guiList.add(randomUseTarget);	    
-	    for(SettingBase<?> setting : guiList)
+	    for(ICRSettings setting : guiList)
 	    	setting.hasNoCost(true);
 	}
 	private void endOfColumn()	{ columnList.add(settingList.size()); }
 	private void spacer()		{ spacerList.add(settingList.size()); }
-	private String fileToKey (File file)	{
-		String key = file.getPath();
-		key = key.substring(0, key.length() - EXT.length());
-		String dir = speciesDirectoryPath();
-		if (dir.length() <= key.length()) {
-			String parent = key.substring(0, dir.length());
-			boolean same = parent.equals(dir);
-			if(same) {
-				if (dir.length() == key.length())
-					key = "";
-				else
-					key = key.substring(dir.length()+1, key.length());
-			}
-		}
-		return key;
-	}
 	// ==================== Nested Classes ====================
 	//
 	// ==================== RaceList ====================
@@ -556,11 +544,11 @@ public class CustomRaceDefinitions implements ISpecies {
 			labelsAreFinals(true);
 			hasNoCost(true);
 			showFullGuide(false);
-			reload();
+			reload(false);
 		}
 		// ---------- Initializers ----------
 		//
-		public void reload() {
+		public void reload(boolean foldersRework) {
 			String currentValue = settingValue();
 			clearLists();
 			clearOptionsText();
@@ -575,12 +563,8 @@ public class CustomRaceDefinitions implements ISpecies {
 					if (opt.size() == 0)
 						System.err.println("Empty race file: " + file.getName());
 					else {
-						String key = RaceKey.getKey(opt);
-						String fileKey = fileToKey(file);
-						if (!key.equalsIgnoreCase(fileKey)) {
-							RaceKey.setKey(opt, fileKey);
-							DynOptions.saveOptions(opt, file);
-						}
+						RaceKey.valid(opt, file);	// Check to Update filename
+						ReworkedRaceKey.valid(opt, file, foldersRework);	// Test for reworked old Ways
 						add(opt);
 					}
 				}
@@ -636,8 +620,8 @@ public class CustomRaceDefinitions implements ISpecies {
 			}
 			return false;
 		}
-		public LinkedList<String> getAllowedAlienRaces() {
-			LinkedList<String> list = new LinkedList<>();
+		public StringList getAllowedAlienRaces() {
+			StringList list = new StringList();
 			File[] fileList = loadListing();
 			if (fileList != null)
 				for (File file : fileList) {
@@ -647,8 +631,8 @@ public class CustomRaceDefinitions implements ISpecies {
 				}
 			return list;
 		}
-		public LinkedList<String> getAllAlienRaces() {
-			LinkedList<String> list = new LinkedList<>();
+		public StringList getAllAlienRaces() {
+			StringList list = new StringList();
 			File[] fileList = loadListing();
 			if (fileList != null)
 				for (File file : fileList) {
@@ -694,12 +678,36 @@ public class CustomRaceDefinitions implements ISpecies {
 	//
 	private class RaceKey extends SettingString	{
 		private static final String RACE_KEY = "RACE_KEY";
-		static String getKey (DynOptions opts)				{ return opts.getString(ROOT + RACE_KEY); }
-		static void setKey (DynOptions opts, String key)	{ opts.setString(ROOT + RACE_KEY, key); }
+
+		private static void setKey(DynOptions opts, String key)	{ opts.setString(ROOT + RACE_KEY, key); }
+		private static String getKey(DynOptions opts)			{ return opts.getString(ROOT + RACE_KEY); }
+		private static String fileToKey (File file)				{
+			String key = file.getPath();
+			key = key.substring(0, key.length() - EXT.length());
+			String dir = speciesDirectoryPath();
+			if (dir.length() <= key.length()) {
+				String parent = key.substring(0, dir.length());
+				boolean same = parent.equals(dir);
+				if(same) {
+					if (dir.length() == key.length())
+						key = "";
+					else
+						key = key.substring(dir.length()+1, key.length());
+				}
+			}
+			return key;
+		}
+		private static void valid(DynOptions opt, File file)	{
+			String optKey	= getKey(opt);
+			String fileKey	= fileToKey(file);
+			if (!optKey.equalsIgnoreCase(fileKey)) {
+				setKey(opt, fileKey);
+				DynOptions.saveOptions(opt, file);
+			}
+		}
 
 		private RaceKey() {
 			super(ROOT, RACE_KEY, baseRace, 1);
-			inputMessage("Enter the Race File Name");
 			randomStr(RANDOMIZED_RACE_KEY);
 		}
 		@Override public void pushSetting() { race.id = settingValue(); }
@@ -710,7 +718,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class RaceName extends SettingString {
 		private RaceName() {
 			super(ROOT, "RACE_NAME", "Custom Race", 1);
-			inputMessage("Enter the Race Name");
 			randomStr("Random Race");
 		}
 		@Override public void pushSetting() {
@@ -727,7 +734,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class EmpireName extends SettingString {
 		private EmpireName() {
 			super(ROOT, "RACE_EMPIRE_NAME", "Custom Empire", 1);
-			inputMessage("Enter the Empire Designation");
 			randomStr(CR_EMPIRE_NAME_RANDOM);
 		}
 		@Override public void pushSetting() { race.empireTitle(settingValue()); }
@@ -743,7 +749,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class RaceDescription1 extends SettingString {
 		private RaceDescription1() {
 			super(ROOT, "RACE_DESC_1", "Description 1", 2);
-			inputMessage("Enter the Description");
 			randomStr("Randomized");
 		}
 		@Override public void pushSetting() {
@@ -758,7 +763,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class RaceDescription2 extends SettingString {
 		private RaceDescription2() {
 			super(ROOT, "RACE_DESC_2", "Description 2", 2);
-			inputMessage("Enter the Description");
 			randomStr("Randomized");
 		}
 		@Override public void pushSetting() { race.setDescription2(settingValue()); }
@@ -769,7 +773,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class RaceDescription3 extends SettingString {
 		private RaceDescription3() {
 			super(ROOT, "RACE_DESC_3", "Description 3", 3);
-			inputMessage("Enter the Description");
 			randomStr("Randomized");
 		}
 		@Override public void pushSetting() { race.setDescription3(settingValue()); }
@@ -780,7 +783,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class RaceDescription4 extends SettingString {
 		private RaceDescription4() {
 			super(ROOT, "RACE_DESC_4", "Description 4", 3);
-			inputMessage("Enter the Description");
 			randomStr("Randomized");
 		}
 		@Override public void pushSetting() { race.setDescription4(settingValue()); }
@@ -791,7 +793,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class RacePrefix extends SettingString {
 		private RacePrefix() {
 			super(ROOT, "RACE_PREFIX", "@", 1);
-			inputMessage("Enter the race Prefix");
 			randomStr("#");
 			isBullet(false);
 		}
@@ -803,7 +804,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class RaceSuffix extends SettingString {
 		private RaceSuffix() {
 			super(ROOT, "RACE_SUFFIX", "", 1);
-			inputMessage("Enter the race Suffix");
 			randomStr("#");
 			isBullet(false);
 		}
@@ -815,7 +815,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class LeaderPrefix extends SettingString {
 		private LeaderPrefix() {
 			super(ROOT, "LEADER_PREFIX", "@", 1);
-			inputMessage("Enter the leader Prefix");
 			randomStr("#");
 			isBullet(false);
 		}
@@ -827,7 +826,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class LeaderSuffix extends SettingString {
 		private LeaderSuffix() {
 			super(ROOT, "LEADER_SUFFIX", "", 1);
-			inputMessage("Enter the leader Suffix");
 			randomStr("#");
 			isBullet(false);
 		}
@@ -839,7 +837,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class WorldsPrefix extends SettingString {
 		private WorldsPrefix() {
 			super(ROOT, "WORLDS_PREFIX", "@", 1);
-			inputMessage("Enter the worlds Prefix");
 			randomStr("#");
 			isBullet(false);
 		}
@@ -851,7 +848,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class WorldsSuffix extends SettingString {
 		private WorldsSuffix() {
 			super(ROOT, "WORLDS_SUFFIX", "", 1);
-			inputMessage("Enter the worlds Suffix");
 			randomStr("#");
 			isBullet(false);
 		}
@@ -880,7 +876,7 @@ public class CustomRaceDefinitions implements ISpecies {
 
 		private AvailableAI() {
 			super(ROOT, "AVAILABLE_AI", defaultValue);
-			isBullet(true);
+			isBullet(false);
 			hasNoCost(true);
 			getToolTip();
 			initOptionsText();
@@ -888,6 +884,48 @@ public class CustomRaceDefinitions implements ISpecies {
 		@Override public void pushSetting() { race.availableAI(settingValue()); }
 		@Override public void pullSetting() { set(race.availableAI()); }
 	}
+//	// ==================== PreferredAI ====================
+//	//
+//	private class PreferredAI extends SettingInteger	{
+//		// big = good
+//		private PreferredAI()	{
+//			super(ROOT, "PREFERRED_AI", -1, -1, 35);
+//			hasNoCost(true);
+//			pctValue(false);
+//		}
+//		@Override public void pushSetting()	{ race.preferredAI(settingValue()); }
+//		@Override public void pullSetting()	{ set(race.preferredAI()); }
+//	}
+	// ==================== BoundAI ====================
+	//
+	private class BoundAI extends SettingBase<String> {
+		private static final String BOUND_AI = "BOUND_AI";
+		private static final String DEFAULT_VALUE = ROOT + BOUND_AI + "_NONE";
+		private static final String BASE_UI = IBaseOptsTools.BASE_UI;
+
+		private BoundAI() {
+			super(ROOT, BOUND_AI);
+			isBullet(false);
+			hasNoCost(true);
+			showFullGuide(false);
+			getToolTip();
+			initOptionsText();
+			labelsAreFinals(true);
+			allowListSelect(true);
+			refreshLevel(1);
+			for (String s : IGameOptions.specificAIset().getAliens()) {
+				put(s, s.toUpperCase(), 0f, s);
+			}
+			put(DEFAULT_VALUE, DEFAULT_VALUE, 0f, DEFAULT_VALUE);
+			defaultCfgValue(DEFAULT_VALUE);
+			initOptionsText();
+		}
+		@Override public String guideDefaultValue()	{ return defaultLangLabel(); }
+		@Override public String guideValue()		{ return langLabel(settingValue()); }
+		@Override public void pushSetting() 		{ race.preferredShipSet(settingValue()); }
+		@Override public void pullSetting() 		{ set(race.preferredShipSet()); }
+	}
+
 	// ==================== PreferredShipSize ====================
 	//
 	private class PreferredShipSize extends SettingBase<String> {
@@ -938,6 +976,81 @@ public class CustomRaceDefinitions implements ISpecies {
 		@Override public String guideValue()		{ return getSelLangLabel(); }
 		@Override public void pushSetting() 		{ race.preferredShipSet(settingValue()); }
 		@Override public void pullSetting() 		{ set(race.preferredShipSet()); }
+	}
+	// ==================== ReworkedRaceKey ====================
+	//
+	private class ReworkedRaceKey extends SettingBase<String> {
+		private static final String REWORKED_RACE_KEY	= "REWORKED_RACE_KEY";
+		private static final String DEFAULT_VALUE		= "NONE";
+
+		private static void setKey(DynOptions opts, String key)	{ opts.setString(ROOT + REWORKED_RACE_KEY, key); }
+		private static String getKey(DynOptions opts)			{ return opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE); }
+		private static String fileToReworked (File file, boolean foldersRework)	{
+			// Test for reworked old Ways
+			String name = file.getName();
+			name = name.substring(0, name.length() - EXT.length());
+			if (IRaceOptions.allRaceOptions.contains(name))
+				return name;
+			if (foldersRework) {
+				Path path = file.toPath();
+				int count = path.getNameCount();
+				String dir = "RACE_" + path.getName(count-2).toString().toUpperCase();
+				if (IRaceOptions.allRaceOptions.contains(dir))
+					return dir;
+			}
+			return "";
+		}
+		private static void valid(DynOptions opt, File file, boolean foldersRework)	{
+			String optKey	= getKey(opt);
+			String fileKey	= fileToReworked(file, foldersRework);
+			if (fileKey.isEmpty())
+				return;
+			if (!fileKey.equals(optKey)) {
+				setKey(opt, fileKey);
+				DynOptions.saveOptions(opt, file);
+			}
+		}
+		private ReworkedRaceKey() {
+			super(ROOT, REWORKED_RACE_KEY);
+			isBullet(false);
+			hasNoCost(true);
+			showFullGuide(false);
+			getToolTip();
+			initOptionsText();
+			labelsAreFinals(true);
+			allowListSelect(true);
+			refreshLevel(1);
+			for (Entry<String, String> s : ISpecies.R_M.baseRacesNamesMap().entrySet()) {
+				put(s.getValue(), s.getKey(), 0f, s.getKey());
+			}
+			String defaultValue = LabelManager.current().label(ROOT + REWORKED_RACE_KEY + "_" + DEFAULT_VALUE);
+			put(defaultValue, DEFAULT_VALUE, 0f, DEFAULT_VALUE);
+			defaultCfgValue(defaultValue);
+			initOptionsText();
+		}
+		@Override public void pushSetting() 			{ race.reworkableSpeciesKey(settingValue()); }
+		@Override public void pullSetting() 			{ set(race.reworkableSpeciesKey()); }
+		@Override protected StringList altReturnList()	{ return new StringList(getValues()); }
+		@Override protected StringList guiTextsList()	{ return getOptions(); }
+		@Override public String guideDefaultValue()		{ return getDefaultCfgValue(); }
+		@Override public String guideValue()			{ return getCfgValue(); }
+		@Override public void updateOptionTool()		{
+			if (!isSpacer() && dynOpts() != null)
+				set(dynOpts().getString(getLangLabel(), DEFAULT_VALUE));
+		}
+		@Override public void updateOption(DynamicOptions destOptions)	{
+			if (!isSpacer() && destOptions != null)
+				destOptions.setString(getLangLabel(), settingValue());
+		}
+		@Override public void updateOptionTool(DynamicOptions srcOptions)	{
+			if (!isSpacer() && srcOptions != null)
+				set(srcOptions.getString(getLangLabel(), DEFAULT_VALUE));
+		}
+		@Override public void copyOption(IGameOptions src, IGameOptions dest, boolean updateTool, int cascadeSubMenu)	{
+			if (!isSpacer() && src != null && dest != null)
+				dest.dynOpts().setString(getLangLabel(), settingValue());
+			dest.dynOpts().setString(getLangLabel(), src.dynOpts().getString(getLangLabel(), DEFAULT_VALUE));
+		}
 	}
 	// ==================== CRObjective ====================
 	//
