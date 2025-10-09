@@ -916,6 +916,15 @@ public abstract class BaseModPanel extends BasePanel
 			else
 				g.fillRoundRect(x, y, width, height, cnr, cnr);
 		}
+		public void drawString (Graphics2D g, int fSizeMax, int fSizeMin)	{
+			String str	= replaceDigits(param.guideValue());
+			int fSize	= scaledFont(g, str, width-s2, fSizeMax, fSizeMin);
+			int offset	= (scaled(fSizeMax) - scaled(fSize))/3 + s3;
+			int sw = g.getFontMetrics().stringWidth(str);
+			int sx = x + (width - sw)/2;
+			int sy = y + height - offset;
+			g.drawString(str, sx, sy);
+		}
 		// ========== Getters ==========
 		//
 		public String getDescription()		 {

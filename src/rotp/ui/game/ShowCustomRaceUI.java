@@ -216,10 +216,6 @@ public class ShowCustomRaceUI extends BaseModPanel {
 			for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
 				int optionIdx = bulletStart + bulletIdx;
 				setting.optionText(optionBT(), bulletIdx);
-				if (setting.optionText(bulletIdx) == null) {
-					System.out.println("setting.optionText(bulletIdx) == null");
-					ModText ot = setting.optionText(bulletIdx); 
-				}
 				setting.optionText(bulletIdx).disabled(optionIdx == paramIdx);
 				columnH	+= optionH;
 			}

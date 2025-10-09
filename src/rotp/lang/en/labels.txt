@@ -1643,8 +1643,8 @@ SETUP_GALAXY_NUMBER_SYSTEMS       | Total Systems: %1
 SETUP_GALAXY_MAX_OPPONENTS        | Maximum Opponents: %1
 SETUP_SHOW_ABILITIES_HEADER       | Selectable
 SETUP_NEW_RACES_HEADER            | Species List
-SETUP_NEW_RACES_ON                | All Species
-SETUP_NEW_RACES_OFF               | Original
+//SETUP_NEW_RACES_ON                | All Species
+//SETUP_NEW_RACES_OFF               | Original
 SETUP_OPPONENTS_HEADER_1          | %1 vs.
 SETUP_OPPONENTS_HEADER_2          | Rival Empires
 SETUP_OPPONENT_RANDOM             | ???
@@ -2189,7 +2189,8 @@ CUSTOM_RACE_RESEARCH_PLANET_DESC       | Cost multiplier for researching Planet 
 CUSTOM_RACE_RESEARCH_PROPULSION_DESC   | Cost multiplier for researching Propulsion tech. Display: Cost multiplier -> Cost multiplier/ Revenue multiplier (Cost)
 CUSTOM_RACE_RESEARCH_WEAPON_DESC       | Cost multiplier for researching Weapon tech. Display: Cost multiplier -> Cost multiplier/ Revenue multiplier (Cost)
 CUSTOM_RACE_RACE_NAME				| Species Name
-CUSTOM_RACE_RACE_NAME_DESC			| All possible names<br>The counterpart of the "_race" parameter in Species.labels.txt files, and the "name" parameter in CUSTOM_RACE_RACE_NAME_INPUT			| Enter the Species Name.
+CUSTOM_RACE_RACE_NAME_DESC			| All possible names<br>The counterpart of the "_race" parameter in Species.labels.txt files, and the "name" parameter in the Species.names.txt files.
+CUSTOM_RACE_RACE_NAME_INPUT			| Enter the Species Name.
 CUSTOM_RACE_RACE_NAME_PLURAL		| Species Name in the plural
 CUSTOM_RACE_RACE_NAME_PLURAL_DESC	| The plural of all the possible names<br>The counterpart of the "_race_plural" parameter in Species.labels.txt files
 CUSTOM_RACE_RACE_NAME_PLURAL_INPUT	| Enter the name of the species in plural form.
@@ -3478,8 +3479,12 @@ SETTINGS_MOD_REAL_NEBULAE_OPACITY      | Real Nebula Opacity: %1%
 
 SETTINGS_MOD_PREVIEW_NEBULA_DESC         | Show the nebulae in the galaxy map preview? (Can slow refresh, especially with the real nebulae option.)
 SETTINGS_MOD_PREVIEW_NEBULA              | Preview nebulae: %1
-SETTINGS_MOD_SHOW_NEW_RACES_DESC         | Show the new species in the opponents list?
-SETTINGS_MOD_SHOW_NEW_RACES              | Show new species: %1
+SETTINGS_MOD_SHOW_NEW_RACES_DESC		| RotP-Fusion includes 6 new species. Should these new species appear in the list of opponents?
+SETTINGS_MOD_SHOW_NEW_RACES				| Show new species: %1
+SETTINGS_MOD_SHOW_NEW_RACES_YES_DESC	| The 6 species of Modnar will be included in the list of opponents.
+SETTINGS_MOD_SHOW_NEW_RACES_YES			| All Species
+SETTINGS_MOD_SHOW_NEW_RACES_NO_DESC		| Only the original 10 species will be displayed in the list of opponents.
+SETTINGS_MOD_SHOW_NEW_RACES_NO			| Original
 
 SETTINGS_MOD_SHOW_TOOLTIPS_DESC          | Custom Species Menu: Show the lower box with Tooltips?
 SETTINGS_MOD_SHOW_TOOLTIPS               | Show Tooltips: %1
@@ -3661,18 +3666,6 @@ NAME_RACE_MRRSHAN_FR_HELP  | →NAME_FR_HELP←
 NAME_RACE_PSILON_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SAKKRA_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SILICOID_FR_HELP | →NAME_FR_HELP←
-
-LIST_DIALOG_'SELECTION'        | 'Selection'
-LIST_DIALOG_'ORIGINAL SPECIES' | 'Original Species'
-LIST_DIALOG_'REWORKED'         | 'Reworked'
-LIST_DIALOG_'PLAYER'           | 'Player'
-LIST_DIALOG_'RANDOM'           | 'Random'
-LIST_DIALOG_'RANDOM 10'        | 'Random 10'
-LIST_DIALOG_'RANDOM 16'        | 'Random 16'
-LIST_DIALOG_'FILES'            | 'Files'
-LIST_DIALOG_'ALL FILES'        | 'All Files'
-LIST_DIALOG_'FILES RACES'      | 'Files Species'
-LIST_DIALOG_'All'              | 'All'
 
 SETTINGS_MOD_DEBUG_OPTIONS_TITLE         | Developer's Options
 SETTINGS_MOD_DEBUG_OPTIONS_UI            | Debug Options
@@ -5742,17 +5735,29 @@ SETUP_SELECT_CR_OPTIONS		      | Selectable Abilities.
 ???		                          | ???
 ???_DESC		                  | ???_DESCXXX
 
-'Selection'_DESC        | Same abilities as the global abilities selected on the top.
-'Original Species'_DESC | Original abilities of the selected species (the one on the icon)
-'Reworked'_DESC         | Reworked abilities of the selected species (the one on the icon), modified and saved by the player (in the Species Customization Panel) with the respectively named species files: RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA, RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
-'Player'_DESC           | Same abilities as the selected player species.
-'Random'_DESC           | Abilities will be randomly generated using the "Setup" parameters: <b>RANDOM ALIENS OPTIONS</b> : "Target Max", "Target Min", "Custom Aliens", "Setting % Max", "Setting % Min", and "Smooth Edges".
-'Random 10'_DESC        | Abilities randomly selected within the ten original species abilities.
-'Random 16'_DESC        | Abilities randomly selected within the sixteen species abilities. <i>(The ten original species and the six Modnar species)</i>
-'Files'_DESC            | Abilities randomly selected within customized species files, having the "Available to AI" option enabled. If this list is empty the selection will be made within the original species abilities.
-'All Files'_DESC        | Abilities randomly selected within customized species file, ignoring the "Available to AI" option. If this list is empty the selection will be made within the original species abilities.
-'Files Races'_DESC      | Abilities randomly selected within the original species abilities and the customized species files, having the "Available to AI" option enabled.
-'All'_DESC              | Abilities randomly selected within the original species abilities and the customized species files, ignoring the "Available to AI" option.
+ABILITIES_SELECTION			| 'From Abilities top box'
+ABILITIES_ORIGINAL_SPECIES	| 'Original Abilities'
+ABILITIES_REWORKED			| 'Reworked Abilities'
+ABILITIES_PLAYER				| 'Same as Player'
+ABILITIES_RANDOM				| 'Randomly Created'
+ABILITIES_RANDOM_10			| 'Any Original (10)'
+ABILITIES_RANDOM_16			| 'Any Original (16)'
+ABILITIES_FILES				| 'Allowed Custom Species'
+ABILITIES_ALL_FILES			| 'Any Custom Species'
+ABILITIES_FILES_RACES			| 'Original or Allowed'
+ABILITIES_All					| 'Original or Any Custom'
+
+ABILITIES_SELECTION_DESC			| Same abilities as the global abilities selected on the top.
+ABILITIES_ORIGINAL_SPECIES_DESC	| Original abilities of the selected species (the one on the icon)
+ABILITIES_REWORKED_DESC			| Reworked abilities of the selected species (the one on the icon), modified and saved by the player (in the Species Customization Panel) with the respectively named species files: RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA, RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
+ABILITIES_PLAYER_DESC				| Same abilities as the selected player species.
+ABILITIES_RANDOM_DESC				| Abilities will be randomly generated using the "Setup" parameters: <b>RANDOM ALIENS OPTIONS</b> : "Target Max", "Target Min", "Custom Aliens", "Setting % Max", "Setting % Min", and "Smooth Edges".
+ABILITIES_RANDOM_10_DESC			| Abilities randomly selected within the ten original species abilities.
+ABILITIES_RANDOM_16_DESC			| Abilities randomly selected within the sixteen species abilities. <i>(The ten original species and the six Modnar species)</i>
+ABILITIES_FILES_DESC				| Abilities randomly selected within customized species files, having the "Available to AI" option enabled. If this list is empty the selection will be made within the original species abilities.
+ABILITIES_ALL_FILES_DESC			| Abilities randomly selected within customized species file, ignoring the "Available to AI" option. If this list is empty the selection will be made within the original species abilities.
+ABILITIES_FILES_RACES_DESC		| Abilities randomly selected within the original species abilities and the customized species files, having the "Available to AI" option enabled.
+ABILITIES_All_DESC				| Abilities randomly selected within the original species abilities and the customized species files, ignoring the "Available to AI" option.
 
 SETUP_GALAXY_SHAPE_RECTANGLE_HELP		| Original rectangular or square Galaxies with up to five voids.
 SETUP_GALAXY_SHAPE_RECTANGLE_O1_DESC	| Shape ratio adjustment.

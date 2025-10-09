@@ -834,6 +834,9 @@ public interface Base extends InputEventUtil {
         return exists;
     }
 	public default BufferedReader directReader(String fullString) {
+		File file = new File(fullString);
+		if (!file.exists())
+			return null;
 		FileInputStream fis = null;
 		InputStreamReader in = null;
 		InputStream zipStream = null;
@@ -854,9 +857,9 @@ public interface Base extends InputEventUtil {
 			else if (zipStream != null)
 				in = new InputStreamReader(zipStream, "UTF-8");
 			else
-				err("Base.reader() -- FileNotFoundException:", fullString);
+				err("Base.directReader() -- FileNotFoundException:", fullString);
 		} catch (IOException ex) {
-			err("Base.reader() -- UnsupportedEncodingException: ", fullString);
+			err("Base.directReader() -- UnsupportedEncodingException: ", fullString);
 		}
 
 		if (in == null)

@@ -69,8 +69,9 @@ public class ParamList extends AbstractParam<String> {
 	public ParamList(String gui, String name, List<String> list, String defaultValue) {
 		super(gui, name, defaultValue);
 		valueLabelMap = new IndexableMap();
-		for (String element : list)
-			put(element, element); // Temporary; needs to be further initialized
+		if (list != null)
+			for (String element : list)
+				put(element, element); // Temporary; needs to be further initialized
 	}
 	/**
 	 * Initializer for shape options
@@ -267,12 +268,19 @@ public class ParamList extends AbstractParam<String> {
 			return defaultValue();
 		return valueLabelMap.getCfgValue(0);
 	}
-	protected int listSize()					{ return valueLabelMap.listSize(); }
+	public int listSize()							{ return valueLabelMap.listSize(); }
 	protected String currentOption()				{
 		int index = Math.max(0, getIndex());
 		return valueLabelMap.guiTextList.get(index);
 	}
-	protected void setFromList(BaseModPanel frame){
+	protected int dialogWidth()		{ return RotPUI.scaledSize(350); }
+	protected int dialogHeight()	{
+		int height = 128 + (int)Math.ceil(18.5 * listSize());
+		height = Math.max(300, height);
+		height = Math.min(350, height);
+		return  RotPUI.scaledSize(height);
+	}
+	protected void setFromList(BaseModPanel frame)	{
 		String message	= "<html>" + getGuiDescription() + "</html>";
 		String title	= langLabel(getLangLabel(), "");
 		initGuiTexts();
@@ -287,7 +295,7 @@ public class ParamList extends AbstractParam<String> {
 				list, currentOption(),		// List & Initial choice
 				null, true,					// long Dialogue & isVertical
 				boxPosX, boxPosY,			// Position
-				RotPUI.scaledSize(350), RotPUI.scaledSize(height),	// size
+				dialogWidth(), dialogHeight(),	// size
 				null,						// Font
 				frame,						// Preview
 				valueLabelMap.cfgValueList,	// Alternate return
@@ -365,7 +373,7 @@ public class ParamList extends AbstractParam<String> {
 		// ========== Constructors and Initializers ==========
 		//
 		public IndexableMap() {}
-		private void clear () {
+		public void clear () {
 			cfgValueList.clear();
 			langLabelList.clear();
 		}

@@ -1,9 +1,11 @@
 package rotp.ui.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
+// No out of range error Return "" instead
 public class StringList extends ArrayList<String> {
 	private static final long serialVersionUID = 1L;
 
@@ -17,8 +19,12 @@ public class StringList extends ArrayList<String> {
 			return super.get(0);
 		return super.get(id % size());
 	}
-	public String getFirst()	{ return get(0); }
-	public String getLast()		{ return get(size()-1); }
+	@Override public String remove(int id)	{ return id<0 || id>=size()? "" : super.remove(id); }
+
+	public String getFirst()	{ return size()==0? "" : super.get(0); }
+	public String getLast()		{ return size()==0? "" : super.get(size()-1); }
+	public String removeFirst()	{ return size()==0? "" : super.remove(0); }
+	public String removeLast()	{ return size()==0? "" : super.remove(size()-1); }
 
 	public IntegerList getIndexes(String search, boolean ignoreCase)	{
 		if (ignoreCase)
@@ -45,7 +51,7 @@ public class StringList extends ArrayList<String> {
 	 * @param s VString to search for
 	 * @return Index, -1 if none
 	 */
-	int indexOfIgnoreCase(String s)	{
+	public int indexOfIgnoreCase(String s)	{
 		int index = 0;
 		for (String entry : this) {
 			if (entry.equalsIgnoreCase(s))
@@ -54,5 +60,6 @@ public class StringList extends ArrayList<String> {
 		}
 		return -1;
 	}
-	boolean isValidIndex(int index)	{ return index >= 0 && index < size(); }
+	public boolean isValidIndex(int index)	{ return index >= 0 && index < size(); }
+	public void removeNullAndEmpty()		{ removeAll(Arrays.asList("", null)); }
 }

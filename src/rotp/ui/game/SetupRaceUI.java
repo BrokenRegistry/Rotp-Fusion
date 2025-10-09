@@ -221,7 +221,6 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
     }
 	@Override protected void singleInit()	{ paramList = AllSubUI.optionsRace(); }
 	public void init(String leaderName) {
-		System.out.println("leaderName: " + leaderName);
 		init();
 		this.leaderName.setText(leaderName);
 	}

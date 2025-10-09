@@ -45,7 +45,6 @@ import java.util.stream.Collectors;
 import rotp.model.empires.Leader.Personality;
 import rotp.model.game.DynOptions;
 import rotp.model.game.DynamicOptions;
-import rotp.model.game.IBaseOptsTools;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IRaceOptions;
 import rotp.model.planet.PlanetType;
@@ -629,6 +628,7 @@ public class CustomRaceDefinitions implements ISpecies {
 					if (cr.availableAI.settingValue())
 						list.add(cr.raceKey.settingValue());
 				}
+			list.removeNullAndEmpty();
 			return list;
 		}
 		public StringList getAllAlienRaces() {
@@ -639,6 +639,7 @@ public class CustomRaceDefinitions implements ISpecies {
 					CustomRaceDefinitions cr = new CustomRaceDefinitions(loadOptions(file));
 					list.add(cr.raceKey.settingValue());
 				}
+			list.removeNullAndEmpty();
 			return list;
 	    }
 		// ---------- Overriders ----------
@@ -901,7 +902,6 @@ public class CustomRaceDefinitions implements ISpecies {
 	private class BoundAI extends SettingBase<String> {
 		private static final String BOUND_AI = "BOUND_AI";
 		private static final String DEFAULT_VALUE = ROOT + BOUND_AI + "_NONE";
-		private static final String BASE_UI = IBaseOptsTools.BASE_UI;
 
 		private BoundAI() {
 			super(ROOT, BOUND_AI);

@@ -1643,8 +1643,8 @@ SETUP_GALAXY_NUMBER_SYSTEMS       | Nombre de systèmes : %1
 SETUP_GALAXY_MAX_OPPONENTS        | %1 adversaires ou moins
 SETUP_SHOW_ABILITIES_HEADER       | Sélectionnable
 SETUP_NEW_RACES_HEADER            | Espèces
-SETUP_NEW_RACES_ON                | Toutes
-SETUP_NEW_RACES_OFF               | Original
+//SETUP_NEW_RACES_ON                | Toutes
+//SETUP_NEW_RACES_OFF               | Originales
 SETUP_OPPONENTS_HEADER_1          | %1 contre
 SETUP_OPPONENTS_HEADER_2          | Empires rivaux
 SETUP_OPPONENT_RANDOM             | ???
@@ -3479,8 +3479,12 @@ SETTINGS_MOD_REAL_NEBULAE_OPACITY      | Opacité des Nébuleuses : %1%
 
 SETTINGS_MOD_PREVIEW_NEBULA_DESC         | Afficher les nébuleuses dans l’aperçu de la carte de la galaxie ? (Le rafraîchissement peut être lent, en particulier avec l’option de vraies nébuleuses.)
 SETTINGS_MOD_PREVIEW_NEBULA              | Aperçu des nébuleuses : %1
-SETTINGS_MOD_SHOW_NEW_RACES_DESC         | Afficher les nouvelles espèces dans la liste des adversaires ?
-SETTINGS_MOD_SHOW_NEW_RACES              | Toutes les espèces : %1
+SETTINGS_MOD_SHOW_NEW_RACES_DESC		| RotP-Fusion comprend 6 nouvelles espèces. Ces nouvelles espèces doivent-elles apparaître dans la liste des adversaires ?
+SETTINGS_MOD_SHOW_NEW_RACES				| Toutes les espèces : %1
+SETTINGS_MOD_SHOW_NEW_RACES_YES_DESC	| Les 6 espèces de Modnar seront incluses dans la liste des adversaires.
+SETTINGS_MOD_SHOW_NEW_RACES_YES			| Toutes
+SETTINGS_MOD_SHOW_NEW_RACES_NO_DESC		| Seules les 10 espèces originales seront affichées dans la liste des adversaires.
+SETTINGS_MOD_SHOW_NEW_RACES_NO			| Originales
 
 SETTINGS_MOD_SHOW_TOOLTIPS_DESC          | Menu Espèces personnalisées : afficher la case inférieure avec les info ?
 SETTINGS_MOD_SHOW_TOOLTIPS               | Afficher la barre d’info: %1
@@ -3662,18 +3666,6 @@ NAME_RACE_MRRSHAN_FR_HELP  | →NAME_FR_HELP←
 NAME_RACE_PSILON_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SAKKRA_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SILICOID_FR_HELP | →NAME_FR_HELP←
-
-LIST_DIALOG_'SELECTION'        | 'Sélection'
-LIST_DIALOG_'ORIGINAL SPECIES' | 'Espèces Originales'
-LIST_DIALOG_'REWORKED'         | 'Retravaillées'
-LIST_DIALOG_'PLAYER'           | 'Joueur'
-LIST_DIALOG_'RANDOM'           | 'Aléatoire'
-LIST_DIALOG_'RANDOM 10'        | 'Aléatoire 10'
-LIST_DIALOG_'RANDOM 16'        | 'Aléatoire 16'
-LIST_DIALOG_'FILES'            | 'Fichiers'
-LIST_DIALOG_'ALL FILES'        | 'Tous les Fichiers'
-LIST_DIALOG_'FILES RACES'      | 'Fichiers Espèces'
-LIST_DIALOG_'All'              | 'Toutes'
 
 SETTINGS_MOD_DEBUG_OPTIONS_TITLE         | Options pour les développeurs
 SETTINGS_MOD_DEBUG_OPTIONS_UI            | Options de débogage
@@ -5743,17 +5735,29 @@ SETUP_SELECT_CR_OPTIONS            | Aptitudes sélectionnables.
 ???                                | ???
 ???_DESC                           | ???_DESCXXX
 
-’Selection’_DESC        | Mêmes aptitudes que les aptitudes globales sélectionnées ci-dessus.
-’Original Species’_DESC | Aptitudes originales de l’espèce sélectionnée (celle sur l’icône)
-’Reworked’_DESC         | Aptitudes retravaillées de l’espèce sélectionnée (celle sur l’icône), modifiées et sauvegardées par le joueur (dans le panneau de personnalisation des espèces) avec les fichiers d’espèces respectivement nommés : RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA , RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
-’Player’_DESC           | Mêmes aptitudes que l’espèce du joueur sélectionné.
-’Random’_DESC           | Les aptitudes seront générées aléatoirement à l’aide des paramètres « Configuration » : <b>OPTIONS D’ALIENS ALÉATOIRES</b> : « Cible max », « Cible min », « Aliens personnalisés », « Réglage % max », « Réglage % min » et « Bords lisses ».
-’Random 10’_DESC        | Aptitudes sélectionnées aléatoirement parmi les aptitudes des dix espèces originales.
-’Random 16’_DESC        | Aptitudes sélectionnées aléatoirement parmi les aptitudes des seize espèces. <i>(Les dix espèces originales et les six espèces de Modnar)</i>
-’Files’_DESC            | Aptitudes sélectionnées aléatoirement parmi les fichiers d’espèces personnalisées, avec l’option « Disponible pour l’IA » activée. Si cette liste est vide, la sélection sera effectuée dans les limites des aptitudes d’origine des espèces.
-’All Files’_DESC        | Aptitudes sélectionnées aléatoirement parmi les fichiers d’espèce personnalisé, en ignorant l’option « Disponible pour l’IA ». Si cette liste est vide, la sélection sera effectuée dans le cadre des aptitudes d’origine de l’espèce.
-’Files Races’_DESC      | Aptitudes sélectionnées aléatoirement parmi les aptitudes des espèces originales et les fichiers d’espèces personnalisées, avec l’option « Disponible pour l’IA » activée.
-’All’_DESC              | Aptitudes sélectionnées aléatoirement parmi les aptitudes des espèces originales et les fichiers d’espèces personnalisées, en ignorant l’option « Disponible pour l’IA ».
+ABILITIES_SELECTION			| 'Aptitudes globale'
+ABILITIES_ORIGINAL_SPECIES	| 'Aptitudes originale'
+ABILITIES_REWORKED			| 'Retravaillée'
+ABILITIES_PLAYER				| 'Comme le joueur'
+ABILITIES_RANDOM				| 'Création aléatoire'
+ABILITIES_RANDOM_10			| 'Une des 10 originale'
+ABILITIES_RANDOM_16			| 'Une des 16 originale'
+ABILITIES_FILES				| 'Personalisée et autorisée'
+ABILITIES_ALL_FILES			| 'Personalisée'
+ABILITIES_FILES_RACES			| 'Originale ou autorisée'
+ABILITIES_All					| 'Originale ou personalisée'
+
+ABILITIES_SELECTION_DESC			| Mêmes aptitudes que les aptitudes globales sélectionnées ci-dessus.
+ABILITIES_ORIGINAL_SPECIES_DESC	| Aptitudes originales de l’espèce sélectionnée (celle sur l’icône)
+ABILITIES_REWORKED_DESC			| Aptitudes retravaillées de l’espèce sélectionnée (celle sur l’icône), modifiées et sauvegardées par le joueur (dans le panneau de personnalisation des espèces) avec les fichiers d’espèces respectivement nommés : RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA , RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
+ABILITIES_PLAYER_DESC				| Mêmes aptitudes que l’espèce du joueur sélectionné.
+ABILITIES_RANDOM_DESC				| Les aptitudes seront générées aléatoirement à l’aide des paramètres « Configuration » : <b>OPTIONS D’ALIENS ALÉATOIRES</b> : « Cible max », « Cible min », « Aliens personnalisés », « Réglage % max », « Réglage % min » et « Bords lisses ».
+ABILITIES_RANDOM_10_DESC			| Aptitudes sélectionnées aléatoirement parmi les aptitudes des dix espèces originales.
+ABILITIES_RANDOM_16_DESC			| Aptitudes sélectionnées aléatoirement parmi les aptitudes des seize espèces. <i>(Les dix espèces originales et les six espèces de Modnar)</i>
+ABILITIES_FILES_DESC				| Aptitudes sélectionnées aléatoirement parmi les fichiers d’espèces personnalisées, avec l’option « Disponible pour l’IA » activée. Si cette liste est vide, la sélection sera effectuée dans les limites des aptitudes d’origine des espèces.
+ABILITIES_ALL_FILES_DESC			| Aptitudes sélectionnées aléatoirement parmi les fichiers d’espèce personnalisé, en ignorant l’option « Disponible pour l’IA ». Si cette liste est vide, la sélection sera effectuée dans le cadre des aptitudes d’origine de l’espèce.
+ABILITIES_FILES_RACES_DESC		| Aptitudes sélectionnées aléatoirement parmi les aptitudes des espèces originales et les fichiers d’espèces personnalisées, avec l’option « Disponible pour l’IA » activée.
+ABILITIES_All_DESC				| Aptitudes sélectionnées aléatoirement parmi les aptitudes des espèces originales et les fichiers d’espèces personnalisées, en ignorant l’option « Disponible pour l’IA ».
 
 SETUP_GALAXY_SHAPE_RECTANGLE_HELP		| Galaxie rectangulaire ou carrée originale avec jusqu’à cinq vides.
 SETUP_GALAXY_SHAPE_RECTANGLE_O1_DESC	| Ajustement du rapport de forme.

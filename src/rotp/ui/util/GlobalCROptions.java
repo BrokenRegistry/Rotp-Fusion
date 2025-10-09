@@ -25,12 +25,11 @@ public class GlobalCROptions extends ParamString {
 	 * @param name The name
 	 * @param defaultValue The default value
 	 */
-	public GlobalCROptions(String gui, String name, String defaultValue) {
+	public GlobalCROptions(String gui, String name, String defaultValue)	{
 		super(gui, name, defaultValue);
-		
 	}
 
-	public LinkedList<String> getBaseOptions() {
+	public LinkedList<String> getBaseOptions()	{
 		LinkedList<String> list = new LinkedList<> ();
 		for (SpecificCROption opt : SpecificCROption.values()) {
 			if(!opt.isSelection() && !opt.isUserChoice())
@@ -38,35 +37,15 @@ public class GlobalCROptions extends ParamString {
 		}
 		return list;
 	}
-	public SpecificCROption getEnu() {
-		return SpecificCROption.set(get());
-	}
+	public SpecificCROption getEnu()	{ return SpecificCROption.set(get()); }
 
-	public boolean isBaseRace() {
-		return SpecificCROption.isBaseRace(get());
-	}
-	public boolean isSelection() {
-		return SpecificCROption.isSelection(get());
-	}
-	public boolean isReworked() {
-		return SpecificCROption.isReworked(get());
-	}
-	public boolean isPlayer() {
-		return SpecificCROption.isPlayer(get());
-	}
-	public boolean isRandom() {
-		return SpecificCROption.isRandom(get());
-	}
-	public boolean isFilteredFiles() {
-		return SpecificCROption.isFilteredFiles(get());
-	}
-	public boolean isAllFiles() {
-		return SpecificCROption.isAllFiles(get());
-	}
-	public boolean isFilesAndRaces() {
-		return SpecificCROption.isFilesAndRaces(get());
-	}
-	public boolean isAll() {
-		return SpecificCROption.isAll(get());
-	}
+	public boolean isBaseRace()			{ return SpecificCROption.isBaseRace(get()); }
+	public boolean isSelection()		{ return SpecificCROption.isSelection(get()); }
+	public boolean isReworked()			{ return SpecificCROption.isReworked(get()); }
+	public boolean isPlayer()			{ return SpecificCROption.isPlayer(get()); }
+	public boolean isRandom()			{ return SpecificCROption.isRandom(get()); }
+	public boolean isFilteredFiles()	{ return SpecificCROption.isFilteredFiles(get()); }
+	public boolean isAllFiles()			{ return SpecificCROption.isAllFiles(get()); }
+	public boolean isFilesAndRaces()	{ return SpecificCROption.isFilesAndRaces(get()); }
+	public boolean isAll()				{ return SpecificCROption.isAll(get()); }
 }

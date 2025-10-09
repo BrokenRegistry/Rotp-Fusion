@@ -39,6 +39,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Point;
@@ -211,7 +212,7 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 			Component locationComp,
 			String labelText,
 			String title,
-			Object[] data,
+			String[] data,
 			String initialValue,
 			String longValue,
 			boolean isVerticalWrap,
@@ -245,6 +246,19 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 		//list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		if (longValue != null)
 			list.setPrototypeCellValue(longValue); //get extra space
+		else {
+			int maxLength = 0;
+			String string = "";
+			FontMetrics fm = list.getFontMetrics( list.getFont() );
+			for (String s : data) {
+				int len = fm.stringWidth(s);
+				if (len > maxLength) {
+					maxLength = len;
+					string = s;
+				}
+			}
+			list.setPrototypeCellValue(string + "xx");
+		}
 		if (isVerticalWrap)
 			list.setLayoutOrientation(JList.VERTICAL_WRAP);
 		else

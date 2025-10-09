@@ -36,7 +36,7 @@ public enum SpecificCROption {
 	public final String value;
 
 	private SpecificCROption(String opt) { value = opt; }
-	
+
 	public static SpecificCROption set(String opt) {
 		for (SpecificCROption crO: values())
 			if (opt.equals(crO.value))
@@ -51,7 +51,7 @@ public enum SpecificCROption {
 		return list;
 	}
 	public static SpecificCROption defaultSpecificValue() { return SELECTION; }
-	
+
 	public boolean isBaseRace()		 { return this == BASE_RACE;  }
 	public boolean isSelection()	 { return this == SELECTION; }
 	public boolean isReworked()		 { return this == REWORKED; }
