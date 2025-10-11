@@ -45,6 +45,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 25-10-10 (BR)
+- Opponents panel automation:
+  - Reducing the number of opponents will no longer remove those who are out of bounds, so they will reappear when the number increases again.
+  - If you clear an opponent (with mid-click) while holding down the Ctrl key, all the following opponent will be cleared too.
+  - If you click on an opponent while holding down, all the following empty opponents will be set to the first available species.
 - The 'Reworked' abilities will now randomly select one of the custom species that has the corresponding "Species for Animation".
 
 25-10-09 (BR)

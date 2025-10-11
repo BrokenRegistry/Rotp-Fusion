@@ -531,7 +531,6 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 			return options.selectedNumberOpponents();
 		}
 		@Override public void setOptionValue(IGameOptions options, Integer newValue) {
-			options.selectedOpponentRace(newValue, null);
 			options.selectedNumberOpponents(newValue);
 		}
 		@Override public Integer defaultValue() {

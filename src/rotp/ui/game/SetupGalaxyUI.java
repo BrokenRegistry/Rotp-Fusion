@@ -1741,11 +1741,8 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			numOpps = 0;
 		}
 		int maxOpps = opts.maximumOpponentsOptions();
-		if (maxOpps < numOpps) {
-			for (int i=maxOpps;i<numOpps;i++)
-				opts.selectedOpponentRace(i,null);
+		if (maxOpps < numOpps)
 			opts.selectedNumberOpponents(maxOpps);
-		}
 		opts.galaxyShape().quickGenerate(); // modnar: do a quickgen to get correct map preview
 		backImg = null; // BR: to show/hide system per empire
 		nebulas = null;
@@ -2556,13 +2553,10 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			nextOpponentAI(true);
 		else if (hoverPolyBox == abilitiesBoxL)
 			globalAbilities.prev();
-//			prevGlobalAbilities(true);
 		else if (hoverBox == abilitiesBox)
 			globalAbilities.toggle(e, this);
-//			toggleGlobalAbilities(e);
 		else if (hoverPolyBox == abilitiesBoxR)
 			globalAbilities.next();
-//			nextGlobalAbilities(true);
 		else if (hoverBox == newRacesBox)
 			toggleNewRaces(true);
 		else if (hoverBox == showAbilitiesBox)
@@ -2621,11 +2615,20 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 				}
 				else if (hoverBox == oppAbilities[i]) {
 					specificAbilities.toggle(e, this);
-//					toggleSpecificOpponentAbilities(i, true, up, mid);
 					break;
 				}
 				else if (hoverBox == oppSet[i]) {
-					toggleOpponent(i, true, up, mid);
+					if (mid && e.isControlDown()) {
+						for (int k=i; k<MAX_DISPLAY_OPPS; k++)
+							toggleOpponent(k, true, up, mid);
+					}
+					else if (up && e.isShiftDown()) {
+						for (int k=i; k<MAX_DISPLAY_OPPS; k++)
+							if (opts.selectedOpponentRace(k) == null)
+								toggleOpponent(k, true, up, mid);
+					}
+					else
+						toggleOpponent(i, true, up, mid);
 					break;
 				}
 			}
@@ -2665,10 +2668,8 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		else if (hoverBox == abilitiesBox)
 			if (up)
 				globalAbilities.prev();
-//				prevGlobalAbilities(false);
 			else
 				globalAbilities.next();
-//				nextGlobalAbilities(false);
 		else if (hoverBox == newRacesBox)
 			toggleNewRaces(false);
 		else if (hoverBox == showAbilitiesBox)
