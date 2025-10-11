@@ -182,13 +182,23 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 	default boolean selectedRestartChangesPlayerAI()	{ return restartChangesPlayerAI.get(); }
 	ParamBoolean restartAppliesSettings		= new ParamBoolean( MOD_UI, "RESTART_APPLY_SETTINGS",false);
 	default boolean selectedRestartAppliesSettings()	{ return restartAppliesSettings.get(); }
+	String RCPR_LAST		= "Last";
+	String RCPR_SWAP		= "Swap";
+	String RCPR_GUI_SWAP	= "GuiSwap";
+	String RCPR_GUI_LAST	= "GuiLast";
 	ParamList    restartChangesPlayerRace	= new ParamList( MOD_UI, "RESTART_PLAYER_RACE", "Swap")
 		.showFullGuide(true)
-		.put("Last", 	MOD_UI + "RESTART_PLAYER_RACE_LAST")
-		.put("Swap",	MOD_UI + "RESTART_PLAYER_RACE_SWAP")
-		.put("GuiSwap",	MOD_UI + "RESTART_PLAYER_RACE_GUI_SWAP")
-		.put("GuiLast",	MOD_UI + "RESTART_PLAYER_RACE_GUI_LAST");
+		.put(RCPR_LAST, 	MOD_UI + "RESTART_PLAYER_RACE_LAST")
+		.put(RCPR_SWAP,		MOD_UI + "RESTART_PLAYER_RACE_SWAP")
+		.put(RCPR_GUI_SWAP,	MOD_UI + "RESTART_PLAYER_RACE_GUI_SWAP")
+		.put(RCPR_GUI_LAST,	MOD_UI + "RESTART_PLAYER_RACE_GUI_LAST");
 	default String selectedRestartChangesPlayerRace()	{ return restartChangesPlayerRace.get(); }
+	default boolean restartKeepPlayerSpecies()			{
+		if (selectedRestartAppliesSettings())
+			return false;
+		String changesPlayer = restartChangesPlayerRace.get();
+		return !changesPlayer.equals(RCPR_GUI_SWAP) && !changesPlayer.equals(RCPR_GUI_LAST);
+	}
 
 	ParamTech techIrradiated	= new ParamTech("TECH_IRRADIATED",	3, "ControlEnvironment",6); // level 18
 	ParamTech techCloaking		= new ParamTech("TECH_CLOAKING",	2, "Cloaking",			0); // level 27

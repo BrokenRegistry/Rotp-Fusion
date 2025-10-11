@@ -286,9 +286,12 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     @Override
     public String[] selectedOpponentRaces()      { return opponentRaces; }
     @Override
-    public String selectedOpponentRace(int i)    { return (i>=opponentRaces.length && i>0) ? null : opponentRaces[i]; }
+    public String selectedOpponentRace(int i)    { return (i>=opponentRaces.length || i<0) ? null : opponentRaces[i]; }
     @Override
     public void selectedOpponentRace(int i, String s) {
+//    	if (s == null) {
+//    		System.out.println("selectedOpponentRace(int i, String s): s = null i = " + i );
+//    	}
          if (i < opponentRaces.length && i>=0)
     	   		opponentRaces[i] = s;
     }

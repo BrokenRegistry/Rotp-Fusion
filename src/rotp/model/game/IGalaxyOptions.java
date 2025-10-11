@@ -261,6 +261,9 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 		return null;
 	}
 
+	ParamBoolean fullyScrambledSpecies	= new ParamBoolean(MOD_UI, "FULLY_SCRAMBLED_SPECIES", false); // TODO BR: Put on a panel
+	default boolean fullyScrambledSpecies()	{ return fullyScrambledSpecies.get(); }
+
 	ParamBoolean previewNebula			= new ParamBoolean(MOD_UI, "PREVIEW_NEBULA", true);
 	ParamInteger galaxyRandSource		= new GalaxyRandSource() ;
 	final class GalaxyRandSource extends ParamInteger {

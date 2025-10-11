@@ -14,13 +14,14 @@ import rotp.ui.game.GameUI;
 import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamCR;
 import rotp.ui.util.PlayerShipSet;
+import rotp.ui.util.StringList;
 
 public interface IRaceOptions extends IBaseOptsTools {
 
 	String defaultRace = "RACE_HUMAN";
 	
-	static LinkedList<String> getBaseRaceOptions() {
-		LinkedList<String> list = new LinkedList<>();
+	static StringList getBaseRaceOptions() {
+		StringList list = new StringList();
 		list.add(defaultRace);
 		list.add("RACE_ALKARI");
 		list.add("RACE_SILICOID");
@@ -33,10 +34,10 @@ public interface IRaceOptions extends IBaseOptsTools {
 		list.add("RACE_BULRATHI");
 		return list;
 	}
-	default LinkedList<String> baseRaceOptions() { return getBaseRaceOptions(); } 
+	default StringList baseRaceOptions() { return getBaseRaceOptions(); } 
 
-	static LinkedList<String> getAllRaceOptions() {
-		LinkedList<String> list = getBaseRaceOptions();
+	static StringList getAllRaceOptions() {
+		StringList list = getBaseRaceOptions();
 		list.add("RACE_NEOHUMAN");   // modnar: add races
 		list.add("RACE_MONOCLE");	 // modnar: add races
 		list.add("RACE_JACKTRADES"); // modnar: add races
@@ -45,8 +46,8 @@ public interface IRaceOptions extends IBaseOptsTools {
 		list.add("RACE_GEARHEAD");   // modnar: add races
 		return list;
 	}
-	LinkedList<String> allRaceOptions = getAllRaceOptions(); 
-	default LinkedList<String> allRaceOptions() { return getAllRaceOptions(); } 
+	StringList allRaceOptions = getAllRaceOptions(); 
+	default StringList allRaceOptions() { return getAllRaceOptions(); } 
 
 	default BufferedImage getMugBackImg(int w, int h, float radius) {
 		BufferedImage backImg = new BufferedImage(w, h, TYPE_INT_ARGB);

@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 // No out of range error Return "" instead
+// Easier to tut and retrieve these list in Maps
 public class StringList extends ArrayList<String> {
 	private static final long serialVersionUID = 1L;
 
 	public StringList()	{}
-	public StringList(List<String> src)	{ super(src); }
+	public StringList(int initialCapacity)	{ super(initialCapacity); }
+	public StringList(List<String> src)		{ super(src); }
 
 	@Override public String get(int id)	{
 		if (id<0 || size() == 0)

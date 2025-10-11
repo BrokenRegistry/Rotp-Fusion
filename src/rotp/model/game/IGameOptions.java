@@ -29,6 +29,7 @@ import rotp.model.galaxy.StarSystem;
 import rotp.model.planet.Planet;
 import rotp.model.tech.TechEngineWarp;
 import rotp.ui.game.SetupGalaxyUI;
+import rotp.ui.util.StringList;
 
 public interface IGameOptions extends IModOptions {
     public static final int MAX_OPPONENTS = SetupGalaxyUI.MAX_DISPLAY_OPPS;
@@ -517,7 +518,7 @@ public interface IGameOptions extends IModOptions {
     default void nextOpponent(int i) {
         String player = selectedPlayerRace();
         // BR: Race filtration
-        List<String> allOpps = getNewRacesOnOffList();
+        List<String> allOpps = getInternalSpeciesList();
         String[] selectedOpps = selectedOpponentRaces();
         String currOpp = this.selectedOpponentRace(i);
 
@@ -544,7 +545,7 @@ public interface IGameOptions extends IModOptions {
         String player = selectedPlayerRace();
         // BR: Race filtration
         // List<String> allOpps = startingRaceOptions();
-        List<String> allOpps = getNewRacesOnOffList();
+        List<String> allOpps = getInternalSpeciesList();
         String[] selectedOpps = selectedOpponentRaces();
         String currOpp = selectedOpponentRace(i);
         int lastIndex = allOpps.size()-1;
@@ -607,12 +608,11 @@ public interface IGameOptions extends IModOptions {
             default: return 1.0f;
         }
     }
-    default List<String> getNewRacesOnOffList() {
-		if (showNewRaces.get()) {
-			return allRaceOptions();
-		}
-		return baseRaceOptions();
-    }
+	default StringList getInternalSpeciesList()	{
+		if (showNewRaces.get())
+			return new StringList(allRaceOptions());
+		return new StringList(baseRaceOptions());
+	}
 
     // Was in MOO1GameOptions
     public static List<String> getAiHostilityOptions() {

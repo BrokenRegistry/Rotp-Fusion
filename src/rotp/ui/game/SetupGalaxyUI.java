@@ -16,8 +16,6 @@
 package rotp.ui.game;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.empires.CustomRaceDefinitions.BASE_RACE_MARKER;
-import static rotp.model.empires.CustomRaceDefinitions.fileToAlienRace;
 import static rotp.model.empires.CustomRaceDefinitions.getAllowedAlienRaces;
 import static rotp.model.empires.CustomRaceDefinitions.getBaseRaceList;
 import static rotp.model.game.DefaultValues.MOO1_DEFAULT;
@@ -54,8 +52,6 @@ import static rotp.ui.options.ISubUiKeys.GALAXY_SHAPES_UI_KEY;
 import static rotp.ui.util.IParam.LABEL_DESCRIPTION;
 import static rotp.ui.util.IParam.labelFormat;
 import static rotp.ui.util.IParam.langLabel;
-import static rotp.ui.util.IParam.realLangLabel;
-import static rotp.ui.util.IParam.rowFormat;
 import static rotp.ui.util.IParam.tableFormat;
 
 // modnar: needed for adding RenderingHints
@@ -134,7 +130,6 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	private static final String SPECIFIC_AI  = "SETUP_SPECIFIC_AI";
 	private static final String GLOBAL_AI    = "SETUP_GLOBAL_AI";
 	private static final String OPPONENT_RANDOM	 = "SETUP_OPPONENT_RANDOM";
-	private	static final String LANG_LIST_KEY    = "ABILITIES_";
  	private static final int    buttonFont		= 30;
 	private	static final Font   bigButtonFont	= FontManager.current().narrowFont(buttonFont);
 	public  static final int	MAX_DISPLAY_OPPS = 49;
@@ -276,7 +271,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 
     public static ParamList specificAI() { return instance.specificAI; }
     public static ParamList opponentAI() { return instance.opponentAI; }
-	private static int mouseBoxIndex()	 {
+	public static int mouseBoxIndex()	 {
 		if (instance.hoverBox == null)
 			return 0;
 		return instance.hoverBox.mouseBoxIndex();
@@ -295,7 +290,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	public void initOpponentGuide() {
 		opponentRandom = text(OPPONENT_RANDOM);
 		LinkedList<String> list = new LinkedList<>();
-		list.addAll(opts.getNewRacesOnOffList());
+		list.addAll(opts.getInternalSpeciesList());
 		list.add(opponentRandom); // For Random (Randomized)
 		specificOpponent.reInit(list);
 		specificOpponent.defaultValue(opponentRandom);
@@ -1723,7 +1718,6 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			return file.getName();
 		return path;
 	}
-
 	// ==============================================================
 	// Post selection tasks
 	// ==============================================================
@@ -2829,102 +2823,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			return tableFormat(help);
 		}
 	};
-	private class ParamListGlobalAbilities extends ParamList { // For Guide
-		private ParamListGlobalAbilities(String gui, String name, String defaultValue) {
-			super(gui, name, null, defaultValue);
-			isDuplicate(true); // To activate get and set optionValue
-		}
-		@Override public String getOptionValue(IGameOptions options) {
-			return globalCROptions.get();
-		}
-		@Override public void setOptionValue(IGameOptions options, String str) {
-			globalCROptions.set(str);
-			postSelectionLight(false);
-		}
-		@Override public String	guideValue()	{ return dialogLang(get()); }
-		@Override public String getRowGuide(int id)	{
-			String key		= getLangLabel(id);
-			String langKey	= langKey(key);
-			String help		= realLangLabel(langKey+LABEL_DESCRIPTION);
-			if (help != null)
-				return rowFormat(labelFormat(realLangLabel(langKey)), help);
-
-			key  = getGuiValue(id);
-			help = realLangLabel(key+LABEL_DESCRIPTION);
-			Race   race		= fileToAlienRace(key);
-			String raceName = race.setupName;
-			if (key.startsWith(BASE_RACE_MARKER))
-				help = labelFormat(name(id)) + "<i>(Original species)</i>&nbsp " + race.getDescription1();
-			else
-				help = labelFormat(raceName) + race.getDescription1();
-			help += "<br>" + race.getDescription2()
-					+ "&ensp /&ensp " + race.getDescription3()
-					+ "&ensp /&ensp " + race.getDescription4();
-			return help;
-		}
-		@Override protected int dialogWidth()	{ return scaled(500); }
-		@Override protected int dialogHeight()	{ return scaled(450);}
-		@Override public void reInit(List<String> list)		 {
-			valueLabelMap.clear();
-			for (String element : list)
-				put(element, dialogLang(element));
-			if (!list.contains(get()))
-				set(list.get(0));
-		}
-	};
-	private String dialogLang(String src)	{
-		String langKey = langKey(src);
-		String langTxt = text(langKey);
-		if (langTxt.equals(langKey))
-			return src;
-		return langTxt;
-	}
-	private String langKey(String src)	{ return LANG_LIST_KEY + src.toUpperCase().replaceAll("'", "").replaceAll(" ", "_"); }
-
-	private class ParamListSpecificAbilities extends ParamList { // For Guide
-		ParamListSpecificAbilities(String gui, String name, String defaultValue) {
-			super(gui, name, null, defaultValue);
-			isDuplicate(true); // To activate get and set optionValue
-		}
-		@Override public String getOptionValue(IGameOptions opts)	{
-			return opts.specificOpponentCROption(mouseBoxIndex()+1);
-		}
-		@Override public void setOptionValue(IGameOptions opts, String str)	{
-			opts.specificOpponentCROption(str, mouseBoxIndex()+1);
-			postSelectionLight(false);
-		}
-		@Override public String	guideValue()		{ return dialogLang(get()); }
-		@Override public String getRowGuide(int id)	{
-			String key		= getLangLabel(id);
-			String langKey	= langKey(key);
-			String help		= realLangLabel(langKey+LABEL_DESCRIPTION);
-			if (help != null)
-				return rowFormat(labelFormat(realLangLabel(langKey)), help);
-
-			key  = getGuiValue(id);
-			help = realLangLabel(key+LABEL_DESCRIPTION);
-			Race   race		= fileToAlienRace(key);
-			String raceName = race.setupName;
-			if (key.startsWith(BASE_RACE_MARKER))
-				help = labelFormat(name(id)) + "<i>(Original species)</i>&nbsp " + race.getDescription1();
-			else
-				help = labelFormat(raceName) + race.getDescription1();
-			help += "<br>" + race.getDescription2()
-					+ "&ensp /&ensp " + race.getDescription3()
-					+ "&ensp /&ensp " + race.getDescription4();
-			return help;
-		}
-		@Override protected int dialogWidth()	{ return scaled(500); }
-		@Override protected int dialogHeight()	{ return scaled(450);}
-		@Override public void reInit(List<String> list)		 {
-			valueLabelMap.clear();
-			for (String element : list)
-				put(element, dialogLang(element));
-			if (!list.contains(get()))
-				set(list.get(0));
-		}
-		public  String	guideValue(int id)	{ return dialogLang(opts.specificOpponentCROption(id)); }
-	};
+	// Bitmap shape Properties Change Listener
 	private class BMPropertyChangeListener implements PropertyChangeListener {
 		private final JFileChooser bmFileChooser;
 		private BMPropertyChangeListener(JFileChooser fileChooser) {

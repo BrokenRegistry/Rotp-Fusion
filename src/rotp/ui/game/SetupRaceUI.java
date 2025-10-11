@@ -160,7 +160,7 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
 //    private boolean drawAllButtons = true;
 	public ParamList playerSpecies() {
 		return new ParamListPlayerSpecies( // For Guide
-				BASE_UI, "PLAYER_SPECIES", guiOptions().getNewRacesOnOffList(), IRaceOptions.defaultRace);
+				BASE_UI, "PLAYER_SPECIES", guiOptions().getInternalSpeciesList(), IRaceOptions.defaultRace);
 	}
 	public ParamString playerHomeWorld() {
 		return new ParamStringPlayerHomeWorld(BASE_UI, "PLAYER_HOMEWORLD", "");
@@ -1401,7 +1401,7 @@ public final class SetupRaceUI extends BaseModPanel implements ISpecies, MouseWh
 		@Override public String	guideValue()	{ return text(get()); }
 		@Override public void reInit(List<String> list) {
 			if (list == null)
-				super.reInit(guiOptions().getNewRacesOnOffList());
+				super.reInit(guiOptions().getInternalSpeciesList());
 			else
 				super.reInit(list);
 		}

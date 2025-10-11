@@ -20,12 +20,12 @@ import static rotp.model.empires.CustomRaceDefinitions.fileToAlienRace;
 import static rotp.model.empires.CustomRaceDefinitions.getAllAlienRaces;
 import static rotp.model.empires.CustomRaceDefinitions.getAllowedAlienRaces;
 import static rotp.model.empires.CustomRaceDefinitions.optionToAlienRace;
-import static rotp.model.empires.CustomRaceDefinitions.raceFileExist;
 import static rotp.model.game.IBaseOptsTools.GAME_OPTIONS_FILE;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -61,6 +61,25 @@ public class GalaxyFactory implements ISpecies, Base {
 	private static final boolean showAI	 = false; // BR: for debug
 	private static boolean[] isRandomOpponent; // BR: only Random Races will be customized
 	private static String playerDataRaceKey;   // BR: in case Alien races are a copy of player race
+	private HashMap<String, StringList> reworkedMap; 
+	
+	private void cleanFactory()	{
+		isRandomOpponent	= null;
+		playerDataRaceKey	= null;
+		reworkedMap			= null;
+	}
+	private HashMap<String, StringList> reworkedMap()	{
+		if (reworkedMap == null)
+			reworkedMap = CustomRaceDefinitions.getReworkMap();
+		return reworkedMap;
+	}
+	private String reworkedKey(String animKey)	{
+		StringList list = reworkedMap().get(animKey);
+		shuffle(list);
+		String skillKey = list.removeFirst();
+		//System.out.println("Rework Anim key = " + animKey + " -> Skill key = " + skillKey);
+		return skillKey;
+	}
 
 	public Galaxy newGalaxy(GalaxyCopy src) {
 		GalaxyBaseData gc = src.galSrc;
@@ -94,7 +113,7 @@ public class GalaxyFactory implements ISpecies, Base {
 		addUnsettledSystemsForGalaxy(g, gc);		
 		init(g, System.currentTimeMillis());
 		opts.saveOptionsToFile(GAME_OPTIONS_FILE);
-		//saveOptionsToFileName((MOO1GameOptions)opts, GAME_OPTIONS_FILE);
+		cleanFactory();
 		return g;
 	}
 	public Galaxy newGalaxy() {
@@ -151,8 +170,8 @@ public class GalaxyFactory implements ISpecies, Base {
 		long tm2 = System.currentTimeMillis();
 		log(str(g.numStarSystems()) ," Systems, ",str(Planet.COUNT)," Planets: "+(tm2-tm1)+"ms");
 		init(g, tm2);
-		// saveOptionsToFileName((MOO1GameOptions)opts, GAME_OPTIONS_FILE);
 		opts.saveOptionsToFile(GAME_OPTIONS_FILE);
+		cleanFactory();
 		return g;
 	}
 	private void showAI(Galaxy g) {
@@ -337,7 +356,7 @@ public class GalaxyFactory implements ISpecies, Base {
 	private LinkedList<String> buildAlienRaces() {
 		LinkedList<String> raceList = new LinkedList<>();
 		List<String> allRaceOptions = new ArrayList<>();
-		List<String> options = options().getNewRacesOnOffList(); // BR:
+		List<String> options = options().getInternalSpeciesList(); // BR:
 		int maxRaces = options().selectedNumberOpponents();
 		int mult = IGameOptions.MAX_OPPONENT_TYPE;
 
@@ -575,10 +594,11 @@ public class GalaxyFactory implements ISpecies, Base {
 						dataRace = fileToAlienRace(selectedAbility);
 						break;
 					case REWORKED:
-						if(raceFileExist(raceKey))
-							dataRace = fileToAlienRace(raceKey);
-						else
+						String skillKey = reworkedKey(raceKey);
+						if (skillKey.isEmpty())
 							dataRace = R_M.keyed(raceKey);
+						else
+							dataRace = fileToAlienRace(skillKey);
 						break;
 					case PLAYER:
 						dataRace = optionToAlienRace(g.empire(0).raceOptions());

@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+25-10-10 (BR)
+- The 'Reworked' abilities will now randomly select one of the custom species that has the corresponding "Species for Animation".
+
 25-10-09 (BR)
 - Added field in custom Species: Bound AI and Species for animation.
 - Fixed Galaxy shape options fields not showing guide before changing the shape at least once.

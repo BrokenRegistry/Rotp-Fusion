@@ -37,6 +37,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -193,9 +194,12 @@ public class CustomRaceDefinitions implements ISpecies {
 		cr.setRace(cr.new RaceList().getBaseRace(key));
 		return cr.getRace();
 	}
-	private static StringList getRaceFileList()		{ return new CustomRaceDefinitions().new RaceList().getLabels(); }
-	public static StringList getAllowedAlienRaces()	{ return new CustomRaceDefinitions().new RaceList().getAllowedAlienRaces(); }
-	public static StringList getAllAlienRaces()		{ return new CustomRaceDefinitions().new RaceList().getAllAlienRaces(); }
+	private static RaceList newRaceList()			{ return new CustomRaceDefinitions().new RaceList(); }
+	private static StringList getRaceFileList()		{ return newRaceList().getLabels(); }
+	public static StringList getAllowedAlienRaces()	{ return newRaceList().getAllowedAlienRaces(); }
+	public static StringList getAllAlienRaces()		{ return newRaceList().getAllAlienRaces(); }
+	public static HashMap<String, StringList> getReworkMap()	{ return newRaceList().reworkMap(); }
+
 	// ========== Options Management ==========
 	//
 	/**
@@ -535,6 +539,7 @@ public class CustomRaceDefinitions implements ISpecies {
 	public class RaceList extends SettingBase<String> {
 		private boolean newValue = false;
 		private boolean reload	 = false;
+		private HashMap<String, StringList> reworkedMap = new HashMap<>();
 
 		public RaceList() {
 			super(ROOT, "RACE_LIST");
@@ -550,7 +555,11 @@ public class CustomRaceDefinitions implements ISpecies {
 		public void reload(boolean foldersRework) {
 			String currentValue = settingValue();
 			clearLists();
+			reworkedMap.clear();
 			clearOptionsText();
+			for (String raceKey : IGameOptions.allRaceOptions)
+				reworkedMap.put(raceKey, new StringList());
+
 			// Add Current race
 			add((DynOptions) IGameOptions.playerCustomRace.get());
 			defaultIndex(0);
@@ -562,8 +571,11 @@ public class CustomRaceDefinitions implements ISpecies {
 					if (opt.size() == 0)
 						System.err.println("Empty race file: " + file.getName());
 					else {
-						RaceKey.valid(opt, file);	// Check to Update filename
-						ReworkedRaceKey.valid(opt, file, foldersRework);	// Test for reworked old Ways
+						// Check to Update filename
+						String skillKey = RaceKey.valid(opt, file);
+						// Test for reworked old Ways
+						String animKey  = ReworkedRaceKey.validReworked(opt, file, foldersRework);
+						reworkedMap.get(animKey).add(skillKey);
 						add(opt);
 					}
 				}
@@ -575,6 +587,7 @@ public class CustomRaceDefinitions implements ISpecies {
 			reload = true;
 			set(currentValue);
 		}
+		private HashMap<String, StringList> reworkMap() { return reworkedMap; }
 		private File[] loadListing()	{
 			File speciesDir = new File(speciesDirectoryPath());
 			List<File> speciesList = new ArrayList<>();
@@ -681,7 +694,7 @@ public class CustomRaceDefinitions implements ISpecies {
 		private static final String RACE_KEY = "RACE_KEY";
 
 		private static void setKey(DynOptions opts, String key)	{ opts.setString(ROOT + RACE_KEY, key); }
-		private static String getKey(DynOptions opts)			{ return opts.getString(ROOT + RACE_KEY); }
+		private static String getKey(DynOptions opts)			{ return opts.getString(ROOT + RACE_KEY, ""); }
 		private static String fileToKey (File file)				{
 			String key = file.getPath();
 			key = key.substring(0, key.length() - EXT.length());
@@ -698,13 +711,14 @@ public class CustomRaceDefinitions implements ISpecies {
 			}
 			return key;
 		}
-		private static void valid(DynOptions opt, File file)	{
+		private static String valid(DynOptions opt, File file)	{
 			String optKey	= getKey(opt);
 			String fileKey	= fileToKey(file);
 			if (!optKey.equalsIgnoreCase(fileKey)) {
 				setKey(opt, fileKey);
 				DynOptions.saveOptions(opt, file);
 			}
+			return fileKey;
 		}
 
 		private RaceKey() {
@@ -983,8 +997,14 @@ public class CustomRaceDefinitions implements ISpecies {
 		private static final String REWORKED_RACE_KEY	= "REWORKED_RACE_KEY";
 		private static final String DEFAULT_VALUE		= "NONE";
 
-		private static void setKey(DynOptions opts, String key)	{ opts.setString(ROOT + REWORKED_RACE_KEY, key); }
-		private static String getKey(DynOptions opts)			{ return opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE); }
+		private static void setReworkedKey(DynOptions opts, String key)	{ opts.setString(ROOT + REWORKED_RACE_KEY, key); }
+		private static String getReworkedKey(DynOptions opts)			{ return opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE); }
+		/**
+		 * Get a reworked key from the filename, or the folder name
+		 * @param file source file
+		 * @param foldersRework true -> Get a reworked key from the Folder.
+		 * @return the key, "" if none
+		 */
 		private static String fileToReworked (File file, boolean foldersRework)	{
 			// Test for reworked old Ways
 			String name = file.getName();
@@ -1000,15 +1020,26 @@ public class CustomRaceDefinitions implements ISpecies {
 			}
 			return "";
 		}
-		private static void valid(DynOptions opt, File file, boolean foldersRework)	{
-			String optKey	= getKey(opt);
-			String fileKey	= fileToReworked(file, foldersRework);
-			if (fileKey.isEmpty())
-				return;
-			if (!fileKey.equals(optKey)) {
-				setKey(opt, fileKey);
+		/**
+		 * validate the key and return it
+		 * @param opt options files
+		 * @param file File to be checked for old reworked way
+		 * @param foldersRework true -> Get a reworked key from the Folder.
+		 * @return true if the reworked file is not empty
+		 */
+		private static String validReworked(DynOptions opt, File file, boolean foldersRework)	{
+			String optKey	= getReworkedKey(opt); // current key
+			String fileKey	= fileToReworked(file, foldersRework); // potential candidate
+
+			if (fileKey.isEmpty()) // no candidate
+				return optKey;
+
+			if (!fileKey.equals(optKey)) { // update the key
+				setReworkedKey(opt, fileKey);
 				DynOptions.saveOptions(opt, file);
+				return fileKey;
 			}
+			return optKey;
 		}
 		private ReworkedRaceKey() {
 			super(ROOT, REWORKED_RACE_KEY);

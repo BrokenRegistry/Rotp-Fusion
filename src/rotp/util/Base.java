@@ -368,9 +368,8 @@ public interface Base extends InputEventUtil {
     public default void shuffle(List<?> list, Rand rand)	{
     	Collections.shuffle(list, new Random(rand.nextLong()));
     }
-    public default void shuffle(List<?> list)	{
-    	Collections.shuffle(list, new Random(rng().nextLong()));
-    }    public default float asin(float d)  { return (float) FastMath.asin(d); }
+	public default void shuffle(List<?> list)	{ Collections.shuffle(list, new Random(rng().nextLong())); }
+	public default float asin(float d)			{ return (float) FastMath.asin(d); }
     public default int bounds(int low, int val, int hi) {
         return Math.min(Math.max(low, val), hi);
     }
