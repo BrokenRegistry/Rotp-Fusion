@@ -559,6 +559,7 @@ public class CustomRaceDefinitions implements ISpecies {
 			clearOptionsText();
 			for (String raceKey : IGameOptions.allRaceOptions)
 				reworkedMap.put(raceKey, new StringList());
+			reworkedMap.put(ReworkedRaceKey.DEFAULT_VALUE, new StringList());
 
 			// Add Current race
 			add((DynOptions) IGameOptions.playerCustomRace.get());

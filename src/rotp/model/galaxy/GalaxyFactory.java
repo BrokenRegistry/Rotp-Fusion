@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import rotp.model.empires.CustomRaceDefinitions;
 import rotp.model.empires.Empire;
@@ -50,7 +51,7 @@ import rotp.ui.util.StringList;
 import rotp.ui.util.planets.PlanetImager;
 import rotp.util.Base;
 
-public class GalaxyFactory implements ISpecies, Base {
+public final class GalaxyFactory implements ISpecies, Base {
 	private static GalaxyFactory instance = new GalaxyFactory();
 	public  static GalaxyFactory current() { return instance; }
 	/**
@@ -61,20 +62,28 @@ public class GalaxyFactory implements ISpecies, Base {
 	private static final boolean showAI	 = false; // BR: for debug
 	private static boolean[] isRandomOpponent; // BR: only Random Races will be customized
 	private static String playerDataRaceKey;   // BR: in case Alien races are a copy of player race
-	private HashMap<String, StringList> reworkedMap; 
+	private HashMap<String, StringList> reworkedMap, reworkedMapOrigin; 
 	
 	private void cleanFactory()	{
 		isRandomOpponent	= null;
 		playerDataRaceKey	= null;
+		reworkedMapOrigin	= null;
 		reworkedMap			= null;
 	}
 	private HashMap<String, StringList> reworkedMap()	{
-		if (reworkedMap == null)
-			reworkedMap = CustomRaceDefinitions.getReworkMap();
+		if (reworkedMap == null) {
+			reworkedMapOrigin = CustomRaceDefinitions.getReworkMap();
+			reworkedMap = new HashMap<>();
+			for (Entry<String, StringList> entry : reworkedMapOrigin.entrySet())
+				reworkedMap.put(entry.getKey(), new StringList(entry.getValue()));
+		}
 		return reworkedMap;
 	}
 	private String reworkedKey(String animKey)	{
 		StringList list = reworkedMap().get(animKey);
+		if (list.isEmpty())
+			list.addAll(reworkedMapOrigin.get(animKey));
+		shuffle(list);
 		shuffle(list);
 		String skillKey = list.removeFirst();
 		//System.out.println("Rework Anim key = " + animKey + " -> Skill key = " + skillKey);

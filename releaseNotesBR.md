@@ -7,12 +7,16 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
-25-10-06 (BR)
-- In the Species Customization pane, you can now select where the species Files are stored.
-  - They can be organized in sub-folders, and will be displayed with their sub-folders.
-  - The file Name (on the left) is used as key, and will be updated to include the sub-folders. This to avoid two species having the same key.
-- An introduction text file can be added to the same directory as the species, with the same file name and the extension ".intro.txt."
-  - It will be displayed when you start a new game with this species.
+25-10-10 (BR)
+- Opponents panel automation:
+  - Reducing the number of opponents will no longer remove those who are out of bounds, so they will reappear when the number increases again.
+  - If you clear an opponent (with mid-click) while holding down the Ctrl key, all the following opponent will be cleared too.
+  - If you click on an opponent while holding down, all the following empty opponents will be set to the first available species.
+- The 'Reworked' abilities will now randomly select one of the custom species that has the corresponding "Species for Animation".
+- Added field in custom Species: Bound AI and Species for animation.
+- Fixed Galaxy shape options fields not showing guide before changing the shape at least once.
+- Fixed Galaxy Setup Start Button being blank when "Shift" was down.
+- Standardization and centralization of aptitudes display methodes in the opponents' control panel.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

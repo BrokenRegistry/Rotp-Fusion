@@ -22,6 +22,12 @@
 
 ### Features:
 
+- Opponents panel automation:
+  - Reducing the number of opponents will no longer remove those who are out of bounds, so they will reappear when the number increases again.
+  - If you clear an opponent (with mid-click) while holding down the Ctrl key, all the following opponent will be cleared too.
+  - If you click on an opponent while holding down, all the following empty opponents will be set to the first available species.
+- The 'Reworked' abilities will now randomly select one of the custom species that has the corresponding "Species for Animation".
+- Added field in custom Species: Bound AI and Species for animation.
 - In the Species Customization pane, you can now select where the species Files are stored.
   - They can be organized in sub-folders, and will be displayed with their sub-folders.
   - The file Name (on the left) is used as key, and will be updated to include the sub-folders. This to avoid two species having the same key.
@@ -209,6 +215,7 @@
 
 ### Miscellaneous:
 
+- Standardization and centralization of aptitudes display methodes in the opponents' control panel.
 - New pom.xml version management.
   - pom version has now to be a constant.
 - New parameter to reduce (or increase!?) the Spaces Pirates level.
@@ -305,6 +312,8 @@
 
 ### Fixes:
 
+- Fixed Galaxy shape options fields not showing guide before changing the shape at least once.
+- Fixed Galaxy Setup Start Button being blank when "Shift" was down.
 - Fixed Guide text for MoO1 retreat option.
 - Fixed Compilation failing for not enough memory error.
 - Fixed a retreat options conflict that could cause Orion to be wrongly scouted.
