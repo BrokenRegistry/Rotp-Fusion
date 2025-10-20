@@ -2,17 +2,20 @@ package rotp.ui.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
 // No out of range error Return "" instead
-// Easier to tut and retrieve these list in Maps
+// Easier to put and retrieve these list in Maps
 public class StringList extends ArrayList<String> {
 	private static final long serialVersionUID = 1L;
 
 	public StringList()	{}
 	public StringList(int initialCapacity)	{ super(initialCapacity); }
 	public StringList(List<String> src)		{ super(src); }
+	public StringList(String s, String sep)	{ super(Arrays.asList(s.split(sep))); }
 
 	@Override public String get(int id)	{
 		if (id<0 || size() == 0)
@@ -64,4 +67,7 @@ public class StringList extends ArrayList<String> {
 	}
 	public boolean isValidIndex(int index)	{ return index >= 0 && index < size(); }
 	public void removeNullAndEmpty()		{ removeAll(Arrays.asList("", null)); }
+	public void reset(Collection<String> s)	{ clear(); addAll(s); }
+	public void rotate(int i)				{ Collections.rotate(this, i); }
+	public String join(String sep)			{ return String.join(sep, this); }
 }

@@ -17,7 +17,7 @@ package rotp.model.tech;
 
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
-import rotp.model.empires.Race;
+import rotp.model.empires.species.Species;
 import rotp.model.ships.ShipSpecialResistSpecial;
 
 public final class TechResistSpecial extends Tech {
@@ -57,7 +57,7 @@ public final class TechResistSpecial extends Tech {
 	@Override public boolean isMonsterTech()			{ return true; }
 	@Override public float baseValue(Empire c)			{ return c.ai().scientist().baseValue(this); }
 	@Override public boolean providesShipComponent()	{ return true; }
-	@Override public boolean canBeResearched(Race r)	{ return false; }
+	@Override public boolean canBeResearched(Species s)	{ return false; }
 	@Override public void provideBenefits(Empire c)		{
 		super.provideBenefits(c);
 		ShipSpecialResistSpecial sh = new ShipSpecialResistSpecial(this);

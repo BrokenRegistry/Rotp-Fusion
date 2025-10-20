@@ -16,7 +16,7 @@
 package rotp.ui.game;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.empires.CustomRaceDefinitions.ROOT;
+import static rotp.model.empires.species.CustomRaceDefinitions.ROOT;
 import static rotp.model.game.IBaseOptsTools.LIVE_OPTIONS_FILE;
 import static rotp.ui.util.IParam.langLabel;
 
@@ -31,11 +31,12 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
+import java.util.List;
 
 import rotp.Rotp;
-import rotp.model.empires.CustomRaceDefinitions;
-import rotp.model.empires.CustomRaceDefinitions.RaceList;
-import rotp.model.empires.Race;
+import rotp.model.empires.species.CustomRaceDefinitions;
+import rotp.model.empires.species.CustomRaceDefinitions.RaceList;
+import rotp.model.empires.species.Species;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IMainOptions;
@@ -44,11 +45,10 @@ import rotp.ui.RotPUI;
 import rotp.ui.util.ICRSettings;
 import rotp.ui.util.InterfaceOptions;
 import rotp.ui.util.ParamButtonHelp;
-import rotp.ui.util.ParamCR;
 import rotp.util.LabelManager;
 import rotp.util.ModifierKeysState;
 
-public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
+class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 	private static final long serialVersionUID	= 1L;
 	private static final String GUI_ID			= "CUSTOM_RACE";
 	private static final String selectKey		= ROOT + "GUI_SELECT";
@@ -74,7 +74,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	private final Box randomPushBox	= new Box(randomPushKey);
 	private final Box loadBox		= new Box(loadButtonHelp);
 
-	private LinkedList<ICRSettings> guiList;
+	private List<ICRSettings> guiList;
 	private RaceList raceList;
 	private int yRandB, yRandGetB, xRandPushB;
 	
@@ -133,12 +133,11 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 			return;
 		instance.guiOptions().selectedPlayerCustomRace(instance.cr().getAsOptions());
 	}
-	private void saveCurrentRace() {
+	private void saveCurrentRace()	{
 		IGameOptions opts = guiOptions();
 		if (opts.selectedPlayerIsCustom()) {
-			ParamCR pl	 =  opts.playerCustomRace();
-			Race plRace	 = pl.getRace();
-			String plKey = plRace.id();
+			Species plSp = opts.playerCustomSpecies(opts);
+			String plKey = plSp.skillKey();
 			String crKey = cr().getRaceKey();
 			if (crKey.equals(plKey))
 				opts.selectedPlayerCustomRace(cr().getAsOptions());

@@ -15,8 +15,10 @@
  */
 package rotp.model.empires;
 
-import java.awt.*;
+import java.awt.Image;
 import java.util.List;
+
+import rotp.model.empires.species.Species;
 import rotp.util.AnimationManager;
 import rotp.util.Base;
 
@@ -27,7 +29,7 @@ public class RaceCombatAnimation implements Base {
     public float scale = 1.0f;
     public int xSpacing, ySpacing;
 
-    public Image notFiring()            { return currentFrame(iconKey, Race.notFiring);  }
+    public Image notFiring()            { return currentFrame(iconKey, Species.notFiring());  }
     public List<Image> firingFrames()   { return AnimationManager.current().allImages(iconKey); }
 
     public void iconSpec(String s) {

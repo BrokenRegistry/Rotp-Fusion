@@ -17,8 +17,6 @@ package rotp.util;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.model.game.IGameOptions.DIFFICULTY_CUSTOM;
-import static rotp.model.game.IRaceOptions.playerCustomRace;
-import static rotp.model.game.IRaceOptions.playerIsCustom;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -85,7 +83,7 @@ import org.apache.commons.math3.util.FastMath;
 
 import rotp.Rotp;
 import rotp.model.empires.Empire;
-import rotp.model.empires.ISpecies;
+import rotp.model.empires.species.Species;
 import rotp.model.galaxy.Galaxy;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.DynOptions;
@@ -1552,27 +1550,12 @@ public interface Base extends InputEventUtil {
         g.drawImage(back, 0, 0, imgW, imgH, null);
         g.dispose();
     }
-    public default String generateGameName() {
-		String name;
-		if (playerIsCustom.get())
-			name = playerCustomRace.getRace().setupName;
-		else
-			name = ISpecies.R_M.keyed(newGameOptions().selectedPlayerRace()).setupName();
-		name +=   " - " + text(newGameOptions().selectedGalaxySize())
-				+ " - " + text(newGameOptions().selectedGameDifficulty());
-		// modnar: add custom difficulty level option, set in Remnants.cfg
-		// append this custom difficulty percentage to gameName if selected
-		if (newGameOptions().selectedGameDifficulty().equals(DIFFICULTY_CUSTOM)) {
-			name += " (" + Integer.toString(newGameOptions().selectedCustomDifficulty()) + "%)";
-		}
-		return name;
-    }
     public default String generateGameName(IGameOptions options) {
 		String name;
 		if (options.selectedPlayerIsCustom())
-			name = options.playerCustomRace().getRace().setupName;
+			name = options.playerCustomSetupName(options);
 		else
-			name = ISpecies.R_M.keyed(options.selectedPlayerRace()).setupName();
+			name = Species.getSpeciesName(options.selectedPlayerRace());
 		name +=   " - " + text(options.selectedGalaxySize())
 				+ " - " + text(options.selectedGameDifficulty());
 		// modnar: add custom difficulty level option, set in Remnants.cfg

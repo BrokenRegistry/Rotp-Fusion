@@ -16,8 +16,6 @@
 
 package rotp.ui.util;
 
-import java.util.LinkedList;
-
 public enum SpecificCROption {
 	
 	SELECTION	("'Selection'"),
@@ -43,8 +41,8 @@ public enum SpecificCROption {
 				return crO;
 		return USER_CHOICE;
 	}
-	public static LinkedList<String> options() {
-		LinkedList<String> list = new LinkedList<>();
+	public static StringList options() {
+		StringList list = new StringList();
 		for (SpecificCROption opt: values())
 			list.add(opt.value);
 		list.removeLast();
@@ -63,18 +61,18 @@ public enum SpecificCROption {
 	public boolean isAll()			 { return this == ALL; }
 	public boolean isUserChoice()	 { return this == USER_CHOICE; }
 
-	public static boolean isBaseRace(String opt)		{
+	static boolean isBaseRace(String opt)		{
 		return (opt.equals(BASE_RACE.value) || opt.equalsIgnoreCase("'Base Race'"));
 	}
-	public static boolean isSelection(String opt)		{ return opt.equals(SELECTION.value); }
-	public static boolean isReworked(String opt)		{ return opt.equals(REWORKED.value); }
-	public static boolean isPlayer(String opt)			{ return opt.equals(PLAYER.value); }
-	public static boolean isRandom(String opt)			{ return opt.equals(RANDOM.value); }
-	public static boolean isFilteredFiles(String opt)	{ return opt.equals(FILES_FLT.value); }
-	public static boolean isAllFiles(String opt)		{ return opt.equals(FILES_NO_FLT.value); }
-	public static boolean isFilesAndRaces(String opt)	{ return opt.equals(FILES_RACES.value); }
-	public static boolean isAll(String opt)				{ return opt.equals(ALL.value); }
-	public static boolean isUserChoice(String opt) {
+	static boolean isSelection(String opt)		{ return opt.equals(SELECTION.value); }
+	static boolean isReworked(String opt)		{ return opt.equals(REWORKED.value); }
+	static boolean isPlayer(String opt)			{ return opt.equals(PLAYER.value); }
+	static boolean isRandom(String opt)			{ return opt.equals(RANDOM.value); }
+	static boolean isFilteredFiles(String opt)	{ return opt.equals(FILES_FLT.value); }
+	static boolean isAllFiles(String opt)		{ return opt.equals(FILES_NO_FLT.value); }
+	static boolean isFilesAndRaces(String opt)	{ return opt.equals(FILES_RACES.value); }
+	static boolean isAll(String opt)			{ return opt.equals(ALL.value); }
+	static boolean isUserChoice(String opt) {
 		for (SpecificCROption crO: values())
 			if (opt.equals(crO.value))
 				return false;

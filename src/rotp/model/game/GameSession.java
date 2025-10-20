@@ -138,7 +138,10 @@ public final class GameSession implements Base, Serializable {
     private boolean aFewMoreTurns = false;
 	private boolean lastAlwaysAtWar = false;
 	private boolean lastAlwaysAlly  = false;
+	private transient boolean loading = false;
 
+	boolean loading()							{ return loading; }
+	boolean isReady()							{ return galaxy()!=null && !loading(); }
     public GameStatus status()                   { return status; }
     public long id()                             { return id; }
     public long achievementId()                  {
@@ -333,7 +336,7 @@ public final class GameSession implements Base, Serializable {
             shipsConstructed().clear();
             spyActivity = false;
             galaxy().startGame();
-    		GameUI.gameName = generateGameName();
+    		GameUI.gameName = generateGameName(newGameOptions);
             saveRecentSession();
             saveBackupSession(1);
         }
@@ -1201,9 +1204,9 @@ public final class GameSession implements Base, Serializable {
 			StarSystem sys = g.system(id);
 			Leader boss = emp.leader();
 			System.out.println(
-					String.format("%-16s", emp.empireRaceName())
+					String.format("%-16s", emp.speciesName())
 					+ String.format("%-12s", sys.name())
-					+ String.format("%-16s", emp.dataRaceName())
+					+ String.format("%-16s", emp.speciesSkillsName())
 					+ String.format("%-12s", boss.personality())
 					+ String.format("%-15s", boss.objective())
 					+ String.format("%-22s", emp.diplomatAI())
@@ -1368,6 +1371,7 @@ public final class GameSession implements Base, Serializable {
             }
 
 			GameSession.instance = newSession;
+			instance.loading = true;
 			rulesetManager().setAsGameMode();
 
             if (Rotp.isIDE()) {
@@ -1383,11 +1387,12 @@ public final class GameSession implements Base, Serializable {
 			instance.options().setAsGame();
 			resolveOptionsDiscrepansies(newSession);
 			rulesetManager().setAsGameMode();
+			instance.loading = false;
 
 			if (instance.galaxy.playerSwapRequest())
 				instance.galaxy.swapPlayerEmpire();
-            newSession.validate();
             newSession.validateOnLoadOnly();
+            newSession.validate();
 
             loadPreviousSession(newSession, startUp);
             newSession.ironmanValidation();
@@ -1447,6 +1452,7 @@ public final class GameSession implements Base, Serializable {
         // check for council last-vote init issue
         boolean allVotedOnlyForPlayer = true;
         for (Empire emp: galaxy().empires()) {
+        	emp.validateOnLoad();
             if (emp.lastCouncilVoteEmpId() != 0)
                 allVotedOnlyForPlayer = false;
         }

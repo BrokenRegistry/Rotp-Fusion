@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+25-10-20 (BR)
+- When a player select a custom species, the name of the custom species will replace the name of the selected animation species. But if the custom species has the same name as another species, and close to the maximum number of opponents is selected, this species name will appears twice. To fix this, the default option to keep the MoO1 names will add them to the list instead of replacing the first element. And as the human keep their names, I've added for them a new denomination: Pangaean.
+
 25-10-10 (BR)
 - Opponents panel automation:
   - Reducing the number of opponents will no longer remove those who are out of bounds, so they will reappear when the number increases again.

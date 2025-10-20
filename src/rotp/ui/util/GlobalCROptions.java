@@ -16,8 +16,6 @@
 
 package rotp.ui.util;
 
-import java.util.LinkedList;
-
 public class GlobalCROptions extends ParamString {
 
 	/**
@@ -29,8 +27,8 @@ public class GlobalCROptions extends ParamString {
 		super(gui, name, defaultValue);
 	}
 
-	public LinkedList<String> getBaseOptions()	{
-		LinkedList<String> list = new LinkedList<> ();
+	public StringList getBaseOptions()	{
+		StringList list = new StringList();
 		for (SpecificCROption opt : SpecificCROption.values()) {
 			if(!opt.isSelection() && !opt.isUserChoice())
 				list.add(opt.value);

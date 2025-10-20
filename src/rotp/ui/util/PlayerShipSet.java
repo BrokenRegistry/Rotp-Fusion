@@ -16,13 +16,12 @@
 
 package rotp.ui.util;
 
-import static rotp.model.game.IRaceOptions.playerCustomRace;
 import static rotp.model.game.IRaceOptions.playerIsCustom;
 import static rotp.ui.util.IParam.langLabel;
 
-import rotp.model.empires.ISpecies;
-import rotp.model.empires.Race;
+import rotp.model.empires.species.Species;
 import rotp.model.game.IBaseOptsTools;
+import rotp.model.game.IGameOptions;
 import rotp.model.game.RulesetManager;
 import rotp.model.ships.ShipLibrary;
 
@@ -92,24 +91,32 @@ public class PlayerShipSet extends ParamList {
 	 */
 	public int realShipSetId() {
 		int index;
-		Race r =  ISpecies.R_M.keyed(RulesetManager.current().newOptions().selectedPlayerRace());
+		IGameOptions opts = RulesetManager.current().newOptions();
+
 		if (playerIsCustom.get() && isOriginal()) {
-			String preferredShipSet = preferredShipSet();
+			Species species = opts.playerCustomSpecies(opts);
+			String preferredShipSet = species.preferredShipSet();
 			if (preferredShipSet.equalsIgnoreCase(DISPLAY_RACE_SET))
-				index = getIndex(r.preferredShipSet());
+				index = getIndex(species.preferredShipSet());
 			else
 				index = getIndex(preferredShipSet);
 		}
 		// Standard process
-		else if (isOriginal())
-			index = getIndex(r.preferredShipSet());
+		else if (isOriginal()) {
+			Species species =  new Species(opts.selectedPlayerRace());
+			index = getIndex(species.preferredShipSet());
+		}
 		else 
 			index = getIndex();
-		
+
 		if (index == -1) index = 0;
 		return index;
 	}
-	private String preferredShipSet() 		{ return playerCustomRace.getRace().preferredShipSet(); }
+	private String preferredShipSet() 		{
+		IGameOptions opts = RulesetManager.current().newOptions();
+		Species species = opts.playerCustomSpecies(opts);
+		return species.preferredShipSet();
+	}
 	private String preferredShipsetName()	{
 		String key = rootLabelKey() + preferredShipSet().toUpperCase();
 		String str = langLabel(key);

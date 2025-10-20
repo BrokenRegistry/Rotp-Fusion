@@ -18,8 +18,8 @@ package rotp.ui.util;
 
 import java.io.Serializable;
 
-import rotp.model.empires.CustomRaceDefinitions;
-import rotp.model.empires.Race;
+import rotp.model.empires.species.CustomRaceDefinitions;
+import rotp.model.empires.species.Species;
 import rotp.model.game.DynOptions;
 
 public class ParamCR extends ParamObject {
@@ -40,11 +40,5 @@ public class ParamCR extends ParamObject {
 	}
 	// ===== Other Methods =====
 	//
-	public Race getRace() {
-		Race r = getCustomRace().getRace();
-		return r;
-	}
-	private CustomRaceDefinitions getCustomRace() {
-		return new CustomRaceDefinitions((DynOptions) get());
-	}
+	public Species getSpecies(String animKey)	{ return new Species(animKey, null, (DynOptions) get()); }
 }

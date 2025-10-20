@@ -16,7 +16,7 @@
 package rotp.model.tech;
 
 import rotp.model.empires.Empire;
-import rotp.model.empires.Race;
+import rotp.model.empires.species.Species;
 import rotp.model.planet.PlanetType;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipSpecialColony;
@@ -55,9 +55,9 @@ public final class TechControlEnvironment extends Tech {
     public int hostilityAllowed()                { return hostilityAllowed; }
     public boolean canColonize(PlanetType pt)    { return pt.hostility() <= hostilityAllowed(); }
     @Override
-    public boolean canBeResearched(Race r)  {
+    public boolean canBeResearched(Species s)	{
         // If Ignores Eco is not No, only environments that are not colonizable are researchable
-        switch (r.acceptedPlanetEnvironment()) {
+        switch (s.acceptedPlanetEnvironment()) {
             case "All":
                 return false;
             case "Limited":

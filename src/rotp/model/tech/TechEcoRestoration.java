@@ -16,7 +16,7 @@
 package rotp.model.tech;
 
 import rotp.model.empires.Empire;
-import rotp.model.empires.Race;
+import rotp.model.empires.species.Species;
 
 public final class TechEcoRestoration extends Tech {
     public static final int BASE_WASTE_ELIMINATED = 2;
@@ -32,10 +32,8 @@ public final class TechEcoRestoration extends Tech {
         free = b;
         init();
     }
-    @Override
-    public boolean canBeResearched(Race r)  {
-        return !r.ignoresPlanetEnvironment();  // silicoids don't research these techs
-    }
+	// silicoids don't research these techs
+	@Override public boolean canBeResearched(Species s)	{ return !s.ignoresPlanetEnvironment(); }
     @Override
     public void init() {
         super.init();

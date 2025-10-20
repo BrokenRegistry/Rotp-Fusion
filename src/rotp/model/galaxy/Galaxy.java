@@ -32,8 +32,7 @@ import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.Empire;
 import rotp.model.empires.Empire.EmpireBaseData;
 import rotp.model.empires.GalacticCouncil;
-import rotp.model.empires.ISpecies;
-import rotp.model.empires.Race;
+import rotp.model.empires.species.Species;
 import rotp.model.events.RandomEvents;
 import rotp.model.galaxy.StarSystem.SystemBaseData;
 import rotp.model.game.DynOptions;
@@ -542,9 +541,9 @@ public final class Galaxy implements Base, Serializable {
     public void addEmpire(Empire e) {
         empires[e.id] = e;
     }
-    public Empire empireForRace(Race r) {
+	public Empire empireForRace(Species s) {
         for (Empire e: empires) {
-            if (e.isRace(r))
+			if (e.isSpeciesAnim(s))
                 return e;
         }
         return null;
@@ -788,7 +787,7 @@ public final class Galaxy implements Base, Serializable {
         return nextName;
     }
     private void loadRaceNames(String rId, int i) {
-        Race r = ISpecies.R_M.keyed(rId);
+        Species r = new Species(rId);
         List<String> names = new ArrayList<>(r.systemNames());
         shuffle(names);
         raceSystemNames().put(rId, names);

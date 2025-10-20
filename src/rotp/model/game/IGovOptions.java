@@ -73,7 +73,7 @@ public interface IGovOptions {
 		@Override public Boolean set(Boolean b)	{
 			Boolean val = super.set(b);
 			Galaxy galaxy = GameSession.instance().galaxy();
-			if (galaxy != null)
+			if (GameSession.instance().isReady())
 				galaxy.player().redoGovTurnDecisionsRich();
 			return val;
 		}

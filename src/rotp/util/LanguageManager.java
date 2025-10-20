@@ -29,9 +29,8 @@ import java.util.List;
 import java.util.Locale;
 
 import rotp.Rotp;
-import rotp.model.empires.ISpecies;
-import rotp.model.empires.Race;
-import rotp.model.empires.RaceFactory;
+import rotp.model.empires.species.RaceFactory;
+import rotp.model.empires.species.Species;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IGovOptions;
 import rotp.ui.RotPUI;
@@ -60,35 +59,35 @@ public class LanguageManager implements Base {
     		currentLanguage  = languages.get(i);
     }
 	public static boolean isDefaultLanguage()	{ return selectedLanguage == DEFAULT_LANGUAGE; }
-    private List<Language> languages()  {
+    private static List<Language> languages()  {
         if (languages.isEmpty()) {
-            loadLanguages();
+        	current().loadLanguages();
             selectedLanguage(-1);
-            selectLanguage(DEFAULT_LANGUAGE);
+            current().selectLanguage(DEFAULT_LANGUAGE);
         }
         return languages;
     }
     public List<String> languageCodes() {
         List<String> names = new ArrayList<>();
-        for (Language lang: languages)
+        for (Language lang: languages())
             names.add(lang.directory);
         return names;
     }
     public List<String> languageNames() {
         List<String> names = new ArrayList<>();
-        for (Language lang: languages)
+        for (Language lang: languages())
             names.add(lang.name);
         return names;
     }
     private Language languageForCode(String code) {
-        for (Language lang: languages) {
+        for (Language lang: languages()) {
             if (lang.directory.equalsIgnoreCase(code))
                 return lang;
         }
         return null;
     }
     public static int languageNumber(String dir) {
-        for (int i=0;i<languages.size();i++) {
+        for (int i=0;i<languages().size();i++) {
             Language lang = languages.get(i);
             if (lang.directory.equalsIgnoreCase(dir))
                 return i;
@@ -96,7 +95,7 @@ public class LanguageManager implements Base {
         return DEFAULT_LANGUAGE;
     }
     public static void selectLanguage(String dir) {
-        for (int i=0;i<languages.size();i++) {
+        for (int i=0;i<languages().size();i++) {
             Language lang = languages.get(i);
             if (lang.directory.equalsIgnoreCase(dir)) {
                 current().selectLanguage(i);
@@ -104,8 +103,8 @@ public class LanguageManager implements Base {
             }
         }
     }
-    public static String selectedLanguageDir() { return languages.get(selectedLanguage).directory; }
-    public static String languageDir(int i)    { return languages.get(i).directory; }
+    public static String selectedLanguageDir() { return languages().get(selectedLanguage).directory; }
+    public static String languageDir(int i)    { return languages().get(i).directory; }
     public String selectedLanguageName()       { return language(selectedLanguage()); }
     public String defaultLanguageFullPath()    { return baseDir+languages().get(DEFAULT_LANGUAGE).directory; }
     public String selectedLanguageFullPath()   { return baseDir+languages().get(selectedLanguage()).directory; }
@@ -147,21 +146,18 @@ public class LanguageManager implements Base {
     	LabelManager.validate = doIt;
     	if (!doIt)
     		return;
-    	boolean valid = true;
-    	System.out.println("Start Dialogue Tokens Validation");    	
-    	for (Race r : ISpecies.R_M.races()) {
-    		valid &= r.validateDialogueTokens();
-    	}
+    	System.out.println("Start Dialogue Tokens Validation");    
+    	boolean valid = Species.validateDialogueTokens();
     	if (valid)
     		System.out.println("Validation Successful");
     	else
     		System.out.println("Validation Failed");
     }
     public void reloadLanguage()      { loadLanguage(selectedLanguage()); } // BR: to reload labels without having to restart
-    public void reloadRace(Race race) { // BR: to reload Selected race labels
-    	Language newLang = languages().get(selectedLanguage);
-    	RaceFactory.current().loadRaceLangFiles(race, newLang.directory);
-    }
+	public void reloadRace(Species species)	{ // BR: to reload Selected species labels
+		Language newLang = languages().get(selectedLanguage);
+		Species.loadRaceLangFiles(species, newLang.directory);
+	}
     public void loadLanguage(int i)   {
         Language defLang = languages().get(DEFAULT_LANGUAGE); // BR: Uncommented
         Language newLang = languages().get(i);

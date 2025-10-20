@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package rotp.model.empires;
+package rotp.model.empires.species;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +25,7 @@ import rotp.Rotp;
 import rotp.model.game.IGameOptions;
 import rotp.ui.util.ParamSpeciesName;
 import rotp.ui.util.PlayerShipSet;
+import rotp.ui.util.StringList;
 import rotp.util.AnimationManager;
 import rotp.util.Base;
 import rotp.util.ImageManager;
@@ -32,7 +33,7 @@ import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
 import rotp.util.PixelShifter;
 
-public enum RaceFactory implements ISpecies, Base {
+public enum RaceFactory implements Base {
     INSTANCE;
     public static RaceFactory current()   { return INSTANCE; }
 
@@ -234,19 +235,20 @@ public enum RaceFactory implements ISpecies, Base {
         catch (IOException e) {
             err("RaceFactory.loadRaceDataFile(", filename, ") -- IOException: ", e.toString());
         }
-        R_M.addRace(newRace);
+        Species.addRace(newRace);
     }
     public void resetRaceLangFiles() {
-        for (Race r : R_M.races())
+        for (Race r : Species.races())
             r.raceLabels().resetDialogue();
     }
     public void loadRaceLangFiles(String langDir) {
-        for (Race r : R_M.races()) {
+        for (Race r : Species.races()) {
         	r.raceLabels().resetDialogue();
         	loadRaceLangFiles(r, langDir);
+			Species.addName(r);
         }
     }
-    public void loadRaceLangFiles(Race r, String langDir) {
+	void loadRaceLangFiles(Race r, String langDir) {
 		String dir = concat("lang/", langDir, "/races/");
 		List<String> sNames = readSystemNames(dir+r.langKey()+".systems.txt");
 		if (sNames != null)
@@ -268,34 +270,38 @@ public enum RaceFactory implements ISpecies, Base {
         int selectedLanguage = LanguageManager.selectedLanguage();
         String langId = LanguageManager.selectedLanguageDir();
         String speciesName = "";
-        if (selectedLanguage <= 0) {
-            HashMap<String, ParamSpeciesName> map = IGameOptions.speciesNameMap;
-            ParamSpeciesName param = map.get(r.id);
-            speciesNames = param==null? null : param.getValid();        	
-            if (speciesNames != null) {
-            	labels.replaceFirstVal("_empire",		speciesNames[0]);
-            	labels.replaceFirstVal("_race",			speciesNames[1]);
-            	labels.replaceFirstVal("_race_plural",	speciesNames[2]);
-            	speciesName = speciesNames[1];
-            }
-        }
-        else if (langId.equals("fr")) {
-            HashMap<String, ParamSpeciesName> map = IGameOptions.speciesNameMapFr;
-            ParamSpeciesName param = map.get(r.id + "_FR");
-            speciesNames = param==null? null : param.getValid();        	
-            if (speciesNames != null) {
-            	labels.replaceFirstVal("_empire",			 speciesNames[0]);
-            	labels.replaceFirstVal("_empireof",			 speciesNames[1]);
-            	labels.replaceFirstVal("_raceadjec",		 speciesNames[2]);
-            	labels.replaceFirstVal("_raceadjecF",		 speciesNames[3]);
-            	labels.replaceFirstVal("_race_pluralnoun",	 speciesNames[4]);
-            	labels.replaceFirstVal("_race_pluralnounof", speciesNames[5]);
-            	labels.replaceFirstVal("_race_pluralnounto", speciesNames[6]);
-            	labels.replaceFirstVal("_race_pluraladjec",	 speciesNames[7]);
-            	labels.replaceFirstVal("_race_pluraladjecF", speciesNames[8]);
-            	speciesName = speciesNames[2];
-            }
-        }
+		if (!r.id.equals("RACE_HUMAN")) { // Human names do not change
+			if (selectedLanguage <= 0) {
+				HashMap<String, ParamSpeciesName> map = IGameOptions.speciesNameMap;
+				ParamSpeciesName param = map.get(r.id);
+				speciesNames = param==null? null : param.getValid();
+				// Will be added instead of replaced
+				if (speciesNames != null) {
+					labels.replaceFirstVal("_empire",		speciesNames[0]);
+					labels.replaceFirstVal("_race",			speciesNames[1]);
+					labels.replaceFirstVal("_race_plural",	speciesNames[2]);
+					speciesName = speciesNames[1];
+				}
+			}
+			else if (langId.equals("fr")) {
+				HashMap<String, ParamSpeciesName> map = IGameOptions.speciesNameMapFr;
+				ParamSpeciesName param = map.get(r.id + "_FR");
+				speciesNames = param==null? null : param.getValid();
+				// Will be added instead of replaced
+				if (speciesNames != null) {
+					labels.replaceFirstVal("_empire",			 speciesNames[0]);
+					labels.replaceFirstVal("_empireof",			 speciesNames[1]);
+					labels.replaceFirstVal("_raceadjec",		 speciesNames[2]);
+					labels.replaceFirstVal("_raceadjecF",		 speciesNames[3]);
+					labels.replaceFirstVal("_race_pluralnoun",	 speciesNames[4]);
+					labels.replaceFirstVal("_race_pluralnounof", speciesNames[5]);
+					labels.replaceFirstVal("_race_pluralnounto", speciesNames[6]);
+					labels.replaceFirstVal("_race_pluraladjec",	 speciesNames[7]);
+					labels.replaceFirstVal("_race_pluraladjecF", speciesNames[8]);
+					speciesName = speciesNames[2];
+				}
+		}
+		}
         //
         // Load Species Names
         //
@@ -314,9 +320,13 @@ public enum RaceFactory implements ISpecies, Base {
 		catch (IOException e) {
 			err("RaceFactory.loadRaceLangFile(", r.directoryName()+") -- IOException: ", e.toString());
 		}
-        if (speciesNames != null) { // Update Species names if required.
-			r.raceNames().set(0, speciesName);
-        }
+		if (speciesNames != null) { // Update Species names if required.
+			StringList nameList = r.speciesNames();
+			// Move the first element to the end
+			nameList.rotate(-1);
+			// Add the new element at the first position
+			nameList.add(0, speciesName);
+		}
         if (Rotp.countWords)
             log("WORDS - "+filename+": "+wc);
 
@@ -351,7 +361,7 @@ public enum RaceFactory implements ISpecies, Base {
         String key = vals.get(0);
         String value = vals.get(1);
 
-		if (key.equalsIgnoreCase("key"))				{ r.id = value; return; }
+		if (key.equalsIgnoreCase("key"))				{ r.id(value); return; }
 		if (key.equalsIgnoreCase("langKey"))			{ r.langKey(value); return; }
 		if (key.equalsIgnoreCase("year"))				{ r.startingYear(parseInt(value)); return; }
 		if (key.equalsIgnoreCase("homestarType"))		{ r.homeworldStarType(value); return; }
@@ -486,7 +496,7 @@ public enum RaceFactory implements ISpecies, Base {
         if (Rotp.countWords)
             wc = substrings(value,',').size();  // uncomment 
 
-		if (key.equalsIgnoreCase("name"))	{ r.parseRaceNames(value); return wc; }
+		if (key.equalsIgnoreCase("name"))	{ r.parseSpeciesNames(value); return wc; }
 		if (key.equalsIgnoreCase("desc1"))	{ r.setDescription1(value); return wc; }
 		if (key.equalsIgnoreCase("desc2"))	{ r.setDescription2(value); return wc; }
 		if (key.equalsIgnoreCase("desc3"))	{ r.setDescription3(value); return wc; }

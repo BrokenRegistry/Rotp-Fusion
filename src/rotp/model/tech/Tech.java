@@ -25,7 +25,7 @@ import java.util.HashMap;
 import rotp.model.colony.Colony;
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
-import rotp.model.empires.Race;
+import rotp.model.empires.species.Species;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.BasePanel;
 import rotp.ui.combat.ShipBattleUI;
@@ -243,7 +243,7 @@ public class Tech implements Base {
 
     public int quintile()                   { return quintile; }
     public void provideBenefits(Empire c)   {  }
-    public boolean canBeResearched(Race r)  { return true; }
+    public boolean canBeResearched(Species s)	{ return true; }
 
     public float baseReallocateAmount()    { return 0.25f; }
     public float tradeValue(Empire civ)    { return level; }  // BR: Never used

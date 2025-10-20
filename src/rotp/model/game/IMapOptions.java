@@ -1,6 +1,5 @@
 package rotp.model.game;
 
-import rotp.model.galaxy.Galaxy;
 import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamInteger;
 import rotp.ui.util.ParamList;
@@ -86,10 +85,9 @@ public interface IMapOptions extends IBaseOptsTools {
 		DivertExcessToResearch() { super(GAME_UI, "DIVERT_EXCESS_TO_RESEARCH", true); }
 		@Override public Boolean set(Boolean b)	{
 			Boolean val = super.set(b);
-			Galaxy galaxy = GameSession.instance().galaxy();
-			if (galaxy != null)
+			if (GameSession.instance().isReady())
 				if (IGameOptions.reserveFromRich.get())
-					galaxy.player().redoGovTurnDecisionsRich();
+					GameSession.instance().galaxy().player().redoGovTurnDecisionsRich();
 			return val;
 		}
 	}

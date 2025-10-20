@@ -16,8 +16,8 @@
 package rotp.ui.game;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.empires.CustomRaceDefinitions.getAllowedAlienRaces;
-import static rotp.model.empires.CustomRaceDefinitions.getBaseRaceList;
+import static rotp.model.empires.species.CustomRaceDefinitions.getAllowedAlienRaces;
+import static rotp.model.empires.species.CustomRaceDefinitions.getBaseRaceList;
 import static rotp.model.game.DefaultValues.MOO1_DEFAULT;
 import static rotp.model.game.DefaultValues.ROTP_DEFAULT;
 import static rotp.model.game.IBaseOptsTools.BASE_UI;
@@ -84,15 +84,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import rotp.Rotp;
 import rotp.model.ai.AIList;
-import rotp.model.empires.CustomRaceDefinitions;
 import rotp.model.empires.Empire;
-import rotp.model.empires.ISpecies;
-import rotp.model.empires.Race;
+import rotp.model.empires.species.CustomRaceDefinitions;
+import rotp.model.empires.species.ISpecies;
+import rotp.model.empires.species.Species;
 import rotp.model.galaxy.AllShapes;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.galaxy.GalaxyShape;
 import rotp.model.galaxy.GalaxyShape.EmpireSystem;
 import rotp.model.galaxy.Nebula;
+import rotp.model.game.DynOptions;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGalaxyOptions.ListShapeParam;
 import rotp.model.game.IGameOptions;
@@ -474,7 +475,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		if (selOpp == null)
 			rivalMugs[i] = nullMug();
 		else {
-			BufferedImage diplo = R_M.keyed(selOpp).diploMugshotQuiet();
+			BufferedImage diplo = new Species(selOpp).diploMugshotQuiet();
 			rivalMugs[i] = getMug(diplo, backMug());
 		}
 	}
@@ -1702,7 +1703,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	private BufferedImage playerRaceImg()	{
 		if (playerMug == null) {
 			String selRace = opts.selectedPlayerRace();
-			playerMug = newBufferedImage(R_M.keyed(selRace).diploMug());
+			playerMug = newBufferedImage(new Species(selRace).diploMug());
 		}
 		return playerMug;
 	}
@@ -1931,7 +1932,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		opts.saveOptionsToFile(LIVE_OPTIONS_FILE);
 		starting = true;
 		buttonClick();
-		GameUI.gameName = generateGameName();
+		GameUI.gameName = generateGameName(opts);
 		UserPreferences.setForNewGame();
 		close();
 		final Runnable save = () -> {
@@ -1972,16 +1973,10 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		Race race;
-		String setupName;
-		if (opts.selectedPlayerIsCustom()) {
-			race = R_M.keyed(CustomRaceDefinitions.CUSTOM_RACE_KEY, null);
-			setupName = race.setupName;
-		}
-		else {
-			race = R_M.keyed(opts.selectedPlayerRace());
-			setupName = race.setupName();
-		}
+		Species species = new Species(opts.selectedPlayerRace());
+		if (opts.selectedPlayerIsCustom())
+			species.setSpeciesSkills(CustomRaceDefinitions.CUSTOM_RACE_KEY, (DynOptions)null);
+		String setupName = species.setupName();
 
 		// background image
 		Image back = GameUI.defaultBackground;
@@ -2787,9 +2782,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			String key = get();
 			if (key == null || key.equals(opponentRandom))
 				return "Random";
-			Race race = R_M.keyed(key);
-			String name = race.setupName();
-			return name; 
+			return Species.getSpeciesName(key); 
 		}
 		@Override public String getRowGuide(int id)	{
 			// System.out.println("id = " + id + " " + this.getGuiValue(id));
@@ -2798,12 +2791,12 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			if (key == null || key.equals(opponentRandom))
 				help = labelFormat(opponentRandom) + "Surprise me!";
 			else {
-				Race   race		= R_M.keyed(key);
-				String raceName = race.setupName();
-				help = labelFormat(raceName) + race.getDescription1()
-						+ "<br>" + race.getDescription2()
-						+ "&ensp /&ensp " + race.getDescription3()
-						+ "&ensp /&ensp " + race.getDescription4();
+				Species species	= new Species(key);
+				String raceName = species.setupName();
+				help = labelFormat(raceName) + species.getDescription(1)
+						+ "<br>" + species.getDescription(2)
+						+ "&ensp /&ensp " + species.getDescription(3)
+						+ "&ensp /&ensp " + species.getDescription(4);
 			}
 			return help;
 		}
@@ -2814,12 +2807,12 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			if (key == null || key.equals(opponentRandom))
 				help = "Surprise me!";
 			else {
-				Race   race		= R_M.keyed(key);
-				String raceName = race.setupName();
-				help = labelFormat(raceName) + race.getDescription1()
-						+ "<br>" + race.getDescription2()
-						+ "<br>" + race.getDescription3()
-						+ "<br>" + race.getDescription4();
+				Species species	= new Species(key);
+				String raceName = species.setupName();
+				help = labelFormat(raceName) + species.getDescription(1)
+						+ "<br>" + species.getDescription(2)
+						+ "<br>" + species.getDescription(3)
+						+ "<br>" + species.getDescription(4);
 			}
 			return tableFormat(help);
 		}

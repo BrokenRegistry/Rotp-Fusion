@@ -30,8 +30,10 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 import rotp.Rotp;
+import rotp.ui.util.StringList;
 
 public class LabelManager implements Base {
+	public static final String LIST_SEP = ",";
     static LabelManager instance = new LabelManager();
     public static LabelManager current()  { return instance; }
 	public static boolean validate = false; // BR: for debug purpose
@@ -331,11 +333,15 @@ public class LabelManager implements Base {
     	}
 		return result;
     }
-    public void replaceFirstVal(String key, String newVal) {
-    	String oldList = label(key);
-    	String[] valArray = oldList.split(",");
-    	valArray[0] = newVal;
-    	String newList = String.join(",", valArray);
+	public void replaceFirstVal(String key, String newVal) {
+		// Extract the list from the string
+		StringList list = new StringList(label(key), LIST_SEP);
+		// Move the first element to the end
+		list.rotate(-1);
+		// Add the new element at the first position
+		list.add(0, newVal);
+		// Convert back to string
+		String newList = list.join(LIST_SEP);
         try {
             labelMap.put(key, newList.getBytes("UTF-8"));
         }

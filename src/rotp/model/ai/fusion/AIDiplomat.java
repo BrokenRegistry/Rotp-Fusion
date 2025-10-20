@@ -2070,7 +2070,7 @@ public class AIDiplomat implements Base, Diplomat {
 //        }
         // BR: Trade-off between what was intended and what was implemented:
         // Mitigation for custom species
-        if (empire.isCustomRace())
+        if (empire.isCustomSpecies())
         	racialMod = (float) Math.sqrt(racialMod);
         float personalityMod = 1.0f;
         if(variant == 1) {

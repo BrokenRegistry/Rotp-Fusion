@@ -1,7 +1,7 @@
 // race-specific variables (must start with _)
-_empire                           | Human Triumvirate, Terran Triumvirate, Tellan Triumvirate, Priman Triumvirate, Midgardian Triumvirate
-_race                             | Human, Terran, Tellan, Priman, Midgardian
-_race_plural                      | Humans, Terrans, Tellans, Primans, Midgardians
+_empire                           | Human Triumvirate, Terran Triumvirate, Tellan Triumvirate, Priman Triumvirate, Pangaean Triumvirate, Midgardian Triumvirate
+_race                             | Human, Terran, Tellan, Priman, Midgardian, Pangaean
+_race_plural                      | Humans, Terrans, Tellans, Primans, Midgardians, Pangaeans
 _title                            | Triumvir
 _nameTitle                        | Triumvir
 

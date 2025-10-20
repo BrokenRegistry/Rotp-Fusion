@@ -35,11 +35,12 @@ import java.util.LinkedList;
 
 import javax.swing.SwingUtilities;
 
-import rotp.model.empires.CustomRaceDefinitions;
 import rotp.model.empires.Empire.EmpireBaseData;
-import rotp.model.empires.ISpecies;
+import rotp.model.empires.species.CustomRaceDefinitions;
+import rotp.model.empires.species.Species;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.game.GameSession;
+import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.NoticeMessage;
 import rotp.ui.RotPUI;
@@ -92,14 +93,14 @@ final class SelectRestartEmpireUI  extends BasePanel implements MouseListener, M
 	// BR: for restarting with new options
 	void init(GalaxyCopy oG, GameSession newSession) {
 		this.newSession = newSession;
-	 	oldGalaxy = oG;
+		oldGalaxy = oG;
 		empireList.clear();
 		valueList.clear();
 		raceList.clear();
 		empireList.clear();
 		abilitiesList.clear();
 		homeworldList.clear();
-		
+
 		hoverBox = null;
 		selectBox = null;
 		selectIndex = -1;
@@ -114,7 +115,7 @@ final class SelectRestartEmpireUI  extends BasePanel implements MouseListener, M
 		enableGlassPane(this);
 		repaint();
 	}
-	
+
 	private void loadListing() {
 		empireList.clear();
 		valueList.clear();
@@ -132,8 +133,8 @@ final class SelectRestartEmpireUI  extends BasePanel implements MouseListener, M
 			if (e.isCustomRace)
 				cr = new CustomRaceDefinitions(e.raceOptions);
 			else
-				cr = new CustomRaceDefinitions(ISpecies.R_M.keyed(e.dataRaceKey));
-			
+				cr = new CustomRaceDefinitions(new Species(e.dataRaceKey));
+
 			empireList.add(name);
 			valueList.add(Math.round(cr.getTotalCost()));
 			raceList.add(race);
@@ -266,8 +267,9 @@ final class SelectRestartEmpireUI  extends BasePanel implements MouseListener, M
 
 		final Runnable load = () -> {
 			long start = System.currentTimeMillis();
-			GameUI.gameName = generateGameName();
-			GameSession.instance().restartGame(newGameOptions(), oldGalaxy);
+			IGameOptions opts = newGameOptions();
+			GameUI.gameName = generateGameName(opts);
+			GameSession.instance().restartGame(opts, oldGalaxy);
 			RotPUI.instance().mainUI().checkMapInitialized();
 			RotPUI.instance().selectIntroPanel();
 			log("TOTAL GAME START TIME:" +(System.currentTimeMillis()-start));
@@ -319,7 +321,7 @@ final class SelectRestartEmpireUI  extends BasePanel implements MouseListener, M
 			drawShadowedString(g, title, 1, 3, (w-sw)/2, scaled(120), GameUI.titleShade(), GameUI.titleColor());
 
 			end = min(empireList.size(), start+MAX_LENGTH);
-			
+
 			int w0 = wE+wH+wR+wA+wV+wM+wM;
 			int x0 = (w-w0)/2;
 			int h0 = s5+(MAX_LENGTH*lineH);
@@ -331,13 +333,13 @@ final class SelectRestartEmpireUI  extends BasePanel implements MouseListener, M
 			int wBottom = s80;
 			g.setColor(GameUI.loadListMask());
 			g.fillRect(x0-wSide, y0-wTop, w0+wSide+wSide, h0+lineH+wTop+wBottom);
-			
+
 			g.setColor(GameUI.raceCenterColor());
 			g.fillRect(x0, y0, w0, h0+lineH);
-			
+
 			g.setColor(GameUI.sortLabelBackColor());
 			g.fillRect(x0, y0, w0, lineH);
-			
+
 			int bX = x0+wM;
 			int bY = y0+lineH;
 			drawEmpireButton	(g, bX, bY);

@@ -22,7 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
-import rotp.model.empires.Race;
+import rotp.model.empires.species.Species;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
@@ -91,44 +91,37 @@ public class PlanetFactory implements Base {
     private static boolean combo(ParamAAN2 aan2, boolean b, boolean isPlayer) {
     	return aan2.isAlways(isPlayer) || (!aan2.isNever(isPlayer) && b);
     }
-    public static Planet createHomeworld(Race r, Race dr, StarSystem sys,
-    		float bonus, boolean isPlayer) { // BR: added player info and dataRace
-    	IGameOptions opts = GameSession.instance().options();
-        Planet p = instance.options().randomPlayerPlanet(dr, sys);
-        p.baseSize(dr.homeworldSize()*bonus);
-        if (r.homeworldKey() > 0)
-            p.terrainSeed(r.homeworldKey());
+	public static Planet createHomeworld(Species species, StarSystem sys, float bonus, boolean isPlayer) {
+		IGameOptions opts = GameSession.instance().options();
+		Planet p = instance.options().randomPlayerPlanet(species, sys);
+		p.baseSize(species.homeworldSize()*bonus);
+		if (species.homeworldKey() > 0)
+			p.terrainSeed(species.homeworldKey());
 		// modnar: add option for changing Race homeworld type
-        // BR: User control over these settings
-		if (dr.raceWithUltraPoorHomeworld())
+		// BR: User control over these settings
+		if (species.raceWithUltraPoorHomeworld())
 			p.setResourceUltraPoor();
-		if (dr.raceWithPoorHomeworld())
+		if (species.raceWithPoorHomeworld())
 			p.setResourcePoor();
-		if (combo(opts.selectedRichHomeworld(),
-				dr.raceWithRichHomeworld(), isPlayer))
+		if (combo(opts.selectedRichHomeworld(), species.raceWithRichHomeworld(), isPlayer))
 			p.setResourceRich();
-		if (combo(opts.selectedUltraRichHomeworld(),
-				dr.raceWithUltraRichHomeworld(), isPlayer))
+		if (combo(opts.selectedUltraRichHomeworld(), species.raceWithUltraRichHomeworld(), isPlayer))
 			p.setResourceUltraRich();
-		if (combo(opts.selectedArtifactsHomeworld(),
-				dr.raceWithArtifactsHomeworld(), isPlayer))
+		if (combo(opts.selectedArtifactsHomeworld(), species.raceWithArtifactsHomeworld(), isPlayer))
 			p.setArtifactRace();
-		if (combo(opts.selectedOrionLikeHomeworld(),
-				dr.raceWithOrionLikeHomeworld(), isPlayer))
+		if (combo(opts.selectedOrionLikeHomeworld(), species.raceWithOrionLikeHomeworld(), isPlayer))
 			p.setOrionRace();
-		if (dr.raceWithHostileHomeworld())
+		if (species.raceWithHostileHomeworld())
 			p.makeEnvironmentHostile();
-		if (combo(opts.selectedFertileHomeworld(),
-				dr.raceWithFertileHomeworld(), isPlayer))
+		if (combo(opts.selectedFertileHomeworld(), species.raceWithFertileHomeworld(), isPlayer))
 			p.enrichSoil();
-		if (combo(opts.selectedGaiaHomeworld(),
-				dr.raceWithGaiaHomeworld(), isPlayer)) {
+		if (combo(opts.selectedGaiaHomeworld(), species.raceWithGaiaHomeworld(), isPlayer)) {
 			p.enrichSoil();
 			p.enrichSoil();
 		}
+		return p;
+	}
 
-        return p;
-    }
     // modnar: add option to start game with additional colonies
     // modnar: use orionPlanet (always Terran), always size-60
     public static Planet createCompanionWorld(StarSystem sys, float bonus) {

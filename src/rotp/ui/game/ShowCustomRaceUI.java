@@ -16,7 +16,7 @@
 package rotp.ui.game;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.empires.CustomRaceDefinitions.ROOT;
+import static rotp.model.empires.species.CustomRaceDefinitions.ROOT;
 import static rotp.ui.game.SetupGalaxyUI.specificAI;
 
 import java.awt.Color;
@@ -37,8 +37,8 @@ import javax.swing.JEditorPane;
 import javax.swing.JTextPane;
 
 import rotp.model.ai.AIList;
-import rotp.model.empires.CustomRaceDefinitions;
 import rotp.model.empires.Empire;
+import rotp.model.empires.species.CustomRaceDefinitions;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
@@ -106,12 +106,12 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	// This should be the last static to be initialized
 	private static final ShowCustomRaceUI instance = new ShowCustomRaceUI();
 
-	private LinkedList<Integer> colSettingsCount;
-	private	LinkedList<Integer> spacerList;
-	private LinkedList<Integer> columnList;
-	LinkedList<ICRSettings>  commonList;
-	protected LinkedList<ICRSettings> settingList;
-	protected LinkedList<ICRSettings> mouseList;
+	private List<Integer> colSettingsCount;
+	private	List<Integer> spacerList;
+	private List<Integer> columnList;
+	List<ICRSettings>  commonList;
+	protected List<ICRSettings> settingList;
+	protected List<ICRSettings> mouseList;
 	
 	protected String guiTitleID;
 
@@ -311,7 +311,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	protected  String totalCostStr()	{ return text(totalCostKey, Math.round(cr().getTotalCost())); }
 	private  String malusCostStr()		{ return text(malusCostKey, Math.round(cr().getMalusCost())); }
 
-	private boolean checkForHoveredSettings(LinkedList<ICRSettings> settings) {
+	private boolean checkForHoveredSettings(List<ICRSettings> settings) {
 		for (ICRSettings setting : settings) {
 			if (setting.settingText().contains(mX,mY)) {
 				hoverBox = setting.settingText().box();
@@ -610,7 +610,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		totalCostText.displayText(totalCostStr());
 		totalCostText.setScaledXY(xCost, yCost);
 		totalCostText.draw(g);
-		// Malus cost
+		// Penalty cost
 		int sw = totalCostText.w();
 		malusCostText.displayText(malusCostStr());
 		malusCostText.setScaledXY(xCost + sw + s2, yCost);

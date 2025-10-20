@@ -1,13 +1,13 @@
 // race-specific variables (must start with _)
-_empire                           | Le Triumvirat Humain, Le Triumvirat Terrien, Le Triumvirat Tellien, Le Triumvirat Primien, Le Triumvirat Midgardien
-_empireof                         | du Triumvirat Humain, du Triumvirat Terrien, du Triumvirat Tellien, du Triumvirat Primien, du Triumvirat Midgardien
-_raceadjec                        | Humain, Terrien, Tellien, Primien, Midgardien
-_raceadjecF                       | Humaine, Terrienne, Tellienne, Primienne, Midgardienne
-_race_pluralnoun                  | les Humains, les Terriens, les Telliens, les Primiens, les Midgardiens
-_race_pluralnounof                | des Humains, des Terriens, des Telliens, des Primiens, des Midgardiens
-_race_pluralnounto                | aux Humains, aux Terriens, aux Telliens, aux Primiens, aux Midgardiens
-_race_pluraladjec                 | Humains, Terriens, Telliens, Primiens, Midgardiens
-_race_pluraladjecF                | Humaines, Terriennes, Telliennes, Primiennes, Midgardiennes
+_empire                           | Le Triumvirat Humain, Le Triumvirat Terrien, Le Triumvirat Tellien, Le Triumvirat Primien, Le Triumvirat Midgardien, Le Triumvirat Pangéen
+_empireof                         | du Triumvirat Humain, du Triumvirat Terrien, du Triumvirat Tellien, du Triumvirat Primien, du Triumvirat Midgardien, de Triumvirat Pangéen
+_raceadjec                        | Humain, Terrien, Tellien, Primien, Midgardien, Pangéen
+_raceadjecF                       | Humaine, Terrienne, Tellienne, Primienne, Midgardienne, Pangéenne
+_race_pluralnoun                  | les Humains, les Terriens, les Telliens, les Primiens, les Midgardiens, les Pangéens
+_race_pluralnounof                | des Humains, des Terriens, des Telliens, des Primiens, des Midgardiens, des Pangéens
+_race_pluralnounto                | aux Humains, aux Terriens, aux Telliens, aux Primiens, aux Midgardiens, aux Pangéens
+_race_pluraladjec                 | Humains, Terriens, Telliens, Primiens, Midgardiens, Pangéens
+_race_pluraladjecF                | Humaines, Terriennes, Telliennes, Primiennes, Midgardiennes, Pangéennes
 _title                            | le Triumvir
 _nameTitle                        | le Triumvir
 

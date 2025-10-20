@@ -8,8 +8,8 @@ import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
-import java.util.LinkedList;
 
+import rotp.model.empires.species.Species;
 import rotp.ui.game.GameUI;
 import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamCR;
@@ -71,8 +71,11 @@ public interface IRaceOptions extends IBaseOptsTools {
 	default boolean selectedPlayerIsCustom()		{ return playerIsCustom.get(); }
 	default void selectedPlayerIsCustom(boolean is)	{ playerIsCustom.set(is); }
 
-	ParamCR		playerCustomRace	= new ParamCR(MOD_UI, defaultRace);
+	ParamCR	playerCustomRace	= new ParamCR(MOD_UI, defaultRace);
 	default ParamCR playerCustomRace()						 { return playerCustomRace; }
 	default Serializable selectedPlayerCustomRace()			 { return playerCustomRace.get(); }
 	default void selectedPlayerCustomRace(Serializable race) { playerCustomRace.set(race); }
+	default Species playerCustomSpecies(String animKey)		 { return playerCustomRace.getSpecies(animKey); }	
+	default Species playerCustomSpecies(IGameOptions opts)	 { return playerCustomRace.getSpecies(opts.selectedPlayerRace()); }	
+	default String  playerCustomSetupName(IGameOptions opts) { return playerCustomSpecies(opts).setupName(); }	
 }

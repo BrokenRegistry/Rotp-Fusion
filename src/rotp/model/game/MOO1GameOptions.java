@@ -39,7 +39,7 @@ import java.util.zip.ZipOutputStream;
 
 import rotp.Rotp;
 import rotp.model.empires.Empire;
-import rotp.model.empires.Race;
+import rotp.model.empires.species.Species;
 import rotp.model.events.RandomEvent;
 import rotp.model.galaxy.AllShapes;
 import rotp.model.galaxy.GalaxyShape;
@@ -645,10 +645,8 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             checkForArtifacts(p, s);
         return p;
     }
-    @Override
-    public String randomPlayerStarType(Race r)     { return StarType.YELLOW; }
-    @Override
-    public String randomRaceStarType(Race r)       { 
+	@Override public String randomPlayerStarType(Species s)	{ return StarType.YELLOW; }
+	@Override public String randomRaceStarType(Species s)	{ 
         List<String> types = new ArrayList<>();
         types.add(StarType.RED);
         types.add(StarType.ORANGE);
@@ -671,10 +669,9 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         p.initPlanetType("PLANET_TERRAN");
         return p;
     }
-    @Override
-    public Planet randomPlayerPlanet(Race r, StarSystem s) {
+    @Override public Planet randomPlayerPlanet(Species species, StarSystem s)	{
         Planet p = new Planet(s);
-        p.initPlanetType(r.homeworldPlanetType());
+        p.initPlanetType(species.homeworldPlanetType());
         return p;
     }
     // @Override public List<String> galaxySizeOptions()     { return IGameOptions.getGalaxySizeOptions(); }
