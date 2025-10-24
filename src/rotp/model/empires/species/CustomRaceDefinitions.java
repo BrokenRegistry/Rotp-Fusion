@@ -600,11 +600,14 @@ public class CustomRaceDefinitions {
 			if (!speciesDir.exists() || !speciesDir.isDirectory())
 				return;
 			// Local files
-			speciesList.addAll(Arrays.asList(speciesDir.listFiles(SPECIES_FILTER)));
+			File[] array = speciesDir.listFiles(SPECIES_FILTER);
+			if (array != null && array.length > 0)
+				speciesList.addAll(Arrays.asList(array));
 			// Sub Dir files
 			File[] subDirectories = speciesDir.listFiles(File::isDirectory);
-			for (File subDir : subDirectories)
-				scanSubDir(speciesList, subDir);
+			if(subDirectories != null && subDirectories.length > 0)
+				for (File subDir : subDirectories)
+					scanSubDir(speciesList, subDir);
 		}
 		private void add(DynOptions opt) {
 			CustomRaceDefinitions cr = new CustomRaceDefinitions(opt);
