@@ -27,9 +27,9 @@ public interface InterfaceOptions {
 	default void prepareToSave(IGameOptions o)	{}
 	void updateOptionTool();
 	// For settings only
-	default void updateOptionTool(DynamicOptions options)	{}
+	default void updateOptionTool(DynamicOptions srcOptions)	{}
 	// For settings only
-	default void updateOption(DynamicOptions options)	{}
+	default void updateOption(DynamicOptions destOptions)	{}
 	default void setFromDefault(boolean excludeCfg, boolean excludeSubMenu)	{ }
 	// cascadeSubMenu as integer to avoid infinite loop!
 	default void copyOption(IGameOptions src, IGameOptions dest,

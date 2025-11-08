@@ -15,8 +15,6 @@
  */
 package rotp.ui.main.overlay;
 
-import static rotp.ui.BasePanel.stroke2;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

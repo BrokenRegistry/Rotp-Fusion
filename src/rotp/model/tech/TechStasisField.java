@@ -21,12 +21,13 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
 import rotp.model.ships.ShipSpecialStasisField;
 import rotp.ui.BasePanel;
 import rotp.ui.combat.ShipBattleUI;
-import java.awt.image.BufferedImage;
 
 public final class TechStasisField extends Tech {
     private static final int FRAME_MS = 30;
@@ -87,7 +88,7 @@ public final class TechStasisField extends Tech {
         Graphics2D g0 = (Graphics2D) ui.getGraphics();
         Stroke prev = g0.getStroke();
 
-        g0.setStroke(BasePanel.baseStroke(1));
+        g0.setStroke(baseStroke(1));
 
         Rectangle rect = ui.combatGrids[x][y];
         int n=15;

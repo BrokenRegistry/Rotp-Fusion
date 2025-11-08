@@ -764,7 +764,7 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
         }
         private void paintSabotageResult(Image buffer) {
             Graphics2D g = (Graphics2D) buffer.getGraphics();
-            setFontHints(g);
+            setRenderingHints(g);
             int w = getWidth();
             int h = getHeight();
             g.setColor(Color.black);

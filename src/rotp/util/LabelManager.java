@@ -33,7 +33,7 @@ import rotp.Rotp;
 import rotp.ui.util.StringList;
 
 public class LabelManager implements Base {
-	public static final String LIST_SEP = ",";
+	public static final String LIST_SEP = StringList.SEP;
     static LabelManager instance = new LabelManager();
     public static LabelManager current()  { return instance; }
 	public static boolean validate = false; // BR: for debug purpose
@@ -51,7 +51,7 @@ public class LabelManager implements Base {
     public boolean hasDialogue(String key) { return dialogueMap.containsKey(key); }
     public boolean hasIntroduction()       { return !introLines.isEmpty(); }
     public List<String> introduction()     { return introLines; }
-    
+
     public void dialogueFile(String s)    { dialogueFile = s; }
     public void labelFile(String s)       { labelFile = s; }
     public void introFile(String s)       { introFile = s; }
@@ -135,7 +135,6 @@ public class LabelManager implements Base {
         }
         if (Rotp.countWords)
             log("WORDS - "+filename+": "+wc);
-            
     }
     public void loadLabelFile(String dir) {
     	lastDir = dir;
@@ -172,7 +171,7 @@ public class LabelManager implements Base {
     public void loadDialogueFile(String dir) {
     	lastDir = dir;
         log("loading Dialogue: ", dir, dialogueFile);
-        
+
         String filename = dir+dialogueFile;
         BufferedReader in = reader(filename);
         if (in == null) {
@@ -201,7 +200,7 @@ public class LabelManager implements Base {
     }
     public void loadTechsFile(String dir) {
         log("loading Techs: ", dir, techsFile);
-        
+
         String filename = dir+techsFile;
         BufferedReader in = reader(filename);
         if (in == null) {
@@ -245,7 +244,7 @@ public class LabelManager implements Base {
         	}
             return 0;
        }
-        
+
         int wc = 0;
         String val = vals.get(1).trim();
         if (validate) {
@@ -290,7 +289,7 @@ public class LabelManager implements Base {
         	}
             return 0;
         }
-         
+
         String key = vals.get(0);
         if (!map.containsKey(key))
             map.put(key, new ArrayList<>());
@@ -305,7 +304,7 @@ public class LabelManager implements Base {
             }
         }
         map.get(key).add(val);
-        
+
         if (Rotp.countWords)
             return substrings(val, ' ').size();
         else
@@ -347,6 +346,14 @@ public class LabelManager implements Base {
         }
         catch(UnsupportedEncodingException e) { }
     }
+	public void filterLabelsTo(StringList common, StringList multiple)	{
+		for (String key : labelMap.keySet())
+			if (key.startsWith("_"))
+				if (label(key).contains(LIST_SEP))
+					multiple.add(key);
+				else
+					common.add(key);
+	}
 
     public Collection<List<String>> dialogueMapValues() { return dialogueMap.values(); } // BR: For Debug
     public Set<Entry<String, List<String>>> dialogueMapEntrySet() { return dialogueMap.entrySet(); } // BR: For Debug
@@ -355,7 +362,6 @@ public class LabelManager implements Base {
     	if (FontManager.current() == null)
     		return;
     	Font dlg = FontManager.current().dlgFont(16);
-//    	Font dlg = FontManager.current().plainFont(16);
     	int loc = dlg.canDisplayUpTo(str);
     	if (loc == -1)
     		return;

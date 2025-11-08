@@ -19,11 +19,12 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
 import rotp.model.Sprite;
+import rotp.ui.ScaledInteger;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.util.Base;
 
-public abstract class MapOverlay implements Base {
+public abstract class MapOverlay implements Base, ScaledInteger {
     abstract public boolean hoveringOverSprite(Sprite o);
     abstract public void advanceMap();
     abstract public void paintOverMap(MainUI parent, GalaxyMapPanel ui, Graphics2D g2);

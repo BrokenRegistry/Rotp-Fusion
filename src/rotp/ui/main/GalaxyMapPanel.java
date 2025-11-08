@@ -346,7 +346,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
     	// debugShowAll = true; // TO DO BR: COMMENT
     	// debugShowAll = false; // TO DO BR: COMMENT
         Graphics2D g2 = (Graphics2D) g;
-        setFontHints(g2);
+        setRenderingHints(g2);
         parent.checkMapInitialized();
 		try {
 			paintToImage(mapBuffer());
@@ -609,7 +609,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
                 //redrawRangeMap = false;
 				//Graphics2D g0 = (Graphics2D) rangeMapBuffer.getGraphics();
 				Graphics2D g0 = (Graphics2D) g.create(); // use create() to not leave afterimage
-				setFontHints(g0);
+				setRenderingHints(g0);
 				if(!historyMode)
                 	drawExtendedRangeDisplay(g0);
 				drawOwnershipDisplay(g0);

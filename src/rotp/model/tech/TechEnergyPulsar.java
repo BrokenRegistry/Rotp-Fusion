@@ -15,14 +15,16 @@
  */
 package rotp.model.tech;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Stroke;
+import java.awt.image.BufferedImage;
+
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
 import rotp.model.ships.ShipSpecialPulsar;
-import rotp.ui.BasePanel;
 import rotp.ui.combat.ShipBattleUI;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public final class TechEnergyPulsar extends Tech {
     private static final int FRAME_MS = 20;
@@ -110,7 +112,7 @@ public final class TechEnergyPulsar extends Tech {
         Graphics2D g = (Graphics2D) ui.getGraphics();
         Stroke prev = g.getStroke();
 
-        g.setStroke(BasePanel.baseStroke(4));
+        g.setStroke(baseStroke(4));
 
         Rectangle rect = ui.combatGrids[x][y];
         int n=15;
@@ -134,7 +136,7 @@ public final class TechEnergyPulsar extends Tech {
                 int endJ = min(n, i+5);
                 for (int j=startJ;j<endJ;j++) {
                     Graphics2D g0 = (Graphics2D) frames[j].getGraphics();
-                    g0.setStroke(BasePanel.baseStroke(5));
+                    g0.setStroke(baseStroke(5));
                     g0.setColor(c0);
                     g0.drawOval(x0, y0, w0, h0);
                     g0.dispose();

@@ -16,7 +16,7 @@
 package rotp.ui.game;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.empires.species.CustomRaceDefinitions.ROOT;
+import static rotp.model.empires.species.SpeciesSettings.ROOT;
 import static rotp.ui.game.SetupGalaxyUI.specificAI;
 
 import java.awt.Color;
@@ -39,15 +39,15 @@ import javax.swing.JTextPane;
 import rotp.model.ai.AIList;
 import rotp.model.empires.Empire;
 import rotp.model.empires.species.CustomRaceDefinitions;
+import rotp.model.empires.species.ICRSettings;
+import rotp.model.empires.species.SettingBase;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.races.RacesUI;
-import rotp.ui.util.ICRSettings;
 import rotp.ui.util.IParam;
 import rotp.ui.util.ListDialogUI;
-import rotp.ui.util.SettingBase;
 import rotp.util.FontManager;
 import rotp.util.ModifierKeysState;
 
@@ -102,6 +102,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private static final int   optionFont	= 13;
 	private static final int   optionH		= s15;
 	private static final int   optionIndent	= s15;
+	private static CustomRaceDefinitions cr;
 
 	// This should be the last static to be initialized
 	private static final ShowCustomRaceUI instance = new ShowCustomRaceUI();
@@ -143,7 +144,6 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private   ModText malusCostText;
 	private	  RacesUI  raceUI; // Parent panel
 	protected int maxLeftM;
-	private   CustomRaceDefinitions cr;
 	protected boolean initialized = false;
 	private   boolean forceUpdate = true;
 
@@ -160,14 +160,14 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	    malusCostText = new ModText(this, costFontSize, 
 	    		malusC, malusC, hoverC, depressedC, malusC, false);
 	}
-	public static ShowCustomRaceUI instance() {
-		return instance.init0();
-	}
+	public static ShowCustomRaceUI instance() 				{ return instance.init0(); }
+	public static CustomRaceDefinitions displayedSpecies()	{ return cr; }
+
 	private ShowCustomRaceUI init0() {
 		if (initialized)
 			return this;
 		initialized = true;
-		cr(new CustomRaceDefinitions());		
+		cr(new CustomRaceDefinitions(true));		
 		maxLeftM	= scaled(80);
 		guiTitleID	= ROOT + "SHOW_TITLE";
 	    commonList	= settingList;
@@ -485,7 +485,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
     	initButtonPosition();
 		buttonBackImg = new BufferedImage(retina(wButton), retina(hButton), TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) buttonBackImg.getGraphics();
-		setFontHints(g);
+		setRenderingHints(g);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
         g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);

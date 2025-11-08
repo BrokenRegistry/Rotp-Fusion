@@ -496,19 +496,19 @@ public enum RaceFactory implements Base {
         if (Rotp.countWords)
             wc = substrings(value,',').size();  // uncomment 
 
-		if (key.equalsIgnoreCase("name"))	{ r.parseSpeciesNames(value); return wc; }
-		if (key.equalsIgnoreCase("desc1"))	{ r.setDescription1(value); return wc; }
-		if (key.equalsIgnoreCase("desc2"))	{ r.setDescription2(value); return wc; }
-		if (key.equalsIgnoreCase("desc3"))	{ r.setDescription3(value); return wc; }
-		if (key.equalsIgnoreCase("desc4"))	{ r.setDescription4(value); return wc; } // modnar: add desc4
-		if (key.equalsIgnoreCase("home"))	{ r.homeSystemNames().clear(); r.homeSystemNames().addAll(substrings(value, ',')); return wc; }
-		if (key.equalsIgnoreCase("title"))	{ r.title(value.trim()); return wc; }
-		if (key.equalsIgnoreCase("fulltitle"))	{ r.fullTitle(value.trim()); return wc; }
-		if (key.equalsIgnoreCase("leader"))	{ r.leaderNames().clear(); r.leaderNames().addAll(substrings(value, ',')); return wc; }
-		if (key.equalsIgnoreCase("ship1"))	{ r.shipNamesSmall().clear(); r.shipNamesSmall().addAll(substrings(value, ',')); return wc; }
-		if (key.equalsIgnoreCase("ship2"))	{ r.shipNamesMedium().clear(); r.shipNamesMedium().addAll(substrings(value, ',')); return wc; }
-		if (key.equalsIgnoreCase("ship3"))	{ r.shipNamesLarge().clear(); r.shipNamesLarge().addAll(substrings(value, ',')); return wc; }
-		if (key.equalsIgnoreCase("ship4"))	{ r.shipNamesHuge().clear(); r.shipNamesHuge().addAll(substrings(value, ',')); return wc; }
+		if (key.equalsIgnoreCase("name"))		{ r.parseSpeciesNames(value);	return wc; }
+		if (key.equalsIgnoreCase("desc1"))		{ r.setDescription1(value);		return wc; }
+		if (key.equalsIgnoreCase("desc2"))		{ r.setDescription2(value);		return wc; }
+		if (key.equalsIgnoreCase("desc3"))		{ r.setDescription3(value);		return wc; }
+		if (key.equalsIgnoreCase("desc4"))		{ r.setDescription4(value);		return wc; } // modnar: add desc4
+		if (key.equalsIgnoreCase("home"))		{ r.parseHomeWorlds(value);		return wc; }
+		if (key.equalsIgnoreCase("title"))		{ r.title(value.trim());		return wc; }
+		if (key.equalsIgnoreCase("fulltitle"))	{ r.fullTitle(value.trim());	return wc; }
+		if (key.equalsIgnoreCase("leader"))		{ r.parseLeaderNames(value);	return wc; }
+		if (key.equalsIgnoreCase("ship1"))		{ r.parseShipNamesSmall(value);	return wc; }
+		if (key.equalsIgnoreCase("ship2"))		{ r.parseShipNamesMedium(value);return wc; }
+		if (key.equalsIgnoreCase("ship3"))		{ r.parseShipNamesLarge(value);	return wc; }
+		if (key.equalsIgnoreCase("ship4"))		{ r.parseShipNamesHuge(value);	return wc; }
 	err("unknown key->", input);
 	return 0;
 	}

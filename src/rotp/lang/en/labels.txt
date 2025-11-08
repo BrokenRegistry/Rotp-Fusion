@@ -2071,9 +2071,6 @@ CUSTOM_RACE_RANDOM_USE_TARGET_NO_DESC  | Ignore targeted value.
 
 CUSTOM_RACE_DESCRIPTION				| Customized Species
 
-
-
-
 CUSTOM_RACE_BASE_DATARACE         | Base Abilities
 CUSTOM_RACE_HOME_TYPE             | Planet Type
 CUSTOM_RACE_HOME_SIZE_DESC        | Starting Size of this Empire Home world.
@@ -2188,7 +2185,54 @@ CUSTOM_RACE_RESEARCH_FORCEFIELD_DESC   | Cost multiplier for researching Force F
 CUSTOM_RACE_RESEARCH_PLANET_DESC       | Cost multiplier for researching Planet tech. Display: Cost multiplier -> Cost multiplier/ Revenue multiplier (Cost)
 CUSTOM_RACE_RESEARCH_PROPULSION_DESC   | Cost multiplier for researching Propulsion tech. Display: Cost multiplier -> Cost multiplier/ Revenue multiplier (Cost)
 CUSTOM_RACE_RESEARCH_WEAPON_DESC       | Cost multiplier for researching Weapon tech. Display: Cost multiplier -> Cost multiplier/ Revenue multiplier (Cost)
-CUSTOM_RACE_RACE_NAME				| Species Name
+
+CUSTOM_RACE__empire					| →CUSTOM_RACE_RACE_EMPIRE_NAME←
+CUSTOM_RACE__empire_DESC			| →CUSTOM_RACE_RACE_EMPIRE_NAME_DESC←
+CUSTOM_RACE__race					| →CUSTOM_RACE_SPECIES_NAME←
+CUSTOM_RACE__race_DESC				| →CUSTOM_RACE_SPECIES_NAME_DESC←
+CUSTOM_RACE__race_plural			| Plural of →CUSTOM_RACE_SPECIES_NAME←
+CUSTOM_RACE__race_plural_DESC		| Plural of →CUSTOM_RACE_SPECIES_NAME_DESC←
+CUSTOM_RACE__title					| →CUSTOM_RACE_LEADER_TITLE←
+CUSTOM_RACE__title_DESC				| →CUSTOM_RACE_LEADER_TITLE_DESC←
+CUSTOM_RACE__nameTitle				| →CUSTOM_RACE_LEADER_FULLTITLE←
+CUSTOM_RACE__nameTitle_DESC			| →CUSTOM_RACE_LEADER_FULLTITLE_DESC←
+
+CUSTOM_RACE__empirefr				| →CUSTOM_RACE_RACE_EMPIRE_NAMEfr←
+CUSTOM_RACE__empirefr_DESC			| →CUSTOM_RACE_RACE_EMPIRE_NAMEfr_DESC←
+CUSTOM_RACE__racefr				| →CUSTOM_RACE_SPECIES_NAMEfr←
+CUSTOM_RACE__racefr_DESC			| →CUSTOM_RACE_SPECIES_NAMEfr_DESC←
+CUSTOM_RACE__race_pluralfr			| Plural of →CUSTOM_RACE_SPECIES_NAMEfr←
+CUSTOM_RACE__race_pluralfr_DESC	| Plural of →CUSTOM_RACE_SPECIES_NAMEfr_DESC←
+CUSTOM_RACE__titlefr				| →CUSTOM_RACE_LEADER_TITLEfr←
+CUSTOM_RACE__titlefr_DESC			| →CUSTOM_RACE_LEADER_TITLEfr_DESC←
+CUSTOM_RACE__nameTitlefr			| →CUSTOM_RACE_LEADER_FULLTITLEfr←
+CUSTOM_RACE__nameTitlefr_DESC		| →CUSTOM_RACE_LEADER_FULLTITLEfr_DESC←
+
+CUSTOM_RACE__empireoffr				| De l’empire
+CUSTOM_RACE__empireoffr_DESC			| Désignation de l’empire avec une notion d’origine (du, de la)<br>La contrepartie du paramètre "_empireof" dans les fichiers Species.labels.txt
+CUSTOM_RACE__raceadjecfr				| Adjectif de l’espèce
+CUSTOM_RACE__raceadjecfr_DESC			| Adjectif relatif à l’espèce<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__raceadjecFfr				| Féminin de l’adjectif
+CUSTOM_RACE__raceadjecFfr_DESC			| Féminin de l’adjectif relatif à l’espèce<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnounfr			| Pluriel de l’espèce
+CUSTOM_RACE__race_pluralnounfr_DESC	| Pluriel du nom de l’espèce<br>La contrepartie du paramètre « _race_pluralnoun » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnounoffr		| Pluriel & Origine
+CUSTOM_RACE__race_pluralnounoffr_DESC	| Pluriel de la désignation de l’empire avec une notion d’origine (du, de la)<br>La contrepartie du paramètre "_race_pluralnounof" dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnountofr		| →CUSTOM_RACE_LEADER_FULLTITLE←
+CUSTOM_RACE__race_pluralnountofr_DESC	| Pluriel de la désignation de l’empire avec une notion de destination (aux)<br>La contrepartie du paramètre "_race_pluralnounto" dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluraladjecfr		| Pluriel de l’adjectif
+CUSTOM_RACE__race_pluraladjecfr_DESC	| Pluriel de l’adjectif relatif à l’espèce<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluraladjecFfr		| Féminin pluriel
+CUSTOM_RACE__race_pluraladjecFfr_DESC	| Féminin pluriel de l’adjectif relatif à l’espèce<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+
+CUSTOM_RACE_SPECIES_NAME			| Civilization Name
+CUSTOM_RACE_SPECIES_NAME_DESC		| One of the possible name for this species.
+CUSTOM_RACE_HOME_WORLD				| Home world
+CUSTOM_RACE_HOME_WORLD_DESC			| One of the possible home system names.
+CUSTOM_RACE_LEADER_NAME				| Leader Name
+CUSTOM_RACE_LEADER_NAME_DESC		| One of the possible leader names.
+
+CUSTOM_RACE_RACE_NAME				| Civilizations Names
 CUSTOM_RACE_RACE_NAME_DESC			| All possible names<br>The counterpart of the "_race" parameter in Species.labels.txt files, and the "name" parameter in the Species.names.txt files.
 CUSTOM_RACE_RACE_NAME_INPUT			| Enter the Species Name.
 CUSTOM_RACE_RACE_NAME_PLURAL		| Species Name in the plural
@@ -2217,6 +2261,27 @@ CUSTOM_RACE_SHIP_NAME_3           | Large Ships Names
 CUSTOM_RACE_SHIP_NAME_3_DESC      | All possible large ships name.<br>The counterpart of the "ship3" parameter in Species.names.txt files
 CUSTOM_RACE_SHIP_NAME_4           | Huge Ships Names
 CUSTOM_RACE_SHIP_NAME_4_DESC      | All possible huge ships name.<br>The counterpart of the "ship4" parameter in Species.names.txt files
+
+CUSTOM_RACE_RACE_NAMEfr				| Nom de l’espèce
+CUSTOM_RACE_RACE_NAMEfr_DESC		| Une des possibles dénomination de cette espèce.
+CUSTOM_RACE_RACE_EMPIRE_NAMEfr		| Appellation de l’empire
+CUSTOM_RACE_RACE_EMPIRE_NAMEfr_DESC	| Le pendant du paramètre « _empire » dans les fichiers Species.labels.txt.
+CUSTOM_RACE_HOME_WORLDfr			| Monde d’origine
+CUSTOM_RACE_HOME_WORLDfr_DESC		| Un des possibles noms donné à la planète d’origine.
+CUSTOM_RACE_LEADER_NAMEfr			| Nom du chef
+CUSTOM_RACE_LEADER_NAMEfr_DESC		| Un des possibles noms de dirigeants.
+CUSTOM_RACE_LEADER_TITLEfr			| Titre du chef
+CUSTOM_RACE_LEADER_TITLEfr_DESC	| L’équivalent du paramètre « titre » dans les fichiers Species.names.txt.
+CUSTOM_RACE_LEADER_FULLTITLEfr		| Titre du chef complet
+CUSTOM_RACE_LEADER_FULLTITLEfr_DESC	| L’équivalent du paramètre « fulltitle » dans les fichiers Species.names.txt.
+CUSTOM_RACE_RACE_DESC_1fr			| Aperçu de l’humeur de l’espèce
+CUSTOM_RACE_RACE_DESC_1fr_DESC		| L’équivalent du paramètre « desc1 » dans les fichiers Species.names.txt
+CUSTOM_RACE_RACE_DESC_2fr			| Aperçu des aptitudes de l’espèce
+CUSTOM_RACE_RACE_DESC_2fr_DESC		| L’équivalent du paramètre « desc2 » dans les fichiers Species.names.txt
+CUSTOM_RACE_RACE_DESC_3fr			| Aperçu globale de l’espèce
+CUSTOM_RACE_RACE_DESC_3fr_DESC		| L’équivalent du paramètre « desc3 » dans les fichiers Species.names.txt
+CUSTOM_RACE_RACE_DESC_4fr			| Aperçu spécifique de l’espèce
+CUSTOM_RACE_RACE_DESC_4fr_DESC		| L’équivalent du paramètre « desc4 » dans les fichiers Species.names.txt
 
 CUSTOM_RACE_RACE_DESC_1				| Species mood description
 CUSTOM_RACE_RACE_DESC_1_DESC		| The counterpart of the "desc1" parameter in Species.names.txt files
@@ -2309,6 +2374,10 @@ CUSTOM_RACE_IGNORES_ECO_ALL        | All
 CUSTOM_RACE_IGNORES_ECO_NO_DESC      | Normal behavior, Hostile planet types requires tech.
 CUSTOM_RACE_IGNORES_ECO_LIMITED_DESC | Ignores Waste and Hostile environments like All, Barren, Tundra, and Dead can immediately be colonized.
 CUSTOM_RACE_IGNORES_ECO_ALL_DESC     | All planet types can immediately be colonized.
+
+// Custom Race Naming Sub Panel
+CUSTOM_RACE_UI_NAMES_TITLE			| Custom Species Names Catalog
+
 
 // Advanced Settings
 SETTINGS_TITLE                    | Advanced Game Options
@@ -5735,27 +5804,27 @@ SETUP_SELECT_CR_OPTIONS		      | Selectable Abilities.
 ???		                          | ???
 ???_DESC		                  | ???_DESCXXX
 
-ABILITIES_SELECTION			| 'From Abilities top box'
-ABILITIES_ORIGINAL_SPECIES	| 'Original Abilities'
-ABILITIES_REWORKED			| 'Reworked Abilities'
+ABILITIES_SELECTION				| 'From Abilities top box'
+ABILITIES_ORIGINAL_SPECIES		| 'Original Abilities'
+ABILITIES_REWORKED				| 'Reworked Abilities'
 ABILITIES_PLAYER				| 'Same as Player'
 ABILITIES_RANDOM				| 'Randomly Created'
-ABILITIES_RANDOM_10			| 'Any Original (10)'
-ABILITIES_RANDOM_16			| 'Any Original (16)'
-ABILITIES_FILES				| 'Allowed Custom Species'
-ABILITIES_ALL_FILES			| 'Any Custom Species'
+ABILITIES_RANDOM_10				| 'Any Original (10)'
+ABILITIES_RANDOM_16				| 'Any Original (16)'
+ABILITIES_FILES					| 'Allowed Custom Species'
+ABILITIES_ALL_FILES				| 'Any Custom Species'
 ABILITIES_FILES_RACES			| 'Original or Allowed'
 ABILITIES_All					| 'Original or Any Custom'
 
-ABILITIES_SELECTION_DESC			| Same abilities as the global abilities selected on the top.
+ABILITIES_SELECTION_DESC		| Same abilities as the global abilities selected on the top.
 ABILITIES_ORIGINAL_SPECIES_DESC	| Original abilities of the selected species (the one on the icon)
 ABILITIES_REWORKED_DESC			| Reworked abilities of the selected species (the one on the icon), modified and saved by the player (in the Species Customization Panel) with the respectively named species files: RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA, RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
-ABILITIES_PLAYER_DESC				| Same abilities as the selected player species.
-ABILITIES_RANDOM_DESC				| Abilities will be randomly generated using the "Setup" parameters: <b>RANDOM ALIENS OPTIONS</b> : "Target Max", "Target Min", "Custom Aliens", "Setting % Max", "Setting % Min", and "Smooth Edges".
-ABILITIES_RANDOM_10_DESC			| Abilities randomly selected within the ten original species abilities.
-ABILITIES_RANDOM_16_DESC			| Abilities randomly selected within the sixteen species abilities. <i>(The ten original species and the six Modnar species)</i>
-ABILITIES_FILES_DESC				| Abilities randomly selected within customized species files, having the "Available to AI" option enabled. If this list is empty the selection will be made within the original species abilities.
-ABILITIES_ALL_FILES_DESC			| Abilities randomly selected within customized species file, ignoring the "Available to AI" option. If this list is empty the selection will be made within the original species abilities.
+ABILITIES_PLAYER_DESC			| Same abilities as the selected player species.
+ABILITIES_RANDOM_DESC			| Abilities will be randomly generated using the "Setup" parameters: <b>RANDOM ALIENS OPTIONS</b> : "Target Max", "Target Min", "Custom Aliens", "Setting % Max", "Setting % Min", and "Smooth Edges".
+ABILITIES_RANDOM_10_DESC		| Abilities randomly selected within the ten original species abilities.
+ABILITIES_RANDOM_16_DESC		| Abilities randomly selected within the sixteen species abilities. <i>(The ten original species and the six Modnar species)</i>
+ABILITIES_FILES_DESC			| Abilities randomly selected within customized species files, having the "Available to AI" option enabled. If this list is empty the selection will be made within the original species abilities.
+ABILITIES_ALL_FILES_DESC		| Abilities randomly selected within customized species file, ignoring the "Available to AI" option. If this list is empty the selection will be made within the original species abilities.
 ABILITIES_FILES_RACES_DESC		| Abilities randomly selected within the original species abilities and the customized species files, having the "Available to AI" option enabled.
 ABILITIES_All_DESC				| Abilities randomly selected within the original species abilities and the customized species files, ignoring the "Available to AI" option.
 

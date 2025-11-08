@@ -21,6 +21,7 @@ import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
 import rotp.model.ships.ShipSpecialProjector;
@@ -135,7 +136,7 @@ public final class TechStreamProjector extends Tech {
         for (int i=0;i<n;i++) {
             for (int j=i;j<n;j++) {
                 Graphics2D g1 = (Graphics2D) frames[j].getGraphics();
-                g1.setStroke(BasePanel.baseStroke(3));
+                g1.setStroke(baseStroke(3));
                 g1.setColor(beamColor);
                 AffineTransform tx = g1.getTransform();
                 g1.rotate(radians, rX, rY);

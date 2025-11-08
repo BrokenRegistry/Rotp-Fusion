@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package rotp.ui.util;
+package rotp.model.empires.species;
 
 import static rotp.ui.util.IParam.langLabel;
 import static rotp.ui.util.IParam.realLangLabel;

@@ -1,7 +1,7 @@
 package rotp.model.empires.species;
 
-import static rotp.model.empires.species.CustomRaceDefinitions.BASE_RACE_MARKER;
-import static rotp.model.empires.species.CustomRaceDefinitions.fileToAlienRace;
+import static rotp.model.empires.species.CustomRaceDefinitions.fileToAlienRaceInfo;
+import static rotp.model.empires.species.SpeciesSettings.BASE_RACE_MARKER;
 import static rotp.model.game.IGalaxyOptions.globalCROptions;
 import static rotp.ui.util.IParam.labelFormat;
 import static rotp.ui.util.IParam.realLangLabel;
@@ -57,7 +57,7 @@ public interface ISpecies {
 
 			key  = getGuiValue(id);
 			help = realLangLabel(key + LABEL_DESCRIPTION);
-			SpeciesSkills speciesSkill = fileToAlienRace(key);
+			SpeciesSkills speciesSkill = fileToAlienRaceInfo(key);
 			String raceName = speciesSkill.setupName;
 			if (key.startsWith(BASE_RACE_MARKER))
 				help = labelFormat(name(id)) + "<i>(Original species)</i>&nbsp " + speciesSkill.getDescription1();
@@ -101,7 +101,7 @@ public interface ISpecies {
 
 			key  = getGuiValue(id);
 			help = realLangLabel(key + LABEL_DESCRIPTION);
-			SpeciesSkills speciesSkill = fileToAlienRace(key);
+			SpeciesSkills speciesSkill = fileToAlienRaceInfo(key);
 			String raceName	= speciesSkill.setupName;
 			if (key.startsWith(BASE_RACE_MARKER))
 				help = labelFormat(name(id)) + "<i>(Original species)</i>&nbsp " + speciesSkill.getDescription1();

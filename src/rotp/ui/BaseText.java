@@ -15,9 +15,6 @@
  */
 package rotp.ui;
 
-import static rotp.ui.BasePanel.s5;
-import static rotp.ui.BasePanel.s50;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -28,7 +25,7 @@ import rotp.util.Base;
 import rotp.util.LanguageManager;
 
 
-public class BaseText implements Base {
+public class BaseText implements Base, ScaledInteger {
     static int ST_NORMAL = 0;
     static int ST_LOCKED = 1;
     static int ST_HOVER = 1;

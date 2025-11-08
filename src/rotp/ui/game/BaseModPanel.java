@@ -234,6 +234,8 @@ public abstract class BaseModPanel extends BasePanel
 	}
 	
 	public void refreshGui(int level) {}
+	public void sleep()	{ isOnTop = false; }
+	public void wake()	{ isOnTop = true; }
 
 	protected void init() {
 		//ModifierKeysState.reset();

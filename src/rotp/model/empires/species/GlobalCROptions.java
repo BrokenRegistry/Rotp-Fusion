@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-package rotp.ui.util;
+package rotp.model.empires.species;
+
+import rotp.ui.util.ParamString;
+import rotp.ui.util.StringList;
 
 public class GlobalCROptions extends ParamString {
 

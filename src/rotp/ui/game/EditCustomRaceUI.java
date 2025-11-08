@@ -16,7 +16,7 @@
 package rotp.ui.game;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.empires.species.CustomRaceDefinitions.ROOT;
+import static rotp.model.empires.species.SpeciesSettings.ROOT;
 import static rotp.model.game.IBaseOptsTools.LIVE_OPTIONS_FILE;
 import static rotp.ui.util.IParam.langLabel;
 
@@ -36,13 +36,13 @@ import java.util.List;
 import rotp.Rotp;
 import rotp.model.empires.species.CustomRaceDefinitions;
 import rotp.model.empires.species.CustomRaceDefinitions.RaceList;
+import rotp.model.empires.species.ICRSettings;
 import rotp.model.empires.species.Species;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IMainOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.util.ICRSettings;
 import rotp.ui.util.InterfaceOptions;
 import rotp.ui.util.ParamButtonHelp;
 import rotp.util.LabelManager;
@@ -88,7 +88,7 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 		if (initialized)
 			return this;
 		initialized = true;
-		cr(new CustomRaceDefinitions());		
+		cr(new CustomRaceDefinitions(true));		
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
@@ -252,7 +252,11 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 					for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
 						int optionIdx = bulletStart + bulletIdx;
 						if (hoverBox == setting.optionText(bulletIdx).box()) {
-							if (setting.toggle(e, w, optionIdx) || raceList.newValue()) {
+							if (setting.getLangLabel().equals("CUSTOM_RACE_RACE_KEY")) {
+								if (setting.toggle(e, w, this))
+									repaint();
+							}
+							else if (setting.toggle(e, w, optionIdx) || raceList.newValue()) {
 								repaint();
 							}
 							else
@@ -714,7 +718,7 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 		g.setStroke(prev);
 	}
 	@Override public void paintComponent(Graphics g0) {
-		// showTiming = true;
+		//showTiming = true; // TO DO BR: COMMENT
 		if (showTiming)
 			System.out.println("===== EditCustomRace PaintComponents =====");
 		long timeStart = System.currentTimeMillis();
@@ -741,9 +745,12 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 		drawSpeciesDirButton(g);
 		//drawButtons(g);
 		if (showTiming)
-			System.out.println("EditCustomRace paintComponent() Time = " + (System.currentTimeMillis()-timeStart));	
+			System.out.println("EditCustomRace paintComponent() Time = " + (System.currentTimeMillis()-timeStart) + " ms");	
 	}
 	@Override public void keyPressed(KeyEvent e) {
+		if (!isOnTop)
+			return;
+
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_ESCAPE:
 				doExitBoxAction();
@@ -752,6 +759,9 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 		super.keyPressed(e);
 	}
 	@Override public void mouseReleased(MouseEvent e) {
+		if (!isOnTop)
+			return;
+
 		if (e.getButton() > 3)
 			return;
 		if (hoverBox == null)
@@ -799,6 +809,9 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 		mouseCommon(e, null);
 	}
 	@Override public void mouseWheelMoved(MouseWheelEvent e) {
+		if (!isOnTop)
+			return;
+
 		mouseCommon(null, e);
 	}
 }

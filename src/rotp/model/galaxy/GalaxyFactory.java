@@ -15,11 +15,11 @@
  */
 package rotp.model.galaxy;
 
-import static rotp.model.empires.species.CustomRaceDefinitions.RANDOM_RACE_KEY;
 import static rotp.model.empires.species.CustomRaceDefinitions.fileToAlienRace;
 import static rotp.model.empires.species.CustomRaceDefinitions.getAllAlienRaces;
 import static rotp.model.empires.species.CustomRaceDefinitions.getAllowedAlienRaces;
 import static rotp.model.empires.species.CustomRaceDefinitions.optionToAlienRace;
+import static rotp.model.empires.species.SpeciesSettings.RANDOM_RACE_KEY;
 import static rotp.model.game.IBaseOptsTools.GAME_OPTIONS_FILE;
 
 import java.awt.Point;
@@ -35,6 +35,7 @@ import rotp.model.empires.Empire.EmpireBaseData;
 import rotp.model.empires.Leader;
 import rotp.model.empires.species.CustomRaceDefinitions;
 import rotp.model.empires.species.Species;
+import rotp.model.empires.species.SpecificCROption;
 import rotp.model.galaxy.Galaxy.GalaxyBaseData;
 import rotp.model.galaxy.GalaxyShape.EmpireSystem;
 import rotp.model.galaxy.StarSystem.SystemBaseData;
@@ -45,7 +46,6 @@ import rotp.model.game.IGameOptions;
 import rotp.model.planet.Planet;
 import rotp.model.tech.Tech; // modnar: add game mode to start all Empires with 2 random techs
 import rotp.model.tech.TechTree; // modnar: add game mode to start all Empires with 2 random techs
-import rotp.ui.util.SpecificCROption;
 import rotp.ui.util.StringList;
 import rotp.ui.util.planets.PlanetImager;
 import rotp.util.Base;

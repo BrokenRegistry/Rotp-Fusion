@@ -23,7 +23,6 @@ import java.awt.Stroke;
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
 import rotp.model.ships.ShipSpecialBlackHole;
-import rotp.ui.BasePanel;
 import rotp.ui.combat.ShipBattleUI;
 
 public final class TechBlackHole extends Tech {
@@ -83,7 +82,7 @@ public final class TechBlackHole extends Tech {
         Graphics2D g = (Graphics2D) ui.getGraphics();
         Stroke prev = g.getStroke();
 
-        g.setStroke(BasePanel.baseStroke(4));
+        g.setStroke(baseStroke(4));
 
         Rectangle rect = ui.combatGrids[x][y];
         int n=15;

@@ -107,7 +107,7 @@ public final class GameOverUI extends FadeInPanel
         int w = getWidth();
         int h = getHeight();
         Graphics2D g = (Graphics2D) img.getGraphics();
-        setFontHints(g);
+        setRenderingHints(g);
 
         // modnar: use (slightly) better sampling
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);

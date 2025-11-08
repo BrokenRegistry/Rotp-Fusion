@@ -408,7 +408,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 	}
 	@Override protected String GUI_ID()		{ return GUI_ID; }
 	@Override public void paintComponent(Graphics g0)	{
-		// showTiming = true;
+		// showTiming = true; // TO DO BR: COMMENT
 		if (showTiming)
 			System.out.println("===== Classic Menu PaintComponents =====");
 		long timeStart = System.currentTimeMillis();
@@ -440,7 +440,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 		g.setStroke(prev);
 		showGuide(g);
 		if (showTiming)
-			System.out.println("Classic Menu paintComponent() Time = " + (System.currentTimeMillis()-timeStart));
+			System.out.println("Classic Menu paintComponent Time = " + (System.currentTimeMillis()-timeStart) + " ms");
 	}
 	@Override public void keyPressed(KeyEvent e)		{
 		super.keyPressed(e);

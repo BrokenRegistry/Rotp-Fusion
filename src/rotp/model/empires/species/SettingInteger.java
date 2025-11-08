@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package rotp.ui.util;
+package rotp.model.empires.species;
 
+import static rotp.model.empires.species.SettingBase.CostFormula.RELATIVE;
 import static rotp.ui.util.IParam.langLabel;
-import static rotp.ui.util.SettingBase.CostFormula.RELATIVE;
 
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;

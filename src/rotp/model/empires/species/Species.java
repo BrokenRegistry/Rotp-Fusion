@@ -16,6 +16,7 @@ import rotp.model.empires.Leader;
 import rotp.model.empires.RaceCombatAnimation;
 import rotp.model.empires.SystemInfo;
 import rotp.model.game.DynOptions;
+import rotp.model.game.IGameOptions;
 import rotp.model.planet.PlanetType;
 import rotp.model.tech.Tech;
 import rotp.ui.util.StringList;
@@ -26,11 +27,12 @@ public class Species implements ISpecies, Base, Serializable {
 
 	// ====================================================================
 	// Species Management
-	//
+	// ====================================================================
 	private static final Map<String, Race> INTERNAL_SPECIES_MAP = new HashMap<>();
 	private static final Map<String, String> INTERNAL_NAMES_MAP = new HashMap<>();
 
 	static Race getAnim(String key)			{ return INTERNAL_SPECIES_MAP.get(key); }
+//	static DynOptions getOptions(String key){ return new CustomRaceDefinitions(getAnim(key)).getAsOptions(); }
 	static boolean isValidKey(String s)		{ return INTERNAL_SPECIES_MAP.get(s) != null; }
 	static List<Race> races()				{ return new ArrayList<>(INTERNAL_SPECIES_MAP.values()); }
 	static Map<String, String> namesMap()	{ return INTERNAL_NAMES_MAP; }
@@ -56,6 +58,18 @@ public class Species implements ISpecies, Base, Serializable {
 	}
 	public static String getSpeciesName(String key)				{ return new Species(key).setupName(); }
 	public static void loadRaceLangFiles(Species s, String dir)	{ RaceFactory.current().loadRaceLangFiles(s.anim, dir); }
+	private static SpeciesSkills keyToRace(String raceKey) {
+		if (raceKey.equalsIgnoreCase(SpeciesSettings.RANDOM_RACE_KEY)) {
+			return CustomRaceDefinitions.getRandomAlienRace();
+		}
+		if (raceKey.equalsIgnoreCase(SpeciesSettings.CUSTOM_RACE_KEY)) {
+			DynOptions opt = (DynOptions) IGameOptions.playerCustomRace.get();
+			return new CustomRaceDefinitions(opt, false).getRace();
+		}
+		// load from file
+		return new CustomRaceDefinitions(raceKey, false).getRace();
+	}
+	
 	// ====================================================================
 	// Names validations
 	//
@@ -80,9 +94,10 @@ public class Species implements ISpecies, Base, Serializable {
 			usedSpeciesNames = new StringList();
 		return usedSpeciesNames;
 	}
+
 	// ====================================================================
 	// Species
-	//
+	// ====================================================================
 	private static final String CUSTOM_RACE_DESCRIPTION	= "CUSTOM_RACE_DESCRIPTION";
 
 	private transient Race anim;
@@ -116,7 +131,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public Species(String key)	{
 		anim = getAnim(key);
 		if (anim == null) { // Add custom race if missing
-			skills = CustomRaceDefinitions.keyToRace(key);
+			skills = keyToRace(key);
 			skills.isCustomSpecies(true);
 			skills.setDescription4(skills.text(CUSTOM_RACE_DESCRIPTION));
 		}
@@ -133,7 +148,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public SpeciesSkills setSpeciesSkills(String skillsKey)	{
 		skills = getAnim(skillsKey);
 		if (skills == null) {
-			skills = CustomRaceDefinitions.keyToRace(skillsKey);
+			skills = keyToRace(skillsKey);
 			skills.isCustomSpecies(true);
 			skills.setDescription4(skills.text(CUSTOM_RACE_DESCRIPTION));
 		}
@@ -148,6 +163,7 @@ public class Species implements ISpecies, Base, Serializable {
 	}
 	public void setSpeciesSkills(SpeciesSkills speciesSkills)	{ skills = speciesSkills; }
 	public void setSpeciesIndex(int id)		{ speciesIndex = id; }
+	SpeciesSkills getSkillCopy()			{ return skills.copy(); }
 
 	// ====================================================================
 	// To be overridden

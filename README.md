@@ -46,6 +46,13 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 25-10-20 (BR)
 - When a player select a custom species, the name of the custom species will replace the name of the selected animation species. But if the custom species has the same name as another species, and close to the maximum number of opponents is selected, this species name will appears twice. To fix this, the default option to keep the MoO1 names will add them to the list instead of replacing the first element. And as the human keep their names, I've added for them a new denomination: Pangaean.
+- Species classes and method reorganization
+  - Moved all species related class in its own package under the Empire one.
+  - Species skills (Abilities) have their own class (without all the animations contents)
+  - Race extends SpeciesSkills and includes Species Animations, and is still used for the internal species and is filled, as before, by the RaceFactory.
+  - A new Species class regroup the Empire method and redirect the request to the right skill class accordingly to the custom or random state of the species.
+  - Moved Species Manager inside Species class. (The same way Race Manager was inside Race class)
+  - Empire extends the species class to get access to all its previously owned methods. Thus Empire calls to race functions remains unchanged.
 
 25-10-10 (BR)
 - Opponents panel automation:

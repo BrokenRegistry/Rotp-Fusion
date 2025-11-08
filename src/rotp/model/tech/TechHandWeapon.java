@@ -19,6 +19,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+
 import rotp.model.empires.Empire;
 import rotp.ui.BasePanel;
 
@@ -113,7 +114,7 @@ public final class TechHandWeapon extends Tech {
 
         if (strokeSize > 0) {
             Stroke prevStroke = g.getStroke();
-            g.setStroke(BasePanel.baseStroke(strokeSize));
+            g.setStroke(baseStroke(strokeSize));
             g.setColor(color);
             g.drawLine(x0, y0, x1, y1);
             g.setStroke(prevStroke);

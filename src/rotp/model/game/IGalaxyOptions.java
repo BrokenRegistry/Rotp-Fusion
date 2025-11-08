@@ -12,10 +12,11 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import rotp.Rotp;
+import rotp.model.empires.species.GlobalCROptions;
+import rotp.model.empires.species.SpecificCROption;
 import rotp.model.galaxy.AllShapes;
 import rotp.ui.RotPUI;
 import rotp.ui.game.SetupGalaxyUI;
-import rotp.ui.util.GlobalCROptions;
 import rotp.ui.util.IParam;
 import rotp.ui.util.LinkData;
 import rotp.ui.util.LinkValue;
@@ -24,7 +25,6 @@ import rotp.ui.util.ParamInteger;
 import rotp.ui.util.ParamList;
 import rotp.ui.util.ParamListMultiple;
 import rotp.ui.util.ParamString;
-import rotp.ui.util.SpecificCROption;
 import rotp.util.Rand;
 
 public interface IGalaxyOptions extends IBaseOptsTools {

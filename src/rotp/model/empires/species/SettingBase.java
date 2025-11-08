@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package rotp.ui.util;
+package rotp.model.empires.species;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.Rotp.rand;
 import static rotp.model.game.IMainOptions.minListSizePopUp;
 import static rotp.ui.util.IParam.langHelp;
 import static rotp.ui.util.IParam.langLabel;
+import static rotp.ui.util.IParam.realLangLabel;
 import static rotp.ui.util.IParam.rowsSeparator;
 import static rotp.ui.util.IParam.tableFormat;
 import static rotp.util.Base.textSubs;
@@ -38,20 +39,25 @@ import java.util.LinkedList;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang3.StringUtils;
+
 import rotp.model.game.DynamicOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.RulesetManager;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.BaseModPanel.ModText;
+import rotp.ui.game.ShowCustomRaceUI;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.util.ListDialogUI;
+import rotp.ui.util.StringList;
 
 public class SettingBase<T> implements ICRSettings {
 	
 	public enum CostFormula {DIFFERENCE, RELATIVE, NORMALIZED}
-	private static final Color settingPosC = SystemPanel.limeText;  // Setting name color
-	public static final Color settingNegC = SystemPanel.redText;   // Setting name color
-	public static final Color settingC	  = SystemPanel.whiteText; // Setting name color
+	private static final Color settingPosC	= SystemPanel.limeText;	// Setting name color
+	public static final Color settingNegC	= SystemPanel.redText;	// Setting name color
+	public static final Color settingC		= SystemPanel.whiteText;	// Setting name color
 
 	private static final boolean defaultIsList			= true;
 	private static final boolean defaultIsBullet		= false;
@@ -138,6 +144,10 @@ public class SettingBase<T> implements ICRSettings {
 	protected void setFromCfgLabel(String s)	{
 		int index = labelValidIndex(labelList.indexOfIgnoreCase(s));
 		selectedValue(valueList.get(index));
+	}
+	@Override public String toString()	{
+		String s = getLangLabel() + ": " + getCfgValue() + " (" + defaultValue + ")";
+		return s;
 	}
 	// ========== Public IParam Interfaces ==========
 	//
@@ -299,12 +309,12 @@ public class SettingBase<T> implements ICRSettings {
 			return 0f;;
 		return costList.get(costValidIndex());
 	}
-	@Override public String guiCostOptionStr(int idx)	{ return guiCostOptionStr(idx, 0); }
-	@Override public int index()		{ return cfgValidIndex(); }
+	@Override public String guiCostOptionStr(int idx)		{ return guiCostOptionStr(idx, 0); }
+	@Override public int index()							{ return cfgValidIndex(); }
 	@Override public void guiSelect()	{
 		if (isSpacer())
 			return;
-		pushSetting();
+		settingToSkill(ShowCustomRaceUI.displayedSpecies().getRawRace());
 		updateGui();
 	}
 	@Override public void setRandom(float min, float max, boolean gaussian)	{ set(randomize(min, max, gaussian)); }
@@ -593,6 +603,19 @@ public class SettingBase<T> implements ICRSettings {
 	}
 	private	void addToolTip(String label, boolean finalKey)		{
 		tooltipList.add(getToolTip(label, finalKey));
+	}
+	public String getLabel(String langDir)	{
+		String langLabel = getLangLabel();
+		String realLabel = realLangLabel(langLabel);
+		if (realLabel != null)
+			return realLabel;
+		System.out.println("langLabel = " + langLabel);
+		String labelEnd = langDir;
+		langLabel = StringUtils.removeEnd(langLabel, labelEnd);
+		realLabel = realLangLabel(langLabel);
+		if (realLabel != null)
+			return realLabel;
+		return StringUtils.removeEnd(getCfgLabel(), labelEnd);
 	}
 	// ===== Other Public Methods =====
 	//

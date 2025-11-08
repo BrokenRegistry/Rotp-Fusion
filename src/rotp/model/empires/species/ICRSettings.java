@@ -1,4 +1,4 @@
-package rotp.ui.util;
+package rotp.model.empires.species;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -6,52 +6,23 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 
 import rotp.ui.game.BaseModPanel.ModText;
+import rotp.ui.util.IParam;
 
+/**
+ * Interface Custom Species Setting
+ */
 public interface ICRSettings extends IParam {
-//	void guiSelect();
-//	void updateGui();
-//	void pushSetting();
-//	void pullSetting();
-//	void clearImage();
-//
-//	void settingText(ModText txt);
-//	void hasNoCost(boolean hasNoCost);
-//	void setValueFromCost(float cost);
-//	void setRandom(float cost);
-//	void optionText(ModText optionText, int i);
-//	void setRandom(float min, float max, boolean gaussian);
-//	void drawSetting(int sizePad, int endPad, int optionH, int currentdWith,
-//			Color frameC, int frameShift, int xLine, int yLine, int settingIndent,
-//			int shift, int settingH, int frameTopPad, int wSetting, int optionIndent,
-//			boolean retina, float retinaFactor);
-//
-//	boolean toggle(MouseEvent e, MouseWheelEvent w, int idx);
-//	boolean isSpacer();
-//	boolean hasNoCost();
-//	boolean isBullet();
-//
-//	int index()	;
-//	int bulletStart();
-//	int bulletBoxSize();
-//	int deltaYLines();
-//
-//	ModText settingText();
-//	ModText optionText(int i);
-//	ModText[] optionsText();
-//	BufferedImage getImage();
-//
-//	float costFactor();
-//	float settingCost();
-//	float lastRandomSource();
-//
-//	String guiSettingDisplayStr();
-//	String guiCostOptionStr(int idx);
-
 
 	default void guiSelect()	{}
 	default void updateGui()	{}
-	default void pushSetting()	{}
-	default void pullSetting()	{}
+	/**
+	 *  Push current settings to SpeciesSkill
+	 */
+	default void settingToSkill(SpeciesSkills skills)	{ updateOption(skills.speciesOptions()); }
+	/**
+	 *  Pull settings from SpeciesSkill
+	 */
+	default void skillToSetting(SpeciesSkills skills)	{ updateOptionTool(skills.speciesOptions()); }
 	default void clearImage()	{}
 
 	default void settingText(ModText txt)		{}

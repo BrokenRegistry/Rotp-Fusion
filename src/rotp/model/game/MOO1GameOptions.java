@@ -40,6 +40,7 @@ import java.util.zip.ZipOutputStream;
 import rotp.Rotp;
 import rotp.model.empires.Empire;
 import rotp.model.empires.species.Species;
+import rotp.model.empires.species.SpecificCROption;
 import rotp.model.events.RandomEvent;
 import rotp.model.galaxy.AllShapes;
 import rotp.model.galaxy.GalaxyShape;
@@ -56,7 +57,6 @@ import rotp.ui.options.GalaxyMenuOptions;
 import rotp.ui.options.RaceMenuOptions;
 import rotp.ui.util.IParam;
 import rotp.ui.util.ParamSubUI;
-import rotp.ui.util.SpecificCROption;
 import rotp.util.Base;
 import rotp.util.Rand;
 

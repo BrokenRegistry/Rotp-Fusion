@@ -44,7 +44,6 @@ import rotp.model.empires.Empire;
 import rotp.model.game.IGameOptions;
 import rotp.model.ships.ShipComponent;
 import rotp.model.ships.ShipWeaponBeam;
-import rotp.ui.BasePanel;
 import rotp.ui.combat.ShipBattleUI;
 
 public final class TechShipWeapon extends Tech {
@@ -617,10 +616,10 @@ public final class TechShipWeapon extends Tech {
             g.setStroke(weaponStroke);
         else if (wpn.heavy()) {
         	spotWidth = scaled(attacksPerRound * (1 + 2*(beamStroke+weaponSpread-1)));
-        	g.setStroke(BasePanel.baseStroke(beamStroke*2+1));
+        	g.setStroke(baseStroke(beamStroke*2+1));
         } else {
         	spotWidth = scaled(2*(beamStroke+weaponSpread-1)*attacksPerRound);
-        	g.setStroke(BasePanel.baseStroke(beamStroke*2));
+        	g.setStroke(baseStroke(beamStroke*2));
         }
         
         int windUpFramesNum = opt.beamWindupFrames();
@@ -1061,9 +1060,9 @@ public final class TechShipWeapon extends Tech {
         if (weaponStroke != null)
             g.setStroke(weaponStroke);
         else if (wpn.heavy())
-            g.setStroke(BasePanel.baseStroke(beamStroke*2+1));
+            g.setStroke(baseStroke(beamStroke*2+1));
         else
-            g.setStroke(BasePanel.baseStroke(beamStroke*2));
+            g.setStroke(baseStroke(beamStroke*2));
 
         if (options().newWeaponSound())
         	 playAudioClip(newSoundEffect()); // BR:
@@ -1193,9 +1192,9 @@ public final class TechShipWeapon extends Tech {
         if (weaponStroke != null)
             g.setStroke(weaponStroke);
         else if (wpn.heavy())
-            g.setStroke(BasePanel.baseStroke(beamStroke*2+1));
+            g.setStroke(baseStroke(beamStroke*2+1));
         else
-            g.setStroke(BasePanel.baseStroke(beamStroke*2));
+            g.setStroke(baseStroke(beamStroke*2));
 
         if (options().newWeaponSound())
         	 playAudioClip(newSoundEffect()); // BR:

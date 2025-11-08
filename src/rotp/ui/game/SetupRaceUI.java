@@ -16,7 +16,7 @@
 package rotp.ui.game;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.empires.species.CustomRaceDefinitions.BASE_RACE_MARKER;
+import static rotp.model.empires.species.SpeciesSettings.BASE_RACE_MARKER;
 import static rotp.ui.util.IParam.labelFormat;
 import static rotp.ui.util.IParam.realLangLabel;
 import static rotp.ui.util.IParam.rowFormat;
@@ -535,7 +535,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         g.setStroke(prev);
 	}
 	@Override public void paintComponent(Graphics g0) {
-		// showTiming = true;
+		// showTiming = true; // TO DO BR: Comment
 		if (showTiming)
 			System.out.println("===== SetupRaceUI PaintComponents =====");
 		if (!isOnTop)
@@ -575,7 +575,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 			g.drawImage(backImg(), 0, 0, this);
 
 		if (showTiming)
-			System.out.println("background image Time = " + (System.currentTimeMillis()-timeStart));
+			System.out.println("background image Time = " + (System.currentTimeMillis()-timeStart) + " ms");
 
 		drawButtons(g);
         drawFixButtons(g, false);
@@ -781,7 +781,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 		showGuide(g);
 
 		if (showTiming)
-			System.out.println("paintComponent() Time = " + (System.currentTimeMillis()-timeStart));
+			System.out.println("paintComponent() Time = " + (System.currentTimeMillis()-timeStart) + " ms");
 	}
     private void goToMainMenu() {
         buttonClick();
@@ -960,15 +960,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         int h = getHeight();
         backImg = newOpaqueImage(w, h);
         Graphics2D g = (Graphics2D) backImg.getGraphics();
-        setFontHints(g);
-
-		// modnar: use (slightly) better upsampling
-        // BR: Even better for unique rendering
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        setHiRenderingHints(g);
 
         // background image
         Image back = GameUI.defaultBackground;

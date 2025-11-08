@@ -88,6 +88,7 @@ import rotp.model.empires.Empire;
 import rotp.model.empires.species.CustomRaceDefinitions;
 import rotp.model.empires.species.ISpecies;
 import rotp.model.empires.species.Species;
+import rotp.model.empires.species.SpecificCROption;
 import rotp.model.galaxy.AllShapes;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.galaxy.GalaxyShape;
@@ -112,7 +113,6 @@ import rotp.ui.util.ParamButtonHelp;
 import rotp.ui.util.ParamList;
 import rotp.ui.util.ParamSubUI;
 import rotp.ui.util.RotpFileChooser;
-import rotp.ui.util.SpecificCROption;
 import rotp.ui.util.StringList;
 import rotp.util.FontManager;
 import rotp.util.ModifierKeysState;
@@ -977,7 +977,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	// Paint components sub sections
 	// ==============================================================
 	private Graphics2D paintInit(Graphics g0) {
-		// showTiming = true;
+		//showTiming = true; // TO DO BR: COMMENTS
 		if (showTiming)
 			System.out.println("===== Galaxy PaintComponents =====");
 		super.paintComponent(g0);
@@ -1374,6 +1374,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		}
 	}
 	@Override public void paintComponent(Graphics g0) {
+		//showTiming = true; // TO DO BR: COMMENTS
 		if (!isOnTop)
 			return;
 		long timeStart = System.currentTimeMillis();
@@ -1396,7 +1397,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			drawNotice(g, 30);
 		}
 		if (showTiming)
-			System.out.println("Galaxy paintComponent() Time = " + (System.currentTimeMillis()-timeStart));
+			System.out.println("Galaxy paintComponent() Time = " + (System.currentTimeMillis()-timeStart) + " ms");
 	}
 	private void drawHelpButton(Graphics2D g) {
 		helpBox.setBounds(s20,s20,s20,s25);
@@ -1966,7 +1967,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		int h = getHeight();
 		backImg = newOpaqueImage(w, h);
 		Graphics2D g = (Graphics2D) backImg.getGraphics();
-		setFontHints(g);
+		setRenderingHints(g);
 		// modnar: use (slightly) better upsampling
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
