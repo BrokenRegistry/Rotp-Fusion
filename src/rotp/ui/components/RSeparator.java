@@ -13,7 +13,7 @@ import rotp.ui.game.GameUI;
 
 public class RSeparator extends RLabel	{
 	private static final long serialVersionUID = 1L;
-	protected static int separatorWidth	= s4;
+	protected static int separatorWidth	= s2;
 	protected static int separatorGap	= s2;
 
 	public RSeparator(boolean horizontal, int lineWidth, String text)	{

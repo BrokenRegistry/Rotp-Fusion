@@ -15,10 +15,10 @@
  */
 package rotp.model.galaxy;
 
-import static rotp.model.empires.species.CustomRaceDefinitions.fileToAlienRace;
-import static rotp.model.empires.species.CustomRaceDefinitions.getAllAlienRaces;
-import static rotp.model.empires.species.CustomRaceDefinitions.getAllowedAlienRaces;
-import static rotp.model.empires.species.CustomRaceDefinitions.optionToAlienRace;
+import static rotp.model.empires.species.SkillsFactory.fileToSkills;
+import static rotp.model.empires.species.SkillsFactory.getAllAlienSkills;
+import static rotp.model.empires.species.SkillsFactory.getAllowedAlienSkills;
+import static rotp.model.empires.species.SkillsFactory.optionToSkills;
 import static rotp.model.empires.species.SpeciesSettings.RANDOM_RACE_KEY;
 import static rotp.model.game.IBaseOptsTools.GAME_OPTIONS_FILE;
 
@@ -33,7 +33,7 @@ import java.util.Map.Entry;
 import rotp.model.empires.Empire;
 import rotp.model.empires.Empire.EmpireBaseData;
 import rotp.model.empires.Leader;
-import rotp.model.empires.species.CustomRaceDefinitions;
+import rotp.model.empires.species.SkillsFactory;
 import rotp.model.empires.species.Species;
 import rotp.model.empires.species.SpecificCROption;
 import rotp.model.galaxy.Galaxy.GalaxyBaseData;
@@ -72,7 +72,7 @@ public final class GalaxyFactory implements Base {
 	}
 	private HashMap<String, StringList> reworkedMap()	{
 		if (reworkedMap == null) {
-			reworkedMapOrigin = CustomRaceDefinitions.getReworkMap();
+			reworkedMapOrigin = SkillsFactory.getReworkMap();
 			reworkedMap = new HashMap<>();
 			for (Entry<String, StringList> entry : reworkedMapOrigin.entrySet())
 				reworkedMap.put(entry.getKey(), new StringList(entry.getValue()));
@@ -418,7 +418,7 @@ public final class GalaxyFactory implements Base {
 		DynOptions options = null;
 		String restartChangesPlayerRace = opts.selectedRestartChangesPlayerRace();
 		if (opts.selectedPlayerIsCustom())
-			playerDataRaceKey = CustomRaceDefinitions.CUSTOM_RACE_KEY;
+			playerDataRaceKey = SkillsFactory.CUSTOM_RACE_KEY;
 		if (src != null && !opts.selectedRestartAppliesSettings()
 				&& !restartChangesPlayerRace.equals("GuiLast")
 				&& !restartChangesPlayerRace.equals("GuiSwap")) { // Use Restart info
@@ -559,8 +559,8 @@ public final class GalaxyFactory implements Base {
 		StringList allowedRaceList	= null;
 		StringList alienRaceList	= null;
 		if ((opts.selectedRestartAppliesSettings() || src == null)) {
-			allowedRaceList	= getAllowedAlienRaces();
-			alienRaceList	= getAllAlienRaces();
+			allowedRaceList	= getAllowedAlienSkills();
+			alienRaceList	= getAllAlienSkills();
 		}
 
 		// since we may have more races than colors we will need to reset the
@@ -596,15 +596,15 @@ public final class GalaxyFactory implements Base {
 
 				switch (ability) {
 					case USER_CHOICE:
-						species.setSpeciesSkills(fileToAlienRace(selectedAbility));
+						species.setSpeciesSkills(fileToSkills(selectedAbility));
 						break;
 					case REWORKED:
 						String skillKey = reworkedKey(raceKey);
 						if (!skillKey.isEmpty())
-							species.setSpeciesSkills(fileToAlienRace(skillKey));
+							species.setSpeciesSkills(fileToSkills(skillKey));
 						break;
 					case PLAYER:
-						species.setSpeciesSkills(optionToAlienRace(g.empire(0).speciesOptions()));
+						species.setSpeciesSkills(optionToSkills(g.empire(0).speciesOptions()));
 						break;
 					case RANDOM: // Create a random race
 						species.setSpeciesSkills(RANDOM_RACE_KEY);
@@ -619,20 +619,20 @@ public final class GalaxyFactory implements Base {
 						if (allowedRaceList.isEmpty())
 							species.setSpeciesSkills(raceKey);
 						else
-							species.setSpeciesSkills(fileToAlienRace(random(allowedRaceList)));
+							species.setSpeciesSkills(fileToSkills(random(allowedRaceList)));
 						break;
 					case FILES_NO_FLT:
 						if (alienRaceList.isEmpty())
 							species.setSpeciesSkills(raceKey);
 						else
-							species.setSpeciesSkills(fileToAlienRace(random(alienRaceList)));
+							species.setSpeciesSkills(fileToSkills(random(alienRaceList)));
 						break;
 					case FILES_RACES:
 						if (rng().nextBoolean())
 							if (allowedRaceList.isEmpty())
 								species.setSpeciesSkills(random(opts.allRaceOptions()));
 							else
-								species.setSpeciesSkills(fileToAlienRace(random(allowedRaceList)));
+								species.setSpeciesSkills(fileToSkills(random(allowedRaceList)));
 						else
 							species.setSpeciesSkills(random(opts.allRaceOptions()));
 						break;
@@ -640,11 +640,11 @@ public final class GalaxyFactory implements Base {
 						if (rng().nextBoolean())
 							if (rng().nextBoolean())
 								if (allowedRaceList.isEmpty())
-									species.setSpeciesSkills(optionToAlienRace(g.empire(0).speciesOptions()));
+									species.setSpeciesSkills(optionToSkills(g.empire(0).speciesOptions()));
 								else
-									species.setSpeciesSkills(fileToAlienRace(random(allowedRaceList)));
+									species.setSpeciesSkills(fileToSkills(random(allowedRaceList)));
 							else
-								species.setSpeciesSkills(optionToAlienRace(g.empire(0).speciesOptions()));
+								species.setSpeciesSkills(optionToSkills(g.empire(0).speciesOptions()));
 						else if (rng().nextBoolean())
 							species.setSpeciesSkills(random(opts.allRaceOptions()));
 						else
@@ -662,7 +662,7 @@ public final class GalaxyFactory implements Base {
 				if(eSrc.raceOptions == null)
 					species.setSpeciesSkills(eSrc.dataRaceKey);
 				else
-					species.setSpeciesSkills(optionToAlienRace(eSrc.raceOptions));
+					species.setSpeciesSkills(optionToSkills(eSrc.raceOptions));
  
 			EmpireSystem empSystem = null;
 			sys = StarSystemFactory.current().newSystemForRace(species, g);

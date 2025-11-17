@@ -34,9 +34,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import rotp.Rotp;
-import rotp.model.empires.species.CustomRaceDefinitions;
-import rotp.model.empires.species.CustomRaceDefinitions.RaceList;
 import rotp.model.empires.species.ICRSettings;
+import rotp.model.empires.species.SkillsFactory;
+import rotp.model.empires.species.SkillsFactory.RaceList;
 import rotp.model.empires.species.Species;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
@@ -88,28 +88,28 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 		if (initialized)
 			return this;
 		initialized = true;
-		cr(new CustomRaceDefinitions(true));		
+		cr(SkillsFactory.getSkillsFactoryForEditor());		
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		maxLeftM	= scaled(999);
 		guiTitleID	= ROOT + "GUI_TITLE";
-	    initGUI();		
+		initGUI();		
 
 		guiList = cr().guiList();
-	    for(ICRSettings setting : guiList)
-	    	setting.settingText(new ModText(this, labelFontSize,
+		for(ICRSettings setting : guiList)
+			setting.settingText(new ModText(this, labelFontSize,
 					labelC, labelC, hoverC, depressedC, textC, false));
-	    raceList = cr().initRaceList();
-	    initSetting(raceList);
-
-	    commonList = new LinkedList<>();
-	    commonList.addAll(settingList);
-	    commonList.addAll(guiList);
-	    
-	    mouseList = new LinkedList<>();
-	    mouseList.addAll(commonList);
-	    mouseList.add(raceList);
+		raceList = cr().initRaceList();
+		initSetting(raceList);
+		
+		commonList = new LinkedList<>();
+		commonList.addAll(settingList);
+		commonList.addAll(guiList);
+		
+		mouseList = new LinkedList<>();
+		mouseList.addAll(commonList);
+		mouseList.add(raceList);
 		return this;
 	}
 	private void reloadRaceList(boolean foldersRework) {

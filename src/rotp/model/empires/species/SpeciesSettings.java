@@ -2,6 +2,7 @@ package rotp.model.empires.species;
 
 import static rotp.model.empires.species.SettingBase.CostFormula.DIFFERENCE;
 import static rotp.model.empires.species.SettingBase.CostFormula.NORMALIZED;
+import static rotp.model.game.IRaceOptions.defaultRace;
 import static rotp.ui.util.IParam.langLabel;
 import static rotp.ui.util.PlayerShipSet.DISPLAY_RACE_SET;
 import static rotp.util.LanguageManager.selectedLanguageDir;
@@ -63,7 +64,7 @@ public abstract class SpeciesSettings {
 			updateEmpireSpeciesMap();
 		return ONE_PER_EMPIRE_MAP;
 	}
-	static HashMap<String, StringList> getOnePerSpeciesMap()	{
+	static HashMap<String, StringList> getOnePerSpeciesMap(){
 		if (ONE_PER_SPECIES_MAP.isEmpty())
 			updateEmpireSpeciesMap();
 		return ONE_PER_SPECIES_MAP;
@@ -77,12 +78,14 @@ public abstract class SpeciesSettings {
 	//
 	protected final SettingMap settingMap = new SettingMap(); // !!! To be kept up to date !!!
 	private SpeciesSkills race; // !!! To be kept up to date !!!
-	protected DynOptions reworkedRace;
-	boolean isReference = false; // For the rework sources, not to be updated.
-	boolean loadingInternalRace = false; // For the rework sources, not to be updated.
+	protected DynOptions reworkedOptions;
+	protected SpeciesSkills reworkedSkills;
+	boolean isReference = true; // For the rework sources, not to be updated.
+	boolean tryToUpdate = false; // For the rework sources, not to be updated.
 
-	protected SpeciesSkills race()					{ return race; }; // !!! To be kept up to date !!!
-	protected void race(SpeciesSkills race)			{ this.race = race; }; // !!! To be kept up to date !!!
+	private boolean doNotTryToUpdate()		{ return isReference || !tryToUpdate || reworkedOptions == null; }
+	protected SpeciesSkills race()			{ return race; };		// !!! To be kept up to date !!!
+	protected void race(SpeciesSkills race)	{ this.race = race; };	// !!! To be kept up to date !!!
 	protected void setDialogueSettings(String dir)	{
 		StringList list = getOnePerSpeciesMap().get(dir);
 		String langKey = toLanguageKey(dir);
@@ -117,6 +120,7 @@ public abstract class SpeciesSettings {
 	// ========================================================================
 	// Sub Classes
 	//
+	// #======================== Setting Map ========================
 	class SettingMap {
 		private final List<ICRSettings> settingList	= new ArrayList<>(); // !!! To be kept up to date !!!
 		private final List<ICRSettings> guiList	 	= new ArrayList<>();
@@ -128,26 +132,26 @@ public abstract class SpeciesSettings {
 			if (name.startsWith("_"))
 				System.out.println("name.startsWith(_)");
 			if (filled)
-				System.out.println("settingMap is not ready for new entry");
+				System.out.println("settingMap is not ready for new entry " + name);
 			settingMap.put(name, setting);
 		}
 		void add(ICRSettings setting) {
 			if (settingList.contains(setting)) {
-				System.err.println("DUPLICATE settingList");
+				System.err.println("DUPLICATE settingList " + setting.getCfgLabel());
 			}
 			settingList.add(setting);
 			put(setting.getLangLabel(), setting);
 		}
 		void addGui(ICRSettings setting) {
 			if (guiList.contains(setting)) {
-				System.err.println("DUPLICATE guilist");
+				System.err.println("DUPLICATE guilist " + setting.getCfgLabel());
 			}
 			guiList.add(setting);
 			put(setting.getLangLabel(), setting);
 		}
 		void addAttribute(ICRSettings setting) {
 			if (attributeList.contains(setting)) {
-				System.err.println("DUPLICATE attributeList");
+				System.err.println("DUPLICATE attributeList " + setting.getCfgLabel());
 			}
 			attributeList.add(setting);
 			put(setting.getLangLabel(), setting);
@@ -168,11 +172,131 @@ public abstract class SpeciesSettings {
 			list.addAll(guiList);
 			return list;
 		}
+		List<ICRSettings> getForRandom()	{
+			List<ICRSettings> list = new ArrayList<>(settingList);
+			list.addAll(guiList);
+			return list;
+		}
 		ICRSettings get(String key)			{ return settingMap.get(key); }
 		StringList getList(String key)		{ return ((SettingStringList)settingMap.get(ROOT + key)).getList(); }
 	}
+	// -#-
+	// #==================== ReworkedRaceKey ====================
+	//
+	class ReworkedRaceKey extends SettingBase<String> {
+		static final String REWORKED_RACE_KEY = "REWORKED_RACE_KEY";
+		static final String DEFAULT_VALUE = "NONE";
 
-	// ==================== RaceName ====================
+		private static void setReworkedKey(DynOptions opts, String key)	{ opts.setString(ROOT + REWORKED_RACE_KEY, key); }
+		private static String getReworkedKey(DynOptions opts)			{ return opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE); }
+		static String getRawReworkedKey(DynOptions opts)		{
+			String key = opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE);
+			return DEFAULT_VALUE.equals(key)? null : key;
+		}
+		static String getValidReworkedKey(DynOptions opts)		{
+			String key = opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE);
+			return DEFAULT_VALUE.equals(key)? defaultRace : key;
+		}
+		/**
+		 * Get a reworked key from the filename, or the folder name
+		 * @param file source file
+		 * @param foldersRework true -> Get a reworked key from the Folder.
+		 * @return the key, "" if none
+		 */
+		private static String fileToReworked (File file, boolean foldersRework)	{
+			// Test for reworked old Ways
+			String name = file.getName();
+			name = name.substring(0, name.length() - EXT.length());
+			if (IRaceOptions.allRaceOptions.contains(name))
+				return name;
+			if (foldersRework) {
+				Path path = file.toPath();
+				int count = path.getNameCount();
+				String dir = "RACE_" + path.getName(count-2).toString().toUpperCase();
+				if (IRaceOptions.allRaceOptions.contains(dir))
+					return dir;
+			}
+			return "";
+		}
+		/**
+		 * validate the key and return it
+		 * @param opt options files
+		 * @param file File to be checked for old reworked way
+		 * @param foldersRework true -> Get a reworked key from the Folder.
+		 * @return true if the reworked file is not empty
+		 */
+		static String validReworked(DynOptions opt, File file, boolean foldersRework)	{
+			String optKey	= getReworkedKey(opt); // current key
+			String fileKey	= fileToReworked(file, foldersRework); // potential candidate
+
+			if (fileKey.isEmpty()) // no candidate
+				return optKey;
+
+			if (!fileKey.equals(optKey)) { // update the key
+				setReworkedKey(opt, fileKey);
+				DynOptions.saveOptions(opt, file);
+				return fileKey;
+			}
+			return optKey;
+		}
+		ReworkedRaceKey() {
+			super(ROOT, REWORKED_RACE_KEY);
+			isBullet(false);
+			hasNoCost(true);
+			showFullGuide(false);
+			getToolTip();
+			initOptionsText();
+			labelsAreFinals(true);
+			allowListSelect(true);
+			refreshLevel(1);
+			for (Entry<String, String> s : Species.namesMap().entrySet())
+				put(s.getValue(), s.getKey(), 0f, s.getKey());
+			String defaultValue = LabelManager.current().label(ROOT + REWORKED_RACE_KEY + "_" + DEFAULT_VALUE);
+			put(defaultValue, DEFAULT_VALUE, 0f, DEFAULT_VALUE);
+			defaultCfgValue(defaultValue);
+			initOptionsText();
+		}
+		@Override public void settingToSkill(SpeciesSkills skills)	{ skills.reworkableSpeciesKey(settingValue()); }
+		@Override public void skillToSetting(SpeciesSkills skills)	{ set(skills.reworkableSpeciesKey()); }
+		@Override protected StringList altReturnList()	{ return new StringList(getValues()); }
+		@Override protected StringList guiTextsList()	{ return getOptions(); }
+		@Override public String guideDefaultValue()		{ return getDefaultCfgValue(); }
+		@Override public String guideValue()			{ return getCfgValue(); }
+		@Override public void updateOptionTool()		{
+			if (!isSpacer() && dynOpts() != null)
+				set(dynOpts().getString(getLangLabel(), DEFAULT_VALUE));
+		}
+		@Override public void updateOption(DynamicOptions destOptions)	{
+			if (!isSpacer() && destOptions != null)
+				destOptions.setString(getLangLabel(), settingValue());
+		}
+		@Override public void updateOptionTool(DynamicOptions srcOptions)	{
+			if (!isSpacer() && srcOptions != null) {
+				String reworkKey = srcOptions.getString(getLangLabel());
+				if (reworkKey == null || DEFAULT_VALUE.equals(reworkKey)) {
+					reworkedSkills = null;
+					reworkedOptions = null;
+					set(DEFAULT_VALUE);
+				}
+				else {
+					set(reworkKey);
+//					Race refSkill = Species.getAnim(reworkKey);
+//					CustomRaceDefinitions cr = new CustomRaceDefinitions(refSkill, true, false);
+//					reworkedRace = cr.getAsOptions();
+					reworkedSkills = SkillsFactory.getMasterSkillsForReworked(reworkKey);
+					reworkedOptions = reworkedSkills.speciesOptions();
+				}
+				set(srcOptions.getString(getLangLabel(), DEFAULT_VALUE));
+			}
+		}
+		@Override public void copyOption(IGameOptions src, IGameOptions dest, boolean updateTool, int cascadeSubMenu)	{
+			if (!isSpacer() && src != null && dest != null)
+				dest.dynOpts().setString(getLangLabel(), settingValue());
+			dest.dynOpts().setString(getLangLabel(), src.dynOpts().getString(getLangLabel(), DEFAULT_VALUE));
+		}
+	}
+	// -#-
+	// #==================== RaceName ====================
 	//
 	class RaceName extends SettingStringList { // TODO BR: update to standard list selection
 		static final String KEY = "RACE_NAME";
@@ -190,7 +314,7 @@ public abstract class SpeciesSettings {
 			String value = settingValue();
 			if (value == null || value.endsWith(TO_EDIT_TAG))
 				return;
-			System.out.println("forward changed a value: " + value + " singular: " + singular);
+//			System.out.println("forward changed a value: " + value + " langKey: " + ROOT +  EN_SINGULAR + langKey);// TODO BR: REMOVE
 			src.setString(ROOT + EN_SINGULAR + langKey, value);
 			src.setString(ROOT + EN_PLURAL + langKey, value + "s" + TO_EDIT_TAG);
 		}
@@ -218,12 +342,12 @@ public abstract class SpeciesSettings {
 			randomStr("Randomized");
 		}
 		@Override void validateLingoDefault(DynamicOptions speciesOptions, String currentLingo)	{
-			if (isReference || reworkedRace == null)
+			if (doNotTryToUpdate())
 				return;
 			super.validateLingoDefault(speciesOptions, currentLingo);
 		}
 		@Override void validateReworkedDefault(String value)	{
-			if (isReference || reworkedRace == null)
+			if (doNotTryToUpdate())
 				return;
 			super.validateReworkedDefault(value);
 		}
@@ -406,114 +530,7 @@ public abstract class SpeciesSettings {
 		@Override public void settingToSkill(SpeciesSkills skills) 		{ skills.preferredShipSet(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) 		{ set(skills.preferredShipSet()); }
 	}
-	// ==================== ReworkedRaceKey ====================
-	//
-	class ReworkedRaceKey extends SettingBase<String> {
-		static final String REWORKED_RACE_KEY = "REWORKED_RACE_KEY";
-		static final String DEFAULT_VALUE = "NONE";
 
-		private static void setReworkedKey(DynOptions opts, String key)	{ opts.setString(ROOT + REWORKED_RACE_KEY, key); }
-		private static String getReworkedKey(DynOptions opts)			{ return opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE); }
-		static String getRawReworkedKey(DynOptions opts)		{
-			String key = opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE);
-			return DEFAULT_VALUE.equals(key)? null : key;
-		}
-		/**
-		 * Get a reworked key from the filename, or the folder name
-		 * @param file source file
-		 * @param foldersRework true -> Get a reworked key from the Folder.
-		 * @return the key, "" if none
-		 */
-		private static String fileToReworked (File file, boolean foldersRework)	{
-			// Test for reworked old Ways
-			String name = file.getName();
-			name = name.substring(0, name.length() - EXT.length());
-			if (IRaceOptions.allRaceOptions.contains(name))
-				return name;
-			if (foldersRework) {
-				Path path = file.toPath();
-				int count = path.getNameCount();
-				String dir = "RACE_" + path.getName(count-2).toString().toUpperCase();
-				if (IRaceOptions.allRaceOptions.contains(dir))
-					return dir;
-			}
-			return "";
-		}
-		/**
-		 * validate the key and return it
-		 * @param opt options files
-		 * @param file File to be checked for old reworked way
-		 * @param foldersRework true -> Get a reworked key from the Folder.
-		 * @return true if the reworked file is not empty
-		 */
-		static String validReworked(DynOptions opt, File file, boolean foldersRework)	{
-			String optKey	= getReworkedKey(opt); // current key
-			String fileKey	= fileToReworked(file, foldersRework); // potential candidate
-
-			if (fileKey.isEmpty()) // no candidate
-				return optKey;
-
-			if (!fileKey.equals(optKey)) { // update the key
-				setReworkedKey(opt, fileKey);
-				DynOptions.saveOptions(opt, file);
-				return fileKey;
-			}
-			return optKey;
-		}
-		ReworkedRaceKey() {
-			super(ROOT, REWORKED_RACE_KEY);
-			isBullet(false);
-			hasNoCost(true);
-			showFullGuide(false);
-			getToolTip();
-			initOptionsText();
-			labelsAreFinals(true);
-			allowListSelect(true);
-			refreshLevel(1);
-			for (Entry<String, String> s : Species.namesMap().entrySet())
-				put(s.getValue(), s.getKey(), 0f, s.getKey());
-			String defaultValue = LabelManager.current().label(ROOT + REWORKED_RACE_KEY + "_" + DEFAULT_VALUE);
-			put(defaultValue, DEFAULT_VALUE, 0f, DEFAULT_VALUE);
-			defaultCfgValue(defaultValue);
-			initOptionsText();
-		}
-		@Override public void settingToSkill(SpeciesSkills skills)	{ skills.reworkableSpeciesKey(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills)	{ set(skills.reworkableSpeciesKey()); }
-		@Override protected StringList altReturnList()	{ return new StringList(getValues()); }
-		@Override protected StringList guiTextsList()	{ return getOptions(); }
-		@Override public String guideDefaultValue()		{ return getDefaultCfgValue(); }
-		@Override public String guideValue()			{ return getCfgValue(); }
-		@Override public void updateOptionTool()		{
-			if (!isSpacer() && dynOpts() != null)
-				set(dynOpts().getString(getLangLabel(), DEFAULT_VALUE));
-		}
-		@Override public void updateOption(DynamicOptions destOptions)	{
-			if (!isSpacer() && destOptions != null)
-				destOptions.setString(getLangLabel(), settingValue());
-		}
-		@Override public void updateOptionTool(DynamicOptions srcOptions)	{
-			if (!isSpacer() && srcOptions != null) {
-				String reworkKey = srcOptions.getString(getLangLabel());
-				if (reworkKey == null || DEFAULT_VALUE.equals(reworkKey)) {
-					reworkedRace = null;
-					set(DEFAULT_VALUE);
-				}
-				else {
-					set(reworkKey);
-					Race refSkill = Species.getAnim(reworkKey);
-					CustomRaceDefinitions cr = new CustomRaceDefinitions(refSkill, true, false);
-					
-					reworkedRace = cr.getAsOptions();
-				}
-				set(srcOptions.getString(getLangLabel(), DEFAULT_VALUE));
-			}
-		}
-		@Override public void copyOption(IGameOptions src, IGameOptions dest, boolean updateTool, int cascadeSubMenu)	{
-			if (!isSpacer() && src != null && dest != null)
-				dest.dynOpts().setString(getLangLabel(), settingValue());
-			dest.dynOpts().setString(getLangLabel(), src.dynOpts().getString(getLangLabel(), DEFAULT_VALUE));
-		}
-	}
 	// ==================== CRObjective ====================
 	//
 	class CRObjective {
@@ -1097,7 +1114,8 @@ public abstract class SpeciesSettings {
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.ignoresFactoryRefit(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.ignoresFactoryRefit()); }
 	}
-	// ==================== TechResearch  And Discovery====================
+	// -#-
+	// #==================== TechResearch  And Discovery====================
 	//
 	class Technologies {
 		TechResearch	techResearch	= new TechResearch();
@@ -1423,9 +1441,19 @@ public abstract class SpeciesSettings {
 			}
 		}
 	}
+	// -#-
 
-	// ==================== Names and Labels ====================
+	// #==================== Names and Labels ====================
 	//
+	// ==================== Language list ====================
+	//
+	class LanguageList extends SettingString {
+		static final String KEY = "LANGUAGE_LIST";
+		private static final String DEFAULT_VALUE = "en";
+		LanguageList()	{ super(ROOT, KEY, DEFAULT_VALUE); }
+		@Override public void settingToSkill(SpeciesSkills skills) { skills.languageList(settingValue()); }
+		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.languageList()); }
+	}
 	// ==================== HomeWorld ====================
 	//
 	class HomeWorld extends SettingStringList {
@@ -1491,7 +1519,10 @@ public abstract class SpeciesSettings {
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.fullTitle(settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.fullTitle()); }
 	}
-
+	// -#-
+	// #====================
+	// List of unique Names
+	//
 	class SpeciesAttributes implements ICRSettings { // for one Language
 		SpeciesNameItems		speciesNameItems;
 		SpeciesDescriptionItems	speciesDescriptionItems;
@@ -1530,9 +1561,6 @@ public abstract class SpeciesSettings {
 			empireLabelItems.updateOptionTool(srcOptions);
 		}
 	}
-	// ====================
-	// List of unique Names
-	//
 	// ====================
 	// Species List
 	//
@@ -1705,10 +1733,10 @@ public abstract class SpeciesSettings {
 		@Override public int getIndex()		{ return lastIndex; }
 		@Override String getSelectedItem()	{ return getList().get(lastIndex, TO_EDIT_DEFAULT); }
 		@Override void validateReworkedDefault(String value)	{
-			if (isReference || reworkedRace == null)
+			if (doNotTryToUpdate())
 				return;
 			if (TO_EDIT_DEFAULT.equals(value)) { // Try to get reworked value
-				String reworkedList = reworkedRace.getString(getLangLabel());
+				String reworkedList = reworkedOptions.getString(getLangLabel());
 				if (reworkedList == null)
 					return;
 				String reworkedValue = new StringList(reworkedList).get(lastIndex, TO_EDIT_DEFAULT);
@@ -1720,7 +1748,7 @@ public abstract class SpeciesSettings {
 			}
 		}
 		@Override void validateLingoDefault(DynamicOptions speciesOptions, String currentLingo)	{
-			if (isReference)
+			if (isReference || !tryToUpdate)
 				return;
 			String value = getSelectedItem();
 			if (TO_EDIT_DEFAULT.equals(value)) { // Try to get reworked value
@@ -1785,10 +1813,10 @@ public abstract class SpeciesSettings {
 		void setLiveValue(String str)	{ set(str); }
 		String getSelectedItem()		{ return settingValue(); }
 		void validateReworkedDefault(String value)	{
-			if (isReference || reworkedRace == null)
+			if (doNotTryToUpdate())
 				return;
 			if (TO_EDIT_DEFAULT.equals(value)) {
-				String reworkedValue = reworkedRace.getString(getLangLabel()); // Try to get reworked value
+				String reworkedValue = reworkedOptions.getString(getLangLabel()); // Try to get reworked value
 				if (reworkedValue != null)
 					set(tagValue(reworkedValue));
 				else {
@@ -1850,5 +1878,5 @@ public abstract class SpeciesSettings {
 			}
 		}
 	}
-
+	// -#-
 }

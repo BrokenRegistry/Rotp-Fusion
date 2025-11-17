@@ -28,8 +28,9 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
 
-import rotp.model.empires.species.CustomRaceDefinitions.AllSpeciesAttributes;
+import rotp.model.empires.species.SkillsFactory.AllSpeciesAttributes;
 import rotp.model.empires.species.SpeciesSettings.SpeciesAttributes;
 import rotp.ui.components.RButtonBar;
 import rotp.ui.components.RButtonBar.BarEvent;
@@ -49,7 +50,7 @@ import rotp.util.LanguageManager;
 
 public class CustomNameUI extends RDialog {
 	private static final long serialVersionUID = 1L;
-	private static final String ROOT = CustomRaceDefinitions.ROOT + "UI_";
+	private static final String ROOT = SkillsFactory.ROOT + "UI_";
 
 	private static final Insets BUTTON_INSETS = new Insets(0, s10, 0, s10);
 	private static final String  LANGUAGE_ID = "LANGUAGE";
@@ -63,8 +64,6 @@ public class CustomNameUI extends RDialog {
 	private int HORIZONTAL_GAP	= s10;
 	private int VERTICAL_GAP	= s10;
 
-//	private final HashMap<String, StringList> onePerEmpireMap	= SpeciesSettings.getOnePerEmpireMap();
-//	private final HashMap<String, StringList> onePerSpeciesMap	= SpeciesSettings.getOnePerSpeciesMap();
 	private final StringList languageNames = new StringList(LanguageManager.current().languageNames());
 	private final StringList languageCodes = new StringList(LanguageManager.current().languageCodes());
 
@@ -81,6 +80,7 @@ public class CustomNameUI extends RDialog {
 	private PageSelectionPane pageSelectionPane;
 	private BookPane bookPane;
 	private LangageSelection langageSelection; // ComboBox
+	private SelectionBars bars;
 
 	private void updating(boolean b)	{ updating = b; }
 	private boolean twoLanguages()		{
@@ -115,6 +115,7 @@ public class CustomNameUI extends RDialog {
 		setModal(true);
 		setVisible(true);
 	}
+	// #=== Initializers
 	private void initLists() {
 		int currentId = LanguageManager.selectedLanguage();
 		languageNames.setSelectedIndex(currentId);
@@ -153,6 +154,9 @@ public class CustomNameUI extends RDialog {
 					break;
 				case BUTTON_SELECTED:
 					break;
+				case BUTTON_RENAMED:
+					System.out.println("LanguageBarListener: Button renamed " + e.toString());
+					break;
 			}
 			languageNames.setSelectedIndex(e.newLabel);
 			pageSelectionPane.buildPanel();
@@ -170,14 +174,19 @@ public class CustomNameUI extends RDialog {
 				case BUTTON_REMOVED:
 					break;
 				case BUTTON_SELECTED:
-					System.out.println("EmpireBarListener: Button selected" + e.toString());
+					System.out.println("EmpireBarListener: Button selected " + e.toString());
 					break;
+				case BUTTON_RENAMED:
+					System.out.println("EmpireBarListener: Button renamed " + e.toString());
+					pageSelectionPane.refreshBar();
+					return;
 			}
 			pageSelectionPane.buildPanel();
 		}
 	}
+	// -#-
 	// ========================================================================
-	// Level 1: Content Panel (set as content pane to be able to access paintComponent to gives a background
+	// #=== Level 1: Content Panel (set as content pane to be able to access paintComponent to gives a background
 	//
 	class ContentPanel extends RContentPanel { // TODO
 		private static final long serialVersionUID = 1L;
@@ -226,12 +235,12 @@ public class CustomNameUI extends RDialog {
 				}
 		}
 	}
+	// -#-
 	// ========================================================================
-	// Level 2: ==> Selection Panel
+	// #=== Level 2: ==> Selection Panel
 	//
 	private class PageSelectionPane extends JPanel	{
 		private static final long serialVersionUID = 1L;
-		private SelectionBars bars;
 		// TODO
 		PageSelectionPane() {
 			setOpaque(false);
@@ -258,6 +267,17 @@ public class CustomNameUI extends RDialog {
 			pack();
 			updating(false);
 			// System.out.println("====> UPDATING = FALSE");
+		}
+		private void refreshBar()	{
+			updating(true);
+			if (bars != null)
+				remove(bars);
+			bars = new SelectionBars();
+			bars.buildPanel();
+			GridBagConstraints gbc = newGbc(0,0, REMAINDER,1, 0,0, CENTER, HORIZONTAL, new Insets(0, LEFT_MARGIN, 0, RIGHT_MARGIN), 0,0);
+			add(bars, gbc);
+			pack();
+			updating(false);
 		}
 		private void updateLanguage(String language)	{
 			// System.out.println("update Language to " + language + " updating = " + updating);
@@ -300,9 +320,9 @@ public class CustomNameUI extends RDialog {
 			pack();
 		}
 	}
-
+	// -#-
 	// ========================================================================
-	// Level 3: Book Pane
+	// #=== Level 3: Book Pane
 	//
 	private class BookPane extends JPanel	{
 		private static final long serialVersionUID = 1L;
@@ -347,7 +367,8 @@ public class CustomNameUI extends RDialog {
 			updating(false);
 		}
 		private void singleLanguage() {
-			c.insets = ZERO_INSETS;
+//			c.insets = ZERO_INSETS;
+			c.insets = new Insets(s5, s5, s5, s5);
 			c.gridx = 0;
 			c.gridy = 0;
 			c.weightx = 1;
@@ -356,21 +377,24 @@ public class CustomNameUI extends RDialog {
 			add(page0(), c);
 		}
 		private void sidedLanguage() {
-			GridBagConstraints gbc = newGbc(0, 0, 1, 1, 0, 0, 7, NONE, ZERO_INSETS, 0, 0);
+//			GridBagConstraints gbc = newGbc(0, 0, 1, 1, 0, 0, 7, NONE, ZERO_INSETS, 0, 0);
+			GridBagConstraints gbc = newGbc(0, 0, 1, 1, 0, 0, 7, NONE, new Insets(s5, s5, s5, s5), 0, 0);
 			add(page0(), gbc);
-			gbc.gridx++;
-			new RSeparator(this, false, gbc.gridx, gbc.gridy);
+//			gbc.gridx++;
+//			new RSeparator(this, false, gbc.gridx, gbc.gridy);
 			//new RotPSeparatorV(this, c.gridx, c.gridy);
 			gbc.gridx++;
-			new RSeparator(this, false, gbc.gridx, gbc.gridy);
+//			new RSeparator(this, false, gbc.gridx, gbc.gridy);
+			new RSeparator(this, false, s2, null, gbc.gridx, gbc.gridy);
 			gbc.gridy = 0;
 			gbc.gridx++;
 			c.anchor = GridBagConstraints.EAST;
 			add(page1(), gbc);
 		}
 	}
+	// -#-
 	// ========================================================================
-	// Level 4: Page Pane
+	// #=== Level 4: Page Pane
 	//
 	private class PagePane extends JPanel	{
 		private static final long serialVersionUID = 1L;
@@ -391,11 +415,25 @@ public class CustomNameUI extends RDialog {
 			setLayout(new GridBagLayout());
 			GridBagConstraints c = new GridBagConstraints();
 
+			// Mandatory fields for Animation selection
+			Color headersColor = Color.BLACK;
+			c.insets = ZERO_INSETS;
+			c.gridx = 0;
+			c.gridy = 0;
+			c.gridheight = 1;
+			c.gridwidth = 2;
+			c.anchor = GridBagConstraints.WEST;
+			String str = text("CUSTOM_RACE_MANDATORY_FIELDS");
+			RLabel mandatory = new RLabel(str);
+			mandatory.setForeground(headersColor);
+			add(mandatory, c);
+			
 			// language
 			c.insets = ZERO_INSETS;
 			c.gridx = 1;
 			c.gridy = 0;
 			c.gridheight = 1;
+			c.gridwidth = 1;
 			c.anchor = GridBagConstraints.EAST;
 			add(new RLabel("Language:"), c);
 			c.gridy = 1;
@@ -412,20 +450,36 @@ public class CustomNameUI extends RDialog {
 // TODO
 			// From Name text file
 			// Empire dependent fields
-
 			// ==> EmpireNameItems
 			int x = 0;
-			int y = 0;
+			int y = 1;
 			SpeciesAttributes identifications = settings.getAttributes(languageDir);
+			boolean first = true;
 			for (SettingString setting : identifications.empireNameItems) {
-				new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, ethnicId);
+				SettingField sf = new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, ethnicId);
+				if (first && left) {
+					addChangeListener(sf, e -> bars.empireNameChangedAction(e));
+					first = false;
+				}
 				y++;
 			}
 
-			new RSeparator(this, true, s2, null, x, y);
-			y++;
+//			new RSeparator(this, true, s2, null, x, y);
+//			y++;
 
-			// Common to the species
+			// Common to the species (UI)
+			c.insets = new Insets(s5, 0, 0, 0);
+			c.gridx = 0;
+			c.gridy = y;
+			y++;
+			c.gridheight = 1;
+			c.gridwidth = 2;
+			c.anchor = GridBagConstraints.WEST;
+			str = text("CUSTOM_RACE_SPECIES_FIELDS");
+			RLabel common = new RLabel(str);
+			common.setForeground(headersColor);
+			add(common, c);
+
 			// ==> SpeciesNameItems
 			for (SettingString setting : identifications.speciesNameItems) {
 				new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, ethnicId);
@@ -446,11 +500,23 @@ public class CustomNameUI extends RDialog {
 				addSuggestButton(this, c);
 			}
 
-			new RSeparator(this, true, s4, null, x, y);
-			y++;
+//			new RSeparator(this, true, s4, null, x, y);
+//			y++;
 
 			// For Dialogues
 			// Common Fields
+			// Common dialog to the species
+			c.insets = new Insets(s5, 0, 0, 0);
+			c.gridx = 0;
+			c.gridy = y;
+			y++;
+			c.gridheight = 1;
+			c.gridwidth = 2;
+			c.anchor = GridBagConstraints.WEST;
+			str = text("CUSTOM_RACE_SPECIES_DIALOG_FIELDS");
+			RLabel speciesDialog = new RLabel(str);
+			speciesDialog.setForeground(headersColor);
+			add(speciesDialog, c);
 
 			// ==> SpeciesLabelItems
 			for (SettingString setting : identifications.speciesLabelItems) {
@@ -458,9 +524,21 @@ public class CustomNameUI extends RDialog {
 				y++;
 			}
 
-			new RSeparator(this, true, s2, null, x, y);
+//			new RSeparator(this, true, s2, null, x, y);
 
 			// Multiple Fields
+			// dialog to the civilization
+			c.insets = new Insets(s5, 0, 0, 0);
+			c.gridx = 0;
+			c.gridy = y;
+			y++;
+			c.gridheight = 1;
+			c.gridwidth = 2;
+			c.anchor = GridBagConstraints.WEST;
+			str = text("CUSTOM_RACE_ETHNIC_DIALOG_FIELDS");
+			RLabel civDialog = new RLabel(str);
+			civDialog.setForeground(headersColor);
+			add(civDialog, c);
 
 			c.gridx = 0;
 			c.gridy = y;
@@ -474,7 +552,6 @@ public class CustomNameUI extends RDialog {
 				//addSuggestButton(this, c);
 			}
 			y++;
-
 			// ==> EmpireLabelItems
 			for (SettingString setting : identifications.empireLabelItems) {
 				new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, ethnicId);
@@ -543,9 +620,17 @@ public class CustomNameUI extends RDialog {
 			}
 			
 		}
+		void empireNameChangedAction(ChangeEvent e)	{
+			SettingField src = (SettingField) e.getSource();
+			String text = src.getText();
+			if (text.isBlank())
+				return;
+			selectEmpire.renameSelected(text);
+		}
 	}
+	// -#-
 	// ========================================================================
-	// Level 5: 
+	// #=== Level 5: 
 	//
 
 	private void addSuggestButton(Container pane, GridBagConstraints c)	{
@@ -555,9 +640,9 @@ public class CustomNameUI extends RDialog {
 		c.anchor = GridBagConstraints.EAST;
 		pane.add(new SuggestButton(), c);
 	}
-
+	// -#-
 	// ========================================================================
-	// Specific Buttons definition
+	// #=== Specific Buttons definition
 	//
 	private class ExitButton extends RButton	{
 		private static final long serialVersionUID = 1L;
@@ -638,4 +723,5 @@ public class CustomNameUI extends RDialog {
 			}
 		}
 	}
+	// -#-
 }

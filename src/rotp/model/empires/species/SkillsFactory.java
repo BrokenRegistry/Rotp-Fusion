@@ -1,0 +1,932 @@
+/*
+ * Copyright 2015-2020 Ray Fowler
+ *
+ * Licensed under the GNU General Public License, Version 3 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package rotp.model.empires.species;
+
+import static rotp.Rotp.rand;
+import static rotp.model.game.IMainOptions.speciesDirectoryPath;
+import static rotp.model.game.IPreGameOptions.randomAlienRaces;
+import static rotp.model.game.IPreGameOptions.randomAlienRacesMax;
+import static rotp.model.game.IPreGameOptions.randomAlienRacesMin;
+import static rotp.model.game.IPreGameOptions.randomAlienRacesSmoothEdges;
+import static rotp.model.game.IPreGameOptions.randomAlienRacesTargetMax;
+import static rotp.model.game.IPreGameOptions.randomAlienRacesTargetMin;
+import static rotp.model.game.IRaceOptions.defaultRace;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import rotp.model.empires.species.SpeciesSettings.Technologies.TechDiscovery;
+import rotp.model.empires.species.SpeciesSettings.Technologies.TechResearch;
+import rotp.model.game.DynOptions;
+import rotp.model.game.IGameOptions;
+import rotp.ui.game.BaseModPanel;
+import rotp.ui.util.StringList;
+import rotp.util.LanguageManager;
+
+public class SkillsFactory extends SpeciesSettings {
+
+	private SkillsFactory()	{}
+
+	public final SettingInteger randomTargetMax = new SettingInteger(
+			ROOT, "RANDOM_TARGET_MAX", 75, null, null, 1, 5, 20).pctValue(false);
+	public final SettingInteger randomTargetMin = new SettingInteger(
+			ROOT, "RANDOM_TARGET_MIN", 0, null, null, 1, 5, 20).pctValue(false);
+	public final SettingInteger randomMax = new SettingInteger(
+			ROOT, "RANDOM_MAX", 25, -100, 100, 1, 5, 20);
+	public final SettingInteger randomMin = new SettingInteger(
+			ROOT, "RANDOM_MIN", -25, -100, 100, 1, 5, 20);
+	public final SettingBoolean randomUseTarget = new SettingBoolean(
+			ROOT, "RANDOM_USE_TARGET", false, true);
+	public final SettingBoolean randomSmoothEdges = new SettingBoolean(
+			ROOT, "RANDOM_EDGES", true, true);
+
+	private List<Integer> spacerList; // For UI
+	private List<Integer> columnList; // For UI
+	private RaceList raceList;
+	private AvailableAI	  availableAI	= new AvailableAI();
+	private CRPersonality personality	= new CRPersonality();
+	private CRObjective	  objective		= new CRObjective();
+	private RaceKey		  raceKey		= new RaceKey();
+	private Technologies  technologies	= new Technologies();
+	private TechDiscovery techDiscovery	= technologies.techDiscovery;
+	private TechResearch  techResearch	= technologies.techResearch;
+
+	
+	// #========== Constructors For Custom Skills Editors and Viewer ==========
+	//
+	public static SkillsFactory getSkillsFactoryForEditor()	{
+		SkillsFactory factory = new SkillsFactory();
+		factory.initFactoryForEdit();
+		return factory;
+	}
+
+	SpeciesSkills getRawRace()				{ return race(); }
+	public String getRaceKey()				{ return race().id; }
+	public List<ICRSettings> settingList()	{ return settingMap.getSettings(); }
+	public List<ICRSettings> guiList()		{ return settingMap.getGuis(); }
+	public List<Integer>	 spacerList()	{ return spacerList; }
+	public List<Integer>	 columnList()	{ return columnList; }
+	public RaceList initRaceList()	{ 
+		raceList = new RaceList();
+		return raceList;
+	}
+	public float getTotalCost() {
+		float totalCost = 0;
+		for (ICRSettings setting : settingMap.getSettings()) {
+			if (setting.isSpacer())
+				continue;
+			totalCost += setting.settingCost();
+		}
+		return totalCost;
+	}
+	public  float getMalusCost() {
+		float malus = 0;
+		for (ICRSettings setting : settingMap.getSettings()) {
+			if (setting.isSpacer())
+				continue;
+			float cost = setting.settingCost();
+			if (cost < 0)
+				malus += setting.settingCost();
+		}
+		return -malus;
+	}
+
+	/**
+	 * Settings to DynOptions
+	 * @return DynOptions
+	 */
+	public DynOptions getAsOptions() {
+		tryToUpdate = false;
+		DynOptions destOptions = race().speciesOptions();
+		if (destOptions == null)
+			destOptions = new DynOptions();
+		for (ICRSettings setting : settingMap.getAll())
+			setting.updateOption(destOptions);
+		return destOptions;
+	}
+	/**
+	 * DynOptions to settings and race
+	 * @param srcOptions
+	 */
+	public void setSettingTools(DynOptions srcOptions)	{
+		List<ICRSettings> settings = settingMap.getAll();
+		for (ICRSettings setting : settings)
+			setting.updateOptionTool(srcOptions);
+
+		for (ICRSettings setting : settings)
+			setting.settingToSkill(race());
+	}
+	/**
+	 * race to settings
+	 */
+	public void setFromRaceToShow(SpeciesSkills skills) {
+		tryToUpdate = false;
+		race(skills);
+		for (ICRSettings setting : settingMap.getAll())
+			setting.skillToSetting(race());
+	}
+	private void saveSettings(String path, String fileName)	{ getAsOptions().save(path, fileName); }
+	private String fileName()	{ return race().id + EXT; }
+	public void saveRace()		{ saveSettings(speciesDirectoryPath(), fileName()); }
+	public void loadRace()		{
+		String raceKey = race().id;
+		if (Species.isValidKey(raceKey)) {
+			race(Species.getAnim(raceKey).copy());
+			for (ICRSettings setting : settingMap.getAll())
+				setting.skillToSetting(race());
+		}
+		else {
+			tryToUpdate = true;
+			setSettingTools(loadOptions(speciesDirectoryPath(), fileName()));
+		}
+	}
+
+	private void initFactoryForEdit()	{
+		tryToUpdate = false;
+		race(Species.getAnim(defaultRace).copy());
+
+		// Create the settings if necessary
+		newSettingList();
+
+		// Fills with default setting
+		List<ICRSettings> settings = settingMap.getAll();
+		for (ICRSettings setting : settings)
+			setting.settingToSkill(race());
+
+//		// Fills the skills options from the settings
+//		DynOptions destOptions = race().speciesOptions(); // TODO BR: Maybe superfluous
+//		for (ICRSettings setting : settings)
+//			setting.updateOption(destOptions);
+	}
+	// -#-
+
+	// #========== Constructors For Galaxy Factory ==========
+	//
+	public SkillsFactory (DynOptions srcOptions)	{ initSkillsForGalaxy(srcOptions); }
+	public SkillsFactory (String InternalRaceKey)	{ initWithInternalSkillsForGalaxy(InternalRaceKey, true); }
+
+	public static SpeciesSkills optionToSkills(DynOptions srcOptions)	{ return new SkillsFactory(srcOptions).race(); }
+	public static SpeciesSkills fileToSkills(String fileName)	{
+		SkillsFactory factory = new SkillsFactory();
+		factory.initSkillsForGalaxy(loadOptions(speciesDirectoryPath(), fileName + EXT));
+		return factory.race();
+	}
+	public static HashMap<String, StringList> getReworkMap()	{ return newRaceList().reworkMap(); }
+	public static StringList getAllAlienSkills()		{ return newRaceList().getAllAlienRaces(); }
+	public static StringList getAllowedAlienSkills()	{ return newRaceList().getAllowedAlienRaces(); }
+	private static RaceList newRaceList()				{	// TODO BR: Change Galaxy Factory to get only one instance of this
+		SkillsFactory factory = new SkillsFactory();
+		factory.initWithDefaultSkillsForGalaxy(false);
+		return factory.new RaceList();
+	}
+
+	private void initSkillsForGalaxy(DynOptions srcOptions)	{
+		String skillKey = ReworkedRaceKey.getRawReworkedKey(srcOptions);
+		initWithInternalSkillsForGalaxy(skillKey, false);
+
+		// update the skills from the source option
+		List<ICRSettings> settings = settingMap.getForRandom();
+		for (ICRSettings setting : settings)
+			setting.updateOptionTool(srcOptions);
+
+		// Fills the skills options from the settings
+		DynOptions destOptions = race().speciesOptions();
+		for (ICRSettings setting : settings)
+			setting.updateOption(destOptions);
+	}
+	private void initWithInternalSkillsForGalaxy(String SkillsKey, boolean fillOptions)	{
+		if (SkillsKey == null) {
+			initWithDefaultSkillsForGalaxy(fillOptions);
+			return;
+		}
+		race(Species.getAnim(SkillsKey).copy());
+
+		// Create the settings if necessary
+		newSettingList();
+
+		// Fills the settings with skills
+		List<ICRSettings> settings = settingMap.getAll();
+		for (ICRSettings setting : settings)
+			setting.skillToSetting(race());
+
+		// Fills the skills options from the settings
+		if (fillOptions) {
+			DynOptions destOptions = race().speciesOptions(); // TODO BR: Maybe superfluous
+			for (ICRSettings setting : settings)
+				setting.updateOption(destOptions);
+		}
+	}
+	private void initWithDefaultSkillsForGalaxy(boolean fillOptions)	{
+		race(Species.getAnim(defaultRace).copy());
+
+		// Create the settings if necessary
+		newSettingList();
+
+		// Fills with default settings (instead of default Species settings)
+		List<ICRSettings> settings = settingMap.getAll();
+		for (ICRSettings setting : settings)
+			setting.settingToSkill(race());
+
+		// Fills the skills options from the settings
+		if (fillOptions) {
+			DynOptions destOptions = race().speciesOptions(); // TODO BR: Maybe superfluous
+			for (ICRSettings setting : settings)
+				setting.updateOption(destOptions);
+		}
+	}
+	// -#-
+
+	// #========== Constructors For Species ==========
+	//
+	static SpeciesSkills keyToCustomSpecies(String skillsKey)	{
+		SkillsFactory factory = new SkillsFactory();
+		factory.initSkillsForSpecies(skillsKey);
+		return factory.race();
+	}
+	static SpeciesSkills fileToAlienRaceInfo(String skillsKey)	{
+		SkillsFactory factory = new SkillsFactory();
+		factory.initSkillsForSpecies(skillsKey);
+		return factory.race();
+	}
+
+	private void initSkillsForSpecies(String skillsKey)	{
+		switch (skillsKey) {
+			case RANDOM_RACE_KEY:
+				race(Species.getAnim(defaultRace).copy());
+				race().isCustomSpecies(true);
+				randomizeRace(randomAlienRacesMin.get(), randomAlienRacesMax.get(),
+						randomAlienRacesTargetMin.get(), randomAlienRacesTargetMax.get(),
+						randomAlienRaces.isTarget(), randomAlienRacesSmoothEdges.get(), false);
+				return;
+
+			case CUSTOM_RACE_KEY:
+				initSkillsForGalaxy((DynOptions) IGameOptions.playerCustomRace.get());
+				return;
+
+			default:
+				initSkillsForGalaxy(loadOptions(speciesDirectoryPath(), skillsKey + EXT));
+				return;
+		}
+	}
+	// -#-
+
+	// #========== Constructors For Param CR ==========
+	// Called during Startup, will be reinitialized later
+	//
+	public static DynOptions getDefaultOptions()	{
+		SkillsFactory factory = new SkillsFactory();
+		factory.initFactoryForParamCR();
+		return factory.race().speciesOptions();
+	}
+
+	private void initFactoryForParamCR()	{
+		race(Species.getAnim(defaultRace).copy());
+		newSettingList();
+	}
+	// -#-
+
+	// #========== Constructors For RaceList ==========
+	// RaceList will only use data from SpeciesSkills
+	//
+	private static SkillsFactory getFactoryForRaceList(DynOptions srcOptions)	{
+		SkillsFactory factory = new SkillsFactory();
+		factory.initSkillsForRaceList(srcOptions);
+		return factory;
+	}
+	private static SkillsFactory getFactoryForRaceList(Species species)	{
+		SkillsFactory factory = new SkillsFactory();
+		factory.initSkillsForRaceList(species);
+		return factory;
+	}
+
+	private void initSkillsForRaceList(DynOptions srcOptions)	{
+		tryToUpdate = false;
+		race(Species.getAnim(defaultRace).copy());
+		newSettingList();
+
+		// update default setting value from source options
+		List<ICRSettings> settings = settingMap.getSettings();
+		for (ICRSettings setting : settings)
+			setting.updateOptionTool(srcOptions);
+
+		// Then push the settings to the SpeciesSkills
+		for (ICRSettings setting : settings)
+			setting.settingToSkill(race());
+
+//		race().speciesOptions(getAsOptions());
+		race().isCustomSpecies(true);
+	}
+	private void initSkillsForRaceList(Species species)	{
+		tryToUpdate = false;
+		race(species.getSkillCopy());
+		newSettingList();
+
+		List<ICRSettings> settings = settingMap.getSettings();
+		for (ICRSettings setting : settings)
+			setting.skillToSetting(race());
+
+//		race().speciesOptions(getAsOptions());
+		race().isCustomSpecies(true);
+	}
+
+	// -#-
+	
+	// #========== Constructors For Reworked ==========
+	//
+	static SpeciesSkills getMasterSkillsForReworked(String key)	{
+		SkillsFactory factory = new SkillsFactory();
+		factory.initForReworked(key);
+		return factory.race();
+	}
+
+	private void initForReworked(String key)	{
+		isReference = true;
+		// Get a copy of the Master Skills
+		if(Species.isValidKey(key))
+			race(Species.getAnim(key).copy());
+		else
+			race(Species.getAnim(defaultRace).copy());
+
+		// Create the settings if necessary
+		newSettingList();
+
+		// Fills the settings from the Master skills
+		List<ICRSettings> settings = settingMap.getAll();
+		for (ICRSettings setting : settings)
+			setting.skillToSetting(race());
+
+		// Fills the skills options from the settings
+		DynOptions destOptions = race().speciesOptions();
+		for (ICRSettings setting : settings)
+			setting.updateOption(destOptions);
+	}
+	// -#-
+
+	// #========== Constructors For Other Gui ==========
+	//
+	public static StringList getBaseRaceList()	{
+		return getRaceFileList()
+				.stream()
+				.filter(c -> c.startsWith(BASE_RACE_MARKER))
+				.collect(Collectors.toCollection(StringList::new));
+	}
+	private static StringList getRaceFileList()		{ return newRaceList().getLabels(); }
+
+	// -#-
+
+	// #========== Tools ==========
+	//
+	private static void backwardComp(DynOptions opts) {
+		if (opts.getString(ROOT + "HOME_RESOURCES", "").equalsIgnoreCase("Artifacts")) {
+			opts.setString(ROOT + "HOME_RESOURCES", "Normal");
+			opts.setString(ROOT + "HOME_ARTIFACTS", "Artifacts");
+		}
+	}
+	private static DynOptions loadOptions(File saveFile) {
+		DynOptions opts =  DynOptions.loadOptions(saveFile);
+		backwardComp(opts);
+		return opts;
+	}
+	private static DynOptions loadOptions(String path, String fileName) {
+		DynOptions opts =  DynOptions.loadOptions(path, fileName);
+		backwardComp(opts);
+		return opts;
+	}
+	private void initFromOptionsForEdit(DynOptions srcOptions) { // As reference: copy and delete what is unnecessary
+		// Get a copy of the Master Skills
+		String skillsKey = ReworkedRaceKey.getValidReworkedKey(srcOptions);
+		race(Species.getAnim(skillsKey).copy());
+
+		// Create the settings if necessary
+		newSettingList();
+
+		// Fills the settings from the Master skills
+		List<ICRSettings> settings = settingMap.getAll();
+		for (ICRSettings setting : settings)
+			setting.skillToSetting(race());
+
+		// update the skills from the source option
+		for (ICRSettings setting : settings)
+			setting.updateOptionTool(srcOptions);
+
+		// Fills the skills options from the settings
+		DynOptions destOptions = race().speciesOptions();
+		for (ICRSettings setting : settings)
+			setting.updateOption(destOptions);
+	}
+	private void initFromSkillsKeyForEdit(String key) { // As reference: copy and delete what is unnecessary
+		// Get a copy of the Master Skills
+		if(Species.isValidKey(key))
+			race(Species.getAnim(key).copy());
+		else
+			race(Species.getAnim(defaultRace).copy());
+
+		// Create the settings if necessary
+		newSettingList();
+
+		// Fills the settings from the Master skills
+		List<ICRSettings> settings = settingMap.getAll();
+		for (ICRSettings setting : settings)
+			setting.skillToSetting(race());
+
+		// Fills the skills options from the settings
+		DynOptions destOptions = race().speciesOptions();
+		for (ICRSettings setting : settings)
+			setting.updateOption(destOptions);
+	}
+
+	// -#-
+
+	// #========== Randomized Skills ==========
+	//
+	private void randomizeRace(float min, float max,
+			float targetMin, float targetMax, boolean gaussian, boolean updateGui) {
+		float target	= (targetMax + targetMin)/2;
+		float maxDiff	= Math.max(0.04f, Math.abs(targetMax-targetMin)/2);
+		float maxChange	= Math.max(0.1f, Math.abs(max-min));
+
+		List<ICRSettings> shuffledSettingList = new ArrayList<>(settingMap.getSettings());
+		// first pass full random
+		randomizeRace(min, max, gaussian, updateGui);
+		float cost = getTotalCost();
+
+		// second pass going smoothly to the target
+		for (int i=0; i<10; i++) {
+			Collections.shuffle(shuffledSettingList);
+			for (ICRSettings setting : shuffledSettingList) {
+				if (!setting.isSpacer() &&!setting.hasNoCost()) {
+					float difference = target - cost;
+					if (Math.abs(difference) <= maxDiff)
+						return;
+					float costFactor = setting.costFactor();
+					float changeRequest = difference/costFactor;
+					cost -= setting.settingCost();
+					if (Math.abs(changeRequest) <= maxChange) {
+						float maxRequest = changeRequest + maxDiff/costFactor;
+						if (maxRequest > 0)
+							maxRequest = Math.min(maxChange, maxRequest);
+						else
+							maxRequest =  Math.max(-maxChange, maxRequest);						
+						float minRequest = changeRequest - maxDiff/costFactor;
+						if (maxRequest > 0)
+							minRequest = Math.min(maxChange, minRequest);
+						else
+							minRequest =  Math.max(-maxChange, minRequest);
+						float request = minRequest + rand().nextFloat() * (maxRequest-minRequest);
+
+						setting.setValueFromCost(setting.settingCost()+request*costFactor);
+					} else {
+						setting.setRandom(setting.lastRandomSource()
+								+ maxChange*Math.signum(changeRequest));
+					}
+					cost += setting.settingCost();
+					if (updateGui)
+						setting.guiSelect();
+				}
+			}				
+		}
+		// third pass forcing the target
+		for (int i=0; i<5; i++) {
+			Collections.shuffle(shuffledSettingList);
+			for (ICRSettings setting : shuffledSettingList) {
+				if (!setting.isSpacer() &&!setting.hasNoCost()) {
+					cost -= setting.settingCost();
+					setting.setValueFromCost(target - cost);
+					cost += setting.settingCost();
+					if (updateGui)
+						setting.guiSelect();
+					if (Math.abs(cost-target) <= maxDiff)
+						return;
+				}
+			}				
+		}
+	}
+	/**
+	 * race is not up to date
+	 */
+	private void randomizeRace(float min, float max, boolean gaussian, boolean updateGui) {
+		for (ICRSettings setting : settingMap.getSettings()) {
+			if (!setting.isSpacer()) {
+				setting.setRandom(min, max, gaussian);
+				if (updateGui)
+					setting.guiSelect();
+			}
+		}
+	}
+	public void randomizeRace(boolean updateGui) {
+		randomizeRace(randomMin.settingValue(), randomMax.settingValue(),
+			randomTargetMin.settingValue(), randomTargetMax.settingValue(),
+			randomUseTarget.settingValue(), randomSmoothEdges.settingValue(), updateGui);
+		for (ICRSettings setting : settingMap.getSettings())
+			setting.settingToSkill(race());
+	}
+	/**
+	 * race is not up to date
+	 */
+	private void randomizeRace(float min, float max, float targetMin, float targetMax, 
+			boolean useTarget, boolean gaussian, boolean updateGui) {
+		if (useTarget)
+			randomizeRace(min, max, targetMin, targetMax, gaussian, updateGui);
+		else
+			randomizeRace(min, max, gaussian, updateGui);
+	}	
+	// -#-
+	// #========== Setting initialization ==========
+	//
+	protected void newSettingList() {
+		if(settingMap.filled)
+			return;
+		String dir = LanguageManager.selectedLanguageDir();
+		spacerList  = new LinkedList<>();
+		columnList  = new LinkedList<>();
+
+		// ====================
+		// First column (left)
+		settingMap.add(new ReworkedRaceKey());
+		settingMap.add(raceKey);
+		settingMap.add(new RaceName(dir));
+		settingMap.add(new EmpireName(dir));
+		for (int i : new int[]{ 1, 2, 4, 3 })
+			settingMap.add(new RaceDescription(i, dir));
+		endOfColumn();
+
+		// ====================
+		// Second column
+		settingMap.add(personality.erratic);
+		settingMap.add(personality.pacifist);
+		settingMap.add(personality.honorable);
+		settingMap.add(personality.ruthless);
+		settingMap.add(personality.aggressive);
+		settingMap.add(personality.xenophobic);
+		spacer();
+		settingMap.add(objective.militarist);
+		settingMap.add(objective.ecologist);
+		settingMap.add(objective.diplomat);
+		settingMap.add(objective.industrialist);
+		settingMap.add(objective.expansionist);
+		settingMap.add(objective.technologist);
+		spacer();
+		settingMap.add(availableAI);
+		settingMap.add(new BoundAI());
+		settingMap.add(new PreferredShipSize());
+		settingMap.add(new PreferredShipSet());
+		spacer();
+		settingMap.add(new RacePrefix());
+		settingMap.add(new RaceSuffix());
+		settingMap.add(new LeaderPrefix());
+		settingMap.add(new LeaderSuffix());
+		settingMap.add(new WorldsPrefix());
+		settingMap.add(new WorldsSuffix());
+		endOfColumn();
+
+		// ====================
+		// Third column
+		settingMap.add(techDiscovery);
+		settingMap.add(techDiscovery.computer);
+		settingMap.add(techDiscovery.construction);
+		settingMap.add(techDiscovery.forceField);
+		settingMap.add(techDiscovery.planet);
+		settingMap.add(techDiscovery.propulsion);
+		settingMap.add(techDiscovery.weapon);
+		spacer();
+//		settingMap.add(new RacePlanetType()); // not yet differentiated
+		settingMap.add(new HomeworldSize());
+//		settingMap.add(new SpeciesType()); // Not used in Game
+		settingMap.add(new PopGrowRate());
+		settingMap.add(new IgnoresEco());
+		spacer();
+		settingMap.add(new ProdWorker());
+		settingMap.add(new ProdControl());
+		settingMap.add(new IgnoresFactoryRefit());
+		spacer();
+		settingMap.add(new ShipAttack());
+		settingMap.add(new ShipDefense());
+		settingMap.add(new ShipInitiative());
+		settingMap.add(new GroundAttack());
+		spacer();
+		settingMap.add(new SpyCost());
+		settingMap.add(new SpySecurity());
+		settingMap.add(new SpyInfiltration());
+//		settingMap.add(new SpyTelepathy()); // Not used in Game
+		endOfColumn();
+
+		// ====================
+		// Fourth column
+		settingMap.add(techResearch);
+		settingMap.add(techResearch.computer);
+		settingMap.add(techResearch.construction);
+		settingMap.add(techResearch.forceField);
+		settingMap.add(techResearch.planet);
+		settingMap.add(techResearch.propulsion);
+		settingMap.add(techResearch.weapon);
+		spacer();
+		settingMap.add(new PlanetArtifacts()); // Backward compatibility: stay above PlanetRessources()
+		settingMap.add(new PlanetRessources());
+		settingMap.add(new PlanetEnvironment());
+		spacer();
+		settingMap.add(new CreditsBonus());
+		settingMap.add(new HitPointsBonus());
+		settingMap.add(new MaintenanceBonus());
+		settingMap.add(new ShipSpaceBonus());
+		spacer();
+		settingMap.add(new DiplomacyTrade());
+// 		settingMap.add(new DiploPosDP()); // Not used in Game
+		settingMap.add(new DiplomacyBonus());
+		settingMap.add(new DiplomacyCouncil());
+		settingMap.add(new RelationDefault());	// BR: Maybe All the races
+		endOfColumn();
+
+		// ====================
+		// Fifth column
+		// endOfColumn();
+		// ====================
+		settingMap.addGui(randomSmoothEdges);
+		settingMap.addGui(randomMin);
+		settingMap.addGui(randomMax);
+		settingMap.addGui(randomTargetMin);
+		settingMap.addGui(randomTargetMax);
+		settingMap.addGui(randomUseTarget);	    
+		for(ICRSettings setting : settingMap.getSettings())
+			setting.hasNoCost(true);
+
+		// ====================
+		// Other non displayed attributes	// TODO BR:
+		// ====================
+		settingMap.addAttribute(new LanguageList());
+		new SpeciesAttributes(dir);
+		
+
+		settingMap.filled = true;
+	}
+	private void endOfColumn()	{ columnList.add(settingMap.getSettings().size()); }
+	private void spacer()		{ spacerList.add(settingMap.getSettings().size()); }
+	// -#-
+	// #==================== Nested Classes ====================
+	//
+	class AllSpeciesAttributes {
+		SettingString raceKey;
+		
+		HashMap<String, SpeciesAttributes> attributesMap = new HashMap<>();
+
+		AllSpeciesAttributes()	{
+			raceKey = (RaceKey) settingMap.get(ROOT + RaceKey.RACE_KEY);
+			LanguageList languageList = (LanguageList) settingMap.get(ROOT + LanguageList.KEY);
+			StringList languages = new StringList(languageList.settingValue());
+			for (String lg : languages) {
+				attributesMap.put(lg, new SpeciesAttributes(lg));
+			}
+		}
+		StringList getEthnicNames()	{
+			return settingMap.getList(RaceName.KEY);
+		}
+		SpeciesAttributes getAttributes(String dir)	{
+			SpeciesAttributes speciesAttributes = attributesMap.get(dir);
+			if (speciesAttributes == null) {
+				attributesMap.put(dir, new SpeciesAttributes(dir));
+			}
+			return attributesMap.get(dir);
+		}
+	}
+	// -#-
+
+	// #==================== RaceList ====================
+	//
+	public class RaceList extends SettingBase<String> {
+		private boolean newValue = false;
+		private boolean reload	 = false;
+		private HashMap<String, StringList> reworkedMap = new HashMap<>();
+
+		public RaceList()	{
+			super(ROOT, "RACE_LIST");
+			isBullet(true);
+			maxBullet(32);
+			labelsAreFinals(true);
+			hasNoCost(true);
+			showFullGuide(false);
+			reload(false);
+		}
+		// ---------- Initializers ----------
+		//
+		public void reload(boolean foldersRework)	{
+			String currentValue = settingValue();
+			clearLists();
+			reworkedMap.clear();
+			clearOptionsText();
+			for (String raceKey : IGameOptions.allRaceOptions)
+				reworkedMap.put(raceKey, new StringList());
+			reworkedMap.put(ReworkedRaceKey.DEFAULT_VALUE, new StringList());
+
+			// Add Current race
+			add((DynOptions) IGameOptions.playerCustomRace.get());
+			defaultIndex(0);
+			// Add existing files
+			File[] fileList = loadListing();
+			if (fileList != null)
+				for (File file : fileList) {
+					DynOptions opt = loadOptions(file);
+					if (opt.size() == 0)
+						System.err.println("Empty race file: " + file.getName());
+					else {
+						// Check to Update filename
+						String skillKey = RaceKey.valid(opt, file);
+						// Test for reworked old Ways
+						String animKey  = ReworkedRaceKey.validReworked(opt, file, foldersRework);
+						reworkedMap.get(animKey).add(skillKey); // The map has a "None" key
+						add(opt);
+					}
+				}
+			// Add Game races
+			for (String raceKey : IGameOptions.allRaceOptions)
+				add(raceKey);
+
+			initOptionsText();
+			reload = true;
+			set(currentValue);
+		}
+		private HashMap<String, StringList> reworkMap()	{ return reworkedMap; }
+		private File[] loadListing()	{
+			File speciesDir = new File(speciesDirectoryPath());
+			List<File> speciesList = new ArrayList<>();
+			scanSubDir(speciesList, speciesDir);
+			return speciesList.toArray(new File[0]);
+		}
+		private void scanSubDir(List<File> speciesList, File speciesDir)	{
+			if (!speciesDir.exists() || !speciesDir.isDirectory())
+				return;
+			// Local files
+			File[] array = speciesDir.listFiles(SPECIES_FILTER);
+			if (array != null && array.length > 0)
+				speciesList.addAll(Arrays.asList(array));
+			// Sub Dir files
+			File[] subDirectories = speciesDir.listFiles(File::isDirectory);
+			if(subDirectories != null && subDirectories.length > 0)
+				for (File subDir : subDirectories)
+					scanSubDir(speciesList, subDir);
+		}
+		private void add(DynOptions opt)	{
+			SkillsFactory cr = SkillsFactory.getFactoryForRaceList(opt);
+//			SpeciesSkills dr = cr.getRace();
+			SpeciesSkills dr = cr.race();
+			String cfgValue	 = dr.setupName;
+			String langLabel = dr.id;
+			String tooltipKey = dr.getDescription3();
+			float cost = cr.getTotalCost();
+			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
+		}
+		private void add(String raceKey)	{
+			Species species	  = new Species(raceKey);	    	
+			String cfgValue	  = species.skillKey();
+			String langLabel  = BASE_RACE_MARKER + species.setupName();
+			String tooltipKey = species.getDescription(3);
+			SkillsFactory cr  = getFactoryForRaceList(species);
+			float cost = cr.getTotalCost();
+			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
+		}
+		private String getBaseRace(String key)	{
+			return getCfgValue(key);
+		}
+		public boolean newValue()	{
+			if (newValue) {
+				newValue = false;
+				return true;
+			}
+			return false;
+		}
+		public StringList getAllowedAlienRaces()	{
+			StringList list = new StringList();
+			File[] fileList = loadListing();
+			if (fileList != null)
+				for (File file : fileList) {
+					SkillsFactory cr = SkillsFactory.getFactoryForRaceList(loadOptions(file));
+					if (cr.availableAI.settingValue())
+						list.add(cr.raceKey.settingValue());
+				}
+			list.removeNullAndEmpty();
+			return list;
+		}
+		public StringList getAllAlienRaces()	{
+			StringList list = new StringList();
+			File[] fileList = loadListing();
+			if (fileList != null)
+				for (File file : fileList) {
+					SkillsFactory cr = SkillsFactory.getFactoryForRaceList(loadOptions(file));
+					list.add(cr.raceKey.settingValue());
+				}
+			list.removeNullAndEmpty();
+			return list;
+	    }
+		// ---------- Overriders ----------
+		//
+		@Override public String guideValue()					{ return guiOptionLabel(); }
+		@Override public String guiOptionValue(int index)		{ return guiOptionLabel(); }
+		@Override protected void selectedValue(String value)	{
+			super.selectedValue(value);
+			if (reload) { // No need to load options on reload
+				reload = false;
+				return;
+			}
+			if (index() == 0) {
+				setSettingTools((DynOptions) IGameOptions.playerCustomRace.get());
+				newValue = true;
+				return;
+			}
+			if (index()>=listSize()-16) { // Base Race
+				race(Species.getAnim(getCfgValue(settingValue())).copy());
+				List<ICRSettings> settings = settingMap.getAll();
+				for (ICRSettings setting : settings)
+					setting.skillToSetting(race());
+
+				for (ICRSettings setting : settingMap.getSettings())
+					setting.updateGui();
+				return;
+			}
+			File file = new File(speciesDirectoryPath(), settingValue()+EXT);
+			if (file.exists()) {
+				setSettingTools(loadOptions(file));
+				newValue = true;
+				return;
+			}
+		}
+		private void setSettingTools(DynOptions srcOptions) {
+			tryToUpdate = true;
+			isReference = false;
+			List<ICRSettings> settings = settingMap.getAll();
+			for (ICRSettings setting : settings)
+				setting.updateOptionTool(srcOptions);
+
+			for (ICRSettings setting : settings)
+				setting.settingToSkill(race());
+		}
+	}
+	// -#-
+
+	// #==================== RaceKey ====================
+	//
+	private class RaceKey extends SettingString	{
+		private static final String RACE_KEY = "RACE_KEY";
+
+		private static void setKey(DynOptions opts, String key)	{ opts.setString(ROOT + RACE_KEY, key); }
+		private static String getKey(DynOptions opts)			{ return opts.getString(ROOT + RACE_KEY, ""); }
+		private static String fileToKey (File file)				{
+			String key = file.getPath();
+			key = key.substring(0, key.length() - EXT.length());
+			String dir = speciesDirectoryPath();
+			if (dir.length() <= key.length()) {
+				String parent = key.substring(0, dir.length());
+				boolean same = parent.equals(dir);
+				if(same) {
+					if (dir.length() == key.length())
+						key = "";
+					else
+						key = key.substring(dir.length()+1, key.length());
+				}
+			}
+			return key;
+		}
+		private static String valid(DynOptions opt, File file)	{
+			String optKey	= getKey(opt);
+			String fileKey	= fileToKey(file);
+			if (!optKey.equalsIgnoreCase(fileKey)) {
+				setKey(opt, fileKey);
+				DynOptions.saveOptions(opt, file);
+			}
+			return fileKey;
+		}
+
+		private RaceKey() {
+			super(ROOT, RACE_KEY, defaultRace, 1);
+			randomStr(RANDOMIZED_RACE_KEY);
+		}
+		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame)	{
+			AllSpeciesAttributes settings = new AllSpeciesAttributes();
+			CustomNameUI ui = new CustomNameUI(frame, settings);
+			return true;
+		}
+		
+		@Override public void settingToSkill(SpeciesSkills skills) { skills.id = settingValue(); }
+		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.id); }
+	}
+	// -#-
+}

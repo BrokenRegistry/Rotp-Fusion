@@ -2188,10 +2188,10 @@ CUSTOM_RACE_RESEARCH_WEAPON_DESC       | →FR_RESEARCH_CR← →TECH_WEAPONS←
 
 CUSTOM_RACE__empireen				| →CUSTOM_RACE_RACE_EMPIRE_NAME←
 CUSTOM_RACE__empireen_DESC			| →CUSTOM_RACE_RACE_EMPIRE_NAME_DESC←
-CUSTOM_RACE__raceen				| →CUSTOM_RACE_SPECIES_NAME←
+CUSTOM_RACE__raceen					| →CUSTOM_RACE_SPECIES_NAME←
 CUSTOM_RACE__raceen_DESC			| →CUSTOM_RACE_SPECIES_NAME_DESC←
 CUSTOM_RACE__race_pluralen			| Pluriel du →CUSTOM_RACE_SPECIES_NAME←
-CUSTOM_RACE__race_pluralen_DESC	| Pluriel d’→CUSTOM_RACE_SPECIES_NAME_DESC←
+CUSTOM_RACE__race_pluralen_DESC		| Pluriel d’→CUSTOM_RACE_SPECIES_NAME_DESC←
 CUSTOM_RACE__titleen				| →CUSTOM_RACE_LEADER_TITLE←
 CUSTOM_RACE__titleen_DESC			| →CUSTOM_RACE_LEADER_TITLE_DESC←
 CUSTOM_RACE__nameTitleen			| →CUSTOM_RACE_LEADER_FULLTITLE←
@@ -2208,59 +2208,66 @@ CUSTOM_RACE__title_DESC				| →CUSTOM_RACE_LEADER_TITLE_DESC←
 CUSTOM_RACE__nameTitle				| →CUSTOM_RACE_LEADER_FULLTITLE←
 CUSTOM_RACE__nameTitle_DESC			| →CUSTOM_RACE_LEADER_FULLTITLE_DESC←
 
-CUSTOM_RACE__empireof				| De l’empire
-CUSTOM_RACE__empireof_DESC			| Désignation de l’empire avec une notion d’origine (du, de la)<br>La contrepartie du paramètre "_empireof" dans les fichiers Species.labels.txt
-CUSTOM_RACE__raceadjec				| Adjectif de l’espèce
-CUSTOM_RACE__raceadjec_DESC			| Adjectif relatif à l’espèce<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
-CUSTOM_RACE__raceadjecF				| Féminin de l’adjectif
-CUSTOM_RACE__raceadjecF_DESC		| Féminin de l’adjectif relatif à l’espèce<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
-CUSTOM_RACE__race_pluralnoun		| Pluriel de l’espèce
-CUSTOM_RACE__race_pluralnoun_DESC	| Pluriel du nom de l’espèce<br>La contrepartie du paramètre « _race_pluralnoun » dans les fichiers dans les fichiers Species.labels.txt
-CUSTOM_RACE__race_pluralnounof		| Pluriel & Origine
-CUSTOM_RACE__race_pluralnounof_DESC	| Pluriel de la désignation de l’empire avec une notion d’origine (du, de la)<br>La contrepartie du paramètre "_race_pluralnounof" dans les fichiers Species.labels.txt
+CUSTOM_RACE_CIVILIZATION_FR			| l’ethnie
+CUSTOM_RACE__empireof				| **De →CUSTOM_RACE_CIVILIZATION_FR←
+CUSTOM_RACE__empireof_DESC			| Désignation de →CUSTOM_RACE_CIVILIZATION_FR← avec une notion d’origine (du, de la)<br>La contrepartie du paramètre "_empireof" dans les fichiers Species.labels.txt
+CUSTOM_RACE__raceadjec				| **Adjectif de →CUSTOM_RACE_CIVILIZATION_FR←
+CUSTOM_RACE__raceadjec_DESC			| Adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__raceadjecF				| **Féminin de l’adjectif
+CUSTOM_RACE__raceadjecF_DESC		| Féminin de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnoun		| **Pluriel de →CUSTOM_RACE_CIVILIZATION_FR←
+CUSTOM_RACE__race_pluralnoun_DESC	| Pluriel du nom de →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _race_pluralnoun » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnounof		| **Pluriel & Origine
+CUSTOM_RACE__race_pluralnounof_DESC	| Pluriel de la désignation de →CUSTOM_RACE_CIVILIZATION_FR← avec une notion d’origine (du, de la)<br>La contrepartie du paramètre "_race_pluralnounof" dans les fichiers Species.labels.txt
 CUSTOM_RACE__race_pluralnounto		| →CUSTOM_RACE_LEADER_FULLTITLE←
-CUSTOM_RACE__race_pluralnounto_DESC	| Pluriel de la désignation de l’empire avec une notion de destination (aux)<br>La contrepartie du paramètre "_race_pluralnounto" dans les fichiers Species.labels.txt
-CUSTOM_RACE__race_pluraladjec		| Pluriel de l’adjectif
-CUSTOM_RACE__race_pluraladjec_DESC	| Pluriel de l’adjectif relatif à l’espèce<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
-CUSTOM_RACE__race_pluraladjecF		| Féminin pluriel
-CUSTOM_RACE__race_pluraladjecF_DESC	| Féminin pluriel de l’adjectif relatif à l’espèce<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnounto_DESC	| Pluriel de la désignation de →CUSTOM_RACE_CIVILIZATION_FR← avec une notion de destination (aux)<br>La contrepartie du paramètre "_race_pluralnounto" dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluraladjec		| **Pluriel de l’adjectif
+CUSTOM_RACE__race_pluraladjec_DESC	| Pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluraladjecF		| **Féminin pluriel
+CUSTOM_RACE__race_pluraladjecF_DESC	| Féminin pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
 
-CUSTOM_RACE_SPECIES_NAME			| Nom de l’ethnie
+CUSTOM_RACE_MANDATORY_FIELDS		| **Champs obligatoires pour sélectionner l’animation : Un par ethnie.
+CUSTOM_RACE_SPECIES_FIELDS			| Champs communs pour toutes les ethnies de cette espèce.
+CUSTOM_RACE_SPECIES_DIALOG_FIELDS	| Champs communs pour le dialogue avec cette espèce.
+CUSTOM_RACE_ETHNIC_DIALOG_FIELDS	| Champs dédiés aux dialogues avec cette ethnie.
+CUSTOM_RACE_FIELDS_EDIT				| À éditer
+
+CUSTOM_RACE_SPECIES_NAME			| **Nom de →CUSTOM_RACE_CIVILIZATION_FR←
 CUSTOM_RACE_SPECIES_NAME_DESC		| Une des possibles dénomination de cette espèce.
-CUSTOM_RACE_HOME_WORLD				| Monde d’origine
+CUSTOM_RACE_HOME_WORLD				| **Monde d’origine
 CUSTOM_RACE_HOME_WORLD_DESC			| Un des possibles noms donné à la planète d’origine.
-CUSTOM_RACE_LEADER_NAME				| Nom du chef
+CUSTOM_RACE_LEADER_NAME				| **Nom du chef
 CUSTOM_RACE_LEADER_NAME_DESC		| Un des possibles noms de dirigeants.
 
-CUSTOM_RACE_RACE_NAME				| Noms des ethnies
+CUSTOM_RACE_RACE_NAME				| **Nom de →CUSTOM_RACE_CIVILIZATION_FR←
 CUSTOM_RACE_RACE_NAME_DESC			| Tous les noms possibles<br>La contrepartie du paramètre « _race » dans les fichiers Species.labels.txt et du paramètre « name » dans les fichiers Species.names.txt.
-CUSTOM_RACE_RACE_NAME_INPUT			| Saisissez le nom de l’espèce.
-CUSTOM_RACE_RACE_NAME_PLURAL		| Nom de l’espèce au pluriel
+CUSTOM_RACE_RACE_NAME_INPUT			| Saisissez le nom de →CUSTOM_RACE_CIVILIZATION_FR←.
+CUSTOM_RACE_RACE_NAME_PLURAL		| **Pluriel du nom de →CUSTOM_RACE_CIVILIZATION_FR←
 CUSTOM_RACE_RACE_NAME_PLURAL_DESC	| Le pluriel de tous les noms possibles<br>La contrepartie du paramètre "_race_plural" dans les fichiers Species.labels.txt
-CUSTOM_RACE_RACE_NAME_PLURAL_INPUT	| Saisissez le nom de l’espèce au pluriel.
-CUSTOM_RACE_LEADER_TITLE          | Titre du chef
-CUSTOM_RACE_LEADER_TITLE_DESC     | L’équivalent du paramètre « titre » dans les fichiers Species.names.txt.
-CUSTOM_RACE_LABEL_TITLE           | Titre du chef 2
-CUSTOM_RACE_LABEL_TITLE_DESC      | L’équivalent du paramètre « _title » dans les fichiers Species.labels.txt.
-CUSTOM_RACE_LEADER_FULLTITLE      | Titre du chef complet
-CUSTOM_RACE_LEADER_FULLTITLE_DESC | L’équivalent du paramètre « fulltitle » dans les fichiers Species.names.txt.
-CUSTOM_RACE_LEADER_NAMETITLE      | Titre du chef complet 2
+CUSTOM_RACE_RACE_NAME_PLURAL_INPUT	| Saisissez le nom de →CUSTOM_RACE_CIVILIZATION_FR← au pluriel.
+CUSTOM_RACE_LEADER_TITLE			| Titre du chef
+CUSTOM_RACE_LEADER_TITLE_DESC		| L’équivalent du paramètre « titre » dans les fichiers Species.names.txt.
+CUSTOM_RACE_LABEL_TITLE				| Titre du chef 2
+CUSTOM_RACE_LABEL_TITLE_DESC		| L’équivalent du paramètre « _title » dans les fichiers Species.labels.txt.
+CUSTOM_RACE_LEADER_FULLTITLE		| Titre du chef complet
+CUSTOM_RACE_LEADER_FULLTITLE_DESC	| L’équivalent du paramètre « fulltitle » dans les fichiers Species.names.txt.
+CUSTOM_RACE_LEADER_NAMETITLE		| Titre du chef complet 2
 CUSTOM_RACE_LEADER_NAMETITLE_DESC | L’équivalent du paramètre « _nameTitle » dans les fichiers Species.labels.txt.
-CUSTOM_RACE_RACE_EMPIRE_NAME 		| Appellation de l’empire
+CUSTOM_RACE_RACE_EMPIRE_NAME 		| **Appellation de →CUSTOM_RACE_CIVILIZATION_FR←
 CUSTOM_RACE_RACE_EMPIRE_NAME_DESC	| Le pendant du paramètre « _empire » dans les fichiers Species.labels.txt.
-CUSTOM_RACE_RACE_EMPIRE_NAME_INPUT	| Saisissez la désignation de l’empire.
-CUSTOM_RACE_HOME_WORLDS           | Mondes d’origines
-CUSTOM_RACE_HOME_WORLDS_DESC      | Noms possibles des systèmes de départ.<br>L’équivalent du paramètre « home » dans les fichiers Species.names.txt
-CUSTOM_RACE_LEADER_NAMES          | Nom des chefs
-CUSTOM_RACE_LEADER_NAMES_DESC     | Noms de chefs possibles.<br>La contrepartie du paramètre « leader » dans les fichiers Species.names.txt
-CUSTOM_RACE_SHIP_NAME_1           | Noms des petits vaisseaux
-CUSTOM_RACE_SHIP_NAME_1_DESC      | Tous les noms possibles de petits navires.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
-CUSTOM_RACE_SHIP_NAME_2           | Noms des vaisseaux moyens
-CUSTOM_RACE_SHIP_NAME_2_DESC      | Tous les noms possibles de vaisseaux moyens.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
-CUSTOM_RACE_SHIP_NAME_3           | Noms des grands vaisseaux
-CUSTOM_RACE_SHIP_NAME_3_DESC      | Tous les noms possibles de grands vaisseaux.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
-CUSTOM_RACE_SHIP_NAME_4           | Noms des énormes vaisseaux
-CUSTOM_RACE_SHIP_NAME_4_DESC      | Tous les noms possibles d’énormes vaisseaux.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
+CUSTOM_RACE_RACE_EMPIRE_NAME_INPUT	| Saisissez la désignation de →CUSTOM_RACE_CIVILIZATION_FR←.
+CUSTOM_RACE_HOME_WORLDS				| **Mondes d’origines
+CUSTOM_RACE_HOME_WORLDS_DESC		| Noms possibles des systèmes de départ.<br>L’équivalent du paramètre « home » dans les fichiers Species.names.txt
+CUSTOM_RACE_LEADER_NAMES			| **Nom des chefs
+CUSTOM_RACE_LEADER_NAMES_DESC		| Noms de chefs possibles.<br>La contrepartie du paramètre « leader » dans les fichiers Species.names.txt
+CUSTOM_RACE_SHIP_NAME_1				| Noms des petits vaisseaux
+CUSTOM_RACE_SHIP_NAME_1_DESC		| Tous les noms possibles de petits navires.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
+CUSTOM_RACE_SHIP_NAME_2				| Noms des vaisseaux moyens
+CUSTOM_RACE_SHIP_NAME_2_DESC		| Tous les noms possibles de vaisseaux moyens.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
+CUSTOM_RACE_SHIP_NAME_3				| Noms des grands vaisseaux
+CUSTOM_RACE_SHIP_NAME_3_DESC		| Tous les noms possibles de grands vaisseaux.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
+CUSTOM_RACE_SHIP_NAME_4				| Noms des énormes vaisseaux
+CUSTOM_RACE_SHIP_NAME_4_DESC		| Tous les noms possibles d’énormes vaisseaux.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
 
 CUSTOM_RACE_RACE_NAMEen				| →CUSTOM_RACE_LEADER_FULLTITLE_DESC←
 CUSTOM_RACE_RACE_NAMEen_DESC		| →CUSTOM_RACE_RACE_NAME_DESC←

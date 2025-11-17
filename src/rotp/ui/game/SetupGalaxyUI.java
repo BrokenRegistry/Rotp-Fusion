@@ -16,8 +16,8 @@
 package rotp.ui.game;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.empires.species.CustomRaceDefinitions.getAllowedAlienRaces;
-import static rotp.model.empires.species.CustomRaceDefinitions.getBaseRaceList;
+import static rotp.model.empires.species.SkillsFactory.getAllowedAlienSkills;
+import static rotp.model.empires.species.SkillsFactory.getBaseRaceList;
 import static rotp.model.game.DefaultValues.MOO1_DEFAULT;
 import static rotp.model.game.DefaultValues.ROTP_DEFAULT;
 import static rotp.model.game.IBaseOptsTools.BASE_UI;
@@ -85,8 +85,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import rotp.Rotp;
 import rotp.model.ai.AIList;
 import rotp.model.empires.Empire;
-import rotp.model.empires.species.CustomRaceDefinitions;
 import rotp.model.empires.species.ISpecies;
+import rotp.model.empires.species.SkillsFactory;
 import rotp.model.empires.species.Species;
 import rotp.model.empires.species.SpecificCROption;
 import rotp.model.galaxy.AllShapes;
@@ -298,7 +298,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	}
 	private void initAIandAbilitiesList() {
 		initOpponentGuide();
-		StringList allowedAlien = getAllowedAlienRaces();
+		StringList allowedAlien = getAllowedAlienSkills();
 		StringList baseRaceList = getBaseRaceList();
 		StringList list = new StringList();
 
@@ -1976,7 +1976,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		Species species = new Species(opts.selectedPlayerRace());
 		if (opts.selectedPlayerIsCustom())
-			species.setSpeciesSkills(CustomRaceDefinitions.CUSTOM_RACE_KEY, (DynOptions)null);
+			species.setSpeciesSkills(SkillsFactory.CUSTOM_RACE_KEY, (DynOptions)null);
 		String setupName = species.setupName();
 
 		// background image

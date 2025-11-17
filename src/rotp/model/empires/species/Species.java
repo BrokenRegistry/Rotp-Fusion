@@ -16,7 +16,6 @@ import rotp.model.empires.Leader;
 import rotp.model.empires.RaceCombatAnimation;
 import rotp.model.empires.SystemInfo;
 import rotp.model.game.DynOptions;
-import rotp.model.game.IGameOptions;
 import rotp.model.planet.PlanetType;
 import rotp.model.tech.Tech;
 import rotp.ui.util.StringList;
@@ -58,17 +57,19 @@ public class Species implements ISpecies, Base, Serializable {
 	}
 	public static String getSpeciesName(String key)				{ return new Species(key).setupName(); }
 	public static void loadRaceLangFiles(Species s, String dir)	{ RaceFactory.current().loadRaceLangFiles(s.anim, dir); }
-	private static SpeciesSkills keyToRace(String raceKey) {
-		if (raceKey.equalsIgnoreCase(SpeciesSettings.RANDOM_RACE_KEY)) {
-			return CustomRaceDefinitions.getRandomAlienRace();
-		}
-		if (raceKey.equalsIgnoreCase(SpeciesSettings.CUSTOM_RACE_KEY)) {
-			DynOptions opt = (DynOptions) IGameOptions.playerCustomRace.get();
-			return new CustomRaceDefinitions(opt, false).getRace();
-		}
-		// load from file
-		return new CustomRaceDefinitions(raceKey, false).getRace();
-	}
+//	private static SpeciesSkills keyToRace(String raceKey)		{ return CustomSpeciesFactory.keyToCustomSpecies(raceKey); }
+	
+//	private static SpeciesSkills keyToRace(String raceKey)		{
+//		if (raceKey.equalsIgnoreCase(SpeciesSettings.RANDOM_RACE_KEY)) {
+//			return CustomRaceDefinitions.getRandomAlienRace();
+//		}
+//		if (raceKey.equalsIgnoreCase(SpeciesSettings.CUSTOM_RACE_KEY)) {
+//			DynOptions opt = (DynOptions) IGameOptions.playerCustomRace.get();
+//			return new CustomRaceDefinitions(opt, false).getRace();
+//		}
+//		// load from file
+//		return new CustomRaceDefinitions(raceKey, false).getRace();
+//	}
 	
 	// ====================================================================
 	// Names validations
@@ -131,7 +132,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public Species(String key)	{
 		anim = getAnim(key);
 		if (anim == null) { // Add custom race if missing
-			skills = keyToRace(key);
+			skills = SkillsFactory.keyToCustomSpecies(key);
 			skills.isCustomSpecies(true);
 			skills.setDescription4(skills.text(CUSTOM_RACE_DESCRIPTION));
 		}
@@ -148,7 +149,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public SpeciesSkills setSpeciesSkills(String skillsKey)	{
 		skills = getAnim(skillsKey);
 		if (skills == null) {
-			skills = keyToRace(skillsKey);
+			skills = SkillsFactory.keyToCustomSpecies(skillsKey);
 			skills.isCustomSpecies(true);
 			skills.setDescription4(skills.text(CUSTOM_RACE_DESCRIPTION));
 		}
@@ -157,7 +158,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public SpeciesSkills setSpeciesSkills(String skillsKey, DynOptions options)	{
 		if (options == null)
 			return setSpeciesSkills(skillsKey);
-		skills = CustomRaceDefinitions.optionToAlienRace(options);
+		skills = SkillsFactory.optionToSkills(options);
 		skills.isCustomSpecies(true);
 		return skills;
 	}
@@ -262,7 +263,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public String fullTitle()	{ return fullTitle(isPlayer()); }
 	public List<String> introduction()	{ return introduction(isPlayer()); }
 	public boolean isCustomPlayer()		{ return skills.isCustomSpecies() && isPlayer(); }
-	public void initCRToShow(CustomRaceDefinitions cr)	{ cr.setFromRaceToShow(skills);}
+	public void initCRToShow(SkillsFactory cr)	{ cr.setFromRaceToShow(skills);}
 	// ====================================================================
 	// Purely Animations
 	//

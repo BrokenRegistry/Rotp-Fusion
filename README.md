@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+25-11-08 (BR)
+- New Custom Race text edition panel with more fields.
+  - this will allow to set the names of opponents, rather than them using the one of the animation species.
+
 25-10-20 (BR)
 - When a player select a custom species, the name of the custom species will replace the name of the selected animation species. But if the custom species has the same name as another species, and close to the maximum number of opponents is selected, this species name will appears twice. To fix this, the default option to keep the MoO1 names will add them to the list instead of replacing the first element. And as the human keep their names, I've added for them a new denomination: Pangaean.
 - Species classes and method reorganization

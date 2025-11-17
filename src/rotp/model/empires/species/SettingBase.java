@@ -82,8 +82,8 @@ public class SettingBase<T> implements ICRSettings {
 	private boolean isList			= defaultIsList;
 	private int		refreshLevel	= 0;
 	private int		bulletHFactor	= 1;
-	private int 	bulletMax   	= 25;
-	private int 	bulletStart 	= 0;
+	private int		bulletMax   	= 25;
+	private int		bulletStart 	= 0;
 	private T		selectedValue	= null;
 	private T		defaultValue	= null;
 	private ModText settingText;

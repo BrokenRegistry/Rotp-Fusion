@@ -120,7 +120,7 @@ class SpeciesSkills implements Base, Serializable {
 	private String title;
 	private String fullTitle;
 	private int homeworldKey, introTextX;
-	private String reworkableSpeciesKey;
+	private String reworkableSpeciesKey, languageList;
 	private int preferredAI;
 
 	private static final int PERSONALITY_COUNT	= Personality.values().length;
@@ -147,6 +147,8 @@ class SpeciesSkills implements Base, Serializable {
 	int speciesType()					{ return speciesType; }
 	void speciesType(int i)				{ speciesType = i; }
 
+	String languageList()				{ return languageList; }
+	void languageList(String s)			{ languageList = s; }
 	String reworkableSpeciesKey()		{ return reworkableSpeciesKey; }
 	void reworkableSpeciesKey(String s)	{ reworkableSpeciesKey = s; }
 	int startingYear()					{ return startingYear; }
@@ -544,7 +546,7 @@ class SpeciesSkills implements Base, Serializable {
 	// BR: Custom Species
 	boolean isCustomSpecies()			{ return isCustomSpecies; }
 	SpeciesSkills isCustomSpecies(boolean is)	{ isCustomSpecies = is; return this;}
-	boolean isRandomized()				{ return CustomRaceDefinitions.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
+	boolean isRandomized()				{ return SkillsFactory.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
 	DynOptions speciesOptions()			{ return speciesOptions; }
 	void speciesOptions(DynOptions val)	{ speciesOptions = val; }
 	// BR: Get the values encoded in HomeworldKey

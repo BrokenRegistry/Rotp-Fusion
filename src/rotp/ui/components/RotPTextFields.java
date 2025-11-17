@@ -115,7 +115,8 @@ public class RotPTextFields { //extends RotPComponents {
 		}
 		private void init()	{
 			addActionListener(new TextFieldAction());
-			this.setUI(ui);
+			setUI(ui);
+			addChangeListener(this, e -> textChangedAction());
 		}
 		private class TextFieldAction implements ActionListener	{
 			@Override public void actionPerformed(ActionEvent evt)	{
@@ -128,6 +129,7 @@ public class RotPTextFields { //extends RotPComponents {
 				setting.selectedValue(currentId, text);
 			}
 		}
+		private void textChangedAction()	{ setting.selectedValue(currentId, getText()); }
 	}
 	public static class RotPToolTipUI extends ToolTipUI {
 		public static ComponentUI createUI(JComponent c)	{

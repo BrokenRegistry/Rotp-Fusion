@@ -38,7 +38,7 @@ import javax.swing.JTextPane;
 
 import rotp.model.ai.AIList;
 import rotp.model.empires.Empire;
-import rotp.model.empires.species.CustomRaceDefinitions;
+import rotp.model.empires.species.SkillsFactory;
 import rotp.model.empires.species.ICRSettings;
 import rotp.model.empires.species.SettingBase;
 import rotp.model.game.IGameOptions;
@@ -102,7 +102,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private static final int   optionFont	= 13;
 	private static final int   optionH		= s15;
 	private static final int   optionIndent	= s15;
-	private static CustomRaceDefinitions cr;
+	private static SkillsFactory cr;
 
 	// This should be the last static to be initialized
 	private static final ShowCustomRaceUI instance = new ShowCustomRaceUI();
@@ -161,13 +161,13 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	    		malusC, malusC, hoverC, depressedC, malusC, false);
 	}
 	public static ShowCustomRaceUI instance() 				{ return instance.init0(); }
-	public static CustomRaceDefinitions displayedSpecies()	{ return cr; }
+	public static SkillsFactory displayedSpecies()	{ return cr; }
 
 	private ShowCustomRaceUI init0() {
 		if (initialized)
 			return this;
 		initialized = true;
-		cr(new CustomRaceDefinitions(true));		
+		cr(SkillsFactory.getSkillsFactoryForEditor());		
 		maxLeftM	= scaled(80);
 		guiTitleID	= ROOT + "SHOW_TITLE";
 	    commonList	= settingList;
@@ -236,8 +236,8 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	}
 	// ========== Other Methods ==========
 	//
-	CustomRaceDefinitions cr()			{ return cr; }
-	void cr(CustomRaceDefinitions cr)	{ this.cr = cr; }
+	SkillsFactory cr()			{ return cr; }
+	void cr(SkillsFactory cr)	{ ShowCustomRaceUI.cr = cr; }
 	private void setDesc(String tt)		{
 		descBox.setText(tt);
 		loadGuide();

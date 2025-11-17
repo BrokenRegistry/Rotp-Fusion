@@ -27,7 +27,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 	private static final long serialVersionUID = 1L;
 
 	public interface ButtonBarListener	{
-		enum BarEvents	{ BUTTON_SELECTED, BUTTON_REMOVED, BUTTON_ADDED }
+		enum BarEvents	{ BUTTON_SELECTED, BUTTON_REMOVED, BUTTON_ADDED, BUTTON_RENAMED }
 		//public void actionPerformed(BarEvents e, String newLabel, String PrevLabel);
 		public void actionPerformed(BarEvent e);
 	}
@@ -164,6 +164,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 				case BUTTON_REMOVED:
 					pendingEvent = event;
 					return;
+				case BUTTON_RENAMED:
 				case BUTTON_SELECTED:
 					if (pendingEvent == null)
 						barListener.actionPerformed(event);
@@ -217,6 +218,15 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 	public int getSelectedIndex()		{ return labelList.getSelectedIndex(); }
 	public int getIndex(MiniToggle b)	{ return buttonList.indexOf(b); }
 	public StringList getList()			{ return labelList; }
+	public void renameSelected(String newLabel)	{ // TODO
+		int idx = getSelectedIndex();
+		String prevLabel = labelList.set(idx, newLabel);
+		buttonList.get(idx).setText(newLabel);
+		System.out.println("button name changed: " + prevLabel + " --> " + newLabel);
+		callEvent(new BarEvent(BarEvents.BUTTON_RENAMED, newLabel, prevLabel));
+//		refreshToggleButtons();
+//		revalidate();
+	}
 	private String getValidtext(String str)	{
 		if (newTextRequest != null)
 			str = newTextRequest.apply(barName);
