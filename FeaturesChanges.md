@@ -312,6 +312,8 @@
 
 ### Fixes:
 
+- Fixed the issue of the shipyard limit being unreadable in Spanish. (Font size is now dynamic.)
+- Fixed some crash on launch, but may not be stable, uses the previous version if you do not have this issue.
 - Fixed Galaxy shape options fields not showing guide before changing the shape at least once.
 - Fixed Galaxy Setup Start Button being blank when "Shift" was down.
 - Fixed Guide text for MoO1 retreat option.

@@ -413,23 +413,40 @@ public class EmpireSystemPanel extends SystemPanel {
             boolean noSparePct = buildSparePct != 0;
             boolean showBuildSparePct = isAltDown() && inGovLimitBox;
 
-            g.setFont(narrowFont(16));
             String label = showBuildSparePct ?
             		text("MAIN_COLONY_SHIPYARD_GOV_PCT") :
             		text("MAIN_COLONY_SHIPYARD_LIMIT");
-            int sw1 = g.getFontMetrics().stringWidth(label);
             String none = text("MAIN_COLONY_SHIPYARD_LIMIT_NONE");
-            int sw2 = g.getFontMetrics().stringWidth(none);
             String amt = showBuildSparePct ?
             		text("MAIN_COLONY_SHIPYARD_GOV_PCT_VAL", buildUsePct) :
             		c.shipyard().buildLimitStr();
-            int sw3 = g.getFontMetrics().stringWidth(amt);
 
-            int x1 = x+s12;
-            int y1 = y+s8;
-            int x2 = x1+sw1+s5;
-            int x3 = x1+sw1+s5+max(sw2,sw3)+s5;
-            int y3 = y1+s2;
+			// Dynamic font are required for some languages
+			// First determine longest text
+			g.setFont(narrowFont(16));
+			int sw2 = g.getFontMetrics().stringWidth(none);
+			int sw3 = g.getFontMetrics().stringWidth(amt);
+			String str = label + (sw2>sw3? none : amt);
+			// get the font size
+			int dx = s12;
+			int maxWidth = w - s24;
+			int fontSize = scaledFont(g, str, maxWidth, 16, 8);
+			// Shift the left position for small font
+			if (fontSize < 16) {
+				dx = 0;
+				maxWidth = w - s12;
+				fontSize = scaledFont(g, str, maxWidth, 16, 8);
+			}
+			//System.out.println("scaled font size = " + fontSize); // TO DO BR: Remove
+			int sw1 = g.getFontMetrics().stringWidth(label);
+			sw2 = g.getFontMetrics().stringWidth(none);
+			sw3 = g.getFontMetrics().stringWidth(amt);
+
+			int x1 = x + dx;
+			int y1 = y + s8;
+			int x2 = x1 + sw1 + s5;
+			int x3 = x1 + sw1 + s5 + max(sw2,sw3) + s5;
+			int y3 = y1 + s2;
             if (noSparePct && (c.isGovernor() || showBuildSparePct)) {
             	int r = 100 + (120*buildSparePct)/100;
             	g.setColor(new Color(r, r/3, 0));

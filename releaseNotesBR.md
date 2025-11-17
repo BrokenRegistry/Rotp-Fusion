@@ -7,16 +7,11 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
-25-10-10 (BR)
-- Opponents panel automation:
-  - Reducing the number of opponents will no longer remove those who are out of bounds, so they will reappear when the number increases again.
-  - If you clear an opponent (with mid-click) while holding down the Ctrl key, all the following opponent will be cleared too.
-  - If you click on an opponent while holding down, all the following empty opponents will be set to the first available species.
-- The 'Reworked' abilities will now randomly select one of the custom species that has the corresponding "Species for Animation".
-- Added field in custom Species: Bound AI and Species for animation.
-- Fixed Galaxy shape options fields not showing guide before changing the shape at least once.
-- Fixed Galaxy Setup Start Button being blank when "Shift" was down.
-- Standardization and centralization of aptitudes display methodes in the opponents' control panel.
+25-11-17 (BR)
+- Fixed the issue of the shipyard limit being unreadable in Spanish. (Font size is now dynamic.)
+
+25-11-07 (BR)
+- Fixed some crash on launch, but may not be stable, uses the previous version if you do not have this issue.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)
