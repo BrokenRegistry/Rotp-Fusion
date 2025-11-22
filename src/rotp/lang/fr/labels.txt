@@ -3040,9 +3040,24 @@ FR_MISSILES_DESC_HK                      | Les bases sont équipées des meilleu
 FR_USINES_DESC_HK                        | La planète a achevé de construire ses usines (ou presque)
 FR_POPULATION_DESC_HK                    | La population est à son maximum (ou presque) + La planète est entièrement terraformée + Aucuns déchets (si affecté par les déchets)
 
-SETTINGS_MOD_TECH_IRRADIATED_HELP        | →TECH_HEAD_HK← <b>→CONTROLENV_6_NAME←</b>&nbsp →TECH_END_HK← <br>&emsp<i>→CONTROLENV_6_DETAIL←</i><br>→TECH_LEVEL_HK← 18.<br>Cela pourrait être très frustrant de ne pas pouvoir coloniser toute la planète en fin de partie !
-SETTINGS_MOD_TECH_IRRADIATED_DESC        | (Niveau 18)→TECH_VAL_HK← "→CONTROLENV_6_NAME←" →TECH_END_HK←
-SETTINGS_MOD_TECH_IRRADIATED             | Maîtrise Env. Irradiés : %1
+SETTINGS_MOD_TECH_BARREN_HELP		| →TECH_HEAD_HK← <b>→CONTROLENV_1_NAME←</b>&nbsp →TECH_END_HK← <br>&emsp<i>→CONTROLENV_1_DETAIL←</i><br>→TECH_LEVEL_HK← 3.<br>Cela pourrait être très frustrant de ne pas pouvoir coloniser toute la planète en fin de partie !
+SETTINGS_MOD_TECH_BARREN_DESC		| (Level 3)→TECH_VAL_HK← "→CONTROLENV_1_NAME←" →TECH_END_HK←
+SETTINGS_MOD_TECH_BARREN			| Maîtrise Env. Stériles : %1
+SETTINGS_MOD_TECH_TUNDRA_HELP		| →TECH_HEAD_HK← <b>→CONTROLENV_2_NAME←</b>&nbsp →TECH_END_HK← <br>&emsp<i>→CONTROLENV_2_DETAIL←</i><br>→TECH_LEVEL_HK← 6.<br>Cela pourrait être très frustrant de ne pas pouvoir coloniser toute la planète en fin de partie !
+SETTINGS_MOD_TECH_TUNDRA_DESC		| (Level 6)→TECH_VAL_HK← "→CONTROLENV_2_NAME←" →TECH_END_HK←
+SETTINGS_MOD_TECH_TUNDRA			| Maîtrise Env. Toundras : %1
+SETTINGS_MOD_TECH_DEAD_HELP			| →TECH_HEAD_HK← <b>→CONTROLENV_3_NAME←</b>&nbsp →TECH_END_HK← <br>&emsp<i>→CONTROLENV_3_DETAIL←</i><br>→TECH_LEVEL_HK← 9.<br>Cela pourrait être très frustrant de ne pas pouvoir coloniser toute la planète en fin de partie !
+SETTINGS_MOD_TECH_DEAD_DESC			| (Level 9)→TECH_VAL_HK← "→CONTROLENV_3_NAME←" →TECH_END_HK←
+SETTINGS_MOD_TECH_DEAD				| Maîtrise Env. Morts : %1
+SETTINGS_MOD_TECH_INFERNO_HELP		| →TECH_HEAD_HK← <b>→CONTROLENV_4_NAME←</b>&nbsp →TECH_END_HK← <br>&emsp<i>→CONTROLENV_4_DETAIL←</i><br>→TECH_LEVEL_HK← 12.<br>Cela pourrait être très frustrant de ne pas pouvoir coloniser toute la planète en fin de partie !
+SETTINGS_MOD_TECH_INFERNO_DESC		| (Level 12)→TECH_VAL_HK← "→CONTROLENV_4_NAME←" →TECH_END_HK←
+SETTINGS_MOD_TECH_INFERNO			| Maîtrise Env. Infernaux : %1
+SETTINGS_MOD_TECH_TOXIC_HELP		| →TECH_HEAD_HK← <b>→CONTROLENV_5_NAME←</b>&nbsp →TECH_END_HK← <br>&emsp<i>→CONTROLENV_5_DETAIL←</i><br>→TECH_LEVEL_HK← 15.<br>Cela pourrait être très frustrant de ne pas pouvoir coloniser toute la planète en fin de partie !
+SETTINGS_MOD_TECH_TOXIC_DESC		| (Level 15)→TECH_VAL_HK← "→CONTROLENV_5_NAME←" →TECH_END_HK←
+SETTINGS_MOD_TECH_TOXIC				| Maîtrise Env. Toxiques : %1
+SETTINGS_MOD_TECH_IRRADIATED_HELP	| →TECH_HEAD_HK← <b>→CONTROLENV_6_NAME←</b>&nbsp →TECH_END_HK← <br>&emsp<i>→CONTROLENV_6_DETAIL←</i><br>→TECH_LEVEL_HK← 18.<br>Cela pourrait être très frustrant de ne pas pouvoir coloniser toute la planète en fin de partie !
+SETTINGS_MOD_TECH_IRRADIATED_DESC	| (Niveau 18)→TECH_VAL_HK← "→CONTROLENV_6_NAME←" →TECH_END_HK←
+SETTINGS_MOD_TECH_IRRADIATED		| Maîtrise Env. Irradiés : %1
 SETTINGS_MOD_TECH_CLOAKING_HELP          | →TECH_HEAD_HK← <b>→CLOAK_0_NAME←</b>&nbsp →TECH_END_HK← <br>&emsp<i>→CLOAK_0_DETAIL←</i><br>→TECH_LEVEL_HK← 27.<br>Vous l’aimez ! ou pas ! Utilisées en conjonction avec la communication hyperspatiale, les fins de jeu peuvent devenir très ennuyeuses.
 SETTINGS_MOD_TECH_CLOAKING_DESC          | (Niveau 27) →TECH_VAL_HK← "→CLOAK_0_NAME←" →TECH_END_HK←
 SETTINGS_MOD_TECH_CLOAKING               | →CLOAK_0_NAME←: %1

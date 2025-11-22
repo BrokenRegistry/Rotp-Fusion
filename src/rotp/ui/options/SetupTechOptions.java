@@ -15,6 +15,10 @@ final class SetupTechOptions extends AbstractOptionsSubUI {
 		SafeListPanel map = new SafeListPanel(OPTION_ID);
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("TECH_PLANET"),
+				techBarren,
+				techTundra,
+				techDead,
+				techInferno,
 				techIrradiated,
 				techCloning,
 				techAtmospheric,

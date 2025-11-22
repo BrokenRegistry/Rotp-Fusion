@@ -2,6 +2,9 @@
 
 ## What's New
 
+25-11-21 (BR)
+- Added new options to disable research on colonizations modules.
+
 25-11-17 (BR)
 - Fixed the issue of the shipyard limit being unreadable in Spanish. (Font size is now dynamic.)
 
