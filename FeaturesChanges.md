@@ -22,6 +22,7 @@
 
 ### Features:
 
+- New options to disable research on colonizations modules.
 - Opponents panel automation:
   - Reducing the number of opponents will no longer remove those who are out of bounds, so they will reappear when the number increases again.
   - If you clear an opponent (with mid-click) while holding down the Ctrl key, all the following opponent will be cleared too.

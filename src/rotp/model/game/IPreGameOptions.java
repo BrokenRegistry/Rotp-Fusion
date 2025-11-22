@@ -200,17 +200,23 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 		return !changesPlayer.equals(RCPR_GUI_SWAP) && !changesPlayer.equals(RCPR_GUI_LAST);
 	}
 
-	ParamTech techIrradiated	= new ParamTech("TECH_IRRADIATED",	3, "ControlEnvironment",6); // level 18
-	ParamTech techCloaking		= new ParamTech("TECH_CLOAKING",	2, "Cloaking",			0); // level 27
-	ParamTech techStargate		= new ParamTech("TECH_STARGATES",	4, "Stargate", 			0); // level 27
-	ParamTech techHyperspace	= new ParamTech("TECH_HYPERSPACE",	0, "HyperspaceComm",	0); // level 34
-	ParamTech techIndustry2		= new ParamTech("TECH_INDUSTRY_2",	1, "ImprovedIndustrial",7); // level 38
-	ParamTech techThorium		= new ParamTech("TECH_THORIUM",		4, "FuelRange",			8); // level 41
-	ParamTech techTransport		= new ParamTech("TECH_TRANSPORTERS",4, "CombatTransporter",	0); // level 45
-	ParamTech techCloning		= new ParamTech("TECH_CLONING",		3, "Cloning",			0); // level 21
+	ParamTech techBarren		= new ParamTech("TECH_BARREN",		3, "ControlEnvironment", 1); // level 3
+	ParamTech techTundra		= new ParamTech("TECH_TUNDRA",		3, "ControlEnvironment", 2); // level 6
+	ParamTech techDead			= new ParamTech("TECH_DEAD",		3, "ControlEnvironment", 3); // level 9
+	ParamTech techInferno		= new ParamTech("TECH_INFERNO",		3, "ControlEnvironment", 4); // level 12
+	ParamTech techToxic			= new ParamTech("TECH_TOXIC",		3, "ControlEnvironment", 5); // level 15
+	ParamTech techIrradiated	= new ParamTech("TECH_IRRADIATED",	3, "ControlEnvironment", 6); // level 18
+	ParamTech techCloaking		= new ParamTech("TECH_CLOAKING",	2, "Cloaking",			 0); // level 27
+	ParamTech techStargate		= new ParamTech("TECH_STARGATES",	4, "Stargate", 			 0); // level 27
+	ParamTech techHyperspace	= new ParamTech("TECH_HYPERSPACE",	0, "HyperspaceComm",	 0); // level 34
+	ParamTech techIndustry2		= new ParamTech("TECH_INDUSTRY_2",	1, "ImprovedIndustrial", 7); // level 38
+	ParamTech techThorium		= new ParamTech("TECH_THORIUM",		4, "FuelRange",			 8); // level 41
+	ParamTech techTransport		= new ParamTech("TECH_TRANSPORTERS",4, "CombatTransporter",	 0); // level 45
+	ParamTech techCloning		= new ParamTech("TECH_CLONING",		3, "Cloning",			 0); // level 21
 	ParamTech techAtmospheric	= new ParamTech("TECH_ATMOSPHERIC",	3, "AtmosphereEnrichment",	0); // level 22
-	ParamTech techGaia			= new ParamTech("TECH_GAIA",		3, "SoilEnrichment",	1); // level 30
+	ParamTech techGaia			= new ParamTech("TECH_GAIA",		3, "SoilEnrichment",	 1); // level 30
 	List<ParamTech> techModList		= new ArrayList<>(Arrays.asList(
+			techBarren, techTundra, techDead, techInferno,
 			techIrradiated, techCloning, techAtmospheric,
 			techCloaking, techStargate, techGaia, techHyperspace,
 			techIndustry2, techThorium, techTransport
