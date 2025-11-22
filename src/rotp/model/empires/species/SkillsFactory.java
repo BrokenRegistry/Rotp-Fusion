@@ -26,8 +26,6 @@ import static rotp.model.game.IPreGameOptions.randomAlienRacesTargetMax;
 import static rotp.model.game.IPreGameOptions.randomAlienRacesTargetMin;
 import static rotp.model.game.IRaceOptions.defaultRace;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,8 +74,9 @@ public class SkillsFactory extends SpeciesSettings {
 	
 	// #========== Constructors For Custom Skills Editors and Viewer ==========
 	//
-	public static SkillsFactory getSkillsFactoryForEditor()	{
+	public static SkillsFactory getSkillsFactoryForEditor(BaseModPanel parent)	{
 		SkillsFactory factory = new SkillsFactory();
+		factory.parent = parent;
 		factory.initFactoryForEdit();
 		return factory;
 	}
@@ -118,7 +117,6 @@ public class SkillsFactory extends SpeciesSettings {
 	 * @return DynOptions
 	 */
 	public DynOptions getAsOptions() {
-		tryToUpdate = false;
 		DynOptions destOptions = race().speciesOptions();
 		if (destOptions == null)
 			destOptions = new DynOptions();
@@ -130,19 +128,19 @@ public class SkillsFactory extends SpeciesSettings {
 	 * DynOptions to settings and race
 	 * @param srcOptions
 	 */
-	public void setSettingTools(DynOptions srcOptions)	{
-		List<ICRSettings> settings = settingMap.getAll();
-		for (ICRSettings setting : settings)
-			setting.updateOptionTool(srcOptions);
-
-		for (ICRSettings setting : settings)
-			setting.settingToSkill(race());
+	public void setSettingTools(DynOptions srcOptions)	{ // TODO update Anim src
+		initSkillsForGalaxy(srcOptions);
+//		List<ICRSettings> settings = settingMap.getAll();
+//		for (ICRSettings setting : settings)
+//			setting.updateOptionTool(srcOptions);
+//
+//		for (ICRSettings setting : settings)
+//			setting.settingToSkill(race());
 	}
 	/**
 	 * race to settings
 	 */
 	public void setFromRaceToShow(SpeciesSkills skills) {
-		tryToUpdate = false;
 		race(skills);
 		for (ICRSettings setting : settingMap.getAll())
 			setting.skillToSetting(race());
@@ -157,14 +155,11 @@ public class SkillsFactory extends SpeciesSettings {
 			for (ICRSettings setting : settingMap.getAll())
 				setting.skillToSetting(race());
 		}
-		else {
-			tryToUpdate = true;
+		else
 			setSettingTools(loadOptions(speciesDirectoryPath(), fileName()));
-		}
 	}
 
 	private void initFactoryForEdit()	{
-		tryToUpdate = false;
 		race(Species.getAnim(defaultRace).copy());
 
 		// Create the settings if necessary
@@ -202,14 +197,35 @@ public class SkillsFactory extends SpeciesSettings {
 		return factory.new RaceList();
 	}
 
-	private void initSkillsForGalaxy(DynOptions srcOptions)	{
+	private void initSkillsForGalaxy(DynOptions srcOptions)	{ // TODO BR: update speciesOptions
 		String skillKey = ReworkedRaceKey.getRawReworkedKey(srcOptions);
-		initWithInternalSkillsForGalaxy(skillKey, false);
+		initWithInternalSkillsForGalaxy(skillKey, false); // Options will be filled later
+
+		isReference = false;
+		// Create missing language setting attributes
+		String languageKey = ROOT + LanguageList.KEY;
+		// current languages
+		LanguageList languageSetting = (LanguageList) settingMap.get(languageKey);
+		StringList languages = new StringList(languageSetting.settingValue());
+		// src options languages
+		String srcLanguages = srcOptions.getString(languageKey, "en");
+		StringList srcLanguageList = new StringList(srcLanguages);
+		// Create missing
+		for (String lg : srcLanguageList)
+			if (!languages.contains(lg)) {
+				languages.add(lg);
+				new SpeciesAttributes(lg);
+			}
+		// update language setting
+		languageSetting.set(languages.asString());
 
 		// update the skills from the source option
-		List<ICRSettings> settings = settingMap.getForRandom();
+		List<ICRSettings> settings = settingMap.getAll();
+		settings.remove(languageSetting);
 		for (ICRSettings setting : settings)
 			setting.updateOptionTool(srcOptions);
+		// update language setting to merged value
+//		languageSetting.set(languages.asString());
 
 		// Fills the skills options from the settings
 		DynOptions destOptions = race().speciesOptions();
@@ -322,7 +338,6 @@ public class SkillsFactory extends SpeciesSettings {
 	}
 
 	private void initSkillsForRaceList(DynOptions srcOptions)	{
-		tryToUpdate = false;
 		race(Species.getAnim(defaultRace).copy());
 		newSettingList();
 
@@ -339,7 +354,6 @@ public class SkillsFactory extends SpeciesSettings {
 		race().isCustomSpecies(true);
 	}
 	private void initSkillsForRaceList(Species species)	{
-		tryToUpdate = false;
 		race(species.getSkillCopy());
 		newSettingList();
 
@@ -414,48 +428,48 @@ public class SkillsFactory extends SpeciesSettings {
 		backwardComp(opts);
 		return opts;
 	}
-	private void initFromOptionsForEdit(DynOptions srcOptions) { // As reference: copy and delete what is unnecessary
-		// Get a copy of the Master Skills
-		String skillsKey = ReworkedRaceKey.getValidReworkedKey(srcOptions);
-		race(Species.getAnim(skillsKey).copy());
-
-		// Create the settings if necessary
-		newSettingList();
-
-		// Fills the settings from the Master skills
-		List<ICRSettings> settings = settingMap.getAll();
-		for (ICRSettings setting : settings)
-			setting.skillToSetting(race());
-
-		// update the skills from the source option
-		for (ICRSettings setting : settings)
-			setting.updateOptionTool(srcOptions);
-
-		// Fills the skills options from the settings
-		DynOptions destOptions = race().speciesOptions();
-		for (ICRSettings setting : settings)
-			setting.updateOption(destOptions);
-	}
-	private void initFromSkillsKeyForEdit(String key) { // As reference: copy and delete what is unnecessary
-		// Get a copy of the Master Skills
-		if(Species.isValidKey(key))
-			race(Species.getAnim(key).copy());
-		else
-			race(Species.getAnim(defaultRace).copy());
-
-		// Create the settings if necessary
-		newSettingList();
-
-		// Fills the settings from the Master skills
-		List<ICRSettings> settings = settingMap.getAll();
-		for (ICRSettings setting : settings)
-			setting.skillToSetting(race());
-
-		// Fills the skills options from the settings
-		DynOptions destOptions = race().speciesOptions();
-		for (ICRSettings setting : settings)
-			setting.updateOption(destOptions);
-	}
+//	private void initFromOptionsForEdit(DynOptions srcOptions) { // As reference: copy and delete what is unnecessary
+//		// Get a copy of the Master Skills
+//		String skillsKey = ReworkedRaceKey.getValidReworkedKey(srcOptions);
+//		race(Species.getAnim(skillsKey).copy());
+//
+//		// Create the settings if necessary
+//		newSettingList();
+//
+//		// Fills the settings from the Master skills
+//		List<ICRSettings> settings = settingMap.getAll();
+//		for (ICRSettings setting : settings)
+//			setting.skillToSetting(race());
+//
+//		// update the skills from the source option
+//		for (ICRSettings setting : settings)
+//			setting.updateOptionTool(srcOptions);
+//
+//		// Fills the skills options from the settings
+//		DynOptions destOptions = race().speciesOptions();
+//		for (ICRSettings setting : settings)
+//			setting.updateOption(destOptions);
+//	}
+//	private void initFromSkillsKeyForEdit(String key) { // As reference: copy and delete what is unnecessary
+//		// Get a copy of the Master Skills
+//		if(Species.isValidKey(key))
+//			race(Species.getAnim(key).copy());
+//		else
+//			race(Species.getAnim(defaultRace).copy());
+//
+//		// Create the settings if necessary
+//		newSettingList();
+//
+//		// Fills the settings from the Master skills
+//		List<ICRSettings> settings = settingMap.getAll();
+//		for (ICRSettings setting : settings)
+//			setting.skillToSetting(race());
+//
+//		// Fills the skills options from the settings
+//		DynOptions destOptions = race().speciesOptions();
+//		for (ICRSettings setting : settings)
+//			setting.updateOption(destOptions);
+//	}
 
 	// -#-
 
@@ -555,7 +569,7 @@ public class SkillsFactory extends SpeciesSettings {
 	// -#-
 	// #========== Setting initialization ==========
 	//
-	protected void newSettingList() {
+	private void newSettingList() {
 		if(settingMap.filled)
 			return;
 		String dir = LanguageManager.selectedLanguageDir();
@@ -566,8 +580,10 @@ public class SkillsFactory extends SpeciesSettings {
 		// First column (left)
 		settingMap.add(new ReworkedRaceKey());
 		settingMap.add(raceKey);
-		settingMap.add(new RaceName(dir));
-		settingMap.add(new EmpireName(dir));
+		settingMap.addAttribute(new RaceName(dir));
+		settingMap.add(new LeaderTitle(dir));
+		settingMap.add(new LeaderFullTitle(dir));
+		settingMap.addAttribute(new EmpireName(dir));
 		for (int i : new int[]{ 1, 2, 4, 3 })
 			settingMap.add(new RaceDescription(i, dir));
 		endOfColumn();
@@ -683,34 +699,6 @@ public class SkillsFactory extends SpeciesSettings {
 	private void endOfColumn()	{ columnList.add(settingMap.getSettings().size()); }
 	private void spacer()		{ spacerList.add(settingMap.getSettings().size()); }
 	// -#-
-	// #==================== Nested Classes ====================
-	//
-	class AllSpeciesAttributes {
-		SettingString raceKey;
-		
-		HashMap<String, SpeciesAttributes> attributesMap = new HashMap<>();
-
-		AllSpeciesAttributes()	{
-			raceKey = (RaceKey) settingMap.get(ROOT + RaceKey.RACE_KEY);
-			LanguageList languageList = (LanguageList) settingMap.get(ROOT + LanguageList.KEY);
-			StringList languages = new StringList(languageList.settingValue());
-			for (String lg : languages) {
-				attributesMap.put(lg, new SpeciesAttributes(lg));
-			}
-		}
-		StringList getEthnicNames()	{
-			return settingMap.getList(RaceName.KEY);
-		}
-		SpeciesAttributes getAttributes(String dir)	{
-			SpeciesAttributes speciesAttributes = attributesMap.get(dir);
-			if (speciesAttributes == null) {
-				attributesMap.put(dir, new SpeciesAttributes(dir));
-			}
-			return attributesMap.get(dir);
-		}
-	}
-	// -#-
-
 	// #==================== RaceList ====================
 	//
 	public class RaceList extends SettingBase<String> {
@@ -804,9 +792,9 @@ public class SkillsFactory extends SpeciesSettings {
 			float cost = cr.getTotalCost();
 			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
 		}
-		private String getBaseRace(String key)	{
-			return getCfgValue(key);
-		}
+//		private String getBaseRace(String key)	{
+//			return getCfgValue(key);
+//		}
 		public boolean newValue()	{
 			if (newValue) {
 				newValue = false;
@@ -848,11 +836,13 @@ public class SkillsFactory extends SpeciesSettings {
 				return;
 			}
 			if (index() == 0) {
-				setSettingTools((DynOptions) IGameOptions.playerCustomRace.get());
+				initSkillsForGalaxy((DynOptions) IGameOptions.playerCustomRace.get());
+//				setSettingTools((DynOptions) IGameOptions.playerCustomRace.get());
 				newValue = true;
 				return;
 			}
 			if (index()>=listSize()-16) { // Base Race
+				isReference = true;
 				race(Species.getAnim(getCfgValue(settingValue())).copy());
 				List<ICRSettings> settings = settingMap.getAll();
 				for (ICRSettings setting : settings)
@@ -864,69 +854,26 @@ public class SkillsFactory extends SpeciesSettings {
 			}
 			File file = new File(speciesDirectoryPath(), settingValue()+EXT);
 			if (file.exists()) {
-				setSettingTools(loadOptions(file));
+				initSkillsForGalaxy(loadOptions(file));
+//				setSettingTools(loadOptions(file));
 				newValue = true;
 				return;
 			}
 		}
-		private void setSettingTools(DynOptions srcOptions) {
-			tryToUpdate = true;
-			isReference = false;
-			List<ICRSettings> settings = settingMap.getAll();
-			for (ICRSettings setting : settings)
-				setting.updateOptionTool(srcOptions);
-
-			for (ICRSettings setting : settings)
-				setting.settingToSkill(race());
-		}
-	}
-	// -#-
-
-	// #==================== RaceKey ====================
-	//
-	private class RaceKey extends SettingString	{
-		private static final String RACE_KEY = "RACE_KEY";
-
-		private static void setKey(DynOptions opts, String key)	{ opts.setString(ROOT + RACE_KEY, key); }
-		private static String getKey(DynOptions opts)			{ return opts.getString(ROOT + RACE_KEY, ""); }
-		private static String fileToKey (File file)				{
-			String key = file.getPath();
-			key = key.substring(0, key.length() - EXT.length());
-			String dir = speciesDirectoryPath();
-			if (dir.length() <= key.length()) {
-				String parent = key.substring(0, dir.length());
-				boolean same = parent.equals(dir);
-				if(same) {
-					if (dir.length() == key.length())
-						key = "";
-					else
-						key = key.substring(dir.length()+1, key.length());
-				}
-			}
-			return key;
-		}
-		private static String valid(DynOptions opt, File file)	{
-			String optKey	= getKey(opt);
-			String fileKey	= fileToKey(file);
-			if (!optKey.equalsIgnoreCase(fileKey)) {
-				setKey(opt, fileKey);
-				DynOptions.saveOptions(opt, file);
-			}
-			return fileKey;
-		}
-
-		private RaceKey() {
-			super(ROOT, RACE_KEY, defaultRace, 1);
-			randomStr(RANDOMIZED_RACE_KEY);
-		}
-		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame)	{
-			AllSpeciesAttributes settings = new AllSpeciesAttributes();
-			CustomNameUI ui = new CustomNameUI(frame, settings);
-			return true;
-		}
-		
-		@Override public void settingToSkill(SpeciesSkills skills) { skills.id = settingValue(); }
-		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.id); }
+//		private void setSettingTools(DynOptions srcOptions) {
+//			// Update the Animations
+//			String skillKey = ReworkedRaceKey.getRawReworkedKey(srcOptions);
+//			initWithInternalSkillsForGalaxy(skillKey, false);
+//			tryToUpdate = true;
+//			isReference = false;
+//
+//			List<ICRSettings> settings = settingMap.getAll();
+//			for (ICRSettings setting : settings)
+//				setting.updateOptionTool(srcOptions);
+//
+//			for (ICRSettings setting : settings)
+//				setting.settingToSkill(race());
+//		}
 	}
 	// -#-
 }

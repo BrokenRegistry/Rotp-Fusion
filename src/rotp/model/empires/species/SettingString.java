@@ -144,5 +144,4 @@ public class SettingString extends SettingBase<String> implements Base{
 	//
 	public String settingValue(int item)			{ return settingValue(); }
 	public void selectedValue(int item, String val)	{ selectedValue(val); }
-	public void addValue(int item, String val)		{ selectedValue(val); }
 }

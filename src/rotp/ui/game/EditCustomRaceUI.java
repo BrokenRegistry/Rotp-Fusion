@@ -88,7 +88,7 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 		if (initialized)
 			return this;
 		initialized = true;
-		cr(SkillsFactory.getSkillsFactoryForEditor());		
+		cr(SkillsFactory.getSkillsFactoryForEditor(this));		
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
@@ -252,11 +252,7 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 					for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
 						int optionIdx = bulletStart + bulletIdx;
 						if (hoverBox == setting.optionText(bulletIdx).box()) {
-							if (setting.getLangLabel().equals("CUSTOM_RACE_RACE_KEY")) {
-								if (setting.toggle(e, w, this))
-									repaint();
-							}
-							else if (setting.toggle(e, w, optionIdx) || raceList.newValue()) {
+							if (setting.toggle(e, w, optionIdx) || raceList.newValue()) {
 								repaint();
 							}
 							else

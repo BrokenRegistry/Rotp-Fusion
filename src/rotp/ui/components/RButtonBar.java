@@ -35,15 +35,18 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 		public final BarEvents event;
 		public final String prevLabel;
 		public final String newLabel;
-		BarEvent(BarEvents event, String newLabel, String prevLabel) {
+		public final int index;
+		BarEvent(BarEvents event, String newLabel, String prevLabel, int index) {
 			this.event = event;
 			this.prevLabel = prevLabel;
 			this.newLabel = newLabel;
+			this.index = index;
 		}
 		@Override public String toString()	{
 			String s = event.toString();
 			s += " prevLabel: " + prevLabel;
 			s += " newLabel: " + newLabel;
+			s += " index: " + index;
 			return s;
 		}
 	}
@@ -223,7 +226,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 		String prevLabel = labelList.set(idx, newLabel);
 		buttonList.get(idx).setText(newLabel);
 		System.out.println("button name changed: " + prevLabel + " --> " + newLabel);
-		callEvent(new BarEvent(BarEvents.BUTTON_RENAMED, newLabel, prevLabel));
+		callEvent(new BarEvent(BarEvents.BUTTON_RENAMED, newLabel, prevLabel, idx));
 //		refreshToggleButtons();
 //		revalidate();
 	}
@@ -282,7 +285,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 				idx = 1;
 			labelList.add(idx, newLabel);
 			labelList.setSelectedIndex(idx);
-			callEvent(new BarEvent(BarEvents.BUTTON_ADDED, newLabel, prevLabel));
+			callEvent(new BarEvent(BarEvents.BUTTON_ADDED, newLabel, prevLabel, idx));
 
 			removeToggleButtons();
 			MiniToggle b = new MiniToggle(newLabel);
@@ -323,7 +326,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 			if(prevIdx >= labelList.size())
 				newIdx--;
 			String newLabel = labelList.setSelectedIndex(newIdx);
-			callEvent(new BarEvent(BarEvents.BUTTON_REMOVED, newLabel, prevLabel));
+			callEvent(new BarEvent(BarEvents.BUTTON_REMOVED, newLabel, prevLabel, prevIdx));
 
 			removeToggleButtons();
 			buttonList.remove(prevIdx);
@@ -346,7 +349,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 	// Mini Buttons
 	private class toggleItemAction implements ItemListener	{
 		@Override public void itemStateChanged(ItemEvent evt)	{
-			// System.out.println("toggleItemAction " + evt.getStateChange() + " / Updating = " + updating);
+			 System.out.println("toggleItemAction " + evt.getStateChange() + " / Updating = " + updating);
 			if (updating)
 				return;
 			MiniToggle b = (MiniToggle) evt.getSource();
@@ -376,8 +379,8 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 			}
 			else
 				labelList.setSelectedIndex(pendingEvent.newLabel);
-				
-			callEvent (new BarEvent(BarEvents.BUTTON_SELECTED, newLabel, prevLabel));
+
+			callEvent (new BarEvent(BarEvents.BUTTON_SELECTED, newLabel, prevLabel, idx));
 		}
 	}
 	private class MiniToggle extends RMiniToggleButton	{

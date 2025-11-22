@@ -2084,7 +2084,7 @@ CUSTOM_RACE_HOME_ENVIRONMENT      | Planet Environment
 CUSTOM_RACE_RACE_KEY				| File Name (Key)
 CUSTOM_RACE_RACE_KEY_DESC			| This is the place to enter the filename, it's also used as the key for the standard species... Don't use them, or keep the default "SPECIES_xxx" to set the "Reworked"-Abilities.
 CUSTOM_RACE_RACE_KEY_INPUT			| Enter the file name of the custom species.
-CUSTOM_RACE_REWORKED_RACE_KEY		| Species for Animations
+CUSTOM_RACE_REWORKED_RACE_KEY		| Linked Animations
 CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| This is the prefered Species choice for the displayed animations. When 'Reworked' Abilities is selected, this abilities can be randomly selected.
 CUSTOM_RACE_REWORKED_RACE_KEY_INPUT	| Enter the name of the original reworkable species.
 CUSTOM_RACE_REWORKED_RACE_KEY_NONE	| None
@@ -2190,7 +2190,7 @@ CUSTOM_RACE__empire					| →CUSTOM_RACE_RACE_EMPIRE_NAME←
 CUSTOM_RACE__empire_DESC			| →CUSTOM_RACE_RACE_EMPIRE_NAME_DESC←
 CUSTOM_RACE__race					| →CUSTOM_RACE_SPECIES_NAME←
 CUSTOM_RACE__race_DESC				| →CUSTOM_RACE_SPECIES_NAME_DESC←
-CUSTOM_RACE__race_plural			| **Plural of the civilization name
+CUSTOM_RACE__race_plural			| **Plural of the name
 CUSTOM_RACE__race_plural_DESC		| Plural of →CUSTOM_RACE_SPECIES_NAME_DESC←
 CUSTOM_RACE__title					| →CUSTOM_RACE_LEADER_TITLE←
 CUSTOM_RACE__title_DESC				| →CUSTOM_RACE_LEADER_TITLE_DESC←
@@ -2209,7 +2209,7 @@ CUSTOM_RACE__nameTitlefr			| →CUSTOM_RACE_LEADER_FULLTITLEfr←
 CUSTOM_RACE__nameTitlefr_DESC		| →CUSTOM_RACE_LEADER_FULLTITLEfr_DESC←
 
 CUSTOM_RACE_CIVILIZATION_FR			| l’ethnie
-CUSTOM_RACE__empireoffr				| **De →CUSTOM_RACE_CIVILIZATION_FR←
+CUSTOM_RACE__empireoffr				| **Relatif à →CUSTOM_RACE_CIVILIZATION_FR←
 CUSTOM_RACE__empireoffr_DESC		| Désignation de →CUSTOM_RACE_CIVILIZATION_FR← avec une notion d’origine (du, de la)<br>La contrepartie du paramètre "_empireof" dans les fichiers Species.labels.txt
 CUSTOM_RACE__raceadjecfr			| **Adjectif de →CUSTOM_RACE_CIVILIZATION_FR←
 CUSTOM_RACE__raceadjecfr_DESC		| Adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
@@ -2225,6 +2225,11 @@ CUSTOM_RACE__race_pluraladjecfr		| **Pluriel de l’adjectif
 CUSTOM_RACE__race_pluraladjecfr_DESC	| Pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
 CUSTOM_RACE__race_pluraladjecFfr		| **Féminin pluriel
 CUSTOM_RACE__race_pluraladjecFfr_DESC	| Féminin pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON	| Fill from animations
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON	| Fill from names
+CUSTOM_RACE_COPY_FROM_LEFT_BUTTON	| -> Import
+CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON	| Import <-
 
 CUSTOM_RACE_MANDATORY_FIELDS		| **Required fields to select the animation: one per civilization.
 CUSTOM_RACE_SPECIES_FIELDS			| Common fields for all civilizations of this species.
@@ -2253,7 +2258,7 @@ CUSTOM_RACE_LEADER_FULLTITLE		| Full Leader Title
 CUSTOM_RACE_LEADER_FULLTITLE_DESC	| The counterpart of the "fulltitle" parameter in Species.names.txt files.
 CUSTOM_RACE_LEADER_NAMETITLE		| Full Leader Title 2
 CUSTOM_RACE_LEADER_NAMETITLE_DESC	| The counterpart of the "_nameTitle" parameter in Species.labels.txt files.
-CUSTOM_RACE_RACE_EMPIRE_NAME		| **Empire Designation
+CUSTOM_RACE_RACE_EMPIRE_NAME		| **Name of Government
 CUSTOM_RACE_RACE_EMPIRE_NAME_DESC	| The counterpart of the "_empire" parameter in Species.labels.txt files.
 CUSTOM_RACE_RACE_EMPIRE_NAME_INPUT	| Enter the Empire Designation
 CUSTOM_RACE_HOME_WORLDS				| Homes worlds
@@ -2271,7 +2276,7 @@ CUSTOM_RACE_SHIP_NAME_4_DESC		| All possible huge ships name.<br>The counterpart
 
 CUSTOM_RACE_RACE_NAMEfr				| **Nom de →CUSTOM_RACE_CIVILIZATION_FR←
 CUSTOM_RACE_RACE_NAMEfr_DESC		| Une des possibles dénomination de cette espèce.
-CUSTOM_RACE_RACE_EMPIRE_NAMEfr		| **Appellation de →CUSTOM_RACE_CIVILIZATION_FR←
+CUSTOM_RACE_RACE_EMPIRE_NAMEfr		| **Nom du gouvernement
 CUSTOM_RACE_RACE_EMPIRE_NAMEfr_DESC	| Le pendant du paramètre « _empire » dans les fichiers Species.labels.txt.
 CUSTOM_RACE_HOME_WORLDfr			| **Monde d’origine
 CUSTOM_RACE_HOME_WORLDfr_DESC		| Un des possibles noms donné à la planète d’origine.
@@ -2281,13 +2286,13 @@ CUSTOM_RACE_LEADER_TITLEfr			| Titre du chef
 CUSTOM_RACE_LEADER_TITLEfr_DESC	| L’équivalent du paramètre « titre » dans les fichiers Species.names.txt.
 CUSTOM_RACE_LEADER_FULLTITLEfr		| Titre du chef complet
 CUSTOM_RACE_LEADER_FULLTITLEfr_DESC	| L’équivalent du paramètre « fulltitle » dans les fichiers Species.names.txt.
-CUSTOM_RACE_RACE_DESC_1fr			| Aperçu de l’humeur de l’espèce
+CUSTOM_RACE_RACE_DESC_1fr			| Tempérament de l’espèce
 CUSTOM_RACE_RACE_DESC_1fr_DESC		| L’équivalent du paramètre « desc1 » dans les fichiers Species.names.txt
-CUSTOM_RACE_RACE_DESC_2fr			| Aperçu des aptitudes de l’espèce
+CUSTOM_RACE_RACE_DESC_2fr			| Aptitudes de l’espèce
 CUSTOM_RACE_RACE_DESC_2fr_DESC		| L’équivalent du paramètre « desc2 » dans les fichiers Species.names.txt
-CUSTOM_RACE_RACE_DESC_3fr			| Aperçu globale de l’espèce
+CUSTOM_RACE_RACE_DESC_3fr			| Résumé de l’espèce
 CUSTOM_RACE_RACE_DESC_3fr_DESC		| L’équivalent du paramètre « desc3 » dans les fichiers Species.names.txt
-CUSTOM_RACE_RACE_DESC_4fr			| Aperçu spécifique de l’espèce
+CUSTOM_RACE_RACE_DESC_4fr			| Spécificité de l’espèce
 CUSTOM_RACE_RACE_DESC_4fr_DESC		| L’équivalent du paramètre « desc4 » dans les fichiers Species.names.txt
 
 CUSTOM_RACE_RACE_DESC_1				| Species mood description

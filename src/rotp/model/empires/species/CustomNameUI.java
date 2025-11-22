@@ -8,7 +8,6 @@ import static java.awt.GridBagConstraints.REMAINDER;
 import static java.awt.GridBagConstraints.WEST;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -30,7 +29,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 
-import rotp.model.empires.species.SkillsFactory.AllSpeciesAttributes;
+import rotp.model.empires.species.SpeciesSettings.AllSpeciesAttributes;
 import rotp.model.empires.species.SpeciesSettings.SpeciesAttributes;
 import rotp.ui.components.RButtonBar;
 import rotp.ui.components.RButtonBar.BarEvent;
@@ -39,7 +38,6 @@ import rotp.ui.components.RDialog;
 import rotp.ui.components.RLabel;
 import rotp.ui.components.RSeparator;
 import rotp.ui.components.RotPButtons.RButton;
-import rotp.ui.components.RotPButtons.RToggleButton;
 import rotp.ui.components.RotPPanels.RContentPanel;
 import rotp.ui.components.RotPTextFields.SettingField;
 import rotp.ui.game.BaseModPanel;
@@ -48,7 +46,7 @@ import rotp.ui.util.StringList;
 import rotp.util.FontManager;
 import rotp.util.LanguageManager;
 
-public class CustomNameUI extends RDialog {
+class CustomNameUI extends RDialog {
 	private static final long serialVersionUID = 1L;
 	private static final String ROOT = SkillsFactory.ROOT + "UI_";
 
@@ -61,18 +59,22 @@ public class CustomNameUI extends RDialog {
 	private static final int buttonSepW		= s10;
 	private int LEFT_MARGIN		= s20;
 	private int RIGHT_MARGIN	= LEFT_MARGIN;
-	private int HORIZONTAL_GAP	= s10;
 	private int VERTICAL_GAP	= s10;
 
 	private final StringList languageNames = new StringList(LanguageManager.current().languageNames());
 	private final StringList languageCodes = new StringList(LanguageManager.current().languageCodes());
+	private final String defaultLanguage = languageNames.getFirst();
+	private int selectedLanguageIdx = LanguageManager.selectedLanguage();
+	private String globalLanguage = languageNames.get(selectedLanguageIdx);
+	private int leftLanguageId, rightLanguageId;
 
+	private boolean canceled = false; // TODO BR: implement cancel.
 	private boolean updating;
 	private AllSpeciesAttributes settings;
 	private ArrayList<SettingField> fields;
 
 	private StringList languageButtonList; // Dynamic
-	private StringList ethnicButtonList;	// Dynamic
+	private StringList civilizationButtonList;	// Dynamic
 	private SettingField keyField;
 
 	// Panels
@@ -84,11 +86,50 @@ public class CustomNameUI extends RDialog {
 
 	private void updating(boolean b)	{ updating = b; }
 	private boolean twoLanguages()		{
+		leftLanguageId = 0;
+		if (languageButtonList.size() == 1)
+			return false;
+
+		// Check if global language is selected
 		int selectedIndex = languageButtonList.getSelectedIndex();
-		int size = languageButtonList.size();
-		return size > 1 && selectedIndex > 0;
+		leftLanguageId = selectedIndex;
+		String localLanguage = languageButtonList.getFromSelectedIndex();
+		boolean isUiLanguage = localLanguage.equals(globalLanguage);
+		if (isUiLanguage)
+			return false;
+
+		// Check if global language is in the list
+		int globalId = languageButtonList.indexOf(globalLanguage);
+		if (globalId >= 0) {
+			rightLanguageId = selectedIndex;
+			leftLanguageId = globalId;
+			return true;
+		}
+
+		// Check if default language is in the list
+		int defaultId = languageButtonList.indexOf(defaultLanguage);
+		if (selectedIndex == defaultId)
+			return false;
+		if (defaultId > 0) {
+			rightLanguageId = selectedIndex;
+			leftLanguageId = defaultId;
+			return true;
+		}
+
+		// Check if first of the list is selected
+		if (selectedIndex == 0)
+			return false;
+		rightLanguageId = selectedIndex;
+		leftLanguageId = 0;
+		return true;
+//		return size > 1 && selectedIndex > 0;
+//		return size > 1;
 	}
-	private int languageIndex()			{ return languageNames.getSelectedIndex(); }
+	private String langDirFromButtonId(int idx)	{
+		String langName = languageButtonList.get(idx);
+		int langManagerIdx = languageNames.indexOf(langName);
+		return languageCodes.get(langManagerIdx);
+	}
 	private StringList remainingLang()	{
 		StringList list = new StringList(languageNames);
 		list.removeAll(languageButtonList);
@@ -104,7 +145,8 @@ public class CustomNameUI extends RDialog {
 		super(parent);
 		setName("CustomNameUI");
 		this.settings = settings;
-
+	}
+	boolean showPanel()	{
 		contentPane = new ContentPanel();
 		setContentPane(contentPane);
 
@@ -114,8 +156,12 @@ public class CustomNameUI extends RDialog {
 		setLocationRelativeTo(parent);
 		setModal(true);
 		setVisible(true);
+
+		return canceled;
 	}
+	// ========================================================================
 	// #=== Initializers
+	//
 	private void initLists() {
 		int currentId = LanguageManager.selectedLanguage();
 		languageNames.setSelectedIndex(currentId);
@@ -124,14 +170,15 @@ public class CustomNameUI extends RDialog {
 		languageButtonList = new StringList();
 		languageButtonList.add(nextLanguage());
 		if (currentId > 0) {
-			languageButtonList.add(languageNames.get(currentId));
-			languageButtonList.setSelectedIndex(1);
+			String name = languageNames.get(currentId);
+			languageButtonList.add(name);
+			languageButtonList.setSelectedIndex(name);
 		}
 		else
 			languageButtonList.setSelectedIndex(0);
 
-		ethnicButtonList = settings.getEthnicNames(); // TODO BR: complete
-		ethnicButtonList.setSelectedIndex(0);
+		civilizationButtonList = settings.getCivilizationcNames(); // TODO BR: complete
+		civilizationButtonList.setSelectedIndex(0);
 	}
 	private void reCenter() {
 		Point pLoc = parent.getLocationOnScreen();
@@ -141,7 +188,7 @@ public class CustomNameUI extends RDialog {
 		int y = pLoc.y + (pSize.height - cSize.height)/2;
 		setLocation(x, y);
 	}
-	class LanguageBarListener implements ButtonBarListener	{ // TODO BR:
+	private class LanguageBarListener implements ButtonBarListener	{ // TODO BR:
 		@Override public void actionPerformed(BarEvent e) {
 			if (updating)
 				return;
@@ -162,7 +209,7 @@ public class CustomNameUI extends RDialog {
 			pageSelectionPane.buildPanel();
 		}
 	}
-	class EthnicBarListener implements ButtonBarListener	{ // TODO BR:
+	private class CivilizationBarListener implements ButtonBarListener	{ // TODO BR:
 		@Override public void actionPerformed(BarEvent e) {
 			if (updating)
 				return;
@@ -170,8 +217,10 @@ public class CustomNameUI extends RDialog {
 			// System.out.println("EmpireBarListener:" + e.toString());
 			switch (e.event) {
 				case BUTTON_ADDED:
+					settings.insert(e.index, e.newLabel);
 					break;
 				case BUTTON_REMOVED:
+					settings.delete(e.index);
 					break;
 				case BUTTON_SELECTED:
 					System.out.println("EmpireBarListener: Button selected " + e.toString());
@@ -188,11 +237,11 @@ public class CustomNameUI extends RDialog {
 	// ========================================================================
 	// #=== Level 1: Content Panel (set as content pane to be able to access paintComponent to gives a background
 	//
-	class ContentPanel extends RContentPanel { // TODO
+	private class ContentPanel extends RContentPanel { // TODO
 		private static final long serialVersionUID = 1L;
 		private static final String NAME = "MainPanel";
-		ComponentPositioner positioner = new ComponentPositioner();
-		Dimension lastSize;
+		private ComponentPositioner positioner = new ComponentPositioner();
+		private Dimension lastSize;
 
 		ContentPanel()	{
 			setName(NAME);
@@ -223,7 +272,7 @@ public class CustomNameUI extends RDialog {
 		}
 		@Override protected String title()	{ return text(ROOT + "NAMES_TITLE"); }
 
-		class ComponentPositioner extends ComponentAdapter {
+		private class ComponentPositioner extends ComponentAdapter {
 				@Override public void componentResized(ComponentEvent evt) {
 					if (lastSize.equals(getSize()))
 						return;
@@ -346,14 +395,14 @@ public class CustomNameUI extends RDialog {
 			setLayout(new GridBagLayout());
 		}
 
-		private PagePane page0() {
+		private PagePane page0(boolean single) {
 			if (page0 == null)
-				page0 = new PagePane(true);
+				page0 = new PagePane(true, single);
 			return page0;
 		}
-		private PagePane page1() {
+		private PagePane page1(boolean single) {
 			if (page1 == null)
-				page1 = new PagePane(false);
+				page1 = new PagePane(false, false);
 			return page1;
 		}
 		private void buildPanel() {
@@ -374,12 +423,12 @@ public class CustomNameUI extends RDialog {
 			c.weightx = 1;
 			c.gridwidth = GridBagConstraints.REMAINDER;
 			c.anchor = GridBagConstraints.CENTER;
-			add(page0(), c);
+			add(page0(true), c);
 		}
 		private void sidedLanguage() {
 //			GridBagConstraints gbc = newGbc(0, 0, 1, 1, 0, 0, 7, NONE, ZERO_INSETS, 0, 0);
 			GridBagConstraints gbc = newGbc(0, 0, 1, 1, 0, 0, 7, NONE, new Insets(s5, s5, s5, s5), 0, 0);
-			add(page0(), gbc);
+			add(page0(false), gbc);
 //			gbc.gridx++;
 //			new RSeparator(this, false, gbc.gridx, gbc.gridy);
 			//new RotPSeparatorV(this, c.gridx, c.gridy);
@@ -389,7 +438,7 @@ public class CustomNameUI extends RDialog {
 			gbc.gridy = 0;
 			gbc.gridx++;
 			c.anchor = GridBagConstraints.EAST;
-			add(page1(), gbc);
+			add(page1(false), gbc);
 		}
 	}
 	// -#-
@@ -399,16 +448,17 @@ public class CustomNameUI extends RDialog {
 	private class PagePane extends JPanel	{
 		private static final long serialVersionUID = 1L;
 		String language, languageDir;
-		int languageId, ethnicId;
-		private PagePane(boolean left)	{
+		int languageId, civilizationId;
+		private PagePane(boolean left, boolean single)	{
 			if (left)
-				languageId = 0;
+				languageId = leftLanguageId;
 			else
-				languageId = languageIndex();
+				languageId = rightLanguageId;
+			language = languageButtonList.get(languageId);
+			int lgManagerId = languageNames.indexOf(language);
+			languageDir = languageCodes.get(lgManagerId);
 
-			language	= languageNames.get(languageId);
-			languageDir	= languageCodes.get(languageId);
-			ethnicId	= ethnicButtonList.getSelectedIndex();
+			civilizationId = civilizationButtonList.getSelectedIndex();
 			// System.out.println("Page left = " + left + " Language = " + language);
 			setOpaque(false);
 			setForeground(Color.black);
@@ -455,8 +505,8 @@ public class CustomNameUI extends RDialog {
 			int y = 1;
 			SpeciesAttributes identifications = settings.getAttributes(languageDir);
 			boolean first = true;
-			for (SettingString setting : identifications.empireNameItems) {
-				SettingField sf = new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, ethnicId);
+			for (SettingString setting : identifications.civilizationNameItems) {
+				SettingField sf = new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, civilizationId);
 				if (first && left) {
 					addChangeListener(sf, e -> bars.empireNameChangedAction(e));
 					first = false;
@@ -464,8 +514,17 @@ public class CustomNameUI extends RDialog {
 				y++;
 			}
 
-//			new RSeparator(this, true, s2, null, x, y);
-//			y++;
+			// Copy Language Button
+			c.gridx = 0;
+			c.gridy = y;
+			if (!single) {
+				c.insets = BUTTON_INSETS;
+				c.gridx = 1;
+				c.gridy = y+1;
+				c.gridheight = 2;
+				c.anchor = GridBagConstraints.EAST;
+				add(new CopyLanguageButton(left), c);
+			}
 
 			// Common to the species (UI)
 			c.insets = new Insets(s5, 0, 0, 0);
@@ -482,26 +541,27 @@ public class CustomNameUI extends RDialog {
 
 			// ==> SpeciesNameItems
 			for (SettingString setting : identifications.speciesNameItems) {
-				new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, ethnicId);
+				new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, civilizationId);
 				y++;
 			}
 
 			// ==> SpeciesDescriptionItems
 			for (SettingString setting : identifications.speciesDescriptionItems) {
-				new SettingField(this, setting, WIDE_FIELDS_COL, x, y, languageDir, ethnicId);
+				new SettingField(this, setting, WIDE_FIELDS_COL, x, y, languageDir, civilizationId);
 				y++;
 			}
 
+			// Fill From Animations Button
 			c.gridx = 0;
 			c.gridy = y;
-			if (languageId < 2) {
+			if (left && languageId < 2 && settings.hasAnim()) {
 				c.gridy +=1;
 				c.gridx = 1;
-				addSuggestButton(this, c);
+				c.insets = BUTTON_INSETS;
+				c.gridheight = 2;
+				c.anchor = GridBagConstraints.EAST;
+				add(new FillFromAnimButton(), c);
 			}
-
-//			new RSeparator(this, true, s4, null, x, y);
-//			y++;
 
 			// For Dialogues
 			// Common Fields
@@ -520,11 +580,9 @@ public class CustomNameUI extends RDialog {
 
 			// ==> SpeciesLabelItems
 			for (SettingString setting : identifications.speciesLabelItems) {
-				new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, ethnicId);
+				new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, civilizationId);
 				y++;
 			}
-
-//			new RSeparator(this, true, s2, null, x, y);
 
 			// Multiple Fields
 			// dialog to the civilization
@@ -540,21 +598,21 @@ public class CustomNameUI extends RDialog {
 			civDialog.setForeground(headersColor);
 			add(civDialog, c);
 
+			// Fill From Names Button
 			c.gridx = 0;
 			c.gridy = y;
-			if (languageId < 2) {
+			if (lgManagerId < 2) {
 				c.insets = BUTTON_INSETS;
 				c.gridx = 1;
 				c.gridy = y+1;
 				c.gridheight = 3;
 				c.anchor = GridBagConstraints.EAST;
-				add(new SuggestButton(), c);
-				//addSuggestButton(this, c);
+				add(new FillFromNamesButton(languageDir), c);
 			}
 			y++;
 			// ==> EmpireLabelItems
-			for (SettingString setting : identifications.empireLabelItems) {
-				new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, ethnicId);
+			for (SettingString setting : identifications.civilizationLabelItems) {
+				new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, civilizationId);
 				y++;
 			}
 		}
@@ -562,7 +620,6 @@ public class CustomNameUI extends RDialog {
 	// ========================================================================
 	// Level 4: Selection Bar
 	//
-
 	private class SelectionBars extends JPanel	{
 		private static final long serialVersionUID = 1L;
 		private RButtonBar selectEmpire, selectLanguage;
@@ -572,8 +629,8 @@ public class CustomNameUI extends RDialog {
 			setLayout(new GridBagLayout());
 			int x = 0;
 			int y = 0;
-			selectEmpire = new RButtonBar(ethnicButtonList, ITEM_ID, true, true, false);
-			selectEmpire.setButtonBarListener(new EthnicBarListener());
+			selectEmpire = new RButtonBar(civilizationButtonList, ITEM_ID, true, true, false);
+			selectEmpire.setButtonBarListener(new CivilizationBarListener());
 			GridBagConstraints gbc = newGbc(x,y, 1,1, 0,0, WEST, NONE, ZERO_INSETS, 0,0);
 			add(selectEmpire, gbc);
 
@@ -593,8 +650,8 @@ public class CustomNameUI extends RDialog {
 			setLayout(new GridBagLayout());
 			int x = 0;
 			int y = 0;
-			selectEmpire = new RButtonBar(ethnicButtonList, ITEM_ID, true, true, false);
-			selectEmpire.setButtonBarListener(new EthnicBarListener());
+			selectEmpire = new RButtonBar(civilizationButtonList, ITEM_ID, true, true, false);
+			selectEmpire.setButtonBarListener(new CivilizationBarListener());
 			GridBagConstraints gbc = newGbc(x,y, 1,1, 0,0, WEST, NONE, ZERO_INSETS, 0,0);
 			add(selectEmpire, gbc);
 
@@ -618,7 +675,6 @@ public class CustomNameUI extends RDialog {
 					return null;
 				return null;
 			}
-			
 		}
 		void empireNameChangedAction(ChangeEvent e)	{
 			SettingField src = (SettingField) e.getSource();
@@ -633,13 +689,13 @@ public class CustomNameUI extends RDialog {
 	// #=== Level 5: 
 	//
 
-	private void addSuggestButton(Container pane, GridBagConstraints c)	{
-		c.insets = BUTTON_INSETS;
-		//c.gridx = 1;
-		c.gridheight = 2;
-		c.anchor = GridBagConstraints.EAST;
-		pane.add(new SuggestButton(), c);
-	}
+//	private void addSuggestButton(Container pane, GridBagConstraints c)	{
+//		c.insets = BUTTON_INSETS;
+//		//c.gridx = 1;
+//		c.gridheight = 2;
+//		c.anchor = GridBagConstraints.EAST;
+//		pane.add(new SuggestButton(), c);
+//	}
 	// -#-
 	// ========================================================================
 	// #=== Specific Buttons definition
@@ -672,19 +728,94 @@ public class CustomNameUI extends RDialog {
 			}
 		}
 	}
-	private class SuggestButton extends RToggleButton	{
+//	private class SuggestButton extends RToggleButton	{
+//		private static final long serialVersionUID = 1L;
+//		private SuggestButton()	{
+//			super("Suggest");
+//			setToolTipText("TODO");
+//			addActionListener(new SuggestAction());
+//		}
+//		private class SuggestAction implements ActionListener	{
+//			@Override public void actionPerformed(ActionEvent evt)	{
+//				// TODO BR:  Cancel
+//			}
+//		}
+//	}
+	private class FillFromAnimButton extends RButton	{
 		private static final long serialVersionUID = 1L;
-		private SuggestButton()	{
-			super("Suggest");
+		private FillFromAnimButton()	{
+			super("");
+			setText(text("CUSTOM_RACE_FILL_FROM_ANIM_BUTTON"));
 			setToolTipText("TODO");
-			addActionListener(new SuggestAction());
+			addActionListener(e -> fillFromAnim(e));
 		}
-		private class SuggestAction implements ActionListener	{
-			@Override public void actionPerformed(ActionEvent evt)	{
-				// TODO BR:  Cancel
+		private void fillFromAnim(ActionEvent evt)	{
+			boolean forced = isForced(evt);
+			if (isForAllCiv(evt)) {
+				int size = civilizationButtonList.size();
+				for (int civIdx=0; civIdx<size; civIdx++)
+					settings.fillFromAnim(civIdx, forced);
 			}
+			else {
+				int civIdx  = civilizationButtonList.getSelectedIndex();
+				settings.fillFromAnim(civIdx, forced);
+			}
+			pageSelectionPane.buildPanel();
 		}
 	}
+	private class FillFromNamesButton extends RButton	{
+		private static final long serialVersionUID = 1L;
+		private FillFromNamesButton(String langDir)	{
+			super("");
+			setText(text("CUSTOM_RACE_FILL_FROM_NAME_BUTTON"));
+			setToolTipText("TODO");
+			addActionListener(e -> fillFromFromNames(e, langDir));
+		}
+		private void fillFromFromNames(ActionEvent evt, String langDir)	{
+			boolean forced = isForced(evt);
+			if (isForAllCiv(evt)) {
+				int size = civilizationButtonList.size();
+				for (int civIdx=0; civIdx<size; civIdx++)
+					settings.fillLabelsFromNames(langDir, civIdx, forced);
+			}
+			else {
+				int civIdx  = civilizationButtonList.getSelectedIndex();
+				settings.fillLabelsFromNames(langDir, civIdx, forced);
+			}
+			pageSelectionPane.buildPanel();
+		}
+	}
+	private class CopyLanguageButton extends RButton	{
+		private static final long serialVersionUID = 1L;
+		private CopyLanguageButton(boolean toLeft)	{
+			super("");
+			if (toLeft)
+				setText(text("CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON"));
+			else
+				setText(text("CUSTOM_RACE_COPY_FROM_LEFT_BUTTON"));
+			setToolTipText("TODO");
+			addActionListener(e -> copyLanguage(e, toLeft));
+		}
+		private void copyLanguage(ActionEvent evt, boolean toLeft)	{
+			int destId = toLeft? leftLanguageId : rightLanguageId;
+			int srcId  = toLeft? rightLanguageId : leftLanguageId;
+			String destLangDir = langDirFromButtonId(destId);
+			String srcLangDir  = langDirFromButtonId(srcId);
+			boolean forced = isForced(evt);
+			if (isForAllCiv(evt)) {
+				int size = civilizationButtonList.size();
+				for (int civIdx=0; civIdx<size; civIdx++)
+					settings.copyFromLanguage(srcLangDir, destLangDir, civIdx, forced);
+			}
+			else {
+				int civIdx  = civilizationButtonList.getSelectedIndex();
+				settings.copyFromLanguage(srcLangDir, destLangDir, civIdx, forced);
+			}
+			pageSelectionPane.buildPanel();
+		}
+	}
+	private boolean isForced(ActionEvent evt) { return (evt.getModifiers() & ActionEvent.SHIFT_MASK) > 0; }
+	private boolean isForAllCiv(ActionEvent evt) { return (evt.getModifiers() & ActionEvent.CTRL_MASK) > 0; }
 	// ========================================================================
 	// Other Specific Components definition
 	//

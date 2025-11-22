@@ -73,11 +73,20 @@ public class StringList extends ArrayList<String> {
 		}
 		return super.get(index);
 	}
-	public String get(int index, String fill)	{
+	/**
+	 * Get the specified String at the specified position in this
+	 * list.
+	 * If the index is greater than the last index, the list will be filled with the given String.
+	 * If the index is negative, nothing will be changed
+	 *
+	 * @param index index at which the specified String is to be taken
+	 * @param str  String used to fill the list if the index is higher or equal than the size
+	 */
+	public String get(int index, String str)	{
 		if (index<0)
 			return "";
 		if (size() == 0)
-			add(fill);
+			add(str);
 		if (index >= size()) { // extend the list for higher indexes
 			while (size() <= index)
 				add(super.get(size()-1));

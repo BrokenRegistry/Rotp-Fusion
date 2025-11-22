@@ -155,6 +155,10 @@ public interface RotPButtons extends RotPComponents	{
 		@Override protected void paintComponent(Graphics g)	{
 			Graphics2D g2 = (Graphics2D) g;
 			Rectangle bounds = getBounds();
+			g.setFont(getFont());
+			int sw = g.getFontMetrics().stringWidth(getText());
+			int x = (bounds.width - sw)/2;
+			int y = bounds.height*2/3;
 			if (isSelected()) {
 				setForeground(buttonBackgroundColor());
 				g2.setColor(buttonTextColor());
@@ -167,13 +171,16 @@ public interface RotPButtons extends RotPComponents	{
 				setForeground(buttonTextColor());
 				g2.setColor(buttonBackgroundColor());
 				g2.fillRoundRect(0, s2, bounds.width-1, bounds.height-1-s2-s2, cnr, cnr);
+				g2.setColor(buttonTextColor());
 			}
 			if (showBorder) {
 				g2.setStroke(stroke1);
 				g2.setColor(highlightColor());
 				g2.drawRoundRect(0, s2, bounds.width-1, bounds.height-1-s2-s2, cnr, cnr);
 			}
-			super.paintComponent(g);
+			// Sometime Java truncate the text
+			g2.drawString(getText(), x, y);
+			// super.paintComponent(g);
 		}
 		private class ButtonMouseAdapter extends MouseAdapter	{
 			@Override public void mouseEntered(MouseEvent evt)	{
@@ -183,6 +190,7 @@ public interface RotPButtons extends RotPComponents	{
 			@Override public void mouseExited(MouseEvent evt)	{
 				showBorder = false;
 				setForeground(buttonTextColor());
+				repaint(); // to remove the border
 			}
 			@Override public void mousePressed(MouseEvent evt)	{}
 			@Override public void mouseReleased(MouseEvent evt)	{}

@@ -38,9 +38,9 @@ import javax.swing.JTextPane;
 
 import rotp.model.ai.AIList;
 import rotp.model.empires.Empire;
-import rotp.model.empires.species.SkillsFactory;
 import rotp.model.empires.species.ICRSettings;
 import rotp.model.empires.species.SettingBase;
+import rotp.model.empires.species.SkillsFactory;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
@@ -167,7 +167,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		if (initialized)
 			return this;
 		initialized = true;
-		cr(SkillsFactory.getSkillsFactoryForEditor());		
+		cr(SkillsFactory.getSkillsFactoryForEditor(this));		
 		maxLeftM	= scaled(80);
 		guiTitleID	= ROOT + "SHOW_TITLE";
 	    commonList	= settingList;
