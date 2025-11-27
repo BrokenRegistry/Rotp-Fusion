@@ -48,7 +48,8 @@ import rotp.ui.util.ParamButtonHelp;
 import rotp.util.LabelManager;
 import rotp.util.ModifierKeysState;
 
-class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
+//class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
+public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 	private static final long serialVersionUID	= 1L;
 	private static final String GUI_ID			= "CUSTOM_RACE";
 	private static final String selectKey		= ROOT + "GUI_SELECT";
@@ -67,7 +68,11 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 			loadCurrentKey,
 			"");
 	private	static final EditCustomRaceUI instance		= new EditCustomRaceUI();
-	
+	public static void languageChanged()	{
+		if (instance != null)
+			instance.cr().languageChanged();
+	}
+
 	private final Box selectBox		= new Box(selectKey);
 	private final Box randomBox		= new Box(randomKey);
 	private final Box randomGetBox	= new Box(randomGetKey);
@@ -165,6 +170,12 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 		guiOptions().selectedPlayerIsCustom(true);
 		guiOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
 		close();
+	}
+	private void doUpdateAction(KeyEvent e) {
+		if(!Rotp.isIDE())
+			return;
+		if (cr().autoUpdate(e, raceList))
+			reInitFields();
 	}
 	public void updateCRGui(IGameOptions source) {
 		for (InterfaceOptions param : commonList)
@@ -529,9 +540,13 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 	@Override protected String GUI_ID() { return GUI_ID; }
 	@Override protected void close() {
 		ModifierKeysState.reset();
-		super.close();
-		((SetupRaceUI) parent).raceChanged();		
-		RotPUI.instance().selectSetupRacePanel();
+		if (isVisible()) {
+			super.close();
+			((SetupRaceUI) parent).raceChanged();		
+			RotPUI.instance().selectSetupRacePanel();
+		}
+		else
+			super.close();
 	}
 	@Override protected int getBackGroundWidth() {
 		return super.getBackGroundWidth() + raceListW + columnPad;
@@ -714,11 +729,11 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 		g.setStroke(prev);
 	}
 	@Override public void paintComponent(Graphics g0) {
-		//showTiming = true; // TO DO BR: COMMENT
+		//showTiming = false; // TO DO BR: COMMENT
 		if (showTiming)
 			System.out.println("===== EditCustomRace PaintComponents =====");
-		long timeStart = System.currentTimeMillis();
 		super.paintComponent(g0); // call ShowUI
+		long timeStart = System.currentTimeMillis();
 		Graphics2D g = (Graphics2D) g0;
 		// Custom Race List
 		currentWidth = raceListW;
@@ -726,7 +741,7 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 		g.setStroke(stroke2);
 		paintSetting(g, raceList);
 		g.setStroke(prev);
-	
+
 		// Randomize Options
 		xLine = xDesc  + labelPad;
 		yLine = yRandB - labelPad;
@@ -744,6 +759,7 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 			System.out.println("EditCustomRace paintComponent() Time = " + (System.currentTimeMillis()-timeStart) + " ms");	
 	}
 	@Override public void keyPressed(KeyEvent e) {
+		//checkModifierKey(e);
 		if (!isOnTop)
 			return;
 
@@ -751,6 +767,9 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 			case KeyEvent.VK_ESCAPE:
 				doExitBoxAction();
 				return;
+			case KeyEvent.VK_U:
+				doUpdateAction(e);
+			return;
 		}
 		super.keyPressed(e);
 	}
@@ -807,7 +826,6 @@ class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelListener {
 	@Override public void mouseWheelMoved(MouseWheelEvent e) {
 		if (!isOnTop)
 			return;
-
 		mouseCommon(null, e);
 	}
 }

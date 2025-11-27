@@ -2,6 +2,7 @@ package rotp.ui.components;
 
 import static java.awt.GridBagConstraints.NONE;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -26,9 +27,9 @@ import rotp.ui.util.StringList;
 public class RButtonBar extends JPanel implements ActionListener, ItemSelectable, SwingConstants, RotPComponents	{
 	private static final long serialVersionUID = 1L;
 
+	public interface GetColor	{ Color color(int idx, String label); }
 	public interface ButtonBarListener	{
 		enum BarEvents	{ BUTTON_SELECTED, BUTTON_REMOVED, BUTTON_ADDED, BUTTON_RENAMED }
-		//public void actionPerformed(BarEvents e, String newLabel, String PrevLabel);
 		public void actionPerformed(BarEvent e);
 	}
 	public class BarEvent {
@@ -61,13 +62,13 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 	private StringList labelList;
 
 	private String barName;
-	//private int selectedIndex;
 	private boolean westSide;
 	private boolean keepFirst;
 	private boolean keepOne;
 
 	private ButtonBarListener barListener;
 	private BarEvent pendingEvent;
+	private GetColor gtc;
 	private boolean updating;
 	
 	private List<ActionListener> sizeListenerList = new ArrayList<>();		// For resize purpose
@@ -82,9 +83,6 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 			labelList = new StringList();
 		else
 			labelList = list;
-		if (keepOne && labelList.isEmpty()) {
-			// TODO BR:
-		}
 		barName = itemName;
 		this.westSide	= westSide;
 		this.keepOne	= keepOne;
@@ -109,7 +107,6 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 
 		int idx = getSelectedIndex();
 		buttonList.get(idx).setSelected(true);
-		//refresh();
 	}
 	private void addControlButtons()	{
 		int incr = westSide? 1 : -1;
@@ -138,9 +135,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 		int incr = westSide? 1 : -1;
 		int xPos = westSide? 2 : buttonList.size();
 		GridBagConstraints gbc = newGbc(xPos,0, 1,1, 0,0, 5, NONE, ZERO_INSETS, 0,0);
-
 		for (MiniToggle b : buttonList) {
-			//b.setSelected(i == idx);
 			gbc.gridx += incr;
 			add(b, gbc);
 		}
@@ -151,10 +146,6 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 		for (MiniToggle b : buttonList)
 			remove(b);
 		updating = false;
-	}
-	private void refreshToggleButtons()	{
-		removeToggleButtons();
-		addToggleButtons();
 	}
 	private void callEvent(BarEvent event)	{
 		// System.out.println("callEvent: " + event.toString());
@@ -179,6 +170,14 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 
 		pendingEvent = null;
 	}
+	private Color getTextColor(String name)	{
+		if (gtc == null)
+			return buttonTextColor();
+		else {
+			int idx = labelList.indexOf(name);
+			return gtc.color(idx, name);
+		}
+	}
 	@Override public Object[] getSelectedObjects()	{
 		System.out.println("RSelectionButtons getSelectedObjects()");
 		// TODO Auto-generated method stub
@@ -199,16 +198,12 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 		for(MiniToggle b : buttonList)
 			b.removeItemListener(l);
 	}
+	public void setTextColorGetter(GetColor gtc)				{ this.gtc = gtc; }
 	public void setButtonBarListener(ButtonBarListener l)		{ barListener = l; }
 	public void setNewTextRequest(Function<String, String> f)	{ newTextRequest = f; }
-	public void addSizeListener(ActionListener listener)	{
-		sizeListenerList.add(listener);
-	}
-	public void removeSizeListener(ActionListener listener)	{
-		sizeListenerList.remove(listener);
-	}
-
-
+	public void addSizeListener(ActionListener listener)		{ sizeListenerList.add(listener); }
+	public void removeSizeListener(ActionListener listener)		{ sizeListenerList.remove(listener); }
+	public void repaintButton(int idx)	{ buttonList.get(idx).repaint(); }
 	public void setSelectedIndex(int i)	{
 		if (i == labelList.getSelectedIndex())
 			return;
@@ -221,14 +216,12 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 	public int getSelectedIndex()		{ return labelList.getSelectedIndex(); }
 	public int getIndex(MiniToggle b)	{ return buttonList.indexOf(b); }
 	public StringList getList()			{ return labelList; }
-	public void renameSelected(String newLabel)	{ // TODO
+	public void renameSelected(String newLabel)	{
 		int idx = getSelectedIndex();
 		String prevLabel = labelList.set(idx, newLabel);
 		buttonList.get(idx).setText(newLabel);
 		System.out.println("button name changed: " + prevLabel + " --> " + newLabel);
 		callEvent(new BarEvent(BarEvents.BUTTON_RENAMED, newLabel, prevLabel, idx));
-//		refreshToggleButtons();
-//		revalidate();
 	}
 	private String getValidtext(String str)	{
 		if (newTextRequest != null)
@@ -242,33 +235,6 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 				return str + " " + i;
 		}
 		return str + " " + (labelList.size() + 1);
-	}
-	private void refresh()	{
-		removeAll();
-		int incr = westSide? 1 : -1;
-		int xPos = westSide? 0 : buttonList.size()+2;
-		GridBagConstraints gbc = newGbc(xPos,0, 1,1, 0,0, 5, NONE, ZERO_INSETS, 0,0);
-		add(insertButton, gbc);
-		gbc.gridx += incr;
-		add(removeButton, gbc);
-		gbc.gridx += incr;
-		gbc.insets = westSide? new Insets(0, 0, 0, s5) : new Insets(0, s5, 0, 0);
-		add(addButton, gbc);
-		gbc.insets = ZERO_INSETS;
-
-		int idx = getSelectedIndex();
-		int i = 0;
-		for (MiniToggle b : buttonList) {
-			b.setSelected(i == idx);
-			gbc.gridx += incr;
-			add(b, gbc);
-			i++;
-		}
-		revalidate();
-//		frame = JOptionPane.getFrameForComponent(this.getParent());
-//		frame.pack();
-		for(ActionListener listener : sizeListenerList)
-			listener.actionPerformed(null);;
 	}
 	// ==========================================
 	// Insert Button
@@ -321,7 +287,6 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 				return;
 			}
 			String prevLabel = labelList.remove(prevIdx);
-			
 			int newIdx = prevIdx;
 			if(prevIdx >= labelList.size())
 				newIdx--;
@@ -349,7 +314,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 	// Mini Buttons
 	private class toggleItemAction implements ItemListener	{
 		@Override public void itemStateChanged(ItemEvent evt)	{
-			 System.out.println("toggleItemAction " + evt.getStateChange() + " / Updating = " + updating);
+			// System.out.println("toggleItemAction " + evt.getStateChange() + " / Updating = " + updating);
 			if (updating)
 				return;
 			MiniToggle b = (MiniToggle) evt.getSource();
@@ -390,5 +355,6 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 			setName(barName);
 			addItemListener(new toggleItemAction());
 		}
+		@Override public Color buttonTextColor()	{ return getTextColor(getText()); }
 	}
 }

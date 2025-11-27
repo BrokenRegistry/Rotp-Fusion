@@ -431,7 +431,7 @@ public final class Empire extends Species implements NamedObject {
         return canSeeShips[empId];
     }
 
-	public DynOptions speciesOptions()		{ return raceOptions; }
+	@Override public DynOptions speciesOptions()	{ return raceOptions; }
 	@Override public int speciesNameIndex()	{ return raceNameIndex; }
     public BufferedImage scoutImage() {
         if (scoutImage == null)
@@ -534,7 +534,7 @@ public final class Empire extends Species implements NamedObject {
 		// Init empire species parameters
 		raceKey		= animKey();
 		dataRaceKey	= skillKey();
-		raceOptions	= raceOptions(); // BR: for custom species
+		raceOptions	= super.speciesOptions(); // BR: for custom species
 
 		// Init Home world
 		usedHomeNames().add(s.name()); // To prevent same homeworlds, as custom species may have doubles
@@ -576,7 +576,7 @@ public final class Empire extends Species implements NamedObject {
         selectedAI	= IGameOptions.BASE;
         raceKey		= "RACE_PSILON";
         dataRaceKey	= "RACE_PSILON";
-        raceOptions	= raceOptions();
+        raceOptions	= super.speciesOptions();
         homeSysId	= capitalSysId = sysId;
 		compSysId	= new int[0];
         empireViews	= new EmpireView[0];;

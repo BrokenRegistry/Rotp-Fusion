@@ -152,6 +152,7 @@ public interface RotPButtons extends RotPComponents	{
 			pane.add(this, gbc);
 		}
 		public void toggle()	{ setEnabled(!isEnabled()); }
+
 		@Override protected void paintComponent(Graphics g)	{
 			Graphics2D g2 = (Graphics2D) g;
 			Rectangle bounds = getBounds();
@@ -160,7 +161,7 @@ public interface RotPButtons extends RotPComponents	{
 			int x = (bounds.width - sw)/2;
 			int y = bounds.height*2/3;
 			if (isSelected()) {
-				setForeground(buttonBackgroundColor());
+				//setForeground(buttonBackgroundColor());
 				g2.setColor(buttonTextColor());
 				g2.fillRoundRect(0, s2, bounds.width-1, bounds.height-1-s2-s2, cnr, cnr);
 				g2.setColor(buttonBackgroundColor());
@@ -168,7 +169,7 @@ public interface RotPButtons extends RotPComponents	{
 				g2.drawRoundRect(0, s2, bounds.width-1, bounds.height-1-s2-s2, cnr, cnr);
 			}
 			else {
-				setForeground(buttonTextColor());
+				//setForeground(buttonTextColor());
 				g2.setColor(buttonBackgroundColor());
 				g2.fillRoundRect(0, s2, bounds.width-1, bounds.height-1-s2-s2, cnr, cnr);
 				g2.setColor(buttonTextColor());

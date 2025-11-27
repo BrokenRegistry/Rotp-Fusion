@@ -6,8 +6,8 @@ import static rotp.model.game.IMainOptions.speciesDirectoryPath;
 import static rotp.model.game.IRaceOptions.defaultRace;
 import static rotp.ui.util.IParam.langLabel;
 import static rotp.ui.util.PlayerShipSet.DISPLAY_RACE_SET;
-import static rotp.util.LanguageManager.selectedLanguageDir;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import rotp.Rotp;
 import rotp.model.empires.Leader.Personality;
 import rotp.model.game.DynOptions;
 import rotp.model.game.DynamicOptions;
@@ -26,6 +27,7 @@ import rotp.model.game.IGameOptions;
 import rotp.model.game.IRaceOptions;
 import rotp.model.planet.PlanetType;
 import rotp.model.ships.ShipLibrary;
+import rotp.ui.RotPUI;
 import rotp.ui.game.BaseModPanel;
 import rotp.ui.util.PlayerShipSet;
 import rotp.ui.util.StringList;
@@ -33,22 +35,23 @@ import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
 
 public abstract class SpeciesSettings {
-//	public static final String LANG_SEP	= "§";
-	private static final String PLANET	= "PLANET_";
-	public static final String ROOT		= "CUSTOM_RACE_";
-	static final String EXT		= ".race";
-	private static final String RANDOMIZED_RACE_KEY	= "RANDOMIZED_RACE";
-	public static final String RANDOM_RACE_KEY		= "RANDOM_RACE_KEY";
-	public static final String CUSTOM_RACE_KEY		= "CUSTOM_RACE_KEY";
-	public static final String BASE_RACE_MARKER		= "*";
-	private static final boolean booleansAreBullet	= true;
-	static final String CR_EMPIRE_NAME_RANDOM	= "Randomized";
-	static final FilenameFilter SPECIES_FILTER	= (File dir, String name1) -> name1.toLowerCase().endsWith(EXT);
+	protected static final String DEFAULT_LANGUAGE	= "en";
+	private	static final String PLANET				= "PLANET_";
+	public	static final String ROOT				= "CUSTOM_RACE_";
+			static final String EXT					= ".race";
+	private	static final String RANDOMIZED_RACE_KEY	= "RANDOMIZED_RACE";
+	public	static final String RANDOM_RACE_KEY		= "RANDOM_RACE_KEY";
+	public	static final String CUSTOM_RACE_KEY		= "CUSTOM_RACE_KEY";
+	public	static final String BASE_RACE_MARKER	= "*";
+	private	static final boolean booleansAreBullet	= true;
+	static	final String CR_EMPIRE_NAME_RANDOM		= "Randomized";
+	static	final FilenameFilter SPECIES_FILTER		= (File dir, String name1) -> name1.toLowerCase().endsWith(EXT);
 
 	// Label list taken from the definitions files
+	protected static String workingLanguageCode; 
 	private static final HashMap<String, StringList> ONE_PER_EMPIRE_MAP	= new HashMap<>();
 	private static final HashMap<String, StringList> ONE_PER_SPECIES_MAP = new HashMap<>();
-	private static void updateEmpireSpeciesMap() {
+	protected static void updateEmpireSpeciesMap() {
 		List<String> languageCodes = LanguageManager.current().languageCodes();
 		for (String lang : languageCodes) {
 			String dir = "lang/" + lang + "/races/Human.";
@@ -59,21 +62,22 @@ public abstract class SpeciesSettings {
 			label.filterLabelsTo(common, multiple);
 			ONE_PER_EMPIRE_MAP.put(lang, multiple);
 			ONE_PER_SPECIES_MAP.put(lang, common);
+			workingLanguageCode = selectedLanguageDir();
 		}
 	}
 	private static HashMap<String, StringList> getOnePerEmpireMap()	{
-		if (ONE_PER_EMPIRE_MAP.isEmpty())
+		if (ONE_PER_EMPIRE_MAP.isEmpty() || !selectedLanguageDir().equals(workingLanguageCode))
 			updateEmpireSpeciesMap();
 		return ONE_PER_EMPIRE_MAP;
 	}
 	private static HashMap<String, StringList> getOnePerSpeciesMap(){
-		if (ONE_PER_SPECIES_MAP.isEmpty())
+		if (ONE_PER_SPECIES_MAP.isEmpty() || !selectedLanguageDir().equals(workingLanguageCode))
 			updateEmpireSpeciesMap();
 		return ONE_PER_SPECIES_MAP;
 	}
 
-	private static String toLanguageKey(String s)		{ return "en".equals(s)? "" : s; }
-	private static boolean isCurrentLanguage(String s)	{ return selectedLanguageDir().equals(s); }
+	private static String toLanguageKey(String s)	{ return DEFAULT_LANGUAGE.equals(s)? "" : s; }
+	protected static String selectedLanguageDir()	{ return LanguageManager.selectedLanguageDir(); }
 
 	// ========================================================================
 	// #=== Non Static variable and methods
@@ -82,7 +86,9 @@ public abstract class SpeciesSettings {
 	private SpeciesSkills race; // !!! To be kept up to date !!!
 	private DynOptions animOptions;
 	private SpeciesSkills animSkills;
-	boolean isReference = true; // For the rework sources, not to be updated.
+	boolean isReference = true;
+	boolean isForGalaxy = false;
+	String languageForLabel = DEFAULT_LANGUAGE;
 	BaseModPanel parent;
 
 	protected SpeciesSkills race()			{ return race; };		// !!! To be kept up to date !!!
@@ -97,8 +103,7 @@ public abstract class SpeciesSettings {
 				setting = new SpeciesDialogLabel(label, dir);
 				settingMap.addAttribute(setting);
 			}
-//			System.out.println("settingKey: " + settingKey + " value: " + race().raceLabels().label(label));
-			setting.set(race().raceLabels().label(label)); //  + TO_EDIT_TAG // TODO BR: VALIDATE
+			setting.set(race().raceLabels().label(label));
 			setting.skillToSetting(race());
 		}
 		list = getOnePerEmpireMap().get(dir);
@@ -109,29 +114,69 @@ public abstract class SpeciesSettings {
 				setting = new CivilizationDialogLabel(label, dir);
 				settingMap.addAttribute(setting);
 			}
-//			System.out.println("settingKey: " + settingKey + " value: " + race().raceLabels().label(label));
-			setting.set(race().raceLabels().label(label)); //  + TO_EDIT_TAG
+			setting.set(race().raceLabels().label(label));
 			setting.skillToSetting(race());
 		}
 	}
+	protected void autoUpdate(KeyEvent e)	{ // For developers only
+		if(!(Rotp.isIDE() && e.isShiftDown() && e.isControlDown()))
+			return;
+		settingMap.cleanLanguages();
+		AllSpeciesAttributes settings = new AllSpeciesAttributes();
+		settings.fillFromAnim(true);
+	}
+
 	private boolean callUI()	{
-		SettingMap backup = new SettingMap();
-		backup.copyFrom(settingMap);
-		
+		settingMap.cleanLanguages();
+		SettingMap backupMap = new SettingMap();
+		backupMap.copyFrom(settingMap);
+		race().speciesOptions().backupStringMap();
+
 		AllSpeciesAttributes settings = new AllSpeciesAttributes();
 		CustomNameUI ui = new CustomNameUI(parent, settings);
+		RotPUI.animationListeners.add(ui);
 		boolean canceled = ui.showPanel();
-		if (canceled)
-			settingMap.copyFrom(backup);
-		// TODO BR: validate (cancel vs exit)
+		RotPUI.animationListeners.remove(ui);
+
+		if (canceled) {
+			settingMap.copyFrom(backupMap);
+			race().speciesOptions().restoreStringMap();
+			System.out.println("After restore option string size: " + race().speciesOptions().stringList().size());
+			for (ICRSettings setting : settingMap.getAll()) {
+				if (setting instanceof SettingStringLanguage) {
+					SettingStringLanguage ssl = (SettingStringLanguage)setting;
+					System.out.println(ssl.key + " " + ssl.langDir);
+				}
+				setting.settingToSkill(race());
+			}
+		}
+		else {
+			// Update language setting
+			List<String> codes = LanguageManager.current().languageCodes();
+			List<String> names = LanguageManager.current().languageNames();
+			LanguageList languageSetting = (LanguageList) settingMap.get(ROOT + LanguageList.KEY);
+			StringList languageDir = new StringList();
+			for (String name : settings.getLanguageNames()) {
+				int idx = names.indexOf(name);
+				String dir = codes.get(idx);
+				languageDir.add(dir);
+			}
+			languageSetting.set(languageDir.asString());
+
+			// clean languages if needed
+			settingMap.cleanLanguages();
+		}
 		return true;
+	}
+	protected boolean isAnimAutonomous(String langDir)	{
+		SpeciesAttributes attributes = new SpeciesAttributes(langDir);
+		return attributes.isAnimAutonomous();
 	}
 	// -#-
 	// ========================================================================
 	// Sub Classes
 	//
 	// #======================== Setting Map ========================
-	@SuppressWarnings("ucd")
 	class SettingMap {
 		private final List<ICRSettings> settingList	= new ArrayList<>(); // !!! To be kept up to date !!!
 		private final List<ICRSettings> guiList	 	= new ArrayList<>();
@@ -142,55 +187,42 @@ public abstract class SpeciesSettings {
 		private void put(String name, ICRSettings setting)	{
 			if (name.startsWith("_"))
 				System.out.println("name.startsWith(_)");
-			if (filled)
-				System.out.println("settingMap is not ready for new entry " + name);
+//			if (filled)
+//				System.out.println("settingMap is not ready for new entry " + name);
 			settingMap.put(name, setting);
 		}
 		void add(ICRSettings setting) {
 			if (settingList.contains(setting)) {
-				System.err.println("DUPLICATE settingList " + setting.getCfgLabel());
+				System.err.println("DUPLICATE settingList " + setting.dynOptionIndex());
 			}
 			settingList.add(setting);
-			put(setting.getLangLabel(), setting);
+			put(setting.dynOptionIndex(), setting);
 		}
 		void addGui(ICRSettings setting) {
 			if (guiList.contains(setting)) {
-				System.err.println("DUPLICATE guilist " + setting.getCfgLabel());
+				System.err.println("DUPLICATE guilist " + setting.dynOptionIndex());
 			}
 			guiList.add(setting);
-			put(setting.getLangLabel(), setting);
+			put(setting.dynOptionIndex(), setting);
 		}
 		void addAttribute(ICRSettings setting) {
 			if (attributeList.contains(setting)) {
-				System.err.println("DUPLICATE attributeList " + setting.getCfgLabel());
+				System.err.println("DUPLICATE attributeList " + setting.dynOptionIndex());
 			}
 			attributeList.add(setting);
-			put(setting.getLangLabel(), setting);
+			put(setting.dynOptionIndex(), setting);
 		}
-//		void addAttribute(ICRSettings setting, String Key) {
-//			if (attributeList.contains(setting)) {
-//				System.err.println("DUPLICATE attributeList");
-//			}
-//			attributeList.add(setting);
-//			put(Key, setting);
-//		}
-		List<ICRSettings> getGuis()			{ return guiList; }
-		List<ICRSettings> getSettings()		{ return settingList; }
-		private List<ICRSettings> getAttributes()	{ return attributeList; }
-		List<ICRSettings> getAll()			{
+		List<ICRSettings> getGuis()		{ return guiList; }
+		List<ICRSettings> getSettings()	{ return settingList; }
+		List<ICRSettings> getAll()		{
 			List<ICRSettings> list = new ArrayList<>(settingList);
 			list.addAll(attributeList);
 			list.addAll(guiList);
 			return list;
 		}
-		private List<ICRSettings> getForRandom()	{
-			List<ICRSettings> list = new ArrayList<>(settingList);
-			list.addAll(guiList);
-			return list;
-		}
-		ICRSettings get(String key)			{ return settingMap.get(key); }
-		private StringList getList(String key)		{ return ((SettingStringList)settingMap.get(ROOT + key)).getList(); }
-		private void copyFrom(SettingMap src)			{
+		ICRSettings get(String key)		{ return settingMap.get(key); }
+		private StringList getList(String key)	{ return ((SettingStringList)settingMap.get(key)).getList(); }
+		private void copyFrom(SettingMap src)	{
 			settingList.clear();
 			settingList.addAll(src.settingList);
 			guiList.clear();
@@ -199,7 +231,38 @@ public abstract class SpeciesSettings {
 			attributeList.addAll(src.attributeList);
 			settingMap.clear();
 			settingMap.putAll(src.settingMap);
-			filled = src.filled; // TODO BR: maybe removed
+			filled = src.filled;
+		}
+		void cleanLanguages()	{
+			LanguageList languageList = (LanguageList) get(ROOT + LanguageList.KEY);
+			StringList toKeep = new StringList(languageList.settingValue());
+			HashMap <String, ICRSettings> mapCopy = new HashMap<>(settingMap);
+			for(Entry<String, ICRSettings> entry : mapCopy.entrySet()) {
+				if (entry.getValue() instanceof SettingStringLanguage) {
+					SettingStringLanguage setting = (SettingStringLanguage) entry.getValue();
+					if (!toKeep.contains(setting.langDir)) {
+						settingMap.remove(entry.getKey());
+						attributeList.remove(setting);
+					}
+				}
+			}
+		}
+		void languageChanged(String oldDir, String newDir)	{
+			// first update the settings
+			if (parent != null && parent.isVisible()) {
+				for(Entry<String, ICRSettings> entry : settingMap.entrySet()) {
+					if (entry.getValue() instanceof SettingStringLanguage) {
+						SettingStringLanguage setting = (SettingStringLanguage) entry.getValue();
+						if (setting.languageChanged(oldDir, newDir)) {
+						}
+					}
+				}
+			}
+			// Then update settingMap indexes
+			HashMap <String, ICRSettings> mapCopy = new HashMap<>(settingMap);
+			settingMap.clear();
+			for(ICRSettings setting : mapCopy.values())
+				settingMap.put(setting.dynOptionIndex(), setting);
 		}
 	}
 	// -#-
@@ -211,13 +274,9 @@ public abstract class SpeciesSettings {
 
 		private static void setReworkedKey(DynOptions opts, String key)	{ opts.setString(ROOT + REWORKED_RACE_KEY, key); }
 		private static String getReworkedKey(DynOptions opts)			{ return opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE); }
-		static String getRawReworkedKey(DynOptions opts)		{
+		static String getRawReworkedKey(DynOptions opts)	{
 			String key = opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE);
 			return DEFAULT_VALUE.equals(key)? null : key;
-		}
-		private static String getValidReworkedKey(DynOptions opts)		{
-			String key = opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE);
-			return DEFAULT_VALUE.equals(key)? defaultRace : key;
 		}
 		/**
 		 * Get a reworked key from the filename, or the folder name
@@ -284,17 +343,13 @@ public abstract class SpeciesSettings {
 		@Override protected StringList guiTextsList()	{ return getOptions(); }
 		@Override public String guideDefaultValue()		{ return getDefaultCfgValue(); }
 		@Override public String guideValue()			{ return getCfgValue(); }
-		@Override public void updateOptionTool()		{
-			if (!isSpacer() && dynOpts() != null)
-				set(dynOpts().getString(getLangLabel(), DEFAULT_VALUE));
-		}
 		@Override public void updateOption(DynamicOptions destOptions)	{
 			if (!isSpacer() && destOptions != null)
-				destOptions.setString(getLangLabel(), settingValue());
+				destOptions.setString(dynOptionIndex(), settingValue());
 		}
 		@Override public void updateOptionTool(DynamicOptions srcOptions)	{
 			if (!isSpacer() && srcOptions != null) {
-				String reworkKey = srcOptions.getString(getLangLabel());
+				String reworkKey = srcOptions.getString(dynOptionIndex());
 				if (reworkKey == null || DEFAULT_VALUE.equals(reworkKey)) {
 					animSkills = null;
 					animOptions = null;
@@ -302,27 +357,37 @@ public abstract class SpeciesSettings {
 				}
 				else {
 					set(reworkKey);
-//					Race refSkill = Species.getAnim(reworkKey);
-//					CustomRaceDefinitions cr = new CustomRaceDefinitions(refSkill, true, false);
-//					reworkedRace = cr.getAsOptions();
 					animSkills = SkillsFactory.getMasterSkillsForReworked(reworkKey);
 					animOptions = animSkills.speciesOptions();
 				}
-				set(srcOptions.getString(getLangLabel(), DEFAULT_VALUE));
+				set(srcOptions.getString(dynOptionIndex(), DEFAULT_VALUE));
 			}
 		}
 		@Override public void copyOption(IGameOptions src, IGameOptions dest, boolean updateTool, int cascadeSubMenu)	{
 			if (!isSpacer() && src != null && dest != null)
-				dest.dynOpts().setString(getLangLabel(), settingValue());
-			dest.dynOpts().setString(getLangLabel(), src.dynOpts().getString(getLangLabel(), DEFAULT_VALUE));
+				dest.dynOpts().setString(dynOptionIndex(), settingValue());
+			dest.dynOpts().setString(dynOptionIndex(), src.dynOpts().getString(dynOptionIndex(), DEFAULT_VALUE));
 		}
 	}
+	// ==================== Animation ID ====================
+	//
+	class AnimationId extends SettingInteger {
+		private static final String KEY = "ANIMATION_ID";
+		// big = good
+		AnimationId() {
+			super(ROOT, KEY, -1, 0, null);
+			hasNoCost(true);
+		}
+		@Override public void settingToSkill(SpeciesSkills skills) { skills.reworkableId(settingValue()); }
+		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.reworkableId()); }
+	}
+
 	// -#-
 	// #==================== AllSpeciesAttributes ====================
 	//
 	class AllSpeciesAttributes {
 		SettingString raceKey;
-		private StringList civilizationNames;
+		private StringList civilizationNames, languageNames;
 		private HashMap<String, SpeciesAttributes> attributesMap = new HashMap<>();
 
 		AllSpeciesAttributes()	{
@@ -333,47 +398,88 @@ public abstract class SpeciesSettings {
 				attributesMap.put(lg, new SpeciesAttributes(lg));
 			}
 		}
+		StringList getLanguageNames()	{
+			if (languageNames == null) {
+				LanguageList languageList = (LanguageList) settingMap.get(ROOT + LanguageList.KEY);
+				StringList languageDir =  new StringList(languageList.settingValue());
+				languageNames = new StringList();
+				List<String> codes = LanguageManager.current().languageCodes();
+				List<String> names = LanguageManager.current().languageNames();
+				for (String dir : languageDir) {
+					int idx = codes.indexOf(dir);
+					String name = names.get(idx);
+					languageNames.add(name);
+				}
+				//languageNames = new StringList(languageList.settingValue());
+				int idx = languageDir.indexOf(selectedLanguageDir());
+				languageNames.setSelectedIndex(idx);
+			}
+			return languageNames;
+		}
 		StringList getCivilizationcNames()	{
-			String currentLanguage = LanguageManager.selectedLanguageDir();
-			if ("en".equals(currentLanguage))
-				return settingMap.getList(RaceName.KEY);
-			return settingMap.getList(RaceName.KEY + currentLanguage);
+			if (civilizationNames == null) {
+				String currentLanguage = selectedLanguageDir();
+				if (DEFAULT_LANGUAGE.equals(currentLanguage))
+					civilizationNames = settingMap.getList(ROOT + RaceName.KEY);
+				else
+					civilizationNames = settingMap.getList(ROOT + RaceName.KEY + currentLanguage);
+				civilizationNames.setSelectedIndex(0);
+			}
+			return civilizationNames;
 		}
 		SpeciesAttributes getAttributes(String dir)	{
 			SpeciesAttributes speciesAttributes = attributesMap.get(dir);
-			if (speciesAttributes == null) {
-				// Add new Language // TODO BR: Complete
+			if (speciesAttributes == null)
 				attributesMap.put(dir, new SpeciesAttributes(dir));
-			}
 			return attributesMap.get(dir);
 		}
 		boolean hasAnim()	{ return animSkills != null; }
 		void insert(int idx, String name)	{
 			// add new civilization to every language
-			for (SpeciesAttributes attributes : attributesMap.values()) {
+			for (SpeciesAttributes attributes : attributesMap.values())
 				attributes.insert(idx, name);
-			}
 		}
 		void delete(int idx)	{ // Remove an civilization
-			for (SpeciesAttributes attributes : attributesMap.values()) {
+			for (SpeciesAttributes attributes : attributesMap.values())
 				attributes.delete(idx);
+		}
+		private void fillFromAnim(boolean forced) {
+			int idx = 0;
+			for (String name : getCivilizationcNames()) {
+				fillFromAnim(forced, idx, name);
+				idx++;
 			}
 		}
-		void fillFromAnim(int civIdx, boolean forced)	{
+		void fillFromAnim(boolean forced, int civIdx, String civName)	{
 			if (animSkills == null)
 				return;
-			String currentLanguage = LanguageManager.selectedLanguageDir();
+			String currentLanguage = selectedLanguageDir();
 			SpeciesAttributes dest = attributesMap.get(currentLanguage);
 			if (dest == null)
 				return;
-			dest.fillFromAnim(civIdx, forced);
+
+			// Look if Animation has same civilization name
+			AnimationId animationId = (AnimationId)settingMap.get(ROOT + AnimationId.KEY);
+			StringList animNames = animSkills.speciesNames();
+			int animIdx = animNames.indexOfIgnoreCase(civName);
+			if (animIdx < 0) {
+				animIdx =  animationId.settingValue();
+				if (animIdx < 0)
+					if (animNames.size() >= civIdx)
+						animIdx = civIdx;
+					else
+						animIdx = 0;
+			}
+			else
+				animationId.set(animIdx);
+			dest.fillFromAnim(forced, civIdx, animIdx);
 		}
 		void fillLabelsFromNames(String langDir, int civIdx, boolean forced)	{
 			SpeciesAttributes dest = attributesMap.get(langDir);
 			if (dest == null)
 				return;
 			switch (langDir) {
-			case "en":
+			case DEFAULT_LANGUAGE:
 				fillLabelsFromNamesEN(civIdx, forced);
 				return;
 			case "fr":
@@ -386,32 +492,39 @@ public abstract class SpeciesSettings {
 			SpeciesAttributes dest = attributesMap.get(langDest);
 			dest.copyFromLanguage(src, civIdx, forced);
 		}
-		private boolean isFilled(String dir)	{
+		boolean isAnimAutonomous(String dir)	{
 			SpeciesAttributes attributes = attributesMap.get(dir);
 			if (attributes == null)
 				return false;
-			// TODO
-			return false;
+			return attributes.isAnimAutonomous();
+		}
+		boolean isAnimAutonomous(String dir, int idx)	{
+			SpeciesAttributes attributes = attributesMap.get(dir);
+			if (attributes == null)
+				return false;
+			return attributes.isAnimAutonomous(idx);
 		}
 		private void fillLabelsFromNamesEN(int civIdx, boolean forced)	{
 			String langKey = "";
-			SettingStringList nameSetting = (SettingStringList)settingMap.get(ROOT + RaceName.KEY + langKey);
+			RaceName nameSetting = (RaceName)settingMap.get(ROOT + RaceName.KEY + langKey);
 			StringList nameList = nameSetting.getList();
 			String name = nameList.get(civIdx, "");
 
-			SettingStringList titleSetting = (SettingStringList)settingMap.get(ROOT + LeaderTitle.KEY + langKey);
-			StringList titleList = titleSetting.getList();
-			String title = titleList.get(civIdx, "");
+			LeaderTitle titleSetting = (LeaderTitle)settingMap.get(ROOT + LeaderTitle.KEY + langKey);
+			String title = titleSetting.settingValue();
 
-			SettingStringList fulltitleSetting = (SettingStringList)settingMap.get(ROOT + LeaderFullTitle.KEY + langKey);
-			StringList fulltitleList = fulltitleSetting.getList();
-			String fulltitle = fulltitleList.get(civIdx, "");
+			LeaderFullTitle fulltitleSetting = (LeaderFullTitle)settingMap.get(ROOT + LeaderFullTitle.KEY + langKey);
+			String fulltitle = fulltitleSetting.settingValue();
+			if (fulltitle.isEmpty() || !fulltitleSetting.isAnimAutonomous(civIdx)) {
+				fulltitle = title;
+				fulltitleSetting.set(fulltitle);
+			}
 
 			// _empire
 			CivilizationDialogLabel dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_empire" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, name + " " + title);
 				}
 			}
@@ -420,7 +533,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel)settingMap.get(ROOT + "_race" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, name);
 				}
 			}
@@ -429,7 +542,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_race_plural" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, name + "s");
 				}
 			}
@@ -438,7 +551,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_title " + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, title);
 				}
 			}
@@ -447,7 +560,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_nameTitle " + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, fulltitle);
 				}
 			}
@@ -463,7 +576,11 @@ public abstract class SpeciesSettings {
 
 			LeaderFullTitle fulltitleSetting = (LeaderFullTitle)settingMap.get(ROOT + LeaderFullTitle.KEY + langKey);
 			String fulltitle = fulltitleSetting.settingValue();
-			
+			if (fulltitle.isEmpty() || !fulltitleSetting.isAnimAutonomous(civIdx)) {
+				fulltitle = title;
+				fulltitleSetting.set(fulltitle);
+			}
+
 			String government = "L'empire";
 			if (animSkills != null) {
 				String allGov = animSkills.raceLabels().label("_empire");
@@ -487,7 +604,7 @@ public abstract class SpeciesSettings {
 			CivilizationDialogLabel dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_empire" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, government + " " + name);
 				}
 			}
@@ -496,7 +613,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_empireof" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, governmentOf + " " + name);
 				}
 			}
@@ -505,7 +622,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel)settingMap.get(ROOT + "_raceadjec" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, name);
 				}
 			}
@@ -514,7 +631,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel)settingMap.get(ROOT + "_raceadjecF" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, name + "e");
 				}
 			}
@@ -523,7 +640,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_race_pluralnoun" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, "les " + name + "s");
 				}
 			}
@@ -532,7 +649,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_race_pluralnounof" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, "des " + name + "s");
 				}
 			}
@@ -541,7 +658,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_race_pluralnounto" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, "aux " + name + "s");
 				}
 			}
@@ -550,7 +667,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_race_pluraladjecF" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, name + "es");
 				}
 			}
@@ -559,7 +676,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_race_pluraladjec" + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, name + "s");
 				}
 			}
@@ -568,7 +685,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_title " + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, title);
 				}
 			}
@@ -577,7 +694,7 @@ public abstract class SpeciesSettings {
 			dialogLabel = (CivilizationDialogLabel) settingMap.get(ROOT + "_nameTitle " + langKey);
 			if (dialogLabel != null) {
 				String value = dialogLabel.settingValue(civIdx);
-				if (forced || value.isEmpty()) {
+				if (forced || value.isEmpty() || !dialogLabel.isAnimAutonomous(civIdx)) {
 					dialogLabel.selectedValue(civIdx, fulltitle);
 				}
 			}
@@ -586,9 +703,10 @@ public abstract class SpeciesSettings {
 	// -#-
 	// #==================== RaceKey ====================
 	//
+	protected String raceKey()	{ return ((RaceKey) settingMap.get(ROOT + RaceKey.RACE_KEY)).settingValue();}
+	protected String fileName()	{ return raceKey() + EXT; }
 	class RaceKey extends SettingString	{
 		private static final String RACE_KEY = "RACE_KEY";
-
 		private static void setKey(DynOptions opts, String key)	{ opts.setString(ROOT + RACE_KEY, key); }
 		private static String getKey(DynOptions opts)			{ return opts.getString(ROOT + RACE_KEY, ""); }
 		private static String fileToKey (File file)				{
@@ -628,15 +746,8 @@ public abstract class SpeciesSettings {
 	// -#-
 	// #==================== RaceName ====================
 	//
-	class RaceName extends SettingStringList { // TODO BR: update to standard list selection
+	class RaceName extends SettingStringList {
 		private static final String KEY = "RACE_NAME";
-		private static final String EN_EMPIRE	= "_empire";
-		private static final String EN_SINGULAR	= "_race";
-		private static final String EN_PLURAL	= "_race_plural";
-		private static RaceName get(String langDir, SettingMap map)	{
-			RaceName setting = (RaceName) map.get(ROOT + KEY + toLanguageKey(langDir));
-			return setting;
-		}
 		RaceName(String langDir) {
 			super(ROOT, KEY, "", langDir);
 			randomStr("Random Race");
@@ -775,9 +886,8 @@ public abstract class SpeciesSettings {
 			labelsAreFinals(true);
 			allowListSelect(true);
 			refreshLevel(1);
-			for (String s : IGameOptions.specificAIset().getAliens()) {
+			for (String s : IGameOptions.specificAIset().getAliens())
 				put(s, s.toUpperCase(), 0f, s);
-			}
 			put(DEFAULT_VALUE, DEFAULT_VALUE, 0f, DEFAULT_VALUE);
 			defaultCfgValue(DEFAULT_VALUE);
 			initOptionsText();
@@ -953,7 +1063,7 @@ public abstract class SpeciesSettings {
 
 		CRPersonality() {}
 		private CRPersonality personality() { return this; }
-		
+
 		private void pushSetting(SpeciesSkills skills) {
 			personalityPct[0] = erratic.settingValue();
 			personalityPct[1] = pacifist.settingValue();
@@ -1046,8 +1156,7 @@ public abstract class SpeciesSettings {
 	class CreditsBonus extends SettingInteger {
 		// big = good
 		CreditsBonus() {
-			super(ROOT, "CREDIT", 0, 0, 35, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, .8f}, new float[]{0f, .8f});
+			super(ROOT, "CREDIT", 0, 0, 35, 1, 5, 20, DIFFERENCE, new float[]{0f, .8f}, new float[]{0f, .8f});
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.bCBonus(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.bCBonus() * 100)); }
@@ -1057,8 +1166,7 @@ public abstract class SpeciesSettings {
 	class HitPointsBonus extends SettingInteger {
 		// big = good
 		HitPointsBonus() {
-			super(ROOT, "HIT_POINTS", 100, 50, 200, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .6f});
+			super(ROOT, "HIT_POINTS", 100, 50, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .6f});
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.hPFactor(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.hPFactor() * 100)); }
@@ -1069,8 +1177,7 @@ public abstract class SpeciesSettings {
 	class ShipSpaceBonus extends SettingInteger {
 		// big = good
 		ShipSpaceBonus() {
-			super(ROOT, "SHIP_SPACE", 100, 80, 175, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, 1f}, new float[]{0f, 2f});
+			super(ROOT, "SHIP_SPACE", 100, 80, 175, 1, 5, 20, DIFFERENCE, new float[]{0f, 1f}, new float[]{0f, 2f});
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.shipSpaceFactor(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.shipSpaceFactor() * 100)); }
@@ -1080,8 +1187,7 @@ public abstract class SpeciesSettings {
 	class MaintenanceBonus extends SettingInteger {
 		// Big = bad
 		public MaintenanceBonus() {
-			super(ROOT, "MAINTENANCE", 100, 50, 200, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, -.2f}, new float[]{0f, -.4f});
+			super(ROOT, "MAINTENANCE", 100, 50, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, -.2f}, new float[]{0f, -.4f});
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.maintenanceFactor(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.maintenanceFactor() * 100f)); }
@@ -1223,9 +1329,9 @@ public abstract class SpeciesSettings {
 		@Override public void updateOptionTool(DynamicOptions srcOptions) {
 			if (srcOptions != null) {
 				// get the old boolean value (if there is one)
-				boolean oldBooleanValue = srcOptions.getBoolean(getLangLabel(), false);
+				boolean oldBooleanValue = srcOptions.getBoolean(dynOptionIndex(), false);
 				String defaultValue = oldBooleanValue? "All" : "No";
-				setFromCfgValue(srcOptions.getString(getLangLabel(), defaultValue));
+				setFromCfgValue(srcOptions.getString(dynOptionIndex(), defaultValue));
 			}
 		}
 	}
@@ -1233,8 +1339,7 @@ public abstract class SpeciesSettings {
 	//
 	class PopGrowRate extends SettingInteger {
 		PopGrowRate() {
-			super(ROOT, "POP_GROW_RATE", 100, 50, 200, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .3f});
+			super(ROOT, "POP_GROW_RATE", 100, 50, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .3f});
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.growthRateMod(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round (skills.growthRateMod() * 100)); }
@@ -1243,8 +1348,7 @@ public abstract class SpeciesSettings {
 	//
 	class ShipAttack extends SettingInteger {
 		ShipAttack() {
-			super(ROOT, "SHIP_ATTACK", 0, -1, 5, 1, 1, 1,
-					DIFFERENCE, new float[]{0f, 3f}, new float[]{0f, 5f});
+			super(ROOT, "SHIP_ATTACK", 0, -1, 5, 1, 1, 1, DIFFERENCE, new float[]{0f, 3f}, new float[]{0f, 5f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.shipAttackBonus(settingValue()); }
@@ -1254,8 +1358,7 @@ public abstract class SpeciesSettings {
 	//
 	class ShipDefense extends SettingInteger {
 		ShipDefense() {
-			super(ROOT, "SHIP_DEFENSE", 0, -1, 5, 1, 1, 1,
-					DIFFERENCE, new float[]{0f, 1.5f, 1.5f}, new float[]{0f, 6f});
+			super(ROOT, "SHIP_DEFENSE", 0, -1, 5, 1, 1, 1, DIFFERENCE, new float[]{0f, 1.5f, 1.5f}, new float[]{0f, 6f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.shipDefenseBonus(settingValue()); }
@@ -1265,8 +1368,7 @@ public abstract class SpeciesSettings {
 	//
 	class ShipInitiative extends SettingInteger {
 		ShipInitiative() {
-			super(ROOT, "SHIP_INITIATIVE", 0, -1, 5, 1, 1, 1,
-					DIFFERENCE, new float[]{5f, 1f}, new float[]{0f, 6f});
+			super(ROOT, "SHIP_INITIATIVE", 0, -1, 5, 1, 1, 1, DIFFERENCE, new float[]{5f, 1f}, new float[]{0f, 6f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.shipInitiativeBonus(settingValue()); }
@@ -1276,8 +1378,7 @@ public abstract class SpeciesSettings {
 	//
 	class GroundAttack extends SettingInteger {
 		GroundAttack() {
-			super(ROOT, "GROUND_ATTACK", 0, -20, 30, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, 1.25f}, new float[]{0f, 0.75f});
+			super(ROOT, "GROUND_ATTACK", 0, -20, 30, 1, 5, 20, DIFFERENCE, new float[]{0f, 1.25f}, new float[]{0f, 0.75f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.groundAttackBonus(settingValue()); }
@@ -1287,8 +1388,7 @@ public abstract class SpeciesSettings {
 	//
 	class SpyCost extends SettingInteger {
 		SpyCost() {
-			super(ROOT, "SPY_COST", 100, 50, 200, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, -.1f}, new float[]{0f, -.2f});
+			super(ROOT, "SPY_COST", 100, 50, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, -.1f}, new float[]{0f, -.2f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.spyCostMod(settingValue()/100f); }
@@ -1298,8 +1398,7 @@ public abstract class SpeciesSettings {
 	//
 	class SpySecurity extends SettingInteger {
 		SpySecurity() {
-			super(ROOT, "SPY_SECURITY", 0, -20, 40, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, 1f}, new float[]{0f, 2f});
+			super(ROOT, "SPY_SECURITY", 0, -20, 40, 1, 5, 20, DIFFERENCE, new float[]{0f, 1f}, new float[]{0f, 2f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.internalSecurityAdj(settingValue()/100f); }
@@ -1309,8 +1408,7 @@ public abstract class SpeciesSettings {
 	//
 	class SpyInfiltration extends SettingInteger {
 		SpyInfiltration() {
-			super(ROOT, "SPY_INFILTRATION", 0, -20, 40, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, 1.25f}, new float[]{0f, 2.5f});
+			super(ROOT, "SPY_INFILTRATION", 0, -20, 40, 1, 5, 20, DIFFERENCE, new float[]{0f, 1.25f}, new float[]{0f, 2.5f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.spyInfiltrationAdj(settingValue()/100f); }
@@ -1334,8 +1432,7 @@ public abstract class SpeciesSettings {
 	//
 	class DiplomacyTrade extends SettingInteger {
 		DiplomacyTrade() {
-			super(ROOT, "DIPLOMACY_TRADE", 0, -30, 30, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .3f});
+			super(ROOT, "DIPLOMACY_TRADE", 0, -30, 30, 1, 5, 20, DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .3f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.tradePctBonus(settingValue()/100f); }
@@ -1346,8 +1443,7 @@ public abstract class SpeciesSettings {
 	@SuppressWarnings("unused")
 	class DiploPosDP extends SettingInteger {
 		DiploPosDP() {
-			super(ROOT, "DIPLO_POS_DP", 100, 70, 200, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, .3f}, new float[]{0f, .8f});
+			super(ROOT, "DIPLO_POS_DP", 100, 70, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, .3f}, new float[]{0f, .8f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.positiveDPMod(settingValue()/100f); }
@@ -1357,8 +1453,7 @@ public abstract class SpeciesSettings {
 	//
 	class DiplomacyBonus extends SettingInteger {
 		DiplomacyBonus() {
-			super(ROOT, "DIPLOMACY_BONUS", 0, -50, 100, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, .1f}, new float[]{0f, .2f});
+			super(ROOT, "DIPLOMACY_BONUS", 0, -50, 100, 1, 5, 20, DIFFERENCE, new float[]{0f, .1f}, new float[]{0f, .2f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.diplomacyBonus(settingValue()); }
@@ -1368,8 +1463,7 @@ public abstract class SpeciesSettings {
 	//
 	class DiplomacyCouncil extends SettingInteger {
 		DiplomacyCouncil() {
-			super(ROOT, "DIPLOMACY_COUNCIL", 0, -25, 25, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, .2f}, new float[]{0f, .2f});
+			super(ROOT, "DIPLOMACY_COUNCIL", 0, -25, 25, 1, 5, 20, DIFFERENCE, new float[]{0f, .2f}, new float[]{0f, .2f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.councilBonus(settingValue()/100f); }
@@ -1379,8 +1473,7 @@ public abstract class SpeciesSettings {
 	//
 	class RelationDefault extends SettingInteger {
 		RelationDefault() {
-			super(ROOT, "RELATION_DEFAULT", 0, -10, 10, 1, 2, 4,
-					DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .4f});
+			super(ROOT, "RELATION_DEFAULT", 0, -10, 10, 1, 2, 4, DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .4f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.defaultRaceRelations(settingValue()); }
@@ -1391,8 +1484,7 @@ public abstract class SpeciesSettings {
 	class ProdWorker extends SettingInteger {
 		// bigger = better
 		ProdWorker() {
-			super(ROOT, "PROD_WORKER", 100, 70, 300, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, .8f, 0f}, new float[]{0f, 0.8f, 0.01f});
+			super(ROOT, "PROD_WORKER", 100, 70, 300, 1, 5, 20, DIFFERENCE, new float[]{0f, .8f, 0f}, new float[]{0f, 0.8f, 0.01f});
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.workerProductivityMod(settingValue()/100f); }
@@ -1402,8 +1494,7 @@ public abstract class SpeciesSettings {
 	//
 	class ProdControl extends SettingInteger {
 		ProdControl() {
-			super(ROOT, "PROD_CONTROL", 0, -1, 4, 1, 1, 1,
-					DIFFERENCE, new float[]{0f, 15f, 0f}, new float[]{0f, 30f, 0f});
+			super(ROOT, "PROD_CONTROL", 0, -1, 4, 1, 1, 1, DIFFERENCE, new float[]{0f, 15f, 0f}, new float[]{0f, 30f, 0f});
 			pctValue(false);
 			initOptionsText();
 		}
@@ -1442,9 +1533,7 @@ public abstract class SpeciesSettings {
 			ResearchWeapon			weapon		= new ResearchWeapon();
 
 			TechResearch() {
-				super(ROOT, "TECH_RESEARCH", 100, 60, 200, 1, 5, 20, DIFFERENCE,
-						new float[]{0f, 0.7f, 0.004f},
-						new float[]{0f, 1.0f, 0.006f});
+				super(ROOT, "TECH_RESEARCH", 100, 60, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, 0.7f, 0.004f}, new float[]{0f, 1.0f, 0.006f});
 				hasNoCost(true);
 				initOptionsText();
 			}
@@ -1553,10 +1642,8 @@ public abstract class SpeciesSettings {
 				private static final float	norm = 100f;
 
 				private SettingResearch(String nameLangLabel) {
-					super(ROOT, nameLangLabel, 100, 50, 200, 1, 5, 20, NORMALIZED,
-							new float[]{c0, c1, c2, c3, c4}, null);
+					super(ROOT, nameLangLabel, 100, 50, 200, 1, 5, 20, NORMALIZED, new float[]{c0, c1, c2, c3, c4}, null);
 				}
-
 				@Override public float settingCost() { return settingCost(combinedValue()); }
 				@Override protected float settingCost(Integer value) {
 					float baseCost = (value - baseCostDefault)/norm;
@@ -1576,7 +1663,6 @@ public abstract class SpeciesSettings {
 					str += String.valueOf(combinedValue()) + "%";
 					return str;
 				}
-
 				String costString(float cost) {
 					String str = "(";
 					str +=  new DecimalFormat("0.0").format(cost);
@@ -1600,8 +1686,7 @@ public abstract class SpeciesSettings {
 			DiscoveryWeapon		  weapon		= new DiscoveryWeapon();
 
 			TechDiscovery() {
-				super(ROOT, "TECH_DISCOVERY", 50, 0, 100, 1, 5, 20,
-						DIFFERENCE, new float[]{0f, .5f}, new float[]{0f, 0.5f});
+				super(ROOT, "TECH_DISCOVERY", 50, 0, 100, 1, 5, 20, DIFFERENCE, new float[]{0f, .5f}, new float[]{0f, 0.5f});
 				hasNoCost(true);
 				initOptionsText();
 			}
@@ -1701,7 +1786,6 @@ public abstract class SpeciesSettings {
 			// ==================== Discovery ====================
 			//
 			private class SettingDiscovery extends SettingInteger {
-	
 				private static final float	c0 = 0f;
 				private static final float	c1 = 4.9221976f;
 				private static final float	c2 = 1.25604100f;
@@ -1715,7 +1799,6 @@ public abstract class SpeciesSettings {
 					super(ROOT, nameLangLabel, 0, -100, 100, 1, 5, 20, NORMALIZED,
 							new float[]{c0, c1, c2, c3, c4, c5}, null);
 				}
-
 				@Override public float settingCost() {
 					return settingCost(combinedValue());
 				}
@@ -1736,7 +1819,6 @@ public abstract class SpeciesSettings {
 					str += String.valueOf(combinedValue()) + "%";
 					return str;
 				}
-
 				private String costString(float cost) {
 					String str = "(";
 					str +=  new DecimalFormat("0.0").format(cost);
@@ -1751,7 +1833,6 @@ public abstract class SpeciesSettings {
 		}
 	}
 	// -#-
-
 	// #==================== Names and Labels ====================
 	//
 	// ==================== Language list ====================
@@ -1768,6 +1849,8 @@ public abstract class SpeciesSettings {
 	private class HomeWorld extends SettingStringList {
 		private static final String KEY = "HOME_WORLD";
 		private HomeWorld(String langDir)	{ super(ROOT, KEY, "", langDir); }
+		@Override public boolean isAnimAutonomous()			{ return true; } // can be taken from system list
+		@Override public boolean isAnimAutonomous(int idx)	{ return true; }
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.parseHomeWorlds(settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.homeSystemNames().asString()); }
 	}
@@ -1788,30 +1871,18 @@ public abstract class SpeciesSettings {
 			super(KEY, langDir);
 			randomStr(CR_EMPIRE_NAME_RANDOM);
 		}
-		private String validate(DynamicOptions src)	{
-			String value = src.getString(getLangLabel());
+		private String validate(DynamicOptions srcOptions)	{
+			String value = getFromOption(srcOptions);
 			if (value != null) // UpToDate
 				return value;
 			//Update the options
-			value = src.getString(ROOT+PREVIOUS_KEY, defaultValue());
-			src.setString(getLangLabel(), value);
+			value = srcOptions.getString(ROOT+PREVIOUS_KEY, defaultValue());
+			setOption(srcOptions, value);
 			return value;
-		}
-		@Override public void updateOptionTool()	{ // For backward compatibility
-			if (!isSpacer() && dynOpts() != null)
-				set(validate(dynOpts()));
 		}
 		@Override public void updateOptionTool(DynamicOptions srcOptions) { // For backward compatibility
 			if (srcOptions != null && !isSpacer())
-				set(validate(srcOptions));
-		}
-		@Override public void pushToSkills(SpeciesSkills skills)	{
-			super.pushToSkills(skills);
-//			skills.empireTitle(settingValue());
-		}
-		@Override public void pullFromSkills(SpeciesSkills skills)	{
-			super.pullFromSkills(skills);
-//			set(skills.empireTitle());
+				extendedSet(validate(srcOptions));
 		}
 	}
 	// ==================== LeaderTitle ====================
@@ -1819,7 +1890,6 @@ public abstract class SpeciesSettings {
 	class LeaderTitle extends SettingStringLanguage {
 		private static final String KEY = "LEADER_TITLE";
 		LeaderTitle(String langDir)		{ super(ROOT, KEY, "", langDir); }
-
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.title(settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.title()); }
 	}
@@ -1836,7 +1906,7 @@ public abstract class SpeciesSettings {
 	// List of unique Names
 	//
 	class SpeciesAttributes implements ICRSettings { // for one Language
-		private final String langDir, labelKey;
+		private final String labelKey;
 		SpeciesNameItems		speciesNameItems;
 		SpeciesDescriptionItems	speciesDescriptionItems;
 		SpeciesLabelItems		speciesLabelItems;
@@ -1844,21 +1914,12 @@ public abstract class SpeciesSettings {
 		CivilizationLabelItems	civilizationLabelItems;
 
 		SpeciesAttributes(String langDir)	{
-			this.langDir = langDir;
 			labelKey = langDir;
 			speciesNameItems		= new SpeciesNameItems(labelKey);
 			speciesDescriptionItems	= new SpeciesDescriptionItems(labelKey);
 			speciesLabelItems		= new SpeciesLabelItems(labelKey);
 			civilizationNameItems	= new CivilizationNameItems(labelKey);
 			civilizationLabelItems	= new CivilizationLabelItems(labelKey);
-			// TODO BR:
-		}
-		@Override public void updateOptionTool() {
-			speciesNameItems.updateOptionTool();
-			speciesDescriptionItems.updateOptionTool();
-			speciesLabelItems.updateOptionTool();
-			civilizationNameItems.updateOptionTool();
-			civilizationLabelItems.updateOptionTool();
 		}
 		@Override public void updateOption(DynamicOptions destOptions) {
 			speciesNameItems.updateOption(destOptions);
@@ -1882,14 +1943,16 @@ public abstract class SpeciesSettings {
 			civilizationNameItems.delete(idx);
 			civilizationLabelItems.delete(idx);
 		}
+		private boolean isAnimAutonomous(int idx)	{ return civilizationNameItems.isAnimAutonomous(idx) && civilizationLabelItems.isAnimAutonomous(idx); }
+		private boolean isAnimAutonomous()	{ return civilizationNameItems.isAnimAutonomous() && civilizationLabelItems.isAnimAutonomous(); }
 		public boolean isFilled()	{
-			boolean filled = goodEnough();
-			filled &= speciesNameItems.isFilled();
+			boolean filled = speciesNameItems.isFilled();
 			filled &= speciesDescriptionItems.isFilled();
+			filled &= civilizationLabelItems.isFilled();
+			filled &= civilizationNameItems.isFilled();
 			filled &= speciesLabelItems.isFilled();
 			return filled;
 		}
-		private boolean goodEnough()	{ return civilizationNameItems.isFilled() && civilizationLabelItems.isFilled(); }
 		private void copyFromLanguage(SpeciesAttributes langSrc, int civIdx, boolean forced)	{
 			speciesNameItems.copyFromLanguage(langSrc.speciesNameItems, civIdx, forced);
 			speciesDescriptionItems.copyFromLanguage(langSrc.speciesDescriptionItems, civIdx, forced);
@@ -1897,12 +1960,12 @@ public abstract class SpeciesSettings {
 			civilizationNameItems.copyFromLanguage(langSrc.civilizationNameItems, civIdx, forced);
 			civilizationLabelItems.copyFromLanguage(langSrc.civilizationLabelItems, civIdx, forced);			
 		}
-		private void fillFromAnim(int civIdx, boolean forced)	{
-			speciesNameItems.fillFromAnim(civIdx, forced);
-			speciesDescriptionItems.fillFromAnim(civIdx, forced);
-			speciesLabelItems.fillFromAnim(civIdx, forced);
-			civilizationNameItems.fillFromAnim(civIdx, forced);
-			civilizationLabelItems.fillFromAnim(civIdx, forced);
+		private void fillFromAnim(boolean forced, int civIdx, int animIdx)	{
+			speciesNameItems.fillFromAnim(forced, civIdx, animIdx);
+			speciesDescriptionItems.fillFromAnim(forced, civIdx, animIdx);
+			speciesLabelItems.fillFromAnim(forced, civIdx, animIdx);
+			civilizationNameItems.fillFromAnim(forced, civIdx, animIdx);
+			civilizationLabelItems.fillFromAnim(forced, civIdx, animIdx);
 		}
 	}
 	// ====================
@@ -1975,16 +2038,11 @@ public abstract class SpeciesSettings {
 		}
 	}
 	private class ICSSettingsStringList extends ArrayList<SettingStringLanguage> implements ICRSettings {
-		protected final String langDir, langKey;
+		protected final String langKey;
 		private ICSSettingsStringList(String langDir)	{
-			this.langDir = langDir;
 			langKey = toLanguageKey(langDir);
 		}
 		static final long serialVersionUID = 1L;
-		@Override public void updateOptionTool() {
-			for (ICRSettings item : this)
-				item.updateOptionTool();
-		}
 		@Override public void updateOption(DynamicOptions destOptions) {
 			for (ICRSettings item : this)
 				item.updateOption(destOptions);
@@ -2007,6 +2065,24 @@ public abstract class SpeciesSettings {
 					return false;
 			return true;
 		}
+		public boolean isFilled(int idx)	{
+			for (SettingStringLanguage setting : this)
+				if (!setting.isFilled(idx))
+					return false;
+			return true;
+		}
+		public boolean isAnimAutonomous()	{
+			for (SettingStringLanguage setting : this)
+				if (!setting.isAnimAutonomous())
+					return false;
+			return true;
+		}
+		public boolean isAnimAutonomous(int idx)	{
+			for (SettingStringLanguage setting : this)
+				if (!setting.isAnimAutonomous(idx))
+					return false;
+			return true;
+		}
 		public void copyFromLanguage(ICSSettingsStringList langSrc, int civIdx, boolean forced)	{
 			int size = Math.min(size(), langSrc.size());
 			for (int i=0; i<size; i++) {
@@ -2018,14 +2094,10 @@ public abstract class SpeciesSettings {
 				}
 			}
 		}
-		void fillFromAnim(int civIdx, boolean forced) {
-			for (SettingStringLanguage setting : this) {
-				setting.fillFromAnim(civIdx, forced);;
-			}
+		void fillFromAnim(boolean forced, int civIdx, int animIdx) {
+			for (SettingStringLanguage setting : this)
+				setting.fillFromAnim(forced, civIdx, animIdx);;
 		}
-//		public void fillLabelsFromNames(int civIdx)	{ // TODO
-//			
-//		}
 	}
 	// ==================== Multi Language Settings ====================
 	//
@@ -2058,7 +2130,7 @@ public abstract class SpeciesSettings {
 			}
 			add(setting);
 		}
-		private void insert(int idx, String raceName)	{ // TODO BR: Validate
+		private void insert(int idx, String raceName)	{
 			String value = raceName;
 			for (SettingStringLanguage setting : this) {
 				setting.addValue(idx, value);
@@ -2096,20 +2168,24 @@ public abstract class SpeciesSettings {
 	}
 	// ==================== DialogLabel ====================
 	//
-	private class CivilizationDialogLabel extends SettingStringList { // TODO BR: Push Pull (Validate)
+	private class CivilizationDialogLabel extends SettingStringList {
 		private CivilizationDialogLabel(String labelKey, String langDir)	{
 			super(ROOT, labelKey, "", langDir);
 			key = nameLangLabel + langKey;
 		}
-		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.parseDialogLabel(key, settingValue()); }
+		@Override public void pushToSkills(SpeciesSkills skills)	{
+			if (isForGalaxy)
+				skills.parseDialogLabel(nameLangLabel, settingValue()); // only current language
+			else
+				skills.parseDialogLabel(key, settingValue());
+				
+		}
 		@Override public void pullFromSkills(SpeciesSkills skills)	{
-//			System.out.println("pullFromSkills key = " + key + " / value = " + skills.raceLabels().label(key)); // TODO BR: REMOVE
 			if (isReference)
 				set(skills.raceLabels().label(nameLangLabel));
 			else
 				set(skills.raceLabels().label(key));
 		}
-//			set(skills.raceLabels().label(key)); }
 	}
 	private class SpeciesDialogLabel extends SettingStringLanguage {
 		private SpeciesDialogLabel(String labelKey, String langDir)	{
@@ -2129,10 +2205,6 @@ public abstract class SpeciesSettings {
 		private SettingStringList(String guiLangLabel, String nameLangLabel, String defaultValue, String langDir) {
 			super(guiLangLabel, nameLangLabel, defaultValue, langDir);
 		}
-//		SettingStringList(String guiLangLabel, String nameLangLabel, String defaultValue, int lineNum ,String langDir) {
-//			super(guiLangLabel, nameLangLabel, defaultValue, lineNum, langDir);
-//			set(defaultValue);
-//		}
 		@Override public String settingValue(int item)	{
 			lastSelectedIndex = item;
 			StringList list = getList();
@@ -2164,50 +2236,40 @@ public abstract class SpeciesSettings {
 			return str;
 		}
 		@Override public int getIndex()		{ return lastSelectedIndex; }
-		@Override String getSelectedItem()	{ return getList().get(lastSelectedIndex, ""); }
-		@Override public void fillFromAnim(int civIdx, boolean forced) {
-			String value = this.settingValue(civIdx);
+		@Override public void fillFromAnim(boolean forced, int civIdx, int animIdx)	{
+			String value = settingValue(civIdx);
 			if (!forced && (value != null && !value.isEmpty()))
 				return;
-			String animList = animOptions.getString(getLangLabel());
-			if (animList == null)
+
+			String animValues = animOptions.getString(dynOptionIndex());
+			if (animValues == null)
 				return;
-			StringList list = new StringList(animList);
-			if (list.size() <= civIdx)
-				civIdx = 0;
-			String animValue = list.get(civIdx, "");
+			StringList animList = new StringList(animValues);
+			if (animList.size() <= animIdx)
+				animIdx = 0;
+			String animValue = animList.get(animIdx, "");
 			if (!animValue.isEmpty())
-				setAsLastIndex(animValue);
+				selectedValue(civIdx, animValue);
 		}
-		@Override public void updateOptionTool(DynamicOptions srcOptions) {
-			if (srcOptions != null && !isSpacer()) {
-				String currentLingo = selectedLanguageDir();
-				if (currentLingo.equals("en")) { // default language
-					if (langDir.equals(currentLingo))
-						set(srcOptions.getString(getLangLabel(), defaultValue()));
-				}
-				else { // Fill with default English if empty
-					String val = srcOptions.getString(ROOT + nameLangLabel, defaultValue());
-					val = srcOptions.getString(getLangLabel(), val);
-					set(val);
-				}
-			}
-		}
-		@Override public boolean isFilled()	{
+		@Override boolean isFilled()	{
 			String value = settingValue();
 			if (value == null || value.isEmpty())
 				return false;
 			StringList values = new StringList(value);
 			for (String str : values)
-				if (str.isEmpty())
+				if (!isFilled(str))
 					return false;
 			return true;
 		}
-		private void setAsLastIndex(String s)	{
-			StringList list = getList();
-			list.set(lastSelectedIndex, s);
-			setList(list);
-		}		
+		@Override boolean isFilled(int idx)	{
+			String value = settingValue();
+			if (value == null || value.isEmpty())
+				return false;
+			StringList values = new StringList(value);
+			if (values.size() <= idx)
+				return false;
+			return isFilled(values.get(idx));
+		}
 		private void setList(StringList list)	{ super.set(list.asString()); }
 		StringList getList()					{ return new StringList(settingValue()); }
 		private boolean remove(String s)		{
@@ -2224,9 +2286,14 @@ public abstract class SpeciesSettings {
 		}
 	}
 	private abstract class SettingStringLanguage extends SettingString {
+		// Selected language will be saved both the standard way and with the language ID
+		// Other languages will be saved with their language Id.
+		// Selected language will be loaded normally from the skills
+		// Other languages will be loaded from their language Id.
 		protected String langDir;
 		protected String langKey;
-		protected String key;
+		protected String nameLabel; // to override the base setting one  // also = getCfgLabel()
+		protected String key; // also = getLangLabel
 		protected String nameLangLabel;
 		private SettingStringLanguage(String guiLangLabel, String nameLangLabel, String defaultValue, String langDir) {
 			super(guiLangLabel, nameLangLabel + toLanguageKey(langDir), defaultValue);
@@ -2235,8 +2302,8 @@ public abstract class SpeciesSettings {
 				System.out.println("langDir.isEmpty()"); // TODO BR: REMOVE
 			this.langDir = langDir;
 			langKey = toLanguageKey(langDir);
-			key = ROOT + nameLangLabel + langKey;
-			
+			nameLabel = nameLangLabel + langKey;
+			key = ROOT + nameLabel;
 		}
 		private SettingStringLanguage(String guiLangLabel, String nameLangLabel, String defaultValue, int lineNum ,String langDir) {
 			super(guiLangLabel, nameLangLabel + toLanguageKey(langDir), defaultValue, lineNum);
@@ -2246,62 +2313,93 @@ public abstract class SpeciesSettings {
 			this.langDir = langDir;
 			set(defaultValue);
 			langKey = toLanguageKey(langDir);
-			key = ROOT + nameLangLabel + langKey;
+			nameLabel = nameLangLabel + langKey;
+			key = ROOT + nameLabel;
 		}
 		abstract void pushToSkills(SpeciesSkills skills);
 		abstract void pullFromSkills(SpeciesSkills skills);
-//		String tagValue(String value)	{ return value.endsWith(TO_EDIT_TAG)? value : value + TO_EDIT_TAG; }
-		private String getLiveValue()			{ return settingValue(); }
-		private void setLiveValue(String str)	{ set(str); }
-		String getSelectedItem()		{ return settingValue(); }
-		public void fillFromAnim(int civIdx, boolean forced) {
-			String value = settingValue(civIdx);
-			if (!forced && (value != null && !value.isEmpty()))
+
+		void extendedSet(String value)	{ set(value); }
+		private void fillFromAnim(boolean forced)	{
+			// Animations are always in the selected language
+			String value = settingValue();
+			if (!forced && isFilled(value))
 				return;
-			String animValue = animOptions.getString(getLangLabel()); // Try to get linked animations value
+			String animValue = animOptions.getString(dynOptionIndex()); // Try to get linked animations value
 			if (animValue != null)
-				set(animValue);
+				extendedSet(animValue);
 		}
+		public void fillFromAnim(boolean forced, int civIdx, int animIdx)	{ fillFromAnim(forced); }
+
 		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, int idx)	{ return callUI(); }
 		@Override public void settingToSkill(SpeciesSkills skills)	{
-			String currentLingo = selectedLanguageDir();
-			if (langDir.equals(currentLingo)) {
-//				validateReworkedDefault(getSelectedItem());
+			String gameLang = selectedLanguageDir();
+			if (langDir.equals(gameLang))
 				pushToSkills(skills);	// Current language
-			}
-			else {
-//				validateLingoDefault(skills.speciesOptions(), currentLingo);
-				super.settingToSkill(skills);	// Other Language
-			}
+			else
+				updateOption(skills.speciesOptions());	// Other Language
 		}
 		@Override public void skillToSetting(SpeciesSkills skills)	{
-			String currentLingo = selectedLanguageDir();
-			if (isReference || langDir.equals(currentLingo)) {
+			String gameLang = selectedLanguageDir();
+			if (isReference)
 				pullFromSkills(skills);	// Current language
-//				validateReworkedDefault(getSelectedItem());
-			}
-			else {
-				super.skillToSetting(skills);	// Other Language
-//				validateLingoDefault(skills.speciesOptions(), currentLingo);
-			}
+			else if (langDir.equals(gameLang))
+				pullFromSkills(skills);	// Current language
+			else
+				updateOptionTool(skills.speciesOptions());	// Other Language
 		}
-		@Override public void updateOptionTool(DynamicOptions srcOptions) {
+		@Override public void updateOption(DynamicOptions destOptions)	{ // setting to options
+			if (!isSpacer() && destOptions != null) 
+				setOption(destOptions, settingValue());
+		}
+		@Override public void updateOptionTool(DynamicOptions srcOptions)	{ // Option to settings
 			if (srcOptions != null && !isSpacer()) {
-				String currentLingo = selectedLanguageDir();
-				if (currentLingo.equals("en")) { // default language
-					if (langDir.equals(currentLingo))
-						set(srcOptions.getString(getLangLabel(), defaultValue()));
-				}
-				else { // Fill with default English if empty
-					String val = srcOptions.getString(ROOT + nameLangLabel, defaultValue());
-					val = srcOptions.getString(getLangLabel(), val);
-					set(val);
-				}
+				String value = getFromOption(srcOptions);
+				if (value == null)
+					value = defaultValue();
+				extendedSet(value);
 			}
 		}
-		public void addValue(int item, String val)		{ selectedValue(val); }
-		public String removeValue(int item)				{ return null; }
-		public boolean isFilled()						{ return settingValue() != null && !settingValue().isEmpty(); }
+		@Override public String dynOptionIndex()	{
+			if (langDir.equals(selectedLanguageDir()))
+				return baseOptionIndex();
+			return langOptionIndex();
+		}
+		@Override public String getCfgLabel()	{ return nameLabel; }
+		@Override public String getLangLabel()	{ return key; }
+
+		protected String getFromOption(DynamicOptions srcOptions)	{
+			String value = srcOptions.getString(langOptionIndex());
+			if (value == null)
+				value = srcOptions.getString(baseOptionIndex());
+			if (value == null)
+				value = srcOptions.getString(defaultOptionIndex());
+			return value;
+		}
+		protected void setOption(DynamicOptions destOptions, String value)	{
+			String gameLang = selectedLanguageDir();
+			if (isReference || langDir.equals(gameLang))	// Current language
+				destOptions.setString(baseOptionIndex(), value);
+			destOptions.setString(langOptionIndex(), value);	// Current and Other language
+		}
+		protected String baseOptionIndex()		{ return ROOT + nameLangLabel; }
+		protected String langOptionIndex()		{ return ROOT + nameLangLabel + langDir; }
+		protected String defaultOptionIndex()	{ return ROOT + nameLangLabel + DEFAULT_LANGUAGE; }
+
+		public void addValue(int item, String val)	{ selectedValue(val); }
+		public String removeValue(int item)			{ return null; }
+		boolean isFilled(String value)	{ return value != null && !value.isEmpty() && !value.startsWith("_"); }
+		boolean isFilled()				{ return isFilled(settingValue()); }
+		boolean isFilled(int idx)		{ return isFilled(); }
+		boolean isAnimAutonomous()		{ return isFilled(); }
+		boolean isAnimAutonomous(int idx)	{ return isFilled(idx); }
+		boolean languageChanged(String oldDir, String newDir)	{
+			langDir = newDir;
+			langKey = toLanguageKey(langDir);
+			key = ROOT + nameLangLabel + langKey;
+			getFromOption(race().speciesOptions());
+			return false;
+		}
 	}
 	// -#-
 }

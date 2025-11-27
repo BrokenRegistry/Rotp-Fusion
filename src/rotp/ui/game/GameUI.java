@@ -1204,11 +1204,16 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     }
     private void selectLanguage(int i) {
         softClick();
+		boolean resetCRUI = LanguageManager.selectedLanguage() != i;
         LanguageManager.current().selectLanguage(i);
         UserPreferences.save();
         setTextValues();
         titleImg = null;
         repaint();
+		if (resetCRUI) {
+			ShowCustomRaceUI.languageChanged();
+			EditCustomRaceUI.languageChanged();
+		}
     }
     private void goToSettings() {
 		buttonClick();

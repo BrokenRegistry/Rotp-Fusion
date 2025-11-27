@@ -25,7 +25,7 @@ public interface InterfaceOptions {
 	 * Used when switching between Game and settings
 	 */
 	default void prepareToSave(IGameOptions o)	{}
-	void updateOptionTool();
+	default void updateOptionTool()	{}
 	// For settings only
 	default void updateOptionTool(DynamicOptions srcOptions)	{}
 	// For settings only

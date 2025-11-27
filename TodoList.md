@@ -27,6 +27,15 @@
   - (and on a similar topic, per-planet taxes? maybe that's kinda weird idk)
 - Limit / Customize the flag colors (to be changed when scrolling over them)
 
+- Suggestion: in the colony rules panel, make the ability to use the specific colonizing tech valid only for players ("restricted" colonizing rule).
+  - Suggestion: in the galaxy rules panel, allow the research rate setting to be splitted between player and AIs.
+  - Suggestion: in the galaxy rules panel, add the possibility to fine tune the fuel range (instead of a fixed set, make like the current warp speed multiplier) 
+  - Suggestion: in the galaxy rules panel, the pop growth rate should be splitted into AI pop growth rate and player pop growth rate (and add a bit more choices between normal and reduced, like the current fuel range options or better like the current warp speed multiplier)
+    - As not everyone necessarily appreciates all these unfair and tempting rules options... I'm going to start by adding a "Setup" option to enable or disable unfair options (Disable = limiting them to fair choices only), and the "Setup" choices cannot be changed during the game.
+    - Fixed selections are also more in line with the spirit of MoO1 and the original RotP, so I'll start by extending my options tools to be compatible with both fine-tuning and fixed selections. 
+- Prioritize External image loading.
+- Add subterran equivalent in custom species
+
 ### Later:
 
 - Declare war and ask join war the same turn:

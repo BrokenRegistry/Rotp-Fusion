@@ -95,17 +95,13 @@ public class SettingBoolean extends SettingBase<Boolean> {
 	@Override public String guideValue() 				{ return langLabel(guiOptionLabel()); }
 	@Override public String	guideDefaultValue()			{ return guiValue(defaultValue()); }
 	@Override public String guiOptionValue(int index)	{ return langLabel(guiOptionLabel(index)); }
-	@Override public void updateOptionTool()			{
-		if (!isSpacer() && dynOpts() != null)
-			set(dynOpts().getBoolean(getLangLabel(), defaultValue()));
-	}
 	@Override public void updateOption(DynamicOptions options) {
 		if (!isSpacer() && options != null)
-			options.setBoolean(getLangLabel(), settingValue());
+			options.setBoolean(dynOptionIndex(), settingValue());
 	}
 	@Override public void updateOptionTool(DynamicOptions options) {
 		if (!isSpacer() && options != null)
-			set(options.getBoolean(getLangLabel(), defaultValue()));
+			set(options.getBoolean(dynOptionIndex(), defaultValue()));
 	}
 	@Override protected String getTableHelp()	{
 		int size = listSize();

@@ -176,22 +176,13 @@ public class SettingInteger extends SettingBase<Integer> {
 			return 0f;;
 		return settingCost(settingValue());
 	}
-//	@Override public void updateOption() {
-//		if (!isSpacer() && dynOpts() != null)
-//			dynOpts().setInteger(getLangLabel(), settingValue());
-//	}
-	@Override public void updateOptionTool() {
-		if (!isSpacer() && dynOpts() != null)
-			set(dynOpts().getInteger(getLangLabel(), defaultValue()));
-	}
 	@Override public void updateOption(DynamicOptions options) {
 		if (!isSpacer() && options != null)
-			options.setInteger(getLangLabel(), settingValue());
+			options.setInteger(dynOptionIndex(), settingValue());
 	}
 	@Override public void updateOptionTool(DynamicOptions options) {
-//		options(options);
 		if (!isSpacer() && options != null)
-			set(options.getInteger(getLangLabel(), defaultValue()));
+			set(options.getInteger(dynOptionIndex(), defaultValue()));
 	}
 
 	@Override public String guideSelectedValue(){ return guideValue(settingValue(), true); }

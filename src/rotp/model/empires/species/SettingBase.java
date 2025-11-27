@@ -43,7 +43,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import rotp.model.game.DynamicOptions;
 import rotp.model.game.IGameOptions;
-import rotp.model.game.RulesetManager;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.BaseModPanel.ModText;
@@ -94,6 +93,7 @@ public class SettingBase<T> implements ICRSettings {
 	private boolean updated = true;
 	private BufferedImage img;
 	private int deltaYLines;
+	private int drawCount = 0;
 	
 	// ========== Constructors and initializers ==========
 	//
@@ -196,23 +196,19 @@ public class SettingBase<T> implements ICRSettings {
 	@Override public void setFromDefault(boolean excludeCfg, boolean excludeSubMenu) {
 		selectedValue(defaultValue);
 	}
-	@Override public void updateOptionTool() {
-		if (!isSpacer && dynOpts() != null)
-			setFromCfgValue(dynOpts().getString(getLangLabel(), getDefaultCfgValue()));
-	}
 	@Override public void updateOption(DynamicOptions destOptions) {
 		if (!isSpacer && destOptions != null)
-			destOptions.setString(getLangLabel(), getCfgValue());
+			destOptions.setString(dynOptionIndex(), getCfgValue());
 	}
 	@Override public void updateOptionTool(DynamicOptions srcOptions) {
 		if (!isSpacer && srcOptions != null)
-			setFromCfgValue(srcOptions.getString(getLangLabel(), getDefaultCfgValue()));
+			setFromCfgValue(srcOptions.getString(dynOptionIndex(), getDefaultCfgValue()));
 	}
 	@Override public void copyOption(IGameOptions src, IGameOptions dest,
 									boolean updateTool, int cascadeSubMenu) {
 		if (!isSpacer && src != null && dest != null)
-			dest.dynOpts().setString(getLangLabel(), getCfgValue());
-		dest.dynOpts().setString(getLangLabel(), src.dynOpts().getString(getLangLabel(), getDefaultCfgValue()));
+			dest.dynOpts().setString(dynOptionIndex(), getCfgValue());
+		dest.dynOpts().setString(dynOptionIndex(), src.dynOpts().getString(dynOptionIndex(), getDefaultCfgValue()));
 	}
 	@Override public String getGuiDisplay(int idx)	{
 		String str = text(getLangLabel()); // Get from label.txt
@@ -271,7 +267,11 @@ public class SettingBase<T> implements ICRSettings {
 	@Override public String getValueStr(int id)		{ return valueGuide(valueValidIndex(id)); }
 	@Override public String valueGuide(int id) 		{ return tableFormat(getRowGuide(id)); }
 	@Override public boolean updated()				{ return updated; }
-	@Override public void updated(boolean val)		{ updated = val; }
+	@Override public void updated(boolean val)		{
+		if (val)
+			drawCount = 3;
+		updated = val;
+	}
 
 	// ========== Public ICRSettings Interfaces ==========
 	//
@@ -409,7 +409,7 @@ public class SettingBase<T> implements ICRSettings {
 		}
 		else
 			bt.shiftBounds(xLine, yLine- 2*frameShift);
-		
+
 		y += settingH;
 		y += frameTopPad;
 		// Options
@@ -435,12 +435,17 @@ public class SettingBase<T> implements ICRSettings {
 				bt.shiftBounds(xLine, yLine-2*frameShift);
 			y += optionH;
 		}
+
+		boolean hovered = bt.isHovered();
+		drawCount--;
+		//System.out.println(drawCount + " hovered: " + hovered + " " + this.nameLabel);
+		if (drawCount<=0 && !hovered) {
+			// System.out.println("updated(false)");
+			updated(false);
+		}
+
 		g.dispose();
 	}
-
-	// ========== Tools for overriders ==========
-	//
-	protected DynamicOptions dynOpts()	{ return RulesetManager.current().currentOptions().dynOpts(); }
 
 	// ========== Overridable Methods ==========
 	//

@@ -79,6 +79,7 @@ class SpeciesSkills implements Base, Serializable {
 	// Custom Races:
 	private boolean isCustomSpecies		= false;
 	private boolean isCopy				= false; // Security prevent modification of original 
+	private boolean isAnimAutonomous	= false; // Security prevent modification of original 
 	private DynOptions speciesOptions	= null;
 	// \BR:
 	private int startingYear;
@@ -121,6 +122,7 @@ class SpeciesSkills implements Base, Serializable {
 	private String fullTitle;
 	private int homeworldKey, introTextX;
 	private String reworkableSpeciesKey, languageList;
+	private int reworkableId = -1; // -1 if none was used while editing
 	private int preferredAI;
 
 	private static final int PERSONALITY_COUNT	= Personality.values().length;
@@ -151,6 +153,8 @@ class SpeciesSkills implements Base, Serializable {
 	void languageList(String s)			{ languageList = s; }
 	String reworkableSpeciesKey()		{ return reworkableSpeciesKey; }
 	void reworkableSpeciesKey(String s)	{ reworkableSpeciesKey = s; }
+	int reworkableId()					{ return reworkableId; }
+	void reworkableId(int i)			{ reworkableId = i; }
 	int startingYear()					{ return startingYear; }
 	void startingYear(int i)			{ startingYear = i; }
 	void empireTitle(String s)			{ empireTitle = s; }
@@ -545,7 +549,9 @@ class SpeciesSkills implements Base, Serializable {
 	void fullTitle(String s)			{ fullTitle = s; }
 	// BR: Custom Species
 	boolean isCustomSpecies()			{ return isCustomSpecies; }
-	SpeciesSkills isCustomSpecies(boolean is)	{ isCustomSpecies = is; return this;}
+	SpeciesSkills isCustomSpecies(boolean is)	{ isCustomSpecies = is; return this; }
+	boolean isAnimAutonomous()			{ return isAnimAutonomous; }
+	void isAnimAutonomous(boolean is)	{ isAnimAutonomous = is; }
 	boolean isRandomized()				{ return SkillsFactory.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
 	DynOptions speciesOptions()			{ return speciesOptions; }
 	void speciesOptions(DynOptions val)	{ speciesOptions = val; }

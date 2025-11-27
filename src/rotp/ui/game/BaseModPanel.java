@@ -283,8 +283,10 @@ public abstract class BaseModPanel extends BasePanel
 		backImg = null;
 		bg = null;
 	}
-	protected void close() { 
+	protected void close() {
 		disableGlassPane();
+		clearImages();
+		clearBuffer();
 		clearImages();
 		isOnTop = false;
 		//ModifierKeysState.reset();

@@ -76,17 +76,13 @@ public class SettingString extends SettingBase<String> implements Base{
 	@Override public void setFromCfgValue(String cfgValue) {
 		set(cfgValue);
 	}
-	@Override public void updateOptionTool() {
-		if (!isSpacer() && dynOpts() != null)
-			set(dynOpts().getString(getLangLabel(), defaultValue()));
-	}
 	@Override public void updateOption(DynamicOptions destOptions) {
 		if (!isSpacer() && destOptions != null)
-			destOptions.setString(getLangLabel(), settingValue());
+			destOptions.setString(dynOptionIndex(), settingValue());
 	}
 	@Override public void updateOptionTool(DynamicOptions srcOptions) {
 		if (srcOptions != null && !isSpacer())
-			set(srcOptions.getString(getLangLabel(), defaultValue()));
+			set(srcOptions.getString(dynOptionIndex(), defaultValue()));
 	}
 	@Override public boolean next() {
 		Object prev = UIManager.get("OptionPane.minimumSize");
