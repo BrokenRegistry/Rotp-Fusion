@@ -19,6 +19,7 @@ final class SetupTechOptions extends AbstractOptionsSubUI {
 				techTundra,
 				techDead,
 				techInferno,
+				techToxic,
 				techIrradiated,
 				techCloning,
 				techAtmospheric,
