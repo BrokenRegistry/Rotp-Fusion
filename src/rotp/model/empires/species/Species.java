@@ -547,7 +547,7 @@ public class Species implements ISpecies, Base, Serializable {
 			name = nextAvailableName();
 			if (name.isEmpty()) {
 				// Should never happen!
-				name = anim.speciesNames().getFirst();
+				name = anim.civilizationNames().getFirst();
 				name = name + name;
 				System.err.println("Error: species list is Empty -> " + name);
 				return name;

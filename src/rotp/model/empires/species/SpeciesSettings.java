@@ -460,7 +460,7 @@ public abstract class SpeciesSettings {
 
 			// Look if Animation has same civilization name
 			AnimationId animationId = (AnimationId)settingMap.get(ROOT + AnimationId.KEY);
-			StringList animNames = animSkills.speciesNames();
+			StringList animNames = animSkills.civilizationNames();
 			int animIdx = animNames.indexOfIgnoreCase(civName);
 			if (animIdx < 0) {
 				animIdx =  animationId.settingValue();
@@ -753,11 +753,11 @@ public abstract class SpeciesSettings {
 			randomStr("Random Race");
 		}
 		@Override public void pushToSkills(SpeciesSkills skills) {
-			skills.parseSpeciesNames(settingValue());
+			skills.parseCivilizationNames(settingValue());
 			skills.setupName = skills.setupName();
 		}
 		@Override public void pullFromSkills(SpeciesSkills skills) {
-			String raceNames = String.join(",", skills.speciesNames());
+			String raceNames = String.join(",", skills.civilizationNames());
 			set(raceNames);
 		}
 	}

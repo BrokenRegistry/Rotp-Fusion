@@ -321,7 +321,7 @@ public enum RaceFactory implements Base {
 			err("RaceFactory.loadRaceLangFile(", r.directoryName()+") -- IOException: ", e.toString());
 		}
 		if (speciesNames != null) { // Update Species names if required.
-			StringList nameList = r.speciesNames();
+			StringList nameList = r.civilizationNames();
 			// Move the first element to the end
 			nameList.rotate(-1);
 			// Add the new element at the first position
@@ -496,7 +496,7 @@ public enum RaceFactory implements Base {
         if (Rotp.countWords)
             wc = substrings(value,',').size();  // uncomment 
 
-		if (key.equalsIgnoreCase("name"))		{ r.parseSpeciesNames(value);	return wc; }
+		if (key.equalsIgnoreCase("name"))		{ r.parseCivilizationNames(value);	return wc; }
 		if (key.equalsIgnoreCase("desc1"))		{ r.setDescription1(value);		return wc; }
 		if (key.equalsIgnoreCase("desc2"))		{ r.setDescription2(value);		return wc; }
 		if (key.equalsIgnoreCase("desc3"))		{ r.setDescription3(value);		return wc; }

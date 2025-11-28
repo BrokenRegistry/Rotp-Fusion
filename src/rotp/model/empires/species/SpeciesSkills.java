@@ -182,16 +182,16 @@ class SpeciesSkills implements Base, Serializable {
 	void langKey(String s)				{ langKey = s; }
 	List<String> systemNames()			{ return systemNames; }
 	void systemNames(List<String> s)	{ systemNames.resetFrom(s); }
-	StringList speciesNames()			{ return uniqueNames.speciesNames; }
+	StringList civilizationNames()		{ return uniqueNames.civilizationNames; }
 	StringList homeSystemNames()		{ return uniqueNames.homeSystemNames; }
 	StringList leaderNames()			{ return uniqueNames.leaderNames; }
 	StringList shipNamesSmall()			{ return shipNamesSmall; }
 	StringList shipNamesMedium()		{ return shipNamesMedium; }
 	StringList shipNamesLarge()			{ return shipNamesLarge; }
 	StringList shipNamesHuge()			{ return shipNamesHuge; }
-	private StringList remainingSpeciesNames()	 { return uniqueNames.remainingSpeciesNames; }
-	private StringList remainingHomeworldNames() { return uniqueNames.remainingHomeworldNames; }
-	private StringList remainingLeaderNames()	 { return uniqueNames.remainingLeaderNames; }
+	private StringList remainingCivilizationNames()	{ return uniqueNames.remainingCivilizationNames; }
+	private StringList remainingHomeworldNames()	{ return uniqueNames.remainingHomeworldNames; }
+	private StringList remainingLeaderNames()		{ return uniqueNames.remainingLeaderNames; }
 
 	SpeciesSkills ()	{
 		leaderNames().add("Leader");
@@ -244,7 +244,7 @@ class SpeciesSkills implements Base, Serializable {
 		copy.shipNamesMedium.addAll(shipNamesMedium);
 	 	copy.shipNamesLarge.addAll(shipNamesLarge);
 		copy.shipNamesHuge.addAll(shipNamesHuge);
-		copy.uniqueNames.speciesNames.addAll(uniqueNames.speciesNames);
+		copy.uniqueNames.civilizationNames.addAll(uniqueNames.civilizationNames);
 		copy.uniqueNames.homeSystemNames.addAll(uniqueNames.homeSystemNames);
 		copy.uniqueNames.leaderNames.addAll(uniqueNames.leaderNames);
 		copy.speciesOptions(srcOptions); // TODO BR: COMMENT MAYBE
@@ -252,10 +252,10 @@ class SpeciesSkills implements Base, Serializable {
 		return copy;
 	}
 	void loadNameList()		{
-		StringList secondaryNames = new StringList(speciesNames());
-		uniqueNames.remainingSpeciesNames = new StringList();
-		remainingSpeciesNames().add(secondaryNames.remove(0));
-		remainingSpeciesNames().addAll(secondaryNames);
+		StringList secondaryNames = new StringList(civilizationNames());
+		uniqueNames.remainingCivilizationNames = new StringList();
+		remainingCivilizationNames().add(secondaryNames.remove(0));
+		remainingCivilizationNames().addAll(secondaryNames);
 	}
 	void loadLeaderList()	{
 		StringList secondaryNames = new StringList(leaderNames());
@@ -272,14 +272,14 @@ class SpeciesSkills implements Base, Serializable {
 		remainingHomeworldNames().addAll(homeNames);
 	}
 	String nextAvailableName()	{
-		if (remainingSpeciesNames()==null) 
+		if (remainingCivilizationNames()==null) 
 			loadNameList();
-		String name = remainingSpeciesNames().remove(0);
+		String name = remainingCivilizationNames().remove(0);
 		return name;
 	}
-	int nameIndex(String n)			{ return speciesNames().indexOf(n); }
+	int nameIndex(String n)			{ return civilizationNames().indexOf(n); }
 	String nameVariant(int i)		{
-		StringList names = speciesNames();
+		StringList names = civilizationNames();
 		return i<names.size()? names.get(i): names.get(0);
 	}
 	String nextAvailableLeader()	{
@@ -464,9 +464,9 @@ class SpeciesSkills implements Base, Serializable {
 	}
 	String getDescription4()			{ return description4; }
 	String setupName()			{
-		if (speciesNames().isEmpty())
+		if (civilizationNames().isEmpty())
 			return "";
-		return text(substrings(speciesNames().get(0), '|').get(0));
+		return text(substrings(civilizationNames().get(0), '|').get(0));
 	}
 	int shipAttackBonus()				{ return shipAttackBonus; }
 	void shipAttackBonus(int i)			{ shipAttackBonus = i; }
@@ -749,13 +749,13 @@ class SpeciesSkills implements Base, Serializable {
 		}
 		return null;
 	}
-	void parseSpeciesNames(String names)	{ speciesNames().resetFrom(substrings(names, ',')); }
-	void parseHomeWorlds(String names)		{ homeSystemNames().resetFrom(substrings(names, ',')); }
-	void parseLeaderNames(String names)		{ leaderNames().resetFrom(substrings(names, ',')); }
-	void parseShipNamesSmall(String names)	{ shipNamesSmall().resetFrom(substrings(names, ',')); }
-	void parseShipNamesMedium(String names)	{ shipNamesMedium().resetFrom(substrings(names, ',')); }
-	void parseShipNamesLarge(String names)	{ shipNamesLarge().resetFrom(substrings(names, ',')); }
-	void parseShipNamesHuge(String names)	{ shipNamesHuge().resetFrom(substrings(names, ',')); }
+	void parseCivilizationNames(String names)	{ civilizationNames().resetFrom(substrings(names, ',')); }
+	void parseHomeWorlds(String names)			{ homeSystemNames().resetFrom(substrings(names, ',')); }
+	void parseLeaderNames(String names)			{ leaderNames().resetFrom(substrings(names, ',')); }
+	void parseShipNamesSmall(String names)		{ shipNamesSmall().resetFrom(substrings(names, ',')); }
+	void parseShipNamesMedium(String names)		{ shipNamesMedium().resetFrom(substrings(names, ',')); }
+	void parseShipNamesLarge(String names)		{ shipNamesLarge().resetFrom(substrings(names, ',')); }
+	void parseShipNamesHuge(String names)		{ shipNamesHuge().resetFrom(substrings(names, ',')); }
 	void parseDialogLabel(String label, String names)	{ labels().addLabel(label, names); }
 	
 	private class SpeciesUniqueIdentifiers	{
@@ -763,10 +763,10 @@ class SpeciesSkills implements Base, Serializable {
 		private static final StringList frLabels = new StringList("_empireof,_raceadjec,_raceadjecF"
 				+ ",_race_pluralnoun,_race_pluralnounof,_race_pluralnounto,_race_pluraladjec,_race_pluraladjecF"
 				+ ",_title,_nameTitle", ",");
-		private final StringList speciesNames	 = new StringList();
+		private final StringList civilizationNames	 = new StringList();
 		private final StringList homeSystemNames = new StringList();
 		private final StringList leaderNames	 = new StringList();
-		private StringList remainingSpeciesNames;
+		private StringList remainingCivilizationNames;
 		private StringList remainingHomeworldNames;
 		private StringList remainingLeaderNames;
 	}
