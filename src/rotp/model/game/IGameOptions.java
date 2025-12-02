@@ -610,8 +610,8 @@ public interface IGameOptions extends IModOptions {
     }
 	default StringList getInternalSpeciesList()	{
 		if (showNewRaces.get())
-			return new StringList(allRaceOptions());
-		return new StringList(baseRaceOptions());
+			return new StringList(allRaceKeyList());
+		return new StringList(baseRaceKeyList());
 	}
 
     // Was in MOO1GameOptions

@@ -3,7 +3,7 @@ package rotp.model.empires.species;
 import static rotp.model.empires.species.SettingBase.CostFormula.DIFFERENCE;
 import static rotp.model.empires.species.SettingBase.CostFormula.NORMALIZED;
 import static rotp.model.game.IMainOptions.speciesDirectoryPath;
-import static rotp.model.game.IRaceOptions.defaultRace;
+import static rotp.model.game.IRaceOptions.defaultRaceKey;
 import static rotp.ui.util.IParam.langLabel;
 import static rotp.ui.util.PlayerShipSet.DISPLAY_RACE_SET;
 
@@ -268,7 +268,7 @@ public abstract class SpeciesSettings {
 	// -#-
 	// #==================== ReworkedRaceKey ====================
 	//
-	class ReworkedRaceKey extends SettingBase<String> {
+	class AnimationRaceKey extends SettingBase<String> {
 		private static final String REWORKED_RACE_KEY = "REWORKED_RACE_KEY";
 		static final String DEFAULT_VALUE = "NONE";
 
@@ -288,13 +288,13 @@ public abstract class SpeciesSettings {
 			// Test for reworked old Ways
 			String name = file.getName();
 			name = name.substring(0, name.length() - EXT.length());
-			if (IRaceOptions.allRaceOptions.contains(name))
+			if (IRaceOptions.allRaceKeyList.contains(name))
 				return name;
 			if (foldersRework) {
 				Path path = file.toPath();
 				int count = path.getNameCount();
 				String dir = "RACE_" + path.getName(count-2).toString().toUpperCase();
-				if (IRaceOptions.allRaceOptions.contains(dir))
+				if (IRaceOptions.allRaceKeyList.contains(dir))
 					return dir;
 			}
 			return "";
@@ -306,7 +306,7 @@ public abstract class SpeciesSettings {
 		 * @param foldersRework true -> Get a reworked key from the Folder.
 		 * @return true if the reworked file is not empty
 		 */
-		static String validReworked(DynOptions opt, File file, boolean foldersRework)	{
+		static String validRedesign(DynOptions opt, File file, boolean foldersRework)	{
 			String optKey	= getReworkedKey(opt); // current key
 			String fileKey	= fileToReworked(file, foldersRework); // potential candidate
 
@@ -320,7 +320,7 @@ public abstract class SpeciesSettings {
 			}
 			return optKey;
 		}
-		ReworkedRaceKey() {
+		AnimationRaceKey() {
 			super(ROOT, REWORKED_RACE_KEY);
 			isBullet(false);
 			hasNoCost(true);
@@ -736,7 +736,7 @@ public abstract class SpeciesSettings {
 		}
 
 		RaceKey() {
-			super(ROOT, RACE_KEY, defaultRace, 1);
+			super(ROOT, RACE_KEY, defaultRaceKey, 1);
 			randomStr(RANDOMIZED_RACE_KEY);
 		}
 		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, int idx)	{ return callUI(); }

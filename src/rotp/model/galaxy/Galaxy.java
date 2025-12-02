@@ -821,7 +821,7 @@ public final class Galaxy implements Base, Serializable {
 		int numStarSystems;
 		SystemBaseData[] starSystems;
 		private int numEmpires;
-		EmpireBaseData[] empires;
+		public EmpireBaseData[] empires;
 		
 		GalaxyBaseData(Galaxy src) {
 			width		= src.width();

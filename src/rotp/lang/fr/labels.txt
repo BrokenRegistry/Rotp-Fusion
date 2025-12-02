@@ -1679,7 +1679,7 @@ SETUP_OPPONENT_AI_SELECT          | IA : Sélectionnable
 SETUP_OPPONENT_AI_PLAYER_HELP     | Le contrôle est entre vos mains.
 SETUP_OPPONENT_AI_PLAYER          | IA : Aucune
 SETUP_OPPONENT_CR                 | Aptitudes :
-SETUP_OPP_CR_OPTIONS_HELP         | Aptitudes par défaut pour les adversaires aux espèces personnalisées :<br> « Espèce originale » = Aptitudes standard de l’espèce sélectionnée (dans les cases ci-dessous) ;<br> « Retravaillée » = Nouvelles aptitudes que vous avez enregistrées avec le nom par défaut de l’espèce.<br> (ex : RACE_DARLOK pour les Darloks) ;<br> *Espèce = Espèce originale spécifique ; ou toute autre espèce personnalisée que vous avez créée.
+SETUP_OPP_CR_OPTIONS_HELP         | Aptitudes par défaut pour les adversaires aux espèces personnalisées :<br> « Espèce originale » = Aptitudes standard de l’espèce sélectionnée (dans les cases ci-dessous) ;<br> « Redéfinies » = Nouvelles aptitudes que vous avez enregistrées avec le nom par défaut de l’espèce.<br> (ex : RACE_DARLOK pour les Darloks) ;<br> *Espèce = Espèce originale spécifique ; ou toute autre espèce personnalisée que vous avez créée.
 
 SETUP_AUTOPLAY_OFF_HELP           | Le joueur prend le commandement de l’empire.
 SETUP_AUTOPLAY_OFF                | Désactivé
@@ -2239,7 +2239,7 @@ CUSTOM_RACE_FIELDS_EDIT				| À éditer
 
 CUSTOM_RACE_SPECIES_NAME			| **Nom de →CUSTOM_RACE_CIVILIZATION←
 CUSTOM_RACE_SPECIES_NAME_DESC		| Une des possibles dénomination de cette espèce.
-CUSTOM_RACE_HOME_WORLD				| **Monde d’origine
+CUSTOM_RACE_HOME_WORLD				| *Monde d’origine
 CUSTOM_RACE_HOME_WORLD_DESC			| Un des possibles noms donné à la planète d’origine.
 CUSTOM_RACE_LEADER_NAME				| **Nom du chef
 CUSTOM_RACE_LEADER_NAME_DESC		| Un des possibles noms de dirigeants.
@@ -4862,6 +4862,8 @@ RACES_TRADE_NONE                  | Pas de traité commercial
 RACES_DIPLOMAT_RECALLED           | Diplomate [alien_raceadjec] rappelé
 RACES_DIPLOMATS_RECALLED          | Diplomates rappelés
 
+RACES_DIPLOMACY_CIVILIZATION_TITLE	| La civilization %1 change de nom
+RACES_DIPLOMACY_CIVILIZATION_LABEL	| Saisissez le nouveau nom :
 RACES_DIPLOMACY_LEADER_DIALOG_TITLE	| %1 %2 change son Nom
 RACES_DIPLOMACY_LEADER_DIALOG_LABEL	| Saisissez le nouveau nom :
 RACES_DIPLOMACY_HOMEWORLD         | Planète
@@ -5816,7 +5818,7 @@ SETUP_GALAXY_BACK_DESC            | Annuler les options et revenir au menu Optio
 SETUP_GALAXY_COMPACT_OPTIONS_HELP | Ces boutons ouvrent le menu Options avancées.<br> « →SETUP_BUTTON_MERGED_STATIC_SETTINGS← » contient des paramètres définis une fois au démarrage ou au redémarrage d’un jeu.<br> « →SETUP_BUTTON_MERGED_DYNAMIC_SETTINGS← » contient des paramètres réglables dans le jeu.<br>Pour revenir aux 6 menus d’options classiques :<br> - Appuyez sur « B » ou allez dans « →SETUP_BUTTON_MERGED_STATIC_SETTINGS← » et définissez « Afficher les options compactes » sur « Non ».
 SETUP_GALAXY_VANILLA_OPTIONS_HELP | Ce bouton ouvre le menu de configuration des options avancées.<br> Appuyez sur « B » pour basculer les boutons d’appel des sous-menus.
 SETUP_TUNE_GALAXY_OPTIONS_HELP    | Ce bouton ouvre un panneau de contrôle de survol pour affiner les paramètres de la galaxie. <br>L’aperçu de la carte de la galaxie sera mis à jour en direct.
-SETUP_GALAXY_ABILITIES_DESC       | Aptitudes par défaut des empires extraterrestres :<br> 'Espèce originale' = Aptitudes originales de l’espèce sélectionnée (dans les cases ci-dessous) ;<br> 'Retravaillée' = Nouvelles aptitudes que vous avez enregistrées avec le nom de l’espèce originale.<br> (ex : RACE_DARLOK pour les Nasloks) ;<br> *Espèce = Espèce originale spécifique ; ou toute autre espèce personnalisée que vous avez créée.
+SETUP_GALAXY_ABILITIES_DESC       | Aptitudes par défaut des empires extraterrestres :<br> 'Espèce originale' = Aptitudes originales de l’espèce sélectionnée (dans les cases ci-dessous) ;<br> 'Redéfinies' = Nouvelles aptitudes que vous avez enregistrées avec le nom de l’espèce originale.<br> (ex : RACE_DARLOK pour les Nasloks) ;<br> *Espèce = Espèce originale spécifique ; ou toute autre espèce personnalisée que vous avez créée.
 SETUP_GALAXY_SELECTABLE_DESC      | « Oui » => Une ligne de sélection apparaîtra en haut des cases ci-dessous, permettant la sélection d’une aptitude individuelle.
 SETUP_GALAXY_SELECTABLE            | Aptitudes sélectionnables
 SETUP_GALAXY_RACE_LIST_HELP        | <b>Sélection de la liste des espèces</b><br> Modnar a étendu la liste des espèces originales avec six nouvelles espèces. Si vous n’êtes pas d’humeur à les voir, vous pouvez les exclure de la sélection.<hr><b>Par défaut :</b>&nbsp Original<hr><b>Original :</b>&nbsp Les 6 espèces de Modnar sont exclues.<br> <b>Toutes les espèces</b> : Les 6 espèces de Modnar peuvent également être sélectionnées ou attribuées au hasard.
@@ -5831,21 +5833,22 @@ SETUP_SELECT_CR_OPTIONS            | Aptitudes sélectionnables.
 ???                                | ???
 ???_DESC                           | ???_DESCXXX
 
-ABILITIES_SELECTION				| 'Aptitudes globale'
-ABILITIES_ORIGINAL_SPECIES		| 'Aptitudes originale'
-ABILITIES_REWORKED				| 'Retravaillée'
+ABILITIES_SELECTION				| 'Aptitudes globals'
+ABILITIES_ORIGINAL_SPECIES		| 'Aptitudes originales'
+ABILITIES_REWORKED				| 'Redéfinies'
+ABILITIES_REWORKED_FULL			| 'Animations Préférées'
 ABILITIES_PLAYER				| 'Comme le joueur'
 ABILITIES_RANDOM				| 'Création aléatoire'
-ABILITIES_RANDOM_10				| 'Une des 10 originale'
-ABILITIES_RANDOM_16				| 'Une des 16 originale'
-ABILITIES_FILES					| 'Personalisée et autorisée'
-ABILITIES_ALL_FILES				| 'Personalisée'
-ABILITIES_FILES_RACES			| 'Originale ou autorisée'
-ABILITIES_All					| 'Originale ou personalisée'
+ABILITIES_RANDOM_10				| 'Une des 10 originales'
+ABILITIES_RANDOM_16				| 'Une des 16 originales'
+ABILITIES_FILES					| 'Personalisées et autorisées'
+ABILITIES_ALL_FILES				| 'Personalisées'
+ABILITIES_FILES_RACES			| 'Originales ou autorisées'
+ABILITIES_All					| 'Originales ou personalisées'
 
 ABILITIES_SELECTION_DESC		| Mêmes aptitudes que les aptitudes globales sélectionnées ci-dessus.
 ABILITIES_ORIGINAL_SPECIES_DESC	| Aptitudes originales de l’espèce sélectionnée (celle sur l’icône)
-ABILITIES_REWORKED_DESC			| Aptitudes retravaillées de l’espèce sélectionnée (celle sur l’icône), modifiées et sauvegardées par le joueur (dans le panneau de personnalisation des espèces) avec les fichiers d’espèces respectivement nommés : RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA , RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
+ABILITIES_REWORKED_DESC			| Aptitudes Redéfinies de l’espèce sélectionnée (celle sur l’icône), modifiées et sauvegardées par le joueur (dans le panneau de personnalisation des espèces) avec les fichiers d’espèces respectivement nommés : RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA , RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
 ABILITIES_PLAYER_DESC			| Mêmes aptitudes que l’espèce du joueur sélectionné.
 ABILITIES_RANDOM_DESC			| Les aptitudes seront générées aléatoirement à l’aide des paramètres « Configuration » : <b>OPTIONS D’ALIENS ALÉATOIRES</b> : « Cible max », « Cible min », « Aliens personnalisés », « Réglage % max », « Réglage % min » et « Bords lisses ».
 ABILITIES_RANDOM_10_DESC		| Aptitudes sélectionnées aléatoirement parmi les aptitudes des dix espèces originales.

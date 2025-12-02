@@ -1366,7 +1366,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
 		String leaderName = emp.leader().name();
 		String nameTitle  = emp.raceText("_nameTitle");
 		String specieName  = emp.raceName();
-		System.out.println(nameTitle + " / " + specieName);
+		//System.out.println(nameTitle + " / " + specieName);
 		String dlgTitle = text("RACES_DIPLOMACY_LEADER_DIALOG_TITLE", nameTitle, specieName);
 		String dlgLabel = text("RACES_DIPLOMACY_LEADER_DIALOG_LABEL", nameTitle, specieName);
 		StringDialogUI dlg = RotPUI.instance().stringDialog();

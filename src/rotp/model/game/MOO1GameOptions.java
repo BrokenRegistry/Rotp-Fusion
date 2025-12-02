@@ -700,9 +700,9 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     	return IGameOptions.specificAIset().getAliens();
     }
     @Override
-    public List<String> newRaceOffOptions()	  { return baseRaceOptions(); }
+    public List<String> newRaceOffOptions()	  { return baseRaceKeyList(); }
     @Override
-    public List<String> startingRaceOptions() {  return allRaceOptions(); }
+    public List<String> startingRaceOptions() {  return allRaceKeyList(); }
     @Override
     public List<Integer> possibleColors()	  { return new ArrayList<>(colors); }
 	@Override public void setAndGenerateGalaxy()	{
@@ -981,13 +981,13 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     // ========== Race Menu Options ==========
     @Override public void setRandomPlayerRace() { // BR:
     	if (Rotp.noOptions()) {
-    		selectedPlayerRace(random(baseRaceOptions()));
+    		selectedPlayerRace(random(baseRaceKeyList()));
     		return;
     	}
         if (showNewRaces.get()) // BR: limit randomness
-        	selectedPlayerRace(random(allRaceOptions()));
+        	selectedPlayerRace(random(allRaceKeyList()));
         else
-        	selectedPlayerRace(random(baseRaceOptions()));
+        	selectedPlayerRace(random(baseRaceKeyList()));
         player.update(this);
     }
     private void setBaseRaceSettingsToDefault() { // BR:

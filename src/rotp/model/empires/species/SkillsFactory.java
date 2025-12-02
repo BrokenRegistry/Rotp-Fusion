@@ -24,7 +24,7 @@ import static rotp.model.game.IPreGameOptions.randomAlienRacesMin;
 import static rotp.model.game.IPreGameOptions.randomAlienRacesSmoothEdges;
 import static rotp.model.game.IPreGameOptions.randomAlienRacesTargetMax;
 import static rotp.model.game.IPreGameOptions.randomAlienRacesTargetMin;
-import static rotp.model.game.IRaceOptions.defaultRace;
+import static rotp.model.game.IRaceOptions.defaultRaceKey;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -46,7 +46,7 @@ import rotp.ui.util.StringList;
 
 public class SkillsFactory extends SpeciesSettings {
 
-	private SkillsFactory()	{}
+	SkillsFactory()	{}
 
 	public final SettingInteger randomTargetMax	= new SettingInteger(ROOT, "RANDOM_TARGET_MAX", 75, null, null, 1, 5, 20).pctValue(false);
 	public final SettingInteger randomTargetMin	= new SettingInteger(ROOT, "RANDOM_TARGET_MIN", 0, null, null, 1, 5, 20).pctValue(false);
@@ -128,7 +128,7 @@ public class SkillsFactory extends SpeciesSettings {
 		return destOptions;
 	}
 	private void initSkillsForEditor(DynOptions srcOptions)	{
-		String skillKey = ReworkedRaceKey.getRawReworkedKey(srcOptions);
+		String skillKey = AnimationRaceKey.getRawReworkedKey(srcOptions);
 		initWithInternalSkillsForGalaxy(skillKey);
 
 		isReference = false;
@@ -193,7 +193,7 @@ public class SkillsFactory extends SpeciesSettings {
 		settingMap.cleanLanguages();
 	}
 	private void initFactoryForEdit()	{
-		race(Species.getAnim(defaultRace).copy());
+		race(Species.getAnim(defaultRaceKey).copy());
 		// Create the settings if necessary
 		newSettingList();
 		// Fills with default setting
@@ -213,17 +213,17 @@ public class SkillsFactory extends SpeciesSettings {
 		factory.initSkillsForGalaxy(loadOptions(speciesDirectoryPath(), fileName + EXT));
 		return factory.race();
 	}
-	public static HashMap<String, StringList> getReworkMap()	{ return newRaceList().reworkMap(); }
+	public static HashMap<String, StringList> getAnimationMap()	{ return newRaceList().animationMap(); }
 	public static StringList getAllAlienSkills()		{ return newRaceList().getAllAlienRaces(); }
 	public static StringList getAllowedAlienSkills()	{ return newRaceList().getAllowedAlienRaces(); }
-	private static RaceList newRaceList()				{	// TODO BR: Change Galaxy Factory to get only one instance of this
+	static RaceList newRaceList()						{	// TODO BR: Change Galaxy Factory to get only one instance of this
 		SkillsFactory factory = new SkillsFactory();
 		factory.initWithDefaultSkillsForGalaxy();
 		return factory.new RaceList();
 	}
 
 	private void initSkillsForGalaxy(DynOptions srcOptions)	{
-		String skillKey = ReworkedRaceKey.getRawReworkedKey(srcOptions);
+		String skillKey = AnimationRaceKey.getRawReworkedKey(srcOptions);
 		initWithInternalSkillsForGalaxy(skillKey);
 
 		isReference = false;
@@ -254,7 +254,7 @@ public class SkillsFactory extends SpeciesSettings {
 			setting.skillToSetting(race());
 	}
 	private void initWithDefaultSkillsForGalaxy()	{
-		race(Species.getAnim(defaultRace).copy());
+		race(Species.getAnim(defaultRaceKey).copy());
 		// Create the settings if necessary
 		newSettingList();
 		// Fills with default settings (instead of default Species settings)
@@ -278,7 +278,7 @@ public class SkillsFactory extends SpeciesSettings {
 	private void initSkillsForSpecies(String skillsKey)	{
 		switch (skillsKey) {
 			case RANDOM_RACE_KEY:
-				race(Species.getAnim(defaultRace).copy());
+				race(Species.getAnim(defaultRaceKey).copy());
 				race().isCustomSpecies(true);
 				randomizeRace(randomAlienRacesMin.get(), randomAlienRacesMax.get(),
 						randomAlienRacesTargetMin.get(), randomAlienRacesTargetMax.get(),
@@ -288,8 +288,17 @@ public class SkillsFactory extends SpeciesSettings {
 				initSkillsForGalaxy((DynOptions) IGameOptions.playerCustomRace.get());
 				return;
 			default:
-				initSkillsForGalaxy(loadOptions(speciesDirectoryPath(), skillsKey + EXT));
-				return;
+				if(skillsKey.startsWith(BASE_RACE_MARKER)) {
+					String key = Species.languageToKey(skillsKey.substring(1));
+					if (key == null)
+						key = defaultRaceKey;
+					race(Species.getAnim(key).copy());
+					return;
+				}
+				else {
+					initSkillsForGalaxy(loadOptions(speciesDirectoryPath(), skillsKey + EXT));
+					return;
+				}
 		}
 	}
 	// -#-
@@ -302,7 +311,7 @@ public class SkillsFactory extends SpeciesSettings {
 		return factory.race().speciesOptions();
 	}
 	private void initFactoryForParamCR()	{
-		race(Species.getAnim(defaultRace).copy());
+		race(Species.getAnim(defaultRaceKey).copy());
 		newSettingList();
 	}
 	// -#-
@@ -320,7 +329,7 @@ public class SkillsFactory extends SpeciesSettings {
 		return factory;
 	}
 	private void initSkillsForRaceList(DynOptions srcOptions)	{
-		race(Species.getAnim(defaultRace).copy());
+		race(Species.getAnim(defaultRaceKey).copy());
 		newSettingList();
 
 		// update default setting value from source options
@@ -358,7 +367,7 @@ public class SkillsFactory extends SpeciesSettings {
 		if(Species.isValidKey(key))
 			race(Species.getAnim(key).copy());
 		else
-			race(Species.getAnim(defaultRace).copy());
+			race(Species.getAnim(defaultRaceKey).copy());
 
 		// Create the settings if necessary
 		newSettingList();
@@ -508,7 +517,7 @@ public class SkillsFactory extends SpeciesSettings {
 
 		// ====================
 		// First column (left)
-		settingMap.add(new ReworkedRaceKey());
+		settingMap.add(new AnimationRaceKey());
 		settingMap.add(raceKey);
 		settingMap.addAttribute(new RaceName(dir));
 		settingMap.add(new LeaderTitle(dir));
@@ -655,7 +664,9 @@ public class SkillsFactory extends SpeciesSettings {
 	public class RaceList extends SettingBase<String> {
 		private boolean newValue = false;
 		private boolean reload	 = false;
-		private HashMap<String, StringList> reworkedMap = new HashMap<>();
+		private HashMap<String, StringList> namedAnimMap = new HashMap<>(); // TODO BR: Validate
+		private HashMap<String, StringList> animationMap = new HashMap<>();
+		private HashMap<String, StringList> namedMap	 = new HashMap<>(); // TODO BR: Validate
 
 		public RaceList()	{
 			super(ROOT, "RACE_LIST");
@@ -668,14 +679,21 @@ public class SkillsFactory extends SpeciesSettings {
 		}
 		// ---------- Initializers ----------
 		//
-		public void reload(boolean foldersRework)	{
+		public void reload(boolean foldersRedesign)	{
 			String currentValue = settingValue();
 			clearLists();
-			reworkedMap.clear();
+			namedMap.clear();
+			namedAnimMap.clear();
+			animationMap.clear();
 			clearOptionsText();
-			for (String raceKey : IGameOptions.allRaceOptions)
-				reworkedMap.put(raceKey, new StringList());
-			reworkedMap.put(ReworkedRaceKey.DEFAULT_VALUE, new StringList());
+			for (String raceKey : IGameOptions.allRaceKeyList) {
+				namedAnimMap.put(raceKey, new StringList());
+				animationMap.put(raceKey, new StringList());
+				namedMap.put(raceKey, new StringList());
+			}
+			namedAnimMap.put(AnimationRaceKey.DEFAULT_VALUE, new StringList());
+			animationMap.put(AnimationRaceKey.DEFAULT_VALUE, new StringList());
+			namedMap.put(AnimationRaceKey.DEFAULT_VALUE, new StringList());
 
 			// Add Current race
 			add((DynOptions) IGameOptions.playerCustomRace.get());
@@ -684,6 +702,8 @@ public class SkillsFactory extends SpeciesSettings {
 			File[] fileList = loadListing();
 			if (fileList != null)
 				for (File file : fileList) {
+					if (file == null)
+						continue;
 					DynOptions opt = loadOptions(file);
 					if (opt.size() == 0)
 						System.err.println("Empty race file: " + file.getName());
@@ -691,20 +711,20 @@ public class SkillsFactory extends SpeciesSettings {
 						// Check to Update filename
 						String skillKey = RaceKey.valid(opt, file);
 						// Test for reworked old Ways
-						String animKey  = ReworkedRaceKey.validReworked(opt, file, foldersRework);
-						reworkedMap.get(animKey).add(skillKey); // The map has a "None" key
+						String animKey  = AnimationRaceKey.validRedesign(opt, file, foldersRedesign);
+						animationMap.get(animKey).add(skillKey); // The map has a "None" key
 						add(opt);
 					}
 				}
 			// Add Game races
-			for (String raceKey : IGameOptions.allRaceOptions)
+			for (String raceKey : IGameOptions.allRaceKeyList)
 				add(raceKey);
 
 			initOptionsText();
 			reload = true;
 			set(currentValue);
 		}
-		private HashMap<String, StringList> reworkMap()	{ return reworkedMap; }
+		HashMap<String, StringList> animationMap()	{ return animationMap; }
 		private File[] loadListing()	{
 			File speciesDir = new File(speciesDirectoryPath());
 			List<File> speciesList = new ArrayList<>();
@@ -712,7 +732,7 @@ public class SkillsFactory extends SpeciesSettings {
 			return speciesList.toArray(new File[0]);
 		}
 		private void scanSubDir(List<File> speciesList, File speciesDir)	{
-			if (!speciesDir.exists() || !speciesDir.isDirectory())
+			if (speciesDir == null || !speciesDir.exists() || !speciesDir.isDirectory())
 				return;
 			// Local files
 			File[] array = speciesDir.listFiles(SPECIES_FILTER);
@@ -789,7 +809,8 @@ public class SkillsFactory extends SpeciesSettings {
 			}
 			if (index()>=listSize()-16) { // Base Race
 				isReference = true;
-				race(Species.getAnim(getCfgValue(settingValue())).copy());
+				String key = Species.languageToKey(value.substring(1));
+				race(Species.getAnim(key).copy());
 				List<ICRSettings> settings = settingMap.getAll();
 				for (ICRSettings setting : settings)
 					setting.skillToSetting(race());

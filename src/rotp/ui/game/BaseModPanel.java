@@ -1044,7 +1044,7 @@ public abstract class BaseModPanel extends BasePanel
 		}
 	}
 	public final class ModText extends BaseText {
-		
+
 		private final Box box;
 		private final int baseFontsize;
 		boolean forceHover = false;

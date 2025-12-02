@@ -160,7 +160,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 //    private boolean drawAllButtons = true;
 	public ParamList playerSpecies() {
 		return new ParamListPlayerSpecies( // For Guide
-				BASE_UI, "PLAYER_SPECIES", guiOptions().getInternalSpeciesList(), IRaceOptions.defaultRace);
+				BASE_UI, "PLAYER_SPECIES", guiOptions().getInternalSpeciesList(), IRaceOptions.defaultRaceKey);
 	}
 	public ParamString playerHomeWorld() {
 		return new ParamStringPlayerHomeWorld(BASE_UI, "PLAYER_HOMEWORLD", "");

@@ -301,6 +301,7 @@ public final class Empire extends Species implements NamedObject {
 
 	@Override public int capitalSysId()				{ return capitalSysId; }
 	@Override public Leader leader()				{ return leader; }
+	@Override public String getLeaderName()			{ return leader.name(); }
 	@Override public boolean masksDiplomacy()		{ return super.masksDiplomacy() || ai().diplomat().masksDiplomacy(); }
 	@Override public SystemInfo sv()				{ return sv; }
 
@@ -372,7 +373,7 @@ public final class Empire extends Species implements NamedObject {
 
     public Colony.Orders priorityOrders()         { return priorityOrders; }
     public void priorityOrders(Colony.Orders o)   { priorityOrders = o; }	// BR: Never Used
-    public int colorId()                          { return bannerColor; }
+    @Override public int colorId()                { return bannerColor; }
     private void colorId(int i)                   { bannerColor = i; resetColors(); }
     public int shape()                            { return id / options().numColors(); }
     public float minX()                           { return minX; }
@@ -432,7 +433,7 @@ public final class Empire extends Species implements NamedObject {
     }
 
 	@Override public DynOptions speciesOptions()	{ return raceOptions; }
-	@Override public int speciesNameIndex()	{ return raceNameIndex; }
+	@Override public int civilizationNameIndex()	{ return raceNameIndex; }
     public BufferedImage scoutImage() {
         if (scoutImage == null)
             scoutImage = ShipLibrary.current().scoutImage(shipColorId());
@@ -555,7 +556,7 @@ public final class Empire extends Species implements NamedObject {
         }
 
 		colorId(cId);
-		raceNameIndex	= speciesIndex(); // also initialize species Name
+		raceNameIndex	= civilizationIndex(); // also initialize species Name
 		// Init Leaders
 		String leaderName = name;
 		if (leaderName == null)
@@ -1015,7 +1016,7 @@ public final class Empire extends Species implements NamedObject {
 
 		setSpecies(new Species(raceKey, dataRaceKey, raceOptions));
 //		setSpeciesEmpire(id);
-		setSpeciesIndex(raceNameIndex);
+		setOldSpeciesIndex(raceNameIndex);
 
 		tech().validateOnLoad();
         for(EmpireView view : empireViews)
@@ -4179,14 +4180,10 @@ public final class Empire extends Species implements NamedObject {
         }
         return 0;
 	} // \BR
-
-    // BR:
     /**
 	 * @return the current Name of Home World
 	 */
-	public String getHomeWorldName() {
-        return galaxy().system(homeSysId).name();
-	} // \BR
+	@Override public String getHomeWorldName() { return galaxy().system(homeSysId).name(); }
     // BR:
     /**
      * Change Home World and Companions Name

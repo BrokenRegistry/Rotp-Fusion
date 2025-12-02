@@ -63,16 +63,17 @@ public final class GalaxyFactory implements Base {
 	private static String playerDataRaceKey;   // BR: in case Alien races are a copy of player race
 	private HashMap<String, StringList> reworkedMap, reworkedMapOrigin;
 	
+	// #=== Init
 	private void cleanFactory()	{
 		isRandomOpponent	= null;
 		playerDataRaceKey	= null;
 		reworkedMapOrigin	= null;
 		reworkedMap			= null;
-		Species.clean();
+		Species.cleanUsedNames();
 	}
 	private HashMap<String, StringList> reworkedMap()	{
 		if (reworkedMap == null) {
-			reworkedMapOrigin = SkillsFactory.getReworkMap();
+			reworkedMapOrigin = SkillsFactory.getAnimationMap();
 			reworkedMap = new HashMap<>();
 			for (Entry<String, StringList> entry : reworkedMapOrigin.entrySet())
 				reworkedMap.put(entry.getKey(), new StringList(entry.getValue()));
@@ -394,6 +395,7 @@ public final class GalaxyFactory implements Base {
 		}
 		return raceList;
 	}
+	// -#-
 	private void addPlayerSystemForGalaxy(Galaxy g, int id, List<EmpireSystem> empSystems, GalaxyCopy src) {
 		// creates a star system for player, using selected options
 		GalaxyBaseData galSrc = null; // Used for Restart
@@ -610,10 +612,10 @@ public final class GalaxyFactory implements Base {
 						species.setSpeciesSkills(RANDOM_RACE_KEY);
 						break;
 					case RANDOM_BASE: // Choose randomly in the base list
-						species.setSpeciesSkills(random(opts.baseRaceOptions()));
+						species.setSpeciesSkills(random(opts.baseRaceKeyList()));
 						break;
 					case RANDOM_MOD: // Choose randomly including the Modnar Races
-						species.setSpeciesSkills(random(opts.allRaceOptions()));
+						species.setSpeciesSkills(random(opts.allRaceKeyList()));
 						break;
 					case FILES_FLT:
 						if (allowedRaceList.isEmpty())
@@ -630,11 +632,11 @@ public final class GalaxyFactory implements Base {
 					case FILES_RACES:
 						if (rng().nextBoolean())
 							if (allowedRaceList.isEmpty())
-								species.setSpeciesSkills(random(opts.allRaceOptions()));
+								species.setSpeciesSkills(random(opts.allRaceKeyList()));
 							else
 								species.setSpeciesSkills(fileToSkills(random(allowedRaceList)));
 						else
-							species.setSpeciesSkills(random(opts.allRaceOptions()));
+							species.setSpeciesSkills(random(opts.allRaceKeyList()));
 						break;
 					case ALL:
 						if (rng().nextBoolean())
@@ -646,14 +648,14 @@ public final class GalaxyFactory implements Base {
 							else
 								species.setSpeciesSkills(optionToSkills(g.empire(0).speciesOptions()));
 						else if (rng().nextBoolean())
-							species.setSpeciesSkills(random(opts.allRaceOptions()));
+							species.setSpeciesSkills(random(opts.allRaceKeyList()));
 						else
 							species.setSpeciesSkills(RANDOM_RACE_KEY);
 						break;
 					case BASE_RACE: // default as vanilla
 					default:
 						if (options().randomizeAIAbility()) // original Advanced Option random abilities
-							species.setSpeciesSkills(random(opts.baseRaceOptions()));
+							species.setSpeciesSkills(random(opts.baseRaceKeyList()));
 						else
 							species.setSpeciesSkills(raceKey);
 						break;
@@ -857,7 +859,7 @@ public final class GalaxyFactory implements Base {
 	public static class GalaxyCopy {
 		private IGameOptions newOptions;
 		private IGameOptions oldOptions;
-		private GalaxyBaseData galSrc;
+		public GalaxyBaseData galSrc;
 		private float nebulaSizeMult;
 		private LinkedList<String> alienRaces;
 		private int nearbyStarSystemNumber;

@@ -1679,7 +1679,7 @@ SETUP_OPPONENT_AI_SELECT          | AI: Selectable
 SETUP_OPPONENT_AI_PLAYER_HELP     | The control is under your hands.
 SETUP_OPPONENT_AI_PLAYER          | AI: Off
 SETUP_OPPONENT_CR                 | Abilities:
-SETUP_OPP_CR_OPTIONS_HELP         | Default abilities for alien Species:<br> 'Original Species' = Standard abilities of the selected Species (in the Boxes below);<br> 'Reworked' = New abilities you have saved with the Species default name.<br> (ex: RACE_DARLOK for the Darlok);<br> *Species = specific Original Species; or any other customized species you have built.
+SETUP_OPP_CR_OPTIONS_HELP         | Default abilities for alien Species:<br> 'Original Species' = Standard abilities of the selected Species (in the Boxes below);<br> 'Redesigned' = New abilities you have saved with the Species default name.<br> (ex: RACE_DARLOK for the Darlok);<br> *Species = specific Original Species; or any other customized species you have built.
 
 SETUP_AUTOPLAY_OFF_HELP           | The player takes command of the empire.
 SETUP_AUTOPLAY_OFF                | Off
@@ -2082,10 +2082,10 @@ CUSTOM_RACE_HOME_RESOURCES        | Planet Resources
 CUSTOM_RACE_HOME_ENVIRONMENT_DESC | This selection will affect the growth rate of the home world.
 CUSTOM_RACE_HOME_ENVIRONMENT      | Planet Environment
 CUSTOM_RACE_RACE_KEY				| File Name (Key)
-CUSTOM_RACE_RACE_KEY_DESC			| This is the place to enter the filename, it's also used as the key for the standard species... Don't use them, or keep the default "SPECIES_xxx" to set the "Reworked"-Abilities.
+CUSTOM_RACE_RACE_KEY_DESC			| This is the place to enter the filename, it's also used as the key for the standard species... Don't use them, or keep the default "SPECIES_xxx" to set the "Redesigned"-Abilities.
 CUSTOM_RACE_RACE_KEY_INPUT			| Enter the file name of the custom species.
 CUSTOM_RACE_REWORKED_RACE_KEY		| Linked Animations
-CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| This is the prefered Species choice for the displayed animations. When 'Reworked' Abilities is selected, this abilities can be randomly selected.
+CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| This is the prefered Species choice for the displayed animations. When 'Redesigned' Abilities is selected, this abilities can be randomly selected.
 CUSTOM_RACE_REWORKED_RACE_KEY_INPUT	| Enter the name of the original reworkable species.
 CUSTOM_RACE_REWORKED_RACE_KEY_NONE	| None
 CUSTOM_RACE_BOUND_AI				| Bound AI
@@ -2239,7 +2239,7 @@ CUSTOM_RACE_FIELDS_EDIT				| Edit
 
 CUSTOM_RACE_SPECIES_NAME			| **Civilization Name
 CUSTOM_RACE_SPECIES_NAME_DESC		| One of the possible name for this species.
-CUSTOM_RACE_HOME_WORLD				| **Home world
+CUSTOM_RACE_HOME_WORLD				| *Home world
 CUSTOM_RACE_HOME_WORLD_DESC			| One of the possible home system names.
 CUSTOM_RACE_LEADER_NAME				| **Leader Name
 CUSTOM_RACE_LEADER_NAME_DESC		| One of the possible leader names.
@@ -2278,7 +2278,7 @@ CUSTOM_RACE_RACE_NAMEfr				| **Nom de →CUSTOM_RACE_CIVILIZATION_FR←
 CUSTOM_RACE_RACE_NAMEfr_DESC		| Une des possibles dénomination de cette espèce.
 CUSTOM_RACE_RACE_EMPIRE_NAMEfr		| **Nom du gouvernement
 CUSTOM_RACE_RACE_EMPIRE_NAMEfr_DESC	| Le pendant du paramètre « _empire » dans les fichiers Species.labels.txt.
-CUSTOM_RACE_HOME_WORLDfr			| **Monde d’origine
+CUSTOM_RACE_HOME_WORLDfr			| *Monde d’origine
 CUSTOM_RACE_HOME_WORLDfr_DESC		| Un des possibles noms donné à la planète d’origine.
 CUSTOM_RACE_LEADER_NAMEfr			| **Nom du chef
 CUSTOM_RACE_LEADER_NAMEfr_DESC		| Un des possibles noms de dirigeants.
@@ -4862,6 +4862,8 @@ RACES_TRADE_NONE                  | No trade treaty
 RACES_DIPLOMAT_RECALLED           | [alien_race] diplomat recalled
 RACES_DIPLOMATS_RECALLED          | Diplomats recalled
 
+RACES_DIPLOMACY_CIVILIZATION_TITLE	| New Civilization Name for %1
+RACES_DIPLOMACY_CIVILIZATION_LABEL	| Enter the new %1 Civilization Name:
 RACES_DIPLOMACY_LEADER_DIALOG_TITLE	| %1 %2 new Name
 RACES_DIPLOMACY_LEADER_DIALOG_LABEL	| Enter the new %1 %2 Name:
 RACES_DIPLOMACY_HOMEWORLD         | Homeworld
@@ -5816,7 +5818,7 @@ SETUP_GALAXY_BACK_DESC            | Cancel options and go back to the Player opt
 SETUP_GALAXY_COMPACT_OPTIONS_HELP | These buttons open Advanced options Menu.<br> "→SETUP_BUTTON_MERGED_STATIC_SETTINGS←" contains parameters being set once when starting or restarting a game.<br> "→SETUP_BUTTON_MERGED_DYNAMIC_SETTINGS←" contains parameters adjustable in game.<br>To switch back to 6 classic option menus:<br> - Press "B" or go to "Setup" and set "Show Compact Options" to "No".
 SETUP_GALAXY_VANILLA_OPTIONS_HELP | This button open Advanced options configuration Menu.<br> Press "B" to toggle the submenus call buttons.
 SETUP_TUNE_GALAXY_OPTIONS_HELP    | This button opens a hover control panel to fine-tune galaxy settings. <br>The galaxy map preview will update live.
-SETUP_GALAXY_ABILITIES_DESC       | Default abilities for alien Empires:<br> 'Original Species' = Original abilities of the selected Species (in the Boxes below);<br> 'Reworked' = New abilities you have saved with the original species name.<br> (ex: RACE_DARLOK for the Naslok);<br> *Species = specific Original Species; or any other customized species you have built.
+SETUP_GALAXY_ABILITIES_DESC       | Default abilities for alien Empires:<br> 'Original Species' = Original abilities of the selected Species (in the Boxes below);<br> 'Redesigned' = New abilities you have saved with the original species name.<br> (ex: RACE_DARLOK for the Naslok);<br> *Species = specific Original Species; or any other customized species you have built.
 SETUP_GALAXY_SELECTABLE_DESC      | "Yes" => A selection line will appear at the top of the boxes below, allowing the selection of individual ability.
 SETUP_GALAXY_SELECTABLE		      | Selectable Abilities
 SETUP_GALAXY_RACE_LIST_HELP       | <b>Species list selection</b><br> Modnar has extended the original species list with six new species. If you are not in the mood to see them, you can exclude them from the selection.<hr><b>Default:</b>&nbsp Original<hr><b>Original:</b>&nbsp The 6 Modnar Species are excluded.<br> <b>All Species</b>:&nbsp The 6 Modnar Species can also be selected or randomly assigned.
@@ -5833,7 +5835,8 @@ SETUP_SELECT_CR_OPTIONS		      | Selectable Abilities.
 
 ABILITIES_SELECTION				| 'From Abilities top box'
 ABILITIES_ORIGINAL_SPECIES		| 'Original Abilities'
-ABILITIES_REWORKED				| 'Reworked Abilities'
+ABILITIES_REWORKED				| 'Redesigned Abilities'
+ABILITIES_REWORKED_FULL			| 'Full Custom Species'
 ABILITIES_PLAYER				| 'Same as Player'
 ABILITIES_RANDOM				| 'Randomly Created'
 ABILITIES_RANDOM_10				| 'Any Original (10)'
@@ -5845,7 +5848,7 @@ ABILITIES_All					| 'Original or Any Custom'
 
 ABILITIES_SELECTION_DESC		| Same abilities as the global abilities selected on the top.
 ABILITIES_ORIGINAL_SPECIES_DESC	| Original abilities of the selected species (the one on the icon)
-ABILITIES_REWORKED_DESC			| Reworked abilities of the selected species (the one on the icon), modified and saved by the player (in the Species Customization Panel) with the respectively named species files: RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA, RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
+ABILITIES_REWORKED_DESC			| Redesigned abilities of the selected species (the one on the icon), modified and saved by the player (in the Species Customization Panel) with the respectively named species files: RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA, RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
 ABILITIES_PLAYER_DESC			| Same abilities as the selected player species.
 ABILITIES_RANDOM_DESC			| Abilities will be randomly generated using the "Setup" parameters: <b>RANDOM ALIENS OPTIONS</b> : "Target Max", "Target Min", "Custom Aliens", "Setting % Max", "Setting % Min", and "Smooth Edges".
 ABILITIES_RANDOM_10_DESC		| Abilities randomly selected within the ten original species abilities.
