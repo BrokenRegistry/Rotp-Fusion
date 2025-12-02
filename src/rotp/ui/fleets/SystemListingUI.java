@@ -344,6 +344,8 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             SystemButton button = matchingButton(x,y);
             if ((button != null) && button.wantsMouseWheel()) {
                 Sprite sprite = matchingSprite(x,y);
+				if (sprite == null) // it's uncommon, but could happen
+					return;
                 button.mouseWheelMoved(sprite.system(), e);
                 topParent.repaint();
                 return;
@@ -502,6 +504,8 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             SystemButton button = matchingButton(x,y);
             if ((button != null) && button.wantsMouseRelease()) {
                 Sprite sprite = matchingSprite(x,y);
+				if (sprite == null) // it's uncommon, but could happen
+					return;
                 button.mouseReleased(sprite.system(), e);
                 topParent.repaint();
                 return;
@@ -509,19 +513,19 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         }
 
         Sprite sprite = matchingSprite(x,y);
+        if (sprite == null) // it's uncommon, but could happen
+			return;
         if (sprite instanceof RowSprite && !selectRows()) {
         	return;
         }
 
-        if (sprite != null) {
-            if (shift)
-                sprite.shiftClick();
-            else if (ctrl)
-                sprite.controlClick();
-            else
-                sprite.click();
-            topParent.repaint();
-        }
+        if (shift)
+            sprite.shiftClick();
+        else if (ctrl)
+            sprite.controlClick();
+        else
+            sprite.click();
+        topParent.repaint();
     }
     public class DataView {
         public final List<Column> columns = new ArrayList<>();
