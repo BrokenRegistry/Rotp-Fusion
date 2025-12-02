@@ -313,6 +313,7 @@
 
 ### Fixes:
 
+- Fixed very rare crash on system panel.
 - Fixed the issue of the shipyard limit being unreadable in Spanish. (Font size is now dynamic.)
 - Fixed some crash on launch, but may not be stable, uses the previous version if you do not have this issue.
 - Fixed Galaxy shape options fields not showing guide before changing the shape at least once.

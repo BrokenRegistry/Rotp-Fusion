@@ -7,6 +7,11 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+25-12-02 (BR)
+- Fixed very rare crash on system panel.
+
+25-11-27 (BR)
+- Added the missing Toxic colonization module to the setup panel.
 
 25-11-21 (BR)
 - Added new options to disable research on colonizations modules.
