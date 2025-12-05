@@ -664,7 +664,7 @@ public class Species implements ISpecies, Base, Serializable {
 			if (skills.isCustomSpecies()) {
 				name = skills.nextAvailableName();
 				if (name!=null && !name.isEmpty()) {
-					index = anim.nameIndex(civilizationId.getName());
+					index = anim.nameIndex(name);
 					isCustom = true;
 					isFromAnimation = false;
 					return;
@@ -673,7 +673,7 @@ public class Species implements ISpecies, Base, Serializable {
 			// Then get from animations
 			name = anim.nextAvailableName();
 			if (name!=null && !name.isEmpty()) {
-				index = anim.nameIndex(civilizationId.getName());
+				index = anim.nameIndex(name);
 				isCustom = false;
 				isFromAnimation = true;
 			}

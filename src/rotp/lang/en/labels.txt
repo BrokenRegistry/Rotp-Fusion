@@ -1852,12 +1852,16 @@ SETUP_FUEL_RANGE_HIGHER_HELP      | Fuel range factor = 3.
 SETUP_FUEL_RANGE_HIGHEST_HELP     | Fuel range factor = 5.
 SETUP_RANDOMIZE_AI_NONE_HELP      | To disable this option. But will not disable any randomization on the Galaxy Menu.
 SETUP_RANDOMIZE_AI_NONE           | None
-SETUP_RANDOMIZE_AI_PERSONALITY_HELP | Only the AI personality will be affected by this option, but the Galaxy Menu options may override this, and some AI will ignore all personality option!
-SETUP_RANDOMIZE_AI_PERSONALITY    | Personality
-SETUP_RANDOMIZE_AI_ABILITY_HELP   | Only the AI ability will be affected by this option, but the Galaxy Menu options may override it!
-SETUP_RANDOMIZE_AI_ABILITY        | Ability
-SETUP_RANDOMIZE_AI_BOTH_HELP      | This option will try to change both the AI personality and the AI ability... Only if the Galaxy Menu options don't override it!
-SETUP_RANDOMIZE_AI_BOTH           | Both
+SETUP_RANDOMIZE_AI_PERSONALITY_HELP	| Only the AI personality will be affected by this option, but the Galaxy Menu options may override this, and some AI will ignore all personality option!
+SETUP_RANDOMIZE_AI_PERSONALITY		| Personality
+SETUP_RANDOMIZE_AI_ABILITY_HELP		| The abilities of the species will be randomly replaced by those of one of the 10 original species. Note that the options in the Galaxy menu take precedence!
+SETUP_RANDOMIZE_AI_ABILITY			| Ability (10)
+SETUP_RANDOMIZE_AI_BOTH_HELP		| This option will change both the personality and abilities (chosen randomly from among the 10 original species) of the species... Note that the options in the Galaxy menu take precedence!
+SETUP_RANDOMIZE_AI_BOTH 			| Both (10)
+SETUP_RANDOMIZE_AI_ABILITY_16_HELP	| The abilities of the species will be randomly replaced by those of one of the <b>16</b> original species. Note that the options in the Galaxy menu take precedence!
+SETUP_RANDOMIZE_AI_ABILITY_16		| Ability (16)
+SETUP_RANDOMIZE_AI_BOTH_16_HELP		| This option will change both the personality and abilities (chosen randomly from among the <b>16</b> original species) of the species... Note that the options in the Galaxy menu take precedence!
+SETUP_RANDOMIZE_AI_BOTH_16			| Both (16)
 SETUP_RACE_LABEL                  | Available Species
 SETUP_RACE_COLOR                  | Empire Color:
 SETUP_HOMEWORLD_NAME_LABEL        | Homeworld:

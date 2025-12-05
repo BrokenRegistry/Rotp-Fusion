@@ -296,6 +296,8 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 	GlobalCROptions globalCROptions		= new GlobalCROptions (BASE_UI, "OPP_CR_OPTIONS",
 			SpecificCROption.BASE_RACE.value);
 	ParamBoolean useSelectableAbilities	= new ParamBoolean(BASE_UI, "SELECT_CR_OPTIONS", false);
+	default String selectedGlobalAbility()		{ return globalCROptions.get(); }
+	default boolean useSelectableAbilities()	{ return useSelectableAbilities.get(); }
 
 	ParamList	shapeSelection			= new ShapeSelection();
 	final class ShapeSelection extends ParamList {

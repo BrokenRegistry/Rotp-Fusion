@@ -1852,12 +1852,16 @@ SETUP_FUEL_RANGE_HIGHER_HELP      | Facteur d’autonomie en carburant = 3.
 SETUP_FUEL_RANGE_HIGHEST_HELP     | Facteur d’autonomie en carburant = 5.
 SETUP_RANDOMIZE_AI_NONE_HELP      | Pour désactiver cette option. Mais cela ne désactivera aucune génération aléatoire sur le menu Galaxie.
 SETUP_RANDOMIZE_AI_NONE           | Aucun
-SETUP_RANDOMIZE_AI_PERSONALITY_HELP | Seule la personnalité de l’IA sera affectée par cette option, mais les options du menu Galaxie peuvent remplacer cela, et certaines IA ignoreront toutes les options de personnalité !
-SETUP_RANDOMIZE_AI_PERSONALITY    | Personnalité
-SETUP_RANDOMIZE_AI_ABILITY_HELP   | Seules les aptitudes de l’IA seront affectées par cette option, mais les options du menu Galaxie peuvent la remplacer !
-SETUP_RANDOMIZE_AI_ABILITY        | Aptitudes
-SETUP_RANDOMIZE_AI_BOTH_HELP      | Cette option tentera de modifier à la fois la personnalité et les aptitudes de l’IA... Uniquement si les options du menu Galaxie ne la remplacent pas !
-SETUP_RANDOMIZE_AI_BOTH           | Les deux
+SETUP_RANDOMIZE_AI_PERSONALITY_HELP	| Seule la personnalité de l’espèce sera affectée par cette option, mais notez que certaines IA ignoreront toutes les options de personnalité ! Et aussi, les options du menu Galaxie ont précédence !
+SETUP_RANDOMIZE_AI_PERSONALITY		| Personnalité
+SETUP_RANDOMIZE_AI_ABILITY_HELP		| Les aptitudes de l’espèce seront remplacées aléatoirement par celles de l’une des 10 espèces originales. Notez que les options du menu Galaxie ont précédence !
+SETUP_RANDOMIZE_AI_ABILITY			| Aptitudes (10)
+SETUP_RANDOMIZE_AI_BOTH_HELP		| Cette option modifiera à la fois la personnalité et les aptitudes (choisie aléatoirement parmis les 10 espèces originales) de l’espèce... Notez que les options du menu Galaxie ont précédence !
+SETUP_RANDOMIZE_AI_BOTH				| Les deux (10)
+SETUP_RANDOMIZE_AI_ABILITY_16_HELP	| Les aptitudes de l’espèce seront remplacées aléatoirement par celles de l’une des <b>16<\b> espèces originales. Notez que les options du menu Galaxie ont précédence !
+SETUP_RANDOMIZE_AI_ABILITY_16		| Aptitudes (16)
+SETUP_RANDOMIZE_AI_BOTH_16_HELP		| Cette option modifiera à la fois la personnalité et les aptitudes (choisie aléatoirement parmis les <b>16</b> espèces originales) de l’espèce... Notez que les options du menu Galaxie ont précédence !
+SETUP_RANDOMIZE_AI_BOTH_16			| Les deux (16)
 SETUP_RACE_LABEL                  | Races disponibles
 SETUP_RACE_COLOR                  | Votre Couleur
 SETUP_HOMEWORLD_NAME_LABEL        | Planète d’origine :
