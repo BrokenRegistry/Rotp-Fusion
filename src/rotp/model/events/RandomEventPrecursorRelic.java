@@ -91,9 +91,7 @@ public class RandomEventPrecursorRelic extends AbstractRandomEvent {
         // BR: fixed tech Library deletion
         // allTechs() is the static tech library list!
         // List<String> unkConstructionTechs =  empTech.construction().allTechs();
-        List<String> unkConstructionTechs = new ArrayList<>();;
-        unkConstructionTechs.addAll(empTech.construction().allTechs());
-
+		List<String> unkConstructionTechs = empTech.construction().allowedTechs();
         unkConstructionTechs.removeAll(empTech.construction().knownTechs());
         for (String techId: unkConstructionTechs) {
             if (tech(techId).level() <= maxConsLevel && !tech(techId).restricted)

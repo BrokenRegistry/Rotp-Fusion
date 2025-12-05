@@ -216,7 +216,7 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 	ParamTech techAtmospheric	= new ParamTech("TECH_ATMOSPHERIC",	3, "AtmosphereEnrichment",	0); // level 22
 	ParamTech techGaia			= new ParamTech("TECH_GAIA",		3, "SoilEnrichment",	 1); // level 30
 	List<ParamTech> techModList		= new ArrayList<>(Arrays.asList(
-			techBarren, techTundra, techDead, techInferno,
+			techBarren, techTundra, techDead, techInferno, techToxic,
 			techIrradiated, techCloning, techAtmospheric,
 			techCloaking, techStargate, techGaia, techHyperspace,
 			techIndustry2, techThorium, techTransport

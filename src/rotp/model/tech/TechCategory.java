@@ -242,14 +242,22 @@ public final class TechCategory implements Base, Serializable {
 
     public List<String> possibleTechs()  { return possibleTechs; }
     public List<String> allTechs()       { return TechLibrary.baseCategory[index].possibleTechs(); }
+	public List<String> allowedTechs()	{
+		boolean isPlayer = tree.empire().isPlayer();
+		List<String> allowedTechs = new ArrayList<>();
+		for (String techId : allTechs())
+			if (isAllowed(techId, isPlayer))
+				allowedTechs.add(techId);
+		return allowedTechs;
+	}
 
     // BR: never add in some Technologies
     private boolean isAllowed(String id, boolean isPlayer) {
-    	boolean allowed = true;
         for (ParamTech tech : options().techModList()) {
-        	allowed = allowed && !tech.isNever(id, isPlayer);
+			if(tech.isNever(id, isPlayer))
+				return false;
         }
-    	return allowed;
+    	return true;
     }
     public Rand techRandom()		{ return tree.empire().techRandom(); }
     @Override public float random() { return techRandom().nextFloat(); }
