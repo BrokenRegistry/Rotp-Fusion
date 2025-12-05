@@ -2,6 +2,10 @@
 
 ## What's New
 
+25-12-05 (BR)
+- Added the missing Toxic colonization module to the restricted list
+- Random events granting access to technologies will no longer bypass technological prohibitions.
+
 25-12-02 (BR)
 - Fixed very rare crash on system panel.
 

@@ -84,9 +84,7 @@ public class RandomEventGauntletRelic extends AbstractRandomEvent {
         // BR: fixed tech Library deletion
         // allTechs() is the static tech library list!
         // List<String> unkPlanetologyTechs =  empTech.planetology().allTechs();
-        List<String> unkPlanetologyTechs = new ArrayList<>();;
-        unkPlanetologyTechs.addAll(empTech.planetology().allTechs());
-
+		List<String> unkPlanetologyTechs = empTech.planetology().allowedTechs();
         unkPlanetologyTechs.removeAll(empTech.planetology().knownTechs());
         for (String techId: unkPlanetologyTechs) {
             if (tech(techId).level() <= maxConsLevel && !tech(techId).restricted)
