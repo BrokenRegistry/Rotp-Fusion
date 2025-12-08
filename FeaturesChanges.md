@@ -313,6 +313,7 @@
 
 ### Fixes:
 
+- Correction of errors and omissions in the manual: range and speed of missiles and torpedoes.
 - Added the missing Toxic colonization module to the restricted list
 - Random events granting access to technologies will no longer bypass technological prohibitions.
 - Fixed very rare crash on system panel.
