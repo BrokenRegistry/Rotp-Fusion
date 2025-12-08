@@ -5837,27 +5837,28 @@ SETUP_SELECT_CR_OPTIONS            | Aptitudes sélectionnables.
 ???                                | ???
 ???_DESC                           | ???_DESCXXX
 
-ABILITIES_SELECTION				| 'Aptitudes globals'
+ABILITIES_SELECTION				| 'Aptitudes globales'
 ABILITIES_ORIGINAL_SPECIES		| 'Aptitudes originales'
-ABILITIES_REWORKED				| 'Redéfinies'
-ABILITIES_REWORKED_FULL			| 'Animations Préférées'
+ABILITIES_REWORKED				| 'Animations -> Redéfinies'
+ABILITIES_REWORKED_FULL			| 'Redéfinies -> Animations'
 ABILITIES_PLAYER				| 'Comme le joueur'
 ABILITIES_RANDOM				| 'Création aléatoire'
 ABILITIES_RANDOM_10				| 'Une des 10 originales'
 ABILITIES_RANDOM_16				| 'Une des 16 originales'
-ABILITIES_FILES					| 'Personalisées et autorisées'
+ABILITIES_FILES_FLT				| 'Personalisées et autorisées'
 ABILITIES_ALL_FILES				| 'Personalisées'
 ABILITIES_FILES_RACES			| 'Originales ou autorisées'
 ABILITIES_All					| 'Originales ou personalisées'
 
 ABILITIES_SELECTION_DESC		| Mêmes aptitudes que les aptitudes globales sélectionnées ci-dessus.
 ABILITIES_ORIGINAL_SPECIES_DESC	| Aptitudes originales de l’espèce sélectionnée (celle sur l’icône)
-ABILITIES_REWORKED_DESC			| Aptitudes Redéfinies de l’espèce sélectionnée (celle sur l’icône), modifiées et sauvegardées par le joueur (dans le panneau de personnalisation des espèces) avec les fichiers d’espèces respectivement nommés : RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA , RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
+ABILITIES_REWORKED_DESC			| Aptitudes Redéfinies. Le choix de l’animation est basé sur l’espèce sélectionnée avec l’icône (aussi aléatoirement). Les aptitudes seront prises aléatoirement parmi les espèces personnalisées mentionnant une animation préférée. Si l’espèce personnalisée contient des noms de civilisations ou de dirigeants valides, ils seront utilisés.
+ABILITIES_REWORKED_FULL_DESC	| Le choix se fera aléatoirement parmi les espèces personnalisées mentionnant une animation préférée, ont un nom de civilisation valide et un nom de chef.
 ABILITIES_PLAYER_DESC			| Mêmes aptitudes que l’espèce du joueur sélectionné.
 ABILITIES_RANDOM_DESC			| Les aptitudes seront générées aléatoirement à l’aide des paramètres « Configuration » : <b>OPTIONS D’ALIENS ALÉATOIRES</b> : « Cible max », « Cible min », « Aliens personnalisés », « Réglage % max », « Réglage % min » et « Bords lisses ».
 ABILITIES_RANDOM_10_DESC		| Aptitudes sélectionnées aléatoirement parmi les aptitudes des dix espèces originales.
 ABILITIES_RANDOM_16_DESC		| Aptitudes sélectionnées aléatoirement parmi les aptitudes des seize espèces. <i>(Les dix espèces originales et les six espèces de Modnar)</i>
-ABILITIES_FILES_DESC			| Aptitudes sélectionnées aléatoirement parmi les fichiers d’espèces personnalisées, avec l’option « Disponible pour l’IA » activée. Si cette liste est vide, la sélection sera effectuée dans les limites des aptitudes d’origine des espèces.
+ABILITIES_FILES_FLT_DESC		| Aptitudes sélectionnées aléatoirement parmi les fichiers d’espèces personnalisées, avec l’option « Disponible pour l’IA » activée. Si cette liste est vide, la sélection sera effectuée dans les limites des aptitudes d’origine des espèces.
 ABILITIES_ALL_FILES_DESC		| Aptitudes sélectionnées aléatoirement parmi les fichiers d’espèce personnalisé, en ignorant l’option « Disponible pour l’IA ». Si cette liste est vide, la sélection sera effectuée dans le cadre des aptitudes d’origine de l’espèce.
 ABILITIES_FILES_RACES_DESC		| Aptitudes sélectionnées aléatoirement parmi les aptitudes des espèces originales et les fichiers d’espèces personnalisées, avec l’option « Disponible pour l’IA » activée.
 ABILITIES_All_DESC				| Aptitudes sélectionnées aléatoirement parmi les aptitudes des espèces originales et les fichiers d’espèces personnalisées, en ignorant l’option « Disponible pour l’IA ».

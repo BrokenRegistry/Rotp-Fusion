@@ -158,7 +158,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	private final ParamListSpecificOpponent specificOpponent	= new ParamListSpecificOpponent( // For Guide
 			BASE_UI, "SPECIFIC_OPPONENT", guiOptions().allRaceKeyList(), opponentRandom);
     public  final ParamListGlobalAbilities  globalAbilities		= new ParamListGlobalAbilities(  // For Guide
-			BASE_UI, "GLOBAL_ABILITY", SpecificCROption.BASE_RACE.value);
+			BASE_UI, "GLOBAL_ABILITY", SpecificCROption.ORIGINAL_SPECIES.value);
 	private final ParamListSpecificAbilities specificAbilities	= new ParamListSpecificAbilities( // For Guide
 			BASE_UI, "SPECIFIC_ABILITY", SpecificCROption.defaultSpecificValue().value);
 	private boolean popupPositionsInitialised = false;
@@ -303,8 +303,8 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		StringList list = new StringList();
 
 		// specific Abilities
-		list.addAll(SpecificCROption.options());
-		list.removeLast(); // The blank one (USER_CHOICE)
+		list.addAll(SpecificCROption.getSpecificOptions());
+//		list.removeLast(); // The blank one (USER_CHOICE)
 		list.addAll(allowedAlien);
 		list.addAll(baseRaceList);
 		specificAbilities.reInit(list);

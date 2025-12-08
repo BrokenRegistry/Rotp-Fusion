@@ -203,7 +203,8 @@ public final class SpeciesFactory implements ISpecies, Base {
 					species.setSpeciesSkills(fileToSkills(skillsKey));
 					break;
 				case REWORKED:
-					String skillKey = reworkedKey(skillsKey);
+				case REWORKED_FULL:
+					String skillKey = animationKey(skillsKey);
 					if (!skillKey.isEmpty())
 						species.setSpeciesSkills(fileToSkills(skillKey));
 					break;
@@ -213,10 +214,10 @@ public final class SpeciesFactory implements ISpecies, Base {
 				case RANDOM: // Create a random race
 					species.setSpeciesSkills(RANDOM_RACE_KEY);
 					break;
-				case RANDOM_BASE: // Choose randomly in the base list
+				case RANDOM_10: // Choose randomly in the base list
 					species.setSpeciesSkills(random(baseInternalKeys));
 					break;
-				case RANDOM_MOD: // Choose randomly including the Modnar Races
+				case RANDOM_16: // Choose randomly including the Modnar Races
 					species.setSpeciesSkills(random(allInternalKeys));
 					break;
 				case FILES_FLT:
@@ -225,7 +226,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 					else
 						species.setSpeciesSkills(fileToSkills(random(allowedRaceList)));
 					break;
-				case FILES_NO_FLT:
+				case ALL_FILES:
 					if (alienRaceList.isEmpty())
 						species.setSpeciesSkills(animKey);
 					else
@@ -254,7 +255,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 					else
 						species.setSpeciesSkills(RANDOM_RACE_KEY);
 					break;
-				case BASE_RACE: // default as vanilla
+				case ORIGINAL_SPECIES: // default as vanilla
 				default:
 					if (randomInternalAbility) // original Advanced Option random abilities
 						if (randomInternalAbility16)
@@ -366,8 +367,6 @@ public final class SpeciesFactory implements ISpecies, Base {
 			animationMap.put(entry.getKey(), new StringList(entry.getValue()));
 		return animationMap;
 	}
-
-
 	private String animationKey(String animKey)	{
 		// Search for an unused rework
 		StringList list = animationMap.get(animKey);

@@ -281,7 +281,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public String fullTitle()	{ return fullTitle(isPlayer()); }
 	public List<String> introduction()	{ return introduction(isPlayer()); }
 	public boolean isCustomPlayer()		{ return skills.isCustomSpecies() && isPlayer(); }
-	public boolean isAnimAutonomous()	{ return skills.isAnimAutonomous(); }
+	public String isAnimAutonomous()	{ return skills.isAnimAutonomous(); }
 	public void initCRToShow(SkillsFactory cr)	{ cr.setFromRaceToShow(skills);}
 	// ====================================================================
 	// Purely Animations

@@ -313,6 +313,8 @@
 
 ### Fixes:
 
+- Added the missing Toxic colonization module to the restricted list
+- Random events granting access to technologies will no longer bypass technological prohibitions.
 - Fixed very rare crash on system panel.
 - Fixed the issue of the shipyard limit being unreadable in Spanish. (Font size is now dynamic.)
 - Fixed some crash on launch, but may not be stable, uses the previous version if you do not have this issue.

@@ -19,12 +19,9 @@ import rotp.util.LabelManager;
 public interface ISpecies {
 
 	class Utils {
-		private	static final String LABEL_CONVERTER_KEY	= "ABILITIES_";
-
 		private static int currentIndex()			{ return SetupGalaxyUI.mouseBoxIndex()+1; }
-		private static String labelKey(String key)	{ return LABEL_CONVERTER_KEY + key.toUpperCase().replaceAll("'", "").replaceAll(" ", "_"); }
 		private static String convert(String key)	{
-			String labelKey	= labelKey(key);
+			String labelKey	= SpecificCROption.getLabel(key);
 			String labelTxt	= LabelManager.current().label(labelKey);
 			if (labelTxt.equals(labelKey))
 				return key;
@@ -32,7 +29,6 @@ public interface ISpecies {
 		}
 		private static IGameOptions options()	{ return RulesetManager.current().currentOptions(); }
 		private static void postSelect(boolean click)	{ RotPUI.setupGalaxyUI().postSelectionLight(click); }
-		
 	}
 	// For Guide, do not add to panels
 	class ParamListGlobalAbilities extends ParamList { // For Guide
@@ -40,9 +36,7 @@ public interface ISpecies {
 			super(gui, name, null, defaultValue);
 			isDuplicate(true); // To activate get and set optionValue
 		}
-		@Override public String getOptionValue(IGameOptions options) {
-			return globalCROptions.get();
-		}
+		@Override public String getOptionValue(IGameOptions options)	{ return globalCROptions.get(); }
 		@Override public void setOptionValue(IGameOptions options, String str) {
 			globalCROptions.set(str);
 			Utils.postSelect(false);
@@ -50,7 +44,7 @@ public interface ISpecies {
 		@Override public String	guideValue()	{ return Utils.convert(get()); }
 		@Override public String getRowGuide(int id)	{
 			String key		= getLangLabel(id);
-			String labelKey	= Utils.labelKey(key);
+			String labelKey	= SpecificCROption.getLabel(key);
 			String help		= realLangLabel(labelKey + LABEL_DESCRIPTION);
 			if (help != null)
 				return rowFormat(labelFormat(realLangLabel(labelKey)), help);
@@ -94,7 +88,7 @@ public interface ISpecies {
 		@Override public String	guideValue()		{ return Utils.convert(get()); }
 		@Override public String getRowGuide(int id)	{
 			String key		= getLangLabel(id);
-			String labelKey	= Utils.labelKey(key);
+			String labelKey	= SpecificCROption.getLabel(key);
 			String help		= realLangLabel(labelKey + LABEL_DESCRIPTION);
 			if (help != null)
 				return rowFormat(labelFormat(realLangLabel(labelKey)), help);

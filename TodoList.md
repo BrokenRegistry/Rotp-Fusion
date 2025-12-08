@@ -35,6 +35,8 @@
     - Fixed selections are also more in line with the spirit of MoO1 and the original RotP, so I'll start by extending my options tools to be compatible with both fine-tuning and fixed selections. 
 - Prioritize External image loading.
 - Add subterran equivalent in custom species
+- Add Ship names in custom species
+- Add same civ name as the player with bad starting relationship.
 
 ### Later:
 

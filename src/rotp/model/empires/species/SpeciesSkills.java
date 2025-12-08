@@ -79,7 +79,7 @@ class SpeciesSkills implements Base, Serializable {
 	// Custom Races:
 	private boolean isCustomSpecies		= false;
 	private boolean isCopy				= false; // Security prevent modification of original 
-	private boolean isAnimAutonomous	= false; // Security prevent modification of original 
+	private String isAnimAutonomous		= ""; // Security prevent modification of original 
 	private DynOptions speciesOptions	= null;
 	// \BR:
 	private int startingYear;
@@ -550,8 +550,8 @@ class SpeciesSkills implements Base, Serializable {
 	// BR: Custom Species
 	boolean isCustomSpecies()			{ return isCustomSpecies; }
 	SpeciesSkills isCustomSpecies(boolean is)	{ isCustomSpecies = is; return this; }
-	boolean isAnimAutonomous()			{ return isAnimAutonomous; }
-	void isAnimAutonomous(boolean is)	{ isAnimAutonomous = is; }
+	String isAnimAutonomous()			{ return isAnimAutonomous; }
+	void isAnimAutonomous(String s)		{ isAnimAutonomous = s; }
 	boolean isRandomized()				{ return SkillsFactory.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
 	DynOptions speciesOptions()			{ return speciesOptions; }
 	void speciesOptions(DynOptions val)	{ speciesOptions = val; }

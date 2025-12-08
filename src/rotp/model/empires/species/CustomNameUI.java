@@ -195,7 +195,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 		languageNames.setSelectedIndex(currentId);
 		languageCodes.setSelectedIndex(currentId);
 		languageButtonList = settings.getLanguageNames();
-		civilizationButtonList = settings.getCivilizationcNames();
+		civilizationButtonList = settings.getCivilizationsNames();
 	}
 	// -#-
 	// ========================================================================

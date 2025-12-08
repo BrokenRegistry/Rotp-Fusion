@@ -5839,25 +5839,26 @@ SETUP_SELECT_CR_OPTIONS		      | Selectable Abilities.
 
 ABILITIES_SELECTION				| 'From Abilities top box'
 ABILITIES_ORIGINAL_SPECIES		| 'Original Abilities'
-ABILITIES_REWORKED				| 'Redesigned Abilities'
-ABILITIES_REWORKED_FULL			| 'Full Custom Species'
+ABILITIES_REWORKED				| 'Animations -> Redesigned'
+ABILITIES_REWORKED_FULL			| 'Redesigned -> Animations'
 ABILITIES_PLAYER				| 'Same as Player'
 ABILITIES_RANDOM				| 'Randomly Created'
 ABILITIES_RANDOM_10				| 'Any Original (10)'
 ABILITIES_RANDOM_16				| 'Any Original (16)'
-ABILITIES_FILES					| 'Allowed Custom Species'
+ABILITIES_FILES_FLT				| 'Allowed Custom Species'
 ABILITIES_ALL_FILES				| 'Any Custom Species'
 ABILITIES_FILES_RACES			| 'Original or Allowed'
 ABILITIES_All					| 'Original or Any Custom'
 
-ABILITIES_SELECTION_DESC		| Same abilities as the global abilities selected on the top.
+ABILITIES_SELECTION_DESC		| Same abilities as the global abilities (selected on the top)
 ABILITIES_ORIGINAL_SPECIES_DESC	| Original abilities of the selected species (the one on the icon)
-ABILITIES_REWORKED_DESC			| Redesigned abilities of the selected species (the one on the icon), modified and saved by the player (in the Species Customization Panel) with the respectively named species files: RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA, RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
+ABILITIES_REWORKED_DESC			| Redefined Abilities. The choice of animation is based on the species selected with the icon (and also randomly). Abilities will then be chosen randomly from among the custom species that mention a preferred animation. If the custom species contains valid civilization names or leader names, they will be used.
+ABILITIES_REWORKED_FULL_DESC	| The selection will be made randomly from among the customized species that mention a favorite animation, have a valid civilization name, and a leader name.
 ABILITIES_PLAYER_DESC			| Same abilities as the selected player species.
 ABILITIES_RANDOM_DESC			| Abilities will be randomly generated using the "Setup" parameters: <b>RANDOM ALIENS OPTIONS</b> : "Target Max", "Target Min", "Custom Aliens", "Setting % Max", "Setting % Min", and "Smooth Edges".
 ABILITIES_RANDOM_10_DESC		| Abilities randomly selected within the ten original species abilities.
 ABILITIES_RANDOM_16_DESC		| Abilities randomly selected within the sixteen species abilities. <i>(The ten original species and the six Modnar species)</i>
-ABILITIES_FILES_DESC			| Abilities randomly selected within customized species files, having the "Available to AI" option enabled. If this list is empty the selection will be made within the original species abilities.
+ABILITIES_FILES_FLT_DESC		| Abilities randomly selected within customized species files, having the "Available to AI" option enabled. If this list is empty the selection will be made within the original species abilities.
 ABILITIES_ALL_FILES_DESC		| Abilities randomly selected within customized species file, ignoring the "Available to AI" option. If this list is empty the selection will be made within the original species abilities.
 ABILITIES_FILES_RACES_DESC		| Abilities randomly selected within the original species abilities and the customized species files, having the "Available to AI" option enabled.
 ABILITIES_All_DESC				| Abilities randomly selected within the original species abilities and the customized species files, ignoring the "Available to AI" option.

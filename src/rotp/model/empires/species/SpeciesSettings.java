@@ -85,9 +85,9 @@ public abstract class SpeciesSettings {
 	protected final SettingMap settingMap = new SettingMap(); // !!! To be kept up to date !!!
 	private SpeciesSkills race; // !!! To be kept up to date !!!
 	private DynOptions animOptions;
-	private SpeciesSkills animSkills;
-	boolean isReference = true;
-	boolean isForGalaxy = false;
+	protected SpeciesSkills animSkills;
+	protected boolean isReference = true;
+	protected boolean isForGalaxy = false;
 	String languageForLabel = DEFAULT_LANGUAGE;
 	BaseModPanel parent;
 
@@ -273,7 +273,7 @@ public abstract class SpeciesSettings {
 		static final String DEFAULT_VALUE = "NONE";
 
 		private static void setReworkedKey(DynOptions opts, String key)	{ opts.setString(ROOT + REWORKED_RACE_KEY, key); }
-		private static String getReworkedKey(DynOptions opts)			{ return opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE); }
+		static String getReworkedKey(DynOptions opts)			{ return opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE); }
 		static String getRawReworkedKey(DynOptions opts)	{
 			String key = opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE);
 			return DEFAULT_VALUE.equals(key)? null : key;
@@ -416,7 +416,7 @@ public abstract class SpeciesSettings {
 			}
 			return languageNames;
 		}
-		StringList getCivilizationcNames()	{
+		StringList getCivilizationsNames()	{
 			if (civilizationNames == null) {
 				String currentLanguage = selectedLanguageDir();
 				if (DEFAULT_LANGUAGE.equals(currentLanguage))
@@ -427,6 +427,32 @@ public abstract class SpeciesSettings {
 			}
 			return civilizationNames;
 		}
+		StringList getLeadersNames(String currentLanguage)	{
+			StringList leadersNames;
+			if (DEFAULT_LANGUAGE.equals(currentLanguage))
+				leadersNames = settingMap.getList(ROOT + LeaderName.KEY);
+			else
+				leadersNames = settingMap.getList(ROOT + LeaderName.KEY + currentLanguage);
+			leadersNames.setSelectedIndex(0);
+			return leadersNames;
+		}
+		StringList getHomeWorldNames(String currentLanguage)	{
+			StringList homeWorldNames;
+			if (DEFAULT_LANGUAGE.equals(currentLanguage))
+				homeWorldNames = settingMap.getList(ROOT + HomeWorld.KEY);
+			else
+				homeWorldNames = settingMap.getList(ROOT + HomeWorld.KEY + currentLanguage);
+			homeWorldNames.setSelectedIndex(0);
+			return homeWorldNames;
+		}
+		StringList getFullCivNames(String currentLanguage, StringList namedCiv)	{
+			StringList fullCivNames = new StringList();
+			for (int i=0; i<namedCiv.size(); i++)
+				if (isCivAutonomous(currentLanguage, i))
+					fullCivNames.add(namedCiv.get(i));
+			return fullCivNames;
+		}
+
 		SpeciesAttributes getAttributes(String dir)	{
 			SpeciesAttributes speciesAttributes = attributesMap.get(dir);
 			if (speciesAttributes == null)
@@ -445,7 +471,7 @@ public abstract class SpeciesSettings {
 		}
 		private void fillFromAnim(boolean forced) {
 			int idx = 0;
-			for (String name : getCivilizationcNames()) {
+			for (String name : getCivilizationsNames()) {
 				fillFromAnim(forced, idx, name);
 				idx++;
 			}
@@ -503,6 +529,12 @@ public abstract class SpeciesSettings {
 			if (attributes == null)
 				return false;
 			return attributes.isAnimAutonomous(idx);
+		}
+		boolean isCivAutonomous(String dir, int idx)	{
+			SpeciesAttributes attributes = attributesMap.get(dir);
+			if (attributes == null)
+				return false;
+			return attributes.isCivAutonomous(idx);
 		}
 		private void fillLabelsFromNamesEN(int civIdx, boolean forced)	{
 			String langKey = "";
@@ -1844,21 +1876,37 @@ public abstract class SpeciesSettings {
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.languageList(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.languageList()); }
 	}
+	// ==================== AnimReady ====================
+	//
+	class AnimReady extends SettingStringList {
+		private static final String KEY = "ANIM_READY";
+		private static final String DEFAULT_VALUE = "";
+		static String getAnimReady(DynOptions opts)	{ return opts.getString(ROOT + KEY, DEFAULT_VALUE); }
+		AnimReady(String langDir)					{ super(ROOT, KEY, DEFAULT_VALUE, langDir); }
+		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.isAnimAutonomous(settingValue()); }
+		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.isAnimAutonomous()); }
+	}
 	// ==================== HomeWorld ====================
 	//
-	private class HomeWorld extends SettingStringList {
+	class HomeWorld extends SettingStringList {
 		private static final String KEY = "HOME_WORLD";
-		private HomeWorld(String langDir)	{ super(ROOT, KEY, "", langDir); }
+		private static final String DEFAULT_VALUE = "";
+		static String getHomeWorlds(DynOptions opts)	{ return opts.getString(ROOT + KEY, DEFAULT_VALUE); }
+		private HomeWorld(String langDir)				{ super(ROOT, KEY, DEFAULT_VALUE, langDir); }
 		@Override public boolean isAnimAutonomous()			{ return true; } // can be taken from system list
 		@Override public boolean isAnimAutonomous(int idx)	{ return true; }
+		@Override public boolean isCivAutonomous(int idx)	{ return true; }
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.parseHomeWorlds(settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.homeSystemNames().asString()); }
 	}
 	// ==================== LeaderName ====================
 	//
-	private class LeaderName extends SettingStringList {
+	class LeaderName extends SettingStringList {
 		private static final String KEY = "LEADER_NAME";
-		private LeaderName(String langDir)	{ super(ROOT, KEY, "", langDir); }
+		private static final String DEFAULT_VALUE = "";
+		static String getLeaderNames(DynOptions opts)	{ return opts.getString(ROOT + KEY, DEFAULT_VALUE); }
+		private LeaderName(String langDir)				{ super(ROOT, KEY, DEFAULT_VALUE, langDir); }
+		@Override public boolean isCivAutonomous(int idx)	{ return true; }
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.parseLeaderNames(settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.leaderNames().asString()); }
 	}
@@ -1943,6 +1991,7 @@ public abstract class SpeciesSettings {
 			civilizationNameItems.delete(idx);
 			civilizationLabelItems.delete(idx);
 		}
+		private boolean isCivAutonomous(int idx)	{ return civilizationNameItems.isCivAutonomous(idx) && civilizationLabelItems.isCivAutonomous(idx); }
 		private boolean isAnimAutonomous(int idx)	{ return civilizationNameItems.isAnimAutonomous(idx) && civilizationLabelItems.isAnimAutonomous(idx); }
 		private boolean isAnimAutonomous()	{ return civilizationNameItems.isAnimAutonomous() && civilizationLabelItems.isAnimAutonomous(); }
 		public boolean isFilled()	{
@@ -2083,7 +2132,13 @@ public abstract class SpeciesSettings {
 					return false;
 			return true;
 		}
-		public void copyFromLanguage(ICSSettingsStringList langSrc, int civIdx, boolean forced)	{
+		public boolean isCivAutonomous(int idx)	{
+			for (SettingStringLanguage setting : this)
+				if (!setting.isCivAutonomous(idx))
+					return false;
+			return true;
+		}
+	public void copyFromLanguage(ICSSettingsStringList langSrc, int civIdx, boolean forced)	{
 			int size = Math.min(size(), langSrc.size());
 			for (int i=0; i<size; i++) {
 				SettingString dest = get(i);
@@ -2393,6 +2448,7 @@ public abstract class SpeciesSettings {
 		boolean isFilled(int idx)		{ return isFilled(); }
 		boolean isAnimAutonomous()		{ return isFilled(); }
 		boolean isAnimAutonomous(int idx)	{ return isFilled(idx); }
+		boolean isCivAutonomous(int idx)	{ return isFilled(idx); }
 		boolean languageChanged(String oldDir, String newDir)	{
 			langDir = newDir;
 			langKey = toLanguageKey(langDir);

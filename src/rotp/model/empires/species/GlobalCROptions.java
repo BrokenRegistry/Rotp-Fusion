@@ -30,14 +30,7 @@ public class GlobalCROptions extends ParamString {
 		super(gui, name, defaultValue);
 	}
 
-	public StringList getBaseOptions()	{
-		StringList list = new StringList();
-		for (SpecificCROption opt : SpecificCROption.values()) {
-			if(!opt.isSelection() && !opt.isUserChoice())
-				list.add(opt.value);
-		}
-		return list;
-	}
+	public StringList getBaseOptions()	{ return SpecificCROption.getGlobalOptions(); }
 	public SpecificCROption getEnu()	{ return SpecificCROption.set(get()); }
 
 	public boolean isBaseRace()			{ return SpecificCROption.isBaseRace(get()); }

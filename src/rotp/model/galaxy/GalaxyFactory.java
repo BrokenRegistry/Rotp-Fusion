@@ -611,10 +611,10 @@ public final class GalaxyFactory implements Base {
 					case RANDOM: // Create a random race
 						species.setSpeciesSkills(RANDOM_RACE_KEY);
 						break;
-					case RANDOM_BASE: // Choose randomly in the base list
+					case RANDOM_10: // Choose randomly in the base list
 						species.setSpeciesSkills(random(opts.baseRaceKeyList()));
 						break;
-					case RANDOM_MOD: // Choose randomly including the Modnar Races
+					case RANDOM_16: // Choose randomly including the Modnar Races
 						species.setSpeciesSkills(random(opts.allRaceKeyList()));
 						break;
 					case FILES_FLT:
@@ -623,7 +623,7 @@ public final class GalaxyFactory implements Base {
 						else
 							species.setSpeciesSkills(fileToSkills(random(allowedRaceList)));
 						break;
-					case FILES_NO_FLT:
+					case ALL_FILES:
 						if (alienRaceList.isEmpty())
 							species.setSpeciesSkills(raceKey);
 						else
@@ -652,7 +652,7 @@ public final class GalaxyFactory implements Base {
 						else
 							species.setSpeciesSkills(RANDOM_RACE_KEY);
 						break;
-					case BASE_RACE: // default as vanilla
+					case ORIGINAL_SPECIES: // default as vanilla
 					default:
 						if (options().randomizeAIAbility()) // original Advanced Option random abilities
 							species.setSpeciesSkills(random(opts.baseRaceKeyList()));
