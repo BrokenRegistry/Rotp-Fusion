@@ -7,9 +7,8 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
-25-12-05 (BR)
-- Added the missing Toxic colonization module to the restricted list
-- Random events granting access to technologies will no longer bypass technological prohibitions.
+25-12-08 (BR)
+- Correction of errors and omissions in the manual: range and speed of missiles and torpedoes.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)
