@@ -597,7 +597,7 @@ public final class GalaxyFactory implements Base {
 				}
 
 				switch (ability) {
-					case USER_CHOICE:
+					case USER_SELECTION:
 						species.setSpeciesSkills(fileToSkills(selectedAbility));
 						break;
 					case REWORKED:

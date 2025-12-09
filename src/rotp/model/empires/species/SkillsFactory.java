@@ -212,6 +212,11 @@ public class SkillsFactory extends SpeciesSettings {
 	public static HashMap<String, StringList> getAnimationMap()	{ return newRaceList().animationMap(); }
 	public static StringList getAllAlienSkills()		{ return newRaceList().getAllAlienRaces(); }
 	public static StringList getAllowedAlienSkills()	{ return newRaceList().getAllowedAlienRaces(); }
+	public static SkillsFactory getSkillsFactoryForGalaxy()	{
+		SkillsFactory factory = new SkillsFactory();
+		factory.initWithDefaultSkillsForGalaxy();
+		return factory;
+	}
 	static RaceList newRaceList()						{	// TODO BR: Change Galaxy Factory to get only one instance of this
 		SkillsFactory factory = new SkillsFactory();
 		factory.initWithDefaultSkillsForGalaxy();
@@ -658,7 +663,28 @@ public class SkillsFactory extends SpeciesSettings {
 	// -#-
 	// #==================== RaceList ====================
 	//
-	public final class CivilizationContent {
+	
+	boolean isFilled(String value)	{ return value != null && !value.isEmpty() && !value.startsWith("_"); }
+	private File[] loadListing()	{
+		File speciesDir = new File(speciesDirectoryPath());
+		List<File> speciesList = new ArrayList<>();
+		scanSubDir(speciesList, speciesDir);
+		return speciesList.toArray(new File[0]);
+	}
+	private void scanSubDir(List<File> speciesList, File speciesDir)	{
+		if (speciesDir == null || !speciesDir.exists() || !speciesDir.isDirectory())
+			return;
+		// Local files
+		File[] array = speciesDir.listFiles(SPECIES_FILTER);
+		if (array != null && array.length > 0)
+			speciesList.addAll(Arrays.asList(array));
+		// Sub Dir files
+		File[] subDirectories = speciesDir.listFiles(File::isDirectory);
+		if(subDirectories != null && subDirectories.length > 0)
+			for (File subDir : subDirectories)
+				scanSubDir(speciesList, subDir);
+	}
+	public final class CivilizationRecord {
 		final String skillsKey;
 		final String prefAnimKey;
 		final String civName;
@@ -667,7 +693,7 @@ public class SkillsFactory extends SpeciesSettings {
 		final boolean fullCivName;
 		final boolean fullAnim;
 		final DynOptions speciesOptions;
-		CivilizationContent(DynOptions speciesOptions,
+		CivilizationRecord(DynOptions speciesOptions,
 				String skillsKey,
 				String prefAnimKey,
 				String civName,
@@ -685,7 +711,7 @@ public class SkillsFactory extends SpeciesSettings {
 			this.fullAnim		= fullAnim;
 		}
 	}
-	public final class SpeciesContent {
+	public final class SpeciesRecord {
 		final String skillsKey;
 		final String prefAnimKey;
 		final StringList namedCiv;
@@ -697,7 +723,7 @@ public class SkillsFactory extends SpeciesSettings {
 		final StringList fullAnim	= new StringList();
 		final DynOptions speciesOptions;
 		StringList any	= new StringList();
-		SpeciesContent(DynOptions opts)	{
+		SpeciesRecord(DynOptions opts)	{
 			SkillsFactory sf = new SkillsFactory(opts);
 			this.skillsKey = sf.raceKey.settingValue();
 			speciesOptions = opts;
@@ -721,14 +747,12 @@ public class SkillsFactory extends SpeciesSettings {
 			fullAnim.addAll(fullCivName);
 			fullAnim.retainAll(fullLeader);
 			fullAnim.retainAll(fullHome); // TODO BR: Maybe, Maybe not
-
-			// TODO BR: ContentType
 		}
-		CivContentList getList()	{
-			CivContentList list = new CivContentList();
+		CivRecordList getList()	{
+			CivRecordList list = new CivRecordList();
 			for (int i=0; i<namedCiv.size(); i++) {
 				String civName = namedCiv.get(i);
-				list.add(new CivilizationContent (speciesOptions,
+				list.add(new CivilizationRecord (speciesOptions,
 						skillsKey, prefAnimKey,
 						civName, namedLeader.get(i), namedHome.get(i),
 						fullCivName.contains(civName), fullAnim.contains(civName)));
@@ -736,8 +760,47 @@ public class SkillsFactory extends SpeciesSettings {
 			return list;
 		}
 	}
-	boolean isFilled(String value)	{ return value != null && !value.isEmpty() && !value.startsWith("_"); }
-	public final class CivContentList extends ArrayList<CivilizationContent> {
+	public final class AnimationListMap extends HashMap<String, CivRecordList> {
+		private static final long serialVersionUID = 1L;
+		public AnimationListMap()	{ //  TODO BR: animMapList()
+			for (String raceKey : IGameOptions.allRaceKeyList)
+				put(raceKey, new CivRecordList());
+			put(AnimationRaceKey.DEFAULT_VALUE, new CivRecordList());
+		}
+		public AnimationListMap loadCustomSpecies()	{
+			File[] fileList = loadListing();
+			if (fileList != null)
+				for (File file : fileList) {
+					SpeciesRecord speciesContent = new SpeciesRecord(loadOptions(file));
+					CivRecordList civContentList = get(speciesContent.prefAnimKey);
+					civContentList.addAll(speciesContent.getList());
+				}
+			return this;
+		}
+		public CivRecordList getAllCustomCiv()	{ return getFullAnim(getAllCiv()); }
+		public AnimationListMap getFullAnimMap()	{
+			AnimationListMap map = new AnimationListMap();
+			for (Entry<String, CivRecordList> entry : entrySet()) {
+				map.put(entry.getKey(), getFullAnimCiv(entry.getKey()));
+			}
+			return map;
+		}
+		public CivRecordList getAllCiv()	{
+			CivRecordList list = new CivRecordList();
+			for (CivRecordList civs : values())
+				list.addAll(civs);
+			return list;
+		}
+		public CivRecordList getFullAnimCiv(String key)	{ return getFullAnim(get(key)); }
+		public CivRecordList getFullAnim(CivRecordList src)	{
+			CivRecordList list = new CivRecordList();
+			for (CivilizationRecord civ : src)
+				if (civ.fullAnim)
+					list.add(civ);
+			return list;
+		}
+	}
+	public final class CivRecordList extends ArrayList<CivilizationRecord> {
 		private static final long serialVersionUID = 1L;
 	}
 	public final class RaceList extends SettingBase<String> {
@@ -759,15 +822,11 @@ public class SkillsFactory extends SpeciesSettings {
 		public void reload(boolean foldersRedesign)	{
 			String currentValue = settingValue();
 			clearLists();
-//			animMapList.clear();
 			animationMap.clear();
 			clearOptionsText();
-			for (String raceKey : IGameOptions.allRaceKeyList) {
+			for (String raceKey : IGameOptions.allRaceKeyList)
 				animationMap.put(raceKey, new StringList());
-//				animMapList.put(raceKey, new ContentTypeList());
-			}
 			animationMap.put(AnimationRaceKey.DEFAULT_VALUE, new StringList());
-//			animMapList.put(AnimationRaceKey.DEFAULT_VALUE, new ContentTypeList());
 
 			// Add Current race
 			add((DynOptions) IGameOptions.playerCustomRace.get());
@@ -787,7 +846,6 @@ public class SkillsFactory extends SpeciesSettings {
 						// Test for reworked old Ways
 						String animKey  = AnimationRaceKey.validRedesign(opt, file, foldersRedesign);
 						animationMap.get(animKey).add(skillKey); // The map has a "None" key
-//						animMapList.get(animKey).add(new ContentType(skillKey, opt));
 						add(opt);
 					}
 				}
@@ -800,25 +858,6 @@ public class SkillsFactory extends SpeciesSettings {
 			set(currentValue);
 		}
 		HashMap<String, StringList> animationMap()		{ return animationMap; }
-		private File[] loadListing()	{
-			File speciesDir = new File(speciesDirectoryPath());
-			List<File> speciesList = new ArrayList<>();
-			scanSubDir(speciesList, speciesDir);
-			return speciesList.toArray(new File[0]);
-		}
-		private void scanSubDir(List<File> speciesList, File speciesDir)	{
-			if (speciesDir == null || !speciesDir.exists() || !speciesDir.isDirectory())
-				return;
-			// Local files
-			File[] array = speciesDir.listFiles(SPECIES_FILTER);
-			if (array != null && array.length > 0)
-				speciesList.addAll(Arrays.asList(array));
-			// Sub Dir files
-			File[] subDirectories = speciesDir.listFiles(File::isDirectory);
-			if(subDirectories != null && subDirectories.length > 0)
-				for (File subDir : subDirectories)
-					scanSubDir(speciesList, subDir);
-		}
 		private void add(DynOptions opt)	{
 			SkillsFactory cr = SkillsFactory.getFactoryForRaceList(opt);
 			SpeciesSkills dr = cr.race();
@@ -867,17 +906,17 @@ public class SkillsFactory extends SpeciesSettings {
 			list.removeNullAndEmpty();
 			return list;
 		}
-		public HashMap<String, CivContentList> animMapList()	{ //  TODO BR: animMapList()
-			HashMap<String, CivContentList> animMapList = new HashMap<>();
+		public HashMap<String, CivRecordList> animMapList()	{ //  TODO BR: animMapList()
+			HashMap<String, CivRecordList> animMapList = new HashMap<>();
 			for (String raceKey : IGameOptions.allRaceKeyList)
-				animMapList.put(raceKey, new CivContentList());
-			animMapList.put(AnimationRaceKey.DEFAULT_VALUE, new CivContentList());
+				animMapList.put(raceKey, new CivRecordList());
+			animMapList.put(AnimationRaceKey.DEFAULT_VALUE, new CivRecordList());
 
 			File[] fileList = loadListing();
 			if (fileList != null)
 				for (File file : fileList) {
-					SpeciesContent speciesContent = new SpeciesContent(loadOptions(file));
-					CivContentList civContentList = animMapList.get(speciesContent.prefAnimKey);
+					SpeciesRecord speciesContent = new SpeciesRecord(loadOptions(file));
+					CivRecordList civContentList = animMapList.get(speciesContent.prefAnimKey);
 					civContentList.addAll(speciesContent.getList());
 				}
 			return animMapList;

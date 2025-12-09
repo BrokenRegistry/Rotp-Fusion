@@ -32,7 +32,7 @@ public enum SpecificCROption {
 	ALL_FILES		("'All Files'"),
 	FILES_RACES		("'Files Races'"),
 	ALL				("'All'"),
-	USER_CHOICE		("''");
+	USER_SELECTION	("''");
 
 	public final String value;
 	private SpecificCROption(String opt) { value = opt;}
@@ -49,7 +49,7 @@ public enum SpecificCROption {
 		for (SpecificCROption crO: values())
 			if (opt.equals(crO.value))
 				return crO;
-		return USER_CHOICE;
+		return USER_SELECTION;
 	}
 	public static StringList getSpecificOptions() {
 		StringList list = new StringList();
@@ -76,7 +76,7 @@ public enum SpecificCROption {
 	public boolean isAllFiles()		 { return this == ALL_FILES; }
 	public boolean isFilesAndRaces() { return this == FILES_RACES; }
 	public boolean isAll()			 { return this == ALL; }
-	public boolean isUserChoice()	 { return this == USER_CHOICE; }
+	public boolean isUserChoice()	 { return this == USER_SELECTION; }
 
 	static boolean isBaseRace(String opt)		{ // with backward compatibility
 		return (opt.equals(ORIGINAL_SPECIES.value) || opt.equalsIgnoreCase("'Base Race'"));
