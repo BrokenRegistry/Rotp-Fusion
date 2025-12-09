@@ -55,17 +55,19 @@ public class Ships implements Base, Serializable {
         // adjust the new rally size
         for (int i=0; i<MAX_DESIGNS; i++) {
             int orbitingCount = orbitingFleet.num(i);
-            int rallyCount    = rallyCopy.num(i);
-            int oldOrbitCount = orbitCopy.num(i);
+            int rallyCount    = rallyCopy == null? 0 : rallyCopy.num(i);
+            int oldOrbitCount = orbitCopy == null? 0 : orbitCopy.num(i);
             int defenseCount  = oldOrbitCount - rallyCount;
             if (orbitingCount < oldOrbitCount) { // some loss
             	if (defenseGetLoss) {
             		rallyCount   = min (rallyCount, orbitingCount);
             		defenseCount = orbitingCount - rallyCount;
-            	} else if (rallyGetLoss) {
+            	}
+            	else if (rallyGetLoss) {
             		defenseCount = min (defenseCount, orbitingCount);
             		rallyCount   = orbitingCount - defenseCount;            		
-            	} else {
+            	}
+            	else {
             		rallyCount   = orbitingCount * rallyCount / oldOrbitCount;
             		defenseCount = orbitingCount - rallyCount;
             	}
@@ -74,7 +76,8 @@ public class Ships implements Base, Serializable {
 				rallyingFleet.addShips(i, rallyCount);
 				orbitingFleet.removeShips(i, rallyCount, true);
 			}
-        	orbitCopy.num(i, defenseCount);
+			if (orbitCopy != null)
+				orbitCopy.num(i, defenseCount);
         }
         // Deploy fleet if new fleet
         if (newFleet && rallyingFleet.numShips() >0) {
