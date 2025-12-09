@@ -2,6 +2,9 @@
 
 ## What's New
 
+25-12-09 (BR)
+- Fixed null pointer exception on rallying fleet.
+
 25-12-08 (BR)
 - Correction of errors and omissions in the manual: range and speed of missiles and torpedoes.
 
