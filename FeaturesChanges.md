@@ -313,6 +313,8 @@
 
 ### Fixes:
 
+- Fixed the .pom date edition to be set to the UTC time (it was the PC local time).
+  - This fixed the link to the last release (on the Main Panel), as it was wrong when the release was done when the local day was not the same as the UTC day.
 - Fixed null pointer exception on retreat on arrival when to destinations are available.
 - Fixed null pointer exception on rallying fleet.
 - Correction of errors and omissions in the manual: range and speed of missiles and torpedoes.
