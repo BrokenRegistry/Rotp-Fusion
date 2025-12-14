@@ -7,6 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+25-12-13 (BR)
+- Fixed null pointer exception on retreat on arrival when to destinations are available.
+
 25-12-09 (BR)
 - Fixed null pointer exception on rallying fleet.
 

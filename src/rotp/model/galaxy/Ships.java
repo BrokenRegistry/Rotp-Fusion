@@ -574,11 +574,17 @@ public class Ships implements Base, Serializable {
     boolean arriveFleet(ShipFleet fleet) {
         StarSystem sys = galaxy().system(fleet.destSysId());
 
-        if (fleet.retreatOnArrival()) {
-            fleet.arrive(sys, false);
-            StarSystem destSys = fleet.empire().retreatSystem(sys);
-            retreatFleet(fleet, destSys.id);
-            return false;
+		if (fleet.retreatOnArrival()) {
+			StarSystem destSys = fleet.empire().retreatSystem(sys);
+			if (destSys != null) {
+				fleet.arrive(sys, false);
+				StarSystem destSys2 = fleet.empire().retreatSystem(sys); // Result may change once fleet has arrived.
+				if (destSys2 != null)
+					retreatFleet(fleet, destSys2.id);
+				else
+					retreatFleet(fleet, destSys.id);
+				return false;
+			}
         }
 
         // only players can set up rally points
