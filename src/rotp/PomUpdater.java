@@ -9,11 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class PomUpdater {
 	private static final String VERSION_SEARCH	= "<version>Fusion";
@@ -24,11 +21,8 @@ public class PomUpdater {
 		String name = "pom.xml";
 		File pomFile = new File(folder, name);
 		if (pomFile.exists() && pomFile.isFile()) {
-			String pattern = "yyyy-MM-dd";
-			DateFormat df = new SimpleDateFormat(pattern);
-			Date today = Calendar.getInstance().getTime();
-			String todayAsString = df.format(today);
-			String newVersion = "Fusion-" + todayAsString;
+			String today = Instant.now().toString().substring(0, 10);
+			String newVersion = "Fusion-" + today;
 			updatePom (pomFile, newVersion);
 		}
 		else {
