@@ -741,7 +741,7 @@ public abstract class SpeciesSettings {
 		private static final String RACE_KEY = "RACE_KEY";
 		private static void setKey(DynOptions opts, String key)	{ opts.setString(ROOT + RACE_KEY, key); }
 		private static String getKey(DynOptions opts)			{ return opts.getString(ROOT + RACE_KEY, ""); }
-		private static String fileToKey (File file)				{
+		static String fileToKey(File file)				{
 			String key = file.getPath();
 			key = key.substring(0, key.length() - EXT.length());
 			String dir = speciesDirectoryPath();

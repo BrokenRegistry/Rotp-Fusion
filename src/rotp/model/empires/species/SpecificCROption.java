@@ -42,7 +42,7 @@ public enum SpecificCROption {
 		for (SpecificCROption opt: values())
 			if (opt.value.equals(value))
 				return(LABEL_CONVERTER_KEY + opt.name());
-		System.err.println("ERROR no such value in SpecificCROption.getLabel(string value): " + value);
+		//System.err.println("ERROR no such value in SpecificCROption.getLabel(string value): " + value); // TODO BR: REMOVE
 		return value;
 	}
 	public static SpecificCROption set(String opt) {
@@ -77,6 +77,28 @@ public enum SpecificCROption {
 	public boolean isFilesAndRaces() { return this == FILES_RACES; }
 	public boolean isAll()			 { return this == ALL; }
 	public boolean isUserChoice()	 { return this == USER_SELECTION; }
+	public boolean canHaveCustomAnim()	{
+		switch (this) {
+			case RANDOM:
+			case RANDOM_10:
+			case RANDOM_16:
+			case ORIGINAL_SPECIES:
+				return false;
+			default:
+				return true;
+		}
+	}
+	public boolean canHaveCustomNames()	{
+		switch (this) {
+			case RANDOM:
+			case RANDOM_10:
+			case RANDOM_16:
+			case ORIGINAL_SPECIES:
+				return false;
+			default:
+				return true;
+		}
+	}
 
 	static boolean isBaseRace(String opt)		{ // with backward compatibility
 		return (opt.equals(ORIGINAL_SPECIES.value) || opt.equalsIgnoreCase("'Base Race'"));
@@ -95,4 +117,5 @@ public enum SpecificCROption {
 				return false;
 		return true;
 	}
+	
 }

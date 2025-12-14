@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import rotp.model.empires.Empire;
 import rotp.model.empires.Leader;
 import rotp.model.empires.RaceCombatAnimation;
 import rotp.model.empires.SystemInfo;
+import rotp.model.empires.species.SkillsFactory.CivilizationRecord;
 import rotp.model.game.DynOptions;
 import rotp.model.planet.PlanetType;
 import rotp.model.tech.Tech;
@@ -25,7 +28,7 @@ public class Species implements ISpecies, Base, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// ====================================================================
-	// Species Management
+	// #=== Species Management
 	// ====================================================================
 	private static final Map<String, Race> INTERNAL_SPECIES_MAP = new HashMap<>();
 	private static final Map<String, String> INTERNAL_NAMES_MAP = new HashMap<>();
@@ -34,6 +37,7 @@ public class Species implements ISpecies, Base, Serializable {
 	static Race getAnim(String key)			{ return INTERNAL_SPECIES_MAP.get(key); }
 	static boolean isValidKey(String s)		{ return INTERNAL_SPECIES_MAP.get(s) != null; }
 	static List<Race> races()				{ return new ArrayList<>(INTERNAL_SPECIES_MAP.values()); }
+	static Set<Entry<String, Race>> internalMap()	{ return INTERNAL_SPECIES_MAP.entrySet(); }
 	static Map<String, String> namesMap()	{ return INTERNAL_NAMES_MAP; }
 	static void addRace(Race speciesAnim)	{ INTERNAL_SPECIES_MAP.put(speciesAnim.id(), speciesAnim); }
 	static void addName(Race speciesAnim)	{
@@ -66,22 +70,22 @@ public class Species implements ISpecies, Base, Serializable {
 		usedLeaderNames	 = null;
 		usedSpeciesNames = null;
 	}
-	protected StringList usedHomeNames()	{
+	protected static StringList usedHomeNames()	{
 		if (usedHomeNames == null)
 			usedHomeNames = new StringList();
 		return usedHomeNames;
 	}
-	protected StringList usedLeaderNames()	{
+	protected static StringList usedLeaderNames()	{
 		if (usedLeaderNames == null)
 			usedLeaderNames = new StringList();
 		return usedLeaderNames;
 	}
-	private StringList usedCivilizationNames()	{
+	protected static StringList usedCivilizationNames()	{
 		if (usedSpeciesNames == null)
 			usedSpeciesNames = new StringList();
 		return usedSpeciesNames;
 	}
-
+	// -#-
 	// ====================================================================
 	// Species
 	// ====================================================================
@@ -170,6 +174,22 @@ public class Species implements ISpecies, Base, Serializable {
 	protected void setSpecies(Species src)	{
 		anim = src.anim;
 		skills = src.skills;
+	}
+	public void setNewSpeciesAnim(String animKey)	{ anim = getAnim(animKey); }
+	public void setAllCustomNames(CivilizationRecord civ, String langDir)	{
+		civilizationId = new CivilizationId(civ, langDir, true);
+		initialHomeWorld = civ.homeWorld;
+		initialLeaderName = civ.leaderName;
+	}
+	public void lockUsedNames()	{
+		usedCivilizationNames().add(civilizationId.civName);
+		usedLeaderNames().add(initialLeaderName);
+		usedCivilizationNames().add(initialHomeWorld);
+	}
+	public void setAllAnimNames(CivilizationRecord civ, String langDir)	{
+		civilizationId = new CivilizationId(civ, langDir, false);
+		initialHomeWorld = civ.homeWorld;
+		initialLeaderName = civ.leaderName;
 	}
 	public SpeciesSkills setSpeciesSkills(String skillsKey)	{
 		skills = getAnim(skillsKey);
@@ -643,37 +663,44 @@ public class Species implements ISpecies, Base, Serializable {
 	}
 	class CivilizationId implements Serializable	{
 		private static final long serialVersionUID = 1L;
-		private String name;
+		private String civName;
 		private String languageDir;
 		private Integer index;
 		private boolean isFromAnimation = false;
 		private boolean isCustom = false;
+		CivilizationId(CivilizationRecord civ, String langDir, boolean custom)	{ // TODO BR:
+			isCustom = custom;
+			isFromAnimation = !isCustom;
+			languageDir = langDir;
+			index = civ.civIndex;
+			civName = civ.civName;
+		}
 		CivilizationId(String name, Integer index)	{
-			this.name	= name;
-			this.index	= index;
+			civName = name;
+			this.index = index;
 		}
 		CivilizationId()	{ init(); }
 		private void init()	{
 			do {
 				getAvailableName();
 			}
-			while(!name.isEmpty() && usedCivilizationNames().contains(name));
+			while(!civName.isEmpty() && usedCivilizationNames().contains(civName));
 		}
 		private void getAvailableName()	{
 			index = null;
 			if (skills.isCustomSpecies()) {
-				name = skills.nextAvailableName();
-				if (name!=null && !name.isEmpty()) {
-					index = anim.nameIndex(name);
+				civName = skills.nextAvailableName();
+				if (civName!=null && !civName.isEmpty()) {
+					index = anim.nameIndex(civName);
 					isCustom = true;
 					isFromAnimation = false;
 					return;
 				}
 			}
 			// Then get from animations
-			name = anim.nextAvailableName();
-			if (name!=null && !name.isEmpty()) {
-				index = anim.nameIndex(name);
+			civName = anim.nextAvailableName();
+			if (civName!=null && !civName.isEmpty()) {
+				index = anim.nameIndex(civName);
 				isCustom = false;
 				isFromAnimation = true;
 			}
@@ -683,8 +710,8 @@ public class Species implements ISpecies, Base, Serializable {
 			}
 			return;
 		}
-		void setName(String str)			{ name = str; }
-		String getName()					{ return name; }
+		void setName(String str)			{ civName = str; }
+		String getName()					{ return civName; }
 		void setLangDir(String dir)			{ languageDir = dir; }
 		String getLangDir()					{ return languageDir; }
 		void setIndex(Integer id)			{ index = id; }

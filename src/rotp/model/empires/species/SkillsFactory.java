@@ -43,6 +43,7 @@ import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
 import rotp.ui.game.BaseModPanel;
 import rotp.ui.util.StringList;
+import rotp.util.Base;
 
 public class SkillsFactory extends SpeciesSettings {
 
@@ -686,6 +687,7 @@ public class SkillsFactory extends SpeciesSettings {
 	}
 	public final class CivilizationRecord {
 		final String skillsKey;
+		final String fileKey;
 		final String prefAnimKey;
 		final String civName;
 		final String leaderName;
@@ -693,8 +695,12 @@ public class SkillsFactory extends SpeciesSettings {
 		final boolean fullCivName;
 		final boolean fullAnim;
 		final DynOptions speciesOptions;
+		final int civIndex;
+		int useCount = 0;
 		CivilizationRecord(DynOptions speciesOptions,
+				int civIndex,
 				String skillsKey,
+				String fileKey,
 				String prefAnimKey,
 				String civName,
 				String leaderName,
@@ -703,30 +709,46 @@ public class SkillsFactory extends SpeciesSettings {
 				boolean fullAnim)	{
 			this.speciesOptions	= speciesOptions;
 			this.skillsKey		= skillsKey;
+			this.fileKey		= fileKey;
 			this.prefAnimKey	= prefAnimKey;
 			this.civName		= civName;
 			this.leaderName		= leaderName;
 			this.homeWorld		= homeWorld;
 			this.fullCivName	= fullCivName;
 			this.fullAnim		= fullAnim;
+			this.civIndex		= civIndex;
+		}
+		void markAsUsed()	{ useCount++; }
+		boolean hasPreferedAnim()	{ return skillsKey!=null && !skillsKey.isEmpty(); }
+		boolean isFullAnim()	{
+			if (!fullAnim)
+				return false;
+			if (Species.usedCivilizationNames().contains(homeWorld))
+				return false;
+			if (Species.usedLeaderNames().contains(leaderName))
+				return false;
+			return Species.usedHomeNames().contains(homeWorld);
 		}
 	}
 	public final class SpeciesRecord {
 		final String skillsKey;
+		final String fileKey;
 		final String prefAnimKey;
 		final StringList namedCiv;
 		final StringList namedLeader;
 		final StringList namedHome;
 		final StringList fullCivName;
-		final StringList fullLeader	= new StringList();
-		final StringList fullHome	= new StringList();
-		final StringList fullAnim	= new StringList();
+		final StringList fullLeader;
+		final StringList fullHome;
+		final StringList fullAnim;
 		final DynOptions speciesOptions;
 		StringList any	= new StringList();
-		SpeciesRecord(DynOptions opts)	{
-			SkillsFactory sf = new SkillsFactory(opts);
-			this.skillsKey = sf.raceKey.settingValue();
-			speciesOptions = opts;
+//		SpeciesRecord(DynOptions opts)	{ // TODO BR: REMOVE
+		SpeciesRecord(File file)	{
+			speciesOptions	 = loadOptions(file);
+			SkillsFactory sf = new SkillsFactory(speciesOptions);
+			this.skillsKey	 = sf.raceKey.settingValue();
+			this.fileKey	 = RaceKey.fileToKey(file);
 			if (animSkills == null)
 				prefAnimKey = AnimationRaceKey.DEFAULT_VALUE;
 			else
@@ -738,6 +760,9 @@ public class SkillsFactory extends SpeciesSettings {
 			namedLeader	= settings.getLeadersNames(dir);
 			namedHome	= settings.getHomeWorldNames(dir);
 			fullCivName	= settings.getFullCivNames(dir, namedCiv);
+			fullLeader	= new StringList();
+			fullHome	= new StringList();
+			fullAnim	= new StringList();
 			for (int i=0; i<namedCiv.size(); i++) {
 				if (isFilled(namedLeader.get(i)))
 					fullLeader.add(namedCiv.get(i));
@@ -748,12 +773,26 @@ public class SkillsFactory extends SpeciesSettings {
 			fullAnim.retainAll(fullLeader);
 			fullAnim.retainAll(fullHome); // TODO BR: Maybe, Maybe not
 		}
+		SpeciesRecord(String key, Race race)	{
+			speciesOptions	= race.speciesOptions();
+			skillsKey	= key;
+			fileKey		= key;
+			prefAnimKey	= key;
+			String dir = selectedLanguageDir();
+			namedCiv	= race.civilizationNames();
+			namedLeader	= race.leaderNames();
+			namedHome	= race.homeSystemNames();
+			fullCivName	= namedCiv;
+			fullLeader	= namedCiv;
+			fullHome	= namedCiv;
+			fullAnim	= namedCiv;
+		}
 		CivRecordList getList()	{
 			CivRecordList list = new CivRecordList();
 			for (int i=0; i<namedCiv.size(); i++) {
 				String civName = namedCiv.get(i);
-				list.add(new CivilizationRecord (speciesOptions,
-						skillsKey, prefAnimKey,
+				list.add(new CivilizationRecord (speciesOptions, i,
+						skillsKey, fileKey, prefAnimKey,
 						civName, namedLeader.get(i), namedHome.get(i),
 						fullCivName.contains(civName), fullAnim.contains(civName)));
 			}
@@ -771,10 +810,20 @@ public class SkillsFactory extends SpeciesSettings {
 			File[] fileList = loadListing();
 			if (fileList != null)
 				for (File file : fileList) {
-					SpeciesRecord speciesContent = new SpeciesRecord(loadOptions(file));
-					CivRecordList civContentList = get(speciesContent.prefAnimKey);
-					civContentList.addAll(speciesContent.getList());
+					if (file == null)
+						continue;
+					SpeciesRecord speciesRec = new SpeciesRecord(file);
+					CivRecordList civRecList = get(speciesRec.prefAnimKey);
+					civRecList.addAll(speciesRec.getList());
 				}
+			return this;
+		}
+		public AnimationListMap loadInternalSpecies()	{
+			for (Entry<String, Race> entry : Species.internalMap()) {
+				SpeciesRecord speciesRec = new SpeciesRecord(entry.getKey(), entry.getValue());
+				CivRecordList civRecList = get(speciesRec.fileKey);
+				civRecList.addAll(speciesRec.getList());
+			}
 			return this;
 		}
 		public CivRecordList getAllCustomCiv()	{ return getFullAnim(getAllCiv()); }
@@ -795,13 +844,35 @@ public class SkillsFactory extends SpeciesSettings {
 		public CivRecordList getFullAnim(CivRecordList src)	{
 			CivRecordList list = new CivRecordList();
 			for (CivilizationRecord civ : src)
-				if (civ.fullAnim)
+				if (civ.isFullAnim())
 					list.add(civ);
 			return list;
 		}
 	}
-	public final class CivRecordList extends ArrayList<CivilizationRecord> {
+	public final class CivRecordList extends ArrayList<CivilizationRecord> implements Base {
 		private static final long serialVersionUID = 1L;
+		CivRecordList getFileKey(String fileKey)	{
+			CivRecordList fileKeyList =  new CivRecordList();
+			for (CivilizationRecord civRec : this)
+				if (civRec.fileKey.equals(fileKey))
+					fileKeyList.add(civRec);
+			return fileKeyList;
+		}
+		public CivilizationRecord nextRandom()	{
+			int maxUse = 0;
+			if (isEmpty())
+				return null;
+			for (CivilizationRecord civRec : this)
+				if (civRec.useCount > maxUse)
+					maxUse = civRec.useCount;
+
+			CivRecordList list = new CivRecordList();
+			for (CivilizationRecord civRec : this)
+				if (civRec.useCount == maxUse)
+					list.add(civRec);
+			// Do not update use here, it may still be rejected
+			return random(this);
+		}
 	}
 	public final class RaceList extends SettingBase<String> {
 		private boolean newValue = false;
@@ -915,9 +986,9 @@ public class SkillsFactory extends SpeciesSettings {
 			File[] fileList = loadListing();
 			if (fileList != null)
 				for (File file : fileList) {
-					SpeciesRecord speciesContent = new SpeciesRecord(loadOptions(file));
-					CivRecordList civContentList = animMapList.get(speciesContent.prefAnimKey);
-					civContentList.addAll(speciesContent.getList());
+					SpeciesRecord speciesRec = new SpeciesRecord(file);
+					CivRecordList civRecList = animMapList.get(speciesRec.prefAnimKey);
+					civRecList.addAll(speciesRec.getList());
 				}
 			return animMapList;
 		}
