@@ -70,6 +70,7 @@ public enum SpecificCROption {
 	public boolean isBaseRace()		 { return this == ORIGINAL_SPECIES;  }
 	public boolean isSelection()	 { return this == SELECTION; }
 	public boolean isReworked()		 { return this == REWORKED; }
+	public boolean isReworkedFull()	 { return this == REWORKED_FULL; }
 	public boolean isPlayer()		 { return this == PLAYER; }
 	public boolean isRandom()		 { return this == RANDOM; }
 	public boolean isFilteredFiles() { return this == FILES_FLT; }
@@ -77,6 +78,14 @@ public enum SpecificCROption {
 	public boolean isFilesAndRaces() { return this == FILES_RACES; }
 	public boolean isAll()			 { return this == ALL; }
 	public boolean isUserChoice()	 { return this == USER_SELECTION; }
+	public boolean askForCustomAnim()	{
+		switch (this) {
+			case REWORKED_FULL:
+				return true;
+			default:
+				return false;
+		}
+	}
 	public boolean canHaveCustomAnim()	{
 		switch (this) {
 			case RANDOM:

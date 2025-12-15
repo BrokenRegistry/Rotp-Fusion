@@ -207,6 +207,11 @@ public class Species implements ISpecies, Base, Serializable {
 		skills.isCustomSpecies(true);
 		return skills;
 	}
+	public SpeciesSkills setSpeciesSkills(DynOptions options)	{
+		skills = SkillsFactory.optionToSkills(options);
+		skills.isCustomSpecies(true);
+		return skills;
+	}
 	public void setSpeciesSkills(SpeciesSkills speciesSkills)	{ skills = speciesSkills; }
 	public void setOldSpeciesIndex(int id)		{ civilizationId().setIndex(id); }
 //	public void setOldSpeciesIndex(int id)		{ civilizationIndex = id; }

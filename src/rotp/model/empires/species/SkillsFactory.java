@@ -694,6 +694,7 @@ public class SkillsFactory extends SpeciesSettings {
 		final String homeWorld;
 		final boolean fullCivName;
 		final boolean fullAnim;
+		final boolean availableAI;
 		final DynOptions speciesOptions;
 		final int civIndex;
 		int useCount = 0;
@@ -706,7 +707,8 @@ public class SkillsFactory extends SpeciesSettings {
 				String leaderName,
 				String homeWorld,
 				boolean fullCivName,
-				boolean fullAnim)	{
+				boolean fullAnim,
+				boolean availableAI)	{
 			this.speciesOptions	= speciesOptions;
 			this.skillsKey		= skillsKey;
 			this.fileKey		= fileKey;
@@ -716,10 +718,14 @@ public class SkillsFactory extends SpeciesSettings {
 			this.homeWorld		= homeWorld;
 			this.fullCivName	= fullCivName;
 			this.fullAnim		= fullAnim;
+			this.availableAI		= availableAI;
 			this.civIndex		= civIndex;
 		}
 		void markAsUsed()	{ useCount++; }
-		boolean hasPreferedAnim()	{ return skillsKey!=null && !skillsKey.isEmpty(); }
+		boolean hasPreferedAnim()	{
+			return prefAnimKey!=null && prefAnimKey!=AnimationRaceKey.DEFAULT_VALUE && !prefAnimKey.isEmpty();
+		}
+//		boolean hasPreferedAnim()	{ return skillsKey!=null && !skillsKey.isEmpty(); }
 		boolean isFullAnim()	{
 			if (!fullAnim)
 				return false;
@@ -741,6 +747,7 @@ public class SkillsFactory extends SpeciesSettings {
 		final StringList fullLeader;
 		final StringList fullHome;
 		final StringList fullAnim;
+		final boolean availableAI;
 		final DynOptions speciesOptions;
 		StringList any	= new StringList();
 //		SpeciesRecord(DynOptions opts)	{ // TODO BR: REMOVE
@@ -772,12 +779,13 @@ public class SkillsFactory extends SpeciesSettings {
 			fullAnim.addAll(fullCivName);
 			fullAnim.retainAll(fullLeader);
 			fullAnim.retainAll(fullHome); // TODO BR: Maybe, Maybe not
+			availableAI = sf.race().availableAI();
 		}
 		SpeciesRecord(String key, Race race)	{
 			speciesOptions	= race.speciesOptions();
 			skillsKey	= key;
 			fileKey		= key;
-			prefAnimKey	= key;
+			prefAnimKey	= AnimationRaceKey.DEFAULT_VALUE;
 			String dir = selectedLanguageDir();
 			namedCiv	= race.civilizationNames();
 			namedLeader	= race.leaderNames();
@@ -786,6 +794,7 @@ public class SkillsFactory extends SpeciesSettings {
 			fullLeader	= namedCiv;
 			fullHome	= namedCiv;
 			fullAnim	= namedCiv;
+			availableAI = race.availableAI();
 		}
 		CivRecordList getList()	{
 			CivRecordList list = new CivRecordList();
@@ -794,7 +803,8 @@ public class SkillsFactory extends SpeciesSettings {
 				list.add(new CivilizationRecord (speciesOptions, i,
 						skillsKey, fileKey, prefAnimKey,
 						civName, namedLeader.get(i), namedHome.get(i),
-						fullCivName.contains(civName), fullAnim.contains(civName)));
+						fullCivName.contains(civName), fullAnim.contains(civName),
+						availableAI));
 			}
 			return list;
 		}
@@ -840,11 +850,24 @@ public class SkillsFactory extends SpeciesSettings {
 				list.addAll(civs);
 			return list;
 		}
+		public CivRecordList getSelectedCiv(StringList keys)	{
+			CivRecordList list = new CivRecordList();
+			for ( String key : keys)
+				list.addAll(get(key));
+			return list;
+		}
 		public CivRecordList getFullAnimCiv(String key)	{ return getFullAnim(get(key)); }
 		public CivRecordList getFullAnim(CivRecordList src)	{
 			CivRecordList list = new CivRecordList();
 			for (CivilizationRecord civ : src)
 				if (civ.isFullAnim())
+					list.add(civ);
+			return list;
+		}
+		public CivRecordList getWithPrefAnim(CivRecordList src)	{
+			CivRecordList list = new CivRecordList();
+			for (CivilizationRecord civ : src)
+				if (civ.hasPreferedAnim())
 					list.add(civ);
 			return list;
 		}
@@ -858,18 +881,36 @@ public class SkillsFactory extends SpeciesSettings {
 					fileKeyList.add(civRec);
 			return fileKeyList;
 		}
-		public CivilizationRecord nextRandom()	{
+		CivRecordList getKey(String key)	{
+			CivRecordList fileKeyList =  new CivRecordList();
+			for (CivilizationRecord civRec : this)
+				if (civRec.fileKey.equals(key) || civRec.skillsKey.equals(key))
+					fileKeyList.add(civRec);
+			return fileKeyList;
+		}
+		public CivilizationRecord nextRandom(boolean onlyIfAvailableAI)	{
 			int maxUse = 0;
 			if (isEmpty())
 				return null;
-			for (CivilizationRecord civRec : this)
-				if (civRec.useCount > maxUse)
-					maxUse = civRec.useCount;
+
+			if (onlyIfAvailableAI) {
+				for (CivilizationRecord civRec : this)
+					if (civRec.availableAI && civRec.useCount > maxUse)
+						maxUse = civRec.useCount;
+			} else
+				for (CivilizationRecord civRec : this)
+					if (civRec.useCount > maxUse)
+						maxUse = civRec.useCount;
 
 			CivRecordList list = new CivRecordList();
-			for (CivilizationRecord civRec : this)
-				if (civRec.useCount == maxUse)
-					list.add(civRec);
+			if (onlyIfAvailableAI) {
+				for (CivilizationRecord civRec : this)
+					if (civRec.availableAI && civRec.useCount == maxUse)
+						list.add(civRec);
+			} else
+				for (CivilizationRecord civRec : this)
+					if (civRec.useCount == maxUse)
+						list.add(civRec);
 			// Do not update use here, it may still be rejected
 			return random(this);
 		}
