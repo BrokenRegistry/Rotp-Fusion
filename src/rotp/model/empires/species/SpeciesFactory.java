@@ -24,41 +24,34 @@ import rotp.util.LanguageManager;
 public final class SpeciesFactory implements ISpecies, Base {
 	private final IGameOptions opts;
 	private final SkillsFactory sf =  SkillsFactory.getSkillsFactoryForGalaxy();
-//	private final List<Species> alienSpecies		= new ArrayList<>();
-	private final List<Integer> civilizationColors	= new ArrayList<>();
 	private final RaceList customSpeciesList		= sf.new RaceList();
 	private final HashMap<String, StringList> animMapOrigin	= customSpeciesList.animationMap();
 	private final HashMap<String, StringList> animationMap	= initAnimationMap();
-//	private final StringList allowedRaceList;
-//	private final StringList alienRaceList;
 	private final StringList internalSpeciesKeys;
 	private final StringList baseInternalKeys;
 	private final StringList allInternalKeys;
-//	private final List<AlienInfo> alienSpecies	= new ArrayList<>();
 	private final int playerId;
 	private final Species playerSpecies;
-//	private final DynOptions playerOptions;
 	private final String[] selectedAliens; // = SelectedOpponents
 	private final boolean randomInternalAbility, randomInternalAbility16;
 	private final boolean useLocalSkills;
 	private final String langDir;
 	private final String selectedGlobalSkillsKey;
 	private final SpecificCROption selectedGlobalSkills;
-	private final AnimationListMap animationListMap, fullAnimationMap, internalListMap;
+	private final AnimationListMap animationListMap, fullAnimationMap, allInternalListMap, selectedInternalMap;
 	private final CivRecordList allCustomCiv, allFullAnimationCiv, allWithPreferedAnim;
 	private final CivRecordList selectedInternalCiv, allInternalCiv;
-	
+	private final AlienData[] aliensData;
+
 	// Restart var
 	private final GalaxyCopy galaxyCopy;
 	private final GalaxyBaseData galSrc;
 	private final EmpireBaseData empSrc[]; // TODO BR: Restart
 	private final boolean isRestart;
 	private final int numAliens;
-	StringList AllInternalKeys;
-	AlienData[] aliensData;
 
-//	private boolean[] isRandomOpponent;	// BR: only Random Races will be customized
-	private String playerSkillKey;		// BR: in case Alien races are a copy of player race
+	private List<Integer> civilizationColors	= new ArrayList<>();
+	private String playerSkillKey;	// BR: in case Alien races are a copy of player race
 
 	public Species getPlayerSpecies()		{ return playerSpecies; }
 	public List<Species> getAlienSpecies()	{
@@ -74,7 +67,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 		langDir = LanguageManager.selectedLanguageDir();
 		numAliens	= opts.selectedNumberOpponents();
 		aliensData	= new AlienData[numAliens];
-
+int xxx=1;
 		isRestart	= galaxyCopy != null;
 		galSrc = isRestart? galaxyCopy.galSrc : null;
 		empSrc = isRestart? galSrc.empires : null;
@@ -91,13 +84,16 @@ public final class SpeciesFactory implements ISpecies, Base {
 		animationListMap	= sf.new AnimationListMap().loadCustomSpecies();
 		fullAnimationMap	= animationListMap.getFullAnimMap();
 		allCustomCiv		= animationListMap.getAllCustomCiv();
-		allFullAnimationCiv	= animationListMap.getFullAnim(allCustomCiv);
+		allFullAnimationCiv	= fullAnimationMap.getFullAnim(allCustomCiv);
 		allWithPreferedAnim	= animationListMap.getWithPrefAnim(allCustomCiv);
-		internalListMap		= sf.new AnimationListMap().loadInternalSpecies();
-		selectedInternalCiv	= internalListMap.getSelectedCiv(internalSpeciesKeys);
-		allInternalCiv		= internalListMap.getAllCiv();
 
-		civilizationColors.addAll(opts.possibleColors());
+		allInternalListMap	= sf.new AnimationListMap().loadInternalSpecies();
+		allInternalCiv		= allInternalListMap.getAllCiv();
+		selectedInternalMap	= allInternalListMap.getSelectedMap(internalSpeciesKeys);
+		selectedInternalCiv	= selectedInternalMap.getAllCiv();
+
+		opts.randomizeColors();
+		civilizationColors	= opts.possibleColors();
 
 //		if (!isRestart || opts.selectedRestartAppliesSettings()) {
 //			allowedRaceList	= getAllowedAlienSkills();
@@ -108,13 +104,10 @@ public final class SpeciesFactory implements ISpecies, Base {
 //			alienRaceList	= null;
 //		}
 		Species.cleanUsedNames();
-
+		if (debug())
+			System.out.println("==========");
 		// Player
 		playerSpecies = createPlayerSpecies();
-//		playerOptions = playerSpecies.speciesOptions();
-		if (debug())
-			System.out.println("Player: " + playerSpecies.toString());
-
 		// Aliens
 		createAlienSpecies();
 
@@ -133,13 +126,13 @@ public final class SpeciesFactory implements ISpecies, Base {
 		postponedAliens.addAll(createSkillsSelectedAnim());
 		postponedAliens.addAll(createRandomAnimSelectedSkills());
 
-		postponedAliens = createNoSelectionSpecies(selectedInternalCiv);
+		postponedAliens = createNoSelectionSpecies(selectedInternalMap);
 		if (!postponedAliens.isEmpty())
-			postponedAliens = createNoSelectionSpecies(allInternalCiv);
+			postponedAliens = createNoSelectionSpecies(allInternalListMap);
 		return postponedAliens.isEmpty();
 	}
 
-	private List<AlienData> createNoSelectionSpecies(CivRecordList animSource )	{ // TODO BR:
+	private List<AlienData> createNoSelectionSpecies(AnimationListMap animSource )	{ // TODO BR:
 		List<AlienData> aliens = new ArrayList<>();
 
 		// First: create animations (can be changed later on)
@@ -148,10 +141,12 @@ public final class SpeciesFactory implements ISpecies, Base {
 			if (data.isValid)
 				continue;
 			// select an anim
-			CivilizationRecord civ = animSource.nextRandom(false);
+			CivRecordList civList = animSource.nextRandom(false);
+			CivilizationRecord civ = civList.nextRandom(false);
 			// species, allowCustomAnim = true, allowCustomNames = true
 			data.setSpecies(new Species(civ.fileKey), true, true);
 			aliens.add(data);
+			assignSkillsSequentially(aliens);
 		}
 		if (aliens.isEmpty())
 			return aliens;
@@ -169,7 +164,8 @@ public final class SpeciesFactory implements ISpecies, Base {
 			if (!data.hasLocalSkills || data.isValid)
 				continue;
 			// select an anim
-			CivilizationRecord civ = selectedInternalCiv.nextRandom(false);
+			CivRecordList civList = selectedInternalMap.nextRandom(false);
+			CivilizationRecord civ = civList.nextRandom(false);
 			// species, allowCustomAnim = true, allowCustomNames = true
 			data.setSpecies(new Species(civ.fileKey), true, true);
 			aliens.add(data);
@@ -177,7 +173,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 		if (aliens.isEmpty())
 			return aliens;
 
-		// The finalize species by assigning their skills
+		// Then finalize species by assigning their skills
 		assignSkillsSequentially(aliens);
 		if (aliens.isEmpty())
 			return aliens;
@@ -269,7 +265,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 			default:				return false;
 		}
 	}
-	private boolean assignSkills(AlienData alienData)	{ // TODO BR:
+	private boolean assignSkills(AlienData alienData)	{
 		switch (alienData.skills) {
 			case USER_SELECTION:	return alienData.processUserSelection();
 			case REWORKED:			return alienData.processReworked();
@@ -299,8 +295,8 @@ public final class SpeciesFactory implements ISpecies, Base {
 		final boolean askForCustomAnim;
 		boolean allowCustomAnim;
 //		boolean allowCustomNames;
-//		boolean isAnimFromSkills;
-//		boolean isNamesFromSkills;
+		boolean isAnimFromSkills = false;
+		boolean areNamesFromSkills = false;
 		boolean isValid;
 
 		AlienData(int alienId) {
@@ -327,7 +323,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 			if (!allowCustomAnim || !civ.hasPreferedAnim())
 				return false;
 			if (species.animKey().equals(civ.prefAnimKey))
-				return false; // No change needed
+				return isAnimFromSkills;
 			return true;
 		}
 //		private boolean checkNamesUpdate(CivilizationRecord civ)	{ return allowCustomNames && civ.isFullAnim(); }
@@ -360,7 +356,8 @@ public final class SpeciesFactory implements ISpecies, Base {
 		private boolean processReworkedFull()	{
 			if (species == null) {
 				// Create Species from custom skills, including animation selection and names
-				CivilizationRecord civ = allFullAnimationCiv.nextRandom(true);
+				isAnimFromSkills = true;
+				CivilizationRecord civ = allFullAnimationCiv.nextRandom(true, true);
 				if (civ == null) {
 					civ = allWithPreferedAnim.nextRandom(true);
 					if (civ == null)
@@ -396,7 +393,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 				if (civ == null)
 					return setNominalAnimNames();
 			}
-			species.setSpeciesSkills(civ.speciesOptions);
+			species.setSpeciesSkills(civ.skillsKey, civ.speciesOptions);
 			return tryNewAnimfromSkills(civ);
 		}
 		private boolean processRandom()			{ // Create a random race
@@ -456,30 +453,22 @@ public final class SpeciesFactory implements ISpecies, Base {
 		private boolean tryNewAnimfromSkills (CivilizationRecord skillCiv)	{
 			if (checkAnimUpdate(skillCiv))
 				if (skillCiv.isFullAnim()) { // Full custom and not already used
-					species.setNewSpeciesAnim(skillCiv.prefAnimKey);
+					areNamesFromSkills = true;
+					if (!isAnimFromSkills)
+						species.setNewSpeciesAnim(skillCiv.prefAnimKey);
 					species.setAllCustomNames(skillCiv, langDir);
-					species.lockUsedNames();
-					skillCiv.markAsUsed();
-//					isAnimFromSkills = true;
-//					isNamesFromSkills = true;
+					finalizeSpecies(species, skillCiv);
 					isValid = true;
-					if (debug())
-						System.out.println("Alien: " + species.toString());
 					return isValid;
 				}
 				else { // Try internal anim if remaining one
-					CivRecordList internalCivs = internalListMap.getFullAnimCiv(skillCiv.prefAnimKey);
+					CivRecordList internalCivs = allInternalCiv.getKey(skillCiv.prefAnimKey);
 					CivilizationRecord intCiv = internalCivs.nextRandom(false);
 					if (intCiv != null) { // Use internal anim
 						species.setNewSpeciesAnim(skillCiv.prefAnimKey);
 						species.setAllAnimNames(intCiv, langDir);
-						species.lockUsedNames();
-						intCiv.markAsUsed();
-//						isAnimFromSkills = true;
-//						isNamesFromSkills = false;
+						finalizeSpecies(species, intCiv);
 						isValid = true;
-						if (debug())
-							System.out.println("Alien: " + species.toString());
 						return isValid;
 					}
 				}
@@ -487,219 +476,28 @@ public final class SpeciesFactory implements ISpecies, Base {
 			return setNominalAnimNames();
 		}
 		private boolean setNominalAnimNames()	{
-			CivRecordList internalCivs = internalListMap.getFullAnimCiv(species.animKey());
+			CivRecordList internalCivs = allInternalCiv.getKey(species.animKey());
 			CivilizationRecord animCiv = internalCivs.nextRandom(false);
 			if (animCiv != null) { // Use internal anim
 				species.setAllAnimNames(animCiv, langDir);
-				species.lockUsedNames();
-				animCiv.markAsUsed();
-//				isNamesFromSkills = false;
+				finalizeSpecies(species, animCiv);
 				isValid = true;
-				if (debug())
-					System.out.println("Alien: " + species.toString());
 			}
 			else
 				isValid = false;
 			return isValid;
 		}
 	}
-
-//	private void initLists()	{
-//		int numAliens = opts.selectedNumberOpponents();
-//		for (int alienId=0; alienId<numAliens; alienId++) {
-//			AlienInfo alien	= new AlienInfo(alienId);
-//			alienSpecies.add(alien);
-//		}
-//	}
-//	private final class AlienInfo {
-//		private final int alienId;
-//		private final int civId;
-//		private final String animKey;
-//		private final SpecificCROption skills;
-//		private final boolean iconSelectedAnim;
-//		private final boolean hasSkills;
-//		private final boolean internalSkills;
-//		private final boolean tryChangeAnim;
-//
-//		private boolean randomAnim;
-//		private boolean tryChangeName = true;
-//		private boolean created = false;
-//		private String skillsKey;
-//		private Species species;
-//		private DynOptions options;
-//
-//		private AlienInfo(int id)	{
-//			alienId	= id;
-//			civId	= alienId + 1;
-//			animKey	= selectedAliens[alienId];
-//			iconSelectedAnim = animKey != null;
-//			randomAnim = !iconSelectedAnim;
-//
-//			skills = getSkills();
-//			hasSkills = !skills.isBaseRace();
-//			if (hasSkills)
-//				internalSkills = AllInternalKeys.contains(animKey);
-//			else
-//				internalSkills = false;
-//
-//			tryChangeAnim = hasSkills && !internalSkills && animKey == null;
-//		}
-//		private SpecificCROption getSkills()	{
-//			String localSkillsKey	= opts.specificOpponentCROption(civId);
-//			SpecificCROption skills = SpecificCROption.set(localSkillsKey);
-//			if (useLocalSkills && !skills.isSelection()) {
-//				skillsKey = localSkillsKey;
-//				return skills;
-//			}
-//			else {
-//				skillsKey = selectedGlobalSkillsKey;
-//				return selectedGlobalSkills;
-//			}
-//		}
-//		private void createIconSpecies()	{ // TODO
-//			species = new Species(animKey);
-////			species = new Species(animKey, skillsKey, options);
-//			
-//
-//			// Civilization Name
-//			String CivilzationName = playerSpecies.civilizationName();
-//			if (CivilzationName.isEmpty())
-//				System.err.println("Error: No available name for Player Civilization");
-//
-//			// Home World Name
-//			String systemName = opts.selectedHomeWorldName();
-//			if (systemName.isEmpty())
-//				systemName = playerSpecies.nextAvailableHomeworldExt();
-//			else
-//				playerSpecies.usedHomeNames().add(systemName);
-//			playerSpecies.initialHomeWorld = systemName;
-//
-//			// Leader Name
-//			String leaderName = opts.selectedLeaderName();
-//			if (leaderName.isEmpty())
-//				leaderName = playerSpecies.nextAvailableLeaderExt();
-//			else
-//				playerSpecies.usedLeaderNames().add(leaderName);
-//			playerSpecies.initialLeaderName = leaderName;
-//
-//			// Player Color
-//			int color = options().selectedPlayerColor();
-//			playerSpecies.colorId = color;
-//			civilizationColors.remove(color);			created = true;
-//		}
-//		private void processSkills()	{
-//			switch (skills) {
-//				case USER_SELECTION:
-//					species.setSpeciesSkills(fileToSkills(skillsKey));
-//					break;
-//				case REWORKED:
-//				case REWORKED_FULL:
-//					String skillKey = animationKey(skillsKey);
-//					if (!skillKey.isEmpty())
-//						species.setSpeciesSkills(fileToSkills(skillKey));
-//					break;
-//				case PLAYER:
-//					species.setSpeciesSkills(optionToSkills(playerOptions));
-//					break;
-//				case RANDOM: // Create a random race
-//					species.setSpeciesSkills(RANDOM_RACE_KEY);
-//					break;
-//				case RANDOM_10: // Choose randomly in the base list
-//					species.setSpeciesSkills(random(baseInternalKeys));
-//					break;
-//				case RANDOM_16: // Choose randomly including the Modnar Races
-//					species.setSpeciesSkills(random(allInternalKeys));
-//					break;
-//				case FILES_FLT:
-//					if (allowedRaceList.isEmpty())
-//						species.setSpeciesSkills(animKey);
-//					else
-//						species.setSpeciesSkills(fileToSkills(random(allowedRaceList)));
-//					break;
-//				case ALL_FILES:
-//					if (alienRaceList.isEmpty())
-//						species.setSpeciesSkills(animKey);
-//					else
-//						species.setSpeciesSkills(fileToSkills(random(alienRaceList)));
-//					break;
-//				case FILES_RACES:
-//					if (rng().nextBoolean())
-//						if (allowedRaceList.isEmpty())
-//							species.setSpeciesSkills(random(allInternalKeys));
-//						else
-//							species.setSpeciesSkills(fileToSkills(random(allowedRaceList)));
-//					else
-//						species.setSpeciesSkills(random(allInternalKeys));
-//					break;
-//				case ALL:
-//					if (rng().nextBoolean())
-//						if (rng().nextBoolean())
-//							if (allowedRaceList.isEmpty())
-//								species.setSpeciesSkills(optionToSkills(playerOptions));
-//							else
-//								species.setSpeciesSkills(fileToSkills(random(allowedRaceList)));
-//						else
-//							species.setSpeciesSkills(optionToSkills(playerOptions));
-//					else if (rng().nextBoolean())
-//						species.setSpeciesSkills(random(allInternalKeys));
-//					else
-//						species.setSpeciesSkills(RANDOM_RACE_KEY);
-//					break;
-//				case ORIGINAL_SPECIES: // default as vanilla
-//				default:
-//					if (randomInternalAbility) // original Advanced Option random abilities
-//						if (randomInternalAbility16)
-//							species.setSpeciesSkills(random(allInternalKeys));
-//						else
-//							species.setSpeciesSkills(random(baseInternalKeys));
-//					else
-//						species.setSpeciesSkills(animKey);
-//					break;
-//			}
-//		}
-//	}
-//
-//	private StringList buildAlienRaces() {
-//		StringList alienList = new StringList();
-//		StringList allspeciesOptions = new StringList();
-//		StringList internalSpecies = options().getInternalSpeciesList();
-//		int maxRaces = options().selectedNumberOpponents();
-//		int mult = IGameOptions.MAX_OPPONENT_TYPE;
-//
-//		// first, build randomized list of opponent races
-//		for (int i=0; i<mult; i++) {
-//			shuffle(internalSpecies);
-//			allspeciesOptions.addAll(internalSpecies);
-//		}
-//		if(opts.fullyScrambledSpecies())
-//			shuffle(allspeciesOptions);
-//
-//		
-//		// next, remove from that list the player and any selected opponents
-//		String[] selectedOpponents = options().selectedOpponentRaces();
-//		isRandomOpponent = new boolean[selectedOpponents.length]; // BR: only Random Races will be customized
-//		allspeciesOptions.remove(options().selectedPlayerRace());
-//
-//		for (int i=0;i<maxRaces;i++) {
-//			if (selectedOpponents[i] != null) {
-//				allspeciesOptions.remove(selectedOpponents[i]);
-//				isRandomOpponent[i] = false;
-//			} else {
-//				isRandomOpponent[i] = true;
-//			}
-//		}
-//		// build alien race list, replacing unselected opponents (null)
-//		// with remaining options
-//		for (int i=0;i<maxRaces;i++) {
-//			if (selectedOpponents[i] == null)
-//				alienList.add(allspeciesOptions.remove(0));
-//			else
-//				alienList.add(selectedOpponents[i]);
-//		}
-//		return alienList;
-//	}
-
-	private Species createPlayerSpecies()	{ // TODO Lock names
+	private void finalizeSpecies(Species species, CivilizationRecord civ) {
+		species.lockUsedNames();
+		civ.markAsUsed();
+		if (civilizationColors.isEmpty())
+			civilizationColors = opts.possibleColors();
+		species.colorId = civilizationColors.remove(0);
+		if (debug())
+			System.out.println(species.toString());
+	}
+	private Species createPlayerSpecies()	{
 		GalaxyBaseData galSrc = null; // Used for Restart
 		EmpireBaseData empSrc = null; // Used for Restart
 		if (galaxyCopy != null) {
@@ -724,31 +522,25 @@ public final class SpeciesFactory implements ISpecies, Base {
 		}
 		playerSpecies.setSpeciesSkills(playerSkillKey, skillOptions);
 
-		// Civilization Name
-		String CivilzationName = playerSpecies.civilizationName();
-		if (CivilzationName.isEmpty())
-			System.err.println("Error: No available name for Player Civilization");
-
-		// Home World Name
-		String systemName = opts.selectedHomeWorldName();
-		if (systemName.isEmpty())
-			systemName = playerSpecies.nextAvailableHomeworldExt();
+		CivRecordList internalCivs = allInternalCiv.getKey(playerAnimKey);
+		CivilizationRecord animCiv = internalCivs.get(0);
+		if (animCiv != null) { // Use internal anim
+			playerSpecies.setAllAnimNames(animCiv, langDir);
+			finalizeSpecies(playerSpecies, animCiv);
+		}
 		else
-			playerSpecies.usedHomeNames().add(systemName);
-		playerSpecies.initialHomeWorld = systemName;
-
-		// Leader Name
-		String leaderName = opts.selectedLeaderName();
-		if (leaderName.isEmpty())
-			leaderName = playerSpecies.nextAvailableLeaderExt();
-		else
-			playerSpecies.usedLeaderNames().add(leaderName);
-		playerSpecies.initialLeaderName = leaderName;
+			System.err.println("Error: No available civilization for Player Civilization");
 
 		// Player Color
-		int color = options().selectedPlayerColor();
-		playerSpecies.colorId = color;
-		civilizationColors.remove(color);
+		int playerColor = options().selectedPlayerColor();
+		playerSpecies.colorId = playerColor;
+		civilizationColors.clear();
+		boolean playerCExcluded = false;
+		for (int i : opts.possibleColors())
+			if ((i == playerColor) && !playerCExcluded)
+				playerCExcluded = true;
+			else
+				civilizationColors.add(i);
 		return playerSpecies;
 	}
 	private HashMap<String, StringList> initAnimationMap()	{
@@ -757,53 +549,4 @@ public final class SpeciesFactory implements ISpecies, Base {
 			animationMap.put(entry.getKey(), new StringList(entry.getValue()));
 		return animationMap;
 	}
-//	private String animationKey(String animKey)	{
-//		// Search for an unused rework
-//		StringList list = animationMap.get(animKey);
-//		if (list.isEmpty())
-//			// No more: then refill
-//			list.addAll(animMapOrigin.get(animKey));
-//		shuffle(list);
-//		shuffle(list);
-//		// Get one (could be empty!)
-//		String skillKey = list.removeFirst();
-//		//System.out.println("Rework Anim key = " + animKey + " -> Skill key = " + skillKey);
-//		return skillKey;
-//	}
-//	private LinkedList<String> buildAlienRaces() {
-//		LinkedList<String> alienKeyList = new LinkedList<>();
-//		List<String> allRaceKeyList = new ArrayList<>();
-//		List<String> internalKeyList = opts.getInternalSpeciesList(); // BR:
-//		int maxSpecies = opts.selectedNumberOpponents();
-//		int mult = IGameOptions.MAX_OPPONENT_TYPE;
-//
-//		// first, build randomized list of opponent species
-//		for (int i=0;i<mult;i++) {
-//			shuffle(internalKeyList);
-//			allRaceKeyList.addAll(internalKeyList);
-//		}
-//
-//		// next, remove from that list the player and any selected opponents
-//		String[] selectedOpponents = opts.selectedOpponentRaces();
-//		isRandomOpponent = new boolean[selectedOpponents.length]; // BR: only Random Races will be customized
-//		allRaceKeyList.remove(opts.selectedPlayerRace());
-//
-//		for (int i=0;i<maxSpecies;i++) {
-//			if (selectedOpponents[i] != null) {
-//				allRaceKeyList.remove(selectedOpponents[i]);
-//				isRandomOpponent[i] = false;
-//			} else {
-//				isRandomOpponent[i] = true;
-//			}
-//		}
-//		// build alien race list, replacing unselected opponents (null)
-//		// with remaining options
-//		for (int i=0;i<maxSpecies;i++) {
-//			if (selectedOpponents[i] == null)
-//				alienKeyList.add(allRaceKeyList.remove(0));
-//			else
-//				alienKeyList.add(selectedOpponents[i]);
-//		}
-//		return alienKeyList;
-//	}
 }

@@ -523,6 +523,54 @@ public final class Empire extends Species implements NamedObject {
 	// modnar: add option to start game with additional colonies
 	// modnar: compId is the System ID array for these additional colonies
 	// BR: For Restart with new options and random races
+	public Empire(Galaxy g, int empId, Species species, StarSystem s, int[] compId, EmpireBaseData empSrc) {
+		super(species);
+		IGameOptions opts = options();
+		log("creating empire for ", species.id());
+		if (empSrc == null)
+			randomSource = rng().nextLong();
+		else
+			randomSource = empSrc.randomSource();
+		id = empId;
+
+		// Init empire species parameters
+		raceKey		= animKey();
+		dataRaceKey	= skillKey();
+		raceOptions	= super.speciesOptions(); // BR: for custom species
+
+		// Init Home world
+		homeSysId = capitalSysId = s.id;
+		compSysId = compId; // modnar: add option to start game with additional colonies
+		if (empSrc != null							// Restart
+				&& empId != Empire.PLAYER_ID		// Is Alien
+				&& !opts.selectedRestartChangesAliensAI())	// Don't changes AI
+			selectedAI = empSrc.raceAI();
+
+		empireViews = new EmpireView[opts.selectedNumberOpponents()+1];
+		status = new EmpireStatus(this);
+		sv = new SystemInfo(this);
+		// many things need to know if this is the player civ, so set it early
+		if (empId == Empire.PLAYER_ID) {
+			resetDivertColonyExcessToResearch();
+			g.player(this);
+		}
+
+		colorId(super.colorId());
+		raceNameIndex	= super.civilizationIndex(); // also initialize species Name
+		// Init Leaders
+		String leaderName = super.getLeaderName();
+		leader = new Leader(this, leaderName);
+		if (empSrc != null && empId != Empire.PLAYER_ID
+				&& !opts.selectedRestartAppliesSettings()) { // BR: For Restart with new options 
+			leader.personality = empSrc.personality;
+			leader.objective   = empSrc.objective;
+		}
+		shipLab = new ShipDesignLab();
+	}
+
+	// modnar: add option to start game with additional colonies
+	// modnar: compId is the System ID array for these additional colonies
+	// BR: For Restart with new options and random races
 	public Empire(Galaxy g, int empId, Species species, StarSystem s, int[] compId, Integer cId, String name, EmpireBaseData empSrc) {
 		super(species);
 		log("creating empire for ", species.id());

@@ -218,7 +218,7 @@ public class SkillsFactory extends SpeciesSettings {
 		factory.initWithDefaultSkillsForGalaxy();
 		return factory;
 	}
-	static RaceList newRaceList()						{	// TODO BR: Change Galaxy Factory to get only one instance of this
+	static RaceList newRaceList()	{
 		SkillsFactory factory = new SkillsFactory();
 		factory.initWithDefaultSkillsForGalaxy();
 		return factory.new RaceList();
@@ -718,7 +718,7 @@ public class SkillsFactory extends SpeciesSettings {
 			this.homeWorld		= homeWorld;
 			this.fullCivName	= fullCivName;
 			this.fullAnim		= fullAnim;
-			this.availableAI		= availableAI;
+			this.availableAI	= availableAI;
 			this.civIndex		= civIndex;
 		}
 		void markAsUsed()	{ useCount++; }
@@ -733,7 +733,20 @@ public class SkillsFactory extends SpeciesSettings {
 				return false;
 			if (Species.usedLeaderNames().contains(leaderName))
 				return false;
-			return Species.usedHomeNames().contains(homeWorld);
+			return !Species.usedHomeNames().contains(homeWorld);
+		}
+		@Override public String toString()	{
+			String s = skillsKey + " " + civName + " useCount: " + useCount;
+			return s;
+		}
+		public int useCount(boolean onlyIfAvailableAI, boolean onlyfullAnim)	{
+			if (availableAI || !onlyIfAvailableAI)
+				if (onlyfullAnim && !isFullAnim())
+					return IGameOptions.MAX_OPPONENTS;
+				else
+					return useCount;
+			else
+				return IGameOptions.MAX_OPPONENTS;
 		}
 	}
 	public final class SpeciesRecord {
@@ -750,18 +763,17 @@ public class SkillsFactory extends SpeciesSettings {
 		final boolean availableAI;
 		final DynOptions speciesOptions;
 		StringList any	= new StringList();
-//		SpeciesRecord(DynOptions opts)	{ // TODO BR: REMOVE
 		SpeciesRecord(File file)	{
 			speciesOptions	 = loadOptions(file);
 			SkillsFactory sf = new SkillsFactory(speciesOptions);
 			this.skillsKey	 = sf.raceKey.settingValue();
 			this.fileKey	 = RaceKey.fileToKey(file);
-			if (animSkills == null)
+			if (sf.animSkills == null)
 				prefAnimKey = AnimationRaceKey.DEFAULT_VALUE;
 			else
-				prefAnimKey = animSkills.id;
+				prefAnimKey = sf.animSkills.id;
 			String dir = selectedLanguageDir();
-			AllSpeciesAttributes settings = new AllSpeciesAttributes();
+			AllSpeciesAttributes settings = sf.new AllSpeciesAttributes();
 
 			namedCiv	= settings.getCivilizationsNames();
 			namedLeader	= settings.getLeadersNames(dir);
@@ -786,7 +798,7 @@ public class SkillsFactory extends SpeciesSettings {
 			skillsKey	= key;
 			fileKey		= key;
 			prefAnimKey	= AnimationRaceKey.DEFAULT_VALUE;
-			String dir = selectedLanguageDir();
+			String dir	= selectedLanguageDir();
 			namedCiv	= race.civilizationNames();
 			namedLeader	= race.leaderNames();
 			namedHome	= race.homeSystemNames();
@@ -809,9 +821,9 @@ public class SkillsFactory extends SpeciesSettings {
 			return list;
 		}
 	}
-	public final class AnimationListMap extends HashMap<String, CivRecordList> {
+	public final class AnimationListMap extends HashMap<String, CivRecordList> implements Base {
 		private static final long serialVersionUID = 1L;
-		public AnimationListMap()	{ //  TODO BR: animMapList()
+		public AnimationListMap()	{
 			for (String raceKey : IGameOptions.allRaceKeyList)
 				put(raceKey, new CivRecordList());
 			put(AnimationRaceKey.DEFAULT_VALUE, new CivRecordList());
@@ -856,6 +868,12 @@ public class SkillsFactory extends SpeciesSettings {
 				list.addAll(get(key));
 			return list;
 		}
+		public AnimationListMap getSelectedMap(StringList keys)	{
+			AnimationListMap map = new AnimationListMap();
+			for ( String key : keys)
+				map.put(key, get(key));
+			return map;
+		}
 		public CivRecordList getFullAnimCiv(String key)	{ return getFullAnim(get(key)); }
 		public CivRecordList getFullAnim(CivRecordList src)	{
 			CivRecordList list = new CivRecordList();
@@ -870,6 +888,19 @@ public class SkillsFactory extends SpeciesSettings {
 				if (civ.hasPreferedAnim())
 					list.add(civ);
 			return list;
+		}
+		public CivRecordList nextRandom(boolean onlyIfAvailableAI)	{
+			int minUse = IGameOptions.MAX_OPPONENTS;
+			if (isEmpty())
+				return null;
+			for (CivRecordList civList : values())
+				minUse = min(minUse, civList.totalUseCount(onlyIfAvailableAI));
+
+			List<CivRecordList> list = new ArrayList<>();
+			for (CivRecordList civList : values())
+				if (civList.totalUseCount(onlyIfAvailableAI) == minUse)
+					list.add(civList);
+			return random(list);
 		}
 	}
 	public final class CivRecordList extends ArrayList<CivilizationRecord> implements Base {
@@ -888,31 +919,33 @@ public class SkillsFactory extends SpeciesSettings {
 					fileKeyList.add(civRec);
 			return fileKeyList;
 		}
-		public CivilizationRecord nextRandom(boolean onlyIfAvailableAI)	{
-			int maxUse = 0;
+		public CivilizationRecord nextRandom(boolean onlyIfAvailableAI)	{ return nextRandom(onlyIfAvailableAI, false); }
+		public CivilizationRecord nextRandom(boolean onlyIfAvailableAI, boolean onlyfullAnim)	{
+			int minUse = Integer.MAX_VALUE;
 			if (isEmpty())
 				return null;
-
-			if (onlyIfAvailableAI) {
-				for (CivilizationRecord civRec : this)
-					if (civRec.availableAI && civRec.useCount > maxUse)
-						maxUse = civRec.useCount;
-			} else
-				for (CivilizationRecord civRec : this)
-					if (civRec.useCount > maxUse)
-						maxUse = civRec.useCount;
+			for (CivilizationRecord civRec : this) {
+				//System.out.println(minUse + " / " + civRec.useCount(onlyIfAvailableAI) ); // TODO BR: REMOVE
+				minUse = min(minUse, civRec.useCount(onlyIfAvailableAI, onlyfullAnim));
+			}
 
 			CivRecordList list = new CivRecordList();
-			if (onlyIfAvailableAI) {
-				for (CivilizationRecord civRec : this)
-					if (civRec.availableAI && civRec.useCount == maxUse)
-						list.add(civRec);
-			} else
-				for (CivilizationRecord civRec : this)
-					if (civRec.useCount == maxUse)
-						list.add(civRec);
+			for (CivilizationRecord civRec : this)
+				if (civRec.useCount(onlyIfAvailableAI, onlyfullAnim) == minUse)
+					list.add(civRec);
 			// Do not update use here, it may still be rejected
-			return random(this);
+			return random(list);
+		}
+		public int totalUseCount(boolean onlyIfAvailableAI)	{
+			if (isEmpty())
+				return Integer.MAX_VALUE;
+			int usecount = 0;
+			for ( CivilizationRecord civRec : this)
+				if (civRec.availableAI || !onlyIfAvailableAI)
+					usecount += civRec.useCount;
+				else
+					return IGameOptions.MAX_OPPONENTS;
+			return usecount;
 		}
 	}
 	public final class RaceList extends SettingBase<String> {
@@ -1017,21 +1050,6 @@ public class SkillsFactory extends SpeciesSettings {
 				}
 			list.removeNullAndEmpty();
 			return list;
-		}
-		public HashMap<String, CivRecordList> animMapList()	{ //  TODO BR: animMapList()
-			HashMap<String, CivRecordList> animMapList = new HashMap<>();
-			for (String raceKey : IGameOptions.allRaceKeyList)
-				animMapList.put(raceKey, new CivRecordList());
-			animMapList.put(AnimationRaceKey.DEFAULT_VALUE, new CivRecordList());
-
-			File[] fileList = loadListing();
-			if (fileList != null)
-				for (File file : fileList) {
-					SpeciesRecord speciesRec = new SpeciesRecord(file);
-					CivRecordList civRecList = animMapList.get(speciesRec.prefAnimKey);
-					civRecList.addAll(speciesRec.getList());
-				}
-			return animMapList;
 		}
 		// ---------- Overriders ----------
 		//

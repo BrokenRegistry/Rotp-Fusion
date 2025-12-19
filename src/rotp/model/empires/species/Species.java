@@ -109,7 +109,7 @@ public class Species implements ISpecies, Base, Serializable {
 		return civilizationId;
 	}
 	protected String getLeaderName()	{ return initialLeaderName; }
-	protected String getHomeWorldName()	{ return initialHomeWorld; }
+	public String getHomeWorldName()	{ return initialHomeWorld; }
 	protected int colorId()				{ return colorId; }
 //	String nextAvailableCivilization()	{ // TODO BR: nextAvailableCivilization
 //		if (this.isCustomSpecies()) {
@@ -121,19 +121,19 @@ public class Species implements ISpecies, Base, Serializable {
 //		return name;
 //	}
 	@Override public String toString()	{
-		String s = "Anim: " + animKey();
-		s += " Skills: " + skillKey();
-		s += " Custom: " + isCustomSpecies();
+		String s = String.format("%-22S", "Anim: " + animKey());
+		s += String.format("%-24S", "Skills: " + skillKey());
+		s += String.format("%-14S", "Custom: " + isCustomSpecies());
 		if (civilizationId != null) {
-			s += " Civ Name: " + civilizationId.getName() + " Civ idx: " ;
-			s += " Civ idx: " + civilizationId.getIndex();
+			s += String.format("%-26s", "Civ Name: " + civilizationId.getName());
+			s += String.format("%-11s", "Civ idx: " + civilizationId.getIndex());
 			if (civilizationId.isFromAnimation)
-				s += " from Anim ";
+				s += "anim Names   ";
 			else
-				s += " from Skills ";
+				s += "custom Names ";
 		}
-		s += " Leader: " + getLeaderName();
-		s += " Home: " + getHomeWorldName();
+		s += String.format("%-28S", "Leader: " + getLeaderName());
+		s += String.format("%-22S", "Home: " + getHomeWorldName());
 		s += " ColorId: " + colorId();
 		return s;
 	}
@@ -172,8 +172,12 @@ public class Species implements ISpecies, Base, Serializable {
 	// Initializers
 	//
 	protected void setSpecies(Species src)	{
-		anim = src.anim;
-		skills = src.skills;
+		anim	= src.anim;
+		skills	= src.skills;
+		colorId	= src.colorId;
+		initialHomeWorld	= src.initialHomeWorld;
+		initialLeaderName	= src.initialLeaderName;
+		civilizationId		= src.civilizationId;
 	}
 	public void setNewSpeciesAnim(String animKey)	{ anim = getAnim(animKey); }
 	public void setAllCustomNames(CivilizationRecord civ, String langDir)	{
