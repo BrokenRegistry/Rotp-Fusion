@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import rotp.Rotp;
 import rotp.model.game.IGameOptions;
 import rotp.ui.RotPUI;
@@ -500,21 +501,23 @@ public enum AnimationManager implements Base {
         }
         return newImg;
     }
-    private class FullScreenImageRunnable implements Runnable {
-    	private final BufferedImage newImg;
-    	private final Image srcImg;
-    	private final int w, h;
-    	private FullScreenImageRunnable(BufferedImage newImg, Image srcImg, int w, int h) {
-    		this.newImg = newImg;
-    		this.srcImg = srcImg;
-    		this.w = w;
-    		this.h = h;
-    	}
-    	@Override public void run() {
-            Graphics2D g = (Graphics2D) newImg.getGraphics();
-            setRenderingHints(g);
-            g.drawImage(srcImg, 0, 0, w, h, 0, 0, srcImg.getWidth(null), srcImg.getHeight(null), null);
-            g.dispose();
-        }
-    }
+	private class FullScreenImageRunnable implements Runnable {
+		private BufferedImage newImg;
+		private Image srcImg;
+		private int w, h;
+		private FullScreenImageRunnable(BufferedImage newImg, Image srcImg, int w, int h) {
+			this.newImg = newImg;
+			this.srcImg = srcImg;
+			this.w = w;
+			this.h = h;
+		}
+		@Override public void run() {
+			Graphics2D g = (Graphics2D) newImg.getGraphics();
+			setRenderingHints(g);
+			g.drawImage(srcImg, 0, 0, w, h, 0, 0, srcImg.getWidth(null), srcImg.getHeight(null), null);
+			g.dispose();
+			newImg = null;
+			srcImg = null;
+		}
+	}
 }

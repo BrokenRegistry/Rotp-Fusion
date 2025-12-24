@@ -365,6 +365,7 @@ public final class GameSession implements Base, Serializable {
     	MultiColonySpendingPane.resetPanel();
     }
     private void stopCurrentGame() {
+    	System.out.println("stopCurrentGame has been called");
         RotPUI.instance().mainUI().clearAdvice();
         resetStaticVars(); // BR: better twice than never!
         //vars().clear();
@@ -406,7 +407,7 @@ public final class GameSession implements Base, Serializable {
             return;
         
         performingTurn = true;
-        nextTurnThread = new Thread(nextTurnProcess());
+        nextTurnThread = new Thread(nextTurnProcess(), "NextTurnProcess");
         nextTurnThread.start();
     }
     public void waitUntilNextTurnCanProceed() {
@@ -1204,7 +1205,7 @@ public final class GameSession implements Base, Serializable {
 			StarSystem sys = g.system(id);
 			Leader boss = emp.leader();
 			System.out.println(
-					String.format("%-16s", emp.speciesName())
+					String.format("%-16s", emp.civilizationName())
 					+ String.format("%-12s", sys.name())
 					+ String.format("%-16s", emp.speciesSkillsName())
 					+ String.format("%-12s", boss.personality())
@@ -1501,7 +1502,7 @@ public final class GameSession implements Base, Serializable {
     }
     static ThreadFactory minThreadFactory() {
         return (Runnable r) -> {
-            Thread t = new Thread(r);
+            Thread t = new Thread(r, "minThreadFactory");
             t.setPriority(Thread.MIN_PRIORITY);
             return t;
         };

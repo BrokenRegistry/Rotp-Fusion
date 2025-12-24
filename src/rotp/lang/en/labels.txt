@@ -5848,7 +5848,7 @@ ABILITIES_RANDOM_16				| 'Any Original (16)'
 ABILITIES_FILES_FLT				| 'Allowed Custom Species'
 ABILITIES_ALL_FILES				| 'Any Custom Species'
 ABILITIES_FILES_RACES			| 'Original or Allowed'
-ABILITIES_All					| 'Original or Any Custom'
+ABILITIES_ALL					| 'Original or Any Custom'
 
 ABILITIES_SELECTION_DESC		| Same abilities as the global abilities (selected on the top)
 ABILITIES_ORIGINAL_SPECIES_DESC	| Original abilities of the selected species (the one on the icon)
@@ -5861,7 +5861,7 @@ ABILITIES_RANDOM_16_DESC		| Abilities randomly selected within the sixteen speci
 ABILITIES_FILES_FLT_DESC		| Abilities randomly selected within customized species files, having the "Available to AI" option enabled. If this list is empty the selection will be made within the original species abilities.
 ABILITIES_ALL_FILES_DESC		| Abilities randomly selected within customized species file, ignoring the "Available to AI" option. If this list is empty the selection will be made within the original species abilities.
 ABILITIES_FILES_RACES_DESC		| Abilities randomly selected within the original species abilities and the customized species files, having the "Available to AI" option enabled.
-ABILITIES_All_DESC				| Abilities randomly selected within the original species abilities and the customized species files, ignoring the "Available to AI" option.
+ABILITIES_ALL_DESC				| Abilities randomly selected within the original species abilities and the customized species files, ignoring the "Available to AI" option.
 
 SETUP_GALAXY_SHAPE_RECTANGLE_HELP		| Original rectangular or square Galaxies with up to five voids.
 SETUP_GALAXY_SHAPE_RECTANGLE_O1_DESC	| Shape ratio adjustment.

@@ -113,7 +113,7 @@ public class MapOverlayAdvice extends MapOverlay {
         
         // BR: Increase with for long text
         // Title
-        String title = text("MAIN_ADVISOR_TITLE", player().raceName(), player().leader().name());
+        String title = text("MAIN_ADVISOR_TITLE", player().civilizationName(), player().leader().name());
         title = player().replaceTokens(title, "player");
         int sw = g.getFontMetrics(narrowFont(28)).stringWidth(title);
         int textWidth = max(txtNominalWidth, sw);

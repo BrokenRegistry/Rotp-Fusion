@@ -305,7 +305,7 @@ public class ShipCombatManager implements Base {
         log("Toggling Auto Complete: "+autoComplete);
 
         if (autoComplete) {
-            autoRunThread = new Thread(autoRunProcess());
+            autoRunThread = new Thread(autoRunProcess(), "CombatAutoComplete");
             autoRunThread.start();
             runningThread = autoRunThread;
         }

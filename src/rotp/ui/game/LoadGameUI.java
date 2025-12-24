@@ -73,7 +73,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
     
     private static final SimpleDateFormat fileDateFmtN = new SimpleDateFormat("MMM dd, HH:mm");
     private static final SimpleDateFormat fileDateFmtY = new SimpleDateFormat("yyyy MMM dd, HH:mm");
-    static LoadGameUI current;
+    private static LoadGameUI current;
 
     LoadListingPanel listingPanel;
     List<String> saveFiles = new ArrayList<>();

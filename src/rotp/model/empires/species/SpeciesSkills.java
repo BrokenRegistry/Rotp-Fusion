@@ -216,7 +216,7 @@ class SpeciesSkills implements Base, Serializable {
 			s1 = s1.replace(replString, values.get(0));
 		}
 		if (s.equalsIgnoreCase(s1))
-			return this.empireTitle();
+			return this.empireTitle;
 		return s1;
 	}
 	protected boolean isCopy()			{ return isCopy; }
@@ -463,7 +463,7 @@ class SpeciesSkills implements Base, Serializable {
 		return desc.replace("[race]", name);
 	}
 	String getDescription4()			{ return description4; }
-	String setupName()			{
+	String setupName()					{
 		if (civilizationNames().isEmpty())
 			return "";
 		return text(substrings(civilizationNames().get(0), '|').get(0));

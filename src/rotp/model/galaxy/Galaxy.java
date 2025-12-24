@@ -21,7 +21,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -498,7 +497,8 @@ public final class Galaxy implements Base, Serializable {
     	}
     	if (options().persistentRNG())
     		Rotp.rand(galRandom);
-    	orionEmpire = new Empire(this, -2, orionId(), 0, "Orion"); // to update tech
+    	orionEmpire().isOrion = true;
+//    	orionEmpire = new Empire(this, -2, orionId(), 0, "Orion"); // to update tech
         for (Empire emp: empires())
              emp.validateOnLoad();
         events.validateOnLoad();
@@ -870,15 +870,14 @@ public final class Galaxy implements Base, Serializable {
 				player.raceOptions	= playerRaceOptions;
 			}
 		}
-		void playerRace(String r, String dr, boolean isCR,
-				DynOptions options, int ai) {
-			empires[0].setRace(r, dr, isCR, options, ai);
-		}
-		LinkedList<String> alienRaces() {
-			LinkedList<String> list = new LinkedList<>();
-			for (int i=1; i<numEmpires; i++)
-				list.add(empires[i].raceKey);
-			return list;
-		}
+//		void playerRace(String r, String dr, boolean isCR, DynOptions options, int ai, CivilizationId civId) {
+//			empires[0].setRace(r, dr, isCR, options, ai, civId);
+//		}
+//		LinkedList<String> alienRaces() {
+//			LinkedList<String> list = new LinkedList<>();
+//			for (int i=1; i<numEmpires; i++)
+//				list.add(empires[i].raceKey);
+//			return list;
+//		}
     }
 }

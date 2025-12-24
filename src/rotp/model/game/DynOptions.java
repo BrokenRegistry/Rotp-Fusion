@@ -187,7 +187,7 @@ public class DynOptions implements DynamicOptions, Serializable {
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(saveFile));
         ZipEntry e = new ZipEntry("DynamicOptions.dat");
         out.putNextEntry(e);
-        
+
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream objOut = null;
         try {
@@ -205,7 +205,7 @@ public class DynOptions implements DynamicOptions, Serializable {
             catch(IOException ex) {
     			ex.printStackTrace();
             	System.err.println("Options.save -- IOException: "+ ex.toString());
-            }            
+            }
         }
     }
     // Options files initialization
@@ -245,6 +245,7 @@ public class DynOptions implements DynamicOptions, Serializable {
             return newOptions;
         }
         catch (IOException | ClassNotFoundException e) {
+        	System.err.println("Error: in DynOptions loadObjectData(InputStream is)");
             return null;
         }
     }	

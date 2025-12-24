@@ -619,7 +619,7 @@ public final class Empire extends Species implements NamedObject {
         shipLab = new ShipDesignLab();
     }
     public Empire(Galaxy g, int empId, int sysId, int cId, String name)	{
-		super("RACE_PSILON");
+		super(ORION_KEY);
         log("creating Monster empire for ",  name);
         id			= empId;
         selectedAI	= IGameOptions.BASE;
@@ -667,15 +667,11 @@ public final class Empire extends Species implements NamedObject {
     //public boolean isAIControlled()      { return true; } //for quick switch to test how the AI would have fared in a game
     public Color color()                 { return options().color(bannerColor); }
     int shipColorId()					{ return colorId(); }
-    @Override
-    public String name() {
-        if (empireName == null)
-			if (isPlayer() && isCustomSpecies())
-				empireName = empireTitle();
-			else
-				empireName = replaceTokens("[this_empire]", "this");
-        return empireName;
-    }
+	@Override public String name()		{
+		if (empireName == null)
+			empireName = empireTitle();
+		return empireName;
+	}
     public DiplomaticReply respond(String reason, Empire listener) {
         return respond(reason,listener,null);
     }
@@ -1063,7 +1059,6 @@ public final class Empire extends Species implements NamedObject {
 			dynamicOptions = new DynOptions();
 
 		setSpecies(new Species(raceKey, dataRaceKey, raceOptions));
-//		setSpeciesEmpire(id);
 		setOldSpeciesIndex(raceNameIndex);
 
 		tech().validateOnLoad();
@@ -4258,7 +4253,7 @@ public final class Empire extends Species implements NamedObject {
 	static Comparator<Empire> NON_DYNA_TEC_IND = (Empire o1, Empire o2) -> Double.compare(o2.empireNonDynaTechnoIndPower(), o1.empireNonDynaTechnoIndPower());
 	// ==================== EmpireBaseData ====================
 	//
-	public static class EmpireBaseData {
+	public static final class EmpireBaseData {
 		public String raceKey;
 		public String dataRaceKey;
 		public String empireName;
@@ -4270,6 +4265,7 @@ public final class Empire extends Species implements NamedObject {
 		private int raceAI;
 		private Personality personality;
 		private Objective objective;
+		public CivilizationId civilizationId;
 
 		public SystemBaseData homeSys;
 		private int[] compSysId;
@@ -4277,6 +4273,7 @@ public final class Empire extends Species implements NamedObject {
 		private Long randomSource;
 
 		public EmpireBaseData(Empire src, SystemBaseData[] systems) {
+			src.validateOnLoad();
 			randomSource = src.randomSource;
 			raceKey		 = src.raceKey;
 			dataRaceKey	 = src.dataRaceKey;
@@ -4301,14 +4298,15 @@ public final class Empire extends Species implements NamedObject {
 				for (int i=0; i<compNum; i++)
 					companions[i] = systems[compSysId[i]];
 			}
+			civilizationId = src.getRawCivilizationId(src.raceNameIndex);
 		}
-		public void setRace(String r, String dr, boolean isCR,
-				DynOptions options, int ai) {
+		public void setRace(String r, String dr, boolean isCR, DynOptions options, int ai, CivilizationId civId) {
 			raceKey		 = r;
 			dataRaceKey	 = dr;
 			isCustomRace = isCR;
 			raceOptions	 = options;
 			raceAI		 = ai;
+			civilizationId = civId;
 		}
 		public void raceAI(int ai)	{ raceAI = ai; }
 		public int  raceAI()		{ return raceAI; }

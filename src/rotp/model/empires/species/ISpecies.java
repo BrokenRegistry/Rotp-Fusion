@@ -17,6 +17,7 @@ import rotp.ui.util.ParamList;
 import rotp.util.LabelManager;
 
 public interface ISpecies {
+	String ORION_KEY = "ORION";
 
 	class Utils {
 		private static int currentIndex()			{ return SetupGalaxyUI.mouseBoxIndex()+1; }

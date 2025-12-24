@@ -735,7 +735,7 @@ public abstract class SpeciesSettings {
 	// -#-
 	// #==================== RaceKey ====================
 	//
-	protected String raceKey()	{ return ((RaceKey) settingMap.get(ROOT + RaceKey.RACE_KEY)).settingValue();}
+	protected String raceKey()	{ return ((RaceKey) settingMap.get(ROOT + RaceKey.RACE_KEY)).settingValue(); }
 	protected String fileName()	{ return raceKey() + EXT; }
 	class RaceKey extends SettingString	{
 		private static final String RACE_KEY = "RACE_KEY";
@@ -2353,8 +2353,6 @@ public abstract class SpeciesSettings {
 		private SettingStringLanguage(String guiLangLabel, String nameLangLabel, String defaultValue, String langDir) {
 			super(guiLangLabel, nameLangLabel + toLanguageKey(langDir), defaultValue);
 			this.nameLangLabel = nameLangLabel;
-			if (langDir.isEmpty())
-				System.out.println("langDir.isEmpty()"); // TODO BR: REMOVE
 			this.langDir = langDir;
 			langKey = toLanguageKey(langDir);
 			nameLabel = nameLangLabel + langKey;
@@ -2363,8 +2361,6 @@ public abstract class SpeciesSettings {
 		private SettingStringLanguage(String guiLangLabel, String nameLangLabel, String defaultValue, int lineNum ,String langDir) {
 			super(guiLangLabel, nameLangLabel + toLanguageKey(langDir), defaultValue, lineNum);
 			this.nameLangLabel = nameLangLabel;
-			if (langDir.isEmpty())
-				System.out.println("langDir.isEmpty()"); // TODO BR: REMOVE
 			this.langDir = langDir;
 			set(defaultValue);
 			langKey = toLanguageKey(langDir);

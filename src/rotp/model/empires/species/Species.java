@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import rotp.model.empires.Empire;
+import rotp.model.empires.Empire.EmpireBaseData;
 import rotp.model.empires.Leader;
 import rotp.model.empires.RaceCombatAnimation;
 import rotp.model.empires.SystemInfo;
@@ -52,7 +53,7 @@ public class Species implements ISpecies, Base, Serializable {
 			skills.loadHomeworldList();
 		}
 	}
-	public static String languageToKey (String s)	{ return LANGUAGE_NAMES_MAP.get(s); }
+	static String languageToKey (String s)	{ return LANGUAGE_NAMES_MAP.get(s); }
 	public static boolean validateDialogueTokens()	{
 		boolean valid = true;
 		for (Race skills: Species.races())
@@ -65,7 +66,7 @@ public class Species implements ISpecies, Base, Serializable {
 	// Names validations
 	//
 	private static StringList usedHomeNames, usedLeaderNames, usedSpeciesNames;
-	public static void cleanUsedNames()	{
+	static void cleanUsedNames()	{
 		usedHomeNames	 = null;
 		usedLeaderNames	 = null;
 		usedSpeciesNames = null;
@@ -93,48 +94,50 @@ public class Species implements ISpecies, Base, Serializable {
 
 	private transient Race anim;
 	private transient SpeciesSkills skills;
-	transient String initialHomeWorld;
-	transient String initialLeaderName;
+	private transient String initialHomeWorld;
+	private transient String initialLeaderName;
+	transient String fileKey; // for debug purpose
 	transient int colorId = -1;
-//	private transient Integer civilizationIndex;
-//	private transient String civilizationName; // for debug
-//	private Boolean isCustomNames;
-//	private Boolean isReworked;
+	public boolean isOrion = false;
 	private CivilizationId civilizationId;
-//	private CivilizationName leaderName;
-
-	private CivilizationId civilizationId()	{
-		if (civilizationId == null)
-			civilizationId = new CivilizationId();
+	public CivilizationId getRawCivilizationId(int id)	{ // For restart
+		if (civilizationId == null) {
+			// backward compatibility
+			setOldSpeciesIndex(id);
+		}
 		return civilizationId;
 	}
+	private CivilizationId civilizationId()	{ return civilizationId; }
+	public void setOldSpeciesIndex(int id)	{
+		if (civilizationId == null) {
+			String name = anim.nameVariant(id);
+			civilizationId = new CivilizationId(name, id);
+		}
+		else
+			civilizationId.setIndex(id);
+	}
+	protected String empireTitle()		{ return replaceTokens("[this_empire]", "this"); }
 	protected String getLeaderName()	{ return initialLeaderName; }
 	public String getHomeWorldName()	{ return initialHomeWorld; }
 	protected int colorId()				{ return colorId; }
-//	String nextAvailableCivilization()	{ // TODO BR: nextAvailableCivilization
-//		if (this.isCustomSpecies()) {
-//			
-//		}
-//		if (remainingCivilizationNames()==null) 
-//			loadNameList();
-//		String name = remainingCivilizationNames().remove(0);
-//		return name;
-//	}
 	@Override public String toString()	{
-		String s = String.format("%-22S", "Anim: " + animKey());
-		s += String.format("%-24S", "Skills: " + skillKey());
-		s += String.format("%-14S", "Custom: " + isCustomSpecies());
+		String s = "";
+		s += String.format("%-22s", "Anim: "	+ animKey());
+		s += String.format("%-24s", "Skills: "	+ skillKey());
+		s += String.format("%-14S", "Custom: "	+ isCustomSpecies());
 		if (civilizationId != null) {
-			s += String.format("%-26s", "Civ Name: " + civilizationId.getName());
-			s += String.format("%-11s", "Civ idx: " + civilizationId.getIndex());
-			if (civilizationId.isFromAnimation)
-				s += "anim Names   ";
-			else
+			s += String.format("%-25s", "Species: "	 + raceName());
+			s += String.format("%-26s", "Civ Name: " + civilizationName());
+			s += String.format("%-11s", "Civ idx: "	 + civilizationIndex());
+			if (civilizationId.isSkillsNames())
 				s += "custom Names ";
+			else
+				s += "anim Names   ";
 		}
-		s += String.format("%-28S", "Leader: " + getLeaderName());
-		s += String.format("%-22S", "Home: " + getHomeWorldName());
-		s += " ColorId: " + colorId();
+		s += String.format("%-28s", "Leader: " + getLeaderName());
+		s += String.format("%-22s", "Home: " + getHomeWorldName());
+		s += String.format("%-12s", "ColorId: " + colorId());
+		s += String.format("%-24s", "file: " + fileKey);
 		return s;
 	}
 	// ====================================================================
@@ -159,6 +162,10 @@ public class Species implements ISpecies, Base, Serializable {
 			setSpeciesSkills(skillsKey, options);
 	}
 	public Species(String key)	{
+		if (key.equals(ORION_KEY)) {
+			isOrion = true;
+			key = "RACE_PSILON";
+		}
 		anim = getAnim(key);
 		if (anim == null) { // Add custom race if missing
 			skills = SkillsFactory.keyToCustomSpecies(key);
@@ -167,6 +174,12 @@ public class Species implements ISpecies, Base, Serializable {
 		}
 		else
 			skills = anim;
+	}
+	Species(EmpireBaseData eSrc)	{
+		this(eSrc.raceKey, eSrc.dataRaceKey, eSrc.raceOptions);
+		civilizationId = eSrc.civilizationId;
+		initialHomeWorld = eSrc.homeSys.starName;
+		initialLeaderName = eSrc.leaderName;
 	}
 	// ====================================================================
 	// Initializers
@@ -180,22 +193,26 @@ public class Species implements ISpecies, Base, Serializable {
 		civilizationId		= src.civilizationId;
 	}
 	public void setNewSpeciesAnim(String animKey)	{ anim = getAnim(animKey); }
-	public void setAllCustomNames(CivilizationRecord civ, String langDir)	{
+	void setAllCustomNames(CivilizationRecord civ, String langDir)	{
 		civilizationId = new CivilizationId(civ, langDir, true);
 		initialHomeWorld = civ.homeWorld;
 		initialLeaderName = civ.leaderName;
 	}
-	public void lockUsedNames()	{
-		usedCivilizationNames().add(civilizationId.civName);
+	boolean lockUsedNames()	{
+		boolean used = usedCivilizationNames().contains(civilizationName());
+		used &= usedLeaderNames().contains(initialLeaderName);
+		used &= usedHomeNames().contains(initialHomeWorld);
+		usedCivilizationNames().add(civilizationName());
 		usedLeaderNames().add(initialLeaderName);
-		usedCivilizationNames().add(initialHomeWorld);
+		usedHomeNames().add(initialHomeWorld);
+		return used;
 	}
-	public void setAllAnimNames(CivilizationRecord civ, String langDir)	{
+	void setAllAnimNames(CivilizationRecord civ, String langDir)	{
 		civilizationId = new CivilizationId(civ, langDir, false);
 		initialHomeWorld = civ.homeWorld;
 		initialLeaderName = civ.leaderName;
 	}
-	public SpeciesSkills setSpeciesSkills(String skillsKey)	{
+	SpeciesSkills setSpeciesSkills(String skillsKey)	{
 		skills = getAnim(skillsKey);
 		if (skills == null) {
 			skills = SkillsFactory.keyToCustomSpecies(skillsKey);
@@ -211,21 +228,19 @@ public class Species implements ISpecies, Base, Serializable {
 		skills.isCustomSpecies(true);
 		return skills;
 	}
-	public SpeciesSkills setSpeciesSkills(DynOptions options)	{
+	SpeciesSkills setSpeciesSkills(DynOptions options)	{
 		skills = SkillsFactory.optionToSkills(options);
 		skills.isCustomSpecies(true);
 		return skills;
 	}
 	public void setSpeciesSkills(SpeciesSkills speciesSkills)	{ skills = speciesSkills; }
-	public void setOldSpeciesIndex(int id)		{ civilizationId().setIndex(id); }
-//	public void setOldSpeciesIndex(int id)		{ civilizationIndex = id; }
-	SpeciesSkills getSkillCopy()			{ return skills.copy(); }
+	SpeciesSkills getSkillCopy()	{ return skills.copy(); }
 
 	// ====================================================================
 	// To be overridden
 	//
-	protected boolean isPlayer()			{ return true; } // TODO BR: Check if used
-	protected int civilizationNameIndex()	{ return civilizationIndex(); } // TODO BR: Check if used
+	protected boolean isPlayer()			{ return true; }
+	protected int civilizationNameIndex()	{ return civilizationIndex(); }
 	protected int capitalSysId()			{ return 0; }
 	protected SystemInfo sv()				{ return null; }
 	protected Leader leader()				{ return null; }
@@ -233,28 +248,14 @@ public class Species implements ISpecies, Base, Serializable {
 	// ====================================================================
 	// class tools
 	//
-	private String raceName(int i)		{ // TODO BR: update... Civilization Name
-		String rn;
-		List<String> names = substrings(unparsedRaceName(), '|');
-		if (i >= names.size() || names.get(i).isEmpty())
-			rn = names.get(0);
-		else
-			rn = names.get(i);
-		return speciesPrefix() + rn + speciesSuffix(); // BR: for custom Races
-	}
-	private String unparsedRaceName()	{ // TODO BR: wrong: update
-		if (isCustomPlayer())
-			return skills.setupName;
-		return anim.nameVariant(civilizationNameIndex());
-	}
-	protected String civilizationName()	{ return civilizationId().getName(); }
 	protected int civilizationIndex()	{ return civilizationId().getIndex(); }
-	public String label(String token) {
+	public String label(String token)	{
 		List<String> values = substrings(anim.text(token), ',');
-		return civilizationNameIndex() < values.size() ? values.get(civilizationNameIndex()) : values.get(0);      
+		return civilizationNameIndex() < values.size() ? values.get(civilizationNameIndex()) : values.get(0);
 	}
+	private boolean isSkillsNames()		{ return civilizationId == null? false : civilizationId.isSkillsNames(); }
 	// Species Methods
-	public String replaceTokens(String s, String key)	{ // TODO BR: update
+	public String replaceTokens(String s, String key)	{
 		if (key.equals("player")) // BR: many confusion in translations
 			s = replaceTokens(s, "my");
 		List<String> tokens = this.varTokens(s, key);
@@ -266,19 +267,36 @@ public class Species implements ISpecies, Base, Serializable {
 				s1 = s1.replace(replString, leader().name());
 			else if (token.equals("_home"))
 				s1 = s1.replace(replString, sv().name(capitalSysId()));
-			else if (isCustomPlayer() && !isRandomized() && token.equals("_race"))
-				s1 = s1.replace(replString, setupName());
-			else if (isCustomPlayer() && !isRandomized() && token.equals("_empire"))
-				s1 = s1.replace(replString, empireTitle());
 			else {
-				List<String> values = substrings(anim.text(token), ',');
-				String value = civilizationNameIndex() < values.size() ? values.get(civilizationNameIndex()) : values.get(0);
+				List<String> animValues = substrings(anim.text(token), ',');
+				int idx = civilizationNameIndex();
+				if (isSkillsNames()) {
+					String text = skills.text(token);
+					if (!token.equals(text)) {
+						List<String> skillsValues = substrings(text, ',');
+						if (animValues.size() == 1) { // "_title or equivalent, could be empty
+							if (skillsValues.size() > 0) {
+								s1 = s1.replace(replString, skillsValues.get(0));
+								return s1;
+							}
+						}
+						else { // Must not be empty string
+							if (idx < skillsValues.size()) {
+								String value = skillsValues.get(idx);
+								if (value != null && !value.isEmpty()) {
+									s1 = s1.replace(replString, value);
+									return s1;
+								}
+							}
+						}
+					}
+				}
+				String value = idx < animValues.size() ? animValues.get(idx) : animValues.get(0);
 				s1 = s1.replace(replString, value);
 			}
 		}
 		return s1;
 	}
-
 	public boolean acceptedPlanetEnvironment(PlanetType pt)	{
 		switch (acceptedPlanetEnvironment()) {
 			case "Limited":
@@ -296,13 +314,13 @@ public class Species implements ISpecies, Base, Serializable {
 		}
 	}
 	public String raceName()	{
-		if (isCustomPlayer())
-			return skills.setupName;
-		if (sv()==null)
+		if (isOrion)
 			return "Orion";
-		return raceName(0);
+		String name = civilizationId().getSpeciesName();
+		if (name == null || name.isEmpty())
+			return animSetupName(); // BR: for backward compatibility
+		return name;
 	}
-
 	public boolean isValid()	{ return anim != null && skills != null; }
 	public String id()			{ return anim.id() + " / " + skills.id(); }
 
@@ -310,13 +328,18 @@ public class Species implements ISpecies, Base, Serializable {
 	public String fullTitle()	{ return fullTitle(isPlayer()); }
 	public List<String> introduction()	{ return introduction(isPlayer()); }
 	public boolean isCustomPlayer()		{ return skills.isCustomSpecies() && isPlayer(); }
-	public String isAnimAutonomous()	{ return skills.isAnimAutonomous(); }
+//	public String isAnimAutonomous()	{ return skills.isAnimAutonomous(); }
 	public void initCRToShow(SkillsFactory cr)	{ cr.setFromRaceToShow(skills);}
 	// ====================================================================
 	// Purely Animations
 	//
-	protected String animKey()		{ return anim.id(); }
-	public String speciesName()		{return anim.name(); }
+	protected String animKey()	{ return anim.id(); }
+	public String civilizationName()	{
+		String name = civilizationId().getCivName();
+		if (name == null || name.isEmpty())
+			return anim.name(); // BR: for backward compatibility
+		return name;
+	}
 	public String animSetupName()	{return anim.setupName(); }
 
 	public boolean masksDiplomacy()	{ return anim.masksDiplomacy(); }
@@ -437,11 +460,8 @@ public class Species implements ISpecies, Base, Serializable {
 	public String homeworldPlanetType()	{ return skills.homeworldPlanetType(); }
 	String worldsPrefix()				{ return skills.worldsPrefix(); }
 	String worldsSuffix()				{ return skills.worldsSuffix(); }
-	private String speciesPrefix()		{ return skills.speciesPrefix(); }
-	private String speciesSuffix()		{ return skills.speciesSuffix(); }
 	private String leaderPrefix()		{ return skills.leaderPrefix(); }
 	private String leaderSuffix()		{ return skills.leaderSuffix(); }
-	protected String empireTitle()		{ return skills.empireTitle(); }
 	public String acceptedPlanetEnvironment()	{ return skills.acceptedPlanetEnvironment(); }
 
 	protected float spyCostMod()		{ return skills.spyCostMod(); }
@@ -468,8 +488,8 @@ public class Species implements ISpecies, Base, Serializable {
 	public float hPFactor()					{ return skills.hPFactor();  }
 	public float maintenanceFactor()		{ return skills.maintenanceFactor(); }
 	public float shipSpaceFactor()			{ return skills.shipSpaceFactor(); }
-	public String planetRessource()			{ return skills.planetRessource(); }
-	public String planetEnvironment()		{ return skills.planetEnvironment(); }
+//	public String planetRessource()			{ return skills.planetRessource(); }
+//	public String planetEnvironment()		{ return skills.planetEnvironment(); }
 	public int preferredShipSize()			{ return skills.preferredShipSize(); }
 	public int diplomacyBonus()				{ return skills.diplomacyBonus(); }
 	public int robotControlsAdj()			{ return skills.robotControlsAdj(); }
@@ -478,12 +498,12 @@ public class Species implements ISpecies, Base, Serializable {
 	public float tradePctBonus()			{ return skills.tradePctBonus(); }
 	public float researchBonusPct()			{ return skills.researchBonusPct(); }
 	public float researchNoSpyBonusPct()	{ return skills.researchNoSpyBonusPct(); }
-	public float techDiscoveryPct()			{ return skills.techDiscoveryPct(); }
+//	public float techDiscoveryPct()			{ return skills.techDiscoveryPct(); }
 	public float techDiscoveryPct(int i)	{ return skills.techDiscoveryPct(i); }
 	public float growthRateMod()			{ return skills.growthRateMod(); }
 	protected float workerProductivityMod()	{ return skills.workerProductivityMod(); }
 	public float internalSecurityAdj()		{ return skills.internalSecurityAdj(); }
-	float baseRelations(Empire e)			{ return skills.baseRelations(e); }
+//	float baseRelations(Empire e)			{ return skills.baseRelations(e); }
 	public float spyInfiltrationAdj()		{ return skills.spyInfiltrationAdj(); }
 	public float techMod(int cat)			{ return skills.techMod(cat); }
 	public int groundAttackBonus()			{ return skills.groundAttackBonus(); }
@@ -538,32 +558,6 @@ public class Species implements ISpecies, Base, Serializable {
 			return anim.defaultHomeworldName();
 		return s;
 	}
-	public String nextAvailableHomeworldExt()	{
-		String name;
-		do {
-			name = nextAvailableHomeworld();
-			if (name.isEmpty()) {
-				// Then last chance, get one from the star System List
-				StringList systemNames = anim.masterSystemList(this);
-				systemNames.removeAll(usedHomeNames());
-				return systemNames.getFirst();
-			}
-			else
-				name = skills.worldsPrefix() + name + skills.worldsSuffix();
-			// System.out.println("Next home world name = " + name);
-		}
-		while(usedHomeNames().contains(name));
-		usedHomeNames().add(name);
-		return name;
-	}
-	public String nextAvailableHomeworld()		{ // TODO BR: make private
-		if (!skills.isCustomSpecies())
-			return anim.nextAvailableHomeworld();
-		String s = skills.nextAvailableHomeworld();
-		if (s==null || s.isEmpty())
-			return anim.nextAvailableHomeworld();
-		return s;
-	}
 	protected String nextAvailableLeaderExt()	{
 		String name;
 		do {
@@ -588,43 +582,6 @@ public class Species implements ISpecies, Base, Serializable {
 		if (s==null || s.isEmpty())
 			return anim.nextAvailableLeader();
 		return s;
-	}
-	private String nextAvailableNameExt()	{
-		String name;
-		do {
-			name = nextAvailableName();
-			if (name.isEmpty()) {
-				// Should never happen!
-				name = anim.civilizationNames().getFirst();
-				name = name + name;
-				System.err.println("Error: species list is Empty -> " + name);
-				return name;
-			}
-		}
-		while(usedCivilizationNames().contains(name));
-		return name;
-
-	}
-	private String nextAvailableName()		{
-		// To be implemented later
-		// 50 species and player Anim != Skill => one opponent will have to be mixed too !!!
-//		if (skills.isCustomSpecies()) {
-//			speciesName = skills.nextAvailableName();
-//			if (speciesName==null || speciesName.isEmpty()) {
-//				speciesName  = anim.nextAvailableName();
-//				speciesIndex = anim.nameIndex(speciesName);
-//			}
-//			else
-//				speciesIndex = skills.nameIndex(speciesName);
-//		}
-//		else {
-//		speciesName = anim.nextAvailableName();
-//		speciesIndex = anim.nameIndex(speciesName);
-		civilizationId().setName(anim.nextAvailableName()); // TODO BR: select the right source
-		civilizationId().setIndex(anim.nameIndex(civilizationId.getName()));
-//			civilizationIndex = anim.nameIndex(civilizationName);
-//		}
-		return civilizationId().getName();
 	}
 	public String preferredShipSet()		{
 		String ShipSet = skills.preferredShipSet();
@@ -670,81 +627,35 @@ public class Species implements ISpecies, Base, Serializable {
 			return anim.systemNames();
 		return list;
 	}
-	class CivilizationId implements Serializable	{
+	public class CivilizationId implements Serializable	{
 		private static final long serialVersionUID = 1L;
 		private String civName;
+		private String speciesName;
 		private String languageDir;
 		private Integer index;
-		private boolean isFromAnimation = false;
-		private boolean isCustom = false;
-		CivilizationId(CivilizationRecord civ, String langDir, boolean custom)	{ // TODO BR:
-			isCustom = custom;
-			isFromAnimation = !isCustom;
-			languageDir = langDir;
-			index = civ.civIndex;
-			civName = civ.civName;
-		}
-		CivilizationId(String name, Integer index)	{
-			civName = name;
-			this.index = index;
-		}
-		CivilizationId()	{ init(); }
-		private void init()	{
-			do {
-				getAvailableName();
-			}
-			while(!civName.isEmpty() && usedCivilizationNames().contains(civName));
-		}
-		private void getAvailableName()	{
-			index = null;
-			if (skills.isCustomSpecies()) {
-				civName = skills.nextAvailableName();
-				if (civName!=null && !civName.isEmpty()) {
-					index = anim.nameIndex(civName);
-					isCustom = true;
-					isFromAnimation = false;
-					return;
-				}
-			}
-			// Then get from animations
-			civName = anim.nextAvailableName();
-			if (civName!=null && !civName.isEmpty()) {
-				index = anim.nameIndex(civName);
-				isCustom = false;
-				isFromAnimation = true;
-			}
-			else {
-				isCustom = false;
-				isFromAnimation = false;
-			}
-			return;
-		}
-		void setName(String str)			{ civName = str; }
-		String getName()					{ return civName; }
-		void setLangDir(String dir)			{ languageDir = dir; }
-		String getLangDir()					{ return languageDir; }
-		void setIndex(Integer id)			{ index = id; }
-		Integer getIndex()					{ return index; }
-		void isFromAnimation(boolean is)	{ isFromAnimation = is; }
-		boolean isFromAnimation()			{ return isFromAnimation; }
-		void isCustom(boolean is)			{ isCustom = is; }
-		boolean isCustom()					{ return isCustom; }
-		boolean isEmpty()					{ return index == null; }
+		private boolean isSkillsNames = false;
 
-//		void changeCivilizationName(BaseModPanel frameComp, Component locationComp)	{
-//			// Not a good Idea to use this, as all the dialogs will be wrong
-//			softClick();
-//			String dlgTitle = text("RACES_DIPLOMACY_CIVILIZATION_TITLE", name);
-//			String dlgLabel = text("RACES_DIPLOMACY_CIVILIZATION_LABEL", name);
-//			StringDialogUI dlg = RotPUI.instance().stringDialog();
-//			dlg.init(frameComp, locationComp, dlgLabel, dlgTitle, name, name,
-//					-1, -1, scaled(350), -1, null, null, null);
-//			String newName = dlg.showDialog(0);
-//			if (!newName.equals(name)) {
-//				isAutoUpgradable(false);
-//				name = newName;
-//			}
-//		}
+		private CivilizationId(CivilizationRecord civ, String langDir, boolean isSkillsNames)	{
+			isSkillsNames(isSkillsNames);
+			setLangDir(langDir);
+			setIndex(civ.civIndex);
+			setCivName(civ.civName);
+			setSpeciesName(civ.speciesName);
+		}
+		private CivilizationId(String name, Integer index)	{
+			setCivName(name);
+			setIndex(index);
+		}
+		private void setCivName(String str)			{ civName = str; }
+		private String getCivName()					{ return civName; }
+		private void setSpeciesName(String str)		{ speciesName = str; }
+		private String getSpeciesName()				{ return speciesName; }
+		private void setLangDir(String dir)			{ languageDir = dir; }
+		private String getLangDir()					{ return languageDir; }
+		private void setIndex(Integer id)			{ index = id; }
+		private Integer getIndex()					{ return index; }
+		private void isSkillsNames(boolean is)		{ isSkillsNames = is; }
+		private boolean isSkillsNames()				{ return isSkillsNames; }
 	}
 }
 

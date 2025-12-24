@@ -1108,7 +1108,7 @@ public class RacesUI extends BasePanel {
             int x1 = x0+w1+mgn+s5;
             int y1 = y0+s25;
             g.setFont(narrowFont(22));
-            drawShadowedString(g, emp.raceName(), 1, x1, y1, blackC, whiteC);
+            drawShadowedString(g, emp.civilizationName(), 1, x1, y1, blackC, whiteC);
             int xSh = x+w-s30;
             int ySh = y0+s10;
             int sSh = s20;

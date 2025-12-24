@@ -1565,7 +1565,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         GalacticCouncil c = galaxy().council();
 		String msg = text("COUNCIL_ELECTED_TITLE");
         msg += NEWLINE + voteTotals();
-        msg += NEWLINE + "The winner is: " + c.leader().speciesName();
+        msg += NEWLINE + "The winner is: " + c.leader().civilizationName();
 		return msg;
 	}
 	private String announceMessage()		{
