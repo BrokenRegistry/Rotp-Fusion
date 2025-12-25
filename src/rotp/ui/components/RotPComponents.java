@@ -11,6 +11,7 @@ import static java.awt.GridBagConstraints.SOUTHWEST;
 import static java.awt.GridBagConstraints.WEST;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
@@ -20,6 +21,8 @@ import java.util.Objects;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -29,14 +32,23 @@ import javax.swing.text.JTextComponent;
 
 import rotp.ui.ScaledInteger;
 import rotp.ui.game.GameUI;
+import rotp.ui.main.SystemPanel;
+import rotp.ui.util.IParam;
 import rotp.util.Base;
+import rotp.util.FontManager;
 
 public interface RotPComponents extends Base, ScaledInteger {
 	Insets ZERO_INSETS	= new Insets(0, 0, 0, 0);
+	String LABEL_DESCRIPTION	= IParam.LABEL_DESCRIPTION;
 
 	default Color buttonBackgroundColor()	{ return GameUI.buttonBackgroundColor(); }
 	default Color buttonTextColor()			{ return GameUI.borderBrightColor(); }
 	default Color highlightColor()			{ return Color.YELLOW; }
+	default Color tooltipBackgroundColor()	{ return GameUI.paneBackgroundColor(); }
+	default Color tooltipTxtColor()			{ return SystemPanel.blackText; }
+	default Font tooltipFont()				{ return FontManager.getNarrowFont(scaled(baseFontSize())); }
+	default int baseFontSize()				{ return 14; }
+	default int baseDismissDelay()			{ return 10000; }
 
 	/**
 	 * Creates a {@code GridBagConstraints} object with
@@ -214,4 +226,10 @@ public interface RotPComponents extends Base, ScaledInteger {
 		Document d = text.getDocument();
 		if (d != null) d.addDocumentListener(dl);
 	}
+	default void initTooltips()	{
+		UIManager.put("ToolTip.font", tooltipFont());
+		UIManager.put("ToolTip.background", tooltipBackgroundColor());
+		UIManager.put("ToolTip.foreground", tooltipTxtColor());
+		ToolTipManager.sharedInstance().setDismissDelay(baseDismissDelay());
+	}	
 }

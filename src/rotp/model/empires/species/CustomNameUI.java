@@ -180,6 +180,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 	boolean showPanel()	{
 		contentPane = new ContentPanel();
 		setContentPane(contentPane);
+		initTooltips();
 
 		setTitle(text(ROOT + "NAMES_TITLE"));
 
@@ -811,8 +812,8 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class ExitButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private ExitButton()	{
-			super("Exit");
-			setToolTipText("TODO");
+			super(ROOT + "BUTTON_EXIT");
+			setLabelKey();
 			addActionListener(e -> exitAction());
 		}
 		private void exitAction()	{ dispose(); }
@@ -820,8 +821,8 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class CancelButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private CancelButton()	{
-			super("Cancel");
-			setToolTipText("TODO");
+			super(ROOT + "BUTTON_CANCEL");
+			setLabelKey();
 			addActionListener(e -> cancelAction());
 		}
 		private void cancelAction()	{
@@ -832,9 +833,8 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class FillFromAnimButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private FillFromAnimButton()	{
-			super("");
-			setText(text("CUSTOM_RACE_FILL_FROM_ANIM_BUTTON"));
-			setToolTipText("TODO");
+			super("CUSTOM_RACE_FILL_FROM_ANIM_BUTTON");
+			setLabelKey();
 			addActionListener(e -> fillFromAnim(e));
 		}
 		private void fillFromAnim(ActionEvent evt)	{
@@ -857,9 +857,8 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class FillFromNamesButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private FillFromNamesButton(String langDir)	{
-			super("");
-			setText(text("CUSTOM_RACE_FILL_FROM_NAME_BUTTON"));
-			setToolTipText("TODO");
+			super("CUSTOM_RACE_FILL_FROM_NAME_BUTTON");
+			setLabelKey();
 			addActionListener(e -> fillFromFromNames(e, langDir));
 		}
 		private void fillFromFromNames(ActionEvent evt, String langDir)	{
@@ -879,12 +878,8 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class CopyLanguageButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private CopyLanguageButton(boolean toLeft)	{
-			super("");
-			if (toLeft)
-				setText(text("CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON"));
-			else
-				setText(text("CUSTOM_RACE_COPY_FROM_LEFT_BUTTON"));
-			setToolTipText("TODO");
+			super(toLeft? "CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON" : "CUSTOM_RACE_COPY_FROM_LEFT_BUTTON");
+			setLabelKey();
 			addActionListener(e -> copyLanguage(e, toLeft));
 		}
 		private void copyLanguage(ActionEvent evt, boolean toLeft)	{

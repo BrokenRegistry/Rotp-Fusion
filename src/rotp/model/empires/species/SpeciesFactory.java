@@ -126,7 +126,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 		// Terminate
 		Species.cleanUsedNames();
 	}
-	private boolean debug()					{ return true; }
+	private boolean debug()					{ return false; }
 
 	private List<AlienData> createNoSelectionSpecies(AnimationListMap animSource )	{
 		List<AlienData> aliens = new ArrayList<>();

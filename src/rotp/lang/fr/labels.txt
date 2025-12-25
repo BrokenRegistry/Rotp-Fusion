@@ -2019,6 +2019,7 @@ SETUP_BUTTON_CUSTOM_PLAYER_RACE   | Façonner une espèce
 CUSTOM_RACE_RACE_AI_DESC          | Changer l’IA de l’empire
 CUSTOM_RACE_GUI_TITLE             | Façonnage des espèces
 CUSTOM_RACE_SHOW_TITLE            | Aptitudes de l’espèce
+CUSTOM_RACE_SHOW_TITLE_CUSTOM	| Aptitudes de l’espèce personnalisée
 CUSTOM_RACE_GUI_MALUS             | (Malus : %1)
 CUSTOM_RACE_GUI_COST              | Valeur totale : %1
 CUSTOM_RACE_GUI_SELECT_DESC       | Enregistrer cette espèce, l’attribuer au joueur, Enregistrer en tant que «Dernier paramètre», et quitter ce panneau.
@@ -2230,10 +2231,14 @@ CUSTOM_RACE__race_pluraladjec_DESC	| Pluriel de l’adjectif relatif à →CUSTO
 CUSTOM_RACE__race_pluraladjecF		| **Féminin pluriel
 CUSTOM_RACE__race_pluraladjecF_DESC	| Féminin pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
 
-CUSTOM_RACE_FILL_FROM_ANIM_BUTTON	| = Animations
-CUSTOM_RACE_FILL_FROM_NAME_BUTTON	| Compléter
-CUSTOM_RACE_COPY_FROM_LEFT_BUTTON	| -> Copier
-CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON	| Copier <-
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON		| = Animations
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Rempli les champs en utilisant les valeurs des animations préférées.
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON		| Compléter
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Essayer de remplir les champs en utilisant le nom de la civilisation et le titre.
+CUSTOM_RACE_COPY_FROM_LEFT_BUTTON		| -> Copier
+CUSTOM_RACE_COPY_FROM_LEFT_BUTTON_DESC	| Copiez les valeurs de la page de gauche.
+CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON		| Copier <-
+CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON_DESC	| Copiez les valeurs de la page de droite.
 
 CUSTOM_RACE_MANDATORY_FIELDS		| **Champs obligatoires pour sélectionner l’animation : Un par ethnie.
 CUSTOM_RACE_SPECIES_FIELDS			| Champs communs pour toutes les ethnies de cette espèce.
@@ -2243,7 +2248,7 @@ CUSTOM_RACE_FIELDS_EDIT				| À éditer
 
 CUSTOM_RACE_SPECIES_NAME			| **Nom de →CUSTOM_RACE_CIVILIZATION←
 CUSTOM_RACE_SPECIES_NAME_DESC		| Une des possibles dénomination de cette espèce.
-CUSTOM_RACE_HOME_WORLD				| *Monde d’origine
+CUSTOM_RACE_HOME_WORLD				| **Monde d’origine
 CUSTOM_RACE_HOME_WORLD_DESC			| Un des possibles noms donné à la planète d’origine.
 CUSTOM_RACE_LEADER_NAME				| **Nom du chef
 CUSTOM_RACE_LEADER_NAME_DESC		| Un des possibles noms de dirigeants.
@@ -2392,7 +2397,18 @@ CUSTOM_RACE_IGNORES_ECO_LIMITED_DESC | Ignore les environnements dévastés et h
 CUSTOM_RACE_IGNORES_ECO_ALL_DESC     | Tous les types de planètes peuvent immédiatement être colonisés.
 
 // Custom Race Naming Sub Panel
+CUSTOM_RACE_UI_NAMES_TITLE			| Catalogue des noms d’espèces personnalisés
+CUSTOM_RACE_UI_BUTTON_EXIT			| Quitter
+CUSTOM_RACE_UI_BUTTON_EXIT_DESC		| Conservez les paramètres actuels, puis quittez l'interface.
+CUSTOM_RACE_UI_BUTTON_CANCEL		| Annuler
+CUSTOM_RACE_UI_BUTTON_CANCEL_DESC	| Annulez les modifications, puis quittez l'interface.
 
+BUTTON_BAR_INSERT_LEFT				| <+
+BUTTON_BAR_INSERT_LEFT_DESC			| Insère un nouvel onglet à gauche de celui sélectionné.
+BUTTON_BAR_INSERT_RIGHT				| +>
+BUTTON_BAR_INSERT_RIGHT_DESC		| Insère un nouvel onglet à droite de celui sélectionné.
+BUTTON_BAR_REMOVE					| -
+BUTTON_BAR_REMOVE_DESC				| Supprimer l'onglet actuellement sélectionné.
 
 
 // Advanced Settings

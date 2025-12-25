@@ -266,10 +266,10 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 		private static final long serialVersionUID = 1L;
 		private final boolean insert;
 		private InsertItemButton(boolean insert)	{
-			super((insert ^ westSide)? "+>" : "<+");
+			super((insert ^ westSide)? "BUTTON_BAR_INSERT_RIGHT" : "BUTTON_BAR_INSERT_LEFT");
+			setLabelKey();
 			this.insert	= insert;
 			setName(insert? INSERT_NAME : ADD_NAME);
-			setToolTipText("TODO");
 			addActionListener(new InsertItemAction());
 		}
 	}
@@ -304,9 +304,9 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 	private class RemoveItemButton extends RMiniButton	{
 		private static final long serialVersionUID = 1L;
 		private RemoveItemButton()	{
-			super("-");
+			super("BUTTON_BAR_REMOVE");
+			setLabelKey();
 			setName(REMOVE_NAME);
-			setToolTipText("TODO");
 			addActionListener(new RemoveItemAction());
 		}
 	}

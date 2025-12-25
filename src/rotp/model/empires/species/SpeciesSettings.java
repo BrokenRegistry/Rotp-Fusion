@@ -141,11 +141,11 @@ public abstract class SpeciesSettings {
 		if (canceled) {
 			settingMap.copyFrom(backupMap);
 			race().speciesOptions().restoreStringMap();
-			System.out.println("After restore option string size: " + race().speciesOptions().stringList().size());
+			// System.out.println("After restore option string size: " + race().speciesOptions().stringList().size());
 			for (ICRSettings setting : settingMap.getAll()) {
 				if (setting instanceof SettingStringLanguage) {
 					SettingStringLanguage ssl = (SettingStringLanguage)setting;
-					System.out.println(ssl.key + " " + ssl.langDir);
+					// System.out.println(ssl.key + " " + ssl.langDir);
 				}
 				setting.settingToSkill(race());
 			}
@@ -1893,8 +1893,8 @@ public abstract class SpeciesSettings {
 		private static final String DEFAULT_VALUE = "";
 		static String getHomeWorlds(DynOptions opts)	{ return opts.getString(ROOT + KEY, DEFAULT_VALUE); }
 		private HomeWorld(String langDir)				{ super(ROOT, KEY, DEFAULT_VALUE, langDir); }
-		@Override public boolean isAnimAutonomous()			{ return true; } // can be taken from system list
-		@Override public boolean isAnimAutonomous(int idx)	{ return true; }
+		//@Override public boolean isAnimAutonomous()			{ return true; } // can be taken from system list
+		//@Override public boolean isAnimAutonomous(int idx)	{ return true; }
 		@Override public boolean isCivAutonomous(int idx)	{ return true; }
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.parseHomeWorlds(settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.homeSystemNames().asString()); }
@@ -1993,7 +1993,7 @@ public abstract class SpeciesSettings {
 		}
 		private boolean isCivAutonomous(int idx)	{ return civilizationNameItems.isCivAutonomous(idx) && civilizationLabelItems.isCivAutonomous(idx); }
 		private boolean isAnimAutonomous(int idx)	{ return civilizationNameItems.isAnimAutonomous(idx) && civilizationLabelItems.isAnimAutonomous(idx); }
-		private boolean isAnimAutonomous()	{ return civilizationNameItems.isAnimAutonomous() && civilizationLabelItems.isAnimAutonomous(); }
+		private boolean isAnimAutonomous()			{ return civilizationNameItems.isAnimAutonomous() && civilizationLabelItems.isAnimAutonomous(); }
 		public boolean isFilled()	{
 			boolean filled = speciesNameItems.isFilled();
 			filled &= speciesDescriptionItems.isFilled();
@@ -2417,8 +2417,8 @@ public abstract class SpeciesSettings {
 			return langOptionIndex();
 		}
 		@Override public String getCfgLabel()	{ return nameLabel; }
-		@Override public String getLangLabel()	{ return key; }
-
+		@Override public String getLangLabel()	{ return ROOT + nameLabel; }
+//		@Override public String getLangLabel()	{ return key; }
 		protected String getFromOption(DynamicOptions srcOptions)	{
 			String value = srcOptions.getString(langOptionIndex());
 			if (value == null)

@@ -241,6 +241,10 @@ public class SkillsFactory extends SpeciesSettings {
 		for (ICRSettings setting : settings)
 			setting.updateOption(destOptions);
 
+		// Fills with selected settings
+		for (ICRSettings setting : settings)
+			setting.settingToSkill(race());
+
 		// The previous options could offer more languages.
 		settingMap.cleanLanguages();
 	}

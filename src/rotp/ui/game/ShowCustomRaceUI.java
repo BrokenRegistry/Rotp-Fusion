@@ -183,7 +183,12 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	}
 	public void loadRace(IGameOptions options)		{ // For Race Diplomatic UI Panel
 		forceUpdate = true;
-		raceUI.selectedEmpire().initCRToShow(cr);
+		Empire emp = raceUI.selectedEmpire();
+		emp.initCRToShow(cr);
+		if (emp.isCustomSpecies())
+			guiTitleID	= ROOT + "SHOW_TITLE_CUSTOM";
+		else
+			guiTitleID	= ROOT + "SHOW_TITLE";
 	}
 	public void init(RacesUI p)	{ // For Race Diplomatic UI Panel
 		forceUpdate = true;

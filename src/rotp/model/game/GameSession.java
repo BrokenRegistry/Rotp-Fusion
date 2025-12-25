@@ -365,7 +365,6 @@ public final class GameSession implements Base, Serializable {
     	MultiColonySpendingPane.resetPanel();
     }
     private void stopCurrentGame() {
-    	System.out.println("stopCurrentGame has been called");
         RotPUI.instance().mainUI().clearAdvice();
         resetStaticVars(); // BR: better twice than never!
         //vars().clear();

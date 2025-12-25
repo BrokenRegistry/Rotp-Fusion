@@ -612,9 +612,14 @@ public class SettingBase<T> implements ICRSettings {
 	public String getLabel(String langDir)	{
 		String langLabel = getLangLabel();
 		String realLabel = realLangLabel(langLabel);
-		if (realLabel != null)
+		if (realLabel != null) {
+			if (realLabel.isEmpty()) {
+				realLabel = realLangLabel(langLabel);
+				//System.out.println("realLabel.isEmpty()"); // TODO BR: REMOVE
+			}
 			return realLabel;
-		System.out.println("langLabel = " + langLabel);
+		}
+		//System.out.println("langLabel = " + langLabel); // TODO BR: REMOVE
 		String labelEnd = langDir;
 		langLabel = StringUtils.removeEnd(langLabel, labelEnd);
 		realLabel = realLangLabel(langLabel);

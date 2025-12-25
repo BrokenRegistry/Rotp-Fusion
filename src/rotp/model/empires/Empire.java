@@ -722,8 +722,11 @@ public final class Empire extends Species implements NamedObject {
     public int shipCount(int hullSize) {
         return galaxy().ships.hullSizeCount(id, hullSize);
     }
-    @Override
-    public String toString()   { return concat("Empire: ", raceName()); }
+	@Override public String toString()	{ return super.toString();
+//		if (isCustomSpecies())
+//			return concat("Empire: ", civilizationName(), "custom ");
+//		return concat("Empire: ", civilizationName());
+	}
 
     public boolean canSendTransportsFrom(StarSystem sys) {
         if (sys == null)

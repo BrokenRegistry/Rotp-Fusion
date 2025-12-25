@@ -71,6 +71,11 @@ public interface RotPButtons extends RotPComponents	{
 			this(text);
 			pane.add(this, gbc);
 		}
+		public void setLabelKey()			{ setLabelKey(getText()); }
+		public void setLabelKey(String key) {
+				setText(text(key));
+				setToolTipText(text(key + LABEL_DESCRIPTION));
+		}
 		@Override protected void paintComponent(Graphics g)	{
 			Graphics2D g2 = (Graphics2D) g;
 			Rectangle bounds = getBounds();

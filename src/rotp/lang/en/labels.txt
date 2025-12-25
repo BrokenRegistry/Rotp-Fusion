@@ -2019,6 +2019,7 @@ SETUP_BUTTON_CUSTOM_PLAYER_RACE   | Customize Species
 CUSTOM_RACE_RACE_AI_DESC          | Change the empire AI
 CUSTOM_RACE_GUI_TITLE             | Sapiens Species Customization
 CUSTOM_RACE_SHOW_TITLE            | Species' Abilities
+CUSTOM_RACE_SHOW_TITLE_CUSTOM	| Customized Species' Abilities
 CUSTOM_RACE_GUI_MALUS             | (Malus: %1)
 CUSTOM_RACE_GUI_COST              | Total Value: %1
 CUSTOM_RACE_GUI_SELECT_DESC       | Save Current Species, Select it as Player Species, Save as Last Settings and Exit Panel
@@ -2230,10 +2231,14 @@ CUSTOM_RACE__race_pluraladjecfr_DESC	| Pluriel de l’adjectif relatif à →CUS
 CUSTOM_RACE__race_pluraladjecFfr		| **Féminin pluriel
 CUSTOM_RACE__race_pluraladjecFfr_DESC	| Féminin pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
 
-CUSTOM_RACE_FILL_FROM_ANIM_BUTTON	| Fill from animations
-CUSTOM_RACE_FILL_FROM_NAME_BUTTON	| Fill from names
-CUSTOM_RACE_COPY_FROM_LEFT_BUTTON	| -> Import
-CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON	| Import <-
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON		| Fill from animations
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Fill in the fields using the values of your preferred animations.
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON		| Fill from names
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Try filling in the fields using the civilization name and the tittle.
+CUSTOM_RACE_COPY_FROM_LEFT_BUTTON		| -> Import
+CUSTOM_RACE_COPY_FROM_LEFT_BUTTON_DESC	| Copy the values from the left-hand page.
+CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON		| Import <-
+CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON_DESC	| Copy the values from the right-hand page.
 
 CUSTOM_RACE_MANDATORY_FIELDS		| **Required fields to select the animation: one per civilization.
 CUSTOM_RACE_SPECIES_FIELDS			| Common fields for all civilizations of this species.
@@ -2243,7 +2248,7 @@ CUSTOM_RACE_FIELDS_EDIT				| Edit
 
 CUSTOM_RACE_SPECIES_NAME			| **Civilization Name
 CUSTOM_RACE_SPECIES_NAME_DESC		| One of the possible name for this species.
-CUSTOM_RACE_HOME_WORLD				| *Home world
+CUSTOM_RACE_HOME_WORLD				| **Home world
 CUSTOM_RACE_HOME_WORLD_DESC			| One of the possible home system names.
 CUSTOM_RACE_LEADER_NAME				| **Leader Name
 CUSTOM_RACE_LEADER_NAME_DESC		| One of the possible leader names.
@@ -2393,7 +2398,17 @@ CUSTOM_RACE_IGNORES_ECO_ALL_DESC     | All planet types can immediately be colon
 
 // Custom Race Naming Sub Panel
 CUSTOM_RACE_UI_NAMES_TITLE			| Custom Species Names Catalog
+CUSTOM_RACE_UI_BUTTON_EXIT			| Exit
+CUSTOM_RACE_UI_BUTTON_EXIT_DESC		| Keep the current Settings then Exit the Panel.
+CUSTOM_RACE_UI_BUTTON_CANCEL		| Cancel
+CUSTOM_RACE_UI_BUTTON_CANCEL_DESC	| Cancel changes then Exit Panel.
 
+BUTTON_BAR_INSERT_LEFT				| <+
+BUTTON_BAR_INSERT_LEFT_DESC			| Insert a new tab at the left of the selected one.
+BUTTON_BAR_INSERT_RIGHT				| +>
+BUTTON_BAR_INSERT_RIGHT_DESC		| Insert a new tab at the right of the selected one
+BUTTON_BAR_REMOVE					| -
+BUTTON_BAR_REMOVE_DESC				| Remove the currently selected tab
 
 // Advanced Settings
 SETTINGS_TITLE                    | Advanced Game Options
