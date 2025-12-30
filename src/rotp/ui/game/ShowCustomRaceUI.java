@@ -108,7 +108,8 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private static final ShowCustomRaceUI instance = new ShowCustomRaceUI();
 	public static void languageChanged()	{
 		if (instance != null)
-			instance.cr().languageChanged();
+			if (instance.cr() != null)
+				instance.cr().languageChanged();
 	}
 
 	private List<Integer> colSettingsCount;
@@ -475,6 +476,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		super.close();
 		for (ICRSettings setting : settingList)
 			setting.clearImage();
+		cr().cleanFactories();
 	}
 	@Override protected void drawButtons(Graphics2D g, boolean init) {
         Stroke prev = g.getStroke();

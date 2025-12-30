@@ -2232,9 +2232,9 @@ CUSTOM_RACE__race_pluraladjecFfr		| **Féminin pluriel
 CUSTOM_RACE__race_pluraladjecFfr_DESC	| Féminin pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
 
 CUSTOM_RACE_FILL_FROM_ANIM_BUTTON		| Fill from animations
-CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Fill in the fields using the values of your preferred animations.
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Fill in the empty fields using the values from your preferred animations. Press "Shift" to also replace fields that are already filled in.
 CUSTOM_RACE_FILL_FROM_NAME_BUTTON		| Fill from names
-CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Try filling in the fields using the civilization name and the tittle.
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Try filling in the empty fields using the civilization name and the tittle. Press "Shift" to also replace fields that are already filled in.
 CUSTOM_RACE_COPY_FROM_LEFT_BUTTON		| -> Import
 CUSTOM_RACE_COPY_FROM_LEFT_BUTTON_DESC	| Copy the values from the left-hand page.
 CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON		| Import <-

@@ -2232,13 +2232,13 @@ CUSTOM_RACE__race_pluraladjecF		| **Féminin pluriel
 CUSTOM_RACE__race_pluraladjecF_DESC	| Féminin pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
 
 CUSTOM_RACE_FILL_FROM_ANIM_BUTTON		| = Animations
-CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Rempli les champs en utilisant les valeurs des animations préférées.
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Rempli les champs vides en utilisant les valeurs de vos animations préférées. Appuyez sur « Maj » pour remplacer également les champs déjà remplis.
 CUSTOM_RACE_FILL_FROM_NAME_BUTTON		| Compléter
-CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Essayer de remplir les champs en utilisant le nom de la civilisation et le titre.
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Essaye de remplir les champs vides en utilisant le nom de la civilisation et le titre. Appuyez sur « Maj » pour remplacer également les champs déjà remplis.
 CUSTOM_RACE_COPY_FROM_LEFT_BUTTON		| -> Copier
-CUSTOM_RACE_COPY_FROM_LEFT_BUTTON_DESC	| Copiez les valeurs de la page de gauche.
+CUSTOM_RACE_COPY_FROM_LEFT_BUTTON_DESC	| Copie les valeurs de la page de gauche.
 CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON		| Copier <-
-CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON_DESC	| Copiez les valeurs de la page de droite.
+CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON_DESC	| Copie les valeurs de la page de droite.
 
 CUSTOM_RACE_MANDATORY_FIELDS		| **Champs obligatoires pour sélectionner l’animation : Un par ethnie.
 CUSTOM_RACE_SPECIES_FIELDS			| Champs communs pour toutes les ethnies de cette espèce.
@@ -2397,7 +2397,7 @@ CUSTOM_RACE_IGNORES_ECO_LIMITED_DESC | Ignore les environnements dévastés et h
 CUSTOM_RACE_IGNORES_ECO_ALL_DESC     | Tous les types de planètes peuvent immédiatement être colonisés.
 
 // Custom Race Naming Sub Panel
-CUSTOM_RACE_UI_NAMES_TITLE			| Catalogue des noms d’espèces personnalisés
+CUSTOM_RACE_UI_NAMES_TITLE			| Registre des noms d’espèces personnalisés
 CUSTOM_RACE_UI_BUTTON_EXIT			| Quitter
 CUSTOM_RACE_UI_BUTTON_EXIT_DESC		| Conservez les paramètres actuels, puis quittez l'interface.
 CUSTOM_RACE_UI_BUTTON_CANCEL		| Annuler

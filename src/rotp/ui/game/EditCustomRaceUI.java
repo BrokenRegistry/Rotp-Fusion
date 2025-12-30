@@ -70,7 +70,8 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	private	static final EditCustomRaceUI instance		= new EditCustomRaceUI();
 	public static void languageChanged()	{
 		if (instance != null)
-			instance.cr().languageChanged();
+			if (instance.cr() != null)
+				instance.cr().languageChanged();
 	}
 
 	private final Box selectBox		= new Box(selectKey);

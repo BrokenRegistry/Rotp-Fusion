@@ -756,7 +756,7 @@ class SpeciesSkills implements Base, Serializable {
 	void parseShipNamesMedium(String names)		{ shipNamesMedium().resetFrom(substrings(names, ',')); }
 	void parseShipNamesLarge(String names)		{ shipNamesLarge().resetFrom(substrings(names, ',')); }
 	void parseShipNamesHuge(String names)		{ shipNamesHuge().resetFrom(substrings(names, ',')); }
-	void parseDialogLabel(String label, String names)	{ labels().addLabel(label, names); }
+	void parseDialogLabel(String label, String names)	{ raceLabels().addLabel(label, names); }
 	
 	private class SpeciesUniqueIdentifiers	{
 		private static final StringList enLabels = new StringList("_empire,_race,_race_plural,_title,_nameTitle", ",");
