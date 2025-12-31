@@ -253,7 +253,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 		// loop through civilizations for current language
 		boolean langAutonomous = true;
 		int idx = 0;
-		//System.out.println("civilizationButtonList: " + civilizationButtonList.toString());
+		// System.out.println("civilizationButtonList: " + civilizationButtonList.toString()); // TO DO BR: comment
 		for (String civName : civilizationButtonList) {
 			if (civilizationColorHasChanged(currentLangDir, civName, idx))
 				bars.selectCivilization.repaintButton(idx);
@@ -316,7 +316,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 					languageTextColor.remove(e.prevLabel);
 					languageTextColor.put(e.newLabel, DEFAULT_COLOR_ID);
 					civilizationTextColor.clear();
-					System.out.println("LanguageBarListener: Button renamed " + e.toString());
+					// System.out.println("LanguageBarListener: Button renamed " + e.toString()); // TO DO BR: comment
 					break;
 			}
 			languageNames.setSelectedIndex(e.newLabel);
@@ -345,12 +345,12 @@ class CustomNameUI extends RDialog implements ActionListener {
 					settings.delete(e.index);
 					break;
 				case BUTTON_SELECTED:
-					System.out.println("EmpireBarListener: Button selected " + e.toString());
+					// System.out.println("EmpireBarListener: Button selected " + e.toString()); // TO DO BR: comment
 					break;
 				case BUTTON_RENAMED:
 					int prev = civilizationTextColor.remove(e.prevLabel);
 					civilizationTextColor.put(e.newLabel, prev);
-					System.out.println("EmpireBarListener: Button renamed " + e.toString());
+					// System.out.println("EmpireBarListener: Button renamed " + e.toString()); // TO DO BR: comment
 					pageSelectionPane.refreshBar();
 					return;
 			}
@@ -445,7 +445,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 			updating(false);
 		}
 		private void updateLanguage(String language)	{
-			// System.out.println("update Language to " + language + " updating = " + updating);
+			// System.out.println("update Language to " + language + " updating = " + updating); // TO DO BR: comment
 			if (updating)
 				return;
 			languageNames.setSelectedIndex(language);
@@ -570,7 +570,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 			int lgManagerId = languageNames.indexOf(language);
 
 			civilizationId = civilizationButtonList.getSelectedIndex();
-			// System.out.println("Page left = " + left + " Language = " + language);
+			// System.out.println("Page left = " + left + " Language = " + language); // TO DO BR: comment
 			setOpaque(false);
 			setForeground(Color.black);
 			setLayout(new GridBagLayout());
@@ -924,7 +924,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 		}
 		private class LanguageAction implements ActionListener	{
 			@Override public void actionPerformed(ActionEvent evt)	{
-				// System.out.println("LanguageAction " + evt.getActionCommand());
+				// System.out.println("LanguageAction " + evt.getActionCommand()); // TO DO BR: comment
 				String language = (String) getSelectedItem();
 				pageSelectionPane.updateLanguage(language);
 			}

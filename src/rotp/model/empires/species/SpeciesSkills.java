@@ -247,7 +247,7 @@ class SpeciesSkills implements Base, Serializable {
 		copy.uniqueNames.civilizationNames.addAll(uniqueNames.civilizationNames);
 		copy.uniqueNames.homeSystemNames.addAll(uniqueNames.homeSystemNames);
 		copy.uniqueNames.leaderNames.addAll(uniqueNames.leaderNames);
-		copy.speciesOptions(srcOptions); // TODO BR: COMMENT MAYBE
+		copy.speciesOptions(srcOptions);
 		copy.isCopy = true;
 		return copy;
 	}
@@ -759,13 +759,9 @@ class SpeciesSkills implements Base, Serializable {
 	void parseDialogLabel(String label, String names)	{ raceLabels().addLabel(label, names); }
 	
 	private class SpeciesUniqueIdentifiers	{
-		private static final StringList enLabels = new StringList("_empire,_race,_race_plural,_title,_nameTitle", ",");
-		private static final StringList frLabels = new StringList("_empireof,_raceadjec,_raceadjecF"
-				+ ",_race_pluralnoun,_race_pluralnounof,_race_pluralnounto,_race_pluraladjec,_race_pluraladjecF"
-				+ ",_title,_nameTitle", ",");
-		private final StringList civilizationNames	 = new StringList();
-		private final StringList homeSystemNames = new StringList();
-		private final StringList leaderNames	 = new StringList();
+		private final StringList civilizationNames	= new StringList();
+		private final StringList homeSystemNames	= new StringList();
+		private final StringList leaderNames		= new StringList();
 		private StringList remainingCivilizationNames;
 		private StringList remainingHomeworldNames;
 		private StringList remainingLeaderNames;

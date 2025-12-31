@@ -42,7 +42,6 @@ public enum SpecificCROption {
 		for (SpecificCROption opt: values())
 			if (opt.value.equals(value))
 				return(LABEL_CONVERTER_KEY + opt.name());
-		//System.err.println("ERROR no such value in SpecificCROption.getLabel(string value): " + value); // TODO BR: REMOVE
 		return value;
 	}
 	public static SpecificCROption set(String opt) {

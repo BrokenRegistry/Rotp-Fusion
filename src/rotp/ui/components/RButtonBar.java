@@ -180,13 +180,11 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 	}
 	@Override public Object[] getSelectedObjects()	{
 		System.out.println("RSelectionButtons getSelectedObjects()");
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override public void actionPerformed(ActionEvent e)	{
 		System.out.println("RSelectionButtons actionPerformed(ActionEvent e)");
 		System.out.println(e.toString());
-		// TODO Auto-generated method stub
 	}
 	@Override public void addItemListener(ItemListener l)	{
 		itemListenerList.add(l);
@@ -213,7 +211,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 		if (!button.isSelected())
 			buttonList.get(i).setSelected(true);
 	}
-	public int getSelectedIndex()		{ return labelList.getSelectedIndex(); }
+	public int getSelectedIndex()		{ return labelList.ValidSelectedIndex(); }
 	public int getIndex(MiniToggle b)	{ return buttonList.indexOf(b); }
 	public StringList getList()			{ return labelList; }
 	public void renameSelected(String newLabel)	{
