@@ -16,7 +16,6 @@
 package rotp.ui;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Composite;
@@ -26,7 +25,6 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Shape;
-import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -48,7 +46,7 @@ import rotp.ui.util.InterfacePreview;
 import rotp.util.Base;
 import rotp.util.ThickBevelBorder;
 
-public class BasePanel extends JPanel implements Base, InterfacePreview {
+public class BasePanel extends JPanel implements Base, ScaledInteger, InterfacePreview {
     private static final long serialVersionUID = 1L;
     public static final String TEXTURE_GRAY = "TEXTURE_GRAY";
     public static final String TEXTURE_BROWN = "TEXTURE_BROWN";
@@ -150,7 +148,7 @@ public class BasePanel extends JPanel implements Base, InterfacePreview {
             drawMemory(g);
     }
     protected void jPanelPaintComponent(Graphics g) {
-        setFontHints(g);
+        setRenderingHints(g);
         super.paintComponent(g);
     }
     protected void jPanelPaint(Graphics g) {
@@ -166,7 +164,7 @@ public class BasePanel extends JPanel implements Base, InterfacePreview {
     }
     @Override
     public void paintComponent(Graphics g) {
-        setFontHints(g);
+        setRenderingHints(g);
 
         if (hasStarBackground())
             setBackground(starBackgroundC());
@@ -274,7 +272,7 @@ public class BasePanel extends JPanel implements Base, InterfacePreview {
         	// x = bdrW+s10;
         	// y = bdrW+s10;
        }
-        	
+
         g.setColor(MainUI.paneShadeC);
         g.fillRect(x-bdrW, y-bdrW, noticeW+bdrW+bdrW, noticeH+bdrW+bdrW);
         g.setColor(MainUI.paneBackground);
@@ -352,58 +350,6 @@ public class BasePanel extends JPanel implements Base, InterfacePreview {
         g0.setClip(clip);
         drawTextureWithExistingClip(g0, x,y,w,h);
         g0.setClip(null);
-    }
-
-    public static int  s1,  s2,  s3,  s4,  s5,  s6,  s7,  s8,  s9, s10;
-    public static int s11, s12, s13, s14, s15, s16, s17, s18, s19, s20;
-    public static int s21, s22, s23, s24, s25, s26, s27, s28, s29, s30;
-    public static int s31, s32, s33, s34, s35, s36, s37, s38, s39, s40;
-    public static int s41, s42, s43, s44, s45, s46, s47, s48, s49, s50;
-    public static int s51, s52, s53, s54, s55, s56, s57, s58, s59, s60;
-    public static int s61, s62, s63, s64, s65, s66, s67, s68, s69, s70;
-    public static int s71, s72, s73, s74, s75, s76, s77, s78, s79, s80;
-    public static int s81, s82, s83, s84, s85, s86, s87, s88, s89, s90;
-    public static int s91, s92, s93, s94, s95, s96, s97, s98, s99, s100;
-
-    public static Stroke stroke1, stroke2, stroke3, stroke4, stroke5, stroke6, stroke7, stroke8, stroke9, stroke10; // modnar: add 3 strokes
-
-    public void loadScaledIntegers() {
-        s1 = scaled(1); s2 = scaled(2); s3 = scaled(3); s4 = scaled(4); s5 = scaled(5); s6 = scaled(6); s7 = scaled(7); s8 = scaled(8); s9 = scaled(9); s10 = scaled(10);
-        s11 = scaled(11); s12 = scaled(12); s13 = scaled(13); s14 = scaled(14); s15 = scaled(15); s16 = scaled(16); s17 = scaled(17); s18 = scaled(18); s19 = scaled(19); s20 = scaled(20);
-        s21 = scaled(21); s22 = scaled(22); s23 = scaled(23); s24 = scaled(24); s25 = scaled(25); s26 = scaled(26); s27 = scaled(27); s28 = scaled(28); s29 = scaled(29); s30 = scaled(30);
-        s31 = scaled(31); s32 = scaled(32); s33 = scaled(33); s34 = scaled(34); s35 = scaled(35); s36 = scaled(36); s37 = scaled(37); s38 = scaled(38); s39 = scaled(39); s40 = scaled(40);
-        s41 = scaled(41); s42 = scaled(42); s43 = scaled(43); s44 = scaled(44); s45 = scaled(45); s46 = scaled(46); s47 = scaled(47); s48 = scaled(48); s49 = scaled(49); s50 = scaled(50);
-        s51 = scaled(51); s52 = scaled(52); s53 = scaled(53); s54 = scaled(54); s55 = scaled(55); s56 = scaled(56); s57 = scaled(57); s58 = scaled(58); s59 = scaled(59); s60 = scaled(60);
-        s61 = scaled(61); s62 = scaled(62); s63 = scaled(63); s64 = scaled(64); s65 = scaled(65); s66 = scaled(66); s67 = scaled(67); s68 = scaled(68); s69 = scaled(69); s70 = scaled(70);
-        s71 = scaled(71); s72 = scaled(72); s73 = scaled(73); s74 = scaled(74); s75 = scaled(75); s76 = scaled(76); s77 = scaled(77); s78 = scaled(78); s79 = scaled(79); s80 = scaled(80);
-        s81 = scaled(81); s82 = scaled(82); s83 = scaled(83); s84 = scaled(84); s85 = scaled(85); s86 = scaled(86); s87 = scaled(87); s88 = scaled(88); s89 = scaled(89); s90 = scaled(90);
-        s91 = scaled(91); s92 = scaled(92); s93 = scaled(93); s94 = scaled(94); s95 = scaled(95); s96 = scaled(96); s97 = scaled(97); s98 = scaled(98); s99 = scaled(99); s100 = scaled(100);
-
-        stroke1 = new BasicStroke(s1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: round cap and join
-        stroke2 = new BasicStroke(s2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: round cap and join
-        stroke3 = new BasicStroke(s3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: round cap and join
-        stroke4 = new BasicStroke(s4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: round cap and join
-        stroke5 = new BasicStroke(s5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: round cap and join
-        stroke6 = new BasicStroke(s6, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: round cap and join
-        stroke7 = new BasicStroke(s7, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: round cap and join
-        stroke8 = new BasicStroke(s8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: add strokes
-        stroke9 = new BasicStroke(s9, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: add strokes
-        stroke10 = new BasicStroke(s10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: add strokes
-    }
-    public static Stroke baseStroke(int n) {
-        switch(n) {
-            case 1: return stroke1;
-            case 2: return stroke2;
-            case 3: return stroke3;
-            case 4: return stroke4;
-            case 5: return stroke5;
-            case 6: return stroke6;
-            case 7: return stroke7;
-            case 8: return stroke8; // modnar: add strokes
-            case 9: return stroke9; // modnar: add strokes
-            case 10: return stroke10; // modnar: add strokes
-            default: return stroke1;
-        }
     }
 
     // used for keyEvents sent from RotPUI

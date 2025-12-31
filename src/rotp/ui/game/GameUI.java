@@ -560,6 +560,10 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     @Override
     public String ambienceSoundKey() { return canContinue() ? super.ambienceSoundKey() : AMBIENCE_KEY; }
     @Override public void paintComponent(Graphics g0) {
+		boolean showTiming = false;
+		// showTiming = true; // TO DO BR: COMMENT
+		long timeStart = System.currentTimeMillis();
+
         super.paintComponent(g0);
         Graphics2D g = (Graphics2D) g0;
         int w = getWidth();
@@ -606,7 +610,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         if (titleImg == null) {
             titleImg = newBufferedImage(getWidth(), scaled(200));
             Graphics2D imgG = (Graphics2D) titleImg.getGraphics();
-            setFontHints(imgG);
+            setRenderingHints(imgG);
             int bigFont = scaledLogoFont(imgG, titleStr1+titleStr3, w*3/4, 80, 65);
             int smallFont = scaledLogoFont(imgG, titleStr2, w*3/20, 60, 40);
             imgG.setFont(logoFont(bigFont));
@@ -767,6 +771,8 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 		}
 
         g.setComposite(prevComp);
+		if (showTiming)
+			System.out.println("Main Menu paintComponent Time = " + (System.currentTimeMillis()-timeStart) + " ms");	
     }
     private void drawInfo(Graphics2D g, String info, int xLeft, int yBottom, int w) {
     	int fontSize = 15;
@@ -1198,11 +1204,16 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     }
     private void selectLanguage(int i) {
         softClick();
+		boolean resetCRUI = LanguageManager.selectedLanguage() != i;
         LanguageManager.current().selectLanguage(i);
         UserPreferences.save();
         setTextValues();
         titleImg = null;
         repaint();
+		if (resetCRUI) {
+			ShowCustomRaceUI.languageChanged();
+			EditCustomRaceUI.languageChanged();
+		}
     }
     private void goToSettings() {
 		buttonClick();

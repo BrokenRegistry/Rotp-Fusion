@@ -382,7 +382,7 @@ public class GroundBattleUI extends BasePanel implements MouseListener {
     }
     private void paintCombatScene(Image img) {
         Graphics2D g = (Graphics2D) img.getGraphics();
-        setFontHints(g);
+        setRenderingHints(g);
         int w = getWidth();
         int h = getHeight();
         Color detailLineC = Color.white;

@@ -59,10 +59,10 @@ class SpeciesSkills implements Base, Serializable {
 	private final SpeciesUniqueIdentifiers uniqueNames = new SpeciesUniqueIdentifiers();
 	private final StringList systemNames = new StringList();
 
-	private List<String> shipNamesSmall	 = new ArrayList<>();
-	private List<String> shipNamesMedium = new ArrayList<>();
-	private List<String> shipNamesLarge	 = new ArrayList<>();
-	private List<String> shipNamesHuge	 = new ArrayList<>();
+	private final StringList shipNamesSmall	 = new StringList();
+	private final StringList shipNamesMedium = new StringList();
+	private final StringList shipNamesLarge	 = new StringList();
+	private final StringList shipNamesHuge	 = new StringList();
 
 	private float defaultRaceRelations = 0;
 	private final HashMap<String, Integer> raceRelations = new HashMap<>();
@@ -78,6 +78,8 @@ class SpeciesSkills implements Base, Serializable {
 	private String planetEnvironment	= "Normal";
 	// Custom Races:
 	private boolean isCustomSpecies		= false;
+	private boolean isCopy				= false; // Security prevent modification of original 
+	private String isAnimAutonomous		= ""; // Security prevent modification of original 
 	private DynOptions speciesOptions	= null;
 	// \BR:
 	private int startingYear;
@@ -119,7 +121,8 @@ class SpeciesSkills implements Base, Serializable {
 	private String title;
 	private String fullTitle;
 	private int homeworldKey, introTextX;
-	private String reworkableSpeciesKey;
+	private String reworkableSpeciesKey, languageList;
+	private int reworkableId = -1; // -1 if none was used while editing
 	private int preferredAI;
 
 	private static final int PERSONALITY_COUNT	= Personality.values().length;
@@ -146,8 +149,12 @@ class SpeciesSkills implements Base, Serializable {
 	int speciesType()					{ return speciesType; }
 	void speciesType(int i)				{ speciesType = i; }
 
+	String languageList()				{ return languageList; }
+	void languageList(String s)			{ languageList = s; }
 	String reworkableSpeciesKey()		{ return reworkableSpeciesKey; }
 	void reworkableSpeciesKey(String s)	{ reworkableSpeciesKey = s; }
+	int reworkableId()					{ return reworkableId; }
+	void reworkableId(int i)			{ reworkableId = i; }
 	int startingYear()					{ return startingYear; }
 	void startingYear(int i)			{ startingYear = i; }
 	void empireTitle(String s)			{ empireTitle = s; }
@@ -163,7 +170,7 @@ class SpeciesSkills implements Base, Serializable {
 	void worldsPrefix(String s)			{ worldsPrefix = s; }
 	String worldsSuffix()				{ return worldsSuffix; }
 	void worldsSuffix(String s)			{ worldsSuffix = s; }
-	String preferredShipSet()	{ return preferredShipSet; }
+	String preferredShipSet()			{ return preferredShipSet; }
 	void preferredShipSet(String s)		{ preferredShipSet = s; }
 
 	String homeworldStarType()			{ return homeworldStarType; }
@@ -174,17 +181,17 @@ class SpeciesSkills implements Base, Serializable {
 	String langKey()					{ return langKey; }
 	void langKey(String s)				{ langKey = s; }
 	List<String> systemNames()			{ return systemNames; }
-	void systemNames(List<String> s)	{ systemNames.reset(s); }
-	StringList speciesNames()			{ return uniqueNames.speciesNames; }
+	void systemNames(List<String> s)	{ systemNames.resetFrom(s); }
+	StringList civilizationNames()		{ return uniqueNames.civilizationNames; }
 	StringList homeSystemNames()		{ return uniqueNames.homeSystemNames; }
 	StringList leaderNames()			{ return uniqueNames.leaderNames; }
-	List<String> shipNamesSmall()		{ return shipNamesSmall; }
-	List<String> shipNamesMedium()		{ return shipNamesMedium; }
-	List<String> shipNamesLarge()		{ return shipNamesLarge; }
-	List<String> shipNamesHuge()		{ return shipNamesHuge; }
-	private StringList remainingSpeciesNames()	 { return uniqueNames.remainingSpeciesNames; }
-	private StringList remainingHomeworldNames() { return uniqueNames.remainingHomeworldNames; }
-	private StringList remainingLeaderNames()	 { return uniqueNames.remainingLeaderNames; }
+	StringList shipNamesSmall()			{ return shipNamesSmall; }
+	StringList shipNamesMedium()		{ return shipNamesMedium; }
+	StringList shipNamesLarge()			{ return shipNamesLarge; }
+	StringList shipNamesHuge()			{ return shipNamesHuge; }
+	private StringList remainingCivilizationNames()	{ return uniqueNames.remainingCivilizationNames; }
+	private StringList remainingHomeworldNames()	{ return uniqueNames.remainingHomeworldNames; }
+	private StringList remainingLeaderNames()		{ return uniqueNames.remainingLeaderNames; }
 
 	SpeciesSkills ()	{
 		leaderNames().add("Leader");
@@ -209,12 +216,20 @@ class SpeciesSkills implements Base, Serializable {
 			s1 = s1.replace(replString, values.get(0));
 		}
 		if (s.equalsIgnoreCase(s1))
-			return this.empireTitle();
+			return this.empireTitle;
 		return s1;
 	}
+	protected boolean isCopy()			{ return isCopy; }
+	protected void isCopy( boolean is)	{ isCopy = is; }
 	// BR: for species customization
 	// Get a Copy the current species
-	protected SpeciesSkills copy() {
+	protected SpeciesSkills copy()		{
+		if (speciesOptions() == null)
+			return copy(new DynOptions());
+		else
+			return copy(speciesOptions().copy());
+	}
+	protected SpeciesSkills copy(DynOptions srcOptions) {
 		SpeciesSkills copy	= RaceFactory.current().reloadRaceDataFile(directoryName);
 		labels.copy(labels, copy.labels);
 		copy.setupName		= setupName();
@@ -223,17 +238,24 @@ class SpeciesSkills implements Base, Serializable {
 		copy.description2	= description2;
 		copy.description3	= description3;
 		copy.description4	= description4;
+		copy.title			= title;
+		copy.fullTitle		= fullTitle;
 		copy.shipNamesSmall.addAll(shipNamesSmall);
 		copy.shipNamesMedium.addAll(shipNamesMedium);
 	 	copy.shipNamesLarge.addAll(shipNamesLarge);
 		copy.shipNamesHuge.addAll(shipNamesHuge);
+		copy.uniqueNames.civilizationNames.addAll(uniqueNames.civilizationNames);
+		copy.uniqueNames.homeSystemNames.addAll(uniqueNames.homeSystemNames);
+		copy.uniqueNames.leaderNames.addAll(uniqueNames.leaderNames);
+		copy.speciesOptions(srcOptions);
+		copy.isCopy = true;
 		return copy;
 	}
 	void loadNameList()		{
-		StringList secondaryNames = new StringList(speciesNames());
-		uniqueNames.remainingSpeciesNames = new StringList();
-		remainingSpeciesNames().add(secondaryNames.remove(0));
-		remainingSpeciesNames().addAll(secondaryNames);
+		StringList secondaryNames = new StringList(civilizationNames());
+		uniqueNames.remainingCivilizationNames = new StringList();
+		remainingCivilizationNames().add(secondaryNames.remove(0));
+		remainingCivilizationNames().addAll(secondaryNames);
 	}
 	void loadLeaderList()	{
 		StringList secondaryNames = new StringList(leaderNames());
@@ -249,15 +271,15 @@ class SpeciesSkills implements Base, Serializable {
 		Collections.shuffle(homeNames);
 		remainingHomeworldNames().addAll(homeNames);
 	}
-	String nextAvailableName()		{
-		if (remainingSpeciesNames()==null) 
+	String nextAvailableName()	{
+		if (remainingCivilizationNames()==null) 
 			loadNameList();
-		String name = remainingSpeciesNames().remove(0);
+		String name = remainingCivilizationNames().remove(0);
 		return name;
 	}
-	int nameIndex(String n)			{ return speciesNames().indexOf(n); }
+	int nameIndex(String n)			{ return civilizationNames().indexOf(n); }
 	String nameVariant(int i)		{
-		StringList names = speciesNames();
+		StringList names = civilizationNames();
 		return i<names.size()? names.get(i): names.get(0);
 	}
 	String nextAvailableLeader()	{
@@ -270,8 +292,8 @@ class SpeciesSkills implements Base, Serializable {
 			loadHomeworldList();
 		return remainingHomeworldNames().remove(0);
 	}
-	LabelManager raceLabels()				{ return labels; }
-	@Override public String toString()		{ return concat("Skills:", id); }
+	LabelManager raceLabels()			{ return labels; }
+	@Override public String toString()	{ return concat("Skills:", id); }
 	@Override public String text(String key)	{
 		if (raceLabels().hasLabel(key))
 			return raceLabels().label(key);
@@ -416,6 +438,14 @@ class SpeciesSkills implements Base, Serializable {
 	void setDescription2(String desc)	{ description2 = desc; }
 	void setDescription3(String desc)	{ description3 = desc; }
 	void setDescription4(String desc)	{ description4 = desc; }
+	void setDescription(int i, String desc)	{
+		switch (i) {
+			case 1:	description1 = desc; return;
+			case 2:	description2 = desc; return;
+			case 3:	description3 = desc; return;
+			case 4:	description4 = desc; return;
+		}
+	}
 	String getDescription(int i)		{
 		switch (i) {
 			case 1:	return getDescription1();
@@ -433,10 +463,10 @@ class SpeciesSkills implements Base, Serializable {
 		return desc.replace("[race]", name);
 	}
 	String getDescription4()			{ return description4; }
-	String setupName()			{
-		if (speciesNames().isEmpty())
+	String setupName()					{
+		if (civilizationNames().isEmpty())
 			return "";
-		return text(substrings(speciesNames().get(0), '|').get(0));
+		return text(substrings(civilizationNames().get(0), '|').get(0));
 	}
 	int shipAttackBonus()				{ return shipAttackBonus; }
 	void shipAttackBonus(int i)			{ shipAttackBonus = i; }
@@ -519,8 +549,10 @@ class SpeciesSkills implements Base, Serializable {
 	void fullTitle(String s)			{ fullTitle = s; }
 	// BR: Custom Species
 	boolean isCustomSpecies()			{ return isCustomSpecies; }
-	SpeciesSkills isCustomSpecies(boolean is)	{ isCustomSpecies = is; return this;}
-	boolean isRandomized()				{ return CustomRaceDefinitions.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
+	SpeciesSkills isCustomSpecies(boolean is)	{ isCustomSpecies = is; return this; }
+	String isAnimAutonomous()			{ return isAnimAutonomous; }
+	void isAnimAutonomous(String s)		{ isAnimAutonomous = s; }
+	boolean isRandomized()				{ return SkillsFactory.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
 	DynOptions speciesOptions()			{ return speciesOptions; }
 	void speciesOptions(DynOptions val)	{ speciesOptions = val; }
 	// BR: Get the values encoded in HomeworldKey
@@ -564,8 +596,8 @@ class SpeciesSkills implements Base, Serializable {
 	void   planetEnvironment(String s)	{ planetEnvironment = s; }
 
 	boolean raceWithUltraPoorHomeworld()	{ return planetRessource.equalsIgnoreCase("UltraPoor"); }
-	boolean raceWithPoorHomeworld()		{ return planetRessource.equalsIgnoreCase("Poor"); }
-	boolean raceWithRichHomeworld()		{ return planetRessource.equalsIgnoreCase("Rich"); }
+	boolean raceWithPoorHomeworld()			{ return planetRessource.equalsIgnoreCase("Poor"); }
+	boolean raceWithRichHomeworld()			{ return planetRessource.equalsIgnoreCase("Rich"); }
 	boolean raceWithUltraRichHomeworld()	{ return planetRessource.equalsIgnoreCase("UltraRich"); }
 	boolean raceWithOrionLikeHomeworld()	{ return planetArtifacts.equalsIgnoreCase("OrionLike"); }
 	boolean raceWithArtifactsHomeworld()	{
@@ -717,16 +749,20 @@ class SpeciesSkills implements Base, Serializable {
 		}
 		return null;
 	}
-	void parseSpeciesNames(String names)	{ speciesNames().reset(substrings(names, ',')); }
+	void parseCivilizationNames(String names)	{ civilizationNames().resetFrom(substrings(names, ',')); }
+	void parseHomeWorlds(String names)			{ homeSystemNames().resetFrom(substrings(names, ',')); }
+	void parseLeaderNames(String names)			{ leaderNames().resetFrom(substrings(names, ',')); }
+	void parseShipNamesSmall(String names)		{ shipNamesSmall().resetFrom(substrings(names, ',')); }
+	void parseShipNamesMedium(String names)		{ shipNamesMedium().resetFrom(substrings(names, ',')); }
+	void parseShipNamesLarge(String names)		{ shipNamesLarge().resetFrom(substrings(names, ',')); }
+	void parseShipNamesHuge(String names)		{ shipNamesHuge().resetFrom(substrings(names, ',')); }
+	void parseDialogLabel(String label, String names)	{ raceLabels().addLabel(label, names); }
+	
 	private class SpeciesUniqueIdentifiers	{
-		private static final StringList enLabels = new StringList("_empire,_race,_race_plural,_title,_nameTitle", ",");
-		private static final StringList frLabels = new StringList("_empireof,_raceadjec,_raceadjecF"
-				+ ",_race_pluralnoun,_race_pluralnounof,_race_pluralnounto,_race_pluraladjec,_race_pluraladjecF"
-				+ ",_title,_nameTitle", ",");
-		private final StringList speciesNames	 = new StringList();
-		private final StringList homeSystemNames = new StringList();
-		private final StringList leaderNames	 = new StringList();
-		private StringList remainingSpeciesNames;
+		private final StringList civilizationNames	= new StringList();
+		private final StringList homeSystemNames	= new StringList();
+		private final StringList leaderNames		= new StringList();
+		private StringList remainingCivilizationNames;
 		private StringList remainingHomeworldNames;
 		private StringList remainingLeaderNames;
 	}

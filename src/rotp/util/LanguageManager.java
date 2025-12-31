@@ -49,7 +49,7 @@ public class LanguageManager implements Base {
     private static int selectedLanguage = LanguageManager.DEFAULT_LANGUAGE;
     public static final char[] latinDigits = { '0','1','2','3','4','5','6','7','8','9' };
     public static char[] customDigits = null;
-    public static Language currentLanguage;
+    private static Language currentLanguage;
 
     public static void selectDefaultLanguage() { instance.selectLanguage(LanguageManager.DEFAULT_LANGUAGE); }
     public static int selectedLanguage()        { return selectedLanguage; }
@@ -103,7 +103,7 @@ public class LanguageManager implements Base {
             }
         }
     }
-    public static String selectedLanguageDir() { return languages().get(selectedLanguage).directory; }
+    public static String selectedLanguageDir() { return currentLanguage.directory; }
     public static String languageDir(int i)    { return languages().get(i).directory; }
     public String selectedLanguageName()       { return language(selectedLanguage()); }
     public String defaultLanguageFullPath()    { return baseDir+languages().get(DEFAULT_LANGUAGE).directory; }

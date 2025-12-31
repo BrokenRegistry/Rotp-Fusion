@@ -226,21 +226,6 @@ public class ParamListMultiple extends ParamList {
 		set(newValue);
 		return valid;
 	}
-	private String makeValid(boolean fixIndex)		{
-		String oldValue = super.get();
-		if (oldValue == null)
-			oldValue = "";
-		String newValue	= get();
-		if (oldValue.equals(newValue))
-			return oldValue;
-
-		// Fix
-		if (fixIndex) {
-			updateIndexes(oldValue);
-			newValue = get();
-		}
-		return set(newValue);
-	}
 	private IntegerList getIndexes(String value)	{ return values().getIndexes(value, false); }
 	private String[] splitValue(String value)		{
 		if (value == null)

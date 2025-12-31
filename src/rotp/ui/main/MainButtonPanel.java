@@ -102,7 +102,7 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
     public String textureName()            { return TEXTURE_GRAY; }
     public void init() {
         allowNextTurn = false;
-        new Thread(slowEnableNextTurn()).start();
+        new Thread(slowEnableNextTurn(), "slowEnableNextTurn").start();
     }
     private Runnable slowEnableNextTurn() {
         return () -> {

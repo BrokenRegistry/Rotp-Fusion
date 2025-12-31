@@ -90,6 +90,7 @@ public interface IParam extends InterfaceOptions{
 	default boolean	trueChange()			{ return true; }
 	// Display
 	default void setFromCfgValue(String val) {}
+	default String	dynOptionIndex()		{ return getLangLabel(); }
 	default String	getCfgValue()			{ return ""; }
 	default String	getCfgLabel()			{ return ""; }
 	default String	getGuiDisplay()			{ return ""; } // Name, value, ... and more

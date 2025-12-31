@@ -39,10 +39,16 @@ public class ParamDirectory extends ParamString	{
 	}
 	@Override public String get()	{ // Always return a valid directory
 		String dir = super.get();
-		File file = new File(dir);
-		if (!file.exists() || !file.isDirectory()) {
+		if (dir == null) {
 			dir = Rotp.jarPath();
 			set(dir);
+		}
+		else {
+			File file = new File(dir);
+			if (!file.exists() || !file.isDirectory()) {
+				dir = Rotp.jarPath();
+				set(dir);
+			}
 		}
 		return dir;
 	}

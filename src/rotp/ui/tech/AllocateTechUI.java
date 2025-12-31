@@ -935,7 +935,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         int h = treeBox.height;
         visualTree = newOpaqueImage(w, h);
         Graphics2D g = (Graphics2D) visualTree.createGraphics();
-        setFontHints(g);
+        setRenderingHints(g);
         Tech[] techs = new Tech[maxTechLvl - minTechLvl + 7];
         int freeId = 0;
         for (String techId: allT) {

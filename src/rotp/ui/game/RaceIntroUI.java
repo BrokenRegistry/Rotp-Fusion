@@ -97,7 +97,7 @@ public class RaceIntroUI extends BasePanel implements MouseListener {
     }
     public void paintToBuffer(Image img) {
         Graphics2D g = (Graphics2D) img.getGraphics();
-        setFontHints(g);
+        setRenderingHints(g);
         g.drawImage(introBack(), 0, 0, getWidth(), getHeight(), this);
         drawHomePlanet(g);
         jPanelPaintComponent(g);
@@ -203,7 +203,7 @@ public class RaceIntroUI extends BasePanel implements MouseListener {
         int w1 = h*8/5;
         introBack = this.newBufferedImage(w, h);
         Graphics2D g = (Graphics2D) introBack.getGraphics();
-        setFontHints(g);
+        setRenderingHints(g);
         g.setColor(Color.black);
         g.fillRect(0,0, w, h);
         drawStars(g);

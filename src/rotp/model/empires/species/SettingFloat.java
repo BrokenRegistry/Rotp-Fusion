@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package rotp.ui.util;
+package rotp.model.empires.species;
 
 import static rotp.Rotp.rand;
+import static rotp.model.empires.species.SettingBase.CostFormula.RELATIVE;
 import static rotp.ui.util.IParam.langLabel;
-import static rotp.ui.util.SettingBase.CostFormula.RELATIVE;
 
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
@@ -218,22 +218,14 @@ public class SettingFloat extends SettingBase<Float> {
 			return 0f;;
 		return settingCost(settingValue());
 	}
-//	@Override public void updateOption() {
-//		if (!isSpacer() && dynOpts() != null)
-//			dynOpts().setFloat(getLangLabel(), settingValue());
-//	}
-	@Override public void updateOptionTool() {
-		if (!isSpacer() && dynOpts() != null)
-			set(dynOpts().getFloat(getLangLabel(), defaultValue()));
-	}
 	@Override public void updateOption(DynamicOptions options) {
 		if (!isSpacer() && options != null)
-			options.setFloat(getLangLabel(), settingValue());
+			options.setFloat(dynOptionIndex(), settingValue());
 	}
 	@Override public void updateOptionTool(DynamicOptions options) {
 //		options(options);
 		if (!isSpacer() && options != null)
-			set(options.getFloat(getLangLabel(), defaultValue()));
+			set(options.getFloat(dynOptionIndex(), defaultValue()));
 	}
 	@Override public String guideValue() { return getCfgValue(); }
 

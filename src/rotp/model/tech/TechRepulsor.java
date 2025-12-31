@@ -114,7 +114,7 @@ public final class TechRepulsor extends Tech {
         for (int i=0;i<n;i++) {
             for (int j=i;j<n;j++) {
                 Graphics2D g1 = (Graphics2D) frames[j].getGraphics();
-                g1.setStroke(BasePanel.baseStroke(3));
+                g1.setStroke(baseStroke(3));
                 g1.setColor(beamColor);
                 AffineTransform tx = g1.getTransform();
                 g1.rotate(radians, rX, rY);

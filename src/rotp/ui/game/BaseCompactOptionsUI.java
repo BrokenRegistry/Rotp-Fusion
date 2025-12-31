@@ -845,7 +845,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	}
 	@Override protected String GUI_ID()		{ return GUI_ID; }
 	@Override public void paintComponent(Graphics g0)	{
-		// showTiming = true;
+		//showTiming = true; // TO DO BR: COMMENT
 		if (showTiming)
 			System.out.println("===== Compact PaintComponents =====");
 		long timeStart = System.currentTimeMillis();
@@ -901,7 +901,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		searchResultsBox.setBounds(xSearch, ySearch - resultField.getHeight(), resultField.getWidth(), resultField.getHeight());
 
 		if (showTiming)
-			System.out.println("Compact paintComponent() Time = " + (System.currentTimeMillis()-timeStart));
+			System.out.println("Compact Menu paintComponent Time = " + (System.currentTimeMillis()-timeStart) + " ms");
 	}
 	@Override public void keyReleased(KeyEvent e)		{
 		if(checkModifierKey(e))

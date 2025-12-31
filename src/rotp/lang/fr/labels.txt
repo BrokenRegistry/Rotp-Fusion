@@ -1679,7 +1679,7 @@ SETUP_OPPONENT_AI_SELECT          | IA : Sélectionnable
 SETUP_OPPONENT_AI_PLAYER_HELP     | Le contrôle est entre vos mains.
 SETUP_OPPONENT_AI_PLAYER          | IA : Aucune
 SETUP_OPPONENT_CR                 | Aptitudes :
-SETUP_OPP_CR_OPTIONS_HELP         | Aptitudes par défaut pour les adversaires aux espèces personnalisées :<br> « Espèce originale » = Aptitudes standard de l’espèce sélectionnée (dans les cases ci-dessous) ;<br> « Retravaillée » = Nouvelles aptitudes que vous avez enregistrées avec le nom par défaut de l’espèce.<br> (ex : RACE_DARLOK pour les Darloks) ;<br> *Espèce = Espèce originale spécifique ; ou toute autre espèce personnalisée que vous avez créée.
+SETUP_OPP_CR_OPTIONS_HELP         | Aptitudes par défaut pour les adversaires aux espèces personnalisées :<br> « Espèce originale » = Aptitudes standard de l’espèce sélectionnée (dans les cases ci-dessous) ;<br> « Redéfinies » = Nouvelles aptitudes que vous avez enregistrées avec le nom par défaut de l’espèce.<br> (ex : RACE_DARLOK pour les Darloks) ;<br> *Espèce = Espèce originale spécifique ; ou toute autre espèce personnalisée que vous avez créée.
 
 SETUP_AUTOPLAY_OFF_HELP           | Le joueur prend le commandement de l’empire.
 SETUP_AUTOPLAY_OFF                | Désactivé
@@ -1852,12 +1852,16 @@ SETUP_FUEL_RANGE_HIGHER_HELP      | Facteur d’autonomie en carburant = 3.
 SETUP_FUEL_RANGE_HIGHEST_HELP     | Facteur d’autonomie en carburant = 5.
 SETUP_RANDOMIZE_AI_NONE_HELP      | Pour désactiver cette option. Mais cela ne désactivera aucune génération aléatoire sur le menu Galaxie.
 SETUP_RANDOMIZE_AI_NONE           | Aucun
-SETUP_RANDOMIZE_AI_PERSONALITY_HELP | Seule la personnalité de l’IA sera affectée par cette option, mais les options du menu Galaxie peuvent remplacer cela, et certaines IA ignoreront toutes les options de personnalité !
-SETUP_RANDOMIZE_AI_PERSONALITY    | Personnalité
-SETUP_RANDOMIZE_AI_ABILITY_HELP   | Seules les aptitudes de l’IA seront affectées par cette option, mais les options du menu Galaxie peuvent la remplacer !
-SETUP_RANDOMIZE_AI_ABILITY        | Aptitudes
-SETUP_RANDOMIZE_AI_BOTH_HELP      | Cette option tentera de modifier à la fois la personnalité et les aptitudes de l’IA... Uniquement si les options du menu Galaxie ne la remplacent pas !
-SETUP_RANDOMIZE_AI_BOTH           | Les deux
+SETUP_RANDOMIZE_AI_PERSONALITY_HELP	| Seule la personnalité de l’espèce sera affectée par cette option, mais notez que certaines IA ignoreront toutes les options de personnalité ! Et aussi, les options du menu Galaxie ont précédence !
+SETUP_RANDOMIZE_AI_PERSONALITY		| Personnalité
+SETUP_RANDOMIZE_AI_ABILITY_HELP		| Les aptitudes de l’espèce seront remplacées aléatoirement par celles de l’une des 10 espèces originales. Notez que les options du menu Galaxie ont précédence !
+SETUP_RANDOMIZE_AI_ABILITY			| Aptitudes (10)
+SETUP_RANDOMIZE_AI_BOTH_HELP		| Cette option modifiera à la fois la personnalité et les aptitudes (choisie aléatoirement parmis les 10 espèces originales) de l’espèce... Notez que les options du menu Galaxie ont précédence !
+SETUP_RANDOMIZE_AI_BOTH				| Les deux (10)
+SETUP_RANDOMIZE_AI_ABILITY_16_HELP	| Les aptitudes de l’espèce seront remplacées aléatoirement par celles de l’une des <b>16<\b> espèces originales. Notez que les options du menu Galaxie ont précédence !
+SETUP_RANDOMIZE_AI_ABILITY_16		| Aptitudes (16)
+SETUP_RANDOMIZE_AI_BOTH_16_HELP		| Cette option modifiera à la fois la personnalité et les aptitudes (choisie aléatoirement parmis les <b>16</b> espèces originales) de l’espèce... Notez que les options du menu Galaxie ont précédence !
+SETUP_RANDOMIZE_AI_BOTH_16			| Les deux (16)
 SETUP_RACE_LABEL                  | Races disponibles
 SETUP_RACE_COLOR                  | Votre Couleur
 SETUP_HOMEWORLD_NAME_LABEL        | Planète d’origine :
@@ -2015,6 +2019,7 @@ SETUP_BUTTON_CUSTOM_PLAYER_RACE   | Façonner une espèce
 CUSTOM_RACE_RACE_AI_DESC          | Changer l’IA de l’empire
 CUSTOM_RACE_GUI_TITLE             | Façonnage des espèces
 CUSTOM_RACE_SHOW_TITLE            | Aptitudes de l’espèce
+CUSTOM_RACE_SHOW_TITLE_CUSTOM	| Aptitudes de l’espèce personnalisée
 CUSTOM_RACE_GUI_MALUS             | (Malus : %1)
 CUSTOM_RACE_GUI_COST              | Valeur totale : %1
 CUSTOM_RACE_GUI_SELECT_DESC       | Enregistrer cette espèce, l’attribuer au joueur, Enregistrer en tant que «Dernier paramètre», et quitter ce panneau.
@@ -2071,9 +2076,6 @@ CUSTOM_RACE_RANDOM_USE_TARGET_NO_DESC  | Ignorer les limites.
 
 CUSTOM_RACE_DESCRIPTION				| Espèce Personnalisée
 
-// BR: Ne pas traduire maintenant...
-//FR_REWORKED                     | « 'Retravaillées' » →FR_REWORKED←
-FR_REWORKED                       | « 'Reworked' »
 CUSTOM_RACE_BASE_DATARACE         | Aptitudes de base
 CUSTOM_RACE_HOME_TYPE             | Type de planète
 CUSTOM_RACE_HOME_SIZE_DESC        | Taille de départ du monde d’origine de cet empire.
@@ -2085,10 +2087,10 @@ CUSTOM_RACE_HOME_RESOURCES        | Ressources planétaires
 CUSTOM_RACE_HOME_ENVIRONMENT_DESC | Ce paramètre affecte le taux de croissance du monde d’origine.
 CUSTOM_RACE_HOME_ENVIRONMENT      | Environnement planétaire
 CUSTOM_RACE_RACE_KEY				| Nom du fichier (Clé)
-CUSTOM_RACE_RACE_KEY_DESC			| C’est ici que vous devez saisir le nom du fichier, il est également utilisé comme clé pour les espèces standard... Ne les utilisez pas ou conservez la valeur par défaut "RACE_xxx" pour définir les aptitudes →FR_REWORKED←.
+CUSTOM_RACE_RACE_KEY_DESC			| C’est ici que vous devez saisir le nom du fichier, il est également utilisé comme clé pour les espèces standard... Ne les utilisez pas ou conservez la valeur par défaut "RACE_xxx" pour définir les aptitudes →ABILITIES_REWORKED←.
 CUSTOM_RACE_RACE_KEY_INPUT			| Entrez le nom du fichier de l’espèce personnalisée.
 CUSTOM_RACE_REWORKED_RACE_KEY		| Espèce pour Animations
-CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| Espèce préférée pour l’affichage des animations. Lorsque l’option aptitudes →FR_REWORKED← est sélectionnée, cette aptitudes pourra être choisie au hasard.
+CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| Espèce préférée pour l’affichage des animations. Lorsque l’option aptitudes →ABILITIES_REWORKED← est sélectionnée, cette aptitudes pourra être choisie au hasard.
 CUSTOM_RACE_REWORKED_RACE_KEY_INPUT	| Entrez le nom de l’espèce originale modifiable.
 CUSTOM_RACE_REWORKED_RACE_KEY_NONE	| Aucune
 CUSTOM_RACE_BOUND_AI				| IA liée
@@ -2188,46 +2190,130 @@ CUSTOM_RACE_RESEARCH_FORCEFIELD_DESC   | →FR_RESEARCH_CR← →TECH_FORCE_FIEL
 CUSTOM_RACE_RESEARCH_PLANET_DESC       | →FR_RESEARCH_CR← →TECH_PLANETOLOGY←→FR_RESEARCH_DISPLAY←
 CUSTOM_RACE_RESEARCH_PROPULSION_DESC   | →FR_RESEARCH_CR← →TECH_PROPULSION←→FR_RESEARCH_DISPLAY←
 CUSTOM_RACE_RESEARCH_WEAPON_DESC       | →FR_RESEARCH_CR← →TECH_WEAPONS←→FR_RESEARCH_DISPLAY←
-CUSTOM_RACE_RACE_NAME				| Nom de l’espèce
-CUSTOM_RACE_RACE_NAME_DESC			| Tous les noms possibles<br>La contrepartie du paramètre « _race » dans les fichiers Species.labels.txt et du paramètre « name » dans les fichiers Species.names.txt.
-CUSTOM_RACE_RACE_NAME_INPUT			| Saisissez le nom de l’espèce.
-CUSTOM_RACE_RACE_NAME_PLURAL		| Nom de l’espèce au pluriel
-CUSTOM_RACE_RACE_NAME_PLURAL_DESC	| Le pluriel de tous les noms possibles<br>La contrepartie du paramètre "_race_plural" dans les fichiers Species.labels.txt
-CUSTOM_RACE_RACE_NAME_PLURAL_INPUT	| Saisissez le nom de l’espèce au pluriel.
-CUSTOM_RACE_LEADER_TITLE          | Titre du chef
-CUSTOM_RACE_LEADER_TITLE_DESC     | L’équivalent du paramètre « titre » dans les fichiers Species.names.txt.
-CUSTOM_RACE_LABEL_TITLE           | Titre du chef 2
-CUSTOM_RACE_LABEL_TITLE_DESC      | L’équivalent du paramètre « _title » dans les fichiers Species.labels.txt.
-CUSTOM_RACE_LEADER_FULLTITLE      | Titre du chef complet
-CUSTOM_RACE_LEADER_FULLTITLE_DESC | L’équivalent du paramètre « fulltitle » dans les fichiers Species.names.txt.
-CUSTOM_RACE_LEADER_NAMETITLE      | Titre du chef complet 2
-CUSTOM_RACE_LEADER_NAMETITLE_DESC | L’équivalent du paramètre « _nameTitle » dans les fichiers Species.labels.txt.
-CUSTOM_RACE_RACE_EMPIRE_NAME 		| Désignation de l’empire
-CUSTOM_RACE_RACE_EMPIRE_NAME_DESC	| Le pendant du paramètre « _empire » dans les fichiers Species.labels.txt.
-CUSTOM_RACE_RACE_EMPIRE_NAME_INPUT	| Saisissez la désignation de l’empire.
-CUSTOM_RACE_HOME_WORLDS           | Mondes d’origines
-CUSTOM_RACE_HOME_WORLDS_DESC      | Noms possibles des systèmes domestiques.<br>L’équivalent du paramètre « home » dans les fichiers Species.names.txt
-CUSTOM_RACE_LEADER_NAMES          | Nom des chefs
-CUSTOM_RACE_LEADER_NAMES_DESC     | Noms de leaders possibles.<br>La contrepartie du paramètre « leader » dans les fichiers Species.names.txt
-CUSTOM_RACE_SHIP_NAME_1           | Noms des petits vaisseaux
-CUSTOM_RACE_SHIP_NAME_1_DESC      | Tous les noms possibles de petits navires.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
-CUSTOM_RACE_SHIP_NAME_2           | Noms des vaisseaux moyens
-CUSTOM_RACE_SHIP_NAME_2_DESC      | Tous les noms possibles de vaisseaux moyens.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
-CUSTOM_RACE_SHIP_NAME_3           | Noms des grands vaisseaux
-CUSTOM_RACE_SHIP_NAME_3_DESC      | Tous les noms possibles de grands vaisseaux.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
-CUSTOM_RACE_SHIP_NAME_4           | Noms des énormes vaisseaux
-CUSTOM_RACE_SHIP_NAME_4_DESC      | Tous les noms possibles d’énormes vaisseaux.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
 
-CUSTOM_RACE_RACE_DESC_1				| Description de l’humeur de l’espèce
+CUSTOM_RACE__empireen				| →CUSTOM_RACE_RACE_EMPIRE_NAME←
+CUSTOM_RACE__empireen_DESC			| →CUSTOM_RACE_RACE_EMPIRE_NAME_DESC←
+CUSTOM_RACE__raceen					| →CUSTOM_RACE_SPECIES_NAME←
+CUSTOM_RACE__raceen_DESC			| →CUSTOM_RACE_SPECIES_NAME_DESC←
+CUSTOM_RACE__race_pluralen			| Pluriel du →CUSTOM_RACE_SPECIES_NAME←
+CUSTOM_RACE__race_pluralen_DESC		| Pluriel d’→CUSTOM_RACE_SPECIES_NAME_DESC←
+CUSTOM_RACE__titleen				| →CUSTOM_RACE_LEADER_TITLE←
+CUSTOM_RACE__titleen_DESC			| →CUSTOM_RACE_LEADER_TITLE_DESC←
+CUSTOM_RACE__nameTitleen			| →CUSTOM_RACE_LEADER_FULLTITLE←
+CUSTOM_RACE__nameTitleen_DESC		| →CUSTOM_RACE_LEADER_FULLTITLE_DESC←
+
+CUSTOM_RACE__empire					| →CUSTOM_RACE_RACE_EMPIRE_NAME←
+CUSTOM_RACE__empire_DESC			| →CUSTOM_RACE_RACE_EMPIRE_NAME_DESC←
+CUSTOM_RACE__race					| →CUSTOM_RACE_SPECIES_NAME←
+CUSTOM_RACE__race_DESC				| →CUSTOM_RACE_SPECIES_NAME_DESC←
+CUSTOM_RACE__race_plural			| Pluriel du →CUSTOM_RACE_SPECIES_NAME←
+CUSTOM_RACE__race_plural_DESC		| Pluriel d’→CUSTOM_RACE_SPECIES_NAME_DESC←
+CUSTOM_RACE__title					| →CUSTOM_RACE_LEADER_TITLE←
+CUSTOM_RACE__title_DESC				| →CUSTOM_RACE_LEADER_TITLE_DESC←
+CUSTOM_RACE__nameTitle				| →CUSTOM_RACE_LEADER_FULLTITLE←
+CUSTOM_RACE__nameTitle_DESC			| →CUSTOM_RACE_LEADER_FULLTITLE_DESC←
+
+CUSTOM_RACE_CIVILIZATION			| l’ethnie
+CUSTOM_RACE__empireof				| **Relatif à →CUSTOM_RACE_CIVILIZATION←
+CUSTOM_RACE__empireof_DESC			| Désignation de →CUSTOM_RACE_CIVILIZATION← avec une notion d’origine (du, de la)<br>La contrepartie du paramètre "_empireof" dans les fichiers Species.labels.txt
+CUSTOM_RACE__raceadjec				| **Adjectif de →CUSTOM_RACE_CIVILIZATION←
+CUSTOM_RACE__raceadjec_DESC			| Adjectif relatif à →CUSTOM_RACE_CIVILIZATION←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__raceadjecF				| **Féminin de l’adjectif
+CUSTOM_RACE__raceadjecF_DESC		| Féminin de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnoun		| **Pluriel de →CUSTOM_RACE_CIVILIZATION←
+CUSTOM_RACE__race_pluralnoun_DESC	| Pluriel du nom de →CUSTOM_RACE_CIVILIZATION←<br>La contrepartie du paramètre « _race_pluralnoun » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnounof		| **Pluriel & Origine
+CUSTOM_RACE__race_pluralnounof_DESC	| Pluriel de la désignation de →CUSTOM_RACE_CIVILIZATION← avec une notion d’origine (du, de la)<br>La contrepartie du paramètre "_race_pluralnounof" dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnounto		| →CUSTOM_RACE_LEADER_FULLTITLE←
+CUSTOM_RACE__race_pluralnounto_DESC	| Pluriel de la désignation de →CUSTOM_RACE_CIVILIZATION← avec une notion de destination (aux)<br>La contrepartie du paramètre "_race_pluralnounto" dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluraladjec		| **Pluriel de l’adjectif
+CUSTOM_RACE__race_pluraladjec_DESC	| Pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluraladjecF		| **Féminin pluriel
+CUSTOM_RACE__race_pluraladjecF_DESC	| Féminin pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON		| = Animations
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Rempli les champs vides en utilisant les valeurs de vos animations préférées. Appuyez sur « Maj » pour remplacer également les champs déjà remplis.
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON		| Compléter
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Essaye de remplir les champs vides en utilisant le nom de la civilisation et le titre. Appuyez sur « Maj » pour remplacer également les champs déjà remplis.
+CUSTOM_RACE_COPY_FROM_LEFT_BUTTON		| -> Copier
+CUSTOM_RACE_COPY_FROM_LEFT_BUTTON_DESC	| Copie les valeurs de la page de gauche.
+CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON		| Copier <-
+CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON_DESC	| Copie les valeurs de la page de droite.
+
+CUSTOM_RACE_MANDATORY_FIELDS		| **Champs obligatoires pour sélectionner l’animation : Un par ethnie.
+CUSTOM_RACE_SPECIES_FIELDS			| Champs communs pour toutes les ethnies de cette espèce.
+CUSTOM_RACE_SPECIES_DIALOG_FIELDS	| Champs communs pour le dialogue avec cette espèce.
+CUSTOM_RACE_ETHNIC_DIALOG_FIELDS	| Champs dédiés aux dialogues avec cette ethnie.
+CUSTOM_RACE_FIELDS_EDIT				| À éditer
+
+CUSTOM_RACE_SPECIES_NAME			| **Nom de →CUSTOM_RACE_CIVILIZATION←
+CUSTOM_RACE_SPECIES_NAME_DESC		| Une des possibles dénomination de cette espèce.
+CUSTOM_RACE_HOME_WORLD				| **Monde d’origine
+CUSTOM_RACE_HOME_WORLD_DESC			| Un des possibles noms donné à la planète d’origine.
+CUSTOM_RACE_LEADER_NAME				| **Nom du chef
+CUSTOM_RACE_LEADER_NAME_DESC		| Un des possibles noms de dirigeants.
+
+CUSTOM_RACE_RACE_NAME				| **Nom de →CUSTOM_RACE_CIVILIZATION←
+CUSTOM_RACE_RACE_NAME_DESC			| Tous les noms possibles<br>La contrepartie du paramètre « _race » dans les fichiers Species.labels.txt et du paramètre « name » dans les fichiers Species.names.txt.
+CUSTOM_RACE_RACE_NAME_INPUT			| Saisissez le nom de →CUSTOM_RACE_CIVILIZATION←.
+CUSTOM_RACE_RACE_NAME_PLURAL		| **Pluriel du nom de →CUSTOM_RACE_CIVILIZATION←
+CUSTOM_RACE_RACE_NAME_PLURAL_DESC	| Le pluriel de tous les noms possibles<br>La contrepartie du paramètre "_race_plural" dans les fichiers Species.labels.txt
+CUSTOM_RACE_RACE_NAME_PLURAL_INPUT	| Saisissez le nom de →CUSTOM_RACE_CIVILIZATION← au pluriel.
+CUSTOM_RACE_LEADER_TITLE			| Titre du chef
+CUSTOM_RACE_LEADER_TITLE_DESC		| L’équivalent du paramètre « titre » dans les fichiers Species.names.txt.
+CUSTOM_RACE_LABEL_TITLE				| Titre du chef 2
+CUSTOM_RACE_LABEL_TITLE_DESC		| L’équivalent du paramètre « _title » dans les fichiers Species.labels.txt.
+CUSTOM_RACE_LEADER_FULLTITLE		| Titre du chef complet
+CUSTOM_RACE_LEADER_FULLTITLE_DESC	| L’équivalent du paramètre « fulltitle » dans les fichiers Species.names.txt.
+CUSTOM_RACE_LEADER_NAMETITLE		| Titre du chef complet 2
+CUSTOM_RACE_LEADER_NAMETITLE_DESC	| L’équivalent du paramètre « _nameTitle » dans les fichiers Species.labels.txt.
+CUSTOM_RACE_RACE_EMPIRE_NAME		| **Nom du gouvernement
+CUSTOM_RACE_RACE_EMPIRE_NAME_DESC	| Le pendant du paramètre « _empire » dans les fichiers Species.labels.txt.
+CUSTOM_RACE_RACE_EMPIRE_NAME_INPUT	| Saisissez la désignation de →CUSTOM_RACE_CIVILIZATION←.
+CUSTOM_RACE_HOME_WORLDS				| **Mondes d’origines
+CUSTOM_RACE_HOME_WORLDS_DESC		| Noms possibles des systèmes de départ.<br>L’équivalent du paramètre « home » dans les fichiers Species.names.txt
+CUSTOM_RACE_LEADER_NAMES			| **Nom des chefs
+CUSTOM_RACE_LEADER_NAMES_DESC		| Noms de chefs possibles.<br>La contrepartie du paramètre « leader » dans les fichiers Species.names.txt
+CUSTOM_RACE_SHIP_NAME_1				| Noms des petits vaisseaux
+CUSTOM_RACE_SHIP_NAME_1_DESC		| Tous les noms possibles de petits navires.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
+CUSTOM_RACE_SHIP_NAME_2				| Noms des vaisseaux moyens
+CUSTOM_RACE_SHIP_NAME_2_DESC		| Tous les noms possibles de vaisseaux moyens.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
+CUSTOM_RACE_SHIP_NAME_3				| Noms des grands vaisseaux
+CUSTOM_RACE_SHIP_NAME_3_DESC		| Tous les noms possibles de grands vaisseaux.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
+CUSTOM_RACE_SHIP_NAME_4				| Noms des énormes vaisseaux
+CUSTOM_RACE_SHIP_NAME_4_DESC		| Tous les noms possibles d’énormes vaisseaux.<br>La contrepartie du paramètre « ship1 » dans les fichiers Species.names.txt
+
+CUSTOM_RACE_RACE_NAMEen				| →CUSTOM_RACE_LEADER_FULLTITLE_DESC←
+CUSTOM_RACE_RACE_NAMEen_DESC		| →CUSTOM_RACE_RACE_NAME_DESC←
+CUSTOM_RACE_RACE_EMPIRE_NAMEen		| →CUSTOM_RACE_RACE_EMPIRE_NAME←
+CUSTOM_RACE_RACE_EMPIRE_NAMEen_DESC	| →CUSTOM_RACE_RACE_EMPIRE_NAME_DESC←
+CUSTOM_RACE_HOME_WORLDen			| →CUSTOM_RACE_HOME_WORLD←
+CUSTOM_RACE_HOME_WORLDen_DESC		| →CUSTOM_RACE_HOME_WORLD_DESC←
+CUSTOM_RACE_LEADER_NAMEen			| →CUSTOM_RACE_LEADER_NAME←
+CUSTOM_RACE_LEADER_NAMEen_DESC		| →CUSTOM_RACE_LEADER_NAME_DESC←
+CUSTOM_RACE_LEADER_TITLEen			| →CUSTOM_RACE_LEADER_TITLE←
+CUSTOM_RACE_LEADER_TITLEen_DESC		| →CUSTOM_RACE_LEADER_TITLE_DESC←
+CUSTOM_RACE_LEADER_FULLTITLEen		| →CUSTOM_RACE_LEADER_FULLTITLE←
+CUSTOM_RACE_LEADER_FULLTITLEen_DESC	| →CUSTOM_RACE_LEADER_FULLTITLE_DESC←
+CUSTOM_RACE_RACE_DESC_1en			| →CUSTOM_RACE_RACE_DESC_1←
+CUSTOM_RACE_RACE_DESC_1en_DESC		| →CUSTOM_RACE_RACE_DESC_1_DESC←
+CUSTOM_RACE_RACE_DESC_2en			| →CUSTOM_RACE_RACE_DESC_2←
+CUSTOM_RACE_RACE_DESC_2en_DESC		| →CUSTOM_RACE_RACE_DESC_2_DESC←
+CUSTOM_RACE_RACE_DESC_3en			| →CUSTOM_RACE_RACE_DESC_3←
+CUSTOM_RACE_RACE_DESC_3en_DESC		| →CUSTOM_RACE_RACE_DESC_3_DESC←
+CUSTOM_RACE_RACE_DESC_4en			| →CUSTOM_RACE_RACE_DESC_4←
+CUSTOM_RACE_RACE_DESC_4en_DESC		| →CUSTOM_RACE_RACE_DESC_4_DESC←
+
+CUSTOM_RACE_RACE_DESC_1				| Tempérament de l’espèce
 CUSTOM_RACE_RACE_DESC_1_DESC		| L’équivalent du paramètre « desc1 » dans les fichiers Species.names.txt
-CUSTOM_RACE_RACE_DESC_1_INPUT		| Saisissez la description de l’humeur de l’espèce.
-CUSTOM_RACE_RACE_DESC_2				| Description des aptitudes de l’espèce
+CUSTOM_RACE_RACE_DESC_1_INPUT		| Saisissez la description de l’état d’esprit de l’espèce.
+CUSTOM_RACE_RACE_DESC_2				| Aptitudes de l’espèce
 CUSTOM_RACE_RACE_DESC_2_DESC		| L’équivalent du paramètre « desc2 » dans les fichiers Species.names.txt
-CUSTOM_RACE_RACE_DESC_2_INPUT		| Description des aptitudes de l’espèce.
-CUSTOM_RACE_RACE_DESC_3				| Saisissez la dDescription globale de l’espèce
+CUSTOM_RACE_RACE_DESC_2_INPUT		| Aperçu des aptitudes de l’espèce.
+CUSTOM_RACE_RACE_DESC_3				| Résumé de l’espèce
 CUSTOM_RACE_RACE_DESC_3_DESC		| L’équivalent du paramètre « desc3 » dans les fichiers Species.names.txt
 CUSTOM_RACE_RACE_DESC_3_INPUT		| Saisissez la description globale de l’espèce.
-CUSTOM_RACE_RACE_DESC_4				| Description spécifique de l’espèce
+CUSTOM_RACE_RACE_DESC_4				| Spécificité de l’espèce
 CUSTOM_RACE_RACE_DESC_4_DESC		| L’équivalent du paramètre « desc4 » dans les fichiers Species.names.txt
 CUSTOM_RACE_RACE_DESC_4_INPUT		| Saisissez la description spécifique de l’espèce.
 
@@ -2309,6 +2395,21 @@ CUSTOM_RACE_IGNORES_ECO_ALL        | tout
 CUSTOM_RACE_IGNORES_ECO_NO_DESC      | Comportement normal, les types de planètes hostiles nécessitent la technologie adéquate.
 CUSTOM_RACE_IGNORES_ECO_LIMITED_DESC | Ignore les environnements dévastés et hostiles tel que : Aride, Toundra et Morts et peuvent immédiatement être colonisés.
 CUSTOM_RACE_IGNORES_ECO_ALL_DESC     | Tous les types de planètes peuvent immédiatement être colonisés.
+
+// Custom Race Naming Sub Panel
+CUSTOM_RACE_UI_NAMES_TITLE			| Registre des noms d’espèces personnalisés
+CUSTOM_RACE_UI_BUTTON_EXIT			| Quitter
+CUSTOM_RACE_UI_BUTTON_EXIT_DESC		| Conservez les paramètres actuels, puis quittez l'interface.
+CUSTOM_RACE_UI_BUTTON_CANCEL		| Annuler
+CUSTOM_RACE_UI_BUTTON_CANCEL_DESC	| Annulez les modifications, puis quittez l'interface.
+
+BUTTON_BAR_INSERT_LEFT				| <+
+BUTTON_BAR_INSERT_LEFT_DESC			| Insère un nouvel onglet à gauche de celui sélectionné.
+BUTTON_BAR_INSERT_RIGHT				| +>
+BUTTON_BAR_INSERT_RIGHT_DESC		| Insère un nouvel onglet à droite de celui sélectionné.
+BUTTON_BAR_REMOVE					| -
+BUTTON_BAR_REMOVE_DESC				| Supprimer l'onglet actuellement sélectionné.
+
 
 // Advanced Settings
 SETTINGS_TITLE                    | Options Avancées
@@ -4781,6 +4882,8 @@ RACES_TRADE_NONE                  | Pas de traité commercial
 RACES_DIPLOMAT_RECALLED           | Diplomate [alien_raceadjec] rappelé
 RACES_DIPLOMATS_RECALLED          | Diplomates rappelés
 
+RACES_DIPLOMACY_CIVILIZATION_TITLE	| La civilization %1 change de nom
+RACES_DIPLOMACY_CIVILIZATION_LABEL	| Saisissez le nouveau nom :
 RACES_DIPLOMACY_LEADER_DIALOG_TITLE	| %1 %2 change son Nom
 RACES_DIPLOMACY_LEADER_DIALOG_LABEL	| Saisissez le nouveau nom :
 RACES_DIPLOMACY_HOMEWORLD         | Planète
@@ -4794,7 +4897,7 @@ RACES_DIPLOMACY_LAST_VOTE         | Dernier vote
 RACES_DIPLOMACY_VOTE_FOR_PLAYER   | Pour vous
 RACES_DIPLOMACY_ABSTAIN           | Abstention
 RACES_DIPLOMACY_RELATIONS_METER   | Compteur de relations
-RACES_DIPLOMACY_RELATIONS_UNKNOWN | L’humeur et les motivations [alien_empireof] sont impénétrables pour nos diplomates et nos espions.
+RACES_DIPLOMACY_RELATIONS_UNKNOWN | L’état d’esprit et les motivations [alien_empireof] sont impénétrables pour nos diplomates et nos espions.
 RACES_DIPLOMACY_BUREAU            | Bureau de la diplomatie
 RACES_DIPLOMACY_BUREAU_DESC1      | Contactez les empires étrangers ou rappelez vos diplomates pour empêcher les empires de vous contacter.
 RACES_DIPLOMACY_BUREAU_DESC       | Contactez l’ambassadeur [alien_raceadjec] pour une audience ou établissez un contact si vos diplomates ont été rappelés.
@@ -5735,7 +5838,7 @@ SETUP_GALAXY_BACK_DESC            | Annuler les options et revenir au menu Optio
 SETUP_GALAXY_COMPACT_OPTIONS_HELP | Ces boutons ouvrent le menu Options avancées.<br> « →SETUP_BUTTON_MERGED_STATIC_SETTINGS← » contient des paramètres définis une fois au démarrage ou au redémarrage d’un jeu.<br> « →SETUP_BUTTON_MERGED_DYNAMIC_SETTINGS← » contient des paramètres réglables dans le jeu.<br>Pour revenir aux 6 menus d’options classiques :<br> - Appuyez sur « B » ou allez dans « →SETUP_BUTTON_MERGED_STATIC_SETTINGS← » et définissez « Afficher les options compactes » sur « Non ».
 SETUP_GALAXY_VANILLA_OPTIONS_HELP | Ce bouton ouvre le menu de configuration des options avancées.<br> Appuyez sur « B » pour basculer les boutons d’appel des sous-menus.
 SETUP_TUNE_GALAXY_OPTIONS_HELP    | Ce bouton ouvre un panneau de contrôle de survol pour affiner les paramètres de la galaxie. <br>L’aperçu de la carte de la galaxie sera mis à jour en direct.
-SETUP_GALAXY_ABILITIES_DESC       | Aptitudes par défaut des empires extraterrestres :<br> 'Espèce originale' = Aptitudes originales de l’espèce sélectionnée (dans les cases ci-dessous) ;<br> 'Retravaillée' = Nouvelles aptitudes que vous avez enregistrées avec le nom de l’espèce originale.<br> (ex : RACE_DARLOK pour les Nasloks) ;<br> *Espèce = Espèce originale spécifique ; ou toute autre espèce personnalisée que vous avez créée.
+SETUP_GALAXY_ABILITIES_DESC       | Aptitudes par défaut des empires extraterrestres :<br> 'Espèce originale' = Aptitudes originales de l’espèce sélectionnée (dans les cases ci-dessous) ;<br> 'Redéfinies' = Nouvelles aptitudes que vous avez enregistrées avec le nom de l’espèce originale.<br> (ex : RACE_DARLOK pour les Nasloks) ;<br> *Espèce = Espèce originale spécifique ; ou toute autre espèce personnalisée que vous avez créée.
 SETUP_GALAXY_SELECTABLE_DESC      | « Oui » => Une ligne de sélection apparaîtra en haut des cases ci-dessous, permettant la sélection d’une aptitude individuelle.
 SETUP_GALAXY_SELECTABLE            | Aptitudes sélectionnables
 SETUP_GALAXY_RACE_LIST_HELP        | <b>Sélection de la liste des espèces</b><br> Modnar a étendu la liste des espèces originales avec six nouvelles espèces. Si vous n’êtes pas d’humeur à les voir, vous pouvez les exclure de la sélection.<hr><b>Par défaut :</b>&nbsp Original<hr><b>Original :</b>&nbsp Les 6 espèces de Modnar sont exclues.<br> <b>Toutes les espèces</b> : Les 6 espèces de Modnar peuvent également être sélectionnées ou attribuées au hasard.
@@ -5750,29 +5853,31 @@ SETUP_SELECT_CR_OPTIONS            | Aptitudes sélectionnables.
 ???                                | ???
 ???_DESC                           | ???_DESCXXX
 
-ABILITIES_SELECTION			| 'Aptitudes globale'
-ABILITIES_ORIGINAL_SPECIES	| 'Aptitudes originale'
-ABILITIES_REWORKED			| 'Retravaillée'
+ABILITIES_SELECTION				| 'Aptitudes globales'
+ABILITIES_ORIGINAL_SPECIES		| 'Aptitudes originales'
+ABILITIES_REWORKED				| 'Animations -> Redéfinies'
+ABILITIES_REWORKED_FULL			| 'Redéfinies -> Animations'
 ABILITIES_PLAYER				| 'Comme le joueur'
 ABILITIES_RANDOM				| 'Création aléatoire'
-ABILITIES_RANDOM_10			| 'Une des 10 originale'
-ABILITIES_RANDOM_16			| 'Une des 16 originale'
-ABILITIES_FILES				| 'Personalisée et autorisée'
-ABILITIES_ALL_FILES			| 'Personalisée'
-ABILITIES_FILES_RACES			| 'Originale ou autorisée'
-ABILITIES_All					| 'Originale ou personalisée'
+ABILITIES_RANDOM_10				| 'Une des 10 originales'
+ABILITIES_RANDOM_16				| 'Une des 16 originales'
+ABILITIES_FILES_FLT				| 'Personalisées et autorisées'
+ABILITIES_ALL_FILES				| 'Personalisées'
+ABILITIES_FILES_RACES			| 'Originales ou autorisées'
+ABILITIES_ALL					| 'Originales ou personalisées'
 
-ABILITIES_SELECTION_DESC			| Mêmes aptitudes que les aptitudes globales sélectionnées ci-dessus.
+ABILITIES_SELECTION_DESC		| Mêmes aptitudes que les aptitudes globales sélectionnées ci-dessus.
 ABILITIES_ORIGINAL_SPECIES_DESC	| Aptitudes originales de l’espèce sélectionnée (celle sur l’icône)
-ABILITIES_REWORKED_DESC			| Aptitudes retravaillées de l’espèce sélectionnée (celle sur l’icône), modifiées et sauvegardées par le joueur (dans le panneau de personnalisation des espèces) avec les fichiers d’espèces respectivement nommés : RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA , RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
-ABILITIES_PLAYER_DESC				| Mêmes aptitudes que l’espèce du joueur sélectionné.
-ABILITIES_RANDOM_DESC				| Les aptitudes seront générées aléatoirement à l’aide des paramètres « Configuration » : <b>OPTIONS D’ALIENS ALÉATOIRES</b> : « Cible max », « Cible min », « Aliens personnalisés », « Réglage % max », « Réglage % min » et « Bords lisses ».
-ABILITIES_RANDOM_10_DESC			| Aptitudes sélectionnées aléatoirement parmi les aptitudes des dix espèces originales.
-ABILITIES_RANDOM_16_DESC			| Aptitudes sélectionnées aléatoirement parmi les aptitudes des seize espèces. <i>(Les dix espèces originales et les six espèces de Modnar)</i>
-ABILITIES_FILES_DESC				| Aptitudes sélectionnées aléatoirement parmi les fichiers d’espèces personnalisées, avec l’option « Disponible pour l’IA » activée. Si cette liste est vide, la sélection sera effectuée dans les limites des aptitudes d’origine des espèces.
-ABILITIES_ALL_FILES_DESC			| Aptitudes sélectionnées aléatoirement parmi les fichiers d’espèce personnalisé, en ignorant l’option « Disponible pour l’IA ». Si cette liste est vide, la sélection sera effectuée dans le cadre des aptitudes d’origine de l’espèce.
+ABILITIES_REWORKED_DESC			| Aptitudes Redéfinies. Le choix de l’animation est basé sur l’espèce sélectionnée avec l’icône (aussi aléatoirement). Les aptitudes seront prises aléatoirement parmi les espèces personnalisées mentionnant une animation préférée. Si l’espèce personnalisée contient des noms de civilisations ou de dirigeants valides, ils seront utilisés.
+ABILITIES_REWORKED_FULL_DESC	| Le choix se fera aléatoirement parmi les espèces personnalisées mentionnant une animation préférée, ont un nom de civilisation valide et un nom de chef.
+ABILITIES_PLAYER_DESC			| Mêmes aptitudes que l’espèce du joueur sélectionné.
+ABILITIES_RANDOM_DESC			| Les aptitudes seront générées aléatoirement à l’aide des paramètres « Configuration » : <b>OPTIONS D’ALIENS ALÉATOIRES</b> : « Cible max », « Cible min », « Aliens personnalisés », « Réglage % max », « Réglage % min » et « Bords lisses ».
+ABILITIES_RANDOM_10_DESC		| Aptitudes sélectionnées aléatoirement parmi les aptitudes des dix espèces originales.
+ABILITIES_RANDOM_16_DESC		| Aptitudes sélectionnées aléatoirement parmi les aptitudes des seize espèces. <i>(Les dix espèces originales et les six espèces de Modnar)</i>
+ABILITIES_FILES_FLT_DESC		| Aptitudes sélectionnées aléatoirement parmi les fichiers d’espèces personnalisées, avec l’option « Disponible pour l’IA » activée. Si cette liste est vide, la sélection sera effectuée dans les limites des aptitudes d’origine des espèces.
+ABILITIES_ALL_FILES_DESC		| Aptitudes sélectionnées aléatoirement parmi les fichiers d’espèce personnalisé, en ignorant l’option « Disponible pour l’IA ». Si cette liste est vide, la sélection sera effectuée dans le cadre des aptitudes d’origine de l’espèce.
 ABILITIES_FILES_RACES_DESC		| Aptitudes sélectionnées aléatoirement parmi les aptitudes des espèces originales et les fichiers d’espèces personnalisées, avec l’option « Disponible pour l’IA » activée.
-ABILITIES_All_DESC				| Aptitudes sélectionnées aléatoirement parmi les aptitudes des espèces originales et les fichiers d’espèces personnalisées, en ignorant l’option « Disponible pour l’IA ».
+ABILITIES_ALL_DESC				| Aptitudes sélectionnées aléatoirement parmi les aptitudes des espèces originales et les fichiers d’espèces personnalisées, en ignorant l’option « Disponible pour l’IA ».
 
 SETUP_GALAXY_SHAPE_RECTANGLE_HELP		| Galaxie rectangulaire ou carrée originale avec jusqu’à cinq vides.
 SETUP_GALAXY_SHAPE_RECTANGLE_O1_DESC	| Ajustement du rapport de forme.

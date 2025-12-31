@@ -103,6 +103,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     public static boolean isVIPConsole = false; // BR: to avoid complex call on error!
     public static boolean useDebugFile = false;
 
+	public static final List<ActionListener> animationListeners = new ArrayList<>();
     private static final String SETUP_RACE_PANEL = "SetupRace";
     private static final String SETUP_GALAXY_PANEL = "SetupGalaxy";
     private static final String LOAD_PANEL = "Load";
@@ -889,6 +890,8 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         long newTime  = timeMs();
         animationMs = newTime;
         animationCount++;
+		for (ActionListener listener : animationListeners)
+			listener.actionPerformed(e);
         animate();
     }
     @Override

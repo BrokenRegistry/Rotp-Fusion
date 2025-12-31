@@ -234,6 +234,8 @@ public abstract class BaseModPanel extends BasePanel
 	}
 	
 	public void refreshGui(int level) {}
+	public void sleep()	{ isOnTop = false; }
+	public void wake()	{ isOnTop = true; }
 
 	protected void init() {
 		//ModifierKeysState.reset();
@@ -281,8 +283,10 @@ public abstract class BaseModPanel extends BasePanel
 		backImg = null;
 		bg = null;
 	}
-	protected void close() { 
+	protected void close() {
 		disableGlassPane();
+		clearImages();
+		clearBuffer();
 		clearImages();
 		isOnTop = false;
 		//ModifierKeysState.reset();
@@ -1040,7 +1044,7 @@ public abstract class BaseModPanel extends BasePanel
 		}
 	}
 	public final class ModText extends BaseText {
-		
+
 		private final Box box;
 		private final int baseFontsize;
 		boolean forceHover = false;

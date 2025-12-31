@@ -16,7 +16,7 @@
 package rotp.ui.game;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.empires.species.CustomRaceDefinitions.ROOT;
+import static rotp.model.empires.species.SpeciesSettings.ROOT;
 import static rotp.ui.game.SetupGalaxyUI.specificAI;
 
 import java.awt.Color;
@@ -38,16 +38,16 @@ import javax.swing.JTextPane;
 
 import rotp.model.ai.AIList;
 import rotp.model.empires.Empire;
-import rotp.model.empires.species.CustomRaceDefinitions;
+import rotp.model.empires.species.ICRSettings;
+import rotp.model.empires.species.SettingBase;
+import rotp.model.empires.species.SkillsFactory;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.races.RacesUI;
-import rotp.ui.util.ICRSettings;
 import rotp.ui.util.IParam;
 import rotp.ui.util.ListDialogUI;
-import rotp.ui.util.SettingBase;
 import rotp.util.FontManager;
 import rotp.util.ModifierKeysState;
 
@@ -56,7 +56,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private static final String	 playerAIOffKey	= "SETUP_OPPONENT_AI_PLAYER";
 	private static final String	 totalCostKey	= ROOT + "GUI_COST";
 	private static final String	 malusCostKey	= ROOT + "GUI_MALUS";
-	
+
 	private	static final int	 tooltipPadV	= s10;
 	private	static final int	 descPadM		= s5;
 	private static final int	 descLineH		= s18;
@@ -80,7 +80,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private static final int	costOffset		= s25; // Offset from title
 	private static final int	titlePad		= s80; // Offset of first setting
 	private static final int	raceAIH			= s18;
-	
+
 	private static final Color	frameC			= SystemPanel.blackText; // Setting frame color
 	private static final Color	settingNegC		= SettingBase.settingNegC; // Setting name color
 	private static final Color	settingC		= SettingBase.settingC; // Setting name color
@@ -102,9 +102,15 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private static final int   optionFont	= 13;
 	private static final int   optionH		= s15;
 	private static final int   optionIndent	= s15;
+	private static SkillsFactory cr;
 
 	// This should be the last static to be initialized
 	private static final ShowCustomRaceUI instance = new ShowCustomRaceUI();
+	public static void languageChanged()	{
+		if (instance != null)
+			if (instance.cr() != null)
+				instance.cr().languageChanged();
+	}
 
 	private List<Integer> colSettingsCount;
 	private	List<Integer> spacerList;
@@ -143,7 +149,6 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private   ModText malusCostText;
 	private	  RacesUI  raceUI; // Parent panel
 	protected int maxLeftM;
-	private   CustomRaceDefinitions cr;
 	protected boolean initialized = false;
 	private   boolean forceUpdate = true;
 
@@ -160,14 +165,14 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	    malusCostText = new ModText(this, costFontSize, 
 	    		malusC, malusC, hoverC, depressedC, malusC, false);
 	}
-	public static ShowCustomRaceUI instance() {
-		return instance.init0();
-	}
+	public static ShowCustomRaceUI instance() 				{ return instance.init0(); }
+	public static SkillsFactory displayedSpecies()	{ return cr; }
+
 	private ShowCustomRaceUI init0() {
 		if (initialized)
 			return this;
 		initialized = true;
-		cr(new CustomRaceDefinitions());		
+		cr(SkillsFactory.getSkillsFactoryForEditor(this));		
 		maxLeftM	= scaled(80);
 		guiTitleID	= ROOT + "SHOW_TITLE";
 	    commonList	= settingList;
@@ -179,7 +184,12 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	}
 	public void loadRace(IGameOptions options)		{ // For Race Diplomatic UI Panel
 		forceUpdate = true;
-		raceUI.selectedEmpire().initCRToShow(cr);
+		Empire emp = raceUI.selectedEmpire();
+		emp.initCRToShow(cr);
+		if (emp.isCustomSpecies())
+			guiTitleID	= ROOT + "SHOW_TITLE_CUSTOM";
+		else
+			guiTitleID	= ROOT + "SHOW_TITLE";
 	}
 	public void init(RacesUI p)	{ // For Race Diplomatic UI Panel
 		forceUpdate = true;
@@ -236,8 +246,8 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	}
 	// ========== Other Methods ==========
 	//
-	CustomRaceDefinitions cr()			{ return cr; }
-	void cr(CustomRaceDefinitions cr)	{ this.cr = cr; }
+	SkillsFactory cr()			{ return cr; }
+	void cr(SkillsFactory cr)	{ ShowCustomRaceUI.cr = cr; }
 	private void setDesc(String tt)		{
 		descBox.setText(tt);
 		loadGuide();
@@ -286,7 +296,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private void playerAIBoxAction()	{
 		AIList list				= IGameOptions.changePlayAIset();
 		List<String> returnList = list.getAutoPlay();
-		String[] choiceArray	= list.getNames().toArray(new String[list.size()]);;
+		String[] choiceArray	= list.getNames().toArray(new String[list.size()]);
 
 		IGameOptions opts = raceUI.options();
 		String aiNewKey = selectAIFromList(choiceArray, returnList, opts.selectedAutoplayOption(), opts.autoplay());
@@ -296,7 +306,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private void alienAIBoxAction()		{
 		AIList list				= IGameOptions.changeAlienAIset();
 		List<String> returnList = list.getAliens();
-		String[] choiceArray	= list.getNames().toArray(new String[list.size()]);;
+		String[] choiceArray	= list.getNames().toArray(new String[list.size()]);
 		Empire emp		= raceUI.selectedEmpire();
 		String aiNewKey = selectAIFromList(choiceArray, returnList, emp.getAiName(), specificAI());
 		emp.changeOpponentAI(aiNewKey);
@@ -318,6 +328,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 				setDesc(setting.getToolTip());
 				if (hoverBox != prevHover) {
 					setting.settingText().mouseEnter();
+					setting.updated(true);
 					repaint(hoverBox);
 				}
 				return true;
@@ -330,6 +341,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 						setDesc(setting.getToolTip(idx));
 						if (hoverBox != prevHover) {
 							txt.mouseEnter();
+							setting.updated(true);
 							repaint(hoverBox);
 						}
 						return true;
@@ -464,6 +476,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		super.close();
 		for (ICRSettings setting : settingList)
 			setting.clearImage();
+		cr().cleanFactories();
 	}
 	@Override protected void drawButtons(Graphics2D g, boolean init) {
         Stroke prev = g.getStroke();
@@ -485,7 +498,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
     	initButtonPosition();
 		buttonBackImg = new BufferedImage(retina(wButton), retina(hButton), TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) buttonBackImg.getGraphics();
-		setFontHints(g);
+		setRenderingHints(g);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
         g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -597,15 +610,15 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		super.paintComponent(g0);
 		Graphics2D g = (Graphics2D) g0;
 
-        // background image
+		// background image
 		g.drawImage(backImg(), 0, 0, this);
 		// Buttons background image
-        drawButtons(g);
-        drawFixButtons(g, false);
+		drawButtons(g);
+		drawFixButtons(g, false);
 
 		// Tool tip
 		paintDescriptions(g);
-		
+
 		// Total cost
 		totalCostText.displayText(totalCostStr());
 		totalCostText.setScaledXY(xCost, yCost);
@@ -615,13 +628,12 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		malusCostText.displayText(malusCostStr());
 		malusCostText.setScaledXY(xCost + sw + s2, yCost);
 		malusCostText.draw(g);
-		
+
 		// Loop thru the parameters
 		xLine = leftM+s10;
 		yLine = yTop;
 		currentWidth	= wFirstColumn;
 		descWidth	= wGist() - 2 * columnPad;
-
 
 		// First column (left)
 		// Loop thru parameters
@@ -641,7 +653,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		g.setStroke(prev);
 
 		showGuide(g);
-		
+
 		// ready for extension
 		xLine = xLine + currentWidth + columnPad;
 		yLine = yTop;
@@ -694,8 +706,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 			repaint();
 		}
 		// Check if cursor is in a box
-		checkForHoveredSettings(mouseList);;
-
+		checkForHoveredSettings(mouseList);
 	}
 	@Override public void mouseReleased(MouseEvent e) {
 		if (e.getButton() > 3)

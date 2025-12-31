@@ -1372,7 +1372,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
                 drawingPlanet = false;
             }
         };
-        Thread thread = new Thread(drawRunnable);
+        Thread thread = new Thread(drawRunnable, "DrawRunTable");
         thread.start();
     }
     private void drawResults(Graphics2D g, int x, int y, int w, int h) {

@@ -42,6 +42,7 @@ public class DynOptions implements DynamicOptions, Serializable {
 	private LinkedHashMap<String, Integer>		integerList	= new LinkedHashMap<>();
     private LinkedHashMap<String, Serializable>	objectList	= new LinkedHashMap<>();
     private LinkedHashMap<String, String>		stringList	= new LinkedHashMap<>();
+	private transient LinkedHashMap<String, String>	stringListBackup;
 
     // -------------------- Basic Getters --------------------
     //
@@ -57,7 +58,12 @@ public class DynOptions implements DynamicOptions, Serializable {
     			+ objectList.size()
     			+ stringList.size();
     }
-    // -------------------- Overriders --------------------
+	public LinkedHashMap<String, String> stringListBackup()	{
+		if (stringListBackup == null)
+			stringListBackup = new LinkedHashMap<>();
+		return stringListBackup;
+	}
+	// #===-------------------- Overriders --------------------
     //
 	@Override public Boolean setBoolean(String id, Boolean value) {
 		return booleanList.put(id, value);
@@ -104,24 +110,28 @@ public class DynOptions implements DynamicOptions, Serializable {
 	@Override public String getString(String id, String defaultValue) {
 		return stringList.getOrDefault(id, defaultValue);
 	}
-	// -------------------- File Management --------------------
+	// -#-
+	// #===-------------------- Tools --------------------
+	//
+	public static DynOptions copy(DynOptions options) {
+		return (DynOptions) ObjectCloner.deepCopy(options);
+	}
+	public DynOptions copy()		{
+		return (DynOptions) ObjectCloner.deepCopy(this);
+	}
+	public void backupStringMap()	{
+		stringListBackup().clear();
+		stringListBackup.putAll(stringList);
+	}
+	public void restoreStringMap()	{
+		stringList.clear();
+		stringList.putAll(stringListBackup());
+	}
+	// -#-
+	// #===-------------------- File Management --------------------
 	//
 	public void save(String path, String fileName) {
 		saveOptions(this, path, fileName);
-	}
-//	public void load(String path, String fileName) {
-//		DynOptions opts	= loadOptions(path, fileName);
-//		booleanList	= opts.booleanList;
-//		floatList	= opts.floatList;
-//		integerList	= opts.integerList;
-//	    objectList	= opts.objectList;
-//	    stringList	= opts.stringList;
-//	}
-	public DynOptions copy() {
-		return (DynOptions) ObjectCloner.deepCopy(this);
-	}
-	public static DynOptions copy(DynOptions options) {
-		return (DynOptions) ObjectCloner.deepCopy(options);
 	}
     // Save options to zip file
     public static void saveOptions(DynOptions options, File saveFile) {
@@ -177,7 +187,7 @@ public class DynOptions implements DynamicOptions, Serializable {
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(saveFile));
         ZipEntry e = new ZipEntry("DynamicOptions.dat");
         out.putNextEntry(e);
-        
+
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream objOut = null;
         try {
@@ -195,7 +205,7 @@ public class DynOptions implements DynamicOptions, Serializable {
             catch(IOException ex) {
     			ex.printStackTrace();
             	System.err.println("Options.save -- IOException: "+ ex.toString());
-            }            
+            }
         }
     }
     // Options files initialization
@@ -235,7 +245,9 @@ public class DynOptions implements DynamicOptions, Serializable {
             return newOptions;
         }
         catch (IOException | ClassNotFoundException e) {
+        	System.err.println("Error: in DynOptions loadObjectData(InputStream is)");
             return null;
         }
     }	
+	// -#-
 }

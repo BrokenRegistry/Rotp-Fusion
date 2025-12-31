@@ -27,11 +27,11 @@ import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
 import rotp.model.empires.species.Species;
 import rotp.model.ships.ShipDesign;
-import rotp.ui.BasePanel;
+import rotp.ui.ScaledInteger;
 import rotp.ui.combat.ShipBattleUI;
 import rotp.util.Base;
 
-public class Tech implements Base {
+public class Tech implements Base, ScaledInteger {
     public static final float miniSlowRate = .97164f;
     public static final float miniFastRate = .933033f;
 
@@ -348,7 +348,7 @@ public class Tech implements Base {
         Stroke prev = g.getStroke();
 
         g.setColor(Color.yellow);
-        g.setStroke(BasePanel.baseStroke(1));
+        g.setStroke(baseStroke(1));
 
         g.drawLine(x0, y0, x1, y1);
 

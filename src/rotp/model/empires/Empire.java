@@ -301,6 +301,7 @@ public final class Empire extends Species implements NamedObject {
 
 	@Override public int capitalSysId()				{ return capitalSysId; }
 	@Override public Leader leader()				{ return leader; }
+	@Override public String getLeaderName()			{ return leader.name(); }
 	@Override public boolean masksDiplomacy()		{ return super.masksDiplomacy() || ai().diplomat().masksDiplomacy(); }
 	@Override public SystemInfo sv()				{ return sv; }
 
@@ -372,7 +373,7 @@ public final class Empire extends Species implements NamedObject {
 
     public Colony.Orders priorityOrders()         { return priorityOrders; }
     public void priorityOrders(Colony.Orders o)   { priorityOrders = o; }	// BR: Never Used
-    public int colorId()                          { return bannerColor; }
+    @Override public int colorId()                { return bannerColor; }
     private void colorId(int i)                   { bannerColor = i; resetColors(); }
     public int shape()                            { return id / options().numColors(); }
     public float minX()                           { return minX; }
@@ -431,8 +432,8 @@ public final class Empire extends Species implements NamedObject {
         return canSeeShips[empId];
     }
 
-	public DynOptions speciesOptions()		{ return raceOptions; }
-	@Override public int speciesNameIndex()	{ return raceNameIndex; }
+	@Override public DynOptions speciesOptions()	{ return raceOptions; }
+	@Override public int civilizationNameIndex()	{ return raceNameIndex; }
     public BufferedImage scoutImage() {
         if (scoutImage == null)
             scoutImage = ShipLibrary.current().scoutImage(shipColorId());
@@ -522,6 +523,54 @@ public final class Empire extends Species implements NamedObject {
 	// modnar: add option to start game with additional colonies
 	// modnar: compId is the System ID array for these additional colonies
 	// BR: For Restart with new options and random races
+	public Empire(Galaxy g, int empId, Species species, StarSystem s, int[] compId, EmpireBaseData empSrc) {
+		super(species);
+		IGameOptions opts = options();
+		log("creating empire for ", species.id());
+		if (empSrc == null)
+			randomSource = rng().nextLong();
+		else
+			randomSource = empSrc.randomSource();
+		id = empId;
+
+		// Init empire species parameters
+		raceKey		= animKey();
+		dataRaceKey	= skillKey();
+		raceOptions	= super.speciesOptions(); // BR: for custom species
+
+		// Init Home world
+		homeSysId = capitalSysId = s.id;
+		compSysId = compId; // modnar: add option to start game with additional colonies
+		if (empSrc != null							// Restart
+				&& empId != Empire.PLAYER_ID		// Is Alien
+				&& !opts.selectedRestartChangesAliensAI())	// Don't changes AI
+			selectedAI = empSrc.raceAI();
+
+		empireViews = new EmpireView[opts.selectedNumberOpponents()+1];
+		status = new EmpireStatus(this);
+		sv = new SystemInfo(this);
+		// many things need to know if this is the player civ, so set it early
+		if (empId == Empire.PLAYER_ID) {
+			resetDivertColonyExcessToResearch();
+			g.player(this);
+		}
+
+		colorId(super.colorId());
+		raceNameIndex	= super.civilizationIndex(); // also initialize species Name
+		// Init Leaders
+		String leaderName = super.getLeaderName();
+		leader = new Leader(this, leaderName);
+		if (empSrc != null && empId != Empire.PLAYER_ID
+				&& !opts.selectedRestartAppliesSettings()) { // BR: For Restart with new options 
+			leader.personality = empSrc.personality;
+			leader.objective   = empSrc.objective;
+		}
+		shipLab = new ShipDesignLab();
+	}
+
+	// modnar: add option to start game with additional colonies
+	// modnar: compId is the System ID array for these additional colonies
+	// BR: For Restart with new options and random races
 	public Empire(Galaxy g, int empId, Species species, StarSystem s, int[] compId, Integer cId, String name, EmpireBaseData empSrc) {
 		super(species);
 		log("creating empire for ", species.id());
@@ -534,7 +583,7 @@ public final class Empire extends Species implements NamedObject {
 		// Init empire species parameters
 		raceKey		= animKey();
 		dataRaceKey	= skillKey();
-		raceOptions	= raceOptions(); // BR: for custom species
+		raceOptions	= super.speciesOptions(); // BR: for custom species
 
 		// Init Home world
 		usedHomeNames().add(s.name()); // To prevent same homeworlds, as custom species may have doubles
@@ -555,7 +604,7 @@ public final class Empire extends Species implements NamedObject {
         }
 
 		colorId(cId);
-		raceNameIndex	= speciesIndex(); // also initialize species Name
+		raceNameIndex	= civilizationIndex(); // also initialize species Name
 		// Init Leaders
 		String leaderName = name;
 		if (leaderName == null)
@@ -570,13 +619,13 @@ public final class Empire extends Species implements NamedObject {
         shipLab = new ShipDesignLab();
     }
     public Empire(Galaxy g, int empId, int sysId, int cId, String name)	{
-		super("RACE_PSILON");
+		super(ORION_KEY);
         log("creating Monster empire for ",  name);
         id			= empId;
         selectedAI	= IGameOptions.BASE;
         raceKey		= "RACE_PSILON";
         dataRaceKey	= "RACE_PSILON";
-        raceOptions	= raceOptions();
+        raceOptions	= super.speciesOptions();
         homeSysId	= capitalSysId = sysId;
 		compSysId	= new int[0];
         empireViews	= new EmpireView[0];;
@@ -618,15 +667,11 @@ public final class Empire extends Species implements NamedObject {
     //public boolean isAIControlled()      { return true; } //for quick switch to test how the AI would have fared in a game
     public Color color()                 { return options().color(bannerColor); }
     int shipColorId()					{ return colorId(); }
-    @Override
-    public String name() {
-        if (empireName == null)
-			if (isPlayer() && isCustomSpecies())
-				empireName = empireTitle();
-			else
-				empireName = replaceTokens("[this_empire]", "this");
-        return empireName;
-    }
+	@Override public String name()		{
+		if (empireName == null)
+			empireName = empireTitle();
+		return empireName;
+	}
     public DiplomaticReply respond(String reason, Empire listener) {
         return respond(reason,listener,null);
     }
@@ -677,8 +722,11 @@ public final class Empire extends Species implements NamedObject {
     public int shipCount(int hullSize) {
         return galaxy().ships.hullSizeCount(id, hullSize);
     }
-    @Override
-    public String toString()   { return concat("Empire: ", raceName()); }
+	@Override public String toString()	{ return super.toString();
+//		if (isCustomSpecies())
+//			return concat("Empire: ", civilizationName(), "custom ");
+//		return concat("Empire: ", civilizationName());
+	}
 
     public boolean canSendTransportsFrom(StarSystem sys) {
         if (sys == null)
@@ -1014,8 +1062,7 @@ public final class Empire extends Species implements NamedObject {
 			dynamicOptions = new DynOptions();
 
 		setSpecies(new Species(raceKey, dataRaceKey, raceOptions));
-//		setSpeciesEmpire(id);
-		setSpeciesIndex(raceNameIndex);
+		setOldSpeciesIndex(raceNameIndex);
 
 		tech().validateOnLoad();
         for(EmpireView view : empireViews)
@@ -4179,14 +4226,10 @@ public final class Empire extends Species implements NamedObject {
         }
         return 0;
 	} // \BR
-
-    // BR:
     /**
 	 * @return the current Name of Home World
 	 */
-	public String getHomeWorldName() {
-        return galaxy().system(homeSysId).name();
-	} // \BR
+	@Override public String getHomeWorldName() { return galaxy().system(homeSysId).name(); }
     // BR:
     /**
      * Change Home World and Companions Name
@@ -4213,7 +4256,7 @@ public final class Empire extends Species implements NamedObject {
 	static Comparator<Empire> NON_DYNA_TEC_IND = (Empire o1, Empire o2) -> Double.compare(o2.empireNonDynaTechnoIndPower(), o1.empireNonDynaTechnoIndPower());
 	// ==================== EmpireBaseData ====================
 	//
-	public static class EmpireBaseData {
+	public static final class EmpireBaseData {
 		public String raceKey;
 		public String dataRaceKey;
 		public String empireName;
@@ -4225,6 +4268,7 @@ public final class Empire extends Species implements NamedObject {
 		private int raceAI;
 		private Personality personality;
 		private Objective objective;
+		public CivilizationId civilizationId;
 
 		public SystemBaseData homeSys;
 		private int[] compSysId;
@@ -4232,6 +4276,7 @@ public final class Empire extends Species implements NamedObject {
 		private Long randomSource;
 
 		public EmpireBaseData(Empire src, SystemBaseData[] systems) {
+			src.validateOnLoad();
 			randomSource = src.randomSource;
 			raceKey		 = src.raceKey;
 			dataRaceKey	 = src.dataRaceKey;
@@ -4256,14 +4301,15 @@ public final class Empire extends Species implements NamedObject {
 				for (int i=0; i<compNum; i++)
 					companions[i] = systems[compSysId[i]];
 			}
+			civilizationId = src.getRawCivilizationId(src.raceNameIndex);
 		}
-		public void setRace(String r, String dr, boolean isCR,
-				DynOptions options, int ai) {
+		public void setRace(String r, String dr, boolean isCR, DynOptions options, int ai, CivilizationId civId) {
 			raceKey		 = r;
 			dataRaceKey	 = dr;
 			isCustomRace = isCR;
 			raceOptions	 = options;
 			raceAI		 = ai;
+			civilizationId = civId;
 		}
 		public void raceAI(int ai)	{ raceAI = ai; }
 		public int  raceAI()		{ return raceAI; }

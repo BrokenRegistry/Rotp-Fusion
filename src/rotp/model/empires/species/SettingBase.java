@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package rotp.ui.util;
+package rotp.model.empires.species;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.Rotp.rand;
 import static rotp.model.game.IMainOptions.minListSizePopUp;
 import static rotp.ui.util.IParam.langHelp;
 import static rotp.ui.util.IParam.langLabel;
+import static rotp.ui.util.IParam.realLangLabel;
 import static rotp.ui.util.IParam.rowsSeparator;
 import static rotp.ui.util.IParam.tableFormat;
 import static rotp.util.Base.textSubs;
@@ -38,20 +39,24 @@ import java.util.LinkedList;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang3.StringUtils;
+
 import rotp.model.game.DynamicOptions;
 import rotp.model.game.IGameOptions;
-import rotp.model.game.RulesetManager;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.BaseModPanel.ModText;
+import rotp.ui.game.ShowCustomRaceUI;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.util.ListDialogUI;
+import rotp.ui.util.StringList;
 
 public class SettingBase<T> implements ICRSettings {
 	
 	public enum CostFormula {DIFFERENCE, RELATIVE, NORMALIZED}
-	private static final Color settingPosC = SystemPanel.limeText;  // Setting name color
-	public static final Color settingNegC = SystemPanel.redText;   // Setting name color
-	public static final Color settingC	  = SystemPanel.whiteText; // Setting name color
+	private static final Color settingPosC	= SystemPanel.limeText;	// Setting name color
+	public static final Color settingNegC	= SystemPanel.redText;	// Setting name color
+	public static final Color settingC		= SystemPanel.whiteText;	// Setting name color
 
 	private static final boolean defaultIsList			= true;
 	private static final boolean defaultIsBullet		= false;
@@ -76,8 +81,8 @@ public class SettingBase<T> implements ICRSettings {
 	private boolean isList			= defaultIsList;
 	private int		refreshLevel	= 0;
 	private int		bulletHFactor	= 1;
-	private int 	bulletMax   	= 25;
-	private int 	bulletStart 	= 0;
+	private int		bulletMax   	= 25;
+	private int		bulletStart 	= 0;
 	private T		selectedValue	= null;
 	private T		defaultValue	= null;
 	private ModText settingText;
@@ -88,6 +93,7 @@ public class SettingBase<T> implements ICRSettings {
 	private boolean updated = true;
 	private BufferedImage img;
 	private int deltaYLines;
+	private int drawCount = 0;
 	
 	// ========== Constructors and initializers ==========
 	//
@@ -139,6 +145,10 @@ public class SettingBase<T> implements ICRSettings {
 		int index = labelValidIndex(labelList.indexOfIgnoreCase(s));
 		selectedValue(valueList.get(index));
 	}
+	@Override public String toString()	{
+		String s = getLangLabel() + ": " + getCfgValue() + " (" + defaultValue + ")";
+		return s;
+	}
 	// ========== Public IParam Interfaces ==========
 	//
 	@Override public void setFromCfgValue(String cfgValue) {
@@ -186,23 +196,19 @@ public class SettingBase<T> implements ICRSettings {
 	@Override public void setFromDefault(boolean excludeCfg, boolean excludeSubMenu) {
 		selectedValue(defaultValue);
 	}
-	@Override public void updateOptionTool() {
-		if (!isSpacer && dynOpts() != null)
-			setFromCfgValue(dynOpts().getString(getLangLabel(), getDefaultCfgValue()));
-	}
 	@Override public void updateOption(DynamicOptions destOptions) {
 		if (!isSpacer && destOptions != null)
-			destOptions.setString(getLangLabel(), getCfgValue());
+			destOptions.setString(dynOptionIndex(), getCfgValue());
 	}
 	@Override public void updateOptionTool(DynamicOptions srcOptions) {
 		if (!isSpacer && srcOptions != null)
-			setFromCfgValue(srcOptions.getString(getLangLabel(), getDefaultCfgValue()));
+			setFromCfgValue(srcOptions.getString(dynOptionIndex(), getDefaultCfgValue()));
 	}
 	@Override public void copyOption(IGameOptions src, IGameOptions dest,
 									boolean updateTool, int cascadeSubMenu) {
 		if (!isSpacer && src != null && dest != null)
-			dest.dynOpts().setString(getLangLabel(), getCfgValue());
-		dest.dynOpts().setString(getLangLabel(), src.dynOpts().getString(getLangLabel(), getDefaultCfgValue()));
+			dest.dynOpts().setString(dynOptionIndex(), getCfgValue());
+		dest.dynOpts().setString(dynOptionIndex(), src.dynOpts().getString(dynOptionIndex(), getDefaultCfgValue()));
 	}
 	@Override public String getGuiDisplay(int idx)	{
 		String str = text(getLangLabel()); // Get from label.txt
@@ -261,7 +267,11 @@ public class SettingBase<T> implements ICRSettings {
 	@Override public String getValueStr(int id)		{ return valueGuide(valueValidIndex(id)); }
 	@Override public String valueGuide(int id) 		{ return tableFormat(getRowGuide(id)); }
 	@Override public boolean updated()				{ return updated; }
-	@Override public void updated(boolean val)		{ updated = val; }
+	@Override public void updated(boolean val)		{
+		if (val)
+			drawCount = 3;
+		updated = val;
+	}
 
 	// ========== Public ICRSettings Interfaces ==========
 	//
@@ -299,12 +309,12 @@ public class SettingBase<T> implements ICRSettings {
 			return 0f;;
 		return costList.get(costValidIndex());
 	}
-	@Override public String guiCostOptionStr(int idx)	{ return guiCostOptionStr(idx, 0); }
-	@Override public int index()		{ return cfgValidIndex(); }
+	@Override public String guiCostOptionStr(int idx)		{ return guiCostOptionStr(idx, 0); }
+	@Override public int index()							{ return cfgValidIndex(); }
 	@Override public void guiSelect()	{
 		if (isSpacer())
 			return;
-		pushSetting();
+		settingToSkill(ShowCustomRaceUI.displayedSpecies().getRawRace());
 		updateGui();
 	}
 	@Override public void setRandom(float min, float max, boolean gaussian)	{ set(randomize(min, max, gaussian)); }
@@ -399,7 +409,7 @@ public class SettingBase<T> implements ICRSettings {
 		}
 		else
 			bt.shiftBounds(xLine, yLine- 2*frameShift);
-		
+
 		y += settingH;
 		y += frameTopPad;
 		// Options
@@ -425,12 +435,17 @@ public class SettingBase<T> implements ICRSettings {
 				bt.shiftBounds(xLine, yLine-2*frameShift);
 			y += optionH;
 		}
+
+		boolean hovered = bt.isHovered();
+		drawCount--;
+		//System.out.println(drawCount + " hovered: " + hovered + " " + this.nameLabel);
+		if (drawCount<=0 && !hovered) {
+			// System.out.println("updated(false)");
+			updated(false);
+		}
+
 		g.dispose();
 	}
-
-	// ========== Tools for overriders ==========
-	//
-	protected DynamicOptions dynOpts()	{ return RulesetManager.current().currentOptions().dynOpts(); }
 
 	// ========== Overridable Methods ==========
 	//
@@ -593,6 +608,21 @@ public class SettingBase<T> implements ICRSettings {
 	}
 	private	void addToolTip(String label, boolean finalKey)		{
 		tooltipList.add(getToolTip(label, finalKey));
+	}
+	public String getLabel(String langDir)	{
+		String langLabel = getLangLabel();
+		String realLabel = realLangLabel(langLabel);
+		if (realLabel != null) {
+			if (realLabel.isEmpty())
+				realLabel = realLangLabel(langLabel);
+			return realLabel;
+		}
+		String labelEnd = langDir;
+		langLabel = StringUtils.removeEnd(langLabel, labelEnd);
+		realLabel = realLangLabel(langLabel);
+		if (realLabel != null)
+			return realLabel;
+		return StringUtils.removeEnd(getCfgLabel(), labelEnd);
 	}
 	// ===== Other Public Methods =====
 	//

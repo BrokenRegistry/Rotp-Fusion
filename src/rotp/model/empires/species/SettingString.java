@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package rotp.ui.util;
+package rotp.model.empires.species;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import rotp.model.game.DynamicOptions;
+import rotp.ui.game.ShowCustomRaceUI;
 import rotp.util.Base;
 
 public class SettingString extends SettingBase<String> implements Base{
@@ -49,6 +50,18 @@ public class SettingString extends SettingBase<String> implements Base{
 		initOptionsText();
 		getToolTip(); // to init the list
 	}
+	public SettingString(String guiLangLabel, String nameLangLabel, String defaultValue) {
+		super(guiLangLabel, nameLangLabel, defaultValue, false, true, true);
+		hasNoCost(true);
+		bulletHFactor(1);
+		// Fake list needed for bullet aspect
+		put(defaultValue, defaultValue);
+		defaultIndex(0);
+		set(defaultValue);
+		initOptionsText();
+		getToolTip(); // to init the list
+	}
+
 //	protected void inputMessage(String inputMessage) {
 //		this.inputMessage = inputMessage;
 //	}
@@ -63,22 +76,13 @@ public class SettingString extends SettingBase<String> implements Base{
 	@Override public void setFromCfgValue(String cfgValue) {
 		set(cfgValue);
 	}
-//	@Override public void updateOption() {
-//		if (!isSpacer() && dynOpts() != null)
-//			dynOpts().setString(getLangLabel(), settingValue());
-//	}
-	@Override public void updateOptionTool() {
-		if (!isSpacer() && dynOpts() != null)
-			set(dynOpts().getString(getLangLabel(), defaultValue()));
-	}
 	@Override public void updateOption(DynamicOptions destOptions) {
 		if (!isSpacer() && destOptions != null)
-			destOptions.setString(getLangLabel(), settingValue());
+			destOptions.setString(dynOptionIndex(), settingValue());
 	}
 	@Override public void updateOptionTool(DynamicOptions srcOptions) {
-//		options(srcOptions);
-		if (!isSpacer() && srcOptions != null)
-			set(srcOptions.getString(getLangLabel(), defaultValue()));
+		if (srcOptions != null && !isSpacer())
+			set(srcOptions.getString(dynOptionIndex(), defaultValue()));
 	}
 	@Override public boolean next() {
 		Object prev = UIManager.get("OptionPane.minimumSize");
@@ -90,7 +94,7 @@ public class SettingString extends SettingBase<String> implements Base{
 		if (input == null)
 			return false; // cancelled
 		set(input);
-		pushSetting();
+		settingToSkill(ShowCustomRaceUI.displayedSpecies().getRawRace());
 		updateGui();
 		return false;
 	}
@@ -132,4 +136,8 @@ public class SettingString extends SettingBase<String> implements Base{
 			put("", getToolTip());
 		}		
 	}
+	// ===== Other Methods =====
+	//
+	public String settingValue(int item)			{ return settingValue(); }
+	public void selectedValue(int item, String val)	{ selectedValue(val); }
 }

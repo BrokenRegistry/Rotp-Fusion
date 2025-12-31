@@ -18,7 +18,7 @@ package rotp.ui.util;
 
 import java.io.Serializable;
 
-import rotp.model.empires.species.CustomRaceDefinitions;
+import rotp.model.empires.species.SkillsFactory;
 import rotp.model.empires.species.Species;
 import rotp.model.game.DynOptions;
 
@@ -36,7 +36,7 @@ public class ParamCR extends ParamObject {
 	// ===== Overriders =====
 	//
 	@Override public Serializable defaultValue() {
-		return CustomRaceDefinitions.getDefaultOptions();
+		return SkillsFactory.getDefaultOptions();
 	}
 	// ===== Other Methods =====
 	//

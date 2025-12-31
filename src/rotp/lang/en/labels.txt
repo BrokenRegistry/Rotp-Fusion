@@ -1679,7 +1679,7 @@ SETUP_OPPONENT_AI_SELECT          | AI: Selectable
 SETUP_OPPONENT_AI_PLAYER_HELP     | The control is under your hands.
 SETUP_OPPONENT_AI_PLAYER          | AI: Off
 SETUP_OPPONENT_CR                 | Abilities:
-SETUP_OPP_CR_OPTIONS_HELP         | Default abilities for alien Species:<br> 'Original Species' = Standard abilities of the selected Species (in the Boxes below);<br> 'Reworked' = New abilities you have saved with the Species default name.<br> (ex: RACE_DARLOK for the Darlok);<br> *Species = specific Original Species; or any other customized species you have built.
+SETUP_OPP_CR_OPTIONS_HELP         | Default abilities for alien Species:<br> 'Original Species' = Standard abilities of the selected Species (in the Boxes below);<br> 'Redesigned' = New abilities you have saved with the Species default name.<br> (ex: RACE_DARLOK for the Darlok);<br> *Species = specific Original Species; or any other customized species you have built.
 
 SETUP_AUTOPLAY_OFF_HELP           | The player takes command of the empire.
 SETUP_AUTOPLAY_OFF                | Off
@@ -1852,12 +1852,16 @@ SETUP_FUEL_RANGE_HIGHER_HELP      | Fuel range factor = 3.
 SETUP_FUEL_RANGE_HIGHEST_HELP     | Fuel range factor = 5.
 SETUP_RANDOMIZE_AI_NONE_HELP      | To disable this option. But will not disable any randomization on the Galaxy Menu.
 SETUP_RANDOMIZE_AI_NONE           | None
-SETUP_RANDOMIZE_AI_PERSONALITY_HELP | Only the AI personality will be affected by this option, but the Galaxy Menu options may override this, and some AI will ignore all personality option!
-SETUP_RANDOMIZE_AI_PERSONALITY    | Personality
-SETUP_RANDOMIZE_AI_ABILITY_HELP   | Only the AI ability will be affected by this option, but the Galaxy Menu options may override it!
-SETUP_RANDOMIZE_AI_ABILITY        | Ability
-SETUP_RANDOMIZE_AI_BOTH_HELP      | This option will try to change both the AI personality and the AI ability... Only if the Galaxy Menu options don't override it!
-SETUP_RANDOMIZE_AI_BOTH           | Both
+SETUP_RANDOMIZE_AI_PERSONALITY_HELP	| Only the AI personality will be affected by this option, but the Galaxy Menu options may override this, and some AI will ignore all personality option!
+SETUP_RANDOMIZE_AI_PERSONALITY		| Personality
+SETUP_RANDOMIZE_AI_ABILITY_HELP		| The abilities of the species will be randomly replaced by those of one of the 10 original species. Note that the options in the Galaxy menu take precedence!
+SETUP_RANDOMIZE_AI_ABILITY			| Ability (10)
+SETUP_RANDOMIZE_AI_BOTH_HELP		| This option will change both the personality and abilities (chosen randomly from among the 10 original species) of the species... Note that the options in the Galaxy menu take precedence!
+SETUP_RANDOMIZE_AI_BOTH 			| Both (10)
+SETUP_RANDOMIZE_AI_ABILITY_16_HELP	| The abilities of the species will be randomly replaced by those of one of the <b>16</b> original species. Note that the options in the Galaxy menu take precedence!
+SETUP_RANDOMIZE_AI_ABILITY_16		| Ability (16)
+SETUP_RANDOMIZE_AI_BOTH_16_HELP		| This option will change both the personality and abilities (chosen randomly from among the <b>16</b> original species) of the species... Note that the options in the Galaxy menu take precedence!
+SETUP_RANDOMIZE_AI_BOTH_16			| Both (16)
 SETUP_RACE_LABEL                  | Available Species
 SETUP_RACE_COLOR                  | Empire Color:
 SETUP_HOMEWORLD_NAME_LABEL        | Homeworld:
@@ -2015,6 +2019,7 @@ SETUP_BUTTON_CUSTOM_PLAYER_RACE   | Customize Species
 CUSTOM_RACE_RACE_AI_DESC          | Change the empire AI
 CUSTOM_RACE_GUI_TITLE             | Sapiens Species Customization
 CUSTOM_RACE_SHOW_TITLE            | Species' Abilities
+CUSTOM_RACE_SHOW_TITLE_CUSTOM	| Customized Species' Abilities
 CUSTOM_RACE_GUI_MALUS             | (Malus: %1)
 CUSTOM_RACE_GUI_COST              | Total Value: %1
 CUSTOM_RACE_GUI_SELECT_DESC       | Save Current Species, Select it as Player Species, Save as Last Settings and Exit Panel
@@ -2071,9 +2076,6 @@ CUSTOM_RACE_RANDOM_USE_TARGET_NO_DESC  | Ignore targeted value.
 
 CUSTOM_RACE_DESCRIPTION				| Customized Species
 
-
-
-
 CUSTOM_RACE_BASE_DATARACE         | Base Abilities
 CUSTOM_RACE_HOME_TYPE             | Planet Type
 CUSTOM_RACE_HOME_SIZE_DESC        | Starting Size of this Empire Home world.
@@ -2085,10 +2087,10 @@ CUSTOM_RACE_HOME_RESOURCES        | Planet Resources
 CUSTOM_RACE_HOME_ENVIRONMENT_DESC | This selection will affect the growth rate of the home world.
 CUSTOM_RACE_HOME_ENVIRONMENT      | Planet Environment
 CUSTOM_RACE_RACE_KEY				| File Name (Key)
-CUSTOM_RACE_RACE_KEY_DESC			| This is the place to enter the filename, it's also used as the key for the standard species... Don't use them, or keep the default "SPECIES_xxx" to set the "Reworked"-Abilities.
+CUSTOM_RACE_RACE_KEY_DESC			| This is the place to enter the filename, it's also used as the key for the standard species... Don't use them, or keep the default "SPECIES_xxx" to set the "Redesigned"-Abilities.
 CUSTOM_RACE_RACE_KEY_INPUT			| Enter the file name of the custom species.
-CUSTOM_RACE_REWORKED_RACE_KEY		| Species for Animations
-CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| This is the prefered Species choice for the displayed animations. When 'Reworked' Abilities is selected, this abilities can be randomly selected.
+CUSTOM_RACE_REWORKED_RACE_KEY		| Linked Animations
+CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| This is the prefered Species choice for the displayed animations. When 'Redesigned' Abilities is selected, this abilities can be randomly selected.
 CUSTOM_RACE_REWORKED_RACE_KEY_INPUT	| Enter the name of the original reworkable species.
 CUSTOM_RACE_REWORKED_RACE_KEY_NONE	| None
 CUSTOM_RACE_BOUND_AI				| Bound AI
@@ -2188,35 +2190,119 @@ CUSTOM_RACE_RESEARCH_FORCEFIELD_DESC   | Cost multiplier for researching Force F
 CUSTOM_RACE_RESEARCH_PLANET_DESC       | Cost multiplier for researching Planet tech. Display: Cost multiplier -> Cost multiplier/ Revenue multiplier (Cost)
 CUSTOM_RACE_RESEARCH_PROPULSION_DESC   | Cost multiplier for researching Propulsion tech. Display: Cost multiplier -> Cost multiplier/ Revenue multiplier (Cost)
 CUSTOM_RACE_RESEARCH_WEAPON_DESC       | Cost multiplier for researching Weapon tech. Display: Cost multiplier -> Cost multiplier/ Revenue multiplier (Cost)
-CUSTOM_RACE_RACE_NAME				| Species Name
+
+CUSTOM_RACE__empire					| →CUSTOM_RACE_RACE_EMPIRE_NAME←
+CUSTOM_RACE__empire_DESC			| →CUSTOM_RACE_RACE_EMPIRE_NAME_DESC←
+CUSTOM_RACE__race					| →CUSTOM_RACE_SPECIES_NAME←
+CUSTOM_RACE__race_DESC				| →CUSTOM_RACE_SPECIES_NAME_DESC←
+CUSTOM_RACE__race_plural			| **Plural of the name
+CUSTOM_RACE__race_plural_DESC		| Plural of →CUSTOM_RACE_SPECIES_NAME_DESC←
+CUSTOM_RACE__title					| →CUSTOM_RACE_LEADER_TITLE←
+CUSTOM_RACE__title_DESC				| →CUSTOM_RACE_LEADER_TITLE_DESC←
+CUSTOM_RACE__nameTitle				| →CUSTOM_RACE_LEADER_FULLTITLE←
+CUSTOM_RACE__nameTitle_DESC			| →CUSTOM_RACE_LEADER_FULLTITLE_DESC←
+
+CUSTOM_RACE__empirefr				| →CUSTOM_RACE_RACE_EMPIRE_NAMEfr←
+CUSTOM_RACE__empirefr_DESC			| →CUSTOM_RACE_RACE_EMPIRE_NAMEfr_DESC←
+CUSTOM_RACE__racefr					| →CUSTOM_RACE_SPECIES_NAMEfr←
+CUSTOM_RACE__racefr_DESC			| →CUSTOM_RACE_SPECIES_NAMEfr_DESC←
+CUSTOM_RACE__race_pluralfr			| Plural of →CUSTOM_RACE_SPECIES_NAMEfr←
+CUSTOM_RACE__race_pluralfr_DESC		| Plural of →CUSTOM_RACE_SPECIES_NAMEfr_DESC←
+CUSTOM_RACE__titlefr				| →CUSTOM_RACE_LEADER_TITLEfr←
+CUSTOM_RACE__titlefr_DESC			| →CUSTOM_RACE_LEADER_TITLEfr_DESC←
+CUSTOM_RACE__nameTitlefr			| →CUSTOM_RACE_LEADER_FULLTITLEfr←
+CUSTOM_RACE__nameTitlefr_DESC		| →CUSTOM_RACE_LEADER_FULLTITLEfr_DESC←
+
+CUSTOM_RACE_CIVILIZATION_FR			| l’ethnie
+CUSTOM_RACE__empireoffr				| **Relatif à →CUSTOM_RACE_CIVILIZATION_FR←
+CUSTOM_RACE__empireoffr_DESC		| Désignation de →CUSTOM_RACE_CIVILIZATION_FR← avec une notion d’origine (du, de la)<br>La contrepartie du paramètre "_empireof" dans les fichiers Species.labels.txt
+CUSTOM_RACE__raceadjecfr			| **Adjectif de →CUSTOM_RACE_CIVILIZATION_FR←
+CUSTOM_RACE__raceadjecfr_DESC		| Adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__raceadjecFfr			| **Féminin de l’adjectif
+CUSTOM_RACE__raceadjecFfr_DESC		| Féminin de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnounfr			| **Pluriel de →CUSTOM_RACE_CIVILIZATION_FR←
+CUSTOM_RACE__race_pluralnounfr_DESC		| Pluriel du nom de →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _race_pluralnoun » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnounoffr		| **Pluriel & Origine
+CUSTOM_RACE__race_pluralnounoffr_DESC	| Pluriel de la désignation de →CUSTOM_RACE_CIVILIZATION_FR← avec une notion d’origine (du, de la)<br>La contrepartie du paramètre "_race_pluralnounof" dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluralnountofr		| **Pluriel & Destination
+CUSTOM_RACE__race_pluralnountofr_DESC	| Pluriel de la désignation de →CUSTOM_RACE_CIVILIZATION_FR← avec une notion de destination (aux)<br>La contrepartie du paramètre "_race_pluralnounto" dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluraladjecfr		| **Pluriel de l’adjectif
+CUSTOM_RACE__race_pluraladjecfr_DESC	| Pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+CUSTOM_RACE__race_pluraladjecFfr		| **Féminin pluriel
+CUSTOM_RACE__race_pluraladjecFfr_DESC	| Féminin pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec » dans les fichiers dans les fichiers Species.labels.txt
+
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON		| Fill from animations
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Fill in the empty fields using the values from your preferred animations. Press "Shift" to also replace fields that are already filled in.
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON		| Fill from names
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Try filling in the empty fields using the civilization name and the tittle. Press "Shift" to also replace fields that are already filled in.
+CUSTOM_RACE_COPY_FROM_LEFT_BUTTON		| -> Import
+CUSTOM_RACE_COPY_FROM_LEFT_BUTTON_DESC	| Copy the values from the left-hand page.
+CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON		| Import <-
+CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON_DESC	| Copy the values from the right-hand page.
+
+CUSTOM_RACE_MANDATORY_FIELDS		| **Required fields to select the animation: one per civilization.
+CUSTOM_RACE_SPECIES_FIELDS			| Common fields for all civilizations of this species.
+CUSTOM_RACE_SPECIES_DIALOG_FIELDS	| Common fields for dialog with this species.
+CUSTOM_RACE_ETHNIC_DIALOG_FIELDS	| Dedicated fields for dialog with this civilization.
+CUSTOM_RACE_FIELDS_EDIT				| Edit
+
+CUSTOM_RACE_SPECIES_NAME			| **Civilization Name
+CUSTOM_RACE_SPECIES_NAME_DESC		| One of the possible name for this species.
+CUSTOM_RACE_HOME_WORLD				| **Home world
+CUSTOM_RACE_HOME_WORLD_DESC			| One of the possible home system names.
+CUSTOM_RACE_LEADER_NAME				| **Leader Name
+CUSTOM_RACE_LEADER_NAME_DESC		| One of the possible leader names.
+
+CUSTOM_RACE_RACE_NAME				| **Civilization Name
 CUSTOM_RACE_RACE_NAME_DESC			| All possible names<br>The counterpart of the "_race" parameter in Species.labels.txt files, and the "name" parameter in the Species.names.txt files.
 CUSTOM_RACE_RACE_NAME_INPUT			| Enter the Species Name.
-CUSTOM_RACE_RACE_NAME_PLURAL		| Species Name in the plural
+CUSTOM_RACE_RACE_NAME_PLURAL		| **Species Name in the plural
 CUSTOM_RACE_RACE_NAME_PLURAL_DESC	| The plural of all the possible names<br>The counterpart of the "_race_plural" parameter in Species.labels.txt files
-CUSTOM_RACE_RACE_NAME_PLURAL_INPUT	| Enter the name of the species in plural form.
-CUSTOM_RACE_LEADER_TITLE          | Leader Title
-CUSTOM_RACE_LEADER_TITLE_DESC     | The counterpart of the "title" parameter in Species.names.txt files.
-CUSTOM_RACE_LABEL_TITLE           | Leader Title 2
-CUSTOM_RACE_LABEL_TITLE_DESC      | The counterpart of the "_title" parameter in Species.labels.txt files.
-CUSTOM_RACE_LEADER_FULLTITLE      | Full Leader Title
-CUSTOM_RACE_LEADER_FULLTITLE_DESC | The counterpart of the "fulltitle" parameter in Species.names.txt files.
-CUSTOM_RACE_LEADER_NAMETITLE      | Full Leader Title 2
-CUSTOM_RACE_LEADER_NAMETITLE_DESC | The counterpart of the "_nameTitle" parameter in Species.labels.txt files.
-CUSTOM_RACE_RACE_EMPIRE_NAME		| Empire Designation
+CUSTOM_RACE_RACE_NAME_PLURAL_INPUT	| Enter the name of the civilization in plural form.
+CUSTOM_RACE_LEADER_TITLE			| Leader Title
+CUSTOM_RACE_LEADER_TITLE_DESC		| The counterpart of the "title" parameter in Species.names.txt files.
+CUSTOM_RACE_LABEL_TITLE				| Leader Title 2
+CUSTOM_RACE_LABEL_TITLE_DESC		| The counterpart of the "_title" parameter in Species.labels.txt files.
+CUSTOM_RACE_LEADER_FULLTITLE		| Full Leader Title
+CUSTOM_RACE_LEADER_FULLTITLE_DESC	| The counterpart of the "fulltitle" parameter in Species.names.txt files.
+CUSTOM_RACE_LEADER_NAMETITLE		| Full Leader Title 2
+CUSTOM_RACE_LEADER_NAMETITLE_DESC	| The counterpart of the "_nameTitle" parameter in Species.labels.txt files.
+CUSTOM_RACE_RACE_EMPIRE_NAME		| **Name of Government
 CUSTOM_RACE_RACE_EMPIRE_NAME_DESC	| The counterpart of the "_empire" parameter in Species.labels.txt files.
 CUSTOM_RACE_RACE_EMPIRE_NAME_INPUT	| Enter the Empire Designation
-CUSTOM_RACE_HOME_WORLDS           | Homes worlds
-CUSTOM_RACE_HOME_WORLDS_DESC      | Possible home system names.<br>The counterpart of the "home" parameter in Species.names.txt files
-CUSTOM_RACE_LEADER_NAMES          | Leader Names
-CUSTOM_RACE_LEADER_NAMES_DESC     | Possible leader names.<br>The counterpart of the "leader" parameter in Species.names.txt files
-CUSTOM_RACE_SHIP_NAME_1           | Small Ships Names
-CUSTOM_RACE_SHIP_NAME_1_DESC      | All possible small ships name.<br>The counterpart of the "ship1" parameter in Species.names.txt files
-CUSTOM_RACE_SHIP_NAME_2           | Medium Ships Names
-CUSTOM_RACE_SHIP_NAME_2_DESC      | All possible medium ships name.<br>The counterpart of the "ship2" parameter in Species.names.txt files
-CUSTOM_RACE_SHIP_NAME_3           | Large Ships Names
-CUSTOM_RACE_SHIP_NAME_3_DESC      | All possible large ships name.<br>The counterpart of the "ship3" parameter in Species.names.txt files
-CUSTOM_RACE_SHIP_NAME_4           | Huge Ships Names
-CUSTOM_RACE_SHIP_NAME_4_DESC      | All possible huge ships name.<br>The counterpart of the "ship4" parameter in Species.names.txt files
+CUSTOM_RACE_HOME_WORLDS				| Homes worlds
+CUSTOM_RACE_HOME_WORLDS_DESC		| Possible home system names.<br>The counterpart of the "home" parameter in Species.names.txt files
+CUSTOM_RACE_LEADER_NAMES			| Leader Names
+CUSTOM_RACE_LEADER_NAMES_DESC		| Possible leader names.<br>The counterpart of the "leader" parameter in Species.names.txt files
+CUSTOM_RACE_SHIP_NAME_1				| Names of small ships
+CUSTOM_RACE_SHIP_NAME_1_DESC		| All possible small ships name.<br>The counterpart of the "ship1" parameter in Species.names.txt files
+CUSTOM_RACE_SHIP_NAME_2				| Names of medium ships
+CUSTOM_RACE_SHIP_NAME_2_DESC		| All possible medium ships name.<br>The counterpart of the "ship2" parameter in Species.names.txt files
+CUSTOM_RACE_SHIP_NAME_3				| Names of large ships
+CUSTOM_RACE_SHIP_NAME_3_DESC		| All possible large ships name.<br>The counterpart of the "ship3" parameter in Species.names.txt files
+CUSTOM_RACE_SHIP_NAME_4				| Names of huge ships
+CUSTOM_RACE_SHIP_NAME_4_DESC		| All possible huge ships name.<br>The counterpart of the "ship4" parameter in Species.names.txt files
+
+CUSTOM_RACE_RACE_NAMEfr				| **Nom de →CUSTOM_RACE_CIVILIZATION_FR←
+CUSTOM_RACE_RACE_NAMEfr_DESC		| Une des possibles dénomination de cette espèce.
+CUSTOM_RACE_RACE_EMPIRE_NAMEfr		| **Nom du gouvernement
+CUSTOM_RACE_RACE_EMPIRE_NAMEfr_DESC	| Le pendant du paramètre « _empire » dans les fichiers Species.labels.txt.
+CUSTOM_RACE_HOME_WORLDfr			| *Monde d’origine
+CUSTOM_RACE_HOME_WORLDfr_DESC		| Un des possibles noms donné à la planète d’origine.
+CUSTOM_RACE_LEADER_NAMEfr			| **Nom du chef
+CUSTOM_RACE_LEADER_NAMEfr_DESC		| Un des possibles noms de dirigeants.
+CUSTOM_RACE_LEADER_TITLEfr			| Titre du chef
+CUSTOM_RACE_LEADER_TITLEfr_DESC	| L’équivalent du paramètre « titre » dans les fichiers Species.names.txt.
+CUSTOM_RACE_LEADER_FULLTITLEfr		| Titre du chef complet
+CUSTOM_RACE_LEADER_FULLTITLEfr_DESC	| L’équivalent du paramètre « fulltitle » dans les fichiers Species.names.txt.
+CUSTOM_RACE_RACE_DESC_1fr			| Tempérament de l’espèce
+CUSTOM_RACE_RACE_DESC_1fr_DESC		| L’équivalent du paramètre « desc1 » dans les fichiers Species.names.txt
+CUSTOM_RACE_RACE_DESC_2fr			| Aptitudes de l’espèce
+CUSTOM_RACE_RACE_DESC_2fr_DESC		| L’équivalent du paramètre « desc2 » dans les fichiers Species.names.txt
+CUSTOM_RACE_RACE_DESC_3fr			| Résumé de l’espèce
+CUSTOM_RACE_RACE_DESC_3fr_DESC		| L’équivalent du paramètre « desc3 » dans les fichiers Species.names.txt
+CUSTOM_RACE_RACE_DESC_4fr			| Spécificité de l’espèce
+CUSTOM_RACE_RACE_DESC_4fr_DESC		| L’équivalent du paramètre « desc4 » dans les fichiers Species.names.txt
 
 CUSTOM_RACE_RACE_DESC_1				| Species mood description
 CUSTOM_RACE_RACE_DESC_1_DESC		| The counterpart of the "desc1" parameter in Species.names.txt files
@@ -2309,6 +2395,20 @@ CUSTOM_RACE_IGNORES_ECO_ALL        | All
 CUSTOM_RACE_IGNORES_ECO_NO_DESC      | Normal behavior, Hostile planet types requires tech.
 CUSTOM_RACE_IGNORES_ECO_LIMITED_DESC | Ignores Waste and Hostile environments like All, Barren, Tundra, and Dead can immediately be colonized.
 CUSTOM_RACE_IGNORES_ECO_ALL_DESC     | All planet types can immediately be colonized.
+
+// Custom Race Naming Sub Panel
+CUSTOM_RACE_UI_NAMES_TITLE			| Custom Species Names Catalog
+CUSTOM_RACE_UI_BUTTON_EXIT			| Exit
+CUSTOM_RACE_UI_BUTTON_EXIT_DESC		| Keep the current Settings then Exit the Panel.
+CUSTOM_RACE_UI_BUTTON_CANCEL		| Cancel
+CUSTOM_RACE_UI_BUTTON_CANCEL_DESC	| Cancel changes then Exit Panel.
+
+BUTTON_BAR_INSERT_LEFT				| <+
+BUTTON_BAR_INSERT_LEFT_DESC			| Insert a new tab at the left of the selected one.
+BUTTON_BAR_INSERT_RIGHT				| +>
+BUTTON_BAR_INSERT_RIGHT_DESC		| Insert a new tab at the right of the selected one
+BUTTON_BAR_REMOVE					| -
+BUTTON_BAR_REMOVE_DESC				| Remove the currently selected tab
 
 // Advanced Settings
 SETTINGS_TITLE                    | Advanced Game Options
@@ -4781,6 +4881,8 @@ RACES_TRADE_NONE                  | No trade treaty
 RACES_DIPLOMAT_RECALLED           | [alien_race] diplomat recalled
 RACES_DIPLOMATS_RECALLED          | Diplomats recalled
 
+RACES_DIPLOMACY_CIVILIZATION_TITLE	| New Civilization Name for %1
+RACES_DIPLOMACY_CIVILIZATION_LABEL	| Enter the new %1 Civilization Name:
 RACES_DIPLOMACY_LEADER_DIALOG_TITLE	| %1 %2 new Name
 RACES_DIPLOMACY_LEADER_DIALOG_LABEL	| Enter the new %1 %2 Name:
 RACES_DIPLOMACY_HOMEWORLD         | Homeworld
@@ -5735,7 +5837,7 @@ SETUP_GALAXY_BACK_DESC            | Cancel options and go back to the Player opt
 SETUP_GALAXY_COMPACT_OPTIONS_HELP | These buttons open Advanced options Menu.<br> "→SETUP_BUTTON_MERGED_STATIC_SETTINGS←" contains parameters being set once when starting or restarting a game.<br> "→SETUP_BUTTON_MERGED_DYNAMIC_SETTINGS←" contains parameters adjustable in game.<br>To switch back to 6 classic option menus:<br> - Press "B" or go to "Setup" and set "Show Compact Options" to "No".
 SETUP_GALAXY_VANILLA_OPTIONS_HELP | This button open Advanced options configuration Menu.<br> Press "B" to toggle the submenus call buttons.
 SETUP_TUNE_GALAXY_OPTIONS_HELP    | This button opens a hover control panel to fine-tune galaxy settings. <br>The galaxy map preview will update live.
-SETUP_GALAXY_ABILITIES_DESC       | Default abilities for alien Empires:<br> 'Original Species' = Original abilities of the selected Species (in the Boxes below);<br> 'Reworked' = New abilities you have saved with the original species name.<br> (ex: RACE_DARLOK for the Naslok);<br> *Species = specific Original Species; or any other customized species you have built.
+SETUP_GALAXY_ABILITIES_DESC       | Default abilities for alien Empires:<br> 'Original Species' = Original abilities of the selected Species (in the Boxes below);<br> 'Redesigned' = New abilities you have saved with the original species name.<br> (ex: RACE_DARLOK for the Naslok);<br> *Species = specific Original Species; or any other customized species you have built.
 SETUP_GALAXY_SELECTABLE_DESC      | "Yes" => A selection line will appear at the top of the boxes below, allowing the selection of individual ability.
 SETUP_GALAXY_SELECTABLE		      | Selectable Abilities
 SETUP_GALAXY_RACE_LIST_HELP       | <b>Species list selection</b><br> Modnar has extended the original species list with six new species. If you are not in the mood to see them, you can exclude them from the selection.<hr><b>Default:</b>&nbsp Original<hr><b>Original:</b>&nbsp The 6 Modnar Species are excluded.<br> <b>All Species</b>:&nbsp The 6 Modnar Species can also be selected or randomly assigned.
@@ -5750,29 +5852,31 @@ SETUP_SELECT_CR_OPTIONS		      | Selectable Abilities.
 ???		                          | ???
 ???_DESC		                  | ???_DESCXXX
 
-ABILITIES_SELECTION			| 'From Abilities top box'
-ABILITIES_ORIGINAL_SPECIES	| 'Original Abilities'
-ABILITIES_REWORKED			| 'Reworked Abilities'
+ABILITIES_SELECTION				| 'From Abilities top box'
+ABILITIES_ORIGINAL_SPECIES		| 'Original Abilities'
+ABILITIES_REWORKED				| 'Animations -> Redesigned'
+ABILITIES_REWORKED_FULL			| 'Redesigned -> Animations'
 ABILITIES_PLAYER				| 'Same as Player'
 ABILITIES_RANDOM				| 'Randomly Created'
-ABILITIES_RANDOM_10			| 'Any Original (10)'
-ABILITIES_RANDOM_16			| 'Any Original (16)'
-ABILITIES_FILES				| 'Allowed Custom Species'
-ABILITIES_ALL_FILES			| 'Any Custom Species'
+ABILITIES_RANDOM_10				| 'Any Original (10)'
+ABILITIES_RANDOM_16				| 'Any Original (16)'
+ABILITIES_FILES_FLT				| 'Allowed Custom Species'
+ABILITIES_ALL_FILES				| 'Any Custom Species'
 ABILITIES_FILES_RACES			| 'Original or Allowed'
-ABILITIES_All					| 'Original or Any Custom'
+ABILITIES_ALL					| 'Original or Any Custom'
 
-ABILITIES_SELECTION_DESC			| Same abilities as the global abilities selected on the top.
+ABILITIES_SELECTION_DESC		| Same abilities as the global abilities (selected on the top)
 ABILITIES_ORIGINAL_SPECIES_DESC	| Original abilities of the selected species (the one on the icon)
-ABILITIES_REWORKED_DESC			| Reworked abilities of the selected species (the one on the icon), modified and saved by the player (in the Species Customization Panel) with the respectively named species files: RACE_ALKARI, RACE_BULRATHI, RACE_DARLOK, RACE_HUMAN, RACE_KLACKON, RACE_MEKLAR, RACE_MRRSHAN, RACE_PSILON, RACE_SAKKRA, RACE_SILICOID, RACE_EARLYGAME, RACE_GEARHEAD, RACE_JACKTRADES, RACE_MONOCLE, RACE_NEOHUMAN, RACE_WARDEMON.
-ABILITIES_PLAYER_DESC				| Same abilities as the selected player species.
-ABILITIES_RANDOM_DESC				| Abilities will be randomly generated using the "Setup" parameters: <b>RANDOM ALIENS OPTIONS</b> : "Target Max", "Target Min", "Custom Aliens", "Setting % Max", "Setting % Min", and "Smooth Edges".
-ABILITIES_RANDOM_10_DESC			| Abilities randomly selected within the ten original species abilities.
-ABILITIES_RANDOM_16_DESC			| Abilities randomly selected within the sixteen species abilities. <i>(The ten original species and the six Modnar species)</i>
-ABILITIES_FILES_DESC				| Abilities randomly selected within customized species files, having the "Available to AI" option enabled. If this list is empty the selection will be made within the original species abilities.
-ABILITIES_ALL_FILES_DESC			| Abilities randomly selected within customized species file, ignoring the "Available to AI" option. If this list is empty the selection will be made within the original species abilities.
+ABILITIES_REWORKED_DESC			| Redefined Abilities. The choice of animation is based on the species selected with the icon (and also randomly). Abilities will then be chosen randomly from among the custom species that mention a preferred animation. If the custom species contains valid civilization names or leader names, they will be used.
+ABILITIES_REWORKED_FULL_DESC	| The selection will be made randomly from among the customized species that mention a favorite animation, have a valid civilization name, and a leader name.
+ABILITIES_PLAYER_DESC			| Same abilities as the selected player species.
+ABILITIES_RANDOM_DESC			| Abilities will be randomly generated using the "Setup" parameters: <b>RANDOM ALIENS OPTIONS</b> : "Target Max", "Target Min", "Custom Aliens", "Setting % Max", "Setting % Min", and "Smooth Edges".
+ABILITIES_RANDOM_10_DESC		| Abilities randomly selected within the ten original species abilities.
+ABILITIES_RANDOM_16_DESC		| Abilities randomly selected within the sixteen species abilities. <i>(The ten original species and the six Modnar species)</i>
+ABILITIES_FILES_FLT_DESC		| Abilities randomly selected within customized species files, having the "Available to AI" option enabled. If this list is empty the selection will be made within the original species abilities.
+ABILITIES_ALL_FILES_DESC		| Abilities randomly selected within customized species file, ignoring the "Available to AI" option. If this list is empty the selection will be made within the original species abilities.
 ABILITIES_FILES_RACES_DESC		| Abilities randomly selected within the original species abilities and the customized species files, having the "Available to AI" option enabled.
-ABILITIES_All_DESC				| Abilities randomly selected within the original species abilities and the customized species files, ignoring the "Available to AI" option.
+ABILITIES_ALL_DESC				| Abilities randomly selected within the original species abilities and the customized species files, ignoring the "Available to AI" option.
 
 SETUP_GALAXY_SHAPE_RECTANGLE_HELP		| Original rectangular or square Galaxies with up to five voids.
 SETUP_GALAXY_SHAPE_RECTANGLE_O1_DESC	| Shape ratio adjustment.

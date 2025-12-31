@@ -22,6 +22,17 @@
 
 ### Features:
 
+- Complete overhaul of species management.
+  - The "Race" class now consists of skills and animations.
+    - However, the Race factory remains unchanged.
+  - Custom species can choose their animations and assign them names, leaders, and home world.
+    - This for Multiple civilizations per species.
+    - This in multiple languages.
+    - A new GUI is now available for this purpose.
+  - The distribution of skills, animations, names, and civilizations is managed by a new "Species" class and includes all "Race" methods that were previously in the Empire class.
+    - Then the Empire Class now extends the Species class to get back all these methods.
+  - A "species factory" is now responsible for assembling species according to player requests.
+  - A new option allows empires to be assigned from custom species that have selected an animation with dedicated names.
 - New options to disable research on colonizations modules.
 - Opponents panel automation:
   - Reducing the number of opponents will no longer remove those who are out of bounds, so they will reappear when the number increases again.

@@ -96,6 +96,8 @@ import rotp.model.tech.TechLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
+import rotp.ui.game.EditCustomRaceUI;
+import rotp.ui.game.ShowCustomRaceUI;
 import rotp.ui.util.planets.PlanetImager;
 import rotp.util.sound.SoundClip;
 import rotp.util.sound.SoundManager;
@@ -319,7 +321,7 @@ public interface Base extends InputEventUtil {
     public default BufferedImage currentFrame(String key, List<String> exclusions)  {
         return AnimationManager.current().currentFrame(key, exclusions);
     }
-    public default void setFontHints(Graphics g) {
+    public default void setRenderingHints(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
@@ -328,6 +330,18 @@ public interface Base extends InputEventUtil {
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         }
     }
+	public default void setHiRenderingHints(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+		if(UserPreferences.antialiasing()) {
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
+			g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+			g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		}
+	}
     public default void resetAnimation(String key) {
         AnimationManager.current().reset(key);
     }
@@ -1797,14 +1811,21 @@ public interface Base extends InputEventUtil {
 			}
 		}
 	}
-    default void debugReloadLabels(String langDir) {
+	default void debugReloadLabels(String langDir) {
+		boolean resetCRUI = false;
 		if (!Rotp.isIDE()) {
 			// BR: Intended to only To be used from IDE
 			Toolkit.getDefaultToolkit().beep();
 			if (langDir == null || langDir.isEmpty())
 				LanguageManager.current().reloadLanguage();
-			else
+			else {
+				resetCRUI = !LanguageManager.selectedLanguageDir().equals(langDir);
 				LanguageManager.selectLanguage(langDir);
+			}
+			if (resetCRUI) {
+				ShowCustomRaceUI.languageChanged();
+				EditCustomRaceUI.languageChanged();
+			}
 			return;
 		}
 		Toolkit.getDefaultToolkit().beep();
@@ -1814,10 +1835,16 @@ public interface Base extends InputEventUtil {
 		copyLabels("rotp/lang/fr/techs.txt");
 		if (langDir == null || langDir.isEmpty())
 			LanguageManager.current().reloadLanguage();
-		else
+		else {
+				resetCRUI = !LanguageManager.selectedLanguageDir().equals(langDir);
 			LanguageManager.selectLanguage(langDir);
+		}
+			if (resetCRUI) {
+				ShowCustomRaceUI.languageChanged();
+				EditCustomRaceUI.languageChanged();
+			}
 		return;
-    }
+	}
     default void debugReloadLabels(Component component) {
     	debugReloadLabels("");
     	component.repaint();

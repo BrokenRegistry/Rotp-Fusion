@@ -1,9 +1,9 @@
 // all possible names
 name: Ursinathien, Bearathien, Burlathien, Paurathien, Grizzlathien
 
-desc1: Des Écologistes agressifs
-desc2: Des formidables combattants au sol
-desc3: Les farouchement loyaux [race]s apprécient à la fois la force et la sagesse de leur roi philosophe.
+desc1: Des ardents écologistes
+desc2: De formidables combattants sur le terrain.
+desc3: Les intrinsèquement loyaux [race]s apprécient autant la force que la sagesse de leur roi philosophe.
 desc4: Combat au sol +25
 
 // possible home system names

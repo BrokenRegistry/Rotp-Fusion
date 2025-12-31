@@ -18,11 +18,11 @@ import rotp.ui.util.StringList;
 
 public interface IRaceOptions extends IBaseOptsTools {
 
-	String defaultRace = "RACE_HUMAN";
+	String defaultRaceKey = "RACE_HUMAN";
 	
-	static StringList getBaseRaceOptions() {
+	static StringList getBaseRaceKeyList() {
 		StringList list = new StringList();
-		list.add(defaultRace);
+		list.add(defaultRaceKey);
 		list.add("RACE_ALKARI");
 		list.add("RACE_SILICOID");
 		list.add("RACE_MRRSHAN");
@@ -34,10 +34,10 @@ public interface IRaceOptions extends IBaseOptsTools {
 		list.add("RACE_BULRATHI");
 		return list;
 	}
-	default StringList baseRaceOptions() { return getBaseRaceOptions(); } 
+	default StringList baseRaceKeyList() { return getBaseRaceKeyList(); } 
 
-	static StringList getAllRaceOptions() {
-		StringList list = getBaseRaceOptions();
+	static StringList getAllRaceKeyList() {
+		StringList list = getBaseRaceKeyList();
 		list.add("RACE_NEOHUMAN");   // modnar: add races
 		list.add("RACE_MONOCLE");	 // modnar: add races
 		list.add("RACE_JACKTRADES"); // modnar: add races
@@ -46,8 +46,8 @@ public interface IRaceOptions extends IBaseOptsTools {
 		list.add("RACE_GEARHEAD");   // modnar: add races
 		return list;
 	}
-	StringList allRaceOptions = getAllRaceOptions(); 
-	default StringList allRaceOptions() { return getAllRaceOptions(); } 
+	StringList allRaceKeyList = getAllRaceKeyList(); 
+	default StringList allRaceKeyList() { return getAllRaceKeyList(); } 
 
 	default BufferedImage getMugBackImg(int w, int h, float radius) {
 		BufferedImage backImg = new BufferedImage(w, h, TYPE_INT_ARGB);
@@ -71,7 +71,7 @@ public interface IRaceOptions extends IBaseOptsTools {
 	default boolean selectedPlayerIsCustom()		{ return playerIsCustom.get(); }
 	default void selectedPlayerIsCustom(boolean is)	{ playerIsCustom.set(is); }
 
-	ParamCR	playerCustomRace	= new ParamCR(MOD_UI, defaultRace);
+	ParamCR	playerCustomRace	= new ParamCR(MOD_UI, defaultRaceKey);
 	default ParamCR playerCustomRace()						 { return playerCustomRace; }
 	default Serializable selectedPlayerCustomRace()			 { return playerCustomRace.get(); }
 	default void selectedPlayerCustomRace(Serializable race) { playerCustomRace.set(race); }

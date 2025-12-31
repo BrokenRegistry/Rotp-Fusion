@@ -158,6 +158,8 @@ public interface IGameOptions extends IModOptions {
     public static final String RANDOMIZE_AI_PERSONALITY = "SETUP_RANDOMIZE_AI_PERSONALITY";
     public static final String RANDOMIZE_AI_ABILITY     = "SETUP_RANDOMIZE_AI_ABILITY";
     public static final String RANDOMIZE_AI_BOTH        = "SETUP_RANDOMIZE_AI_BOTH";
+    public static final String RANDOMIZE_AI_ABILITY_16  = "SETUP_RANDOMIZE_AI_ABILITY_16";
+    public static final String RANDOMIZE_AI_BOTH_16     = "SETUP_RANDOMIZE_AI_BOTH_16";
 
     public static final String AI_HOSTILITY_LOWEST   = "SETUP_AI_HOSTILITY_LOWEST";
     public static final String AI_HOSTILITY_LOWER    = "SETUP_AI_HOSTILITY_LOWER";
@@ -314,24 +316,36 @@ public interface IGameOptions extends IModOptions {
     public default boolean restrictedColonization() { return selectedColonizingOption().equals(COLONIZING_RESTRICTED); }
     public default int baseAIRelationsAdj()       { return 0; }
     public default int selectedAI(Empire e)       { return defaultAI.id; }
-    public default boolean randomizeAIPersonality()  {
+    public default boolean randomizeAIPersonality()	{
         switch (selectedRandomizeAIOption()) {
             case RANDOMIZE_AI_PERSONALITY:
             case RANDOMIZE_AI_BOTH:
+            case RANDOMIZE_AI_BOTH_16:
                 return true;
             default:
                 return false;
         }
     }
-    public default boolean randomizeAIAbility()  {
+    public default boolean randomizeAIAbility()		{
         switch (selectedRandomizeAIOption()) {
             case RANDOMIZE_AI_ABILITY:
+            case RANDOMIZE_AI_ABILITY_16:
             case RANDOMIZE_AI_BOTH:
+            case RANDOMIZE_AI_BOTH_16:
                 return true;
             default:
                 return false;
         }
     }
+	public default boolean randomizeAIAbility16()	{
+		switch (selectedRandomizeAIOption()) {
+			case RANDOMIZE_AI_ABILITY_16:
+			case RANDOMIZE_AI_BOTH_16:
+				return true;
+			default:
+				return false;
+		}
+	}
     public String name();
     public void setAdvancedOptionsToDefault();
 
@@ -610,8 +624,8 @@ public interface IGameOptions extends IModOptions {
     }
 	default StringList getInternalSpeciesList()	{
 		if (showNewRaces.get())
-			return new StringList(allRaceOptions());
-		return new StringList(baseRaceOptions());
+			return new StringList(allRaceKeyList());
+		return new StringList(baseRaceKeyList());
 	}
 
     // Was in MOO1GameOptions
@@ -698,6 +712,8 @@ public interface IGameOptions extends IModOptions {
         list.add(RANDOMIZE_AI_PERSONALITY);
         list.add(RANDOMIZE_AI_ABILITY);
         list.add(RANDOMIZE_AI_BOTH);
+        list.add(RANDOMIZE_AI_ABILITY_16);
+        list.add(RANDOMIZE_AI_BOTH_16);
         return list;
     }
     public static List<String> getResearchRateOptions() {

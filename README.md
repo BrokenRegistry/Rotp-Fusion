@@ -44,18 +44,22 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-25-12-14 (BR)
-- Fixed the .pom date edition to be set to the UTC time (it was the PC local time).
-  - This fixed the link to the last release (on the Main Panel), as it was wrong when the release was done when the local day was not the same as the UTC day.
+25-12-31 (BR)
+- Complete overhaul of species management.
+  - The "Race" class now consists of skills and animations.
+    - However, the Race factory remains unchanged.
+  - Custom species can choose their animations and assign them names, leaders, and home world.
+    - This for Multiple civilizations per species.
+    - This in multiple languages.
+    - A new GUI is now available for this purpose.
+  - The distribution of skills, animations, names, and civilizations is managed by a new "Species" class and includes all "Race" methods that were previously in the Empire class.
+    - Then the Empire Class now extends the Species class to get back all these methods.
+  - A "species factory" is now responsible for assembling species according to player requests.
+  - A new option allows empires to be assigned from custom species that have selected an animation with dedicated names.
 
-25-12-13 (BR)
-- Fixed null pointer exception on retreat on arrival when to destinations are available.
-
-25-12-09 (BR)
-- Fixed null pointer exception on rallying fleet.
-
-25-12-08 (BR)
-- Correction of errors and omissions in the manual: range and speed of missiles and torpedoes.
+- Current limitations:
+  - The number of civilizations per species is currently limited by the interface, which only allows for one row of tabs.
+  - This also limits the number of languages.
 
 
 ### [Features Historic](FeaturesChanges.md)

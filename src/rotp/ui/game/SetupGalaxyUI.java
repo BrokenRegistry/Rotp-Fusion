@@ -16,8 +16,8 @@
 package rotp.ui.game;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.empires.species.CustomRaceDefinitions.getAllowedAlienRaces;
-import static rotp.model.empires.species.CustomRaceDefinitions.getBaseRaceList;
+import static rotp.model.empires.species.SkillsFactory.getAllowedAlienSkills;
+import static rotp.model.empires.species.SkillsFactory.getBaseRaceList;
 import static rotp.model.game.DefaultValues.MOO1_DEFAULT;
 import static rotp.model.game.DefaultValues.ROTP_DEFAULT;
 import static rotp.model.game.IBaseOptsTools.BASE_UI;
@@ -85,9 +85,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import rotp.Rotp;
 import rotp.model.ai.AIList;
 import rotp.model.empires.Empire;
-import rotp.model.empires.species.CustomRaceDefinitions;
 import rotp.model.empires.species.ISpecies;
+import rotp.model.empires.species.SkillsFactory;
 import rotp.model.empires.species.Species;
+import rotp.model.empires.species.SpecificCROption;
 import rotp.model.galaxy.AllShapes;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.galaxy.GalaxyShape;
@@ -112,7 +113,6 @@ import rotp.ui.util.ParamButtonHelp;
 import rotp.ui.util.ParamList;
 import rotp.ui.util.ParamSubUI;
 import rotp.ui.util.RotpFileChooser;
-import rotp.ui.util.SpecificCROption;
 import rotp.ui.util.StringList;
 import rotp.util.FontManager;
 import rotp.util.ModifierKeysState;
@@ -156,9 +156,9 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			IGameOptions.specificAIset().getAliens(),
 			defaultAI.aliensKey);
 	private final ParamListSpecificOpponent specificOpponent	= new ParamListSpecificOpponent( // For Guide
-			BASE_UI, "SPECIFIC_OPPONENT", guiOptions().allRaceOptions(), opponentRandom);
+			BASE_UI, "SPECIFIC_OPPONENT", guiOptions().allRaceKeyList(), opponentRandom);
     public  final ParamListGlobalAbilities  globalAbilities		= new ParamListGlobalAbilities(  // For Guide
-			BASE_UI, "GLOBAL_ABILITY", SpecificCROption.BASE_RACE.value);
+			BASE_UI, "GLOBAL_ABILITY", SpecificCROption.ORIGINAL_SPECIES.value);
 	private final ParamListSpecificAbilities specificAbilities	= new ParamListSpecificAbilities( // For Guide
 			BASE_UI, "SPECIFIC_ABILITY", SpecificCROption.defaultSpecificValue().value);
 	private boolean popupPositionsInitialised = false;
@@ -298,13 +298,13 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	}
 	private void initAIandAbilitiesList() {
 		initOpponentGuide();
-		StringList allowedAlien = getAllowedAlienRaces();
+		StringList allowedAlien = getAllowedAlienSkills();
 		StringList baseRaceList = getBaseRaceList();
 		StringList list = new StringList();
 
 		// specific Abilities
-		list.addAll(SpecificCROption.options());
-		list.removeLast(); // The blank one (USER_CHOICE)
+		list.addAll(SpecificCROption.getSpecificOptions());
+//		list.removeLast(); // The blank one (USER_CHOICE)
 		list.addAll(allowedAlien);
 		list.addAll(baseRaceList);
 		specificAbilities.reInit(list);
@@ -977,7 +977,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	// Paint components sub sections
 	// ==============================================================
 	private Graphics2D paintInit(Graphics g0) {
-		// showTiming = true;
+		//showTiming = true; // TO DO BR: COMMENTS
 		if (showTiming)
 			System.out.println("===== Galaxy PaintComponents =====");
 		super.paintComponent(g0);
@@ -1374,6 +1374,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		}
 	}
 	@Override public void paintComponent(Graphics g0) {
+		//showTiming = true; // TO DO BR: COMMENTS
 		if (!isOnTop)
 			return;
 		long timeStart = System.currentTimeMillis();
@@ -1396,7 +1397,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			drawNotice(g, 30);
 		}
 		if (showTiming)
-			System.out.println("Galaxy paintComponent() Time = " + (System.currentTimeMillis()-timeStart));
+			System.out.println("Galaxy paintComponent() Time = " + (System.currentTimeMillis()-timeStart) + " ms");
 	}
 	private void drawHelpButton(Graphics2D g) {
 		helpBox.setBounds(s20,s20,s20,s25);
@@ -1966,7 +1967,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		int h = getHeight();
 		backImg = newOpaqueImage(w, h);
 		Graphics2D g = (Graphics2D) backImg.getGraphics();
-		setFontHints(g);
+		setRenderingHints(g);
 		// modnar: use (slightly) better upsampling
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
@@ -1975,7 +1976,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		Species species = new Species(opts.selectedPlayerRace());
 		if (opts.selectedPlayerIsCustom())
-			species.setSpeciesSkills(CustomRaceDefinitions.CUSTOM_RACE_KEY, (DynOptions)null);
+			species.setSpeciesSkills(SkillsFactory.CUSTOM_RACE_KEY, (DynOptions)null);
 		String setupName = species.setupName();
 
 		// background image
@@ -2768,7 +2769,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		}
 		@Override public void reInit(List<String> list) {
 			if (list == null)
-				super.reInit(guiOptions().allRaceOptions());
+				super.reInit(guiOptions().allRaceKeyList());
 			else
 				super.reInit(list);
 		}
