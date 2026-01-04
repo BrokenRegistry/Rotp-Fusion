@@ -1945,13 +1945,13 @@ public abstract class SpeciesSettings {
 	// #====================
 	// List of unique Names
 	//
-	class SpeciesAttributes implements ICRSettings { // for one Language
+	public class SpeciesAttributes implements ICRSettings { // for one Language
 		private final String labelKey;
-		SpeciesNameItems		speciesNameItems;
-		SpeciesDescriptionItems	speciesDescriptionItems;
-		SpeciesLabelItems		speciesLabelItems;
-		CivilizationNameItems	civilizationNameItems;
-		CivilizationLabelItems	civilizationLabelItems;
+		public SpeciesNameItems			speciesNameItems;
+		public SpeciesDescriptionItems	speciesDescriptionItems;
+		public SpeciesLabelItems		speciesLabelItems;
+		public CivilizationNameItems	civilizationNameItems;
+		public CivilizationLabelItems	civilizationLabelItems;
 
 		SpeciesAttributes(String langDir)	{
 			labelKey = langDir;
