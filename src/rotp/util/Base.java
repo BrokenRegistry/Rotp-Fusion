@@ -757,6 +757,18 @@ public interface Base extends InputEventUtil {
            //("Base.icon() -- resource is empty or null");
             return null;
         }
+		{
+			File file = new File(Rotp.jarPath(), n);
+			if (file.isFile()) {
+				ImageIcon icon = null;
+				try {
+					icon = new ImageIcon(file.getPath());
+				}
+				catch(Exception e) { }
+				if (icon != null)
+					return icon;
+			}
+		}
 
         String webp = webpImageName(n);
         {

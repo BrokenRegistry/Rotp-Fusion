@@ -3,6 +3,9 @@
 ## What's New
 
 26-01-04 (BR)
+- Custom images can be put in an "images" folder located in the same folder as the jar file.
+  - The folder structure inside the images folder must be the same as the original one, and the file type must be the same as specified in the txt files.
+- Fixed useless creation of empty race files.
 - When there is more than 31 empires, Replay will now list all of tem in smaller font size.
 - Fixed some missing French dialog. (By default there was no pacific contact dialog for species that are never pacifist... Except when customized!)
 - Fixed custom player dialog display.
