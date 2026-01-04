@@ -220,10 +220,21 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         	shipBox[i].setBounds(xFleet, yFleet + i * shipDist, shipWidth, shipHeight);
     }
 	@Override protected void singleInit()	{ paramList = AllSubUI.optionsRace(); }
-	public void init(String leaderName) {
-		init();
-		this.leaderName.setText(leaderName);
-		newGameOptions().selectedLeaderName(leaderName);
+	public void init(String name)	{
+    	super.init();
+		leaderName.setBackground(GameUI.setupFrame());
+		leaderName.setFont(labelFont);
+		leaderName.setText(newGameOptions().selectedLeaderName());
+		shipSetTxt.setBackground(GameUI.setupFrame());
+		shipSetTxt.setFont(labelFont);
+		homeWorld.setBackground(GameUI.setupFrame());
+		setHomeWorldFont(); // BR: MonoSpaced font for Galaxy
+		homeWorld.setText(newGameOptions().selectedHomeWorldName());
+
+		initShipBoxBounds();
+		repaint();
+		// Save initial options
+		newGameOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
 	}
     @Override public void init() {
     	super.init();
@@ -833,8 +844,13 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 	}
 	void raceChanged()	{
 		IGameOptions opts = newGameOptions();
-		if (selectedPlayerIsCustom())
+		if (selectedPlayerIsCustom()) {
 			playerSpecies = opts.playerCustomSpecies(opts);
+			if (!isVisible()) {
+				String playerAnim = playerSpecies.raceId();
+				opts.selectedPlayerRace(playerAnim);
+			}
+		}
 		else
 			playerSpecies = new Species(opts.selectedPlayerRace());
 		playerSpecies.resetSetupImage();

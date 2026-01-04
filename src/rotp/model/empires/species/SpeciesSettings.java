@@ -2225,26 +2225,16 @@ public abstract class SpeciesSettings {
 			super(ROOT, labelKey, "", langDir);
 			key = nameLangLabel + langKey;
 		}
-		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.parseDialogLabel(key, settingValue()); }
-		@Override public void pullFromSkills(SpeciesSkills skills)	{
-			if (isReference())
-				set(skills.raceLabels().label(nameLangLabel));
-			else
-				set(skills.raceLabels().label(key));
-		}
+		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.parseDialogLabel(nameLangLabel, settingValue()); }
+		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.raceLabels().label(nameLangLabel)); }
 	}
 	private class SpeciesDialogLabel extends SettingStringLanguage {
 		private SpeciesDialogLabel(String labelKey, String langDir)	{
 			super(ROOT, labelKey, "", langDir);
 			key = nameLangLabel + langKey;
 		}
-		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.parseDialogLabel(key, settingValue()); }
-		@Override public void pullFromSkills(SpeciesSkills skills)	{
-			if (isReference())
-				set(skills.raceLabels().label(nameLangLabel));
-			else
-				set(skills.raceLabels().label(key));
-		}
+		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.parseDialogLabel(nameLangLabel, settingValue()); }
+		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.raceLabels().label(nameLangLabel)); }
 	}
 	private abstract class SettingStringList extends SettingStringLanguage {
 		private int lastSelectedIndex;
@@ -2412,8 +2402,11 @@ public abstract class SpeciesSettings {
 		}
 		protected void setOption(DynamicOptions destOptions, String value)	{
 			String gameLang = selectedLanguageDir();
-			if (isReference() || langDir.equals(gameLang))	// Current language
+			if (isReference() || langDir.equals(gameLang)) {	// Current language
+				// System.out.println("==> " + baseOptionIndex() + " / Value: " + value); // TO DO BR: REMOVE
 				destOptions.setString(baseOptionIndex(), value);
+			}
+			// System.out.println("==> " + langOptionIndex() + " / Value: " + value); // TO DO BR: REMOVE
 			destOptions.setString(langOptionIndex(), value);	// Current and Other language
 		}
 		protected String baseOptionIndex()		{ return ROOT + nameLangLabel; }

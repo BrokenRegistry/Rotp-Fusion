@@ -1444,8 +1444,8 @@ NOTICE_SPIES_CAUGHT_DESC          | • Nos forces de sécurité internes ont d�
 NOTICE_SPIES_CAUGHT_CONFESSED     | Leurs espions ont avoué des activités de sabotage en cours.
 NOTICE_SPIES_CAUGHT_CONFESSED2    | Leurs espions ont avoué des activités d’espionnage en cours.
 NOTICE_SPIES_FRAMED               | • Nous avons été piégés pour des activités d’espionnage au sein [alien_empireof].
-NOTICE_SPIES_ESPIONAGE            | • Nos espions ont volé les secrets de %1 à [alien_empire].
-NOTICE_SPIES_ESPIONAGE_FRAME      | Nous avons réussi à blâmer [framed_empire] pour ce vol.
+NOTICE_SPIES_ESPIONAGE            | • Nos espions ont volé les secrets de %1 [alien_pluralnounto].
+NOTICE_SPIES_ESPIONAGE_FRAME      | Nous avons réussi à blâmer [framed_race_pluralnoun] pour ce vol.
 NOTICE_SPIES_SABOTAGE_FACTORIES   | • Nos espions ont réussi à détruire %1 usines dans le système %2.
 NOTICE_SPIES_SABOTAGE_BASES       | • Nos espions ont réussi à détruire %1 bases de missiles protégeant le système %2.
 NOTICE_SPIES_SABOTAGE_REBELS      | • Nos espions ont réussi à inciter les rebelles dans le système %2.
@@ -1489,13 +1489,13 @@ GNN_FLEETS_RANKING                | Classement actuel par puissance des flottes 
 GNN_CENSUS_RANKING                | Classement des populations des empires selon le dernier recensement :
 GNN_PRODUCTION_RANKING            | Classements actuels de la production des empires :
 GNN_TECHNOLOGY_RANKING            | Classement actuel des empires technologiquement les plus avancés :
-GNN_PLAYER_REBELLION              | %1 s’est rebellé et refuse de contribuer à [rebelling_empire]. Au moins %2 millions de rebelles contrôlent la colonie. Des troupes doivent être envoyées pour réprimer le soulèvement.
-GNN_ALIEN_REBELLION               | %1 s’est rebellé et a refusé de contribuer à [rebelling_empire]. Au moins %2 millions de rebelles contrôlent la colonie.
-GNN_PLAYER_REBELLION_SPREAD       | La rébellion continue de se propager dans tout le [rebelling_empire]. Au moins %2 millions de rebelles contrôlent désormais la colonie de %1.
+GNN_PLAYER_REBELLION              | %1 s’est rebellé et refuse de contribuer [rebelling_race_pluralnounto]. Au moins %2 millions de rebelles contrôlent la colonie. Des troupes doivent être envoyées pour réprimer le soulèvement.
+GNN_ALIEN_REBELLION               | %1 s’est rebellé et a refusé de contribuer [rebelling_race_pluralnounto]. Au moins %2 millions de rebelles contrôlent la colonie.
+GNN_PLAYER_REBELLION_SPREAD       | La rébellion continue de se propager parmi [rebelling_race_pluralnoun]. Au moins %2 millions de rebelles contrôlent désormais la colonie de %1.
 GNN_OVERTHROW                     | Un nouveau chef a émergé de l’intérieur [alien_empireof]. Les rumeurs indiquent que le nouvel empereur est %1. Les relations sont devenues neutres et les échanges ont été perturbés.
 GNN_END_COUNCIL                   | Avec seulement deux Empires restants, les tentatives d’unification de la galaxie avec un Conseil Galactique ont pris fin. De nombreux dirigeants débattent maintenant du type de solution finale qui peut apporter une paix durable.
 GNN_FORM_COUNCIL                  | En quête de paix, les représentants de chaque espèce se réuniront bientôt pour tenter d’élire un empereur galactique. Les candidats seront les dirigeants des deux empires les plus peuplés.
-GNN_ALLY_AT_WAR                   | Notre allié, [ally_empire], est entré en guerre contre [other_empire].
+GNN_ALLY_AT_WAR                   | Notre allié, [ally_empire], est entré en guerre contre [other_race_pluralnoun].
 
 // Error UI text
 ERROR_TITLE                       | Une erreur est survenue :(
@@ -4984,7 +4984,7 @@ RACES_INTEL_KNOWN_TECH_DESC       | Nos espions rapportent que [alien_race_plura
 RACES_INTEL_UNKNOWN_TECHNOLOGY    | Rapport de technologie inconnue
 RACES_INTEL_UNKNOWN_TECH_DESC     | Nos espions rapportent que les races étrangères ont maîtrisé les technologies suivantes qui nous sont inconnues.
 
-RACES_MILITARY_TITLE              | Flotte de vaisseaux [alien_race_pluraladjecF]
+RACES_MILITARY_TITLE              | Flotte de vaisseaux [alien_raceadjecF]
 RACES_MILITARY_SUBTITLE           | Vaisseaux par taille de coque
 RACES_MILITARY_UNSCANNED          | ??
 RACES_MILITARY_UNSCANNED_LONG     | Non scanné
@@ -5397,7 +5397,7 @@ GAME_OVER_REBEL_ALLIANCE_CHALLENGER_WIN_RB | →GAME_OVER_REBEL_ALLIANCE_CHALLEN
 GAME_OVER_REBEL_ALLIANCE_FOLLOWER_WIN_RB   | →GAME_OVER_REBEL_ALLIANCE_FOLLOWER_WIN←
 
 GAME_OVER_EXIT                    | Quitter
-GAME_OVER_REPLAY                  | Rejouer
+GAME_OVER_REPLAY                  | Revoir
 GAME_OVER_CONTINUE                | Encore quelques tours...
 
 // text for race-generic endings

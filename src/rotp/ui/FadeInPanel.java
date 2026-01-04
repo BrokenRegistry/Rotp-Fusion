@@ -55,9 +55,9 @@ public class FadeInPanel extends BasePanel {
     private BufferedImage fadeInOverlay() {
         if (!stillFading())
             return null;
-
-        float alpha = (float) Math.sqrt((float)msRemaining / fadeInMs());
-        alpha = max(0,min(1,alpha));
+		float alphaSquare = (float)msRemaining / fadeInMs();
+		alphaSquare = bounds(0, alphaSquare, 1);
+		float alpha = (float) Math.sqrt(alphaSquare);
         BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = image.createGraphics();
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));

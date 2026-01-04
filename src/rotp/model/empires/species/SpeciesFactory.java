@@ -46,6 +46,8 @@ public final class SpeciesFactory implements ISpecies, Base {
 
 	private List<Integer> civilizationColors	= new ArrayList<>();
 	private String playerSkillKey;	// BR: in case Alien races are a copy of player race
+
+	private boolean debug()	{ return false; } // TO DO BR: set to false
 	private void clearAll()	{
 		animationListMap	= null;
 		fullAnimationMap	= null;
@@ -126,7 +128,6 @@ public final class SpeciesFactory implements ISpecies, Base {
 		// Terminate
 		Species.cleanUsedNames();
 	}
-	private boolean debug()	{ return false; }
 
 	private List<AlienData> createNoSelectionSpecies(AnimationListMap animSource )	{
 		List<AlienData> aliens = new ArrayList<>();
@@ -176,7 +177,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 
 		// Then: There is a problem!
 		// Return the remaining list... Or maybe try to fixes
-		System.err.println("not all Random selected anim were created; Missing: " + aliens.size());
+		System.out.println("not all Random selected anim were created: Missing: " + aliens.size());
 		return aliens;
 	}
 	private List<AlienData> createSkillsSelectedAnim()	{
@@ -298,7 +299,6 @@ public final class SpeciesFactory implements ISpecies, Base {
 			}
 			return true;
 		}
-
 		// Create species recipients
 		for (int alienId=0; alienId<numAliens; alienId++)
 			aliensData[alienId] = new AlienData(alienId);
@@ -322,6 +322,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 		String restartChangesPlayerRace = options.selectedRestartChangesPlayerRace();
 		if (options.selectedPlayerIsCustom())
 			playerSkillKey = SkillsFactory.CUSTOM_RACE_KEY;
+
 		if (fullRestart
 				&& !restartChangesPlayerRace.equals("GuiLast")
 				&& !restartChangesPlayerRace.equals("GuiSwap")) { // Use Restart info
@@ -329,22 +330,14 @@ public final class SpeciesFactory implements ISpecies, Base {
 			playerSkillKey = empSrc.dataRaceKey;
 			skillOptions = empSrc.raceOptions;
 			playerSpecies = new Species(empSrc);
-			finalizeSpecies(playerSpecies, null);
-			return playerSpecies;
 		}
 		else {
 			playerSpecies = new Species(playerAnimKey);
 			playerSpecies.setSpeciesSkills(playerSkillKey, skillOptions);
+			playerSpecies.setPlayerAnimNames(options, langDir);
 		}
-		CivRecordList internalCivs = allInternalCiv.getKey(playerAnimKey);
-		CivilizationRecord animCiv = internalCivs.get(0);
-		if (animCiv != null) { // Use internal anim
-			playerSpecies.setAllAnimNames(animCiv, langDir);
-			finalizeSpecies(playerSpecies, animCiv);
-		}
-		else
-			System.err.println("Error: No available civilization for Player Civilization");
 
+		playerSpecies.lockUsedNames();
 		// Player Color
 		int playerColor = options().selectedPlayerColor();
 		playerSpecies.colorId = playerColor;
@@ -355,6 +348,9 @@ public final class SpeciesFactory implements ISpecies, Base {
 				playerCExcluded = true;
 			else
 				civilizationColors.add(i);
+
+		if (debug())
+			System.out.println(playerSpecies.toString());
 		return playerSpecies;
 	}
 	private final class AlienData	{
@@ -555,8 +551,8 @@ public final class SpeciesFactory implements ISpecies, Base {
 			// Then try with internal Anim
 			CivRecordList internalCivs = allInternalCiv.getKey(skillCiv.prefAnimKey);
 			CivilizationRecord intCiv = internalCivs.nextRandom(false, true);
-			if (intCiv != null) { // Use internal anim
-				// Test is already the right anim
+			if (intCiv != null && intCiv.hasPreferedAnim()) { // Use internal anim
+				// Test if is already the right anim
 				if (!species.animKey().equals(skillCiv.prefAnimKey))
 					species.setNewSpeciesAnim(skillCiv.prefAnimKey);
 				species.setAllAnimNames(intCiv, langDir);
@@ -591,7 +587,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 		private boolean setNominalAnimNames()	{
 			CivRecordList internalCivs = allInternalCiv.getKey(species.animKey());
 			CivilizationRecord animCiv = internalCivs.nextRandom(false, true);
-			if (animCiv != null) { // Use internal anim
+			if (animCiv != null && animCiv.isFullAnim()) { // Use internal anim with unused names
 				species.setAllAnimNames(animCiv, langDir);
 				finalizeSpecies(species, animCiv);
 				isValid = true;

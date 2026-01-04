@@ -52,7 +52,7 @@ public class Leader implements Base, Serializable {
     private Empire empire;
 
     public String name()      { return name; }
-    
+
     // BR:
     /**
      * Change the leader Name
@@ -61,7 +61,7 @@ public class Leader implements Base, Serializable {
     public void setName(String newName) {
     	name = newName;
     } // \BR
-    
+    @Override public String toString()	{ return name + " of " + empire.name(); }
     public Leader(Empire c) {
         this(c, c.randomLeaderName());
     }
@@ -103,7 +103,8 @@ public class Leader implements Base, Serializable {
             p = Personality.values()[empire.mostCommonLeaderAttitude()];
 
         switch(p) {
-            case PACIFIST:   return DialogueManager.CONTACT_PACIFIST;
+            case PACIFIST:
+            	return DialogueManager.CONTACT_PACIFIST;
             case HONORABLE:  return DialogueManager.CONTACT_HONORABLE;
             case RUTHLESS:   return DialogueManager.CONTACT_RUTHLESS;
             case AGGRESSIVE: return DialogueManager.CONTACT_AGGRESSIVE;

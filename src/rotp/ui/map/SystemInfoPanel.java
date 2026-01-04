@@ -33,8 +33,10 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+
 import rotp.model.empires.Empire;
 import rotp.model.empires.SystemView;
 import rotp.model.events.StarSystemEvent;
@@ -206,7 +208,7 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
                 return;
             int id = sys.id;
             String name = player().sv.descriptiveName(id);
-            g.setFont(narrowFont(24));
+            scaledFont(g, name, w-s50, 24, 14);
             drawShadowedString(g, name, 2, s10, s30, MainUI.shadeBorderC(), SystemPanel.whiteLabelText);
             
             int sz = s60;

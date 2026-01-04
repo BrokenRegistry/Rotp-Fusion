@@ -58,6 +58,8 @@ public class DynOptions implements DynamicOptions, Serializable {
     			+ objectList.size()
     			+ stringList.size();
     }
+    public boolean unfilled()	{ return size() == 0; }
+    public boolean filled()		{ return size() > 0; }
 	public LinkedHashMap<String, String> stringListBackup()	{
 		if (stringListBackup == null)
 			stringListBackup = new LinkedHashMap<>();

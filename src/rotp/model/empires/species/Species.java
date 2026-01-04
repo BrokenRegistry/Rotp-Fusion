@@ -20,6 +20,7 @@ import rotp.model.empires.RaceCombatAnimation;
 import rotp.model.empires.SystemInfo;
 import rotp.model.empires.species.SkillsFactory.CivilizationRecord;
 import rotp.model.game.DynOptions;
+import rotp.model.game.IGameOptions;
 import rotp.model.planet.PlanetType;
 import rotp.model.tech.Tech;
 import rotp.ui.util.StringList;
@@ -35,8 +36,8 @@ public class Species implements ISpecies, Base, Serializable {
 	private static final Map<String, String> INTERNAL_NAMES_MAP = new HashMap<>();
 	private static final Map<String, String> LANGUAGE_NAMES_MAP = new HashMap<>(); // contains English and loaded languages
 
-	static Race getAnim(String key)			{ return INTERNAL_SPECIES_MAP.get(key); }
-	static boolean isValidKey(String s)		{ return INTERNAL_SPECIES_MAP.get(s) != null; }
+	static Race getAnim(String key)			{ return key==null? null : INTERNAL_SPECIES_MAP.get(key); }
+	static boolean isValidKey(String key)	{ return key==null? false :INTERNAL_SPECIES_MAP.get(key) != null; }
 	static List<Race> races()				{ return new ArrayList<>(INTERNAL_SPECIES_MAP.values()); }
 	static Set<Entry<String, Race>> internalMap()	{ return INTERNAL_SPECIES_MAP.entrySet(); }
 	static Map<String, String> namesMap()	{ return INTERNAL_NAMES_MAP; }
@@ -90,7 +91,7 @@ public class Species implements ISpecies, Base, Serializable {
 	// ====================================================================
 	// Species
 	// ====================================================================
-	private static final String CUSTOM_RACE_DESCRIPTION	= "CUSTOM_RACE_DESCRIPTION";
+//	private static final String CUSTOM_RACE_DESCRIPTION	= "CUSTOM_RACE_DESCRIPTION";
 
 	private transient Race anim;
 	private transient SpeciesSkills skills;
@@ -98,8 +99,9 @@ public class Species implements ISpecies, Base, Serializable {
 	private transient String initialLeaderName;
 	transient String fileKey; // for debug purpose
 	transient int colorId = -1;
-	public boolean isOrion = false;
+	private boolean isOrion = false;
 	private CivilizationId civilizationId;
+	private boolean trySkillsForNames = false;
 	public CivilizationId getRawCivilizationId(int id)	{ // For restart
 		if (civilizationId == null) {
 			// backward compatibility
@@ -108,14 +110,6 @@ public class Species implements ISpecies, Base, Serializable {
 		return civilizationId;
 	}
 	private CivilizationId civilizationId()	{ return civilizationId; }
-	public void setOldSpeciesIndex(int id)	{
-		if (civilizationId == null) {
-			String name = anim.nameVariant(id);
-			civilizationId = new CivilizationId(name, id);
-		}
-		else
-			civilizationId.setIndex(id);
-	}
 	protected String empireTitle()		{ return replaceTokens("[this_empire]", "this"); }
 	protected String getLeaderName()	{ return initialLeaderName; }
 	public String getHomeWorldName()	{ return initialHomeWorld; }
@@ -143,10 +137,6 @@ public class Species implements ISpecies, Base, Serializable {
 	// ====================================================================
 	// Constructors
 	//
-	protected Species(Species src)	{
-		setSpecies(src);
-		civilizationIndex();
-	}
 	public Species(String animKey, String skillsKey, DynOptions options)	{
 		anim	= getAnim(animKey);
 		skills	= anim;
@@ -168,9 +158,9 @@ public class Species implements ISpecies, Base, Serializable {
 		}
 		anim = getAnim(key);
 		if (anim == null) { // Add custom race if missing
-			skills = SkillsFactory.keyToCustomSpecies(key);
+			skills = SkillsFactory.keyToCustomSpecies(null, key);
 			skills.isCustomSpecies(true);
-			skills.setDescription4(skills.text(CUSTOM_RACE_DESCRIPTION));
+//			skills.setDescription4(skills.text(CUSTOM_RACE_DESCRIPTION));
 		}
 		else
 			skills = anim;
@@ -181,16 +171,41 @@ public class Species implements ISpecies, Base, Serializable {
 		initialHomeWorld = eSrc.homeSys.starName;
 		initialLeaderName = eSrc.leaderName;
 	}
-	// ====================================================================
-	// Initializers
-	//
-	protected void setSpecies(Species src)	{
+	protected Species(Species src)	{ // At Empire Creation
 		anim	= src.anim;
 		skills	= src.skills;
 		colorId	= src.colorId;
 		initialHomeWorld	= src.initialHomeWorld;
 		initialLeaderName	= src.initialLeaderName;
 		civilizationId		= src.civilizationId;
+	}
+	// ====================================================================
+	// Initializers
+	//
+	private void setOldSpeciesIndex(int id)	{
+		if (civilizationId == null) {
+			String name;
+			if (trySkillsForNames) {
+				name = skills.nameVariant(id);
+				if (!name.isEmpty()) {
+					civilizationId = new CivilizationId(name, id);
+					return;
+				}
+			}
+			name = anim.nameVariant(id);
+			civilizationId = new CivilizationId(name, id);
+		}
+		else
+			civilizationId.setIndex(id);
+	}
+	public void validateOnLoad(String animKey, String skillsKey, DynOptions options, int raceNameIndex)	{
+		Species species = new Species(animKey, skillsKey, options);
+		anim	= species.anim;
+		skills	= species.skills;
+		trySkillsForNames = trySkillsForNames();
+		if (civilizationId == null) {
+			setOldSpeciesIndex(raceNameIndex);
+		}
 	}
 	public void setNewSpeciesAnim(String animKey)	{ anim = getAnim(animKey); }
 	void setAllCustomNames(CivilizationRecord civ, String langDir)	{
@@ -212,29 +227,35 @@ public class Species implements ISpecies, Base, Serializable {
 		initialHomeWorld = civ.homeWorld;
 		initialLeaderName = civ.leaderName;
 	}
+	void setPlayerAnimNames(IGameOptions options, String langDir)	{
+		initialLeaderName = options.selectedLeaderName();
+		initialHomeWorld = options.selectedHomeWorldName();
+		String civName = setupName();
+		civilizationId = new CivilizationId(civName, civName, 0, langDir, isCustomSpecies());
+	}
 	SpeciesSkills setSpeciesSkills(String skillsKey)	{
 		skills = getAnim(skillsKey);
 		if (skills == null) {
-			skills = SkillsFactory.keyToCustomSpecies(skillsKey);
+			skills = SkillsFactory.keyToCustomSpecies(anim, skillsKey);
 			skills.isCustomSpecies(true);
-			skills.setDescription4(skills.text(CUSTOM_RACE_DESCRIPTION));
+//			skills.setDescription4(skills.text(CUSTOM_RACE_DESCRIPTION)); // TO DO BR: May be not!!!
 		}
 		return skills;
 	}
 	public SpeciesSkills setSpeciesSkills(String skillsKey, DynOptions options)	{
 		if (options == null)
 			return setSpeciesSkills(skillsKey);
-		skills = SkillsFactory.optionToSkills(options);
+		skills = SkillsFactory.optionToSkills(anim, options);
 		skills.isCustomSpecies(true);
 		return skills;
 	}
 	SpeciesSkills setSpeciesSkills(DynOptions options)	{
-		skills = SkillsFactory.optionToSkills(options);
+		skills = SkillsFactory.optionToSkills(anim, options);
 		skills.isCustomSpecies(true);
 		return skills;
 	}
 	public void setSpeciesSkills(SpeciesSkills speciesSkills)	{ skills = speciesSkills; }
-	SpeciesSkills getSkillCopy()	{ return skills.copy(); }
+	SpeciesSkills getSkillCopy(boolean full)	{ return skills.copy(full); }
 
 	// ====================================================================
 	// To be overridden
@@ -255,9 +276,26 @@ public class Species implements ISpecies, Base, Serializable {
 	}
 	private boolean isSkillsNames()		{ return civilizationId == null? false : civilizationId.isSkillsNames(); }
 	// Species Methods
+	private boolean trySkillsForNames()	{
+		if (!isCustomSpecies()) // only available for customized species
+			return false;
+		if (skills.isRandomized())
+			return false;
+		if (options().randomizeAIAbility()) // => this means hidden abilities
+			return false;
+		return true;
+	}
+	private String tokenText(String key, boolean trySkills)	{
+		if (trySkills) {
+			if (skills.raceLabels().hasLabel(key))
+				return skills.raceLabels().label(key);
+		}
+		return anim.text(key);
+	}
 	public String replaceTokens(String s, String key)	{
 		if (key.equals("player")) // BR: many confusion in translations
 			s = replaceTokens(s, "my");
+		boolean trySkills = trySkillsForNames && isSkillsNames();
 		List<String> tokens = this.varTokens(s, key);
 		String s1 = s;
 		for (String token: tokens) {
@@ -270,8 +308,8 @@ public class Species implements ISpecies, Base, Serializable {
 			else {
 				List<String> animValues = substrings(anim.text(token), ',');
 				int idx = civilizationNameIndex();
-				if (isSkillsNames()) {
-					String text = skills.text(token);
+				if (trySkills) {
+					String text = tokenText(token, trySkills);
 					if (!token.equals(text)) {
 						List<String> skillsValues = substrings(text, ',');
 						if (animValues.size() == 1) { // "_title or equivalent, could be empty
@@ -335,7 +373,13 @@ public class Species implements ISpecies, Base, Serializable {
 	//
 	protected String animKey()	{ return anim.id(); }
 	public String civilizationName()	{
-		String name = civilizationId().getCivName();
+		String name;
+		if (trySkillsForNames && civilizationId().isSkillsNames())
+			name = skills.nameVariant(civilizationIndex());
+		else
+			name = anim.nameVariant(civilizationIndex());
+		if (name == null || name.isEmpty())
+			name = civilizationId().getCivName();
 		if (name == null || name.isEmpty())
 			return anim.name(); // BR: for backward compatibility
 		return name;
@@ -516,13 +560,21 @@ public class Species implements ISpecies, Base, Serializable {
 	// Depend on custom Species
 	//
 	public String setupName()	{
-		if (isCustomSpecies())
-			return skills.setupName;
+		if (isCustomSpecies()) {
+			String name = skills.setupName();
+			if (name.isEmpty())
+				return skills.setupName;
+			return name;
+		}
 		return anim.setupName();
 	}
 	public String raceType()	{
-		if (isCustomSpecies())
-			return skills.setupName;
+		if (isCustomSpecies()) {
+			String name = skills.setupName();
+			if (name.isEmpty())
+				return skills.setupName;
+			return name;
+		}
 		else
 			return skills.nameVariant(0);
 	}
@@ -606,6 +658,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public String randomLeaderName()		{
 		if (!skills.isCustomSpecies())
 			return anim.randomLeaderName();
+		// Random Species check if has names
 		String s = skills.randomLeaderName();
 		if (s==null || s.isEmpty())
 			return anim.randomLeaderName();
@@ -635,6 +688,13 @@ public class Species implements ISpecies, Base, Serializable {
 		private Integer index;
 		private boolean isSkillsNames = false;
 
+		private CivilizationId(String civName, String speciesName, Integer civIndex, String langDir, boolean isSkillsNames)	{
+			isSkillsNames(isSkillsNames);
+			setLangDir(langDir);
+			setIndex(civIndex);
+			setCivName(civName);
+			setSpeciesName(speciesName);
+		}
 		private CivilizationId(CivilizationRecord civ, String langDir, boolean isSkillsNames)	{
 			isSkillsNames(isSkillsNames);
 			setLangDir(langDir);
@@ -645,6 +705,14 @@ public class Species implements ISpecies, Base, Serializable {
 		private CivilizationId(String name, Integer index)	{
 			setCivName(name);
 			setIndex(index);
+		}
+		@Override public String toString()			{
+			String s = "";
+			s += String.format("%-26s", "civName: "	+ civName);
+			s += String.format("%-31s", " speciesName: " + speciesName);
+			s += String.format("%-10s", " index: " + index);
+			s += String.format("%-21s", " isSkillsNames: " + isSkillsNames);
+			return s;
 		}
 		private void setCivName(String str)			{ civName = str; }
 		private String getCivName()					{ return civName; }

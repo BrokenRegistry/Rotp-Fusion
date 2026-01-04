@@ -497,8 +497,8 @@ public final class Galaxy implements Base, Serializable {
     	}
     	if (options().persistentRNG())
     		Rotp.rand(galRandom);
-    	orionEmpire().isOrion = true;
-//    	orionEmpire = new Empire(this, -2, orionId(), 0, "Orion"); // to update tech
+//    	orionEmpire().isOrion = true;
+    	orionEmpire = new Empire(this, -2, orionId(), 0, "Orion"); // to update tech
         for (Empire emp: empires())
              emp.validateOnLoad();
         events.validateOnLoad();

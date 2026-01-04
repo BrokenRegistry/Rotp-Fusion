@@ -29,12 +29,12 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.SwingUtilities;
 
 import rotp.model.empires.SystemInfo;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
-
 import rotp.ui.RotPUI;
 import rotp.ui.SystemViewer;
 import rotp.ui.map.IMapHandler;
@@ -76,9 +76,9 @@ public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionLis
             return;
         int id = sys.id;
         String name = systems != null ? text("PLANETS_AGGREGATE_VALUES") : player().sv.descriptiveName(id);
-        int sw = g.getFontMetrics().stringWidth(name);
         Color c0 = nameBox == hoverBox ? Color.yellow : SystemPanel.whiteLabelText;
-        scaledFont(g, name, w-s50, 24, 20);
+        scaledFont(g, name, w-s60, 24, 14);
+        int sw = g.getFontMetrics().stringWidth(name);
         drawShadowedString(g, name, 2, s10, s30, MainUI.shadeBorderC(), c0);
         nameBox.setBounds(s10, s5, sw+s5,s25);
 

@@ -668,6 +668,7 @@ public final class Empire extends Species implements NamedObject {
     public Color color()                 { return options().color(bannerColor); }
     int shipColorId()					{ return colorId(); }
 	@Override public String name()		{
+		//empireName = null; // TO DO BR: REMOVE
 		if (empireName == null)
 			empireName = empireTitle();
 		return empireName;
@@ -722,11 +723,7 @@ public final class Empire extends Species implements NamedObject {
     public int shipCount(int hullSize) {
         return galaxy().ships.hullSizeCount(id, hullSize);
     }
-	@Override public String toString()	{ return super.toString();
-//		if (isCustomSpecies())
-//			return concat("Empire: ", civilizationName(), "custom ");
-//		return concat("Empire: ", civilizationName());
-	}
+//	@Override public String toString()	{ return super.toString(); }
 
     public boolean canSendTransportsFrom(StarSystem sys) {
         if (sys == null)
@@ -1061,9 +1058,8 @@ public final class Empire extends Species implements NamedObject {
 		if (dynamicOptions == null)
 			dynamicOptions = new DynOptions();
 
-		setSpecies(new Species(raceKey, dataRaceKey, raceOptions));
-		setOldSpeciesIndex(raceNameIndex);
-
+		validateOnLoad(raceKey, dataRaceKey, raceOptions, raceNameIndex);
+		// System.out.println(toString()); // TO DO BR: comment
 		tech().validateOnLoad();
         for(EmpireView view : empireViews)
             if(view != null)
@@ -1080,7 +1076,7 @@ public final class Empire extends Species implements NamedObject {
 	            Colony col = sys.colony();
 	            col.addColonyOrder(order, amt);
 	            if (col.reallocationRequired)
-	                governorAI().setColonyAllocations(col);     
+	                governorAI().setColonyAllocations(col);
         	}
         }
     }
@@ -1091,7 +1087,7 @@ public final class Empire extends Species implements NamedObject {
 //            refreshViews(); // BR: Optimization
             for (Empire ally: allies()) {
             	if (ally != null)
-            		ally.setRecalcDistances();       
+            		ally.setRecalcDistances();
 //                 ally.refreshViews(); // BR: Optimization
             }
         }
@@ -1305,7 +1301,7 @@ public final class Empire extends Species implements NamedObject {
         return income / empireBC;
     }
     public void nextTurn() {
-        log(this + ": NextTurn");
+        log(toString() + ": NextTurn");
         shipBuildingSystems.clear();
         newSystems.clear();
         recalcPlanetaryProduction();

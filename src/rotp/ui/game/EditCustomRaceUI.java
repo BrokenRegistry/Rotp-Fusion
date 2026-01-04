@@ -94,13 +94,13 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		if (initialized)
 			return this;
 		initialized = true;
-		cr(SkillsFactory.getSkillsFactoryForEditor(this));		
+		cr(SkillsFactory.getSkillsFactoryForEditor(this));
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		maxLeftM	= scaled(999);
 		guiTitleID	= ROOT + "GUI_TITLE";
-		initGUI();		
+		initGUI();
 
 		guiList = cr().guiList();
 		for(ICRSettings setting : guiList)
@@ -108,11 +108,11 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 					labelC, labelC, hoverC, depressedC, textC, false));
 		raceList = cr().initRaceList();
 		initSetting(raceList);
-		
+
 		commonList = new LinkedList<>();
 		commonList.addAll(settingList);
 		commonList.addAll(guiList);
-		
+
 		mouseList = new LinkedList<>();
 		mouseList.addAll(commonList);
 		mouseList.add(raceList);
@@ -167,9 +167,13 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	}
 	private void doSelectBoxAction() {
 		buttonClick();
-		guiOptions().selectedPlayerCustomRace(cr().getAsOptions());
-		guiOptions().selectedPlayerIsCustom(true);
-		guiOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
+		IGameOptions opts = guiOptions();
+		opts.selectedPlayerCustomRace(cr().getAsOptions());
+		opts.selectedPlayerIsCustom(true);
+		String anim = cr().getPlayerAnim();
+		if (anim != null)
+			opts.selectedPlayerRace(anim);
+		opts.saveOptionsToFile(LIVE_OPTIONS_FILE);
 		close();
 	}
 	private void doUpdateAction(KeyEvent e) {

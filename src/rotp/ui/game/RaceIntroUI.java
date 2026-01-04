@@ -135,6 +135,7 @@ public class RaceIntroUI extends BasePanel implements MouseListener {
         Empire pl = player();
         String title = pl.introduction().get(0);
         title = title.replace("[race]", pl.raceName());
+        title = pl.replaceTokens(title, "player");
         g.setColor(textColor);
         g.setFont(font(24));
         int x0 = scaled(pl.introTextX());
@@ -158,6 +159,7 @@ public class RaceIntroUI extends BasePanel implements MouseListener {
                 paragraph = paragraph.replace("[title]", pl.title());
                 paragraph = paragraph.replace("[fulltitle]", pl.fullTitle());
                 paragraph = paragraph.replace("[home]", pl.getHomeWorldName());
+                paragraph = pl.replaceTokens(paragraph, "player");
                 List<String> lines = scaledWrappedLines(g, paragraph, lineW, 30, 16, 12);
                 for (String line: lines) {
                     drawString(g,line, x0, y0);

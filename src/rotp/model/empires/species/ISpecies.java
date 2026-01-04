@@ -52,7 +52,7 @@ public interface ISpecies {
 
 			key  = getGuiValue(id);
 			help = realLangLabel(key + LABEL_DESCRIPTION);
-			SpeciesSkills speciesSkill = fileToAlienRaceInfo(key);
+			SpeciesSkills speciesSkill = fileToAlienRaceInfo(null, key);
 			String raceName = speciesSkill.setupName;
 			if (key.startsWith(BASE_RACE_MARKER))
 				help = labelFormat(name(id)) + "<i>(Original species)</i>&nbsp " + speciesSkill.getDescription1();
@@ -96,7 +96,7 @@ public interface ISpecies {
 
 			key  = getGuiValue(id);
 			help = realLangLabel(key + LABEL_DESCRIPTION);
-			SpeciesSkills speciesSkill = fileToAlienRaceInfo(key);
+			SpeciesSkills speciesSkill = fileToAlienRaceInfo(null, key);
 			String raceName	= speciesSkill.setupName;
 			if (key.startsWith(BASE_RACE_MARKER))
 				help = labelFormat(name(id)) + "<i>(Original species)</i>&nbsp " + speciesSkill.getDescription1();

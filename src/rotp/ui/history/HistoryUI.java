@@ -97,6 +97,7 @@ public final class HistoryUI extends BasePanel implements MouseListener {
     int maxTurn = 0;
     int numSystems = 1;
     int numEmps = 1;
+    int shownEmps = 1;
     byte[] sysData;
     int[] sysCount;
     float[] xMin;
@@ -144,6 +145,14 @@ public final class HistoryUI extends BasePanel implements MouseListener {
         sortedEmpires.addAll(Arrays.asList(galaxy().empires()));
         initOwnershipData();
         sortEmpireList();
+		if (showAll)
+			shownEmps = numEmps;
+		else {
+			shownEmps = 0;
+			for (Empire emp: sortedEmpires)
+				if (emp.numColoniesHistory > 0)
+					shownEmps++;
+		}
     }
     public void sortEmpireList() {
         for (Empire emp: sortedEmpires) 
@@ -975,22 +984,25 @@ public final class HistoryUI extends BasePanel implements MouseListener {
         }
         @Override
         public void paintOverMap(GalaxyMapPanel ui, Graphics2D g) { 
-            // empire list
-            int lineH = s22;
-            int y1 = s40;
-            int x1 = getWidth()-scaled(120);
+			// empire list
+			int heightMax	= getHeight() - s90;
+			int baseEmpSize	= 31;
+			int lineH		= heightMax / max(baseEmpSize, shownEmps);
+			int fontSize	= unscaled(lineH)-2;
+			int y1 = s40;
+			int x1 = getWidth() - scaled(120);
             g.setFont(narrowFont(24));
             g.setColor(Color.white);
             String sysTitle = text("HISTORY_SYSTEMS");
             String empTitle = text("HISTORY_EMPIRE");
             String ext = text("HISTORY_EXTINCT");
             int sw0 = g.getFontMetrics().stringWidth(sysTitle);
-            
+
             g.setColor(Color.white);
             drawString(g,empTitle, x1, y1);
             drawString(g,sysTitle, x1-sw0-s10, y1);
-            
-            g.setFont(narrowFont(20));
+
+            g.setFont(narrowFont(fontSize));
             for (Empire emp: sortedEmpires) {
                 int num = emp.numColoniesHistory;
                 if (showAll || (num > 0)) {

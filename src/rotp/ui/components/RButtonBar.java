@@ -218,7 +218,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 		int idx = getSelectedIndex();
 		String prevLabel = labelList.set(idx, newLabel);
 		buttonList.get(idx).setText(newLabel);
-		System.out.println("button name changed: " + prevLabel + " --> " + newLabel);
+		// System.out.println("button name changed: " + prevLabel + " --> " + newLabel);
 		callEvent(new BarEvent(BarEvents.BUTTON_RENAMED, newLabel, prevLabel, idx));
 	}
 	private String getValidtext(String str)	{

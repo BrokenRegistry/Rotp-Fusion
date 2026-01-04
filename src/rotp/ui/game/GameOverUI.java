@@ -87,7 +87,6 @@ public final class GameOverUI extends FadeInPanel
             backImg = newBufferedImage(gameOverImage);
             fadeDelay = 3000;
         }
-
         if (trans == null) {
             trans = new Composite[20];
             for (int i=0;i<trans.length;i++) 
@@ -119,7 +118,8 @@ public final class GameOverUI extends FadeInPanel
         String title = gameOverTitle();
         // drawString(g,title, s10, s35);
         drawShadowedString(g, title, 1, s10, s35, SystemPanel.blackText, Color.lightGray);
-        
+
+        //System.out.println("transIndex: " + transIndex); // TO DO BR: comment
         if (transIndex >= 0) {
             int lineH = s30;
             int lineW = w*2/3;

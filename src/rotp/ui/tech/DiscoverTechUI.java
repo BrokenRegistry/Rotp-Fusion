@@ -513,9 +513,10 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
         g.setFont(narrowFont(16));
         drawShadowedString(g, key, 1, x1+s10, y+h-s11, SystemPanel.textShadowC, c0);
         
-        g.setFont(narrowFont(20));
+       // g.setFont(narrowFont(20));
+        scaledFont(g, label, w-s30, 20, 14);
         int sw = g.getFontMetrics().stringWidth(label);
-        int x0 = x1+((w-sw)/2);
+        int x0 = x1+s6+((w-sw)/2);
         drawShadowedString(g, label, 3, x0, y+h-s11, SystemPanel.textShadowC, c0);
 
         g.setColor(c0);

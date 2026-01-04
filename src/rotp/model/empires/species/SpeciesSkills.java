@@ -77,6 +77,7 @@ class SpeciesSkills implements Base, Serializable {
 	private String planetRessource	= "Normal";
 	private String planetEnvironment	= "Normal";
 	// Custom Races:
+	private boolean isRandomizedSpecies	= false;
 	private boolean isCustomSpecies		= false;
 	private boolean isCopy				= false; // Security prevent modification of original 
 	private String isAnimAutonomous		= ""; // Security prevent modification of original 
@@ -223,15 +224,16 @@ class SpeciesSkills implements Base, Serializable {
 	protected void isCopy( boolean is)	{ isCopy = is; }
 	// BR: for species customization
 	// Get a Copy the current species
-	protected SpeciesSkills copy()		{
-		if (speciesOptions() == null)
-			return copy(new DynOptions());
+	protected SpeciesSkills copy(boolean full)	{
+		if (!full || speciesOptions() == null)
+			return copy(new DynOptions(), full);
 		else
-			return copy(speciesOptions().copy());
+			return copy(speciesOptions().copy(), full);
 	}
-	protected SpeciesSkills copy(DynOptions srcOptions) {
+	protected SpeciesSkills copy(DynOptions srcOptions, boolean full)	{
 		SpeciesSkills copy	= RaceFactory.current().reloadRaceDataFile(directoryName);
-		labels.copy(labels, copy.labels);
+		if (full)
+			labels.copy(labels, copy.labels);
 		copy.setupName		= setupName();
 		copy.empireTitle	= empireTitle();
 		copy.description1	= description1;
@@ -549,7 +551,9 @@ class SpeciesSkills implements Base, Serializable {
 	void fullTitle(String s)			{ fullTitle = s; }
 	// BR: Custom Species
 	boolean isCustomSpecies()			{ return isCustomSpecies; }
-	SpeciesSkills isCustomSpecies(boolean is)	{ isCustomSpecies = is; return this; }
+	void isCustomSpecies(boolean is)	{ isCustomSpecies = is; }
+	boolean isRandomizedSpecies()		{ return isRandomizedSpecies; }
+	void isRandomizedSpecies(boolean is){ isRandomizedSpecies = is; }
 	String isAnimAutonomous()			{ return isAnimAutonomous; }
 	void isAnimAutonomous(String s)		{ isAnimAutonomous = s; }
 	boolean isRandomized()				{ return SkillsFactory.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }

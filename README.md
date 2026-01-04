@@ -44,6 +44,14 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-01-04 (BR)
+- When there is more than 31 empires, Replay will now list all of tem in smaller font size.
+- Fixed some missing French dialog. (By default there was no pacific contact dialog for species that are never pacifist... Except when customized!)
+- Fixed custom player dialog display.
+- Fixed language change for custom species.
+- Custom species are now built from their animation species.
+- Fixed certain texts that extended beyond the boxes.
+
 25-12-31 (BR)
 - Complete overhaul of species management.
   - The "Race" class now consists of skills and animations.

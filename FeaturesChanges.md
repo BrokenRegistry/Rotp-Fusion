@@ -324,6 +324,12 @@
 
 ### Fixes:
 
+- When there is more than 31 empires, Replay will now list all of tem in smaller font size.
+- Fixed some missing French dialog. (By default there was no pacific contact dialog for species that are never pacifist... Except when customized!)
+- Fixed custom player dialog display.
+- Fixed language change for custom species.
+- Custom species are now built from their animation species.
+- Fixed certain texts that extended beyond the boxes.
 - Fixed the .pom date edition to be set to the UTC time (it was the PC local time).
   - This fixed the link to the last release (on the Main Panel), as it was wrong when the release was done when the local day was not the same as the UTC day.
 - Fixed null pointer exception on retreat on arrival when to destinations are available.
