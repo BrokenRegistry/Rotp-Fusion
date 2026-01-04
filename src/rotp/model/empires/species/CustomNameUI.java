@@ -32,7 +32,11 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 
 import rotp.model.empires.species.SpeciesSettings.AllSpeciesAttributes;
+import rotp.model.empires.species.SpeciesSettings.CivilizationNameItems;
 import rotp.model.empires.species.SpeciesSettings.SpeciesAttributes;
+import rotp.model.empires.species.SpeciesSettings.SpeciesDescriptionItems;
+import rotp.model.empires.species.SpeciesSettings.SpeciesLabelItems;
+import rotp.model.empires.species.SpeciesSettings.SpeciesNameItems;
 import rotp.ui.components.RButtonBar;
 import rotp.ui.components.RButtonBar.BarEvent;
 import rotp.ui.components.RButtonBar.ButtonBarListener;
@@ -615,8 +619,9 @@ class CustomNameUI extends RDialog implements ActionListener {
 			int x = 0;
 			int y = 1;
 			SpeciesAttributes identifications = settings.getAttributes(languageDir);
+			CivilizationNameItems civilizationNameItems = identifications.civilizationNameItems;
 			boolean first = true;
-			for (SettingString setting : identifications.civilizationNameItems) {
+			for (SettingString setting : civilizationNameItems) {
 				SettingField sf = new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, civilizationId);
 				if (first && left) {
 					addChangeListener(sf, e -> bars.empireNameChangedAction(e));
@@ -651,13 +656,15 @@ class CustomNameUI extends RDialog implements ActionListener {
 			add(common, c);
 
 			// ==> SpeciesNameItems
-			for (SettingString setting : identifications.speciesNameItems) {
+			SpeciesNameItems speciesNameItems = identifications.speciesNameItems;
+			for (SettingString setting : speciesNameItems) {
 				new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, civilizationId);
 				y++;
 			}
 
 			// ==> SpeciesDescriptionItems
-			for (SettingString setting : identifications.speciesDescriptionItems) {
+			SpeciesDescriptionItems speciesDescriptionItems = identifications.speciesDescriptionItems;
+			for (SettingString setting : speciesDescriptionItems) {
 				new SettingField(this, setting, WIDE_FIELDS_COL, x, y, languageDir, civilizationId);
 				y++;
 			}
@@ -688,7 +695,8 @@ class CustomNameUI extends RDialog implements ActionListener {
 			add(speciesDialog, c);
 
 			// ==> SpeciesLabelItems
-			for (SettingString setting : identifications.speciesLabelItems) {
+			SpeciesLabelItems speciesLabelItems = identifications.speciesLabelItems;
+			for (SettingString setting : speciesLabelItems) {
 				new SettingField(this, setting, NORM_FIELDS_COL, x, y, languageDir, civilizationId);
 				y++;
 			}

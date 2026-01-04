@@ -2012,7 +2012,7 @@ public abstract class SpeciesSettings {
 	// ====================
 	// Species List
 	//
-	private class SpeciesNameItems extends ICSSettingsStringList {
+	class SpeciesNameItems extends ICSSettingsStringList {
 		private static final long serialVersionUID = 1L;
 		private SpeciesNameItems(String langDir)	{
 			super(langDir);
@@ -2033,7 +2033,7 @@ public abstract class SpeciesSettings {
 			add(setting);
 		}
 	}
-	private class SpeciesDescriptionItems extends ICSSettingsStringList {
+	class SpeciesDescriptionItems extends ICSSettingsStringList {
 		private static final long serialVersionUID = 1L;
 		private static final int[] SEQ = new int[] {1, 2, 4, 3};
 		private SpeciesDescriptionItems(String langDir)	{
@@ -2061,7 +2061,7 @@ public abstract class SpeciesSettings {
 			}
 		}
 	}
-	private class SpeciesLabelItems extends ICSSettingsStringList {
+	class SpeciesLabelItems extends ICSSettingsStringList {
 		private static final long serialVersionUID = 1L;
 		 SpeciesLabelItems(String langDir)	{
 			super(langDir);
@@ -2156,7 +2156,7 @@ public abstract class SpeciesSettings {
 	// ====================
 	// Empire List
 	//
-	private class CivilizationNameItems extends ICSSettingsStringList {
+	class CivilizationNameItems extends ICSSettingsStringList {
 		private static final long serialVersionUID = 1L;
 		private CivilizationNameItems(String langDir)	{
 			super(langDir);
@@ -2190,7 +2190,7 @@ public abstract class SpeciesSettings {
 			}
 		}
 	}
-	private class CivilizationLabelItems extends ICSSettingsStringList { // DialogLabels
+	class CivilizationLabelItems extends ICSSettingsStringList { // DialogLabels
 		private static final long serialVersionUID = 1L;
 		private CivilizationLabelItems(String langDir)	{
 			super(langDir);
