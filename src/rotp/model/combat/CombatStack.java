@@ -44,7 +44,6 @@ import rotp.model.galaxy.StarSystem;
 import rotp.model.game.ICombatOptions;
 import rotp.model.ships.ShipComponent;
 import rotp.model.ships.ShipDesign;
-import rotp.model.ships.ShipWeapon;
 import rotp.model.ships.ShipWeaponMissileType;
 import rotp.model.tech.TechCloaking;
 import rotp.model.tech.TechStasisField;
@@ -823,28 +822,28 @@ public class CombatStack implements Base {
         }
     }
     //Used for making AI capable of assessing the power of Monsters
-    public float firePower(float shield, float defense, float missileDefense) {
-        float dmg = 0;
-        for (int i=0;i<numWeapons(); i++) {
-            if (weapon(i).canAttackShips()) {
-                if(weapon(i).isWeapon()) {
-                    if(weapon(i).isSpecial())
-                    	continue;
-                    ShipWeapon wpn = (ShipWeapon)weapon(i);
-                    float attack = attackLevel() + wpn.computerLevel();
-                    float hitPct = 1;
-                    if(weapon(i).isBeamWeapon())
-                        hitPct = (5 + attack - defense) / 10;
-                    if(weapon(i).isMissileWeapon())
-                        hitPct = (5 + attack - missileDefense) / 10;
-                    hitPct = max(.05f, hitPct);
-                    hitPct = min(hitPct, 1.0f);
-                    dmg += (wpnCount(i) * wpn.firepower(shield) * hitPct);
-                }
-            }
-        }
-        return dmg;
-    }
+//    public float firePower(float shield, float defense, float missileDefense) {
+//        float dmg = 0;
+//        for (int i=0;i<numWeapons(); i++) {
+//            if (weapon(i).canAttackShips()) {
+//                if(weapon(i).isWeapon()) {
+//                    if(weapon(i).isSpecial())
+//                    	continue;
+//                    ShipWeapon wpn = (ShipWeapon)weapon(i);
+//                    float attack = attackLevel() + wpn.computerLevel();
+//                    float hitPct = 1;
+//                    if(weapon(i).isBeamWeapon())
+//                        hitPct = (5 + attack - defense) / 10;
+//                    if(weapon(i).isMissileWeapon())
+//                        hitPct = (5 + attack - missileDefense) / 10;
+//                    hitPct = max(.05f, hitPct);
+//                    hitPct = min(hitPct, 1.0f);
+//                    dmg += (wpnCount(i) * wpn.firepower(shield) * hitPct);
+//                }
+//            }
+//        }
+//        return dmg;
+//    }
     public Dimension shieldSize(int boxW, int boxH) {
     	final float fW  = 4.0f;	// To convert shipSize to Shield Width
     	final float fH  = 4.0f;	// To estimate the target size

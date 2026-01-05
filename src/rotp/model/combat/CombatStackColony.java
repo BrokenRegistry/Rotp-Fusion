@@ -208,9 +208,12 @@ public class CombatStackColony extends CombatStack {
         //ail: @Ray: My AI usually doesn't build missile-bases and there's also no hook in it to control the used missile type, so'll do some very basic logic here to help the auto-play and the other AIs pick the right missile
         int missileToUse = 0;
         float bestDamage = 0;
+		float defense = newTarget.missileDefense();
         for(int i = 0; i < numWeapons(); ++i)
         {
-            float currentDamage = ((ShipWeapon)weapon(i)).firepower(newTarget.shieldLevel());
+		ShipWeapon weapon = (ShipWeapon)weapon(i);
+		float attack = attackLevel() + weapon.computerLevel();
+		float currentDamage = ((ShipWeapon)weapon(i)).firepower(newTarget.shieldLevel(), attack - defense);
             if(currentDamage > bestDamage) {
                 missileToUse = i;
                 bestDamage = currentDamage;

@@ -966,62 +966,62 @@ MISSDEF_2_DETAIL    | An energy field that destroys incoming enemy missiles and 
 // Missile Weapon techs
 //
 MISSWPN_NAME        | Missiles
-MISSWPN_DETAIL      | Their attack level is equal to the combat computer level of the firing ship, plus the weapon's attack bonus.
+MISSWPN_DETAIL      | Their attack level is equal to the combat computer level of the firing ship, plus the weapon's attack bonus. The 2-shots version receives a speed increment of 1 and a range increment of 2 (but limited to a maximum range of 10). 
 
 MISSWPN_0_NAME      | Nuclear Missile
 MISSWPN_0_BRIEF     | 2 shots, +1 speed
 MISSWPN_0_BRIEF2    | 5 shots
-MISSWPN_0_DETAIL    | Missiles tipped with nuclear warheads that explode for 4 points of damage and move at a speed of 2.
+MISSWPN_0_DETAIL    | Missiles tipped with nuclear warheads that explode for 4 points of damage. They move at a speed of 2, and have a range of 4. (Speed = 3 and range = 6 for the 2-shots version)
 
 MISSWPN_1_NAME      | Hyper-V Rockets
 MISSWPN_1_BRIEF     | 2 shots, +1 speed
 MISSWPN_1_BRIEF2    | 5 shots
-MISSWPN_1_DETAIL    | Swift missiles that explode for 6 points of damage and move at a speed of 2.5.
+MISSWPN_1_DETAIL    | Swift missiles that explode for 6 points of damage. They move at a speed of 2.5, and have a range of 4. (Speed = 3.5 and range = 7 for the 2-shots version)
 
 MISSWPN_2_NAME      | Hyper-X Rockets
 MISSWPN_2_BRIEF     | 2 shots, +1 to hit
 MISSWPN_2_BRIEF2    | 5 shots, +1 to hit
-MISSWPN_2_DETAIL    | Missiles equipped with high energy warheads that explode for 8 points of damage, move at a speed of 2.5, and are controlled by a +1 level targeting computer.
+MISSWPN_2_DETAIL    | Missiles equipped with high energy warheads that explode for 8 points of damage. They move at a speed of 2.5, are controlled by a +1 level targeting computer, and have a range of 5. (Speed = 3.5 and range = 7 for the 2-shots version)
 
 MISSWPN_3_NAME      | Scatter Pack V Rockets
 MISSWPN_3_BRIEF     | 2 shots, +1 speed
 MISSWPN_3_BRIEF2    | 5 shots
-MISSWPN_3_DETAIL    | MIRV versions of Hyper-V Rockets, splitting into five separate warheads that each explode for 6 points of damage and move at a speed of 2.5.
+MISSWPN_3_DETAIL    | MIRV versions of Hyper-V Rockets, splitting into five separate warheads that each explode for 6 points of damage. They move at a speed of 2.5, and have a range of 4. (Speed = 3.5 and range = 7 for the 2-shots version)
 
 MISSWPN_4_NAME      | Merculite Missiles
 MISSWPN_4_BRIEF     | 2 shots, +2 to hit
 MISSWPN_4_BRIEF2    | 5 shots, +2 to hit
-MISSWPN_4_DETAIL    | Hard-hitting, swift missiles that explode for 10 points of damage, move at a speed of 3, and are controlled by a +2 targeting computer.
+MISSWPN_4_DETAIL    | Hard-hitting, swift missiles that explode for 10 points of damage. They move at a speed of 3, are controlled by a +2 targeting computer, and have a range of 6. (Speed = 4 and range = 8 for the 2-shots version)
 
 MISSWPN_5_NAME      | Stinger Missiles
 MISSWPN_5_BRIEF     | 2 shots, +3 to hit
 MISSWPN_5_BRIEF2    | 5 shots, +3 to hit
-MISSWPN_5_DETAIL    | Slow, hyper-accurate missiles that do 15 points of damage, move at a speed of 3.5, and are controlled by a sophisticated +3 targeting computer.
+MISSWPN_5_DETAIL    | Slow, hyper-accurate missiles that do 15 points of damage. They move at a speed of 3.5, are controlled by a sophisticated +3 targeting computer, and have a range of 7. (Speed = 4.5 and range = 9 for the 2-shots version)
 
 MISSWPN_6_NAME      | Scatter Pack VII Missiles
 MISSWPN_6_BRIEF     | 2 shots, MIRVS to 7
 MISSWPN_6_BRIEF2    | 5 shots, MIRVS to 7
-MISSWPN_6_DETAIL    | MIRV versions of Hyper-X Rockets, splitting into 7 separate warheads that each explode for 10 points of damage, move at a speed of 3, and are guided by a +2 targeting computer.
+MISSWPN_6_DETAIL    | MIRV versions of Hyper-X Rockets, splitting into 7 separate warheads that each explode for 10 points of damage. They move at a speed of 3, are guided by a +2 targeting computer, and have a range of 6. (Speed = 4 and range = 8 for the 2-shots version)
 
 MISSWPN_7_NAME      | Pulson Missiles
 MISSWPN_7_BRIEF     | 2 shots, +4 to hit
 MISSWPN_7_BRIEF2    | 5 shots, +4 to hit
-MISSWPN_7_DETAIL    | Powerful missiles equipped with anti-matter warheads that explode for 20 points of damage, move at speed 4, and are controlled by a +4 targeting computer.
+MISSWPN_7_DETAIL    | Powerful missiles equipped with anti-matter warheads that explode for 20 points of damage. They move at speed 4, are controlled by a +4 targeting computer, and have a range of 8. (Speed = 5 and range = 10 for the 2-shots version)
 
 MISSWPN_8_NAME      | Hercular Missiles
 MISSWPN_8_BRIEF     | 2 shots, +5 to hit
 MISSWPN_8_BRIEF2    | 5 shots, +5 to hit
-MISSWPN_8_DETAIL    | Highly advanced missile that explodes for 25 points of damage. The hercular missile moves at speed 4.5 and is controlled by a +5 targeting computer.
+MISSWPN_8_DETAIL    | Highly advanced missile that explodes for 25 points of damage. The hercular missile moves at speed 4.5, is controlled by a +5 targeting computer, and has a range of 9. (Speed = 5.5 and range = 10 for the 2-shots version)
 
 MISSWPN_9_NAME      | Zeon Missiles
 MISSWPN_9_BRIEF     | 2 shots, +6 to hit
 MISSWPN_9_BRIEF2    | 5 shots, +6 to hit
-MISSWPN_9_DETAIL    | Most advanced missile available. Capable of striking enemy ships for 30 points of damage and moving at a speed of 5. The missile is guided by a +6 targeting computer.
+MISSWPN_9_DETAIL    | Most advanced missile available. Capable of striking enemy ships for 30 points of damage and moving at a speed of 5. The missile is guided by a +6 targeting computer, and has a range of 10. (Speed = 6 and range = 10 for the 2-shots version)
 
 MISSWPN_10_NAME      | Scatter Pack X Missiles
 MISSWPN_10_BRIEF     | 2 shots, MIRVS to 10
 MISSWPN_10_BRIEF2    | 5 shots, MIRVS to 10
-MISSWPN_10_DETAIL    | MIRV versions of Stinger Missiles, splitting into 10 separate warheads that each explode for 15 points of damage, move at speed 3.5, and are guided by a +3 targeting computer.
+MISSWPN_10_DETAIL    | MIRV versions of Stinger Missiles, splitting into 10 separate warheads that each explode for 15 points of damage. They move at speed 3.5, are guided by a +3 targeting computer, and have a range of 7. (Speed = 4.5 and range = 9 for the 2-shots version)
 
 
 //

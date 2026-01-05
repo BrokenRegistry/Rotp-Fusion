@@ -54,17 +54,19 @@ public final class ShipWeaponBomb extends ShipWeapon {
     public void fireUpon(CombatStack source, CombatStack target, int count, ShipCombatManager mgr) {
         float defense = target.bombDefense();
         float attack = source.attackLevel();
-        float pct = (5 + attack - defense) / 10;
-        pct = max(.05f, pct);
+		float diffLevel = attack - defense;
+		int minDamage = minDamage(diffLevel);
+		int maxDamage = maxDamage();
+		float hitPct  = hitPct(diffLevel);
 
         float totalDamage = 0;
         float shieldMod = source.targetShieldMod(this)*shieldMod();
         boolean successfullyHit = false;
         for (int i=0;i<count;i++) {
-            if (random() < pct) { 
+            if (random() < hitPct) { 
                 successfullyHit = true;
                 if (!target.destroyed()) {
-                    float damage = roll(minDamage(), maxDamage());
+                    float damage = roll(minDamage, maxDamage);
                     damage = target.takeBombDamage(damage, shieldMod);
                     totalDamage += damage;
                 }

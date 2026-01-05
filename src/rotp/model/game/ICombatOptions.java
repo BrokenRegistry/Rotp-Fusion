@@ -185,6 +185,10 @@ public interface ICombatOptions extends IBaseOptsTools {
 	ParamBoolean moo1ShieldRules			= new ParamBoolean(MOD_UI, "MOO1_SHIELD_RULES", false)
 			.setDefaultValue(MOO1_DEFAULT, true);
 
+	ParamBoolean moo1CombatResolution		= new ParamBoolean(MOD_UI, "MOO1_COMBAT_RESOL", false)
+			.setDefaultValue(MOO1_DEFAULT, true);
+	default boolean moo1CombatResolution()	{ return moo1CombatResolution.get(); }
+
 	ParamBoolean moo1RetreatRules			= new ParamBoolean(MOD_UI, "MOO1_RETREAT", false)
 			.setDefaultValue(MOO1_DEFAULT, true);
 	default boolean selectedMoo1RetreatRules()		{ return moo1RetreatRules.get(); }

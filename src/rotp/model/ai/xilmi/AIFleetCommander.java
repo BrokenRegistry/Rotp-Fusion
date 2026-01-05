@@ -30,7 +30,6 @@ import rotp.model.ai.FleetStats;
 import rotp.model.ai.ShipDecision;
 import rotp.model.ai.ShipPlan;
 import rotp.model.ai.interfaces.FleetCommander;
-import rotp.model.combat.CombatStack;
 import rotp.model.combat.CombatStackColony;
 import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.Empire;
@@ -1732,13 +1731,13 @@ public class AIFleetCommander implements Base, FleetCommander {
 //        }
 //        return stats;
 //    }
-    float monsterFirePower(List<CombatStack> monsters, float shield, float defense, float missileDefense) {
-        float total = 0;
-        for (CombatStack monster : monsters) {
-            total += monster.firePower(shield, defense, missileDefense);
-        }
-        return total;
-    }
+//    float monsterFirePower(List<CombatStack> monsters, float shield, float defense, float missileDefense) {
+//        float total = 0;
+//        for (CombatStack monster : monsters) {
+//            total += monster.firePower(shield, defense, missileDefense);
+//        }
+//        return total;
+//    }
     float combatPower(ShipFleet attacker) {
         FleetStats undefended = new FleetStats();
         return combatPower(attacker, undefended);

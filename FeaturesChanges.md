@@ -22,6 +22,8 @@
 
 ### Features:
 
+26-01-05 (BR)
+- New option to restore MoO1 combat resolution: Unlike in MoO1, damage inflicted by weapons in RotP is not affected by the difference between attack and defense levels. (Only affects the probability of hitting.) In MoO1, a high differential between attack and defense increases the weapon's minimum damage. This gives kittens a boost.
 - Complete overhaul of species management.
   - The "Race" class now consists of skills and animations.
     - However, the Race factory remains unchanged.
@@ -181,7 +183,6 @@
 
 ### Governor:
 
-25-05-23 (BR)
 - Auto-Scouts improvement:
   - To avoid damaging our relations with empires we are not at war with, Auto-Scouts will leave their colonies to go to the most strategic location.
 - Auto-Scouts will leave alien colonies, even if they don't have new star systems to explore. This is to avoid damaging your relationship with that empire.

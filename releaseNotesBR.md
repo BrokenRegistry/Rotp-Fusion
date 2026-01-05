@@ -7,6 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-01-05 (BR)
+- New option to restore MoO1 combat resolution: Unlike in MoO1, damage inflicted by weapons in RotP is not affected by the difference between attack and defense levels. (Only affects the probability of hitting.) In MoO1, a high differential between attack and defense increases the weapon's minimum damage. This gives kittens a boost.
+
 26-01-04 (BR)
 - Custom images can be put in an "images" folder located in the same folder as the jar file.
   - The folder structure inside the images folder must be the same as the original one, and the file type must be the same as specified in the txt files.

@@ -36,15 +36,43 @@ public class ShipWeapon extends ShipComponent {
     public float computerLevel()      { return 0; }
     public float decay()              { return 0; }
     public boolean canAttackPlanets() { return (!noWeapon() && (maxDamage() > 0)); }
-    public float firepower()          { return firepower(0); }
-    public float firepower(float shield) {
+	public float firepower()			{ return firepower(0, 0); }
+	public float hitPct(float dLevel)	{ return bounds(.05f, (5 + dLevel)/10, 1); } //cannot hit for more than 100%
+	public int minDamage(float dLevel)	{ // For MoO1 combat resolution
+		if (dLevel<=5 || !options().moo1CombatResolution())
+			return minDamage();
+		float hitPct = (5 + dLevel) / 10;
+		int minDamage = minDamage();
+		return (int) (minDamage + (maxDamage()-minDamage) * (1 - 1/hitPct));
+	}
+//    public float firepower(float shield) {
+//		int maxAttackPower = maxDamage();
+//		float ensuingShield = (shield * shieldMod());
+//		if (ICombatOptions.moo1ShieldRules.get())	// To follow MoO1 rules
+//			ensuingShield = (int) ensuingShield;
+//		if (ensuingShield >= maxAttackPower)
+//			return 0.0f; // The weapon is too weak
+//		int minAttackPower = minDamage();
+//
+//		// The first attack power that can penetrate the shield
+//		int minPowerToHit = Math.max(minAttackPower, (int) ensuingShield + 1);
+//		// Average damage when the attack hit the target
+//		float averageHitDamage = (minPowerToHit + maxAttackPower)/2f - ensuingShield;
+//		// Average Damage including the non hit
+//		float hitProbability = (float) (maxAttackPower - minPowerToHit + 1) / (maxAttackPower - minAttackPower + 1);
+//		float averageDamage = averageHitDamage * hitProbability;
+//
+//		return attacksPerRound() * averageDamage * scatterAttacks();
+//	}
+	public float firepower(float shield) { return firepower(shield, 0); } // TODO BR: try to update callers to give the right level difference
+	public float firepower(float shield, float diffLevel)	{
 		int maxAttackPower = maxDamage();
 		float ensuingShield = (shield * shieldMod());
 		if (ICombatOptions.moo1ShieldRules.get())	// To follow MoO1 rules
 			ensuingShield = (int) ensuingShield;
 		if (ensuingShield >= maxAttackPower)
 			return 0.0f; // The weapon is too weak
-		int minAttackPower = minDamage();
+		int minAttackPower = minDamage(diffLevel);
 
 		// The first attack power that can penetrate the shield
 		int minPowerToHit = Math.max(minAttackPower, (int) ensuingShield + 1);
@@ -55,7 +83,7 @@ public class ShipWeapon extends ShipComponent {
 		float averageDamage = averageHitDamage * hitProbability;
 
 		return attacksPerRound() * averageDamage * scatterAttacks();
-    }
+	}
     public float max(ShipDesign d, int i) {
         return noWeapon() ? 0 : max(0, (float)Math.floor(d.availableSpaceForWeaponSlot(i) / space(d))) ;
     }
@@ -63,20 +91,23 @@ public class ShipWeapon extends ShipComponent {
     public float estimatedKills(CombatStack source, CombatStack target, int num) {
         if (groundAttacksOnly() && !target.isColony())
             return 0;
+		float diffLevel = source.attackLevel() - target.bombDefense();
         float shieldLevel = target.shieldLevel();
         //ail: we multiply our damage by the amount of weapons shooting
-        float dmg = firepower(shieldLevel) * num;
         // modnar: account for planetDamageMod()
         // correctly calculate damage estimate for attacking colony (in round-about way)
         // beams and torpedoes do half damage against colonies, planetDamageMod() = 0.5f
         // other weapons have planetDamageMod() = 1.0f, so this correction would have no effect for them
         // average(beamMax/2-shield, beamMin/2-shield)  // correct formula
         // = average(beamMax-2*shield, beamMin-2*shield)/2  // equivalent formula used here
+        float dmg;
         if (target.isColony()) {
             shieldLevel = target.shieldLevel() / planetDamageMod();
-            dmg = firepower(shieldLevel) * num * planetDamageMod();
+            dmg = firepower(shieldLevel, diffLevel) * num * planetDamageMod();
         }
-		
+		else
+			dmg = firepower(shieldLevel, diffLevel) * num;
+
         if (dmg == 0)
             return 0;
         //ail: The only thing that makes sense to return here is our total damage divided by the target's hitpoints
@@ -88,9 +119,8 @@ public class ShipWeapon extends ShipComponent {
         float shieldMod = source.targetShieldMod(this);
         float shieldLevel = shieldMod * target.shieldLevel();
         float beamMod = 1;
-        float pct = (5 + source.attackLevel() - target.bombDefense()) / 10;
-        pct = max(.05f, pct);
-        pct = min(pct, 1); //cannot hit for more than 100%
+		float diffLevel = source.attackLevel() - target.bombDefense();
+		float hitPct = hitPct(diffLevel); //cannot hit for more than 100%
         if(isBeamWeapon())
         {
             shieldLevel /= planetDamageMod(); 
@@ -102,7 +132,7 @@ public class ShipWeapon extends ShipComponent {
             float damage = TechBiologicalWeapon.avgDamage(maxDamage(), (int)targetAntiDote) * 200;
             return damage * num;
         }
-        return firepower(shieldLevel)* num * beamMod * pct;
+		return firepower(shieldLevel, diffLevel)* num * beamMod * hitPct;
     }
     @Override
     public float estimatedBombardDamage(ShipDesign des, CombatStackColony target) {
@@ -110,9 +140,8 @@ public class ShipWeapon extends ShipComponent {
         float shieldMod = des.targetShieldMod(this);
         float shieldLevel = shieldMod * target.shieldLevel();
         float beamMod = 1;
-        float pct = (5 + des.attackLevel() + des.empire().shipAttackBonus() - target.bombDefense()) / 10;
-        pct = max(.05f, pct);
-        pct = min(pct, 1); //cannot hit for more than 100%
+		float diffLevel = des.attackLevel() + des.empire().shipAttackBonus() - target.bombDefense();
+		float hitPct = hitPct(diffLevel); //cannot hit for more than 100%
         if(isBeamWeapon())
         {
             shieldLevel /= planetDamageMod(); 
@@ -124,7 +153,7 @@ public class ShipWeapon extends ShipComponent {
             float damage = TechBiologicalWeapon.avgDamage(maxDamage(), (int)targetAntiDote) * 200;
             return damage * num;
         }
-        return firepower(shieldLevel)* num * beamMod * pct;
+		return firepower(shieldLevel, diffLevel)* num * beamMod * hitPct;
     }
     @Override
     public String fieldValue(int n, ShipDesign d, int bank) {

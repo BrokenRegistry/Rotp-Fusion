@@ -2691,8 +2691,8 @@ HEADERS_ASTEROID_PROBABILITY         | ~~~ PROBABILITÉ DES ASTÉROÏDES ~~~
 HEADERS_ASTEROID_PROBABILITY_DESC    | Probabilité d’obtenir des astéroïdes et l’impact des ressources planétaires sur cette probabilité.
 HEADERS_ASTEROID_IMPACT              | ~~~ POSITION ET IMPACT ASTÉROÏDES ~~~
 HEADERS_ASTEROID_IMPACT_DESC         | Localisation de la planète et effet des astéroïdes.
-HEADERS_SHIELD_OPTIONS				| ~~~ BOUCLIERS ~~~
-HEADERS_SHIELD_OPTIONST_DESC		| Paramètres affectant l’efficacité des boucliers.
+HEADERS_COMBAT_RESOLUTION			| ~~~ CALUL DE RÉSOLUTION ~~~
+HEADERS_COMBAT_RESOLUTION_DESC		| Paramètres affectant le calcul des attaques et des défenses.
 
 HEADERS_TECH_PLANET                  | ~~~ TECHNOLOGIES PLANÉTAIRES ~~~
 HEADERS_TECH_PLANET_DESC             | Technologies planétaires requises ou interdites.
@@ -2868,6 +2868,10 @@ SETTINGS_MOD_MOO1_RETREAT_DESC			| Retraite différée de MoO1 ou retraite immé
 SETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Le bouton « Retraite » permet de retirer le vaisseau actuel du combat. L’ennemi aura un tour pour tirer sur votre vaisseau pendant qu’il se retire de l’écran.
 SETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Le bouton « Retraite » retire instantanément le vaisseau actuel du combat. L’ennemi ne pourra pas tirer sur votre vaisseau pendant qu’il se retire de l’écran.
 SETTINGS_MOD_MOO1_RETREAT				| Règles de retraite de MoO1 : %1
+SETTINGS_MOD_MOO1_COMBAT_RESOL_DESC		| Contrairement à MoO1, les dégâts infligés par les armes dans RotP ne sont pas affectés par la différence entre les niveaux d’attaque et de défense. (Cela n’affecte que la probabilité de toucher.)
+SETTINGS_MOD_MOO1_COMBAT_RESOL_YES_DESC	| Un écart important entre l’attaque et la défense augmente les dégâts minimums de l'arme.
+SETTINGS_MOD_MOO1_COMBAT_RESOL_NO_DESC	| La différence entre les niveaux d'attaque et de défense n'affecte pas les dégâts infligés par l'arme.
+SETTINGS_MOD_MOO1_COMBAT_RESOL			| Résolution des combats de MoO1 : %1
 
 SETTINGS_MOD_HOME_ORION              | Planète mère avec Vestiges : %1
 SETTINGS_MOD_HOME_ARTIFACT           | Planète mère avec Artéfact : %1

@@ -73,24 +73,27 @@ public final class ShipWeaponBeam extends ShipWeapon {
             return;
         }
         float totalDamage = 0;
-        float totalLatent = 0; // BR: Damages if not shielded
+        float totalLatent = 0; // BR: For shield effects: Damages if not shielded
         float asteroidsMod = 0;
         if (options().moo1AsteroidsProperties()) {
         	int numAsteroids = mgr.asteroidsInPath(source.x(), source.y(), target.x(), target.y());
         	asteroidsMod = 3 * numAsteroids * shieldMod();
         }
         float shieldMod = asteroidsMod + source.targetShieldMod(this)*shieldMod();
-        
+
         // use attack/defense values to determine chance that weapon will hit
-        int minDamage = minDamage();
-        int maxDamage = maxDamage();
         int range     = source.movePointsTo(target.x, target.y);
         float defense = target.beamDefense() + range - 1;
         float attack  = source.attackLevel() + tech().computer;
-        float hitPct  = (5 + attack - defense) / 10;
-        hitPct = max(.05f, hitPct);
-
+		float diffLevel = attack - defense;
+		int minDamage = minDamage(diffLevel);
+		int maxDamage = maxDamage();
+		float hitPct  = hitPct(diffLevel);
         boolean successfullyHit = false;
+
+		if (hitPct > 1f && options().moo1CombatResolution())
+			minDamage = (int) (minDamage + (maxDamage-minDamage) * (1 - 1/hitPct));
+
         for (int i=0;i<count;i++) {
             if (random() < hitPct) {
                 successfullyHit = true;
@@ -104,7 +107,7 @@ public final class ShipWeaponBeam extends ShipWeapon {
                 totalLatent += latentDamage;
             }
         }
-        
+
         if (totalDamage > 0) // Success
             drawSuccessfulAttack(source, target, totalDamage, count, totalLatent);
         else if (successfullyHit) // Shielded

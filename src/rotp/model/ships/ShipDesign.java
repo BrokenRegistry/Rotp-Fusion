@@ -496,7 +496,7 @@ public final class ShipDesign extends Design {
                     hitPct = (5 + attack - missileDefense) / 10;
                 hitPct = max(.05f, hitPct);
                 hitPct = min(hitPct, 1.0f);
-                dmg += (wpnCount(i) * weapon(i).firepower(shield) * hitPct * weapon(i).bombardAttacks());
+                dmg += (wpnCount(i) * weapon(i).firepower(shield, attack - defense) * hitPct * weapon(i).bombardAttacks());
             }
         return dmg;
     }
@@ -529,7 +529,7 @@ public final class ShipDesign extends Design {
                     hitPct = (5 + attack - missileDefense) / 10;
                 hitPct = max(.0f, hitPct);
                 hitPct = min(hitPct, 1.0f);
-                dmg += (wpnCount(i) * wpn.firepower(shield) * hitPct);
+                dmg += (wpnCount(i) * wpn.firepower(shield, attack - defense) * hitPct);
             }
 		}
         return dmg;
@@ -540,12 +540,12 @@ public final class ShipDesign extends Design {
             dmg += (wpnCount(i) * weapon(i).firepower(shield));
         return dmg;
     }
-    public float firepower(CombatStack target, int wpn) {
-        float dmg = wpnCount(wpn) * weapon(wpn).firepower(target.shieldLevel());
-        if (weapon(wpn).isStreamingWeapon() && (dmg > target.maxStackHits()))
-            dmg *= (dmg/target.maxStackHits());
-        return dmg;
-    }
+//    public float firepower(CombatStack target, int wpn) {
+//        float dmg = wpnCount(wpn) * weapon(wpn).firepower(target.shieldLevel());
+//        if (weapon(wpn).isStreamingWeapon() && (dmg > target.maxStackHits()))
+//            dmg *= (dmg/target.maxStackHits());
+//        return dmg;
+//    }
     public float estimatedKills(CombatStack source, CombatStack target) {
         float kills = 0;
         for (int i=0;i<maxWeapons();i++)

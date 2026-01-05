@@ -966,62 +966,62 @@ MISSDEF_2_DETAIL    | Un champ d'énergie qui détruit les missiles et torpilles
 // Missile Weapon techs
 //
 MISSWPN_NAME        | Missiles et Roquettes
-MISSWPN_DETAIL      | Leur niveau d'attaque est égal au niveau de l'ordinateur de combat du vaisseau qui les tire, plus le bonus d'attaque de l'arme.
+MISSWPN_DETAIL      | Leur niveau d'attaque est égal au niveau de l'ordinateur de combat du vaisseau qui les tire, plus le bonus d'attaque de l'arme. La version « 2 coups » reçoit un incrément de vitesse de 1, et un incrément de portée de 2 (Mais limité à une portée maximale de 10).
 
 MISSWPN_0_NAME      | Missiles nucléaires
 MISSWPN_0_BRIEF     | 2 coups, +1 vitesse
 MISSWPN_0_BRIEF2    | 5 coups
-MISSWPN_0_DETAIL    | Missiles munis d'ogives nucléaires qui explosent en infligeant 4 points de dégâts et se déplacent à une vitesse de 2.
+MISSWPN_0_DETAIL    | Missiles munis d'ogives nucléaires qui explosent en infligeant 4 points de dégâts et se déplacent à une vitesse de 2 et ont une portée de 4. (Vitesse = 3 et portée = 6 pour la version 2 coups)
 
 MISSWPN_1_NAME      | Roquettes Hyper-V
 MISSWPN_1_BRIEF     | 2 coups, +1 vitesse
 MISSWPN_1_BRIEF2    | 5 coups
-MISSWPN_1_DETAIL    | Des missiles rapides qui explosent pour 6 points de dégâts et se déplacent à une vitesse de 2,5.
+MISSWPN_1_DETAIL    | Des missiles rapides qui explosent pour 6 points de dégâts et se déplacent à une vitesse de 2,5 et ont une portée de 5. (Vitesse = 3,5 et portée = 7 pour la version 2 coups)
 
 MISSWPN_2_NAME      | Roquettes Hyper-X
 MISSWPN_2_BRIEF     | 2 coups, Ciblage +1
 MISSWPN_2_BRIEF2    | 5 coups, Ciblage +1
-MISSWPN_2_DETAIL    | Missiles équipés d'ogives à haute énergie qui explosent pour 8 points de dégâts, se déplacent à une vitesse de 2,5 et sont contrôlés par un ordinateur de ciblage de niveau +1.
+MISSWPN_2_DETAIL    | Missiles équipés d'ogives à haute énergie qui explosent pour 8 points de dégâts, se déplacent à une vitesse de 2,5. Ils sont contrôlés par un ordinateur de ciblage de niveau +1, et ont une portée de 5. (Vitesse = 3,5 et portée = 7 pour la version 2 coups)
 
 MISSWPN_3_NAME      | Roquettes à têtes multiples V
 MISSWPN_3_BRIEF     | 2 coups, Mirvage V, +1 vitesse
 MISSWPN_3_BRIEF2    | 5 coups, Mirvage V
-MISSWPN_3_DETAIL    | Versions mirvage des fusées Hyper-V, se divisant en cinq ogives distinctes qui explosent chacune pour 6 points de dégâts et se déplacent à une vitesse de 2,5.
+MISSWPN_3_DETAIL    | Versions mirvage des fusées Hyper-V, se divisant en cinq ogives distinctes qui explosent chacune pour 6 points de dégâts et se déplacent à une vitesse de 2,5 et ont une portée de 5. (Vitesse = 3,5 et portée = 7 pour la version 2 coups)
 
 MISSWPN_4_NAME      | Missiles Merculite
 MISSWPN_4_BRIEF     | 2 coups, Ciblage +2
 MISSWPN_4_BRIEF2    | 5 coups, Ciblage +2
-MISSWPN_4_DETAIL    | Des missiles rapides et percutants qui explosent en infligeant 10 points de dégâts, se déplacent à une vitesse de 3 et sont contrôlés par un ordinateur de ciblage +2.
+MISSWPN_4_DETAIL    | Des missiles rapides et percutants qui explosent en infligeant 10 points de dégâts, se déplacent à une vitesse de 3. Ils sont contrôlés par un ordinateur de ciblage +2, et ont une portée de 6. (Vitesse = 4 et portée = 8 pour la version 2 coups)
 
 MISSWPN_5_NAME      | Missiles Stinger
 MISSWPN_5_BRIEF     | 2 coups, Ciblage +3
 MISSWPN_5_BRIEF2    | 5 coups, Ciblage +3
-MISSWPN_5_DETAIL    | Des missiles lents et hyper-précis qui infligent 15 points de dégâts, se déplacent à une vitesse de 3,5 et sont contrôlés par un ordinateur de ciblage +3.
+MISSWPN_5_DETAIL    | Des missiles lents et hyper-précis qui infligent 15 points de dégâts, se déplacent à une vitesse de 3,5. Ils sont contrôlés par un ordinateur de ciblage +3, et ont une portée de 7. (Vitesse = 4,5 et portée = 9 pour la version 2 coups)
 
 MISSWPN_6_NAME      | Missiles à têtes multiples VII
 MISSWPN_6_BRIEF     | 2 coups, Mirvage VII
 MISSWPN_6_BRIEF2    | 5 coups, Mirvage VII
-MISSWPN_6_DETAIL    | Versions Mirvage des fusées Hyper-X, se divisant en 7 ogives distinctes qui explosent chacune pour 10 points de dégâts, se déplacent à une vitesse de 3 et sont guidées par un ordinateur de ciblage +2.
+MISSWPN_6_DETAIL    | Versions Mirvage des fusées Hyper-X, se divisant en 7 ogives distinctes qui explosent chacune pour 10 points de dégâts, se déplacent à une vitesse de 3. Ils sont guidées par un ordinateur de ciblage +2, et ont une portée de 6. (Vitesse = 4 et portée = 8 pour la version 2 coups)
 
 MISSWPN_7_NAME      | Missiles Pulson
 MISSWPN_7_BRIEF     | 2 coups, Ciblage +4
 MISSWPN_7_BRIEF2    | 5 coups, Ciblage +4
-MISSWPN_7_DETAIL    | De puissants missiles équipés d'ogives anti-matière qui explosent pour 20 points de dégâts, se déplacent à la vitesse 4 et sont contrôlés par un ordinateur de ciblage +4.
+MISSWPN_7_DETAIL    | De puissants missiles équipés d'ogives anti-matière qui explosent pour 20 points de dégâts, se déplacent à la vitesse 4. Ils sont contrôlés par un ordinateur de ciblage +4, et ont une portée de 8. (Vitesse = 5 et portée = 10 pour la version 2 coups)
 
 MISSWPN_8_NAME      | Missiles Herculaires
 MISSWPN_8_BRIEF     | 2 coups, Ciblage +5
 MISSWPN_8_BRIEF2    | 5 coups, Ciblage +5
-MISSWPN_8_DETAIL    | Missile très avancé qui explose et inflige 25 points de dégâts. Les missiles herculaires se déplacent à une vitesse de 4,5 et sont contrôlés par un ordinateur de ciblage +5.
+MISSWPN_8_DETAIL    | Missile très avancé qui explose et inflige 25 points de dégâts. Les missiles herculaires se déplacent à une vitesse de 4,5. Ils sont contrôlés par un ordinateur de ciblage +5, et ont une portée de 9. (Vitesse = 5.5 et portée = 10 pour la version 2 coups)
 
 MISSWPN_9_NAME      | Missiles Zeon
-MISSWPN_9_BRIEF     | 2 coups, Ciblage +5
-MISSWPN_9_BRIEF2    | 5 coups, Ciblage +5
-MISSWPN_9_DETAIL    | Le missile le plus avancé disponible. Capable de frapper les vaisseaux ennemis pour 30 points de dégâts et de se déplacer à une vitesse de 5. Le missile est guidé par un ordinateur de ciblage +6.
+MISSWPN_9_BRIEF     | 2 coups, Ciblage +6
+MISSWPN_9_BRIEF2    | 5 coups, Ciblage +6
+MISSWPN_9_DETAIL    | Le missile le plus avancé disponible. Capable de frapper les vaisseaux ennemis pour 30 points de dégâts et de se déplacer à une vitesse de 5. Ils sont guidés par un ordinateur de ciblage +6, et ont une portée de 10. (Vitesse = 5 et portée = 10 pour la version 2 coups)
 
 MISSWPN_10_NAME      | Missiles à têtes multiples X
 MISSWPN_10_BRIEF     | 2 coups, Mirvage X
 MISSWPN_10_BRIEF2    | 5 coups, Mirvage X
-MISSWPN_10_DETAIL    | Les versions Mirvage des missiles Stinger, se divisant en 10 ogives distinctes qui explosent chacune pour 15 points de dégâts, se déplacent à une vitesse de 3,5 et sont guidées par un ordinateur de ciblage +3.
+MISSWPN_10_DETAIL    | Les versions Mirvage des missiles Stinger, se divisant en 10 ogives distinctes qui explosent chacune pour 15 points de dégâts. Ils se déplacent à une vitesse de 3,5 et sont guidées par un ordinateur de ciblage +3, et ont une portée de 7. (Vitesse = 4,5 et portée = 9 pour la version 2 coups)
 
 
 //

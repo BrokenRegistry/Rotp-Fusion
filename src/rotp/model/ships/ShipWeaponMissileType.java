@@ -17,6 +17,7 @@ package rotp.model.ships;
 
 import java.awt.Component;
 import java.awt.Image;
+
 import rotp.model.combat.CombatStack;
 import rotp.model.combat.CombatStackColony;
 import rotp.model.combat.ShipCombatManager;
@@ -66,12 +67,12 @@ public class ShipWeaponMissileType extends ShipWeapon {
         }
 
         boolean isColony = target.isColony();
-        int minDamage = minDamage();
-        int maxDamage = maxDamage();
         float defense = target.missileDefense();
         float attack = source.attackLevel() + computerLevel();
-        float hitPct = (5 + attack - defense) / 10;
-        hitPct = max(.05f, hitPct);
+		float diffLevel = attack - defense;
+		int minDamage = minDamage(diffLevel);
+		int maxDamage = maxDamage();
+		float hitPct  = hitPct(diffLevel);
 
         float totalDamage = 0;
         float damageLoss = damageLoss(source.distance);

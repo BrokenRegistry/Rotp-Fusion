@@ -2690,8 +2690,8 @@ HEADERS_ASTEROID_PROBABILITY         | ~~~ ASTEROID PROBABILITY ~~~
 HEADERS_ASTEROID_PROBABILITY_DESC    | Probability of obtaining asteroids and the impact of planetary resources on this probability.
 HEADERS_ASTEROID_IMPACT              | ~~~ IMPACT AND PLANET LOCATION ~~~
 HEADERS_ASTEROID_IMPACT_DESC         | Location of the planet and effect of asteroids.
-HEADERS_SHIELD_OPTIONS				| ~~~ SHIELD OPTIONS ~~~
-HEADERS_SHIELD_OPTIONST_DESC		| Parameters affecting shields effectiveness.
+HEADERS_COMBAT_RESOLUTION			| ~~~ RESOLUTION COMPUTATION ~~~
+HEADERS_COMBAT_RESOLUTION_DESC		| Parameters affecting attack an defense effectiveness.
 
 HEADERS_TECH_PLANET                  | ~~~ TECH PLANET ~~~
 HEADERS_TECH_PLANET_DESC             | Planetary technologies required or prohibited.
@@ -2867,6 +2867,10 @@ SETTINGS_MOD_MOO1_RETREAT_DESC			| Delayed retreat from MoO1 or instant retreat 
 SETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Retreat Button will removes the current ship from combat. The enemy will have one turn to fire on your ship as it retreats off the screen.
 SETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Retreat Button will instantaneously removes the current ship from combat. The enemy will not be able to fire on your ship as it retreats off the screen.
 SETTINGS_MOD_MOO1_RETREAT				| MoO1 Retreat Rules: %1
+SETTINGS_MOD_MOO1_COMBAT_RESOL_DESC		| Unlike in MoO1, damage inflicted by weapons in RotP is not affected by the difference between attack and defense levels. (Only affects the probability of hitting.)
+SETTINGS_MOD_MOO1_COMBAT_RESOL_YES_DESC	| A high differential between attack and defense increases the weapon's minimum damage.
+SETTINGS_MOD_MOO1_COMBAT_RESOL_NO_DESC	| The difference between attack and defense levels does not affect the damage inflicted by the weapon.
+SETTINGS_MOD_MOO1_COMBAT_RESOL			| MoO1 Combat Resolution: %1
 
 SETTINGS_MOD_HOME_ORION              | Orion Ruin HomeWorld: %1
 SETTINGS_MOD_HOME_ARTIFACT           | Get Artifact HomeWorld: %1

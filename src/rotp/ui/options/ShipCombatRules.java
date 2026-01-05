@@ -18,8 +18,9 @@ final class ShipCombatRules extends AbstractOptionsSubUI {
 		list1.add(HEADER_SPACER_50);
 		list1.addAll(AllSubUI.getHandle(COMBAT_TIMING_UI_KEY).getUiMajor(false));
 		list1.add(HEADER_SPACER_50);
-		list1.add(new ParamTitle("SHIELD_OPTIONS"));
+		list1.add(new ParamTitle("COMBAT_RESOLUTION"));
 		list1.add(moo1ShieldRules);
+		list1.add(moo1CombatResolution);
 		map.add(list1);
 		map.add(AllSubUI.getHandle(WEAPON_ANIMATION_UI_KEY).getUiMajor(true));
 		map.add(AllSubUI.getHandle(SHIELD_ANIMATION_UI_KEY).getUiMajor(true));

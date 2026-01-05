@@ -59,14 +59,16 @@ public final class ShipWeaponBiological extends ShipWeapon {
         source.usedBioweapons();
         float defense = target.bioweaponDefense();
         float attack = source.attackLevel();
-        float pct = (5 + attack - defense) / 10;
-        pct = max(.05f, pct);
+		float diffLevel = attack - defense;
+		int minDamage = minDamage(diffLevel);
+		int maxDamage = maxDamage();
+		float hitPct  = hitPct(diffLevel);
 
         float totalDamage = 0;
         for (int i=0;i<count;i++) {
-            if (random() < pct) 
+            if (random() < hitPct) 
             {
-                float currentDamage = roll(minDamage(), maxDamage());
+                float currentDamage = roll(minDamage, maxDamage);
                 currentDamage = max(0, currentDamage - target.empire().tech().antidoteLevel());
                 totalDamage += currentDamage;
             }
