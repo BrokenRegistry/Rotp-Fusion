@@ -4,7 +4,6 @@
 
 ### Bug to fix:
 
-- Check Stasis Weapon when one empire stack remains.
 
 
 ### Very soon:
@@ -20,7 +19,6 @@
   - Starting alliances (free for the ai to dismiss)
   - Starting factions (Stronger than alliance, but breakable at very low diplomacy level)
   - Immuable faction (Like final war)
-- Search tools for options.
 - Split the ship stacks so that they fill two front lines…
 - Option to increase the size of the combat screen.
 - Would it be possible to have a governor option to extend autospend - to prioritise artifacts planets with spending?
@@ -33,8 +31,7 @@
   - Suggestion: in the galaxy rules panel, the pop growth rate should be splitted into AI pop growth rate and player pop growth rate (and add a bit more choices between normal and reduced, like the current fuel range options or better like the current warp speed multiplier)
     - As not everyone necessarily appreciates all these unfair and tempting rules options... I'm going to start by adding a "Setup" option to enable or disable unfair options (Disable = limiting them to fair choices only), and the "Setup" choices cannot be changed during the game.
     - Fixed selections are also more in line with the spirit of MoO1 and the original RotP, so I'll start by extending my options tools to be compatible with both fine-tuning and fixed selections. 
-- Prioritize External image loading.
-- Add subterran equivalent in custom species
+- Add subterraneans equivalent in custom species
 - Add Ship names in custom species
 - Add same civ name as the player with bad starting relationship.
 

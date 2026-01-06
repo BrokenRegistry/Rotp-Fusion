@@ -15,23 +15,36 @@ final class SystemsOptions extends AbstractOptionsSubUI {
 		SafeListPanel map = new SafeListPanel(OPTION_ID);
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("ARTIFACT_OPTIONS"),
-				artifactPlanetMult, artifactPlanetOffset,
+				artifactPlanetMult,
+				artifactPlanetOffset,
 				LINE_SPACER_25,
 				orionPlanetProb,
 				LINE_SPACER_25,
 				allowRichPoorArtifact,
 				
 				HEADER_SPACER_50,
-				new ParamTitle("GAME_OTHER"),
-				orionToEmpireModifier
+				new ParamTitle("PLANET_SIZE_OPTIONS"),
+				PlanetSizeMultiplier,
+				PlanetCreationSizeMax,
+				PlanetCreationSizeMin,
+				PlanetCreationRound,
+				PlanetBaseSizeMax
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("RICH_OPTIONS"),
-				ultraPoorPlanetMult, ultraPoorPlanetOffset,
-				poorPlanetMult, poorPlanetOffset,
+				ultraPoorPlanetMult,
+				ultraPoorPlanetOffset,
+				poorPlanetMult,
+				poorPlanetOffset,
 				LINE_SPACER_25,
-				richPlanetMult, richPlanetOffset,
-				ultraRichPlanetMult, ultraRichPlanetOffset
+				richPlanetMult,
+				richPlanetOffset,
+				ultraRichPlanetMult,
+				ultraRichPlanetOffset,
+
+				HEADER_SPACER_50,
+				new ParamTitle("GAME_OTHER"),
+				orionToEmpireModifier
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("HOMEWORLD_NEIGHBORHOOD"),

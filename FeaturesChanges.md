@@ -22,7 +22,7 @@
 
 ### Features:
 
-26-01-05 (BR)
+- New option to customize planet size bonus, their minimum and maximum sizes, as well as the rounding of values.
 - New option to restore MoO1 combat resolution: Unlike in MoO1, damage inflicted by weapons in RotP is not affected by the difference between attack and defense levels. (Only affects the probability of hitting.) In MoO1, a high differential between attack and defense increases the weapon's minimum damage. This gives kittens a boost.
 - Complete overhaul of species management.
   - The "Race" class now consists of skills and animations.

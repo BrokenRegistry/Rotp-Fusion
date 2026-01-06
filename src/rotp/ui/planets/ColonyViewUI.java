@@ -88,15 +88,20 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		barSep			= s10;
 		rowSep			= -scaled(1*factoryRows);
 		initDisplayVar(pop, bases, factories);
-		if (speciesRows>2 || (factoryBars > 1 && factoryRows>4)) {
+		if (speciesRows>2 || (factoryBars>1 && factoryRows>4)) {
 			maxColumns	= 15;
 			iconWidth	= s56;
 			blockSep	= s10;
 			initDisplayVar(pop, bases, factories);
+			if (speciesRows>2 || (factoryBars>1 && factoryRows>4)) {
+				maxColumns	= 20;
+				iconWidth	= s40;
+				blockSep	= s10;
+				initDisplayVar(pop, bases, factories);
+			}
 		}
-		if (factoryBars > 1) {
+		if (factoryBars > 1)
 			blockSep = blockSep *3/4;
-		}
 		colSep = 0;
 
 		initFactoryImage();
@@ -155,40 +160,6 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		g.dispose();
 		return speciesImg;
 	}
-/*	private BufferedImage initSpeciesImage2(Race race)	{
-		speciesWidth	= iconWidth;
-		speciesHeight = speciesWidth;
-		int spW = speciesWidth*4/8;
-		int spH = spW * 41/38;
-		int[] iHue = new int[] {0, 90, 180};
-		BufferedImage mugshot = race.diploMugshotQuiet();
-		int mW = mugshot.getWidth(null);
-		int mH = mugshot.getHeight(null);
-
-		BufferedImage[] mugHue = setHue(mugshot, iHue, 128);
-		BufferedImage speciesImg = newBufferedImage(speciesWidth, speciesHeight);
-		Graphics2D g	= (Graphics2D) speciesImg.getGraphics();
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
-		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		int x = 0;
-		int y = 0;
-		//y = spH/5;
-		g.drawImage(mugshot, x, y, x+spW, y+spH, mW, 0, 0, mH, null);
-		x = speciesWidth-spW;
-		y = spH/5;
-		g.drawImage(mugshot, x, y, x+spW, y+spH, 0, 0, mW, mH, null);
-		g.drawImage(mugHue[1], x, y, x+spW, y+spH, 0, 0, mW, mH, null);
-		x = x/3;
-		y = speciesHeight-spH;
-		g.drawImage(mugshot, x, y, x+spW, y+spH, 0, 0, mW, mH, null);
-		g.drawImage(mugHue[2], x, y, x+spW, y+spH, 0, 0, mW, mH, null);
-
-		g.dispose();
-		return speciesImg;
-	} */
 	private BufferedImage rect(int w, int h, Color c, Double angleDeg) {
 		BufferedImage img = new BufferedImage(w, h, TYPE_INT_ARGB);
 		Graphics2D g = img.createGraphics();
@@ -493,78 +464,6 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		g.dispose();
 		return factoryImg;
 	}
-/*	private BufferedImage stargate(int ra, int rb, double a)	{
-		// Fermat spiral r = a * sqrt(phi)
-		int dia = 2*rb;
-		double dPhi = Math.PI/10;
-		double phiA = ra*ra /(a*a);
-		double phiB = rb*rb /(a*a);
-		BufferedImage img = new BufferedImage(dia, dia, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) img.getGraphics();
-		g.setColor(new Color(128, 128, 255));
-		g.setStroke(stroke2);
-		double r = a * Math.sqrt(phiA);
-		int x0 = (int) Math.round(r*Math.cos(phiA));
-		int y0 = (int) Math.round(r*Math.sin(phiA));
-		
-		for (double phi=phiA+dPhi; phi<phiB; phi+=dPhi) {
-			r = a * Math.sqrt(phi);
-			int x1 = (int) Math.round(r*Math.cos(phi));
-			int y1 = (int) Math.round(r*Math.sin(phi));
-			g.drawLine(rb+x0, rb+y0, rb+x1, rb+y1);
-			g.drawLine(rb-x0, rb-y0, rb-x1, rb-y1);
-			g.drawLine(rb+y0, rb-x0, rb+y1, rb-x1);
-			g.drawLine(rb-y0, rb+x0, rb-y1, rb+x1);
-			x0=x1;
-			y0=y1;
-		}
-		g.dispose();
-		return img;
-	} */
-/*	private BufferedImage stargate(int ra, int rb, double a, double k)	{
-		//  logarithmic spiral r = a * e^(k*phi)
-		int dia = 2*rb;
-		int n = 4;
-		double beta = Math.PI/(2*n);
-		double dPhi = Math.PI/32;
-		double phiA = Math.log(ra/a)/k;
-		double phiB = Math.log(rb/a)/k;
-		BufferedImage img = new BufferedImage(dia, dia, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) img.getGraphics();
-		int c3 = 255;
-		int c2 = c3*2/8;
-		int c1 = c2;
-		g.setColor(new Color(c1, c2, c3));
-		g.setStroke(stroke2);
-		double r = a * Math.exp(k*phiA);
-		int[] x0 = new int[n];
-		int[] y0 = new int[n];
-		Color[] colors = new Color[n];
-		for (int i=0; i<n; i++) {
-			x0[i] = (int) Math.round(r*Math.cos(phiA + i*beta));
-			y0[i] = (int) Math.round(r*Math.sin(phiA + i*beta));
-			int dc = c1*i*3/(4*n);
-			colors[i] = new Color(c1-dc, c2-dc, c3);
-		}
-		
-		for (double phi=phiA+dPhi; phi<phiB; phi+=dPhi) {
-			r = a * Math.exp(k*phi);
-			for (int i=0; i<n; i++) {
-				g.setColor(colors[i]);
-				int x1 = (int) Math.round(r*Math.cos(phi + i*beta));
-				int y1 = (int) Math.round(r*Math.sin(phi + i*beta));
-				g.drawLine(rb+x0[i], rb+y0[i], rb+x1, rb+y1);
-				g.drawLine(rb-x0[i], rb-y0[i], rb-x1, rb-y1);
-				g.drawLine(rb+y0[i], rb-x0[i], rb+y1, rb-x1);
-				g.drawLine(rb-y0[i], rb+x0[i], rb-y1, rb+x1);
-				x0[i]=x1;
-				y0[i]=y1;
-			}
-		}
-		g.dispose();
-		return img;
-	} */
-
 	private void createImage(boolean bgOnly)	{
 		int w = getWidth();
 		int h = getHeight();
@@ -601,13 +500,18 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		int marginX	= s10;
 		int marginY	= marginX;
 		int dx		= iconWidth + colSep;
+		int maxRows	= 3;
 
 		// draw pop
+		int rowStep = speciesHeight + rowSep;
+		if (speciesRows > maxRows)
+			rowStep = (rowStep * maxRows) / speciesRows;
 		BufferedImage speciesImg = initSpeciesImage(empire);
 		int xSpecies = marginX+dx/8;
-		int ySpecies = h - marginY - speciesRows*(speciesHeight + rowSep) + rowSep;
+		int ySpecies = h - marginY - min(maxRows, speciesRows) * (speciesHeight + rowSep) + rowSep;
 		int xa = xSpecies;
 		int ya = ySpecies;
+
 		for (int row=speciesRows-1; row>=0; row--) {
 			if (row%2==0)
 				xa = xSpecies;
@@ -618,13 +522,24 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 				g.drawImage(speciesImg, xa, ya, xa+speciesWidth, ya+speciesHeight, 0, 0, speciesWidth, speciesHeight, null);
 				xa += dx;
 			}
-			ya += speciesHeight + rowSep;
+			ya += rowStep;
 		}
-		
+
 		// draw Factories
+		rowStep = factoryHeight + rowSep;
+		int barStep = barSep - rowSep;
+		int factoryRowsStep = factoryRows*rowStep - rowSep + blockSep;
+		int factoryBarsStep = barSep - rowSep;
+
+		if (factoryBars > maxRows) {
+			rowStep = (rowStep * maxRows) / speciesRows;
+			barStep = (barStep * maxRows) / speciesRows;
+			factoryRowsStep = (factoryRowsStep * maxRows) / factoryBars;
+			factoryBarsStep = (factoryBarsStep * maxRows) / factoryBars;
+		}
 		BufferedImage factoryImg = initFactoryImage();
 		int xFactory = marginX;
-		int yFactory = ySpecies - factoryBars*(factoryRows*(factoryHeight+rowSep)-rowSep+blockSep);
+		int yFactory = ySpecies - factoryBars*(factoryRowsStep);
 		ya = yFactory;
 		int factoryPerBar = maxColumns * factoryRows;
 		for (int bar=factoryBars-1; bar>=0; bar--) {
@@ -632,27 +547,31 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 			int numCol	= min (maxColumns, factoryCols - bar*maxColumns);
 			int rowTop	= min(factoryRows, factLim)-1;
 			int yBar = ya;
-			
+
 			for (int col=0; (col<numCol) && (factLim>=0); col++) {
 				int rowStart = min(factoryRows, factLim)-1;
 				for (int row=rowStart; row>=0; row--) {
-					ya = yBar + (rowTop-row) * (factoryHeight + rowSep);
+					//ya = yBar + (rowTop-row) * (factoryHeight + rowSep);
+					ya = yBar + (rowTop-row) * (rowStep);
 					if (row%2==0)
 						xa = xFactory + col*dx;
 					else
 						xa = xFactory + col*dx + dx/2;
 					g.drawImage(factoryImg, xa, ya, xa+factoryWidth, ya+factoryHeight, 0, 0, factoryWidth, factoryHeight, null);
 					factLim--;
-					ya += factoryHeight + rowSep;
+					ya += rowStep;
 				}
 			}
-			ya += barSep - rowSep;
+			ya += barStep;
 		}
-		
+
 		// draw Missiles
+		rowStep = missileHeight + rowSep;
+		if (missileRows > maxRows)
+			rowStep = (rowStep * maxRows) / missileRows;
 		BufferedImage missileImg = initMissileImage();
 		int xMissile = marginX;
-		int yMissile = yFactory - missileHeight-blockSep;
+		int yMissile = yFactory - missileRows*rowStep - blockSep + rowSep;
 		ya = yMissile;
 		xa = marginX;
 		for (int row=missileRows-1; row>=0; row--) {
@@ -665,22 +584,11 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 				g.drawImage(missileImg, xa, ya, xa+missileWidth, ya+missileHeight, 0, 0, missileWidth, missileHeight, null);
 				xa += dx;
 			}
-			ya += missileHeight + rowSep;
+			ya += rowStep;
 		}
 
 		// Draw Stargates
 		if (sys.hasStargate(empire)) {
-//			int ra = scaled(30);
-//			int rb = scaled(50);
-//			double a = scaled(2);
-//			double k = 0.25;
-//			BufferedImage starGate = stargate(ra, rb, a, k);
-//			int sgH = starGate.getHeight();
-//			int sgW = starGate.getWidth();
-//			int sgSide = 2*rb;
-//			int sgX = getWidth()/2 - rb;
-//			int sgY = scaled(40);
-//			g.drawImage(starGate, sgX, sgY, sgX+sgSide, sgY+sgSide, 0, 0, sgW, sgH, null);
 			Image starGate = empire.shipLab().stargateDesign().image();
 			int sgH = starGate.getHeight(null);
 			int sgW = starGate.getWidth(null);
@@ -744,7 +652,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 				shW = scaled(260-shrink);
 				stepY = s10;
 			}
-			
+
 			int shH  = shW;
 			int shDH = shH + marginY;
 			int shDW = shW + marginX;
@@ -855,7 +763,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		sw = g.getFontMetrics().stringWidth(title);
 		x0 = (w-sw)/2;
 		drawBorderedString(g, title, 1, x0, y0, Color.black, Color.yellow);
-		
+
 		g.dispose();
 	}
 	private int numDesign(ShipFleet fleet, int empId)	{
@@ -867,8 +775,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
         }
         return num;
 	}
-    private void drawFleet(Graphics2D g, ShipFleet fleet, int x, int y, int w, int h,
-    						boolean location, Color textColor) {
+    private void drawFleet(Graphics2D g, ShipFleet fleet, int x, int y, int w, int h, boolean location, Color textColor) {
 		StarSystem sys = galaxy().system(sysId);
 		Empire empire  = sys.empire();
 
@@ -883,7 +790,6 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 
         int shipX = location==RIGHT? x-shipW/2 :  x+shipW/2;
         int shipY = y;
-
 
         // get count of all stacks based on design visibility
         int[] visible = fleet.visibleShips(empire.id);
@@ -968,7 +874,6 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		RotPUI.instance().selectMainPanel(false);
 		landscapeImg = null;
 	}
-
 	private void loadHelpUI()					{
 		HelpUI helpUI = RotPUI.helpUI();
 		helpUI.clear();
@@ -976,7 +881,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		int w0 = scaled(250);
         int x0 = (w - w0)/2;
         int y0 = scaled(80);
-	
+
         helpUI.addBrownHelpText(x0, y0, w0, 0, text("COLONY_VIEW_HELP_1"));
         helpUI.open(this);
 	}
@@ -1007,7 +912,6 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 				advanceScreen();
 				return;
 		}
-		//repaint(); // TO DO BR: REMOVE
 	}
 	@Override public void paintComponent(Graphics g0)	{
 		super.paintComponent(g0);
@@ -1017,33 +921,6 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
-//		// Draw test
-//		int tstH	= s64;
-//		int tstW	= tstH;
-//		int yTest = getHeight()/2;
-//		int ya = yTest;
-//		int yb = yTest-tstH-s10;
-//		int xa = s10;
-//		for (Race species : Race.races()) {
-//			initSpeciesImage(species);
-//			int dW = speciesImg.getWidth();
-//			int dH = speciesImg.getHeight();
-//			int dSize = max(dW,dH);
-//			int w2 = tstW * dW/dSize;
-//			int h2 = tstH * dH/dSize;
-//			g.drawImage(speciesImg, xa, ya, xa+w2, ya+h2, 0, 0, dW, dH, null);
-//
-////			initSpeciesImage2(species);
-////			dW = speciesImg.getWidth();
-////			dH = speciesImg.getHeight();
-////			dSize = max(dW,dH);
-////			w2 = tstW * dW/dSize;
-////			h2 = tstH * dH/dSize;
-////			g.drawImage(speciesImg, x0, yb, x0+w2, yb+h2, 0, 0, dW, dH, null);
-//			xa += w2+s5;
-//		}
-
 		g.drawImage(landscapeImg, 0, 0, null);
 	}
 	@Override public void animate()	{
@@ -1060,7 +937,6 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 			repaint();
 			return;
 		}
-			
 		if ((e.getButton() > 3) || e.getClickCount() > 1)
 			return;
 		advanceScreen();

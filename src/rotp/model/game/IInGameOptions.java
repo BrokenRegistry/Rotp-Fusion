@@ -14,7 +14,6 @@ import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
-import rotp.model.planet.Planet;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.util.IParam;
 import rotp.ui.util.ParamBoolean;
@@ -346,7 +345,7 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 			.guiFormat("‰");
 
 	ParamInteger bombingTarget		= new ParamInteger(MOD_UI, "BOMBING_TARGET", 2)
-			.setLimits(0, Planet.finalSizeMax)
+			.setLimits(0, 300)
 			.setIncrements(1, 5, 20);
 	default int selectedBombingTarget()			{ return bombingTarget.get(); }
 

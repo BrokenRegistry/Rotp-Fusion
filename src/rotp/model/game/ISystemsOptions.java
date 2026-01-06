@@ -87,6 +87,30 @@ public interface ISystemsOptions extends IBaseOptsTools {
 		return r;
 	}
 
+	ParamInteger PlanetSizeMultiplier	= new ParamInteger( MOD_UI, "PLANET_SIZE_MULT", 100)
+			.setLimits(80, 150)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
+	default float planetSizeMultiplier()	{ return 0.01f * PlanetSizeMultiplier.get(); }
+
+	ParamInteger PlanetCreationSizeMax	= new ParamInteger( MOD_UI, "PLANET_CREATION_MAX", 120)
+			.setLimits(100, 150)
+			.setIncrements(1, 5, 20);
+	default int	planetCreationSizeMax()		{ return PlanetCreationSizeMax.get(); }
+	ParamInteger PlanetCreationSizeMin	= new ParamInteger( MOD_UI, "PLANET_CREATION_MIN", 10)
+			.setLimits(5, 25)
+			.setIncrements(1, 5, 20);
+	default int	planetCreationSizeMin()		{ return PlanetCreationSizeMin.get(); }
+	ParamInteger PlanetCreationRound	= new ParamInteger( MOD_UI, "PLANET_CREATION_ROUND", 5)
+			.setLimits(1, 10)
+			.setIncrements(1, 2, 5);
+	default int	planetCreationRound()		{ return PlanetCreationSizeMin.get(); }
+
+	ParamInteger PlanetBaseSizeMax	= new ParamInteger( MOD_UI, "PLANET_BASE_SIZE_MAX", 180)
+			.setLimits(150, 300)
+			.setIncrements(1, 5, 20);
+	default int	planetBaseSizeMax()			{ return PlanetBaseSizeMax.get(); }
+
 	ParamBoolean allowRichPoorArtifact	= new ParamBoolean( MOD_UI, "RICH_POOR_ARTIFACT", false);
 	default boolean allowRichPoorArtifact()		{ return allowRichPoorArtifact.get(); }
 

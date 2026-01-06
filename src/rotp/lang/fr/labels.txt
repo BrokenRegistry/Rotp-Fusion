@@ -2410,7 +2410,6 @@ BUTTON_BAR_INSERT_RIGHT_DESC		| Insère un nouvel onglet à droite de celui sél
 BUTTON_BAR_REMOVE					| -
 BUTTON_BAR_REMOVE_DESC				| Supprimer l'onglet actuellement sélectionné.
 
-
 // Advanced Settings
 SETTINGS_TITLE                    | Options Avancées
 SETTINGS_DESCRIPTION              | Cliquez pour changer les paramètres.
@@ -2635,6 +2634,8 @@ HEADERS_ARTIFACT_OPTIONS             | ~~~ ARTÉFACTS ~~~
 HEADERS_RICH_OPTIONS_HELP            | To customize Ultra-Poor, Poor, Rich, and Ultra-Rich Resources probabilities.<br>The first resource to be set win ! (From Ultra-Poor to Ultra-Rich). The default probability is first multiplied by the modifier, then the offset is added.
 HEADERS_RICH_OPTIONS_DESC            | Personnalisation des probabilités des ressources ultra-pauvres, pauvres, riches et ultra-riches.
 HEADERS_RICH_OPTIONS                 | ~~~ RESSOURCES ~~~
+HEADERS_PLANET_SIZE_OPTIONS_DESC	| Pour personnaliser le bonus des tailles des planètes, leurs dimensions minimales et maximales, ainsi que l'arrondi des valeurs.
+HEADERS_PLANET_SIZE_OPTIONS			| ~~~ TAILLE DES PLANÈTES ~~~
 HEADERS_NEBULAE_OPTION_DESC          | Personnalisation du placement des nébuleuses et leurs impacts sur les planètes.
 HEADERS_NEBULAE_OPTION               | ~~~ NÉBULEUSES ~~~
 HEADERS_HOMEWORLD_NEIGHBORHOOD_DESC  | Personnalisation des distances et du contenu du voisinage des mondes d’origine.
@@ -2719,24 +2720,37 @@ SETTINGS_MOD_ARTIFACT_ORION_DESC     | Probabilté pour la planète d’avoir de
 SETTINGS_MOD_ARTIFACT_ORION          | Prob. Artéfacts d’Orion : %1%
 
 SETTINGS_MOD_ULTRA_POOR_MULT_DESC    | Multiplicateur de probabilité pour la planète d’être ultra-pauvre.
-SETTINGS_MOD_ULTRA_POOR_MULT         | Multiplicateur Ultra-Pauvre: %1%
+SETTINGS_MOD_ULTRA_POOR_MULT         | Multiplicateur Ultra-Pauvre : %1%
 SETTINGS_MOD_ULTRA_POOR_OFFSET_DESC  | Décalage de probabilité pour la planète d’être Ultra-Pauvre.
-SETTINGS_MOD_ULTRA_POOR_OFFSET       | Décalage Ultra-Pauvre: %1%
+SETTINGS_MOD_ULTRA_POOR_OFFSET       | Décalage Ultra-Pauvre : %1%
 
 SETTINGS_MOD_POOR_MULT_DESC          | Multiplicateur de probabilité pour la planète d’être pauvre.
-SETTINGS_MOD_POOR_MULT               | Multiplicateur Pauvre: %1%
+SETTINGS_MOD_POOR_MULT               | Multiplicateur Pauvre : %1%
 SETTINGS_MOD_POOR_OFFSET_DESC        | Décalage de probabilité pour la planète d’être Pauvre.
-SETTINGS_MOD_POOR_OFFSET             | Décalage Pauvre: %1%
+SETTINGS_MOD_POOR_OFFSET             | Décalage Pauvre : %1%
 
 SETTINGS_MOD_RICH_MULT_DESC          | Multiplicateur de probabilité pour la planète d’être riche.
-SETTINGS_MOD_RICH_MULT               | Multiplicateur Riche: %1%
+SETTINGS_MOD_RICH_MULT               | Multiplicateur Riche : %1%
 SETTINGS_MOD_RICH_OFFSET_DESC        | Décalage de probabilité pour la planète d’être Riche.
-SETTINGS_MOD_RICH_OFFSET             | Décalage Riche: %1%
+SETTINGS_MOD_RICH_OFFSET             | Décalage Riche : %1%
 
 SETTINGS_MOD_ULTRA_RICH_MULT_DESC    | Multiplicateur de probabilité pour la planète d’être ultra-riche.
-SETTINGS_MOD_ULTRA_RICH_MULT         | Multiplicateur Ultra-Riche: %1%
+SETTINGS_MOD_ULTRA_RICH_MULT         | Multiplicateur Ultra-Riche : %1%
 SETTINGS_MOD_ULTRA_RICH_OFFSET_DESC  | Décalage de probabilité pour la planète d’être Ultra-Riche.
-SETTINGS_MOD_ULTRA_RICH_OFFSET       | Décalage Ultra-Riche: %1%
+SETTINGS_MOD_ULTRA_RICH_OFFSET       | Décalage Ultra-Riche : %1%
+
+SETTINGS_MOD_PLANET_SIZE_MULT_DESC		| Multiplicateur de taille de planète lors de la création et des améliorations d’une planète.<br>S’applique en plus de tous les autres bonus ou malus.
+SETTINGS_MOD_PLANET_SIZE_MULT			| Multiplicateur de taille : %1%
+
+SETTINGS_MOD_PLANET_CREATION_ROUND_DESC	| Multiple de taille de planète lors sa création.<br>Lors de la création d’une planète, sa taille doit être divisible par cette valeur.
+SETTINGS_MOD_PLANET_CREATION_ROUND		| Incrément de taille : %1
+SETTINGS_MOD_PLANET_CREATION_MAX_DESC	| Taille maximale d’une planète lors de sa création.
+SETTINGS_MOD_PLANET_CREATION_MAX		| Taille initiale maximale : %1
+SETTINGS_MOD_PLANET_CREATION_MIN_DESC	| Taille minimale d’une planète lors de sa création.
+SETTINGS_MOD_PLANET_CREATION_MIN		| Taille initiale minimale : %1
+
+SETTINGS_MOD_PLANET_BASE_SIZE_MAX_DESC	| Taille maximale d’une planète incluant les enrichissements (Fertile et Gaia), et la terraformation atmosphérique, mais excluant les autres terraformations. La taille finale peut donc surpasser cette valeur de 120 (Terraformation complète).
+SETTINGS_MOD_PLANET_BASE_SIZE_MAX		| Taille de base maximale : %1
 
 TAG_RED_DISPLAY  | Les textes en rouge impliquent une incompatibilité avec d’autres options en rouges.
 SETTINGS_MOD_FIRST_RING_SYS_NUM_HELP    | →SETTINGS_MOD_FIRST_RING_SYS_NUM_DESC←<br>Ce nombre doit être >= au nombre minimal d’étoiles habitables des environs immédiats.<br>Ce nombre doit être <= au nombre minimal d’étoiles du voisinage étendu.

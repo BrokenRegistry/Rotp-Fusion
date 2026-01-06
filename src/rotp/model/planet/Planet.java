@@ -35,6 +35,7 @@ import rotp.model.galaxy.NamedObject;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.GameSession;
+import rotp.model.game.ISystemsOptions;
 import rotp.model.tech.TechAtmosphereEnrichment;
 import rotp.model.tech.TechSoilEnrichment;
 import rotp.model.tech.TechTree;
@@ -44,13 +45,8 @@ import rotp.util.Base;
 import rotp.util.ColorRange;
 import rotp.util.FastImage;
 
-public class Planet implements Base, IMappedObject, Serializable {
+public class Planet implements Base, IMappedObject, Serializable, ISystemsOptions {
     private static final long serialVersionUID = 1L;
-    public static final int creationSizeMax	= 120;
-    public static final int creationSizeMin	= 10;
-    public static final int baseSizeMax		= 180;
-    public static final int baseSizeMin		= creationSizeMin;
-    public static final int finalSizeMax	= baseSizeMax + 120;
     public static int COUNT = 0;
 
     private static final SphereShadowPaint ssp = new SphereShadowPaint();
@@ -88,6 +84,11 @@ public class Planet implements Base, IMappedObject, Serializable {
     private static final int ASTEROID_DENSITY_NONE = 0;
     private static final int ASTEROID_DENSITY_LOW  = 1;
     private static final int ASTEROID_DENSITY_HIGH = 2;
+
+	public static final int creationSizeMax()	{ return PlanetCreationSizeMax.get(); }
+	public static final int creationSizeMin()	{ return PlanetCreationSizeMin.get(); }
+	public static final int creationSizeInc()	{ return PlanetCreationRound.get(); }
+	public static final int baseSizeMax()		{ return PlanetBaseSizeMax.get(); }
 
     private String planetTypeKey;
     private final StarSystem system;
@@ -354,9 +355,9 @@ public class Planet implements Base, IMappedObject, Serializable {
 
     public float baseSize()        { return baseSize; }
     public void baseSize(float d)  { baseSize = d; }
-    // max base size for planet (before general terraforming) is 180
+    // default max base size for planet (before general terraforming) is 180
     public void increaseBaseSize(float amt) {
-        float maxSize = baseSizeMax*session().populationBonus();
+        float maxSize = baseSizeMax() * session().populationBonus();
         float newSize = Math.min(maxSize, baseSize()+amt);
         baseSize(newSize);
     }

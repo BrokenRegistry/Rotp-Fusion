@@ -80,7 +80,7 @@ public final class TechImprovedTerraforming extends Tech {
     }
     @Override
     public boolean isObsolete(Empire c) {
-        return increase < c.tech().terraformAdj();
+        return increase() < c.tech().terraformAdj();
     }
     @Override
     public float baseValue(Empire c) {

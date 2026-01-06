@@ -205,7 +205,6 @@ class SpeciesSkills implements Base, Serializable {
 		directoryName = dirPath;
 		labels = new LabelManager();
 	}
-	// TODO BR: For species customization to be completed
 	String empireTitle() {
 		String s = "[this_empire]";
 		String key = "this";
