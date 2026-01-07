@@ -164,7 +164,7 @@ public class DynOptions implements DynamicOptions, Serializable {
             	newOptions = initMissingOptionFile(saveFile);
             }
     	} else {
-			System.err.println("File not found: " + saveFile.getAbsolutePath());
+			// System.err.println("File not found: " + saveFile.getAbsolutePath());
 			newOptions = new DynOptions();
 			// newOptions = initMissingOptionFile(saveFile);
 		}
@@ -181,7 +181,7 @@ public class DynOptions implements DynamicOptions, Serializable {
             	newOptions = initMissingOptionFile(path, fileName);
             }
     	} else {
-			System.err.println("File not found: " + loadFile.getAbsolutePath());
+			// System.err.println("File not found: " + loadFile.getAbsolutePath());
 			newOptions = new DynOptions();
 			// newOptions = initMissingOptionFile(path, fileName);
 		}

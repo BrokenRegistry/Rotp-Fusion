@@ -296,7 +296,7 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public boolean	isAutoColonize()				{ return govAutoColonize.get(); }
 	public void		setAutoColonize(boolean b)		{ govAutoColonize.silentSet(b); }
 	public void		toggleAutoColonize()			{ govAutoColonize.toggle(); }
-	public String	autoColonizeTT()				{ return govAutoColonize.govTooltips(); }
+	public String	autoColonizeTT()				{ return govAutoColonize.htmlTooltips(); }
 	public String	autoColonizeText()				{ return govAutoColonize.govLabelTxt(); }
 
 	public boolean	isAutoAttack()					{ return auto_Attack.get(); }

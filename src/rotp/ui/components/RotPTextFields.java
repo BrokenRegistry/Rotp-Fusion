@@ -79,7 +79,7 @@ public class RotPTextFields { //extends RotPComponents {
 
 	public static class RFieldAndLabel extends RTextField	{
 		private static final long serialVersionUID = 1L;
-		private RLabel rotPLabel;
+		protected RLabel rotPLabel;
 
 		public RFieldAndLabel(String label, String txt, int colomns)	{
 			super(txt, colomns); // Create RotPTextField
@@ -110,6 +110,11 @@ public class RotPTextFields { //extends RotPComponents {
 		public SettingField(Container pane, SettingString setting, int colomns, int x, int y, String lang, int itemId)	{
 			super(pane, setting.getLabel(lang), setting.settingValue(itemId), colomns, x, y);
 			this.setting = setting;
+			String tooltips = setting.htmlTooltips();
+			if (!tooltips.isEmpty()) {
+				setToolTipText(tooltips);
+				rotPLabel.setToolTipText(tooltips);
+			}
 			currentId = itemId;
 			init();
 		}
@@ -122,10 +127,10 @@ public class RotPTextFields { //extends RotPComponents {
 			@Override public void actionPerformed(ActionEvent evt)	{
 				//System.out.println("TextFieldAction " + evt.getActionCommand());
 				SettingField field = (SettingField) evt.getSource(); // should be this
-				String actionCommand = evt.getActionCommand();
-				String label = field.setting.getLabel();
+				//String actionCommand = evt.getActionCommand();
+				//String label = field.setting.getLabel();
 				String text = field.getText();
-				System.out.println("TextFieldAction Label = " + label + " Text = " + text + " Command = " + actionCommand);
+				//System.out.println("TextFieldAction Label = " + label + " Text = " + text + " Command = " + actionCommand);
 				setting.selectedValue(currentId, text);
 			}
 		}

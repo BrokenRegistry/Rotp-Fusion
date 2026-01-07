@@ -124,8 +124,9 @@ public interface IParam extends InterfaceOptions{
 	}
 
 	// For Governor ToolTips & labels
-	default String govTooltips()			{ return "<html>" + getDescription() + "</html>"; };
-	default String govLabelTxt()			{ return langGovLabel(getLangLabel()); };
+	default String htmlTooltips()			{ return "<html>" + getDescription() + "</html>"; }
+	default String govLabelTxt()			{ return langGovLabel(getLangLabel()); }
+	default String htmlFullHelp()			{ return "<html>" + getFullHelp() + "</html>"; }
 
 	// Limited size for toolTip boxes
 	default String getDescription()			{
@@ -140,11 +141,11 @@ public interface IParam extends InterfaceOptions{
 		help += modifierHelp();
 		return help;
 	}
-	default String getGuide(int id)			{ return getHeadGuide() + valueGuide(id); };
+	default String getGuide(int id)			{ return getHeadGuide() + valueGuide(id); }
 	default String getGuide()				{ return getHeadGuide() + selectionGuide(); }
 	// Full help for "F1" requests
-	default String getFullHelp()			{ return getGuide(); };
-	default String getHelp()				{ return getDescription(); };
+	default String getFullHelp()			{ return getGuide(); }
+	default String getHelp()				{ return getDescription(); }
 
 	// ===== Local Help and guide Tools =====
 	default String headerHelp(String label, boolean sep)	{

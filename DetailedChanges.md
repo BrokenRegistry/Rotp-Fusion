@@ -3,6 +3,7 @@
 ## What's New
 
 26-01-07 (BR)
+- Added tooltips in the "Custom Species Naming" interface.
 - New custom species option to add ship names.
 - Fixed "Same as player" abilities.
 

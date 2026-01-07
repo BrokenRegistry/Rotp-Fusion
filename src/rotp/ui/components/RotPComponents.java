@@ -46,8 +46,9 @@ public interface RotPComponents extends Base, ScaledInteger {
 	default Color highlightColor()			{ return Color.YELLOW; }
 	default Color tooltipBackgroundColor()	{ return GameUI.paneBackgroundColor(); }
 	default Color tooltipTxtColor()			{ return SystemPanel.blackText; }
-	default Font tooltipFont()				{ return FontManager.getNarrowFont(scaled(baseFontSize())); }
+	default Font tooltipFont()				{ return FontManager.getNarrowFont(scaled(tooltipFontSize())); }
 	default int baseFontSize()				{ return 14; }
+	default int tooltipFontSize()			{ return 12; }
 	default int baseDismissDelay()			{ return 10000; }
 
 	/**

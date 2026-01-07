@@ -179,6 +179,8 @@ public interface Base extends InputEventUtil {
     }
     public default int id(Empire e)       { return e == null ? Empire.NULL_ID : e.id; }
     public default int id(StarSystem s)   { return s == null ? StarSystem.NULL_ID : s.id; }
+	public default String html(String text)		{ return "<html>" + text + "</html>"; }
+	public default String htmlText(String key)	{ return "<html>" + text(key) + "</html>"; }
     public default String text(String key) {
         if (!Rotp.initialized() || (galaxy() == null) || (player() == null))
             return labels().label(key);
