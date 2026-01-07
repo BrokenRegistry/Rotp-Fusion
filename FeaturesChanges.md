@@ -22,6 +22,7 @@
 
 ### Features:
 
+- New custom species option to add ship names.
 - New option to customize planet size bonus, their minimum and maximum sizes, as well as the rounding of values.
 - New option to restore MoO1 combat resolution: Unlike in MoO1, damage inflicted by weapons in RotP is not affected by the difference between attack and defense levels. (Only affects the probability of hitting.) In MoO1, a high differential between attack and defense increases the weapon's minimum damage. This gives kittens a boost.
 - Complete overhaul of species management.
@@ -327,6 +328,7 @@
 
 ### Fixes:
 
+- Fixed "Same as player" abilities.
 - Fixed useless creation of empty race files.
 - When there is more than 31 empires, Replay will now list all of tem in smaller font size.
 - Fixed some missing French dialog. (By default there was no pacific contact dialog for species that are never pacifist... Except when customized!)

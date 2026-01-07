@@ -2274,14 +2274,24 @@ CUSTOM_RACE_HOME_WORLDS				| Homes worlds
 CUSTOM_RACE_HOME_WORLDS_DESC		| Possible home system names.<br>The counterpart of the "home" parameter in Species.names.txt files
 CUSTOM_RACE_LEADER_NAMES			| Leader Names
 CUSTOM_RACE_LEADER_NAMES_DESC		| Possible leader names.<br>The counterpart of the "leader" parameter in Species.names.txt files
-CUSTOM_RACE_SHIP_NAME_1				| Names of small ships
-CUSTOM_RACE_SHIP_NAME_1_DESC		| All possible small ships name.<br>The counterpart of the "ship1" parameter in Species.names.txt files
-CUSTOM_RACE_SHIP_NAME_2				| Names of medium ships
-CUSTOM_RACE_SHIP_NAME_2_DESC		| All possible medium ships name.<br>The counterpart of the "ship2" parameter in Species.names.txt files
-CUSTOM_RACE_SHIP_NAME_3				| Names of large ships
-CUSTOM_RACE_SHIP_NAME_3_DESC		| All possible large ships name.<br>The counterpart of the "ship3" parameter in Species.names.txt files
-CUSTOM_RACE_SHIP_NAME_4				| Names of huge ships
-CUSTOM_RACE_SHIP_NAME_4_DESC		| All possible huge ships name.<br>The counterpart of the "ship4" parameter in Species.names.txt files
+
+CUSTOM_RACE_SHIP_NAMES_0			| Small Ships names
+CUSTOM_RACE_SHIP_NAMES_0_DESC		| The names of the Small ships, separated by commas. They will be shared by all civilizations of this species.
+CUSTOM_RACE_SHIP_NAMES_1			| Medium Ships names
+CUSTOM_RACE_SHIP_NAMES_1_DESC		| The names of the Medium ships, separated by commas. They will be shared by all civilizations of this species.
+CUSTOM_RACE_SHIP_NAMES_2			| Large Ships names
+CUSTOM_RACE_SHIP_NAMES_2_DESC		| The names of the Large ships, separated by commas. They will be shared by all civilizations of this species.
+CUSTOM_RACE_SHIP_NAMES_3			| Huge Ships names
+CUSTOM_RACE_SHIP_NAMES_3_DESC		| The names of the Huge ships, separated by commas. They will be shared by all civilizations of this species.
+
+CUSTOM_RACE_SHIP_NAMES_0fr			| Noms des petits vaisseaux
+CUSTOM_RACE_SHIP_NAMES_0fr_DESC		| Liste des noms des vaisseaux moyens, séparés par une virgule. Ils seront partagés par toutes les civilisations de cette espèce.
+CUSTOM_RACE_SHIP_NAMES_1fr			| Noms des vaisseaux moyens
+CUSTOM_RACE_SHIP_NAMES_1fr_DESC		| Liste des noms des petits vaisseaux, séparés par une virgule. Ils seront partagés par toutes les civilisations de cette espèce.
+CUSTOM_RACE_SHIP_NAMES_2fr			| Noms des grands vaisseaux
+CUSTOM_RACE_SHIP_NAMES_2fr_DESC		| Liste des noms des grands vaisseaux, séparés par une virgule. Ils seront partagés par toutes les civilisations de cette espèce.
+CUSTOM_RACE_SHIP_NAMES_3fr			| Noms des énormes vaisseaux
+CUSTOM_RACE_SHIP_NAMES_3fr_DESC		| Liste des noms des énormes vaisseaux, séparés par une virgule. Ils seront partagés par toutes les civilisations de cette espèce.
 
 CUSTOM_RACE_RACE_NAMEfr				| **Nom de →CUSTOM_RACE_CIVILIZATION_FR←
 CUSTOM_RACE_RACE_NAMEfr_DESC		| Une des possibles dénomination de cette espèce.

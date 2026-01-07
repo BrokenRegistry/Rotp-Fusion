@@ -37,6 +37,7 @@ import rotp.model.empires.species.SpeciesSettings.SpeciesAttributes;
 import rotp.model.empires.species.SpeciesSettings.SpeciesDescriptionItems;
 import rotp.model.empires.species.SpeciesSettings.SpeciesLabelItems;
 import rotp.model.empires.species.SpeciesSettings.SpeciesNameItems;
+import rotp.model.empires.species.SpeciesSettings.SpeciesShipNamesItems;
 import rotp.ui.components.RButtonBar;
 import rotp.ui.components.RButtonBar.BarEvent;
 import rotp.ui.components.RButtonBar.ButtonBarListener;
@@ -113,13 +114,8 @@ class CustomNameUI extends RDialog implements ActionListener {
 		leftLanguageButtonId = selectedIndex;
 		String localLanguage = languageButtonList.getFromSelectedIndex();
 		boolean isUiLanguage = localLanguage.equals(globalLanguage);
-		if (isUiLanguage) {
-//			if (leftLanguageButtonId == rightLanguageButtonId) {
-//				rightLanguageButtonId = 1;
-//			}
-//			return true;
+		if (isUiLanguage)
 			return false;
-		}
 
 		// Check if global language is in the list
 		int globalId = languageButtonList.indexOf(globalLanguage);
@@ -662,9 +658,20 @@ class CustomNameUI extends RDialog implements ActionListener {
 				y++;
 			}
 
+			new RSeparator(this, true, null, x, y ,s2);
+			y++;
 			// ==> SpeciesDescriptionItems
 			SpeciesDescriptionItems speciesDescriptionItems = identifications.speciesDescriptionItems;
 			for (SettingString setting : speciesDescriptionItems) {
+				new SettingField(this, setting, WIDE_FIELDS_COL, x, y, languageDir, civilizationId);
+				y++;
+			}
+
+			new RSeparator(this, true, null, x, y ,s2);
+			y++;
+			// ==> SpeciesShipNamesItems
+			SpeciesShipNamesItems speciesShipNamesItems = identifications.speciesShipNamesItems;
+			for (SettingString setting : speciesShipNamesItems) {
 				new SettingField(this, setting, WIDE_FIELDS_COL, x, y, languageDir, civilizationId);
 				y++;
 			}

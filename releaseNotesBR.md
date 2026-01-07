@@ -7,6 +7,10 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-01-07 (BR)
+- New custom species option to add ship names.
+- Fixed "Same as player" abilities.
+
 26-01-06 (BR)
 - New option to customize planet size bonus, their minimum and maximum sizes, as well as the rounding of values.
 

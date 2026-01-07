@@ -742,8 +742,8 @@ class SpeciesSkills implements Base, Serializable {
 			names.add(text("COLONY_NAME_5", s));
 		return names;
 	}
-	String randomLeaderName()			{ return random(leaderNames()); }
-	List<String> shipNames(int size)	{
+	String randomLeaderName()		{ return random(leaderNames()); }
+	StringList shipNames(int size)	{
 		switch(size) {
 			case ShipDesign.SMALL:	return shipNamesSmall();
 			case ShipDesign.MEDIUM:	return shipNamesMedium();
@@ -751,6 +751,15 @@ class SpeciesSkills implements Base, Serializable {
 			case ShipDesign.HUGE:	return shipNamesHuge();
 		}
 		return null;
+	}
+	String getShipNames(int size)	{ return shipNames(size).asString(); }
+	void parseShipName(int size, String names)	{
+		switch(size) {
+			case ShipDesign.SMALL:	parseShipNamesSmall(names);	 return;
+			case ShipDesign.MEDIUM:	parseShipNamesMedium(names); return;
+			case ShipDesign.LARGE:	parseShipNamesLarge(names);	 return;
+			case ShipDesign.HUGE:	parseShipNamesHuge(names);	 return;
+		}
 	}
 	void parseCivilizationNames(String names)	{ civilizationNames().resetFrom(substrings(names, ',')); }
 	void parseHomeWorlds(String names)			{ homeSystemNames().resetFrom(substrings(names, ',')); }

@@ -1941,6 +1941,19 @@ public abstract class SpeciesSettings {
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.fullTitle(settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.fullTitle()); }
 	}
+	// ==================== ShipNames ====================
+	//
+	class ShipNames extends SettingStringLanguage {
+		private static final String BASE_KEY = "SHIP_NAMES";
+		private static final String KEY(int size)	{ return BASE_KEY + "_" + size;}
+		final int shipSize;
+		ShipNames(int size, String langDir)	{
+			super(ROOT, KEY(size), "", langDir);
+			shipSize = size;
+		}
+		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.parseShipName(shipSize, settingValue()); }
+		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.getShipNames(shipSize)); }
+	}
 	// -#-
 	// #====================
 	// List of unique Names
@@ -1949,6 +1962,7 @@ public abstract class SpeciesSettings {
 		private final String labelKey;
 		SpeciesNameItems		speciesNameItems;
 		SpeciesDescriptionItems	speciesDescriptionItems;
+		SpeciesShipNamesItems	speciesShipNamesItems;
 		SpeciesLabelItems		speciesLabelItems;
 		CivilizationNameItems	civilizationNameItems;
 		CivilizationLabelItems	civilizationLabelItems;
@@ -1957,6 +1971,7 @@ public abstract class SpeciesSettings {
 			labelKey = langDir;
 			speciesNameItems		= new SpeciesNameItems(labelKey);
 			speciesDescriptionItems	= new SpeciesDescriptionItems(labelKey);
+			speciesShipNamesItems	= new SpeciesShipNamesItems(labelKey);
 			speciesLabelItems		= new SpeciesLabelItems(labelKey);
 			civilizationNameItems	= new CivilizationNameItems(labelKey);
 			civilizationLabelItems	= new CivilizationLabelItems(labelKey);
@@ -1964,6 +1979,7 @@ public abstract class SpeciesSettings {
 		@Override public void updateOption(DynamicOptions destOptions) {
 			speciesNameItems.updateOption(destOptions);
 			speciesDescriptionItems.updateOption(destOptions);
+			speciesShipNamesItems.updateOption(destOptions);
 			speciesLabelItems.updateOption(destOptions);
 			civilizationNameItems.updateOption(destOptions);
 			civilizationLabelItems.updateOption(destOptions);
@@ -1971,6 +1987,7 @@ public abstract class SpeciesSettings {
 		@Override public void updateOptionTool(DynamicOptions srcOptions) {
 			speciesNameItems.updateOptionTool(srcOptions);
 			speciesDescriptionItems.updateOptionTool(srcOptions);
+			speciesShipNamesItems.updateOptionTool(srcOptions);
 			speciesLabelItems.updateOptionTool(srcOptions);
 			civilizationNameItems.updateOptionTool(srcOptions);
 			civilizationLabelItems.updateOptionTool(srcOptions);
@@ -1997,6 +2014,7 @@ public abstract class SpeciesSettings {
 		private void copyFromLanguage(SpeciesAttributes langSrc, int civIdx, boolean forced)	{
 			speciesNameItems.copyFromLanguage(langSrc.speciesNameItems, civIdx, forced);
 			speciesDescriptionItems.copyFromLanguage(langSrc.speciesDescriptionItems, civIdx, forced);
+			speciesShipNamesItems.copyFromLanguage(langSrc.speciesShipNamesItems, civIdx, forced);
 			speciesLabelItems.copyFromLanguage(langSrc.speciesLabelItems, civIdx, forced);
 			civilizationNameItems.copyFromLanguage(langSrc.civilizationNameItems, civIdx, forced);
 			civilizationLabelItems.copyFromLanguage(langSrc.civilizationLabelItems, civIdx, forced);			
@@ -2004,6 +2022,7 @@ public abstract class SpeciesSettings {
 		private void fillFromAnim(boolean forced, int civIdx, int animIdx)	{
 			speciesNameItems.fillFromAnim(forced, civIdx, animIdx);
 			speciesDescriptionItems.fillFromAnim(forced, civIdx, animIdx);
+			speciesShipNamesItems.fillFromAnim(forced, civIdx, animIdx);
 			speciesLabelItems.fillFromAnim(forced, civIdx, animIdx);
 			civilizationNameItems.fillFromAnim(forced, civIdx, animIdx);
 			civilizationLabelItems.fillFromAnim(forced, civIdx, animIdx);
@@ -2061,9 +2080,37 @@ public abstract class SpeciesSettings {
 			}
 		}
 	}
+	class SpeciesShipNamesItems extends ICSSettingsStringList {
+		private static final long serialVersionUID = 1L;
+		private static final int[] SEQ = new int[] {0, 1, 2, 3};
+		private SpeciesShipNamesItems(String langDir)	{
+			super(langDir);
+			String langKey = toLanguageKey(langDir);
+			for (int i : SEQ) {
+				if (isForShow()) {
+					SettingStringLanguage setting = (SettingStringLanguage) settingMap.get(ROOT + ShipNames.KEY(i));
+					if (setting == null) {
+						setting	= new ShipNames(i, selectedLanguageDir());
+						settingMap.addAttribute(setting);
+					}
+					setting.skillToSetting(race());
+					add(setting);
+				}
+				else {
+					SettingStringLanguage setting = (SettingStringLanguage) settingMap.get(ROOT + ShipNames.KEY(i) + langKey);
+					if (setting == null) {
+						setting	= new ShipNames(i, langDir);
+						settingMap.addAttribute(setting);
+					}
+					setting.skillToSetting(race());
+					add(setting);
+				}
+			}
+		}
+	}
 	class SpeciesLabelItems extends ICSSettingsStringList {
 		private static final long serialVersionUID = 1L;
-		 SpeciesLabelItems(String langDir)	{
+		private SpeciesLabelItems(String langDir)	{
 			super(langDir);
 			StringList list = getOnePerSpeciesMap().get(langDir);
 			for (String label : list) {

@@ -11,6 +11,7 @@ import rotp.model.empires.Empire.EmpireBaseData;
 import rotp.model.empires.species.SkillsFactory.AnimationListMap;
 import rotp.model.empires.species.SkillsFactory.CivRecordList;
 import rotp.model.empires.species.SkillsFactory.CivilizationRecord;
+import rotp.model.empires.species.SkillsFactory.SpeciesRecord;
 import rotp.model.galaxy.Galaxy.GalaxyBaseData;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.game.DynOptions;
@@ -46,6 +47,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 
 	private List<Integer> civilizationColors	= new ArrayList<>();
 	private String playerSkillKey;	// BR: in case Alien races are a copy of player race
+	private CivRecordList playerCivs;	// BR: in case Alien races are a copy of player race
 
 	private boolean debug()	{ return false; } // TO DO BR: set to false
 	private void clearAll()	{
@@ -205,7 +207,6 @@ public final class SpeciesFactory implements ISpecies, Base {
 				continue;
 			// species, allowCustomAnim = false, allowCustomNames = true
 			data.setSpecies(new Species(data.animationSelectedKey), false, true);
-//			data.isAnimFromSkills = false;
 			aliens.add(data);
 		}
 		if (aliens.isEmpty())
@@ -335,8 +336,11 @@ public final class SpeciesFactory implements ISpecies, Base {
 			playerSpecies = new Species(playerAnimKey);
 			playerSpecies.setSpeciesSkills(playerSkillKey, skillOptions);
 			playerSpecies.setPlayerAnimNames(options, langDir);
+			if (playerSpecies.isCustomSpecies()) {
+				SpeciesRecord sR = sf.new SpeciesRecord(null, playerSpecies.speciesOptions());
+				playerCivs = sR.getList();
+			}
 		}
-
 		playerSpecies.lockUsedNames();
 		// Player Color
 		int playerColor = options().selectedPlayerColor();
@@ -469,7 +473,11 @@ public final class SpeciesFactory implements ISpecies, Base {
 				// Create Species same anim as player
 				setSpecies(new Species(playerSpecies.animKey()), true, true);
 			}
-			CivRecordList customCivs =  allCustomCiv.getKey(playerSkillKey);
+			CivRecordList customCivs;
+			if (playerSpecies.isCustomSpecies())
+				customCivs = playerCivs;
+			else
+				customCivs =  allCustomCiv.getKey(playerSkillKey);
 			CivilizationRecord civ = customCivs.nextRandom(false, false);
 			if (civ == null) {
 				customCivs =  selectedInternalCiv.getKey(playerSkillKey);
@@ -551,7 +559,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 			// Then try with internal Anim
 			CivRecordList internalCivs = allInternalCiv.getKey(skillCiv.prefAnimKey);
 			CivilizationRecord intCiv = internalCivs.nextRandom(false, true);
-			if (intCiv != null && intCiv.hasPreferedAnim()) { // Use internal anim
+			if (intCiv != null && intCiv.isFullAnim()) { // Use internal anim
 				// Test if is already the right anim
 				if (!species.animKey().equals(skillCiv.prefAnimKey))
 					species.setNewSpeciesAnim(skillCiv.prefAnimKey);

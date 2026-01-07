@@ -42,6 +42,15 @@ public class RSeparator extends RLabel	{
 			gbc = newGbc(x,y, 1,REMAINDER, 0,0, 6, GridBagConstraints.VERTICAL, new Insets(0, gap, 0, gap), 0,0);
 		pane.add(this, gbc);
 	}
+	public RSeparator(Container pane, boolean horizontal, String text, int x, int y, int gap)	{
+		super(text);
+		GridBagConstraints gbc;
+		if (horizontal)
+			gbc = newGbc(x,y, REMAINDER,1, 0,0, 2, GridBagConstraints.HORIZONTAL, new Insets(gap, 0, gap, 0), 0,0);
+		else
+			gbc = newGbc(x,y, 1,REMAINDER, 0,0, 6, GridBagConstraints.VERTICAL, new Insets(0, gap, 0, gap), 0,0);
+		pane.add(this, gbc);
+	}
 
 	protected Color separatorColor()	{ return GameUI.raceEdgeColor(); }
 }

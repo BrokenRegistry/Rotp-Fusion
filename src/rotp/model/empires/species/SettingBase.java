@@ -46,7 +46,6 @@ import rotp.model.game.IGameOptions;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.BaseModPanel.ModText;
-import rotp.ui.game.ShowCustomRaceUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.util.ListDialogUI;
 import rotp.ui.util.StringList;
@@ -146,7 +145,7 @@ public class SettingBase<T> implements ICRSettings {
 		selectedValue(valueList.get(index));
 	}
 	@Override public String toString()	{
-		String s = getLangLabel() + ": " + getCfgValue() + " (" + defaultValue + ")";
+		String s = getLangLabel() + ": " + selectedValue + " (" + defaultValue + ")";
 		return s;
 	}
 	// ========== Public IParam Interfaces ==========
@@ -314,7 +313,7 @@ public class SettingBase<T> implements ICRSettings {
 	@Override public void guiSelect()	{
 		if (isSpacer())
 			return;
-		settingToSkill(ShowCustomRaceUI.displayedSpecies().getRawRace());
+		//settingToSkill(ShowCustomRaceUI.displayedSpecies().getRawRace());
 		updateGui();
 	}
 	@Override public void setRandom(float min, float max, boolean gaussian)	{ set(randomize(min, max, gaussian)); }

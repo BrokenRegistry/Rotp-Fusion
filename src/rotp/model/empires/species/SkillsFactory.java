@@ -126,7 +126,7 @@ public class SkillsFactory extends SpeciesSettings {
 	public DynOptions getAsOptions() {
 		DynOptions destOptions = new DynOptions();
 		for (ICRSettings setting : settingMap.getAll()) {
-			// System.out.println(setting.toString()); // TO DO BR: REMOVE
+			//System.out.println(setting.toString()); // TO DO BR: REMOVE
 			setting.updateOption(destOptions);
 		}
 		return destOptions;
@@ -844,7 +844,7 @@ public class SkillsFactory extends SpeciesSettings {
 				return IGameOptions.MAX_OPPONENTS;
 		}
 	}
-	private final class SpeciesRecord {
+	final class SpeciesRecord {
 		private final String skillsKey;
 		private final String fileKey;
 		private final String prefAnimKey;
@@ -858,11 +858,18 @@ public class SkillsFactory extends SpeciesSettings {
 		private final boolean availableAI;
 		private final boolean isCustom;
 		private final DynOptions speciesOptions;
-		private SpeciesRecord(File file)	{
-			speciesOptions	 = loadOptions(file);
+		SpeciesRecord(File file, DynOptions options)	{
+			if (options == null)
+				speciesOptions = loadOptions(file);
+			else
+				speciesOptions = options;
 			SkillsFactory sf = new SkillsFactory(null, speciesOptions);
 			skillsKey  = sf.raceKey.settingValue();
-			fileKey = RaceKey.fileToKey(file);
+			if (file == null)
+				fileKey = null;
+			else
+				fileKey = RaceKey.fileToKey(file);
+			
 			if (sf.animSkills == null)
 				prefAnimKey = AnimationRaceKey.DEFAULT_VALUE;
 			else
@@ -904,7 +911,7 @@ public class SkillsFactory extends SpeciesSettings {
 			availableAI = race.availableAI();
 			isCustom	= false;
 		}
-		private CivRecordList getList()	{
+		CivRecordList getList()	{
 			CivRecordList list = new CivRecordList();
 			for (int i=0; i<namedCiv.size(); i++) {
 				String civName = namedCiv.get(i);
@@ -933,7 +940,7 @@ public class SkillsFactory extends SpeciesSettings {
 				for (File file : fileList) {
 					if (file == null)
 						continue;
-					SpeciesRecord speciesRec = new SpeciesRecord(file);
+					SpeciesRecord speciesRec = new SpeciesRecord(file, null);
 					CivRecordList civRecList = get(speciesRec.prefAnimKey);
 					civRecList.addAll(speciesRec.getList());
 				}
