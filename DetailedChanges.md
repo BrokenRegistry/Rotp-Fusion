@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-01-09 (BR)
+- Added a security filter to remove space only customized text.
+
 26-01-07 (BR)
 - Added tooltips in the "Custom Species Naming" interface.
 - New custom species option to add ship names.

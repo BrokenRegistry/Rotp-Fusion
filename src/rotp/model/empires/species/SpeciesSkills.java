@@ -88,6 +88,7 @@ class SpeciesSkills implements Base, Serializable {
 	private String homeworldStarType;
 	private String homeworldPlanetType;
 	private int homeworldSize;
+	private int populationBonusPct	= 100;
 	private String preferredShipSet;
 	private int preferredShipSize	= 2;
 	private int shipAttackBonus		= 0;
@@ -178,6 +179,8 @@ class SpeciesSkills implements Base, Serializable {
 	void homeworldStarType(String s)	{ homeworldStarType = s; }
 	int homeworldSize()					{ return homeworldSize; }
 	void homeworldSize(int i)			{ homeworldSize = i; }
+	int populationBonusPct()			{ return populationBonusPct; }
+	void populationBonusPct(int i)		{ populationBonusPct = i; }
 	String directoryName()				{ return directoryName; }
 	String langKey()					{ return langKey; }
 	void langKey(String s)				{ langKey = s; }
@@ -249,6 +252,7 @@ class SpeciesSkills implements Base, Serializable {
 		copy.uniqueNames.homeSystemNames.addAll(uniqueNames.homeSystemNames);
 		copy.uniqueNames.leaderNames.addAll(uniqueNames.leaderNames);
 		copy.speciesOptions(srcOptions);
+		copy.populationBonusPct	= populationBonusPct();
 		copy.isCopy = true;
 		return copy;
 	}
@@ -761,13 +765,13 @@ class SpeciesSkills implements Base, Serializable {
 			case ShipDesign.HUGE:	parseShipNamesHuge(names);	 return;
 		}
 	}
-	void parseCivilizationNames(String names)	{ civilizationNames().resetFrom(substrings(names, ',')); }
-	void parseHomeWorlds(String names)			{ homeSystemNames().resetFrom(substrings(names, ',')); }
-	void parseLeaderNames(String names)			{ leaderNames().resetFrom(substrings(names, ',')); }
-	void parseShipNamesSmall(String names)		{ shipNamesSmall().resetFrom(substrings(names, ',')); }
-	void parseShipNamesMedium(String names)		{ shipNamesMedium().resetFrom(substrings(names, ',')); }
-	void parseShipNamesLarge(String names)		{ shipNamesLarge().resetFrom(substrings(names, ',')); }
-	void parseShipNamesHuge(String names)		{ shipNamesHuge().resetFrom(substrings(names, ',')); }
+	void parseCivilizationNames(String names)	{ civilizationNames().resetFrom(substrings(names.trim(), ',')); }
+	void parseHomeWorlds(String names)			{ homeSystemNames().resetFrom(substrings(names.trim(), ',')); }
+	void parseLeaderNames(String names)			{ leaderNames().resetFrom(substrings(names.trim(), ',')); }
+	void parseShipNamesSmall(String names)		{ shipNamesSmall().resetFrom(substrings(names.trim(), ',')); }
+	void parseShipNamesMedium(String names)		{ shipNamesMedium().resetFrom(substrings(names.trim(), ',')); }
+	void parseShipNamesLarge(String names)		{ shipNamesLarge().resetFrom(substrings(names.trim(), ',')); }
+	void parseShipNamesHuge(String names)		{ shipNamesHuge().resetFrom(substrings(names.trim(), ',')); }
 	void parseDialogLabel(String label, String names)	{ raceLabels().addLabel(label, names); }
 	
 	private class SpeciesUniqueIdentifiers	{

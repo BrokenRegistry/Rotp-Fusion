@@ -328,6 +328,7 @@
 
 ### Fixes:
 
+- Added a security filter to remove space only customized text.
 - Fixed "Same as player" abilities.
 - Fixed useless creation of empty race files.
 - When there is more than 31 empires, Replay will now list all of tem in smaller font size.

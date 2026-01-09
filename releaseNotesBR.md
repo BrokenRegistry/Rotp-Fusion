@@ -7,44 +7,13 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-01-09 (BR)
+- Added a security filter to remove space only customized text.
+
 26-01-07 (BR)
 - Added tooltips in the "Custom Species Naming" interface.
 - New custom species option to add ship names.
 - Fixed "Same as player" abilities.
-
-26-01-06 (BR)
-- New option to customize planet size bonus, their minimum and maximum sizes, as well as the rounding of values.
-
-26-01-05 (BR)
-- New option to restore MoO1 combat resolution: Unlike in MoO1, damage inflicted by weapons in RotP is not affected by the difference between attack and defense levels. (Only affects the probability of hitting.) In MoO1, a high differential between attack and defense increases the weapon's minimum damage. This gives kittens a boost.
-
-26-01-04 (BR)
-- Custom images can be put in an "images" folder located in the same folder as the jar file.
-  - The folder structure inside the images folder must be the same as the original one, and the file type must be the same as specified in the txt files.
-- Fixed useless creation of empty race files.
-- When there is more than 31 empires, Replay will now list all of tem in smaller font size.
-- Fixed some missing French dialog. (By default there was no pacific contact dialog for species that are never pacifist... Except when customized!)
-- Fixed custom player dialog display.
-- Fixed language change for custom species.
-- Custom species are now built from their animation species.
-- Fixed certain texts that extended beyond the boxes.
-
-25-12-31 (BR)
-- Complete overhaul of species management.
-  - The "Race" class now consists of skills and animations.
-    - However, the Race factory remains unchanged.
-  - Custom species can choose their animations and assign them names, leaders, and home world.
-    - This for Multiple civilizations per species.
-    - This in multiple languages.
-    - A new GUI is now available for this purpose.
-  - The distribution of skills, animations, names, and civilizations is managed by a new "Species" class and includes all "Race" methods that were previously in the Empire class.
-    - Then the Empire Class now extends the Species class to get back all these methods.
-  - A "species factory" is now responsible for assembling species according to player requests.
-  - A new option allows empires to be assigned from custom species that have selected an animation with dedicated names.
-
-- Current limitations:
-  - The number of civilizations per species is currently limited by the interface, which only allows for one row of tabs.
-  - This also limits the number of languages.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

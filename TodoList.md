@@ -8,6 +8,7 @@
 
 ### Very soon:
 
+- Improve the Custom species interface response time.
 - More Spy AI choice to sabotage the same planet.
 - Add option to limit random event tech generosity... (For slow research, etc...)
 - Adapt Modnar's species.
@@ -31,12 +32,12 @@
   - Suggestion: in the galaxy rules panel, the pop growth rate should be splitted into AI pop growth rate and player pop growth rate (and add a bit more choices between normal and reduced, like the current fuel range options or better like the current warp speed multiplier)
     - As not everyone necessarily appreciates all these unfair and tempting rules options... I'm going to start by adding a "Setup" option to enable or disable unfair options (Disable = limiting them to fair choices only), and the "Setup" choices cannot be changed during the game.
     - Fixed selections are also more in line with the spirit of MoO1 and the original RotP, so I'll start by extending my options tools to be compatible with both fine-tuning and fixed selections. 
-- Add subterraneans equivalent in custom species
-- Add Ship names in custom species
 - Add same civ name as the player with bad starting relationship.
 
 ### Later:
 
+- Add subterraneans equivalent in custom species..
+  - Population Bonus/Malus per empire imply a lot of method call changes... -> Postponed
 - Declare war and ask join war the same turn:
   - Swap the messages
   - Option to remove "Ask join war"
