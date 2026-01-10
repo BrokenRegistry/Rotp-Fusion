@@ -765,14 +765,20 @@ class SpeciesSkills implements Base, Serializable {
 			case ShipDesign.HUGE:	parseShipNamesHuge(names);	 return;
 		}
 	}
-	void parseCivilizationNames(String names)	{ civilizationNames().resetFrom(substrings(names.trim(), ',')); }
-	void parseHomeWorlds(String names)			{ homeSystemNames().resetFrom(substrings(names.trim(), ',')); }
-	void parseLeaderNames(String names)			{ leaderNames().resetFrom(substrings(names.trim(), ',')); }
-	void parseShipNamesSmall(String names)		{ shipNamesSmall().resetFrom(substrings(names.trim(), ',')); }
-	void parseShipNamesMedium(String names)		{ shipNamesMedium().resetFrom(substrings(names.trim(), ',')); }
-	void parseShipNamesLarge(String names)		{ shipNamesLarge().resetFrom(substrings(names.trim(), ',')); }
-	void parseShipNamesHuge(String names)		{ shipNamesHuge().resetFrom(substrings(names.trim(), ',')); }
+	void parseCivilizationNames(String names)	{ parseNames(civilizationNames(), names); }
+	void parseHomeWorlds(String names)			{ parseNames(homeSystemNames(), names); }
+	void parseLeaderNames(String names)			{ parseNames(leaderNames(), names); }
+	void parseShipNamesSmall(String names)		{ parseNames(shipNamesSmall(), names); }
+	void parseShipNamesMedium(String names)		{ parseNames(shipNamesMedium(), names); }
+	void parseShipNamesLarge(String names)		{ parseNames(shipNamesLarge(), names); }
+	void parseShipNamesHuge(String names)		{ parseNames(shipNamesHuge(), names); }
 	void parseDialogLabel(String label, String names)	{ raceLabels().addLabel(label, names); }
+	void parseNames(StringList dest, String names)	{
+		if (names == null || names.isBlank())
+			dest.clear();
+		else
+			dest.resetFrom(substrings(names.trim(), ','));
+	}
 	
 	private class SpeciesUniqueIdentifiers	{
 		private final StringList civilizationNames	= new StringList();

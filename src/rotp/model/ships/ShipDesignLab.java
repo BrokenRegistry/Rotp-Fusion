@@ -415,24 +415,38 @@ public class ShipDesignLab implements Base, Serializable {
         iconifyDesign(design);
         return design;
     }
-    public void nameDesign(ShipDesign d) {
-        List<String> shipNames = empire.shipNames(d.size());
-        if ((shipNames == null) || shipNames.isEmpty()) {
-            d.name(concat("Ship", str(roll(100,999))));
-            return;
-        }
-        List<String> remainingNames = new ArrayList<>();
-        for (String name : shipNames) {
-            if (designNamed(name) == null)
-                remainingNames.add(name);
-        }
-        if (remainingNames.isEmpty()) {
-            d.name(concat("Ship", str(roll(100,999))));
-            return;
-        }
-        int index = min(0,remainingNames.size()-1);
-        d.name(remainingNames.get(index));
-    }
+	public void nameDesign(ShipDesign d) {
+		List<String> shipNames = empire.shipNames(d.size());
+		if ((shipNames != null) && !shipNames.isEmpty()) {
+			for (String name : shipNames) {
+				if (designNamed(name) == null) {
+					d.name(name);
+					return;
+				}
+			}
+		}
+		System.out.println("=======> name Design exception: empire = " + this.empire().toString()); // TODO BR: COMMENT
+		d.name(concat("Ship", str(roll(100,999))));
+		return;
+	}
+//    public void nameDesign(ShipDesign d) {
+//        List<String> shipNames = empire.shipNames(d.size());
+//        if ((shipNames == null) || shipNames.isEmpty()) {
+//            d.name(concat("Ship", str(roll(100,999))));
+//            return;
+//        }
+//        List<String> remainingNames = new ArrayList<>();
+//        for (String name : shipNames) {
+//            if (designNamed(name) == null)
+//                remainingNames.add(name);
+//        }
+//        if (remainingNames.isEmpty()) {
+//            d.name(concat("Ship", str(roll(100,999))));
+//            return;
+//        }
+//        int index = min(0,remainingNames.size()-1);
+//        d.name(remainingNames.get(index));
+//    }
     public void iconifyDesign(ShipDesign newDesign) {
         // get all valid icons for this size and remove ones already being used
         List<String> validIconKeys = ShipLibrary.current().validIconKeys(shipStyleIndex, newDesign.size());

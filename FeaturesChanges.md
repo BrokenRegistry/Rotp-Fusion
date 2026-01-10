@@ -328,6 +328,8 @@
 
 ### Fixes:
 
+- Improved a security for customized Ship Names.
+  - The original names are added as reserve in case the number of custom names is to small.
 - Added a security filter to remove space only customized text.
 - Fixed "Same as player" abilities.
 - Fixed useless creation of empty race files.

@@ -110,6 +110,7 @@ public class Species implements ISpecies, Base, Serializable {
 		return civilizationId;
 	}
 	private CivilizationId civilizationId()	{ return civilizationId; }
+	SpeciesSkills getSkillsForEdit()	{ return skills; }
 	protected String empireTitle()		{ return replaceTokens("[this_empire]", "this"); }
 	protected String getLeaderName()	{ return initialLeaderName; }
 	public String getHomeWorldName()	{ return initialHomeWorld; }
@@ -668,8 +669,11 @@ public class Species implements ISpecies, Base, Serializable {
 		if (!skills.isCustomSpecies())
 			return anim.shipNames(size);
 		List<String> list = skills.shipNames(size);
-		if (list==null || list.isEmpty())
-			return anim.shipNames(size);
+		// The lab takes the first unused name
+		// ... OK for anim, but customs ones will be randomized
+		shuffle(list);
+		// In case there is not enough customized names
+		list.addAll(anim.shipNames(size));
 		return list;
 	}
 	public List<String> systemNames()		{

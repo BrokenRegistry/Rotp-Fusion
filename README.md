@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-01-10 (BR)
+- Improved a security for customized Ship Names.
+  - The original names are added as reserve in case the number of custom names is to small.
+
 26-01-09 (BR)
 - Added a security filter to remove space only customized text.
 

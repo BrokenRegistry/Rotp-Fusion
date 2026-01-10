@@ -152,7 +152,8 @@ public final class SpeciesFactory implements ISpecies, Base {
 
 		// Then: There is a problem!
 		// Return the remaining list... Or maybe try to fixes
-		System.err.println("not all No selection species were created; Missing: " + aliens.size());
+		if(debug())
+			System.out.println("not all No selection species were created; Missing: " + aliens.size());
 		return aliens;
 	}
 	private List<AlienData> createRandomAnimSelectedSkills()	{
@@ -195,7 +196,8 @@ public final class SpeciesFactory implements ISpecies, Base {
 			return aliens;
 		// Then: There is a problem!
 		// Return the remaining list... Or maybe try to fixes
-		System.err.println("not all Skills selected animations were created; Missing: " + aliens.size());
+		if(debug())
+			System.out.println("not all Skills selected animations were created; Missing: " + aliens.size());
 		return aliens;
 	}
 	private List<AlienData> createIconSelectedAnim()	{
@@ -311,6 +313,8 @@ public final class SpeciesFactory implements ISpecies, Base {
 		postponedAliens = createNoSelectionSpecies(selectedInternalMap);
 		if (!postponedAliens.isEmpty())
 			postponedAliens = createNoSelectionSpecies(allInternalListMap);
+		if (!postponedAliens.isEmpty())
+			System.err.println("not all requested species were created; Missing: " + postponedAliens.size());
 		return postponedAliens.isEmpty();
 	}
 	private Species createPlayerSpecies()	{
