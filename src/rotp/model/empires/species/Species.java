@@ -668,7 +668,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public List<String> shipNames(int size)	{
 		if (!skills.isCustomSpecies())
 			return anim.shipNames(size);
-		List<String> list = skills.shipNames(size);
+		List<String> list = new ArrayList<>(skills.shipNames(size));
 		// The lab takes the first unused name
 		// ... OK for anim, but customs ones will be randomized
 		shuffle(list);

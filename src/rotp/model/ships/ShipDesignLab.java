@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import rotp.Rotp;
 import rotp.model.empires.Empire;
 import rotp.model.empires.ShipView;
 import rotp.model.tech.Tech;
@@ -425,7 +426,7 @@ public class ShipDesignLab implements Base, Serializable {
 				}
 			}
 		}
-		System.out.println("=======> name Design exception: empire = " + this.empire().toString()); // TODO BR: COMMENT
+		Rotp.ifIDE("=======> name Design exception: empire = " + this.empire().toString()); // TODO BR: COMMENT
 		d.name(concat("Ship", str(roll(100,999))));
 		return;
 	}
