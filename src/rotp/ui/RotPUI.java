@@ -44,6 +44,7 @@ import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.Empire;
 import rotp.model.empires.EspionageMission;
 import rotp.model.empires.SabotageMission;
+import rotp.model.empires.species.DNAWorkshop;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.Transport;
@@ -128,6 +129,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     private static final String GNN_PANEL = "GNN";
     private static final String COUNCIL_PANEL = "GalacticCouncil";
     private static final String GAME_OVER_PANEL = "GameOver,Man,GameOver";
+    private static final String DNA_WORKSHOP_PANEL = "DNAWorkshop";
 	// private static final String CREDITS_PANEL = "Credits";
     private static final String ERROR_PANEL = "Error";
     private static final String DIALOG_PANEL = "Dialog";
@@ -201,7 +203,8 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     private final MainOptionsUI mainOptionsUI = new MainOptionsUI();
 	private StringDialogUI	stringDialog;
 	private ListDialogUI	listDialog;
-    private final List<BaseCompactOptionsUI> optionsPanels = new ArrayList<>();
+	private final List<BaseCompactOptionsUI> optionsPanels = new ArrayList<>();
+	private final DNAWorkshop dnaWorkshopUI = new DNAWorkshop();
 
     private final AdvancedOptionsUI advancedOptionsUI = new AdvancedOptionsUI();
     private final LargeDialogPane  dialogPane       = new LargeDialogPane();
@@ -358,7 +361,11 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     	setupRaceUI.init();
     	selectPanel(SETUP_RACE_PANEL, setupRaceUI); 
     }
-    public void selectSetupGalaxyPanel() {
+	 public void selectDNAWorkshopPanel(BasePanel parent, boolean allowEdit) {
+		dnaWorkshopUI.init(parent, allowEdit);
+		selectPanel(DNA_WORKSHOP_PANEL, dnaWorkshopUI); 
+	}
+   public void selectSetupGalaxyPanel() {
     	setupGalaxyUI.init();
     	selectPanel(SETUP_GALAXY_PANEL, setupGalaxyUI);
     }
@@ -834,6 +841,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         add(shipBattleUI, SHIP_BATTLE_PANEL);
         add(errorUI, ERROR_PANEL);
         add(dialogPane, DIALOG_PANEL);
+        add(dnaWorkshopUI, DNA_WORKSHOP_PANEL);
 
         if (!UserPreferences.windowed()) {
             dialogPane.addToLayout(diplomaticMessageUI, DIPLOMATIC_MESSAGE_PANEL);

@@ -11,6 +11,7 @@ import static java.awt.GridBagConstraints.WEST;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -19,10 +20,6 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -32,9 +29,11 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 
 import rotp.model.empires.species.SpeciesSettings.BoundAI;
 import rotp.model.empires.species.SpeciesSettings.SettingMap;
@@ -52,7 +51,7 @@ import rotp.ui.main.SystemPanel;
 import rotp.ui.util.InterfaceHelp;
 import rotp.util.FontManager;
 
-public final class CustomSpeciesUI2 extends BasePanel implements ActionListener, RotPComponents {
+public final class DNAWorkshop extends BasePanel implements RotPComponents {
 	private static final long serialVersionUID = 1L;
 	private static final String ROOT		= SkillsFactory.ROOT;
 	private static final int BUTTON_SEP_H	= s5;
@@ -69,13 +68,13 @@ public final class CustomSpeciesUI2 extends BasePanel implements ActionListener,
 	private static final int	COST_FONT_SIZE	= 18;
 	private	static final Font	DESC_FONT		= FontManager.current().plainFont(14);
 
-	private final boolean allowEdit;
+	private boolean allowEdit;
 	private BasePanel parent;
 
 	private SkillsFactory sf;
 	private SettingMap settingMap;
 	// Panels
-	private BasePanel customSpecies;
+	private final DNAWorkshop workshop;
 	private ContentPanel contentPane;
 	private SettingsPane settingsPane;
 	private CostPanel costPanel;
@@ -104,30 +103,32 @@ public final class CustomSpeciesUI2 extends BasePanel implements ActionListener,
 		testPopUp = new JPanel();
 		testPopUp.add(new JLabel("Bla Bla Bla"));
 		testPopUp.setOpaque(true);
-		
 	}
 
 	// ========================================================================
 	// #=== Initializers
 	//
-	public CustomSpeciesUI2(BasePanel parent, boolean allowEdit) {
-		customSpecies	= this;
+	public DNAWorkshop()	{
+		workshop = this;
+		setName("CustomSpeciesUI");
+		sf(SkillsFactory.getSkillsFactoryForEditor(this));
+		contentPane	= new ContentPanel();
+		add(contentPane);
+		revalidate();
+	}
+	public boolean init(BasePanel parent, boolean allowEdit)	{
 		this.parent		= parent;
 		this.allowEdit	= allowEdit;
-		setName("CustomSpeciesUI");
-	}
-	public boolean showPanel()	{
-		sf(SkillsFactory.getSkillsFactoryForEditor(parent));
+		sf(SkillsFactory.getSkillsFactoryForEditor(this));
 		sf().setSettingTools((DynOptions) guiOptions().selectedPlayerCustomRace());
 		settingMap	= sf().settingMap;
 		commonList	= settingMap.getSettings();
 		emptyDescription = html("<b>Shift</b>&nbsp and <b>Ctrl</b>&nbsp can be used to change buttons, click and scroll functions");
-		contentPane	= new ContentPanel();
-		add(contentPane);
 
-		revalidate();
-		enableGlassPane(this);
-		setVisible(true);
+		setEnabled(true);
+		repaint();
+//		enableGlassPane(this);
+//		setVisible(true);
 		return canceled;
 	}
 	private String totalCostStr()	{ return text(TOTAL_COST_KEY, Math.round(sf().getTotalCost())); }
@@ -161,6 +162,16 @@ public final class CustomSpeciesUI2 extends BasePanel implements ActionListener,
 	// ========================================================================
 	// #=== Event calls
 	//
+	@Override public void cancelHelp()	{
+		if (hasPopUp != null)
+			hasPopUp.highLighted(false);
+		hasPopUp = null;
+	}
+	@Override public void advanceHelp()	{ 
+		if (hasPopUp != null)
+			hasPopUp.highLighted(false);
+		hasPopUp = null;
+	}
 	final class SettingListener extends MouseAdapter	{
 		@Override public void mouseClicked(MouseEvent e)	{ }
 		@Override public void mousePressed(MouseEvent e)	{ }
@@ -198,7 +209,7 @@ public final class CustomSpeciesUI2 extends BasePanel implements ActionListener,
 					// TODO BR: Call NamesUI
 				}
 				else
-					setting.toggle(e, customSpecies);
+					setting.toggle(e, workshop);
 				setting.updateGui(panel);
 //				panel.updateDisplay();
 				if (!setting.hasNoCost())
@@ -217,9 +228,12 @@ public final class CustomSpeciesUI2 extends BasePanel implements ActionListener,
 				descriptionBox.setText(description);
 				HelpUI helpUI = RotPUI.helpUI();
 				helpUI.clear();
+				JFrame frame = (JFrame) SwingUtilities.getRoot(RotPUI.instance());
+				Component gp = frame().getGlassPane();
 				Rectangle onScreen = getLocationOnScreen(panel);
-				helpUI.open(customSpecies, panel, description, onScreen);
-				System.out.println("helpUI.open(...);"); // TODO BR: REMOVE
+				helpUI.open(workshop, panel, setting.getGuide(), onScreen);
+//				System.out.println("helpUI.open(...);"); // TODO BR: REMOVE
+				repaint();
 			}
 		}
 		private void clearDescBox(MouseEvent e)	{
@@ -258,7 +272,7 @@ public final class CustomSpeciesUI2 extends BasePanel implements ActionListener,
 	private class ContentPanel extends RContentPanel implements InterfaceHelp {
 		private static final long serialVersionUID = 1L;
 		private static final String NAME = "MainPanel";
-		private ComponentPositioner positioner = new ComponentPositioner();
+//		private ComponentPositioner positioner = new ComponentPositioner();
 		private Dimension lastSize;
 
 		ContentPanel()	{
@@ -291,19 +305,19 @@ public final class CustomSpeciesUI2 extends BasePanel implements ActionListener,
 			gbc = newGbc(x,y, 1,1, 0,0, SOUTH, HORIZONTAL, new Insets(0, LEFT_MARGIN, VERTICAL_GAP, RIGHT_MARGIN), 0,0);
 			add(new BottomPane(), gbc);
 			lastSize = getSize();
-			addComponentListener(positioner);
+//			addComponentListener(positioner);
 		}
 
 		@Override protected String title()	{ return guiTitle(); }
 
-		private class ComponentPositioner extends ComponentAdapter {
-			@Override public void componentResized(ComponentEvent evt) {
-				if (lastSize.equals(getSize()))
-					return;
-				lastSize = getSize();
-				reCenter();
-			}
-		}
+//		private class ComponentPositioner extends ComponentAdapter {
+//			@Override public void componentResized(ComponentEvent evt) {
+//				if (lastSize.equals(getSize()))
+//					return;
+//				lastSize = getSize();
+//				reCenter();
+//			}
+//		}
 
 		@Override
 		public void cancelHelp() {
@@ -462,8 +476,9 @@ public final class CustomSpeciesUI2 extends BasePanel implements ActionListener,
 	// #=== Specific Buttons definition
 	//
 	private void close()	{
+		buttonClick();
 		RotPUI.instance().selectSetupRacePanel();
-
+		disableGlassPane();
 	}
 	private class ExitButton extends RButton	{
 		private static final long serialVersionUID = 1L;
@@ -538,7 +553,7 @@ public final class CustomSpeciesUI2 extends BasePanel implements ActionListener,
 	// ========================================================================
 	// Other
 	//
-	@Override public void actionPerformed(ActionEvent e) { } // TODO BR:
+	@Override public void animate()		{ } // TODO BR:
 	private void reCenter() {
 		Point pLoc = parent.getLocationOnScreen();
 		Dimension pSize = parent.getSize();

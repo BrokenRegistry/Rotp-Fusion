@@ -1627,7 +1627,10 @@ public interface Base extends InputEventUtil {
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(),
 				bounds(0, (int)(alpha*255+0.5), 255));
 	}
-    public default Color saturateColor(Color color, float alpha) {
+    static Color setAlpha(Color color, int alpha) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+	}
+   public default Color saturateColor(Color color, float alpha) {
     	int max = max(color.getRed(), max(color.getGreen(), color.getBlue()));
     	if (max == 0)
     		return setAlpha(Color.white, alpha);
