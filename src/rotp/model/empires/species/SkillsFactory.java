@@ -41,7 +41,7 @@ import rotp.model.empires.species.SpeciesSettings.Technologies.TechDiscovery;
 import rotp.model.empires.species.SpeciesSettings.Technologies.TechResearch;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
-import rotp.ui.game.BaseModPanel;
+import rotp.ui.BasePanel;
 import rotp.ui.util.StringList;
 import rotp.util.Base;
 
@@ -74,7 +74,7 @@ public class SkillsFactory extends SpeciesSettings {
 
 	// #========== Constructors For Custom Skills Editors and Viewer ==========
 	//
-	public static SkillsFactory getSkillsFactoryForEditor(BaseModPanel parent)	{
+	public static SkillsFactory getSkillsFactoryForEditor(BasePanel parent)	{
 		SkillsFactory factory = new SkillsFactory();
 		factory.parent = parent;
 		factory.initFactoryForEdit();

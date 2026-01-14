@@ -9,6 +9,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -202,7 +203,9 @@ public class StringDialogUI extends JDialog implements ActionListener, Base {
 			}
 			else {
 				clearHelp();
-				frame.paintComponents(frame.getGraphics());
+				Graphics g = frame.getGraphics();
+				frame.paintComponents(g);
+				g.dispose();
 			}
 			return;
 		}		
@@ -234,7 +237,7 @@ public class StringDialogUI extends JDialog implements ActionListener, Base {
 		String text	= "No Help Yet";
 		if (param != null)
 			text = param.getGuide();
-		baseModPanel.guidePopUp.setDest(dest, text, frame.getGraphics());
+		baseModPanel.guidePopUp.setDest(dest, text);
 	}
 
 	@Override public String getName()	{ return input.getText(); }

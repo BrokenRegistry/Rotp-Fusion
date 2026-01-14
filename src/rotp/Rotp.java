@@ -122,6 +122,13 @@ public final class Rotp {
                 loadSaveFile = args[0];
         }
 
+//		try { // TODO BR: REMOVE
+//			UIManager.setLookAndFeel("rotp.laf.RotPLookAndFeel");
+//		}
+//		catch (Exception e) {
+//			e.printStackTrace();
+//		}
+
 //		try {
 //			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 //				if ("Nimbus".equals(info.getName())) {

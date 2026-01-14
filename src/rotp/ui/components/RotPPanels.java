@@ -13,7 +13,7 @@ public interface RotPPanels {
 
 	public class RContentPanel extends JPanel implements RotPComponents {
 		private static final long serialVersionUID = 1L;
-		private static final String NAME = "ContentPanel";
+		// private static final String NAME = "ContentPanel";
 		protected Color titleColorBack	= Color.BLACK;
 		protected Color titleColorFore	= Color.WHITE;
 		protected String title			= "No Title";
@@ -73,5 +73,4 @@ public interface RotPPanels {
 			g.drawImage(backImg(), 0, 0, w, h, this);
 		}
 	}
-
 }

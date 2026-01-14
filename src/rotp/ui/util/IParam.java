@@ -21,6 +21,7 @@ import static rotp.ui.game.BaseModPanel.guideFontSize;
 import static rotp.util.Base.NEWLINE;
 import static rotp.util.Base.textSubs;
 
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -65,6 +66,7 @@ public interface IParam extends InterfaceOptions{
 	default boolean next()						{ return false; } // Return forceUpdate
 	default boolean prev()						{ return false; } // Return forceUpdate
 	default boolean toggle(MouseWheelEvent e)	{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, Component frame)						{ return false; } // Return forceUpdate
 	default boolean toggle(MouseEvent e, BaseModPanel frame)					{ return false; } // Return forceUpdate
 	default boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame)	{ return false; } // Return forceUpdate
 	default boolean toggle(MouseEvent e, String p, BaseModPanel frame)			{ return false; } // Return forceUpdate
@@ -127,6 +129,8 @@ public interface IParam extends InterfaceOptions{
 	default String htmlTooltips()			{ return "<html>" + getDescription() + "</html>"; }
 	default String govLabelTxt()			{ return langGovLabel(getLangLabel()); }
 	default String htmlFullHelp()			{ return "<html>" + getFullHelp() + "</html>"; }
+	default String htmlGuide()				{ return "<html>" + getGuide() + "</html>"; }
+	default String htmlGuide(int id)		{ return "<html>" + getGuide(id) + "</html>"; }
 
 	// Limited size for toolTip boxes
 	default String getDescription()			{

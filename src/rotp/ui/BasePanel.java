@@ -42,11 +42,12 @@ import rotp.model.galaxy.StarType;
 import rotp.model.game.IDebugOptions;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.util.InterfaceHelp;
 import rotp.ui.util.InterfacePreview;
 import rotp.util.Base;
 import rotp.util.ThickBevelBorder;
 
-public class BasePanel extends JPanel implements Base, ScaledInteger, InterfacePreview {
+public class BasePanel extends JPanel implements Base, ScaledInteger, InterfacePreview, InterfaceHelp {
     private static final long serialVersionUID = 1L;
     public static final String TEXTURE_GRAY = "TEXTURE_GRAY";
     public static final String TEXTURE_BROWN = "TEXTURE_BROWN";
@@ -86,9 +87,9 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
     }
     public void showHotKeys()              { showHelp(); }
     public void showHelp()                 {  }
-    public void cancelHelp()               {  }
-    public void advanceHelp()              { }
-    
+	@Override public void cancelHelp()	{ }
+	@Override public void advanceHelp()	{ }
+
     public boolean hasStarBackground()     { return false; }
     public final boolean hasTexture()      { return textureName() != null; }
     public boolean isAlpha()               { return false; }
@@ -306,7 +307,7 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
     public void drawTexture(Graphics g0) {
         drawTexture(g0, 0, 0, getWidth(), getHeight());
     }
-    
+
     public void drawTextureWithExistingClip(Graphics g0, int x, int y, int w, int h) {
        if (!UserPreferences.texturesInterface())
             return;

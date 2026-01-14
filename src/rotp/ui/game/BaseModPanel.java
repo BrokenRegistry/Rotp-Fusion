@@ -78,12 +78,12 @@ public abstract class BaseModPanel extends BasePanel
 	protected static final String cancelKey		 	= "SETTINGS_CANCEL";
 	protected static final String applyKey		 	= "SETTINGS_APPLY";
 	
-	private	  static int	 exitButtonWidth, guideButtonWidth,
-							 userButtonWidth, defaultButtonWidth, lastButtonWidth;
-	protected static int	 mX, mY;
-	protected static int	 smallButtonMargin, smallButtonH;
-	protected static int	 miniButtonMargin, miniButtonH;
-	protected static int	 cnr;
+	private	  static int exitButtonWidth, guideButtonWidth,
+						 userButtonWidth, defaultButtonWidth, lastButtonWidth;
+	protected static int mX, mY;
+	protected static int smallButtonMargin, smallButtonH;
+	protected static int miniButtonMargin, miniButtonH;
+	protected static int cnr;
 
 	private	static int	guideFontSize;
 	public	static int	guideFontSize()			{ return guideFontSize; }
@@ -412,6 +412,7 @@ public abstract class BaseModPanel extends BasePanel
 		guideBox.fillButtonBackImg(g);
 
 		drawButtons(g, true); // init = true; local = true
+		g.dispose();
 		return buttonBackImg;
 	}
 
@@ -434,7 +435,9 @@ public abstract class BaseModPanel extends BasePanel
 			loadGuide();
 		else
 			clearGuide();
-		paintComponent(getGraphics());
+		Graphics g = getGraphics();
+		paintComponent(g);
+		g.dispose();
 	}	
 
 	// ==================== Exit Button ====================
@@ -710,7 +713,7 @@ public abstract class BaseModPanel extends BasePanel
 	@Override public void showHotKeys() {
 		Rectangle hotKeysBox  = new Rectangle(mX, mY, 0, 0);
 		String    hotKeysText = text("MOD_OPTIONS_HELP_HK");
-		guidePopUp.setDest(hotKeysBox, hotKeysText, getGraphics());
+		guidePopUp.setDest(hotKeysBox, hotKeysText);
 		contextHlp = true;
 	}
 	@Override public void mouseClicked(MouseEvent e) {  }
@@ -805,13 +808,13 @@ public abstract class BaseModPanel extends BasePanel
 		}
 		if (!(showGuide.get() || dialGuide))
 			return;
-		guidePopUp.setDest(hoverBox, false, getGraphics());
+		guidePopUp.setDest(hoverBox, false);
 	}
 	private boolean showContextualHelp()	{ // Following "F1!
 		if (hoverBox == null)
 			return false; // ==> panel help
 		
-		if (!guidePopUp.setDest(hoverBox, true, getGraphics()))
+		if (!guidePopUp.setDest(hoverBox, true))
 			return false; // ==> panel help
 		contextHlp = true;
 		return true;
@@ -1126,14 +1129,14 @@ public abstract class BaseModPanel extends BasePanel
 			setVisible();
 			init(dest);
 		}
-		public  void setDest(Rectangle dest, String text, Graphics g0)	{
+		public  void setDest(Rectangle dest, String text)	{
 			guideFontSize(FONT_SIZE);
 			lineArr = null;
 			setFullHelp(dest.width == 0);
 			setText(text);
 			setDest(dest);
 		}
-		private boolean setDest(Box dest, boolean fullHelp, Graphics g0){
+		private boolean setDest(Box dest, boolean fullHelp){
 			if (dest == null)
 				return false;
 			guideFontSize(FONT_SIZE);

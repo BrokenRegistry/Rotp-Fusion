@@ -1504,7 +1504,8 @@ ERROR_EMAIL                       | Email: Broken.Registry@protonmail.com
 ERROR_REDDIT                      | Reddit: www.Reddit.com/r/rotp
 
 // Setup UI
-SETUP_SELECT_RACE                 | Select Your Empire
+//SETUP_SELECT_RACE                 | Select Your Empire
+SETUP_SELECT_RACE                 | Select Your Avatar
 SETUP_SELECT_OPPONENTS            | Select Opponents
 SETUP_SELECT_GALAXY               | Select Galaxy
 SETUP_SELECT_GALAXY_OPTIONS       | Select Options
@@ -2013,13 +2014,27 @@ SETUP_NO_FOG_ON_ICONS             | Remove diplomat fog: %1
 SETUP_NO_FOG_ON_ICONS_DESC        | Remove the fog hiding the diplomat icons in the Character settings panel and in the Galaxy settings panel.
 
 // BR: config Player Race
-SETUP_BUTTON_CUSTOM_PLAYER_RACE   | Customize Species
+//SETUP_BUTTON_CUSTOM_PLAYER_RACE   | Customize Species
+SETUP_BUTTON_CUSTOM_PLAYER_RACE	| DNA Workshop
+
+// BR: Customize Player Race New GUI addition
+CUSTOM_RACE_BUTTON_EXIT			| Exit
+CUSTOM_RACE_BUTTON_EXIT_DESC	| Keep the current Settings then Exit the Panel.
+CUSTOM_RACE_BUTTON_CANCEL		| Cancel
+CUSTOM_RACE_BUTTON_CANCEL_DESC	| Cancel changes then Exit Panel.
+CUSTOM_RACE_BUTTON_FOLDER		| Select Folder
+CUSTOM_RACE_BUTTON_FOLDER_DESC	| Select the custom species folder.
+CUSTOM_RACE_BUTTON_NAMES		| Edit Names
+CUSTOM_RACE_BUTTON_NAMES_DESC	| Edit the Civilisations names.<br>(Add, Remove, Languages selection)
 
 // BR: Customize Player Race
 CUSTOM_RACE_RACE_AI_DESC          | Change the empire AI
-CUSTOM_RACE_GUI_TITLE             | Sapiens Species Customization
-CUSTOM_RACE_SHOW_TITLE            | Species' Abilities
-CUSTOM_RACE_SHOW_TITLE_CUSTOM	| Customized Species' Abilities
+//CUSTOM_RACE_GUI_TITLE             | Sapiens Species Customization
+//CUSTOM_RACE_SHOW_TITLE            | Species' Abilities
+//CUSTOM_RACE_SHOW_TITLE_CUSTOM	| Customized Species' Abilities
+CUSTOM_RACE_GUI_TITLE			| DNA Workshop
+CUSTOM_RACE_SHOW_TITLE			| Species' DNA
+CUSTOM_RACE_SHOW_TITLE_CUSTOM	| OGM Species' DNA
 CUSTOM_RACE_GUI_MALUS             | (Malus: %1)
 CUSTOM_RACE_GUI_COST              | Total Value: %1
 CUSTOM_RACE_GUI_SELECT_DESC       | Save Current Species, Select it as Player Species, Save as Last Settings and Exit Panel
@@ -2079,13 +2094,15 @@ CUSTOM_RACE_DESCRIPTION				| Customized Species
 CUSTOM_RACE_BASE_DATARACE         | Base Abilities
 CUSTOM_RACE_HOME_TYPE             | Planet Type
 CUSTOM_RACE_HOME_SIZE_DESC        | Starting Size of this Empire Home world.
-CUSTOM_RACE_HOME_SIZE             | Planet Size
-CUSTOM_RACE_HOME_ARTIFACTS_DESC   | This selection will affect the research of the home world.
+CUSTOM_RACE_HOME_SIZE             | Homeworld Size
+CUSTOM_RACE_HOME_ARTIFACTS_DESC   | Some species require more or less space than others. This bonus multiplies the nominal size of planets.
 CUSTOM_RACE_HOME_ARTIFACTS        | Planet Artifacts
 CUSTOM_RACE_HOME_RESOURCES_DESC   | This selection will affect the production of the home world.
 CUSTOM_RACE_HOME_RESOURCES        | Planet Resources
 CUSTOM_RACE_HOME_ENVIRONMENT_DESC | This selection will affect the growth rate of the home world.
 CUSTOM_RACE_HOME_ENVIRONMENT      | Planet Environment
+CUSTOM_RACE_POPULATION_BONUS_DESC	| Starting Size of this Empire Home world.
+CUSTOM_RACE_POPULATION_BONUS		| Population Bonus
 CUSTOM_RACE_RACE_KEY				| File Name (Key)
 CUSTOM_RACE_RACE_KEY_DESC			| This is the place to enter the filename, it's also used as the key for the standard species... Don't use them, or keep the default "SPECIES_xxx" to set the "Redesigned"-Abilities.
 CUSTOM_RACE_RACE_KEY_INPUT			| Enter the file name of the custom species.

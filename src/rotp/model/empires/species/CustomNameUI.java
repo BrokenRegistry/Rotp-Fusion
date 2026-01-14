@@ -38,6 +38,7 @@ import rotp.model.empires.species.SpeciesSettings.SpeciesDescriptionItems;
 import rotp.model.empires.species.SpeciesSettings.SpeciesLabelItems;
 import rotp.model.empires.species.SpeciesSettings.SpeciesNameItems;
 import rotp.model.empires.species.SpeciesSettings.SpeciesShipNamesItems;
+import rotp.ui.BasePanel;
 import rotp.ui.components.RButtonBar;
 import rotp.ui.components.RButtonBar.BarEvent;
 import rotp.ui.components.RButtonBar.ButtonBarListener;
@@ -47,7 +48,6 @@ import rotp.ui.components.RSeparator;
 import rotp.ui.components.RotPButtons.RButton;
 import rotp.ui.components.RotPPanels.RContentPanel;
 import rotp.ui.components.RotPTextFields.SettingField;
-import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.GameUI;
 import rotp.ui.util.StringList;
 import rotp.util.FontManager;
@@ -69,9 +69,9 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private static final int HIGHLIGHT_COLOR_ID	= 1;
 	private static final int VALID_COLOR_ID		= 2;
 	private static final Color VALID_COLOR		= new Color(190, 217, 115) ; // new Color(254,204,153)
-	private int LEFT_MARGIN		= s20;
-	private int RIGHT_MARGIN	= LEFT_MARGIN;
-	private int VERTICAL_GAP	= s10;
+	private static final int LEFT_MARGIN		= s20;
+	private static final int RIGHT_MARGIN		= LEFT_MARGIN;
+	private static final int VERTICAL_GAP		= s10;
 
 	private final StringList languageNames = new StringList(LanguageManager.current().languageNames());
 	private final StringList languageCodes = new StringList(LanguageManager.current().languageCodes());
@@ -172,7 +172,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 		languageNames.setSelectedIndex(nextLanguage);
 		return nextLanguage;
 	}
-	CustomNameUI(BaseModPanel parent, AllSpeciesAttributes settings) {
+	CustomNameUI(BasePanel parent, AllSpeciesAttributes settings) {
 		super(parent);
 		setName("CustomNameUI");
 		this.settings = settings;

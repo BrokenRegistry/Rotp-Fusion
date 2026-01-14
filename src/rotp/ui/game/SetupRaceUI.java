@@ -44,6 +44,9 @@ import java.util.List;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import rotp.Rotp;
+import rotp.model.empires.species.CustomSpeciesUI;
+import rotp.model.empires.species.CustomSpeciesUI2;
 import rotp.model.empires.species.Species;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IRaceOptions;
@@ -221,6 +224,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
     }
 	@Override protected void singleInit()	{ paramList = AllSubUI.optionsRace(); }
 	public void init(String name)	{
+		this.setEnabled(true);
     	super.init();
 		leaderName.setBackground(GameUI.setupFrame());
 		leaderName.setFont(labelFont);
@@ -237,6 +241,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 		newGameOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
 	}
     @Override public void init() {
+		this.setEnabled(true);
     	super.init();
     	leaderName.setBackground(GameUI.setupFrame());
     	shipSetTxt.setBackground(GameUI.setupFrame());
@@ -546,7 +551,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         g.setStroke(prev);
 	}
 	@Override public void paintComponent(Graphics g0) {
-		// showTiming = true; // TO DO BR: Comment
+		//showTiming = true; // TO DO BR: Comment
 		if (showTiming)
 			System.out.println("===== SetupRaceUI PaintComponents =====");
 		if (!isOnTop)
@@ -1204,10 +1209,27 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 		return fleetImages[shapeId];
     }
     // BR: Display UI panel for Player Race Customization
-    private void goToPlayerRaceCustomization() {
+	private void goToPlayerRaceCustomization(MouseEvent e) {
+		if (Rotp.isIDE() && e.isShiftDown()) {
+			CustomSpeciesUI2 ui = new CustomSpeciesUI2(this, true);
+			RotPUI.animationListeners.add(ui);
+			boolean canceled = ui.showPanel();
+			System.out.println("CustomSpeciesUI return canceled = " + canceled); // TODO BR: REMOVE
+			RotPUI.animationListeners.remove(ui);
+			return;
+		}
+		if (Rotp.isIDE() && e.isControlDown()) {
+			CustomSpeciesUI ui = new CustomSpeciesUI(this, true);
+			RotPUI.animationListeners.add(ui);
+			boolean canceled = ui.showPanel();
+			System.out.println("CustomSpeciesUI return canceled = " + canceled); // TODO BR: REMOVE
+			RotPUI.animationListeners.remove(ui);
+			return;
+		}
         buttonClick();
         EditCustomRaceUI.instance().open(this);
 		setVisible(false);
+		this.setEnabled(false);
     }
     private void goToRenameSpecies() {
         buttonClick();
@@ -1293,7 +1315,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 			doLastBoxAction();
         // BR: Player Race customization
         else if (hoverBox == playerRaceSettingBox)
-            goToPlayerRaceCustomization();
+            goToPlayerRaceCustomization(e);
         else if (hoverBox == checkBox) {
             playerIsCustom.toggle(e, this);
             checkBoxChanged();

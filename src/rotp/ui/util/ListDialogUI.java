@@ -41,6 +41,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -208,7 +209,7 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 	 * otherwise, it should be the component on top of which the
 	 * dialog should appear.
 	 */	
-	public void init(BaseModPanel frameComp,
+	public void init(Component frameComp,
 			Component locationComp,
 			String labelText,
 			String title,
@@ -224,7 +225,7 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 			IParam param)
 	{
 		setTitle(title);
-		baseModPanel		 = frameComp;
+		baseModPanel		 = frameComp instanceof BaseModPanel? (BaseModPanel) frameComp : null;
 		frame				 = JOptionPane.getFrameForComponent(frameComp.getParent());
 		this.alternateReturn = alternateReturn;
 		this.param 			 = param;
@@ -300,8 +301,10 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 			value = alternateReturn.get(index);
 		}
 		ModifierKeysState.reset();
-		baseModPanel.initButtonBackImg();
-		baseModPanel.refreshGui(refreshLevel);
+		if (baseModPanel != null) {
+			baseModPanel.initButtonBackImg();
+			baseModPanel.refreshGui(refreshLevel);
+		}
 		return value;
 	}
 	public int showDialogGetId(int refreshLevel, int idx)	{ // Can only be called once.
@@ -315,8 +318,10 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 		index = -1;
 		setVisible(true);
 		ModifierKeysState.reset();
-		baseModPanel.initButtonBackImg();
-		baseModPanel.refreshGui(refreshLevel);
+		if (baseModPanel != null) {
+			baseModPanel.initButtonBackImg();
+			baseModPanel.refreshGui(refreshLevel);
+		}
 		return index;
 	}
 	private void setValue(String newValue)	{
@@ -341,7 +346,9 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 			}
 			else {
 				clearHelp();
-				frame.paintComponents(frame.getGraphics());
+				Graphics g = frame.getGraphics();
+				frame.paintComponents(g);
+				g.dispose();
 			}
 			return;
 		}		
@@ -361,9 +368,12 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 		}
 	}
 	private void clearHelp() {
-		baseModPanel.guidePopUp.clear();
+		if (baseModPanel != null)
+			baseModPanel.guidePopUp.clear();
 	}
 	private void showHelp(int idx) {
+		if (baseModPanel == null)
+			return;
 		Rectangle dest = getBounds();
 		if (dest.x == 0)
 			return;
@@ -375,7 +385,7 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 		String text	= "No Help Yet";
 		if (param != null)
 			text = param.getGuide(idx);
-		baseModPanel.guidePopUp.setDest(dest, text, frame.getGraphics());
+		baseModPanel.guidePopUp.setDest(dest, text);
 	}
 	private class DialJList extends JList<Object> {
 		//Subclass JList to workaround bug 4832765, which can cause the

@@ -42,6 +42,22 @@ public class RSeparator extends RLabel	{
 			gbc = newGbc(x,y, 1,REMAINDER, 0,0, 6, GridBagConstraints.VERTICAL, new Insets(0, gap, 0, gap), 0,0);
 		pane.add(this, gbc);
 	}
+	public RSeparator(Container pane, boolean horizontal, int lineWidth, String text, int x, int y, int gap1, int gap2, Color color)	{
+		super(text);
+		if (color!= null)
+			if (horizontal)
+				setBorder(BorderFactory.createMatteBorder(0, 0, lineWidth, 0, color));
+			else
+				setBorder(BorderFactory.createMatteBorder(0, lineWidth, 0, 0, color));
+		GridBagConstraints gbc;
+		if (horizontal) {
+			gbc = newGbc(x,y, REMAINDER,1, 0,0, 2, GridBagConstraints.HORIZONTAL, new Insets(gap1, 0, gap2, 0), 0,0);
+		}
+		else {
+			gbc = newGbc(x,y, 1,REMAINDER, 0,0, 6, GridBagConstraints.VERTICAL, new Insets(0, gap1, 0, gap2), 0,0);
+		}
+		pane.add(this, gbc);
+	}
 	public RSeparator(Container pane, boolean horizontal, String text, int x, int y, int gap)	{
 		super(text);
 		GridBagConstraints gbc;

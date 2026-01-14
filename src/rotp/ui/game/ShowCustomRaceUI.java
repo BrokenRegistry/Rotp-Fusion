@@ -165,7 +165,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	    malusCostText = new ModText(this, costFontSize, 
 	    		malusC, malusC, hoverC, depressedC, malusC, false);
 	}
-	public static ShowCustomRaceUI instance() 				{ return instance.init0(); }
+	public static ShowCustomRaceUI instance() 		{ return instance.init0(); }
 	public static SkillsFactory displayedSpecies()	{ return cr; }
 
 	private ShowCustomRaceUI init0() {

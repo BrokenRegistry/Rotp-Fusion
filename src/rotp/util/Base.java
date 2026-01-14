@@ -19,6 +19,7 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.model.game.IGameOptions.DIFFICULTY_CUSTOM;
 
 import java.awt.AlphaComposite;
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Composite;
@@ -1179,12 +1180,19 @@ public interface Base extends InputEventUtil {
     public default List<String> wrappedLines(Graphics g, String text, int maxWidth) {
         return wrappedLines(g, text, maxWidth, 0);
     }
-    public default List<String> wrappedLines(Graphics g, String text, int maxWidth, int line1Indent) {
-    	// BR: Zero would lead to infinite loop
+	public default List<String> wrappedLines(Graphics g, String text, int maxWidth, int line1Indent) {
+		return wrappedLines(g.getFontMetrics(), text, maxWidth, line1Indent);
+	}
+	public default List<String> wrappedLines(Font font, String text, int maxWidth)	{
+		return wrappedLines(new Canvas().getFontMetrics(font), text, maxWidth, 0);
+	}
+	public default List<String> wrappedLines(Font font, String text, int maxWidth, int line1Indent)	{
+		return wrappedLines(new Canvas().getFontMetrics(font), text, maxWidth, line1Indent);
+	}
+	public default List<String> wrappedLines(FontMetrics fm, String text, int maxWidth, int line1Indent) {
+		// BR: Zero would lead to infinite loop
         maxWidth = max(scaled(5), maxWidth);
         List<String> lines = new ArrayList<>();
-
-        FontMetrics fm = g.getFontMetrics();
         int indent = line1Indent;
         String currentLine = "";
 
@@ -1232,25 +1240,6 @@ public interface Base extends InputEventUtil {
                 }
         	}
         }
-//        else { // Character based
-//            List<String> words = substrings(text, ' ');
-//            for (String word: words) {
-//                String newLine = currentLine;
-//                if (newLine.isEmpty())
-//                    newLine = newLine + word;
-//                else
-//                    newLine = newLine + " " + word;
-//                int newWidth = fm.stringWidth(newLine);
-//                if (newWidth > (maxWidth-indent)) {
-//                    lines.add(currentLine);
-//                    indent = 0;
-//                    currentLine = word;
-//                }
-//                else
-//                    currentLine = newLine;
-//            }
-//        }
-
         if (!currentLine.isEmpty())
             lines.add(currentLine);
 

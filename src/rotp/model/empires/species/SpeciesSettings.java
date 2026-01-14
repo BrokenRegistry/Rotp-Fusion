@@ -27,8 +27,8 @@ import rotp.model.game.IGameOptions;
 import rotp.model.game.IRaceOptions;
 import rotp.model.planet.PlanetType;
 import rotp.model.ships.ShipLibrary;
+import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.game.BaseModPanel;
 import rotp.ui.util.PlayerShipSet;
 import rotp.ui.util.StringList;
 import rotp.util.LabelManager;
@@ -88,7 +88,7 @@ public abstract class SpeciesSettings {
 	protected SpeciesSkills animSkills;
 	private boolean isReference		= false;
 	private boolean isForShow		= false;
-	BaseModPanel parent;
+	BasePanel parent;
 
 	private boolean isReference()			{ return isReference; };
 	protected void isReference(boolean b)	{ isReference = b; };
@@ -1314,6 +1314,17 @@ public abstract class SpeciesSettings {
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.homeworldSize(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.homeworldSize()); }
 	}
+	// ==================== PopulationBonusPct ====================
+	//
+	@SuppressWarnings("unused")
+	class PopulationBonusPct extends SettingInteger { // BR: May be implemented later... !High risk of bugs!
+		PopulationBonusPct() {
+			super(ROOT, "POPULATION_BONUS", 100, 70, 150, 1, 5, 20,
+					DIFFERENCE, new float[]{0f, .8f}, new float[]{0f, 1.4f});
+		}
+		@Override public void settingToSkill(SpeciesSkills skills) { skills.populationBonusPct(settingValue()); }
+		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.populationBonusPct()); }
+	}
 	// ==================== SpeciesType ====================
 	//
 	@SuppressWarnings("unused")
@@ -1976,6 +1987,7 @@ public abstract class SpeciesSettings {
 			civilizationNameItems	= new CivilizationNameItems(labelKey);
 			civilizationLabelItems	= new CivilizationLabelItems(labelKey);
 		}
+		@Override public String  getLabel()	{ return ""; }
 		@Override public void updateOption(DynamicOptions destOptions) {
 			speciesNameItems.updateOption(destOptions);
 			speciesDescriptionItems.updateOption(destOptions);
@@ -2142,6 +2154,7 @@ public abstract class SpeciesSettings {
 			langKey = toLanguageKey(langDir);
 		}
 		static final long serialVersionUID = 1L;
+		@Override public String  getLabel()	{ return ""; }
 		@Override public void updateOption(DynamicOptions destOptions) {
 			for (ICRSettings item : this)
 				item.updateOption(destOptions);

@@ -1504,7 +1504,8 @@ ERROR_EMAIL                       | E-mail : rayfowler@fastmail.com
 ERROR_REDDIT                      | Reddit : www.Reddit.com/r/rotp
 
 // Setup UI
-SETUP_SELECT_RACE                 | Sélection de l’espèce
+//SETUP_SELECT_RACE                 | Sélection de l’espèce
+SETUP_SELECT_RACE                 | Sélection de l’Avatar
 SETUP_SELECT_OPPONENTS            | Sélection des adversaires
 SETUP_SELECT_GALAXY               | Configuration de la Galaxie
 SETUP_SELECT_GALAXY_OPTIONS       | Sélection les options
@@ -2013,13 +2014,27 @@ SETUP_NO_FOG_ON_ICONS             | Retirer la brume : %1
 SETUP_NO_FOG_ON_ICONS_DESC        | Retire le brouillard qui masque partiellement les icônes des diplomates dans les panneaux de configuration de l’espèce et de la configuration de la galaxie.
 
 // BR : config Player Race
-SETUP_BUTTON_CUSTOM_PLAYER_RACE   | Façonner une espèce
+//SETUP_BUTTON_CUSTOM_PLAYER_RACE   | Façonner une espèce
+SETUP_BUTTON_CUSTOM_PLAYER_RACE	| Atelier ADN
+
+// BR: Customize Player Race New GUI addition
+CUSTOM_RACE_BUTTON_EXIT			| Quitter
+CUSTOM_RACE_BUTTON_EXIT_DESC	| Conservez les paramètres actuels, puis quittez l'interface.
+CUSTOM_RACE_BUTTON_CANCEL		| Annuler
+CUSTOM_RACE_BUTTON_CANCEL_DESC	| Annulez les modifications, puis quittez l'interface.
+CUSTOM_RACE_BUTTON_FOLDER		| Répertoire
+CUSTOM_RACE_BUTTON_FOLDER_DESC	| Pour choisir le répertoire contenant les espèces personnalisée.
+CUSTOM_RACE_BUTTON_NAMES		| Éditer les Noms
+CUSTOM_RACE_BUTTON_NAMES_DESC	| Pour éditer les noms des civilisations.<br>(Ajouter, Retirer, Choix des langues)
 
 // BR : Customize Player Race
 CUSTOM_RACE_RACE_AI_DESC          | Changer l’IA de l’empire
-CUSTOM_RACE_GUI_TITLE             | Façonnage des espèces
-CUSTOM_RACE_SHOW_TITLE            | Aptitudes de l’espèce
-CUSTOM_RACE_SHOW_TITLE_CUSTOM	| Aptitudes de l’espèce personnalisée
+//CUSTOM_RACE_GUI_TITLE             | Façonnage des espèces
+//CUSTOM_RACE_SHOW_TITLE            | Aptitudes de l’espèce
+//CUSTOM_RACE_SHOW_TITLE_CUSTOM	| Aptitudes de l’espèce personnalisée
+CUSTOM_RACE_GUI_TITLE			| Atelier ADN
+CUSTOM_RACE_SHOW_TITLE			| ADN de l’espèce
+CUSTOM_RACE_SHOW_TITLE_CUSTOM	| ADN de l’espèce OGM
 CUSTOM_RACE_GUI_MALUS             | (Malus : %1)
 CUSTOM_RACE_GUI_COST              | Valeur totale : %1
 CUSTOM_RACE_GUI_SELECT_DESC       | Enregistrer cette espèce, l’attribuer au joueur, Enregistrer en tant que «Dernier paramètre», et quitter ce panneau.
@@ -2079,13 +2094,15 @@ CUSTOM_RACE_DESCRIPTION				| Espèce Personnalisée
 CUSTOM_RACE_BASE_DATARACE         | Aptitudes de base
 CUSTOM_RACE_HOME_TYPE             | Type de planète
 CUSTOM_RACE_HOME_SIZE_DESC        | Taille de départ du monde d’origine de cet empire.
-CUSTOM_RACE_HOME_SIZE             | Taille de la planète
+CUSTOM_RACE_HOME_SIZE             | Taille du monde d’origine
 CUSTOM_RACE_HOME_ARTIFACTS_DESC   | Ce paramètre affecte le potentiel de recherche du monde d’origine.
 CUSTOM_RACE_HOME_ARTIFACTS        | Planète avec artéfacts
 CUSTOM_RACE_HOME_RESOURCES_DESC   | Ce paramètre affecte la production du monde d’origine.
 CUSTOM_RACE_HOME_RESOURCES        | Ressources planétaires
 CUSTOM_RACE_HOME_ENVIRONMENT_DESC | Ce paramètre affecte le taux de croissance du monde d’origine.
 CUSTOM_RACE_HOME_ENVIRONMENT      | Environnement planétaire
+CUSTOM_RACE_POPULATION_BONUS_DESC	| Certaines espèces ont besoin de plus ou moins d’espace que d’autres. Ce bonus multiplie la taille nominale des planètes.
+CUSTOM_RACE_POPULATION_BONUS		| Bonus de Population
 CUSTOM_RACE_RACE_KEY				| Nom du fichier (Clé)
 CUSTOM_RACE_RACE_KEY_DESC			| C’est ici que vous devez saisir le nom du fichier, il est également utilisé comme clé pour les espèces standard... Ne les utilisez pas ou conservez la valeur par défaut "RACE_xxx" pour définir les aptitudes →ABILITIES_REWORKED←.
 CUSTOM_RACE_RACE_KEY_INPUT			| Entrez le nom du fichier de l’espèce personnalisée.

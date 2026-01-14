@@ -27,6 +27,7 @@ import static rotp.ui.util.IParam.tableFormat;
 import static rotp.util.Base.textSubs;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -46,17 +47,12 @@ import rotp.model.game.IGameOptions;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.BaseModPanel.ModText;
-import rotp.ui.main.SystemPanel;
 import rotp.ui.util.ListDialogUI;
 import rotp.ui.util.StringList;
 
 public class SettingBase<T> implements ICRSettings {
 	
 	public enum CostFormula {DIFFERENCE, RELATIVE, NORMALIZED}
-	private static final Color settingPosC	= SystemPanel.limeText;	// Setting name color
-	public static final Color settingNegC	= SystemPanel.redText;	// Setting name color
-	public static final Color settingC		= SystemPanel.whiteText;	// Setting name color
-
 	private static final boolean defaultIsList			= true;
 	private static final boolean defaultIsBullet		= false;
 	private static final boolean defaultLabelsAreFinals	= false;
@@ -179,6 +175,18 @@ public class SettingBase<T> implements ICRSettings {
 			return next();
 		else 
 			return prev();
+	}
+	@Override public boolean toggle(MouseEvent e, Component frame) {
+		if (getDir(e) == 0) 
+			setFromDefault(true, true);
+		else if (allowListSelect && frame != null && 
+				(e.isControlDown() || listSize() >= minListSizePopUp.get()))
+			setFromList(frame);
+		else if (getDir(e) > 0)
+			return next();
+		else 
+			return prev();
+		return false;
 	}
 	@Override public boolean toggle(MouseEvent e, BaseModPanel frame) {
 		if (getDir(e) == 0) 
@@ -445,18 +453,42 @@ public class SettingBase<T> implements ICRSettings {
 
 		g.dispose();
 	}
+	@Override public void updateGui(RSettingPanel panel)	{
+		int paramId	= index();
+		int bulletStart	= bulletStart();
+		int bulletSize	= bulletBoxSize();
 
+		boolean isSettingString = this instanceof SettingString;
+		panel.setLabelColor(getCostColor());
+		panel.setLabelText(guiSettingDisplayStr());
+		if (bulletSize == 0)
+			return;
+		if (bulletSize == 1 || isSettingString) {
+			panel.setValueString(guideSelectedValue(), optionC);
+			return;
+		}
+		boolean refresh = false;
+		for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
+			int optionIdx = bulletStart + bulletIdx;
+			boolean disabled = optionIdx == paramId;
+			Color color = disabled? optionC : selectC;
+			String text = guiCostOptionStr(optionIdx);
+			refresh |= panel.setOptionString(text, bulletIdx, color, refresh && ((bulletIdx+1) >= bulletSize));
+		}
+	}
 	// ========== Overridable Methods ==========
 	//
 	protected boolean showFullGuide()		{ return showFullGuide; }
-	public void enabledColor(float cost) 	{
+	public void enabledColor(float cost)	{ settingText().enabledC(getCostColor(cost)); }
+	public Color getCostColor(float cost)	{
 		if (cost == 0) 
-			settingText().enabledC(settingC);
+			return settingC;
 		else if (cost > 0)
-			settingText().enabledC(settingPosC);
+			return settingPosC;
 		else
-			settingText().enabledC(settingNegC);	
+			return settingNegC;	
 	}
+	@Override public Color getCostColor()	{ return getCostColor(settingCost()); }
 	void resetOptionsToolTip()				{}
 	protected String getCfgValue(T value)	{
 		if (isList) {
@@ -573,7 +605,7 @@ public class SettingBase<T> implements ICRSettings {
 	protected T	defaultValue()			{ return defaultValue; }
 	protected String guiOptionLabel()	{ return guiOptionLabel(index()); }
 	protected String guiOptionLabel(int index)	{ return langLabel(labelList.get(cfgValidIndex(index))); }
-	public	String  getLabel()			{ return langLabel(getLangLabel()); }
+	@Override public String getLabel()	{ return langLabel(getLangLabel()); }
 	private	int bulletEnd()				{ return bulletStart + bulletBoxSize(); }
 	int	bulletHeightFactor()			{ return bulletHFactor; }
 	public	boolean	isDefaultIndex()	{ return cfgValidIndex() == rawDefaultIndex(); }
@@ -800,7 +832,7 @@ public class SettingBase<T> implements ICRSettings {
 		return -1;
 	}
 	@SuppressWarnings("unchecked")
-	private void setFromList(BaseModPanel frame) {
+	private void setFromList(Component frame) {
 		String message	= "<html>" + getGuiDescription() + "</html>";
 		String title	= text(getLangLabel(), "");
 		// System.out.println("getIndex() = " + getIndex());
