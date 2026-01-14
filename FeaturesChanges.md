@@ -328,6 +328,7 @@
 
 ### Fixes:
 
+- Fixed certain fields displaying the generic name of the species instead of the specific name of the Empire.
 - Fixed potential "Memory Leak" (added by the last fix)
 - Improved a security for customized Ship Names.
   - The original names are added as reserve in case the number of custom names is to small.

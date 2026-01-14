@@ -7,6 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-01-14 (BR)
+- Fixed certain fields displaying the generic name of the species instead of the specific name of the Empire.
+
 26-01-12 (BR)
 - Fixed potential "Memory Leak" (added in the last fix)
 
