@@ -355,7 +355,8 @@ public class Species implements ISpecies, Base, Serializable {
 	public String raceName()	{
 		if (isOrion)
 			return "Orion";
-		String name = civilizationId().getSpeciesName();
+//		String name = civilizationId().getSpeciesName();
+		String name = civilizationName();
 		if (name == null || name.isEmpty())
 			return animSetupName(); // BR: for backward compatibility
 		return name;
