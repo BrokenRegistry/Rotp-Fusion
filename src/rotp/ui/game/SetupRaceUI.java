@@ -23,7 +23,6 @@ import static rotp.ui.util.IParam.rowFormat;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -42,12 +41,10 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import rotp.Rotp;
-import rotp.model.empires.species.CustomSpeciesUI;
 import rotp.model.empires.species.Species;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IRaceOptions;
@@ -257,9 +254,6 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         newGameOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
     }
 	@Override public void showHelp() {
-		JFrame frame = (JFrame) SwingUtilities.getRoot(RotPUI.instance());
-		Component gp = frame().getGlassPane(); // TODO BR: REMOVE
-
 		loadHelpUI();
 		repaint();   
 	}
@@ -1216,14 +1210,8 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 	private void goToPlayerRaceCustomization(MouseEvent e) {
 		if (Rotp.isIDE() && e.isShiftDown()) {
 			RotPUI.instance().selectDNAWorkshopPanel(this, true);
-			return;
-		}
-		if (Rotp.isIDE() && e.isControlDown()) {
-			CustomSpeciesUI ui = new CustomSpeciesUI(this, true);
-			RotPUI.animationListeners.add(ui);
-			boolean canceled = ui.showPanel();
-			System.out.println("CustomSpeciesUI return canceled = " + canceled); // TODO BR: REMOVE
-			RotPUI.animationListeners.remove(ui);
+			setVisible(false);
+			this.setEnabled(false);
 			return;
 		}
         buttonClick();

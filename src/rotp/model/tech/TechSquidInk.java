@@ -117,6 +117,7 @@ public final class TechSquidInk extends Tech {
 		g.setStroke(prev);
 
 		ui.paintAllImmediately();
+		g.dispose();
 		sleep(250);
 		source.mgr.performingStackTurn = false;
 	}

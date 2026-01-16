@@ -2026,6 +2026,7 @@ CUSTOM_RACE_BUTTON_FOLDER		| Répertoire
 CUSTOM_RACE_BUTTON_FOLDER_DESC	| Pour choisir le répertoire contenant les espèces personnalisée.
 CUSTOM_RACE_BUTTON_NAMES		| Éditer les Noms
 CUSTOM_RACE_BUTTON_NAMES_DESC	| Pour éditer les noms des civilisations.<br>(Ajouter, Retirer, Choix des langues)
+CUSTOM_RACE_EMPTY_DESCRIPTION	| « Maj » et « Ctrl » peuvent être utilisés pour modifier les fonctionnalités des boutons, des clics et des défilements.
 
 // BR : Customize Player Race
 CUSTOM_RACE_RACE_AI_DESC          | Changer l’IA de l’empire

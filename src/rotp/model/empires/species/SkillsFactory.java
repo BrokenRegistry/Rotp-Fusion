@@ -74,6 +74,12 @@ public class SkillsFactory extends SpeciesSettings {
 
 	// #========== Constructors For Custom Skills Editors and Viewer ==========
 	//
+	public Race avatar()					{
+		if (animSkills == null)
+			return Species.getAnim(defaultRaceKey);
+		else
+			return Species.getAnim(animSkills.id);
+	}
 	public static SkillsFactory getSkillsFactoryForEditor(BasePanel parent)	{
 		SkillsFactory factory = new SkillsFactory();
 		factory.parent = parent;
@@ -133,7 +139,7 @@ public class SkillsFactory extends SpeciesSettings {
 	}
 	public String getPlayerAnim()	{ return animSkills==null? null : animSkills.id; }
 	private void initSkillsForEditor(DynOptions srcOptions)	{
-		String skillKey = AnimationRaceKey.getRawReworkedKey(srcOptions);
+		String skillKey = AvatarKey.getRawAvatarKey(srcOptions);
 		initWithInternalSkillsForGalaxy(null, skillKey, false);
 
 		isReference(false);
@@ -258,7 +264,7 @@ public class SkillsFactory extends SpeciesSettings {
 	}
 
 	private void initSkillsForGalaxy(SpeciesSkills anim, DynOptions srcOptions)	{
-		String skillKey = AnimationRaceKey.getRawReworkedKey(srcOptions);
+		String skillKey = AvatarKey.getRawAvatarKey(srcOptions);
 		initWithInternalSkillsForGalaxy(anim, skillKey, false);
 
 		isReference(false);
@@ -586,7 +592,7 @@ public class SkillsFactory extends SpeciesSettings {
 
 		// ====================
 		// First column (left)
-		settingMap.add(new AnimationRaceKey());
+		settingMap.add(new AvatarKey());
 		settingMap.add(raceKey);
 		settingMap.addAttribute(new RaceName(dir));
 		settingMap.add(new LeaderTitle(dir));
@@ -819,7 +825,7 @@ public class SkillsFactory extends SpeciesSettings {
 		}
 		void markAsUsed()	{ useCount++; }
 		boolean hasPreferedAnim()	{
-			return prefAnimKey!=null && prefAnimKey!=AnimationRaceKey.DEFAULT_VALUE && !prefAnimKey.isEmpty();
+			return prefAnimKey!=null && prefAnimKey!=AvatarKey.DEFAULT_VALUE && !prefAnimKey.isEmpty();
 		}
 		boolean isFullAnim()	{
 			if (!fullAnim)
@@ -871,7 +877,7 @@ public class SkillsFactory extends SpeciesSettings {
 				fileKey = RaceKey.fileToKey(file);
 			
 			if (sf.animSkills == null)
-				prefAnimKey = AnimationRaceKey.DEFAULT_VALUE;
+				prefAnimKey = AvatarKey.DEFAULT_VALUE;
 			else
 				prefAnimKey = sf.animSkills.id;
 			String dir = selectedLanguageDir();
@@ -900,7 +906,7 @@ public class SkillsFactory extends SpeciesSettings {
 			speciesOptions	= race.speciesOptions();
 			skillsKey	= key;
 			fileKey		= key;
-			prefAnimKey	= AnimationRaceKey.DEFAULT_VALUE;
+			prefAnimKey	= AvatarKey.DEFAULT_VALUE;
 			namedCiv	= race.civilizationNames();
 			namedLeader	= race.leaderNames();
 			namedHome	= race.homeSystemNames();
@@ -932,7 +938,7 @@ public class SkillsFactory extends SpeciesSettings {
 		public AnimationListMap()	{
 			for (String raceKey : IGameOptions.allRaceKeyList)
 				put(raceKey, new CivRecordList());
-			put(AnimationRaceKey.DEFAULT_VALUE, new CivRecordList());
+			put(AvatarKey.DEFAULT_VALUE, new CivRecordList());
 		}
 		AnimationListMap loadCustomSpecies()	{
 			File[] fileList = loadListing();
@@ -1076,7 +1082,7 @@ public class SkillsFactory extends SpeciesSettings {
 			clearOptionsText();
 			for (String raceKey : IGameOptions.allRaceKeyList)
 				animationMap.put(raceKey, new StringList());
-			animationMap.put(AnimationRaceKey.DEFAULT_VALUE, new StringList());
+			animationMap.put(AvatarKey.DEFAULT_VALUE, new StringList());
 
 			// Add Current race
 			add((DynOptions) IGameOptions.playerCustomRace.get());
@@ -1094,7 +1100,7 @@ public class SkillsFactory extends SpeciesSettings {
 						// Check to Update filename
 						String skillKey = RaceKey.valid(opt, file);
 						// Test for reworked old Ways
-						String animKey  = AnimationRaceKey.validRedesign(opt, file, foldersRedesign);
+						String animKey  = AvatarKey.validRedesign(opt, file, foldersRedesign);
 						animationMap.get(animKey).add(skillKey); // The map has a "None" key
 						add(opt);
 					}

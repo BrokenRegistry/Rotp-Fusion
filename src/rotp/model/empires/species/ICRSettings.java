@@ -53,6 +53,7 @@ public interface ICRSettings extends IParam {
 	default boolean isSpacer()			{ return false; }
 	default boolean hasNoCost()			{ return true; }
 	default boolean isBullet()			{ return false; }
+	default boolean isSettingString()			{ return false; }
 
 	default int index()					{ return 0; }
 	default int bulletStart()			{ return 0; }

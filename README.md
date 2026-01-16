@@ -44,6 +44,11 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-01-15 (BR)
+- Fixed numerous "getGraphics()" calls that did not properly call "dispose()".
+  - Many of them were used intensively.
+  - This should lighten the load for the garbage collector and, hopefully, prevent "insufficient memory" screens from appearing.
+
 26-01-14 (BR)
 - Fixed certain fields displaying the generic name of the species instead of the specific name of the Empire.
 

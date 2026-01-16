@@ -15,7 +15,11 @@
  */
 package rotp.model.tech;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
 import rotp.model.ships.ShipWeaponBomb;
@@ -202,13 +206,14 @@ public final class TechBombWeapon extends Tech {
             sleep(200);
         }
         g.setStroke(prev);
-        
+
         String missLabel = dmg < 0 ? text("SHIP_COMBAT_DEFLECTED") : text("SHIP_COMBAT_MISS");
 
         if (target.destroyed()) 
             target.drawAttackResult(g, x1,y1,x0, -1,text("SHIP_COMBAT_DESTROYED")); 
         else
-            target.drawAttackResult(g, x1,y1,x0, dmg,missLabel);   
+            target.drawAttackResult(g, x1,y1,x0, dmg,missLabel);
+        g.dispose();
         ui.paintAllImmediately();
     }
 }

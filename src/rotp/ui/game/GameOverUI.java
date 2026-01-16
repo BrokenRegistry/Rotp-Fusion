@@ -155,7 +155,8 @@ public final class GameOverUI extends FadeInPanel
             drawButtons(g);
 
         drawOverlay(g);
-        
+        g.dispose();
+
         // fade in the descriptive text
         if (!stillFading() && (transIndex < trans.length -1)) {
             // on the first time through (transIndex = -1)

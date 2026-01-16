@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -15,6 +16,7 @@ import javax.swing.border.TitledBorder;
 import rotp.ui.components.RLabel;
 import rotp.ui.components.RLineBorder;
 import rotp.ui.components.RotPComponents;
+import rotp.ui.util.IParam;
 
 class RSettingPanel extends JPanel implements RotPComponents {
 	private static final long serialVersionUID = 1L;
@@ -35,9 +37,6 @@ class RSettingPanel extends JPanel implements RotPComponents {
 		this.setting	= setting;
 		this.lineLength	= width;
 		settingListener	= listener;
-		//setToolTipText(setting.htmlFullHelp());
-//		setToolTipText(setting.getFullHelp());
-//		setToolTipText(setting.getGuide());
 		if (setting.isBullet())
 			border	= new RLineBorder(Color.BLACK, false);
 		else
@@ -56,6 +55,8 @@ class RSettingPanel extends JPanel implements RotPComponents {
 		setting.updateGui(this);
 		updateDisplay();
 	}
+	@Override public IParam getParam()			{ return setting; }
+	@Override public JComponent getComponent()	{ return this; }
 	void updateDisplay()	{
 		if (highLighted) {
 			border.setLineColor(highlightColor());
@@ -93,8 +94,6 @@ class RSettingPanel extends JPanel implements RotPComponents {
 			valueLabel.setAlignmentX(0);
 			valueLabel.setBorder(emptyBorder());
 			valueLabel.setForeground(color);
-			//valueLabel.addMouseListener(settingListener);
-			//valueLabel.setFocusable(true);
 			valueLabels.add(valueLabel);
 			add(valueLabel);
 		}
@@ -107,22 +106,8 @@ class RSettingPanel extends JPanel implements RotPComponents {
 			revalidate();
 		return refresh;
 	}
+	public void paintImmediately()	{ paintImmediately(0, 0, getWidth(), getHeight()); }
 	public void setLabelText(String title)	{ titleBorder.setTitle(title); }
 	public void setLabelColor(Color color)	{ titleBorder.setTitleColor(color); }
 	private EmptyBorder emptyBorder()		{ return new EmptyBorder(0, s10, 0, s4); }
-//	@Override public String generateToolTip(XYDataset arg0, int arg1, int arg2) {
-//		return "";
-//	}
-//	@Override public JToolTip createToolTip() {
-//		Point p = getMousePosition();
-//		// Locate the renderer under the event location
-//		System.out.println("Position = " + p);
-//		BufferedImage eyeIcon = this.eyeIcon(scaled(300), scaled(300), Color.RED, true);
-//		//return new ImageToolTip();
-//		return super.createToolTip();
-//		//keep default behaviour 
-//		//JToolTip toReturn=super.createToolTip();
-//		//toReturn.addComponentListener(customTooltipListener);
-//		//return toReturn;
-//	}
 }

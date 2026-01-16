@@ -283,7 +283,8 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
                 g.setStroke(prev);
             }
         }
-        g.setClip(null);      
+        g.setClip(null);
+        g.dispose();
         return screenImg;
     }
     private void scrollList(int i) {

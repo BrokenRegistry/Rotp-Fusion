@@ -943,6 +943,7 @@ public class CombatStackShip extends CombatStack {
                 g.fillOval(x0+w0-(w0/16), y0+(h0/2)-(i*h0/20), w0*i/160, h0*i/10);
             sleep(20);
         }
+        g.dispose();
         ui.paintCellImmediately(x,y);
     }
 }

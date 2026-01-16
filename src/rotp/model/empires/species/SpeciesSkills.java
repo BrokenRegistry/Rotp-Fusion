@@ -153,8 +153,8 @@ class SpeciesSkills implements Base, Serializable {
 
 	String languageList()				{ return languageList; }
 	void languageList(String s)			{ languageList = s; }
-	String reworkableSpeciesKey()		{ return reworkableSpeciesKey; }
-	void reworkableSpeciesKey(String s)	{ reworkableSpeciesKey = s; }
+	String avatarSpeciesKey()		{ return reworkableSpeciesKey; }
+	void avatarSpeciesKey(String s)	{ reworkableSpeciesKey = s; }
 	int reworkableId()					{ return reworkableId; }
 	void reworkableId(int i)			{ reworkableId = i; }
 	int startingYear()					{ return startingYear; }

@@ -10,6 +10,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
+import javax.swing.JComponent;
 import javax.swing.border.LineBorder;
 
 // Extended this class to allow line size and color selection
@@ -37,6 +38,7 @@ public class RLineBorder extends LineBorder implements RotPComponents {
         }
         return (int) Math.ceil(newv);
     }
+	@Override public JComponent getComponent()	{ return null; }
 	/*
 	 * Copy from original LineBorder and modified for "top only" 
 	 */

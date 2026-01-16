@@ -124,7 +124,7 @@ public final class TechStreamProjector extends Tech {
         int rX = (int) (ui.boxW*3/2);
         int rY = (int) (ui.boxH*3/2);
         float radians = source.rotateRadians(target);
-        
+
         // create attack frames
         BufferedImage[] frames = new BufferedImage[n];
         int w0 = BasePanel.s10;
@@ -149,14 +149,14 @@ public final class TechStreamProjector extends Tech {
             w0 += dW;
             h0 += dH;
         }
-        
+
         int repeat = 1;
-        
+
         // create shade boxes for target as it gets increasingly in stasis
 
         int startX = rect.x-ui.boxW;
         int startY = rect.y-ui.boxH;
-        
+
         // draw attack
         for (int h=0; h<repeat; h++) {
             if (!source.mgr.showAnimations()) 
@@ -171,6 +171,7 @@ public final class TechStreamProjector extends Tech {
             }
         }
         g0.setStroke(prev);
+        g0.dispose();
         source.mgr.performingStackTurn = false;
     }
 }

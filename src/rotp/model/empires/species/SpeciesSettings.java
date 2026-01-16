@@ -86,8 +86,8 @@ public abstract class SpeciesSettings {
 	private SpeciesSkills race; // !!! To be kept up to date !!!
 	private DynOptions animOptions;
 	protected SpeciesSkills animSkills;
-	private boolean isReference		= false;
-	private boolean isForShow		= false;
+	private boolean isReference	= false;
+	private boolean isForShow	= false;
 	BasePanel parent;
 
 	private boolean isReference()			{ return isReference; };
@@ -266,29 +266,29 @@ public abstract class SpeciesSettings {
 	// -#-
 	// #==================== ReworkedRaceKey ====================
 	//
-	class AnimationRaceKey extends SettingBase<String> {
-		private static final String REWORKED_RACE_KEY = "REWORKED_RACE_KEY";
+	class AvatarKey extends SettingBase<String> {
+		private static final String AVATAR_KEY = "REWORKED_RACE_KEY";
 		static final String DEFAULT_VALUE = "NONE";
 
-		private static void setReworkedKey(DynOptions opts, String key)	{ opts.setString(ROOT + REWORKED_RACE_KEY, key); }
-		private static String getReworkedKey(DynOptions opts)			{ return opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE); }
-		static String getRawReworkedKey(DynOptions opts)	{
-			String key = opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE);
+		private static void setAvatarKey(DynOptions opts, String key)	{ opts.setString(ROOT + AVATAR_KEY, key); }
+		private static String getAvatarKey(DynOptions opts)			{ return opts.getString(ROOT + AVATAR_KEY, DEFAULT_VALUE); }
+		static String getRawAvatarKey(DynOptions opts)	{
+			String key = opts.getString(ROOT + AVATAR_KEY, DEFAULT_VALUE);
 			return DEFAULT_VALUE.equals(key)? null : key;
 		}
 		/**
-		 * Get a reworked key from the filename, or the folder name
+		 * Get an avatar key from the filename, or the folder name
 		 * @param file source file
-		 * @param foldersRework true -> Get a reworked key from the Folder.
+		 * @param foldersAvatar true -> Get a reworked key from the Folder.
 		 * @return the key, "" if none
 		 */
-		private static String fileToReworked (File file, boolean foldersRework)	{
+		private static String fileToAvatar (File file, boolean foldersAvatar)	{
 			// Test for reworked old Ways
 			String name = file.getName();
 			name = name.substring(0, name.length() - EXT.length());
 			if (IRaceOptions.allRaceKeyList.contains(name))
 				return name;
-			if (foldersRework) {
+			if (foldersAvatar) {
 				Path path = file.toPath();
 				int count = path.getNameCount();
 				String dir = "RACE_" + path.getName(count-2).toString().toUpperCase();
@@ -301,25 +301,25 @@ public abstract class SpeciesSettings {
 		 * validate the key and return it
 		 * @param opt options files
 		 * @param file File to be checked for old reworked way
-		 * @param foldersRework true -> Get a reworked key from the Folder.
+		 * @param foldersAvatar true -> Get a reworked key from the Folder.
 		 * @return true if the reworked file is not empty
 		 */
-		static String validRedesign(DynOptions opt, File file, boolean foldersRework)	{
-			String optKey	= getReworkedKey(opt); // current key
-			String fileKey	= fileToReworked(file, foldersRework); // potential candidate
+		static String validRedesign(DynOptions opt, File file, boolean foldersAvatar)	{
+			String optKey	= getAvatarKey(opt); // current key
+			String fileKey	= fileToAvatar(file, foldersAvatar); // potential candidate
 
 			if (fileKey.isEmpty()) // no candidate
 				return optKey;
 
 			if (!fileKey.equals(optKey)) { // update the key
-				setReworkedKey(opt, fileKey);
+				setAvatarKey(opt, fileKey);
 				DynOptions.saveOptions(opt, file);
 				return fileKey;
 			}
 			return optKey;
 		}
-		AnimationRaceKey() {
-			super(ROOT, REWORKED_RACE_KEY);
+		AvatarKey() {
+			super(ROOT, AVATAR_KEY);
 			isBullet(false);
 			hasNoCost(true);
 			showFullGuide(false);
@@ -330,13 +330,13 @@ public abstract class SpeciesSettings {
 			refreshLevel(1);
 			for (Entry<String, String> s : Species.namesMap().entrySet())
 				put(s.getValue(), s.getKey(), 0f, s.getKey());
-			String defaultValue = LabelManager.current().label(ROOT + REWORKED_RACE_KEY + "_" + DEFAULT_VALUE);
+			String defaultValue = LabelManager.current().label(ROOT + AVATAR_KEY + "_" + DEFAULT_VALUE);
 			put(defaultValue, DEFAULT_VALUE, 0f, DEFAULT_VALUE);
 			defaultCfgValue(defaultValue);
 			initOptionsText();
 		}
-		@Override public void settingToSkill(SpeciesSkills skills)	{ skills.reworkableSpeciesKey(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills)	{ set(skills.reworkableSpeciesKey()); }
+		@Override public void settingToSkill(SpeciesSkills skills)	{ skills.avatarSpeciesKey(settingValue()); }
+		@Override public void skillToSetting(SpeciesSkills skills)	{ set(skills.avatarSpeciesKey()); }
 		@Override protected StringList altReturnList()	{ return new StringList(getValues()); }
 		@Override protected StringList guiTextsList()	{ return getOptions(); }
 		@Override public String guideDefaultValue()		{ return getDefaultCfgValue(); }
@@ -368,6 +368,7 @@ public abstract class SpeciesSettings {
 				dest.dynOpts().setString(dynOptionIndex(), settingValue());
 			dest.dynOpts().setString(dynOptionIndex(), src.dynOpts().getString(dynOptionIndex(), DEFAULT_VALUE));
 		}
+		@Override public boolean isSettingString()	{ return true; }
 	}
 	// ==================== Animation ID ====================
 	//

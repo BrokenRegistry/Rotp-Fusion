@@ -1377,10 +1377,14 @@ public interface Base extends InputEventUtil {
         }
     }
     public default void drawBackgroundStars(BufferedImage img, ImageObserver obs) {
-        drawBackgroundStars(img, img.getGraphics(), img.getWidth(obs), img.getHeight(obs), scaled(50), scaled(100));
+		Graphics g = img.getGraphics();
+		drawBackgroundStars(img, g, img.getWidth(obs), img.getHeight(obs), scaled(50), scaled(100));
+		g.dispose();
     }
     public default void drawBackgroundStars(BufferedImage img, ImageObserver obs, int minDist, int varDist) {
-        drawBackgroundStars(img, img.getGraphics(), img.getWidth(obs), img.getHeight(obs), minDist, varDist);
+		Graphics g = img.getGraphics();
+		drawBackgroundStars(img, g, img.getWidth(obs), img.getHeight(obs), minDist, varDist);
+		g.dispose();
     }
     public default void drawBackgroundStars(Graphics g, int w, int h) {
         drawBackgroundStars(g, w, h, scaled(50), scaled(100));

@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
@@ -36,7 +37,7 @@ public class RLabel extends JLabel implements RotPComponents	{
 	}
 	protected Color labelTextColor()	{ return Color.WHITE; }
 	
-	
+	@Override public JComponent getComponent()	{ return this; }
 //	private class LabelMouseAdapter extends MouseAdapter	{
 //		@Override public void mouseEntered(MouseEvent evt)	{
 //			//showBorder = true;

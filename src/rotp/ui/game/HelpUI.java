@@ -15,127 +15,51 @@
  */
 package rotp.ui.game;
 
-import static rotp.ui.game.BaseModPanel.guideFontSize;
-
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JEditorPane;
-import javax.swing.JTextPane;
-
-import rotp.Rotp;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.util.IParam;
-import rotp.ui.util.InterfaceHelp;
-import rotp.util.Base;
 
 
-public class HelpUI extends BasePanel implements MouseListener, MouseMotionListener {
+public class HelpUI extends BasePanel implements MouseListener {
     private static final long serialVersionUID = 1L;
     private static final Color backgroundHaze = new Color(0,0,0,40);
     private static final int FONT_SIZE		= 16;
     private static final int MIN_FONT_SIZE	= 10;
-//    private static final BufferedImage fakeGraphic = new BufferedImage(16, 16, TYPE_INT_ARGB);
     private static int margin = s30;
     private final Color blueBackC  = new Color(78,101,155);
     private final Color brownBackC = new Color(240,240,240);
     private final Color brownTextC = new Color(45,14,5);
 
     private List<HelpSpec> specs = new ArrayList<>();
-	private InterfaceHelp parent; // BR: changed to Interface to allow Dialogs to call it
-	private JDialog dialog;
-	private boolean asGuide;
-	private GuideData guideData = new GuideData();
+	private BasePanel parent;
 
-	// ========================================================================
-	// === Panel Global Tools
-	//
-	public static String cleanHtmlText(String text)	{
-		text = text.replace("<=", "&lt;=");
-		text = text.replace(">=", "&gt;=");
-		text = text.replace("<>", "&lt;&gt;");
-		return text;
-	}
-	// ========================================================================
-	// #=== Panel Management
-	//
     public HelpUI() {
         init();
     }
     private void init() {
         setOpaque(false);
         addMouseListener(this);
-        addMouseMotionListener(this);
     }
     public void open(BasePanel p) {
         parent = p;
-        asGuide = false;
         enableGlassPane(this);
     }
     public void close() {
-		clear();
-		if (dialog == null)
-			disableGlassPane();
-		else {
-//			dialog.setEnabled(true);
-			dialog.getContentPane().setEnabled(true);
-			dialog.getGlassPane().setVisible(false);
-			dialog = null;
-		}
+    	clear();
+    	disableGlassPane();
     }
-    public void clear() {
-        specs.clear();
-        clearGuide();
-    }
-	public void open(InterfaceHelp parent, Rectangle target, String tipText, Rectangle valid)	{
-		this.parent = parent;
-		asGuide = true;
-		guideData.init(target, tipText, valid);
-		enableGlassPane(this);
-	}
-	public void open(InterfaceHelp parent, JComponent target, String tipText, Rectangle valid)	{
-		this.parent = parent;
-		asGuide = true;
-		guideData.init(target, tipText, valid);
-		enableGlassPane(this);
-	}
-	public void open(JDialog frame, InterfaceHelp parent, Rectangle target, String tipText, Rectangle valid)	{
-		dialog  = frame;
-		this.parent = parent;
-		asGuide = true;
-		guideData.init(target, tipText, valid);
-		this.setVisible(false);
-		dialog.setGlassPane(this);
-		this.setVisible(true);
-	}
-	public void open(JDialog frame, InterfaceHelp parent, JComponent target, String tipText, Rectangle valid)	{
-		dialog  = frame;
-		this.parent = parent;
-		asGuide = true;
-		guideData.init(target, tipText, valid);
-		this.setVisible(false);
-		dialog.setGlassPane(this);
-		this.setVisible(true);
-	}
-	// -#-
-	// ========================================================================
-	// #=== HelpSpec Management
-	//
+    public void clear() { specs.clear(); }
+
     public HelpSpec addBrownHelpText(int x, int y, int w, int num, String text) {
         HelpSpec sp = addBlueHelpText(x,y,w,num,text);
         sp.backC = brownBackC;
@@ -190,17 +114,10 @@ public class HelpUI extends BasePanel implements MouseListener, MouseMotionListe
 		List<String> lines = wrappedLines(narrowFont(FONT_SIZE), str, maxWidth - margin);
 		return lines.size();
 	}
-	// -#-
-	// ========================================================================
-	// #=== Standard Overriders
-	//
-    @Override public void paintComponent(Graphics g0)	{
+
+	@Override public void paintComponent(Graphics g0)	{
         super.paintComponent(g0);
 		Graphics2D g = (Graphics2D) g0;
-		if (asGuide)	{
-			paintGuide(g);
-			return;
-		}
         int w = getWidth();
         int h = getHeight();
         g.setColor(backgroundHaze);
@@ -296,20 +213,12 @@ public class HelpUI extends BasePanel implements MouseListener, MouseMotionListe
     @Override public void mouseReleased(MouseEvent e)	{ parent.advanceHelp(); }
     @Override public void mouseEntered(MouseEvent e)	{ }
     @Override public void mouseExited(MouseEvent e)		{ }
-	@Override public void mouseDragged(MouseEvent e)	{ }
-	@Override public void mouseMoved(MouseEvent e)		{
-		if (asGuide)
-			guideMouseMoved(e);
-	}
 
     private static int lineH(int fontSize)				{ return RotPUI.scaledSize(fontSize + 2); }
     private static int height(int lines, int fontSize)	{ return s2 + (lines + 1) * lineH(fontSize) ; }
     static int lineH()									{ return lineH(FONT_SIZE); }
     static int height(int lines)						{ return height(lines, FONT_SIZE); }
-	// -#-
-	// ========================================================================
-	// #=== HelpSpec
-	//
+
     public class HelpSpec {
         private int x, y, w;
         private int lines, hMax;
@@ -369,257 +278,5 @@ public class HelpUI extends BasePanel implements MouseListener, MouseMotionListe
             }
         }
     }
-	// -#-
-	// ========================================================================
-	// #=== Guide
-	//
-
-	private void clearGuide()					{ guideData.clear(); }
-	private void paintGuide(Graphics2D g)		{ guideData.paintGuide(g); }
-	private void guideMouseMoved(MouseEvent e)	{
-		//System.out.println("guideMouseMoved"); // TODO BR: REMOVE
-		if (guideData.isEmpty()) {
-			close(); // TODO BR: Maybe not
-		}
-		else if (!guideData.contains(e.getLocationOnScreen())) {
-			close();
-			parent.cancelHelp();
-		}
-	}
-
-	class GuideData	{
-		private static final int GUIDE_FONT_SIZE = 14;
-		private static final Color backColor	= GameUI.setupFrame(); // TODO put elsewhere
-		private static final Color lineColor	= backColor;
-		private static final Color borderColor	= Base.setAlpha(backColor, 160);
-		private static final JTextPane guideBox = new JTextPane();
-		private Rectangle targetBox, validBox;
-		private int[] lineArr;
-		private int left, top, width, height;
-
-		GuideData()	{
-			guideBox.setOpaque(true);
-			guideBox.setContentType("text/html");
-			guideBox.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-			guideBox.setBackground(backColor);
-		}
-		private void clear()	{
-			validBox  = null;
-			targetBox = null;
-			lineArr	  = null;
-			guideBox.setText(null);
-		}
-		// Queries
-		private boolean isEmpty()			{ return validBox == null; }
-		private boolean contains(Point p)	{ return validBox==null? false : validBox.contains(p); }
-		private void paintGuide(Graphics2D g)	{
-			g.setColor(borderColor);
-			g.fillRect(left-s8, top-s8, width+s8+s8, height+s8+s8);
-			g.setColor(backColor);
-			g.fillRect(left-s3, top-s3, width+s3+s3, height+s3+s3);
-			g.translate(left, top);
-			guideBox.paint(g);
-			g.translate(-left, -top);
-			drawLines(g);
-		}
-		private void drawLines(Graphics2D g)	{
-			if (lineArr != null) {
-				Stroke prev = g.getStroke();
-				g.setStroke(stroke2);
-				g.setColor(lineColor);
-				int size = lineArr.length/2 - 1;
-				for (int i=0; i<size; i++) {
-					int k = 2*i;
-					g.drawLine(lineArr[k], lineArr[k+1], lineArr[k+2], lineArr[k+3]);
-				}
-				g.setStroke(prev);
-			}			
-		}
-		// Initializations
-		private void setLineArr(int... arr)	{ lineArr = arr; }
-		private void prepareData()	{
-//			guideBox = new JTextPane();
-//			guideBox.setOpaque(true);
-//			guideBox.setContentType("text/html");
-//			guideBox.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-//			guideBox.setBackground(backColor);
-			guideFontSize(GUIDE_FONT_SIZE);
-		}
-		private void init(JComponent target, String tipText, Rectangle valid)	{ init(target.getBounds(), tipText, valid); }
-		private void init(Rectangle target, String tipText, Rectangle valid)	{
-			prepareData();
-			createGuideBox(target, tipText, valid);
-		}
-		// Creations
-		private void createGuideBox(Rectangle target, String tipText, Rectangle valid)	{ createGuideBox(target, tipText, valid, false); }
-		private void createGuideBox(Rectangle target, String tipText, Rectangle valid, boolean fullHelp)	{
-//			targetBox = target;
-			targetBox = valid;
-			validBox  = valid;
-
-			// Check for normal tool tip
-			if (tipText == null) {
-				guideBox.setText("");
-				guideBox.setSize(new Dimension());
-				return;
-			}
-//			// Check for parameter
-//			JComponent src = target.getComponent();
-//			if (target != null && target instanceof IParam) {
-//				Rectangle rect = src.getBounds();
-//				String txt = setParam((IParam) src, rect);
-//				if (txt != null && !txt.isEmpty())
-//					return pane;
-//			}
-			// TODO
-			//return cleanHtmlText(tipText);
-			guideBox.setText(cleanHtmlText(tipText));
-			setSizeAndLocation();
-		}
-		private void createGuideBox(JComponent target, IParam param, boolean fullHelp)	{ // TODO BR: add validBox
-			// Check for normal tool tip
-			if (param == null) {
-				guideBox.setText("");
-				guideBox.setSize(new Dimension());
-				return;
-			}
-			// Check for parameter
-			targetBox = target.getBounds();
-			String txt = setSizeAndLocation(param);
-			if (txt != null && !txt.isEmpty())
-				return;
-			// TODO
-			//return cleanText(tipText);
-			guideBox.setText("");
-			guideBox.setSize(new Dimension());
-		}
-		// Size and location
-		private String setSizeAndLocation(IParam param)	{
-			if (param == null)
-				return null;
-			guideFontSize(GUIDE_FONT_SIZE);
-			String txt = param.getGuide();
-			if (txt == null || txt.isEmpty())
-				return txt;
-
-			txt = cleanHtmlText(txt);
-			setSizeAndLocation(); // For position and arrow
-			if (guideFontSize() < GUIDE_FONT_SIZE) {
-				// Second call to build the guide to adjust html size to current font size
-				txt = param.getGuide();
-				if (txt == null || txt.isEmpty())
-					return txt; // Should never happen
-				txt = cleanHtmlText(txt);
-				setSizeAndLocation(); // For position and arrow
-			}
-			return txt;
-		}
-		private void setSizeAndLocation() {
-//			System.out.println("Target = " + targetBox.toString()); // TODO BR: REMOVE
-			int xShift	= s20;
-			int yShift	= s20;
-			int xCover	= s10;
-			int yCover	= s10;
-			int xMargin	= s10;
-			int yMargin	= s10;
-			int xb, xd, yb, yd;
-			int iW, iH;
-			if (dialog == null) {
-				iW = scaled(Rotp.IMG_W);
-				iH = scaled(Rotp.IMG_H);
-			}
-			else {
-				iW = dialog.getWidth();
-				iH = dialog.getHeight();
-			}
-			xCover = min(xCover, targetBox.width/2);
-			yCover = min(yCover, targetBox.height/2);
-
-			autoSizeBox(s400);
-			// relative position
-			// find X location
-			if (2*targetBox.x + targetBox.width  > iW) { // put box to the left
-				left = targetBox.x - width - xShift;
-				if (left < xMargin)
-					left = xMargin;
-				xb = left + width;
-				xd = targetBox.x + xCover;
-				if (xd < xb)
-					xd = xb + s10;
-			}
-			else { // put box to the right
-				left = targetBox.x + targetBox.width + xShift;
-				if (left+width > iW-xMargin)
-					left = iW-xMargin - width;
-				xb = left;
-				xd = targetBox.x + targetBox.width - xCover;
-				if (xd > xb)
-					xd = xb - s10;
-			}
-			// find Y location
-			if (2*targetBox.y + targetBox.width  > iH) { // put box to the top
-				top = targetBox.y - height - yShift;
-				if (top < yMargin)
-					top = yMargin;
-				yb = top + height;
-				yd = targetBox.y + yCover;
-				if (yd < yb)
-					yb = yd + s10;
-			}
-			else { // put box to the bottom
-				top = targetBox.y + targetBox.height + yShift;
-				if (top+height > iH-yMargin)
-					top = iH-yMargin - height;
-				yb = top;
-				yd = targetBox.y + targetBox.height - yCover;
-				if (yd > yb)
-					yb = yd - s10;
-			}
-			if (targetBox.width>0) // no line for Hotkeys help
-				setLineArr(xb, yb, xd-s6, yd-s13);
-//			boxLocation.x = left;
-//			boxLocation.y = top;
-		}
-		private void autoSizeBox(int maxWidth)	{
-			int iW, iH;
-			if (dialog == null) {
-				iW = scaled(Rotp.IMG_W - 20);
-				iH = scaled(Rotp.IMG_H - 20);
-//				iW = scaled(Rotp.IMG_W - 0);
-//				iH = scaled(Rotp.IMG_H - 0);
-			}
-			else {
-				iW = dialog.getWidth() - s20;
-				iH = dialog.getHeight() - s20;
-			}
-			int testW, preTest;
-			width = Short.MAX_VALUE;
-			boolean go = true;
-
-			while (go) {
-				guideBox.setFont(plainFont(guideFontSize()));
-				height = Short.MAX_VALUE;
-				preTest = -1;
-				testW = maxWidth - 1; // to prevent rounding errors
-				while (height > iH && preTest != testW && testW < iW) {
-					preTest = testW;
-					guideBox.setSize(new Dimension(testW, Short.MAX_VALUE));
-					Dimension paneSize = guideBox.getPreferredSize();
-					width = min(testW, paneSize.width);
-					height = paneSize.height;
-					testW *= (float) height /iH;
-				}
-				go = (width > iW || height > iH);
-				if (go) {
-					guideFontSize(max(1, min(guideFontSize()-1, (int)(guideFontSize() * (float)iH/height -1))));
-					go = guideFontSize() > 1;
-				}
-			}
-			width += 1;
-			Dimension autoSize = new Dimension(width, height);
-			guideBox.setSize(autoSize);
-		}
-	}
-	// -#-
 }
 

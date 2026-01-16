@@ -15,12 +15,16 @@
  */
 package rotp.model.tech;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
 import rotp.model.ships.ShipWeaponBiological;
 import rotp.ui.BasePanel;
 import rotp.ui.combat.ShipBattleUI;
-import java.awt.*;
 
 public final class TechBiologicalWeapon extends Tech {
     public int minDamage;
@@ -164,7 +168,7 @@ public final class TechBiologicalWeapon extends Tech {
          if (!source.mgr.showAnimations())
             return;
         ShipBattleUI ui = source.mgr.ui;
-        
+
         Graphics2D g = (Graphics2D) ui.getGraphics();
         Stroke prev = g.getStroke();
 
@@ -199,9 +203,9 @@ public final class TechBiologicalWeapon extends Tech {
         }
         g.setStroke(prev);
         String missLabel = dmg < 0 ? text("SHIP_COMBAT_IMMUNE") : text("SHIP_COMBAT_MISS");
-        target.drawAttackResult(g, x1,y1,x0, dmg,missLabel);   
+        target.drawAttackResult(g, x1,y1,x0, dmg,missLabel);
+        g.dispose();
         ui.paintAllImmediately();
         sleep(250);
-
     }
 }

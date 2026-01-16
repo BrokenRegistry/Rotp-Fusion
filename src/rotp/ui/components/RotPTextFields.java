@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -48,6 +49,7 @@ public class RotPTextFields { //extends RotPComponents {
 			this(text, columns);
 			pane.add(this, gbc);
 		}
+		@Override public JComponent getComponent()	{ return this; }
 		@Override protected void paintComponent(Graphics g)	{
 			Graphics2D g2 = (Graphics2D) g;
 			Rectangle bounds = getBounds();
@@ -64,10 +66,12 @@ public class RotPTextFields { //extends RotPComponents {
 			@Override public void mouseEntered(MouseEvent evt)	{
 				showBorder = true;
 				setForeground(textFieldTextHLColor());
+				popGuide(getToolTipText());
 			}
 			@Override public void mouseExited(MouseEvent evt)	{
 				showBorder = false;
 				setForeground(textFieldTextColor());
+				hideGuide();
 			}
 			@Override public void mousePressed(MouseEvent evt)	{}
 			@Override public void mouseReleased(MouseEvent evt)	{}

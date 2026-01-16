@@ -385,13 +385,17 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
     private Image combatBackground() {
         if (combatBackground == null) {
             combatBackground = newOpaqueImage(getWidth(), getHeight());
-            combatBackground.getGraphics().drawImage(starBackground(),0,0,null);
+            Graphics g = combatBackground.getGraphics();
+            g.drawImage(starBackground(),0,0,null);
+            g.dispose();
         }
         return combatBackground;
     }
     private void resetCombatBackground() {
         BufferedImage newCombatBackground = newOpaqueImage(getWidth(), getHeight());
-        newCombatBackground.getGraphics().drawImage(starBackground(),0,0,null);
+        Graphics g = newCombatBackground.getGraphics();
+        g.drawImage(starBackground(),0,0,null);
+        g.dispose();
         combatBackground = newCombatBackground;
     }
     public void paintAllImmediately() {
@@ -435,7 +439,9 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
 
         if (mgr.redrawMap) {
             resetCombatBackground();
-            paintAsteroids(combatBackground().getGraphics());
+            Graphics g1 = combatBackground().getGraphics();
+            paintAsteroids(g1);
+            g1.dispose();
             mgr.redrawMap = false;
         }
 
@@ -479,6 +485,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         g.setColor(grayBackC);
         g.drawRect(x,y,w-s1,h-s1);
         g.setStroke(prev);
+        g.dispose();
 
         drawMapBuffer(g0);
     }

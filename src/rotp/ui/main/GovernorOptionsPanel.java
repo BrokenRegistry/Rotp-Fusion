@@ -400,6 +400,7 @@ public class GovernorOptionsPanel extends BasePanel{
 		BufferedImage flipped = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = flipped.getGraphics();
 		g.drawImage(raceImg, 0, 0, destWidth, destHeight, srcWidth, 0, 0, srcHeight, null);
+		g.dispose();
 		raceImage.setIcon(new ImageIcon(flipped));
 		repaint(raceImage.getBounds());
 	}

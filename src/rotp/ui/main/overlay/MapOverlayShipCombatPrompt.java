@@ -272,7 +272,6 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
                 planetImg = sys.planet().type().panoramaImage();
                 int planetW = planetImg.getWidth();
                 int planetH = planetImg.getHeight();
-                Graphics imgG = planetImg.getGraphics();
                 Empire emp = sys.empire();
                 if (emp != null) {
                     BufferedImage fortImg = emp.fortress(sys.colony().fortressNum());
@@ -282,6 +281,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
                     int fortScaleH = fortH*planetW/w;
                     int fortX = planetImg.getWidth()-fortScaleW;
                     int fortY = planetImg.getHeight()-fortScaleH+(planetH/5);
+                	Graphics imgG = planetImg.getGraphics();
                     imgG.drawImage(fortImg, fortX, fortY, fortX+fortScaleW, fortY+fortScaleH, 0, 0, fortImg.getWidth(), fortImg.getHeight(), null);
                     imgG.dispose();
                 }

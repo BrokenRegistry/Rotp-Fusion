@@ -2026,6 +2026,7 @@ CUSTOM_RACE_BUTTON_FOLDER		| Select Folder
 CUSTOM_RACE_BUTTON_FOLDER_DESC	| Select the custom species folder.
 CUSTOM_RACE_BUTTON_NAMES		| Edit Names
 CUSTOM_RACE_BUTTON_NAMES_DESC	| Edit the Civilisations names.<br>(Add, Remove, Languages selection)
+CUSTOM_RACE_EMPTY_DESCRIPTION	| "Shift" and "Ctrl" can be used to modify the functionality of buttons, clicks, and scrolls.<br>
 
 // BR: Customize Player Race
 CUSTOM_RACE_RACE_AI_DESC          | Change the empire AI
@@ -2104,7 +2105,7 @@ CUSTOM_RACE_HOME_ENVIRONMENT      | Planet Environment
 CUSTOM_RACE_POPULATION_BONUS_DESC	| Starting Size of this Empire Home world.
 CUSTOM_RACE_POPULATION_BONUS		| Population Bonus
 CUSTOM_RACE_RACE_KEY				| File Name (Key)
-CUSTOM_RACE_RACE_KEY_DESC			| This is the place to enter the filename, it's also used as the key for the standard species... Don't use them, or keep the default "SPECIES_xxx" to set the "Redesigned"-Abilities.
+CUSTOM_RACE_RACE_KEY_DESC			| This is the place to enter the filename, it's also used as the key for the standard species... Don't use them, or keep the default "RACE_xxx" to set the "Redesigned"-Abilities.
 CUSTOM_RACE_RACE_KEY_INPUT			| Enter the file name of the custom species.
 CUSTOM_RACE_REWORKED_RACE_KEY		| Linked Animations
 CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| This is the prefered Species choice for the displayed animations. When 'Redesigned' Abilities is selected, this abilities can be randomly selected.

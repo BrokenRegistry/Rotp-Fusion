@@ -64,6 +64,7 @@ import rotp.ui.game.AdvancedOptionsUI;
 import rotp.ui.game.BaseCompactOptionsUI;
 import rotp.ui.game.GameOverUI;
 import rotp.ui.game.GameUI;
+import rotp.ui.game.GuideUI;
 import rotp.ui.game.HelpUI;
 import rotp.ui.game.LoadGameUI;
 import rotp.ui.game.MainOptionsUI;
@@ -200,6 +201,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     private final GameOverUI gameOverUI = new GameOverUI();
     private final ErrorUI errorUI = new ErrorUI();
     private final HelpUI helpUI = new HelpUI();
+    private final GuideUI guideUI = new GuideUI();
     private final MainOptionsUI mainOptionsUI = new MainOptionsUI();
 	private StringDialogUI	stringDialog;
 	private ListDialogUI	listDialog;
@@ -292,6 +294,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     }
 	public static RotPUI instance() { return instance; }
     public static HelpUI helpUI()   { return instance.helpUI; }
+    public static GuideUI guideUI()	{ return instance.guideUI; }
 
 	public static BaseCompactOptionsUI getOptionPanel()	{ return instance.nextOptionPanel(); }
 	public static void releaseOptionPanel()				{ instance.optionPanelId--; }
@@ -827,6 +830,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
 
         add(setupRaceUI, SETUP_RACE_PANEL);
         add(setupGalaxyUI, SETUP_GALAXY_PANEL);
+        add(dnaWorkshopUI, DNA_WORKSHOP_PANEL);
         add(loadGameUI, LOAD_PANEL);
         add(saveGameUI, SAVE_PANEL);
         add(raceIntroUI, INTRO_PANEL);
@@ -841,7 +845,6 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         add(shipBattleUI, SHIP_BATTLE_PANEL);
         add(errorUI, ERROR_PANEL);
         add(dialogPane, DIALOG_PANEL);
-        add(dnaWorkshopUI, DNA_WORKSHOP_PANEL);
 
         if (!UserPreferences.windowed()) {
             dialogPane.addToLayout(diplomaticMessageUI, DIPLOMATIC_MESSAGE_PANEL);

@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 
 import rotp.ui.BasePanel;
@@ -76,6 +77,7 @@ public interface RotPButtons extends RotPComponents	{
 				setText(text(key));
 				setToolTipText(htmlText(key + LABEL_DESCRIPTION));
 		}
+		@Override public JComponent getComponent()	{ return this; }
 		@Override protected void paintComponent(Graphics g)	{
 			Graphics2D g2 = (Graphics2D) g;
 			Rectangle bounds = getBounds();
@@ -88,14 +90,18 @@ public interface RotPButtons extends RotPComponents	{
 			}
 			super.paintComponent(g);
 		}
+		// BR: to let Guide UI access to tool tip text
+		@Override public String getToolTipText(MouseEvent e)	{ return null; }
 		private class ButtonMouseAdapter extends MouseAdapter	{
 			@Override public void mouseEntered(MouseEvent evt)	{
 				showBorder = true;
 				setForeground(highlightColor());
+				popGuide(getToolTipText());
 			}
 			@Override public void mouseExited(MouseEvent evt)	{
 				showBorder = false;
 				setForeground(GameUI.borderBrightColor());
+				hideGuide();
 			}
 			@Override public void mousePressed(MouseEvent evt)	{}
 			@Override public void mouseReleased(MouseEvent evt)	{}
@@ -157,7 +163,7 @@ public interface RotPButtons extends RotPComponents	{
 			pane.add(this, gbc);
 		}
 		public void toggle()	{ setEnabled(!isEnabled()); }
-
+		@Override public JComponent getComponent()	{ return this; }
 		@Override protected void paintComponent(Graphics g)	{
 			Graphics2D g2 = (Graphics2D) g;
 			Rectangle bounds = getBounds();

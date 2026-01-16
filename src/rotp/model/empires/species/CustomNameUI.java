@@ -368,6 +368,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 		private Dimension lastSize;
 
 		ContentPanel()	{
+			super(255);
 			setName(NAME);
 			title = title();
 			initLists();

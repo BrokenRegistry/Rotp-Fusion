@@ -458,13 +458,15 @@ public class SettingBase<T> implements ICRSettings {
 		int bulletStart	= bulletStart();
 		int bulletSize	= bulletBoxSize();
 
-		boolean isSettingString = this instanceof SettingString;
 		panel.setLabelColor(getCostColor());
 		panel.setLabelText(guiSettingDisplayStr());
-		if (bulletSize == 0)
+		if (bulletSize == 0) {
+			panel.paintImmediately();
 			return;
-		if (bulletSize == 1 || isSettingString) {
+		}
+		if (bulletSize == 1 || isSettingString()) {
 			panel.setValueString(guideSelectedValue(), optionC);
+			panel.paintImmediately();
 			return;
 		}
 		boolean refresh = false;
@@ -475,6 +477,7 @@ public class SettingBase<T> implements ICRSettings {
 			String text = guiCostOptionStr(optionIdx);
 			refresh |= panel.setOptionString(text, bulletIdx, color, refresh && ((bulletIdx+1) >= bulletSize));
 		}
+		panel.paintImmediately();
 	}
 	// ========== Overridable Methods ==========
 	//

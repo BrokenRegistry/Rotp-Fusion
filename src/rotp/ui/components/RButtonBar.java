@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -178,6 +179,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 			return gtc.color(idx, name);
 		}
 	}
+	@Override public JComponent getComponent()		{ return this; }
 	@Override public Object[] getSelectedObjects()	{
 		System.out.println("RSelectionButtons getSelectedObjects()");
 		return null;

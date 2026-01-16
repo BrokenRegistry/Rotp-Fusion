@@ -165,6 +165,7 @@ public final class TechStasisField extends Tech {
             }
         }
         g0.setStroke(prev);
+        g0.dispose();
         source.mgr.performingStackTurn = false;
     }
 }

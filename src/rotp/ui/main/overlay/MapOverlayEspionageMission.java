@@ -107,6 +107,7 @@ public class MapOverlayEspionageMission extends MapOverlay implements IVIPListen
                 paintTechCategoryButton(g, categorySprites[prevHover]);
             if (techCategoryHoverButton >= 0)
                 paintTechCategoryButton(g, categorySprites[techCategoryHoverButton]);
+            g.dispose();
             */
         }
         return true;
@@ -241,7 +242,6 @@ public class MapOverlayEspionageMission extends MapOverlay implements IVIPListen
             imgG.dispose();
         }
 
-
         int y1b = y1+BasePanel.s60;
         int h1b = h1-BasePanel.s60;
         int imgH = h1b;
@@ -249,7 +249,7 @@ public class MapOverlayEspionageMission extends MapOverlay implements IVIPListen
         g.setClip(x1+BasePanel.s5,y1b,leftW-BasePanel.s10,h1b-BasePanel.s5);
         g.drawImage(labImg, x1+leftW-imgW, y1b, x1+leftW, y1b+h1b, 0, 0, labImg.getWidth(), labImg.getHeight(), null);
         g.setClip(null);
-        
+
 //        int imgW = leftW;
 //        int imgH = imgW*Rotp.IMG_H/Rotp.IMG_W;
 //        g.drawImage(labImg, x1, y1+h1-imgH, x1+leftW, y1+h1, 0, 0, labImg.getWidth(), labImg.getHeight(), null);

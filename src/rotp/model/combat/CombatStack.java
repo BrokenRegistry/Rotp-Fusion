@@ -617,15 +617,16 @@ public class CombatStack implements Base {
     public void drawDamageTaken(float dmg, String result) {
         if (!mgr.showAnimations())
             return;
-        
+
         int stW = mgr.ui.stackW();
         int stH = mgr.ui.stackH();
         int st1X = mgr.ui.stackX(this);
         int st1Y = mgr.ui.stackY(this);
         int x1 = st1X+stW/2;
-        int y1 = st1Y+stH/2;        
+        int y1 = st1Y+stH/2;
         Graphics2D g = (Graphics2D) mgr.ui.getGraphics();
-        drawAttackResult(g,x1,y1,x1, dmg,result);   
+        drawAttackResult(g,x1,y1,x1, dmg,result);
+        g.dispose();
         mgr.ui.paintAllImmediately();    
     }
     public void drawAttackResult(Graphics g, int x1, int y1, int x0, float dmg, String result) {
@@ -959,7 +960,7 @@ public class CombatStack implements Base {
 	        g.setPaint(paint);
 	        g.fill(shieldArea);
 	        g.dispose();
-	        
+
 	        // rescale circle to ellipse
 	        Image scaled = buffImg.getScaledInstance(shieldW, shieldH, Image.SCALE_SMOOTH);
 	        // Add image to animation
@@ -984,7 +985,7 @@ public class CombatStack implements Base {
         g.setPaint(paint);
         g.fill(shieldArea);
         g.dispose();
-        
+
         // rescale circle to ellipse
         Image scaled = buffImg.getScaledInstance(shieldW, shieldH, Image.SCALE_SMOOTH);
         // Add image to animation
@@ -992,7 +993,7 @@ public class CombatStack implements Base {
         g2.setComposite(AlphaComposite.SrcOver);
         g2.drawImage(scaled, 0, 0, null);
         g2.dispose();
-        
+
         return shieldArr;
     }
 }

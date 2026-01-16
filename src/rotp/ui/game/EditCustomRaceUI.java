@@ -314,7 +314,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		int sw		= g.getFontMetrics().stringWidth(text);
 		int textW	= sw + miniButtonMargin;
 		int buttonW	= imageW + textW;
-		int xBox	= leftM + wGist() - columnPad - buttonW;
+		int xBox	= leftM + wCore() - columnPad - buttonW;
 		int yBox	= yCost - speciesDirH;// - s10;
 		speciesDirBox.setBounds(xBox, yBox, buttonW, miniButtonH);
 		g.setColor(GameUI.buttonBackgroundColor());
@@ -382,7 +382,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 
 		// Exit Button
 		int buttonW	= exitButtonWidth(g);
-		xButton = leftM + wGist() - buttonW - buttonPad;
+		xButton = leftM + wCore() - buttonW - buttonPad;
 		exitBox.setBounds(xButton, yButton+s2, buttonW, smallButtonH);
 
 		// Select Button
@@ -438,7 +438,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		randomPushBox.setBounds(xRandPushB, yRandGetB, buttonW, miniButtonH);
 
 		// Species Directory Button
-		int xSD = leftM + wGist() - columnPad - buttonW;
+		int xSD = leftM + wCore() - columnPad - buttonW;
 		int ySD	= yCost - speciesDirH - s10;
 		speciesDirBox.setBounds(xSD, ySD, buttonW, smallButtonH);
 	}
@@ -477,8 +477,8 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	}
     @Override public BufferedImage initButtonBackImg() {
     	initButtonPosition();
-		buttonBackImg = new BufferedImage(retina(wButton), retina(hButton), TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) buttonBackImg.getGraphics();
+		keyBoundBackImg = new BufferedImage(retina(wButton), retina(hButton), TYPE_INT_ARGB);
+		Graphics2D g = (Graphics2D) keyBoundBackImg.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
         g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -502,9 +502,10 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		loadBox.fillButtonBackImg(g);
 		// draw GUIDE button
 		guideBox.fillButtonBackImg(g);
-		
+
 		drawButtons(g, true); // init = true; local = true
-		return buttonBackImg;
+		g.dispose();
+		return keyBoundBackImg;
     }
 
 	@Override public void refreshGui(int level) {
@@ -564,7 +565,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		String text = text(exitButtonKey());
 		int sw = g.getFontMetrics().stringWidth(text);
 		int buttonW	= exitButtonWidth(g);
-		xButton = leftM + wGist() - buttonW - buttonPad;
+		xButton = leftM + wCore() - buttonW - buttonPad;
 		g.setColor(GameUI.buttonBackgroundColor());
 		g.fillRoundRect(exitBox.x, exitBox.y, buttonW, smallButtonH, cnr, cnr);
 		int xT = exitBox.x+((exitBox.width-sw)/2);

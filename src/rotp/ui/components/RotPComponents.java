@@ -42,12 +42,13 @@ import javax.swing.text.JTextComponent;
 import rotp.Rotp;
 import rotp.ui.ScaledInteger;
 import rotp.ui.game.GameUI;
+import rotp.ui.game.GuideUI.IGuide;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.util.IParam;
 import rotp.util.Base;
 import rotp.util.FontManager;
 
-public interface RotPComponents extends Base, ScaledInteger {
+public interface RotPComponents extends IGuide, Base, ScaledInteger {
 	Insets ZERO_INSETS	= new Insets(0, 0, 0, 0);
 	String LABEL_DESCRIPTION	= IParam.LABEL_DESCRIPTION;
 

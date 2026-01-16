@@ -2039,7 +2039,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		// draw opponent count box and arrows
 		int x2b = x2+swHdr+s5;
 		int x2c = x2b;
-		
+
 		g.setColor(GameUI.setupFrame());
 		if (isRandomNumAlien) {
 			int y2c = y2-s13;
@@ -2092,7 +2092,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 
 		int x2d = x2c+s20;
 		drawBorderedString(g, header2, 1, x2d, y2-yho, Color.black, Color.white);
-		
+
 		// align AI and CR selection
 		String header3   = text("SETUP_OPPONENT_AI");
 		String header3cr = text("SETUP_OPPONENT_CR");
@@ -2145,7 +2145,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		int swHdrNR = g.getFontMetrics().stringWidth(headerNR);
 		int swHdrSA = g.getFontMetrics().stringWidth(headerSA);
 		int x4 = side-sep - max(widthNR+swHdrNR, widthSA+swHdrSA);
-		
+
 		// draw New Races selection
 		g.setColor(SystemPanel.blackText);
 		int yNR = y3;

@@ -70,6 +70,7 @@ public class SettingString extends SettingBase<String> implements Base{
 	}
 	// ===== Overriders =====
 	//
+	@Override public boolean isSettingString()	{ return true; }
 	@Override public boolean isDefaultValue() {
 		return defaultValue().equals(settingValue());
 	}

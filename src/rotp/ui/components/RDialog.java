@@ -4,6 +4,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
@@ -22,7 +23,7 @@ public class RDialog extends JDialog implements RotPComponents {
 			frame = JOptionPane.getFrameForComponent(parent2.getParent());
 		else frame = null;
 	}
-	
+	@Override public JComponent getComponent()	{ return null; }
 	// ========================================================================
 	// List toggled by buttons
 	//

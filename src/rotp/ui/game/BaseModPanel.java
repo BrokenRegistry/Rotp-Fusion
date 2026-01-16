@@ -120,13 +120,13 @@ public abstract class BaseModPanel extends BasePanel
 
 	protected int xButton, yButton, wButton, hButton; // absolute button position.
 	protected int xFull, yFull, wFull, hFull, rFull, bFull; // absolute panel window size and position (right, bottom)
-	protected int xGist, yGist, hGist, rGist, bGist; // relative Content size and position (right, bottom)
-	private int wGist; // relative Content size and position (right, bottom)
-	protected BufferedImage buttonBackImg;
+	protected int xCore, yCore, hCore, rCore, bCore; // relative Content size and position (right, bottom)
+	private int wCore; // relative Content size and position (right, bottom)
+	protected BufferedImage keyBoundBackImg;
 	private	  LinearGradientPaint bg;
 	protected LinearGradientPaint bg() {
 		if (bg == null)
-			bg = GameUI.modBackground(xGist, rGist);
+			bg = GameUI.modBackground(xCore, rCore);
 		return bg;
 	}
 	protected BufferedImage backImg; // the full background
@@ -141,8 +141,8 @@ public abstract class BaseModPanel extends BasePanel
         }
         return backImg;
     }
-	protected int wGist()				{ return wGist; }
-	protected void wGist(int w)			{ wGist = w; }
+	protected int wCore()				{ return wCore; }
+	protected void wCore(int w)			{ wCore = w; }
 //	protected int retina(int val)		{ return (int) (val*retinaFactor); }
 //	protected int invRetina(int val)	{ return (int) (val/retinaFactor); }
 	protected int retina(int val)		{ return val*retinaFactor; }
@@ -201,7 +201,7 @@ public abstract class BaseModPanel extends BasePanel
 		cnrR		= cnr;
 		initialised	= false;
 		backImg		= null;
-		buttonBackImg	= null;
+		keyBoundBackImg	= null;
 		bg	= null;
 	}
 	protected void terminate()	{ reInit(false); }
@@ -246,12 +246,12 @@ public abstract class BaseModPanel extends BasePanel
 			hFull = RotPUI.setupRaceUI().getHeight();
 			rFull = xFull + wFull;
 			bFull = yFull + hFull;
-			xGist = 0;
-			yGist = 0;
-			wGist(wFull);
-			hGist = hFull;
-			rGist = xGist + wGist();
-			bGist = yGist + hGist;
+			xCore = 0;
+			yCore = 0;
+			wCore(wFull);
+			hCore = hFull;
+			rCore = xCore + wCore();
+			bCore = yCore + hCore;
 		}
 		smallButtonMargin = s30;
 		smallButtonH	  = s30;
@@ -279,7 +279,7 @@ public abstract class BaseModPanel extends BasePanel
 		initialised = true;
 	}
 	public void clearImages() {
-		buttonBackImg = null;
+		keyBoundBackImg = null;
 		backImg = null;
 		bg = null;
 	}
@@ -291,12 +291,12 @@ public abstract class BaseModPanel extends BasePanel
 		isOnTop = false;
 		//ModifierKeysState.reset();
 	}
-	private BufferedImage buttonBackImg() {
-        if (buttonBackImg == null)
+	private BufferedImage keyBoundBackImg() {
+        if (keyBoundBackImg == null)
             initButtonBackImg();
-        return buttonBackImg;
+        return keyBoundBackImg;
     }
-	@Override public void repaintButtons() {
+	@Override public void repaintKeyBound() {
 		initButtonBackImg();
 		Graphics2D g = (Graphics2D) getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -309,13 +309,13 @@ public abstract class BaseModPanel extends BasePanel
 	}
 	protected void drawButtons(Graphics2D g) {
 		if (retina) {
-			BufferedImage img = buttonBackImg();
+			BufferedImage img = keyBoundBackImg();
 			int w = img.getWidth();
 			int h = img.getHeight();
 			g.drawImage(img, xButton, yButton, xButton+invRetina(w), yButton+invRetina(h), 0, 0, w, h, null);
 		}
 		else
-			g.drawImage(buttonBackImg(), xButton, yButton, null);
+			g.drawImage(keyBoundBackImg(), xButton, yButton, null);
 		drawButtons(g, false); // init = false; local = false
 	}
     protected void drawButton(Graphics2D g, boolean init, Box box, String str) {
@@ -390,8 +390,8 @@ public abstract class BaseModPanel extends BasePanel
 	}
 	public BufferedImage initButtonBackImg() {
 		initButtonPosition();
-		buttonBackImg = new BufferedImage(retina(wButton), retina(hButton), TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) buttonBackImg.getGraphics();
+		keyBoundBackImg = new BufferedImage(retina(wButton), retina(hButton), TYPE_INT_ARGB);
+		Graphics2D g = (Graphics2D) keyBoundBackImg.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
 		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -413,7 +413,7 @@ public abstract class BaseModPanel extends BasePanel
 
 		drawButtons(g, true); // init = true; local = true
 		g.dispose();
-		return buttonBackImg;
+		return keyBoundBackImg;
 	}
 
 	// ==================== Guide Button ====================
