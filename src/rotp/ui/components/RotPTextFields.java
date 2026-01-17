@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -49,16 +48,18 @@ public class RotPTextFields { //extends RotPComponents {
 			this(text, columns);
 			pane.add(this, gbc);
 		}
-		@Override public JComponent getComponent()	{ return this; }
+//		@Override public String getToolTipText(MouseEvent e){ return null; }
+		@Override public JComponent getComponent()			{ return this; }
 		@Override protected void paintComponent(Graphics g)	{
 			Graphics2D g2 = (Graphics2D) g;
-			Rectangle bounds = getBounds();
+			int w = getWidth();
+			int h = getHeight();
 			g2.setColor(GameUI.setupFrame());
-			g2.fillRect(0, s2, bounds.width-1, bounds.height-1-s2-s2);
+			g2.fillRect(0, s2, w-1, h-1-s2-s2);
 			if (showBorder) {
 				g2.setStroke(BasePanel.stroke1);
 				g2.setColor(highlightColor());
-				g2.drawRect(0, s2, bounds.width-1, bounds.height-1-s2-s2);
+				g2.drawRect(0, s2, w-1, h-1-s2-s2);
 			}
 			super.paintComponent(g);
 		}
@@ -66,7 +67,9 @@ public class RotPTextFields { //extends RotPComponents {
 			@Override public void mouseEntered(MouseEvent evt)	{
 				showBorder = true;
 				setForeground(textFieldTextHLColor());
-				popGuide(getToolTipText());
+				String tip = getToolTipText();
+				if (tip!=null && !tip.isEmpty())
+					popGuide(tip);
 			}
 			@Override public void mouseExited(MouseEvent evt)	{
 				showBorder = false;

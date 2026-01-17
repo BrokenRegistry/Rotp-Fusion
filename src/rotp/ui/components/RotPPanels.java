@@ -5,6 +5,7 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
@@ -13,6 +14,12 @@ import javax.swing.JPanel;
 import rotp.ui.game.GameUI;
 
 public interface RotPPanels {
+
+	public class RPanel extends JPanel implements RotPComponents {
+		private static final long serialVersionUID = 1L;
+		@Override public JComponent getComponent()				{ return null; }
+		@Override public String getToolTipText(MouseEvent e)	{ return null; }
+	}
 
 	public class RContentPanel extends JPanel implements RotPComponents {
 		private static final long serialVersionUID = 1L;
@@ -80,6 +87,7 @@ public interface RotPPanels {
 		}
 		@Override public JComponent getComponent()	{ return this; }
 		@Override public void paintComponent(Graphics g) {
+			super.paintComponent(g);
 			int w = getWidth();
 			int h = getHeight();
 			setHiRenderingHints(g);

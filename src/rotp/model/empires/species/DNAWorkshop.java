@@ -9,9 +9,9 @@ import static java.awt.GridBagConstraints.REMAINDER;
 import static java.awt.GridBagConstraints.SOUTHEAST;
 import static java.awt.GridBagConstraints.WEST;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+import static rotp.model.game.IMainOptions.showGuide;
 import static rotp.model.game.IRaceOptions.defaultRaceKey;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -21,9 +21,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -49,7 +49,9 @@ import rotp.ui.RotPUI;
 import rotp.ui.components.RLabel;
 import rotp.ui.components.RSeparator;
 import rotp.ui.components.RotPButtons.RButton;
+import rotp.ui.components.RotPButtons.RHugeButton;
 import rotp.ui.components.RotPComponents;
+import rotp.ui.components.RotPPanels.RPanel;
 import rotp.ui.game.GameUI;
 import rotp.ui.game.GuideUI;
 import rotp.ui.main.SystemPanel;
@@ -77,47 +79,45 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	private boolean allowEdit;
 	private BasePanel parent;
 
-	private SkillsFactory sf;
+	private SkillsFactory dnaFactory;
 	private SettingMap settingMap;
 	private Image backImage;
 	private int backGroundAlpha = 200;
 
 	// Panels
 	private final DNAWorkshop workshop;
-	private ContentPanel contentPane;
-	private SettingsPane settingsPane;
+	private ContentPanel contentPane;	// TODO BR: Check if removable
+	private SettingsPane settingsPane;	// TODO BR: Check if removable
 	private CostPanel costPanel;
-	private JTextPane descriptionBox;
+	private DescriptionPane descriptionPane;
 
 	// private working
 	private boolean canceled = false;
+	private boolean oldTooltipState;
 
 	//
 	private	List<Integer> spacerList;
 	private List<Integer> columnList;
 	List<ICRSettings> commonList;
 	private List<ICRSettings> settingList;
-//	private List<RSettingPanel> settingPanelList;
 	private int settingSize;
 	private String emptyDescription;
 
 	private RSettingPanel hasPopUp;
 
-	JPanel testPopUp;
-
-	// ========================================================================
-	// #=== Initializers
-	//
 	public DNAWorkshop()	{
 		workshop = this;
 		setName("CustomSpeciesUI");
 		setOpaque(true);
-		sf(SkillsFactory.getSkillsFactoryForEditor(this));
+		//sf(SkillsFactory.getSkillsFactoryForEditor(this));
 		setLayout(new GridBagLayout());
 	}
 	public void init(BasePanel parent, boolean allowEdit)	{
 		this.parent		= parent;
 		this.allowEdit	= allowEdit;
+		oldTooltipState	= isTooltipEnabled();
+		setTooltipEnabled(false);
+		
 		setEnabled(true);
 		setVisible(true);
 		this.removeAll();
@@ -126,21 +126,24 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		contentPane	= new ContentPanel(allowEdit);
 		add(contentPane, newGbc(1,1, 1,1, 0,0, EAST, NONE, new Insets(0, 0, 0, 0), 0,0));
 
-		sf().setSettingTools((DynOptions) guiOptions().selectedPlayerCustomRace());
-		settingMap	= sf().settingMap;
+		dnaFactory().setSettingTools((DynOptions) guiOptions().selectedPlayerCustomRace());
+		settingMap	= dnaFactory().settingMap;
 		commonList	= settingMap.getSettings();
 		emptyDescription = htmlText("CUSTOM_RACE_EMPTY_DESCRIPTION");
 
 		backImage = null;
 		repaint();
 	}
-	private String totalCostStr()	{ return text(TOTAL_COST_KEY, Math.round(sf().getTotalCost())); }
-	private String malusCostStr()	{ return text(MALUS_COST_KEY, Math.round(sf().getMalusCost())); }
+	// ========================================================================
+	// #=== Main Methods
+	//
+	private String totalCostStr()	{ return text(TOTAL_COST_KEY, Math.round(dnaFactory().getTotalCost())); }
+	private String malusCostStr()	{ return text(MALUS_COST_KEY, Math.round(dnaFactory().getMalusCost())); }
 	private void initLists() {
 		commonList	= settingList;
-		columnList	= sf().columnList();
-		spacerList	= sf().spacerList();
-		settingList	= sf().settingList();
+		columnList	= dnaFactory().columnList();
+		spacerList	= dnaFactory().spacerList();
+		settingList	= dnaFactory().settingList();
 		settingSize	= settingList.size();
 	}
 	private Rectangle getLocationOnScreen(JComponent c)	{
@@ -183,25 +186,8 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		}
 		return backImage;
 	}
-	private ImageIcon titleImage()	{
-		String title = guiTitle();
-		Font font = narrowFont(50);
-		int sw = new Canvas().getFontMetrics(font).stringWidth(title);
-		int margin = s20;
-		int w = sw + margin + margin;
-		int h = s90;
-
-		BufferedImage titleImg = new BufferedImage(w, h, TYPE_INT_ARGB);
-		//paint background
-		Graphics2D g = (Graphics2D) titleImg.getGraphics();
-		setRenderingHints(g);
-		g.setFont(font);
-
-		drawBorderedString(g, title, 2, margin, s50, Color.darkGray, Color.white);
-		g.dispose();
-		return new ImageIcon(titleImg);
-	}
 	@Override public void paintComponent(Graphics g)	{
+		super.paintComponent(g);
 		setHiRenderingHints(g);
 		int w = getWidth();
 		int h = getHeight();
@@ -219,18 +205,23 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	}
 	@Override public String ambienceSoundKey()	{ return "ResearchAmbience"; }
 	@Override public JComponent getComponent()	{ return this; }
+	@Override public void animate()		{ } // TODO BR:
 	// -#-
 	// ========================================================================
 	// #=== getters and setters
 	//
-	private SkillsFactory sf()			{ return sf; }
-	private void sf(SkillsFactory sf)	{ this.sf = sf; }
-	private boolean isCustomSpecies()	{ return false; } // TODO BR: isCustomSpecies()
+	private void dnaFactory(SkillsFactory sf)	{ this.dnaFactory = sf; }
+	private SkillsFactory dnaFactory()	{
+		if (dnaFactory == null)
+			dnaFactory(SkillsFactory.getSkillsFactoryForEditor(this));
+		return dnaFactory;
+	}
+	private boolean isGMO()		{ return false; } // TODO BR: isCustomSpecies()
 	private String guiTitleID()	{
 		if (allowEdit)
 			return ROOT + "GUI_TITLE";
 		else
-			if (isCustomSpecies())
+			if (isGMO())
 				return ROOT + "SHOW_TITLE_CUSTOM";
 			else
 				return ROOT + "SHOW_TITLE";
@@ -257,9 +248,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		@Override public void mouseEntered(MouseEvent e)	{ setDescBox(e); }
 		@Override public void mouseExited(MouseEvent e)		{ clearDescBox(e); }
 		@Override public void mouseDragged(MouseEvent e)	{ }
-		@Override public void mouseMoved(MouseEvent e)		{
-//			System.out.println("Mouse Moved");
-		}
+		@Override public void mouseMoved(MouseEvent e)		{ }
 		@Override public void mouseWheelMoved(MouseWheelEvent w)	{ toggle(w); }
 
 		private RSettingPanel panel(MouseEvent e)		{ return (RSettingPanel) e.getComponent(); }
@@ -321,60 +310,22 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 				hasPopUp = panel;
 				panel.highLighted(true);
 				String description = setting.getGuiDescription();
-				descriptionBox.setText(description);
-				GuideUI guideUI = RotPUI.guideUI();
-				guideUI.clear();
-				Rectangle onScreen = getLocationOnScreen(panel);
-				guideUI.open(panel, setting.getGuide());
-				repaint();
+				descriptionPane.setText(description);
+//				GuideUI.clear();
+				GuideUI.open(panel, setting.getGuide());
+//				repaint();
 			}
 		}
 		private void clearDescBox(MouseEvent e)	{
 			RSettingPanel panel = panel(e);
 			if (!isInside(e, panel)) {
 				panel.highLighted(false);
-				descriptionBox.setText(emptyDescription);
-				GuideUI guideUI = RotPUI.guideUI();
-				guideUI.close();
+				GuideUI.close();
+				descriptionPane.setText(emptyDescription);
 				hasPopUp = null;
 			}
 		}
 	}
-//	final class GuideListener	{
-////		public void mouseEntered(MouseEvent e)	{ setDescBox(e); }
-////		public void mouseExited(MouseEvent e)	{ clearDescBox(e); }
-//
-//		private RSettingPanel panel(MouseEvent e)		{ return (RSettingPanel) e.getComponent(); }
-////		private ICRSettings getSetting(MouseEvent e)	{ return panel(e).setting; }
-//		private void setDescBox(JComponent target, String text)	{
-//			Rectangle dest = new Rectangle(0,0,target.getWidth(), target.getHeight());
-//			RSettingPanel panel = panel(e);
-//			ICRSettings setting = panel.setting;
-//			if (panel != hasPopUp) {
-//				if (hasPopUp != null)
-//					hasPopUp.highLighted(false);
-//				hasPopUp = panel;
-//				panel.highLighted(true);
-//				String description = setting.getGuiDescription();
-//				descriptionBox.setText(description);
-//				GuideUI guideUI = RotPUI.guideUI();
-//				guideUI.clear();
-//				Rectangle onScreen = getLocationOnScreen(panel);
-//				guideUI.open(workshop, panel, setting.getGuide(), onScreen);
-//				repaint();
-//			}
-//		}
-//		private void clearDescBox(MouseEvent e)	{
-//			RSettingPanel panel = panel(e);
-//			if (!isInside(e, panel)) {
-//				panel.highLighted(false);
-//				descriptionBox.setText(emptyDescription);
-//				GuideUI guideUI = RotPUI.guideUI();
-//				guideUI.close();
-//				hasPopUp = null;
-//			}
-//		}
-//	}
 	// -#-
 	// ========================================================================
 	// #=== Level 1: Content Panel (set as content pane to be able to access paintComponent to gives a background
@@ -393,11 +344,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			int x = 0;
 			int y = 0;
 
-//			// Title pane
-//			JLabel title = new JLabel(titleImage());
-//			title.setOpaque(false);
-//			add(title, newGbc(x,y, 1,1, 0,0, NORTH, NONE, new Insets(0, 0, 0, 0), 0,0));
-
 			if (allowEdit) {
 				Insets inset = new Insets(0, BUTTON_SEP_W, 0, BUTTON_SEP_W);
 				add(new TopPane(allowEdit), newGbc(x,y, 1,1, 0,0, SOUTHEAST, NONE, inset, 0,0));
@@ -413,7 +359,8 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			// Description
 			y++;
 			gbc = newGbc(x,y, 1,1, 0,0, EAST, HORIZONTAL, new Insets(VERTICAL_GAP, LEFT_MARGIN, 0, RIGHT_MARGIN), 0,0);
-			add(new DescriptionPane(allowEdit), gbc);
+			descriptionPane = new DescriptionPane(allowEdit);
+			add(descriptionPane, gbc);
 
 			// Bottom buttons
 			y++;
@@ -424,7 +371,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			BufferedImage blankLine = new BufferedImage(s20, s10, TYPE_INT_ARGB);
 			JLabel picLabel = new JLabel(new ImageIcon(blankLine));
 			add(picLabel, newGbc(x,y, 1,1, 0,0, EAST, HORIZONTAL, ZERO_INSETS, 0,0));
-
 		}
 	}
 	// -#-
@@ -491,7 +437,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 				}
 				ICRSettings setting = settingList.get(i);
 				RSettingPanel settingPanel = new RSettingPanel(this, setting, settingWidth, new SettingListener());
-//				settingPanelList.add(settingPanel);
 				if (setting.isBullet())
 					subPanel.add(settingPanel, newGbc(0,y, REMAINDER,1, 1,0, WEST, HORIZONTAL, bulletInset, 0,0));
 				else
@@ -519,6 +464,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			g.dispose();
 		}
 		@Override public void paintComponent(Graphics g) {
+			super.paintComponent(g);
 			int w = getWidth();
 			int h = getHeight();
 			setHiRenderingHints(g);
@@ -541,29 +487,46 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	// ========================================================================
 	// === Level 2: ==> Description Pane
 	//
-	private class DescriptionPane extends JPanel	{
+	private class DescriptionPane extends RPanel	{
 		private static final long serialVersionUID = 1L;
+		private JTextPane descriptionBox;
 		private DescriptionPane(boolean allowEdit)	{
 			Color color = Base.setAlpha(GameUI.raceCenterColor(), backGroundAlpha);
-			setOpaque(true);
+			setOpaque(false);
 			setBackground(color);
 			setLayout(new GridBagLayout());
 
 			GridBagConstraints gbc = newGbc(0,0, 1,1, 0,0, CENTER, HORIZONTAL, ZERO_INSETS, 0,0);
 			BufferedImage blankLine = new BufferedImage(scaled(840), s41, TYPE_INT_ARGB);
 			JLabel picLabel = new JLabel(new ImageIcon(blankLine));
+			picLabel.setOpaque(false);
 			add(picLabel, gbc);
 
 			descriptionBox = new JTextPane();
-			add(descriptionBox, gbc);
-
-			descriptionBox.setOpaque(true);
+			descriptionBox.setForeground(Color.BLACK);
+			descriptionBox.setOpaque(false);
 			descriptionBox.setContentType("text/html");
 			descriptionBox.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
 			descriptionBox.setFont(DESC_FONT);
-			descriptionBox.setFont(narrowFont(14));
 			descriptionBox.setText(emptyDescription);
-			descriptionBox.setBackground(new Color(0,0,0,0));
+			descriptionBox.setBackground(color);
+		}
+		private void setText(String text)	{
+			descriptionBox.setText(text);
+			repaint();
+		}
+		@Override protected void paintComponent(Graphics g)	{
+			super.paintComponent(g);
+			int w = getWidth();
+			int h = getHeight();
+			g.setColor(getBackground());
+			g.fillRect(0, 0, w-1, h-1);
+
+			Dimension dim =  descriptionBox.getPreferredSize();
+			descriptionBox.setSize(dim);
+			g.translate(s10, 0);
+			descriptionBox.paint(g);
+			g.translate(-s10, 0);
 		}
 	}
 	// ========================================================================
@@ -576,8 +539,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			setLayout(new GridBagLayout());
 			int x = 0;
 			int y = 0;
-			GridBagConstraints gbc = newGbc(x, y, 1,1, 0,0, EAST, NONE, new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, BUTTON_SEP_W), 0,0);
-			add(new CancelButton(), gbc);
+			add(new GuideButton(), newGbc(x, y, 1,1, 0,0, EAST, NONE, new Insets(0, 0, BUTTON_SEP_H, BUTTON_SEP_W), 0,0));
 
 			x++;
 			addVariableSpace(this, x, y);
@@ -585,11 +547,11 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			x++;
 			addVariableSpace(this, x, y);
 
-			gbc.insets = new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, BUTTON_SEP_W);
 			x++;
-			gbc.gridx = x;
-			gbc.anchor = WEST;
-			add(new ExitButton(), gbc);
+			add(new CancelButton(), newGbc(x, y, 1,1, 0,0, EAST, NONE, new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, BUTTON_SEP_W), 0,0));
+
+			x++;
+			add(new ExitButton(), newGbc(x, y, 1,1, 0,0, WEST, NONE, new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, 0), 0,0));
 		}
 	}
 	// -#-
@@ -598,16 +560,21 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	//
 	private void close()	{
 		buttonClick();
+		setTooltipEnabled(oldTooltipState);
 		RotPUI.instance().selectSetupRacePanel();
 		disableGlassPane();
 		setVisible(false);
 		setEnabled(false);
 		remove(contentPane);
-		contentPane	= null;
-		backImage	= null;
-		parent		= null;
+		dnaFactory				= null;
+		contentPane		= null;
+		settingsPane	= null;
+		costPanel		= null;
+		descriptionPane	= null;
+		backImage		= null;
+		parent			= null;
 	}
-	private class ExitButton extends RButton	{
+	private class ExitButton extends RHugeButton	{
 		private static final long serialVersionUID = 1L;
 		private ExitButton()	{
 			super(ROOT + "BUTTON_EXIT");
@@ -616,7 +583,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		}
 		private void exitAction()	{ close(); }
 	}
-	private class CancelButton extends RButton	{
+	private class CancelButton extends RHugeButton	{
 		private static final long serialVersionUID = 1L;
 		private CancelButton()	{
 			super(ROOT + "BUTTON_CANCEL");
@@ -650,6 +617,23 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			Toolkit.getDefaultToolkit().beep();
 		}
 	}
+	private class GuideButton extends RButton	{
+		private static final long serialVersionUID = 1L;
+		private GuideButton()	{
+			super("SETTINGS_GUIDE");
+			setLabelKey();
+			addActionListener(e -> buttonGuideAction(e));
+		}
+		private void buttonGuideAction(ActionEvent e)	{
+			buttonClick();
+			showGuide.toggle();
+			if (showGuide()) {
+				RButton button = (RButton) e.getSource();
+				button.popGuide(button.getToolTipText());
+			}
+		}
+	}
+
 	// ========================================================================
 	// Other Specific Components definition
 	//
@@ -686,15 +670,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	// ========================================================================
 	// Other
 	//
-	@Override public void animate()		{ } // TODO BR:
-	private void reCenter() {
-		Point pLoc = parent.getLocationOnScreen();
-		Dimension pSize = parent.getSize();
-		Dimension cSize = getSize();
-		int x = pLoc.x + (pSize.width - cSize.width)/2;
-		int y = pLoc.y + (pSize.height - cSize.height)/2;
-		setLocation(x, y);
-	}
 	// -#-
 	
 }

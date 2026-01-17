@@ -55,9 +55,11 @@ public interface RotPComponents extends IGuide, Base, ScaledInteger {
 	default Color buttonBackgroundColor()	{ return GameUI.buttonBackgroundColor(); }
 	default Color buttonTextColor()			{ return GameUI.borderBrightColor(); }
 	default Color highlightColor()			{ return Color.YELLOW; }
+
 	default Color tooltipBackgroundColor()	{ return GameUI.paneBackgroundColor(); }
 	default Color tooltipTxtColor()			{ return SystemPanel.blackText; }
 	default Font tooltipFont()				{ return FontManager.getNarrowFont(scaled(tooltipFontSize())); }
+
 	default Font settingLabelFont()			{ return FontManager.getNarrowFont(scaled(settingsFontSize())); }
 	default Font settingValueFont()			{ return FontManager.getNarrowFont(scaled(settingsFontSize())); }
 	default int baseFontSize()				{ return 14; }
@@ -252,6 +254,10 @@ public interface RotPComponents extends IGuide, Base, ScaledInteger {
 	}
 	default void setTooltipInitialDelay(int ms)	{ToolTipManager.sharedInstance().setInitialDelay(ms);} // (4000 ms)
 	default void setTooltipDismissDelay(int ms)	{ToolTipManager.sharedInstance().setDismissDelay(ms);} // (750 ms)
+	default void setTooltipEnabled(boolean is)	{ToolTipManager.sharedInstance().setEnabled(is);}
+	default boolean isTooltipEnabled()			{return ToolTipManager.sharedInstance().isEnabled();}
+	default int getTooltipInitialDelay()		{return ToolTipManager.sharedInstance().getInitialDelay();}
+	default int getTooltipDismissDelay()		{return ToolTipManager.sharedInstance().getDismissDelay();}
 	// -#-
 
 

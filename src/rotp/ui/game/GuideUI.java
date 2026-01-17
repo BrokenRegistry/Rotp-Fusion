@@ -110,8 +110,10 @@ public class GuideUI extends BasePanel {
 //		enableGlassPane(this);
 //	}
 	public static void open(JComponent target, String tipText)	{
-		instance.guideData.init(target, tipText);
-		instance.enableGlassPane(instance);
+		if (showGuide.get()) {
+			instance.guideData.init(target, tipText);
+			instance.enableGlassPane(instance);
+		}
 	}
 	private Rectangle getLocationOnScreen(JComponent c)	{
 		return new Rectangle(c.getLocationOnScreen(), c.getSize());
@@ -147,7 +149,7 @@ public class GuideUI extends BasePanel {
 		private void clear()	{
 			sourceBox = null;
 			lineArr	  = null;
-			guideBox.setText(null);
+			guideBox.setText("");
 		}
 		// Queries
 		private boolean isEmpty()			{ return sourceBox == null; }
