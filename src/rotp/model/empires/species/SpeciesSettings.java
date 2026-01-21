@@ -1558,13 +1558,13 @@ public abstract class SpeciesSettings {
 	// -#-
 	// #==================== TechResearch  And Discovery====================
 	//
-	class Technologies {
+	public class Technologies {
 		TechResearch	techResearch	= new TechResearch();
 		TechDiscovery	techDiscovery	= new TechDiscovery();
 
 		// ==================== TechResearch ====================
 		//
-		class TechResearch extends SettingInteger {
+		public class TechResearch extends SettingInteger {
 
 			ResearchComputer		computer	= new ResearchComputer();
 			ResearchConstruction	construction= new ResearchConstruction();
@@ -1575,7 +1575,7 @@ public abstract class SpeciesSettings {
 
 			TechResearch() {
 				super(ROOT, "TECH_RESEARCH", 100, 60, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, 0.7f, 0.004f}, new float[]{0f, 1.0f, 0.006f});
-				hasNoCost(true);
+				hasNoCost(false);
 				initOptionsText();
 			}
 			@Override public void settingToSkill(SpeciesSkills skills) { skills.researchBonusPct(settingValue()/100f); }
@@ -1585,6 +1585,16 @@ public abstract class SpeciesSettings {
 			}
 			@Override protected boolean next(Integer i) {
 				super.next(i);
+				if (settingText() == null) { // TODO BR: remove once EditCustomSpecies is obsolete
+					// To force refresh the display for those parameters 
+					computer.updated(true);
+					construction.updated(true);
+					forceField.updated(true);
+					planet.updated(true);
+					propulsion.updated(true);
+					weapon.updated(true);
+					return true;
+				}
 				computer.settingText().repaint(computer.guiSettingDisplayStr());
 				construction.settingText().repaint(construction.guiSettingDisplayStr());
 				forceField.settingText().repaint(forceField.guiSettingDisplayStr());
@@ -1593,6 +1603,10 @@ public abstract class SpeciesSettings {
 				weapon.settingText().repaint(weapon.guiSettingDisplayStr());
 				return false;
 			}
+			@Override public boolean toggle(MouseWheelEvent e) {
+				super.toggle(e);
+				return true;
+			}
 			@Override public void enabledColor(float cost) { super.enabledColor(cost()); }
 
 			String costString(float cost) {
@@ -1600,7 +1614,7 @@ public abstract class SpeciesSettings {
 				str +=  new DecimalFormat("0.0").format(cost);
 				return str + ">)";
 			}
-			private float cost() {
+			public float cost() {
 				return computer.settingCost()
 						+ construction.settingCost()
 						+ forceField.settingCost()
@@ -1608,6 +1622,7 @@ public abstract class SpeciesSettings {
 						+ propulsion.settingCost()
 						+ weapon.settingCost();
 			}
+			private void markTechResearchForRefresh()	{ updated(true); }
 
 			// ==================== ResearchComputer ====================
 			//
@@ -1672,7 +1687,7 @@ public abstract class SpeciesSettings {
 			//
 			// ==================== Research ====================
 			//
-			private class SettingResearch extends SettingInteger {
+			public class SettingResearch extends SettingInteger {
 				// Cost: smaller = better
 				private static final float	c0 = 0;
 				private static final float	c1 = -18.02331959f;
@@ -1686,7 +1701,7 @@ public abstract class SpeciesSettings {
 					super(ROOT, nameLangLabel, 100, 50, 200, 1, 5, 20, NORMALIZED, new float[]{c0, c1, c2, c3, c4}, null);
 				}
 				@Override public float settingCost() { return settingCost(combinedValue()); }
-				@Override protected float settingCost(Integer value) {
+				@Override public float settingCost(Integer value) {
 					float baseCost = (value - baseCostDefault)/norm;
 					float cost = 0;
 					for (int i=0; i<posCostFactor.length; i++) {
@@ -1704,6 +1719,10 @@ public abstract class SpeciesSettings {
 					str += String.valueOf(combinedValue()) + "%";
 					return str;
 				}
+				@Override protected void selectedValue(Integer newValue) {
+					super.selectedValue(newValue);
+					markTechResearchForRefresh();
+				}
 				String costString(float cost) {
 					String str = "(";
 					str +=  new DecimalFormat("0.0").format(cost);
@@ -1717,7 +1736,7 @@ public abstract class SpeciesSettings {
 		}
 		// ==================== TechDiscovery ====================
 		//
-		class TechDiscovery extends SettingInteger {
+		public class TechDiscovery extends SettingInteger {
 
 			DiscoveryComputer	  computer		= new DiscoveryComputer();
 			DiscoveryConstruction construction	= new DiscoveryConstruction();
@@ -1728,7 +1747,7 @@ public abstract class SpeciesSettings {
 
 			TechDiscovery() {
 				super(ROOT, "TECH_DISCOVERY", 50, 0, 100, 1, 5, 20, DIFFERENCE, new float[]{0f, .5f}, new float[]{0f, 0.5f});
-				hasNoCost(true);
+				hasNoCost(false);
 				initOptionsText();
 			}
 			@Override public void settingToSkill(SpeciesSkills skills) { skills.techDiscoveryPct(settingValue()/100f); }
@@ -1738,6 +1757,16 @@ public abstract class SpeciesSettings {
 			}
 			@Override protected boolean next(Integer i) {
 				super.next(i);
+				if (settingText() == null) { // TODO BR: remove once EditCustomSpecies is obsolete
+					// To force refresh the display for those parameters 
+					computer.updated(true);
+					construction.updated(true);
+					forceField.updated(true);
+					planet.updated(true);
+					propulsion.updated(true);
+					weapon.updated(true);
+					return true;
+				}
 				computer.settingText().repaint(computer.guiSettingDisplayStr());
 				construction.settingText().repaint(construction.guiSettingDisplayStr());
 				forceField.settingText().repaint(forceField.guiSettingDisplayStr());
@@ -1746,6 +1775,10 @@ public abstract class SpeciesSettings {
 				weapon.settingText().repaint(weapon.guiSettingDisplayStr());
 				return false;
 			}
+			@Override public boolean toggle(MouseWheelEvent e) {
+				super.toggle(e);
+				return true;
+			}
 			@Override public void enabledColor(float cost) { super.enabledColor(cost()); }
 
 			String costString(float cost) {
@@ -1753,7 +1786,7 @@ public abstract class SpeciesSettings {
 				str +=  new DecimalFormat("0.0").format(cost);
 				return str + ">)";
 			}
-			private float cost() {
+			public float cost() {
 				return computer.settingCost()
 						+ construction.settingCost()
 						+ forceField.settingCost()
@@ -1761,6 +1794,7 @@ public abstract class SpeciesSettings {
 						+ propulsion.settingCost()
 						+ weapon.settingCost();
 			}
+			private void markTechDiscoveryForRefresh()	{ updated(true); }
 
 			// ==================== DiscoveryComputer ====================
 			//
@@ -1826,7 +1860,7 @@ public abstract class SpeciesSettings {
 			//
 			// ==================== Discovery ====================
 			//
-			private class SettingDiscovery extends SettingInteger {
+			public class SettingDiscovery extends SettingInteger {
 				private static final float	c0 = 0f;
 				private static final float	c1 = 4.9221976f;
 				private static final float	c2 = 1.25604100f;
@@ -1843,7 +1877,7 @@ public abstract class SpeciesSettings {
 				@Override public float settingCost() {
 					return settingCost(combinedValue());
 				}
-				@Override protected float settingCost(Integer value) {
+				@Override public float settingCost(Integer value) {
 					float baseCost = (value - baseCostDefault)/norm;
 					float cost = 0;
 					for (int i=0; i<posCostFactor.length; i++) {
@@ -1859,6 +1893,10 @@ public abstract class SpeciesSettings {
 					str += " -> ";
 					str += String.valueOf(combinedValue()) + "%";
 					return str;
+				}
+				@Override protected void selectedValue(Integer newValue) {
+					super.selectedValue(newValue);
+					markTechDiscoveryForRefresh();
 				}
 				private String costString(float cost) {
 					String str = "(";

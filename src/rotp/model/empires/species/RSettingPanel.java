@@ -3,6 +3,7 @@ package rotp.model.empires.species;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +14,14 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import rotp.model.empires.species.SpeciesSettings.Technologies.TechDiscovery;
+import rotp.model.empires.species.SpeciesSettings.Technologies.TechResearch;
 import rotp.ui.components.RLabel;
 import rotp.ui.components.RLineBorder;
 import rotp.ui.components.RotPComponents;
 import rotp.ui.util.IParam;
 
-class RSettingPanel extends JPanel implements RotPComponents {
+public class RSettingPanel extends JPanel implements RotPComponents {
 	private static final long serialVersionUID = 1L;
 	private final RLineBorder border;
 	private final TitledBorder titleBorder;
@@ -53,11 +56,42 @@ class RSettingPanel extends JPanel implements RotPComponents {
 		addMouseWheelListener(settingListener);
 
 		setting.updateGui(this);
-		updateDisplay();
+		updateDisplay(true);
 	}
+
 	@Override public IParam getParam()			{ return setting; }
 	@Override public JComponent getComponent()	{ return this; }
-	void updateDisplay()	{
+	@Override public void paintImmediately()	{ paintImmediately(0, 0, getWidth(), getHeight()); }
+
+	private Color getCostColor(float cost)	{
+		if (cost == 0) 
+			return ICRSettings.settingC;
+		else if (cost > 0)
+			return ICRSettings.settingPosC;
+		else
+			return ICRSettings.settingNegC;	
+	}
+	private Color getCostColor()	{
+		if (setting.hasNoCost())
+			return ICRSettings.settingBlandC;
+
+		if (setting instanceof TechDiscovery) {
+			TechDiscovery td = (TechDiscovery)setting;
+			float cost = td.cost();
+			return getCostColor(cost);
+		}
+		else if (setting instanceof TechResearch) {
+			TechResearch tr = (TechResearch)setting;
+			float cost = tr.cost();
+			return getCostColor(cost);
+		}
+		else
+			return getCostColor(setting.settingCost());
+	}
+	void updateDisplay(boolean forced)	{
+		if (!forced && !setting.updated())
+			return;
+		setting.updated(false);
 		if (highLighted) {
 			border.setLineColor(highlightColor());
 			border.setThickness(2);
@@ -66,13 +100,13 @@ class RSettingPanel extends JPanel implements RotPComponents {
 			border.setLineColor(Color.BLACK);
 			border.setThickness(1);
 		}
-		setLabelColor(setting.getCostColor());
+		setLabelColor(getCostColor());
 		setLabelText(setting.guiSettingDisplayStr());
 		repaint();
 	}
 	void highLighted(boolean b)	{
 		highLighted = b;
-		updateDisplay();
+		updateDisplay(true);
 	}
 	void setValueString(String str, Color color)	{
 		boolean refresh = false;
@@ -92,7 +126,7 @@ class RSettingPanel extends JPanel implements RotPComponents {
 			refresh = true;
 			RLabel valueLabel = new RLabel(str);
 			valueLabel.setAlignmentX(0);
-			valueLabel.setBorder(emptyBorder());
+			valueLabel.setBorder(new EmptyBorder(0, s10, 0, s4));
 			valueLabel.setForeground(color);
 			valueLabels.add(valueLabel);
 			add(valueLabel);
@@ -106,8 +140,20 @@ class RSettingPanel extends JPanel implements RotPComponents {
 			revalidate();
 		return refresh;
 	}
-	public void paintImmediately()	{ paintImmediately(0, 0, getWidth(), getHeight()); }
 	public void setLabelText(String title)	{ titleBorder.setTitle(title); }
 	public void setLabelColor(Color color)	{ titleBorder.setTitleColor(color); }
-	private EmptyBorder emptyBorder()		{ return new EmptyBorder(0, s10, 0, s4); }
+	public void setBullet(MouseEvent e)	{
+		int y = e.getY();
+		int bulletStart	= setting.bulletStart();
+		int bulletSize	= setting.bulletBoxSize();
+		for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
+			int optionIdx = bulletStart + bulletIdx;
+			RLabel label = valueLabels.get(optionIdx);
+			int relY = y-label.getY();
+			if (relY>=0 && relY<label.getHeight()) {
+				SettingBase<?> sb = (SettingBase<?>)setting;
+				sb.index(optionIdx);
+			}
+		}
+	}
 }

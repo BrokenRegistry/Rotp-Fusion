@@ -51,6 +51,7 @@ import rotp.util.FontManager;
 public interface RotPComponents extends IGuide, Base, ScaledInteger {
 	Insets ZERO_INSETS	= new Insets(0, 0, 0, 0);
 	String LABEL_DESCRIPTION	= IParam.LABEL_DESCRIPTION;
+//	DescriptionPane descriptionPane = new DescriptionPane(); // not cap, because not really a constant!
 
 	default Color buttonBackgroundColor()	{ return GameUI.buttonBackgroundColor(); }
 	default Color buttonTextColor()			{ return GameUI.borderBrightColor(); }
@@ -65,7 +66,7 @@ public interface RotPComponents extends IGuide, Base, ScaledInteger {
 	default int baseFontSize()				{ return 14; }
 	default int tooltipFontSize()			{ return 12; }
 	default int settingsFontSize()			{ return 12; }
-	default int baseDismissDelay()			{ return 60000; }	// in ms (default = 4000 ms)
+	default int baseDismissDelay()			{ return 4000; }	// in ms (default = 4000 ms)
 	default int baseInitialDelay()			{ return 750; }		// in ms (default = 750 ms)
 
 	// #=== 
@@ -822,4 +823,53 @@ public interface RotPComponents extends IGuide, Base, ScaledInteger {
 		GridBagConstraints gbc = newGbc(x,y, 1,1, 1.0,1.0, CENTER, BOTH, ZERO_INSETS, 0,0);
 		pane.add(new RLabel(""), gbc);
 	}
+//	final class DescriptionPane extends RPanel	{
+//		private static final long serialVersionUID = 1L;
+//		public final JTextPane descriptionBox = new JTextPane();
+//		public final JLabel minHeightLabel	= new JLabel();
+//		public final JLabel minWidthLabel	= new JLabel();
+//		private DescriptionPane()	{
+//			setOpaque(false);
+//			setLayout(new GridBagLayout());
+//
+//			add(minHeightLabel, newGbc(0,0, 1,1, 0,0, CENTER, NONE, ZERO_INSETS, 0,0));
+//			add(minWidthLabel, newGbc(0,0, 1,1, 0,0, CENTER, NONE, ZERO_INSETS, 0,0));
+//			setMinHeight(s41); // two lines
+//			setMinWidth(s20);
+//
+//			descriptionBox.setForeground(Color.BLACK);
+//			descriptionBox.setOpaque(false);
+//			descriptionBox.setContentType("text/html");
+//			descriptionBox.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+//		}
+//		public void init(Color bgC, Color fgC, Font font, String tip, int minW, int minH)	{
+//			setBackground(bgC);
+//			setForeground(fgC);
+//			descriptionBox.setText(tip);
+//			setTipFont(font);
+//			setMinWidth(minW);
+//			setMinHeight(minH);
+//		}
+//		public void setText(String text)	{
+//			descriptionBox.setText(text);
+//			repaint();
+//		}
+//		public void setTipFont(Font font)	{ descriptionBox.setFont(font); }
+//		public void setMinHeight(int h)		{ minHeightLabel.setPreferredSize(new Dimension(1, h)); }
+//		public void setMinWidth(int w)		{ minWidthLabel.setPreferredSize(new Dimension(w, 1)); }
+//
+//		@Override protected void paintComponent(Graphics g)	{
+//			super.paintComponent(g);
+//			int w = getWidth();
+//			int h = getHeight();
+//			g.setColor(getBackground());
+//			g.fillRect(0, 0, w-1, h-1);
+//
+//			Dimension dim =  descriptionBox.getPreferredSize();
+//			descriptionBox.setSize(dim);
+//			g.translate(s10, 0);
+//			descriptionBox.paint(g);
+//			g.translate(-s10, 0);
+//		}
+//	}
 }

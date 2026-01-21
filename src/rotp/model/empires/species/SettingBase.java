@@ -491,7 +491,11 @@ public class SettingBase<T> implements ICRSettings {
 		else
 			return settingNegC;	
 	}
-	@Override public Color getCostColor()	{ return getCostColor(settingCost()); }
+	@Override public Color getCostColor()	{
+		if (hasNoCost())
+			return settingBlandC;
+		return getCostColor(settingCost());
+	}
 	void resetOptionsToolTip()				{}
 	protected String getCfgValue(T value)	{
 		if (isList) {

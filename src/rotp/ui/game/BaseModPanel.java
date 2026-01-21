@@ -31,6 +31,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
+import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -911,11 +912,30 @@ public abstract class BaseModPanel extends BasePanel
 				modText.mouseExit();
 			}
 		}
-		void fillButtonBackImg(Graphics2D g) {
-			if (retina)
+		void fillButtonBackImg(Graphics2D g)	{ fillButtonBackImg(g, true); }
+		void fillButtonBackImg(Graphics2D g, boolean lined)	{
+			Color c1 = GameUI.borderBrightColor();
+			if (retina) {
 				g.fillRoundRect(retina(x-xButton), retina(y-yButton), retina(width), retina(height), cnrR, cnrR);
-			else
+				if (lined) {
+					Paint paint = g.getPaint();
+					g.setStroke(stroke2);
+					g.setColor(c1);
+					g.drawRoundRect(retina(x-xButton), retina(y-yButton), retina(width), retina(height), cnrR, cnrR);
+					g.setPaint(paint);
+				}
+			}
+			else {
 				g.fillRoundRect(x-xButton, y-yButton, width, height, cnr, cnr);
+				if (lined) {
+					Paint paint = g.getPaint();
+					g.setStroke(stroke1);
+					g.setColor(c1);
+					g.drawRoundRect(x-xButton, y-yButton, width, height, cnr, cnr);
+					g.setPaint(paint);
+				}
+			}
+
 		}
 		void fillButtonFullImg(Graphics2D g) {
 			if (retina)

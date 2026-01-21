@@ -21,7 +21,6 @@ import javax.swing.SwingConstants;
 
 import rotp.ui.components.RButtonBar.ButtonBarListener.BarEvents;
 import rotp.ui.components.RotPButtons.RButton;
-import rotp.ui.components.RotPButtons.RMiniButton;
 import rotp.ui.components.RotPButtons.RMiniToggleButton;
 import rotp.ui.util.StringList;
 
@@ -262,11 +261,11 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 			b.setSelected(true);
 		}
 	}
-	private class InsertItemButton extends RMiniButton	{
+	private class InsertItemButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private final boolean insert;
 		private InsertItemButton(boolean insert)	{
-			super((insert ^ westSide)? "BUTTON_BAR_INSERT_RIGHT" : "BUTTON_BAR_INSERT_LEFT");
+			super((insert ^ westSide)? "BUTTON_BAR_INSERT_RIGHT" : "BUTTON_BAR_INSERT_LEFT", RotPButtons.MINI_FONT_SIZE);
 			setLabelKey();
 			this.insert	= insert;
 			setName(insert? INSERT_NAME : ADD_NAME);
@@ -301,10 +300,10 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 			buttonList.get(newIdx).setSelected(true);
 		}
 	}
-	private class RemoveItemButton extends RMiniButton	{
+	private class RemoveItemButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private RemoveItemButton()	{
-			super("BUTTON_BAR_REMOVE");
+			super("BUTTON_BAR_REMOVE", RotPButtons.MINI_FONT_SIZE);
 			setLabelKey();
 			setName(REMOVE_NAME);
 			addActionListener(new RemoveItemAction());

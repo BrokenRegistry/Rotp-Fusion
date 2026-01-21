@@ -45,6 +45,7 @@ import rotp.ui.components.RButtonBar.ButtonBarListener;
 import rotp.ui.components.RDialog;
 import rotp.ui.components.RLabel;
 import rotp.ui.components.RSeparator;
+import rotp.ui.components.RotPButtons;
 import rotp.ui.components.RotPButtons.RButton;
 import rotp.ui.components.RotPPanels.RContentPanel;
 import rotp.ui.components.RotPTextFields.SettingField;
@@ -828,7 +829,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class ExitButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private ExitButton()	{
-			super(ROOT + "BUTTON_EXIT");
+			super(ROOT + "BUTTON_EXIT", RotPButtons.DEFAULT_BUTTON);
 			setLabelKey();
 			addActionListener(e -> exitAction());
 		}
@@ -837,7 +838,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class CancelButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private CancelButton()	{
-			super(ROOT + "BUTTON_CANCEL");
+			super(ROOT + "BUTTON_CANCEL", RotPButtons.DEFAULT_BUTTON);
 			setLabelKey();
 			addActionListener(e -> cancelAction());
 		}
@@ -849,7 +850,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class FillFromAnimButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private FillFromAnimButton()	{
-			super("CUSTOM_RACE_FILL_FROM_ANIM_BUTTON");
+			super("CUSTOM_RACE_FILL_FROM_ANIM_BUTTON", RotPButtons.DEFAULT_BUTTON);
 			setLabelKey();
 			addActionListener(e -> fillFromAnim(e));
 		}
@@ -873,7 +874,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class FillFromNamesButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private FillFromNamesButton(String langDir)	{
-			super("CUSTOM_RACE_FILL_FROM_NAME_BUTTON");
+			super("CUSTOM_RACE_FILL_FROM_NAME_BUTTON", RotPButtons.DEFAULT_BUTTON);
 			setLabelKey();
 			addActionListener(e -> fillFromFromNames(e, langDir));
 		}
@@ -894,7 +895,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class CopyLanguageButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private CopyLanguageButton(boolean toLeft)	{
-			super(toLeft? "CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON" : "CUSTOM_RACE_COPY_FROM_LEFT_BUTTON");
+			super(toLeft? "CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON" : "CUSTOM_RACE_COPY_FROM_LEFT_BUTTON", RotPButtons.DEFAULT_BUTTON);
 			setLabelKey();
 			addActionListener(e -> copyLanguage(e, toLeft));
 		}

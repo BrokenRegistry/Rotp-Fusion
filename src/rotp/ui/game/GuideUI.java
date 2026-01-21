@@ -15,31 +15,53 @@
  */
 package rotp.ui.game;
 
+import static java.awt.GridBagConstraints.CENTER;
+import static java.awt.GridBagConstraints.NONE;
 import static rotp.model.game.IMainOptions.showGuide;
 import static rotp.ui.game.BaseModPanel.guideFontSize;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
+import javax.swing.JLabel;
 import javax.swing.JTextPane;
 
 import rotp.Rotp;
 import rotp.ui.BasePanel;
+import rotp.ui.components.RotPPanels.RPanel;
 import rotp.ui.util.IParam;
 import rotp.util.Base;
 
 public class GuideUI extends BasePanel {
 	public interface IGuide {
+		DescriptionPane descriptionPane = new DescriptionPane(); // not cap, because not really a constant!
+
+		default void setDescription(String txt)		{ descriptionPane.setText(txt); }
+		default void setDescription(JComponent c)	{
+			if (c != null)
+				descriptionPane.setText(c.getToolTipText());
+		}
+		default void setDescription()	{
+			if (showDescription()) {
+				JComponent c = getComponent();
+				if (c != null)
+					descriptionPane.setText(c.getToolTipText());
+			}
+		}
+
 		JComponent getComponent();
 		default IParam getParam()			{ return null; }
 		default boolean showGuide()			{ return showGuide.get(); }
+		default boolean showDescription()	{ return descriptionPane.isActive(); }
 		default void popGuide(String tip)	{
 			if (showGuide()) {
 				JComponent c = getComponent();
@@ -47,6 +69,8 @@ public class GuideUI extends BasePanel {
 					GuideUI.open(c, tip);
 			}
 		}
+
+		default void popGuide(JComponent c)	{ GuideUI.open(c); }
 		default void popGuide()	{
 			if (showGuide()) {
 				JComponent c = getComponent();
@@ -54,6 +78,8 @@ public class GuideUI extends BasePanel {
 					IParam p = getParam();
 					if (p != null)
 						GuideUI.open(c, p.getGuide());
+					else
+						GuideUI.open(c);
 				}
 			}
 		}
@@ -71,6 +97,60 @@ public class GuideUI extends BasePanel {
 			JComponent c = getComponent();
 			if (c != null)
 				c.paintImmediately(0, 0, c.getWidth(), c.getHeight());
+		}
+		final class DescriptionPane extends RPanel	{
+			private static final long serialVersionUID = 1L;
+			public final JTextPane descriptionBox = new JTextPane();
+			public final JLabel minHeightLabel	= new JLabel();
+			public final JLabel minWidthLabel	= new JLabel();
+			private boolean active = false;
+			private DescriptionPane()	{
+				setOpaque(false);
+				setLayout(new GridBagLayout());
+
+				add(minHeightLabel, newGbc(0,0, 1,1, 0,0, CENTER, NONE, ZERO_INSETS, 0,0));
+				add(minWidthLabel, newGbc(0,0, 1,1, 0,0, CENTER, NONE, ZERO_INSETS, 0,0));
+				setMinHeight(s41); // two lines
+				setMinWidth(s20);
+
+				descriptionBox.setForeground(Color.BLACK);
+				descriptionBox.setOpaque(false);
+				descriptionBox.setContentType("text/html");
+				descriptionBox.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+			}
+			public void init(Color bgC, Color fgC, Font font, String tip, int minW, int minH)	{
+				setBackground(bgC);
+				setForeground(fgC);
+				descriptionBox.setText(tip);
+				setTipFont(font);
+				setMinWidth(minW);
+				setMinHeight(minH);
+			}
+			public void setTipFont(Font font)	{ descriptionBox.setFont(font); }
+			public void setMinHeight(int h)		{ minHeightLabel.setPreferredSize(new Dimension(1, h)); }
+			public void setMinWidth(int w)		{ minWidthLabel.setPreferredSize(new Dimension(w, 1)); }
+			public boolean isActive()			{ return active; }
+			public void setActive(boolean flag)	{ active = flag; }
+			public void setText(String text)	{
+				if (active) {
+					descriptionBox.setText(text);
+					repaint();
+				}
+			}
+
+			@Override protected void paintComponent(Graphics g)	{
+				super.paintComponent(g);
+				int w = getWidth();
+				int h = getHeight();
+				g.setColor(getBackground());
+				g.fillRect(0, 0, w-1, h-1);
+
+				Dimension dim =  descriptionBox.getPreferredSize();
+				descriptionBox.setSize(dim);
+				g.translate(s10, 0);
+				descriptionBox.paint(g);
+				g.translate(-s10, 0);
+			}
 		}
 	}
 	private static final long serialVersionUID = 1L;
@@ -110,9 +190,14 @@ public class GuideUI extends BasePanel {
 //		enableGlassPane(this);
 //	}
 	public static void open(JComponent target, String tipText)	{
-		if (showGuide.get()) {
+		if (showGuide.get() && target != null && tipText!= null && !tipText.isEmpty()) {
 			instance.guideData.init(target, tipText);
 			instance.enableGlassPane(instance);
+		}
+	}
+	public static void open(JComponent target)	{
+		if (showGuide.get() && target != null) {
+			open(target, target.getToolTipText());
 		}
 	}
 	private Rectangle getLocationOnScreen(JComponent c)	{

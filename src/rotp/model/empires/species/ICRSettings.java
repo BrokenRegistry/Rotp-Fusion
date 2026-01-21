@@ -6,6 +6,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 
 import rotp.ui.game.BaseModPanel.ModText;
+import rotp.ui.game.GameUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.util.IParam;
 
@@ -18,7 +19,8 @@ public interface ICRSettings extends IParam {
 	Color frameC		= SystemPanel.blackText;	// Setting frame color
 	Color settingPosC	= SystemPanel.limeText;		// Setting name color
 	Color settingNegC	= SystemPanel.redText;		// Setting name color
-	Color settingC		= SystemPanel.whiteText;		// Setting name color
+	Color settingC		= SystemPanel.whiteText;	// Setting name color
+	Color settingBlandC	= GameUI.borderBrightColor();	// Setting name color
 	Color textC			= SystemPanel.whiteText;
 	Color labelC		= SystemPanel.orangeText;
 	Color costC			= SystemPanel.blackText;

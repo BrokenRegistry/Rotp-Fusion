@@ -2,9 +2,12 @@ package rotp.ui.components;
 
 import static java.awt.GridBagConstraints.NONE;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -53,139 +56,159 @@ public interface RotPButtons extends RotPComponents	{
 	}
 	default boolean isPaintedBackground()	{ return false; }
 	default boolean isShadowedString()		{ return false; }
+	default Color getLineBorderColor()		{ return GameUI.borderBrightColor(); }
 	default Color getShadowColor()			{ return GameUI.borderDarkColor(); }
 	default Paint getBackGroundPaint()		{ return buttonBackgroundColor(); }
 
+	static RButton newMiniButton(String text)	{
+		RButton button = new RButton(text, MINI_FONT_SIZE);
+		button.enableLinedBorder(false);
+		return button;
+	}
+	static RButton newButton(String text)	{
+		RButton button = new RButton(text, DEFAULT_FONT_SIZE);
+		return button;
+	}
+	static RButton newBigButton(String text, boolean painted)	{
+		RButton button = new RButton(text, BIG_FONT_SIZE);
+		button.enablePaintedBackground(painted);
+		button.enableShadowedString(true);
+		return button;
+	}
+	static RButton newHugeButton(String text)	{
+		RButton button = new RButton(text, HUGE_FONT_SIZE);
+		button.enablePaintedBackground(true);
+		button.enableShadowedString(true);
+		return button;
+	}
+
 	public class RButton extends JButton implements RotPButtons	{
 		private static final long serialVersionUID = 1L;
-		private boolean showBorder;
+		private boolean highlightBorder	= false;
+		private boolean linedBorder	= true;
+		private boolean paintedBG	= false;
+		private boolean shadowText	= false;
+		private int fontSize = DEFAULT_FONT_SIZE;
 
-		public RButton(String text)	{
+		public RButton(String text, int fontSize)	{
 			super(text);
+			this.fontSize = fontSize;
 			setForeground(buttonTextColor());
 			setBackground(buttonBackgroundColor());
-			setMargin(getButtonMargin());
 			setVerticalTextPosition(AbstractButton.BOTTOM);
 			setHorizontalTextPosition(AbstractButton.CENTER);
 			setFont(buttonFont());
+			setFont(buttonFont(fontSize));
+			setMargin(rotpMargin());
 			setOpaque(false);
 			setFocusPainted(false);
 			setBorderPainted(false);
 			setContentAreaFilled(false);
 			addMouseListener(new ButtonMouseAdapter());
 		}
-		public RButton(Container pane, String text, int x, int y, int anchor)	{
-			this(text);
-			pane.add(this, newGbc(x,y, 1,1, 0,0, anchor, NONE, getButtonMargin(), 0,0));
-		}
-		public RButton(Container pane, String text, GridBagConstraints gbc)	{
-			this(text);
-			pane.add(this, gbc);
-		}
+		public int textBaselineOffset()		{ return scaled(fontSize)/10; }
+		public int heightPct()				{ return 100; }
 		public void setLabelKey()			{ setLabelKey(getText()); }
 		public void setLabelKey(String key) {
 				setText(text(key));
 				setToolTipText(htmlText(key + LABEL_DESCRIPTION));
 		}
-		@Override public JComponent getComponent()	{ return this; }
+		public Insets rotpMargin()			{
+			int side = scaled(fontSize);
+			int top = s2 + side/10;
+			int bottom = s2 + side/20;
+			return new Insets(top, side, bottom, side);
+		}
+		public void enableLinedBorder(boolean flag)		{ linedBorder = flag; }
+		public void enablePaintedBackground(boolean b)	{ paintedBG = b; }
+		public void enableShadowedString(boolean flag)	{ shadowText = flag; }
+		public Dimension rotpSize()	{
+			FontMetrics metrics = new Canvas().getFontMetrics(getFont());
+			Insets margin = getMargin();
+			int txtH = metrics.getHeight();
+			int txtW = metrics.stringWidth(getText());
+			int modH = (txtH * 100)/100;
+			int h = modH + margin.top + margin.bottom;
+			int w = txtW + margin.left + margin.right;
+			Dimension size = new Dimension(w, h);
+			if(isMinimumSizeSet()) {
+				Dimension lim = getMinimumSize();
+				size.width	= max(size.width, lim.width);				
+				size.height	= max(size.height, lim.height);				
+			}
+			if(isMaximumSizeSet()) {
+				Dimension lim = getMaximumSize();
+				size.width	= min(size.width, lim.width);				
+				size.height	= min(size.height, lim.height);				
+			}
+//			System.out.println(fontSize + " --> " + new Dimension(unscaled(size.width), unscaled(size.height)));
+			setSize(size);
+			return size;
+		}
+		@Override public boolean isPaintedBackground()	{ return paintedBG; }
+		@Override public Paint getBackGroundPaint()		{ return GameUI.buttonBackground(0, getWidth()); }
+		@Override public boolean isShadowedString()		{ return shadowText; }
+		@Override public JComponent getComponent()		{ return this; }
+		@Override public Dimension getPreferredSize()	{
+			if (isPreferredSizeSet())
+				return super.getPreferredSize();
+			return rotpSize();
+		}
 		@Override protected void paintComponent(Graphics g)	{
 			Graphics2D g2 = (Graphics2D) g;
 			int w = getWidth();
 			int h = getHeight();
-
+			
 			// Paint Background
 			if (isPaintedBackground())
 				g2.setPaint(getBackGroundPaint());
 			else
 				g2.setColor(getBackground());
-			g2.fillRoundRect(0, s2, w-1, h-1-s2-s2, cnr, cnr);
+			g2.fillRoundRect(0, 0, w-1, h-1, cnr, cnr);
 
 			// Paint Borders
-			if (showBorder) {
+			if (linedBorder || highlightBorder) {
 				g2.setStroke(BasePanel.stroke1);
-				g2.setColor(highlightColor());
-				g2.drawRoundRect(0, s2, w-1, h-1-s2-s2, cnr, cnr);
+				if (highlightBorder)
+					g2.setColor(highlightColor());
+				else
+					g2.setColor(getLineBorderColor());
+				g2.drawRoundRect(0, 0, w-1, h-1, cnr, cnr);
 			}
 
 			// Paint Text
+			g2.setFont(getFont());
+			Insets margin = getMargin();
 			String text = getText();
 			int sw	= g2.getFontMetrics().stringWidth(text);
-			int x	= (w-sw)/2;
-			int y	= (h*75)/100;
-			Color c	= showBorder ? Color.yellow : buttonTextColor();
+			int x	= max((w-sw)/2, margin.left);
+			int sh	= h - margin.top - margin.bottom;
+			int y	= (sh*75)/100 + margin.top;
+			Color c	= highlightBorder ? Color.yellow : buttonTextColor();
 			g2.setColor(c);
 			if (isShadowedString())
 				drawShadowedString(g2, text, 2, x, y, getShadowColor(), c);
 			else
 				drawString(g2, text, x, y);
-//			super.paintComponent(g);
 		}
-		// BR: to let Guide UI access to tool tip text
-//		@Override public String getToolTipText(MouseEvent e)	{ return null; }
 		private class ButtonMouseAdapter extends MouseAdapter	{
 			@Override public void mouseEntered(MouseEvent evt)	{
-				showBorder = true;
+				highlightBorder = true;
 				setForeground(highlightColor());
+				setDescription(getToolTipText());
 				popGuide(getToolTipText());
 			}
 			@Override public void mouseExited(MouseEvent evt)	{
-				showBorder = false;
+				highlightBorder = false;
 				setForeground(GameUI.borderBrightColor());
 				hideGuide();
+				setDescription("");
 			}
 			@Override public void mousePressed(MouseEvent evt)	{}
 			@Override public void mouseReleased(MouseEvent evt)	{}
 		}
 	}
 
-	public class RMiniButton extends RButton	{
-		private static final long serialVersionUID = 1L;
-
-		public RMiniButton(String text)	{ super(text); }
-		public RMiniButton(Container pane, String text, int x, int y, int anchor)	{
-			this(text);
-			pane.add(this, newGbc(x,y, 1,1, 0,0, anchor, NONE, getButtonMargin(), 0,0));
-		}
-		public RMiniButton(Container pane, String text, GridBagConstraints gbc)	{
-			this(text);
-			pane.add(this, gbc);
-		}
-		@Override public int buttonSize()	{ return MINI_BUTTON; }
-	}
-
-	public class RBigButton extends RButton	{
-		private static final long serialVersionUID = 1L;
-
-		public RBigButton(String text)	{ super(text); }
-		public RBigButton(Container pane, String text, int x, int y, int anchor)	{
-			super(pane, text, x, y, anchor);
-		}
-		public RBigButton(Container pane, String text, GridBagConstraints gbc)	{
-			super(pane, text, gbc);
-		}
-		@Override public int buttonSize()	{ return BIG_BUTTON; }
-		@Override public boolean isPaintedBackground()	{ return true; }
-		@Override public boolean isShadowedString()		{ return true; }
-		@Override public Color getShadowColor()			{ return GameUI.borderDarkColor(); }
-		@Override public Paint getBackGroundPaint()		{ return GameUI.buttonBackground(0, getWidth()); }
-	}
-
-	public class RHugeButton extends RButton	{
-		private static final long serialVersionUID = 1L;
-
-		public RHugeButton(String text)	{ super(text); }
-		public RHugeButton(Container pane, String text, int x, int y, int anchor)	{
-			super(pane, text, x, y, anchor);
-		}
-		public RHugeButton(Container pane, String text, GridBagConstraints gbc)	{
-			super(pane, text, gbc);
-		}
-		@Override public int buttonSize()				{ return HUGE_BUTTON; }
-		@Override public boolean isPaintedBackground()	{ return true; }
-		@Override public boolean isShadowedString()		{ return true; }
-		@Override public Color getShadowColor()			{ return GameUI.borderDarkColor(); }
-		@Override public Paint getBackGroundPaint()		{ return GameUI.buttonBackground(0, getWidth()); }
-	}
 
 	public class RToggleButton extends JToggleButton implements RotPButtons	{
 		private static final long serialVersionUID = 1L;
