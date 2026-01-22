@@ -118,7 +118,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 	private void buildRowCountList() {
 		numColumns = 1;
 		Integer numParam = 0;
-		for (IParam param : activeList) {
+		for (IParam<?> param : activeList) {
 			if (param == null) {
 				numColumns++;
 				lastRowList.add(numParam);
@@ -228,7 +228,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 		int yNew = margin + lineH;
 		int xNewR = retina(xNew);
 		int yNewR = retina(yNew);
-		IParam param = activeList.get(index);
+		IParam<?> param = activeList.get(index);
 		boolean refresh = forceUpdate || param.updated();
 		refresh = true;
 		if (refresh) {
@@ -322,7 +322,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 			, MouseEvent e, MouseWheelEvent w) {
 		for (int i=0; i<activeList.size(); i++) {
 			if (hoverBox == btList.get(i).box()) {
-				IParam param = activeList.get(i);
+				IParam<?> param = activeList.get(i);
 				if (param.isSubMenu()) {
 					if (e == null)
 						return;
@@ -342,7 +342,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 		}
 	}
 	private void setLocalToDefault(boolean excludeCfg, boolean excludeSubMenu) {
-		for (IParam param : activeList)
+		for (IParam<?> param : activeList)
 			if (!(excludeCfg && param.isCfgFile())
 					&& !(excludeSubMenu && param.isSubMenu()))
 			param.setFromDefault(excludeCfg, excludeSubMenu);
@@ -397,7 +397,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 	@Override public void refreshGui(int level)	{
 		super.refreshGui(level);
 		for (int i=0; i<activeList.size(); i++) {
-			IParam param = activeList.get(i);
+			IParam<?> param = activeList.get(i);
 			if (param != null) {
 				ModText modText = btList.get(i);
 				if (modText != null)

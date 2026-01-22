@@ -103,9 +103,9 @@ public class RotPTextFields { //extends RotPComponents {
 	}
 	public static class ICRSettingField extends RFieldAndLabel	{ // TODO BR: class ICRSettingField
 		private static final long serialVersionUID = 1L;
-		private final ICRSettings setting;
+		private final ICRSettings<?> setting;
 		private int currentId;
-		public ICRSettingField(Container pane, ICRSettings setting, int colomns, int x, int y)	{
+		public ICRSettingField(Container pane, ICRSettings<?> setting, int colomns, int x, int y)	{
 			super(pane, setting.getLabel(), setting.guideValue(), colomns, x, y);
 			this.setEditable(false);
 			this.setting = setting;

@@ -873,7 +873,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
 		rulesetManager().newOptions().loadStartupOptions();
 		for (int level=0; level<2; level++) {
 			SafeListParam allModOptions = AllSubUI.allModOptions(true);
-			for (IParam param : allModOptions)
+			for (IParam<?> param : allModOptions)
 				param.initDependencies(level);
 		}
     }

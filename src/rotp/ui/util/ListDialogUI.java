@@ -106,7 +106,7 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 	private List<String> alternateReturn;
 	private Frame frame;
 	private BaseModPanel baseModPanel;
-	private IParam param;
+	private IParam<?> param;
 	private JButton helpButton, cancelButton, setButton;
 	private JScrollPane listScroller;
 	private JPanel listPane, buttonPane;
@@ -222,7 +222,7 @@ public class ListDialogUI extends JDialog implements ActionListener, Base {
 			Font listFont,
 			InterfacePreview panel,
 			List<String> alternateReturn,
-			IParam param)
+			IParam<?> param)
 	{
 		setTitle(title);
 		baseModPanel		 = frameComp instanceof BaseModPanel? (BaseModPanel) frameComp : null;

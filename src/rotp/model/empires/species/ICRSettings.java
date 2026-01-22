@@ -13,7 +13,7 @@ import rotp.ui.util.IParam;
 /**
  * Interface Custom Species Setting
  */
-public interface ICRSettings extends IParam {
+public interface ICRSettings<T> extends IParam<T> {
 	Color optionC		= SystemPanel.blackText;	// Unselected option Color
 	Color selectC		= SystemPanel.whiteText;	// Selected option color
 	Color frameC		= SystemPanel.blackText;	// Setting frame color

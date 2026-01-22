@@ -28,10 +28,10 @@ public class RSettingPanel extends JPanel implements RotPComponents {
 	private final int lineLength;
 	private final List<RLabel> valueLabels = new ArrayList<>();
 	private final MouseAdapter settingListener;
-	final ICRSettings setting;
+	final ICRSettings<?> setting;
 	private boolean highLighted;
 
-	RSettingPanel(Container host, ICRSettings setting, int width, MouseAdapter listener)	{
+	RSettingPanel(Container host, ICRSettings<?> setting, int width, MouseAdapter listener)	{
 		setOpaque(false);
 		setAlignmentX(0);
 		setAlignmentY(0);
@@ -59,7 +59,7 @@ public class RSettingPanel extends JPanel implements RotPComponents {
 		updateDisplay(true);
 	}
 
-	@Override public IParam getParam()			{ return setting; }
+	@Override public IParam<?> getParam()		{ return setting; }
 	@Override public JComponent getComponent()	{ return this; }
 	@Override public void paintImmediately()	{ paintImmediately(0, 0, getWidth(), getHeight()); }
 

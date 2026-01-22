@@ -115,9 +115,9 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private List<Integer> colSettingsCount;
 	private	List<Integer> spacerList;
 	private List<Integer> columnList;
-	List<ICRSettings>  commonList;
-	protected List<ICRSettings> settingList;
-	protected List<ICRSettings> mouseList;
+	List<ICRSettings<?>>  commonList;
+	protected List<ICRSettings<?>> settingList;
+	protected List<ICRSettings<?>> mouseList;
 	
 	protected String guiTitleID;
 
@@ -215,7 +215,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 		}
 		endOfColumn();
 	}
-	protected void initSetting(ICRSettings setting) {
+	protected void initSetting(ICRSettings<?> setting) {
 		if (setting.isBullet()) {
 			setting.settingText(settingBT());
 			columnH += settingH + frameSizePad;
@@ -271,7 +271,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	private boolean isPlayer()			{ return raceUI.selectedEmpire().isPlayer(); }
 
 	private String selectAIFromList(String[] choiceArray, List<String> returnList,
-									String initialLabel, IParam param) {
+									String initialLabel, IParam<?> param) {
 		String message = "Make your choice";
 		String initialChoice = text(initialLabel);
 		ListDialogUI dialog = RotPUI.instance().listDialog();
@@ -321,8 +321,8 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	protected  String totalCostStr()	{ return text(totalCostKey, Math.round(cr().getTotalCost())); }
 	private  String malusCostStr()		{ return text(malusCostKey, Math.round(cr().getMalusCost())); }
 
-	private boolean checkForHoveredSettings(List<ICRSettings> settings) {
-		for (ICRSettings setting : settings) {
+	private boolean checkForHoveredSettings(List<ICRSettings<?>> settings) {
+		for (ICRSettings<?> setting : settings) {
 			if (setting.settingText().contains(mX,mY)) {
 				hoverBox = setting.settingText().box();
 				setDesc(setting.getToolTip());
@@ -364,7 +364,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	protected int getBackGroundWidth()	{
 		return columnPad+wFirstColumn+columnPad + (wSetting+columnPad) * (numColumns-1);
 	}
-	protected void paintSetting(Graphics2D g, ICRSettings setting) {
+	protected void paintSetting(Graphics2D g, ICRSettings<?> setting) {
 		boolean refresh = forceUpdate || setting.updated();
 		if (refresh)
 			setting.drawSetting(frameSizePad, frameEndPad, optionH, currentWidth,
@@ -474,7 +474,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	//
 	@Override protected void close() {
 		super.close();
-		for (ICRSettings setting : settingList)
+		for (ICRSettings<?> setting : settingList)
 			setting.clearImage();
 		cr().cleanFactories();
 	}
@@ -574,7 +574,7 @@ public class ShowCustomRaceUI extends BaseModPanel {
 	}
 	protected void reInitFields()	{
 		forceUpdate = true;
-		for (ICRSettings setting : commonList) {
+		for (ICRSettings<?> setting : commonList) {
 			if (setting.isBullet()) {
 				setting.settingText().displayText(setting.guiSettingDisplayStr()); // The setting
 				int bulletStart	= setting.bulletStart();

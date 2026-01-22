@@ -103,10 +103,10 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	// ========== Constructor And Initializers ==========AbstractParam <T>
 	public GovernorOptions() {
 		//System.out.println("GovernorOptions() " + autoShipsByDefault);
-		for (IParam param : AllSubUI.governorSubUI().optionsList()) {
+		for (IParam<?> param : AllSubUI.governorSubUI().optionsList()) {
 //			System.out.println("is duplicate? = " + param.isDuplicate() + " - " + param.isCfgFile()
 //			+ " - " + param.getCfgLabel());
-			((AbstractParam <?>) param).isGovernor(GOV_REFRESH);
+			((AbstractParam<?>) param).isGovernor(GOV_REFRESH);
 		}
 
 		auto_Apply.isGovernor(GOV_RESET);
@@ -149,7 +149,7 @@ public class GovernorOptions implements Serializable, IGovOptions {
 			governorByDefault.silentSet(governorOnByDefault);
 		}
 		autoShipsByDefault = false;
-		for (IParam param: AllSubUI.governorSubUI().optionsList()) {
+		for (IParam<?> param: AllSubUI.governorSubUI().optionsList()) {
 			param.updateOptionTool();
 		}
 		// Converted use of autoShipsByDefault: true = not yet transfered.

@@ -97,17 +97,17 @@ public class SkillsFactory extends SpeciesSettings {
 	}
 	SpeciesSkills getRawRace()	{ return race(); }
 	public String getRaceKey()	{ return raceKey(); }
-	public List<ICRSettings> settingList()	{ return settingMap.getSettings(); }
-	public List<ICRSettings> guiList()		{ return settingMap.getGuis(); }
-	public List<Integer>	 spacerList()	{ return spacerList; }
-	public List<Integer>	 columnList()	{ return columnList; }
+	public List<ICRSettings<?>> settingList()	{ return settingMap.getSettings(); }
+	public List<ICRSettings<?>> guiList()		{ return settingMap.getGuis(); }
+	public List<Integer>	 spacerList()		{ return spacerList; }
+	public List<Integer>	 columnList()		{ return columnList; }
 	public RaceList initRaceList()	{ 
 		raceList = new RaceList();
 		return raceList;
 	}
 	public float getTotalCost() {
 		float totalCost = 0;
-		for (ICRSettings setting : settingMap.getSettings()) {
+		for (ICRSettings<?> setting : settingMap.getSettings()) {
 			if (setting.isSpacer())
 				continue;
 			totalCost += setting.settingCost();
@@ -116,7 +116,7 @@ public class SkillsFactory extends SpeciesSettings {
 	}
 	public  float getMalusCost() {
 		float malus = 0;
-		for (ICRSettings setting : settingMap.getSettings()) {
+		for (ICRSettings<?> setting : settingMap.getSettings()) {
 			if (setting.isSpacer())
 				continue;
 			float cost = setting.settingCost();
@@ -131,7 +131,7 @@ public class SkillsFactory extends SpeciesSettings {
 	 */
 	public DynOptions getAsOptions() {
 		DynOptions destOptions = new DynOptions();
-		for (ICRSettings setting : settingMap.getAll()) {
+		for (ICRSettings<?> setting : settingMap.getAll()) {
 			//System.out.println(setting.toString()); // TO DO BR: REMOVE
 			setting.updateOption(destOptions);
 		}
@@ -157,26 +157,26 @@ public class SkillsFactory extends SpeciesSettings {
 				languages.add(lg);
 		}
 		for (String lg : languages) {
-			new SpeciesAttributes(lg);
+			new SpeciesAttributes<>(lg);
 		}
 		// update language setting
 		languageSetting.set(languages.asString());
 
 		// update the skills from the source option
-		List<ICRSettings> settings = settingMap.getAll();
+		List<ICRSettings<?>> settings = settingMap.getAll();
 		settings.remove(languageSetting);
-		for (ICRSettings setting : settings)
+		for (ICRSettings<?> setting : settings)
 			setting.updateOptionTool(srcOptions);
 
 		// The previous options could offer more languages.
 		settingMap.cleanLanguages();
-		for (ICRSettings setting : settings)
+		for (ICRSettings<?> setting : settings)
 			setting.settingToSkill(race());
 		languageSetting.settingToSkill(race());
 
 		// Fills the skills options from the settings
 		DynOptions destOptions = race().speciesOptions();
-		for (ICRSettings setting : settings)
+		for (ICRSettings<?> setting : settings)
 			setting.updateOption(destOptions);
 		languageSetting.updateOption(destOptions);
 	}
@@ -192,10 +192,10 @@ public class SkillsFactory extends SpeciesSettings {
 		race(skills);
 		isForShow(true);
 		if (skills.isCustomSpecies() && srcOptions != null)
-			for (ICRSettings setting : settingMap.getSettings())
+			for (ICRSettings<?> setting : settingMap.getSettings())
 				setting.updateOptionTool(srcOptions);
 		else
-			for (ICRSettings setting : settingMap.getSettings())
+			for (ICRSettings<?> setting : settingMap.getSettings())
 				setting.skillToSetting(race());
 		// The previous options could offer more languages.
 		isForShow(false);
@@ -209,7 +209,7 @@ public class SkillsFactory extends SpeciesSettings {
 
 		if (Species.isValidKey(raceKey)) {
 			race(Species.getAnim(raceKey).copy(true));
-			for (ICRSettings setting : settingMap.getAll())
+			for (ICRSettings<?> setting : settingMap.getAll())
 				setting.skillToSetting(race());
 		}
 		else
@@ -269,17 +269,17 @@ public class SkillsFactory extends SpeciesSettings {
 
 		isReference(false);
 		// update the skills from the source option
-		List<ICRSettings> settings = settingMap.getAll();
-		for (ICRSettings setting : settings)
+		List<ICRSettings<?>> settings = settingMap.getAll();
+		for (ICRSettings<?> setting : settings)
 			setting.updateOptionTool(srcOptions);
 
 		// Fills the skills options from the settings
 		DynOptions destOptions = race().speciesOptions();
-		for (ICRSettings setting : settings)
+		for (ICRSettings<?> setting : settings)
 			setting.updateOption(destOptions);
 
 		// Fills with selected settings
-		for (ICRSettings setting : settings)
+		for (ICRSettings<?> setting : settings)
 			setting.settingToSkill(race());
 
 		// The previous options could offer more languages.
@@ -298,8 +298,8 @@ public class SkillsFactory extends SpeciesSettings {
 		newSettingList(true);
 
 		// Fills the basic settings with skills
-		List<ICRSettings> settings = settingMap.getSettings();
-		for (ICRSettings setting : settings)
+		List<ICRSettings<?>> settings = settingMap.getSettings();
+		for (ICRSettings<?> setting : settings)
 			setting.skillToSetting(race());
 	}
 	private void initWithDefaultSkillsForGalaxy(boolean fullCopy)	{
@@ -307,8 +307,8 @@ public class SkillsFactory extends SpeciesSettings {
 		// Create the settings if necessary
 		newSettingList(true);
 		// Fills with default settings (instead of default Species settings)
-		List<ICRSettings> settings = settingMap.getAll();
-		for (ICRSettings setting : settings)
+		List<ICRSettings<?>> settings = settingMap.getAll();
+		for (ICRSettings<?> setting : settings)
 			setting.settingToSkill(race());
 	}
 	private void initWithAnimSkillsForGalaxy(SpeciesSkills anim, boolean fullCopy)	{
@@ -316,8 +316,8 @@ public class SkillsFactory extends SpeciesSettings {
 		// Create the settings if necessary
 		newSettingList(true);
 		// Fills the basic settings with skills
-		List<ICRSettings> settings = settingMap.getSettings();
-		for (ICRSettings setting : settings)
+		List<ICRSettings<?>> settings = settingMap.getSettings();
+		for (ICRSettings<?> setting : settings)
 			setting.skillToSetting(race());
 	}
 	// -#-
@@ -398,12 +398,12 @@ public class SkillsFactory extends SpeciesSettings {
 		newSettingList(false);
 
 		// update default setting value from source options
-		List<ICRSettings> settings = settingMap.getSettings();
-		for (ICRSettings setting : settings)
+		List<ICRSettings<?>> settings = settingMap.getSettings();
+		for (ICRSettings<?> setting : settings)
 			setting.updateOptionTool(srcOptions);
 
 		// Then push the settings to the SpeciesSkills
-		for (ICRSettings setting : settings)
+		for (ICRSettings<?> setting : settings)
 			setting.settingToSkill(race());
 
 		race().isCustomSpecies(true);
@@ -412,8 +412,8 @@ public class SkillsFactory extends SpeciesSettings {
 		race(species.getSkillCopy(false));
 		newSettingList(false);
 
-		List<ICRSettings> settings = settingMap.getSettings();
-		for (ICRSettings setting : settings)
+		List<ICRSettings<?>> settings = settingMap.getSettings();
+		for (ICRSettings<?> setting : settings)
 			setting.skillToSetting(race());
 
 		race().isCustomSpecies(true);
@@ -439,13 +439,13 @@ public class SkillsFactory extends SpeciesSettings {
 		newSettingList(true);
 
 		// Fills the settings from the Master skills
-		List<ICRSettings> settings = settingMap.getAll();
-		for (ICRSettings setting : settings)
+		List<ICRSettings<?>> settings = settingMap.getAll();
+		for (ICRSettings<?> setting : settings)
 			setting.skillToSetting(race());
 
 		// Fills the skills options from the settings
 		DynOptions destOptions = race().speciesOptions();
-		for (ICRSettings setting : settings)
+		for (ICRSettings<?> setting : settings)
 			setting.updateOption(destOptions);
 		isReference(false);
 	}
@@ -487,7 +487,7 @@ public class SkillsFactory extends SpeciesSettings {
 		float maxDiff	= Math.max(0.04f, Math.abs(targetMax-targetMin)/2);
 		float maxChange	= Math.max(0.1f, Math.abs(max-min));
 
-		List<ICRSettings> shuffledSettingList = new ArrayList<>(settingMap.getSettings());
+		List<ICRSettings<?>> shuffledSettingList = new ArrayList<>(settingMap.getSettings());
 		// first pass full random
 		randomizeRace(min, max, gaussian, updateGui);
 		float cost = getTotalCost();
@@ -495,7 +495,7 @@ public class SkillsFactory extends SpeciesSettings {
 		// second pass going smoothly to the target
 		for (int i=0; i<10; i++) {
 			Collections.shuffle(shuffledSettingList);
-			for (ICRSettings setting : shuffledSettingList) {
+			for (ICRSettings<?> setting : shuffledSettingList) {
 				if (!setting.isSpacer() &&!setting.hasNoCost()) {
 					float difference = target - cost;
 					if (Math.abs(difference) <= maxDiff)
@@ -530,7 +530,7 @@ public class SkillsFactory extends SpeciesSettings {
 		// third pass forcing the target
 		for (int i=0; i<5; i++) {
 			Collections.shuffle(shuffledSettingList);
-			for (ICRSettings setting : shuffledSettingList) {
+			for (ICRSettings<?> setting : shuffledSettingList) {
 				if (!setting.isSpacer() &&!setting.hasNoCost()) {
 					cost -= setting.settingCost();
 					setting.setValueFromCost(target - cost);
@@ -547,7 +547,7 @@ public class SkillsFactory extends SpeciesSettings {
 	 * race is not up to date
 	 */
 	private void randomizeRace(float min, float max, boolean gaussian, boolean updateGui) {
-		for (ICRSettings setting : settingMap.getSettings()) {
+		for (ICRSettings<?> setting : settingMap.getSettings()) {
 			if (!setting.isSpacer()) {
 				setting.setRandom(min, max, gaussian);
 				if (updateGui)
@@ -571,7 +571,7 @@ public class SkillsFactory extends SpeciesSettings {
 			randomizeRace(min, max, gaussian, updateGui);
 
 		DynOptions destOptions = race().speciesOptions();
-		for (ICRSettings setting : settingMap.getSettings()) {
+		for (ICRSettings<?> setting : settingMap.getSettings()) {
 			setting.settingToSkill(race());
 			setting.updateOption(destOptions);
 		}
@@ -582,7 +582,7 @@ public class SkillsFactory extends SpeciesSettings {
 	private void newSettingList(boolean clear) {
 		if(settingMap.filled) {
 			if (clear)
-				for (ICRSettings setting : settingMap.getAll())
+				for (ICRSettings<?> setting : settingMap.getAll())
 					setting.setFromDefault(false, true);
 			return;
 		}
@@ -698,7 +698,7 @@ public class SkillsFactory extends SpeciesSettings {
 		settingMap.addGui(randomTargetMin);
 		settingMap.addGui(randomTargetMax);
 		settingMap.addGui(randomUseTarget);	    
-		for(ICRSettings setting : settingMap.getGuis())
+		for(ICRSettings<?> setting : settingMap.getGuis())
 			setting.hasNoCost(true);
 
 		// ====================
@@ -707,7 +707,7 @@ public class SkillsFactory extends SpeciesSettings {
 		settingMap.addAttribute(new LanguageList());
 		settingMap.addAttribute(new AnimationId());
 		settingMap.addAttribute(new AnimReady(dir));
-		new SpeciesAttributes(dir);
+		new SpeciesAttributes<>(dir);
 
 		settingMap.filled = true;
 	}
@@ -1162,8 +1162,11 @@ public class SkillsFactory extends SpeciesSettings {
 			list.removeNullAndEmpty();
 			return list;
 		}
+
 		// ---------- Overriders ----------
 		//
+		@Override public List<String> getListForUI()			{ return getValues(); }
+//		@Override public List<String> getListForUI()			{ return getAllAlienRaces(); }
 		@Override public String guideValue()					{ return guiOptionLabel(); }
 		@Override public String guiOptionValue(int index)		{ return guiOptionLabel(); }
 		@Override protected void selectedValue(String value)	{
@@ -1196,19 +1199,19 @@ public class SkillsFactory extends SpeciesSettings {
 						languages.add(lg);
 				}
 				for (String lg : languages) {
-					new SpeciesAttributes(lg);
+					new SpeciesAttributes<>(lg);
 				}
 				// update language setting
 				languageSetting.set(languages.asString());
 
 				DynOptions destOptions = race().speciesOptions();
-				List<ICRSettings> settings = settingMap.getAll();
-				for (ICRSettings setting : settings) {
+				List<ICRSettings<?>> settings = settingMap.getAll();
+				for (ICRSettings<?> setting : settings) {
 					setting.skillToSetting(race());
 					setting.updateOption(destOptions);
 				}
 
-				for (ICRSettings setting : settingMap.getSettings())
+				for (ICRSettings<?> setting : settingMap.getSettings())
 					setting.updateGui();
 				isReference(false);
 				return;

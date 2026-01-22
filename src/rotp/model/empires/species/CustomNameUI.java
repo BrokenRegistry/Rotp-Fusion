@@ -616,7 +616,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 			// ==> EmpireNameItems
 			int x = 0;
 			int y = 1;
-			SpeciesAttributes identifications = settings.getAttributes(languageDir);
+			SpeciesAttributes<?> identifications = settings.getAttributes(languageDir);
 			CivilizationNameItems civilizationNameItems = identifications.civilizationNameItems;
 			boolean first = true;
 			for (SettingString setting : civilizationNameItems) {
@@ -917,8 +917,8 @@ class CustomNameUI extends RDialog implements ActionListener {
 			pageSelectionPane.buildPanel();
 		}
 	}
-	private boolean isForced(ActionEvent evt) { return (evt.getModifiers() & ActionEvent.SHIFT_MASK) > 0; }
-	private boolean isForAllCiv(ActionEvent evt) { return (evt.getModifiers() & ActionEvent.CTRL_MASK) > 0; }
+	private boolean isForced(ActionEvent evt)	 { return isShiftDown(evt); }
+	private boolean isForAllCiv(ActionEvent evt) { return isCtrlDown(evt); }
 	// ========================================================================
 	// Other Specific Components definition
 	//

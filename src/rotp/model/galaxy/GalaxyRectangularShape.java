@@ -74,8 +74,8 @@ final class GalaxyRectangularShape extends GalaxyShape {
 
 	GalaxyRectangularShape(IGameOptions options, boolean[] rndOpt)	{ super(options, rndOpt); }
 
-	@Override public IShapeOption paramOption1()	{ return param1(); }
-	@Override public IShapeOption paramOption2()	{ return param2(); }
+	@Override public IShapeOption<?> paramOption1()	{ return param1(); }
+	@Override public IShapeOption<?> paramOption2()	{ return param2(); }
 	@Override public void setOption1(String value)	{ param1().set(value); }
 	@Override public void setOption2(String value)	{ param2().set(value); }
 	@Override public List<String> options1()		{ return param1().getOptions(); }

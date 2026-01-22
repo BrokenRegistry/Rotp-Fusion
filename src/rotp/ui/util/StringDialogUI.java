@@ -48,7 +48,7 @@ public class StringDialogUI extends JDialog implements ActionListener, Base {
 	private String value = null;
 	private Frame frame;
 	private BaseModPanel baseModPanel;
-	private IParam param;
+	private IParam<?> param;
 	private JButton cancelButton, setButton;
 	private JPanel listPane, buttonPane;
 	private JLabel label;
@@ -131,7 +131,7 @@ public class StringDialogUI extends JDialog implements ActionListener, Base {
 			int width, int height,
 			Font listFont,
 			InterfacePreview panel,
-			IParam param)
+			IParam<?> param)
 	{
 		setTitle(title);
 		baseModPanel		= frameComp;

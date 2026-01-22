@@ -29,7 +29,7 @@ import java.util.EnumMap;
 import rotp.util.ModifierKeysState;
 
 
-public class ParamButtonHelp implements IParam {
+public class ParamButtonHelp implements IParam<String> {
 	
 	protected EnumMap<ModifierKeysState, String>  nameMap = new EnumMap<>(ModifierKeysState.class);
 	protected EnumMap<ModifierKeysState, Boolean> showMap = new EnumMap<>(ModifierKeysState.class);

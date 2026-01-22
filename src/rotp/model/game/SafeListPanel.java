@@ -54,7 +54,7 @@ public class SafeListPanel extends ArrayList<SafeListParam>{
 			size += list.sizeNoSpacer();
 		return size;
 	}
-	public ParamSearchList getSearchList(IParam ui, String toSearch, int min, boolean stripAccents)	{
+	public ParamSearchList getSearchList(IParam<?> ui, String toSearch, int min, boolean stripAccents)	{
 		ParamSearchList paramSet = new ParamSearchList();
 		for (SafeListParam list : this)
 			paramSet.addAll(list.getSearchList(ui, toSearch, min, stripAccents));

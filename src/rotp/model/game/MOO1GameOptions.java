@@ -333,10 +333,10 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
 		selectedNebulaeOption	= opt.selectedNebulaeOption;
 		selectedNumberOpponents	= opt.selectedNumberOpponents;
         SafeListParam list = AllSubUI.systemSubUI().optionsList();
-        for (IParam param : list)
+        for (IParam<?> param : list)
         	param.copyOption(oldOpt, this, true, 5);
 		list = AllSubUI.getHandle(GALAXY_SHAPES_UI_KEY).getUiAll(false).getNoSpacer();
-		for (IParam param : list)
+		for (IParam<?> param : list)
 			param.copyOption(oldOpt, this, true, 5);
 
 		setGalaxyShape(); 
@@ -1088,7 +1088,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     private void setAllNonCfgGameSettingsToDefault(boolean first) { // settings saved in game file.
     	SafeListParam list = AllSubUI.allNotCfgOptions(false);
     	list.remove(playerCustomRace);
-       	for (IParam param : list) {
+       	for (IParam<?> param : list) {
        		if (param != null && !param.isCfgFile()) { // Exclude .cfg parameters
 	       		param.setFromDefault(true, false);
        		}
@@ -1108,7 +1108,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     		setAllNonCfgGameSettingsToDefault(false);
     	}
     	else 
-	       	for (IParam param : pList)
+	       	for (IParam<?> param : pList)
 	       		if (param != null
 	       				&& !(excludeCfg && param.isCfgFile())
 	       				&& !(excludeSubMenu && param.isSubMenu()))
@@ -1185,7 +1185,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     	setAllNonCfgGameSettingsToDefault(first);
     	setAllNonCfgBaseSettingsToDefault();
        	if (!Rotp.noOptions()) // Better safe than sorry
-       		for (IParam param : AllSubUI.allModOptions(false))
+       		for (IParam<?> param : AllSubUI.allModOptions(false))
         		param.initDependencies(IParam.VALID_DEPENDENCIES);
     }
     @Override public void resetAllNonCfgSettingsToDefault()	{ resetAllNonCfgSettingsToDefault(false); }
@@ -1194,7 +1194,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     	setPanelGameSettingsToDefault(pList, excludeCfg, excludeSubMenu);
     	setPanelBaseSettingsToDefault(pList);
        	if (!Rotp.noOptions()) // Better safe than sorry
-       		for (IParam param : AllSubUI.allModOptions(false))
+       		for (IParam<?> param : AllSubUI.allModOptions(false))
         		param.initDependencies(IParam.VALID_DEPENDENCIES);
     }
     @Override public void saveOptionsToFile(String fileName)	{ saveOptions(this, fileName); } // All
@@ -1207,7 +1207,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     	
     	MOO1GameOptions fileOptions = loadOptions(fileName);
     	// Then merge with the listed options
-       	for (IParam param : pList) {
+       	for (IParam<?> param : pList) {
        		if (param == null)
 				continue;
        		if (cascadeSubPanel==0 && param instanceof ParamSubUI)
@@ -1218,7 +1218,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     }
     @Override public void updateAllFromFile(String fileName) { // Only for restore!
     	MOO1GameOptions source = loadOptions(fileName);
-       	for (IParam param : AllSubUI.allModOptions(false)) {
+       	for (IParam<?> param : AllSubUI.allModOptions(false)) {
        		if (param == null)
 				continue;
        		if (param instanceof ParamSubUI)
@@ -1233,13 +1233,13 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
        		}
        	}
        	if (!Rotp.noOptions()) // Better safe than sorry
-       		for (IParam param : AllSubUI.allModOptions(false))
+       		for (IParam<?> param : AllSubUI.allModOptions(false))
         		param.initDependencies(IParam.VALID_DEPENDENCIES);
         source.copyAllBaseSettings(this);
     }
     @Override public void updateAllNonCfgFromFile(String fileName) {
     	MOO1GameOptions source = loadOptions(fileName);
-       	for (IParam param : AllSubUI.allModOptions(false)) {
+       	for (IParam<?> param : AllSubUI.allModOptions(false)) {
        		if (param == null)
 				continue;
        		if (param instanceof ParamSubUI)
@@ -1254,7 +1254,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
        		}
        	}
        	if (!Rotp.noOptions()) // Better safe than sorry
-       		for (IParam param : AllSubUI.allModOptions(false))
+       		for (IParam<?> param : AllSubUI.allModOptions(false))
         		param.initDependencies(IParam.VALID_DEPENDENCIES);
         source.copyAllBaseSettings(this);
     }
@@ -1266,7 +1266,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     	MOO1GameOptions source = loadOptions(fileName);
     	
     	if (pList == RotPUI.mainOptionsUI().activeList()) {
-           	for (IParam param : pList) {
+           	for (IParam<?> param : pList) {
            		if (param == null)
     				continue;
            		boolean paramIsSubUI = param instanceof ParamSubUI;
@@ -1276,7 +1276,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
            	}
     	}
     	else {
-	       	for (IParam param : pList) {
+	       	for (IParam<?> param : pList) {
            		if (param == null)
     				continue;
            		boolean paramIsSubUI = param instanceof ParamSubUI;
@@ -1292,7 +1292,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
 	       	}
     	}
        	if (!Rotp.noOptions()) // Better safe than sorry
-       		for (IParam param : AllSubUI.allModOptions(false))
+       		for (IParam<?> param : AllSubUI.allModOptions(false))
         		param.initDependencies(IParam.VALID_DEPENDENCIES);
 
         source.copyPanelBaseSettings(this, pList);
@@ -1300,7 +1300,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     @Override public void prepareToSave(boolean secure) {
 		// Required to initialize missing option files
 		// System.out.println("prepareToSave() " + optionName());
-    	for (IParam param : AllSubUI.allModOptions(false)) {
+    	for (IParam<?> param : AllSubUI.allModOptions(false)) {
     		if (param != null) {
     			param.prepareToSave(this);
     		}
@@ -1314,7 +1314,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     @Override public void UpdateOptionsTools() {
     	// probably overkill, but no needs to be picky
     	//System.out.println("UpdateOptionsTools() " + optionName());
-    	for (IParam param : AllSubUI.allModOptions(false)) {
+    	for (IParam<?> param : AllSubUI.allModOptions(false)) {
     		if (param != null && !param.isCfgFile()) { // cfg file if updated live!
     			param.updateOptionTool();
     		}

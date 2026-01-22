@@ -119,7 +119,7 @@ public abstract class SpeciesSettings {
 		if (canceled) {
 			settingMap.copyFrom(backupMap);
 			race().speciesOptions().restoreStringMap();
-			for (ICRSettings setting : settingMap.getAll())
+			for (ICRSettings<?> setting : settingMap.getAll())
 				setting.settingToSkill(race());
 		}
 		else {
@@ -143,8 +143,8 @@ public abstract class SpeciesSettings {
 			settingMap.cleanLanguages();
 
 			// update the skills from the source option
-			List<ICRSettings> icrSettings = settingMap.getAll();
-			for (ICRSettings setting : icrSettings) {
+			List<ICRSettings<?>> icrSettings = settingMap.getAll();
+			for (ICRSettings<?> setting : icrSettings) {
 				if (setting instanceof SettingStringLanguage) {
 					setting.settingToSkill(race());
 					setting.updateOption(destOptions);
@@ -159,49 +159,49 @@ public abstract class SpeciesSettings {
 	//
 	// #======================== Setting Map ========================
 	final class SettingMap {
-		private final List<ICRSettings> settingList	= new ArrayList<>(); // !!! To be kept up to date !!!
-		private final List<ICRSettings> guiList	 	= new ArrayList<>();
-		private final List<ICRSettings> attributeList	= new ArrayList<>();
-		private final HashMap <String, ICRSettings> settingMap = new HashMap<>();
+		private final List<ICRSettings<?>> settingList	= new ArrayList<>(); // !!! To be kept up to date !!!
+		private final List<ICRSettings<?>> guiList	 	= new ArrayList<>();
+		private final List<ICRSettings<?>> attributeList	= new ArrayList<>();
+		private final HashMap <String, ICRSettings<?>> settingMap = new HashMap<>();
 		boolean filled = false;
 
-		private void put(String name, ICRSettings setting)	{
+		private void put(String name, ICRSettings<?> setting)	{
 			if (name.startsWith("_"))
 				System.out.println("name.startsWith(_)");
 			settingMap.put(name, setting);
 		}
-		void add(ICRSettings setting) {
+		void add(ICRSettings<?> setting) {
 			if (settingList.contains(setting)) {
 				System.err.println("DUPLICATE settingList " + setting.getLangLabel());
 			}
 			settingList.add(setting);
 			put(setting.getLangLabel(), setting);
 		}
-		void addGui(ICRSettings setting) {
+		void addGui(ICRSettings<?> setting) {
 			if (guiList.contains(setting)) {
 				System.err.println("DUPLICATE guilist " + setting.getLangLabel());
 			}
 			guiList.add(setting);
 			put(setting.getLangLabel(), setting);
 		}
-		void addAttribute(ICRSettings setting) {
+		void addAttribute(ICRSettings<?> setting) {
 			if (attributeList.contains(setting)) {
 				System.err.println("DUPLICATE attributeList " + setting.getLangLabel());
 			}
 			attributeList.add(setting);
 			put(setting.getLangLabel(), setting);
 		}
-		List<ICRSettings> getGuis()		{ return guiList; }
-		List<ICRSettings> getSettings()	{ return settingList; }
-		List<ICRSettings> getAll()		{
-			List<ICRSettings> list = new ArrayList<>(settingList);
+		List<ICRSettings<?>> getGuis()		{ return guiList; }
+		List<ICRSettings<?>> getSettings()	{ return settingList; }
+		List<ICRSettings<?>> getAll()		{
+			List<ICRSettings<?>> list = new ArrayList<>(settingList);
 			list.addAll(attributeList);
 			list.addAll(guiList);
 			return list;
 		}
-		ICRSettings get(String key)		{ return settingMap.get(key); }
+		ICRSettings<?> get(String key)		{ return settingMap.get(key); }
 		private StringList getList(String key)	{
-			ICRSettings setting = settingMap.get(key);
+			ICRSettings<?> setting = settingMap.get(key);
 			if (setting == null) {
 				setting = settingMap.get(key.substring(0, key.length()-2));
 				if (setting == null) {
@@ -234,8 +234,8 @@ public abstract class SpeciesSettings {
 			String selectedLanguage = selectedLanguageDir();
 			if (!toKeep.contains(selectedLanguage))
 				toKeep.add(selectedLanguage);
-			HashMap <String, ICRSettings> mapCopy = new HashMap<>(settingMap);
-			for(Entry<String, ICRSettings> entry : mapCopy.entrySet()) {
+			HashMap <String, ICRSettings<?>> mapCopy = new HashMap<>(settingMap);
+			for(Entry<String, ICRSettings<?>> entry : mapCopy.entrySet()) {
 				if (entry.getValue() instanceof SettingStringLanguage) {
 					SettingStringLanguage setting = (SettingStringLanguage) entry.getValue();
 					if (!toKeep.contains(setting.langDir)) {
@@ -248,7 +248,7 @@ public abstract class SpeciesSettings {
 		void languageChanged(String oldDir, String newDir)	{
 			// first update the settings
 			if (parent != null && parent.isVisible()) {
-				for(Entry<String, ICRSettings> entry : settingMap.entrySet()) {
+				for(Entry<String, ICRSettings<?>> entry : settingMap.entrySet()) {
 					if (entry.getValue() instanceof SettingStringLanguage) {
 						SettingStringLanguage setting = (SettingStringLanguage) entry.getValue();
 						if (setting.languageChanged(oldDir, newDir)) {
@@ -257,9 +257,9 @@ public abstract class SpeciesSettings {
 				}
 			}
 			// Then update settingMap indexes
-			HashMap <String, ICRSettings> mapCopy = new HashMap<>(settingMap);
+			HashMap <String, ICRSettings<?>> mapCopy = new HashMap<>(settingMap);
 			settingMap.clear();
-			for(ICRSettings setting : mapCopy.values())
+			for(ICRSettings<?> setting : mapCopy.values())
 				settingMap.put(setting.getLangLabel(), setting);
 		}
 	}
@@ -389,14 +389,14 @@ public abstract class SpeciesSettings {
 	class AllSpeciesAttributes {
 		SettingString raceKey;
 		private StringList civilizationNames, languageNames;
-		private HashMap<String, SpeciesAttributes> attributesMap = new HashMap<>();
+		private HashMap<String, SpeciesAttributes<?>> attributesMap = new HashMap<>();
 
 		AllSpeciesAttributes()	{
 			raceKey = (RaceKey) settingMap.get(ROOT + RaceKey.RACE_KEY);
 			LanguageList languageList = (LanguageList) settingMap.get(ROOT + LanguageList.KEY);
 			StringList languages = new StringList(languageList.settingValue());
 			for (String lg : languages) {
-				attributesMap.put(lg, new SpeciesAttributes(lg));
+				attributesMap.put(lg, new SpeciesAttributes<>(lg));
 			}
 		}
 		StringList getLanguageNames()	{
@@ -454,20 +454,20 @@ public abstract class SpeciesSettings {
 			return fullCivNames;
 		}
 
-		SpeciesAttributes getAttributes(String dir)	{
-			SpeciesAttributes speciesAttributes = attributesMap.get(dir);
+		SpeciesAttributes<?> getAttributes(String dir)	{
+			SpeciesAttributes<?> speciesAttributes = attributesMap.get(dir);
 			if (speciesAttributes == null)
-				attributesMap.put(dir, new SpeciesAttributes(dir));
+				attributesMap.put(dir, new SpeciesAttributes<>(dir));
 			return attributesMap.get(dir);
 		}
 		boolean hasAnim()	{ return animSkills != null; }
 		void insert(int idx, String name)	{
 			// add new civilization to every language
-			for (SpeciesAttributes attributes : attributesMap.values())
+			for (SpeciesAttributes<?> attributes : attributesMap.values())
 				attributes.insert(idx, name);
 		}
 		void delete(int idx)	{ // Remove an civilization
-			for (SpeciesAttributes attributes : attributesMap.values())
+			for (SpeciesAttributes<?> attributes : attributesMap.values())
 				attributes.delete(idx);
 		}
 		private void fillFromAnim(boolean forced) {
@@ -481,7 +481,7 @@ public abstract class SpeciesSettings {
 			if (animSkills == null)
 				return;
 			String currentLanguage = selectedLanguageDir();
-			SpeciesAttributes dest = attributesMap.get(currentLanguage);
+			SpeciesAttributes<?> dest = attributesMap.get(currentLanguage);
 			if (dest == null)
 				return;
 
@@ -502,7 +502,7 @@ public abstract class SpeciesSettings {
 			dest.fillFromAnim(forced, civIdx, animIdx);
 		}
 		void fillLabelsFromNames(String langDir, int civIdx, boolean forced)	{
-			SpeciesAttributes dest = attributesMap.get(langDir);
+			SpeciesAttributes<?> dest = attributesMap.get(langDir);
 			if (dest == null)
 				return;
 			switch (langDir) {
@@ -515,24 +515,24 @@ public abstract class SpeciesSettings {
 			}
 		}
 		void copyFromLanguage(String langSrc, String langDest, int civIdx, boolean forced)	{
-			SpeciesAttributes src = attributesMap.get(langSrc);
-			SpeciesAttributes dest = attributesMap.get(langDest);
+			SpeciesAttributes<?> src = attributesMap.get(langSrc);
+			SpeciesAttributes<?> dest = attributesMap.get(langDest);
 			dest.copyFromLanguage(src, civIdx, forced);
 		}
 		boolean isAnimAutonomous(String dir)	{
-			SpeciesAttributes attributes = attributesMap.get(dir);
+			SpeciesAttributes<?> attributes = attributesMap.get(dir);
 			if (attributes == null)
 				return false;
 			return attributes.isAnimAutonomous();
 		}
 		boolean isAnimAutonomous(String dir, int idx)	{
-			SpeciesAttributes attributes = attributesMap.get(dir);
+			SpeciesAttributes<?> attributes = attributesMap.get(dir);
 			if (attributes == null)
 				return false;
 			return attributes.isAnimAutonomous(idx);
 		}
 		private boolean isCivAutonomous(String dir, int idx)	{
-			SpeciesAttributes attributes = attributesMap.get(dir);
+			SpeciesAttributes<?> attributes = attributesMap.get(dir);
 			if (attributes == null)
 				return false;
 			return attributes.isCivAutonomous(idx);
@@ -2008,7 +2008,7 @@ public abstract class SpeciesSettings {
 	// #====================
 	// List of unique Names
 	//
-	class SpeciesAttributes implements ICRSettings { // for one Language
+	class SpeciesAttributes<T> implements ICRSettings<T> { // for one Language
 		private final String labelKey;
 		SpeciesNameItems		speciesNameItems;
 		SpeciesDescriptionItems	speciesDescriptionItems;
@@ -2062,7 +2062,7 @@ public abstract class SpeciesSettings {
 			filled &= speciesLabelItems.isFilled();
 			return filled;
 		}
-		private void copyFromLanguage(SpeciesAttributes langSrc, int civIdx, boolean forced)	{
+		private void copyFromLanguage(SpeciesAttributes<?> langSrc, int civIdx, boolean forced)	{
 			speciesNameItems.copyFromLanguage(langSrc.speciesNameItems, civIdx, forced);
 			speciesDescriptionItems.copyFromLanguage(langSrc.speciesDescriptionItems, civIdx, forced);
 			speciesShipNamesItems.copyFromLanguage(langSrc.speciesShipNamesItems, civIdx, forced);
@@ -2187,7 +2187,7 @@ public abstract class SpeciesSettings {
 			}
 		}
 	}
-	private class ICSSettingsStringList extends ArrayList<SettingStringLanguage> implements ICRSettings {
+	private class ICSSettingsStringList extends ArrayList<SettingStringLanguage> implements ICRSettings<String> {
 		protected final String langKey;
 		private ICSSettingsStringList(String langDir)	{
 			langKey = toLanguageKey(langDir);
@@ -2195,11 +2195,11 @@ public abstract class SpeciesSettings {
 		static final long serialVersionUID = 1L;
 		@Override public String  getLabel()	{ return ""; }
 		@Override public void updateOption(DynamicOptions destOptions) {
-			for (ICRSettings item : this)
+			for (ICRSettings<?> item : this)
 				item.updateOption(destOptions);
 		}
 		@Override public void updateOptionTool(DynamicOptions srcOptions) {
-			for (ICRSettings item : this)
+			for (ICRSettings<?> item : this)
 				item.updateOptionTool(srcOptions);
 		}
 		void insert(int idx)	{

@@ -26,7 +26,7 @@ public interface RotPGuideUI {
 	GuideUI guideUI = new GuideUI();
 
 	static void pop(JComponent frame, JComponent target, String text)	{ guideUI.show(frame, target, text); }
-	static void pop(JComponent frame, JComponent target, IParam param)	{ guideUI.show(frame, target, param); }
+	static void pop(JComponent frame, JComponent target, IParam<?> param)	{ guideUI.show(frame, target, param); }
 	static void pop(JComponent frame, JComponent target, Image image)	{ guideUI.show(frame, target, image); }
 	static void hide()	{ guideUI.hide(); }
 
@@ -46,7 +46,7 @@ public interface RotPGuideUI {
 			popup = factory.getPopup(frame, pane(), x, y);
 			popup.show();
 		}
-		private void show(JComponent frame, JComponent target, IParam param)	{
+		private void show(JComponent frame, JComponent target, IParam<?> param)	{
 			pane(frame, target, param, false);
 			show(frame);
 		}
@@ -118,7 +118,7 @@ public interface RotPGuideUI {
 			setDest(target.getBounds());
 			return pane;
 		}
-		private JTextPane pane(JComponent frame, JComponent target, IParam param, boolean fullHelp)	{
+		private JTextPane pane(JComponent frame, JComponent target, IParam<?> param, boolean fullHelp)	{
 			pane().removeAll();
 			guideFontSize(FONT_SIZE);
 			// Check for normal tool tip
@@ -192,7 +192,7 @@ public interface RotPGuideUI {
 			box.setSize(autoSize);
 //			return autoSize;
 		}
-		private String setParam(IParam param, Rectangle dest)	{
+		private String setParam(IParam<?> param, Rectangle dest)	{
 			if (param == null)
 				return null;
 			guideFontSize(FONT_SIZE);

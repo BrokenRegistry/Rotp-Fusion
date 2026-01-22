@@ -80,7 +80,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 	private final Box randomPushBox	= new Box(randomPushKey);
 	private final Box loadBox		= new Box(loadButtonHelp);
 
-	private List<ICRSettings> guiList;
+	private List<ICRSettings<?>> guiList;
 	private RaceList raceList;
 	private int yRandB, yRandGetB, xRandPushB;
 	
@@ -103,7 +103,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		initGUI();
 
 		guiList = cr().guiList();
-		for(ICRSettings setting : guiList)
+		for(ICRSettings<?> setting : guiList)
 			setting.settingText(new ModText(this, labelFontSize,
 					labelC, labelC, hoverC, depressedC, textC, false));
 		raceList = cr().initRaceList();
@@ -247,7 +247,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 			return;
 		}
 		for (int settingIdx=0; settingIdx < mouseList.size(); settingIdx++) {
-			ICRSettings setting = mouseList.get(settingIdx);
+			ICRSettings<?> setting = mouseList.get(settingIdx);
 			if (setting.isBullet()) {
 				if (hoverBox == setting.settingText().box()) { // Check Setting
 					setting.toggle(e, w, this);
@@ -752,7 +752,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		xLine = xDesc  + labelPad;
 		yLine = yRandB - labelPad;
 		ModText bt;
-		for(ICRSettings setting : guiList) {
+		for(ICRSettings<?> setting : guiList) {
 			bt = setting.settingText();
 			bt.displayText(setting.guiSettingDisplayStr());
 			bt.setScaledXY(xLine, yLine);

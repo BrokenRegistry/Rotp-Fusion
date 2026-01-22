@@ -126,7 +126,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	private BasePanel parentUI;
 	private boolean forceUpdate	 = true;
 	private boolean callPreview	 = false;
-	private IParam  callParam	 = null;
+	private IParam<?> callParam	 = null;
 	private boolean isCentered	 = true;
 	private boolean isLeftAlign	 = false;
 	private boolean isJustified	 = false;
@@ -215,7 +215,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			totalRows += list.size();
 			lastRowList.add(totalRows);
 			numRows = max(numRows, list.size());
-			for (IParam param : list) {
+			for (IParam<?> param : list) {
 				if (param != null) {
 					hSettings += hDistSetting * param.heightFactor();
 					activeList.add(param);
@@ -442,7 +442,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 					return false;
 		}
 	}
-	private void paintSetting(Graphics2D g, IParam param) {
+	private void paintSetting(Graphics2D g, IParam<?> param) {
 		boolean refresh = forceUpdate() || param.updated();
 		if (refresh) { // Update imgList
 			int xRight	= 0;
@@ -614,7 +614,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		else
 			g.drawImage(imgList.get(index), xSetting, ySetting-rowPad, null);
 	}
-	private void goToNextSetting(IParam param) {
+	private void goToNextSetting(IParam<?> param) {
 		int hSetting = (int) (hDistSetting * param.heightFactor());
 		index++;
 		if (index >= lastRowList.get(column)) {
@@ -624,7 +624,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		} else
 			ySetting += hSetting;
 	}
-	void searchMouseAction(MouseEvent e, MouseWheelEvent w, IParam param) {
+	void searchMouseAction(MouseEvent e, MouseWheelEvent w, IParam<?> param) {
 		if (param.isSubMenu()) {
 			if (e == null)
 				return;
@@ -647,7 +647,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		for (int i=0; i<activeList.size(); i++) {
 			if (hoverBox == btListLeft.get(i).box()
 					|| hoverBox == btListRight.get(i).box() ) {
-				IParam param = activeList.get(i);
+				IParam<?> param = activeList.get(i);
 				if (param.isSubMenu()) {
 					if (e == null)
 						return;
@@ -673,7 +673,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		}
 	}
 	private void setLocalToDefault(boolean excludeCfg, boolean excludeSubMenu) {
-		for (IParam param : activeList)
+		for (IParam<?> param : activeList)
 			if (!(excludeCfg && param.isCfgFile())
 					&& !(excludeSubMenu && param.isSubMenu()))
 			param.setFromDefault(excludeCfg, excludeSubMenu);
@@ -733,7 +733,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	}
 	// ========== Overriders ==========
 	//
-	@Override public void preview(String s, IParam param) {
+	@Override public void preview(String s, IParam<?> param) {
 		if (parentUI == null)
 			return;
 		if (s != null && !s.equalsIgnoreCase("quickGenerate"))
@@ -873,7 +873,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		xSetting = settingLeft;
 		ySetting = yFull+yTop;
 		while (index<activeList.size()) {
-			IParam param = activeList.get(index);
+			IParam<?> param = activeList.get(index);
 			paintSetting(g, param);
 			goToNextSetting(param);
 		}

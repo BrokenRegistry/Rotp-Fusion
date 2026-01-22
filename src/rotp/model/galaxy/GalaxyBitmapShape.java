@@ -149,9 +149,9 @@ final class GalaxyBitmapShape extends GalaxyShape {
 
 	GalaxyBitmapShape(IGameOptions options, boolean[] rndOpt)	{ super(options, rndOpt); }
 
-	@Override public IShapeOption paramOption1()	{ return param1(); }
-	@Override public IShapeOption paramOption2()	{ return param2(); }
-	@Override public IShapeOption paramOption3()	{ return param3(); }
+	@Override public IShapeOption<?> paramOption1()	{ return param1(); }
+	@Override public IShapeOption<?> paramOption2()	{ return param2(); }
+	@Override public IShapeOption<?> paramOption3()	{ return param3(); }
 	@Override public String getOption3()			{ return param3().get(); }
 	@Override public void setOption1(String value)	{ param1().set(value); }
 	@Override public void setOption2(String value)	{ param2().set(value); }

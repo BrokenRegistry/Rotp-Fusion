@@ -44,13 +44,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import rotp.model.game.DynamicOptions;
 import rotp.model.game.IGameOptions;
+import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.BaseModPanel.ModText;
 import rotp.ui.util.ListDialogUI;
 import rotp.ui.util.StringList;
 
-public class SettingBase<T> implements ICRSettings {
+public class SettingBase<T> implements ICRSettings<T> {
 	
 	public enum CostFormula {DIFFERENCE, RELATIVE, NORMALIZED}
 	private static final boolean defaultIsList			= true;
@@ -164,7 +165,7 @@ public class SettingBase<T> implements ICRSettings {
 		selectedValue(valueList.get(selectedIndex));	
 		return false;
 	}
-	@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame) {
+	@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BasePanel frame) {
 		if (e == null)
 			return toggle(w);
 		else

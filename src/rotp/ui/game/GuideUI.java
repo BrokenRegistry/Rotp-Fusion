@@ -59,7 +59,7 @@ public class GuideUI extends BasePanel {
 		}
 
 		JComponent getComponent();
-		default IParam getParam()			{ return null; }
+		default IParam<?> getParam()		{ return null; }
 		default boolean showGuide()			{ return showGuide.get(); }
 		default boolean showDescription()	{ return descriptionPane.isActive(); }
 		default void popGuide(String tip)	{
@@ -75,7 +75,7 @@ public class GuideUI extends BasePanel {
 			if (showGuide()) {
 				JComponent c = getComponent();
 				if (c != null) {
-					IParam p = getParam();
+					IParam<?> p = getParam();
 					if (p != null)
 						GuideUI.open(c, p.getGuide());
 					else
@@ -291,7 +291,7 @@ public class GuideUI extends BasePanel {
 			guideBox.setText(cleanHtmlText(tipText));
 			setSizeAndLocation();
 		}
-		private void createGuideBox(JComponent target, IParam param, boolean fullHelp)	{ // TODO BR: add validBox
+		private void createGuideBox(JComponent target, IParam<?> param, boolean fullHelp)	{ // TODO BR: add validBox
 			// Check for normal tool tip
 			if (param == null) {
 				guideBox.setText("");
@@ -309,7 +309,7 @@ public class GuideUI extends BasePanel {
 			guideBox.setSize(new Dimension());
 		}
 		// Size and location
-		private String setSizeAndLocation(IParam param)	{
+		private String setSizeAndLocation(IParam<?> param)	{
 			if (param == null)
 				return null;
 			guideFontSize(GUIDE_FONT_SIZE);

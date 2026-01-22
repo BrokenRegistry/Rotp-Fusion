@@ -37,9 +37,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import rotp.Rotp;
+import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
-import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.GameUI;
 import rotp.ui.game.MainOptionsUI;
 import rotp.ui.util.ParamBoolInt;
@@ -695,7 +695,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			isCfgFile(false);
 			isDuplicate(false);
 		}
-		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame) {
+		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BasePanel frame) {
 			String langId = LanguageManager.selectedLanguageDir();
 			switch (langId) {
 				case "en":
@@ -740,7 +740,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			isCfgFile(false);
 			isDuplicate(false);
 		}
-		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame) {
+		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BasePanel frame) {
 			String langId = LanguageManager.selectedLanguageDir();
 			switch (langId) {
 				case "en":
@@ -773,7 +773,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			isCfgFile(false);
 			isDuplicate(false);
 		}
-		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame) {
+		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BasePanel frame) {
 			next();
 			LanguageManager.current().reloadLanguage();
 			return false;

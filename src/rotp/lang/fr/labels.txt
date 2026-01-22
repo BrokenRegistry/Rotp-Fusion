@@ -2404,7 +2404,7 @@ CUSTOM_RACE_ARTIFACTS_NONE_DESC   | Recherche normale
 CUSTOM_RACE_ARTIFACTS_ORION       | Vestiges d’Orion
 CUSTOM_RACE_ARTIFACTS_ORION_DESC  | Recherche quadruplée
 
-CUSTOM_RACE_FAVORED_SHIPSET       | Modèle de vaisseaux
+CUSTOM_RACE_FAVORED_SHIPSET       | Modèle d’aéronefs
 CUSTOM_RACE_FAVORED_SHIPSET_DESC  | Quel est le modèle de vaisseau préféré utilisé par cette espèce ? (Si toujours disponible)
 CUSTOM_RACE_FAVORED_SHIP_SIZE     | Taille de Vaisseaux
 CUSTOM_RACE_FAVORED_SHIP_SIZE_DESC | Quelle est la taille de navire préférée utilisée par cette espèce ? (IA : Base, IA : Modnar, IA : Rookie et IA : Roleplay utiliseront ces informations)
@@ -3983,8 +3983,8 @@ SETTINGS_MOD_TERRAFORM_CLEANED_HELP      | Ne vous embêtez pas à terraformer, 
 // Other base menu Mod settings
 SETTINGS_MOD_PLAYER_SHIP_SET_DESC            | Sélection du graphisme des vaisseaux du joueur.
 SETTINGS_MOD_PLAYER_SHIP_SET                 | Graphisme de votre armada : %1
-SETTINGS_MOD_PLAYER_SHIP_SET_ORIGINAL        | Modèles originaux
-SETTINGS_MOD_PLAYER_SHIP_SET_DISPLAY_SPECIES | Sans préférences
+SETTINGS_MOD_PLAYER_SHIP_SET_ORIGINAL        | Modèle original
+SETTINGS_MOD_PLAYER_SHIP_SET_DISPLAY_SPECIES | Sans préférence
 SETTINGS_MOD_PLAYER_SHIP_SET_FORCED_SHIPSET  | » %1
 SETTINGS_MOD_PLAYER_SHIP_SET_CUSTOM_SPECIES  | ep : %1
 SETTINGS_MOD_PLAYER_SHIP_SET_BASE_SPECIES    | [base_raceadjec]

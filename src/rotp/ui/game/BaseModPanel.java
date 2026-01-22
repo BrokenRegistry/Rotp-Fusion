@@ -833,7 +833,7 @@ public abstract class BaseModPanel extends BasePanel
 	//
 	final class Box extends Rectangle {
 		private static final long serialVersionUID = 1L;
-		private IParam	param;
+		private IParam<?>	param;
 		private String	label;
 		private ModText modText;
 		private int 	mouseBoxIndex;
@@ -851,12 +851,12 @@ public abstract class BaseModPanel extends BasePanel
 			boxHelpList.add(this);
 			this.label = label;
 		}
-		Box(IParam param)	{
+		Box(IParam<?> param)	{
 			this();
 			boxHelpList.add(this);
 			this.param = param;
 		}
-		Box(IParam param, int mouseBoxIndex) {
+		Box(IParam<?> param, int mouseBoxIndex) {
 			this(param);
 			mouseBoxIndex(mouseBoxIndex);
 		}
@@ -868,11 +868,11 @@ public abstract class BaseModPanel extends BasePanel
 			boxBaseList.add(this);
 			//System.out.println("added " + boxBaseList.size() + " " + getDescription());
 		}
-		private void initGuide(String label) { this.label = label; }
-		public  void initGuide(IParam param) { this.param = param; }
-		private void mouseBoxIndex(int idx)	 { mouseBoxIndex = idx; }
-		public String getLabel()			 { return label; }
-		public IParam getParam()			 { return param; }
+		private void initGuide(String label)	{ this.label = label; }
+		public  void initGuide(IParam<?> param)	{ this.param = param; }
+		private void mouseBoxIndex(int idx)	{ mouseBoxIndex = idx; }
+		public String getLabel()			{ return label; }
+		public IParam<?> getParam()			{ return param; }
 
 		// ========== Doers ==========
 		//
@@ -1094,7 +1094,7 @@ public abstract class BaseModPanel extends BasePanel
 		}
 		public void    fontMult(float fMult)	{ super.newFontSize((int) (baseFontsize * fMult)); }
 		public void	   removeBoxFromList()		{ box.removeFromList(); }
-		public ModText initGuide(IParam param)	{ box.initGuide(param); return this; }
+		public ModText initGuide(IParam<?> param)	{ box.initGuide(param); return this; }
 		public ModText initGuide(String label)	{ box.initGuide(label); return this; }
 		Box box() {
 			box.setBounds(bounds());

@@ -39,11 +39,11 @@ import rotp.model.game.DynamicOptions;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.RulesetManager;
+import rotp.ui.BasePanel;
 import rotp.ui.UserPreferences;
-import rotp.ui.game.BaseModPanel;
 import rotp.util.sound.SoundManager;
 
-public abstract class AbstractParam <T> implements IParam {
+public abstract class AbstractParam <T> implements IParam<T> {
 	// Ignore UCDetector public warning!
 	protected static final boolean GO_UP	= true;
 	protected static final boolean GO_DOWN	= false;
@@ -226,7 +226,7 @@ public abstract class AbstractParam <T> implements IParam {
 			return;
 		set(defaultValue());
 	}
-	@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame) {
+	@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BasePanel frame) {
 		if (processingToggle)
 			return false;
 		processingToggle = true;

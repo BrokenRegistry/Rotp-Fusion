@@ -13,7 +13,6 @@ import static rotp.model.game.IMainOptions.showGuide;
 import static rotp.model.game.IRaceOptions.defaultRaceKey;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -34,33 +33,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.ComboBoxUI;
-import javax.swing.plaf.basic.BasicArrowButton;
-import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.plaf.basic.BasicComboPopup;
-import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.plaf.basic.ComboPopup;
 
 import rotp.model.empires.species.SkillsFactory.RaceList;
 import rotp.model.empires.species.SpeciesSettings.AvatarKey;
 import rotp.model.empires.species.SpeciesSettings.SettingMap;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.IMainOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
+import rotp.ui.components.RComboBox;
 import rotp.ui.components.RLabel;
 import rotp.ui.components.RSeparator;
 import rotp.ui.components.RotPButtons;
@@ -69,8 +60,6 @@ import rotp.ui.components.RotPComponents;
 import rotp.ui.game.GameUI;
 import rotp.ui.game.GuideUI;
 import rotp.ui.main.SystemPanel;
-import rotp.ui.races.RacesUI;
-import rotp.ui.util.StringList;
 import rotp.util.Base;
 import rotp.util.FontManager;
 
@@ -112,12 +101,13 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	//
 	private	List<Integer> spacerList;
 	private List<Integer> columnList;
-	List<ICRSettings> commonList;
-	private List<ICRSettings> settingList, randomGeneratorList;
+	List<ICRSettings<?>> commonList;
+	private List<ICRSettings<?>> settingList, randomGeneratorList;
 	private int settingSize;
 	private String emptyDescription;
 
 	private RSettingPanel hasPopUp;
+	private RaceList raceList;
 
 	public DNAWorkshop()	{
 		workshop = this;
@@ -127,29 +117,20 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	public void init(BasePanel parent, boolean allowEdit)	{
 		
 		
-		UIManager.put("ComboBox.disabledBackground", Color.MAGENTA);
-		UIManager.put("ComboBox.disabledForeground", Color.RED);
-		UIManager.put("ComboBox.background", GameUI.borderMidColor());
-		UIManager.put("ComboBox.foreground", SystemPanel.blackText);
-		UIManager.put("ComboBox.selectionBackground", GameUI.raceCenterColor());
-		UIManager.put("ComboBox.selectionForeground", highlightColor());
-
-		UIManager.put("List.selectionBackground", GameUI.raceCenterColor());
-		UIManager.put("List.selectionForeground", highlightColor());
-		UIManager.put("List.focusSelectedCellHighlightBorder", highlightColor());
-		UIManager.put("List.focusCellHighlightBorder", highlightColor());
-
-		UIManager.put("ScrollBar.thumb", RacesUI.scrollBarC);
-		UIManager.put("ScrollBar.thumbHighlight", RacesUI.scrollBarC);
-		UIManager.put("ScrollBar.thumbDarkShadow", GameUI.buttonTextColor());
-		UIManager.put("ScrollBar.thumbShadow", GameUI.borderDarkColor());
-		UIManager.put("ScrollBar.shadow", GameUI.borderMidColor());
-		UIManager.put("ScrollBar.shadow", GameUI.borderMidColor());
-		UIManager.put("ScrollBar.highlight", GameUI.borderBrightColor());
-		UIManager.put("ScrollBar.highlight", GameUI.borderBrightColor());
-
-		//		UIManager.put("ScrollBar.thumb", GameUI.buttonBackgroundColor());
-//		UIManager.put("ScrollBar.thumbHighlight", GameUI.buttonBackgroundColor());
+//		UIManager.put("ComboBox.disabledBackground", Color.MAGENTA);
+//		UIManager.put("ComboBox.disabledForeground", Color.RED);
+//		UIManager.put("ComboBox.background", GameUI.borderMidColor());
+//		UIManager.put("ComboBox.foreground", SystemPanel.blackText);
+//		UIManager.put("ComboBox.selectionBackground", GameUI.raceCenterColor());
+//		UIManager.put("ComboBox.selectionForeground", highlightColor());
+//
+//		UIManager.put("List.selectionBackground", GameUI.raceCenterColor());
+//		UIManager.put("List.selectionForeground", highlightColor());
+//		UIManager.put("List.focusSelectedCellHighlightBorder", highlightColor());
+//		UIManager.put("List.focusCellHighlightBorder", highlightColor());
+//
+//		UIManager.put("ScrollBar.thumb", RacesUI.scrollBarC);
+//		UIManager.put("ScrollBar.thumbHighlight", RacesUI.scrollBarC);
 //		UIManager.put("ScrollBar.thumbDarkShadow", GameUI.buttonTextColor());
 //		UIManager.put("ScrollBar.thumbShadow", GameUI.borderDarkColor());
 //		UIManager.put("ScrollBar.shadow", GameUI.borderMidColor());
@@ -189,6 +170,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		spacerList	= dnaFactory().spacerList();
 		settingList	= dnaFactory().settingList();
 		settingSize	= settingList.size();
+		raceList	= dnaFactory().initRaceList();
 		randomGeneratorList = dnaFactory().guiList();
 	}
 	private void close()	{
@@ -217,6 +199,10 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		workshop.repaint();
 	}
 	private void refreshPanel(boolean forced)	{ contentPane.settingsPane.updatePanel(forced); }
+	private void reloadRaceList(boolean foldersRework) {
+		raceList.reload(foldersRework);
+		refreshAll();
+	}
 	private Rectangle getLocationOnScreen(JComponent c)	{
 		return new Rectangle(c.getLocationOnScreen(), c.getSize());
 	}
@@ -246,7 +232,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			if (!avatarKey.isDefaultValue()) {
 				avatar.resetScientist();
 				Image avatarImg = avatar.scientistQuiet();
-				g.drawImage(avatarImg, 0,2*h/5, 3*w/5,h, 0,0, avatarImg.getWidth(this), avatarImg.getHeight(this), null);
+				g.drawImage(avatarImg, 0,2*h/6, 4*w/6,h, 0,0, avatarImg.getWidth(this), avatarImg.getHeight(this), null);
 			}
 
 			// draw Title
@@ -330,7 +316,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		private void toggle(MouseWheelEvent w)	{
 			if (allowEdit) {
 				RSettingPanel panel = panel(w);
-				ICRSettings setting = panel.setting;
+				ICRSettings<?> setting = panel.setting;
 				if (setting instanceof AvatarKey) {
 					setting.toggle(w);
 					backImage = null;
@@ -356,7 +342,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		private void toggle(MouseEvent e)	{
 			if (allowEdit) {
 				RSettingPanel panel = panel(e);
-				ICRSettings setting = panel.setting;
+				ICRSettings<?> setting = panel.setting;
 				if (setting instanceof AvatarKey) {
 					setting.toggle(e, workshop);
 					backImage = null;
@@ -383,7 +369,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		}
 		private void setDescBox(MouseEvent e)	{
 			RSettingPanel panel = panel(e);
-			ICRSettings setting = panel.setting;
+			ICRSettings<?> setting = panel.setting;
 			if (panel != hasPopUp) {
 				if (hasPopUp != null)
 					hasPopUp.highLighted(false);
@@ -471,22 +457,31 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		private RButton newFolderButton()	{
 			RButton button = RotPButtons.newButton(ROOT + "BUTTON_FOLDER");
 			button.setLabelKey();
-			button.addActionListener(e -> selectFolderAction());
+			button.addMouseListener(e -> selectFolderAction(e));
 			return button;
 		}
 		private RButton newNamesButton()	{
 			RButton button = RotPButtons.newButton(ROOT + "BUTTON_NAMES");
 			button.setLabelKey();
-			button.addActionListener(e -> selectNamesAction());
+			button.addActionListener(e -> selectNamesAction(e));
 			return button;
 		}
-		private void selectFolderAction()	{ // TODO BR: selectFolderAction()
+		private void selectFolderAction(MouseEvent e)	{ // TODO BR: selectFolderAction()
 			Toolkit.getDefaultToolkit().beep();
+			if (e.isControlDown())
+				reloadRaceList(true);
+			else {
+				IMainOptions.speciesDirectory.toggle(e, null, parent);
+				reloadRaceList(false);
+			}
+			dnaFactory().loadRace();
+			repaint();
 		}
-		private void selectNamesAction()	{ // TODO BR: selectNamesAction()
+		private void selectNamesAction(ActionEvent e)	{ // TODO BR: selectNamesAction()
 			Toolkit.getDefaultToolkit().beep();
 		}
 	}
+
 	// ========================================================================
 	// === Level 2: ==> Settings Panel
 	//
@@ -496,6 +491,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		private BufferedImage backImg;
 		private int width, height;
 		private List<RSettingPanel> settingPanelList = new ArrayList<>();
+		private RComboBox<String> gmoSelection;
 
 		SettingsPane(boolean allowEdit)	{ buildPanel(allowEdit); }
 		private void buildPanel(boolean allowEdit) {
@@ -506,11 +502,11 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			setBorder(border);
 
 			int side = s10;
-			int settingWidth = scaled(180);
-			int columnWidth	 = scaled(200);
+			int[] settingWidth	= {scaled(160), scaled(160), scaled(160), scaled(160)};
+			int[] subPanelWidth	= {scaled(180), scaled(180), scaled(180), scaled(180)};
 			int x = 0;
 			int y = 0;
-			JPanel  subPanel = newSubPanel(columnWidth);
+			JPanel  subPanel = newSubPanel(subPanelWidth[x]);
 			subPanel.setBorder(new EmptyBorder(s5, side, s5, 0));
 			add(subPanel, newGbc(0,1, 1,1, 1,0, NORTH, NONE, ZERO_INSETS, 0,0));
 
@@ -518,14 +514,12 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 				RandomGeneratorPane rg = new RandomGeneratorPane();
 				add(rg, newGbc(0,1, 1,1, 1,0, SOUTH, NONE, new Insets(0, 0, s10, 0), 0,0));
 
-				SpeciesSelection comboBox = new SpeciesSelection();
-//				add(comboBox, newGbc(0,0, 1,1, 1,0, NORTH, HORIZONTAL, new Insets(s10, s10, s5, 0), 0,0)); 
-				add(comboBox, newGbc(1,1, 1,1, 1,0, SOUTH, NONE, new Insets(0, 0, s10, 0), 0,0)); 
+				gmoSelection = newGMOSelection();
+			add(gmoSelection, newGbc(1,1, 1,1, 1,0, SOUTH, NONE, new Insets(0, 0, s10, 0), 0,0)); 
 			}
 
 			Insets bulletInset = new Insets(0, 0, s5, 0);
-			costPanel = new CostPanel(settingWidth);
-//			add(costPanel, newGbc(1, 1, 2,1, 0,0, SOUTH, HORIZONTAL, new Insets(0, 0, s10, 0), 0,0));
+			costPanel = new CostPanel(settingWidth[x]);
 			subPanel.add(costPanel, newGbc(x, y, 1,1, 0,0, WEST, HORIZONTAL, bulletInset, 0,0));
 			y++;
 
@@ -538,13 +532,13 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 				if (columnList.contains(i)) {
 					x+=1;
 					y = 0;
-					subPanel = newSubPanel(columnWidth);
+					subPanel = newSubPanel(subPanelWidth[x]);
 					subPanel.setBorder(new EmptyBorder(s10, 0, s5, x==3? side:0));
 					add(subPanel, newGbc(x,0, 1,2, 1,0, NORTH, HORIZONTAL, new Insets(0, s10, 0, 0), 1,0));
 					//continue;
 				}
-				ICRSettings setting = settingList.get(i);
-				RSettingPanel settingPanel = new RSettingPanel(this, setting, settingWidth, new SettingListener());
+				ICRSettings<?> setting = settingList.get(i);
+				RSettingPanel settingPanel = new RSettingPanel(this, setting, settingWidth[x], new SettingListener());
 				settingPanelList.add(settingPanel);
 				if (setting.isBullet())
 					subPanel.add(settingPanel, newGbc(0,y, REMAINDER,1, 1,0, WEST, HORIZONTAL, bulletInset, 0,0));
@@ -552,6 +546,19 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 					subPanel.add(settingPanel, newGbc(0,y, REMAINDER,1, 1,0, WEST, HORIZONTAL, ZERO_INSETS, 0,0));
 				y++;
 			}
+		}
+		private RComboBox<String> newGMOSelection()	{
+			RComboBox<String> box = new RComboBox<>(raceList);
+			box.setPopupLocation(SwingConstants.NORTH);
+			box.enableArrow(true);
+			box.setMaximumRowCount(30);
+			box.addActionListener(e -> gmoSelectionAction(e));
+			return box;
+		}
+		private void gmoSelectionAction(ActionEvent evt)	{
+			String selection = (String) gmoSelection.getSelectedItem();
+			raceList.selectedValue(selection);
+			refreshAll();
 		}
 		private void updatePanel(boolean forced)	{
 			costPanel.updateCost();
@@ -705,7 +712,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			add(newRandomPushButton(), newGbc(1, y, 1,1, 0,0, EAST, NONE, new Insets(0, 0, s10, 0), 0,0));
 
 			int settingWidth = scaled(180);
-			for (ICRSettings setting : randomGeneratorList) {
+			for (ICRSettings<?> setting : randomGeneratorList) {
 				RSettingPanel settingPanel = new RSettingPanel(this, setting, settingWidth, new SettingListener());
 				y++;
 				add(settingPanel, newGbc(0,y, REMAINDER,1, 1,0, WEST, HORIZONTAL, ZERO_INSETS, 0,0));
@@ -769,162 +776,5 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	// ========================================================================
 	// #=== Other Specific Components definition : GMO Selection
 	//
-	void test()	{
-		JComboBox combo = new JComboBox<String>();
-		combo.setUI(ColorArrowUI.createUI(combo));
-	}
-	static class ColorArrowUI extends BasicComboBoxUI {
-
-		public static ComboBoxUI createUI(JComponent c) {
-			return new ColorArrowUI();
-		}
-
-		@Override protected JButton createArrowButton() {
-			return new BasicArrowButton(
-					BasicArrowButton.SOUTH,
-					Color.cyan, Color.magenta,
-					Color.yellow, Color.blue);
-		}
-	}
-	private static class DarkScrollBarUI extends BasicScrollBarUI {
-		@Override protected void configureScrollBarColors() {
-//			super.configureScrollBarColors();
-			thumbColor = RacesUI.scrollBarC;
-//			thumbHighlightColor = RacesUI.scrollBarC;
-//			thumbLightShadowColor = RacesUI.scrollBarC;
-//			thumbDarkShadowColor = RacesUI.scrollBarC;
-//			trackColor = RacesUI.scrollBarC;
-//			trackHighlightColor = Color.YELLOW;
-
-//			thumbColor = RacesUI.scrollBarC;
-//			thumbColor = GameUI.borderDarkColor();
-		}
-	}
-//	UIManager.put("ScrollBar.thumb", GameUI.buttonBackgroundColor());
-//	UIManager.put("ScrollBar.thumbHighlight", GameUI.buttonBackgroundColor());
-//	UIManager.put("ScrollBar.thumbDarkShadow", GameUI.buttonTextColor());
-//	UIManager.put("ScrollBar.thumbShadow", GameUI.borderDarkColor());
-//	UIManager.put("ScrollBar.shadow", GameUI.borderMidColor());
-//	UIManager.put("ScrollBar.shadow", GameUI.borderMidColor());
-//	UIManager.put("ScrollBar.highlight", GameUI.borderBrightColor());
-//	UIManager.put("ScrollBar.highlight", GameUI.borderBrightColor());
-
-	static class MyCP extends BasicComboPopup	{
-		public MyCP(JComboBox<Object> combo) {
-			super(combo);
-			scroller.getVerticalScrollBar().setUI(new DarkScrollBarUI());
-			scroller.getVerticalScrollBar().setBackground(RacesUI.brown);
-			scroller.getVerticalScrollBar().setForeground(RacesUI.scrollBarC);
-			
-//			scroller.getVerticalScrollBar().setBackground(GameUI.borderBrightColor());
-//			scroller.getVerticalScrollBar().setUI(new DarkScrollBarUI());
-		}
-	}
-	static class MyUI extends BasicComboBoxUI	{
-		MyUI()	{
-			super();
-		}
-		@Override protected ComboPopup createPopup() {
-			return new MyCP( comboBox );
-		}
-		@Override protected JButton createArrowButton() {
-			JButton arrowButton = new BasicArrowButton( 
-					BasicArrowButton.NORTH,
-//					BasicArrowButton.SOUTH,
-					GameUI.borderMidColor(), 
-					GameUI.borderBrightColor(), 
-					GameUI.borderDarkColor(), 
-					GameUI.borderBrightColor());
-			arrowButton.setBorder(BorderFactory.createLineBorder(GameUI.borderDarkColor()));
-			return arrowButton;
-		}
-	}
-	private class SpeciesSelection extends JComboBox<String>	{
-		private static final long serialVersionUID = 1L;
-
-		private StringList selectionList ;
-		private RaceList raceList;
-		protected int comboFontSize	= 12;
-		protected int textIndent	= s5;
-		protected int textBaseline	= s4;
-		protected Font comboFont	= FontManager.current().narrowFont(comboFontSize);
-		private SpeciesSelection()	{
-			super();
-			setOpaque(false);
-			raceList = dnaFactory().initRaceList();
-			updateList();
-			setLightWeightPopupEnabled(false);
-			setBackground(RacesUI.brown);
-			setForeground(SystemPanel.blackText);
-			getEditor().getEditorComponent().setBackground(GameUI.borderMidColor());
-			getEditor().getEditorComponent().setForeground(SystemPanel.blackText);
-			setRenderer(new ListRenderer());
-			setFont(comboFont);
-			setSelectedIndex(0);
-			setMaximumRowCount(30);
-			setUI(new MyUI());
-			addActionListener(e -> gmoSelectionAction(e));
-		}
-		private void gmoSelectionAction(ActionEvent evt)	{
-			String selection = (String) getSelectedItem();
-			raceList.selectedValue(selection);
-			refreshAll();
-		}
-		@Override public void paint(Graphics g)	{
-			super.paint(g);
-		}
-		@Override public void paintBorder(Graphics g)	{
-			super.paintBorder(g);
-		}
-		@Override public void paintChildren(Graphics g)	{
-			super.paintChildren(g);
-		}
-		@Override public void paintComponent(Graphics g)	{
-			super.paintComponent(g);
-			int w = getWidth();
-			int h = getHeight();
-			if ((w <= 0) || (h <= 0))
-				return;
-			setRenderingHints(g);
-			g.setColor(GameUI.buttonBackgroundColor());
-			g.fillRect(0,0, w, h);
-			g.setColor(ICRSettings.settingBlandC);
-			setFont(comboFont);
-			g.drawString("Load GMO File", textIndent, h-textBaseline);
-		}
-		private StringList updateList()	{
-			raceList.reload(false);
-			removeAllItems();
-			selectionList = raceList.getAllAlienRaces();
-			for(String item : selectionList)
-				addItem(item);
-			return selectionList;
-		}
-		private class ListRenderer extends DefaultListCellRenderer	{
-			private static final long serialVersionUID = 1L;
-			@Override public void paintComponent(Graphics g)	{
-				super.paintComponent(g);
-				int w = getWidth();
-				int h = getHeight();
-				if ((w <= 0) || (h <= 0))
-					return;
-
-				setHiRenderingHints(g);
-				g.setColor(getBackground());
-				g.fillRect(0,0, w, h);
-
-				g.setColor(getForeground());
-				setFont(comboFont);
-				g.drawString(getText(), textIndent, h-textBaseline);
-			}
-			@Override public Component getListCellRendererComponent(JList<?> list, 
-					Object value, int index, boolean isSelected, boolean cellHasFocus)	{
-				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-				if (isSelected)
-					setDescription(raceList.getToolTip(index));
-				return this;
-			}
-		}
-	}
 	// -#-
 }
