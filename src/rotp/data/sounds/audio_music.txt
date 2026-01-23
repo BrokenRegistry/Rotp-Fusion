@@ -1,4 +1,4 @@
-# key                   , filename                           , gain (0 to 100), playtype
+# key                   , filename                           , gain (0 to 100), playtype (L = reLoad, C = Continue)
 
 
 # Ambience
@@ -27,3 +27,6 @@ ThemeMrrshan            , data/sounds/theme_mrrshan.wav      , 100            , 
 ThemePsilon             , data/sounds/theme_psilon.wav       , 100            , L
 ThemeSakkra             , data/sounds/theme_sakkra.wav       , 100            , L
 ThemeSilicoid           , data/sounds/theme_silicoid.wav     , 100            , L
+
+# Other
+UnspecifiedAction       , data/sounds/action_unspecified.wav , 50             , C

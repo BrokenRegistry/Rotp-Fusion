@@ -57,6 +57,7 @@ public class GuideUI extends BasePanel {
 					descriptionPane.setText(c.getToolTipText());
 			}
 		}
+		default void clearDescription()		{ descriptionPane.setText(""); }
 
 		JComponent getComponent();
 		default IParam<?> getParam()		{ return null; }

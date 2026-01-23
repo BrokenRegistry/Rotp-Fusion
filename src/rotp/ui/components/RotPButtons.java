@@ -15,6 +15,7 @@ import java.awt.Insets;
 import java.awt.Paint;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.function.Function;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
@@ -23,6 +24,7 @@ import javax.swing.JToggleButton;
 
 import rotp.ui.BasePanel;
 import rotp.ui.game.GameUI;
+import rotp.ui.util.IParam;
 import rotp.util.FontManager;
 
 public interface RotPButtons extends RotPComponents	{
@@ -89,7 +91,15 @@ public interface RotPButtons extends RotPComponents	{
 		private boolean paintedBG	= false;
 		private boolean shadowText	= false;
 		private int fontSize = DEFAULT_FONT_SIZE;
+		private IParam<?> param;
+		private BasePanel parent;
+		private Function<MouseEvent, String> actionListener;
 
+		public RButton(String text, int fontSize, IParam<?> param, BasePanel parent)	{
+			this(text, fontSize);
+			this.param	= param;
+			this.parent	= parent;
+		}
 		public RButton(String text, int fontSize)	{
 			super(text);
 			this.fontSize = fontSize;
@@ -122,6 +132,9 @@ public interface RotPButtons extends RotPComponents	{
 		public void enableLinedBorder(boolean flag)		{ linedBorder = flag; }
 		public void enablePaintedBackground(boolean b)	{ paintedBG = b; }
 		public void enableShadowedString(boolean flag)	{ shadowText = flag; }
+		public void setParam (IParam<?> param)			{ this.param = param; }
+		public void setParent (BasePanel parent)		{ this.parent = parent; }
+		public void setListener (Function<MouseEvent, String> listener)	{ actionListener = listener; }
 		public Dimension rotpSize()	{
 			FontMetrics metrics = new Canvas().getFontMetrics(getFont());
 			Insets margin = getMargin();
@@ -145,10 +158,11 @@ public interface RotPButtons extends RotPComponents	{
 			setSize(size);
 			return size;
 		}
+		@Override public IParam<?> getParam()			{ return param; }
+		@Override public JComponent getComponent()		{ return this; }
 		@Override public boolean isPaintedBackground()	{ return paintedBG; }
 		@Override public Paint getBackGroundPaint()		{ return GameUI.buttonBackground(0, getWidth()); }
 		@Override public boolean isShadowedString()		{ return shadowText; }
-		@Override public JComponent getComponent()		{ return this; }
 		@Override public Dimension getPreferredSize()	{
 			if (isPreferredSizeSet())
 				return super.getPreferredSize();
@@ -195,17 +209,30 @@ public interface RotPButtons extends RotPComponents	{
 			@Override public void mouseEntered(MouseEvent evt)	{
 				highlightBorder = true;
 				setForeground(highlightColor());
-				setDescription(getToolTipText());
-				popGuide(getToolTipText());
+				setDescription();
+				popGuide();
+//				if (param != null ) {
+//					setDescription(param.getDescription());
+//					popGuide(param.getGuide());
+//				}
+//				else {
+//					setDescription(getToolTipText());
+//					popGuide(getToolTipText());
+//				}
 			}
 			@Override public void mouseExited(MouseEvent evt)	{
 				highlightBorder = false;
 				setForeground(GameUI.borderBrightColor());
 				hideGuide();
-				setDescription("");
+				clearDescription();
 			}
 			@Override public void mousePressed(MouseEvent evt)	{}
-			@Override public void mouseReleased(MouseEvent evt)	{}
+			@Override public void mouseReleased(MouseEvent evt)	{
+				if (param != null)
+					param.toggle(evt, parent);
+				if (actionListener != null)
+					actionListener.apply(evt);
+			}
 		}
 	}
 
@@ -213,6 +240,8 @@ public interface RotPButtons extends RotPComponents	{
 	public class RToggleButton extends JToggleButton implements RotPButtons	{
 		private static final long serialVersionUID = 1L;
 		private boolean showBorder;
+		private IParam<?> param;
+		private BasePanel parent;
 		
 		public RToggleButton(String text)	{
 			super(text);
@@ -273,14 +302,21 @@ public interface RotPButtons extends RotPComponents	{
 			@Override public void mouseEntered(MouseEvent evt)	{
 				showBorder = true;
 				setForeground(highlightColor());
+				setDescription();
+				popGuide();
 			}
 			@Override public void mouseExited(MouseEvent evt)	{
 				showBorder = false;
 				setForeground(buttonTextColor());
 				repaint(); // to remove the border
+				hideGuide();
+				clearDescription();
 			}
 			@Override public void mousePressed(MouseEvent evt)	{}
-			@Override public void mouseReleased(MouseEvent evt)	{}
+			@Override public void mouseReleased(MouseEvent evt)	{
+				if (param != null)
+					param.toggle(evt, parent);
+			}
 		}
 	}
 

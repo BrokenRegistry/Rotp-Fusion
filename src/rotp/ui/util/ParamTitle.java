@@ -22,7 +22,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
 import rotp.model.game.IGameOptions;
-import rotp.ui.game.BaseModPanel;
+import rotp.ui.BasePanel;
 
 public class ParamTitle extends AbstractParam<String> {
 	
@@ -41,7 +41,7 @@ public class ParamTitle extends AbstractParam<String> {
 	@Override public boolean prev() { return false; }
 	@Override public boolean next() { return false; }
 	@Override public boolean toggle(MouseWheelEvent e)	{ return false; }
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame)	 { return false; }
+	@Override public boolean toggle(MouseEvent e, BasePanel frame)	{ return false; }
 	@Override public void updateOptionTool() {}
 	@Override protected String getOptionValue(IGameOptions options) { return ""; }
 	@Override protected void setOptionValue(IGameOptions options, String value) {}

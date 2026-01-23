@@ -162,8 +162,8 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	@Override public boolean next()		{ return false; }
 	@Override public boolean prev()		{ return false; }
 	@Override public boolean toggle(MouseWheelEvent e) { return false; }
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame) { return false; }
-	@Override public boolean toggle(MouseEvent e, String p, BaseModPanel pUI) {
+	@Override public boolean toggle(MouseEvent e, BasePanel frame) { return false; }
+	@Override public boolean toggle(MouseEvent e, String p, BasePanel pUI) {
 		updated(true);
 		BaseCompactOptionsUI ui = RotPUI.getOptionPanel();
 		ui.initUI(GUI_TITLE_ID, GUI_ID);//, optionsMap);

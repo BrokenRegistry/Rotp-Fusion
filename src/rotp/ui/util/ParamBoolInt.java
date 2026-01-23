@@ -22,7 +22,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.SwingUtilities;
 
-import rotp.ui.game.BaseModPanel;
+import rotp.ui.BasePanel;
 
 public class ParamBoolInt extends ParamInteger {
 	private ParamBoolean boolParam;
@@ -79,7 +79,7 @@ public class ParamBoolInt extends ParamInteger {
 			return super.next();
 		return false;
 	}
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame)	{
+	@Override public boolean toggle(MouseEvent e, BasePanel frame)	{
 		if (SwingUtilities.isRightMouseButton(e)) {
 			if (e.isShiftDown())
 				prev();

@@ -10,6 +10,7 @@ import static java.awt.GridBagConstraints.SOUTHEAST;
 import static java.awt.GridBagConstraints.WEST;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.model.game.IMainOptions.showGuide;
+import static rotp.model.game.IMainOptions.speciesDirectory;
 import static rotp.model.game.IRaceOptions.defaultRaceKey;
 
 import java.awt.Color;
@@ -48,7 +49,6 @@ import rotp.model.empires.species.SpeciesSettings.AvatarKey;
 import rotp.model.empires.species.SpeciesSettings.SettingMap;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
-import rotp.model.game.IMainOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.components.RComboBox;
@@ -62,6 +62,7 @@ import rotp.ui.game.GuideUI;
 import rotp.ui.main.SystemPanel;
 import rotp.util.Base;
 import rotp.util.FontManager;
+import rotp.util.ImageManager;
 
 public final class DNAWorkshop extends BasePanel implements RotPComponents {//, KeyListener {
 	private static final long serialVersionUID = 1L;
@@ -115,29 +116,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		setOpaque(true);
 	}
 	public void init(BasePanel parent, boolean allowEdit)	{
-		
-		
-//		UIManager.put("ComboBox.disabledBackground", Color.MAGENTA);
-//		UIManager.put("ComboBox.disabledForeground", Color.RED);
-//		UIManager.put("ComboBox.background", GameUI.borderMidColor());
-//		UIManager.put("ComboBox.foreground", SystemPanel.blackText);
-//		UIManager.put("ComboBox.selectionBackground", GameUI.raceCenterColor());
-//		UIManager.put("ComboBox.selectionForeground", highlightColor());
-//
-//		UIManager.put("List.selectionBackground", GameUI.raceCenterColor());
-//		UIManager.put("List.selectionForeground", highlightColor());
-//		UIManager.put("List.focusSelectedCellHighlightBorder", highlightColor());
-//		UIManager.put("List.focusCellHighlightBorder", highlightColor());
-//
-//		UIManager.put("ScrollBar.thumb", RacesUI.scrollBarC);
-//		UIManager.put("ScrollBar.thumbHighlight", RacesUI.scrollBarC);
-//		UIManager.put("ScrollBar.thumbDarkShadow", GameUI.buttonTextColor());
-//		UIManager.put("ScrollBar.thumbShadow", GameUI.borderDarkColor());
-//		UIManager.put("ScrollBar.shadow", GameUI.borderMidColor());
-//		UIManager.put("ScrollBar.shadow", GameUI.borderMidColor());
-//		UIManager.put("ScrollBar.highlight", GameUI.borderBrightColor());
-//		UIManager.put("ScrollBar.highlight", GameUI.borderBrightColor());
-
 		this.parent		= parent;
 		this.allowEdit	= allowEdit;
 		oldTooltipState	= isTooltipEnabled();
@@ -158,7 +136,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 
 		backImage = null;
 		refreshPanel(true);
-//		repaint();
 	}
 	// ========================================================================
 	// #=== Main Methods
@@ -201,6 +178,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	private void refreshPanel(boolean forced)	{ contentPane.settingsPane.updatePanel(forced); }
 	private void reloadRaceList(boolean foldersRework) {
 		raceList.reload(foldersRework);
+		contentPane.settingsPane.gmoSelection.updateList(raceList.getListForUI());
 		refreshAll();
 	}
 	private Rectangle getLocationOnScreen(JComponent c)	{
@@ -224,12 +202,19 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			Graphics2D g = (Graphics2D) backImage.getGraphics();
 			setRenderingHints(g);
 
-			// draw background image
-			BufferedImage labImg = avatar.laboratory();
-			g.drawImage(labImg, 0,0, w, h, 0, 0, labImg.getWidth(), labImg.getHeight(), null);
-
 			// draw avatar
-			if (!avatarKey.isDefaultValue()) {
+			if (avatarKey.isDefaultValue()) {
+				// draw background image
+				String key = random(new String[] {"LANDSCAPE_RUINS_ANTARAN", "LANDSCAPE_RUINS_ORION", "DERELICT_SHIP"});
+				Image ruinImg = ImageManager.current().image(key);
+				g.drawImage(ruinImg, 0,0, w, h, 0, 0, ruinImg.getWidth(this), ruinImg.getHeight(this), null);
+			}
+			else {
+				// draw background image
+				BufferedImage labImg = avatar.laboratory();
+				g.drawImage(labImg, 0,0, w, h, 0, 0, labImg.getWidth(), labImg.getHeight(), null);
+
+				// draw avatar
 				avatar.resetScientist();
 				Image avatarImg = avatar.scientistQuiet();
 				g.drawImage(avatarImg, 0,2*h/6, 4*w/6,h, 0,0, avatarImg.getWidth(this), avatarImg.getHeight(this), null);
@@ -455,9 +440,11 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			add(newFolderButton(), newGbc(x, y, 1,1, 0,0, WEST, NONE, new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, BUTTON_SEP_W), 0,0));
 		}
 		private RButton newFolderButton()	{
-			RButton button = RotPButtons.newButton(ROOT + "BUTTON_FOLDER");
+			RButton button = new RButton(ROOT + "BUTTON_FOLDER", RotPButtons.DEFAULT_FONT_SIZE);
+			button.setParam(speciesDirectory);
+			button.setParent(workshop);
 			button.setLabelKey();
-			button.addMouseListener(e -> selectFolderAction(e));
+			button.setListener(e -> selectFolderAction(e));
 			return button;
 		}
 		private RButton newNamesButton()	{
@@ -466,19 +453,20 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			button.addActionListener(e -> selectNamesAction(e));
 			return button;
 		}
-		private void selectFolderAction(MouseEvent e)	{ // TODO BR: selectFolderAction()
-			Toolkit.getDefaultToolkit().beep();
-			if (e.isControlDown())
-				reloadRaceList(true);
-			else {
-				IMainOptions.speciesDirectory.toggle(e, null, parent);
-				reloadRaceList(false);
+		private String selectFolderAction(MouseEvent e)	{ // TODO BR: selectFolderAction()
+			if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+				if (e.isControlDown())
+					reloadRaceList(true);
+				else
+					reloadRaceList(false);
+				dnaFactory().loadRace();
+				repaint();
 			}
-			dnaFactory().loadRace();
-			repaint();
+			return null;
 		}
 		private void selectNamesAction(ActionEvent e)	{ // TODO BR: selectNamesAction()
 			Toolkit.getDefaultToolkit().beep();
+			dnaFactory().callUI();
 		}
 	}
 

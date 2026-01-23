@@ -23,7 +23,7 @@ import java.awt.event.MouseWheelEvent;
 import java.util.LinkedHashMap;
 
 import rotp.model.game.IGameOptions;
-import rotp.ui.game.BaseModPanel;
+import rotp.ui.BasePanel;
 
 public class ParamInteger extends AbstractParam<Integer> {
 
@@ -163,7 +163,7 @@ public class ParamInteger extends AbstractParam<Integer> {
 	}	
 	@Override public boolean prev()				{ return next(-baseInc()); }
 	@Override public boolean next()				{ return next(baseInc()); }
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame)	{ return next(getInc(e) * getDir(e)); }
+	@Override public boolean toggle(MouseEvent e, BasePanel frame)	{ return next(getInc(e) * getDir(e)); }
 	@Override public boolean toggle(MouseWheelEvent e)	{ return next(getInc(e) * getDir(e)); }
 	@Override protected Integer getOptionValue(IGameOptions options) {
 		Integer value = options.dynOpts().getInteger(getLangLabel());

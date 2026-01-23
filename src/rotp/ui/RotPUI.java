@@ -45,6 +45,8 @@ import rotp.model.empires.Empire;
 import rotp.model.empires.EspionageMission;
 import rotp.model.empires.SabotageMission;
 import rotp.model.empires.species.DNAWorkshop;
+import rotp.model.empires.species.NameEditorUI;
+import rotp.model.empires.species.SpeciesSettings.AllSpeciesAttributes;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.Transport;
@@ -130,7 +132,8 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     private static final String GNN_PANEL = "GNN";
     private static final String COUNCIL_PANEL = "GalacticCouncil";
     private static final String GAME_OVER_PANEL = "GameOver,Man,GameOver";
-    private static final String DNA_WORKSHOP_PANEL = "DNAWorkshop";
+	private static final String DNA_WORKSHOP_PANEL = "DNAWorkshop";
+	private static final String NAME_EDITOR_PANEL = "NameEditor";
 	// private static final String CREDITS_PANEL = "Credits";
     private static final String ERROR_PANEL = "Error";
     private static final String DIALOG_PANEL = "Dialog";
@@ -207,6 +210,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
 	private ListDialogUI	listDialog;
 	private final List<BaseCompactOptionsUI> optionsPanels = new ArrayList<>();
 	private final DNAWorkshop dnaWorkshopUI = new DNAWorkshop();
+	private final NameEditorUI nameEditorUI = new NameEditorUI();
 
     private final AdvancedOptionsUI advancedOptionsUI = new AdvancedOptionsUI();
     private final LargeDialogPane  dialogPane       = new LargeDialogPane();
@@ -364,11 +368,16 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     	setupRaceUI.init();
     	selectPanel(SETUP_RACE_PANEL, setupRaceUI); 
     }
-	 public void selectDNAWorkshopPanel(BasePanel parent, boolean allowEdit) {
+	public void selectNameEditorPanel(BasePanel parent, AllSpeciesAttributes settings)	{
+		nameEditorUI.init(parent, settings);
+		selectPanel(NAME_EDITOR_PANEL, nameEditorUI); 
+	}
+	public void selectDNAWorkshopPanel(BasePanel parent, boolean allowEdit)	{
 		dnaWorkshopUI.init(parent, allowEdit);
 		selectPanel(DNA_WORKSHOP_PANEL, dnaWorkshopUI); 
 	}
-   public void selectSetupGalaxyPanel() {
+	public void returnToDNAWorkshopPanel()	{ selectPanel(DNA_WORKSHOP_PANEL, dnaWorkshopUI); } 
+    public void selectSetupGalaxyPanel() {
     	setupGalaxyUI.init();
     	selectPanel(SETUP_GALAXY_PANEL, setupGalaxyUI);
     }
@@ -831,6 +840,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         add(setupRaceUI, SETUP_RACE_PANEL);
         add(setupGalaxyUI, SETUP_GALAXY_PANEL);
         add(dnaWorkshopUI, DNA_WORKSHOP_PANEL);
+        add(nameEditorUI, NAME_EDITOR_PANEL);
         add(loadGameUI, LOAD_PANEL);
         add(saveGameUI, SAVE_PANEL);
         add(raceIntroUI, INTRO_PANEL);

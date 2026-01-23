@@ -104,7 +104,7 @@ public abstract class SpeciesSettings {
 		settings.fillFromAnim(true);
 	}
 
-	private boolean callUI()	{
+	boolean callUI()	{
 		settingMap.cleanLanguages();
 		SettingMap backupMap = new SettingMap();
 		backupMap.copyFrom(settingMap);
@@ -386,7 +386,7 @@ public abstract class SpeciesSettings {
 	// -#-
 	// #==================== AllSpeciesAttributes ====================
 	//
-	class AllSpeciesAttributes {
+	public class AllSpeciesAttributes {
 		SettingString raceKey;
 		private StringList civilizationNames, languageNames;
 		private HashMap<String, SpeciesAttributes<?>> attributesMap = new HashMap<>();

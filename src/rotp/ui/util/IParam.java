@@ -21,7 +21,6 @@ import static rotp.ui.game.BaseModPanel.guideFontSize;
 import static rotp.util.Base.NEWLINE;
 import static rotp.util.Base.textSubs;
 
-import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -36,7 +35,6 @@ import me.xdrop.fuzzywuzzy.FuzzySearch;
 import rotp.Rotp;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.game.BaseModPanel;
 import rotp.util.LabelManager;
 
 public interface IParam<T> extends InterfaceOptions{
@@ -69,11 +67,11 @@ public interface IParam<T> extends InterfaceOptions{
 	default boolean next()						{ return false; } // Return forceUpdate
 	default boolean prev()						{ return false; } // Return forceUpdate
 	default boolean toggle(MouseWheelEvent e)	{ return false; } // Return forceUpdate
-	default boolean toggle(MouseEvent e, Component frame)						{ return false; } // Return forceUpdate
-	default boolean toggle(MouseEvent e, BaseModPanel frame)					{ return false; } // Return forceUpdate
+//	default boolean toggle(MouseEvent e, Component frame)						{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, BasePanel frame)						{ return false; } // Return forceUpdate
 	default boolean toggle(MouseEvent e, MouseWheelEvent w, BasePanel frame)	{ return false; } // Return forceUpdate
-	default boolean toggle(MouseEvent e, String p, BaseModPanel frame)			{ return false; } // Return forceUpdate
-	default boolean toggle(MouseEvent e, String p, BaseModPanel pUI, BaseModPanel frame)	{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, String p, BasePanel frame)				{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, String p, BasePanel pUI, BasePanel frame)	{ return false; } // Return forceUpdate
 	default void	updated(boolean updated)	{}
 	// State
 	default boolean	isDuplicate()			{ return false; }

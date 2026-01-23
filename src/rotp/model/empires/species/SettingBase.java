@@ -46,7 +46,6 @@ import rotp.model.game.DynamicOptions;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.BaseModPanel.ModText;
 import rotp.ui.util.ListDialogUI;
 import rotp.ui.util.StringList;
@@ -177,19 +176,7 @@ public class SettingBase<T> implements ICRSettings<T> {
 		else 
 			return prev();
 	}
-	@Override public boolean toggle(MouseEvent e, Component frame) {
-		if (getDir(e) == 0) 
-			setFromDefault(true, true);
-		else if (allowListSelect && frame != null && 
-				(e.isControlDown() || listSize() >= minListSizePopUp.get()))
-			setFromList(frame);
-		else if (getDir(e) > 0)
-			return next();
-		else 
-			return prev();
-		return false;
-	}
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame) {
+	@Override public boolean toggle(MouseEvent e, BasePanel frame) {
 		if (getDir(e) == 0) 
 			setFromDefault(true, true);
 		else if (allowListSelect && frame != null && 

@@ -30,14 +30,14 @@ import rotp.model.game.IGalaxyOptions.IShapeOption;
 import rotp.model.game.IGalaxyOptions.ShapeOptionList;
 import rotp.model.game.IGalaxyOptions.ShapeOptionString;
 import rotp.model.game.IGameOptions;
+import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.game.BaseModPanel;
 
 class ShapeOptionFile extends ShapeOptionString {
 	public ShapeOptionFile(String name, int option, String defaultValue) {
 		super(name, option, defaultValue);
 	}
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame)	{
+	@Override public boolean toggle(MouseEvent e, BasePanel frame)	{
 		RotPUI.setupGalaxyUI().selectBitmapFromList();
 		return false;
 	}

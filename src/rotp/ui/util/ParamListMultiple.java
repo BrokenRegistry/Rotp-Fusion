@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rotp.model.game.IGameOptions;
+import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.game.BaseModPanel;
 import rotp.util.FontManager;
 
 public class ParamListMultiple extends ParamList {
@@ -165,7 +165,7 @@ public class ParamListMultiple extends ParamList {
 		options.dynOpts().setObject(getLangLabel(), listId);
 	}
 	@Override protected String currentOption()		{ return get(); }
-	@Override protected void setFromList(BaseModPanel frame)	{
+	@Override protected void setFromList(BasePanel frame)	{
 		String message	= "<html>" + getGuiDescription() + "</html>";
 		String title	= langLabel(getLangLabel(), "");
 		initGuiTexts();

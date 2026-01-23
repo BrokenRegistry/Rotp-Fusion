@@ -24,7 +24,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
 import rotp.model.game.DynamicOptions;
-import rotp.ui.game.BaseModPanel;
+import rotp.ui.BasePanel;
 
 public class SettingInteger extends SettingBase<Integer> {
 
@@ -155,7 +155,7 @@ public class SettingInteger extends SettingBase<Integer> {
 	@Override public boolean prev() {
 		return next(-baseInc);
 	}
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame) {
+	@Override public boolean toggle(MouseEvent e, BasePanel frame) {
 		Integer inc = getInc(e) * getDir(e);
 		if (inc == 0)
 			setFromDefault(false, true);

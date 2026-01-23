@@ -28,8 +28,8 @@ import java.util.List;
 
 import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
+import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.game.BaseModPanel;
 
 public class ParamList extends AbstractParam<String> {
 
@@ -138,7 +138,7 @@ public class ParamList extends AbstractParam<String> {
 		else 
 			return prev();
 	}
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame){
+	@Override public boolean toggle(MouseEvent e, BasePanel frame){
 		if (getDir(e) == 0)
 			setFromDefault(false, true);
 		else if (frame != null && 
@@ -280,7 +280,7 @@ public class ParamList extends AbstractParam<String> {
 		height = Math.min(350, height);
 		return  RotPUI.scaledSize(height);
 	}
-	protected void setFromList(BaseModPanel frame)	{
+	protected void setFromList(BasePanel frame)	{
 		String message	= "<html>" + getGuiDescription() + "</html>";
 		String title	= langLabel(getLangLabel(), "");
 		initGuiTexts();
