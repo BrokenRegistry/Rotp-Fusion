@@ -328,6 +328,7 @@
 
 ### Fixes:
 
+- Changed the default mouse sensitivity to "High" to prevent annoyingly slow UI responsiveness.
 - Fixed certain fields displaying the generic name of the species instead of the specific name of the Empire.
 - Fixed potential "Memory Leak" (added by the last fix)
 - Improved a security for customized Ship Names.

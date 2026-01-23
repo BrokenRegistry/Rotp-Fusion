@@ -1059,7 +1059,7 @@ public final class Empire extends Species implements NamedObject {
 			dynamicOptions = new DynOptions();
 
 		validateOnLoad(raceKey, dataRaceKey, raceOptions, raceNameIndex);
-		System.out.println(toString()); // TODO BR: comment
+		//System.out.println(toString()); // TO DO BR: comment
 		tech().validateOnLoad();
         for(EmpireView view : empireViews)
             if(view != null)
