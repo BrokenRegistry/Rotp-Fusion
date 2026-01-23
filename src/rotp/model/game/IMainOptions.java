@@ -142,7 +142,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 							SENSITIVITY_MEDIUM,
 							SENSITIVITY_HIGH
 							),
-					SENSITIVITY_MEDIUM);
+					SENSITIVITY_HIGH);
 			isDuplicate(true);
 			isCfgFile(true);
 			showFullGuide(true);

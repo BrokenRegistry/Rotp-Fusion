@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-01-23 (BR)
+- Changed the default mouse sensitivity to "High" to prevent annoyingly slow UI responsiveness.
+
 26-01-14 (BR)
 - Fixed certain fields displaying the generic name of the species instead of the specific name of the Empire.
 

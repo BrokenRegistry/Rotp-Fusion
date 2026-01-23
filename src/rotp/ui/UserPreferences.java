@@ -57,7 +57,7 @@ public class UserPreferences implements IMainOptions {
 	private static String displayMode     = WINDOW_MODE;
 	private static String graphicsMode    = GRAPHICS_HIGH;
 	private static String texturesMode    = TEXTURES_BOTH;
-	private static String sensitivityMode = SENSITIVITY_MEDIUM;
+	private static String sensitivityMode = SENSITIVITY_HIGH;
 	private static String saveDir = "";
 	private static float uiTexturePct = 0.20f;
 	private static int screenSizePct = 93;
@@ -395,7 +395,7 @@ public class UserPreferences implements IMainOptions {
 			case SENSITIVITY_MEDIUM: return "Medium";
 			case SENSITIVITY_LOW:    return "Low";
 		}
-		return "Medium";
+		return "High";
 	}
 	private static String sensitivityFromSettingName(String s) {
 		switch(s) {
@@ -403,6 +403,6 @@ public class UserPreferences implements IMainOptions {
 			case "Medium": return SENSITIVITY_MEDIUM;
 			case "Low":    return SENSITIVITY_LOW;
 		}
-		return SENSITIVITY_MEDIUM;
+		return SENSITIVITY_HIGH;
 	}
 }
