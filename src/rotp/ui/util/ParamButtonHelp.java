@@ -107,4 +107,5 @@ public class ParamButtonHelp implements IParam<String> {
 	@Override public String getToolTip()	{ return realLangLabel(getKey() + LABEL_DESCRIPTION); }
 
 	@Override public void updateOptionTool()	{}
+	@Override public void selectedValue(String val)	{}
 }

@@ -829,7 +829,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class ExitButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private ExitButton()	{
-			super(ROOT + "BUTTON_EXIT", RotPButtons.DEFAULT_BUTTON);
+			super(ROOT + "BUTTON_EXIT", RotPButtons.DEFAULT_FONT_SIZE);
 			setLabelKey();
 			addActionListener(e -> exitAction());
 		}
@@ -838,7 +838,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class CancelButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private CancelButton()	{
-			super(ROOT + "BUTTON_CANCEL", RotPButtons.DEFAULT_BUTTON);
+			super(ROOT + "BUTTON_CANCEL", RotPButtons.DEFAULT_FONT_SIZE);
 			setLabelKey();
 			addActionListener(e -> cancelAction());
 		}
@@ -850,7 +850,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class FillFromAnimButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private FillFromAnimButton()	{
-			super("CUSTOM_RACE_FILL_FROM_ANIM_BUTTON", RotPButtons.DEFAULT_BUTTON);
+			super("CUSTOM_RACE_FILL_FROM_ANIM_BUTTON", RotPButtons.DEFAULT_FONT_SIZE);
 			setLabelKey();
 			addActionListener(e -> fillFromAnim(e));
 		}
@@ -874,7 +874,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class FillFromNamesButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private FillFromNamesButton(String langDir)	{
-			super("CUSTOM_RACE_FILL_FROM_NAME_BUTTON", RotPButtons.DEFAULT_BUTTON);
+			super("CUSTOM_RACE_FILL_FROM_NAME_BUTTON", RotPButtons.DEFAULT_FONT_SIZE);
 			setLabelKey();
 			addActionListener(e -> fillFromFromNames(e, langDir));
 		}
@@ -895,7 +895,7 @@ class CustomNameUI extends RDialog implements ActionListener {
 	private class CopyLanguageButton extends RButton	{
 		private static final long serialVersionUID = 1L;
 		private CopyLanguageButton(boolean toLeft)	{
-			super(toLeft? "CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON" : "CUSTOM_RACE_COPY_FROM_LEFT_BUTTON", RotPButtons.DEFAULT_BUTTON);
+			super(toLeft? "CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON" : "CUSTOM_RACE_COPY_FROM_LEFT_BUTTON", RotPButtons.DEFAULT_FONT_SIZE);
 			setLabelKey();
 			addActionListener(e -> copyLanguage(e, toLeft));
 		}

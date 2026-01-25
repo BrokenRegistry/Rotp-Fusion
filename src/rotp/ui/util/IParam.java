@@ -62,6 +62,9 @@ public interface IParam<T> extends InterfaceOptions{
 			method.valueUpdated(getUpdatedId());
 	}
 	default List<T> getListForUI()					{ return null; }
+	// For ICRSetting compatibility
+	default void selectedValue(int item, T val)		{ selectedValue(val); }
+	void selectedValue(T val);
 
 	// user input
 	default boolean next()						{ return false; } // Return forceUpdate
@@ -100,6 +103,7 @@ public interface IParam<T> extends InterfaceOptions{
 	default String	getGuiDisplay(int id)	{ return ""; }
 	default String	getGuiDescription()		{ return ""; }
 	default String	guideValue()			{ return ""; } // Only the value, (player view)
+	default String	getLabel()				{ return langLabel(getLangLabel()); }
 	default String	guideSelectedValue()	{ return guideValue(); }
 	default String	guideDefaultValue()		{ return ""; }
 	default String	guideMinimumValue()		{ return ""; }

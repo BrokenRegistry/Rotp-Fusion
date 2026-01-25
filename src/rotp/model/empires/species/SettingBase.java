@@ -509,13 +509,16 @@ public class SettingBase<T> implements ICRSettings<T> {
 	private void repaint() { 
 		if (isSpacer())
 			return;
-		settingText().repaint();
+		if (settingText()!= null)
+			settingText().repaint();
 		int selectedIndex = cfgValidIndex();
 		int bulletSize	= bulletBoxSize();
 		for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
 			int optionIdx = bulletStart + bulletIdx;
-			optionText(bulletIdx).disabled(optionIdx == selectedIndex);
-			optionText(bulletIdx).repaint();
+			if (settingText()!= null) {
+				optionText(bulletIdx).disabled(optionIdx == selectedIndex);
+				optionText(bulletIdx).repaint();
+			}
 		}
 	}
 	public T settingValue() {
@@ -561,7 +564,7 @@ public class SettingBase<T> implements ICRSettings<T> {
 		}
 		return null; // Should be overridden
 	}
-	protected void selectedValue(T newValue) {
+	@Override public void selectedValue(T newValue) {
 		selectedValue = newValue;
 		updated = true;
 		if (isBullet && listSize()>bulletBoxSize()) {

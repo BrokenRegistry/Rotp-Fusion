@@ -9,7 +9,6 @@ import static java.awt.GridBagConstraints.SOUTH;
 import static java.awt.GridBagConstraints.SOUTHEAST;
 import static java.awt.GridBagConstraints.WEST;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.game.IMainOptions.showGuide;
 import static rotp.model.game.IMainOptions.speciesDirectory;
 import static rotp.model.game.IRaceOptions.defaultRaceKey;
 
@@ -23,7 +22,6 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -45,6 +43,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import rotp.model.empires.species.SkillsFactory.RaceList;
+import rotp.model.empires.species.SpeciesSettings.AllSpeciesAttributes;
 import rotp.model.empires.species.SpeciesSettings.AvatarKey;
 import rotp.model.empires.species.SpeciesSettings.SettingMap;
 import rotp.model.game.DynOptions;
@@ -119,11 +118,11 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		this.parent		= parent;
 		this.allowEdit	= allowEdit;
 		oldTooltipState	= isTooltipEnabled();
-		setLayout(new GridBagLayout());
 		setTooltipEnabled(false);
 		setEnabled(true);
 		setVisible(true);
 		this.removeAll();
+		setLayout(new GridBagLayout());
 
 		addVariableSpace(this, 0, 0);
 		contentPane	= new ContentPanel(allowEdit);
@@ -136,6 +135,9 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 
 		backImage = null;
 		refreshPanel(true);
+	}
+	public void returnFromNameEditor(boolean cancelled)	{ // TODO BR:
+		dnaFactory().postNameEditor(cancelled);
 	}
 	// ========================================================================
 	// #=== Main Methods
@@ -168,7 +170,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		columnList		= null;
 		spacerList		= null;
 		settingList		= null;
-		randomGeneratorList	=null;
+		randomGeneratorList	= null;
 	}
 	private void refreshAll()	{
 		backImage = null;
@@ -453,7 +455,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			button.addActionListener(e -> selectNamesAction(e));
 			return button;
 		}
-		private String selectFolderAction(MouseEvent e)	{ // TODO BR: selectFolderAction()
+		private String selectFolderAction(MouseEvent e)	{
 			if (e.getID() == MouseEvent.MOUSE_RELEASED) {
 				if (e.isControlDown())
 					reloadRaceList(true);
@@ -465,8 +467,10 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			return null;
 		}
 		private void selectNamesAction(ActionEvent e)	{ // TODO BR: selectNamesAction()
-			Toolkit.getDefaultToolkit().beep();
-			dnaFactory().callUI();
+			AllSpeciesAttributes settings = dnaFactory().preNameEditor();
+			RotPUI.instance().selectNameEditorPanel(workshop, settings);
+			workshop.setVisible(false);
+			workshop.setEnabled(false);
 		}
 	}
 
@@ -600,7 +604,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			setLayout(new GridBagLayout());
 			int x = 0;
 			int y = 0;
-			add(newGuideButton(), newGbc(x, y, 1,1, 0,0, EAST, NONE, new Insets(0, 0, BUTTON_SEP_H, BUTTON_SEP_W), 0,0));
+			add(newGuideButton(true), newGbc(x, y, 1,1, 0,0, EAST, NONE, new Insets(0, 0, BUTTON_SEP_H, BUTTON_SEP_W), 0,0));
 
 			x++;
 			addVariableSpace(this, x, y);
@@ -614,12 +618,12 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			x++;
 			add(newExitButton(), newGbc(x, y, 1,1, 0,0, WEST, NONE, new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, 0), 0,0));
 		}
-		private RButton newGuideButton()	{
-			RButton button = RotPButtons.newBigButton("SETTINGS_GUIDE", false);
-			button.setLabelKey();
-			button.addActionListener(e -> buttonGuideAction(e));
-			return button;
-		}
+//		private RButton newGuideButton()	{
+//			RButton button = RotPButtons.newBigButton("SETTINGS_GUIDE", false);
+//			button.setLabelKey();
+//			button.addActionListener(e -> buttonGuideAction(e));
+//			return button;
+//		}
 		private RButton newExitButton()		{
 			RButton button = RotPButtons.newHugeButton(ROOT + "BUTTON_EXIT");
 			button.setLabelKey();
@@ -639,18 +643,18 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			canceled = true;
 			close();
 		}
-		private void buttonGuideAction(ActionEvent e)	{
-			buttonClick();
-			if (showGuide()) {
-				hideGuide();
-				showGuide.toggle();
-			}
-			else {
-				showGuide.toggle();
-				RButton button = (RButton) e.getSource();
-				button.popGuide(button.getToolTipText());
-			}
-		}
+//		private void buttonGuideAction(ActionEvent e)	{
+//			buttonClick();
+//			if (showGuide()) {
+//				hideGuide();
+//				showGuide.toggle();
+//			}
+//			else {
+//				showGuide.toggle();
+//				RButton button = (RButton) e.getSource();
+//				button.popGuide(button.getToolTipText());
+//			}
+//		}
 	}
 	// ========================================================================
 	// === Level 3: ==> Cost Panel

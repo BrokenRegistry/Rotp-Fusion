@@ -158,6 +158,7 @@ public abstract class AbstractParam <T> implements IParam<T> {
 	//	public abstract void prev();
 	//	public abstract void toggle(MouseWheelEvent e);
 	//	public abstract void toggle(MouseEvent e);
+	@Override public void selectedValue(T val)			{ set(val); }
 	@Override public void prepareToSave(IGameOptions o)	{ setOptionValue(o, get()); }
 	@Override public String toString() {
 		return getCfgLabel() + " = " + getCfgValue();
@@ -329,7 +330,6 @@ public abstract class AbstractParam <T> implements IParam<T> {
 	//
 	protected boolean processingToggle()	{ return processingToggle; }
 	protected boolean forcedRefresh()		{ return forcedRefresh; }
-	public String getLabel()		{ return langLabel(getLangLabel()); }
 	protected String formerName()	{ return formerName; }
 	protected T creationValue()		{ return isValueInit? value : defaultValue(); }
 	protected T minValue()			{ return minValue; }

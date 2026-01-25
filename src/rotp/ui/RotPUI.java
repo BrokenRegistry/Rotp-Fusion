@@ -376,7 +376,10 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
 		dnaWorkshopUI.init(parent, allowEdit);
 		selectPanel(DNA_WORKSHOP_PANEL, dnaWorkshopUI); 
 	}
-	public void returnToDNAWorkshopPanel()	{ selectPanel(DNA_WORKSHOP_PANEL, dnaWorkshopUI); } 
+	public void returnToDNAWorkshopPanel(boolean cancelled)	{
+		dnaWorkshopUI.returnFromNameEditor(cancelled);
+		selectPanel(DNA_WORKSHOP_PANEL, dnaWorkshopUI);
+	} 
     public void selectSetupGalaxyPanel() {
     	setupGalaxyUI.init();
     	selectPanel(SETUP_GALAXY_PANEL, setupGalaxyUI);

@@ -1165,11 +1165,10 @@ public class SkillsFactory extends SpeciesSettings {
 
 		// ---------- Overriders ----------
 		//
-		@Override public List<String> getListForUI()			{ return getValues(); }
-//		@Override public List<String> getListForUI()			{ return getAllAlienRaces(); }
-		@Override public String guideValue()					{ return guiOptionLabel(); }
-		@Override public String guiOptionValue(int index)		{ return guiOptionLabel(); }
-		@Override protected void selectedValue(String value)	{
+		@Override public List<String> getListForUI()		{ return getValues(); }
+		@Override public String guideValue()				{ return guiOptionLabel(); }
+		@Override public String guiOptionValue(int index)	{ return guiOptionLabel(); }
+		@Override public void selectedValue(String value)	{
 			super.selectedValue(value);
 			if (reload) { // No need to load options on reload
 				reload = false;

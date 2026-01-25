@@ -88,7 +88,10 @@ public abstract class SpeciesSettings {
 	protected SpeciesSkills animSkills;
 	private boolean isReference	= false;
 	private boolean isForShow	= false;
-	BasePanel parent;
+	protected BasePanel parent;
+	// For Names editor only
+	private SettingMap backupMap;
+	private AllSpeciesAttributes settings;
 
 	private boolean isReference()			{ return isReference; };
 	protected void isReference(boolean b)	{ isReference = b; };
@@ -103,7 +106,53 @@ public abstract class SpeciesSettings {
 		AllSpeciesAttributes settings = new AllSpeciesAttributes();
 		settings.fillFromAnim(true);
 	}
+	AllSpeciesAttributes preNameEditor()	{
+		settingMap.cleanLanguages();
+		backupMap = new SettingMap();
+		backupMap.copyFrom(settingMap);
+		race().speciesOptions().backupStringMap();
+		settings = new AllSpeciesAttributes();
+		return settings;
+	}
+	void postNameEditor(boolean cancelled)	{
+		if (cancelled) {
+			settingMap.copyFrom(backupMap);
+			race().speciesOptions().restoreStringMap();
+			for (ICRSettings<?> setting : settingMap.getAll())
+				setting.settingToSkill(race());
+		}
+		else {
+			// Update language setting
+			List<String> codes = LanguageManager.current().languageCodes();
+			List<String> names = LanguageManager.current().languageNames();
+			LanguageList languageSetting = (LanguageList) settingMap.get(ROOT + LanguageList.KEY);
+			StringList languageDir = new StringList();
+			for (String name : settings.getLanguageNames()) {
+				int idx = names.indexOf(name);
+				String dir = codes.get(idx);
+				languageDir.add(dir);
+			}
 
+			DynOptions destOptions = race().speciesOptions();
+			languageSetting.set(languageDir.asString());
+			languageSetting.settingToSkill(race());
+			languageSetting.updateOption(destOptions);
+
+			// clean languages if needed
+			settingMap.cleanLanguages();
+
+			// update the skills from the source option
+			List<ICRSettings<?>> icrSettings = settingMap.getAll();
+			for (ICRSettings<?> setting : icrSettings) {
+				if (setting instanceof SettingStringLanguage) {
+					setting.settingToSkill(race());
+					setting.updateOption(destOptions);
+				}
+			}
+		}
+		backupMap = null;
+		settings  = null;
+	}
 	boolean callUI()	{
 		settingMap.cleanLanguages();
 		SettingMap backupMap = new SettingMap();
@@ -1719,7 +1768,7 @@ public abstract class SpeciesSettings {
 					str += String.valueOf(combinedValue()) + "%";
 					return str;
 				}
-				@Override protected void selectedValue(Integer newValue) {
+				@Override public void selectedValue(Integer newValue) {
 					super.selectedValue(newValue);
 					markTechResearchForRefresh();
 				}
@@ -1894,7 +1943,7 @@ public abstract class SpeciesSettings {
 					str += String.valueOf(combinedValue()) + "%";
 					return str;
 				}
-				@Override protected void selectedValue(Integer newValue) {
+				@Override public void selectedValue(Integer newValue) {
 					super.selectedValue(newValue);
 					markTechDiscoveryForRefresh();
 				}
@@ -2078,6 +2127,7 @@ public abstract class SpeciesSettings {
 			civilizationNameItems.fillFromAnim(forced, civIdx, animIdx);
 			civilizationLabelItems.fillFromAnim(forced, civIdx, animIdx);
 		}
+		@Override public void selectedValue(T val)	{}
 	}
 	// ====================
 	// Species List
@@ -2234,7 +2284,7 @@ public abstract class SpeciesSettings {
 					return false;
 			return true;
 		}
-	public void copyFromLanguage(ICSSettingsStringList langSrc, int civIdx, boolean forced)	{
+		public void copyFromLanguage(ICSSettingsStringList langSrc, int civIdx, boolean forced)	{
 			int size = Math.min(size(), langSrc.size());
 			for (int i=0; i<size; i++) {
 				SettingString dest = get(i);
@@ -2249,6 +2299,7 @@ public abstract class SpeciesSettings {
 			for (SettingStringLanguage setting : this)
 				setting.fillFromAnim(forced, civIdx, animIdx);;
 		}
+		@Override public void selectedValue(String val)	{}
 	}
 	// ==================== Multi Language Settings ====================
 	//

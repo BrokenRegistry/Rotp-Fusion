@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import rotp.ui.BasePanel;
 import rotp.ui.game.GameUI;
 
 public interface RotPPanels {
@@ -21,7 +22,7 @@ public interface RotPPanels {
 		@Override public String getToolTipText(MouseEvent e)	{ return null; }
 	}
 
-	public class RContentPanel extends JPanel implements RotPComponents {
+	public class RContentPanel extends BasePanel implements RotPComponents {
 		private static final long serialVersionUID = 1L;
 		// private static final String NAME = "ContentPanel";
 		protected Color titleColorBack	= Color.BLACK;

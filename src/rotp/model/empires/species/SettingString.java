@@ -139,6 +139,6 @@ public class SettingString extends SettingBase<String> implements Base{
 	}
 	// ===== Other Methods =====
 	//
-	public String settingValue(int item)			{ return settingValue(); }
-	public void selectedValue(int item, String val)	{ selectedValue(val); }
+	public String settingValue(int item)	{ return settingValue(); }
+	@Override public void selectedValue(int item, String val)	{ selectedValue(val); }
 }

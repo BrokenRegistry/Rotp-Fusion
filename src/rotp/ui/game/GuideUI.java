@@ -29,6 +29,7 @@ import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -37,14 +38,34 @@ import javax.swing.JTextPane;
 
 import rotp.Rotp;
 import rotp.ui.BasePanel;
+import rotp.ui.components.RotPButtons;
+import rotp.ui.components.RotPButtons.RButton;
 import rotp.ui.components.RotPPanels.RPanel;
 import rotp.ui.util.IParam;
 import rotp.util.Base;
+import rotp.util.sound.SoundManager;
 
 public class GuideUI extends BasePanel {
 	public interface IGuide {
 		DescriptionPane descriptionPane = new DescriptionPane(); // not cap, because not really a constant!
-
+		default RButton newGuideButton(boolean big)	{
+			RButton button = big? RotPButtons.newBigButton("SETTINGS_GUIDE", false): RotPButtons.newButton("SETTINGS_GUIDE");
+			button.setLabelKey();
+			button.addActionListener(e -> buttonGuideAction(e));
+			return button;
+		}
+		default void buttonGuideAction(ActionEvent e)	{
+			SoundManager.current().playAudioClip("ButtonClick");
+			if (showGuide()) {
+				hideGuide();
+				showGuide.toggle();
+			}
+			else {
+				showGuide.toggle();
+				RButton button = (RButton) e.getSource();
+				button.popGuide(button.getToolTipText());
+			}
+		}
 		default void setDescription(String txt)		{ descriptionPane.setText(txt); }
 		default void setDescription(JComponent c)	{
 			if (c != null)

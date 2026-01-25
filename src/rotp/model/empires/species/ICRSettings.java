@@ -26,7 +26,6 @@ public interface ICRSettings<T> extends IParam<T> {
 	Color costC			= SystemPanel.blackText;
 	Color malusC		= SystemPanel.redText;
 
-	String  getLabel();
 	default void guiSelect()	{}
 	default void updateGui()	{}
 	default void updateGui(RSettingPanel panel)	{}
@@ -55,7 +54,7 @@ public interface ICRSettings<T> extends IParam<T> {
 	default boolean isSpacer()			{ return false; }
 	default boolean hasNoCost()			{ return true; }
 	default boolean isBullet()			{ return false; }
-	default boolean isSettingString()			{ return false; }
+	default boolean isSettingString()	{ return false; }
 
 	default int index()					{ return 0; }
 	default int bulletStart()			{ return 0; }

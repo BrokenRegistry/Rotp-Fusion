@@ -267,6 +267,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 		private InsertItemButton(boolean insert)	{
 			super((insert ^ westSide)? "BUTTON_BAR_INSERT_RIGHT" : "BUTTON_BAR_INSERT_LEFT", RotPButtons.MINI_FONT_SIZE);
 			setLabelKey();
+			setMargin(new Insets(s2, s2, s2, s2));
 			this.insert	= insert;
 			setName(insert? INSERT_NAME : ADD_NAME);
 			addActionListener(new InsertItemAction());
@@ -305,6 +306,7 @@ public class RButtonBar extends JPanel implements ActionListener, ItemSelectable
 		private RemoveItemButton()	{
 			super("BUTTON_BAR_REMOVE", RotPButtons.MINI_FONT_SIZE);
 			setLabelKey();
+			setMargin(new Insets(s2, s4, s2, s4));
 			setName(REMOVE_NAME);
 			addActionListener(new RemoveItemAction());
 		}

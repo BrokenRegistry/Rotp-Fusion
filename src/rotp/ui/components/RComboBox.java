@@ -34,7 +34,7 @@ import rotp.util.FontManager;
 public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 	private static final long serialVersionUID = 1L;
 
-	private List<T> selectionList;
+	protected List<T> selectionList;
 //	private RaceList raceList;
 	protected int comboFontSize	= 12;
 	protected int textIndent	= s5;
@@ -48,15 +48,12 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 		if (flag == showArrow)
 			return;
 		showArrow = flag;
-		if (showArrow) {
-			rComboBoxUI = new RComboBoxUI();
-			setUI(rComboBoxUI);
-		}
+		if (showArrow)
+			setUI(new RComboBoxUI());
 	}
 	public void setPopupLocation(Integer popupLocation)	{
 		boxLocation = popupLocation;
-		rComboBoxUI = new RComboBoxUI();
-		setUI(rComboBoxUI);
+		setUI(new RComboBoxUI());
 	}
 	protected void showTipFor(int index, String text)	{
 		if (param == null)
@@ -65,7 +62,6 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 		setDescription(tip);
 	}
 
-	
 	public RComboBox(List<T> list)	{
 		super();
 		updateList(list);
@@ -82,14 +78,6 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 		init();
 	}
 
-
-	RListRenderer rListRenderer;
-	JComboBox jComboBox; 
-	RComboPopup rComboPopup; 
-	RScrollBarUI darkScrollBarUI = new RScrollBarUI();
-	RComboBoxUI rComboBoxUI;
-
-// setSelectionBackground(GameUI.raceCenterColor());
 	public RComboBox()	{
 		super();
 		init();
@@ -99,13 +87,12 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 		setLightWeightPopupEnabled(false);
 		setBackground(RacesUI.brown);
 		setForeground(SystemPanel.blackText);
-//		setRenderer(new RListRenderer());
-		rListRenderer = new RListRenderer();
-		setRenderer(rListRenderer);
+		setRenderer(new RListRenderer());
 		setFont(comboFont);
-		rComboBoxUI = new RComboBoxUI();
-		setUI(rComboBoxUI);
+		setUI(new RComboBoxUI());
 	}
+	protected Font getSpecialFont(String value)	{ return comboFont; }
+	protected Font lastFont = comboFont;
 	@Override public JComponent getComponent()	{ return this; } // TODO BR: Add TOOL TIP
 	@Override public void paintChildren(Graphics g)	{
 		if (showArrow)
@@ -144,25 +131,24 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 			g.fillRect(0,0, w, h);
 
 			g.setColor(getForeground());
-			setFont(comboFont);
+//			setFont(comboFont);
+			setFont(lastFont);
 			g.drawString(getText(), textIndent, h-textBaseline);
 		}
 		@Override public Component getListCellRendererComponent(JList<?> list, 
 				Object value, int index, boolean isSelected, boolean cellHasFocus)	{
 			super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			lastFont = getSpecialFont(value.toString());
+//			System.out.println("index: " + index + " value: " + value);
+			setFont(lastFont);
 			if (isSelected)
 				showTipFor(index, value.toString());
 			return this;
 		}
 	}
-	class RComboBoxUI extends BasicComboBoxUI	{
+	private class RComboBoxUI extends BasicComboBoxUI	{
 		RComboBoxUI()	{ super(); }
-//		@Override protected RComboPopup createPopup()	{ return new RComboPopup(comboBox); }
-		@Override protected RComboPopup createPopup()	{
-			rComboPopup = new RComboPopup(comboBox);
-			jComboBox = comboBox;
-			return rComboPopup;
-		}
+		@Override protected RComboPopup createPopup()	{ return new RComboPopup(comboBox); }
 		@Override protected JButton createArrowButton()	{ return createArrowButton(boxLocation); }
 		private JButton createArrowButton(int boxLocation)	{
 			JButton button = new BasicArrowButton( 
@@ -190,7 +176,7 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 		@Override protected Rectangle computePopupBounds(int px, int py, int pw, int ph)	{
 			Toolkit toolkit = Toolkit.getDefaultToolkit();
 			Rectangle screenBounds;
-			
+
 			// Calculate the desktop dimensions relative to the combo box.
 			GraphicsConfiguration gc = comboBox.getGraphicsConfiguration();
 			Point p = new Point();
@@ -237,10 +223,9 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 			}
 		}
 	}
-	private class RScrollBarUI extends BasicScrollBarUI {
-		@Override protected void configureScrollBarColors() {
-			thumbColor = RacesUI.scrollBarC;
-		}
+	private static RScrollBarUI darkScrollBarUI = new RScrollBarUI();
+	private static class RScrollBarUI extends BasicScrollBarUI	{
+		@Override protected void configureScrollBarColors()	{ thumbColor = RacesUI.scrollBarC; }
 	}
 }
 

@@ -17,10 +17,10 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import rotp.model.empires.species.ICRSettings;
 import rotp.model.empires.species.SettingString;
 import rotp.ui.BasePanel;
 import rotp.ui.game.GameUI;
+import rotp.ui.util.IParam;
 import rotp.util.FontManager;
 
 public class RotPTextFields { //extends RotPComponents {
@@ -67,9 +67,12 @@ public class RotPTextFields { //extends RotPComponents {
 			@Override public void mouseEntered(MouseEvent evt)	{
 				showBorder = true;
 				setForeground(textFieldTextHLColor());
-				String tip = getToolTipText();
-				if (tip!=null && !tip.isEmpty())
-					popGuide(tip);
+				if (!isEditable()) {
+					popGuide();
+//					String tip = getToolTipText();
+//					if (tip!=null && !tip.isEmpty())
+//						popGuide(tip);
+				}
 			}
 			@Override public void mouseExited(MouseEvent evt)	{
 				showBorder = false;
@@ -83,7 +86,8 @@ public class RotPTextFields { //extends RotPComponents {
 
 	public static class RFieldAndLabel extends RTextField	{
 		private static final long serialVersionUID = 1L;
-		private RLabel rotPLabel;
+		protected RLabel rotPLabel;
+		protected IParam<String> param;
 
 		public RFieldAndLabel(String label, String txt, int colomns)	{
 			super(txt, colomns); // Create RotPTextField
@@ -100,53 +104,31 @@ public class RotPTextFields { //extends RotPComponents {
 			if (fieldTT != null && !fieldTT.isEmpty())
 				setToolTipText(fieldTT);
 		}
-	}
-	public static class ICRSettingField extends RFieldAndLabel	{ // TODO BR: class ICRSettingField
-		private static final long serialVersionUID = 1L;
-		private final ICRSettings<?> setting;
-		private int currentId;
-		public ICRSettingField(Container pane, ICRSettings<?> setting, int colomns, int x, int y)	{
-			super(pane, setting.getLabel(), setting.guideValue(), colomns, x, y);
-			this.setEditable(false);
-			this.setting = setting;
-			setUI(ui);
-			String tooltips = setting.htmlTooltips();
-			setToolTipText(tooltips, tooltips);
-//			init();
+		public void setParam(IParam<String> param)		{
+			this.param = param;
+			rotPLabel.setParam(param);
 		}
-//		private void init()	{
-//			addActionListener(new TextFieldAction());
-//			setUI(ui);
-//			addChangeListener(this, e -> textChangedAction());
-//		}
-//		private class TextFieldAction implements ActionListener	{
-//			@Override public void actionPerformed(ActionEvent evt)	{
-//				SettingField field = (SettingField) evt.getSource(); // should be this
-//				String text = field.getText();
-//				setting.selectedValue(currentId, text);
-//			}
-//		}
-//		private void textChangedAction()	{ setting.selectedValue(currentId, getText()); }
+		@Override public IParam<?> getParam()		{ return param; }
+		@Override public JComponent getComponent()	{ return rotPLabel; }
 	}
-
 	public static class SettingField extends RFieldAndLabel	{
 		private static final long serialVersionUID = 1L;
-		private final SettingString setting;
+//		private final SettingString param;
 		private int currentId;
 
 		public SettingField(SettingString setting, int colomns)	{
 			super(setting.getLabel(), setting.settingValue(), colomns);
-			this.setting = setting;
+			this.param = setting;
 			init();
 		}
 		public SettingField(Container pane, SettingString setting, int colomns, int x, int y)	{
 			super(pane, setting.getLabel(), setting.settingValue(), colomns, x, y);
-			this.setting = setting;
+			this.param = setting;
 			init();
 		}
 		public SettingField(Container pane, SettingString setting, int colomns, int x, int y, String lang, int itemId)	{
 			super(pane, setting.getLabel(lang), setting.settingValue(itemId), colomns, x, y);
-			this.setting = setting;
+			this.param = setting;
 			String tooltips = setting.htmlTooltips();
 			setToolTipText(tooltips, tooltips);
 			currentId = itemId;
@@ -161,10 +143,10 @@ public class RotPTextFields { //extends RotPComponents {
 			@Override public void actionPerformed(ActionEvent evt)	{
 				SettingField field = (SettingField) evt.getSource(); // should be this
 				String text = field.getText();
-				setting.selectedValue(currentId, text);
+				param.selectedValue(currentId, text);
 			}
 		}
-		private void textChangedAction()	{ setting.selectedValue(currentId, getText()); }
+		private void textChangedAction()	{ param.selectedValue(currentId, getText()); }
 	}
 //	public static class RotPToolTipUI extends ToolTipUI {
 //		public static ComponentUI createUI(JComponent c)	{
