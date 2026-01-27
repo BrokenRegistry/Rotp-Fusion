@@ -441,32 +441,41 @@ public class SettingBase<T> implements ICRSettings<T> {
 
 		g.dispose();
 	}
-	@Override public void updateGui(RSettingPanel panel)	{
-		int paramId	= index();
-		int bulletStart	= bulletStart();
-		int bulletSize	= bulletBoxSize();
-
-		panel.setLabelColor(getCostColor());
-		panel.setLabelText(guiSettingDisplayStr());
-		if (bulletSize == 0) {
-			panel.paintImmediately();
-			return;
-		}
-		if (bulletSize == 1 || isSettingString()) {
-			panel.setValueString(guideSelectedValue(), optionC);
-			panel.paintImmediately();
-			return;
-		}
-		boolean refresh = false;
-		for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
-			int optionIdx = bulletStart + bulletIdx;
-			boolean disabled = optionIdx == paramId;
-			Color color = disabled? optionC : selectC;
-			String text = guiCostOptionStr(optionIdx);
-			refresh |= panel.setOptionString(text, bulletIdx, color, refresh && ((bulletIdx+1) >= bulletSize));
-		}
-		panel.paintImmediately();
-	}
+//	@Override public void updateGui(RSettingPanel panel)	{
+//		int paramId	= index();
+//		int bulletStart	= bulletStart();
+//		int bulletSize	= bulletBoxSize();
+//
+//		if (this instanceof RaceKey) {
+//			System.out.println("paramId = " + paramId + " bulletSize = " + bulletSize
+//					+ " guideSelectedValue() = " + guideSelectedValue()); // TODO BR: REMOVE
+//		}
+//		panel.setLabelColor(getCostColor());
+//		panel.setLabelText(guiSettingDisplayStr());
+//		if (bulletSize == 0) {
+//			panel.paintImmediately();
+//			return;
+//		}
+//		if (isSettingString()) {
+//			panel.setValueString(guideSelectedValue(), optionC);
+//			panel.paintImmediately();
+//			return;
+//		}
+//		if (bulletSize == 1) {
+//			panel.setValueString(guideSelectedValue(), optionC);
+//			panel.paintImmediately();
+//			return;
+//		}
+//		boolean refresh = false;
+//		for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
+//			int optionIdx = bulletStart + bulletIdx;
+//			boolean disabled = optionIdx == paramId;
+//			Color color = disabled? optionC : selectC;
+//			String text = guiCostOptionStr(optionIdx);
+//			refresh |= panel.setOptionString(text, bulletIdx, color, refresh && ((bulletIdx+1) >= bulletSize));
+//		}
+//		panel.paintImmediately();
+//	}
 	// ========== Overridable Methods ==========
 	//
 	protected boolean showFullGuide()		{ return showFullGuide; }

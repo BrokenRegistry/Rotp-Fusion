@@ -48,6 +48,13 @@ import rotp.util.sound.SoundManager;
 public class GuideUI extends BasePanel {
 	public interface IGuide {
 		DescriptionPane descriptionPane = new DescriptionPane(); // not cap, because not really a constant!
+
+		default void setGuideColors(Color backC, Color textC)	{ GuideData.setCustomColors(backC, textC); }
+		default void leaveGuide()	{
+			restoreGuideColors();
+			hideGuide();
+		}
+
 		default RButton newGuideButton(boolean big)	{
 			RButton button = big? RotPButtons.newBigButton("SETTINGS_GUIDE", false): RotPButtons.newButton("SETTINGS_GUIDE");
 			button.setLabelKey();
@@ -135,6 +142,7 @@ public class GuideUI extends BasePanel {
 				setMinHeight(s41); // two lines
 				setMinWidth(s20);
 
+//				descriptionBox.setBackground(new Color(78,101,155));
 				descriptionBox.setForeground(Color.BLACK);
 				descriptionBox.setOpaque(false);
 				descriptionBox.setContentType("text/html");
@@ -237,11 +245,14 @@ public class GuideUI extends BasePanel {
 	// ========================================================================
 	// #=== Guide
 	//
+	static void restoreGuideColors()						{ GuideData.setDefaultColors(); }
+	static void setGuideColors(Color backC, Color textC)	{ GuideData.setCustomColors(backC, textC); }
 	class GuideData	{
 		private static final int GUIDE_FONT_SIZE = 14;
-		private static final Color backColor	= GameUI.setupFrame(); // TODO put elsewhere
-		private static final Color lineColor	= backColor;
-		private static final Color borderColor	= Base.setAlpha(backColor, 160);
+		private static Color textColor;
+		private static Color backColor;
+		private static Color lineColor;
+		private static Color borderColor;
 		private static final JTextPane guideBox = new JTextPane();
 		private Rectangle sourceBox;
 		private int[] lineArr;
@@ -251,7 +262,27 @@ public class GuideUI extends BasePanel {
 			guideBox.setOpaque(true);
 			guideBox.setContentType("text/html");
 			guideBox.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+			setDefaultColors();
 			guideBox.setBackground(backColor);
+			guideBox.setForeground(textColor);
+		}
+		private static void setCustomColors(Color backC, Color textC)	{
+			textColor	= textC;
+			backColor	= backC;
+			lineColor	= backC;
+			borderColor	= Base.setAlpha(backC, 160);
+			setGuideColors();
+		}
+		private static void setDefaultColors()	{
+			textColor	= Color.BLACK;
+			backColor	= GameUI.loadHoverBackground();
+			lineColor	= backColor;
+			borderColor	= Base.setAlpha(backColor, 160);
+			setGuideColors();
+		}
+		private static void setGuideColors()	{
+			guideBox.setBackground(backColor);
+			guideBox.setForeground(textColor);
 		}
 		private void clear()	{
 			sourceBox = null;

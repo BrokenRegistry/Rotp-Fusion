@@ -11,7 +11,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
-import rotp.ui.game.GameUI;
 import rotp.ui.util.IParam;
 import rotp.util.FontManager;
 
@@ -21,21 +20,30 @@ public class RLabel extends JLabel implements RotPComponents	{
 	protected int labelFontSize	= 12;
 	protected Font labelFont()	{ return FontManager.current().narrowFont(labelFontSize); }
 	protected IParam<?> param;
+	private LabelMouseListener listener;
+	private Color textColor = labelTextColor();
 
 	public RLabel(String text)	{
 		super(text);
 		setForeground(labelTextColor());
 		setFont(labelFont());
 		setBorder(border);
-		addMouseListener(new LabelMouseAdapter());
 	}
+	public RLabel(String text, boolean addMouseListener)	{
+		this(text);
+		if (addMouseListener) {
+			listener = new LabelMouseListener();
+			addMouseListener(listener);
+		}
+	}
+
 	public RLabel(String text, int fontSize, Color fontColor)	{
 		super(text);
+		textColor = fontColor;
 		setForeground(fontColor);
 		labelFontSize = fontSize;
 		setFont(labelFont());
 		setBorder(border);
-		addMouseListener(new LabelMouseAdapter());
 	}
 	public RLabel(Container pane, String text, GridBagConstraints gbc)	{
 		this(text);
@@ -43,10 +51,16 @@ public class RLabel extends JLabel implements RotPComponents	{
 	}
 	protected Color labelTextColor()	{ return Color.WHITE; }
 
-	public void setParam(IParam<?> param)		{ this.param = param; }
+	public void setParam(IParam<?> param)		{
+		this.param = param;
+		if (listener == null) {
+			listener = new LabelMouseListener();
+			addMouseListener(listener);
+		}
+	}
 	@Override public IParam<?> getParam()		{ return param; }
 	@Override public JComponent getComponent()	{ return this; }
-	private class LabelMouseAdapter extends MouseAdapter	{
+	private class LabelMouseListener extends MouseAdapter	{
 		@Override public void mouseEntered(MouseEvent evt)	{
 			//showBorder = true;
 			if (showGuide()) {
@@ -56,7 +70,7 @@ public class RLabel extends JLabel implements RotPComponents	{
 		}
 		@Override public void mouseExited(MouseEvent evt)	{
 			//showBorder = false;
-			setForeground(GameUI.borderBrightColor());
+			setForeground(textColor);
 			hideGuide();
 		}
 		@Override public void mousePressed(MouseEvent evt)	{}

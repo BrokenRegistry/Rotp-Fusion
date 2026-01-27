@@ -54,6 +54,7 @@ import rotp.ui.components.RotPTextFields.SettingField;
 import rotp.ui.game.GameUI;
 import rotp.ui.util.StringList;
 import rotp.util.FontManager;
+import rotp.util.ImageManager;
 import rotp.util.LanguageManager;
 
 public class NameEditorUI extends BasePanel implements RotPComponents {
@@ -84,7 +85,7 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 	private int leftLanguageButtonId, rightLanguageButtonId;
 	private String leftLanguageDir, rightLanguageDir;
 
-	private boolean cancelled = false;
+	private boolean cancelled;
 	private boolean updating;
 	private AllSpeciesAttributes settings;
 	private ArrayList<SettingField> fields;
@@ -122,10 +123,12 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 		this.settings	= settings;
 		oldTooltipState	= isTooltipEnabled();
 		initTooltips();
+		cancelled(false);
 		setTooltipEnabled(false);
 		setEnabled(true);
 		this.removeAll();
 		setLayout(new GridBagLayout());
+		setGuideColors(GameUI.loadHoverBackground(), Color.BLACK);
 
 //		addVariableSpace(this, 0, 0);
 		contentPane = new ContentPanel();
@@ -141,9 +144,10 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 		buttonClick();
 		setTooltipEnabled(oldTooltipState);
 //		descriptionPane.setActive(false);
+		leaveGuide();
 		disableGlassPane();
 
-		RotPUI.instance().returnToDNAWorkshopPanel(cancelled);;
+		RotPUI.instance().returnToDNAWorkshopPanel(cancelled());;
 		setVisible(false);
 		setEnabled(false);
 		removeAll();
@@ -172,6 +176,17 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 			Graphics2D g = (Graphics2D) backImage.getGraphics();
 			setRenderingHints(g);
 
+			String avatarKey = settings.getAvatarKey();
+			if (avatarKey == null) {
+				Image ruinImg = ImageManager.current().image("DERELICT_SHIP");
+				g.drawImage(ruinImg, 0,0, w, h, 0, 0, ruinImg.getWidth(this), ruinImg.getHeight(this), null);
+			}
+			else {
+				Race avatar = Species.getAnim(avatarKey);
+				Image council = avatar.council();
+				g.drawImage(council, 0,0, w, h, 0, 0, council.getWidth(null), council.getHeight(null), null);
+			}
+
 			// draw Title
 			String title = guiTitle();
 			g.setFont(narrowFont(50));
@@ -182,7 +197,9 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 		}
 		return backImage;
 	}
-	private void updating(boolean b)	{ updating = b; }
+	private void updating(boolean b)		{ updating = b; }
+	private void cancelled(boolean flag)	{ cancelled = flag; }
+	private boolean cancelled()				{ return cancelled; }
 	// -#-
 	// ========================================================================
 	// #=== Language initializers
@@ -267,14 +284,17 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_ESCAPE:
 				setModifierKeysState(e);
-				cancelled = true;
+				cancelled(true);
 				close();
 				return;
 			default:
 				super.keyReleased(e);
 		}
 	}
-	@Override public void animate() { validateButtonTextColor(); }
+//	@Override public String ambienceSoundKey()	{ return "IntroAmbience"; }
+	@Override public String ambienceSoundKey()	{ return "UnspecifiedAction"; }
+	@Override public JComponent getComponent()	{ return this; }
+	@Override public void animate() 			{ validateButtonTextColor(); }
 
 	// -#-
 	// ========================================================================
@@ -364,10 +384,6 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 			idx++;
 		}
 	}
-//	@Override public String ambienceSoundKey()	{ return "IntroAmbience"; }
-	@Override public String ambienceSoundKey()	{ return "UnspecifiedAction"; }
-	@Override public JComponent getComponent()	{ return this; }
-//	@Override public void actionPerformed(ActionEvent e) { validateButtonTextColor(); }
 
 	private class LanguageBarListener implements ButtonBarListener	{
 		@Override public void actionPerformed(BarEvent e) {
@@ -561,9 +577,12 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 			addVariableSpace(this, x, y);
 
 			x++;
-			keyField = new SettingField(settings.raceKey, NORM_FIELDS_COL);
-			add(keyField, newGbc(x, y, 1,1, 0,0, EAST, NONE, insets, 0,0));
+			x++;
+//			keyField = new SettingField(settings.raceKey, NORM_FIELDS_COL);
+//			add(keyField, newGbc(x, y, 1,1, 0,0, CENTER, NONE, insets, 0,0));
+			keyField = new SettingField(this, settings.raceKey, NORM_FIELDS_COL, x, y, leftLanguageDir, 0);
 
+			x++;
 			x++;
 			addVariableSpace(this, x, y);
 
@@ -581,7 +600,7 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 			return button;
 		}
 		private void cancelAction()	{
-			cancelled = true;
+			cancelled(true);
 			close();
 		}
 		private RButton newExitButton()	{

@@ -78,7 +78,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     public  static String gameName = "";
 
     private static final Color langShade[] = { new Color(0,0,0,128), new Color(128,0,0,96) };
-    // private static final Color menuHover[] = {  new Color(255,220,181), new Color(255,255,210) };
+    private static final Color menuHover[] = {  new Color(255,220,181), new Color(255,255,210) };
     private static final Color menuDepressed[] = { new Color(156,96,77), new Color(110,110,110) };
     private static final Color menuEnabled[] = { new Color(255,203,133), new Color(197,197,197) };
     private static final Color menuDisabled[] = { new Color(156,96,77), new Color(110,110,110) };
@@ -157,6 +157,11 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 
     public static void  colorSet(int set)		  { colorSet = set; }
     public static Color langShade()               { return langShade[opt()]; }
+	public static Color menuHover()					{ return menuHover[opt()]; }
+	public static Color menuDepressed()				{ return menuDepressed[opt()]; }
+	public static Color menuEnabled()				{ return menuEnabled[opt()]; }
+	public static Color menuDisabled()				{ return menuDisabled[opt()]; }
+	public static Color menuShade()					{ return titleColor[opt()]; }
     public static Color titleColor()              { return titleColor[opt()]; }
     public static Color titleShade()              { return titleShade[opt()]; }
     public static Color setupShade()              { return setupShade[opt()]; }

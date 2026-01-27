@@ -19,10 +19,21 @@ import rotp.model.empires.species.SpeciesSettings.Technologies.TechResearch;
 import rotp.ui.components.RLabel;
 import rotp.ui.components.RLineBorder;
 import rotp.ui.components.RotPComponents;
+import rotp.ui.game.GameUI;
+import rotp.ui.main.SystemPanel;
 import rotp.ui.util.IParam;
 
 public class RSettingPanel extends JPanel implements RotPComponents {
 	private static final long serialVersionUID = 1L;
+
+	private static final Color OPTION_COLOR		= SystemPanel.blackText;	// Unselected option Color
+	private static final Color SELECT_COLOR		= SystemPanel.whiteText;	// Selected option color
+	private static final Color POSITIVE_COLOR	= SystemPanel.limeText;
+	private static final Color NEGATIVE_COLOR	= SystemPanel.redText;
+	private static final Color SETTING_COLOR	= SystemPanel.whiteText;
+	private static final Color BLAND_COLOR		= GameUI.borderBrightColor();
+	private static final Color LINE_COLOR		= Color.BLACK;
+
 	private final RLineBorder border;
 	private final TitledBorder titleBorder;
 	private final int lineLength;
@@ -41,9 +52,9 @@ public class RSettingPanel extends JPanel implements RotPComponents {
 		this.lineLength	= width;
 		settingListener	= listener;
 		if (setting.isBullet())
-			border	= new RLineBorder(Color.BLACK, false);
+			border	= new RLineBorder(LINE_COLOR, false);
 		else
-			border	= new RLineBorder(Color.BLACK, true);
+			border	= new RLineBorder(LINE_COLOR, true);
 		int titleJustif	= TitledBorder.LEFT;
 		int titplePos	= TitledBorder.TOP;
 		titleBorder		= BorderFactory.createTitledBorder(border, "", titleJustif, titplePos, settingLabelFont());
@@ -55,8 +66,8 @@ public class RSettingPanel extends JPanel implements RotPComponents {
 		addMouseMotionListener(settingListener);
 		addMouseWheelListener(settingListener);
 
-		setting.updateGui(this);
-		updateDisplay(true);
+		updateGui(true);
+//		updateDisplay(true);
 	}
 
 	@Override public IParam<?> getParam()		{ return setting; }
@@ -65,15 +76,15 @@ public class RSettingPanel extends JPanel implements RotPComponents {
 
 	private Color getCostColor(float cost)	{
 		if (cost == 0) 
-			return ICRSettings.settingC;
+			return SETTING_COLOR;
 		else if (cost > 0)
-			return ICRSettings.settingPosC;
+			return POSITIVE_COLOR;
 		else
-			return ICRSettings.settingNegC;	
+			return NEGATIVE_COLOR;	
 	}
 	private Color getCostColor()	{
 		if (setting.hasNoCost())
-			return ICRSettings.settingBlandC;
+			return BLAND_COLOR;
 
 		if (setting instanceof TechDiscovery) {
 			TechDiscovery td = (TechDiscovery)setting;
@@ -88,16 +99,14 @@ public class RSettingPanel extends JPanel implements RotPComponents {
 		else
 			return getCostColor(setting.settingCost());
 	}
-	void updateDisplay(boolean forced)	{
-		if (!forced && !setting.updated())
-			return;
+	private void lightUpdateDisplay()	{
 		setting.updated(false);
 		if (highLighted) {
 			border.setLineColor(highlightColor());
 			border.setThickness(2);
 		}
 		else {
-			border.setLineColor(Color.BLACK);
+			border.setLineColor(LINE_COLOR);
 			border.setThickness(1);
 		}
 		setLabelColor(getCostColor());
@@ -106,7 +115,7 @@ public class RSettingPanel extends JPanel implements RotPComponents {
 	}
 	void highLighted(boolean b)	{
 		highLighted = b;
-		updateDisplay(true);
+		lightUpdateDisplay();
 	}
 	void setValueString(String str, Color color)	{
 		boolean refresh = false;
@@ -119,7 +128,7 @@ public class RSettingPanel extends JPanel implements RotPComponents {
 				valueLabels.get(i).setText("");
 		}
 		if (refresh)
-			revalidate();
+			repaint();
 	}
 	boolean setOptionString(String str, int idx, Color color, boolean refresh)	{
 		if (valueLabels.size() <= idx) {
@@ -137,7 +146,7 @@ public class RSettingPanel extends JPanel implements RotPComponents {
 			valueLabel.setForeground(color);
 		}
 		if (refresh)
-			revalidate();
+			repaint();
 		return refresh;
 	}
 	public void setLabelText(String title)	{ titleBorder.setTitle(title); }
@@ -155,5 +164,41 @@ public class RSettingPanel extends JPanel implements RotPComponents {
 				sb.index(optionIdx);
 			}
 		}
+	}
+	public void updateGui(boolean forced)	{
+		if (!forced) {
+			if (setting.updated())
+				lightUpdateDisplay();
+			return;
+		}
+		int paramId	= setting.index();
+		int bulletStart	= setting.bulletStart();
+		int bulletSize	= setting.bulletBoxSize();
+
+		setLabelColor(getCostColor());
+		setLabelText(setting.guiSettingDisplayStr());
+		if (bulletSize == 0) {
+			paintImmediately();
+			return;
+		}
+		if (setting.isSettingString()) {
+			setValueString(setting.guideSelectedValue(), OPTION_COLOR);
+			paintImmediately();
+			return;
+		}
+		if (bulletSize == 1) {
+			setValueString(setting.guideSelectedValue(), OPTION_COLOR);
+			paintImmediately();
+			return;
+		}
+		boolean refresh = false;
+		for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
+			int optionIdx = bulletStart + bulletIdx;
+			boolean disabled = optionIdx == paramId;
+			Color color = disabled? OPTION_COLOR : SELECT_COLOR;
+			String text = setting.guiCostOptionStr(optionIdx);
+			refresh |= setOptionString(text, bulletIdx, color, refresh && ((bulletIdx+1) >= bulletSize));
+		}
+		paintImmediately();
 	}
 }

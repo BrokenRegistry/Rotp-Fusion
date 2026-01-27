@@ -28,7 +28,7 @@ public interface ICRSettings<T> extends IParam<T> {
 
 	default void guiSelect()	{}
 	default void updateGui()	{}
-	default void updateGui(RSettingPanel panel)	{}
+//	default void updateGui(RSettingPanel panel)	{}
 	/**
 	 *  Push current settings to SpeciesSkill
 	 */

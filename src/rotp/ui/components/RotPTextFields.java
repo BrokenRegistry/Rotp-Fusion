@@ -118,17 +118,20 @@ public class RotPTextFields { //extends RotPComponents {
 
 		public SettingField(SettingString setting, int colomns)	{
 			super(setting.getLabel(), setting.settingValue(), colomns);
-			this.param = setting;
+			setParam(setting);
+//			this.param = setting;
 			init();
 		}
 		public SettingField(Container pane, SettingString setting, int colomns, int x, int y)	{
 			super(pane, setting.getLabel(), setting.settingValue(), colomns, x, y);
-			this.param = setting;
+			setParam(setting);
+//			this.param = setting;
 			init();
 		}
 		public SettingField(Container pane, SettingString setting, int colomns, int x, int y, String lang, int itemId)	{
 			super(pane, setting.getLabel(lang), setting.settingValue(itemId), colomns, x, y);
-			this.param = setting;
+			setParam(setting);
+//			this.param = setting;
 			String tooltips = setting.htmlTooltips();
 			setToolTipText(tooltips, tooltips);
 			currentId = itemId;
@@ -146,29 +149,11 @@ public class RotPTextFields { //extends RotPComponents {
 				param.selectedValue(currentId, text);
 			}
 		}
-		private void textChangedAction()	{ param.selectedValue(currentId, getText()); }
+		private void textChangedAction()	{
+			if (param!= null)
+				param.selectedValue(currentId, getText());
+			else
+				System.out.println("Failed textChangedAction(): " + getText() + " Id = " + currentId); // TODO BR: REMOVE
+		}
 	}
-//	public static class RotPToolTipUI extends ToolTipUI {
-//		public static ComponentUI createUI(JComponent c)	{
-//			return new RotPToolTipUI();
-//		}
-//		RotPToolTipUI() { // TODO BR:
-//
-//		}
-//		@Override public void paint(Graphics g, JComponent c)	{
-//			super.paint(g, c);
-//		}
-//		@Override public void update(Graphics g, JComponent c)	{
-//			super.update(g, c);
-//		}
-//		@Override public Dimension getMinimumSize(JComponent c)	{
-//			return c.getLayout().minimumLayoutSize(c);
-//		}
-//		@Override public Dimension getPreferredSize(JComponent c)	{
-//			return c.getLayout().preferredLayoutSize(c);
-//		}
-//		@Override public Dimension getMaximumSize(JComponent c)	{
-//			return getPreferredSize(c);
-//		}
-//	}
 }

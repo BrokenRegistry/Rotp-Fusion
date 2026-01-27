@@ -44,6 +44,7 @@ import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.util.StringList;
 import rotp.util.Base;
+import rotp.util.sound.SoundManager;
 
 public class SkillsFactory extends SpeciesSettings {
 
@@ -138,7 +139,7 @@ public class SkillsFactory extends SpeciesSettings {
 		return destOptions;
 	}
 	public String getPlayerAnim()	{ return animSkills==null? null : animSkills.id; }
-	private void initSkillsForEditor(DynOptions srcOptions)	{
+	void initSkillsForEditor(DynOptions srcOptions)	{
 		String skillKey = AvatarKey.getRawAvatarKey(srcOptions);
 		initWithInternalSkillsForGalaxy(null, skillKey, false);
 
@@ -595,8 +596,8 @@ public class SkillsFactory extends SpeciesSettings {
 		settingMap.add(new AvatarKey());
 		settingMap.add(raceKey);
 		settingMap.addAttribute(new RaceName(dir));
-		settingMap.add(new LeaderTitle(dir));
-		settingMap.add(new LeaderFullTitle(dir));
+		settingMap.addAttribute(new LeaderTitle(dir));
+		settingMap.addAttribute(new LeaderFullTitle(dir));
 		settingMap.addAttribute(new EmpireName(dir));
 		for (int i : new int[]{ 1, 2, 4, 3 })
 			settingMap.add(new RaceDescription(i, dir));
@@ -1085,8 +1086,8 @@ public class SkillsFactory extends SpeciesSettings {
 			animationMap.put(AvatarKey.DEFAULT_VALUE, new StringList());
 
 			// Add Current race
-			add((DynOptions) IGameOptions.playerCustomRace.get());
-			defaultIndex(0);
+//			add((DynOptions) IGameOptions.playerCustomRace.get());
+//			defaultIndex(0);
 			// Add existing files
 			File[] fileList = loadListing();
 			if (fileList != null)
@@ -1109,6 +1110,7 @@ public class SkillsFactory extends SpeciesSettings {
 			for (String raceKey : IGameOptions.allRaceKeyList)
 				add(raceKey);
 
+			defaultIndex(0);
 			initOptionsText();
 			reload = true;
 			set(currentValue);
@@ -1220,6 +1222,11 @@ public class SkillsFactory extends SpeciesSettings {
 				initSkillsForEditor(loadOptions(file));
 				newValue = true;
 				return;
+			}
+			else {
+				SoundManager.current().playAudioClip("MisClick");
+				System.out.println("File not found!");
+				selectedValue(defaultRaceKey);
 			}
 		}
 	}

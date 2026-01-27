@@ -385,7 +385,7 @@ public abstract class SpeciesSettings {
 			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills)	{ skills.avatarSpeciesKey(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills)	{ set(skills.avatarSpeciesKey()); }
+		@Override public void skillToSetting(SpeciesSkills skills)	{ selectedValue(skills.avatarSpeciesKey()); }
 		@Override protected StringList altReturnList()	{ return new StringList(getValues()); }
 		@Override protected StringList guiTextsList()	{ return getOptions(); }
 		@Override public String guideDefaultValue()		{ return getDefaultCfgValue(); }
@@ -395,22 +395,8 @@ public abstract class SpeciesSettings {
 				destOptions.setString(dynOptionIndex(), settingValue());
 		}
 		@Override public void updateOptionTool(DynamicOptions srcOptions)	{
-			if (!isSpacer() && srcOptions != null) {
-				String reworkKey = srcOptions.getString(dynOptionIndex());
-				if (reworkKey == null || DEFAULT_VALUE.equals(reworkKey)) {
-					animSkills = null;
-					animOptions = null;
-					set(DEFAULT_VALUE);
-				}
-				else {
-					isReference(true);
-					set(reworkKey);
-					animSkills = SkillsFactory.getMasterSkillsForReworked(reworkKey);
-					animOptions = animSkills.speciesOptions();
-					isReference(false);
-				}
+			if (srcOptions != null)
 				set(srcOptions.getString(dynOptionIndex(), DEFAULT_VALUE));
-			}
 		}
 		@Override public void copyOption(IGameOptions src, IGameOptions dest, boolean updateTool, int cascadeSubMenu)	{
 			if (!isSpacer() && src != null && dest != null)
@@ -418,6 +404,20 @@ public abstract class SpeciesSettings {
 			dest.dynOpts().setString(dynOptionIndex(), src.dynOpts().getString(dynOptionIndex(), DEFAULT_VALUE));
 		}
 		@Override public boolean isSettingString()	{ return true; }
+		@Override public void selectedValue(String newValue) {
+			if (newValue == null || DEFAULT_VALUE.equals(newValue)) {
+				animSkills = null;
+				animOptions = null;
+				super.selectedValue(DEFAULT_VALUE);
+			}
+			else {
+				isReference(true);
+				super.selectedValue(newValue);
+				animSkills = SkillsFactory.getMasterSkillsForReworked(newValue);
+				animOptions = animSkills.speciesOptions();
+				isReference(false);
+			}
+		}
 	}
 	// ==================== Animation ID ====================
 	//
@@ -509,7 +509,8 @@ public abstract class SpeciesSettings {
 				attributesMap.put(dir, new SpeciesAttributes<>(dir));
 			return attributesMap.get(dir);
 		}
-		boolean hasAnim()	{ return animSkills != null; }
+		String getAvatarKey()	{ return animSkills==null? null : animSkills.id; }
+		boolean hasAnim()		{ return animSkills != null; }
 		void insert(int idx, String name)	{
 			// add new civilization to every language
 			for (SpeciesAttributes<?> attributes : attributesMap.values())
@@ -832,7 +833,7 @@ public abstract class SpeciesSettings {
 		static final String KEY = "RACE_NAME";
 		RaceName(String langDir) {
 			super(ROOT, KEY, "", langDir);
-			randomStr("Random Race");
+			randomStr(text("CUSTOM_RACE_DESCRIPTION"));
 		}
 		@Override public void pushToSkills(SpeciesSkills skills)	{
 			skills.parseCivilizationNames(settingValue());
@@ -848,7 +849,7 @@ public abstract class SpeciesSettings {
 		RaceDescription(int i, String langDir) {
 			super(ROOT, KEY(i), "Description "+i, i==3? 4:2, langDir);
 			id = i;
-			randomStr("Randomized");
+			randomStr(text("CUSTOM_RACE_DESCRIPTION"));
 		}
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.setDescription(id, settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.getDescription(id)); }
@@ -857,8 +858,8 @@ public abstract class SpeciesSettings {
 	//
 	class RacePrefix extends SettingString {
 		RacePrefix() {
-			super(ROOT, "RACE_PREFIX", "@", 1);
-			randomStr("#");
+			super(ROOT, "RACE_PREFIX", "", 1);
+			randomStr("");
 			isBullet(false);
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesPrefix(settingValue()); }
@@ -869,7 +870,7 @@ public abstract class SpeciesSettings {
 	class RaceSuffix extends SettingString {
 		RaceSuffix() {
 			super(ROOT, "RACE_SUFFIX", "", 1);
-			randomStr("#");
+			randomStr("");
 			isBullet(false);
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesSuffix(settingValue()); }
@@ -879,8 +880,8 @@ public abstract class SpeciesSettings {
 	//
 	class LeaderPrefix extends SettingString {
 		LeaderPrefix() {
-			super(ROOT, "LEADER_PREFIX", "@", 1);
-			randomStr("#");
+			super(ROOT, "LEADER_PREFIX", "", 1);
+			randomStr("");
 			isBullet(false);
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.leaderPrefix(settingValue()); }
@@ -891,7 +892,7 @@ public abstract class SpeciesSettings {
 	class LeaderSuffix extends SettingString {
 		LeaderSuffix() {
 			super(ROOT, "LEADER_SUFFIX", "", 1);
-			randomStr("#");
+			randomStr("");
 			isBullet(false);
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.leaderSuffix(settingValue()); }
@@ -901,8 +902,8 @@ public abstract class SpeciesSettings {
 	//
 	class WorldsPrefix extends SettingString {
 		WorldsPrefix() {
-			super(ROOT, "WORLDS_PREFIX", "@", 1);
-			randomStr("#");
+			super(ROOT, "WORLDS_PREFIX", "", 1);
+			randomStr("");
 			isBullet(false);
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.worldsPrefix(settingValue()); }
@@ -913,7 +914,7 @@ public abstract class SpeciesSettings {
 	class WorldsSuffix extends SettingString {
 		WorldsSuffix() {
 			super(ROOT, "WORLDS_SUFFIX", "", 1);
-			randomStr("#");
+			randomStr("");
 			isBullet(false);
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.worldsSuffix(settingValue()); }

@@ -1,18 +1,21 @@
 package rotp.model.empires.species;
 
+import static java.awt.GridBagConstraints.CENTER;
 import static java.awt.GridBagConstraints.EAST;
 import static java.awt.GridBagConstraints.HORIZONTAL;
 import static java.awt.GridBagConstraints.NONE;
 import static java.awt.GridBagConstraints.NORTH;
 import static java.awt.GridBagConstraints.REMAINDER;
 import static java.awt.GridBagConstraints.SOUTH;
-import static java.awt.GridBagConstraints.SOUTHEAST;
 import static java.awt.GridBagConstraints.WEST;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+import static rotp.model.game.IBaseOptsTools.LIVE_OPTIONS_FILE;
 import static rotp.model.game.IMainOptions.speciesDirectory;
 import static rotp.model.game.IRaceOptions.defaultRaceKey;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -22,11 +25,14 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +48,17 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import rotp.model.empires.Empire;
 import rotp.model.empires.species.SkillsFactory.RaceList;
 import rotp.model.empires.species.SpeciesSettings.AllSpeciesAttributes;
 import rotp.model.empires.species.SpeciesSettings.AvatarKey;
+import rotp.model.empires.species.SpeciesSettings.PreferredShipSet;
+import rotp.model.empires.species.SpeciesSettings.RaceKey;
 import rotp.model.empires.species.SpeciesSettings.SettingMap;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
+import rotp.model.ships.ShipImage;
+import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.components.RComboBox;
@@ -59,6 +70,7 @@ import rotp.ui.components.RotPComponents;
 import rotp.ui.game.GameUI;
 import rotp.ui.game.GuideUI;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.races.RacesUI;
 import rotp.util.Base;
 import rotp.util.FontManager;
 import rotp.util.ImageManager;
@@ -83,6 +95,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 
 	private boolean allowEdit;
 	private BasePanel parent;
+	private RacesUI	raceUI; // Parent panel
 
 	private SkillsFactory dnaFactory;
 	private SettingMap settingMap;
@@ -95,7 +108,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	private CostPanel costPanel;
 
 	// private working
-	private boolean canceled = false;
 	private boolean oldTooltipState;
 
 	//
@@ -103,6 +115,9 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	private List<Integer> columnList;
 	List<ICRSettings<?>> commonList;
 	private List<ICRSettings<?>> settingList, randomGeneratorList;
+	private AvatarKey avatarKey;
+	private PreferredShipSet prefFleet;
+	private RaceKey raceKey;
 	private int settingSize;
 	private String emptyDescription;
 
@@ -123,6 +138,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		setVisible(true);
 		this.removeAll();
 		setLayout(new GridBagLayout());
+		setGuideColors(GameUI.loadHoverBackground(), Color.BLACK);
 
 		addVariableSpace(this, 0, 0);
 		contentPane	= new ContentPanel(allowEdit);
@@ -138,6 +154,16 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	}
 	public void returnFromNameEditor(boolean cancelled)	{ // TODO BR:
 		dnaFactory().postNameEditor(cancelled);
+		setGuideColors(GameUI.loadHoverBackground(), Color.BLACK);
+		refreshAll();
+	}
+	public void init(RacesUI p)	{ // For Race Diplomatic UI Panel
+		init(p, false);
+		raceUI = p;
+	}
+	public void loadRace(IGameOptions options)		{ // For Race Diplomatic UI Panel
+		Empire emp = raceUI.selectedEmpire();
+		emp.initCRToShow(dnaFactory());
 	}
 	// ========================================================================
 	// #=== Main Methods
@@ -151,26 +177,37 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		settingSize	= settingList.size();
 		raceList	= dnaFactory().initRaceList();
 		randomGeneratorList = dnaFactory().guiList();
+
+		for (ICRSettings<?> setting : settingList) {
+			if (setting instanceof AvatarKey)
+				avatarKey = (AvatarKey) setting;
+			if (setting instanceof PreferredShipSet)
+				prefFleet = (PreferredShipSet) setting;
+			if (setting instanceof RaceKey)
+				raceKey = (RaceKey) setting;
+		}
 	}
 	private void close()	{
 		buttonClick();
 		setTooltipEnabled(oldTooltipState);
+		leaveGuide();
 		descriptionPane.setActive(false);
-		disableGlassPane();
 
 		RotPUI.instance().selectSetupRacePanel();
 		setVisible(false);
 		setEnabled(false);
 		removeAll();
-		dnaFactory		= null;
-		contentPane		= null;
-		costPanel		= null;
-		backImage		= null;
-		parent			= null;
-		columnList		= null;
-		spacerList		= null;
-		settingList		= null;
 		randomGeneratorList	= null;
+		dnaFactory	= null;
+		contentPane	= null;
+		costPanel	= null;
+		backImage	= null;
+		parent		= null;
+		columnList	= null;
+		spacerList	= null;
+		settingList	= null;
+		avatarKey	= null;
+		prefFleet	= null;
 	}
 	private void refreshAll()	{
 		backImage = null;
@@ -191,7 +228,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	}
 	private Image backImage()	{
 		if (backImage == null) {
-			AvatarKey avatarKey = (AvatarKey) settingList.get(0);
 			Race avatar;
 			if (avatarKey.isDefaultValue())
 				avatar = Species.getAnim(defaultRaceKey);
@@ -222,17 +258,126 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 				g.drawImage(avatarImg, 0,2*h/6, 4*w/6,h, 0,0, avatarImg.getWidth(this), avatarImg.getHeight(this), null);
 			}
 
+			// draw Fleet
+			if (!prefFleet.isDefaultValue()) {
+				int wf = 3*w/10;
+				int hf = 3*h/10;
+				int xf = w/50;
+				int yf = w/50;
+
+				BufferedImage fleetImage = fleetImage(prefFleet.index(), wf, hf);
+				g.drawImage(fleetImage, xf,yf, this);
+			}
+
 			// draw Title
 			String title = guiTitle();
 			g.setFont(narrowFont(50));
 			int sw = g.getFontMetrics().stringWidth(title);
-			int x = (w - sw)/2;
+			int x = w*2/3 - sw/2;
 			drawBorderedString(g, title, 2, x, s60, Color.darkGray, Color.white);
+
+
 			g.dispose();
 		}
 		return backImage;
 	}
+	private BufferedImage fleetImage(int shipStyle, int w0, int h0)	{
+		BufferedImage fleetImg = new BufferedImage(w0, h0, TYPE_INT_ARGB);
+		Graphics2D g = (Graphics2D) fleetImg.getGraphics();
+		setRenderingHints(g);
 
+		// Star background
+		g.setColor(starBackgroundC());
+		g.fillOval(0, 0, w0, h0);
+		g.setClip(new Ellipse2D.Float(0, 0, w0, h0));
+		drawStars(g, w0, h0);
+
+		// Add cloud as nebulae
+		int rule = AlphaComposite.SRC_OVER;
+		float alpha = 0.25f;
+		AlphaComposite comp = AlphaComposite.getInstance(rule , alpha);
+		Composite oldComp = g.getComposite();
+		g.setComposite(comp);
+		Image cloud = ImageManager.current().image("CLOUDS_INFERNO");
+		g.drawImage(cloud, 0,0, w0,h0, 0,0, cloud.getWidth(this), cloud.getHeight(this), this);
+		g.setComposite(oldComp);
+		
+		int cx = w0/2;
+		int dx = w0/4;
+		int bx = w0/3;
+		int ex = 2*w0/5;
+		int sx = w0/8;
+		int cy = h0/2;
+		int by = h0/3;
+		int dy = h0/4;
+		int sy = h0/10;
+		int ty = h0/12;
+		// Central Ship
+		int shipH[]	= new int[] {h0/8,	h0/8,	h0/8,	h0/8,	h0/8,	h0/8,	h0/8,	h0/8,	h0/10,	h0/10,	h0/10,	h0/10};
+		int shipY[]	= new int[] {cy,	cy,		cy-by,	cy+by,	cy-dy,	cy+dy,	cy-dy,	cy+dy,	cy-sy,	cy+sy,	cy-ty,	cy+ty};
+		int shipX[]	= new int[] {cx+sx,	cx-sx,	cx,		cx,		cx+dx,	cx+dx,	cx-dx,	cx-dx,	cx-ex,	cx-ex,	cx+ex,	cx+ex};
+		int size[]	= new int[] {3,		3,		3,		3,		2,		2,		1,		1,		2,		2,		0,		0};
+		int shape[]	= new int[] {4,		3,		5,		5,		2,		2,		1,		1,		3,		3,		0,		0};
+
+		for (int i=0; i<shipH.length; i++)
+			drawImage(g, shipStyle, shape[i], size[i], shipH[i], shipX[i], shipY[i]);
+
+		g.setClip(null);
+		g.setStroke(stroke2);
+		g.setColor(new Color(100,161,231));
+		g.drawOval(1, 1, w0-2, h0-2);
+
+		g.dispose();
+		return fleetImg;
+	}
+	private void drawImage(Graphics2D g0, int shipStyle, int shapeId, int shipSize, int shipHeight, int x0, int y0)	{
+		int shipWidth = (int) (shipHeight * 1.3314f);
+		BufferedImage shipImg = getShipImage(shipStyle, shapeId, shipSize, shipWidth, shipHeight);
+		int x = x0 - shipImg.getWidth(this)/2 + s5;
+		int y = y0 - shipImg.getHeight(this)/2;
+		g0.drawImage(shipImg, x,y, this);
+	}
+	private BufferedImage getShipImage(int shipStyle, int shapeId, int shipSize, int shipWidth, int shipHeight) {
+		ShipImage images = ShipLibrary.current().shipImage(shipStyle, shipSize, shapeId);
+		Image img = icon(images.baseIcon()).getImage();
+		int w0 = img.getWidth(null);
+		int h0 = img.getHeight(null);
+		float scale = min(shipWidth*2f/w0, shipHeight*2f/h0);
+		int w1 = (int)(scale*w0);
+		int h1 = (int)(scale*h0);
+		BufferedImage resizedImg = new BufferedImage(w1,h1, TYPE_INT_ARGB);
+		Graphics2D g = resizedImg.createGraphics();
+		// modnar: one-step progressive image downscaling, mostly for Sakkra ships (higher-res image files)
+		// there should be better methods
+		if (scale < 0.5) {
+			BufferedImage tmp = new BufferedImage(w0/2, h0/2, TYPE_INT_ARGB);
+			Graphics2D g2D = tmp.createGraphics();
+			// BR: Maximized Quality
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
+			g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			g2D.drawImage(img, 0, 0, w0/2, h0/2, 0, 0, w0, h0, this);
+			g2D.dispose();
+			img = tmp;
+			w0 = img.getWidth(null);
+			h0 = img.getHeight(null);
+			scale = scale*2;
+		}
+		// modnar: use (slightly) better downsampling
+		// NOTE: drawing current ship design on upper-left of Design screen
+		// https://docs.oracle.com/javase/tutorial/2d/advanced/quality.html
+		// BR: Set to the best using modnar recommendations
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
+		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.drawImage(img, 0, 0, w1, h1, 0, 0, w0, h0, null);
+		g.dispose();
+		return resizedImg;
+	}
 	@Override public void paintComponent(Graphics g)	{
 		super.paintComponent(g);
 		setHiRenderingHints(g);
@@ -250,7 +395,8 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 				super.keyReleased(e);
 		}
 	}
-	@Override public String ambienceSoundKey()	{ return "ResearchAmbience"; }
+	@Override public String ambienceSoundKey()	{ return "UnspecifiedAction"; }
+//	@Override public String ambienceSoundKey()	{ return "ResearchAmbience"; }
 	@Override public JComponent getComponent()	{ return this; }
 	@Override public void animate()		{ } // TODO BR:
 	// -#-
@@ -263,12 +409,15 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			dnaFactory(SkillsFactory.getSkillsFactoryForEditor(this));
 		return dnaFactory;
 	}
-	private boolean isGMO()		{ return false; } // TODO BR: isCustomSpecies()
+	private boolean isGMO()		{ return raceUI.selectedEmpire().isCustomSpecies(); }
+	private boolean isRandom()	{ return raceUI.selectedEmpire().isRandomized(); }
 	private String guiTitleID()	{
 		if (allowEdit)
 			return ROOT + "GUI_TITLE";
 		else
-			if (isGMO())
+			if (isRandom())
+				return ROOT + "SHOW_TITLE_RANDOM";
+			else if (isGMO())
 				return ROOT + "SHOW_TITLE_CUSTOM";
 			else
 				return ROOT + "SHOW_TITLE";
@@ -304,21 +453,22 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			if (allowEdit) {
 				RSettingPanel panel = panel(w);
 				ICRSettings<?> setting = panel.setting;
-				if (setting instanceof AvatarKey) {
+				if (setting instanceof AvatarKey || setting instanceof PreferredShipSet) {
 					setting.toggle(w);
 					backImage = null;
-					setting.updateGui(panel);
+					panel.updateGui(true);
 					workshop.repaint();
 					return;
 				}
 				if (setting instanceof SettingString) {
-					// TODO BR: Call NamesUI
+					selectNamesAction(null);
+					return;
 				}
 				else if (setting.toggle(w)) {
 					refreshPanel(false);
 					return;
 				}
-				setting.updateGui(panel);
+				panel.updateGui(true);
 				if (!setting.hasNoCost()) {
 					costPanel.updateCost();
 					costPanel.paintImmediately();
@@ -330,22 +480,23 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			if (allowEdit) {
 				RSettingPanel panel = panel(e);
 				ICRSettings<?> setting = panel.setting;
-				if (setting instanceof AvatarKey) {
+				if (setting instanceof AvatarKey || setting instanceof PreferredShipSet) {
 					setting.toggle(e, workshop);
 					backImage = null;
-					setting.updateGui(panel);
+					panel.updateGui(true);
 					workshop.repaint();
 					return;
 				}
 				if (setting instanceof SettingString) {
-					// TODO BR: Call NamesUI
+					selectNamesAction(null);
 					return;
 				}
 				if (setting.isBullet())
 					panel.setBullet(e);
 				else
 					setting.toggle(e, workshop);
-				setting.updateGui(panel);
+				panel.updateGui(true);
+				refreshPanel(false);
 
 				if (!setting.hasNoCost()) {
 					costPanel.updateCost();
@@ -369,12 +520,19 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		}
 		private void clearDescBox(MouseEvent e)	{
 			RSettingPanel panel = panel(e);
-			if (!isInside(e, panel)) {
+			if (!isVisible() || !panel.isVisible()) {
 				panel.highLighted(false);
 				GuideUI.close();
 				descriptionPane.setText(emptyDescription);
 				hasPopUp = null;
 			}
+			else if (!isInside(e, panel)) {
+				panel.highLighted(false);
+				GuideUI.close();
+				descriptionPane.setText(emptyDescription);
+				hasPopUp = null;
+			}
+			panel.setting.updateGui();
 		}
 	}
 	// -#-
@@ -396,13 +554,13 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			int x = 0;
 			int y = 0;
 
-			if (allowEdit) {
-				Insets inset = new Insets(0, BUTTON_SEP_W, 0, BUTTON_SEP_W);
-				add(new TopPane(allowEdit), newGbc(x,y, 1,1, 0,0, SOUTHEAST, NONE, inset, 0,0));
-			}
+//			if (allowEdit) {
+//				Insets inset = new Insets(0, BUTTON_SEP_W, 0, BUTTON_SEP_W);
+//				add(new TopPane(allowEdit), newGbc(x,y, 1,1, 0,0, SOUTHEAST, NONE, inset, 0,0));
+//			}
 
 			// Page selection pane (with contents)
-			y++;
+//			y++;
 			settingsPane = new SettingsPane(allowEdit);
 			gbc = newGbc(x,y, 1,1, 0,0, EAST, NONE, new Insets(0, LEFT_MARGIN, 0, RIGHT_MARGIN), 0,0);
 			add(settingsPane, gbc);
@@ -441,37 +599,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			x++;
 			add(newFolderButton(), newGbc(x, y, 1,1, 0,0, WEST, NONE, new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, BUTTON_SEP_W), 0,0));
 		}
-		private RButton newFolderButton()	{
-			RButton button = new RButton(ROOT + "BUTTON_FOLDER", RotPButtons.DEFAULT_FONT_SIZE);
-			button.setParam(speciesDirectory);
-			button.setParent(workshop);
-			button.setLabelKey();
-			button.setListener(e -> selectFolderAction(e));
-			return button;
-		}
-		private RButton newNamesButton()	{
-			RButton button = RotPButtons.newButton(ROOT + "BUTTON_NAMES");
-			button.setLabelKey();
-			button.addActionListener(e -> selectNamesAction(e));
-			return button;
-		}
-		private String selectFolderAction(MouseEvent e)	{
-			if (e.getID() == MouseEvent.MOUSE_RELEASED) {
-				if (e.isControlDown())
-					reloadRaceList(true);
-				else
-					reloadRaceList(false);
-				dnaFactory().loadRace();
-				repaint();
-			}
-			return null;
-		}
-		private void selectNamesAction(ActionEvent e)	{ // TODO BR: selectNamesAction()
-			AllSpeciesAttributes settings = dnaFactory().preNameEditor();
-			RotPUI.instance().selectNameEditorPanel(workshop, settings);
-			workshop.setVisible(false);
-			workshop.setEnabled(false);
-		}
 	}
 
 	// ========================================================================
@@ -503,16 +630,20 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			add(subPanel, newGbc(0,1, 1,1, 1,0, NORTH, NONE, ZERO_INSETS, 0,0));
 
 			if (allowEdit) {
-				RandomGeneratorPane rg = new RandomGeneratorPane();
+				RandomizePane rg = new RandomizePane();
 				add(rg, newGbc(0,1, 1,1, 1,0, SOUTH, NONE, new Insets(0, 0, s10, 0), 0,0));
 
+				add(newFolderButton(), newGbc(x, y, 1,1, 0,0, CENTER, NONE, new Insets(s5, 0, 0, 0), 0,0));
+				y++;
 				gmoSelection = newGMOSelection();
-			add(gmoSelection, newGbc(1,1, 1,1, 1,0, SOUTH, NONE, new Insets(0, 0, s10, 0), 0,0)); 
+//				add(gmoSelection, newGbc(1,1, 1,1, 1,0, SOUTH, NONE, new Insets(0, 0, s10, 0), 0,0));
+				subPanel.add(gmoSelection, newGbc(x, y, 1,1, 0,0, CENTER, HORIZONTAL, new Insets(0, 0, s10, 0), 0,0));
 			}
 
 			Insets bulletInset = new Insets(0, 0, s5, 0);
 			costPanel = new CostPanel(settingWidth[x]);
-			subPanel.add(costPanel, newGbc(x, y, 1,1, 0,0, WEST, HORIZONTAL, bulletInset, 0,0));
+			add(costPanel, newGbc(1,1, 2,1, 1,0, SOUTH, HORIZONTAL, new Insets(0, 0, s10, 0), 0,0));
+//			subPanel.add(costPanel, newGbc(x, y, 1,1, 0,0, WEST, HORIZONTAL, bulletInset, 0,0));
 			y++;
 
 			for (int i=0; i<settingSize; i++) {
@@ -541,21 +672,28 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		}
 		private RComboBox<String> newGMOSelection()	{
 			RComboBox<String> box = new RComboBox<>(raceList);
-			box.setPopupLocation(SwingConstants.NORTH);
+			box.setPopupLocation(SwingConstants.SOUTH);
 			box.enableArrow(true);
 			box.setMaximumRowCount(30);
 			box.addActionListener(e -> gmoSelectionAction(e));
 			return box;
 		}
 		private void gmoSelectionAction(ActionEvent evt)	{
+			String prevValue = raceList.settingValue();
 			String selection = (String) gmoSelection.getSelectedItem();
 			raceList.selectedValue(selection);
+			// Test validity
+			if (!raceList.settingValue().equals(selection)) {
+				Toolkit.getDefaultToolkit().beep();
+				reloadRaceList(false);
+				raceList.selectedValue(prevValue);
+			}
 			refreshAll();
 		}
 		private void updatePanel(boolean forced)	{
 			costPanel.updateCost();
 			for(RSettingPanel pane : settingPanelList)
-				pane.updateDisplay(forced);
+					pane.updateGui(forced);
 		}
 		private JPanel newSubPanel(int minWidth)	{
 			JPanel panel = new JPanel();
@@ -610,51 +748,88 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			addVariableSpace(this, x, y);
 
 			x++;
-			addVariableSpace(this, x, y);
+			add(newLoadPlayerButton(), newGbc(x, y, 1,1, 0,0, CENTER, NONE, new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, 0), 0,0));
+			x++;
+			add(newSetPlayerButton(), newGbc(x, y, 1,1, 0,0, CENTER, NONE, new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, 0), 0,0));
+			x++;
+			add(newSaveButton(), newGbc(x, y, 1,1, 0,0, CENTER, NONE, new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, BUTTON_SEP_W), 0,0));
 
 			x++;
-			add(newCancelButton(), newGbc(x, y, 1,1, 0,0, EAST, NONE, new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, BUTTON_SEP_W), 0,0));
+			addVariableSpace(this, x, y);
 
 			x++;
 			add(newExitButton(), newGbc(x, y, 1,1, 0,0, WEST, NONE, new Insets(0, BUTTON_SEP_W, BUTTON_SEP_H, 0), 0,0));
 		}
-//		private RButton newGuideButton()	{
-//			RButton button = RotPButtons.newBigButton("SETTINGS_GUIDE", false);
-//			button.setLabelKey();
-//			button.addActionListener(e -> buttonGuideAction(e));
-//			return button;
-//		}
 		private RButton newExitButton()		{
-			RButton button = RotPButtons.newHugeButton(ROOT + "BUTTON_EXIT");
+			RButton button = RotPButtons.newBigButton(ROOT + "BUTTON_EXIT", true);
 			button.setLabelKey();
-			button.setMinimumSize(new Dimension(s200, s40));
-			button.addActionListener(e -> exitAction());
+			button.setMinimumSize(new Dimension(s150, s30));
+			button.addActionListener(evt -> exitAction(evt));
 			return button;
 		}
-		private RButton newCancelButton()	{
-			RButton button = RotPButtons.newHugeButton(ROOT + "BUTTON_CANCEL");
+		private void exitAction(ActionEvent evt)	{ close(); }
+
+		private RButton newLoadPlayerButton()	{
+			RButton button = RotPButtons.newBigButton(ROOT + "LOAD_PLAYER", true);
+			button.setMinimumSize(new Dimension(s150, s30));
 			button.setLabelKey();
-			button.setMinimumSize(new Dimension(s200, s40));
-			button.addActionListener(e -> cancelAction());
+			button.addActionListener(evt -> loadPlayerAction(evt));
 			return button;
 		}
-		private void exitAction()	{ close(); }
-		private void cancelAction()	{
-			canceled = true;
-			close();
+		private void loadPlayerAction(ActionEvent evt)	{
+			buttonClick();
+			IGameOptions opts = guiOptions();
+			DynOptions player = (DynOptions) opts.selectedPlayerCustomRace();
+			dnaFactory().initSkillsForEditor(player);
+			refreshAll();
 		}
-//		private void buttonGuideAction(ActionEvent e)	{
-//			buttonClick();
-//			if (showGuide()) {
-//				hideGuide();
-//				showGuide.toggle();
+
+		private RButton newSetPlayerButton()	{
+			RButton button = RotPButtons.newBigButton(ROOT + "GUI_SELECT", true);
+			button.setMinimumSize(new Dimension(s150, s30));
+			button.setLabelKey();
+			button.addActionListener(evt -> setPlayerAction(evt));
+			return button;
+		}
+		private void setPlayerAction(ActionEvent evt)	{
+			buttonClick();
+			IGameOptions opts = guiOptions();
+			DynOptions player = dnaFactory().getAsOptions();
+			opts.selectedPlayerCustomRace(player);
+			opts.selectedPlayerIsCustom(true);
+			String anim = dnaFactory().getPlayerAnim();
+			if (anim != null)
+				opts.selectedPlayerRace(anim);
+			opts.saveOptionsToFile(LIVE_OPTIONS_FILE);
+			dnaFactory().saveRace();
+			reloadRaceList(false);
+			dnaFactory().initSkillsForEditor(player);
+			refreshAll();
+		}
+
+		private RButton newSaveButton()	{
+			RButton button = RotPButtons.newBigButton(ROOT + "GUI_SAVE", true);
+			button.setMinimumSize(new Dimension(s150, s30));
+			button.setLabelKey();
+			button.addActionListener(evt -> saveAction(evt));
+			return button;
+		}
+		private void saveAction(ActionEvent evt)	{ // TODO BR: player management
+			IGameOptions opts = guiOptions();
+//			if (opts.selectedPlayerIsCustom()) {
+//				Species plSp = opts.playerCustomSpecies(opts);
+//				String plKey = plSp.skillKey();
+//				String crKey = dnaFactory().getRaceKey();
+//				if (crKey.equals(plKey))
+//					opts.selectedPlayerCustomRace(dnaFactory().getAsOptions());
 //			}
-//			else {
-//				showGuide.toggle();
-//				RButton button = (RButton) e.getSource();
-//				button.popGuide(button.getToolTipText());
-//			}
-//		}
+			String currentSpecies = raceKey.settingValue(); // TODO BR: player management
+			dnaFactory().saveRace();
+			reloadRaceList(false);
+			raceList.selectedValue(currentSpecies);
+			refreshAll();
+		}
+
 	}
 	// ========================================================================
 	// === Level 3: ==> Cost Panel
@@ -690,10 +865,10 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	// ========================================================================
 	// === Level 3: ==> Random Generator Panel
 	//
-	private class RandomGeneratorPane extends JPanel	{
+	private class RandomizePane extends JPanel	{
 		private static final long serialVersionUID = 1L;
 		private List<RSettingPanel> settingPanelList = new ArrayList<>();
-		private RandomGeneratorPane() {
+		private RandomizePane() {
 			setOpaque(false);
 			Border border = new LineBorder(Color.BLACK, 1);
 			Border margin = new EmptyBorder(s5, s5, s5, s5);
@@ -714,10 +889,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			y++;
 			add(newRandomizeButton(), newGbc(0, y, 2,1, 0,0, EAST, NONE, new Insets(s5, 0, 0, 0), 0,0));
 		}
-		private void updatePanel(boolean forced)	{
-			for(RSettingPanel pane : settingPanelList)
-				pane.updateDisplay(forced);
-		}
 		private RButton newRandomGetButton()	{
 			RButton button = RotPButtons.newButton(ROOT + "GUI_RANDOM_GET");
 			button.setLabelKey();
@@ -734,7 +905,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		}
 		private RButton newRandomizeButton()	{
 			RButton button = RotPButtons.newBigButton(ROOT + "GUI_RANDOM", true);
-//			button.enablePaintedBackground(false);
 			button.setMinimumSize(new Dimension(scaled(160), s10));
 			button.setLabelKey();
 			button.addActionListener(e -> randomizeAction());
@@ -748,7 +918,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			dnaFactory().randomMin.set(opts.randomAlienRacesMin());
 			dnaFactory().randomUseTarget.set(opts.randomAlienRacesUseTarget());
 			dnaFactory().randomSmoothEdges.set(opts.randomAlienRacesSmoothEdges());
-			updatePanel(true);
+			refreshPanel(true);
 		}
 		private void randomPushAction()	{
 			IGameOptions opts = guiOptions();
@@ -768,5 +938,37 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	// ========================================================================
 	// #=== Other Specific Components definition : GMO Selection
 	//
+	private RButton newFolderButton()	{
+		RButton button = new RButton(ROOT + "BUTTON_FOLDER", RotPButtons.DEFAULT_FONT_SIZE);
+		button.setMinimumSize(new Dimension(scaled(125), s10));
+		button.setParam(speciesDirectory);
+		button.setParent(workshop);
+		button.setLabelKey();
+		button.setListener(e -> selectFolderAction(e));
+		return button;
+	}
+	private RButton newNamesButton()	{
+		RButton button = RotPButtons.newButton(ROOT + "BUTTON_NAMES");
+		button.setLabelKey();
+		button.addActionListener(e -> selectNamesAction(e));
+		return button;
+	}
+	private String selectFolderAction(MouseEvent e)	{
+		if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+			if (e.isControlDown())
+				reloadRaceList(true);
+			else
+				reloadRaceList(false);
+			dnaFactory().loadRace();
+			repaint();
+		}
+		return null;
+	}
+	private void selectNamesAction(ActionEvent e)	{ // TODO BR: selectNamesAction()
+		AllSpeciesAttributes settings = dnaFactory().preNameEditor();
+		RotPUI.instance().selectNameEditorPanel(workshop, settings);
+		workshop.setVisible(false);
+		workshop.setEnabled(false);
+	}
 	// -#-
 }

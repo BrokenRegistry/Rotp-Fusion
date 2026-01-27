@@ -175,6 +175,10 @@ public interface Base extends InputEventUtil {
     public default SoundClip playAudioClip(String key, int hullSize) {
         return SoundManager.current().playAudioClip(key, hullSize);
     }
+	default void clearCustomShipSounds()	{
+		rotp.util.sound.WavClip.clearDelayClips();
+		rotp.util.sound.OggClip.clearDelayClips();
+	}
     public default SoundClip alwaysPlayAudioClip(String key) {
         return SoundManager.current().alwaysPlay(key);
     }
