@@ -170,6 +170,7 @@ public interface RotPButtons extends RotPComponents	{
 		}
 		@Override protected void paintComponent(Graphics g)	{
 			Graphics2D g2 = (Graphics2D) g;
+			setRenderingHints(g);
 			int w = getWidth();
 			int h = getHeight();
 			

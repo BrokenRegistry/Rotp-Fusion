@@ -10,7 +10,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -22,21 +21,25 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
+import rotp.ui.components.RotPButtons;
+import rotp.ui.components.RotPButtons.RButton;
+import rotp.ui.components.RotPComponents;
+import rotp.ui.components.RotPTextFields.RTextField;
 import rotp.ui.game.BaseModPanel;
 import rotp.ui.game.GameUI;
-import rotp.util.Base;
 import rotp.util.LabelManager;
 import rotp.util.ModifierKeysState;
 
-public class StringDialogUI extends JDialog implements ActionListener, Base {
+public class StringDialogUI extends JDialog implements RotPComponents, ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	private final int topInset	= scaled(6);
@@ -49,10 +52,10 @@ public class StringDialogUI extends JDialog implements ActionListener, Base {
 	private Frame frame;
 	private BaseModPanel baseModPanel;
 	private IParam<?> param;
-	private JButton cancelButton, setButton;
+	private RButton cancelButton, setButton;
 	private JPanel listPane, buttonPane;
-	private JLabel label;
-	private JTextField input;
+	private JTextPane requestText;
+	private RTextField input;
 
 	public StringDialogUI(JFrame frame)	{
 		super(frame, true);
@@ -61,49 +64,53 @@ public class StringDialogUI extends JDialog implements ActionListener, Base {
 
 		//Create and initialize the buttons.
 		String cancel = LabelManager.current().label("BUTTON_TEXT_CANCEL");
-		cancelButton = new JButton(cancel);
-		cancelButton.setMargin(new Insets(topInset, sideInset, 0, sideInset));
-		cancelButton.setFont(narrowFont(15));
+		cancelButton = RotPButtons.newButton(cancel);
+//		cancelButton.setMargin(new Insets(topInset, sideInset, 0, sideInset));
+//		cancelButton.setFont(narrowFont(14));
 		cancelButton.setVerticalAlignment(SwingConstants.TOP);
-		cancelButton.setBackground(GameUI.buttonBackgroundColor());
-		cancelButton.setForeground(GameUI.buttonTextColor());
+//		cancelButton.setBackground(GameUI.buttonBackgroundColor());
+//		cancelButton.setForeground(GameUI.buttonTextColor());
 		cancelButton.addActionListener(this);
 
 		String set = LabelManager.current().label("BUTTON_TEXT_SET");
-		setButton = new JButton(set);
-		setButton.setMargin(new Insets(topInset, sideInset, 0, sideInset));
-		setButton.setFont(narrowFont(15));
+		setButton = RotPButtons.newButton(set);
+//		setButton.setMargin(new Insets(topInset, sideInset, 0, sideInset));
+//		setButton.setFont(narrowFont(14));
 		setButton.setVerticalAlignment(SwingConstants.TOP);
-		setButton.setBackground(GameUI.buttonBackgroundColor());
-		setButton.setForeground(GameUI.buttonTextColor());
+//		setButton.setBackground(GameUI.buttonBackgroundColor());
+//		setButton.setForeground(GameUI.buttonTextColor());
 		setButton.addActionListener(this);
 
-		input = new JTextField();
+		input = new RTextField();
 		input.addMouseListener(new DialMouseAdapter(setButton));
-		input.setBackground(GameUI.setupFrame());
-		input.setForeground(Color.BLACK);
+//		input.setBackground(GameUI.setupFrame());
+//		input.setForeground(Color.BLACK);
 		input.addActionListener(this);
 
 		//Create a container so that we can add a title around
 		//the scroll pane.  Can't add a title directly to the
 		//scroll pane because its background would be white.
 		//Lay out the label and scroll pane from top to bottom.
-		label = new JLabel();
-		label.setFont(narrowFont(15));
-		label.setLabelFor(input);
-		label.setForeground(Color.BLACK);
+		requestText = new JTextPane();
+		requestText.setOpaque(true);
+		requestText.setFont(narrowFont(14));
+		requestText.setForeground(Color.BLACK);
+		requestText.setBackground(GameUI.borderMidColor());
+		requestText.setContentType("text/html");
+		requestText.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+		requestText.setEditable(false);
 
 		listPane = new JPanel();
 		listPane.setLayout(new BoxLayout(listPane, BoxLayout.PAGE_AXIS));
 		listPane.setBackground(GameUI.borderMidColor());
-		listPane.add(label);
+		listPane.add(requestText);
 		listPane.add(Box.createRigidArea(new Dimension(0, s5)));
 		listPane.add(input);
 		listPane.setBorder(BorderFactory.createEmptyBorder(s10, s10, s10, s10));
 
 		//Lay out the buttons from left to right.
 		buttonPane = new JPanel();
-		buttonPane.setFont(narrowFont(15));
+		buttonPane.setFont(narrowFont(14));
 		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
 		buttonPane.setBorder(BorderFactory.createEmptyBorder(s10, s10, s10, s10));
 		buttonPane.setBackground(GameUI.borderMidColor());
@@ -155,8 +162,9 @@ public class StringDialogUI extends JDialog implements ActionListener, Base {
 		setMinimumSize(new Dimension(width, height+scaled(100)));
 
 		//Initialize values.
+		requestText.setText(labelText);
+		requestText.setEditable(false);
 		input.setText(initialValue);
-		label.setText("<html>" + labelText + "</html>");
 		pack();
 
 		setSize(width, height);
@@ -174,10 +182,9 @@ public class StringDialogUI extends JDialog implements ActionListener, Base {
 	}
 	public String showDialog(int refreshLevel)	{ // Can only be called once.
 		setValue(null);
+		input.requestFocusInWindow();
 		setVisible(true);
 		ModifierKeysState.reset();
-//		baseModPanel.initButtonBackImg();
-//		baseModPanel.refreshGui(refreshLevel);
 		return value;
 	}
 	private void setValue(String newValue)	{ value = newValue; }
@@ -250,5 +257,16 @@ public class StringDialogUI extends JDialog implements ActionListener, Base {
 				setButton.doClick(); //emulate button click
 			}
 		}
+		@Override public void mouseEntered(MouseEvent evt)	{
+			if (showGuide())
+				popGuide();
+		}
+		@Override public void mouseExited(MouseEvent evt)	{
+			hideGuide();
+		}
+
 	}
+
+	@Override public JComponent getComponent()	{ return (JComponent) getContentPane(); }
+	@Override public IParam<?> getParam()		{ return param; }
 }

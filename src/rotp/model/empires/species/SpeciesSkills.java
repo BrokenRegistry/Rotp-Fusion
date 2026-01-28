@@ -559,7 +559,7 @@ class SpeciesSkills implements Base, Serializable {
 	void isRandomizedSpecies(boolean is){ isRandomizedSpecies = is; }
 	String isAnimAutonomous()			{ return isAnimAutonomous; }
 	void isAnimAutonomous(String s)		{ isAnimAutonomous = s; }
-	boolean isRandomized()				{ return SkillsFactory.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
+	boolean isRandomized()				{ return DNAFactory.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
 	DynOptions speciesOptions()			{ return speciesOptions; }
 	void speciesOptions(DynOptions val)	{ speciesOptions = val; }
 	// BR: Get the values encoded in HomeworldKey

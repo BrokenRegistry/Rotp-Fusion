@@ -1,6 +1,6 @@
 package rotp.model.empires.species;
 
-import static rotp.model.empires.species.SkillsFactory.fileToAlienRaceInfo;
+import static rotp.model.empires.species.DNAFactory.fileToAlienRaceInfo;
 import static rotp.model.empires.species.SpeciesSettings.BASE_RACE_MARKER;
 import static rotp.model.game.IGalaxyOptions.globalCROptions;
 import static rotp.ui.util.IParam.labelFormat;

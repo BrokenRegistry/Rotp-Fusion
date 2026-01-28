@@ -44,7 +44,6 @@ import java.util.List;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import rotp.Rotp;
 import rotp.model.empires.species.Species;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IRaceOptions;
@@ -1180,11 +1179,11 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 			BufferedImage tmp = new BufferedImage(w0/2, h0/2, TYPE_INT_ARGB);
 			Graphics2D g2D = tmp.createGraphics();
 			// BR: Maximized Quality
-	        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
-	        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-	        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2D.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
+			g2D.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+			g2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 			g2D.drawImage(img, 0, 0, w0/2, h0/2, 0, 0, w0, h0, this);
 			g2D.dispose();
 			img = tmp;
@@ -1208,16 +1207,17 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
     }
     // BR: Display UI panel for Player Race Customization
 	private void goToPlayerRaceCustomization(MouseEvent e) {
-		if (Rotp.isIDE() && e.isShiftDown()) {
-			RotPUI.instance().selectDNAWorkshopPanel(this, true);
-			setVisible(false);
-			this.setEnabled(false);
-			return;
-		}
-        buttonClick();
-        EditCustomRaceUI.instance().open(this);
+//		if (Rotp.isIDE() && e.isShiftDown()) {
+		buttonClick();
+		RotPUI.instance().selectDNAWorkshopPanel(true);
 		setVisible(false);
-		this.setEnabled(false);
+		setEnabled(false);
+//		return;
+//		}
+//        buttonClick();
+//        EditCustomRaceUI.instance().open(this);
+//		setVisible(false);
+//		this.setEnabled(false);
     }
     private void goToRenameSpecies() {
         buttonClick();

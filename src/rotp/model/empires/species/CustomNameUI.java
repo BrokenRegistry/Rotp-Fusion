@@ -56,7 +56,7 @@ import rotp.util.LanguageManager;
 
 class CustomNameUI extends RDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	private static final String ROOT = SkillsFactory.ROOT + "UI_";
+	private static final String ROOT = DNAFactory.ROOT + "UI_";
 
 	private static final Insets BUTTON_INSETS	= new Insets(0, s10, 0, s10);
 	private static final String  LANGUAGE_ID	= "LANGUAGE";

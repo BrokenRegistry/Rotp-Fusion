@@ -46,14 +46,14 @@ import rotp.ui.util.StringList;
 import rotp.util.Base;
 import rotp.util.sound.SoundManager;
 
-public class SkillsFactory extends SpeciesSettings {
+public class DNAFactory extends SpeciesSettings {
 
-	private static SkillsFactory reworkFactory, raceListFactory;
+	private static DNAFactory reworkFactory, raceListFactory;
 	public void cleanFactories()	{
 		reworkFactory	= null;
 		raceListFactory	= null;
 	}
-	SkillsFactory()	{}
+	DNAFactory()	{}
 
 	public final SettingInteger randomTargetMax	= new SettingInteger(ROOT, "RANDOM_TARGET_MAX", 75, null, null, 1, 5, 20).pctValue(false);
 	public final SettingInteger randomTargetMin	= new SettingInteger(ROOT, "RANDOM_TARGET_MIN", 0, null, null, 1, 5, 20).pctValue(false);
@@ -81,8 +81,8 @@ public class SkillsFactory extends SpeciesSettings {
 		else
 			return Species.getAnim(animSkills.id);
 	}
-	public static SkillsFactory getSkillsFactoryForEditor(BasePanel parent)	{
-		SkillsFactory factory = new SkillsFactory();
+	public static DNAFactory getSkillsFactoryForEditor(BasePanel parent)	{
+		DNAFactory factory = new DNAFactory();
 		factory.parent = parent;
 		factory.initFactoryForEdit();
 		return factory;
@@ -226,16 +226,16 @@ public class SkillsFactory extends SpeciesSettings {
 	// -#-
 	// #========== Constructors For Restart UI Factory ==========
 	//
-	public SkillsFactory (DynOptions srcOptions)	{
+	public DNAFactory (DynOptions srcOptions)	{
 		initSkillsForGalaxy(null, srcOptions);
 	}
-	public SkillsFactory (String internalRaceKey)	{
+	public DNAFactory (String internalRaceKey)	{
 		initWithInternalSkillsForGalaxy(null, internalRaceKey, false);
 	}
 	// -#-
 	// #========== Constructors For Galaxy Factory ==========
 	//
-	private SkillsFactory (SpeciesSkills anim, DynOptions srcOptions)	{
+	private DNAFactory (SpeciesSkills anim, DynOptions srcOptions)	{
 		initSkillsForGalaxy(anim, srcOptions);
 	}
 //	public SkillsFactory (SpeciesSkills anim, String internalRaceKey, boolean fullCopy)	{
@@ -243,7 +243,7 @@ public class SkillsFactory extends SpeciesSettings {
 //	}
 
 	static SpeciesSkills optionToSkills(SpeciesSkills anim, DynOptions srcOptions)	{
-		return new SkillsFactory(anim, srcOptions).race();
+		return new DNAFactory(anim, srcOptions).race();
 	}
 //	public static SpeciesSkills fileToSkills(SpeciesSkills anim, String fileName)	{
 //		SkillsFactory factory = new SkillsFactory();
@@ -253,13 +253,13 @@ public class SkillsFactory extends SpeciesSettings {
 //	public static HashMap<String, StringList> getAnimationMap()	{ return newRaceList().animationMap(); }
 //	public static StringList getAllAlienSkills()		{ return newRaceList().getAllAlienRaces(); }
 	public static StringList getAllowedAlienSkills()	{ return newRaceList().getAllowedAlienRaces(); }
-	static SkillsFactory getSkillsFactoryForGalaxy()	{
-		SkillsFactory factory = new SkillsFactory();
+	static DNAFactory getSkillsFactoryForGalaxy()	{
+		DNAFactory factory = new DNAFactory();
 		factory.initWithDefaultSkillsForGalaxy(true);
 		return factory;
 	}
 	private static RaceList newRaceList()	{
-		SkillsFactory factory = new SkillsFactory();
+		DNAFactory factory = new DNAFactory();
 		factory.initWithDefaultSkillsForGalaxy(false);
 		return factory.new RaceList();
 	}
@@ -325,12 +325,12 @@ public class SkillsFactory extends SpeciesSettings {
 	// #========== Constructors For Species ==========
 	//
 	static SpeciesSkills keyToCustomSpecies(SpeciesSkills anim, String skillsKey)	{
-		SkillsFactory factory = new SkillsFactory();
+		DNAFactory factory = new DNAFactory();
 		factory.initSkillsForSpecies(anim, skillsKey);
 		return factory.race();
 	}
 	static SpeciesSkills fileToAlienRaceInfo(SpeciesSkills anim, String skillsKey)	{
-		SkillsFactory factory = new SkillsFactory();
+		DNAFactory factory = new DNAFactory();
 		factory.initSkillsForSpecies(anim, skillsKey);
 		return factory.race();
 	}
@@ -370,7 +370,7 @@ public class SkillsFactory extends SpeciesSettings {
 	// Called during Startup, will be reinitialized later
 	//
 	public static DynOptions getDefaultOptions()	{
-		SkillsFactory factory = new SkillsFactory();
+		DNAFactory factory = new DNAFactory();
 		factory.initFactoryForParamCR();
 		return factory.race().speciesOptions();
 	}
@@ -382,15 +382,15 @@ public class SkillsFactory extends SpeciesSettings {
 	// #========== Constructors For RaceList ==========
 	// RaceList will only use data from SpeciesSkills
 	//
-	private static SkillsFactory getFactoryForRaceList(DynOptions srcOptions)	{
+	private static DNAFactory getFactoryForRaceList(DynOptions srcOptions)	{
 		if (raceListFactory == null)
-			raceListFactory = new SkillsFactory();
+			raceListFactory = new DNAFactory();
 		raceListFactory.initSkillsForRaceList(srcOptions);
 		return raceListFactory;
 	}
-	private static SkillsFactory getFactoryForRaceList(Species species)	{
+	private static DNAFactory getFactoryForRaceList(Species species)	{
 		if (raceListFactory == null)
-			raceListFactory = new SkillsFactory();
+			raceListFactory = new DNAFactory();
 		raceListFactory.initSkillsForRaceList(species);
 		return raceListFactory;
 	}
@@ -424,7 +424,7 @@ public class SkillsFactory extends SpeciesSettings {
 	//
 	static SpeciesSkills getMasterSkillsForReworked(String key)	{
 		if (reworkFactory == null)
-			reworkFactory = new SkillsFactory();
+			reworkFactory = new DNAFactory();
 		reworkFactory.initForReworked(key);
 		return reworkFactory.race();
 	}
@@ -619,17 +619,17 @@ public class SkillsFactory extends SpeciesSettings {
 		settingMap.add(objective.expansionist);
 		settingMap.add(objective.technologist);
 		spacer();
-		settingMap.add(availableAI);
-		settingMap.add(new BoundAI());
 		settingMap.add(new PreferredShipSize());
 		settingMap.add(new PreferredShipSet());
 		spacer();
-		settingMap.add(new RacePrefix());
-		settingMap.add(new RaceSuffix());
-		settingMap.add(new LeaderPrefix());
-		settingMap.add(new LeaderSuffix());
-		settingMap.add(new WorldsPrefix());
-		settingMap.add(new WorldsSuffix());
+		settingMap.add(new ShipAttack());
+		settingMap.add(new ShipDefense());
+		settingMap.add(new ShipInitiative());
+		settingMap.add(new GroundAttack());
+		spacer();
+		settingMap.add(new HitPointsBonus());
+		settingMap.add(new MaintenanceBonus());
+		settingMap.add(new ShipSpaceBonus());
 		endOfColumn();
 
 		// ====================
@@ -652,15 +652,17 @@ public class SkillsFactory extends SpeciesSettings {
 		settingMap.add(new ProdControl());
 		settingMap.add(new IgnoresFactoryRefit());
 		spacer();
-		settingMap.add(new ShipAttack());
-		settingMap.add(new ShipDefense());
-		settingMap.add(new ShipInitiative());
-		settingMap.add(new GroundAttack());
-		spacer();
+		settingMap.add(new CreditsBonus());
 		settingMap.add(new SpyCost());
 		settingMap.add(new SpySecurity());
 		settingMap.add(new SpyInfiltration());
 //		settingMap.add(new SpyTelepathy()); // Not used in Game
+		spacer();
+		settingMap.add(new DiplomacyTrade());
+// 		settingMap.add(new DiploPosDP()); // Not used in Game
+		settingMap.add(new DiplomacyBonus());
+		settingMap.add(new DiplomacyCouncil());
+		settingMap.add(new RelationDefault());	// BR: Maybe All the races
 		endOfColumn();
 
 		// ====================
@@ -677,16 +679,15 @@ public class SkillsFactory extends SpeciesSettings {
 		settingMap.add(new PlanetRessources());
 		settingMap.add(new PlanetEnvironment());
 		spacer();
-		settingMap.add(new CreditsBonus());
-		settingMap.add(new HitPointsBonus());
-		settingMap.add(new MaintenanceBonus());
-		settingMap.add(new ShipSpaceBonus());
+		settingMap.add(availableAI);
+		settingMap.add(new BoundAI());
 		spacer();
-		settingMap.add(new DiplomacyTrade());
-// 		settingMap.add(new DiploPosDP()); // Not used in Game
-		settingMap.add(new DiplomacyBonus());
-		settingMap.add(new DiplomacyCouncil());
-		settingMap.add(new RelationDefault());	// BR: Maybe All the races
+		settingMap.add(new RacePrefix());
+		settingMap.add(new RaceSuffix());
+		settingMap.add(new LeaderPrefix());
+		settingMap.add(new LeaderSuffix());
+		settingMap.add(new WorldsPrefix());
+		settingMap.add(new WorldsSuffix());
 		endOfColumn();
 
 		// ====================
@@ -870,7 +871,7 @@ public class SkillsFactory extends SpeciesSettings {
 				speciesOptions = loadOptions(file);
 			else
 				speciesOptions = options;
-			SkillsFactory sf = new SkillsFactory(null, speciesOptions);
+			DNAFactory sf = new DNAFactory(null, speciesOptions);
 			skillsKey  = sf.raceKey.settingValue();
 			if (file == null)
 				fileKey = null;
@@ -1117,7 +1118,7 @@ public class SkillsFactory extends SpeciesSettings {
 		}
 //		HashMap<String, StringList> animationMap()		{ return animationMap; }
 		private void add(DynOptions opt)	{
-			SkillsFactory cr = SkillsFactory.getFactoryForRaceList(opt);
+			DNAFactory cr = DNAFactory.getFactoryForRaceList(opt);
 			SpeciesSkills dr = cr.race();
 			String cfgValue	 = dr.setupName;
 			String langLabel = dr.id;
@@ -1130,7 +1131,7 @@ public class SkillsFactory extends SpeciesSettings {
 			String cfgValue	  = species.skillKey();
 			String langLabel  = BASE_RACE_MARKER + species.setupName();
 			String tooltipKey = species.getDescription(3);
-			SkillsFactory cr  = getFactoryForRaceList(species);
+			DNAFactory cr  = getFactoryForRaceList(species);
 			float cost = cr.getTotalCost();
 			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
 		}
@@ -1146,7 +1147,7 @@ public class SkillsFactory extends SpeciesSettings {
 			File[] fileList = loadListing();
 			if (fileList != null)
 				for (File file : fileList) {
-					SkillsFactory cr = SkillsFactory.getFactoryForRaceList(loadOptions(file));
+					DNAFactory cr = DNAFactory.getFactoryForRaceList(loadOptions(file));
 					if (cr.availableAI.settingValue())
 						list.add(cr.raceKey.settingValue());
 				}
@@ -1158,7 +1159,7 @@ public class SkillsFactory extends SpeciesSettings {
 			File[] fileList = loadListing();
 			if (fileList != null)
 				for (File file : fileList) {
-					SkillsFactory cr = SkillsFactory.getFactoryForRaceList(loadOptions(file));
+					DNAFactory cr = DNAFactory.getFactoryForRaceList(loadOptions(file));
 					list.add(cr.raceKey.settingValue());
 				}
 			list.removeNullAndEmpty();

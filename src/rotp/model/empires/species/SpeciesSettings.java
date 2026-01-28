@@ -30,6 +30,7 @@ import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.util.PlayerShipSet;
+import rotp.ui.util.StringDialogUI;
 import rotp.ui.util.StringList;
 import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
@@ -413,7 +414,7 @@ public abstract class SpeciesSettings {
 			else {
 				isReference(true);
 				super.selectedValue(newValue);
-				animSkills = SkillsFactory.getMasterSkillsForReworked(newValue);
+				animSkills = DNAFactory.getMasterSkillsForReworked(newValue);
 				animOptions = animSkills.speciesOptions();
 				isReference(false);
 			}
@@ -833,7 +834,7 @@ public abstract class SpeciesSettings {
 		static final String KEY = "RACE_NAME";
 		RaceName(String langDir) {
 			super(ROOT, KEY, "", langDir);
-			randomStr(text("CUSTOM_RACE_DESCRIPTION"));
+			randomStr(langLabel("CUSTOM_RACE_DESCRIPTION"));
 		}
 		@Override public void pushToSkills(SpeciesSkills skills)	{
 			skills.parseCivilizationNames(settingValue());
@@ -849,74 +850,75 @@ public abstract class SpeciesSettings {
 		RaceDescription(int i, String langDir) {
 			super(ROOT, KEY(i), "Description "+i, i==3? 4:2, langDir);
 			id = i;
-			randomStr(text("CUSTOM_RACE_DESCRIPTION"));
+			randomStr(langLabel("CUSTOM_RACE_DESCRIPTION"));
 		}
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.setDescription(id, settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.getDescription(id)); }
 	}
-	// ==================== RacePrefix ====================
+	// ==================== PrefixSufix ====================
 	//
-	class RacePrefix extends SettingString {
-		RacePrefix() {
-			super(ROOT, "RACE_PREFIX", "", 1);
+	class PrefixSufix extends SettingString {
+
+		public PrefixSufix(String guiLangLabel, String nameLangLabel, String defaultValue, int lineNum) {
+			super(guiLangLabel, nameLangLabel, defaultValue, lineNum);
 			randomStr("");
 			isBullet(false);
 		}
+		@Override public boolean toggle(MouseEvent e, BasePanel frame)	{
+			if (getDir(e) == 0) {
+				setFromDefault(true, true);
+				return false;
+			}
+			String dlgTitle = getLabel();
+			String dlgLabel = getInputMessage();
+			String value = settingValue();
+			StringDialogUI dlg = RotPUI.instance().stringDialog();
+			dlg.init(null, frame, dlgLabel, dlgTitle, value, value, -1, -1, scaled(200), -1, null, null, this);
+			String newName = dlg.showDialog(0);
+			selectedValue(newName);
+			return false;
+		}
+
+	}
+		// ==================== RacePrefix ====================
+		//
+		class RacePrefix extends PrefixSufix	{
+		RacePrefix()	{ super(ROOT, "RACE_PREFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesPrefix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.speciesPrefix()); }
 	}
 	// ==================== RaceSuffix ====================
 	//
-	class RaceSuffix extends SettingString {
-		RaceSuffix() {
-			super(ROOT, "RACE_SUFFIX", "", 1);
-			randomStr("");
-			isBullet(false);
-		}
+	class RaceSuffix extends PrefixSufix	{
+		RaceSuffix()	{ super(ROOT, "RACE_SUFFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesSuffix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.speciesSuffix()); }
 	}
 	// ==================== LeaderPrefix ====================
 	//
-	class LeaderPrefix extends SettingString {
-		LeaderPrefix() {
-			super(ROOT, "LEADER_PREFIX", "", 1);
-			randomStr("");
-			isBullet(false);
-		}
+	class LeaderPrefix extends PrefixSufix	{
+		LeaderPrefix()	{ super(ROOT, "LEADER_PREFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.leaderPrefix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.leaderPrefix()); }
 	}
 	// ==================== LeaderSuffix ====================
 	//
-	class LeaderSuffix extends SettingString {
-		LeaderSuffix() {
-			super(ROOT, "LEADER_SUFFIX", "", 1);
-			randomStr("");
-			isBullet(false);
-		}
+	class LeaderSuffix extends PrefixSufix	{
+		LeaderSuffix()	{ super(ROOT, "LEADER_SUFFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.leaderSuffix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.leaderSuffix()); }
 	}
 	// ==================== WorldsPrefix ====================
 	//
-	class WorldsPrefix extends SettingString {
-		WorldsPrefix() {
-			super(ROOT, "WORLDS_PREFIX", "", 1);
-			randomStr("");
-			isBullet(false);
-		}
+	class WorldsPrefix extends PrefixSufix	{
+		WorldsPrefix()	{ super(ROOT, "WORLDS_PREFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.worldsPrefix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.worldsPrefix()); }
 	}
 	// ==================== WorldsSuffix ====================
 	//
-	class WorldsSuffix extends SettingString {
-		WorldsSuffix() {
-			super(ROOT, "WORLDS_SUFFIX", "", 1);
-			randomStr("");
-			isBullet(false);
-		}
+	class WorldsSuffix extends PrefixSufix	{
+		WorldsSuffix()	{ super(ROOT, "WORLDS_SUFFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.worldsSuffix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.worldsSuffix()); }
 	}

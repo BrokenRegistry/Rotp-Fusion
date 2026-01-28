@@ -35,6 +35,15 @@ public class RotPTextFields { //extends RotPComponents {
 
 		private boolean showBorder;
 
+		public RTextField()	{
+			super();
+			setBackground(GameUI.setupFrame());
+			setForeground(textFieldTextColor());
+			setFont(textFieldFont);
+			setBorder(border);
+			setOpaque(false);
+			addMouseListener(new TextFieldMouseAdapter());
+		}
 		public RTextField(String text, int columns)	{
 			super(text, columns);
 			setBackground(GameUI.setupFrame());

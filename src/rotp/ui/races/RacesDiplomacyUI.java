@@ -49,7 +49,6 @@ import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
 import rotp.ui.diplomacy.DialogueManager;
 import rotp.ui.diplomacy.DiplomaticMessage;
-import rotp.ui.game.ShowCustomRaceUI;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.util.StringDialogUI;
@@ -72,7 +71,6 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
     private final RacesUI parent;
     private final ManageDiplomatsUI manageDiplomatsPane;
     private final ManageSpiesUI manageSpiesPane;
-    private ShowCustomRaceUI showRaceAbilitiesPane;
     int incidentY, incidentYMax;
     int relationsY, relationsYMax;
     int dragY;
@@ -1350,16 +1348,12 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         enableGlassPane(manageSpiesPane);
         return;
     }
-    private void openShowAbilitiesPane() {
-        softClick();
-        if (showRaceAbilitiesPane == null) {
-            showRaceAbilitiesPane = ShowCustomRaceUI.instance();
-            showRaceAbilitiesPane.init(parent);
-        }
-        showRaceAbilitiesPane.loadRace(options());
-        enableGlassPane(showRaceAbilitiesPane);
-        return;
-    }
+	private void openShowDNAPane() { // TODO BR: New call... Rename
+		softClick();
+		RotPUI.instance().selectDNAWorkshopPanel(false);
+		parent.setVisible(false);
+		parent.setEnabled(false);
+	}
 	private void changeLeaderName() {
 		softClick();
 		Empire emp = parent.selectedEmpire();
@@ -1541,7 +1535,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
             return;
         }
         else if (hoverShape == showAbilitiesBox) {
-            openShowAbilitiesPane();
+            openShowDNAPane();
             return;
         }
         else if (hoverShape == changeLeaderNameBox) {

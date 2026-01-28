@@ -366,20 +366,26 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
 	}
     public void selectSetupRacePanel()	 {
     	setupRaceUI.init();
-    	selectPanel(SETUP_RACE_PANEL, setupRaceUI); 
+    	selectPanel(SETUP_RACE_PANEL, setupRaceUI);
     }
 	public void selectNameEditorPanel(BasePanel parent, AllSpeciesAttributes settings)	{
 		nameEditorUI.init(parent, settings);
-		selectPanel(NAME_EDITOR_PANEL, nameEditorUI); 
+		selectPanel(NAME_EDITOR_PANEL, nameEditorUI);
 	}
-	public void selectDNAWorkshopPanel(BasePanel parent, boolean allowEdit)	{
-		dnaWorkshopUI.init(parent, allowEdit);
-		selectPanel(DNA_WORKSHOP_PANEL, dnaWorkshopUI); 
+	public void selectDNAWorkshopPanel(boolean allowEdit)	{ // TODO BR:
+		dnaWorkshopUI.init(allowEdit);
+		selectPanel(DNA_WORKSHOP_PANEL, dnaWorkshopUI);
 	}
 	public void returnToDNAWorkshopPanel(boolean cancelled)	{
 		dnaWorkshopUI.returnFromNameEditor(cancelled);
 		selectPanel(DNA_WORKSHOP_PANEL, dnaWorkshopUI);
-	} 
+	}
+	public void returnToDiplomacyPanel()	{
+		selectPanel(RACES_PANEL, racesUI);
+		racesUI.setVisible(true);
+		racesUI.setEnabled(true);
+	}
+
     public void selectSetupGalaxyPanel() {
     	setupGalaxyUI.init();
     	selectPanel(SETUP_GALAXY_PANEL, setupGalaxyUI);

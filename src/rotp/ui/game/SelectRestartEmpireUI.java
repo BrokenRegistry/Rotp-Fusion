@@ -36,7 +36,7 @@ import java.util.LinkedList;
 import javax.swing.SwingUtilities;
 
 import rotp.model.empires.Empire.EmpireBaseData;
-import rotp.model.empires.species.SkillsFactory;
+import rotp.model.empires.species.DNAFactory;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
@@ -122,7 +122,7 @@ final class SelectRestartEmpireUI  extends BasePanel implements MouseListener, M
 		empireList.clear();
 		abilitiesList.clear();
 		homeworldList.clear();
-		SkillsFactory cr;
+		DNAFactory cr;
 
 		for (EmpireBaseData e : oldGalaxy.empires()){
 			String name = e.empireName;
@@ -130,9 +130,9 @@ final class SelectRestartEmpireUI  extends BasePanel implements MouseListener, M
 			String race = e.raceName;
 			String abilities = e.dataName;
 			if (e.isCustomRace)
-				cr = new SkillsFactory(e.raceOptions);
+				cr = new DNAFactory(e.raceOptions);
 			else
-				cr = new SkillsFactory(e.dataRaceKey);
+				cr = new DNAFactory(e.dataRaceKey);
 
 			empireList.add(name);
 			valueList.add(Math.round(cr.getTotalCost()));

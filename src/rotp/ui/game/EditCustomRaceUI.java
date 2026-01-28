@@ -35,10 +35,9 @@ import java.util.List;
 
 import rotp.Rotp;
 import rotp.model.empires.species.ICRSettings;
-import rotp.model.empires.species.SkillsFactory;
-import rotp.model.empires.species.SkillsFactory.RaceList;
+import rotp.model.empires.species.DNAFactory;
+import rotp.model.empires.species.DNAFactory.RaceList;
 import rotp.model.empires.species.Species;
-import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IMainOptions;
 import rotp.ui.BasePanel;
@@ -94,7 +93,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		if (initialized)
 			return this;
 		initialized = true;
-		cr(SkillsFactory.getSkillsFactoryForEditor(this));
+		cr(DNAFactory.getSkillsFactoryForEditor(this));
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
@@ -510,7 +509,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 
 	@Override public void refreshGui(int level) {
 		if (level == 0)
-			cr().setSettingTools((DynOptions) guiOptions().selectedPlayerCustomRace());
+			cr().setSettingTools(guiOptions().selectedPlayerCustomRace());
 		repaint();
 	}
 	@Override protected void doDefaultBoxAction() {
@@ -537,7 +536,7 @@ public class EditCustomRaceUI extends ShowCustomRaceUI implements MouseWheelList
 		ModifierKeysState.reset();
 		parent = p;
 
-		cr().setSettingTools((DynOptions) guiOptions().selectedPlayerCustomRace());
+		cr().setSettingTools(guiOptions().selectedPlayerCustomRace());
 		guiOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
 		init();
 		reloadRaceList(false);

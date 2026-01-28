@@ -59,7 +59,7 @@ import rotp.util.LanguageManager;
 
 public class NameEditorUI extends BasePanel implements RotPComponents {
 	private static final long serialVersionUID = 1L;
-	private static final String ROOT = SkillsFactory.ROOT + "UI_";
+	private static final String ROOT = DNAFactory.ROOT + "UI_";
 
 	private static final Insets BUTTON_INSETS	= new Insets(0, s10, 0, s10);
 	private static final String  LANGUAGE_ID	= "LANGUAGE";
@@ -294,7 +294,8 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 //	@Override public String ambienceSoundKey()	{ return "IntroAmbience"; }
 	@Override public String ambienceSoundKey()	{ return "UnspecifiedAction"; }
 	@Override public JComponent getComponent()	{ return this; }
-	@Override public void animate() 			{ validateButtonTextColor(); }
+	@Override public void animate()				{ validateButtonTextColor(); }
+	@Override public void animateForLowGraphic(){ animate(); }
 
 	// -#-
 	// ========================================================================
@@ -438,7 +439,7 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 					// System.out.println("EmpireBarListener: Button selected " + e.toString()); // TO DO BR: comment
 					break;
 				case BUTTON_RENAMED:
-					int prev = civilizationTextColor.remove(e.prevLabel);
+					Integer prev = civilizationTextColor.remove(e.prevLabel);
 					civilizationTextColor.put(e.newLabel, prev);
 					// System.out.println("EmpireBarListener: Button renamed " + e.toString()); // TO DO BR: comment
 					pageSelectionPane.refreshBar();
