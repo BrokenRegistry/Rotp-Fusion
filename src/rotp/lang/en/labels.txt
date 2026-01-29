@@ -2014,7 +2014,6 @@ SETUP_NO_FOG_ON_ICONS             | Remove diplomat fog: %1
 SETUP_NO_FOG_ON_ICONS_DESC        | Remove the fog hiding the diplomat icons in the Character settings panel and in the Galaxy settings panel.
 
 // BR: config Player Race
-//SETUP_BUTTON_CUSTOM_PLAYER_RACE   | Customize Species
 SETUP_BUTTON_CUSTOM_PLAYER_RACE	| DNA Workshop
 
 // BR: Customize Player Race New GUI addition
@@ -2027,6 +2026,9 @@ CUSTOM_RACE_BUTTON_FOLDER_DESC	| Select the custom species folder.
 CUSTOM_RACE_BUTTON_NAMES		| Edit Names
 CUSTOM_RACE_BUTTON_NAMES_DESC	| Edit the Civilisations names.<br>(Add, Remove, Languages selection)
 CUSTOM_RACE_EMPTY_DESCRIPTION	| "Shift" and "Ctrl" can be used to modify the functionality of buttons, clicks, and scrolls.<br>
+
+CUSTOM_RACE_FLEET_DESC			| Example of a fleet composed of vessels based on the model chosen for this species.
+CUSTOM_RACE_FLEET_HELP			| Example of a fleet composed of vessels based on the model chosen for this species.<br> If the animation bothers you, you can disable or enable it by clicking on the image.
 
 // BR: Customize Player Race
 CUSTOM_RACE_DESCRIPTION			| Randomized DNA

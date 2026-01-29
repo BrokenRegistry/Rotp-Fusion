@@ -180,6 +180,7 @@ public class Species implements ISpecies, Base, Serializable {
 		initialHomeWorld	= src.initialHomeWorld;
 		initialLeaderName	= src.initialLeaderName;
 		civilizationId		= src.civilizationId;
+		trySkillsForNames	= trySkillsForNames();
 	}
 	// ====================================================================
 	// Initializers
@@ -204,7 +205,6 @@ public class Species implements ISpecies, Base, Serializable {
 		Species species = new Species(animKey, skillsKey, options);
 		anim	= species.anim;
 		skills	= species.skills;
-		trySkillsForNames = trySkillsForNames();
 		if (civilizationId == null) {
 			setOldSpeciesIndex(raceNameIndex);
 		}

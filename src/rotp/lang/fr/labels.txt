@@ -2014,19 +2014,21 @@ SETUP_NO_FOG_ON_ICONS             | Retirer la brume : %1
 SETUP_NO_FOG_ON_ICONS_DESC        | Retire le brouillard qui masque partiellement les icônes des diplomates dans les panneaux de configuration de l’espèce et de la configuration de la galaxie.
 
 // BR : config Player Race
-//SETUP_BUTTON_CUSTOM_PLAYER_RACE   | Façonner une espèce
 SETUP_BUTTON_CUSTOM_PLAYER_RACE	| Atelier ADN
 
 // BR: Customize Player Race New GUI addition
 CUSTOM_RACE_BUTTON_EXIT			| Quitter
-CUSTOM_RACE_BUTTON_EXIT_DESC	| Conservez les paramètres actuels, puis quittez l'interface.
+CUSTOM_RACE_BUTTON_EXIT_DESC	| Conservez les paramètres actuels, puis quittez l’interface.
 CUSTOM_RACE_BUTTON_CANCEL		| Annuler
-CUSTOM_RACE_BUTTON_CANCEL_DESC	| Annulez les modifications, puis quittez l'interface.
+CUSTOM_RACE_BUTTON_CANCEL_DESC	| Annulez les modifications, puis quittez l’interface.
 CUSTOM_RACE_BUTTON_FOLDER		| Répertoire
 CUSTOM_RACE_BUTTON_FOLDER_DESC	| Pour choisir le répertoire contenant les espèces personnalisée.
 CUSTOM_RACE_BUTTON_NAMES		| Éditer les Noms
 CUSTOM_RACE_BUTTON_NAMES_DESC	| Pour éditer les noms des civilisations.<br>(Ajouter, Retirer, Choix des langues)
 CUSTOM_RACE_EMPTY_DESCRIPTION	| « Maj » et « Ctrl » peuvent être utilisés pour modifier les fonctionnalités des boutons, des clics et des défilements.
+
+CUSTOM_RACE_FLEET_DESC			| Exemple d’une flottille composée de navires issus du modèle choisi pour cette espèce.
+CUSTOM_RACE_FLEET_HELP			| Exemple d’une flottille composée de navires issus du modèle choisi pour cette espèce.<br>Si l'animation vous dérange, vous pouvez la désactiver ou l’activer en cliquant sur l’image.
 
 // BR : Customize Player Race
 CUSTOM_RACE_DESCRIPTION			| ADN Aléatoire

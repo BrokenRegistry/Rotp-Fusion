@@ -26,10 +26,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -53,7 +53,9 @@ public class GuideUI extends BasePanel {
 		default void leaveGuide()	{
 			restoreGuideColors();
 			hideGuide();
+			GuideUI.parent = null;
 		}
+		default void enterGuide(BasePanel parent)	{ GuideUI.parent = parent; }
 
 		default RButton newGuideButton(boolean big)	{
 			RButton button = big? RotPButtons.newBigButton("SETTINGS_GUIDE", false): RotPButtons.newButton("SETTINGS_GUIDE");
@@ -61,16 +63,18 @@ public class GuideUI extends BasePanel {
 			button.addActionListener(e -> buttonGuideAction(e));
 			return button;
 		}
-		default void buttonGuideAction(ActionEvent e)	{
+		static void buttonGuideAction(ActionEvent e)	{
 			SoundManager.current().playAudioClip("ButtonClick");
-			if (showGuide()) {
-				hideGuide();
+			if (showGuide.get()) {
+				GuideUI.close();
 				showGuide.toggle();
 			}
 			else {
 				showGuide.toggle();
-				RButton button = (RButton) e.getSource();
-				button.popGuide(button.getToolTipText());
+				if (e!=null) {
+					RButton button = (RButton) e.getSource();
+					button.popGuide(button.getToolTipText());
+				}
 			}
 		}
 		default void setDescription(String txt)		{ descriptionPane.setText(txt); }
@@ -96,6 +100,13 @@ public class GuideUI extends BasePanel {
 				JComponent c = getComponent();
 				if (c != null)
 					GuideUI.open(c, tip);
+			}
+		}
+		default void popGuide(String tip, int dx, int dy)	{
+			if (showGuide()) {
+				JComponent c = getComponent();
+				if (c != null)
+					GuideUI.open(c, tip, dx, dy);
 			}
 		}
 
@@ -185,7 +196,7 @@ public class GuideUI extends BasePanel {
 	}
 	private static final long serialVersionUID = 1L;
 	public static GuideUI instance;
-	private BasePanel parent;
+	private static BasePanel parent;
 	private GuideData guideData = new GuideData();
 
 	// ========================================================================
@@ -219,6 +230,12 @@ public class GuideUI extends BasePanel {
 //		guideData.init(target, tipText);
 //		enableGlassPane(this);
 //	}
+	public static void open(JComponent target, String tipText, int dx, int dy)	{
+		if (showGuide.get() && target != null && tipText!= null && !tipText.isEmpty()) {
+			instance.guideData.init(target, tipText, dx, dy);
+			instance.enableGlassPane(instance);
+		}
+	}
 	public static void open(JComponent target, String tipText)	{
 		if (showGuide.get() && target != null && tipText!= null && !tipText.isEmpty()) {
 			instance.guideData.init(target, tipText);
@@ -241,6 +258,23 @@ public class GuideUI extends BasePanel {
 		super.paintComponent(g0);
 		guideData.paintGuide((Graphics2D) g0);
 	}
+	@Override public void keyReleased(KeyEvent e)	{
+		if (parent == null)
+			switch(e.getKeyCode()) {
+				case KeyEvent.VK_ESCAPE:
+					setModifierKeysState(e);
+					close();
+					return;
+				case KeyEvent.VK_G:
+					IGuide.buttonGuideAction(null);
+					return;
+				default:
+					super.keyReleased(e);
+			}
+		else
+			parent.keyReleased(e);
+	}
+
 	// -#-
 	// ========================================================================
 	// #=== Guide
@@ -257,6 +291,7 @@ public class GuideUI extends BasePanel {
 		private Rectangle sourceBox;
 		private int[] lineArr;
 		private int left, top, width, height;
+		private int dx, dy;
 
 		GuideData()	{
 			guideBox.setOpaque(true);
@@ -290,8 +325,6 @@ public class GuideUI extends BasePanel {
 			guideBox.setText("");
 		}
 		// Queries
-		private boolean isEmpty()			{ return sourceBox == null; }
-		private boolean contains(Point p)	{ return sourceBox==null? false : sourceBox.contains(p); }
 		private void paintGuide(Graphics2D g)	{
 			g.setColor(borderColor);
 			g.fillRect(left-s8, top-s8, width+s8+s8, height+s8+s8);
@@ -310,20 +343,26 @@ public class GuideUI extends BasePanel {
 				int size = lineArr.length/2 - 1;
 				for (int i=0; i<size; i++) {
 					int k = 2*i;
-					g.drawLine(lineArr[k], lineArr[k+1], lineArr[k+2], lineArr[k+3]);
+					g.drawLine(lineArr[k], lineArr[k+1], lineArr[k+2]+dx, lineArr[k+3]+dy);
 				}
 				g.setStroke(prev);
 			}			
 		}
 		// Initializations
 		private void setLineArr(int... arr)	{ lineArr = arr; }
-		private void init(JComponent target, String tipText)	{ createGuideBox(getLocationOnScreen(target), tipText, true); }
-		private void init(Rectangle target, String tipText)		{ createGuideBox(target, tipText, false); }
+		private void init(JComponent target, String tipText, int dx, int dy)	{ createGuideBox(getLocationOnScreen(target), tipText, true, dx, dy); }
+		private void init(JComponent target, String tipText)	{ createGuideBox(getLocationOnScreen(target), tipText, true, 0, 0); }
+//		private void init(Rectangle target, String tipText)		{ createGuideBox(target, tipText, false, 0, 0); }
 		// Creations
-		private void createGuideBox(Rectangle target, String tipText)	{ createGuideBox(target, tipText, false); }
-		private void createGuideBox(Rectangle target, String tipText, boolean fullHelp)	{
+//		private void createGuideBox(Rectangle target, String tipText, int dx, int dy)	{ createGuideBox(target, tipText, false, dx, dy); }
+//		private void createGuideBox(Rectangle target, String tipText, boolean fullHelp)	{
+//			createGuideBox(target, tipText, fullHelp, 0, 0);
+//		}
+		private void createGuideBox(Rectangle target, String tipText, boolean fullHelp, int dx, int dy)	{
 			guideFontSize(GUIDE_FONT_SIZE);
 			sourceBox = target;
+			this.dx = dx;
+			this.dy = dy;
 
 			// Check for normal tool tip
 			if (tipText == null) {
@@ -407,6 +446,7 @@ public class GuideUI extends BasePanel {
 				left = sourceBox.x - width - xBoxShift;
 				if (left < xBoxMargin)
 					left = xBoxMargin;
+				left += dx;
 				xb = left + width;
 				xd = sourceBox.x + xTarCover;
 				if (xd < xb)
@@ -416,6 +456,7 @@ public class GuideUI extends BasePanel {
 				left = sourceBox.x + sourceBox.width + xBoxShift;
 				if (left+width > iW-xBoxMargin)
 					left = iW-xBoxMargin - width;
+				left += dx;
 				xb = left;
 				xd = sourceBox.x + sourceBox.width - xTarCover;
 				if (xd > xb)
@@ -426,6 +467,7 @@ public class GuideUI extends BasePanel {
 				top = sourceBox.y - height - yBoxShift;
 				if (top < yBoxMargin)
 					top = yBoxMargin;
+				top += dy;
 				yb = top + height;
 				yd = sourceBox.y + yTarCover;
 				if (yd < yb)
@@ -435,6 +477,7 @@ public class GuideUI extends BasePanel {
 				top = sourceBox.y + sourceBox.height + yBoxShift;
 				if (top+height > iH-yBoxMargin)
 					top = iH-yBoxMargin - height;
+				top += dy;
 				yb = top;
 				yd = sourceBox.y + sourceBox.height - yTarCover;
 				if (yd > yb)
