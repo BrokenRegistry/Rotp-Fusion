@@ -154,55 +154,6 @@ public abstract class SpeciesSettings {
 		backupMap = null;
 		settings  = null;
 	}
-	boolean callUI()	{
-		settingMap.cleanLanguages();
-		SettingMap backupMap = new SettingMap();
-		backupMap.copyFrom(settingMap);
-		race().speciesOptions().backupStringMap();
-
-		AllSpeciesAttributes settings = new AllSpeciesAttributes();
-		CustomNameUI ui = new CustomNameUI(parent, settings);
-		RotPUI.animationListeners.add(ui);
-		boolean canceled = ui.showPanel();
-		RotPUI.animationListeners.remove(ui);
-
-		if (canceled) {
-			settingMap.copyFrom(backupMap);
-			race().speciesOptions().restoreStringMap();
-			for (ICRSettings<?> setting : settingMap.getAll())
-				setting.settingToSkill(race());
-		}
-		else {
-			// Update language setting
-			List<String> codes = LanguageManager.current().languageCodes();
-			List<String> names = LanguageManager.current().languageNames();
-			LanguageList languageSetting = (LanguageList) settingMap.get(ROOT + LanguageList.KEY);
-			StringList languageDir = new StringList();
-			for (String name : settings.getLanguageNames()) {
-				int idx = names.indexOf(name);
-				String dir = codes.get(idx);
-				languageDir.add(dir);
-			}
-
-			DynOptions destOptions = race().speciesOptions();
-			languageSetting.set(languageDir.asString());
-			languageSetting.settingToSkill(race());
-			languageSetting.updateOption(destOptions);
-
-			// clean languages if needed
-			settingMap.cleanLanguages();
-
-			// update the skills from the source option
-			List<ICRSettings<?>> icrSettings = settingMap.getAll();
-			for (ICRSettings<?> setting : icrSettings) {
-				if (setting instanceof SettingStringLanguage) {
-					setting.settingToSkill(race());
-					setting.updateOption(destOptions);
-				}
-			}
-		}
-		return true;
-	}
 	// -#-
 	// ========================================================================
 	// Sub Classes
@@ -823,7 +774,6 @@ public abstract class SpeciesSettings {
 			super(ROOT, RACE_KEY, defaultRaceKey, 1);
 			randomStr(RANDOMIZED_RACE_KEY);
 		}
-		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, int idx)	{ return callUI(); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.id = settingValue(); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.id); }
 	}
@@ -2504,7 +2454,6 @@ public abstract class SpeciesSettings {
 		}
 		public void fillFromAnim(boolean forced, int civIdx, int animIdx)	{ fillFromAnim(forced); }
 
-		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, int idx)	{ return callUI(); }
 		@Override public void settingToSkill(SpeciesSkills skills)	{
 			String gameLang = selectedLanguageDir();
 			if (langDir.equals(gameLang))

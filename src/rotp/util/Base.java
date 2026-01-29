@@ -97,8 +97,6 @@ import rotp.model.tech.TechLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
-import rotp.ui.game.EditCustomRaceUI;
-import rotp.ui.game.ShowCustomRaceUI;
 import rotp.ui.util.planets.PlanetImager;
 import rotp.util.sound.SoundClip;
 import rotp.util.sound.SoundManager;
@@ -1837,8 +1835,7 @@ public interface Base extends InputEventUtil {
 				LanguageManager.selectLanguage(langDir);
 			}
 			if (resetCRUI) {
-				ShowCustomRaceUI.languageChanged();
-				EditCustomRaceUI.languageChanged();
+				// TODO BR: Validate language Change on DNA Workshop
 			}
 			return;
 		}
@@ -1854,8 +1851,7 @@ public interface Base extends InputEventUtil {
 			LanguageManager.selectLanguage(langDir);
 		}
 			if (resetCRUI) {
-				ShowCustomRaceUI.languageChanged();
-				EditCustomRaceUI.languageChanged();
+				// TODO BR: Validate language Change on DNA Workshop
 			}
 		return;
 	}

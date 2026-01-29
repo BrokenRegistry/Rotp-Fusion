@@ -24,7 +24,6 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import rotp.model.game.DynamicOptions;
-import rotp.ui.game.ShowCustomRaceUI;
 import rotp.util.Base;
 
 public class SettingString extends SettingBase<String> implements Base{
@@ -95,7 +94,7 @@ public class SettingString extends SettingBase<String> implements Base{
 		if (input == null)
 			return false; // cancelled
 		set(input);
-		settingToSkill(ShowCustomRaceUI.displayedSpecies().getRawRace());
+//		settingToSkill(ShowCustomRaceUI.displayedSpecies().getRawRace());
 		updateGui();
 		return false;
 	}

@@ -243,7 +243,6 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
     	leaderName.setBackground(GameUI.setupFrame());
     	shipSetTxt.setBackground(GameUI.setupFrame());
     	homeWorld.setBackground(GameUI.setupFrame());
-    	EditCustomRaceUI.updatePlayerCustomRace();
         leaderName.setFont(labelFont);
         setHomeWorldFont(); // BR: MonoSpaced font for Galaxy
         shipSetTxt.setFont(labelFont); // BR:
@@ -1205,33 +1204,24 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         fleetImages[shapeId] = resizedImg;
 		return fleetImages[shapeId];
     }
-    // BR: Display UI panel for Player Race Customization
+	// BR: Display UI panel for Player Race Customization
 	private void goToPlayerRaceCustomization(MouseEvent e) {
-//		if (Rotp.isIDE() && e.isShiftDown()) {
 		buttonClick();
 		RotPUI.instance().selectDNAWorkshopPanel(true);
 		setVisible(false);
 		setEnabled(false);
-//		return;
-//		}
-//        buttonClick();
-//        EditCustomRaceUI.instance().open(this);
-//		setVisible(false);
-//		this.setEnabled(false);
-    }
+	}
     private void goToRenameSpecies() {
         buttonClick();
 		String langId = LanguageManager.selectedLanguageDir();
 		switch (langId) {
 			case "en":
 				buttonClick();
-//				IMainOptions.specieNameOptionsUI().toggle(null, GUI_ID, this);
 				AllSubUI.nameSubUI().toggle(null, GUI_ID, this);
 				setVisible(false);
 				return;
 			case "fr":
 				buttonClick();
-//				IMainOptions.specieNameOptionsFrUI().toggle(null, GUI_ID, this);
 				AllSubUI.nameFrSubUI().toggle(null, GUI_ID, this);
 				setVisible(false);
 				return;

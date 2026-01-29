@@ -1228,8 +1228,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         titleImg = null;
         repaint();
 		if (resetCRUI) {
-			ShowCustomRaceUI.languageChanged();
-			EditCustomRaceUI.languageChanged();
+			// TODO BR: Validate language Change on DNA Workshop
 		}
     }
     private void goToSettings() {
