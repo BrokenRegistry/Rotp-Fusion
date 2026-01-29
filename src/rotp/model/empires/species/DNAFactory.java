@@ -1081,7 +1081,6 @@ public class DNAFactory extends SpeciesSettings {
 			String currentValue = settingValue();
 			clearLists();
 			animationMap.clear();
-			clearOptionsText();
 			for (String raceKey : IGameOptions.allRaceKeyList)
 				animationMap.put(raceKey, new StringList());
 			animationMap.put(AvatarKey.DEFAULT_VALUE, new StringList());
@@ -1112,7 +1111,6 @@ public class DNAFactory extends SpeciesSettings {
 				add(raceKey);
 
 			defaultIndex(0);
-			initOptionsText();
 			reload = true;
 			set(currentValue);
 		}

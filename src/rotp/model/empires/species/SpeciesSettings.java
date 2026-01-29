@@ -325,7 +325,6 @@ public abstract class SpeciesSettings {
 			hasNoCost(true);
 			showFullGuide(false);
 			getToolTip();
-			initOptionsText();
 			labelsAreFinals(true);
 			allowListSelect(true);
 			refreshLevel(1);
@@ -334,7 +333,6 @@ public abstract class SpeciesSettings {
 			String defaultValue = LabelManager.current().label(ROOT + AVATAR_KEY + "_" + DEFAULT_VALUE);
 			put(defaultValue, DEFAULT_VALUE, 0f, DEFAULT_VALUE);
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills)	{ skills.avatarSpeciesKey(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills)	{ selectedValue(skills.avatarSpeciesKey()); }
@@ -808,8 +806,7 @@ public abstract class SpeciesSettings {
 	// ==================== PrefixSufix ====================
 	//
 	class PrefixSufix extends SettingString {
-
-		public PrefixSufix(String guiLangLabel, String nameLangLabel, String defaultValue, int lineNum) {
+		private PrefixSufix(String guiLangLabel, String nameLangLabel, String defaultValue, int lineNum) {
 			super(guiLangLabel, nameLangLabel, defaultValue, lineNum);
 			randomStr("");
 			isBullet(false);
@@ -882,7 +879,6 @@ public abstract class SpeciesSettings {
 			super(ROOT, "AVAILABLE_PLAYER", defaultValue);
 			isBullet(false);
 			hasNoCost(true);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.availablePlayer(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.availablePlayer()); }
@@ -897,7 +893,6 @@ public abstract class SpeciesSettings {
 			isBullet(false);
 			hasNoCost(true);
 			getToolTip();
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.availableAI(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.availableAI()); }
@@ -914,7 +909,6 @@ public abstract class SpeciesSettings {
 			hasNoCost(true);
 			showFullGuide(false);
 			getToolTip();
-			initOptionsText();
 			labelsAreFinals(true);
 			allowListSelect(true);
 			refreshLevel(1);
@@ -922,7 +916,6 @@ public abstract class SpeciesSettings {
 				put(s, s.toUpperCase(), 0f, s);
 			put(DEFAULT_VALUE, DEFAULT_VALUE, 0f, DEFAULT_VALUE);
 			defaultCfgValue(DEFAULT_VALUE);
-			initOptionsText();
 		}
 		@Override public String guideDefaultValue()	{ return defaultLangLabel(); }
 		@Override public String guideValue()		{ return langLabel(settingValue()); }
@@ -941,14 +934,12 @@ public abstract class SpeciesSettings {
 			hasNoCost(true);
 			showFullGuide(true);
 			getToolTip();
-			initOptionsText();
 			labelsAreFinals(true);
 			put("Small",	ROOT + "SHIP_SIZE_SMALL",	0f, "Small");
 			put("Medium",	ROOT + "SHIP_SIZE_MEDIUM",	0f, "Medium");
 			put("Large",	ROOT + "SHIP_SIZE_LARGE",	0f, "Large");
 			put("Huge",		ROOT + "SHIP_SIZE_HUGE",	0f, "Huge");
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.preferredShipSize(index()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { index(skills.preferredShipSize()); }
@@ -964,7 +955,6 @@ public abstract class SpeciesSettings {
 			hasNoCost(true);
 			showFullGuide(false);
 			getToolTip();
-			initOptionsText();
 			labelsAreFinals(true);
 			allowListSelect(true);
 			refreshLevel(1);
@@ -974,7 +964,6 @@ public abstract class SpeciesSettings {
 			}
 			put(DISPLAY_RACE_SET, PlayerShipSet.displayLabelKey(), 0f, DISPLAY_RACE_SET);
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public String guideDefaultValue()	{ return defaultLangLabel(); }
 		@Override public String guideValue()		{ return getSelLangLabel(); }
@@ -1239,9 +1228,7 @@ public abstract class SpeciesSettings {
 			put("Normal",		ROOT   + "RESOURCES_NORMAL",  0f, "Normal");
 			put("Rich",			PLANET + "RICH",			 30f, "Rich");
 			put("UltraRich",	PLANET + "ULTRA_RICH",		 50f, "UltraRich");
-//			put("Artifacts",	PLANET + "ARTIFACTS",		 40f, "Artifacts");
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.planetRessource(settingValue()); }
@@ -1261,7 +1248,6 @@ public abstract class SpeciesSettings {
 			put("Artifacts",	PLANET + "ARTIFACTS",		 40f, "Artifacts");
 			put("OrionLike",	ROOT   + "ARTIFACTS_ORION",  80f, "OrionLike");
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.planetArtifacts(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.planetArtifacts()); }
@@ -1281,7 +1267,6 @@ public abstract class SpeciesSettings {
 			put("Fertile", PLANET + "FERTILE",			   15f, "Fertile");
 			put("Gaia",	   PLANET + "GAIA",				   30f, "Gaia");
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.planetEnvironment(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.planetEnvironment()); }
@@ -1301,7 +1286,6 @@ public abstract class SpeciesSettings {
 			put("Jungle",	PlanetType.JUNGLE,	0f, PlanetType.JUNGLE);
 			put("Terran",	PlanetType.TERRAN,	0f, PlanetType.TERRAN);
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 			hasNoCost(true); // to be removed
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.homeworldPlanetType(settingValue()); }
@@ -1343,7 +1327,6 @@ public abstract class SpeciesSettings {
 			put("Silicate",	"RACE_SILICATE", 4f, 3);
 			put("Robotic",	"RACE_ROBOTIC",	 4f, 4);
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesType(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.speciesType()); }
@@ -1362,7 +1345,6 @@ public abstract class SpeciesSettings {
 			put("Limited",	ROOT+"IGNORES_ECO_LIMITED",	30f, "Limited");
 			put("All",		ROOT+"IGNORES_ECO_ALL",		50f, "All");
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) {
 			skills.acceptedPlanetEnvironment(settingValue());
@@ -1392,7 +1374,6 @@ public abstract class SpeciesSettings {
 	class ShipAttack extends SettingInteger {
 		ShipAttack() {
 			super(ROOT, "SHIP_ATTACK", 0, -1, 5, 1, 1, 1, DIFFERENCE, new float[]{0f, 3f}, new float[]{0f, 5f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.shipAttackBonus(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.shipAttackBonus()); }
@@ -1402,7 +1383,6 @@ public abstract class SpeciesSettings {
 	class ShipDefense extends SettingInteger {
 		ShipDefense() {
 			super(ROOT, "SHIP_DEFENSE", 0, -1, 5, 1, 1, 1, DIFFERENCE, new float[]{0f, 1.5f, 1.5f}, new float[]{0f, 6f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.shipDefenseBonus(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.shipDefenseBonus()); }
@@ -1412,7 +1392,6 @@ public abstract class SpeciesSettings {
 	class ShipInitiative extends SettingInteger {
 		ShipInitiative() {
 			super(ROOT, "SHIP_INITIATIVE", 0, -1, 5, 1, 1, 1, DIFFERENCE, new float[]{5f, 1f}, new float[]{0f, 6f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.shipInitiativeBonus(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.shipInitiativeBonus()); }
@@ -1422,7 +1401,6 @@ public abstract class SpeciesSettings {
 	class GroundAttack extends SettingInteger {
 		GroundAttack() {
 			super(ROOT, "GROUND_ATTACK", 0, -20, 30, 1, 5, 20, DIFFERENCE, new float[]{0f, 1.25f}, new float[]{0f, 0.75f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.groundAttackBonus(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.groundAttackBonus()); }
@@ -1432,7 +1410,6 @@ public abstract class SpeciesSettings {
 	class SpyCost extends SettingInteger {
 		SpyCost() {
 			super(ROOT, "SPY_COST", 100, 50, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, -.1f}, new float[]{0f, -.2f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.spyCostMod(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.spyCostMod() * 100)); }
@@ -1442,7 +1419,6 @@ public abstract class SpeciesSettings {
 	class SpySecurity extends SettingInteger {
 		SpySecurity() {
 			super(ROOT, "SPY_SECURITY", 0, -20, 40, 1, 5, 20, DIFFERENCE, new float[]{0f, 1f}, new float[]{0f, 2f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.internalSecurityAdj(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.internalSecurityAdj() * 100)); }
@@ -1452,7 +1428,6 @@ public abstract class SpeciesSettings {
 	class SpyInfiltration extends SettingInteger {
 		SpyInfiltration() {
 			super(ROOT, "SPY_INFILTRATION", 0, -20, 40, 1, 5, 20, DIFFERENCE, new float[]{0f, 1.25f}, new float[]{0f, 2.5f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.spyInfiltrationAdj(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.spyInfiltrationAdj() * 100)); }
@@ -1466,7 +1441,6 @@ public abstract class SpeciesSettings {
 		SpyTelepathy() {
 			super(ROOT, "SPY_TELEPATHY", defaultValue, 20f, 0f);
 			isBullet(booleansAreBullet);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.telepathic(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.telepathic()); }
@@ -1476,7 +1450,6 @@ public abstract class SpeciesSettings {
 	class DiplomacyTrade extends SettingInteger {
 		DiplomacyTrade() {
 			super(ROOT, "DIPLOMACY_TRADE", 0, -30, 30, 1, 5, 20, DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .3f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.tradePctBonus(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.tradePctBonus() * 100)); }
@@ -1487,7 +1460,6 @@ public abstract class SpeciesSettings {
 	class DiploPosDP extends SettingInteger {
 		DiploPosDP() {
 			super(ROOT, "DIPLO_POS_DP", 100, 70, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, .3f}, new float[]{0f, .8f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.positiveDPMod(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.positiveDPMod() * 100)); }
@@ -1497,7 +1469,6 @@ public abstract class SpeciesSettings {
 	class DiplomacyBonus extends SettingInteger {
 		DiplomacyBonus() {
 			super(ROOT, "DIPLOMACY_BONUS", 0, -50, 100, 1, 5, 20, DIFFERENCE, new float[]{0f, .1f}, new float[]{0f, .2f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.diplomacyBonus(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.diplomacyBonus()); }
@@ -1507,7 +1478,6 @@ public abstract class SpeciesSettings {
 	class DiplomacyCouncil extends SettingInteger {
 		DiplomacyCouncil() {
 			super(ROOT, "DIPLOMACY_COUNCIL", 0, -25, 25, 1, 5, 20, DIFFERENCE, new float[]{0f, .2f}, new float[]{0f, .2f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.councilBonus(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.councilBonus() * 100)); }
@@ -1517,7 +1487,6 @@ public abstract class SpeciesSettings {
 	class RelationDefault extends SettingInteger {
 		RelationDefault() {
 			super(ROOT, "RELATION_DEFAULT", 0, -10, 10, 1, 2, 4, DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .4f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.defaultRaceRelations(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set((int)skills.defaultRaceRelations()); }
@@ -1528,7 +1497,6 @@ public abstract class SpeciesSettings {
 		// bigger = better
 		ProdWorker() {
 			super(ROOT, "PROD_WORKER", 100, 70, 300, 1, 5, 20, DIFFERENCE, new float[]{0f, .8f, 0f}, new float[]{0f, 0.8f, 0.01f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.workerProductivityMod(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.workerProductivityMod() * 100)); }
@@ -1539,7 +1507,6 @@ public abstract class SpeciesSettings {
 		ProdControl() {
 			super(ROOT, "PROD_CONTROL", 0, -1, 4, 1, 1, 1, DIFFERENCE, new float[]{0f, 15f, 0f}, new float[]{0f, 30f, 0f});
 			pctValue(false);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.robotControlsAdj(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.robotControlsAdj()); }
@@ -1552,7 +1519,6 @@ public abstract class SpeciesSettings {
 		IgnoresFactoryRefit() {
 			super(ROOT, "PROD_REFIT_COST", defaultValue, 40f, 0f);
 			isBullet(booleansAreBullet);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.ignoresFactoryRefit(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.ignoresFactoryRefit()); }
@@ -1567,7 +1533,6 @@ public abstract class SpeciesSettings {
 		// ==================== TechResearch ====================
 		//
 		public class TechResearch extends SettingInteger {
-
 			ResearchComputer		computer	= new ResearchComputer();
 			ResearchConstruction	construction= new ResearchConstruction();
 			ResearchForceField		forceField	= new ResearchForceField();
@@ -1578,7 +1543,6 @@ public abstract class SpeciesSettings {
 			TechResearch() {
 				super(ROOT, "TECH_RESEARCH", 100, 60, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, 0.7f, 0.004f}, new float[]{0f, 1.0f, 0.006f});
 				hasNoCost(false);
-				initOptionsText();
 			}
 			@Override public void settingToSkill(SpeciesSkills skills) { skills.researchBonusPct(settingValue()/100f); }
 			@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.researchBonusPct() * 100)); }
@@ -1587,29 +1551,19 @@ public abstract class SpeciesSettings {
 			}
 			@Override protected boolean next(Integer i) {
 				super.next(i);
-				if (settingText() == null) { // TODO BR: remove once EditCustomSpecies is obsolete
-					// To force refresh the display for those parameters 
-					computer.updated(true);
-					construction.updated(true);
-					forceField.updated(true);
-					planet.updated(true);
-					propulsion.updated(true);
-					weapon.updated(true);
-					return true;
-				}
-				computer.settingText().repaint(computer.guiSettingDisplayStr());
-				construction.settingText().repaint(construction.guiSettingDisplayStr());
-				forceField.settingText().repaint(forceField.guiSettingDisplayStr());
-				planet.settingText().repaint(planet.guiSettingDisplayStr());
-				propulsion.settingText().repaint(propulsion.guiSettingDisplayStr());
-				weapon.settingText().repaint(weapon.guiSettingDisplayStr());
-				return false;
+				// To force refresh the display for those parameters 
+				computer.updated(true);
+				construction.updated(true);
+				forceField.updated(true);
+				planet.updated(true);
+				propulsion.updated(true);
+				weapon.updated(true);
+				return true;
 			}
 			@Override public boolean toggle(MouseWheelEvent e) {
 				super.toggle(e);
 				return true;
 			}
-			@Override public void enabledColor(float cost) { super.enabledColor(cost()); }
 
 			String costString(float cost) {
 				String str = "(<";
@@ -1629,60 +1583,42 @@ public abstract class SpeciesSettings {
 			// ==================== ResearchComputer ====================
 			//
 			private class ResearchComputer extends SettingResearch {
-				ResearchComputer() {
-					super("RESEARCH_COMPUTER");
-					initOptionsText();
-				}
+				ResearchComputer()	{ super("RESEARCH_COMPUTER"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(0, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(0) * 100)); }
 			}
 			// ==================== ResearchConstruction ====================
 			//
 			private class ResearchConstruction extends SettingResearch {
-				ResearchConstruction() {
-					super("RESEARCH_CONSTRUCTION");
-					initOptionsText();
-				}
+				ResearchConstruction()	{ super("RESEARCH_CONSTRUCTION"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(1, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(1) * 100)); }
 			}
 			// ==================== ResearchForceField ====================
 			//
 			private class ResearchForceField extends SettingResearch {
-				ResearchForceField() {
-					super("RESEARCH_FORCEFIELD");
-					initOptionsText();
-				}
+				ResearchForceField()	{ super("RESEARCH_FORCEFIELD"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(2, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(2) * 100)); }
 			}
 			// ==================== ResearchPlanet ====================
 			//
 			private class ResearchPlanet extends SettingResearch {
-				ResearchPlanet() {
-					super("RESEARCH_PLANET");
-					initOptionsText();
-				}
+				ResearchPlanet()	{ super("RESEARCH_PLANET"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(3, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(3) * 100)); }
 			}
 			// ==================== ResearchPropulsion ====================
 			//
 			private class ResearchPropulsion extends SettingResearch {
-				ResearchPropulsion() {
-					super("RESEARCH_PROPULSION");
-					initOptionsText();
-				}
+				ResearchPropulsion()	{ super("RESEARCH_PROPULSION"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(4, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(4) * 100)); }
 			}
 			// ==================== ResearchWeapon ====================
 			//
 			private class ResearchWeapon extends SettingResearch {
-				ResearchWeapon() {
-					super("RESEARCH_WEAPON");
-					initOptionsText();
-				}
+				ResearchWeapon()	{ super("RESEARCH_WEAPON"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(5, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(5) * 100)); }
 			}
@@ -1739,7 +1675,6 @@ public abstract class SpeciesSettings {
 		// ==================== TechDiscovery ====================
 		//
 		public class TechDiscovery extends SettingInteger {
-
 			DiscoveryComputer	  computer		= new DiscoveryComputer();
 			DiscoveryConstruction construction	= new DiscoveryConstruction();
 			DiscoveryForceField	  forceField	= new DiscoveryForceField();
@@ -1750,7 +1685,6 @@ public abstract class SpeciesSettings {
 			TechDiscovery() {
 				super(ROOT, "TECH_DISCOVERY", 50, 0, 100, 1, 5, 20, DIFFERENCE, new float[]{0f, .5f}, new float[]{0f, 0.5f});
 				hasNoCost(false);
-				initOptionsText();
 			}
 			@Override public void settingToSkill(SpeciesSkills skills) { skills.techDiscoveryPct(settingValue()/100f); }
 			@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techDiscoveryPct() * 100)); }
@@ -1759,36 +1693,26 @@ public abstract class SpeciesSettings {
 			}
 			@Override protected boolean next(Integer i) {
 				super.next(i);
-				if (settingText() == null) { // TODO BR: remove once EditCustomSpecies is obsolete
-					// To force refresh the display for those parameters 
-					computer.updated(true);
-					construction.updated(true);
-					forceField.updated(true);
-					planet.updated(true);
-					propulsion.updated(true);
-					weapon.updated(true);
-					return true;
-				}
-				computer.settingText().repaint(computer.guiSettingDisplayStr());
-				construction.settingText().repaint(construction.guiSettingDisplayStr());
-				forceField.settingText().repaint(forceField.guiSettingDisplayStr());
-				planet.settingText().repaint(planet.guiSettingDisplayStr());
-				propulsion.settingText().repaint(propulsion.guiSettingDisplayStr());
-				weapon.settingText().repaint(weapon.guiSettingDisplayStr());
-				return false;
+				// To force refresh the display for those parameters 
+				computer.updated(true);
+				construction.updated(true);
+				forceField.updated(true);
+				planet.updated(true);
+				propulsion.updated(true);
+				weapon.updated(true);
+				return true;
 			}
 			@Override public boolean toggle(MouseWheelEvent e) {
 				super.toggle(e);
 				return true;
 			}
-			@Override public void enabledColor(float cost) { super.enabledColor(cost()); }
 
 			String costString(float cost) {
 				String str = "(<";
 				str +=  new DecimalFormat("0.0").format(cost);
 				return str + ">)";
 			}
-			public float cost() {
+			float cost() {
 				return computer.settingCost()
 						+ construction.settingCost()
 						+ forceField.settingCost()
@@ -1802,60 +1726,42 @@ public abstract class SpeciesSettings {
 			//
 			private class DiscoveryComputer extends SettingDiscovery {
 				// smaller = better
-				DiscoveryComputer() {
-					super("DISCOVERY_COMPUTER");
-					initOptionsText();
-				}
+				DiscoveryComputer() { super("DISCOVERY_COMPUTER"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(0, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(0) * 100)); }
 			}
 			// ==================== DiscoveryConstruction ====================
 			//
 			private class DiscoveryConstruction extends SettingDiscovery {
-				DiscoveryConstruction() {
-					super("DISCOVERY_CONSTRUCTION");
-					initOptionsText();
-				}
+				DiscoveryConstruction()	{ super("DISCOVERY_CONSTRUCTION"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(1, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(1) * 100)); }
 			}
 			// ==================== DiscoveryForceField ====================
 			//
 			private class DiscoveryForceField extends SettingDiscovery {
-				DiscoveryForceField() {
-					super("DISCOVERY_FORCEFIELD");
-					initOptionsText();
-				}
+				DiscoveryForceField()	{ super("DISCOVERY_FORCEFIELD"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(2, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(2) * 100)); }
 			}
 			// ==================== DiscoveryPlanet ====================
 			//
 			private class DiscoveryPlanet extends SettingDiscovery {
-				DiscoveryPlanet() {
-					super("DISCOVERY_PLANET");
-					initOptionsText();
-				}
+				DiscoveryPlanet()	{ super("DISCOVERY_PLANET"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(3, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(3) * 100)); }
 			}
 			// ==================== DiscoveryPropulsion ====================
 			//
 			private class DiscoveryPropulsion extends SettingDiscovery {
-				DiscoveryPropulsion() {
-					super("DISCOVERY_PROPULSION");
-					initOptionsText();
-				}
+				DiscoveryPropulsion()	{ super("DISCOVERY_PROPULSION"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(4, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(4) * 100)); }
 			}
 			// ==================== DiscoveryWeapon ====================
 			//
 			private class DiscoveryWeapon extends SettingDiscovery {
-				DiscoveryWeapon() {
-					super("DISCOVERY_WEAPON");
-					initOptionsText();
-				}
+				DiscoveryWeapon()	{ super("DISCOVERY_WEAPON"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(5, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(5) * 100)); }
 			}
@@ -1998,8 +1904,8 @@ public abstract class SpeciesSettings {
 	class ShipNames extends SettingStringLanguage {
 		private static final String BASE_KEY = "SHIP_NAMES";
 		private static final String KEY(int size)	{ return BASE_KEY + "_" + size;}
-		final int shipSize;
-		ShipNames(int size, String langDir)	{
+		private final int shipSize;
+		private ShipNames(int size, String langDir)	{
 			super(ROOT, KEY(size), "", langDir);
 			shipSize = size;
 		}

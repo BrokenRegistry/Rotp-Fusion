@@ -42,8 +42,6 @@ import rotp.util.ModifierKeysState;
 public class StringDialogUI extends JDialog implements RotPComponents, ActionListener {
 	private static final long serialVersionUID = 1L;
 
-	private final int topInset	= scaled(6);
-	private final int sideInset	= scaled(15);
 	private final int s5	= scaled(5);
 	private final int s10	= scaled(10);
 
@@ -65,26 +63,16 @@ public class StringDialogUI extends JDialog implements RotPComponents, ActionLis
 		//Create and initialize the buttons.
 		String cancel = LabelManager.current().label("BUTTON_TEXT_CANCEL");
 		cancelButton = RotPButtons.newButton(cancel);
-//		cancelButton.setMargin(new Insets(topInset, sideInset, 0, sideInset));
-//		cancelButton.setFont(narrowFont(14));
 		cancelButton.setVerticalAlignment(SwingConstants.TOP);
-//		cancelButton.setBackground(GameUI.buttonBackgroundColor());
-//		cancelButton.setForeground(GameUI.buttonTextColor());
 		cancelButton.addActionListener(this);
 
 		String set = LabelManager.current().label("BUTTON_TEXT_SET");
 		setButton = RotPButtons.newButton(set);
-//		setButton.setMargin(new Insets(topInset, sideInset, 0, sideInset));
-//		setButton.setFont(narrowFont(14));
 		setButton.setVerticalAlignment(SwingConstants.TOP);
-//		setButton.setBackground(GameUI.buttonBackgroundColor());
-//		setButton.setForeground(GameUI.buttonTextColor());
 		setButton.addActionListener(this);
 
 		input = new RTextField();
 		input.addMouseListener(new DialMouseAdapter(setButton));
-//		input.setBackground(GameUI.setupFrame());
-//		input.setForeground(Color.BLACK);
 		input.addActionListener(this);
 
 		//Create a container so that we can add a title around
@@ -146,7 +134,6 @@ public class StringDialogUI extends JDialog implements RotPComponents, ActionLis
 		this.param 			= param;
 		this.initialValue	= initialValue;
 		dialGuide			= BaseModPanel.showGuide(); // Always reinitialize.
-		//getRootPane().setDefaultButton(setButton);
 
 		if (listFont == null)
 			input.setFont(narrowFont(14));
@@ -264,7 +251,6 @@ public class StringDialogUI extends JDialog implements RotPComponents, ActionLis
 		@Override public void mouseExited(MouseEvent evt)	{
 			hideGuide();
 		}
-
 	}
 
 	@Override public JComponent getComponent()	{ return (JComponent) getContentPane(); }

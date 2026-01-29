@@ -16,7 +16,6 @@
 
 package rotp.model.empires.species;
 
-import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.Rotp.rand;
 import static rotp.model.game.IMainOptions.minListSizePopUp;
 import static rotp.ui.util.IParam.langHelp;
@@ -26,14 +25,10 @@ import static rotp.ui.util.IParam.rowsSeparator;
 import static rotp.ui.util.IParam.tableFormat;
 import static rotp.util.Base.textSubs;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -46,7 +41,6 @@ import rotp.model.game.DynamicOptions;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.game.BaseModPanel.ModText;
 import rotp.ui.util.ListDialogUI;
 import rotp.ui.util.StringList;
 
@@ -80,15 +74,11 @@ public class SettingBase<T> implements ICRSettings<T> {
 	private int		bulletStart 	= 0;
 	private T		selectedValue	= null;
 	private T		defaultValue	= null;
-	private ModText settingText;
-	private ModText[] optionsText;
 	private String	settingToolTip;
 	private float	lastRandomSource;
 
 	private boolean updated = true;
-	private BufferedImage img;
 	private int deltaYLines;
-	private int drawCount = 0;
 	
 	// ========== Constructors and initializers ==========
 	//
@@ -112,7 +102,7 @@ public class SettingBase<T> implements ICRSettings<T> {
 	 * @param guiLabel  The label header
 	 * @param nameLabel The nameLabel
 	 */
-	public	SettingBase(String guiLabel, String nameLabel) {
+	SettingBase(String guiLabel, String nameLabel) {
 		this.guiLabel	= guiLabel;
 		this.nameLabel	= nameLabel;
 	}
@@ -123,23 +113,14 @@ public class SettingBase<T> implements ICRSettings<T> {
 		if (settingToolTip == null)
 			settingToolTip = "";
 	}
-	private	void optionsText(ModText[] optionsText)		{ this.optionsText = optionsText; }
-	public	void initOptionsText()				{
-		if (bulletBoxSize() > 0)
-			optionsText(new ModText[bulletBoxSize()]);
-	}
-	public	void isBullet(boolean isBullet)		{ this.isBullet = isBullet; }
-	public	void allowListSelect(boolean allow)	{ allowListSelect = allow; }
+	void isBullet(boolean isBullet)				{ this.isBullet = isBullet; }
+	void allowListSelect(boolean allow)			{ allowListSelect = allow; }
 	private	void isList(boolean isList)			{ this.isList = isList; }
-	public	void labelsAreFinals(boolean finals){ labelsAreFinals = finals; }
-	public	void showFullGuide(boolean show)	{ showFullGuide = show; }
+	void labelsAreFinals(boolean finals)		{ labelsAreFinals = finals; }
+	void showFullGuide(boolean show)			{ showFullGuide = show; }
 	protected void bulletHFactor(int factor)	{ bulletHFactor = factor; }
 	protected void refreshLevel(int level)		{ refreshLevel  = level; }
 	protected String getInputMessage()			{ return text(getLangLabel() + INPUT); }
-	protected void setFromCfgLabel(String s)	{
-		int index = labelValidIndex(labelList.indexOfIgnoreCase(s));
-		selectedValue(valueList.get(index));
-	}
 	@Override public String toString()	{
 		String s = getLangLabel() + ": " + selectedValue + " (" + defaultValue + ")";
 		return s;
@@ -262,43 +243,12 @@ public class SettingBase<T> implements ICRSettings<T> {
 	@Override public String getValueStr(int id)		{ return valueGuide(valueValidIndex(id)); }
 	@Override public String valueGuide(int id) 		{ return tableFormat(getRowGuide(id)); }
 	@Override public boolean updated()				{ return updated; }
-	@Override public void updated(boolean val)		{
-		if (val)
-			drawCount = 3;
-		updated = val;
-	}
+	@Override public void updated(boolean val)		{ updated = val; }
 
 	// ========== Public ICRSettings Interfaces ==========
 	//
-	@Override public void settingText(ModText txt)		{ settingText = txt.initGuide(this); }
 	@Override public void hasNoCost(boolean hasNoCost)	{ this.hasNoCost = hasNoCost; }
-	@Override public void optionText(ModText optionText, int i)	{ optionsText[i] = optionText; }
 	// return true if needs to repaint
-	@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, int idx) { // For bullet
-		if (e == null) { // Mouse Wheel Event
-			if (getDir(w) > 0) { // prev
-				if (bulletStart > 0) {
-					bulletStart(bulletStart-1);
-					repaint();
-					return true;
-				}
-				return false;
-			} else { // next
-				if (listSize() > bulletEnd()) {
-					bulletStart(bulletStart+1);
-					repaint();
-					return true;
-				}
-			}
-			return false;
-		} else { // Mouse Click
-			optionalInput();
-			index(idx);
-			guiSelect();
-			return false;
-		}
-	}
-	@Override public void updateGui()		{  repaint(); }
 	@Override public float settingCost()	{
 		if (isSpacer() || hasNoCost)
 			return 0f;;
@@ -318,18 +268,13 @@ public class SettingBase<T> implements ICRSettings<T> {
 		set(randomize(rand));
 	}
 	@Override public void setValueFromCost(float cost)	{ set(getValueFromCost(cost)); }
-	@Override public BufferedImage getImage()		{ return img; }
 	@Override public int deltaYLines()				{ return deltaYLines; }
-	@Override public void clearImage()				{ img = null; }
 	@Override public String guiSettingDisplayStr()	{ return isBullet ? guiSettingLabelCostStr() : guiSettingLabelValueCostStr(); }
 	@Override public boolean isSpacer()				{ return isSpacer; }
 	@Override public boolean hasNoCost()			{ return hasNoCost; }
 	@Override public boolean isBullet()				{ return isBullet; }
 	@Override public int bulletStart()				{ return bulletStart; }
 	@Override public float lastRandomSource()		{ return lastRandomSource; }
-	@Override public ModText settingText()			{ return settingText; }
-	@Override public ModText optionText(int i)		{ return optionsText[i]; }
-	@Override public ModText[] optionsText()		{ return optionsText; }
 	@Override public float	costFactor()			{
 		if (isList) {
 			if (lastRandomSource<0)
@@ -343,156 +288,9 @@ public class SettingBase<T> implements ICRSettings<T> {
 			return Math.max(maxValueCostFactor(), minValueCostFactor());
 	}
 	@Override public int bulletBoxSize()			{ return isBullet()? Math.min(listSize(), bulletMax) : 0; }
-	@Override public void drawSetting(int sizePad, int endPad, int optionH, int currentdWith,
-			Color frameC, int frameShift, int xLine, int yLine, int settingIndent,
-			int shift, int settingH, int frameTopPad, int wSetting, int optionIndent,
-			boolean retina, float retinaFactor) {
-		int optNum	= bulletBoxSize();;
-		float cost 	= settingCost();
-		ModText bt	= settingText();
-		int paramId	= index();
-		int bulletStart	= bulletStart();
-		int bulletSize	= bulletBoxSize();
-		if (optNum == 0) {
-			endPad	= 0;
-			sizePad	= 0;
-		}
-		deltaYLines	= settingH + frameTopPad + bulletSize*optionH + endPad;
-
-		if (retina) {
-			sizePad			*= retinaFactor;
-			endPad			*= retinaFactor;
-			optionH			*= retinaFactor;
-			currentdWith	*= retinaFactor;
-			frameShift		*= retinaFactor;
-			xLine			*= retinaFactor;
-			yLine			*= retinaFactor;
-			settingIndent	*= retinaFactor;
-			shift			*= retinaFactor;
-			settingH		*= retinaFactor;
-			frameTopPad		*= retinaFactor;
-			wSetting		*= retinaFactor;
-			optionIndent	*= retinaFactor;
-			bt.fontMult(retinaFactor);
-		}
-
-		int y		= Math.max(shift, frameShift);
-		int x		= 0;
-		int height	= (int) (deltaYLines*retinaFactor) - optionH/2 - endPad + y + 1;
-		int width	= currentdWith + 1;
-
-		img = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) img.getGraphics();
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
-		
-		int settingBoxH	= optNum * optionH + sizePad;
-		// frame
-		bt.displayText(guiSettingDisplayStr());
-		int blankW = bt.stringWidth(g) + settingIndent;
-		g.setColor(frameC);
-		drawBox(g, x, y - frameShift, currentdWith, settingBoxH, settingIndent/2, blankW);
-		enabledColor(cost);
-		bt.setScaledXY(x + settingIndent, y);
-		bt.draw(g);
-		if (retina) {
-			bt.fontMult(1);
-			bt.setBounds((int) ((x + settingIndent + xLine) / retinaFactor),
-						 (int) ((y + yLine - optionH - 2*frameShift) / retinaFactor),
-						 (int) ((currentdWith - 2*optionIndent) / retinaFactor),
-						 (int) (settingH / retinaFactor));
-		}
-		else
-			bt.shiftBounds(xLine, yLine- 2*frameShift);
-
-		y += settingH;
-		y += frameTopPad;
-		// Options
-		formatData(g, wSetting - 2*optionIndent);
-		for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
-			int optionIdx = bulletStart + bulletIdx;
-			bt = optionText(bulletIdx);
-			if (retina)
-				bt.fontMult(retinaFactor);
-			bt.disabled(optionIdx == paramId);
-			bt.displayText(guiCostOptionStr(optionIdx));
-			bt.setScaledXY(x + optionIndent, y);
-			bt.setFixedWidth(true, currentdWith-2*optionIndent);
-			bt.draw(g);
-			if (retina) {
-				bt.fontMult(1);
-				bt.setBounds((int) ((x + optionIndent + xLine) / retinaFactor),
-							 (int) ((y + yLine - optionH - 2*frameShift) / retinaFactor),
-							 (int) ((currentdWith - 2*optionIndent) / retinaFactor),
-							 (int) (optionH / retinaFactor));
-			}
-			else
-				bt.shiftBounds(xLine, yLine-2*frameShift);
-			y += optionH;
-		}
-
-		boolean hovered = bt.isHovered();
-		drawCount--;
-		//System.out.println(drawCount + " hovered: " + hovered + " " + this.nameLabel);
-		if (drawCount<=0 && !hovered) {
-			// System.out.println("updated(false)");
-			updated(false);
-		}
-
-		g.dispose();
-	}
-//	@Override public void updateGui(RSettingPanel panel)	{
-//		int paramId	= index();
-//		int bulletStart	= bulletStart();
-//		int bulletSize	= bulletBoxSize();
-//
-//		if (this instanceof RaceKey) {
-//			System.out.println("paramId = " + paramId + " bulletSize = " + bulletSize
-//					+ " guideSelectedValue() = " + guideSelectedValue()); // TODO BR: REMOVE
-//		}
-//		panel.setLabelColor(getCostColor());
-//		panel.setLabelText(guiSettingDisplayStr());
-//		if (bulletSize == 0) {
-//			panel.paintImmediately();
-//			return;
-//		}
-//		if (isSettingString()) {
-//			panel.setValueString(guideSelectedValue(), optionC);
-//			panel.paintImmediately();
-//			return;
-//		}
-//		if (bulletSize == 1) {
-//			panel.setValueString(guideSelectedValue(), optionC);
-//			panel.paintImmediately();
-//			return;
-//		}
-//		boolean refresh = false;
-//		for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
-//			int optionIdx = bulletStart + bulletIdx;
-//			boolean disabled = optionIdx == paramId;
-//			Color color = disabled? optionC : selectC;
-//			String text = guiCostOptionStr(optionIdx);
-//			refresh |= panel.setOptionString(text, bulletIdx, color, refresh && ((bulletIdx+1) >= bulletSize));
-//		}
-//		panel.paintImmediately();
-//	}
 	// ========== Overridable Methods ==========
 	//
-	protected boolean showFullGuide()		{ return showFullGuide; }
-	public void enabledColor(float cost)	{ settingText().enabledC(getCostColor(cost)); }
-	public Color getCostColor(float cost)	{
-		if (cost == 0) 
-			return settingC;
-		else if (cost > 0)
-			return settingPosC;
-		else
-			return settingNegC;	
-	}
-	@Override public Color getCostColor()	{
-		if (hasNoCost())
-			return settingBlandC;
-		return getCostColor(settingCost());
-	}
+	private boolean showFullGuide()			{ return showFullGuide; }
 	void resetOptionsToolTip()				{}
 	protected String getCfgValue(T value)	{
 		if (isList) {
@@ -515,28 +313,13 @@ public class SettingBase<T> implements ICRSettings<T> {
 		}
 		return 0f;
 	}
-	private void repaint() { 
-		if (isSpacer())
-			return;
-		if (settingText()!= null)
-			settingText().repaint();
-		int selectedIndex = cfgValidIndex();
-		int bulletSize	= bulletBoxSize();
-		for (int bulletIdx=0; bulletIdx < bulletSize; bulletIdx++) {
-			int optionIdx = bulletStart + bulletIdx;
-			if (settingText()!= null) {
-				optionText(bulletIdx).disabled(optionIdx == selectedIndex);
-				optionText(bulletIdx).repaint();
-			}
-		}
-	}
 	public T settingValue() {
 		if (selectedValue == null)
 			return defaultValue;
 		else
 			return selectedValue;
 	}
-	public SettingBase<?> set(T newValue) {
+	SettingBase<?> set(T newValue) {
 		if (isList) {
 			selectedValue = newValue;
 			selectedValue(valueList.get(valueValidIndex()));
@@ -576,15 +359,7 @@ public class SettingBase<T> implements ICRSettings<T> {
 	@Override public void selectedValue(T newValue) {
 		selectedValue = newValue;
 		updated = true;
-		if (isBullet && listSize()>bulletBoxSize()) {
-			// center the value
-			int boxSize	= bulletBoxSize();
-			int start	= Math.max(0, index()-boxSize/2);
-			int end		= Math.min(listSize(), start + boxSize);
-			bulletStart(end - boxSize);
-		}
 	}
-	protected StringList labelList()		{ return labelList; }
 	protected StringList guiTextsList()		{
 		StringList guiTextList = new StringList();
 		for (String label : labelList)
@@ -594,11 +369,11 @@ public class SettingBase<T> implements ICRSettings<T> {
 	protected StringList altReturnList()	{ return cfgValueList; }
 	// ========== Setter ==========
 	//
-	public SettingBase<?> defaultIndex(int index) {
+	SettingBase<?> defaultIndex(int index)	{
 		setDefaultIndex(bounds(0, index, cfgValueList.size()-1));
 		return this;
 	}
-	public SettingBase<?> defaultCfgValue(String defaultCfgValue) {
+	SettingBase<?> defaultCfgValue(String defaultCfgValue) {
 		setDefaultIndex(cfgValidIndex(cfgValueList.indexOfIgnoreCase(defaultCfgValue)));
 		return this;
 	}
@@ -613,10 +388,9 @@ public class SettingBase<T> implements ICRSettings<T> {
 	protected String guiOptionLabel()	{ return guiOptionLabel(index()); }
 	protected String guiOptionLabel(int index)	{ return langLabel(labelList.get(cfgValidIndex(index))); }
 	@Override public String getLabel()	{ return langLabel(getLangLabel()); }
-	private	int bulletEnd()				{ return bulletStart + bulletBoxSize(); }
 	int	bulletHeightFactor()			{ return bulletHFactor; }
 	public	boolean	isDefaultIndex()	{ return cfgValidIndex() == rawDefaultIndex(); }
-	public	int listSize()				{ return valueList.size(); }
+	int listSize()						{ return valueList.size(); }
 	public	StringList getOptions()		{ return new StringList(cfgValueList); }
 	public	StringList getLabels()		{ return new StringList(labelList); }
 	public	LinkedList<T> getValues()	{
@@ -672,7 +446,7 @@ public class SettingBase<T> implements ICRSettings<T> {
 	 * @param value
 	 * @return this for chaining purpose
 	 */
-	public void put(String cfgValue, String langLabel, float cost, T value) {
+	void put(String cfgValue, String langLabel, float cost, T value) {
 		isList(true);
 		cfgValueList.add(cfgValue);
 		costList.add(cost);
@@ -680,7 +454,7 @@ public class SettingBase<T> implements ICRSettings<T> {
 		addLabel(langLabel);
 		addToolTip(langLabel, false);
 	}
-	public void put(String cfgValue, String langLabel, float cost, T value, String tooltipKey) {
+	void put(String cfgValue, String langLabel, float cost, T value, String tooltipKey) {
 		isList(true);
 		cfgValueList.add(cfgValue);
 		costList.add(cost);
@@ -710,16 +484,6 @@ public class SettingBase<T> implements ICRSettings<T> {
 		costList.clear();
 		valueList.clear();
 		tooltipList.clear();
-		bulletStart(0);
-	}
-	protected void clearOptionsText() {
-		if (optionsText == null)
-			return;
-		for (int i=0; i<optionsText.length; i++ )
-			if (optionsText[i] != null) {
-				optionsText[i].removeBoxFromList();
-				//optionsText[i] = null;
-			}
 	}
 	protected T optionValue(int index)	{ return valueList.get(valueValidIndex(index)); }
 	protected String getTableHelp()		{
@@ -735,17 +499,6 @@ public class SettingBase<T> implements ICRSettings<T> {
 	protected String getDefaultCfgValue()	{ return getCfgValue(defaultValue); }
 	// ========== Private Methods ==========
 	//
-	private void bulletStart(int start) {
-		bulletStart = start;
-		int idx = index();
-		if(optionsText==null || optionsText[0]==null)
-			return;
-		for (int bulletIdx=0; bulletIdx < bulletBoxSize(); bulletIdx++) {
-			int optionIdx = bulletStart + bulletIdx;
-			optionText(bulletIdx).disabled(optionIdx == idx);
-			optionText(bulletIdx).displayText(guiCostOptionStr(optionIdx));
-		}
-	}
 	/**
 	 * @param min Limit Value in %
 	 * @param max Limit Value in %
@@ -814,7 +567,7 @@ public class SettingBase<T> implements ICRSettings<T> {
 	private int bounds(int low, int val, int hi)	{ return Math.min(Math.max(low, val), hi); }
 	private int cfgValidIndex()				{ return cfgValidIndex(rawSelectedIndex()); }
 	private int cfgValidIndex(int index)	{ return cfgValueList.isValidIndex(index)? index : valueValidDefaultIndex(); }
-	private int labelValidIndex(int index)	{ return labelList.isValidIndex(index)? index : valueValidDefaultIndex(); }
+	//private int labelValidIndex(int index)	{ return labelList.isValidIndex(index)? index : valueValidDefaultIndex(); }
 	private int valueValidDefaultIndex()	{ return bounds(0, rawDefaultIndex(), valueList.size()-1); }
 	private int valueValidIndex()			{ return valueValidIndex(rawSelectedIndex()); }	
 	private int valueValidIndex(int index)	{ return index<0 || index>valueList.size()? valueValidDefaultIndex() : index; }
@@ -860,14 +613,11 @@ public class SettingBase<T> implements ICRSettings<T> {
 				-1, -1,						// Position
 				RotPUI.scaledSize(360), RotPUI.scaledSize(height),	// size
 				null, null,				// Font, Preview
-				altReturnList(),	// Alternate return
+				altReturnList(),		// Alternate return
 				this);					// help parameter
 
 		String input = (String) dialog.showDialog(refreshLevel);
-		// System.out.println("input = " + input);
 		if (input != null && getValueIndexIgnoreCase(input) >= 0)
 			set((T) input);
-		// System.out.println("input = " + input);
-		// System.out.println("getIndex() = " + getIndex());
 	}
 }

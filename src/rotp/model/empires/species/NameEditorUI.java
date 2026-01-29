@@ -104,7 +104,6 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 	private LangageSelection langageSelection; // ComboBox
 	private SelectionBars bars;
 
-	private BasePanel parent;
 	private boolean oldTooltipState;
 	private Image backImage;
 	private int backGroundAlpha = 200;
@@ -119,22 +118,19 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 		setOpaque(true);
 	}
 	public void init(BasePanel parent, AllSpeciesAttributes settings)	{
-		this.parent		= parent;
 		this.settings	= settings;
 		oldTooltipState	= isTooltipEnabled();
 		initTooltips();
 		cancelled(false);
 		setTooltipEnabled(false);
 		setEnabled(true);
+		enterGuide(this);
 		this.removeAll();
 		setLayout(new GridBagLayout());
 		setGuideColors(GameUI.loadHoverBackground(), Color.BLACK);
 
-//		addVariableSpace(this, 0, 0);
 		contentPane = new ContentPanel();
 		add(contentPane, newGbc(0,0, 1,1, 0,0, NORTH, NONE, new Insets(0, 0, 0, 0), 0,0));
-
-//		setTitle(text(ROOT + "NAMES_TITLE"));
 		backImage = null;
 
 		setVisible(true);
@@ -143,7 +139,6 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 	private void close()	{
 		buttonClick();
 		setTooltipEnabled(oldTooltipState);
-//		descriptionPane.setActive(false);
 		leaveGuide();
 		disableGlassPane();
 
@@ -152,7 +147,6 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 		setEnabled(false);
 		removeAll();
 		backImage	= null;
-		parent		= null;
 		languageButtonList		= null;
 		civilizationButtonList	= null;
 		languageTextColor		= null;
@@ -579,8 +573,6 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 
 			x++;
 			x++;
-//			keyField = new SettingField(settings.raceKey, NORM_FIELDS_COL);
-//			add(keyField, newGbc(x, y, 1,1, 0,0, CENTER, NONE, insets, 0,0));
 			keyField = new SettingField(this, settings.raceKey, NORM_FIELDS_COL, x, y, leftLanguageDir, 0);
 
 			x++;
@@ -878,27 +870,6 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 		private SelectionBars() {
 			setName("SelectionPane");
 			setOpaque(false);
-//			setLayout(new GridBagLayout());
-//			int x = 0;
-//			int y = 0;
-//			selectCivilization = new RButtonBar(civilizationButtonList, ITEM_ID, true, true, false);
-//			selectCivilization.setButtonBarListener(new CivilizationBarListener());
-//			selectCivilization.setTextColorGetter((idx, name) -> getCivilizationTextColor(idx, name));
-//			GridBagConstraints gbc = newGbc(x,y, 1,1, 0,0, WEST, NONE, ZERO_INSETS, 0,0);
-//			add(selectCivilization, gbc);
-//
-//			x++;
-//			addVariableSpace(this, x, y);
-//
-//			selectLanguage = new RButtonBar(languageButtonList, LANGUAGE_ID, false, true, true);
-//			selectLanguage.setButtonBarListener(new LanguageBarListener());
-//			selectLanguage.setNewTextRequest(new NextName());
-//			selectLanguage.setTextColorGetter((idx, name) -> getLanguageTextColor(idx, name));
-//			gbc.gridx = x+1;
-//			gbc.weightx = 0;
-//			gbc.anchor = EAST;
-//			add(selectLanguage, gbc);
-//			repaint();
 		}
 		private void buildPanel()	{
 			setLayout(new GridBagLayout());
@@ -1029,7 +1000,6 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 	// ========================================================================
 	// Other Specific Components definition
 	//
-	
 	private class LangageSelection extends RComboBox<String>	{
 		private static final long serialVersionUID = 1L;
 		private LangageSelection(StringList list)	{
@@ -1053,7 +1023,7 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 			setRenderingHints(g);
 			g.setColor(GameUI.buttonBackgroundColor());
 			g.fillRect(0, 0, w, h);
-			g.setColor(ICRSettings.settingBlandC);
+			g.setColor(blandTextColor());
 			setFont(getSpecialFont(value));
 			g.drawString(value, textIndent, h-textBaseline);
 		}

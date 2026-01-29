@@ -24,7 +24,6 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import rotp.model.empires.species.ICRSettings;
 import rotp.ui.game.GameUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.races.RacesUI;
@@ -34,15 +33,14 @@ import rotp.util.FontManager;
 public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 	private static final long serialVersionUID = 1L;
 
-	protected List<T> selectionList;
-//	private RaceList raceList;
 	protected int comboFontSize	= 12;
 	protected int textIndent	= s5;
 	protected int textBaseline	= s4;
 	protected Font comboFont	= FontManager.current().narrowFont(comboFontSize);
-	protected boolean showArrow = true;
-	protected int boxLocation	= SwingConstants.SOUTH;
-	protected IParam<T> param;
+	private List<T> selectionList;
+	private boolean showArrow = true;
+	private int boxLocation	= SwingConstants.SOUTH;
+	private IParam<T> param;
 
 	public void enableArrow(boolean flag)	{
 		if (flag == showArrow)
@@ -55,7 +53,7 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 		boxLocation = popupLocation;
 		setUI(new RComboBoxUI());
 	}
-	protected void showTipFor(int index, String text)	{
+	private void showTipFor(int index, String text)	{
 		if (param == null)
 			return;
 		String tip = param.getToolTip(index);
@@ -63,12 +61,10 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 	}
 
 	public RComboBox(List<T> list)	{
-		super();
 		updateList(list);
 		init();
 	}
 	public RComboBox(IParam<T> param)	{
-		super();
 		this.param = param;
 		if (param != null) {
 			List<T> list = (List<T>) param.getListForUI();
@@ -77,11 +73,7 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 		}
 		init();
 	}
-
-	public RComboBox()	{
-		super();
-		init();
-	}
+	public RComboBox()	{ init(); }
 	private void init()	{
 		setOpaque(false);
 		setLightWeightPopupEnabled(false);
@@ -92,8 +84,8 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 		setUI(new RComboBoxUI());
 	}
 	protected Font getSpecialFont(String value)	{ return comboFont; }
-	protected Font lastFont = comboFont;
-	@Override public JComponent getComponent()	{ return this; } // TODO BR: Add TOOL TIP
+	private Font lastFont = comboFont;
+	@Override public JComponent getComponent()	{ return this; }
 	@Override public void paintChildren(Graphics g)	{
 		if (showArrow)
 			super.paintChildren(g);
@@ -107,7 +99,7 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 		setRenderingHints(g);
 		g.setColor(GameUI.buttonBackgroundColor());
 		g.fillRect(0,0, w, h);
-		g.setColor(ICRSettings.settingBlandC);
+		g.setColor(blandTextColor());
 		setFont(comboFont);
 		g.drawString("Load GMO File", textIndent, h-textBaseline);
 	}
@@ -131,7 +123,6 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 			g.fillRect(0,0, w, h);
 
 			g.setColor(getForeground());
-//			setFont(comboFont);
 			setFont(lastFont);
 			g.drawString(getText(), textIndent, h-textBaseline);
 		}
@@ -139,7 +130,6 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 				Object value, int index, boolean isSelected, boolean cellHasFocus)	{
 			super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			lastFont = getSpecialFont(value.toString());
-//			System.out.println("index: " + index + " value: " + value);
 			setFont(lastFont);
 			if (isSelected)
 				showTipFor(index, value.toString());
@@ -161,10 +151,10 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 			return button;
 		}
 	}
-	class RComboPopup extends BasicComboPopup	{
+	private class RComboPopup extends BasicComboPopup	{
 		private static final long serialVersionUID = 1L;
 
-		public RComboPopup(JComboBox<Object> combo) {
+		private RComboPopup(JComboBox<Object> combo) {
 			super(combo);
 			list.setSelectionBackground(GameUI.raceCenterColor());
 			list.setSelectionForeground(highlightColor());

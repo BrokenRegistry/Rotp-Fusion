@@ -878,7 +878,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		@Override public void mousePressed(MouseEvent evt)	{ }
 		@Override public void mouseReleased(MouseEvent evt)	{ animateFleet = !animateFleet; }
 		@Override public void mouseEntered(MouseEvent evt)	{
-			popGuide(text(ROOT + "FLEET_HELP"), -s40, -s40);
+			popGuide(text(ROOT + "FLEET_HELP"), -s36, -s36);
 			setDescription(text(ROOT + "FLEET_HELP"));
 		}
 		@Override public void mouseExited(MouseEvent evt)	{

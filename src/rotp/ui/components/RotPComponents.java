@@ -44,7 +44,8 @@ import rotp.util.FontManager;
 public interface RotPComponents extends IGuide, Base, ScaledInteger {
 	Insets ZERO_INSETS	= new Insets(0, 0, 0, 0);
 	String LABEL_DESCRIPTION	= IParam.LABEL_DESCRIPTION;
-//	DescriptionPane descriptionPane = new DescriptionPane(); // not cap, because not really a constant!
+
+	default Color blandTextColor()			{ return GameUI.borderBrightColor(); }	// Setting name color
 
 	default Color buttonBackgroundColor()	{ return GameUI.buttonBackgroundColor(); }
 	default Color buttonTextColor()			{ return GameUI.borderBrightColor(); }
