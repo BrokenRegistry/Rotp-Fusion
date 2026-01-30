@@ -234,7 +234,7 @@ public interface ICombatOptions extends IBaseOptsTools {
 			.setLimits(0, 1000)
 			.setIncrements(1, 5, 20)
 			.perMilleValue(true);
-	default float asteroidsVanishProbPerMille()	{ return asteroidsVanishProbPerMille.get()/1000; }
+	default float asteroidsVanishProbPerMille()	{ return asteroidsVanishProbPerMille.get()/1000f; }
 
 	ParamInteger baseNoAsteroidsProbPct		= new ParamInteger(MOD_UI, "BASE_NO_ASTEROIDS", 46)
 			.setLimits(0, 100)

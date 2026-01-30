@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-01-30 (BR)
+- Fixed asteroids no longer disappeared gradually.
+- Updated JRE in the .exe file to Version 25.0.1_8
+
 26-01-23 (BR)
 - Changed the default mouse sensitivity to "High" to prevent annoyingly slow UI responsiveness.
 
