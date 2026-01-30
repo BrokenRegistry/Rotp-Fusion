@@ -229,6 +229,7 @@
 
 ### Miscellaneous:
 
+- Updated JRE in the .exe file to Version 25.0.1_8
 - Custom images can be put in an "images" folder located in the same folder as the jar file.
   - The folder structure inside the images folder must be the same as the original one, and the file type must be the same as specified in the txt files.
 - Standardization and centralization of aptitudes display methodes in the opponents' control panel.
@@ -328,6 +329,7 @@
 
 ### Fixes:
 
+- Fixed asteroids no longer disappeared gradually.
 - Changed the default mouse sensitivity to "High" to prevent annoyingly slow UI responsiveness.
 - Fixed certain fields displaying the generic name of the species instead of the specific name of the Empire.
 - Fixed potential "Memory Leak" (added by the last fix)

@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<version>Fusion-2026-01-23</version>
+	<version>Fusion-2026-01-30</version>
 
 	<!-- Project Declaration -->
 	<groupId>com.rayfowler</groupId>
@@ -370,7 +370,7 @@
 				<configuration>
 					<!-- ##### Think to also update the version number in Windows.xml ##### -->
 					<url>
-						https://github.com/adoptium/temurin23-binaries/releases/download/jdk-23.0.1%2B11/OpenJDK23U-jre_x64_windows_hotspot_23.0.1_11.zip
+						https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.1%2B8/OpenJDK25U-jre_x64_windows_hotspot_25.0.1_8.zip
 					</url>
 					<unpack>true</unpack>
 					<outputDirectory>${project.build.directory}/jre-win</outputDirectory>
