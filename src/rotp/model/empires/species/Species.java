@@ -18,13 +18,14 @@ import rotp.model.empires.Empire.EmpireBaseData;
 import rotp.model.empires.Leader;
 import rotp.model.empires.RaceCombatAnimation;
 import rotp.model.empires.SystemInfo;
-import rotp.model.empires.species.SkillsFactory.CivilizationRecord;
+import rotp.model.empires.species.DNAFactory.CivilizationRecord;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.planet.PlanetType;
 import rotp.model.tech.Tech;
 import rotp.ui.util.StringList;
 import rotp.util.Base;
+import rotp.util.LabelManager;
 
 public class Species implements ISpecies, Base, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -159,7 +160,7 @@ public class Species implements ISpecies, Base, Serializable {
 		}
 		anim = getAnim(key);
 		if (anim == null) { // Add custom race if missing
-			skills = SkillsFactory.keyToCustomSpecies(null, key);
+			skills = DNAFactory.keyToCustomSpecies(null, key);
 			skills.isCustomSpecies(true);
 //			skills.setDescription4(skills.text(CUSTOM_RACE_DESCRIPTION));
 		}
@@ -179,6 +180,7 @@ public class Species implements ISpecies, Base, Serializable {
 		initialHomeWorld	= src.initialHomeWorld;
 		initialLeaderName	= src.initialLeaderName;
 		civilizationId		= src.civilizationId;
+		trySkillsForNames	= trySkillsForNames();
 	}
 	// ====================================================================
 	// Initializers
@@ -203,7 +205,6 @@ public class Species implements ISpecies, Base, Serializable {
 		Species species = new Species(animKey, skillsKey, options);
 		anim	= species.anim;
 		skills	= species.skills;
-		trySkillsForNames = trySkillsForNames();
 		if (civilizationId == null) {
 			setOldSpeciesIndex(raceNameIndex);
 		}
@@ -237,7 +238,7 @@ public class Species implements ISpecies, Base, Serializable {
 	SpeciesSkills setSpeciesSkills(String skillsKey)	{
 		skills = getAnim(skillsKey);
 		if (skills == null) {
-			skills = SkillsFactory.keyToCustomSpecies(anim, skillsKey);
+			skills = DNAFactory.keyToCustomSpecies(anim, skillsKey);
 			skills.isCustomSpecies(true);
 //			skills.setDescription4(skills.text(CUSTOM_RACE_DESCRIPTION)); // TO DO BR: May be not!!!
 		}
@@ -246,12 +247,12 @@ public class Species implements ISpecies, Base, Serializable {
 	public SpeciesSkills setSpeciesSkills(String skillsKey, DynOptions options)	{
 		if (options == null)
 			return setSpeciesSkills(skillsKey);
-		skills = SkillsFactory.optionToSkills(anim, options);
+		skills = DNAFactory.optionToSkills(anim, options);
 		skills.isCustomSpecies(true);
 		return skills;
 	}
 	SpeciesSkills setSpeciesSkills(DynOptions options)	{
-		skills = SkillsFactory.optionToSkills(anim, options);
+		skills = DNAFactory.optionToSkills(anim, options);
 		skills.isCustomSpecies(true);
 		return skills;
 	}
@@ -369,7 +370,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public List<String> introduction()	{ return introduction(isPlayer()); }
 	public boolean isCustomPlayer()		{ return skills.isCustomSpecies() && isPlayer(); }
 //	public String isAnimAutonomous()	{ return skills.isAnimAutonomous(); }
-	public void initCRToShow(SkillsFactory cr)	{ cr.setFromRaceToShow(skills, speciesOptions());}
+	public void initCRToShow(DNAFactory dnaFactory)	{ dnaFactory.setFromRaceToShow(skills, speciesOptions());}
 	// ====================================================================
 	// Purely Animations
 	//
@@ -491,8 +492,12 @@ public class Species implements ISpecies, Base, Serializable {
 	public String raceId()					{ return anim.id; }
 	public String lossSplashKey()			{ return anim.lossSplashKey(); }
 	public String winSplashKey()			{ return anim.winSplashKey(); }
-	public String randomSystemName(Empire e)	{ return anim.randomSystemName(e); } // TODO BR: add option for custom systems
-	public String raceText(String key, String... s)	{ return anim.text(key, s); }
+	public String randomSystemName(Empire e)		{ return anim.randomSystemName(e); } // TODO BR: add option for custom systems
+	public String raceText(String key, String... s)	{
+		if (anim == null)
+			return LabelManager.current().label(key);
+		return anim.text(key, s);
+	}
 
 	// ====================================================================
 	// Purely Skills

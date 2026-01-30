@@ -598,6 +598,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
                 if (parent.showShipRanges())
                     drawExtendedRangeDisplay(g0);
                 drawOwnershipDisplay(g0);
+                g0.dispose();
             }
             g.drawImage(rangeMapBuffer,0,0,null);
         }
@@ -613,6 +614,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
 				if(!historyMode)
                 	drawExtendedRangeDisplay(g0);
 				drawOwnershipDisplay(g0);
+				g0.dispose();
 			}
         }
 	}

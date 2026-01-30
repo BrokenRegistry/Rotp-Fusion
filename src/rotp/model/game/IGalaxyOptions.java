@@ -106,37 +106,37 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 	}
 	static int getNumberStarSystems(String size, IGameOptions opts)	{ return galaxySizeMap(true, opts).get(size); }
 	static List<String> getGalaxyShapeOptions()	{ return AllShapes.getNames(); }
-	interface IShapeOption extends IParam	{
-		IParam getParam();
+	interface IShapeOption<T> extends IParam<T>	{
+		IParam<?> getParam();
 		default String	defaulttoString()	{ return getAsInt().toString(); }
 		default String	gettoString()		{ return getAsInt().toString(); }
 		default Integer	getAsInt()			{ return 0; }
 		void setString(String str);
 	}
-	class ListShapeParam extends ArrayList<IShapeOption>	{
+	class ListShapeParam extends ArrayList<IShapeOption<?>>	{
 		private static final long serialVersionUID = 1L;
-		private static final IShapeOption NONE = new ShapeOptionList("NONE");
-		public ListShapeParam(Collection<IShapeOption> c)	{
+		private static final IShapeOption<?> NONE = new ShapeOptionList("NONE");
+		public ListShapeParam(Collection<IShapeOption<?>> c)	{
 			addAll(c);
 		}
 		public ListShapeParam()			{}
-		@Override public IShapeOption get(int id)	{
+		@Override public IShapeOption<?> get(int id)	{
 			if (id<0 || size() == 0 || id >= size())
 				return NONE;
 			return super.get(id);
 		}
-		@Override public boolean add(IShapeOption so)	{
+		@Override public boolean add(IShapeOption<?> so)	{
 			if (so == null)
 				return false;
 			return super.add(so);
 		}
-		@Override public boolean addAll(Collection<? extends IShapeOption> c)	{
+		@Override public boolean addAll(Collection<? extends IShapeOption<?>> c)	{
 			if (c == null)
 				return false;
 			return super.addAll(c);
 		}
 	}
-	class ShapeOptionInteger extends ParamInteger implements IShapeOption	{
+	class ShapeOptionInteger extends ParamInteger implements IShapeOption<Integer>	{
 		private ShapeOptionInteger(String name)	{
 			super(BASE_UI, name + "_O" + 0, 0);
 			isDuplicate(false);
@@ -152,7 +152,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 			else
 				updated(true);
 		}
-		@Override public IParam getParam()			{ return this; }
+		@Override public IParam<?> getParam()		{ return this; }
 		@Override public String defaulttoString()	{ return defaultValue().toString(); }
 		@Override public String gettoString()		{
 			Integer i = get();
@@ -172,7 +172,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 		}
 		@Override public Integer getAsInt()			{ return get(); }
 	}
-	class ShapeOptionString extends ParamString implements IShapeOption	{
+	class ShapeOptionString extends ParamString implements IShapeOption<String>	{
 		private ShapeOptionString(String name)	{
 			super(BASE_UI, name + "_O" + 0, "");
 			isDuplicate(false);
@@ -188,7 +188,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 			else
 				updated(true);
 		}
-		@Override public IParam getParam()			{ return this; }
+		@Override public IParam<?> getParam()			{ return this; }
 		@Override public String defaulttoString()	{ return defaultValue(); }
 		@Override public String gettoString()		{
 			String str = get();
@@ -202,7 +202,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 			return str;
 		}
 	}
-	class ShapeOptionList extends ParamList implements IShapeOption	{
+	class ShapeOptionList extends ParamList implements IShapeOption<String>	{
 		private ShapeOptionList(String name)	{
 			super(BASE_UI, name + "_O" + 0, new ArrayList<>(), "");
 			isDuplicate(false);
@@ -219,7 +219,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 			showFullGuide(true);
 		}
 
-		@Override public IParam getParam()			{ return this; }
+		@Override public IParam<?> getParam()		{ return this; }
 		@Override public String defaulttoString()	{ return defaultValue(); }
 		@Override public String gettoString()		{
 			String str = get();
@@ -233,13 +233,13 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 			return str;
 		}
 	}
-	class ShapeOptionListMult extends ParamListMultiple implements IShapeOption	{
+	class ShapeOptionListMult extends ParamListMultiple implements IShapeOption<String>	{
 		public ShapeOptionListMult(String name, int option, List<String> list, int defaultId)	{
 			super(BASE_UI, name + "_O" + option, list, list.get(defaultId));
 			showFullGuide(true);
 		}
 
-		@Override public IParam getParam()			{ return this; }
+		@Override public IParam<?> getParam()		{ return this; }
 		@Override public String defaulttoString()	{ return defaultValue(); }
 		@Override public String gettoString()		{ return get(); }
 		@Override public void setString(String str)	{ set(str); }

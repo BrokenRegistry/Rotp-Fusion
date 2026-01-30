@@ -1,5 +1,6 @@
 package rotp.ui.components;
 
+import static java.awt.GridBagConstraints.BOTH;
 import static java.awt.GridBagConstraints.CENTER;
 import static java.awt.GridBagConstraints.EAST;
 import static java.awt.GridBagConstraints.NORTH;
@@ -11,9 +12,11 @@ import static java.awt.GridBagConstraints.SOUTHWEST;
 import static java.awt.GridBagConstraints.WEST;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
@@ -32,25 +35,35 @@ import javax.swing.text.JTextComponent;
 
 import rotp.ui.ScaledInteger;
 import rotp.ui.game.GameUI;
+import rotp.ui.game.GuideUI.IGuide;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.util.IParam;
 import rotp.util.Base;
 import rotp.util.FontManager;
 
-public interface RotPComponents extends Base, ScaledInteger {
+public interface RotPComponents extends IGuide, Base, ScaledInteger {
 	Insets ZERO_INSETS	= new Insets(0, 0, 0, 0);
 	String LABEL_DESCRIPTION	= IParam.LABEL_DESCRIPTION;
+
+	default Color blandTextColor()			{ return GameUI.borderBrightColor(); }	// Setting name color
 
 	default Color buttonBackgroundColor()	{ return GameUI.buttonBackgroundColor(); }
 	default Color buttonTextColor()			{ return GameUI.borderBrightColor(); }
 	default Color highlightColor()			{ return Color.YELLOW; }
+
 	default Color tooltipBackgroundColor()	{ return GameUI.paneBackgroundColor(); }
 	default Color tooltipTxtColor()			{ return SystemPanel.blackText; }
 	default Font tooltipFont()				{ return FontManager.getNarrowFont(scaled(tooltipFontSize())); }
+
+	default Font settingLabelFont()			{ return FontManager.getNarrowFont(scaled(settingsFontSize())); }
+	default Font settingValueFont()			{ return FontManager.getNarrowFont(scaled(settingsFontSize())); }
 	default int baseFontSize()				{ return 14; }
 	default int tooltipFontSize()			{ return 12; }
-	default int baseDismissDelay()			{ return 10000; }
+	default int settingsFontSize()			{ return 12; }
+	default int baseDismissDelay()			{ return 4000; }	// in ms (default = 4000 ms)
+	default int baseInitialDelay()			{ return 750; }		// in ms (default = 750 ms)
 
+	// #=== 
 	/**
 	 * Creates a {@code GridBagConstraints} object with
 	 * all of its fields set to the passed-in arguments.
@@ -231,6 +244,23 @@ public interface RotPComponents extends Base, ScaledInteger {
 		UIManager.put("ToolTip.font", tooltipFont());
 		UIManager.put("ToolTip.background", tooltipBackgroundColor());
 		UIManager.put("ToolTip.foreground", tooltipTxtColor());
-		ToolTipManager.sharedInstance().setDismissDelay(baseDismissDelay());
-	}	
+		setTooltipDismissDelay(baseDismissDelay());
+		setTooltipInitialDelay(baseInitialDelay());
+	}
+	default void setTooltipInitialDelay(int ms)	{ToolTipManager.sharedInstance().setInitialDelay(ms);} // (4000 ms)
+	default void setTooltipDismissDelay(int ms)	{ToolTipManager.sharedInstance().setDismissDelay(ms);} // (750 ms)
+	default void setTooltipEnabled(boolean is)	{ToolTipManager.sharedInstance().setEnabled(is);}
+	default boolean isTooltipEnabled()			{return ToolTipManager.sharedInstance().isEnabled();}
+	default int getTooltipInitialDelay()		{return ToolTipManager.sharedInstance().getInitialDelay();}
+	default int getTooltipDismissDelay()		{return ToolTipManager.sharedInstance().getDismissDelay();}
+	// -#-
+
+	default void addVariableSpace(Container pane, int x, int y)	{
+		GridBagConstraints gbc = newGbc(x,y, 1,1, 1.0,1.0, CENTER, BOTH, ZERO_INSETS, 0,0);
+		pane.add(new RLabel(""), gbc);
+	}
+	default boolean isShiftDown(ActionEvent evt) { return (evt.getModifiers() & ActionEvent.SHIFT_MASK) > 0; }
+	default boolean isCtrlDown(ActionEvent evt)	 { return (evt.getModifiers() & ActionEvent.CTRL_MASK) > 0; }
+	default boolean isAltDown(ActionEvent evt)	 { return (evt.getModifiers() & ActionEvent.ALT_MASK) > 0; }
+
 }

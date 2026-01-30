@@ -92,7 +92,7 @@ public final class AllSubUI {
 	public static SafeListParam allModOptions(boolean refresh)			{
 		if (refresh || allModOptions == null) {
 			// Start with a set to filter duplicates
-			LinkedHashSet<IParam> allOptions = new LinkedHashSet<>();
+			LinkedHashSet<IParam<?>> allOptions = new LinkedHashSet<>();
 			for (AbstractOptionsSubUI ui : instance().uiMap.values())
 				allOptions.addAll(ui.getListNoSpacer());
 			// Remove the line separators
@@ -107,14 +107,14 @@ public final class AllSubUI {
 	}
 	public static SafeListParam allCfgOptions(boolean refresh)			{
 		SafeListParam list = new SafeListParam(ALL_CFG_OPTIONS);
-		for(IParam param : allModOptions(refresh))
+		for(IParam<?> param : allModOptions(refresh))
 			if (param.isCfgFile())
 				list.add(param);
 		return list;
 	}
 	public static SafeListParam allNotCfgOptions(boolean refresh)		{
 		SafeListParam list = new SafeListParam(ALL_NOT_CFG_OPTIONS);
-		for(IParam param:allModOptions(refresh))
+		for(IParam<?> param:allModOptions(refresh))
 			if (!param.isCfgFile())
 				list.add(param);
 		return list;

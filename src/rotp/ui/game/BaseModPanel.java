@@ -31,6 +31,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
+import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -78,12 +79,12 @@ public abstract class BaseModPanel extends BasePanel
 	protected static final String cancelKey		 	= "SETTINGS_CANCEL";
 	protected static final String applyKey		 	= "SETTINGS_APPLY";
 	
-	private	  static int	 exitButtonWidth, guideButtonWidth,
-							 userButtonWidth, defaultButtonWidth, lastButtonWidth;
-	protected static int	 mX, mY;
-	protected static int	 smallButtonMargin, smallButtonH;
-	protected static int	 miniButtonMargin, miniButtonH;
-	protected static int	 cnr;
+	private	  static int exitButtonWidth, guideButtonWidth,
+						 userButtonWidth, defaultButtonWidth, lastButtonWidth;
+	protected static int mX, mY;
+	protected static int smallButtonMargin, smallButtonH;
+	protected static int miniButtonMargin, miniButtonH;
+	protected static int cnr;
 
 	private	static int	guideFontSize;
 	public	static int	guideFontSize()			{ return guideFontSize; }
@@ -120,13 +121,13 @@ public abstract class BaseModPanel extends BasePanel
 
 	protected int xButton, yButton, wButton, hButton; // absolute button position.
 	protected int xFull, yFull, wFull, hFull, rFull, bFull; // absolute panel window size and position (right, bottom)
-	protected int xGist, yGist, hGist, rGist, bGist; // relative Content size and position (right, bottom)
-	private int wGist; // relative Content size and position (right, bottom)
-	protected BufferedImage buttonBackImg;
+	protected int xCore, yCore, hCore, rCore, bCore; // relative Content size and position (right, bottom)
+	private int wCore; // relative Content size and position (right, bottom)
+	protected BufferedImage keyBoundBackImg;
 	private	  LinearGradientPaint bg;
 	protected LinearGradientPaint bg() {
 		if (bg == null)
-			bg = GameUI.modBackground(xGist, rGist);
+			bg = GameUI.modBackground(xCore, rCore);
 		return bg;
 	}
 	protected BufferedImage backImg; // the full background
@@ -141,8 +142,8 @@ public abstract class BaseModPanel extends BasePanel
         }
         return backImg;
     }
-	protected int wGist()				{ return wGist; }
-	protected void wGist(int w)			{ wGist = w; }
+	protected int wCore()				{ return wCore; }
+	protected void wCore(int w)			{ wCore = w; }
 //	protected int retina(int val)		{ return (int) (val*retinaFactor); }
 //	protected int invRetina(int val)	{ return (int) (val/retinaFactor); }
 	protected int retina(int val)		{ return val*retinaFactor; }
@@ -201,7 +202,7 @@ public abstract class BaseModPanel extends BasePanel
 		cnrR		= cnr;
 		initialised	= false;
 		backImg		= null;
-		buttonBackImg	= null;
+		keyBoundBackImg	= null;
 		bg	= null;
 	}
 	protected void terminate()	{ reInit(false); }
@@ -246,12 +247,12 @@ public abstract class BaseModPanel extends BasePanel
 			hFull = RotPUI.setupRaceUI().getHeight();
 			rFull = xFull + wFull;
 			bFull = yFull + hFull;
-			xGist = 0;
-			yGist = 0;
-			wGist(wFull);
-			hGist = hFull;
-			rGist = xGist + wGist();
-			bGist = yGist + hGist;
+			xCore = 0;
+			yCore = 0;
+			wCore(wFull);
+			hCore = hFull;
+			rCore = xCore + wCore();
+			bCore = yCore + hCore;
 		}
 		smallButtonMargin = s30;
 		smallButtonH	  = s30;
@@ -279,7 +280,7 @@ public abstract class BaseModPanel extends BasePanel
 		initialised = true;
 	}
 	public void clearImages() {
-		buttonBackImg = null;
+		keyBoundBackImg = null;
 		backImg = null;
 		bg = null;
 	}
@@ -291,12 +292,12 @@ public abstract class BaseModPanel extends BasePanel
 		isOnTop = false;
 		//ModifierKeysState.reset();
 	}
-	private BufferedImage buttonBackImg() {
-        if (buttonBackImg == null)
+	private BufferedImage keyBoundBackImg() {
+        if (keyBoundBackImg == null)
             initButtonBackImg();
-        return buttonBackImg;
+        return keyBoundBackImg;
     }
-	@Override public void repaintButtons() {
+	@Override public void repaintKeyBound() {
 		initButtonBackImg();
 		Graphics2D g = (Graphics2D) getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -309,13 +310,13 @@ public abstract class BaseModPanel extends BasePanel
 	}
 	protected void drawButtons(Graphics2D g) {
 		if (retina) {
-			BufferedImage img = buttonBackImg();
+			BufferedImage img = keyBoundBackImg();
 			int w = img.getWidth();
 			int h = img.getHeight();
 			g.drawImage(img, xButton, yButton, xButton+invRetina(w), yButton+invRetina(h), 0, 0, w, h, null);
 		}
 		else
-			g.drawImage(buttonBackImg(), xButton, yButton, null);
+			g.drawImage(keyBoundBackImg(), xButton, yButton, null);
 		drawButtons(g, false); // init = false; local = false
 	}
     protected void drawButton(Graphics2D g, boolean init, Box box, String str) {
@@ -390,8 +391,8 @@ public abstract class BaseModPanel extends BasePanel
 	}
 	public BufferedImage initButtonBackImg() {
 		initButtonPosition();
-		buttonBackImg = new BufferedImage(retina(wButton), retina(hButton), TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) buttonBackImg.getGraphics();
+		keyBoundBackImg = new BufferedImage(retina(wButton), retina(hButton), TYPE_INT_ARGB);
+		Graphics2D g = (Graphics2D) keyBoundBackImg.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
 		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -412,7 +413,8 @@ public abstract class BaseModPanel extends BasePanel
 		guideBox.fillButtonBackImg(g);
 
 		drawButtons(g, true); // init = true; local = true
-		return buttonBackImg;
+		g.dispose();
+		return keyBoundBackImg;
 	}
 
 	// ==================== Guide Button ====================
@@ -434,7 +436,9 @@ public abstract class BaseModPanel extends BasePanel
 			loadGuide();
 		else
 			clearGuide();
-		paintComponent(getGraphics());
+		Graphics g = getGraphics();
+		paintComponent(g);
+		g.dispose();
 	}	
 
 	// ==================== Exit Button ====================
@@ -710,7 +714,7 @@ public abstract class BaseModPanel extends BasePanel
 	@Override public void showHotKeys() {
 		Rectangle hotKeysBox  = new Rectangle(mX, mY, 0, 0);
 		String    hotKeysText = text("MOD_OPTIONS_HELP_HK");
-		guidePopUp.setDest(hotKeysBox, hotKeysText, getGraphics());
+		guidePopUp.setDest(hotKeysBox, hotKeysText);
 		contextHlp = true;
 	}
 	@Override public void mouseClicked(MouseEvent e) {  }
@@ -805,13 +809,13 @@ public abstract class BaseModPanel extends BasePanel
 		}
 		if (!(showGuide.get() || dialGuide))
 			return;
-		guidePopUp.setDest(hoverBox, false, getGraphics());
+		guidePopUp.setDest(hoverBox, false);
 	}
 	private boolean showContextualHelp()	{ // Following "F1!
 		if (hoverBox == null)
 			return false; // ==> panel help
 		
-		if (!guidePopUp.setDest(hoverBox, true, getGraphics()))
+		if (!guidePopUp.setDest(hoverBox, true))
 			return false; // ==> panel help
 		contextHlp = true;
 		return true;
@@ -829,7 +833,7 @@ public abstract class BaseModPanel extends BasePanel
 	//
 	final class Box extends Rectangle {
 		private static final long serialVersionUID = 1L;
-		private IParam	param;
+		private IParam<?>	param;
 		private String	label;
 		private ModText modText;
 		private int 	mouseBoxIndex;
@@ -847,12 +851,12 @@ public abstract class BaseModPanel extends BasePanel
 			boxHelpList.add(this);
 			this.label = label;
 		}
-		Box(IParam param)	{
+		Box(IParam<?> param)	{
 			this();
 			boxHelpList.add(this);
 			this.param = param;
 		}
-		Box(IParam param, int mouseBoxIndex) {
+		Box(IParam<?> param, int mouseBoxIndex) {
 			this(param);
 			mouseBoxIndex(mouseBoxIndex);
 		}
@@ -864,11 +868,11 @@ public abstract class BaseModPanel extends BasePanel
 			boxBaseList.add(this);
 			//System.out.println("added " + boxBaseList.size() + " " + getDescription());
 		}
-		private void initGuide(String label) { this.label = label; }
-		public  void initGuide(IParam param) { this.param = param; }
-		private void mouseBoxIndex(int idx)	 { mouseBoxIndex = idx; }
-		public String getLabel()			 { return label; }
-		public IParam getParam()			 { return param; }
+		private void initGuide(String label)	{ this.label = label; }
+		public  void initGuide(IParam<?> param)	{ this.param = param; }
+		private void mouseBoxIndex(int idx)	{ mouseBoxIndex = idx; }
+		public String getLabel()			{ return label; }
+		public IParam<?> getParam()			{ return param; }
 
 		// ========== Doers ==========
 		//
@@ -908,11 +912,30 @@ public abstract class BaseModPanel extends BasePanel
 				modText.mouseExit();
 			}
 		}
-		void fillButtonBackImg(Graphics2D g) {
-			if (retina)
+		void fillButtonBackImg(Graphics2D g)	{ fillButtonBackImg(g, true); }
+		void fillButtonBackImg(Graphics2D g, boolean lined)	{
+			Color c1 = GameUI.borderBrightColor();
+			if (retina) {
 				g.fillRoundRect(retina(x-xButton), retina(y-yButton), retina(width), retina(height), cnrR, cnrR);
-			else
+				if (lined) {
+					Paint paint = g.getPaint();
+					g.setStroke(stroke2);
+					g.setColor(c1);
+					g.drawRoundRect(retina(x-xButton), retina(y-yButton), retina(width), retina(height), cnrR, cnrR);
+					g.setPaint(paint);
+				}
+			}
+			else {
 				g.fillRoundRect(x-xButton, y-yButton, width, height, cnr, cnr);
+				if (lined) {
+					Paint paint = g.getPaint();
+					g.setStroke(stroke1);
+					g.setColor(c1);
+					g.drawRoundRect(x-xButton, y-yButton, width, height, cnr, cnr);
+					g.setPaint(paint);
+				}
+			}
+
 		}
 		void fillButtonFullImg(Graphics2D g) {
 			if (retina)
@@ -1071,7 +1094,7 @@ public abstract class BaseModPanel extends BasePanel
 		}
 		public void    fontMult(float fMult)	{ super.newFontSize((int) (baseFontsize * fMult)); }
 		public void	   removeBoxFromList()		{ box.removeFromList(); }
-		public ModText initGuide(IParam param)	{ box.initGuide(param); return this; }
+		public ModText initGuide(IParam<?> param)	{ box.initGuide(param); return this; }
 		public ModText initGuide(String label)	{ box.initGuide(label); return this; }
 		Box box() {
 			box.setBounds(bounds());
@@ -1126,14 +1149,14 @@ public abstract class BaseModPanel extends BasePanel
 			setVisible();
 			init(dest);
 		}
-		public  void setDest(Rectangle dest, String text, Graphics g0)	{
+		public  void setDest(Rectangle dest, String text)	{
 			guideFontSize(FONT_SIZE);
 			lineArr = null;
 			setFullHelp(dest.width == 0);
 			setText(text);
 			setDest(dest);
 		}
-		private boolean setDest(Box dest, boolean fullHelp, Graphics g0){
+		private boolean setDest(Box dest, boolean fullHelp){
 			if (dest == null)
 				return false;
 			guideFontSize(FONT_SIZE);

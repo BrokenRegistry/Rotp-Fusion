@@ -163,10 +163,10 @@ public abstract class GalaxyShape implements Base, Serializable {
 		list.add(paramOption4());
 		return list;
 	}
-	public IShapeOption paramOption1()	{ return null; }
-	public IShapeOption paramOption2()	{ return null; }
-	public IShapeOption paramOption3()	{ return null; }
-	public IShapeOption paramOption4()	{ return null; }
+	public IShapeOption<?> paramOption1()	{ return null; }
+	public IShapeOption<?> paramOption2()	{ return null; }
+	public IShapeOption<?> paramOption3()	{ return null; }
+	public IShapeOption<?> paramOption4()	{ return null; }
 
 	public void setOption1(String value)	{}
 	public void setOption2(String value)	{}

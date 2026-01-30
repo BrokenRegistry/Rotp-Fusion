@@ -18,6 +18,8 @@ package rotp.model.ships;
 import java.util.ArrayList;
 import java.util.List;
 
+import rotp.ui.RotPUI;
+
 public class ShipImage {
     List<String> iconKeys = new ArrayList<>();
     int currentFrame = 0;
@@ -25,6 +27,8 @@ public class ShipImage {
     public List<String> icons()   { return iconKeys; }
     public String baseIcon()      { return iconKeys.get(0); }
     public String currentIcon()   { return iconKeys.get(currentFrame); }
+	public String animationIcon() { return iconKeys.get(RotPUI.instance().animationCount() % iconKeys.size()); }
+	public String animIcon(int i) { return iconKeys.get((i+RotPUI.instance().animationCount()) % iconKeys.size()); }
     public String nextIcon()  {
         currentFrame = (currentFrame +1) % iconKeys.size();
         return currentIcon();

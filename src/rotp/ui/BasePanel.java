@@ -88,7 +88,7 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
     public void showHelp()                 {  }
     public void cancelHelp()               {  }
     public void advanceHelp()              { }
-    
+
     public boolean hasStarBackground()     { return false; }
     public final boolean hasTexture()      { return textureName() != null; }
     public boolean isAlpha()               { return false; }
@@ -306,7 +306,7 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
     public void drawTexture(Graphics g0) {
         drawTexture(g0, 0, 0, getWidth(), getHeight());
     }
-    
+
     public void drawTextureWithExistingClip(Graphics g0, int x, int y, int w, int h) {
        if (!UserPreferences.texturesInterface())
             return;
@@ -377,10 +377,10 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
     // BR:
     public boolean checkModifierKey(InputEvent e) {
 		if (checkForChange(e)) {
-			repaintButtons();
+			repaintKeyBound();
 			return true;
 		}
 		return false;
 	}
-    public void repaintButtons() { repaint(); }
+    public void repaintKeyBound() { repaint(); }
 }

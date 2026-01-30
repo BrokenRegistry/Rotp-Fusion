@@ -23,7 +23,7 @@ import java.awt.event.MouseWheelEvent;
 import java.text.DecimalFormat;
 
 import rotp.model.game.IGameOptions;
-import rotp.ui.game.BaseModPanel;
+import rotp.ui.BasePanel;
 
 public class ParamFloat extends AbstractParam<Float> {
 	
@@ -143,7 +143,7 @@ public class ParamFloat extends AbstractParam<Float> {
 	}	
 	@Override public boolean next() { return next(baseInc()); }
 	@Override public boolean prev() { return next(-baseInc()); }
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame)		{ return next(getInc(e) * getDir(e)); }
+	@Override public boolean toggle(MouseEvent e, BasePanel frame)	{ return next(getInc(e) * getDir(e)); }
 	@Override public boolean toggle(MouseWheelEvent e) { return next(getInc(e) * getDir(e)); }
 	@Override protected Float getOptionValue(IGameOptions options) {
 		Float value = options.dynOpts().getFloat(getLangLabel());

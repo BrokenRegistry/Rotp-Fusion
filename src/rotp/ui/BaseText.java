@@ -218,10 +218,16 @@ public class BaseText implements Base, ScaledInteger {
             return text;
     }
     public int draw() {
-        return draw(panel.getGraphics());
+		Graphics g = panel.getGraphics();
+		int draw = draw(g);
+		g.dispose();
+		return draw;
     }
     public int drawCentered() {
-        return drawCentered(panel.getGraphics());
+		Graphics g = panel.getGraphics();
+		int drawCentered = drawCentered(g);
+		g.dispose();
+		return drawCentered;
     }
     public void updateBounds(Graphics g) { update(g, false); } // BR:
     public int draw(Graphics g) { return update(g, true); }

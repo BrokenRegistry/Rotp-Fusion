@@ -221,6 +221,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
     }
 	@Override protected void singleInit()	{ paramList = AllSubUI.optionsRace(); }
 	public void init(String name)	{
+		this.setEnabled(true);
     	super.init();
 		leaderName.setBackground(GameUI.setupFrame());
 		leaderName.setFont(labelFont);
@@ -237,11 +238,11 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 		newGameOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
 	}
     @Override public void init() {
+		setEnabled(true);
     	super.init();
     	leaderName.setBackground(GameUI.setupFrame());
     	shipSetTxt.setBackground(GameUI.setupFrame());
     	homeWorld.setBackground(GameUI.setupFrame());
-    	EditCustomRaceUI.updatePlayerCustomRace();
         leaderName.setFont(labelFont);
         setHomeWorldFont(); // BR: MonoSpaced font for Galaxy
         shipSetTxt.setFont(labelFont); // BR:
@@ -546,7 +547,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         g.setStroke(prev);
 	}
 	@Override public void paintComponent(Graphics g0) {
-		// showTiming = true; // TO DO BR: Comment
+		//showTiming = true; // TO DO BR: Comment
 		if (showTiming)
 			System.out.println("===== SetupRaceUI PaintComponents =====");
 		if (!isOnTop)
@@ -1177,11 +1178,11 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 			BufferedImage tmp = new BufferedImage(w0/2, h0/2, TYPE_INT_ARGB);
 			Graphics2D g2D = tmp.createGraphics();
 			// BR: Maximized Quality
-	        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
-	        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-	        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2D.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
+			g2D.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+			g2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 			g2D.drawImage(img, 0, 0, w0/2, h0/2, 0, 0, w0, h0, this);
 			g2D.dispose();
 			img = tmp;
@@ -1203,25 +1204,24 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         fleetImages[shapeId] = resizedImg;
 		return fleetImages[shapeId];
     }
-    // BR: Display UI panel for Player Race Customization
-    private void goToPlayerRaceCustomization() {
-        buttonClick();
-        EditCustomRaceUI.instance().open(this);
+	// BR: Display UI panel for Player Race Customization
+	private void goToPlayerRaceCustomization(MouseEvent e) {
+		buttonClick();
+		RotPUI.instance().selectDNAWorkshopPanel(true);
 		setVisible(false);
-    }
+		setEnabled(false);
+	}
     private void goToRenameSpecies() {
         buttonClick();
 		String langId = LanguageManager.selectedLanguageDir();
 		switch (langId) {
 			case "en":
 				buttonClick();
-//				IMainOptions.specieNameOptionsUI().toggle(null, GUI_ID, this);
 				AllSubUI.nameSubUI().toggle(null, GUI_ID, this);
 				setVisible(false);
 				return;
 			case "fr":
 				buttonClick();
-//				IMainOptions.specieNameOptionsFrUI().toggle(null, GUI_ID, this);
 				AllSubUI.nameFrSubUI().toggle(null, GUI_ID, this);
 				setVisible(false);
 				return;
@@ -1293,7 +1293,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 			doLastBoxAction();
         // BR: Player Race customization
         else if (hoverBox == playerRaceSettingBox)
-            goToPlayerRaceCustomization();
+            goToPlayerRaceCustomization(e);
         else if (hoverBox == checkBox) {
             playerIsCustom.toggle(e, this);
             checkBoxChanged();

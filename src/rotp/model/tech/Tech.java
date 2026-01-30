@@ -361,6 +361,7 @@ public class Tech implements Base, ScaledInteger {
             int x= x1-(sw/2);
             drawBorderedString(g, s, x, y1, Color.white, Color.red);
         }
+        g.dispose();
         sleep(250);
         ui.paintAllImmediately();
         sleep(250);

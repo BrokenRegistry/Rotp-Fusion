@@ -4,12 +4,10 @@ import static java.awt.GridBagConstraints.NONE;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -18,12 +16,11 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.ToolTipUI;
 
 import rotp.model.empires.species.SettingString;
 import rotp.ui.BasePanel;
 import rotp.ui.game.GameUI;
+import rotp.ui.util.IParam;
 import rotp.util.FontManager;
 
 public class RotPTextFields { //extends RotPComponents {
@@ -38,6 +35,15 @@ public class RotPTextFields { //extends RotPComponents {
 
 		private boolean showBorder;
 
+		public RTextField()	{
+			super();
+			setBackground(GameUI.setupFrame());
+			setForeground(textFieldTextColor());
+			setFont(textFieldFont);
+			setBorder(border);
+			setOpaque(false);
+			addMouseListener(new TextFieldMouseAdapter());
+		}
 		public RTextField(String text, int columns)	{
 			super(text, columns);
 			setBackground(GameUI.setupFrame());
@@ -51,15 +57,18 @@ public class RotPTextFields { //extends RotPComponents {
 			this(text, columns);
 			pane.add(this, gbc);
 		}
+//		@Override public String getToolTipText(MouseEvent e){ return null; }
+		@Override public JComponent getComponent()			{ return this; }
 		@Override protected void paintComponent(Graphics g)	{
 			Graphics2D g2 = (Graphics2D) g;
-			Rectangle bounds = getBounds();
+			int w = getWidth();
+			int h = getHeight();
 			g2.setColor(GameUI.setupFrame());
-			g2.fillRect(0, s2, bounds.width-1, bounds.height-1-s2-s2);
+			g2.fillRect(0, s2, w-1, h-1-s2-s2);
 			if (showBorder) {
 				g2.setStroke(BasePanel.stroke1);
 				g2.setColor(highlightColor());
-				g2.drawRect(0, s2, bounds.width-1, bounds.height-1-s2-s2);
+				g2.drawRect(0, s2, w-1, h-1-s2-s2);
 			}
 			super.paintComponent(g);
 		}
@@ -67,10 +76,17 @@ public class RotPTextFields { //extends RotPComponents {
 			@Override public void mouseEntered(MouseEvent evt)	{
 				showBorder = true;
 				setForeground(textFieldTextHLColor());
+				if (!isEditable()) {
+					popGuide();
+//					String tip = getToolTipText();
+//					if (tip!=null && !tip.isEmpty())
+//						popGuide(tip);
+				}
 			}
 			@Override public void mouseExited(MouseEvent evt)	{
 				showBorder = false;
 				setForeground(textFieldTextColor());
+				hideGuide();
 			}
 			@Override public void mousePressed(MouseEvent evt)	{}
 			@Override public void mouseReleased(MouseEvent evt)	{}
@@ -80,6 +96,7 @@ public class RotPTextFields { //extends RotPComponents {
 	public static class RFieldAndLabel extends RTextField	{
 		private static final long serialVersionUID = 1L;
 		protected RLabel rotPLabel;
+		protected IParam<String> param;
 
 		public RFieldAndLabel(String label, String txt, int colomns)	{
 			super(txt, colomns); // Create RotPTextField
@@ -90,31 +107,42 @@ public class RotPTextFields { //extends RotPComponents {
 			pane.add(rotPLabel, newGbc(x,y, 1,1, 0,0, 6, NONE, ZERO_INSETS, 0,0));
 			pane.add(this, newGbc(x+1,y, 1,1, 0,0, 4, NONE, ZERO_INSETS, 0,0));
 		}
+		public void setToolTipText(String labelTT, String fieldTT)	{
+			if (labelTT != null && !labelTT.isEmpty())
+				rotPLabel.setToolTipText(labelTT);
+			if (fieldTT != null && !fieldTT.isEmpty())
+				setToolTipText(fieldTT);
+		}
+		public void setParam(IParam<String> param)		{
+			this.param = param;
+			rotPLabel.setParam(param);
+		}
+		@Override public IParam<?> getParam()		{ return param; }
+		@Override public JComponent getComponent()	{ return rotPLabel; }
 	}
-
 	public static class SettingField extends RFieldAndLabel	{
 		private static final long serialVersionUID = 1L;
-		private final SettingString setting;
+//		private final SettingString param;
 		private int currentId;
 
 		public SettingField(SettingString setting, int colomns)	{
 			super(setting.getLabel(), setting.settingValue(), colomns);
-			this.setting = setting;
+			setParam(setting);
+//			this.param = setting;
 			init();
 		}
 		public SettingField(Container pane, SettingString setting, int colomns, int x, int y)	{
 			super(pane, setting.getLabel(), setting.settingValue(), colomns, x, y);
-			this.setting = setting;
+			setParam(setting);
+//			this.param = setting;
 			init();
 		}
 		public SettingField(Container pane, SettingString setting, int colomns, int x, int y, String lang, int itemId)	{
 			super(pane, setting.getLabel(lang), setting.settingValue(itemId), colomns, x, y);
-			this.setting = setting;
+			setParam(setting);
+//			this.param = setting;
 			String tooltips = setting.htmlTooltips();
-			if (!tooltips.isEmpty()) {
-				setToolTipText(tooltips);
-				rotPLabel.setToolTipText(tooltips);
-			}
+			setToolTipText(tooltips, tooltips);
 			currentId = itemId;
 			init();
 		}
@@ -125,38 +153,16 @@ public class RotPTextFields { //extends RotPComponents {
 		}
 		private class TextFieldAction implements ActionListener	{
 			@Override public void actionPerformed(ActionEvent evt)	{
-				//System.out.println("TextFieldAction " + evt.getActionCommand());
 				SettingField field = (SettingField) evt.getSource(); // should be this
-				//String actionCommand = evt.getActionCommand();
-				//String label = field.setting.getLabel();
 				String text = field.getText();
-				//System.out.println("TextFieldAction Label = " + label + " Text = " + text + " Command = " + actionCommand);
-				setting.selectedValue(currentId, text);
+				param.selectedValue(currentId, text);
 			}
 		}
-		private void textChangedAction()	{ setting.selectedValue(currentId, getText()); }
-	}
-	public static class RotPToolTipUI extends ToolTipUI {
-		public static ComponentUI createUI(JComponent c)	{
-			return new RotPToolTipUI();
-		}
-		RotPToolTipUI() {
-			
-		}
-		@Override public void paint(Graphics g, JComponent c)	{
-			super.paint(g, c);
-		}
-		@Override public void update(Graphics g, JComponent c)	{
-			super.update(g, c);
-		}
-		@Override public Dimension getMinimumSize(JComponent c)	{
-			return c.getLayout().minimumLayoutSize(c);
-		}
-		@Override public Dimension getPreferredSize(JComponent c)	{
-			return c.getLayout().preferredLayoutSize(c);
-		}
-		@Override public Dimension getMaximumSize(JComponent c)	{
-			return getPreferredSize(c);
+		private void textChangedAction()	{
+			if (param!= null)
+				param.selectedValue(currentId, getText());
+			else
+				System.out.println("Failed textChangedAction(): " + getText() + " Id = " + currentId); // TODO BR: REMOVE
 		}
 	}
 }

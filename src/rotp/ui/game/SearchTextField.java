@@ -56,8 +56,8 @@ class SearchTextField extends BaseTextField	{
 		parent.refreshGui(0);
 		validFocus();
 	}
-	public IParam getHoveredParam()	{ return resultField.selectedResult.param; }
-	public IParam getHoveredUI()	{ return resultField.selectedResult.ui; }
+	public IParam<?> getHoveredParam()	{ return resultField.selectedResult.param; }
+	public IParam<?> getHoveredUI()		{ return resultField.selectedResult.ui; }
 	void search()	{
 		String toSearch = getText();
 		if (toSearch.length() < 1) {

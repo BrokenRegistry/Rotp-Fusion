@@ -60,6 +60,7 @@ import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
 import rotp.ui.sprites.RoundGradientPaint;
 import rotp.ui.util.RotpFileChooser;
+import rotp.util.Base;
 import rotp.util.FontManager;
 import rotp.util.ImageManager;
 import rotp.util.LanguageManager;
@@ -77,7 +78,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     public  static String gameName = "";
 
     private static final Color langShade[] = { new Color(0,0,0,128), new Color(128,0,0,96) };
-    // private static final Color menuHover[] = {  new Color(255,220,181), new Color(255,255,210) };
+    private static final Color menuHover[] = {  new Color(255,220,181), new Color(255,255,210) };
     private static final Color menuDepressed[] = { new Color(156,96,77), new Color(110,110,110) };
     private static final Color menuEnabled[] = { new Color(255,203,133), new Color(197,197,197) };
     private static final Color menuDisabled[] = { new Color(156,96,77), new Color(110,110,110) };
@@ -156,6 +157,11 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 
     public static void  colorSet(int set)		  { colorSet = set; }
     public static Color langShade()               { return langShade[opt()]; }
+	public static Color menuHover()					{ return menuHover[opt()]; }
+	public static Color menuDepressed()				{ return menuDepressed[opt()]; }
+	public static Color menuEnabled()				{ return menuEnabled[opt()]; }
+	public static Color menuDisabled()				{ return menuDisabled[opt()]; }
+	public static Color menuShade()					{ return titleColor[opt()]; }
     public static Color titleColor()              { return titleColor[opt()]; }
     public static Color titleShade()              { return titleShade[opt()]; }
     public static Color setupShade()              { return setupShade[opt()]; }
@@ -180,17 +186,28 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     public static Color loadListMask()            { return loadListMask[opt()]; }
     public static Color sortLabelBackColor()      { return sortLabelBackColor[opt()]; }
 
+    public static LinearGradientPaint modBackground(float x0, float x1, int alpha) {
+        Point2D start = new Point2D.Float(x0, 0); // BR adjustable for 10 or 16 species
+        Point2D end = new Point2D.Float(x1, 0);
+        float[] dist = {0.0f, 0.1f, 0.9f, 1.0f};
+        Color mid0 = Base.setAlpha(raceCenterColor(), alpha);
+//        Color edge0 = opt()==0? new Color(147,96, 61) : new Color(65,72,71);
+        Color edge0 = Base.setAlpha(raceEdgeColor(), alpha);
+//        Color mid0 = raceCenterColor();
+        Color[] colors0 = {edge0, mid0,  mid0, edge0 };
+        return new LinearGradientPaint(start, end, dist, colors0, CycleMethod.REPEAT);
+  }
     public static LinearGradientPaint modBackground(float x0, float x1) {
-          Point2D start = new Point2D.Float(x0, 0); // BR adjustable for 10 or 16 species
-          Point2D end = new Point2D.Float(x1, 0);
-          float[] dist = {0.0f, 0.1f, 0.9f, 1.0f};
-          Color mid0 = raceCenterColor();
-//          Color edge0 = opt()==0? new Color(147,96, 61) : new Color(65,72,71);
-          Color edge0 = raceEdgeColor();
-//          Color mid0 = raceCenterColor();
-          Color[] colors0 = {edge0, mid0,  mid0, edge0 };
-          return new LinearGradientPaint(start, end, dist, colors0, CycleMethod.REPEAT);
-    }
+        Point2D start = new Point2D.Float(x0, 0); // BR adjustable for 10 or 16 species
+        Point2D end = new Point2D.Float(x1, 0);
+        float[] dist = {0.0f, 0.1f, 0.9f, 1.0f};
+        Color mid0 = raceCenterColor();
+//        Color edge0 = opt()==0? new Color(147,96, 61) : new Color(65,72,71);
+        Color edge0 = raceEdgeColor();
+//        Color mid0 = raceCenterColor();
+        Color[] colors0 = {edge0, mid0,  mid0, edge0 };
+        return new LinearGradientPaint(start, end, dist, colors0, CycleMethod.REPEAT);
+  }
     public static LinearGradientPaint buttonBackground(int x0, int x1) {
         Point2D start = new Point2D.Float(x0, 0); // BR adjustable for 10 or 16 species
         Point2D end = new Point2D.Float(x1, 0);
@@ -1211,8 +1228,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         titleImg = null;
         repaint();
 		if (resetCRUI) {
-			ShowCustomRaceUI.languageChanged();
-			EditCustomRaceUI.languageChanged();
+			// TODO BR: Validate language Change on DNA Workshop
 		}
     }
     private void goToSettings() {
@@ -1424,7 +1440,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
                 g.setColor(Color.white);
                 int sw = g.getFontMetrics().stringWidth(name);
                 drawString(g,name, w-sw-s5, y0);
-            }    
+            }
             fontsReady = true;
             g.dispose();
             parent.repaint();

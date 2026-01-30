@@ -254,6 +254,7 @@
 
 ### User Interfaces:
 
+- New interface for customizing species, and renamed to DNA workshop.
 - Added RotP colors and fonts to files selector that were still OS like.
 - Some sub-options, which depend on other options for their values to be taken into account, are displayed semi-transparently when their values are not taken into account.
 - New Options tool to reset remote variable and to add images in option panels.
@@ -329,6 +330,10 @@
 
 ### Fixes:
 
+- Fixed asteroids no longer disappeared gradually.
+- Fixed numerous "getGraphics()" calls that did not properly call "dispose()".
+  - Many of them were used intensively.
+  - This should lighten the load for the garbage collector and, hopefully, prevent "insufficient memory" screens from appearing.
 - Fixed asteroids no longer disappeared gradually.
 - Changed the default mouse sensitivity to "High" to prevent annoyingly slow UI responsiveness.
 - Fixed certain fields displaying the generic name of the species instead of the specific name of the Empire.

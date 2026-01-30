@@ -104,8 +104,8 @@ final class GalaxySpiralShape extends GalaxyShape {
 		double minHomeRay = Math.sqrt(empireBuffer * numEmpires() / twoPI / galaxyRay());
 		return getRandomSymmetric(minHomeRay);
 	}
-	@Override public IShapeOption paramOption1()	{ return param1(); }
-	@Override public IShapeOption paramOption2()	{ return param2(); }
+	@Override public IShapeOption<?> paramOption1()	{ return param1(); }
+	@Override public IShapeOption<?> paramOption2()	{ return param2(); }
 	@Override public void setOption1(String value)	{ param1().set(value); }
 	@Override public void setOption2(String value)	{ param2().set(value); }
 	@Override public List<String> options1()		{ return param1().getOptions(); }

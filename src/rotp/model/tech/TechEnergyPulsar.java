@@ -160,7 +160,7 @@ public final class TechEnergyPulsar extends Tech {
                 sleep(FRAME_MS-t1);
         }
         g.setStroke(prev);
-
+        g.dispose();
         ui.paintAllImmediately();
         sleep(250);
         source.mgr.performingStackTurn = false;

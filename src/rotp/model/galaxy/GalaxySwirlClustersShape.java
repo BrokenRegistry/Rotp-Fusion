@@ -50,7 +50,7 @@ final class GalaxySwirlClustersShape extends GalaxyShape {
 
 	GalaxySwirlClustersShape(IGameOptions options, boolean[] rndOpt)	{ super(options, rndOpt); }
 
-	@Override public IShapeOption paramOption1()	{ return param1(); }
+	@Override public IShapeOption<?> paramOption1()	{ return param1(); }
 	@Override public void setOption1(String value)	{ param1().set(value); }
 	@Override public List<String> options1()		{ return param1().getOptions(); }
 	@Override public String name()					{ return NAME; }

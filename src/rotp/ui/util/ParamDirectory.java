@@ -8,7 +8,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import rotp.Rotp;
-import rotp.ui.game.BaseModPanel;
+import rotp.ui.BasePanel;
 
 public class ParamDirectory extends ParamString	{
 	public ParamDirectory(String gui, String name)	{
@@ -21,7 +21,7 @@ public class ParamDirectory extends ParamString	{
 		return label;			
 	}
 	@Override public String getGuiDescription()	{ return langLabel(descriptionId(), get()); }
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame)	{
+	@Override public boolean toggle(MouseEvent e, BasePanel frame)	{
 		if (getDir(e) == 0) {
 			set(defaultValue());
 			return false;

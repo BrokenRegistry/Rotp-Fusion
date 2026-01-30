@@ -2785,11 +2785,11 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                 increment(true);
 
             else if (hoverBox == maxPopBox) {
-            	IGameOptions.maxMissingPopulation.toggle(e, null);
+            	IGameOptions.maxMissingPopulation.toggle(e, this);
             	repaint();
             }
             else if (hoverBox == maxFactBox) {
-            	IGameOptions.maxMissingFactories.toggle(e, null);
+            	IGameOptions.maxMissingFactories.toggle(e, this);
             	repaint();
             }
 

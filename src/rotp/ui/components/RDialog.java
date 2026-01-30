@@ -1,36 +1,29 @@
 package rotp.ui.components;
 
-import static java.awt.GridBagConstraints.BOTH;
-import static java.awt.GridBagConstraints.CENTER;
-
-import java.awt.Container;
 import java.awt.Frame;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import rotp.ui.game.BaseModPanel;
+import rotp.ui.BasePanel;
 
 public class RDialog extends JDialog implements RotPComponents {
 	private static final long serialVersionUID = 1L;
 
-	protected BaseModPanel parent;
-	protected Frame frame;
+	protected final BasePanel parent;
+	protected final Frame frame;
 	protected int titleFontSize	= 30;
 
-	protected RDialog(BaseModPanel parent)	{
-		this.parent = parent;
-		if (parent != null)
-			frame = JOptionPane.getFrameForComponent(parent.getParent());
+	protected RDialog(BasePanel parent2)	{
+		this.parent = parent2;
+		if (parent2 != null)
+			frame = JOptionPane.getFrameForComponent(parent2.getParent());
+		else frame = null;
 	}
-	
-	protected void addVariableSpace(Container pane, int x, int y)	{
-		GridBagConstraints gbc = newGbc(x,y, 1,1, 1.0,1.0, CENTER, BOTH, ZERO_INSETS, 0,0);
-		pane.add(new RLabel(""), gbc);
-	}
+	@Override public JComponent getComponent()	{ return null; }
 	// ========================================================================
 	// List toggled by buttons
 	//

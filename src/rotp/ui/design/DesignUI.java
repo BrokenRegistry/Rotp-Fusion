@@ -1729,15 +1729,16 @@ public class DesignUI extends BasePanel {
         private void repaintShip() {
             Graphics g = getGraphics();
             drawShip(g, s10,s10,shipW,shipH);
+            g.dispose();
         }
         private void drawShipBorder(Graphics g0, int x, int y, int w, int h) {
             Graphics2D g2 = (Graphics2D) g0;
-            
+
             g2.setColor(darkBrown);
             Shape rect = new RoundRectangle2D.Float(x,y,w,h,w/8, h/8);
             g2.setClip(rect);
             g2.fill(rect);  
-            
+
             if (UserPreferences.texturesInterface()) 
                 drawTexture(g0, rect, x,y,w,h);       
             g2.setClip(null);

@@ -44,7 +44,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	private SafeListPanel optionsMap;
 	private final SafeListParam optionsList;
 	private int unSeen = 0;
-	private IParam bestSearchResult;
+	private IParam<?> bestSearchResult;
 	
 	// ===== Constructors =====
 	//
@@ -61,7 +61,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 		optionsMap = AllSubUI.getHandle(guiId).optionsMap();
 		optionsList		= new SafeListParam(GUI_ID);
 		for (SafeListParam list : optionsMap) {
-			for (IParam param : list) {
+			for (IParam<?> param : list) {
 				if (param != null && !param.isTitle())
 					optionsList.add(param);
 			}
@@ -83,8 +83,8 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 			return ((ParamSubUI)p).GUI_TITLE_ID.equals(GUI_TITLE_ID);
 		return false;
 	}
-	@Override public IParam getSearchResult()	{ return bestSearchResult; }
-	@Override public ParamSearchResult processSearch(ParamSearchList paramSet, IParam ui, String flt, int min, boolean stripAccents)	{
+	@Override public IParam<?> getSearchResult()	{ return bestSearchResult; }
+	@Override public ParamSearchResult processSearch(ParamSearchList paramSet, IParam<?> ui, String flt, int min, boolean stripAccents)	{
 		// Process the container
 		ParamSearchResult uiPsr = new ParamSearchResult(this, ui, flt, min, stripAccents);
 		bestSearchResult = this;
@@ -120,7 +120,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	}
 	@Override public boolean isDefaultValue()	{ 
 		boolean is = true;
-		for (IParam param : optionsList)
+		for (IParam<?> param : optionsList)
 			if (param != null)
 				is &= param.isDefaultValue();
 		return is;
@@ -128,7 +128,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	@Override public void copyOption(IGameOptions src, IGameOptions dest,
 									boolean updateTool, int cascadeSubMenu) {
 		super.copyOption(src, dest, updateTool, cascadeSubMenu);
-		for (IParam param : optionsList) {
+		for (IParam<?> param : optionsList) {
 			if (param == null)
 				continue;
 			if (cascadeSubMenu<=0 && param instanceof ParamSubUI)
@@ -139,13 +139,13 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	}
 	@Override public void updateOptionTool() {
 		super.updateOptionTool();
-		for (IParam param : optionsList)
+		for (IParam<?> param : optionsList)
 			if (param != null)
 				param.updateOptionTool();
 	}
 	@Override public void setFromDefault(boolean excludeCfg, boolean excludeSubMenu) {
 		super.setFromDefault(excludeCfg, excludeSubMenu);
-		for (IParam param : optionsList)
+		for (IParam<?> param : optionsList)
 			if (param != null)
 				if (!(excludeCfg && param.isCfgFile())
 						&& !(excludeSubMenu && param.isSubMenu()))
@@ -154,7 +154,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	@Override protected SafeListPanel getOptionValue(IGameOptions options) { return last(); }
 	@Override protected void setOptionValue(IGameOptions options, SafeListPanel value) {}
 	@Override public void setFromCfgValue(String val) {
-		for (IParam param : optionsList)
+		for (IParam<?> param : optionsList)
 			if (param != null && !param.isCfgFile())
 				param.setFromCfgValue(val);
 	}
@@ -162,8 +162,8 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	@Override public boolean next()		{ return false; }
 	@Override public boolean prev()		{ return false; }
 	@Override public boolean toggle(MouseWheelEvent e) { return false; }
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame) { return false; }
-	@Override public boolean toggle(MouseEvent e, String p, BaseModPanel pUI) {
+	@Override public boolean toggle(MouseEvent e, BasePanel frame) { return false; }
+	@Override public boolean toggle(MouseEvent e, String p, BasePanel pUI) {
 		updated(true);
 		BaseCompactOptionsUI ui = RotPUI.getOptionPanel();
 		ui.initUI(GUI_TITLE_ID, GUI_ID);//, optionsMap);
@@ -203,7 +203,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	public void updateList() {
 		optionsList.clear();
 		for (SafeListParam list : optionsMap) {
-			for (IParam param : list) {
+			for (IParam<?> param : list) {
 				if (param != null && !param.isTitle())
 					optionsList.add(param);
 			}
@@ -242,7 +242,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	}
 	private List<String> getRowList() {
 		List<String> strList = new ArrayList<>();
-		for ( IParam param : optionsMap.getListNoTitle()) {
+		for ( IParam<?> param : optionsMap.getListNoTitle()) {
 			if (param.isSubMenu()) {
 				strList.add("<b>" + param.getGuiDisplay() + "</b>");
 			}

@@ -126,7 +126,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	private BasePanel parentUI;
 	private boolean forceUpdate	 = true;
 	private boolean callPreview	 = false;
-	private IParam  callParam	 = null;
+	private IParam<?> callParam	 = null;
 	private boolean isCentered	 = true;
 	private boolean isLeftAlign	 = false;
 	private boolean isJustified	 = false;
@@ -166,12 +166,12 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		hFull = location.height;
 		rFull = xFull + wFull;
 		bFull = yFull + hFull;
-		xGist = 0;
-		yGist = 0;
-		wGist(wFull);
-		hGist = hFull;
-		rGist = xGist + wGist();
-		bGist = yGist + hGist;
+		xCore = 0;
+		yCore = 0;
+		wCore(wFull);
+		hCore = hFull;
+		rCore = xCore + wCore();
+		bCore = yCore + hCore;
 		clearOptionsList();
 		reInit(hovering);
 	}
@@ -215,7 +215,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			totalRows += list.size();
 			lastRowList.add(totalRows);
 			numRows = max(numRows, list.size());
-			for (IParam param : list) {
+			for (IParam<?> param : list) {
 				if (param != null) {
 					hSettings += hDistSetting * param.heightFactor();
 					activeList.add(param);
@@ -318,13 +318,13 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			g.drawImage(back, 0, 0, wFull, hFull, 0, 0, imgW, imgH, this);
 		}
 		g.setPaint(bg());
-		g.fillRect(xGist, yGist, wGist(), hGist);
+		g.fillRect(xCore, yCore, wCore(), hCore);
 
 		// Title
 		g.setFont(titleFont);
 		String title = text(guiTitleID);
 		int sw = g.getFontMetrics().stringWidth(title);
-		int xTitle = xGist + (wGist()-sw)/2;
+		int xTitle = xCore + (wCore()-sw)/2;
 		drawBorderedString(g, title, 1, xTitle, yTitle, Color.black, Color.white);
 
 		// buttons location
@@ -335,15 +335,15 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		int optButtonWidth = 2*defaultButtonWidth(g) + userButtonWidth(g);
 		int limWith = 4*sep + exitWidth + optButtonWidth + guideButtonWidth(g);
 		int smallButtonW = exitWidth;
-		int xPos = xFull+rGist-smallButtonW-sep;
+		int xPos = xFull+rCore-smallButtonW-sep;
 		int ypos;
 		exitBox.setBounds(xPos, yButton, smallButtonW, smallButtonH);
 		smallButtonW = guideButtonWidth(g);
-		guideBox.setBounds(xFull+xGist+sep, yButton, smallButtonW, smallButtonH);
+		guideBox.setBounds(xFull+xCore+sep, yButton, smallButtonW, smallButtonH);
 		smallButtonW = defaultButtonWidth(g);
-		if (hovering && wGist() < limWith) { // over two rows
-			sep2 = (wGist() - optButtonWidth - 2*sep)/2;
-			xPos = xFull+rGist-smallButtonW-sep;
+		if (hovering && wCore() < limWith) { // over two rows
+			sep2 = (wCore() - optButtonWidth - 2*sep)/2;
+			xPos = xFull+rCore-smallButtonW-sep;
 			ypos = yButton-smallButtonH-sep;
 		}
 		else { // Single row
@@ -442,7 +442,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 					return false;
 		}
 	}
-	private void paintSetting(Graphics2D g, IParam param) {
+	private void paintSetting(Graphics2D g, IParam<?> param) {
 		boolean refresh = forceUpdate() || param.updated();
 		if (refresh) { // Update imgList
 			int xRight	= 0;
@@ -614,7 +614,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		else
 			g.drawImage(imgList.get(index), xSetting, ySetting-rowPad, null);
 	}
-	private void goToNextSetting(IParam param) {
+	private void goToNextSetting(IParam<?> param) {
 		int hSetting = (int) (hDistSetting * param.heightFactor());
 		index++;
 		if (index >= lastRowList.get(column)) {
@@ -624,7 +624,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		} else
 			ySetting += hSetting;
 	}
-	void searchMouseAction(MouseEvent e, MouseWheelEvent w, IParam param) {
+	void searchMouseAction(MouseEvent e, MouseWheelEvent w, IParam<?> param) {
 		if (param.isSubMenu()) {
 			if (e == null)
 				return;
@@ -647,7 +647,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		for (int i=0; i<activeList.size(); i++) {
 			if (hoverBox == btListLeft.get(i).box()
 					|| hoverBox == btListRight.get(i).box() ) {
-				IParam param = activeList.get(i);
+				IParam<?> param = activeList.get(i);
 				if (param.isSubMenu()) {
 					if (e == null)
 						return;
@@ -673,7 +673,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		}
 	}
 	private void setLocalToDefault(boolean excludeCfg, boolean excludeSubMenu) {
-		for (IParam param : activeList)
+		for (IParam<?> param : activeList)
 			if (!(excludeCfg && param.isCfgFile())
 					&& !(excludeSubMenu && param.isSubMenu()))
 			param.setFromDefault(excludeCfg, excludeSubMenu);
@@ -690,40 +690,40 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		extraSep = 0;
 		int minH = titlePad + hSettingsTotal + descHeigh + buttonPadV + smallButtonH + bottomPad;
 		if (hovering)
-			if (scaled(minWidth) > wGist())
+			if (scaled(minWidth) > wCore())
 				minH = minH + buttonPadV + smallButtonH;
-		if (minH > hGist) {
-			hGist = max(hGist, minH);
-			hFull = hGist;
-			bGist = yGist + hGist;
-			bFull = bGist;
+		if (minH > hCore) {
+			hCore = max(hCore, minH);
+			hFull = hCore;
+			bCore = yCore + hCore;
+			bFull = bCore;
 		}
 		else {
-			xGist = columnPad;
-			rGist = wFull - columnPad;
-			wGist(rGist - xGist);
-			hGist = minH;
-			yGist = (hFull - hGist) / 2;
-			bGist = yGist + hGist;
+			xCore = columnPad;
+			rCore = wFull - columnPad;
+			wCore(rCore - xCore);
+			hCore = minH;
+			yCore = (hFull - hCore) / 2;
+			bCore = yCore + hCore;
 
-			columnWidth = ((wGist() - columnPad) /4); // Max Width allowed
+			columnWidth = ((wCore() - columnPad) /4); // Max Width allowed
 			if (numColumns < 4) { // to adjust the panel width
-				wGist((columnWidth + columnPad) * 3); // below 3 the buttons will be squeezed!
-				xGist = (wFull - wGist())/2;
-				rGist = wFull - xGist;
+				wCore((columnWidth + columnPad) * 3); // below 3 the buttons will be squeezed!
+				xCore = (wFull - wCore())/2;
+				rCore = wFull - xCore;
 				if (numColumns == 2)
 					extraSep = 6 * columnPad;
 			}
 		}
-		columnWidth	= ((wGist() - columnPad) / numColumns);
+		columnWidth	= ((wCore() - columnPad) / numColumns);
 		int wCorr	= max(0, columnWidth - maxColumnWidth);
-		settingLeft	= xFull+xGist + columnPad/2 + wCorr*numColumns/2 - extraSep/2;
+		settingLeft	= xFull+xCore + columnPad/2 + wCorr*numColumns/2 - extraSep/2;
 		columnWidth	= min(columnWidth, maxColumnWidth);
-		yTitle		= yGist + titleOffset;
-		yTop		= yGist + titlePad; // First setting top position
-		descWidth	= wGist() - 2 * columnPad;
-		xDesc		= xFull + xGist + columnPad;		
-		yButton		= yFull + bGist - (smallButtonH + bottomPad);
+		yTitle		= yCore + titleOffset;
+		yTop		= yCore + titlePad; // First setting top position
+		descWidth	= wCore() - 2 * columnPad;
+		xDesc		= xFull + xCore + columnPad;		
+		yButton		= yFull + bCore - (smallButtonH + bottomPad);
 
 		guiOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
 		enableGlassPane(this);
@@ -733,7 +733,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	}
 	// ========== Overriders ==========
 	//
-	@Override public void preview(String s, IParam param) {
+	@Override public void preview(String s, IParam<?> param) {
 		if (parentUI == null)
 			return;
 		if (s != null && !s.equalsIgnoreCase("quickGenerate"))
@@ -788,7 +788,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			break;
 		case SHIFT:			// Apply
 			guiOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
-			repaintButtons();
+			repaintKeyBound();
 			return; 
 		default:			// Exit
 			guiOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
@@ -873,7 +873,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		xSetting = settingLeft;
 		ySetting = yFull+yTop;
 		while (index<activeList.size()) {
-			IParam param = activeList.get(index);
+			IParam<?> param = activeList.get(index);
 			paintSetting(g, param);
 			goToNextSetting(param);
 		}

@@ -655,11 +655,11 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 	public static class CommandMenu implements IVIPConsole{
 		protected final String menuName;
 		private final CommandMenu parent;
-		private final List<IParam>		settings = new ArrayList<>();
+		private final List<IParam<?>>	settings = new ArrayList<>();
 		private final List<CommandMenu>	subMenus = new ArrayList<>();
 		private final List<Command>		commands = new ArrayList<>();
 		private int lastList = NULL_ID;
-		private IParam liveSetting;
+		private IParam<?> liveSetting;
 
 		// ##### CONSTRUCTORS #####
 		protected CommandMenu(String name)	{
@@ -674,9 +674,9 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 		CommandMenu(String name, CommandMenu parent, ParamSubUI ui)		{
 			this(name, parent, ui.optionsList());
 		}
-		CommandMenu(String name, CommandMenu parent, List<IParam> src)	{
+		CommandMenu(String name, CommandMenu parent, List<IParam<?>> src)	{
 			this(name, parent);
-			for (IParam p : src)
+			for (IParam<?> p : src)
 				if (p != null)
 					if (p.isSubMenu()) {
 						ParamSubUI ui = (ParamSubUI) p;
@@ -694,7 +694,7 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 		protected String exitPanel()			{ return ""; }
 		protected String close(String out)		{ return parent.open(out); }
 		protected void addMenu(CommandMenu menu)	{ subMenus.add(menu); }
-		protected void addSetting(IParam setting)	{ settings.add(setting); }
+		protected void addSetting(IParam<?> setting)	{ settings.add(setting); }
 		public void addCmd(Command cmd)	{ commands.add(cmd); }
 //		protected void newEntry(String entry)	{
 //			List<String> param = new ArrayList<>();
@@ -951,7 +951,7 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 				return settingGuide(out+ "? Invalid parameter" + NEWLINE);
 			return settingSel(out, number);
 		}
-		protected String settingSel(String out, IParam option) {
+		protected String settingSel(String out, IParam<?> option) {
 			liveSetting = option;
 			return optionGuide(out);
 		}
@@ -969,7 +969,7 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 			}
 			out +=  "Setting list:";
 			for (int i=0; i<settings.size(); i++) {
-				IParam setting = settings.get(i);
+				IParam<?> setting = settings.get(i);
 				if (setting.isActive()) {
 					out += NEWLINE + "( S " + i + ") ";
 					out += setting.getGuiDisplay();

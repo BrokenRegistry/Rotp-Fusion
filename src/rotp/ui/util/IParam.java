@@ -33,11 +33,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import rotp.Rotp;
+import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.game.BaseModPanel;
 import rotp.util.LabelManager;
 
-public interface IParam extends InterfaceOptions{
+public interface IParam<T> extends InterfaceOptions{
 	static final String LABEL_DESCRIPTION = "_DESC";
 	static final String LABEL_HELP		 = "_HELP";
 	static final String LABEL_GOV_LABEL	 = "_LABEL";
@@ -61,14 +61,20 @@ public interface IParam extends InterfaceOptions{
 		if (method != null && Rotp.initialized())
 			method.valueUpdated(getUpdatedId());
 	}
+	default List<T> getListForUI()					{ return null; }
+	// For ICRSetting compatibility
+	default void selectedValue(int item, T val)		{ selectedValue(val); }
+	void selectedValue(T val);
+
 	// user input
 	default boolean next()						{ return false; } // Return forceUpdate
 	default boolean prev()						{ return false; } // Return forceUpdate
 	default boolean toggle(MouseWheelEvent e)	{ return false; } // Return forceUpdate
-	default boolean toggle(MouseEvent e, BaseModPanel frame)					{ return false; } // Return forceUpdate
-	default boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame)	{ return false; } // Return forceUpdate
-	default boolean toggle(MouseEvent e, String p, BaseModPanel frame)			{ return false; } // Return forceUpdate
-	default boolean toggle(MouseEvent e, String p, BaseModPanel pUI, BaseModPanel frame)	{ return false; } // Return forceUpdate
+//	default boolean toggle(MouseEvent e, Component frame)						{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, BasePanel frame)						{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, MouseWheelEvent w, BasePanel frame)	{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, String p, BasePanel frame)				{ return false; } // Return forceUpdate
+	default boolean toggle(MouseEvent e, String p, BasePanel pUI, BasePanel frame)	{ return false; } // Return forceUpdate
 	default void	updated(boolean updated)	{}
 	// State
 	default boolean	isDuplicate()			{ return false; }
@@ -97,6 +103,7 @@ public interface IParam extends InterfaceOptions{
 	default String	getGuiDisplay(int id)	{ return ""; }
 	default String	getGuiDescription()		{ return ""; }
 	default String	guideValue()			{ return ""; } // Only the value, (player view)
+	default String	getLabel()				{ return langLabel(getLangLabel()); }
 	default String	guideSelectedValue()	{ return guideValue(); }
 	default String	guideDefaultValue()		{ return ""; }
 	default String	guideMinimumValue()		{ return ""; }
@@ -127,6 +134,8 @@ public interface IParam extends InterfaceOptions{
 	default String htmlTooltips()			{ return "<html>" + getDescription() + "</html>"; }
 	default String govLabelTxt()			{ return langGovLabel(getLangLabel()); }
 	default String htmlFullHelp()			{ return "<html>" + getFullHelp() + "</html>"; }
+	default String htmlGuide()				{ return "<html>" + getGuide() + "</html>"; }
+	default String htmlGuide(int id)		{ return "<html>" + getGuide(id) + "</html>"; }
 
 	// Limited size for toolTip boxes
 	default String getDescription()			{
@@ -190,6 +199,8 @@ public interface IParam extends InterfaceOptions{
 			help = realDescription(id);
 		if (help == null)
 			help = "";
+		if (help.isEmpty())
+			return help;
 		return rowFormat(labelFormat(name(id)), help);
 	}
 	default String valueGuide(int id)		{ return "";}
@@ -200,6 +211,8 @@ public interface IParam extends InterfaceOptions{
 			return val;
 		// this is a list
 		String help = valueGuide(getIndex());
+		if (help.isEmpty())
+			return val;
 		return val + baseSeparator() + help;
 	}
 	default String modifierHelp()			{
@@ -239,7 +252,7 @@ public interface IParam extends InterfaceOptions{
 		return langHelp(getLangLabel(id));
 	}
 	// ===== Search tools =====
-	default IParam getSearchResult()		{ return this; }
+	default IParam<?> getSearchResult()		{ return this; }
 	default String rawSearchLabel()			{
 		String str = langLabel(getLangLabel(), "", "");
 		str = str.replace(":", "").strip();
@@ -251,7 +264,7 @@ public interface IParam extends InterfaceOptions{
 			str = StringUtils.stripAccents(str);
 		return str.toLowerCase();
 	}
-	default ParamSearchResult processSearch(ParamSearchList paramSet, IParam ui, String flt, int min, boolean stripAccents) {
+	default ParamSearchResult processSearch(ParamSearchList paramSet, IParam<?> ui, String flt, int min, boolean stripAccents) {
 		ParamSearchResult psr = new ParamSearchResult(this, ui, flt, min, stripAccents);
 		if (psr.isGoodEnough())
 			paramSet.add(psr);
@@ -369,7 +382,7 @@ public interface IParam extends InterfaceOptions{
 				add(0, psr);
 			}
 		}
-		private ParamSearchResult containsSameParam(IParam p)	{
+		private ParamSearchResult containsSameParam(IParam<?> p)	{
 			for (ParamSearchResult psr : this)
 				if (psr.param.equals(p))
 					return psr;
@@ -406,14 +419,14 @@ public interface IParam extends InterfaceOptions{
 	}
 	class ParamSearchResult {
 		public static final String COL_SEP = " |-> ";
-		public final IParam param;
-		public final IParam ui;
+		public final IParam<?> param;
+		public final IParam<?> ui;
 		private int ratio;
 		private int partialRatio;
 		private int min;
 		int result;
 
-		ParamSearchResult(IParam param, IParam ui, String flt, int min, boolean stripAccents)	{
+		ParamSearchResult(IParam<?> param, IParam<?> ui, String flt, int min, boolean stripAccents)	{
 			this.param	= param;
 			this.ui		= ui;
 			this.min	= min;
@@ -432,7 +445,7 @@ public interface IParam extends InterfaceOptions{
 //			return format(ui) + COL_SEP + format(param) + " (" + result + "/" + partialRatio + "/" + ratio + ")";
 		}
 		private String subPanelFormat(String s)	{ return "[" + s.strip() + "]"; }
-		private String format(IParam p)			{
+		private String format(IParam<?> p)			{
 			if (p == null)
 				return subPanelFormat(langLabel("SETTINGS_MOD_SEARCH_RESULT_THIS_PANEL"));
 			if (p.isSubMenu())

@@ -1504,7 +1504,8 @@ ERROR_EMAIL                       | Email: Broken.Registry@protonmail.com
 ERROR_REDDIT                      | Reddit: www.Reddit.com/r/rotp
 
 // Setup UI
-SETUP_SELECT_RACE                 | Select Your Empire
+//SETUP_SELECT_RACE                 | Select Your Empire
+SETUP_SELECT_RACE                 | Select Your Avatar
 SETUP_SELECT_OPPONENTS            | Select Opponents
 SETUP_SELECT_GALAXY               | Select Galaxy
 SETUP_SELECT_GALAXY_OPTIONS       | Select Options
@@ -2013,19 +2014,37 @@ SETUP_NO_FOG_ON_ICONS             | Remove diplomat fog: %1
 SETUP_NO_FOG_ON_ICONS_DESC        | Remove the fog hiding the diplomat icons in the Character settings panel and in the Galaxy settings panel.
 
 // BR: config Player Race
-SETUP_BUTTON_CUSTOM_PLAYER_RACE   | Customize Species
+SETUP_BUTTON_CUSTOM_PLAYER_RACE	| DNA Workshop
+
+// BR: Customize Player Race New GUI addition
+CUSTOM_RACE_BUTTON_EXIT			| Exit
+CUSTOM_RACE_BUTTON_EXIT_DESC	| Exit the Panel. (Without saving the last modification)
+CUSTOM_RACE_BUTTON_CANCEL		| Cancel
+CUSTOM_RACE_BUTTON_CANCEL_DESC	| Cancel changes then Exit Panel.
+CUSTOM_RACE_BUTTON_FOLDER		| Select GMO Folder
+CUSTOM_RACE_BUTTON_FOLDER_DESC	| Select the folder containing your custom species..
+CUSTOM_RACE_BUTTON_NAMES		| Edit Names
+CUSTOM_RACE_BUTTON_NAMES_DESC	| To write new terminilogy to be associated with this OGM. Several civilizations can be created, in several languages.
+CUSTOM_RACE_EMPTY_DESCRIPTION	| "Shift" and "Ctrl" can be used to modify the functionality of buttons, clicks, and scrolls.<br>
+
+CUSTOM_RACE_FLEET_DESC			| Example of a fleet composed of vessels based on the model chosen for this species.
+CUSTOM_RACE_FLEET_HELP			| Example of a fleet composed of vessels based on the model chosen for this species.<br> If the animation bothers you, you can disable or enable it by clicking on the image.
 
 // BR: Customize Player Race
-CUSTOM_RACE_RACE_AI_DESC          | Change the empire AI
-CUSTOM_RACE_GUI_TITLE             | Sapiens Species Customization
-CUSTOM_RACE_SHOW_TITLE            | Species' Abilities
-CUSTOM_RACE_SHOW_TITLE_CUSTOM	| Customized Species' Abilities
-CUSTOM_RACE_GUI_MALUS             | (Malus: %1)
-CUSTOM_RACE_GUI_COST              | Total Value: %1
-CUSTOM_RACE_GUI_SELECT_DESC       | Save Current Species, Select it as Player Species, Save as Last Settings and Exit Panel
-CUSTOM_RACE_GUI_SELECT            | Set as Player
+CUSTOM_RACE_DESCRIPTION			| Randomized DNA
+CUSTOM_RACE_RACE_AI_DESC		| Change the empire AI
+CUSTOM_RACE_GUI_TITLE			| DNA Workshop
+CUSTOM_RACE_SHOW_TITLE			| Species' DNA
+CUSTOM_RACE_SHOW_TITLE_CUSTOM	| OGM Species' DNA
+CUSTOM_RACE_SHOW_TITLE_RANDOM	| Randomized Species' DNA
+CUSTOM_RACE_GUI_MALUS			| (Malus: %1)
+CUSTOM_RACE_GUI_COST			| Total Value: %1
+CUSTOM_RACE_GUI_SELECT_DESC		| Save Current Species, Select it as Player Species.
+CUSTOM_RACE_GUI_SELECT			| Set as Player
+CUSTOM_RACE_LOAD_PLAYER_DESC	| Load current player customized species.
+CUSTOM_RACE_LOAD_PLAYER			| Load Player
 CUSTOM_RACE_GUI_RANDOM_HELP       | Each individual setting will randomly be set within the given relative Setting range.<br> If "Force Target" = Yes, and the Total Value is not within the allowed Range: The values will progressively be randomly shifted (Even outside their allowed range) until the final "Target Range" is reached.
-CUSTOM_RACE_GUI_RANDOM_DESC       | Randomize the species following the above settings
+CUSTOM_RACE_GUI_RANDOM_DESC       | Randomize the species ADN following the above settings
 CUSTOM_RACE_GUI_RANDOM            | Randomize
 
 CUSTOM_RACE_GUI_RANDOM_GET_HELP   | Get Randomization Parameters from Setup Alien Randomization Parameters.
@@ -2036,12 +2055,12 @@ CUSTOM_RACE_GUI_RANDOM_PUSH_HELP  | Push Randomization Parameters to Setup Alien
 CUSTOM_RACE_GUI_RANDOM_PUSH_DESC  | Push Randomization Parameters to Setup Alien Randomization Parameters.
 CUSTOM_RACE_GUI_RANDOM_PUSH       | Push
 
-CUSTOM_RACE_GUI_LOAD_DESC         | Load the settings from the file specified in "File Name" Field, if none, create an empty one.
+CUSTOM_RACE_GUI_LOAD_DESC         | Load the Genetically Modified Organism from the file specified in "File Name" Field, if none, create an empty one.
 CUSTOM_RACE_GUI_LOAD              | Reload
-CUSTOM_RACE_GUI_SAVE_DESC         | Save the settings to the file specified in "File Name" Field, existing files will be overwritten.
+CUSTOM_RACE_GUI_SAVE_DESC         | Save the Genetically Modified Organism to the file specified in "File Name" Field, existing files will be overwritten.
 CUSTOM_RACE_GUI_SAVE              | Save to File
 CUSTOM_RACE_RACE_LIST             | File List
-CUSTOM_RACE_RACE_LIST_DESC        | Custom species abilities file list. Click to load. (At the top is the one when opening the GUI.)
+CUSTOM_RACE_RACE_LIST_DESC        | GMO file list. Click to select the species to display.
 CUSTOM_RACE_RANDOM_MAX_HELP       | Upper relative limit of the parameter random generation window.<br>Related to the parameter cost; and is not necessarily linearly related to the selected percentage of the parameter.
 CUSTOM_RACE_RANDOM_MAX_DESC       | Upper relative limit of the parameter random generation window.<br>Related to the parameter cost; and is not necessarily linearly related to the selected percentage of the parameter.
 CUSTOM_RACE_RANDOM_MAX            | Setting Max
@@ -2079,18 +2098,20 @@ CUSTOM_RACE_DESCRIPTION				| Customized Species
 CUSTOM_RACE_BASE_DATARACE         | Base Abilities
 CUSTOM_RACE_HOME_TYPE             | Planet Type
 CUSTOM_RACE_HOME_SIZE_DESC        | Starting Size of this Empire Home world.
-CUSTOM_RACE_HOME_SIZE             | Planet Size
-CUSTOM_RACE_HOME_ARTIFACTS_DESC   | This selection will affect the research of the home world.
+CUSTOM_RACE_HOME_SIZE             | Homeworld Size
+CUSTOM_RACE_HOME_ARTIFACTS_DESC   | Some species require more or less space than others. This bonus multiplies the nominal size of planets.
 CUSTOM_RACE_HOME_ARTIFACTS        | Planet Artifacts
 CUSTOM_RACE_HOME_RESOURCES_DESC   | This selection will affect the production of the home world.
 CUSTOM_RACE_HOME_RESOURCES        | Planet Resources
 CUSTOM_RACE_HOME_ENVIRONMENT_DESC | This selection will affect the growth rate of the home world.
 CUSTOM_RACE_HOME_ENVIRONMENT      | Planet Environment
-CUSTOM_RACE_RACE_KEY				| File Name (Key)
-CUSTOM_RACE_RACE_KEY_DESC			| This is the place to enter the filename, it's also used as the key for the standard species... Don't use them, or keep the default "SPECIES_xxx" to set the "Redesigned"-Abilities.
+CUSTOM_RACE_POPULATION_BONUS_DESC	| Starting Size of this Empire Home world.
+CUSTOM_RACE_POPULATION_BONUS		| Population Bonus
+CUSTOM_RACE_RACE_KEY				| GMO File Name
+CUSTOM_RACE_RACE_KEY_DESC			| Name of the GMO file, without the extension, but including the sub-directories, up to the species folder.<br>Example: Human\Priman
 CUSTOM_RACE_RACE_KEY_INPUT			| Enter the file name of the custom species.
-CUSTOM_RACE_REWORKED_RACE_KEY		| Linked Animations
-CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| This is the prefered Species choice for the displayed animations. When 'Redesigned' Abilities is selected, this abilities can be randomly selected.
+CUSTOM_RACE_REWORKED_RACE_KEY		| Avatar
+CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| This is the prefered Avatar choice for the displayed animations. When '→ABILITIES_REWORKED←' Abilities is selected, this abilities can be randomly selected.
 CUSTOM_RACE_REWORKED_RACE_KEY_INPUT	| Enter the name of the original reworkable species.
 CUSTOM_RACE_REWORKED_RACE_KEY_NONE	| None
 CUSTOM_RACE_BOUND_AI				| Bound AI
@@ -2232,9 +2253,9 @@ CUSTOM_RACE__race_pluraladjecFfr		| **Féminin pluriel
 CUSTOM_RACE__race_pluraladjecFfr_DESC	| Féminin pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION_FR←<br>La contrepartie du paramètre « _raceadjec »<br>dans les fichiers Species.labels.txt
 
 CUSTOM_RACE_FILL_FROM_ANIM_BUTTON		| Fill from animations
-CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Fill in the empty fields<br>using the values from your preferred animations.<br>Press "Shift" to also replace fields that are already filled in.
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Fill in the empty fields using the values from your preferred Avatar.<br>Press "Shift" to also replace fields that are already filled in.
 CUSTOM_RACE_FILL_FROM_NAME_BUTTON		| Fill from names
-CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Try filling in the empty fields<br>using the civilization name and the tittle.<br>Press "Shift" to also replace fields that are already filled in.
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Try filling in the empty fields using the civilization name and the tittle.<br>Press "Shift" to also replace fields that are already filled in.
 CUSTOM_RACE_COPY_FROM_LEFT_BUTTON		| -> Import
 CUSTOM_RACE_COPY_FROM_LEFT_BUTTON_DESC	| Copy the values from the left-hand page.
 CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON		| Import <-
@@ -2307,7 +2328,7 @@ CUSTOM_RACE_LEADER_FULLTITLEfr		| Titre du chef complet
 CUSTOM_RACE_LEADER_FULLTITLEfr_DESC	| L’équivalent du paramètre « fulltitle »<br>dans les fichiers Species.names.txt.
 CUSTOM_RACE_RACE_DESC_1fr			| Tempérament de l’espèce
 CUSTOM_RACE_RACE_DESC_1fr_DESC		| L’équivalent du paramètre « desc1 »<br>dans les fichiers Species.names.txt
-CUSTOM_RACE_RACE_DESC_2fr			| Aptitudes de l’espèce
+CUSTOM_RACE_RACE_DESC_2fr			| Qualités de l’espèce
 CUSTOM_RACE_RACE_DESC_2fr_DESC		| L’équivalent du paramètre « desc2 »<br>dans les fichiers Species.names.txt
 CUSTOM_RACE_RACE_DESC_3fr			| Résumé de l’espèce
 CUSTOM_RACE_RACE_DESC_3fr_DESC		| L’équivalent du paramètre « desc3 »<br>dans les fichiers Species.names.txt
@@ -2407,7 +2428,7 @@ CUSTOM_RACE_IGNORES_ECO_LIMITED_DESC | Ignores Waste and Hostile environments li
 CUSTOM_RACE_IGNORES_ECO_ALL_DESC     | All planet types can immediately be colonized.
 
 // Custom Race Naming Sub Panel
-CUSTOM_RACE_UI_NAMES_TITLE			| Custom Species Names Catalog
+CUSTOM_RACE_UI_NAMES_TITLE			| Avatar New Terminology
 CUSTOM_RACE_UI_BUTTON_EXIT			| Exit
 CUSTOM_RACE_UI_BUTTON_EXIT_DESC		| Keep the current Settings then Exit the Panel.
 CUSTOM_RACE_UI_BUTTON_CANCEL		| Cancel
@@ -5882,17 +5903,17 @@ SETUP_SELECT_CR_OPTIONS		      | Selectable Abilities.
 ???_DESC		                  | ???_DESCXXX
 
 ABILITIES_SELECTION				| 'From Abilities top box'
-ABILITIES_ORIGINAL_SPECIES		| 'Original Abilities'
-ABILITIES_REWORKED				| 'Animations -> Redesigned'
-ABILITIES_REWORKED_FULL			| 'Redesigned -> Animations'
+ABILITIES_ORIGINAL_SPECIES		| 'Original DNA'
+ABILITIES_REWORKED				| 'Avatar -> GMO'
+ABILITIES_REWORKED_FULL			| 'GMO -> Avatar'
 ABILITIES_PLAYER				| 'Same as Player'
 ABILITIES_RANDOM				| 'Randomly Created'
-ABILITIES_RANDOM_10				| 'Any Original (10)'
-ABILITIES_RANDOM_16				| 'Any Original (16)'
-ABILITIES_FILES_FLT				| 'Allowed Custom Species'
-ABILITIES_ALL_FILES				| 'Any Custom Species'
-ABILITIES_FILES_RACES			| 'Original or Allowed'
-ABILITIES_ALL					| 'Original or Any Custom'
+ABILITIES_RANDOM_10				| 'One of the 10 DNAs'
+ABILITIES_RANDOM_16				| 'One of the 16 DNAs'
+ABILITIES_FILES_FLT				| 'Allowed GMO'
+ABILITIES_ALL_FILES				| 'Any GMO'
+ABILITIES_FILES_RACES			| 'DNA or Allowed GMO'
+ABILITIES_ALL					| 'DNA or Any GMO'
 
 ABILITIES_SELECTION_DESC		| Same abilities as the global abilities (selected on the top)
 ABILITIES_ORIGINAL_SPECIES_DESC	| Original abilities of the selected species (the one on the icon)

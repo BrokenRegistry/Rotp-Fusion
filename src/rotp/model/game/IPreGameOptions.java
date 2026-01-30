@@ -8,8 +8,8 @@ import java.util.List;
 
 import rotp.Rotp;
 import rotp.model.planet.Planet;
+import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.game.BaseModPanel;
 import rotp.ui.util.LinkData;
 import rotp.ui.util.LinkValue;
 import rotp.ui.util.ParamAAN2;
@@ -158,7 +158,7 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 		}
 		
 		@Override public boolean isValidValue()	{ return isValidDoubleCheck(); }
-		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BaseModPanel frame) {
+		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, BasePanel frame) {
 			boolean forceUpdate = super.toggle(e, w, frame);
 			Integer value = get();
 			int min	= dynMinValue();

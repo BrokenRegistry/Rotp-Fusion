@@ -120,7 +120,7 @@ public final class TechBlackHole extends Tech {
 
         target.drawAttackResult(g, startX,startY,sourceX, dmg,text("SHIP_COMBAT_MISS"));   
         g.setStroke(prev);
-
+        g.dispose();
         ui.paintAllImmediately();
         sleep(250);
         source.mgr.performingStackTurn = false;

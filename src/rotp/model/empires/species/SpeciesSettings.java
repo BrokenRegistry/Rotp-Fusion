@@ -27,9 +27,10 @@ import rotp.model.game.IGameOptions;
 import rotp.model.game.IRaceOptions;
 import rotp.model.planet.PlanetType;
 import rotp.model.ships.ShipLibrary;
+import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.game.BaseModPanel;
 import rotp.ui.util.PlayerShipSet;
+import rotp.ui.util.StringDialogUI;
 import rotp.ui.util.StringList;
 import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
@@ -86,9 +87,12 @@ public abstract class SpeciesSettings {
 	private SpeciesSkills race; // !!! To be kept up to date !!!
 	private DynOptions animOptions;
 	protected SpeciesSkills animSkills;
-	private boolean isReference		= false;
-	private boolean isForShow		= false;
-	BaseModPanel parent;
+	private boolean isReference	= false;
+	private boolean isForShow	= false;
+	protected BasePanel parent;
+	// For Names editor only
+	private SettingMap backupMap;
+	private AllSpeciesAttributes settings;
 
 	private boolean isReference()			{ return isReference; };
 	protected void isReference(boolean b)	{ isReference = b; };
@@ -103,23 +107,19 @@ public abstract class SpeciesSettings {
 		AllSpeciesAttributes settings = new AllSpeciesAttributes();
 		settings.fillFromAnim(true);
 	}
-
-	private boolean callUI()	{
+	AllSpeciesAttributes preNameEditor()	{
 		settingMap.cleanLanguages();
-		SettingMap backupMap = new SettingMap();
+		backupMap = new SettingMap();
 		backupMap.copyFrom(settingMap);
 		race().speciesOptions().backupStringMap();
-
-		AllSpeciesAttributes settings = new AllSpeciesAttributes();
-		CustomNameUI ui = new CustomNameUI(parent, settings);
-		RotPUI.animationListeners.add(ui);
-		boolean canceled = ui.showPanel();
-		RotPUI.animationListeners.remove(ui);
-
-		if (canceled) {
+		settings = new AllSpeciesAttributes();
+		return settings;
+	}
+	void postNameEditor(boolean cancelled)	{
+		if (cancelled) {
 			settingMap.copyFrom(backupMap);
 			race().speciesOptions().restoreStringMap();
-			for (ICRSettings setting : settingMap.getAll())
+			for (ICRSettings<?> setting : settingMap.getAll())
 				setting.settingToSkill(race());
 		}
 		else {
@@ -143,15 +143,16 @@ public abstract class SpeciesSettings {
 			settingMap.cleanLanguages();
 
 			// update the skills from the source option
-			List<ICRSettings> icrSettings = settingMap.getAll();
-			for (ICRSettings setting : icrSettings) {
+			List<ICRSettings<?>> icrSettings = settingMap.getAll();
+			for (ICRSettings<?> setting : icrSettings) {
 				if (setting instanceof SettingStringLanguage) {
 					setting.settingToSkill(race());
 					setting.updateOption(destOptions);
 				}
 			}
 		}
-		return true;
+		backupMap = null;
+		settings  = null;
 	}
 	// -#-
 	// ========================================================================
@@ -159,49 +160,49 @@ public abstract class SpeciesSettings {
 	//
 	// #======================== Setting Map ========================
 	final class SettingMap {
-		private final List<ICRSettings> settingList	= new ArrayList<>(); // !!! To be kept up to date !!!
-		private final List<ICRSettings> guiList	 	= new ArrayList<>();
-		private final List<ICRSettings> attributeList	= new ArrayList<>();
-		private final HashMap <String, ICRSettings> settingMap = new HashMap<>();
+		private final List<ICRSettings<?>> settingList	= new ArrayList<>(); // !!! To be kept up to date !!!
+		private final List<ICRSettings<?>> guiList	 	= new ArrayList<>();
+		private final List<ICRSettings<?>> attributeList	= new ArrayList<>();
+		private final HashMap <String, ICRSettings<?>> settingMap = new HashMap<>();
 		boolean filled = false;
 
-		private void put(String name, ICRSettings setting)	{
+		private void put(String name, ICRSettings<?> setting)	{
 			if (name.startsWith("_"))
 				System.out.println("name.startsWith(_)");
 			settingMap.put(name, setting);
 		}
-		void add(ICRSettings setting) {
+		void add(ICRSettings<?> setting) {
 			if (settingList.contains(setting)) {
 				System.err.println("DUPLICATE settingList " + setting.getLangLabel());
 			}
 			settingList.add(setting);
 			put(setting.getLangLabel(), setting);
 		}
-		void addGui(ICRSettings setting) {
+		void addGui(ICRSettings<?> setting) {
 			if (guiList.contains(setting)) {
 				System.err.println("DUPLICATE guilist " + setting.getLangLabel());
 			}
 			guiList.add(setting);
 			put(setting.getLangLabel(), setting);
 		}
-		void addAttribute(ICRSettings setting) {
+		void addAttribute(ICRSettings<?> setting) {
 			if (attributeList.contains(setting)) {
 				System.err.println("DUPLICATE attributeList " + setting.getLangLabel());
 			}
 			attributeList.add(setting);
 			put(setting.getLangLabel(), setting);
 		}
-		List<ICRSettings> getGuis()		{ return guiList; }
-		List<ICRSettings> getSettings()	{ return settingList; }
-		List<ICRSettings> getAll()		{
-			List<ICRSettings> list = new ArrayList<>(settingList);
+		List<ICRSettings<?>> getGuis()		{ return guiList; }
+		List<ICRSettings<?>> getSettings()	{ return settingList; }
+		List<ICRSettings<?>> getAll()		{
+			List<ICRSettings<?>> list = new ArrayList<>(settingList);
 			list.addAll(attributeList);
 			list.addAll(guiList);
 			return list;
 		}
-		ICRSettings get(String key)		{ return settingMap.get(key); }
+		ICRSettings<?> get(String key)		{ return settingMap.get(key); }
 		private StringList getList(String key)	{
-			ICRSettings setting = settingMap.get(key);
+			ICRSettings<?> setting = settingMap.get(key);
 			if (setting == null) {
 				setting = settingMap.get(key.substring(0, key.length()-2));
 				if (setting == null) {
@@ -234,8 +235,8 @@ public abstract class SpeciesSettings {
 			String selectedLanguage = selectedLanguageDir();
 			if (!toKeep.contains(selectedLanguage))
 				toKeep.add(selectedLanguage);
-			HashMap <String, ICRSettings> mapCopy = new HashMap<>(settingMap);
-			for(Entry<String, ICRSettings> entry : mapCopy.entrySet()) {
+			HashMap <String, ICRSettings<?>> mapCopy = new HashMap<>(settingMap);
+			for(Entry<String, ICRSettings<?>> entry : mapCopy.entrySet()) {
 				if (entry.getValue() instanceof SettingStringLanguage) {
 					SettingStringLanguage setting = (SettingStringLanguage) entry.getValue();
 					if (!toKeep.contains(setting.langDir)) {
@@ -248,7 +249,7 @@ public abstract class SpeciesSettings {
 		void languageChanged(String oldDir, String newDir)	{
 			// first update the settings
 			if (parent != null && parent.isVisible()) {
-				for(Entry<String, ICRSettings> entry : settingMap.entrySet()) {
+				for(Entry<String, ICRSettings<?>> entry : settingMap.entrySet()) {
 					if (entry.getValue() instanceof SettingStringLanguage) {
 						SettingStringLanguage setting = (SettingStringLanguage) entry.getValue();
 						if (setting.languageChanged(oldDir, newDir)) {
@@ -257,38 +258,38 @@ public abstract class SpeciesSettings {
 				}
 			}
 			// Then update settingMap indexes
-			HashMap <String, ICRSettings> mapCopy = new HashMap<>(settingMap);
+			HashMap <String, ICRSettings<?>> mapCopy = new HashMap<>(settingMap);
 			settingMap.clear();
-			for(ICRSettings setting : mapCopy.values())
+			for(ICRSettings<?> setting : mapCopy.values())
 				settingMap.put(setting.getLangLabel(), setting);
 		}
 	}
 	// -#-
 	// #==================== ReworkedRaceKey ====================
 	//
-	class AnimationRaceKey extends SettingBase<String> {
-		private static final String REWORKED_RACE_KEY = "REWORKED_RACE_KEY";
+	class AvatarKey extends SettingBase<String> {
+		private static final String AVATAR_KEY = "REWORKED_RACE_KEY";
 		static final String DEFAULT_VALUE = "NONE";
 
-		private static void setReworkedKey(DynOptions opts, String key)	{ opts.setString(ROOT + REWORKED_RACE_KEY, key); }
-		private static String getReworkedKey(DynOptions opts)			{ return opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE); }
-		static String getRawReworkedKey(DynOptions opts)	{
-			String key = opts.getString(ROOT + REWORKED_RACE_KEY, DEFAULT_VALUE);
+		private static void setAvatarKey(DynOptions opts, String key)	{ opts.setString(ROOT + AVATAR_KEY, key); }
+		private static String getAvatarKey(DynOptions opts)			{ return opts.getString(ROOT + AVATAR_KEY, DEFAULT_VALUE); }
+		static String getRawAvatarKey(DynOptions opts)	{
+			String key = opts.getString(ROOT + AVATAR_KEY, DEFAULT_VALUE);
 			return DEFAULT_VALUE.equals(key)? null : key;
 		}
 		/**
-		 * Get a reworked key from the filename, or the folder name
+		 * Get an avatar key from the filename, or the folder name
 		 * @param file source file
-		 * @param foldersRework true -> Get a reworked key from the Folder.
+		 * @param foldersAvatar true -> Get a reworked key from the Folder.
 		 * @return the key, "" if none
 		 */
-		private static String fileToReworked (File file, boolean foldersRework)	{
+		private static String fileToAvatar (File file, boolean foldersAvatar)	{
 			// Test for reworked old Ways
 			String name = file.getName();
 			name = name.substring(0, name.length() - EXT.length());
 			if (IRaceOptions.allRaceKeyList.contains(name))
 				return name;
-			if (foldersRework) {
+			if (foldersAvatar) {
 				Path path = file.toPath();
 				int count = path.getNameCount();
 				String dir = "RACE_" + path.getName(count-2).toString().toUpperCase();
@@ -301,42 +302,40 @@ public abstract class SpeciesSettings {
 		 * validate the key and return it
 		 * @param opt options files
 		 * @param file File to be checked for old reworked way
-		 * @param foldersRework true -> Get a reworked key from the Folder.
+		 * @param foldersAvatar true -> Get a reworked key from the Folder.
 		 * @return true if the reworked file is not empty
 		 */
-		static String validRedesign(DynOptions opt, File file, boolean foldersRework)	{
-			String optKey	= getReworkedKey(opt); // current key
-			String fileKey	= fileToReworked(file, foldersRework); // potential candidate
+		static String validRedesign(DynOptions opt, File file, boolean foldersAvatar)	{
+			String optKey	= getAvatarKey(opt); // current key
+			String fileKey	= fileToAvatar(file, foldersAvatar); // potential candidate
 
 			if (fileKey.isEmpty()) // no candidate
 				return optKey;
 
 			if (!fileKey.equals(optKey)) { // update the key
-				setReworkedKey(opt, fileKey);
+				setAvatarKey(opt, fileKey);
 				DynOptions.saveOptions(opt, file);
 				return fileKey;
 			}
 			return optKey;
 		}
-		AnimationRaceKey() {
-			super(ROOT, REWORKED_RACE_KEY);
+		AvatarKey() {
+			super(ROOT, AVATAR_KEY);
 			isBullet(false);
 			hasNoCost(true);
 			showFullGuide(false);
 			getToolTip();
-			initOptionsText();
 			labelsAreFinals(true);
 			allowListSelect(true);
 			refreshLevel(1);
 			for (Entry<String, String> s : Species.namesMap().entrySet())
 				put(s.getValue(), s.getKey(), 0f, s.getKey());
-			String defaultValue = LabelManager.current().label(ROOT + REWORKED_RACE_KEY + "_" + DEFAULT_VALUE);
+			String defaultValue = LabelManager.current().label(ROOT + AVATAR_KEY + "_" + DEFAULT_VALUE);
 			put(defaultValue, DEFAULT_VALUE, 0f, DEFAULT_VALUE);
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
-		@Override public void settingToSkill(SpeciesSkills skills)	{ skills.reworkableSpeciesKey(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills)	{ set(skills.reworkableSpeciesKey()); }
+		@Override public void settingToSkill(SpeciesSkills skills)	{ skills.avatarSpeciesKey(settingValue()); }
+		@Override public void skillToSetting(SpeciesSkills skills)	{ selectedValue(skills.avatarSpeciesKey()); }
 		@Override protected StringList altReturnList()	{ return new StringList(getValues()); }
 		@Override protected StringList guiTextsList()	{ return getOptions(); }
 		@Override public String guideDefaultValue()		{ return getDefaultCfgValue(); }
@@ -346,27 +345,28 @@ public abstract class SpeciesSettings {
 				destOptions.setString(dynOptionIndex(), settingValue());
 		}
 		@Override public void updateOptionTool(DynamicOptions srcOptions)	{
-			if (!isSpacer() && srcOptions != null) {
-				String reworkKey = srcOptions.getString(dynOptionIndex());
-				if (reworkKey == null || DEFAULT_VALUE.equals(reworkKey)) {
-					animSkills = null;
-					animOptions = null;
-					set(DEFAULT_VALUE);
-				}
-				else {
-					isReference(true);
-					set(reworkKey);
-					animSkills = SkillsFactory.getMasterSkillsForReworked(reworkKey);
-					animOptions = animSkills.speciesOptions();
-					isReference(false);
-				}
+			if (srcOptions != null)
 				set(srcOptions.getString(dynOptionIndex(), DEFAULT_VALUE));
-			}
 		}
 		@Override public void copyOption(IGameOptions src, IGameOptions dest, boolean updateTool, int cascadeSubMenu)	{
 			if (!isSpacer() && src != null && dest != null)
 				dest.dynOpts().setString(dynOptionIndex(), settingValue());
 			dest.dynOpts().setString(dynOptionIndex(), src.dynOpts().getString(dynOptionIndex(), DEFAULT_VALUE));
+		}
+		@Override public boolean isSettingString()	{ return true; }
+		@Override public void selectedValue(String newValue) {
+			if (newValue == null || DEFAULT_VALUE.equals(newValue)) {
+				animSkills = null;
+				animOptions = null;
+				super.selectedValue(DEFAULT_VALUE);
+			}
+			else {
+				isReference(true);
+				super.selectedValue(newValue);
+				animSkills = DNAFactory.getMasterSkillsForReworked(newValue);
+				animOptions = animSkills.speciesOptions();
+				isReference(false);
+			}
 		}
 	}
 	// ==================== Animation ID ====================
@@ -385,17 +385,17 @@ public abstract class SpeciesSettings {
 	// -#-
 	// #==================== AllSpeciesAttributes ====================
 	//
-	class AllSpeciesAttributes {
+	public class AllSpeciesAttributes {
 		SettingString raceKey;
 		private StringList civilizationNames, languageNames;
-		private HashMap<String, SpeciesAttributes> attributesMap = new HashMap<>();
+		private HashMap<String, SpeciesAttributes<?>> attributesMap = new HashMap<>();
 
 		AllSpeciesAttributes()	{
 			raceKey = (RaceKey) settingMap.get(ROOT + RaceKey.RACE_KEY);
 			LanguageList languageList = (LanguageList) settingMap.get(ROOT + LanguageList.KEY);
 			StringList languages = new StringList(languageList.settingValue());
 			for (String lg : languages) {
-				attributesMap.put(lg, new SpeciesAttributes(lg));
+				attributesMap.put(lg, new SpeciesAttributes<>(lg));
 			}
 		}
 		StringList getLanguageNames()	{
@@ -453,20 +453,21 @@ public abstract class SpeciesSettings {
 			return fullCivNames;
 		}
 
-		SpeciesAttributes getAttributes(String dir)	{
-			SpeciesAttributes speciesAttributes = attributesMap.get(dir);
+		SpeciesAttributes<?> getAttributes(String dir)	{
+			SpeciesAttributes<?> speciesAttributes = attributesMap.get(dir);
 			if (speciesAttributes == null)
-				attributesMap.put(dir, new SpeciesAttributes(dir));
+				attributesMap.put(dir, new SpeciesAttributes<>(dir));
 			return attributesMap.get(dir);
 		}
-		boolean hasAnim()	{ return animSkills != null; }
+		String getAvatarKey()	{ return animSkills==null? null : animSkills.id; }
+		boolean hasAnim()		{ return animSkills != null; }
 		void insert(int idx, String name)	{
 			// add new civilization to every language
-			for (SpeciesAttributes attributes : attributesMap.values())
+			for (SpeciesAttributes<?> attributes : attributesMap.values())
 				attributes.insert(idx, name);
 		}
 		void delete(int idx)	{ // Remove an civilization
-			for (SpeciesAttributes attributes : attributesMap.values())
+			for (SpeciesAttributes<?> attributes : attributesMap.values())
 				attributes.delete(idx);
 		}
 		private void fillFromAnim(boolean forced) {
@@ -480,7 +481,7 @@ public abstract class SpeciesSettings {
 			if (animSkills == null)
 				return;
 			String currentLanguage = selectedLanguageDir();
-			SpeciesAttributes dest = attributesMap.get(currentLanguage);
+			SpeciesAttributes<?> dest = attributesMap.get(currentLanguage);
 			if (dest == null)
 				return;
 
@@ -501,7 +502,7 @@ public abstract class SpeciesSettings {
 			dest.fillFromAnim(forced, civIdx, animIdx);
 		}
 		void fillLabelsFromNames(String langDir, int civIdx, boolean forced)	{
-			SpeciesAttributes dest = attributesMap.get(langDir);
+			SpeciesAttributes<?> dest = attributesMap.get(langDir);
 			if (dest == null)
 				return;
 			switch (langDir) {
@@ -514,24 +515,24 @@ public abstract class SpeciesSettings {
 			}
 		}
 		void copyFromLanguage(String langSrc, String langDest, int civIdx, boolean forced)	{
-			SpeciesAttributes src = attributesMap.get(langSrc);
-			SpeciesAttributes dest = attributesMap.get(langDest);
+			SpeciesAttributes<?> src = attributesMap.get(langSrc);
+			SpeciesAttributes<?> dest = attributesMap.get(langDest);
 			dest.copyFromLanguage(src, civIdx, forced);
 		}
 		boolean isAnimAutonomous(String dir)	{
-			SpeciesAttributes attributes = attributesMap.get(dir);
+			SpeciesAttributes<?> attributes = attributesMap.get(dir);
 			if (attributes == null)
 				return false;
 			return attributes.isAnimAutonomous();
 		}
 		boolean isAnimAutonomous(String dir, int idx)	{
-			SpeciesAttributes attributes = attributesMap.get(dir);
+			SpeciesAttributes<?> attributes = attributesMap.get(dir);
 			if (attributes == null)
 				return false;
 			return attributes.isAnimAutonomous(idx);
 		}
 		private boolean isCivAutonomous(String dir, int idx)	{
-			SpeciesAttributes attributes = attributesMap.get(dir);
+			SpeciesAttributes<?> attributes = attributesMap.get(dir);
 			if (attributes == null)
 				return false;
 			return attributes.isCivAutonomous(idx);
@@ -771,7 +772,6 @@ public abstract class SpeciesSettings {
 			super(ROOT, RACE_KEY, defaultRaceKey, 1);
 			randomStr(RANDOMIZED_RACE_KEY);
 		}
-		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, int idx)	{ return callUI(); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.id = settingValue(); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.id); }
 	}
@@ -782,7 +782,7 @@ public abstract class SpeciesSettings {
 		static final String KEY = "RACE_NAME";
 		RaceName(String langDir) {
 			super(ROOT, KEY, "", langDir);
-			randomStr("Random Race");
+			randomStr(langLabel("CUSTOM_RACE_DESCRIPTION"));
 		}
 		@Override public void pushToSkills(SpeciesSkills skills)	{
 			skills.parseCivilizationNames(settingValue());
@@ -798,74 +798,74 @@ public abstract class SpeciesSettings {
 		RaceDescription(int i, String langDir) {
 			super(ROOT, KEY(i), "Description "+i, i==3? 4:2, langDir);
 			id = i;
-			randomStr("Randomized");
+			randomStr(langLabel("CUSTOM_RACE_DESCRIPTION"));
 		}
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.setDescription(id, settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.getDescription(id)); }
 	}
-	// ==================== RacePrefix ====================
+	// ==================== PrefixSufix ====================
 	//
-	class RacePrefix extends SettingString {
-		RacePrefix() {
-			super(ROOT, "RACE_PREFIX", "@", 1);
-			randomStr("#");
+	class PrefixSufix extends SettingString {
+		private PrefixSufix(String guiLangLabel, String nameLangLabel, String defaultValue, int lineNum) {
+			super(guiLangLabel, nameLangLabel, defaultValue, lineNum);
+			randomStr("");
 			isBullet(false);
 		}
+		@Override public boolean toggle(MouseEvent e, BasePanel frame)	{
+			if (getDir(e) == 0) {
+				setFromDefault(true, true);
+				return false;
+			}
+			String dlgTitle = getLabel();
+			String dlgLabel = getInputMessage();
+			String value = settingValue();
+			StringDialogUI dlg = RotPUI.instance().stringDialog();
+			dlg.init(null, frame, dlgLabel, dlgTitle, value, value, -1, -1, scaled(200), -1, null, null, this);
+			String newName = dlg.showDialog(0);
+			selectedValue(newName);
+			return false;
+		}
+
+	}
+		// ==================== RacePrefix ====================
+		//
+		class RacePrefix extends PrefixSufix	{
+		RacePrefix()	{ super(ROOT, "RACE_PREFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesPrefix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.speciesPrefix()); }
 	}
 	// ==================== RaceSuffix ====================
 	//
-	class RaceSuffix extends SettingString {
-		RaceSuffix() {
-			super(ROOT, "RACE_SUFFIX", "", 1);
-			randomStr("#");
-			isBullet(false);
-		}
+	class RaceSuffix extends PrefixSufix	{
+		RaceSuffix()	{ super(ROOT, "RACE_SUFFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesSuffix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.speciesSuffix()); }
 	}
 	// ==================== LeaderPrefix ====================
 	//
-	class LeaderPrefix extends SettingString {
-		LeaderPrefix() {
-			super(ROOT, "LEADER_PREFIX", "@", 1);
-			randomStr("#");
-			isBullet(false);
-		}
+	class LeaderPrefix extends PrefixSufix	{
+		LeaderPrefix()	{ super(ROOT, "LEADER_PREFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.leaderPrefix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.leaderPrefix()); }
 	}
 	// ==================== LeaderSuffix ====================
 	//
-	class LeaderSuffix extends SettingString {
-		LeaderSuffix() {
-			super(ROOT, "LEADER_SUFFIX", "", 1);
-			randomStr("#");
-			isBullet(false);
-		}
+	class LeaderSuffix extends PrefixSufix	{
+		LeaderSuffix()	{ super(ROOT, "LEADER_SUFFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.leaderSuffix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.leaderSuffix()); }
 	}
 	// ==================== WorldsPrefix ====================
 	//
-	class WorldsPrefix extends SettingString {
-		WorldsPrefix() {
-			super(ROOT, "WORLDS_PREFIX", "@", 1);
-			randomStr("#");
-			isBullet(false);
-		}
+	class WorldsPrefix extends PrefixSufix	{
+		WorldsPrefix()	{ super(ROOT, "WORLDS_PREFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.worldsPrefix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.worldsPrefix()); }
 	}
 	// ==================== WorldsSuffix ====================
 	//
-	class WorldsSuffix extends SettingString {
-		WorldsSuffix() {
-			super(ROOT, "WORLDS_SUFFIX", "", 1);
-			randomStr("#");
-			isBullet(false);
-		}
+	class WorldsSuffix extends PrefixSufix	{
+		WorldsSuffix()	{ super(ROOT, "WORLDS_SUFFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.worldsSuffix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.worldsSuffix()); }
 	}
@@ -879,7 +879,6 @@ public abstract class SpeciesSettings {
 			super(ROOT, "AVAILABLE_PLAYER", defaultValue);
 			isBullet(false);
 			hasNoCost(true);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.availablePlayer(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.availablePlayer()); }
@@ -894,7 +893,6 @@ public abstract class SpeciesSettings {
 			isBullet(false);
 			hasNoCost(true);
 			getToolTip();
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.availableAI(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.availableAI()); }
@@ -911,7 +909,6 @@ public abstract class SpeciesSettings {
 			hasNoCost(true);
 			showFullGuide(false);
 			getToolTip();
-			initOptionsText();
 			labelsAreFinals(true);
 			allowListSelect(true);
 			refreshLevel(1);
@@ -919,7 +916,6 @@ public abstract class SpeciesSettings {
 				put(s, s.toUpperCase(), 0f, s);
 			put(DEFAULT_VALUE, DEFAULT_VALUE, 0f, DEFAULT_VALUE);
 			defaultCfgValue(DEFAULT_VALUE);
-			initOptionsText();
 		}
 		@Override public String guideDefaultValue()	{ return defaultLangLabel(); }
 		@Override public String guideValue()		{ return langLabel(settingValue()); }
@@ -938,14 +934,12 @@ public abstract class SpeciesSettings {
 			hasNoCost(true);
 			showFullGuide(true);
 			getToolTip();
-			initOptionsText();
 			labelsAreFinals(true);
 			put("Small",	ROOT + "SHIP_SIZE_SMALL",	0f, "Small");
 			put("Medium",	ROOT + "SHIP_SIZE_MEDIUM",	0f, "Medium");
 			put("Large",	ROOT + "SHIP_SIZE_LARGE",	0f, "Large");
 			put("Huge",		ROOT + "SHIP_SIZE_HUGE",	0f, "Huge");
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.preferredShipSize(index()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { index(skills.preferredShipSize()); }
@@ -961,7 +955,6 @@ public abstract class SpeciesSettings {
 			hasNoCost(true);
 			showFullGuide(false);
 			getToolTip();
-			initOptionsText();
 			labelsAreFinals(true);
 			allowListSelect(true);
 			refreshLevel(1);
@@ -971,7 +964,6 @@ public abstract class SpeciesSettings {
 			}
 			put(DISPLAY_RACE_SET, PlayerShipSet.displayLabelKey(), 0f, DISPLAY_RACE_SET);
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public String guideDefaultValue()	{ return defaultLangLabel(); }
 		@Override public String guideValue()		{ return getSelLangLabel(); }
@@ -1236,9 +1228,7 @@ public abstract class SpeciesSettings {
 			put("Normal",		ROOT   + "RESOURCES_NORMAL",  0f, "Normal");
 			put("Rich",			PLANET + "RICH",			 30f, "Rich");
 			put("UltraRich",	PLANET + "ULTRA_RICH",		 50f, "UltraRich");
-//			put("Artifacts",	PLANET + "ARTIFACTS",		 40f, "Artifacts");
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.planetRessource(settingValue()); }
@@ -1258,7 +1248,6 @@ public abstract class SpeciesSettings {
 			put("Artifacts",	PLANET + "ARTIFACTS",		 40f, "Artifacts");
 			put("OrionLike",	ROOT   + "ARTIFACTS_ORION",  80f, "OrionLike");
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.planetArtifacts(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.planetArtifacts()); }
@@ -1278,7 +1267,6 @@ public abstract class SpeciesSettings {
 			put("Fertile", PLANET + "FERTILE",			   15f, "Fertile");
 			put("Gaia",	   PLANET + "GAIA",				   30f, "Gaia");
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.planetEnvironment(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.planetEnvironment()); }
@@ -1298,7 +1286,6 @@ public abstract class SpeciesSettings {
 			put("Jungle",	PlanetType.JUNGLE,	0f, PlanetType.JUNGLE);
 			put("Terran",	PlanetType.TERRAN,	0f, PlanetType.TERRAN);
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 			hasNoCost(true); // to be removed
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.homeworldPlanetType(settingValue()); }
@@ -1313,6 +1300,17 @@ public abstract class SpeciesSettings {
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.homeworldSize(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.homeworldSize()); }
+	}
+	// ==================== PopulationBonusPct ====================
+	//
+	@SuppressWarnings("unused")
+	class PopulationBonusPct extends SettingInteger { // BR: May be implemented later... !High risk of bugs!
+		PopulationBonusPct() {
+			super(ROOT, "POPULATION_BONUS", 100, 70, 150, 1, 5, 20,
+					DIFFERENCE, new float[]{0f, .8f}, new float[]{0f, 1.4f});
+		}
+		@Override public void settingToSkill(SpeciesSkills skills) { skills.populationBonusPct(settingValue()); }
+		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.populationBonusPct()); }
 	}
 	// ==================== SpeciesType ====================
 	//
@@ -1329,7 +1327,6 @@ public abstract class SpeciesSettings {
 			put("Silicate",	"RACE_SILICATE", 4f, 3);
 			put("Robotic",	"RACE_ROBOTIC",	 4f, 4);
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesType(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.speciesType()); }
@@ -1348,7 +1345,6 @@ public abstract class SpeciesSettings {
 			put("Limited",	ROOT+"IGNORES_ECO_LIMITED",	30f, "Limited");
 			put("All",		ROOT+"IGNORES_ECO_ALL",		50f, "All");
 			defaultCfgValue(defaultValue);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) {
 			skills.acceptedPlanetEnvironment(settingValue());
@@ -1378,7 +1374,6 @@ public abstract class SpeciesSettings {
 	class ShipAttack extends SettingInteger {
 		ShipAttack() {
 			super(ROOT, "SHIP_ATTACK", 0, -1, 5, 1, 1, 1, DIFFERENCE, new float[]{0f, 3f}, new float[]{0f, 5f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.shipAttackBonus(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.shipAttackBonus()); }
@@ -1388,7 +1383,6 @@ public abstract class SpeciesSettings {
 	class ShipDefense extends SettingInteger {
 		ShipDefense() {
 			super(ROOT, "SHIP_DEFENSE", 0, -1, 5, 1, 1, 1, DIFFERENCE, new float[]{0f, 1.5f, 1.5f}, new float[]{0f, 6f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.shipDefenseBonus(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.shipDefenseBonus()); }
@@ -1398,7 +1392,6 @@ public abstract class SpeciesSettings {
 	class ShipInitiative extends SettingInteger {
 		ShipInitiative() {
 			super(ROOT, "SHIP_INITIATIVE", 0, -1, 5, 1, 1, 1, DIFFERENCE, new float[]{5f, 1f}, new float[]{0f, 6f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.shipInitiativeBonus(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.shipInitiativeBonus()); }
@@ -1408,7 +1401,6 @@ public abstract class SpeciesSettings {
 	class GroundAttack extends SettingInteger {
 		GroundAttack() {
 			super(ROOT, "GROUND_ATTACK", 0, -20, 30, 1, 5, 20, DIFFERENCE, new float[]{0f, 1.25f}, new float[]{0f, 0.75f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.groundAttackBonus(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.groundAttackBonus()); }
@@ -1418,7 +1410,6 @@ public abstract class SpeciesSettings {
 	class SpyCost extends SettingInteger {
 		SpyCost() {
 			super(ROOT, "SPY_COST", 100, 50, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, -.1f}, new float[]{0f, -.2f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.spyCostMod(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.spyCostMod() * 100)); }
@@ -1428,7 +1419,6 @@ public abstract class SpeciesSettings {
 	class SpySecurity extends SettingInteger {
 		SpySecurity() {
 			super(ROOT, "SPY_SECURITY", 0, -20, 40, 1, 5, 20, DIFFERENCE, new float[]{0f, 1f}, new float[]{0f, 2f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.internalSecurityAdj(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.internalSecurityAdj() * 100)); }
@@ -1438,7 +1428,6 @@ public abstract class SpeciesSettings {
 	class SpyInfiltration extends SettingInteger {
 		SpyInfiltration() {
 			super(ROOT, "SPY_INFILTRATION", 0, -20, 40, 1, 5, 20, DIFFERENCE, new float[]{0f, 1.25f}, new float[]{0f, 2.5f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.spyInfiltrationAdj(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.spyInfiltrationAdj() * 100)); }
@@ -1452,7 +1441,6 @@ public abstract class SpeciesSettings {
 		SpyTelepathy() {
 			super(ROOT, "SPY_TELEPATHY", defaultValue, 20f, 0f);
 			isBullet(booleansAreBullet);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.telepathic(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.telepathic()); }
@@ -1462,7 +1450,6 @@ public abstract class SpeciesSettings {
 	class DiplomacyTrade extends SettingInteger {
 		DiplomacyTrade() {
 			super(ROOT, "DIPLOMACY_TRADE", 0, -30, 30, 1, 5, 20, DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .3f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.tradePctBonus(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.tradePctBonus() * 100)); }
@@ -1473,7 +1460,6 @@ public abstract class SpeciesSettings {
 	class DiploPosDP extends SettingInteger {
 		DiploPosDP() {
 			super(ROOT, "DIPLO_POS_DP", 100, 70, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, .3f}, new float[]{0f, .8f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.positiveDPMod(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.positiveDPMod() * 100)); }
@@ -1483,7 +1469,6 @@ public abstract class SpeciesSettings {
 	class DiplomacyBonus extends SettingInteger {
 		DiplomacyBonus() {
 			super(ROOT, "DIPLOMACY_BONUS", 0, -50, 100, 1, 5, 20, DIFFERENCE, new float[]{0f, .1f}, new float[]{0f, .2f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.diplomacyBonus(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.diplomacyBonus()); }
@@ -1493,7 +1478,6 @@ public abstract class SpeciesSettings {
 	class DiplomacyCouncil extends SettingInteger {
 		DiplomacyCouncil() {
 			super(ROOT, "DIPLOMACY_COUNCIL", 0, -25, 25, 1, 5, 20, DIFFERENCE, new float[]{0f, .2f}, new float[]{0f, .2f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.councilBonus(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.councilBonus() * 100)); }
@@ -1503,7 +1487,6 @@ public abstract class SpeciesSettings {
 	class RelationDefault extends SettingInteger {
 		RelationDefault() {
 			super(ROOT, "RELATION_DEFAULT", 0, -10, 10, 1, 2, 4, DIFFERENCE, new float[]{0f, .4f}, new float[]{0f, .4f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.defaultRaceRelations(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set((int)skills.defaultRaceRelations()); }
@@ -1514,7 +1497,6 @@ public abstract class SpeciesSettings {
 		// bigger = better
 		ProdWorker() {
 			super(ROOT, "PROD_WORKER", 100, 70, 300, 1, 5, 20, DIFFERENCE, new float[]{0f, .8f, 0f}, new float[]{0f, 0.8f, 0.01f});
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.workerProductivityMod(settingValue()/100f); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.workerProductivityMod() * 100)); }
@@ -1525,7 +1507,6 @@ public abstract class SpeciesSettings {
 		ProdControl() {
 			super(ROOT, "PROD_CONTROL", 0, -1, 4, 1, 1, 1, DIFFERENCE, new float[]{0f, 15f, 0f}, new float[]{0f, 30f, 0f});
 			pctValue(false);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.robotControlsAdj(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.robotControlsAdj()); }
@@ -1538,7 +1519,6 @@ public abstract class SpeciesSettings {
 		IgnoresFactoryRefit() {
 			super(ROOT, "PROD_REFIT_COST", defaultValue, 40f, 0f);
 			isBullet(booleansAreBullet);
-			initOptionsText();
 		}
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.ignoresFactoryRefit(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.ignoresFactoryRefit()); }
@@ -1546,14 +1526,13 @@ public abstract class SpeciesSettings {
 	// -#-
 	// #==================== TechResearch  And Discovery====================
 	//
-	class Technologies {
+	public class Technologies {
 		TechResearch	techResearch	= new TechResearch();
 		TechDiscovery	techDiscovery	= new TechDiscovery();
 
 		// ==================== TechResearch ====================
 		//
-		class TechResearch extends SettingInteger {
-
+		public class TechResearch extends SettingInteger {
 			ResearchComputer		computer	= new ResearchComputer();
 			ResearchConstruction	construction= new ResearchConstruction();
 			ResearchForceField		forceField	= new ResearchForceField();
@@ -1563,8 +1542,7 @@ public abstract class SpeciesSettings {
 
 			TechResearch() {
 				super(ROOT, "TECH_RESEARCH", 100, 60, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, 0.7f, 0.004f}, new float[]{0f, 1.0f, 0.006f});
-				hasNoCost(true);
-				initOptionsText();
+				hasNoCost(false);
 			}
 			@Override public void settingToSkill(SpeciesSkills skills) { skills.researchBonusPct(settingValue()/100f); }
 			@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.researchBonusPct() * 100)); }
@@ -1573,22 +1551,26 @@ public abstract class SpeciesSettings {
 			}
 			@Override protected boolean next(Integer i) {
 				super.next(i);
-				computer.settingText().repaint(computer.guiSettingDisplayStr());
-				construction.settingText().repaint(construction.guiSettingDisplayStr());
-				forceField.settingText().repaint(forceField.guiSettingDisplayStr());
-				planet.settingText().repaint(planet.guiSettingDisplayStr());
-				propulsion.settingText().repaint(propulsion.guiSettingDisplayStr());
-				weapon.settingText().repaint(weapon.guiSettingDisplayStr());
-				return false;
+				// To force refresh the display for those parameters 
+				computer.updated(true);
+				construction.updated(true);
+				forceField.updated(true);
+				planet.updated(true);
+				propulsion.updated(true);
+				weapon.updated(true);
+				return true;
 			}
-			@Override public void enabledColor(float cost) { super.enabledColor(cost()); }
+			@Override public boolean toggle(MouseWheelEvent e) {
+				super.toggle(e);
+				return true;
+			}
 
 			String costString(float cost) {
 				String str = "(<";
 				str +=  new DecimalFormat("0.0").format(cost);
 				return str + ">)";
 			}
-			private float cost() {
+			public float cost() {
 				return computer.settingCost()
 						+ construction.settingCost()
 						+ forceField.settingCost()
@@ -1596,71 +1578,54 @@ public abstract class SpeciesSettings {
 						+ propulsion.settingCost()
 						+ weapon.settingCost();
 			}
+			private void markTechResearchForRefresh()	{ updated(true); }
 
 			// ==================== ResearchComputer ====================
 			//
 			private class ResearchComputer extends SettingResearch {
-				ResearchComputer() {
-					super("RESEARCH_COMPUTER");
-					initOptionsText();
-				}
+				ResearchComputer()	{ super("RESEARCH_COMPUTER"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(0, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(0) * 100)); }
 			}
 			// ==================== ResearchConstruction ====================
 			//
 			private class ResearchConstruction extends SettingResearch {
-				ResearchConstruction() {
-					super("RESEARCH_CONSTRUCTION");
-					initOptionsText();
-				}
+				ResearchConstruction()	{ super("RESEARCH_CONSTRUCTION"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(1, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(1) * 100)); }
 			}
 			// ==================== ResearchForceField ====================
 			//
 			private class ResearchForceField extends SettingResearch {
-				ResearchForceField() {
-					super("RESEARCH_FORCEFIELD");
-					initOptionsText();
-				}
+				ResearchForceField()	{ super("RESEARCH_FORCEFIELD"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(2, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(2) * 100)); }
 			}
 			// ==================== ResearchPlanet ====================
 			//
 			private class ResearchPlanet extends SettingResearch {
-				ResearchPlanet() {
-					super("RESEARCH_PLANET");
-					initOptionsText();
-				}
+				ResearchPlanet()	{ super("RESEARCH_PLANET"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(3, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(3) * 100)); }
 			}
 			// ==================== ResearchPropulsion ====================
 			//
 			private class ResearchPropulsion extends SettingResearch {
-				ResearchPropulsion() {
-					super("RESEARCH_PROPULSION");
-					initOptionsText();
-				}
+				ResearchPropulsion()	{ super("RESEARCH_PROPULSION"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(4, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(4) * 100)); }
 			}
 			// ==================== ResearchWeapon ====================
 			//
 			private class ResearchWeapon extends SettingResearch {
-				ResearchWeapon() {
-					super("RESEARCH_WEAPON");
-					initOptionsText();
-				}
+				ResearchWeapon()	{ super("RESEARCH_WEAPON"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.techMod(5, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techMod(5) * 100)); }
 			}
 			//
 			// ==================== Research ====================
 			//
-			private class SettingResearch extends SettingInteger {
+			public class SettingResearch extends SettingInteger {
 				// Cost: smaller = better
 				private static final float	c0 = 0;
 				private static final float	c1 = -18.02331959f;
@@ -1674,7 +1639,7 @@ public abstract class SpeciesSettings {
 					super(ROOT, nameLangLabel, 100, 50, 200, 1, 5, 20, NORMALIZED, new float[]{c0, c1, c2, c3, c4}, null);
 				}
 				@Override public float settingCost() { return settingCost(combinedValue()); }
-				@Override protected float settingCost(Integer value) {
+				@Override public float settingCost(Integer value) {
 					float baseCost = (value - baseCostDefault)/norm;
 					float cost = 0;
 					for (int i=0; i<posCostFactor.length; i++) {
@@ -1692,6 +1657,10 @@ public abstract class SpeciesSettings {
 					str += String.valueOf(combinedValue()) + "%";
 					return str;
 				}
+				@Override public void selectedValue(Integer newValue) {
+					super.selectedValue(newValue);
+					markTechResearchForRefresh();
+				}
 				String costString(float cost) {
 					String str = "(";
 					str +=  new DecimalFormat("0.0").format(cost);
@@ -1705,8 +1674,7 @@ public abstract class SpeciesSettings {
 		}
 		// ==================== TechDiscovery ====================
 		//
-		class TechDiscovery extends SettingInteger {
-
+		public class TechDiscovery extends SettingInteger {
 			DiscoveryComputer	  computer		= new DiscoveryComputer();
 			DiscoveryConstruction construction	= new DiscoveryConstruction();
 			DiscoveryForceField	  forceField	= new DiscoveryForceField();
@@ -1716,8 +1684,7 @@ public abstract class SpeciesSettings {
 
 			TechDiscovery() {
 				super(ROOT, "TECH_DISCOVERY", 50, 0, 100, 1, 5, 20, DIFFERENCE, new float[]{0f, .5f}, new float[]{0f, 0.5f});
-				hasNoCost(true);
-				initOptionsText();
+				hasNoCost(false);
 			}
 			@Override public void settingToSkill(SpeciesSkills skills) { skills.techDiscoveryPct(settingValue()/100f); }
 			@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techDiscoveryPct() * 100)); }
@@ -1726,22 +1693,26 @@ public abstract class SpeciesSettings {
 			}
 			@Override protected boolean next(Integer i) {
 				super.next(i);
-				computer.settingText().repaint(computer.guiSettingDisplayStr());
-				construction.settingText().repaint(construction.guiSettingDisplayStr());
-				forceField.settingText().repaint(forceField.guiSettingDisplayStr());
-				planet.settingText().repaint(planet.guiSettingDisplayStr());
-				propulsion.settingText().repaint(propulsion.guiSettingDisplayStr());
-				weapon.settingText().repaint(weapon.guiSettingDisplayStr());
-				return false;
+				// To force refresh the display for those parameters 
+				computer.updated(true);
+				construction.updated(true);
+				forceField.updated(true);
+				planet.updated(true);
+				propulsion.updated(true);
+				weapon.updated(true);
+				return true;
 			}
-			@Override public void enabledColor(float cost) { super.enabledColor(cost()); }
+			@Override public boolean toggle(MouseWheelEvent e) {
+				super.toggle(e);
+				return true;
+			}
 
 			String costString(float cost) {
 				String str = "(<";
 				str +=  new DecimalFormat("0.0").format(cost);
 				return str + ">)";
 			}
-			private float cost() {
+			float cost() {
 				return computer.settingCost()
 						+ construction.settingCost()
 						+ forceField.settingCost()
@@ -1749,72 +1720,55 @@ public abstract class SpeciesSettings {
 						+ propulsion.settingCost()
 						+ weapon.settingCost();
 			}
+			private void markTechDiscoveryForRefresh()	{ updated(true); }
 
 			// ==================== DiscoveryComputer ====================
 			//
 			private class DiscoveryComputer extends SettingDiscovery {
 				// smaller = better
-				DiscoveryComputer() {
-					super("DISCOVERY_COMPUTER");
-					initOptionsText();
-				}
+				DiscoveryComputer() { super("DISCOVERY_COMPUTER"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(0, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(0) * 100)); }
 			}
 			// ==================== DiscoveryConstruction ====================
 			//
 			private class DiscoveryConstruction extends SettingDiscovery {
-				DiscoveryConstruction() {
-					super("DISCOVERY_CONSTRUCTION");
-					initOptionsText();
-				}
+				DiscoveryConstruction()	{ super("DISCOVERY_CONSTRUCTION"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(1, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(1) * 100)); }
 			}
 			// ==================== DiscoveryForceField ====================
 			//
 			private class DiscoveryForceField extends SettingDiscovery {
-				DiscoveryForceField() {
-					super("DISCOVERY_FORCEFIELD");
-					initOptionsText();
-				}
+				DiscoveryForceField()	{ super("DISCOVERY_FORCEFIELD"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(2, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(2) * 100)); }
 			}
 			// ==================== DiscoveryPlanet ====================
 			//
 			private class DiscoveryPlanet extends SettingDiscovery {
-				DiscoveryPlanet() {
-					super("DISCOVERY_PLANET");
-					initOptionsText();
-				}
+				DiscoveryPlanet()	{ super("DISCOVERY_PLANET"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(3, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(3) * 100)); }
 			}
 			// ==================== DiscoveryPropulsion ====================
 			//
 			private class DiscoveryPropulsion extends SettingDiscovery {
-				DiscoveryPropulsion() {
-					super("DISCOVERY_PROPULSION");
-					initOptionsText();
-				}
+				DiscoveryPropulsion()	{ super("DISCOVERY_PROPULSION"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(4, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(4) * 100)); }
 			}
 			// ==================== DiscoveryWeapon ====================
 			//
 			private class DiscoveryWeapon extends SettingDiscovery {
-				DiscoveryWeapon() {
-					super("DISCOVERY_WEAPON");
-					initOptionsText();
-				}
+				DiscoveryWeapon()	{ super("DISCOVERY_WEAPON"); }
 				@Override public void settingToSkill(SpeciesSkills skills) { skills.discoveryMod(5, settingValue()/100f); }
 				@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.discoveryMod(5) * 100)); }
 			}
 			//
 			// ==================== Discovery ====================
 			//
-			private class SettingDiscovery extends SettingInteger {
+			public class SettingDiscovery extends SettingInteger {
 				private static final float	c0 = 0f;
 				private static final float	c1 = 4.9221976f;
 				private static final float	c2 = 1.25604100f;
@@ -1831,7 +1785,7 @@ public abstract class SpeciesSettings {
 				@Override public float settingCost() {
 					return settingCost(combinedValue());
 				}
-				@Override protected float settingCost(Integer value) {
+				@Override public float settingCost(Integer value) {
 					float baseCost = (value - baseCostDefault)/norm;
 					float cost = 0;
 					for (int i=0; i<posCostFactor.length; i++) {
@@ -1847,6 +1801,10 @@ public abstract class SpeciesSettings {
 					str += " -> ";
 					str += String.valueOf(combinedValue()) + "%";
 					return str;
+				}
+				@Override public void selectedValue(Integer newValue) {
+					super.selectedValue(newValue);
+					markTechDiscoveryForRefresh();
 				}
 				private String costString(float cost) {
 					String str = "(";
@@ -1946,8 +1904,8 @@ public abstract class SpeciesSettings {
 	class ShipNames extends SettingStringLanguage {
 		private static final String BASE_KEY = "SHIP_NAMES";
 		private static final String KEY(int size)	{ return BASE_KEY + "_" + size;}
-		final int shipSize;
-		ShipNames(int size, String langDir)	{
+		private final int shipSize;
+		private ShipNames(int size, String langDir)	{
 			super(ROOT, KEY(size), "", langDir);
 			shipSize = size;
 		}
@@ -1958,7 +1916,7 @@ public abstract class SpeciesSettings {
 	// #====================
 	// List of unique Names
 	//
-	class SpeciesAttributes implements ICRSettings { // for one Language
+	class SpeciesAttributes<T> implements ICRSettings<T> { // for one Language
 		private final String labelKey;
 		SpeciesNameItems		speciesNameItems;
 		SpeciesDescriptionItems	speciesDescriptionItems;
@@ -1976,6 +1934,7 @@ public abstract class SpeciesSettings {
 			civilizationNameItems	= new CivilizationNameItems(labelKey);
 			civilizationLabelItems	= new CivilizationLabelItems(labelKey);
 		}
+		@Override public String  getLabel()	{ return ""; }
 		@Override public void updateOption(DynamicOptions destOptions) {
 			speciesNameItems.updateOption(destOptions);
 			speciesDescriptionItems.updateOption(destOptions);
@@ -2011,7 +1970,7 @@ public abstract class SpeciesSettings {
 			filled &= speciesLabelItems.isFilled();
 			return filled;
 		}
-		private void copyFromLanguage(SpeciesAttributes langSrc, int civIdx, boolean forced)	{
+		private void copyFromLanguage(SpeciesAttributes<?> langSrc, int civIdx, boolean forced)	{
 			speciesNameItems.copyFromLanguage(langSrc.speciesNameItems, civIdx, forced);
 			speciesDescriptionItems.copyFromLanguage(langSrc.speciesDescriptionItems, civIdx, forced);
 			speciesShipNamesItems.copyFromLanguage(langSrc.speciesShipNamesItems, civIdx, forced);
@@ -2027,6 +1986,7 @@ public abstract class SpeciesSettings {
 			civilizationNameItems.fillFromAnim(forced, civIdx, animIdx);
 			civilizationLabelItems.fillFromAnim(forced, civIdx, animIdx);
 		}
+		@Override public void selectedValue(T val)	{}
 	}
 	// ====================
 	// Species List
@@ -2136,18 +2096,19 @@ public abstract class SpeciesSettings {
 			}
 		}
 	}
-	private class ICSSettingsStringList extends ArrayList<SettingStringLanguage> implements ICRSettings {
+	private class ICSSettingsStringList extends ArrayList<SettingStringLanguage> implements ICRSettings<String> {
 		protected final String langKey;
 		private ICSSettingsStringList(String langDir)	{
 			langKey = toLanguageKey(langDir);
 		}
 		static final long serialVersionUID = 1L;
+		@Override public String  getLabel()	{ return ""; }
 		@Override public void updateOption(DynamicOptions destOptions) {
-			for (ICRSettings item : this)
+			for (ICRSettings<?> item : this)
 				item.updateOption(destOptions);
 		}
 		@Override public void updateOptionTool(DynamicOptions srcOptions) {
-			for (ICRSettings item : this)
+			for (ICRSettings<?> item : this)
 				item.updateOptionTool(srcOptions);
 		}
 		void insert(int idx)	{
@@ -2182,7 +2143,7 @@ public abstract class SpeciesSettings {
 					return false;
 			return true;
 		}
-	public void copyFromLanguage(ICSSettingsStringList langSrc, int civIdx, boolean forced)	{
+		public void copyFromLanguage(ICSSettingsStringList langSrc, int civIdx, boolean forced)	{
 			int size = Math.min(size(), langSrc.size());
 			for (int i=0; i<size; i++) {
 				SettingString dest = get(i);
@@ -2197,6 +2158,7 @@ public abstract class SpeciesSettings {
 			for (SettingStringLanguage setting : this)
 				setting.fillFromAnim(forced, civIdx, animIdx);;
 		}
+		@Override public void selectedValue(String val)	{}
 	}
 	// ==================== Multi Language Settings ====================
 	//
@@ -2398,7 +2360,6 @@ public abstract class SpeciesSettings {
 		}
 		public void fillFromAnim(boolean forced, int civIdx, int animIdx)	{ fillFromAnim(forced); }
 
-		@Override public boolean toggle(MouseEvent e, MouseWheelEvent w, int idx)	{ return callUI(); }
 		@Override public void settingToSkill(SpeciesSkills skills)	{
 			String gameLang = selectedLanguageDir();
 			if (langDir.equals(gameLang))

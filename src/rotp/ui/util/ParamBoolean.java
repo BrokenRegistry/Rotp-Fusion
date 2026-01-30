@@ -27,7 +27,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
 import rotp.model.game.IGameOptions;
-import rotp.ui.game.BaseModPanel;
+import rotp.ui.BasePanel;
 
 public class ParamBoolean extends AbstractParam<Boolean> {
 	
@@ -89,7 +89,7 @@ public class ParamBoolean extends AbstractParam<Boolean> {
 	@Override public boolean prev()						{ return next(); }
 	@Override public boolean next()						{ set(!get()); return false; }
 	@Override public boolean toggle(MouseWheelEvent e)	{ return next(); }
-	@Override public boolean toggle(MouseEvent e, BaseModPanel frame) {
+	@Override public boolean toggle(MouseEvent e, BasePanel frame) {
 		if (getDir(e) == 0)
 			setFromDefault(false, true);
 		else

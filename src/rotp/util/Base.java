@@ -19,6 +19,7 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.model.game.IGameOptions.DIFFICULTY_CUSTOM;
 
 import java.awt.AlphaComposite;
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Composite;
@@ -96,8 +97,6 @@ import rotp.model.tech.TechLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
-import rotp.ui.game.EditCustomRaceUI;
-import rotp.ui.game.ShowCustomRaceUI;
 import rotp.ui.util.planets.PlanetImager;
 import rotp.util.sound.SoundClip;
 import rotp.util.sound.SoundManager;
@@ -174,6 +173,10 @@ public interface Base extends InputEventUtil {
     public default SoundClip playAudioClip(String key, int hullSize) {
         return SoundManager.current().playAudioClip(key, hullSize);
     }
+	default void clearCustomShipSounds()	{
+		rotp.util.sound.WavClip.clearDelayClips();
+		rotp.util.sound.OggClip.clearDelayClips();
+	}
     public default SoundClip alwaysPlayAudioClip(String key) {
         return SoundManager.current().alwaysPlay(key);
     }
@@ -1179,12 +1182,19 @@ public interface Base extends InputEventUtil {
     public default List<String> wrappedLines(Graphics g, String text, int maxWidth) {
         return wrappedLines(g, text, maxWidth, 0);
     }
-    public default List<String> wrappedLines(Graphics g, String text, int maxWidth, int line1Indent) {
-    	// BR: Zero would lead to infinite loop
+	public default List<String> wrappedLines(Graphics g, String text, int maxWidth, int line1Indent) {
+		return wrappedLines(g.getFontMetrics(), text, maxWidth, line1Indent);
+	}
+	public default List<String> wrappedLines(Font font, String text, int maxWidth)	{
+		return wrappedLines(new Canvas().getFontMetrics(font), text, maxWidth, 0);
+	}
+	public default List<String> wrappedLines(Font font, String text, int maxWidth, int line1Indent)	{
+		return wrappedLines(new Canvas().getFontMetrics(font), text, maxWidth, line1Indent);
+	}
+	public default List<String> wrappedLines(FontMetrics fm, String text, int maxWidth, int line1Indent) {
+		// BR: Zero would lead to infinite loop
         maxWidth = max(scaled(5), maxWidth);
         List<String> lines = new ArrayList<>();
-
-        FontMetrics fm = g.getFontMetrics();
         int indent = line1Indent;
         String currentLine = "";
 
@@ -1232,25 +1242,6 @@ public interface Base extends InputEventUtil {
                 }
         	}
         }
-//        else { // Character based
-//            List<String> words = substrings(text, ' ');
-//            for (String word: words) {
-//                String newLine = currentLine;
-//                if (newLine.isEmpty())
-//                    newLine = newLine + word;
-//                else
-//                    newLine = newLine + " " + word;
-//                int newWidth = fm.stringWidth(newLine);
-//                if (newWidth > (maxWidth-indent)) {
-//                    lines.add(currentLine);
-//                    indent = 0;
-//                    currentLine = word;
-//                }
-//                else
-//                    currentLine = newLine;
-//            }
-//        }
-
         if (!currentLine.isEmpty())
             lines.add(currentLine);
 
@@ -1388,10 +1379,14 @@ public interface Base extends InputEventUtil {
         }
     }
     public default void drawBackgroundStars(BufferedImage img, ImageObserver obs) {
-        drawBackgroundStars(img, img.getGraphics(), img.getWidth(obs), img.getHeight(obs), scaled(50), scaled(100));
+		Graphics g = img.getGraphics();
+		drawBackgroundStars(img, g, img.getWidth(obs), img.getHeight(obs), scaled(50), scaled(100));
+		g.dispose();
     }
     public default void drawBackgroundStars(BufferedImage img, ImageObserver obs, int minDist, int varDist) {
-        drawBackgroundStars(img, img.getGraphics(), img.getWidth(obs), img.getHeight(obs), minDist, varDist);
+		Graphics g = img.getGraphics();
+		drawBackgroundStars(img, g, img.getWidth(obs), img.getHeight(obs), minDist, varDist);
+		g.dispose();
     }
     public default void drawBackgroundStars(Graphics g, int w, int h) {
         drawBackgroundStars(g, w, h, scaled(50), scaled(100));
@@ -1638,7 +1633,10 @@ public interface Base extends InputEventUtil {
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(),
 				bounds(0, (int)(alpha*255+0.5), 255));
 	}
-    public default Color saturateColor(Color color, float alpha) {
+    static Color setAlpha(Color color, int alpha) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+	}
+   public default Color saturateColor(Color color, float alpha) {
     	int max = max(color.getRed(), max(color.getGreen(), color.getBlue()));
     	if (max == 0)
     		return setAlpha(Color.white, alpha);
@@ -1837,8 +1835,7 @@ public interface Base extends InputEventUtil {
 				LanguageManager.selectLanguage(langDir);
 			}
 			if (resetCRUI) {
-				ShowCustomRaceUI.languageChanged();
-				EditCustomRaceUI.languageChanged();
+				// TODO BR: Validate language Change on DNA Workshop
 			}
 			return;
 		}
@@ -1854,8 +1851,7 @@ public interface Base extends InputEventUtil {
 			LanguageManager.selectLanguage(langDir);
 		}
 			if (resetCRUI) {
-				ShowCustomRaceUI.languageChanged();
-				EditCustomRaceUI.languageChanged();
+				// TODO BR: Validate language Change on DNA Workshop
 			}
 		return;
 	}

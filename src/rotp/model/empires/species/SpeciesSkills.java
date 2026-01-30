@@ -153,8 +153,8 @@ class SpeciesSkills implements Base, Serializable {
 
 	String languageList()				{ return languageList; }
 	void languageList(String s)			{ languageList = s; }
-	String reworkableSpeciesKey()		{ return reworkableSpeciesKey; }
-	void reworkableSpeciesKey(String s)	{ reworkableSpeciesKey = s; }
+	String avatarSpeciesKey()		{ return reworkableSpeciesKey; }
+	void avatarSpeciesKey(String s)	{ reworkableSpeciesKey = s; }
 	int reworkableId()					{ return reworkableId; }
 	void reworkableId(int i)			{ reworkableId = i; }
 	int startingYear()					{ return startingYear; }
@@ -559,7 +559,7 @@ class SpeciesSkills implements Base, Serializable {
 	void isRandomizedSpecies(boolean is){ isRandomizedSpecies = is; }
 	String isAnimAutonomous()			{ return isAnimAutonomous; }
 	void isAnimAutonomous(String s)		{ isAnimAutonomous = s; }
-	boolean isRandomized()				{ return SkillsFactory.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
+	boolean isRandomized()				{ return DNAFactory.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
 	DynOptions speciesOptions()			{ return speciesOptions; }
 	void speciesOptions(DynOptions val)	{ speciesOptions = val; }
 	// BR: Get the values encoded in HomeworldKey

@@ -8,10 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import rotp.model.empires.Empire.EmpireBaseData;
-import rotp.model.empires.species.SkillsFactory.AnimationListMap;
-import rotp.model.empires.species.SkillsFactory.CivRecordList;
-import rotp.model.empires.species.SkillsFactory.CivilizationRecord;
-import rotp.model.empires.species.SkillsFactory.SpeciesRecord;
+import rotp.model.empires.species.DNAFactory.AnimationListMap;
+import rotp.model.empires.species.DNAFactory.CivRecordList;
+import rotp.model.empires.species.DNAFactory.CivilizationRecord;
+import rotp.model.empires.species.DNAFactory.SpeciesRecord;
 import rotp.model.galaxy.Galaxy.GalaxyBaseData;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.game.DynOptions;
@@ -22,7 +22,7 @@ import rotp.util.LanguageManager;
 
 public final class SpeciesFactory implements ISpecies, Base {
 	private final IGameOptions options;
-	private SkillsFactory sf =  SkillsFactory.getSkillsFactoryForGalaxy();
+	private DNAFactory sf =  DNAFactory.getSkillsFactoryForGalaxy();
 	private final StringList internalSpeciesKeys;
 	private final StringList baseInternalKeys;
 	private final StringList allInternalKeys;
@@ -326,7 +326,7 @@ public final class SpeciesFactory implements ISpecies, Base {
 		DynOptions skillOptions = null;
 		String restartChangesPlayerRace = options.selectedRestartChangesPlayerRace();
 		if (options.selectedPlayerIsCustom())
-			playerSkillKey = SkillsFactory.CUSTOM_RACE_KEY;
+			playerSkillKey = DNAFactory.CUSTOM_RACE_KEY;
 
 		if (fullRestart
 				&& !restartChangesPlayerRace.equals("GuiLast")

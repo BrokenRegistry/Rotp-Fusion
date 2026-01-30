@@ -21,7 +21,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.ImageIcon;
+
 import rotp.model.colony.Colony;
 import rotp.model.colony.MissileBaseMissile;
 import rotp.model.combat.CombatStack;
@@ -362,7 +364,8 @@ public final class TechMissileWeapon extends Tech {
         int y1 = st1Y+stH/2;
 
         Graphics2D g = (Graphics2D) ui.getGraphics();
-        target.drawAttackResult(g,x1,y1,x1, dmg,text("SHIP_COMBAT_MISS"));   
+        target.drawAttackResult(g,x1,y1,x1, dmg,text("SHIP_COMBAT_MISS"));
+        g.dispose();
         ui.paintAllImmediately();
     }
 }

@@ -21,7 +21,7 @@ public final class MainOptions extends AbstractOptionsSubUI {
 		
 		// Vanilla UI to compact UI conversion
 		SafeListParam column = new SafeListParam("");
-		for (IParam opt : options) {
+		for (IParam<?> opt : options) {
 			if (opt == null) {
 				map.add(column);
 				column = new SafeListParam("");

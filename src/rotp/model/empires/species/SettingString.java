@@ -16,21 +16,15 @@
 
 package rotp.model.empires.species;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-
 import rotp.model.game.DynamicOptions;
-import rotp.ui.game.ShowCustomRaceUI;
 import rotp.util.Base;
 
 public class SettingString extends SettingBase<String> implements Base{
 	
 	private String randomStr = "Randomized";
-//	private String inputMessage = "Enter the value";
 	
 	// ========== constructors  and Initializers ==========
 	//
@@ -39,7 +33,7 @@ public class SettingString extends SettingBase<String> implements Base{
 	 * @param nameLangLabel The nameLangLabel
 	 * @param defaultvalue The default value
 	 */
-	public SettingString(String guiLangLabel, String nameLangLabel, String defaultValue, int lineNum) {
+	SettingString(String guiLangLabel, String nameLangLabel, String defaultValue, int lineNum) {
 		super(guiLangLabel, nameLangLabel, defaultValue, false, true, true);
 		hasNoCost(true);
 		bulletHFactor(lineNum);
@@ -47,10 +41,9 @@ public class SettingString extends SettingBase<String> implements Base{
 		for (int i=0; i<lineNum; i++)
 			put("", "");
 		defaultIndex(0);
-		initOptionsText();
 		getToolTip(); // to init the list
 	}
-	public SettingString(String guiLangLabel, String nameLangLabel, String defaultValue) {
+	SettingString(String guiLangLabel, String nameLangLabel, String defaultValue) {
 		super(guiLangLabel, nameLangLabel, defaultValue, false, true, true);
 		hasNoCost(true);
 		bulletHFactor(1);
@@ -58,18 +51,15 @@ public class SettingString extends SettingBase<String> implements Base{
 		put(defaultValue, defaultValue);
 		defaultIndex(0);
 		set(defaultValue);
-		initOptionsText();
 		getToolTip(); // to init the list
 	}
 
-//	protected void inputMessage(String inputMessage) {
-//		this.inputMessage = inputMessage;
-//	}
 	protected void randomStr(String randomStr) {
 		this.randomStr = randomStr;
 	}
 	// ===== Overriders =====
 	//
+	@Override public boolean isSettingString()	{ return true; }
 	@Override public boolean isDefaultValue() {
 		return defaultValue().equals(settingValue());
 	}
@@ -83,20 +73,6 @@ public class SettingString extends SettingBase<String> implements Base{
 	@Override public void updateOptionTool(DynamicOptions srcOptions) {
 		if (srcOptions != null && !isSpacer())
 			set(srcOptions.getString(dynOptionIndex(), defaultValue()));
-	}
-	@Override public boolean next() {
-		Object prev = UIManager.get("OptionPane.minimumSize");
-		UIManager.put("OptionPane.minimumSize", new Dimension(scaled(800),scaled(90)));
-		String msg = getInputMessage();
-		String input;
-		input = JOptionPane.showInputDialog(settingText().panel() ,msg, settingValue()); // TODO BR: Improve aspect
-		UIManager.put("OptionPane.minimumSize", prev); 
-		if (input == null)
-			return false; // cancelled
-		set(input);
-		settingToSkill(ShowCustomRaceUI.displayedSpecies().getRawRace());
-		updateGui();
-		return false;
 	}
 	@Override public void setRandom(float min, float max, boolean gaussian) {
 		set(randomStr);
@@ -138,6 +114,6 @@ public class SettingString extends SettingBase<String> implements Base{
 	}
 	// ===== Other Methods =====
 	//
-	public String settingValue(int item)			{ return settingValue(); }
-	public void selectedValue(int item, String val)	{ selectedValue(val); }
+	public String settingValue(int item)	{ return settingValue(); }
+	@Override public void selectedValue(int item, String val)	{ selectedValue(val); }
 }

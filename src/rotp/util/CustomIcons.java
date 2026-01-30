@@ -44,7 +44,7 @@ public class CustomIcons implements Base {
 		imgW = img.getWidth();
 		imgH = img.getHeight();
 		g.drawImage(img, x1, y1, x2, y2, 0, 0, imgW, imgH, null);
-		
+
 		g.dispose();
 		return rulesIcon;
 	}
@@ -409,7 +409,7 @@ public class CustomIcons implements Base {
 		height	 = (yCtr+1)*2 + 1;
 		int xRay = xCtr;
 		int yRay = xCtr *7/10;
-		int rayExt = round(Math.sqrt(yRay*yRay + xRay*xRay))+1;
+		int rayExt = round(Math.sqrt(yRay*yRay + xRay*xRay))+2;
 		int diaExt	= rayExt+rayExt;
 		int yCtrUp	= yCtr - yRay -1;
 		int yCtrLow	= yCtr + yRay +1;
@@ -422,8 +422,8 @@ public class CustomIcons implements Base {
 		Graphics2D g = getGraphicsRH(img);
 		g.setColor(lineCol);
 		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-		g.drawOval(xCtr-rayExt, yCtrUp-rayExt, diaExt, diaExt);
-		g.drawOval(xCtr-rayExt, yCtrLow-rayExt, diaExt, diaExt);
+		g.drawOval(xCtr-rayExt+2, yCtrUp-rayExt, diaExt, diaExt);
+		g.drawOval(xCtr-rayExt+2, yCtrLow-rayExt, diaExt, diaExt);
 
 		strokeW	= width/24;
 		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
@@ -491,7 +491,7 @@ public class CustomIcons implements Base {
 		g.drawLine(xArrow, yArrow, xArrow+lArrow,yArrow);
 		g.drawLine(xArrow, yArrow, xArrow, yArrow-lArrow);
 		g.drawRoundRect(tlDot, tlDot, diaDot, diaDot, diaDot, diaDot);
-		
+
 		g.dispose();
 		return img;
 	}

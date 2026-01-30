@@ -63,9 +63,9 @@ public class UserPreferences implements IMainOptions {
 	private static int screenSizePct = 93;
 	private static int selectedScreen = -1; // BR: to specify the destination display
 	private static int backupTurns = 5; // modnar: change default turns between backups to 5
-	private static List<IParam> optionList;
+	private static List<IParam<?>> optionList;
 	private static boolean readyToSave = false;
-	private static List<IParam> optionList() {
+	private static List<IParam<?>> optionList() {
 		if (optionList == null) {
 			optionList = AllSubUI.allCfgOptions(false);
 		}
@@ -204,7 +204,7 @@ public class UserPreferences implements IMainOptions {
 			out.println();
 			out.println("===== Extended Settings =====");
 			out.println();
-			for (IParam param : optionList()) {
+			for (IParam<?> param : optionList()) {
 				if (param != null
 						&& !param.isDuplicate()
 						&& param.isCfgFile()
@@ -275,7 +275,7 @@ public class UserPreferences implements IMainOptions {
 			case "DISABLE_ADVISOR": disableAdvisor = yesOrNo(val); return;
 			default:
 				// BR: Global Mod GUI
-				for (IParam param : optionList()) {
+				for (IParam<?> param : optionList()) {
 					if (param != null && key.equalsIgnoreCase(param.getCfgLabel())) {
 						if (param instanceof ParamString)
 							param.setFromCfgValue(fullVal.trim());

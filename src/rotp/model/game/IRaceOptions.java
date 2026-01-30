@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
 
 import rotp.model.empires.species.Species;
 import rotp.ui.game.GameUI;
@@ -72,10 +71,10 @@ public interface IRaceOptions extends IBaseOptsTools {
 	default void selectedPlayerIsCustom(boolean is)	{ playerIsCustom.set(is); }
 
 	ParamCR	playerCustomRace	= new ParamCR(MOD_UI, defaultRaceKey);
-	default ParamCR playerCustomRace()						 { return playerCustomRace; }
-	default Serializable selectedPlayerCustomRace()			 { return playerCustomRace.get(); }
-	default void selectedPlayerCustomRace(Serializable race) { playerCustomRace.set(race); }
-	default Species playerCustomSpecies(String animKey)		 { return playerCustomRace.getSpecies(animKey); }	
-	default Species playerCustomSpecies(IGameOptions opts)	 { return playerCustomRace.getSpecies(opts.selectedPlayerRace()); }	
+	default ParamCR playerCustomRace()						{ return playerCustomRace; }
+	default DynOptions selectedPlayerCustomRace()			{ return (DynOptions) playerCustomRace.get(); }
+	default void selectedPlayerCustomRace(DynOptions race)	{ playerCustomRace.set(race); }
+	default Species playerCustomSpecies(String animKey)		{ return playerCustomRace.getSpecies(animKey); }	
+	default Species playerCustomSpecies(IGameOptions opts)	{ return playerCustomRace.getSpecies(opts.selectedPlayerRace()); }	
 	default String  playerCustomSetupName(IGameOptions opts) { return playerCustomSpecies(opts).setupName(); }	
 }

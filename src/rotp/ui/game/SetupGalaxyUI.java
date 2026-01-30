@@ -16,8 +16,8 @@
 package rotp.ui.game;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static rotp.model.empires.species.SkillsFactory.getAllowedAlienSkills;
-import static rotp.model.empires.species.SkillsFactory.getBaseRaceList;
+import static rotp.model.empires.species.DNAFactory.getAllowedAlienSkills;
+import static rotp.model.empires.species.DNAFactory.getBaseRaceList;
 import static rotp.model.game.DefaultValues.MOO1_DEFAULT;
 import static rotp.model.game.DefaultValues.ROTP_DEFAULT;
 import static rotp.model.game.IBaseOptsTools.BASE_UI;
@@ -86,7 +86,7 @@ import rotp.Rotp;
 import rotp.model.ai.AIList;
 import rotp.model.empires.Empire;
 import rotp.model.empires.species.ISpecies;
-import rotp.model.empires.species.SkillsFactory;
+import rotp.model.empires.species.DNAFactory;
 import rotp.model.empires.species.Species;
 import rotp.model.empires.species.SpecificCROption;
 import rotp.model.galaxy.AllShapes;
@@ -346,10 +346,10 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	@Override protected void singleInit()	{
 		showAbilitiesBox	= new Box(useSelectableAbilities);
 		shapeBox		= new Box(shapeSelection);
-		mapOption1Box	= new Box((IParam) null);
-		mapOption2Box	= new Box((IParam) null);
-		mapOption3Box	= new Box((IParam) null);
-		mapOption4Box	= new Box((IParam) null);
+		mapOption1Box	= new Box((IParam<?>) null);
+		mapOption2Box	= new Box((IParam<?>) null);
+		mapOption3Box	= new Box((IParam<?>) null);
+		mapOption4Box	= new Box((IParam<?>) null);
 		sizeOptionBox	= new Box(opts.dynStarsPerEmpire());
 		sizeBox			= new Box(sizeSelection);
 		sizeMinBox		= new Box(randomNumStarsLim1);
@@ -376,7 +376,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		duplicateList.add(sizeSelection);
 		duplicateList.add(aliensNumber);
 
-		for (IParam param : duplicateList)
+		for (IParam<?> param : duplicateList)
 			for (int i=0; i<2; i++)
 				param.initDependencies(i);
 	}
@@ -409,7 +409,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			return;
 		SafeListParam list = AllSubUI.getHandle(ADVANCED_SYSTEMS_UI_KEY).optionsMap().getListNoTitle();
 		int boxX = galaxyBox.x - scaled(360);
-		for ( IParam param : list) {
+		for ( IParam<?> param : list) {
 			if (param instanceof ParamList) {
 				ParamList p = (ParamList) param;
 				p.setPosition(boxX, -1);
@@ -885,7 +885,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		opts.galaxyShape().quickGenerate();
 		repaint();
 	}
-	@Override public void preview(String s, IParam param) {
+	@Override public void preview(String s, IParam<?> param) {
 		if (s == null)
 			return;
 		if (!s.equalsIgnoreCase("quickGenerate")) {
@@ -1976,7 +1976,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		Species species = new Species(opts.selectedPlayerRace());
 		if (opts.selectedPlayerIsCustom())
-			species.setSpeciesSkills(SkillsFactory.CUSTOM_RACE_KEY, (DynOptions)null);
+			species.setSpeciesSkills(DNAFactory.CUSTOM_RACE_KEY, (DynOptions)null);
 		String setupName = species.setupName();
 
 		// background image
@@ -2039,7 +2039,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		// draw opponent count box and arrows
 		int x2b = x2+swHdr+s5;
 		int x2c = x2b;
-		
+
 		g.setColor(GameUI.setupFrame());
 		if (isRandomNumAlien) {
 			int y2c = y2-s13;
@@ -2092,7 +2092,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 
 		int x2d = x2c+s20;
 		drawBorderedString(g, header2, 1, x2d, y2-yho, Color.black, Color.white);
-		
+
 		// align AI and CR selection
 		String header3   = text("SETUP_OPPONENT_AI");
 		String header3cr = text("SETUP_OPPONENT_CR");
@@ -2145,7 +2145,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		int swHdrNR = g.getFontMetrics().stringWidth(headerNR);
 		int swHdrSA = g.getFontMetrics().stringWidth(headerSA);
 		int x4 = side-sep - max(widthNR+swHdrNR, widthSA+swHdrSA);
-		
+
 		// draw New Races selection
 		g.setColor(SystemPanel.blackText);
 		int yNR = y3;

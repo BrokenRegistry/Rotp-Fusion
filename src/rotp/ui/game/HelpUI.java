@@ -15,16 +15,14 @@
  */
 package rotp.ui.game;
 
-import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,14 +35,13 @@ public class HelpUI extends BasePanel implements MouseListener {
     private static final Color backgroundHaze = new Color(0,0,0,40);
     private static final int FONT_SIZE		= 16;
     private static final int MIN_FONT_SIZE	= 10;
-    private static final BufferedImage fakeGraphic = new BufferedImage(16, 16, TYPE_INT_ARGB);
     private static int margin = s30;
     private final Color blueBackC  = new Color(78,101,155);
     private final Color brownBackC = new Color(240,240,240);
     private final Color brownTextC = new Color(45,14,5);
 
     private List<HelpSpec> specs = new ArrayList<>();
-    private BasePanel parent;
+	private BasePanel parent;
 
     public HelpUI() {
         init();
@@ -58,12 +55,10 @@ public class HelpUI extends BasePanel implements MouseListener {
         enableGlassPane(this);
     }
     public void close() {
-        specs.clear();
-        disableGlassPane();
+    	clear();
+    	disableGlassPane();
     }
-    public void clear() {
-        specs.clear();
-    }
+    public void clear() { specs.clear(); }
 
     public HelpSpec addBrownHelpText(int x, int y, int w, int num, String text) {
         HelpSpec sp = addBlueHelpText(x,y,w,num,text);
@@ -115,24 +110,16 @@ public class HelpUI extends BasePanel implements MouseListener {
         specs.add(sp);
         return sp;
     }
-    public int getLineNumber(String str, int maxWidth)	{
-    	Graphics g = getGraphics();
-    	if (g==null) {// BR: because this may happen !?
-    		g = (Graphics2D) fakeGraphic.getGraphics();
-    	}
-        int fontSize = FONT_SIZE;
-        g.setFont(narrowFont(fontSize));
-        List<String> lines = wrappedLines(g, str, maxWidth - margin);
-        g.dispose();
-        return lines.size();
-    }
+	public int getLineNumber(String str, int maxWidth)	{
+		List<String> lines = wrappedLines(narrowFont(FONT_SIZE), str, maxWidth - margin);
+		return lines.size();
+	}
 
-    @Override public void paintComponent(Graphics g0)	{
+	@Override public void paintComponent(Graphics g0)	{
         super.paintComponent(g0);
-
+		Graphics2D g = (Graphics2D) g0;
         int w = getWidth();
         int h = getHeight();
-        Graphics2D g = (Graphics2D) g0;
         g.setColor(backgroundHaze);
         g.fillRect(0, 0, w, h);
 
@@ -226,6 +213,7 @@ public class HelpUI extends BasePanel implements MouseListener {
     @Override public void mouseReleased(MouseEvent e)	{ parent.advanceHelp(); }
     @Override public void mouseEntered(MouseEvent e)	{ }
     @Override public void mouseExited(MouseEvent e)		{ }
+
     private static int lineH(int fontSize)				{ return RotPUI.scaledSize(fontSize + 2); }
     private static int height(int lines, int fontSize)	{ return s2 + (lines + 1) * lineH(fontSize) ; }
     static int lineH()									{ return lineH(FONT_SIZE); }
@@ -276,19 +264,15 @@ public class HelpUI extends BasePanel implements MouseListener {
             y3 = y3a;
         }
         private void init()	{
-        	Graphics g = getGraphics();
-        	if (g==null) {// BR: because this may happen !?
-        		g = (Graphics2D) fakeGraphic.getGraphics();
-        	}
             fontSize = FONT_SIZE;
-            g.setFont(narrowFont(fontSize));
-            List<String> linesList = wrappedLines(g, text, w - margin);
+            Font font = narrowFont(fontSize);
+            List<String> linesList = wrappedLines(font, text, w - margin);
             lines = linesList.size();
             int specH = height();
             while ((specH > hMax) && (fontSize > MIN_FONT_SIZE)) {
                 fontSize--;
-                g.setFont(narrowFont(fontSize));
-                linesList = wrappedLines(g, text, w - margin);
+                font = narrowFont(fontSize);
+                linesList = wrappedLines(font, text, w - margin);
                 lines = linesList.size();
                 specH = height();
             }
