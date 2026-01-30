@@ -8,6 +8,8 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -30,13 +32,14 @@ import rotp.ui.races.RacesUI;
 import rotp.ui.util.IParam;
 import rotp.util.FontManager;
 
-public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
+public class RComboBox<T> extends JComboBox<T> implements RotPComponents, MouseListener {
 	private static final long serialVersionUID = 1L;
 
 	protected int comboFontSize	= 12;
 	protected int textIndent	= s5;
 	protected int textBaseline	= s4;
 	protected Font comboFont	= FontManager.current().narrowFont(comboFontSize);
+	private Font lastFont		= comboFont;
 	private List<T> selectionList;
 	private boolean showArrow = true;
 	private int boxLocation	= SwingConstants.SOUTH;
@@ -82,9 +85,10 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 		setRenderer(new RListRenderer());
 		setFont(comboFont);
 		setUI(new RComboBoxUI());
+		addMouseListener(this);
 	}
 	protected Font getSpecialFont(String value)	{ return comboFont; }
-	private Font lastFont = comboFont;
+	@Override public IParam<?> getParam()		{ return param; }
 	@Override public JComponent getComponent()	{ return this; }
 	@Override public void paintChildren(Graphics g)	{
 		if (showArrow)
@@ -103,6 +107,15 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents {
 		setFont(comboFont);
 		g.drawString("Load GMO File", textIndent, h-textBaseline);
 	}
+	@Override public void mouseClicked(MouseEvent evt)	{ }
+	@Override public void mousePressed(MouseEvent evt)	{ }
+	@Override public void mouseReleased(MouseEvent evt)	{ mouseEntered(evt); }
+	@Override public void mouseEntered(MouseEvent evt)	{ setDescription(); }
+	@Override public void mouseExited(MouseEvent evt)	{
+//		hideGuide();
+		clearDescription();
+	}
+
 	public void updateList(List<T> newList)	{
 		removeAllItems();
 		selectionList = newList;

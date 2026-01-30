@@ -199,6 +199,8 @@ public interface IParam<T> extends InterfaceOptions{
 			help = realDescription(id);
 		if (help == null)
 			help = "";
+		if (help.isEmpty())
+			return help;
 		return rowFormat(labelFormat(name(id)), help);
 	}
 	default String valueGuide(int id)		{ return "";}
@@ -209,6 +211,8 @@ public interface IParam<T> extends InterfaceOptions{
 			return val;
 		// this is a list
 		String help = valueGuide(getIndex());
+		if (help.isEmpty())
+			return val;
 		return val + baseSeparator() + help;
 	}
 	default String modifierHelp()			{

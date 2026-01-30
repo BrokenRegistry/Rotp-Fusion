@@ -13,6 +13,7 @@ import static java.awt.GridBagConstraints.WEST;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.model.game.IBaseOptsTools.LIVE_OPTIONS_FILE;
 import static rotp.model.game.IMainOptions.speciesDirectory;
+import static rotp.ui.util.IParam.baseSeparator;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -33,6 +34,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -73,6 +76,7 @@ import rotp.ui.game.GuideUI;
 import rotp.ui.game.GuideUI.IGuide;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.races.RacesUI;
+import rotp.ui.util.IParam;
 import rotp.util.AnimationManager;
 import rotp.util.Base;
 import rotp.util.FontManager;
@@ -362,15 +366,18 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 					backImage = null;
 					panel.updateGui(true);
 					workshop.repaint();
+					setDescBox(w);
 					return;
 				}
 				if (setting instanceof SettingString)
 					return;
 				else if (setting.toggle(w)) {
 					refreshPanel(false);
+					setDescBox(w);
 					return;
 				}
 				panel.updateGui(true);
+				setDescBox(w);
 				if (!setting.hasNoCost()) {
 					costPanel.updateCost();
 					costPanel.paintImmediately();
@@ -387,6 +394,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 					backImage = null;
 					panel.updateGui(true);
 					workshop.repaint();
+					setDescBox(e);
 					return;
 				}
 				if (setting instanceof PrefixSufix) {
@@ -403,6 +411,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 					setting.toggle(e, workshop);
 				panel.updateGui(true);
 				refreshPanel(false);
+				setDescBox(e);
 
 				if (!setting.hasNoCost()) {
 					costPanel.updateCost();
@@ -414,15 +423,13 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		private void setDescBox(MouseEvent e)	{
 			RSettingPanel panel = panel(e);
 			ICRSettings<?> setting = panel.setting;
-			if (panel != hasPopUp) {
-				if (hasPopUp != null)
-					hasPopUp.highLighted(false);
-				hasPopUp = panel;
-				panel.highLighted(true);
-				String description = setting.getGuiDescription();
-				descriptionPane.setText(description);
-				GuideUI.open(panel, setting.getGuide());
-			}
+			if (hasPopUp != null && panel != hasPopUp)
+				hasPopUp.highLighted(false);
+			hasPopUp = panel;
+			panel.highLighted(true);
+			String description = setting.getGuiDescription();
+			descriptionPane.setText(description);
+			GuideUI.open(panel, setting.getGuide());
 		}
 		private void clearDescBox(MouseEvent e)	{
 			RSettingPanel panel = panel(e);
@@ -846,7 +853,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	// ========================================================================
 	// #=== Other Classes: FleetPanel
 	//
-	private final class FleetPanel extends BasePanel implements RotPComponents, MouseListener	{
+	private final class FleetPanel extends BasePanel implements RotPComponents, MouseListener, MouseWheelListener	{
 		private static final long serialVersionUID = 1L;
 		private static final int DRAG = 10;
 		private Dimension size;
@@ -861,9 +868,10 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			setVisible(true);
 			setEnabled(true);
 			addMouseListener(this);
+			addMouseWheelListener(this);
 		}
 		@Override public Dimension getPreferredSize()		{ return size; }
-		@Override public void paintComponent(Graphics g) {
+		@Override public void paintComponent(Graphics g)	{
 			if (prefFleet.isDefaultValue())
 				return;
 			setRenderingHints(g);
@@ -873,17 +881,33 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			BufferedImage fleetImage = fleetImage(prefFleet.index(), w, h);
 			g.drawImage(fleetImage, 0,0, this);
 		}
-		@Override public JComponent getComponent() { return this; }
+		@Override public IParam<?> getParam()				{ return prefFleet; }
+		@Override public JComponent getComponent()			{ return this; }
 		@Override public void mouseClicked(MouseEvent evt)	{ }
 		@Override public void mousePressed(MouseEvent evt)	{ }
-		@Override public void mouseReleased(MouseEvent evt)	{ animateFleet = !animateFleet; }
+		@Override public void mouseReleased(MouseEvent evt)	{
+			if (SwingUtilities.isRightMouseButton(evt))
+				prefFleet.toggle(evt, workshop);
+			else if (SwingUtilities.isMiddleMouseButton(evt))
+				prefFleet.toggle(evt, workshop);
+			else if (evt.isControlDown())
+				prefFleet.toggle(evt, workshop);
+			else
+				animateFleet = !animateFleet;
+			mouseEntered(evt);
+		}
 		@Override public void mouseEntered(MouseEvent evt)	{
-			popGuide(text(ROOT + "FLEET_HELP"), -s36, -s36);
-			setDescription(text(ROOT + "FLEET_HELP"));
+			String desc = text(ROOT + "FLEET_HELP");
+			popGuide(prefFleet.getGuide() + baseSeparator() + desc, -s36, -s36);
+			setDescription(desc);
 		}
 		@Override public void mouseExited(MouseEvent evt)	{
 			hideGuide();
 			clearDescription();
+		}
+		@Override public void mouseWheelMoved(MouseWheelEvent evt)	{
+			prefFleet.toggle(evt);
+			mouseEntered(evt);
 		}
 
 		private BufferedImage fleetImage(int shipStyle, int w0, int h0)	{

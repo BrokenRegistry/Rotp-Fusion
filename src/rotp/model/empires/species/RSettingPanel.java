@@ -67,7 +67,6 @@ public class RSettingPanel extends JPanel implements RotPComponents {
 		addMouseWheelListener(settingListener);
 
 		updateGui(true);
-//		updateDisplay(true);
 	}
 
 	@Override public IParam<?> getParam()		{ return setting; }

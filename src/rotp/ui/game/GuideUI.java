@@ -85,8 +85,13 @@ public class GuideUI extends BasePanel {
 		default void setDescription()	{
 			if (showDescription()) {
 				JComponent c = getComponent();
-				if (c != null)
-					descriptionPane.setText(c.getToolTipText());
+				if (c != null) {
+					IParam<?> p = getParam();
+					if (p != null)
+						descriptionPane.setText(p.getDescription());
+					else
+						descriptionPane.setText(c.getToolTipText());
+				}
 			}
 		}
 		default void clearDescription()		{ descriptionPane.setText(""); }
@@ -283,6 +288,7 @@ public class GuideUI extends BasePanel {
 	static void setGuideColors(Color backC, Color textC)	{ GuideData.setCustomColors(backC, textC); }
 	class GuideData	{
 		private static final int GUIDE_FONT_SIZE = 14;
+		private static final Color borderLineColor = new Color(128, 128, 128, 128);
 		private static Color textColor;
 		private static Color backColor;
 		private static Color lineColor;
@@ -327,13 +333,18 @@ public class GuideUI extends BasePanel {
 		// Queries
 		private void paintGuide(Graphics2D g)	{
 			g.setColor(borderColor);
-			g.fillRect(left-s8, top-s8, width+s8+s8, height+s8+s8);
+			g.fillRoundRect(left-s6, top-s6, width+s6+s6, height+s6+s6, cnr+s3, cnr+s3);
 			g.setColor(backColor);
-			g.fillRect(left-s3, top-s3, width+s3+s3, height+s3+s3);
+			g.fillRoundRect(left-s3, top-s3, width+s3+s3, height+s3+s3, cnr, cnr);
 			g.translate(left, top);
 			guideBox.paint(g);
 			g.translate(-left, -top);
 			drawLines(g);
+			g.setColor(borderLineColor);
+			Stroke prev = g.getStroke();
+			g.setStroke(stroke1);
+			g.drawRoundRect(left-s3, top-s3, width+s3+s3, height+s3+s3, cnr, cnr);
+			g.setStroke(prev);
 		}
 		private void drawLines(Graphics2D g)	{
 			if (lineArr != null) {
@@ -422,12 +433,11 @@ public class GuideUI extends BasePanel {
 			return txt;
 		}
 		private void setSizeAndLocation() {
-//			System.out.println("Target = " + targetBox.toString()); // TODO BR: REMOVE
-			int cover	= sourceBox.height>s25? s5 : s5;
+			int cover		= s5;
 			int xBoxShift	= s20;
 			int yBoxShift	= s20;
-			int xTarCover	= cover;
-			int yTarCover	= cover;
+			int xTarCover	= s2;
+			int yTarCover	= sourceBox.height>s25? s10 : s5;
 			int xBoxMargin	= s10;
 			int yBoxMargin	= s10;
 			int xLineCover	= cover;
@@ -483,10 +493,7 @@ public class GuideUI extends BasePanel {
 				if (yd > yb)
 					yb = yd - yLineCover;
 			}
-			if (sourceBox.height>s25)
-				setLineArr(xb, yb, xd-s6, yd-s13);
-			else
-				setLineArr(xb, yb, xd-s6, yd-s19);
+			setLineArr(xb, yb, xd, yd);
 		}
 		private void autoSizeBox(int maxWidth)	{
 			int iW, iH;

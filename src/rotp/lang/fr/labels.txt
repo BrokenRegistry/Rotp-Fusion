@@ -2018,13 +2018,13 @@ SETUP_BUTTON_CUSTOM_PLAYER_RACE	| Atelier ADN
 
 // BR: Customize Player Race New GUI addition
 CUSTOM_RACE_BUTTON_EXIT			| Quitter
-CUSTOM_RACE_BUTTON_EXIT_DESC	| Conservez les paramètres actuels, puis quittez l’interface.
+CUSTOM_RACE_BUTTON_EXIT_DESC	| Quitter l’interface sans sauvegarder les changements.
 CUSTOM_RACE_BUTTON_CANCEL		| Annuler
 CUSTOM_RACE_BUTTON_CANCEL_DESC	| Annulez les modifications, puis quittez l’interface.
-CUSTOM_RACE_BUTTON_FOLDER		| Répertoire
-CUSTOM_RACE_BUTTON_FOLDER_DESC	| Pour choisir le répertoire contenant les espèces personnalisée.
+CUSTOM_RACE_BUTTON_FOLDER		| Répertoire OGM
+CUSTOM_RACE_BUTTON_FOLDER_DESC	| Choisir le répertoire contenant vos espèces personnalisées.
 CUSTOM_RACE_BUTTON_NAMES		| Éditer les Noms
-CUSTOM_RACE_BUTTON_NAMES_DESC	| Pour éditer les noms des civilisations.<br>(Ajouter, Retirer, Choix des langues)
+CUSTOM_RACE_BUTTON_NAMES_DESC	| Pour rédiger la nouvelle terminologie à associer à cet OGM. Plusieures civilisations peuvent être créées, dans plusieures langues.
 CUSTOM_RACE_EMPTY_DESCRIPTION	| « Maj » et « Ctrl » peuvent être utilisés pour modifier les fonctionnalités des boutons, des clics et des défilements.
 
 CUSTOM_RACE_FLEET_DESC			| Exemple d’une flottille composée de navires issus du modèle choisi pour cette espèce.
@@ -2044,7 +2044,7 @@ CUSTOM_RACE_GUI_SELECT			| Choix du Joueur
 CUSTOM_RACE_LOAD_PLAYER_DESC	| Charger le joueur personnalisé actuel.
 CUSTOM_RACE_LOAD_PLAYER			| Lire Joueur
 CUSTOM_RACE_GUI_RANDOM_HELP       | Chaque paramètre individuel sera défini de manière aléatoire dans la plage de paramètres relative donnée.<br>Si « →CUSTOM_RACE_RANDOM_USE_TARGET← » = « →CUSTOM_RACE_RANDOM_USE_TARGET_YES← » et que la valeur totale n’est pas dans la plage autorisée : les valeurs seront progressivement décalées de manière aléatoire (même en dehors de leur plage autorisée) jusqu’à ce que la « Plage ciblée » finale soit atteinte.
-CUSTOM_RACE_GUI_RANDOM_DESC       | Générer aléatoirement une espèce à partir des paramètres à l’écran.
+CUSTOM_RACE_GUI_RANDOM_DESC       | Générer aléatoirement l’ADN d’une espèce à partir des paramètres à l’écran.
 CUSTOM_RACE_GUI_RANDOM            | Casualiser
 
 CUSTOM_RACE_GUI_RANDOM_GET_HELP   | Saisir les paramètres de génération aléatoire de la configuration aléatoire des extraterrestres.
@@ -2060,7 +2060,7 @@ CUSTOM_RACE_GUI_LOAD              | Relire
 CUSTOM_RACE_GUI_SAVE_DESC         | Enregistrez l’Organisme Génétiquement Modifié dans le fichier spécifié dans le champ « →CUSTOM_RACE_RACE_KEY← », les fichiers existants seront écrasés.
 CUSTOM_RACE_GUI_SAVE              | Écrire dans fichier
 CUSTOM_RACE_RACE_LIST             | Liste des fichiers
-CUSTOM_RACE_RACE_LIST_DESC        | Liste des fichiers des OGM. Cliquez pour charger le fichier. (L’espèce présente à l’ouverture de l’interface est placée en tête de liste.)
+CUSTOM_RACE_RACE_LIST_DESC        | Liste des fichiers des OGM. Cliquez pour sélectionner le fichier.
 CUSTOM_RACE_RANDOM_MAX_HELP       | Limite relative supérieure de la fenêtre de génération aléatoire des paramètres.<br>Relié au coût du paramètre; et n’est pas forcément linéairement relié au pourcentage sélectionné du paramètre.
 CUSTOM_RACE_RANDOM_MAX_DESC       | Limite relative supérieure de la fenêtre de génération aléatoire des paramètres.<br>Relié au coût du paramètre; et n’est pas forcément linéairement relié au pourcentage sélectionné du paramètre.
 CUSTOM_RACE_RANDOM_MAX            | Limite haute
@@ -2111,7 +2111,7 @@ CUSTOM_RACE_RACE_KEY				| Nom du fichier
 CUSTOM_RACE_RACE_KEY_DESC			| Nom du fichier OGM, sans l'extension, mais incluant les sous-répertoires jusqu'au dossier de l'espèce.<br>Exemple: Human\Priman
 CUSTOM_RACE_RACE_KEY_INPUT			| Entrez le nom du fichier de l’espèce personnalisée.
 CUSTOM_RACE_REWORKED_RACE_KEY		| Avatar
-CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| Espèce préférée pour l’affichage des animations. Lorsque l’option aptitudes →ABILITIES_REWORKED← est sélectionnée, cette aptitudes pourra être choisie au hasard.
+CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| Avatar préféré pour l’affichage des animations. Lorsque l’option aptitudes →ABILITIES_REWORKED← est sélectionnée, cette aptitudes pourra être choisie au hasard.
 CUSTOM_RACE_REWORKED_RACE_KEY_INPUT	| Entrez le nom de l’espèce originale modifiable.
 CUSTOM_RACE_REWORKED_RACE_KEY_NONE	| Aucune
 CUSTOM_RACE_BOUND_AI				| IA liée
@@ -2253,7 +2253,7 @@ CUSTOM_RACE__race_pluraladjecF		| **Féminin pluriel
 CUSTOM_RACE__race_pluraladjecF_DESC	| Féminin pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION←<br>La contrepartie du paramètre « _raceadjec »<br>dans les fichiers Species.labels.txt
 
 CUSTOM_RACE_FILL_FROM_ANIM_BUTTON		| = Animations
-CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Rempli les champs vides en utilisant les valeurs de vos animations préférées.<br>Appuyez sur « Maj » pour remplacer également les champs déjà remplis.
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Rempli les champs vides en utilisant les valeurs de votre Avatar préféré.<br>Appuyez sur « Maj » pour remplacer également les champs déjà remplis.
 CUSTOM_RACE_FILL_FROM_NAME_BUTTON		| Compléter
 CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Essaye de remplir les champs vides en utilisant le nom de la civilisation et le titre.<br>Appuyez sur « Maj » pour remplacer également les champs déjà remplis.
 CUSTOM_RACE_COPY_FROM_LEFT_BUTTON		| -> Copier
@@ -2338,7 +2338,7 @@ CUSTOM_RACE_RACE_DESC_4en_DESC		| →CUSTOM_RACE_RACE_DESC_4_DESC←
 CUSTOM_RACE_RACE_DESC_1				| Tempérament de l’espèce
 CUSTOM_RACE_RACE_DESC_1_DESC		| L’équivalent du paramètre « desc1 »<br>dans les fichiers Species.names.txt
 CUSTOM_RACE_RACE_DESC_1_INPUT		| Saisissez la description de l’état d’esprit de l’espèce.
-CUSTOM_RACE_RACE_DESC_2				| Aptitudes de l’espèce
+CUSTOM_RACE_RACE_DESC_2				| Qualités de l’espèce
 CUSTOM_RACE_RACE_DESC_2_DESC		| L’équivalent du paramètre « desc2 »<br>dans les fichiers Species.names.txt
 CUSTOM_RACE_RACE_DESC_2_INPUT		| Aperçu des aptitudes de l’espèce.
 CUSTOM_RACE_RACE_DESC_3				| Résumé de l’espèce
