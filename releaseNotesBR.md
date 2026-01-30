@@ -8,6 +8,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-01-30 (BR)
+- Fixed DNA workshop guide location in windows mode.
 - New interface for customizing species, and renamed to DNA workshop.
 - Fixed asteroids no longer disappeared gradually.
 - Updated JRE in the .exe file to Version 25.0.1_8

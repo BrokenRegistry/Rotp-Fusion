@@ -21,11 +21,13 @@ import static rotp.model.game.IMainOptions.showGuide;
 import static rotp.ui.game.BaseModPanel.guideFontSize;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
@@ -253,7 +255,12 @@ public class GuideUI extends BasePanel {
 		}
 	}
 	private Rectangle getLocationOnScreen(JComponent c)	{
-		return new Rectangle(c.getLocationOnScreen(), c.getSize());
+		Point pC = new Point(c.getLocationOnScreen());
+		Component ref = parent == null? Rotp.getFrame().getContentPane():parent;
+		Point pS = ref.getLocationOnScreen();
+		pC.x -= pS.x;
+		pC.y -= pS.y;
+		return new Rectangle(pC, c.getSize());
 	}
 	// -#-
 	// ========================================================================
@@ -362,7 +369,7 @@ public class GuideUI extends BasePanel {
 		// Initializations
 		private void setLineArr(int... arr)	{ lineArr = arr; }
 		private void init(JComponent target, String tipText, int dx, int dy)	{ createGuideBox(getLocationOnScreen(target), tipText, true, dx, dy); }
-		private void init(JComponent target, String tipText)	{ createGuideBox(getLocationOnScreen(target), tipText, true, 0, 0); }
+		private void init(JComponent target, String tipText)	{ init(target, tipText, 0, 0); }
 //		private void init(Rectangle target, String tipText)		{ createGuideBox(target, tipText, false, 0, 0); }
 		// Creations
 //		private void createGuideBox(Rectangle target, String tipText, int dx, int dy)	{ createGuideBox(target, tipText, false, dx, dy); }

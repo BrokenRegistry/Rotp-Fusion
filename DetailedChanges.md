@@ -3,6 +3,7 @@
 ## What's New
 
 26-01-30 (BR)
+- Fixed DNA workshop guide location in windows mode.
 - New interface for customizing species, and renamed to DNA workshop.
 - Fixed asteroids no longer disappeared gradually.
 - Updated JRE in the .exe file to Version 25.0.1_8
