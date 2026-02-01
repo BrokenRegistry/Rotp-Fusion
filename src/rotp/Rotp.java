@@ -99,8 +99,8 @@ public final class Rotp {
 
 	public static boolean initialized()	{ return initialized; }
 	public static JFrame getFrame()		{ return frame; }
-	public static boolean memoryLow()	{ return memoryTracker.memoryLow(); }
-    public static String getMemoryInfo(boolean screen) { return(memoryTracker.getMemoryInfo(screen)); }
+	public static boolean memoryLow()	{ return memoryTracker().memoryLow(); }
+	public static String getMemoryInfo(boolean screen)	{ return(memoryTracker().getMemoryInfo(screen)); }
 	public static boolean noOptions(String id)	{ // Keep for debug
 		if (noOptions)
 			ifIDE("### noOptions() usefully called from " + id + " ###");
@@ -208,7 +208,12 @@ public final class Rotp {
         if(isIDE())
         	PomUpdater.updatePom();
     }
-    private static void installGCMonitoring() { memoryTracker = new MemoryTracker(maxHeapMemory); }
+	private static MemoryTracker memoryTracker()	{
+		if (memoryTracker == null)
+			memoryTracker = new MemoryTracker(maxHeapMemory);
+		return memoryTracker;
+	}
+    private static void installGCMonitoring() { memoryTracker(); }
     private static GraphicsDevice device() {
     	if (device == null) {
             int selectedScreen = UserPreferences.selectedScreen();

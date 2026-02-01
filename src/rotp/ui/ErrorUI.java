@@ -29,7 +29,7 @@ import rotp.util.OSUtil;
 public final class ErrorUI extends BasePanel implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = 1L;
 	private static final String BASE_TITLE	= "An Error has occurred  :(  - ";
-	private static final String DESC_1		="If you would like to help fix this problem, please send a screen shot of this UI plus the ";
+	private static final String DESC_1		="If you would like to help fix this problem, please send the ERROR_REPORT file plus the ";
 	private static final String DESC_2		=" save game file to BrokenRegistry, or bring it to his attention on the ROTP subreddit.";
 	private static final int LOADING_MODE	= 0;
 	private static final int SETUP_MODE		= 1;
@@ -60,11 +60,30 @@ public final class ErrorUI extends BasePanel implements MouseListener, MouseMoti
 		file[PLAYER_MODE]	= "'recent.rotp'";
 		file[TURN_MODE]		= "!!! To Replay Last Turn !!!.rotp";
 	}
-    public void init(Throwable e) {
+    public String init(Throwable e) {
         exception = e;
         e.printStackTrace();
 		errorMode = currentMode;
+		return textForReport();
     }
+	private String textForReport() {
+		String nl = System.lineSeparator();
+		String str = BASE_TITLE + mode[errorMode];
+		str += nl + DESC_1 + file[errorMode] + DESC_2;
+		str += nl + "Email: Broken.Registry@protonmail.com";
+		str += nl + "Reddit: www.Reddit.com/r/rotp";
+		str += nl + osTxt;
+		str += nl + "Version:"+ Rotp.releaseId;;
+		str += nl + Rotp.getMemoryInfo(false);;
+		str += nl;
+		str += nl + exception.toString();
+		str += nl;
+		for (StackTraceElement line : exception.getStackTrace())
+			str += nl + line.toString();
+		str += nl + exception.getStackTrace();
+		return str;
+	}
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);

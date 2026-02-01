@@ -229,6 +229,8 @@
 
 ### Miscellaneous:
 
+- When an error occurs, an error report file is now created.
+  - Sometimes the error is so buried in Java calls that no Rotp code lines appear on the screen, making screenshots useless. These lines will appear in the new report file.
 - Updated JRE in the .exe file to Version 25.0.1_8
 - Custom images can be put in an "images" folder located in the same folder as the jar file.
   - The folder structure inside the images folder must be the same as the original one, and the file type must be the same as specified in the txt files.

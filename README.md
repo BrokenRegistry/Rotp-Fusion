@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-02-01 (BR)
+- When an error occurs, an error report file is now created.
+  - Sometimes the error is so buried in Java calls that no Rotp code lines appear on the screen, making screenshots useless. These lines will appear in the new report file.
+
 26-01-30 (BR)
 - New interface for customizing species, and renamed to DNA workshop.
 - Fixed asteroids no longer disappeared gradually.

@@ -1348,7 +1348,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
         enableGlassPane(manageSpiesPane);
         return;
     }
-	private void openShowDNAPane() { // TODO BR: New call... Rename
+	private void openShowDNAPane() {
 		softClick();
 		RotPUI.instance().selectDNAWorkshopPanel(false);
 		parent.setVisible(false);

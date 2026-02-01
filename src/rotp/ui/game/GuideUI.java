@@ -413,7 +413,7 @@ public class GuideUI extends BasePanel {
 			String txt = setSizeAndLocation(param);
 			if (txt != null && !txt.isEmpty())
 				return;
-			// TODO
+			// TODO BR:
 			//return cleanText(tipText);
 			guideBox.setText("");
 			guideBox.setSize(new Dimension());

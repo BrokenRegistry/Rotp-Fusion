@@ -29,7 +29,11 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -372,7 +376,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
 		nameEditorUI.init(parent, settings);
 		selectPanel(NAME_EDITOR_PANEL, nameEditorUI);
 	}
-	public void selectDNAWorkshopPanel(boolean allowEdit)	{ // TODO BR:
+	public void selectDNAWorkshopPanel(boolean allowEdit)	{
 		dnaWorkshopUI.init(allowEdit);
 		selectPanel(DNA_WORKSHOP_PANEL, dnaWorkshopUI);
 	}
@@ -581,10 +585,24 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         	VIPConsole.throwError(e);
         }
         else {
-        	errorUI.init(e);
+			String textForReport = errorUI.init(e);
             selectPanel(ERROR_PANEL, errorUI);
+			saveErrorReportFile(textForReport);
         }
     }
+	private void saveErrorReportFile(String report) {
+		LocalDate today = LocalDate.now();
+		LocalTime now = LocalTime.now();
+		String filename = "ERROR_REPORT_";
+		filename += today.getYear() + "_" + today.getMonthValue() + "_" + today.getDayOfMonth() + "_";
+		filename += now.getHour() + "_" + now.getMinute() + "_" + now.getSecond();
+		File file = new File(Rotp.jarPath(), filename + ".txt");
+		try {
+			Files.writeString(file.toPath(), report);
+		} catch (IOException e) {
+			System.err.println("Error report failed");
+		}
+	}
     public void selectGNNPanel(String title, String id, List<Empire> empires) {
         session().pauseNextTurnProcessing("Show GNN");
         gnnUI.init(title, id, empires);
