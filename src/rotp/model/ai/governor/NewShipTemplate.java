@@ -52,7 +52,6 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 	private boolean boostInertial;
 	private boolean needDefenses;
 	private boolean useSDModsSpace;
-	private float[] shipDesignMods;
 	private float enemyMissilePercentage;
 	private float topSpeed;
 	private float antiDote;
@@ -82,12 +81,13 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 
 	@Override protected ShipDesign bestDesign(ShipDesigner ai, DesignType role)	{
 		// create a blank design, one for each size. Add the current design as a 5th entry
+		Empire emp = ai.empire();
 		ShipDesign[] shipDesigns = new ShipDesign[4];
 		for (int i = 0; i<4; i++) 
 			shipDesigns[i] = newDesign(ai, role, i);
 
 		SortedMap<Float, ShipDesign> designSorter = new TreeMap<>();
-		float costLimit = ai.empire().totalPlanetaryProduction() * max(0.125f, ai.empire().shipMaintCostPerBC()) * 50 / ai.empire().allColonizedSystems().size();
+		float costLimit = emp.totalPlanetaryProduction() * max(0.125f, emp.shipMaintCostPerBC()) * 50 / emp.allColonizedSystems().size();
 		float biggestShipWeaponSize = 0;
 		float biggestBombSize = 0;
 		float highestAttackLevel = 0;
@@ -121,7 +121,7 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 
 		for (int i = 0; i<4; i++) {
 			ShipDesign design = shipDesigns[i];
-			float cost	= design.cost() * shipDesignMods[i];
+			float cost	= design.cost() * emp.shipDesignModCost(i);
 			float score	= design.spaceUsed() / cost;
 			float defScore = design.hits() / cost;
 			float hitPct = (5 + highestAttackLevel - (design.beamDefense() + design.missileDefense()) / 2) / 10;
@@ -195,7 +195,6 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 		duty = role;
 		Empire empire	= ai.empire();
 		TechTree tech	= empire.tech();
-		shipDesignMods	= opts.shipDesignMod(empire.shipDesignMods());
 		useSDModsSpace	= opts.useShipDesignModsSpace();
 
 		//ail: looking at the stats of our enemies
@@ -628,6 +627,7 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 	}
 	////////////////////////////////////////////////////
 	private void designRequirements(ShipDesigner ai, DesignType role)	{
+		Empire emp	= ai.empire();
 		hasInertial = false;
 		TechShipInertial topShipInertialTech = ai.empire().tech().topShipInertialTech();
 		inertialDefense = 1;
@@ -636,35 +636,35 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 			hasInertial = true;
 		}
 		// initial separation of the free space left onto weapons and non-weapons/specials
-		moduleSpaceRatio = shipDesignMods[MODULE_SPACE];		
+		moduleSpaceRatio = emp.shipDesignModModuleSpace();		
 
 		// Initial weighting of what isn't weapons
 		shieldWeight	= 4;
 		ecmWeight		= 3;	
 		maneuverWeight	= 2;
 		armorWeight		= 3;
-		reinforcedArmorAllowed	= shipDesignMods[REINFORCED_ARMOR] > 0; 
-		sameSpeedAllowed		= shipDesignMods[SPEED_MATCHING] > 0; 
-		specialsWeight			= shipDesignMods[SPECIALS_WEIGHT];
+		reinforcedArmorAllowed	= emp.shipDesignModReinforcedArmor(); 
+		sameSpeedAllowed		= emp.shipDesignModSpeedMatching(); 
+		specialsWeight			= emp.shipDesignModSpecialsWeight();
 
 		ecmWeight = Math.round(ecmWeight * 2 * enemyMissilePercentage);	
 		switch (role) {
 			case BEAM:
 				if (useSDModsSpace) {
-					shieldWeight	= shipDesignMods[SHIELD_WEIGHT_FB];
-					ecmWeight		= shipDesignMods[ECM_WEIGHT_FD];
-					maneuverWeight	= shipDesignMods[MANEUVER_WEIGHT_F];
-					armorWeight		= shipDesignMods[ARMOR_WEIGHT_FB];
+					shieldWeight	= emp.shipDesignModShieldWeightFB();
+					ecmWeight		= emp.shipDesignModEcmWeightFD();
+					maneuverWeight	= emp.shipDesignModManeuverWeightF();
+					armorWeight		= emp.shipDesignModArmorWeightFB();
 				}
 				else
 					maneuverWeight += 1;
 				break;
 			case BOMBER:
 				if (useSDModsSpace) {
-					shieldWeight	= shipDesignMods[SHIELD_WEIGHT_FB];
-					ecmWeight		= shipDesignMods[ECM_WEIGHT_B];
-					maneuverWeight	= shipDesignMods[MANEUVER_WEIGHT_BD];
-					armorWeight		= shipDesignMods[ARMOR_WEIGHT_FB];
+					shieldWeight	= emp.shipDesignModShieldWeightFB();
+					ecmWeight		= emp.shipDesignModEcmWeightB();
+					maneuverWeight	= emp.shipDesignModManeuverWeightBD();
+					armorWeight		= emp.shipDesignModArmorWeightFB();
 				}
 				else {
 					shieldWeight = 0;
@@ -672,26 +672,26 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 				break;
 			case DESTROYER:
 				if (useSDModsSpace) {
-					shieldWeight	= shipDesignMods[SHIELD_WEIGHT_D];
-					ecmWeight		= shipDesignMods[ECM_WEIGHT_FD];
-					maneuverWeight	= shipDesignMods[MANEUVER_WEIGHT_BD];
-					armorWeight		= shipDesignMods[ARMOR_WEIGHT_D];
+					shieldWeight	= emp.shipDesignModShieldWeightD();
+					ecmWeight		= emp.shipDesignModEcmWeightFD();
+					maneuverWeight	= emp.shipDesignModManeuverWeightBD();
+					armorWeight		= emp.shipDesignModArmorWeightD();
 				}
 				break;
 			case FIGHTER:
 				if (useSDModsSpace) {
-					shieldWeight	= shipDesignMods[SHIELD_WEIGHT_FB];
-					ecmWeight		= shipDesignMods[ECM_WEIGHT_FD];
-					maneuverWeight	= shipDesignMods[MANEUVER_WEIGHT_BD];
-					armorWeight		= shipDesignMods[ARMOR_WEIGHT_FB];
+					shieldWeight	= emp.shipDesignModShieldWeightFB();
+					ecmWeight		= emp.shipDesignModEcmWeightFD();
+					maneuverWeight	= emp.shipDesignModManeuverWeightBD();
+					armorWeight		= emp.shipDesignModArmorWeightFB();
 				}
 				break;
 			case HYBRID:
 				if (useSDModsSpace) {
-					shieldWeight	= shipDesignMods[SHIELD_WEIGHT_FB];
-					ecmWeight		= shipDesignMods[ECM_WEIGHT_FD];
-					maneuverWeight	= shipDesignMods[MANEUVER_WEIGHT_BD];
-					armorWeight		= shipDesignMods[ARMOR_WEIGHT_FB];
+					shieldWeight	= emp.shipDesignModShieldWeightFB();
+					ecmWeight		= emp.shipDesignModEcmWeightFD();
+					maneuverWeight	= emp.shipDesignModManeuverWeightBD();
+					armorWeight		= emp.shipDesignModArmorWeightFB();
 				}
 				if (hasInertial) {
 					float factor = sqrt(inertialDefense);
@@ -703,10 +703,10 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 				break;
 			case MISSILE:
 				if (useSDModsSpace) {
-					shieldWeight	= shipDesignMods[SHIELD_WEIGHT_FB];
-					ecmWeight		= shipDesignMods[ECM_WEIGHT_FD];
-					maneuverWeight	= shipDesignMods[MANEUVER_WEIGHT_BD];
-					armorWeight		= shipDesignMods[ARMOR_WEIGHT_FB];
+					shieldWeight	= emp.shipDesignModShieldWeightFB();
+					ecmWeight		= emp.shipDesignModEcmWeightFD();
+					maneuverWeight	= emp.shipDesignModManeuverWeightBD();
+					armorWeight		= emp.shipDesignModArmorWeightFB();
 				}
 				else {
 					shieldWeight	= 0;
@@ -719,10 +719,10 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 				break;
 			case INTERCEPTOR:
 				if (useSDModsSpace) {
-					shieldWeight	= shipDesignMods[SHIELD_WEIGHT_FB];
-					ecmWeight		= shipDesignMods[ECM_WEIGHT_FD];
-					maneuverWeight	= shipDesignMods[MANEUVER_WEIGHT_BD];
-					armorWeight		= shipDesignMods[ARMOR_WEIGHT_FB];
+					shieldWeight	= emp.shipDesignModShieldWeightFB();
+					ecmWeight		= emp.shipDesignModEcmWeightFD();
+					maneuverWeight	= emp.shipDesignModManeuverWeightBD();
+					armorWeight		= emp.shipDesignModArmorWeightFB();
 				}
 				if (hasInertial) {
 					float factor = sqrt(inertialDefense);
@@ -900,6 +900,7 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 			float longRangePct, boolean missileShip)	{
 		SortedMap<Float, ShipSpecial> specials = new TreeMap<>(Collections.reverseOrder());
 		List<ShipSpecial> allSpecials = ai.lab().specials();
+		Empire emp = ai.empire();
 
 		int designsWithStasisField = 0;
 		for (int slot=0;slot<ShipDesignLab.MAX_DESIGNS;slot++) {
@@ -922,7 +923,7 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 				switch (tech.techType) {
 				case Tech.CLOAKING:
 					//ail: we always want it. It's the best!
-					currentScore = 500 * shipDesignMods[PREF_CLOAK];
+					currentScore = emp.shipDesignModPrefCloak()? 500 : 0;
 					break;
 				case Tech.MISSILE_SHIELD:
 					if (tech.typeSeq == 0)
@@ -940,7 +941,8 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 					currentScore = max(0, currentScore);
 					currentScore *= 10;
 					currentScore *= antiMissile;
-					currentScore *= shipDesignMods[PREF_MISS_SHIELD];
+					if (!emp.shipDesignModPrefMissShield())
+						currentScore = 0;
 					break;
 				}
 				continue;
@@ -960,7 +962,8 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 					currentScore = 0;
 				else if (d.size() > 2)
 					currentScore *= 6;
-				currentScore *= shipDesignMods[PREF_REPAIR];
+				if (!emp.shipDesignModPrefRepair())
+					currentScore = 0;
 				break;
 			case Tech.SCANNER:
 				currentScore = 50;
@@ -984,12 +987,16 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 					currentScore = 200;
 					currentScore *= (d.totalSpace() - spec.space(d)) / d.totalSpace();
 				}
-				currentScore *= shipDesignMods[PREF_BEAM_FOCUS];
+				if (!emp.shipDesignModPrefBeamFocus())
+					currentScore = 0;
 				break;
 			case Tech.CLOAKING:
 				//ail: we always want it. It's the best!
 				currentScore = 5000;
-				currentScore = 2 * shipDesignMods[PREF_CLOAK];
+				if (emp.shipDesignModPrefCloak())
+					currentScore *= 2;
+				else
+					currentScore = 0;
 				break;
 			case Tech.DISPLACEMENT:
 				currentScore = 50;
@@ -999,7 +1006,8 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 				currentScore *= (5-d.size());
 				if (needRange)
 					currentScore /= 5;
-				currentScore *= shipDesignMods[PREF_PULSARS];
+				if (!emp.shipDesignModPrefPulsars())
+					currentScore = 0;
 				break;
 			case Tech.MISSILE_SHIELD:
 				if (tech.typeSeq == 0)
@@ -1017,41 +1025,49 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 				currentScore = Math.max(0, currentScore);
 				currentScore *= 5;
 				currentScore *= antiMissile;
-				currentScore *= shipDesignMods[PREF_MISS_SHIELD];
+				if (!emp.shipDesignModPrefMissShield())
+					currentScore = 0;
 				break;
 			case Tech.REPULSOR:
 				currentScore = 250 * (1 - longRangePct);
 				if (needRange && !hasCloaking)
 					currentScore *= 2;
-				currentScore *= shipDesignMods[PREF_REPULSOR];
+				if (!emp.shipDesignModPrefRepulsor())
+					currentScore = 0;
 				break;
 			case Tech.SHIP_INERTIAL:
 				currentScore = 100 * (tech.typeSeq + 1);
 				if (boostInertial)
 					currentScore *= 2;
-				currentScore *= shipDesignMods[PREF_INERTIAL];
+				if (!emp.shipDesignModPrefInertial())
+					currentScore = 0;
 				break;
 			case Tech.SHIP_NULLIFIER:
 				currentScore = 100;
 				if (needRange)
 					currentScore *= 1.5;
-				if (spec.tech().isTechNullifier())
-					currentScore *= shipDesignMods[PREF_TECH_NULLIFIER];
+				if (spec.tech().isTechNullifier()) {
+					if (!emp.shipDesignModPrefInertial())
+						currentScore = 0;
+				}
 				else if (spec.tech().isWarpDissipator())
-					currentScore *= shipDesignMods[PREF_WARP_DISSIPATOR];
+					if (!emp.shipDesignModPrefWarpDissip())
+						currentScore = 0;
 				break;
 			case Tech.STASIS_FIELD:
 				currentScore = 500;
 				if (needRange && !hasCloaking || designsWithStasisField > 1)
 					currentScore /= 10;
-				currentScore *= shipDesignMods[PREF_STASIS];
+				if (!emp.shipDesignModPrefStasis())
+					currentScore = 0;
 				break;
 			case Tech.STREAM_PROJECTOR:
 				currentScore = 100 * (tech.typeSeq + 1);
 				currentScore *= (5-d.size());
 				if (needRange)
 					currentScore *= 2;
-				currentScore *= shipDesignMods[PREF_STREAM_PROJECTOR];
+				if (!emp.shipDesignModPrefStreamProj())
+					currentScore = 0;
 				break;
 			case Tech.SUBSPACE_INTERDICTOR:
 				currentScore = 200 * (1 - ai.empire().generalAI().defenseRatio());
@@ -1147,10 +1163,10 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 						overKillMod = avgHP / expectedDamagePerShot;
 					currentScore *= overKillMod;
 
-					if (wpn.isBioWeapon()) {
+					if (wpn.isBioWeapon() && ai.empire().shipDesignModBioWeapons())
 						currentScore = bioWeaponScoreMod(ai) * TechBiologicalWeapon.avgDamage(wpn.maxDamage(), (int)antiDote) * 200 / wpn.space(d);
-						currentScore *= shipDesignMods[BIO_WEAPONS];
-					}
+					else
+						currentScore = 0;
 					if (currentScore > bestScore) {
 						bestWeapon = wpn;
 						bestScore = currentScore;

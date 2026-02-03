@@ -67,10 +67,10 @@ public class NewShipTemplate extends ShipTemplate {
 
         // race's design cost multiplier for each hull size (set in definition.txt file)
         float[] costMultiplier = new float[5];
-        costMultiplier[0] = emp.shipDesignMods(COST_MULT_S);
-        costMultiplier[1] = emp.shipDesignMods(COST_MULT_M);
-        costMultiplier[2] = emp.shipDesignMods(COST_MULT_L);
-        costMultiplier[3] = emp.shipDesignMods(COST_MULT_H);       
+        costMultiplier[0] = emp.shipDesignModCostMultSmall();
+        costMultiplier[1] = emp.shipDesignModCostMultMedium();
+        costMultiplier[2] = emp.shipDesignModCostMultLarge();
+        costMultiplier[3] = emp.shipDesignModCostMultHuge();  
         // add another entry for the current design, using the cost multiplier for its size
         costMultiplier[4] = costMultiplier[currentDesign.size()];
 
@@ -103,26 +103,26 @@ public class NewShipTemplate extends ShipTemplate {
         Empire emp = ai.empire();
 
         // initial separation of the free space left onto weapons and non-weapons/specials
-        float moduleSpaceRatio = emp.shipDesignMods(MODULE_SPACE);
+        float moduleSpaceRatio = emp.shipDesignModModuleSpace();
         float modulesSpace = totalSpace * moduleSpaceRatio;
 
         // arbitrary initial weighting of what isn't weapons
         // Shield Weight: default 2, bombers/humans 4
-        int shieldWeight = role == DesignType.DESTROYER ? (int) emp.shipDesignMods(SHIELD_WEIGHT_D): (int) emp.shipDesignMods(SHIELD_WEIGHT_FB);
+        int shieldWeight = role.isDestroyer() ? emp.shipDesignModShieldWeightD() : emp.shipDesignModShieldWeightFB();
         // ECM Weight: default 1, bombers 3
-        int ecmWeight = role == DesignType.BOMBER ? (int) emp.shipDesignMods(ECM_WEIGHT_B): (int) emp.shipDesignMods(ECM_WEIGHT_FD);    
+        int ecmWeight = role.isBomber() ? emp.shipDesignModEcmWeightB() : emp.shipDesignModEcmWeightFD();
         // Maneuver Weight: default 2, fighters/alkari/mrrshan 4
-        int maneuverWeight = role == DesignType.FIGHTER ? (int) emp.shipDesignMods(MANEUVER_WEIGHT_F): (int) emp.shipDesignMods(MANEUVER_WEIGHT_BD);
+        int maneuverWeight = role.isFighter() ? emp.shipDesignModManeuverWeightF() : emp.shipDesignModManeuverWeightBD();
         // Armor Weight: default 2, destroyers/bulrathi/silicoid 3
-        int armorWeight = role == DesignType.DESTROYER ? (int) emp.shipDesignMods(ARMOR_WEIGHT_D): (int) emp.shipDesignMods(ARMOR_WEIGHT_FB);
+        int armorWeight = role.isDestroyer() ? emp.shipDesignModArmorWeightD() : emp.shipDesignModArmorWeightFB();
         // Specials Weight: default 1, adjust elsewhere for ship size
-        int specialsWeight = (int) emp.shipDesignMods(SPECIALS_WEIGHT);
+        int specialsWeight = emp.shipDesignModSpecialsWeight();
         // Same Speed Allowed Flag: default false, alkari/mrrshan true
-        boolean sameSpeedAllowed = emp.shipDesignMods(SPEED_MATCHING) > 0;
+        boolean sameSpeedAllowed = emp.shipDesignModSpeedMatching();
         // Reinforced Armor Allowed Flag: default true, alkari/klackon false
-        boolean reinforcedArmorAllowed = emp.shipDesignMods(REINFORCED_ARMOR) > 0;
+        boolean reinforcedArmorAllowed = emp.shipDesignModReinforcedArmor();
         // Allow Bio Weapons: default false, silicoid true  (adjusted elsewhere for leader type)
-        boolean allowBioWeapons = emp.shipDesignMods(BIO_WEAPONS) > 0;
+        boolean allowBioWeapons = emp.shipDesignModBioWeapons();
 
         // if we have a large ship, let's let the AI use more specials; it may have to differentiate designs more
         if (size >= ShipDesign.LARGE)
@@ -297,7 +297,7 @@ public class NewShipTemplate extends ShipTemplate {
 // ********** SPECIALS SELECTION AND FITTING FUNCTIONS ********** //
 
     private ArrayList<ShipSpecial> buildRacialSpecialsList(ShipDesigner ai) {
-        Empire race = ai.empire();
+        Empire emp = ai.empire();
         ArrayList<ShipSpecial> specials = new ArrayList<>();
         List<ShipSpecial> allSpecials = ai.lab().specials();
 
@@ -336,27 +336,27 @@ public class NewShipTemplate extends ShipTemplate {
         }
 
         // Alkari and Psilon
-        boolean preferPulsars = race.shipDesignMods(PREF_PULSARS) > 0;
+        boolean preferPulsars = emp.shipDesignModPrefPulsars();
         // Darlok and Psilon
-        boolean preferCloak = race.shipDesignMods(PREF_CLOAK) > 0;
+        boolean preferCloak = emp.shipDesignModPrefCloak();
         // Meklar and Psilon
-        boolean preferRepair = race.shipDesignMods(PREF_REPAIR) > 0;
+        boolean preferRepair = emp.shipDesignModPrefRepair();
         // Mrrshan and Psilon
-        boolean preferInertial = race.shipDesignMods(PREF_INERTIAL) > 0;
+        boolean preferInertial = emp.shipDesignModPrefInertial();
         // Sakkra, Bulrathi and Psilon
-        boolean preferMissileShield = race.shipDesignMods(PREF_MISS_SHIELD) > 0;
+        boolean preferMissileShield = emp.shipDesignModPrefMissShield();
         // Psilon
-        boolean preferRepulsor = race.shipDesignMods(PREF_REPULSOR) > 0;
+        boolean preferRepulsor = emp.shipDesignModPrefRepulsor();
         // Psilon
-        boolean preferStasisField = race.shipDesignMods(PREF_STASIS) > 0;
+        boolean preferStasisField = emp.shipDesignModPrefStasis();
         // Psilon
-        boolean preferStreamProjector = race.shipDesignMods(PREF_STREAM_PROJECTOR) > 0;
+        boolean preferStreamProjector = emp.shipDesignModPrefStreamProj();
         // Psilon
-        boolean preferWarpDissipator = race.shipDesignMods(PREF_WARP_DISSIPATOR) > 0;
+        boolean preferWarpDissipator = emp.shipDesignModPrefWarpDissip();
         // Psilon
-        boolean preferTechNullifier = race.shipDesignMods(PREF_TECH_NULLIFIER) > 0;
+        boolean preferTechNullifier = emp.shipDesignModPrefTechNullif();
         // Psilon
-        boolean preferBeamFocus = race.shipDesignMods(PREF_BEAM_FOCUS) > 0;
+        boolean preferBeamFocus = emp.shipDesignModPrefBeamFocus();
 
         // 3 - Racially preferred specials
         for (ShipSpecial spec: allSpecials) {

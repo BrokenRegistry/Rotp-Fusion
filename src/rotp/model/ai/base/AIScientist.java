@@ -354,7 +354,7 @@ public class AIScientist implements Base, Scientist {
         if (empire.leader().isMilitarist())
             adj *= 1.25;
 
-        if (empire.shipDesignMods(NewShipTemplate.PREF_REPAIR) > 0)
+        if (empire.shipDesignModPrefRepair())
             val *= 2;
         return adj * val;
     }
@@ -407,7 +407,7 @@ public class AIScientist implements Base, Scientist {
         if (empire.leader().isMilitarist())
             adj *= 1.25;
 
-        if (empire.shipDesignMods(NewShipTemplate.PREF_BEAM_FOCUS) > 0)
+        if (empire.shipDesignModPrefBeamFocus())
             val *= 2;
         return adj * val;
     }
@@ -518,7 +518,7 @@ public class AIScientist implements Base, Scientist {
         if (empire.leader().isAggressive())
             adj *= 1.25;
 
-        if (empire.shipDesignMods(NewShipTemplate.PREF_CLOAK) > 0)
+        if (empire.shipDesignModPrefCloak())
             val *= 2;
         return adj * val;
     }
@@ -575,7 +575,7 @@ public class AIScientist implements Base, Scientist {
 
         int numRaces = empire.contactedEmpires().size() + 1;
         // multiply tech level by # new planets possible vs. # known races
-        // modnar: further prioritize enviroment tech
+        // modnar: further prioritize environment tech
         adj *= 2;
         return (newPlanets / numRaces) * adj * t.level;
     }
@@ -686,7 +686,7 @@ public class AIScientist implements Base, Scientist {
         if (empire.leader().isAggressive())
             adj *= 1.25;
 
-        if (empire.shipDesignMods(NewShipTemplate.PREF_PULSARS) > 0)
+        if (empire.shipDesignModPrefPulsars())
             val *= 2;
         return adj * val;
     }
@@ -842,7 +842,7 @@ public class AIScientist implements Base, Scientist {
         if (empire.leader().isMilitarist())
             val *= 1.5;
 
-        if (empire.shipDesignMods(NewShipTemplate.PREF_MISS_SHIELD) > 0)
+        if (empire.shipDesignModPrefMissShield())
             val *= 2;
         return val;
     }
@@ -936,7 +936,7 @@ public class AIScientist implements Base, Scientist {
         if (empire.leader().isMilitarist())
             adj *= 1.25;
 
-        if (empire.shipDesignMods(NewShipTemplate.PREF_REPULSOR) > 0)
+        if (empire.shipDesignModPrefRepulsor())
             val *= 2;
         return adj * val;
     }
@@ -981,7 +981,7 @@ public class AIScientist implements Base, Scientist {
         if (empire.leader().isMilitarist())
             val *= 1.5;
 
-        if (empire.shipDesignMods(NewShipTemplate.PREF_INERTIAL) > 0)
+        if (empire.shipDesignModPrefInertial())
             val *= 2;
         return val;
     }
@@ -995,9 +995,9 @@ public class AIScientist implements Base, Scientist {
         if (empire.leader().isTechnologist())
             adj *= 1.25;
 
-        if ((t.speedRed > 0) && (empire.shipDesignMods(NewShipTemplate.PREF_WARP_DISSIPATOR) > 0))
+        if ((t.speedRed > 0) && empire.shipDesignModPrefWarpDissip())
             val *= 2;
-        else if ((t.minComputerRed > 0) && (empire.shipDesignMods(NewShipTemplate.PREF_TECH_NULLIFIER) > 0))
+        else if ((t.minComputerRed > 0) && empire.shipDesignModPrefTechNullif())
             val *= 2;
 
         return adj * val;
@@ -1077,7 +1077,7 @@ public class AIScientist implements Base, Scientist {
         if (empire.leader().isMilitarist())
             adj *= 1.25;
 
-        if (empire.shipDesignMods(NewShipTemplate.PREF_STASIS) > 0)
+        if (empire.shipDesignModPrefStasis())
             val *= 2;
         return adj * val;
     }
@@ -1089,7 +1089,7 @@ public class AIScientist implements Base, Scientist {
         if (empire.leader().isMilitarist())
             adj *= 1.25;
 
-        if (empire.shipDesignMods(NewShipTemplate.PREF_STREAM_PROJECTOR) > 0)
+        if (empire.shipDesignModPrefStreamProj())
             val *= 2;
         return adj * val;
     }

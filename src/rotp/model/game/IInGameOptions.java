@@ -315,7 +315,28 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 			.pctValue(true);
 	default float selectedShipSpaceFactor()	{ return shipSpaceFactor.get()/100f; }
 
-	ParamFloat missileBaseModifier	= new ParamFloat(MOD_UI, "MISSILE_BASE_MODIFIER", 2f/3f)
+	ParamBoolean prefShipSizeImpacts	= new ParamBoolean(MOD_UI, "PREF_SIZE_IMPACTS", false);
+	default boolean prefShipSizeImpacts()	{ return prefShipSizeImpacts.get(); }
+
+	ParamInteger prefShipSizeSpacePct	= new ParamInteger(MOD_UI, "PREF_SIZE_SPACE", 0)
+			.setLimits(0, 50)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
+	default float prefShipSizeSpaceBoost()	{ return prefShipSizeSpacePct.get()/100f-1; }
+
+	ParamInteger prefShipSizeHitPct		= new ParamInteger(MOD_UI, "PREF_SIZE_HITS", 0)
+			.setLimits(0, 50)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
+	default float prefShipSizeHitBonus()	{ return prefShipSizeHitPct.get()/100f; }
+
+	ParamInteger prefShipSizeCostPct	= new ParamInteger(MOD_UI, "PREF_SIZE_COST", 0)
+			.setLimits(0, 50)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
+	default float prefShipSizeCostBonus()	{ return prefShipSizeCostPct.get()/100f; }
+
+	ParamFloat missileBaseModifier	= new ParamFloat(MOD_UI, "MISSILE_BASE_MODIFIER", 0.67f)
 			.setDefaultValue(MOO1_DEFAULT, 1f)
 			.setDefaultValue(ROTP_DEFAULT, 1f)
 			.setLimits(0.1f, 2f)
@@ -325,7 +346,7 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 			.formerName(MOD_UI+"MISSILE_SIZE_MODIFIER");
 	default float selectedMissileBaseModifier()	{ return missileBaseModifier.get(); }
 
-	ParamFloat missileShipModifier	= new ParamFloat(MOD_UI, "MISSILE_SHIP_MODIFIER", 2f/3f)
+	ParamFloat missileShipModifier	= new ParamFloat(MOD_UI, "MISSILE_SHIP_MODIFIER", 0.67f)
 			.setDefaultValue(MOO1_DEFAULT, 1f)
 			.setDefaultValue(ROTP_DEFAULT, 1f)
 			.setLimits(0.1f, 2f)

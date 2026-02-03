@@ -562,7 +562,37 @@ public class Species implements ISpecies, Base, Serializable {
 	public int shipDefenseBonus()			{ return skills.shipDefenseBonus(); }
 	public int shipInitiativeBonus()		{ return skills.shipInitiativeBonus(); }
 	public boolean ignoresPlanetEnvironment()	{ return skills.ignoresPlanetEnvironment(); }
-	
+
+	public float shipDesignModCost(int size)	{ return skills.shipDesignModCost(size); }
+	public float shipDesignModCostMultSmall()	{ return skills.shipDesignModCostMultSmall(); }
+	public float shipDesignModCostMultMedium()	{ return skills.shipDesignModCostMultMedium(); }
+	public float shipDesignModCostMultLarge()	{ return skills.shipDesignModCostMultLarge(); }
+	public float shipDesignModCostMultHuge()	{ return skills.shipDesignModCostMultHuge(); }
+	public float shipDesignModModuleSpace()		{ return skills.shipDesignModModuleSpace(); }
+	public int shipDesignModShieldWeightFB()	{ return skills.shipDesignModShieldWeightFB(); }
+	public int shipDesignModShieldWeightD()		{ return skills.shipDesignModShieldWeightD(); }
+	public int shipDesignModEcmWeightFD()		{ return skills.shipDesignModEcmWeightFD(); }
+	public int shipDesignModEcmWeightB()		{ return skills.shipDesignModEcmWeightB(); }
+	public int shipDesignModManeuverWeightBD()	{ return skills.shipDesignModManeuverWeightBD(); }
+	public int shipDesignModManeuverWeightF()	{ return skills.shipDesignModManeuverWeightF(); }
+	public int shipDesignModArmorWeightFB()		{ return skills.shipDesignModArmorWeightFB(); }
+	public int shipDesignModArmorWeightD()		{ return skills.shipDesignModArmorWeightD(); }
+	public int shipDesignModSpecialsWeight()	{ return skills.shipDesignModSpecialsWeight(); }
+	public boolean shipDesignModSpeedMatching()		{ return skills.shipDesignModSpeedMatching(); }
+	public boolean shipDesignModReinforcedArmor()	{ return skills.shipDesignModReinforcedArmor(); }
+	public boolean shipDesignModBioWeapons()		{ return skills.shipDesignModBioWeapons(); }
+	public boolean shipDesignModPrefPulsars()		{ return skills.shipDesignModPrefPulsars(); }
+	public boolean shipDesignModPrefCloak()			{ return skills.shipDesignModPrefCloak(); }
+	public boolean shipDesignModPrefRepair()		{ return skills.shipDesignModPrefRepair(); }
+	public boolean shipDesignModPrefInertial()		{ return skills.shipDesignModPrefInertial(); }
+	public boolean shipDesignModPrefMissShield()	{ return skills.shipDesignModPrefMissShield(); }
+	public boolean shipDesignModPrefRepulsor()		{ return skills.shipDesignModPrefRepulsor(); }
+	public boolean shipDesignModPrefStasis()		{ return skills.shipDesignModPrefStasis(); }
+	public boolean shipDesignModPrefStreamProj()	{ return skills.shipDesignModPrefStreamProj(); }
+	public boolean shipDesignModPrefWarpDissip()	{ return skills.shipDesignModPrefWarpDissip(); }
+	public boolean shipDesignModPrefTechNullif()	{ return skills.shipDesignModPrefTechNullif(); }
+	public boolean shipDesignModPrefBeamFocus()		{ return skills.shipDesignModPrefBeamFocus(); }
+
 	// ====================================================================
 	// Depend on custom Species
 	//
@@ -694,20 +724,20 @@ public class Species implements ISpecies, Base, Serializable {
 		private static final long serialVersionUID = 1L;
 		private String civName;
 		private String speciesName;
-		private String languageDir;
+//		private String languageDir;
 		private Integer index;
 		private boolean isSkillsNames = false;
 
 		private CivilizationId(String civName, String speciesName, Integer civIndex, String langDir, boolean isSkillsNames)	{
 			isSkillsNames(isSkillsNames);
-			setLangDir(langDir);
+//			setLangDir(langDir);
 			setIndex(civIndex);
 			setCivName(civName);
 			setSpeciesName(speciesName);
 		}
 		private CivilizationId(CivilizationRecord civ, String langDir, boolean isSkillsNames)	{
 			isSkillsNames(isSkillsNames);
-			setLangDir(langDir);
+//			setLangDir(langDir);
 			setIndex(civ.civIndex);
 			setCivName(civ.civName);
 			setSpeciesName(civ.speciesName);
@@ -727,9 +757,9 @@ public class Species implements ISpecies, Base, Serializable {
 		private void setCivName(String str)			{ civName = str; }
 		private String getCivName()					{ return civName; }
 		private void setSpeciesName(String str)		{ speciesName = str; }
-		private String getSpeciesName()				{ return speciesName; }
-		private void setLangDir(String dir)			{ languageDir = dir; }
-		private String getLangDir()					{ return languageDir; }
+//		private String getSpeciesName()				{ return speciesName; }
+//		private void setLangDir(String dir)			{ languageDir = dir; }
+//		private String getLangDir()					{ return languageDir; }
 		private void setIndex(Integer id)			{ index = id; }
 		private Integer getIndex()					{ return index; }
 		private void isSkillsNames(boolean is)		{ isSkillsNames = is; }

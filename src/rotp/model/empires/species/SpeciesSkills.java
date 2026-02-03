@@ -33,6 +33,7 @@ import rotp.model.empires.Leader.Personality;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IMainOptions;
+import rotp.model.game.IShipDesignOption;
 import rotp.model.planet.PlanetType;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.util.StringList;
@@ -40,7 +41,7 @@ import rotp.util.Base;
 import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
 
-class SpeciesSkills implements Base, Serializable {
+class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final String INTRO_FILE_EXTENSION = ".intro.txt";
 
@@ -153,8 +154,8 @@ class SpeciesSkills implements Base, Serializable {
 
 	String languageList()				{ return languageList; }
 	void languageList(String s)			{ languageList = s; }
-	String avatarSpeciesKey()		{ return reworkableSpeciesKey; }
-	void avatarSpeciesKey(String s)	{ reworkableSpeciesKey = s; }
+	String avatarSpeciesKey()			{ return reworkableSpeciesKey; }
+	void avatarSpeciesKey(String s)		{ reworkableSpeciesKey = s; }
 	int reworkableId()					{ return reworkableId; }
 	void reworkableId(int i)			{ reworkableId = i; }
 	int startingYear()					{ return startingYear; }
@@ -532,10 +533,41 @@ class SpeciesSkills implements Base, Serializable {
 	void objectivePct(int i, float f)	{ objectivePct[i] = f; }
 	float discoveryMod(int i)			{ return discoveryMod[i]; }
 	void discoveryMod(int i, float f)	{ discoveryMod[i] = f; }
+
 	float[] shipDesignMods()			{ return shipDesignMods; }
 	float shipDesignMods(int i)			{ return shipDesignMods[i]; }
 	void shipDesignMods(int i, float f)	{ shipDesignMods[i] = f; }
 	int shipDesignModsSize()			{ return DESIGN_MODS_COUNT; }
+	float shipDesignModCost(int size)	{ return options().prefShipSizeImpacts()? 1 : shipDesignMods[size]; }
+	float shipDesignModCostMultSmall()	{ return options().prefShipSizeImpacts()? 1 : shipDesignMods[COST_MULT_S]; }
+	float shipDesignModCostMultMedium()	{ return options().prefShipSizeImpacts()? 1 : shipDesignMods[COST_MULT_M]; }
+	float shipDesignModCostMultLarge()	{ return options().prefShipSizeImpacts()? 1 : shipDesignMods[COST_MULT_L]; }
+	float shipDesignModCostMultHuge()	{ return options().prefShipSizeImpacts()? 1 : shipDesignMods[COST_MULT_H]; }
+	float shipDesignModModuleSpace()	{ return shipDesignMods[MODULE_SPACE]; }
+	int shipDesignModShieldWeightFB()	{ return (int) shipDesignMods[SHIELD_WEIGHT_FB]; }
+	int shipDesignModShieldWeightD()	{ return (int) shipDesignMods[SHIELD_WEIGHT_D]; }
+	int shipDesignModEcmWeightFD()		{ return (int) shipDesignMods[ECM_WEIGHT_FD]; }
+	int shipDesignModEcmWeightB()		{ return (int) shipDesignMods[ECM_WEIGHT_B]; }
+	int shipDesignModManeuverWeightBD()	{ return (int) shipDesignMods[MANEUVER_WEIGHT_BD]; }
+	int shipDesignModManeuverWeightF()	{ return (int) shipDesignMods[MANEUVER_WEIGHT_F]; }
+	int shipDesignModArmorWeightFB()	{ return (int) shipDesignMods[ARMOR_WEIGHT_FB]; }
+	int shipDesignModArmorWeightD()		{ return (int) shipDesignMods[ARMOR_WEIGHT_D]; }
+	int shipDesignModSpecialsWeight()	{ return (int) shipDesignMods[SPECIALS_WEIGHT]; }
+	boolean shipDesignModSpeedMatching()	{ return shipDesignMods[SPEED_MATCHING] > 0; }
+	boolean shipDesignModReinforcedArmor()	{ return shipDesignMods[REINFORCED_ARMOR] > 0; }
+	boolean shipDesignModBioWeapons()		{ return shipDesignMods[BIO_WEAPONS] > 0; }
+	boolean shipDesignModPrefPulsars()		{ return shipDesignMods[PREF_PULSARS] > 0; }
+	boolean shipDesignModPrefCloak()		{ return shipDesignMods[PREF_CLOAK] > 0; }
+	boolean shipDesignModPrefRepair()		{ return shipDesignMods[PREF_REPAIR] > 0; }
+	boolean shipDesignModPrefInertial()		{ return shipDesignMods[PREF_INERTIAL] > 0; }
+	boolean shipDesignModPrefMissShield()	{ return shipDesignMods[PREF_MISS_SHIELD] > 0; }
+	boolean shipDesignModPrefRepulsor()		{ return shipDesignMods[PREF_REPULSOR] > 0; }
+	boolean shipDesignModPrefStasis()		{ return shipDesignMods[PREF_STASIS] > 0; }
+	boolean shipDesignModPrefStreamProj()	{ return shipDesignMods[PREF_STREAM_PROJECTOR] > 0; }
+	boolean shipDesignModPrefWarpDissip()	{ return shipDesignMods[PREF_WARP_DISSIPATOR] > 0; }
+	boolean shipDesignModPrefTechNullif()	{ return shipDesignMods[PREF_TECH_NULLIFIER] > 0; }
+	boolean shipDesignModPrefBeamFocus()	{ return shipDesignMods[PREF_BEAM_FOCUS] > 0; }
+
 	boolean availablePlayer()			{ return availablePlayer; }
 	void availablePlayer(boolean b)		{ availablePlayer = b; }
 	boolean availableAI()				{ return availableAI; }

@@ -296,7 +296,7 @@ public class NewShipTemplate extends ShipTemplate {
         }
 
         // initial separation of the free space left onto weapons and non-weapons/specials
-        float moduleSpaceRatio = ai.empire().shipDesignMods(MODULE_SPACE);
+        float moduleSpaceRatio = ai.empire().shipDesignModModuleSpace();
         float modulesSpace = totalSpace * moduleSpaceRatio;
 
         // arbitrary initial weighting of what isn't weapons

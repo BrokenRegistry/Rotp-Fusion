@@ -67,10 +67,10 @@ public class NewShipTemplate extends ShipTemplate {
 
         // race's design cost multiplier for each hull size (set in definition.txt file)
         float[] costMultiplier = new float[5];
-        costMultiplier[0] = (float) Math.sqrt(emp.shipDesignMods(COST_MULT_S)); // modnar: scale down cost multiplier
-        costMultiplier[1] = (float) Math.sqrt(emp.shipDesignMods(COST_MULT_M)); // modnar: scale down cost multiplier
-        costMultiplier[2] = (float) Math.sqrt(emp.shipDesignMods(COST_MULT_L)); // modnar: scale down cost multiplier
-        costMultiplier[3] = (float) Math.sqrt(emp.shipDesignMods(COST_MULT_H)); // modnar: scale down cost multiplier
+        costMultiplier[0] = (float) Math.sqrt(emp.shipDesignModCostMultSmall()); // modnar: scale down cost multiplier
+        costMultiplier[1] = (float) Math.sqrt(emp.shipDesignModCostMultMedium()); // modnar: scale down cost multiplier
+        costMultiplier[2] = (float) Math.sqrt(emp.shipDesignModCostMultLarge()); // modnar: scale down cost multiplier
+        costMultiplier[3] = (float) Math.sqrt(emp.shipDesignModCostMultHuge()); // modnar: scale down cost multiplier
         // add another entry for the current design, using the cost multiplier for its size
         costMultiplier[4] = 100f*costMultiplier[currentDesign.size()];
 
@@ -141,7 +141,7 @@ public class NewShipTemplate extends ShipTemplate {
         // smaller hulls can't fit too many modules/components, should instead try to fit weapons
         // fine for moduleSpaceRatio to be low, will get weapon leftover with second "loop" below
         // moduleSpaceRatio += (size - 3)/18
-        float moduleSpaceRatio = emp.shipDesignMods(MODULE_SPACE);
+        float moduleSpaceRatio = emp.shipDesignModModuleSpace();
         moduleSpaceRatio = (float) ( moduleSpaceRatio + (size - 3.0f)/18.0f );
         float modulesSpace = totalSpace * moduleSpaceRatio;
 
@@ -149,25 +149,25 @@ public class NewShipTemplate extends ShipTemplate {
         // modnar: set general Computer Weight to be 3
         int computerWeight = 3;
         // Shield Weight: default 2, bombers/humans 4
-        int shieldWeight = role == DesignType.DESTROYER ? (int) emp.shipDesignMods(SHIELD_WEIGHT_D): (int) emp.shipDesignMods(SHIELD_WEIGHT_FB);
+        int shieldWeight = role.isDestroyer() ? emp.shipDesignModShieldWeightD() : emp.shipDesignModShieldWeightFB();
         // ECM Weight: default 1, bombers 3
-        int ecmWeight = role == DesignType.BOMBER ? (int) emp.shipDesignMods(ECM_WEIGHT_B): (int) emp.shipDesignMods(ECM_WEIGHT_FD);    
-        // Maneuver Weight: default 2, figters/alkari/mrrshan 4
-        int maneuverWeight = role == DesignType.FIGHTER ? (int) emp.shipDesignMods(MANEUVER_WEIGHT_F): (int) emp.shipDesignMods(MANEUVER_WEIGHT_BD);
+        int ecmWeight = role.isBomber() ? emp.shipDesignModEcmWeightB() : emp.shipDesignModEcmWeightFD();
+        // Maneuver Weight: default 2, fighters/alkari/mrrshan 4
+        int maneuverWeight = role.isFighter() ? emp.shipDesignModManeuverWeightF() : emp.shipDesignModManeuverWeightBD();
         // Armor Weight: default 2, destroyers/bulrathi/silicoid 3
-        int armorWeight = role == DesignType.DESTROYER ? (int) emp.shipDesignMods(ARMOR_WEIGHT_D): (int) emp.shipDesignMods(ARMOR_WEIGHT_FB); 
+        int armorWeight = role.isDestroyer() ? emp.shipDesignModArmorWeightD() : emp.shipDesignModArmorWeightFB();
         // modnar: best armor already set above, reduce armorWeight here to zero
         armorWeight = 0;
         // Specials Weight: default 1, adjust elsewhere for ship size
-        int specialsWeight = (int) emp.shipDesignMods(SPECIALS_WEIGHT); 
+        int specialsWeight = emp.shipDesignModSpecialsWeight(); 
         // Same Speed Allowed Flag: default false, alkari/mrrshan true
-        boolean sameSpeedAllowed = emp.shipDesignMods(SPEED_MATCHING) > 0; 
+        boolean sameSpeedAllowed = emp.shipDesignModSpeedMatching(); 
         // Reinforced Armor Allowed Flag: default true, alkari/klackon false
-        // boolean reinforcedArmorAllowed = race.shipDesignMods(REINFORCED_ARMOR] > 0; 
+        // boolean reinforcedArmorAllowed = emp.shipDesignModReinforcedArmor();
         // modnar: don't allow Reinforced Armor, force reinforcedArmorAllowed to be false
         // reinforcedArmorAllowed = false;
         // Allow Bio Weapons: default false, silicoid true  (adjusted elsewhere for leader type)
-        boolean allowBioWeapons = emp.shipDesignMods(BIO_WEAPONS) > 0;
+        boolean allowBioWeapons = emp.shipDesignModBioWeapons();
 
         // if we have a large ship, let's let the AI use more specials; it may have to differentiate designs more
         if (size >= ShipDesign.LARGE)
@@ -483,28 +483,28 @@ public class NewShipTemplate extends ShipTemplate {
                 specials.add(allSpecials.get(i));
         }
 
-        // Alkari and Psilon
-        boolean preferPulsars = emp.shipDesignMods(PREF_PULSARS) > 0;
+     // Alkari and Psilon
+        boolean preferPulsars = emp.shipDesignModPrefPulsars();
         // Darlok and Psilon
-        boolean preferCloak = emp.shipDesignMods(PREF_CLOAK) > 0;
+        boolean preferCloak = emp.shipDesignModPrefCloak();
         // Meklar and Psilon
-        boolean preferRepair = emp.shipDesignMods(PREF_REPAIR) > 0;
+        boolean preferRepair = emp.shipDesignModPrefRepair();
         // Mrrshan and Psilon
-        boolean preferInertial = emp.shipDesignMods(PREF_INERTIAL) > 0;
+        boolean preferInertial = emp.shipDesignModPrefInertial();
         // Sakkra, Bulrathi and Psilon
-        boolean preferMissileShield = emp.shipDesignMods(PREF_MISS_SHIELD) > 0;
+        boolean preferMissileShield = emp.shipDesignModPrefMissShield();
         // Psilon
-        boolean preferRepulsor = emp.shipDesignMods(PREF_REPULSOR) > 0;
+        boolean preferRepulsor = emp.shipDesignModPrefRepulsor();
         // Psilon
-        boolean preferStasisField = emp.shipDesignMods(PREF_STASIS) > 0;
+        boolean preferStasisField = emp.shipDesignModPrefStasis();
         // Psilon
-        boolean preferStreamProjector = emp.shipDesignMods(PREF_STREAM_PROJECTOR) > 0;
+        boolean preferStreamProjector = emp.shipDesignModPrefStreamProj();
         // Psilon
-        boolean preferWarpDissipator = emp.shipDesignMods(PREF_WARP_DISSIPATOR) > 0;
+        boolean preferWarpDissipator = emp.shipDesignModPrefWarpDissip();
         // Psilon
-        boolean preferTechNullifier = emp.shipDesignMods(PREF_TECH_NULLIFIER) > 0;
+        boolean preferTechNullifier = emp.shipDesignModPrefTechNullif();
         // Psilon
-        boolean preferBeamFocus = emp.shipDesignMods(PREF_BEAM_FOCUS) > 0;
+        boolean preferBeamFocus = emp.shipDesignModPrefBeamFocus();
         
         // 3 - Racially preferred specials
         for (ShipSpecial spec: allSpecials) {

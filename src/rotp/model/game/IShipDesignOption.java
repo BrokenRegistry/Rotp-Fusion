@@ -1,34 +1,5 @@
 package rotp.model.game;
 
-import static rotp.model.ai.interfaces.ShipTemplate.ARMOR_WEIGHT_D;
-import static rotp.model.ai.interfaces.ShipTemplate.ARMOR_WEIGHT_FB;
-import static rotp.model.ai.interfaces.ShipTemplate.BIO_WEAPONS;
-import static rotp.model.ai.interfaces.ShipTemplate.COST_MULT_H;
-import static rotp.model.ai.interfaces.ShipTemplate.COST_MULT_L;
-import static rotp.model.ai.interfaces.ShipTemplate.COST_MULT_M;
-import static rotp.model.ai.interfaces.ShipTemplate.COST_MULT_S;
-import static rotp.model.ai.interfaces.ShipTemplate.ECM_WEIGHT_B;
-import static rotp.model.ai.interfaces.ShipTemplate.ECM_WEIGHT_FD;
-import static rotp.model.ai.interfaces.ShipTemplate.MANEUVER_WEIGHT_BD;
-import static rotp.model.ai.interfaces.ShipTemplate.MANEUVER_WEIGHT_F;
-import static rotp.model.ai.interfaces.ShipTemplate.MODULE_SPACE;
-import static rotp.model.ai.interfaces.ShipTemplate.PREF_BEAM_FOCUS;
-import static rotp.model.ai.interfaces.ShipTemplate.PREF_CLOAK;
-import static rotp.model.ai.interfaces.ShipTemplate.PREF_INERTIAL;
-import static rotp.model.ai.interfaces.ShipTemplate.PREF_MISS_SHIELD;
-import static rotp.model.ai.interfaces.ShipTemplate.PREF_PULSARS;
-import static rotp.model.ai.interfaces.ShipTemplate.PREF_REPAIR;
-import static rotp.model.ai.interfaces.ShipTemplate.PREF_REPULSOR;
-import static rotp.model.ai.interfaces.ShipTemplate.PREF_STASIS;
-import static rotp.model.ai.interfaces.ShipTemplate.PREF_STREAM_PROJECTOR;
-import static rotp.model.ai.interfaces.ShipTemplate.PREF_TECH_NULLIFIER;
-import static rotp.model.ai.interfaces.ShipTemplate.PREF_WARP_DISSIPATOR;
-import static rotp.model.ai.interfaces.ShipTemplate.REINFORCED_ARMOR;
-import static rotp.model.ai.interfaces.ShipTemplate.SHIELD_WEIGHT_D;
-import static rotp.model.ai.interfaces.ShipTemplate.SHIELD_WEIGHT_FB;
-import static rotp.model.ai.interfaces.ShipTemplate.SPECIALS_WEIGHT;
-import static rotp.model.ai.interfaces.ShipTemplate.SPEED_MATCHING;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +8,7 @@ import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamInteger;
 import rotp.ui.util.ParamList;
 
-interface IShipDesignOption extends IBaseOptsTools {
+public interface IShipDesignOption extends IBaseOptsTools {
 	String ASD_AI		= "AI";
 	String ASD_SPECIES	= "SPECIES";
 	String ASD_USER		= "USER";
@@ -47,6 +18,35 @@ interface IShipDesignOption extends IBaseOptsTools {
 	int ASD_OTHER	= 2;
 	int ASD_BOOLEAN	= 3;
 	int ASD_SPECIAL	= 4;
+
+	int COST_MULT_S	= 0;
+	int COST_MULT_M	= 1;
+	int COST_MULT_L	= 2;
+	int COST_MULT_H	= 3;
+	int MODULE_SPACE		= 4;
+	int SHIELD_WEIGHT_FB	= 5;
+	int SHIELD_WEIGHT_D		= 6;
+	int ECM_WEIGHT_FD		= 7;
+	int ECM_WEIGHT_B		= 8;
+	int MANEUVER_WEIGHT_BD	= 9;
+	int MANEUVER_WEIGHT_F	= 10;
+	int ARMOR_WEIGHT_FB		= 11;
+	int ARMOR_WEIGHT_D		= 12;
+	int SPECIALS_WEIGHT		= 13;
+	int SPEED_MATCHING		= 14;
+	int REINFORCED_ARMOR	= 15;
+	int BIO_WEAPONS			= 16;
+	int PREF_PULSARS		= 17;
+	int PREF_CLOAK			= 18;
+	int PREF_REPAIR			= 19;
+	int PREF_INERTIAL		= 20;
+	int PREF_MISS_SHIELD	= 21;
+	int PREF_REPULSOR		= 22;
+	int PREF_STASIS			= 23;
+	int PREF_STREAM_PROJECTOR	= 24;
+	int PREF_WARP_DISSIPATOR	= 25;
+	int PREF_TECH_NULLIFIER	= 26;
+	int PREF_BEAM_FOCUS		= 27;
 
 	ParamBoolean autoTagAutoColon		= new ParamBoolean(AUTO_SHIP_DESIGN, "AUTO_TAG_COLON", false)
 			.isCfgFile(true);
