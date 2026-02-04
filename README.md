@@ -44,22 +44,8 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-26-02-01 (BR)
-- When an error occurs, an error report file is now created.
-  - Sometimes the error is so buried in Java calls that no Rotp code lines appear on the screen, making screenshots useless. These lines will appear in the new report file.
-
-26-01-30 (BR)
-- New interface for customizing species, and renamed to DNA workshop.
-- Fixed asteroids no longer disappeared gradually.
-- Updated JRE in the .exe file to Version 25.0.1_8
-
-26-01-23 (BR)
-- Changed the default mouse sensitivity to "High" to prevent annoyingly slow UI responsiveness.
-
-26-01-15 (BR)
-- Fixed numerous "getGraphics()" calls that did not properly call "dispose()".
-  - Many of them were used intensively.
-  - This should lighten the load for the garbage collector and, hopefully, prevent "insufficient memory" screens from appearing.
+26-02-04 (BR)
+- Fixed a bug randomly preventing the allocation popup to be displayed.
 
 
 ### [Features Historic](FeaturesChanges.md)

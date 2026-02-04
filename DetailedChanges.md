@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-02-04 (BR)
+- Fixed a bug randomly preventing the allocation popup to be displayed.
+
 26-02-01 (BR)
 - When an error occurs, an error report file is now created.
   - Sometimes the error is so buried in Java calls that no Rotp code lines appear on the screen, making screenshots useless. These lines will appear in the new report file.

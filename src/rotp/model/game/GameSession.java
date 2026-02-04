@@ -108,6 +108,7 @@ public final class GameSession implements Base, Serializable {
     public static final SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final Object ONE_GAME_AT_A_TIME = new Object();
     private static GameSession instance = new GameSession();
+	private static void instance(GameSession newInstance) { instance = newInstance; }
     public static GameSession instance()  { return instance; }
 
 	private static final boolean showInfo = false; // BR: for debug
@@ -299,7 +300,7 @@ public final class GameSession implements Base, Serializable {
 
         options(newGameOptions.copyAllOptions());
 		rulesetManager().setAsGameMode();
-    	instance.getGovernorOptions().gameStarted();
+    	instance().getGovernorOptions().gameStarted();
         startExecutors();
 
         synchronized(ONE_GAME_AT_A_TIME) {
@@ -322,7 +323,7 @@ public final class GameSession implements Base, Serializable {
     	stopCurrentGame();
         options(src.options().copyAllOptions());
 		rulesetManager().setAsGameMode();
-    	instance.getGovernorOptions().gameStarted();
+    	instance().getGovernorOptions().gameStarted();
         startExecutors();
 
         synchronized(ONE_GAME_AT_A_TIME) {
@@ -545,7 +546,7 @@ public final class GameSession implements Base, Serializable {
                 RotPUI.instance().mainUI().saveMapState();
                 log("Next Turn - BEGIN: ", str(galaxy.currentYear()));
                 log("Autosaving pre-turn");
-                long ufs = instance.saveRecentSession(false);
+                long ufs = instance().saveRecentSession(false);
                 debugMonitor(ufs, 0);
 				// ModnarPrivateLogging();
 
@@ -649,12 +650,6 @@ public final class GameSession implements Base, Serializable {
 				// revalidates the possible impacts on the other one.
 				player().redoGovTurnDecisions();
 
-                if (!systemsToAllocate().isEmpty())
-                	if (options.showAllocatePopUp())
-                		RotPUI.instance().allocateSystems();
-                	else
-                		systemsToAllocate().clear();
-
                 if (spyActivity)
                     SpyReportAlert.create();
 
@@ -674,12 +669,18 @@ public final class GameSession implements Base, Serializable {
                 log("Autosaving post-turn");
                 log("NEXT TURN PROCESSING TIME: ", str(timeMs()-startMs));
                 NoticeMessage.resetSubstatus(text("TURN_SAVING") + " b");
-                ufs = instance.saveRecentSession(true);
+                ufs = instance().saveRecentSession(true);
 
                 if (processNotifications()) { // BR: to display scouted Stars after diplomacy
                 	log("Notifications processed 6 - back to MainPanel");
                 	RotPUI.instance().selectMainPanel();
                 }
+
+				if (!systemsToAllocate().isEmpty())
+					if (options.showAllocatePopUp())
+						RotPUI.instance().allocateSystems();
+					else
+						systemsToAllocate().clear();
 
                 log("Reselecting main panel");
                 RotPUI.instance().mainUI().showDisplayPanel();
@@ -1176,9 +1177,9 @@ public final class GameSession implements Base, Serializable {
     }
     private void loadPreviousSession(GameSession gs, boolean startUp) {
         stopCurrentGame();
-        instance = gs;
+        instance(gs);
 		// BR: save the last loaded game initial parameters
-		instance.options().saveOptionsToFile(GAME_OPTIONS_FILE);
+		instance().options().saveOptionsToFile(GAME_OPTIONS_FILE);
 
 		if (showInfo) 
 			showInfo(gs.galaxy());
@@ -1187,11 +1188,11 @@ public final class GameSession implements Base, Serializable {
         if (!startUp) {
             RotPUI.instance().selectMainPanelLoadGame();
         }
-        instance.getGovernorOptions().gameLoaded();
+        instance().getGovernorOptions().gameLoaded();
 
         // BR: To fix a previous bug.
-        if (instance.aFewMoreTurns() && GameOverUI.gameOverTitleBaseKey().isEmpty())
-        	instance.aFewMoreTurns(false);
+        if (instance().aFewMoreTurns() && GameOverUI.gameOverTitleBaseKey().isEmpty())
+        	instance().aFewMoreTurns(false);
 
         if (IDebugOptions.selectedShowVIPPanel())
         	VIPConsole.updateConsole();
@@ -1370,8 +1371,8 @@ public final class GameSession implements Base, Serializable {
                 }
             }
 
-			GameSession.instance = newSession;
-			instance.loading = true;
+			GameSession.instance(newSession);
+			instance().loading = true;
 			rulesetManager().setAsGameMode();
 
             if (Rotp.isIDE()) {
@@ -1384,13 +1385,13 @@ public final class GameSession implements Base, Serializable {
             }
 
 			// BR: save the last loaded game initial parameters
-			instance.options().setAsGame();
+			instance().options().setAsGame();
 			resolveOptionsDiscrepansies(newSession);
 			rulesetManager().setAsGameMode();
-			instance.loading = false;
+			instance().loading = false;
 
-			if (instance.galaxy.playerSwapRequest())
-				instance.galaxy.swapPlayerEmpire();
+			if (instance().galaxy.playerSwapRequest())
+				instance().galaxy.swapPlayerEmpire();
             newSession.validateOnLoadOnly();
             newSession.validate();
 
@@ -1411,7 +1412,7 @@ public final class GameSession implements Base, Serializable {
     }
     // BR: For restarting with new options
     public void loadSession(GameSession newSession) {
-        GameSession.instance = newSession;
+        GameSession.instance(newSession);
         newSession.validate();
         newSession.validateOnLoadOnly();
     	return;

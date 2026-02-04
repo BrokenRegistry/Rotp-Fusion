@@ -332,6 +332,7 @@
 
 ### Fixes:
 
+- Fixed a bug randomly preventing the allocation popup to be displayed.
 - Fixed asteroids no longer disappeared gradually.
 - Fixed numerous "getGraphics()" calls that did not properly call "dispose()".
   - Many of them were used intensively.
