@@ -332,6 +332,7 @@
 
 ### Fixes:
 
+- Fixed some null pointer exception occurring when ship is deleted concurrently to being displayed.
 - Fixed a bug randomly preventing the allocation popup to be displayed.
 - Fixed asteroids no longer disappeared gradually.
 - Fixed numerous "getGraphics()" calls that did not properly call "dispose()".

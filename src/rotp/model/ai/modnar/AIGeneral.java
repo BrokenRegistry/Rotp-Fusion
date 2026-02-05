@@ -761,7 +761,7 @@ public class AIGeneral implements Base, General {
 
         Galaxy gal = galaxy();
         for (Ship ship: empire.visibleShips()){
-            if (ship.inTransit() && empire.aggressiveWith(ship.empId())) {
+            if (ship!=null && ship.inTransit() && empire.aggressiveWith(ship.empId())) {
                 if (empire.knowETA(ship)) {
                     StarSystem dest = gal.system(ship.destSysId());
                     if (!targetedSystems.containsKey(dest))

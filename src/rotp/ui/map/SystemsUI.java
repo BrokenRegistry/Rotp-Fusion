@@ -155,7 +155,7 @@ public final class SystemsUI extends BasePanel implements IMapHandler, ActionLis
         expandGuardedSystems.clear();
         Empire pl = player();
         for (Ship sh: pl.visibleShips()) {
-            if (sh instanceof ShipFleet) {
+            if (sh!=null && sh instanceof ShipFleet) {
                 ShipFleet fl = (ShipFleet) sh;
                 if (fl.isOrbiting()) {
                     StarSystem sys = fl.system();
@@ -714,7 +714,7 @@ public final class SystemsUI extends BasePanel implements IMapHandler, ActionLis
         // player or allied colonies
         if (pl.knowShipETA() && pl.alliedWith(sysEmpId)) {
             for (Ship sh: pl.visibleShips()) {
-                if ((sh.destSysId() == sv.sysId) && pl.atWarWith(sh.empId()) && sh.isPotentiallyArmed(pl)) {
+                if (sh!=null && (sh.destSysId() == sv.sysId) && pl.atWarWith(sh.empId()) && sh.isPotentiallyArmed(pl)) {
                     if (sysEmp.isPlayer())
                         return MainUI.redAlertC; // enemy fleets approaching player colonies
                     else 
@@ -907,7 +907,7 @@ public final class SystemsUI extends BasePanel implements IMapHandler, ActionLis
         // player or allied colonies
         if (pl.knowShipETA() && pl.alliedWith(sv.empId())) {
             for (Ship sh: pl.visibleShips()) {
-                if ((sh.destSysId() == sv.sysId) && pl.atWarWith(sh.empId()) && sh.isPotentiallyArmed(pl)) {
+                if (sh!=null && (sh.destSysId() == sv.sysId) && pl.atWarWith(sh.empId()) && sh.isPotentiallyArmed(pl)) {
                     String fleetMsg;
                     if (sysEmp.isPlayer())
                         fleetMsg = text("SYSTEMS_EXT_INC_FLEET_PLAYER");

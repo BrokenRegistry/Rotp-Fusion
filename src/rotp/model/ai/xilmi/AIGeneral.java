@@ -750,7 +750,7 @@ public class AIGeneral implements Base, General {
 
         Galaxy gal = galaxy();
         for (Ship ship: empire.visibleShips()){
-            if (ship.inTransit() && empire.aggressiveWith(ship.empId())) {
+            if (ship!=null && ship.inTransit() && empire.aggressiveWith(ship.empId())) {
                 if (empire.knowETA(ship)) {
                     StarSystem dest = gal.system(ship.destSysId());
                     if (!targetedSystems.containsKey(dest))
@@ -987,7 +987,7 @@ public class AIGeneral implements Base, General {
         float cost = 0;
         for(Ship sh : empire.visibleShips())
         {
-            if(empire.aggressiveWith(sh.empId()))
+            if(sh!=null && empire.aggressiveWith(sh.empId()))
                 if(!sh.nullDest() && galaxy().system(sh.destSysId()).empire() == empire)
                     if(sh.isTransport())
                     {
@@ -1394,7 +1394,7 @@ public class AIGeneral implements Base, General {
         boolean senseDanger = false;
         for(Ship sh : empire.visibleShips())
         {
-            if(empire.aggressiveWith(sh.empId()))
+            if(sh!=null && empire.aggressiveWith(sh.empId()))
             {
                 if(!sh.nullDest() && galaxy().system(sh.destSysId()).empire() == empire)
                 {

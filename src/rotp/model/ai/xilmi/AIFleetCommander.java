@@ -1584,7 +1584,7 @@ public class AIFleetCommander implements Base, FleetCommander {
         for(Ship sh : empire.visibleShips())
         {
             if(empire.aggressiveWith(sh.empId()))
-                if(!sh.nullDest() && galaxy().system(sh.destSysId()).empire() == empire)
+                if(sh!=null && !sh.nullDest() && galaxy().system(sh.destSysId()).empire() == empire)
                     if(sh.isTransport())
                         return true;
         }

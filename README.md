@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-02-05 (BR)
+- Fixed some null pointer exception occurring when ship is deleted concurrently to being displayed.
+
 26-02-04 (BR)
 - Fixed a bug randomly preventing the allocation popup to be displayed.
 

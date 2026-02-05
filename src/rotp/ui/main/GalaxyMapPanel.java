@@ -1187,7 +1187,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
                 float minDistance = Float.MAX_VALUE;
                 Sprite closestShip = null;
                 for (Ship sh: ships) {
-                    if (sh.displayed()) {
+                    if (sh != null && sh.displayed()) {
                         Sprite spr = (Sprite) sh;
                         if (parent.shouldDrawSprite(spr)
                         && spr.isSelectableAt(this, x1, y1)) {
@@ -1242,7 +1242,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
                 if (ships == null)
                     ships = new ArrayList<>(pl.visibleShips());
                 for (Ship sh: ships) {
-                    if (sh.displayed()) {
+                    if (sh!=null && sh.displayed()) {
                         FlightPathSprite fpSpr = sh.pathSprite();
                         if (parent.shouldDrawSprite(fpSpr)
                         && fpSpr.isSelectableAt(this, x1, y1))

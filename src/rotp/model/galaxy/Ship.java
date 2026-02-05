@@ -104,6 +104,6 @@ public interface Ship extends IMappedObject, Base, Sprite {
     public boolean displayed();
 
     public boolean isPotentiallyArmed(Empire e);
-    public static Comparator<Ship> ARRIVAL_TIME = (Ship sh1, Ship sh2) -> Base.compare(sh1.arrivalTimeAdjusted(),sh2.arrivalTimeAdjusted());
-    public static Comparator<Ship> EMPIRE_ID = (Ship sh1, Ship sh2) -> Base.compare(sh1.empId(), sh2.empId());
+    public static Comparator<Ship> ARRIVAL_TIME = (Ship sh1, Ship sh2) -> Base.compare(sh1==null? -99 : sh1.arrivalTimeAdjusted(), sh2==null? -99 : sh2.arrivalTimeAdjusted());
+    public static Comparator<Ship> EMPIRE_ID = (Ship sh1, Ship sh2) -> Base.compare(sh1==null? -1 : sh1.empId(), sh2==null? -1 : sh2.empId());
 }

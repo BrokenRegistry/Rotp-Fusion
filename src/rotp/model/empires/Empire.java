@@ -1836,7 +1836,7 @@ public final class Empire extends Species implements NamedObject {
     }
     public List<Transport> opponentsTransports() {
     	List<Transport> transports = new ArrayList<>();
-        for (Ship sh: visibleShips)
+        for (Ship sh: visibleShips())
             if (sh != null && sh.isTransport() && sh.empId()!=id)
             	transports.add((Transport)sh);
         return transports;
@@ -1855,7 +1855,7 @@ public final class Empire extends Species implements NamedObject {
         int transports = s.orbitingTransports(id);
         
         boolean[] enemyMap = enemyMap();
-        for (Ship sh: visibleShips) {
+        for (Ship sh: visibleShips()) {
             if (sh != null && sh.isTransport()) {
                 if (enemyMap[sh.empId()] && (sh.destSysId() == s.id))
                 if (aggressiveWith(sh.empId()) && sh.destSysId() == s.id)
@@ -1867,7 +1867,7 @@ public final class Empire extends Species implements NamedObject {
     public int unfriendlyTransportsInTransit(StarSystem s) {
         int transports = s.orbitingTransports(id);
         
-        for (Ship sh: visibleShips) {
+        for (Ship sh: visibleShips()) {
             if (sh != null && sh.isTransport()) {
                 if (aggressiveWith(sh.empId()) && sh.destSysId() == s.id)
                     transports += ((Transport)sh).size();
@@ -3452,7 +3452,7 @@ public final class Empire extends Species implements NamedObject {
 
         float visiblePts = 0;
         for (Ship sh : visibleShips()) {
-            if ((sh.empId() == emp.id) && sh instanceof ShipFleet) {
+            if (sh!=null && (sh.empId() == emp.id) && sh instanceof ShipFleet) {
                 ShipFleet sh1 = (ShipFleet) sh;
                 visiblePts += sh1.hullPoints();
             }
@@ -3789,7 +3789,7 @@ public final class Empire extends Species implements NamedObject {
             // multiple empires, all allied with player.. that's a win
             else if (galaxy().allAlliedWithPlayer() && !options().noAllianceCouncil()) 
                 session().status().winMilitaryAlliance();
-        }            
+        }
         status.assessTurn();
     }
     public ShipView shipViewFor(ShipDesign d ) {
