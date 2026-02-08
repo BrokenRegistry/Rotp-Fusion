@@ -336,7 +336,7 @@
 
 - Fixed a possible crash when entering the DNA workshop (with unexpected parameters).
 - Fixed visibility issue when fleets overlapped: only those belonging to the player were displayed.
-  - When fleets overlap, the number of hidden fleets is now displayed in red in the fleet panel. Press “B” (for “below”) to scroll through the fleets.
+  - When fleets overlap, the number of hidden fleets is now displayed in red in the fleet panel. Press "B" (for "below") to scroll through the fleets.
 - Fixed some null pointer exception occurring when ship is deleted concurrently to being displayed.
 - Fixed a bug randomly preventing the allocation popup to be displayed.
 - Fixed asteroids no longer disappeared gradually.
