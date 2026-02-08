@@ -272,8 +272,10 @@ public abstract class SpeciesSettings {
 		static final String DEFAULT_VALUE = "NONE";
 
 		private static void setAvatarKey(DynOptions opts, String key)	{ opts.setString(ROOT + AVATAR_KEY, key); }
-		private static String getAvatarKey(DynOptions opts)			{ return opts.getString(ROOT + AVATAR_KEY, DEFAULT_VALUE); }
+		private static String getAvatarKey(DynOptions opts)		{ return opts==null? DEFAULT_VALUE : opts.getString(ROOT + AVATAR_KEY, DEFAULT_VALUE); }
 		static String getRawAvatarKey(DynOptions opts)	{
+			if (opts == null)
+				return null;
 			String key = opts.getString(ROOT + AVATAR_KEY, DEFAULT_VALUE);
 			return DEFAULT_VALUE.equals(key)? null : key;
 		}

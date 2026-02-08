@@ -2886,6 +2886,17 @@ GRAPH_DYN_DIFF_MODE_LEGEND_2			| Dynamic Multiplier
 GRAPH_DYN_DIFF_MODE_LEGEND_3			| Normal Production
 GRAPH_DYN_DIFF_MODE_LEGEND_4			| Dynamic Production
 
+HEADERS_PREF_SHIP_SIZE_IMPACT			| ~~~ IMPACTS DE LA TAILLE ~~~
+HEADERS_PREF_SHIP_SIZE_IMPACT_DESC		| Par défaut, le choix d’une taille de vaisseau préférée n’affecte que les choix de conception des IAs de base en leur faisant croire que les coûts seront augmentés, alors qu’ils restent inchangés. Les paramètres ci-dessous vous permettent d’associer des conséquences réelles à ce choix.
+SETTINGS_MOD_PREF_SIZE_IMPACTS			| La taille préférée importe : %1
+SETTINGS_MOD_PREF_SIZE_IMPACTS_DESC		| La taille préférée des vaisseaux de l’espèce aura une incidence sur leur coût, leur taille et leurs points de vie.<br>Définis par les paramètres ci-dessous.
+SETTINGS_MOD_PREF_SIZE_SPACE			| Impact sur l’espace : %1 %
+SETTINGS_MOD_PREF_SIZE_SPACE_DESC		| L’espace interne des vaisseaux de la taille préférée par l'espèce sera augmenté de ce facteur.
+SETTINGS_MOD_PREF_SIZE_HITS				| Impact sur les points de vie : %1 %
+SETTINGS_MOD_PREF_SIZE_HITS_DESC		| Les point de vie des vaisseaux de la taille préférée par l'espèce sera augmenté de ce facteur.
+SETTINGS_MOD_PREF_SIZE_COST				| Impact sur le coût : %1 %
+SETTINGS_MOD_PREF_SIZE_COST_DESC		| Le coût des vaisseaux de la taille préférée par l'espèce sera réduit de ce facteur.
+
 SETTINGS_MOD_SCRAP_REFUND            | Casse pour vaisseaux : %1
 SETTINGS_MOD_SCRAP_REFUND_ALL        | Partout
 SETTINGS_MOD_SCRAP_REFUND_EMPIRE     | Dans l’Empire
@@ -4541,7 +4552,7 @@ SHIP_DESIGN_RANGE_VALUE           | %1 a.l.
 SHIP_DESIGN_RANGE_UNLIMITED       | Illimité
 SHIP_DESIGN_SPEED_VALUE           | Distorsion %1
 SHIP_DESIGN_COST_VALUE            | %1 BC
-SHIP_DESIGN_TOTAL_SPACE_LABEL     | Espace total
+SHIP_DESIGN_TOTAL_SPACE_LABEL     | Espace utilisé
 SHIP_DESIGN_AVAIL_SPACE_LABEL     | Espace disponible
 SHIP_DESIGN_COLORS                | Teinte
 SHIP_DESIGN_COMBAT_STATS_TITLE    | Statistiques de combat

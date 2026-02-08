@@ -20,7 +20,13 @@ final class ShipRules extends AbstractOptionsSubUI {
 
 				LINE_SPACER_25,
 				scrapRefundOption,
-				scrapRefundFactor
+				scrapRefundFactor,
+
+				new ParamTitle("PREF_SHIP_SIZE_IMPACT"),
+				prefShipSizeImpacts,
+				prefShipSizeCostFactor,
+				prefShipSizeSpaceFactor,
+				prefShipSizeHitFactor
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("BOMBARD_AND_LANDING"),

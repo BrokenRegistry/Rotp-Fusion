@@ -25,6 +25,7 @@ import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseCompactOptionsUI;
+import rotp.ui.main.FleetPanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.TransportDeploymentPanel;
@@ -313,14 +314,24 @@ public class MapOverlayNone extends MapOverlay {
             	else
             		prevFleet(player().orderedIdleFleets());
                 break;
-            case KeyEvent.VK_MULTIPLY:
-            case KeyEvent.VK_7:
-            	nextFlag(1, shift, ctrl);
-            	break;
-            case KeyEvent.VK_SUBTRACT:
-            case KeyEvent.VK_8:
-        	   nextFlag(2, shift, ctrl);
-            	break;
+			case KeyEvent.VK_MULTIPLY:
+				nextFlag(1, shift, ctrl);
+				break;
+			case KeyEvent.VK_7:
+				if (parent.displayPanel().currentPanel instanceof FleetPanel)
+					parent.displayPanel().keyPressed(e);
+				else
+					nextFlag(1, shift, ctrl);
+				break;
+			case KeyEvent.VK_SUBTRACT:
+				nextFlag(2, shift, ctrl);
+				break;
+			case KeyEvent.VK_8:
+				if (parent.displayPanel().currentPanel instanceof FleetPanel)
+					parent.displayPanel().keyPressed(e);
+				else
+					nextFlag(2, shift, ctrl);
+				break;
             case KeyEvent.VK_NUMPAD9:
             case KeyEvent.VK_U:
             case KeyEvent.VK_DIVIDE:

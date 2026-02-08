@@ -22,6 +22,8 @@
 
 ### Features:
 
+- New option to modify ship characteristics based on the species' preferred ship size:
+  - Cost, space, or hit points can be modified according to the percentage chosen by the player.
 - New custom species option to add ship names.
 - New option to customize planet size bonus, their minimum and maximum sizes, as well as the rounding of values.
 - New option to restore MoO1 combat resolution: Unlike in MoO1, damage inflicted by weapons in RotP is not affected by the difference between attack and defense levels. (Only affects the probability of hitting.) In MoO1, a high differential between attack and defense increases the weapon's minimum damage. This gives kittens a boost.
@@ -332,6 +334,9 @@
 
 ### Fixes:
 
+- Fixed a possible crash when entering the DNA workshop (with unexpected parameters).
+- Fixed visibility issue when fleets overlapped: only those belonging to the player were displayed.
+  - When fleets overlap, the number of hidden fleets is now displayed in red in the fleet panel. Press “B” (for “below”) to scroll through the fleets.
 - Fixed some null pointer exception occurring when ship is deleted concurrently to being displayed.
 - Fixed a bug randomly preventing the allocation popup to be displayed.
 - Fixed asteroids no longer disappeared gradually.

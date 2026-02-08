@@ -150,7 +150,7 @@ public class DNAFactory extends SpeciesSettings {
 		LanguageList languageSetting = (LanguageList) settingMap.get(languageKey);
 		StringList languages = new StringList(languageSetting.settingValue());
 		// src options languages
-		String srcLanguages = srcOptions.getString(languageKey, DEFAULT_LANGUAGE);
+		String srcLanguages = srcOptions==null? DEFAULT_LANGUAGE : srcOptions.getString(languageKey, DEFAULT_LANGUAGE);
 		StringList srcLanguageList = new StringList(srcLanguages);
 		// Create missing
 		for (String lg : srcLanguageList) {
@@ -166,8 +166,9 @@ public class DNAFactory extends SpeciesSettings {
 		// update the skills from the source option
 		List<ICRSettings<?>> settings = settingMap.getAll();
 		settings.remove(languageSetting);
-		for (ICRSettings<?> setting : settings)
-			setting.updateOptionTool(srcOptions);
+		if (srcOptions != null)
+			for (ICRSettings<?> setting : settings)
+				setting.updateOptionTool(srcOptions);
 
 		// The previous options could offer more languages.
 		settingMap.cleanLanguages();

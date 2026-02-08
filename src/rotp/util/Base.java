@@ -37,6 +37,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Transparency;
+import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Point2D;
@@ -1588,10 +1589,11 @@ public interface Base extends InputEventUtil {
 		}
 		return name;
     }
-    public default boolean has3Buttons() {
-    	return MouseInfo.getNumberOfButtons() >= 3;
-    	//return false;
-    }
+    // Mouse helpers
+	default boolean has3Buttons()				{ return MouseInfo.getNumberOfButtons() >= 3; }
+	default boolean isLeftClick(MouseEvent e)	{ return SwingUtilities.isLeftMouseButton(e); }
+	default boolean isMidClick(MouseEvent e)	{ return SwingUtilities.isMiddleMouseButton(e); }
+	default boolean isRightClick(MouseEvent e)	{ return SwingUtilities.isRightMouseButton(e); }
     // ----- Debug tools -----
     public default void writeToFile(String fileName, String s, boolean newLine, boolean append) {
         File saveFile = file(fileName);

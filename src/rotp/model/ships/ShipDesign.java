@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import rotp.model.combat.CombatStack;
 import rotp.model.galaxy.Galaxy;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.IGameOptions;
 import rotp.model.planet.PlanetType;
 import rotp.util.Base;
 
@@ -85,7 +86,7 @@ public final class ShipDesign extends Design {
     private Integer monsterManeuver;	// BR: for monsters only
     private transient ImageIcon icon;
     private transient Image image;
-    private transient float costBC;
+    private transient int costBC;
 
     @Override public int hashCode() {
     	if (hashCode == null)
@@ -360,18 +361,25 @@ public final class ShipDesign extends Design {
 			float availableSpace = availableSpace();
 			if (availableSpace < 0)
 				cost -= availableSpace;
-            costBC = cost;
+			IGameOptions opts = options();
+			if (opts.prefShipSizeImpacts()) {
+				cost *= opts.prefShipSizeCostFactor(empire().preferredShipSize(), size());
+				costBC = round(cost);
+			}
+			else
+				costBC = ceil(cost);
         }
-        return (int) Math.ceil(costBC);
+        return costBC;
     }
     public float hullPoints() { return hullPoints(size()); }
     public float totalSpace() { return totalSpace(size()); }
     public float totalSpace(int s) {
+		IGameOptions opts = options();
         float techBonus = 1 + (.02f * empire().tech().construction().techLevel());
         // modnar: change total ship space for new races // modnar: NeoHumans, +40% space
         // BR: Made dataRace call
         float raceSpaceBonus = empire().shipSpaceFactor();
-        float optionSpaceBonus = options().selectedShipSpaceFactor();
+		float optionSpaceBonus = opts.selectedShipSpaceFactor();
         int baseSpace = 0;
         switch(s) {
 	        case SMALL  : baseSpace = 40; break;
@@ -382,7 +390,9 @@ public final class ShipDesign extends Design {
         }
         // modnar: change total ship space for new races
         float finalSpace = baseSpace * techBonus * raceSpaceBonus * optionSpaceBonus;
-        return finalSpace;
+		if (opts.prefShipSizeImpacts())
+			finalSpace /= opts.prefShipSizeSpaceFactor(empire().preferredShipSize(), s);
+		return finalSpace;
     }
     public void becomeObsolete(int turns) {
         if (!obsolete()) {

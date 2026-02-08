@@ -36,11 +36,13 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import rotp.model.Sprite;
 import rotp.model.empires.Empire;
+import rotp.model.galaxy.Ship;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
@@ -48,6 +50,7 @@ import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
+import rotp.ui.RotPUI;
 import rotp.ui.map.IMapHandler;
 import rotp.ui.sprites.FlightPathSprite;
 
@@ -451,10 +454,13 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 //parent.parent.hoveringOverSprite(systems.get(index).sprite());
                 parent.repaint();
                 return;
-            case KeyEvent.VK_H:
-            	toggleShowFleetInfo();
-            	parent.repaint();
-                return;
+			case KeyEvent.VK_B:
+				showHiddenFleet();
+				return;
+			case KeyEvent.VK_H:
+				toggleShowFleetInfo();
+				parent.repaint();
+				return;
 			case KeyEvent.VK_1:
 				detailPane().selectSpeed(1);
 				return;
@@ -518,6 +524,46 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         bottomPane.setBackground(MainUI.shadeBorderC());
         return bottomPane;
     }
+	private int searchForHiddenFleet(List<Ship> altShips, float maxDist)	{
+		int nextIndex = -1;
+		ShipFleet fleet = displayedFleet();
+		if (fleet == null || fleet.isOrbiting() || fleet.isDeployed())
+			return nextIndex;
+		if (fleet.launchTime() == galaxy().currentTime())
+			return nextIndex;
+
+		float x = fleet.x();
+		float y = fleet.y();
+		List<Ship> ships = new ArrayList<>(player().visibleShips());
+		for (Ship sh: ships) {
+			if (fleet == sh)
+				nextIndex = altShips.size();
+			else if (sh != null && sh.displayed() && sh instanceof ShipFleet) {
+				float dist = distance(sh.x(), sh.y(), x, y);
+				if (dist <= maxDist)
+					altShips.add(sh);
+			}
+		}
+		return nextIndex;
+	}
+	private int countHiddenFleets()	{
+		List<Ship> altShips = new ArrayList<>();
+		searchForHiddenFleet(altShips, 1);
+		return altShips.size();
+	}
+	private void showHiddenFleet()	{
+		List<Ship> altShips = new ArrayList<>();
+		int nextIndex = searchForHiddenFleet(altShips, 1);
+		if (altShips.isEmpty()) {
+			misClick();
+			return;
+		}
+		if (nextIndex >= altShips.size())
+			nextIndex = 0;
+		softClick();
+		Ship nexShip = altShips.get(nextIndex);
+		RotPUI.instance().mainUI().hoveringSprite(nexShip);
+	}
     public final class FleetGraphicPane extends BasePanel implements MouseWheelListener {
         private static final long serialVersionUID = 1L;
         private final FleetPanel parent;
@@ -884,6 +930,14 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             scaledFont(g, title, w-s20, 22, 15);
             drawShadowedString(g, title, 4, x0, y0, SystemPanel.textShadowC, Color.white);
 
+			int hiddenCount = countHiddenFleets();
+			if (hiddenCount>0) {
+				String hidden = "+"+hiddenCount;
+				g.setFont(narrowFont(24));
+				g.setColor(Color.RED);
+				int sw = g.getFontMetrics().stringWidth(hidden);
+				drawString(g, hidden, w-sw-s5, y0);
+			}
             if (showAdjust) {
                 int a[] = new int[3];
                 int b[] = new int[3];
@@ -1681,6 +1735,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             g.drawRoundRect(x1+s1,y,w-s2,h,s10,s10);
             g.setStroke(prev2);
         }
+
         @Override
         public void mouseDragged(MouseEvent e) { }
         @Override
@@ -1717,6 +1772,10 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         public void mouseReleased(MouseEvent e) {
             if (e.getButton() > 3)
                 return;
+			if (isRightClick(e)) {
+				showHiddenFleet();
+				return;
+			}
             int x = e.getX();
             int y = e.getY();
 

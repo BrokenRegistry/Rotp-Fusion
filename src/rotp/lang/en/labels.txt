@@ -2886,6 +2886,17 @@ GRAPH_DYN_DIFF_MODE_LEGEND_2			| Dynamic Multiplier
 GRAPH_DYN_DIFF_MODE_LEGEND_3			| Normal Production
 GRAPH_DYN_DIFF_MODE_LEGEND_4			| Dynamic Production
 
+HEADERS_PREF_SHIP_SIZE_IMPACT			| ~~~ SHIP SIZE IMPACT ~~~
+HEADERS_PREF_SHIP_SIZE_IMPACT_DESC		|  By default, choosing a preferred ship size only affects the basic AI's design choices by making them believe that costs will be increased, while they remain unchanged. The settings below allow you to associate real consequences of this choice.
+SETTINGS_MOD_PREF_SIZE_IMPACTS			| Favored size matters: %1
+SETTINGS_MOD_PREF_SIZE_IMPACTS_DESC		| The preferred size of the species' vessels will affect their cost, size, and hit points.<br>Defined by the parameters below.
+SETTINGS_MOD_PREF_SIZE_SPACE			| Impact on the Space: %1%
+SETTINGS_MOD_PREF_SIZE_SPACE_DESC		| The internal space of vessels of the size preferred by the species will be increased by this factor.
+SETTINGS_MOD_PREF_SIZE_HITS				| Impact on the Hit Points: %1%
+SETTINGS_MOD_PREF_SIZE_HITS_DESC		| The hit points of vessels of the size preferred by the species will be increased by this factor.
+SETTINGS_MOD_PREF_SIZE_COST				| Impact on the cost: %1%
+SETTINGS_MOD_PREF_SIZE_COST_DESC		| The cost of vessels of the size preferred by the species will be reduced by this factor.
+
 SETTINGS_MOD_SCRAP_REFUND            | Ship Refund: %1
 SETTINGS_MOD_SCRAP_REFUND_ALL        | Everywhere
 SETTINGS_MOD_SCRAP_REFUND_EMPIRE     | Empire Worlds
@@ -4541,7 +4552,7 @@ SHIP_DESIGN_RANGE_VALUE           | %1 light-years
 SHIP_DESIGN_RANGE_UNLIMITED       | Unlimited
 SHIP_DESIGN_SPEED_VALUE           | Warp %1
 SHIP_DESIGN_COST_VALUE            | %1 BC
-SHIP_DESIGN_TOTAL_SPACE_LABEL     | Total Space
+SHIP_DESIGN_TOTAL_SPACE_LABEL     | Used Space
 SHIP_DESIGN_AVAIL_SPACE_LABEL     | Available Space
 SHIP_DESIGN_COLORS                | Tint
 SHIP_DESIGN_COMBAT_STATS_TITLE    | Combat Stats

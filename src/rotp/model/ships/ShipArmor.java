@@ -16,6 +16,7 @@
 package rotp.model.ships;
 
 import rotp.model.empires.Empire;
+import rotp.model.game.IGameOptions;
 import rotp.model.tech.TechArmor;
 
 public final class ShipArmor extends ShipComponent {
@@ -41,10 +42,18 @@ public final class ShipArmor extends ShipComponent {
         float hits = design.baseHits() * tech().hitsAdj;
         if (reinforced)
             hits *= 1.5f;
+		IGameOptions opts = options();
+		if (opts.prefShipSizeImpacts()) {
+			hits /= opts.prefShipSizeHitFactor(design.empire().preferredShipSize(), design.size());
+			return hits;
+		}
         return (float) Math.ceil(hits);
     }
-    @Override
-    public String desc(ShipDesign d) { return text(desc(), (int) hits(d)); }
+	@Override public String desc(ShipDesign d)	{
+		if (options().prefShipSizeImpacts())
+			return text(desc(), fmt(hits(d)));
+		return text(desc(), (int) hits(d));
+	}
     @Override
 	// modnar: add in cost miniaturization for Armor
     public float cost(ShipDesign d) {

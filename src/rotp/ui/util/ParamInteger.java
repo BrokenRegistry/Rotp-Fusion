@@ -120,6 +120,7 @@ public class ParamInteger extends AbstractParam<Integer> {
 		this.perMilleValue = perMilleValue;
 		return this;
 	}
+	public float getFloat()	{ return pctValue? get()/100f : perMilleValue? get()/1000f : get(); }
 	// ===== Overriders =====
 	//
 	@Override public ParamInteger isValueInit(boolean is) { super.isValueInit(is)  ; return this; }

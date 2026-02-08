@@ -51,7 +51,7 @@ public class SpriteDisplayPanel extends BasePanel implements SystemViewer, Mouse
     private static final String DISPLAY_WAR_VIEW = "DisplayWarView";
 
     private final CardLayout layout = new CardLayout();
-    BasePanel currentPanel;
+    public BasePanel currentPanel;
 
     EmpireSystemPanel playerSystemPane;
     AlienSystemPanel alienSystemPane;

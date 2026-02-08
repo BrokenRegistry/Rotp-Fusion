@@ -269,7 +269,7 @@ public interface IShipDesignOption extends IBaseOptsTools {
 					break;
 			}
 		}
-		public float getFloat()	{ return get()/100f; }
+		@Override public float getFloat()	{ return get()/100f; }
 		@Override public paramShipDesign setLimits(Integer min, Integer max) {
 			super.setLimits(min, max);
 			return this;

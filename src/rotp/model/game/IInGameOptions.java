@@ -4,6 +4,7 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.stream.IntStream;
 
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.XYChart;
@@ -315,27 +316,57 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 			.pctValue(true);
 	default float selectedShipSpaceFactor()	{ return shipSpaceFactor.get()/100f; }
 
-	ParamBoolean prefShipSizeImpacts	= new ParamBoolean(MOD_UI, "PREF_SIZE_IMPACTS", false);
+	ParamBoolean prefShipSizeImpacts			= new ParamBoolean(MOD_UI, "PREF_SIZE_IMPACTS", false);
+	PrefShipSizeFactor prefShipSizeSpaceFactor	= new PrefShipSizeFactor(MOD_UI, "PREF_SIZE_SPACE", 6);
+	PrefShipSizeFactor prefShipSizeHitFactor	= new PrefShipSizeFactor(MOD_UI, "PREF_SIZE_HITS", 6);
+	PrefShipSizeFactor prefShipSizeCostFactor	= new PrefShipSizeFactor(MOD_UI, "PREF_SIZE_COST", 12);
 	default boolean prefShipSizeImpacts()	{ return prefShipSizeImpacts.get(); }
+	default float prefShipSizeSpaceFactor(int pref, int size)	{ return prefShipSizeSpaceFactor.get(pref, size); }
+	default float prefShipSizeHitFactor(int pref, int size)		{ return prefShipSizeHitFactor.get(pref, size); }
+	default float prefShipSizeCostFactor(int pref, int size)	{ return prefShipSizeCostFactor.get(pref, size); }
+	
+	static class PrefShipSizeFactor extends ParamInteger	{
+		private static final int LARGE = 2;
+		private static final int[][] FACTORS = new int[][] {{0, 0, 1, 2}, {1, 0, 0, 1}, {2, 1, 0, 0}, {3, 2, 1, 0}};
+		private static final int[] WEIGHTING = new int[] {60, 80, 150, 200};
+		private static final int WEIGHT_SUM  = IntStream.of(WEIGHTING).sum();
+		private final float[][] bonus = new float[4][4];
 
-	ParamInteger prefShipSizeSpacePct	= new ParamInteger(MOD_UI, "PREF_SIZE_SPACE", 0)
-			.setLimits(0, 50)
-			.setIncrements(1, 5, 20)
-			.pctValue(true);
-	default float prefShipSizeSpaceBoost()	{ return prefShipSizeSpacePct.get()/100f-1; }
+		public PrefShipSizeFactor(String gui, String name, Integer defaultValue)	{
+			super(gui, name, defaultValue);
+			setLimits(0, 50);
+			setIncrements(1, 5, 20);
+			pctValue(true);
+		}
+		@Override public Integer set(Integer newValue)	{
+			float value = super.set(newValue)/100f;
+			float[] merit = new float[4];
+			// first pass for raw factors
+			for (int pref=0; pref<4; pref++) {
+				float norm = value * FACTORS[pref][LARGE] + 1;
+				merit[pref] = 0;
+				for (int size=0; size<4; size++) {
+					bonus[pref][size] = (value * FACTORS[pref][size] + 1) / norm;
+					merit[pref] += bonus[pref][size] * WEIGHTING[size];
+				}
+			}
+			// second pass to equalize the merit
+			for (int pref=0; pref<4; pref++) {
+				float norm = WEIGHT_SUM/merit[pref];
+				for (int size=0; size<4; size++)
+					bonus[pref][size] *= norm;
+			}
 
-	ParamInteger prefShipSizeHitPct		= new ParamInteger(MOD_UI, "PREF_SIZE_HITS", 0)
-			.setLimits(0, 50)
-			.setIncrements(1, 5, 20)
-			.pctValue(true);
-	default float prefShipSizeHitBonus()	{ return prefShipSizeHitPct.get()/100f; }
-
-	ParamInteger prefShipSizeCostPct	= new ParamInteger(MOD_UI, "PREF_SIZE_COST", 0)
-			.setLimits(0, 50)
-			.setIncrements(1, 5, 20)
-			.pctValue(true);
-	default float prefShipSizeCostBonus()	{ return prefShipSizeCostPct.get()/100f; }
-
+//			String log = "";
+//			for (int pref=0; pref<4; pref++) {
+//				for (int size=0; size<4; size++)
+//					log += bonus[pref][size] + ", ";
+//			}
+//			System.out.println(getCfgLabel() + " Bonus = " + log );
+			return newValue;
+		}
+		public float get(int pref, int size)	{ return bonus[pref][size]; }
+	}
 	ParamFloat missileBaseModifier	= new ParamFloat(MOD_UI, "MISSILE_BASE_MODIFIER", 0.67f)
 			.setDefaultValue(MOO1_DEFAULT, 1f)
 			.setDefaultValue(ROTP_DEFAULT, 1f)

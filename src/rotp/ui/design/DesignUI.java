@@ -2212,7 +2212,10 @@ public class DesignUI extends BasePanel {
             int x3 = x+w-s20+xofs2;
             g.setColor(darkestBrown);
             g.setFont(narrowFont(fontSize));
-            str = ""+(int)des.hits();
+			if (options().prefShipSizeImpacts())
+				str = fmt(des.hits());
+			else
+				str = ""+(int)des.hits();
             sw = g.getFontMetrics().stringWidth(str);
             drawString(g,str, x3-sw, y2);
             str = ""+(des.missileDefense()+des.empire().shipDefenseBonus());
