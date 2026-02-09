@@ -103,7 +103,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	private static final Color	MALUS_COLOR		= SystemPanel.redText;
 	private static final int	COST_FONT_SIZE	= 18;
 	private	static final Font	DESC_FONT		= FontManager.current().narrowFont(14);
-	private static final int	ANIM_DIVISOR	= 1;
+	private static final int	ANIM_DIVISOR	= 3;
 	private static final int	BG_ALPHA		= 200;
 
 	private boolean allowEdit;
@@ -885,9 +885,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			setRenderingHints(g);
 			int w = getWidth();
 			int h = getHeight();
-
-			BufferedImage fleetImage = fleetImage(prefFleet.index(), w, h);
-			g.drawImage(fleetImage, 0,0, this);
+			fleetImage((Graphics2D) g, prefFleet.index(), w, h);
 		}
 		@Override public IParam<?> getParam()				{ return prefFleet; }
 		@Override public JComponent getComponent()			{ return this; }
@@ -918,11 +916,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			mouseEntered(evt);
 		}
 
-		private BufferedImage fleetImage(int shipStyle, int w0, int h0)	{
-			BufferedImage fleetImg = new BufferedImage(w0, h0, TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) fleetImg.getGraphics();
-			setRenderingHints(g);
-
+		private void fleetImage(Graphics2D g, int shipStyle, int w0, int h0)	{
 			// Star background
 			g.setColor(starBackgroundC());
 			g.fillOval(0, 0, w0, h0);
@@ -941,54 +935,53 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			g.drawImage(cloud, 0,0, w0,h0, 0,0, cloud.getWidth(this), cloud.getHeight(this), this);
 			g.setComposite(oldComp);
 
-			int cx = w0/2;
-			int dx = w0/4;
-			int bx = w0/3;
+			int xc = w0/2;
+			int x3 = w0/3;
+			int x4 = w0/4;
+			int x5 = w0/5;
 			int ex = 2*w0/5;
-			int sx = w0/8;
+			int x8 = w0/8;
+			int x0 = w0/10;
+			int xx = w0/16;
+
 			int cy = h0/2;
-			int by = h0/3;
-			int dy = h0/4;
-			int ry = h0/8;
-			int sy = h0/10;
+			int y3 = h0/3;
+			int y4 = h0/4;
+			int y6 = h0/5;
+			int y8 = h0/8;
+			int y0 = h0/10;
 			int ty = h0/12;
 			// Central Ship
 			int shipH[], shipY[], shipX[], size[], shape[];
 			switch (prefSize.index()) {
-//			case 0:
-//				shipH = new int[] { h0/10,	h0/8,	h0/10,	h0/10,	h0/10,	h0/10,	h0/8,	h0/8,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10};
-//				shipY = new int[] { cy,		cy,		cy-by,	cy+by,	cy-dy,	cy+dy,	cy-dy,	cy+dy,	cy-sy,	cy+sy,	cy-ry,	cy+ry,	cy-sy,	cy+sy,	cy,		cy};
-//				shipX = new int[] { cx+sx,	cx-sx,	cx,		cx,		cx+dx,	cx+dx,	cx-dx,	cx-dx,	cx-ex,	cx-ex,	cx,		cx,	cx+bx,	cx+bx,	cx+ex,	cx+dx};
-//				size  = new int[] { LARGE,	HUGE,	LARGE,	LARGE,	MEDIUM,	MEDIUM,	SMALL,	SMALL,	MEDIUM,	MEDIUM,	MEDIUM,	MEDIUM,	SMALL,	SMALL,	SMALL,	SMALL};
-//				shape = new int[] { 4,		3,		5,		5,		2,		2,		1,		1,		3,		3,		5,		5,		0,		0,		4,		4};
-//				break;
-//			case 1:
-//				shipH = new int[] { h0/10,	h0/8,	h0/8,	h0/8,	h0/10,	h0/10,	h0/8,	h0/8,	h0/10,	h0/10,	h0/10,	h0/10};
-//				shipY = new int[] { cy,		cy,		cy-by,	cy+by,	cy-dy,	cy+dy,	cy-dy,	cy+dy,	cy-sy,	cy+sy,	cy-ty,	cy+ty};
-//				shipX = new int[] { cx+sx,	cx-sx,	cx,		cx,		cx+dx,	cx+dx,	cx-dx,	cx-dx,	cx-ex,	cx-ex,	cx+ex,	cx+ex};
-//				size  = new int[] { LARGE,	HUGE,	HUGE,	HUGE,	LARGE,	LARGE,	MEDIUM,	MEDIUM,	LARGE,	LARGE,	SMALL,	SMALL};
-//				shape = new int[] { 4,		3,		5,		5,		2,		2,		1,		1,		3,		3,		0,		0};
-//				break;
-//			case 2:
-//				shipH = new int[] { h0/10,	h0/8,	h0/8,	h0/8,	h0/10,	h0/10,	h0/8,	h0/8,	h0/10,	h0/10,	h0/10,	h0/10};
-//				shipY = new int[] { cy,		cy,		cy-by,	cy+by,	cy-dy,	cy+dy,	cy-dy,	cy+dy,	cy-sy,	cy+sy,	cy-ty,	cy+ty};
-//				shipX = new int[] { cx+sx,	cx-sx,	cx,		cx,		cx+dx,	cx+dx,	cx-dx,	cx-dx,	cx-ex,	cx-ex,	cx+ex,	cx+ex};
-//				size  = new int[] { LARGE,	HUGE,	HUGE,	HUGE,	LARGE,	LARGE,	MEDIUM,	MEDIUM,	LARGE,	LARGE,	SMALL,	SMALL};
-//				shape = new int[] { 4,		3,		5,		5,		2,		2,		1,		1,		3,		3,		0,		0};
-//				break;
+			case 0:
+				shipH = new int[] { h0/10,	h0/10,	h0/10,	h0/8,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/8,	h0/8,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10};
+				shipY = new int[] { cy,		cy-y6,	cy+y6,	cy,		cy-y3,	cy+y3,	cy-y6,	cy+y6,	cy-y3,	cy+y3,	cy-y4,	cy+y4,	cy-y4,	cy+y4,	cy-y0,	cy+y0,	cy-y8,	cy+y8,	cy-y0,	cy+y0,	cy,		cy};
+				shipX = new int[] { xc+x8,	xc+x8,	xc+x8,	xc-x5,	xc+x0,	xc+x0,	xc-x8,	xc-x8,	xc-xx,	xc-xx,	xc+x4,	xc+x4,	xc-x4,	xc-x4,	xc-ex,	xc-ex,	xc,		xc,		xc+x3,	xc+x3,	xc+ex,	xc+x4};
+				size  = new int[] { LARGE,	SMALL,	SMALL,	HUGE,	MEDIUM,	MEDIUM,	SMALL,	SMALL,	SMALL,	SMALL,	MEDIUM,	MEDIUM,	SMALL,	SMALL,	MEDIUM,	MEDIUM,	MEDIUM,	MEDIUM,	SMALL,	SMALL,	SMALL,	SMALL};
+				shape = new int[] { 4,		2,		2,		3,		4,		4,		3,		3,		5,		5,		2,		2,		1,		1,		3,		3,		5,		5,		0,		0,		4,		4};
+				break;
+			case 1:
+				shipH = new int[] { h0/10,	h0/8,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10,	h0/8,	h0/8,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10};
+				shipY = new int[] { cy,		cy,		cy-y3,	cy+y3,	cy-y3,	cy+y3,	cy-y4,	cy+y4,	cy-y4,	cy+y4,	cy-y0,	cy+y0,	cy,		cy-ty,	cy+ty};
+				shipX = new int[] { xc+x8,	xc-x8,	xc+x0,	xc+x0,	xc-x0,	xc-x0,	xc+x4,	xc+x4,	xc-x4,	xc-x4,	xc-ex,	xc-ex,	w0-x5,	xc+ex,	xc+ex};
+				size  = new int[] { LARGE,	HUGE,	MEDIUM,	MEDIUM,	MEDIUM,	MEDIUM,	LARGE,	LARGE,	MEDIUM,	MEDIUM,	LARGE,	LARGE,	SMALL,	SMALL,	SMALL};
+				shape = new int[] { 4,		3,		4,		4,		5,		5,		2,		2,		1,		1,		3,		3,		5,		0,		0};
+				break;
 			case 3:
 				shipH = new int[] { h0/8,	h0/7,	h0/7,	h0/7,	h0/7,	h0/7,	h0/7,	h0/7,	h0/8,	h0/8,	h0/8,	h0/8};
-				shipY = new int[] { cy,		cy,		cy-by,	cy+by,	cy-dy,	cy+dy,	cy-dy,	cy+dy,	cy-sy,	cy+sy,	cy-ty,	cy+ty};
-				shipX = new int[] { cx+sx,	cx-sx,	cx,		cx,		cx+dx,	cx+dx,	cx-dx,	cx-dx,	cx-ex,	cx-ex,	cx+ex,	cx+ex};
+				shipY = new int[] { cy,		cy,		cy-y3,	cy+y3,	cy-y4,	cy+y4,	cy-y4,	cy+y4,	cy-y0,	cy+y0,	cy-ty,	cy+ty};
+				shipX = new int[] { xc+x8,	xc-x8,	xc,		xc,		xc+x4,	xc+x4,	xc-x4,	xc-x4,	xc-ex,	xc-ex,	xc+ex,	xc+ex};
 				size  = new int[] { LARGE,	HUGE,	HUGE,	HUGE,	HUGE,	HUGE,	MEDIUM,	MEDIUM,	LARGE,	LARGE,	SMALL,	SMALL};
 				shape = new int[] { 4,		3,		5,		5,		2,		2,		1,		1,		3,		3,		0,		0};
 				break;
+			case 2:
 			default:
-				shipH = new int[] { h0/10,	h0/8,	h0/8,	h0/8,	h0/10,	h0/10,	h0/8,	h0/8,	h0/10,	h0/10,	h0/10,	h0/10};
-				shipY = new int[] { cy,		cy,		cy-by,	cy+by,	cy-dy,	cy+dy,	cy-dy,	cy+dy,	cy-sy,	cy+sy,	cy-ty,	cy+ty};
-				shipX = new int[] { cx+sx,	cx-sx,	cx,		cx,		cx+dx,	cx+dx,	cx-dx,	cx-dx,	cx-ex,	cx-ex,	cx+ex,	cx+ex};
-				size  = new int[] { LARGE,	HUGE,	HUGE,	HUGE,	LARGE,	LARGE,	MEDIUM,	MEDIUM,	LARGE,	LARGE,	SMALL,	SMALL};
-				shape = new int[] { 4,		3,		5,		5,		2,		2,		1,		1,		3,		3,		0,		0};
+				shipH = new int[] { h0/10,	h0/8,	h0/8,	h0/8,	h0/10,	h0/10,	h0/8,	h0/8,	h0/10,	h0/10,	h0/10,	h0/10,	h0/10};
+				shipY = new int[] { cy,		cy,		cy-y3,	cy+y3,	cy-y4,	cy+y4,	cy-y4,	cy+y4,	cy-y0,	cy+y0,	cy,		cy-ty,	cy+ty};
+				shipX = new int[] { xc+x8,	xc-x8,	xc,		xc,		xc+x4,	xc+x4,	xc-x4,	xc-x4,	xc-ex,	xc-ex,	w0-x5,	xc+ex,	xc+ex};
+				size  = new int[] { LARGE,	HUGE,	HUGE,	HUGE,	LARGE,	LARGE,	MEDIUM,	MEDIUM,	LARGE,	LARGE,	SMALL,	SMALL,	SMALL};
+				shape = new int[] { 4,		3,		5,		5,		2,		2,		1,		1,		3,		3,		5,		0,		0};
 				break;
 			}
 
@@ -999,9 +992,6 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 			g.setStroke(stroke2);
 			g.setColor(new Color(100,161,231));
 			g.drawOval(1, 1, w0-2, h0-2);
-
-			g.dispose();
-			return fleetImg;
 		}
 		private void drawImage(Graphics2D g0, int shipStyle, int shapeId, int shipSize, int shipHeight, int x0, int y0, int i)	{
 			int shipWidth = (int) (shipHeight * 1.3314f);

@@ -2,6 +2,11 @@
 
 ## What's New
 
+26-02-09 (BR)
+- DNA Workshop: fleet animation:
+  - They now match the animation speed of the Ship Design UI.
+  - Each preferred ship size ha is fleet model.
+
 26-02-08 (BR)
 - Fixed a possible crash when entering the DNA workshop (with unexpected parameters).
 - Fixed visibility issue when fleets overlapped: only those belonging to the player were displayed.

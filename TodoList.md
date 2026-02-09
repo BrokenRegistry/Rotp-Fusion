@@ -8,7 +8,6 @@
 
 ### Very soon:
 
-- Improve the Custom species interface response time.
 - More Spy AI choice to sabotage the same planet.
 - Add option to limit random event tech generosity... (For slow research, etc...)
 - Adapt Modnar's species.
@@ -25,6 +24,7 @@
 - Would it be possible to have a governor option to extend autospend - to prioritise artifacts planets with spending?
   - (and on a similar topic, per-planet taxes? maybe that's kinda weird idk)
 - Limit / Customize the flag colors (to be changed when scrolling over them)
+- Could we get the same logic as scouts, where if a colony ship is on a long voyage and a closer one is idle, it'll also choose the same destination?
 
 - Suggestion: in the colony rules panel, make the ability to use the specific colonizing tech valid only for players ("restricted" colonizing rule).
   - Suggestion: in the galaxy rules panel, allow the research rate setting to be splitted between player and AIs.
