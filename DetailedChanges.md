@@ -2,10 +2,13 @@
 
 ## What's New
 
+26-02-11 (BR)
+- Fixed AI not checking the presence of your diplomat before requesting peace.
+
 26-02-09 (BR)
 - DNA Workshop: fleet animation:
   - They now match the animation speed of the Ship Design UI.
-  - Each preferred ship size ha is fleet model.
+  - Each preferred ship size has is fleet model.
 
 26-02-08 (BR)
 - Fixed a possible crash when entering the DNA workshop (with unexpected parameters).

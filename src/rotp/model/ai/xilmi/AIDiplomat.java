@@ -571,6 +571,8 @@ public class AIDiplomat implements Base, Diplomat {
         return DiplomaticReply.answer(false, declineReasonText(v));
     }
     private boolean willingToOfferPeace(EmpireView v) {
+		if (!v.diplomats()) // BR: if no diplomat, please do not disturb!
+			return false;
 		if (options().alwaysAtWar())
 			return false;
         if (!v.embassy().war())
