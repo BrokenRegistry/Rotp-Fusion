@@ -173,6 +173,10 @@ public class ParamInteger extends AbstractParam<Integer> {
 				value = creationValue();
 			else
 				value = options.dynOpts().getInteger(formerName(), creationValue());
+		if (value < minValue())
+			value = minValue();
+		else if (value > maxValue())
+			value = maxValue();
 		return value;
 	}
 	@Override protected void setOptionValue(IGameOptions options, Integer value) {

@@ -311,7 +311,7 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	default float selectedScrapRefundFactor()	{ return scrapRefundFactor.get(); }
 
 	ParamInteger shipSpaceFactor	= new ParamInteger(MOD_UI, "SHIP_SPACE_FACTOR", 100)
-			.setLimits(10, 1000)
+			.setLimits(30, 1000)
 			.setIncrements(1, 10, 50)
 			.pctValue(true);
 	default float selectedShipSpaceFactor()	{ return shipSpaceFactor.get()/100f; }

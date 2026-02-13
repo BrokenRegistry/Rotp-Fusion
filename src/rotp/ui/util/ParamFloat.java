@@ -152,6 +152,10 @@ public class ParamFloat extends AbstractParam<Float> {
 				value = creationValue();
 			else
 				value = options.dynOpts().getFloat(formerName(), creationValue());
+		if (value < minValue())
+			value = minValue();
+		else if (value > maxValue())
+			value = maxValue();
 		return value;
 	}
 	@Override protected void setOptionValue(IGameOptions options, Float value) {
