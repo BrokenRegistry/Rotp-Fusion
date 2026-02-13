@@ -2,8 +2,14 @@
 
 ## What's New
 
-26-02-11 (BR)
+26-02-13 (BR)
 - Fixed AI not checking the presence of your diplomat before requesting peace.
+- Fixed AI constantly asking for peace when you are in their range but they are not in your range so you would not be able to recall the diplomat.
+  - You can recall / Reinstate your diplomat from any empire by pressing "R" while hovering their Empire. (In the Race Menu)
+  - And also Mute / unmute their Warning by pressing "M" while hovering their Empire.
+- Fixed the automatic reinstatement of a recalled diplomat.
+  - If you had recalled your diplomat (= gone for more than 2 billion turns), then agreed to join a war against them, the delay will be replaced by the standard delay for such an offense, and a few years later, your diplomat will be quietly reinstated.
+    - From now on, a long delay will never be replaced by a shorter delay.
 
 26-02-09 (BR)
 - DNA Workshop: fleet animation:

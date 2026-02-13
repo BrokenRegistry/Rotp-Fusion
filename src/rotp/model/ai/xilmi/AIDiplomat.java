@@ -1202,7 +1202,7 @@ public class AIDiplomat implements Base, Diplomat {
         decidedToBreakAlliance(v);
         decidedToBreakPact(v);
         //It should be possible to declare war or break an alliance with the diplomat gone
-        if (v.embassy().diplomatGone() || v.otherView().embassy().diplomatGone())
+		if (!v.diplomats()) // No diplomats or out of range == no contacts
             return;
         decidedToBreakTrade(v);
         decidedToIssueWarning(v);

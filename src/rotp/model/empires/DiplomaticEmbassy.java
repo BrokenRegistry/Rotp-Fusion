@@ -136,7 +136,7 @@ public final class DiplomaticEmbassy implements Base, Serializable {
         warFooting = false;
         casusBelli = null;
         casusBelliInc = null;
-        diplomatGoneTimer = 0;
+		withdrawAmbassador(0);
     }
     private void evaluateWarPreparations() {
         // we are assessing turn and about to enter diplomacy. Are our reasons
@@ -344,6 +344,10 @@ public final class DiplomaticEmbassy implements Base, Serializable {
             baseTurns = 9999;
         else if (war())
             baseTurns *= 2;
+		// BR: to prevent lowering the player choice to recall diplomat
+		// And a little incident should not lower the effect of a bigger incident
+		if (diplomatGoneTimer > baseTurns)
+				return;
         withdrawAmbassador(baseTurns+1);
     }
     public void assessTurn() {
@@ -385,7 +389,7 @@ public final class DiplomaticEmbassy implements Base, Serializable {
             ignoreThreat();
         if (!timerIsActive(TIMER_SPY_WARNING))
             view.spies().ignoreThreat();
-        
+
         diplomatGoneTimer--;
         requestCount = 0;
         currentMaxRequests = min(currentMaxRequests+1, MAX_REQUESTS_TURN);
@@ -394,8 +398,8 @@ public final class DiplomaticEmbassy implements Base, Serializable {
         minimumPraiseLevel = minimumPraiseLevel() - 1;
         minimumWarnLevel = minimumWarnLevel() - 1;
     }
-    public void recallAmbassador()     { diplomatGoneTimer = Integer.MAX_VALUE; }
-    public void openEmbassy()          { diplomatGoneTimer = 0; }
+	public void recallAmbassador()	{ withdrawAmbassador(Integer.MAX_VALUE); }
+	public void openEmbassy()		{ withdrawAmbassador(0); }
     public boolean diplomatGone()      { return diplomatGoneTimer > 0;  }
 	public boolean wantWar() { return otherEmbassy().relations() < -50 && options().canStartWar(owner().isPlayer(), view.isPlayer()); }
     public boolean isAlly()            { return (alliance() || unity()); }
@@ -602,12 +606,16 @@ public final class DiplomaticEmbassy implements Base, Serializable {
         otherEmbassy().addIncident(SignPactIncident.create(empire(), owner()));
         return inc;
     }
-    public void reopenEmbassy() {
-        diplomatGoneTimer = 0;
-    }
-    public void closeEmbassy() {
-        withdrawAmbassador(Integer.MAX_VALUE);
-    }
+	public void toggleEmbassy()	{
+		if (!contact())
+			return;
+		if (diplomatGone())
+			reopenEmbassy();
+		else
+			closeEmbassy();
+	}
+	public void reopenEmbassy()	{ withdrawAmbassador(0); }
+	public void closeEmbassy()	{ withdrawAmbassador(Integer.MAX_VALUE); }
     public DiplomaticIncident breakPact() { return breakPact(false); }
     public DiplomaticIncident breakPact(boolean caughtSpying) {
         endTreaty();

@@ -743,6 +743,26 @@ public class RacesUI extends BasePanel {
                         diploPanel.openManageDiplomatsPane();
                 //}
                 return;
+			case KeyEvent.VK_M: {	// Mute
+				Empire emp = raceListingPanel.hoverEmp;
+				if (emp == null)
+					emp = selectedEmpire();
+				if (emp != null && emp.isAI()) {
+					player().viewForEmpire(emp).embassy().toggleMuted();
+					repaint();
+				}
+				return;
+			}
+			case KeyEvent.VK_R: {	// Recall or Reinstate diplomat
+				Empire emp = raceListingPanel.hoverEmp;
+				if (emp == null)
+					emp = selectedEmpire();
+				if (emp != null && emp.isAI()) {
+					player().viewForEmpire(emp).embassy().toggleEmbassy();
+					repaint();
+				}
+				return;
+			}
             case KeyEvent.VK_S: // Spy
                 //if (selectedPanel.equals(DIPLOMACY_PANEL)) {
                     if (selectedEmpire().isPlayer())
@@ -1228,25 +1248,28 @@ public class RacesUI extends BasePanel {
         }
         public void drawRaceImage(Graphics2D g, Empire emp, BufferedImage back, int x, int y, int h, boolean inRange) {
             BufferedImage img = emp.diploMugshotQuiet();
-            
+
             int w1 = back.getWidth();
             int h1 = back.getHeight();
             int mgn = (h-h1)/2;
-            
+
             g.drawImage(back, x+mgn, y+mgn, null);
             g.drawImage(img, x+mgn, y+mgn, w1, h1, null);
 
             if (emp.isPlayer())
                 return;
-            
+
             String text = "";
+            boolean drawLine = false;
             EmpireView view = player().viewForEmpire(emp);
             boolean dipGone = view.embassy().diplomatGone();
             boolean otherDipGone = view.otherView().embassy().diplomatGone();
-            if (!inRange) 
-                text = text("RACES_OUT_OF_RANGE");
+			if (!inRange) {
+				text = text("RACES_OUT_OF_RANGE");
+				drawLine = dipGone;
+			}
             else if (dipGone && otherDipGone)
-                text = text("RACES_DIPLOMATS_RECALLED");
+            	text = text("RACES_DIPLOMATS_RECALLED");
             else if (dipGone) {
                 text = text("RACES_DIPLOMAT_RECALLED");
                 text = player().replaceTokens(text, "alien");
@@ -1255,7 +1278,7 @@ public class RacesUI extends BasePanel {
                 text = text("RACES_DIPLOMAT_RECALLED", emp.raceName());
                 text = emp.replaceTokens(text, "alien");
             }
-                        
+
             if (!text.isEmpty()) {
                 g.setFont(narrowFont(14));
                 Composite prevC = g.getComposite();
@@ -1264,6 +1287,10 @@ public class RacesUI extends BasePanel {
                 g.setColor(Color.black);
                 g.fillRect(x+mgn, y+mgn, w1, h1);
                 g.setComposite(prevC);
+				if (drawLine) {
+					g.setColor(Color.RED);
+					g.drawLine(x+mgn+mgn, y+h1, x+w1, y+mgn+mgn);
+				}
                 g.setColor(Color.white);
                 List<String> lines = wrappedLines(g, text, w1-s10);
                 int y2 = y+mgn+s50-(lines.size()*s8);
@@ -1274,6 +1301,7 @@ public class RacesUI extends BasePanel {
                     y2 += s16;
                 }
             }
+            
         }
         public BufferedImage raceBackImg() {
             if (raceBackImg == null)
@@ -1410,6 +1438,7 @@ public class RacesUI extends BasePanel {
         public void mouseExited(MouseEvent mouseEvent) {
             if (hoverShape != null) {
                 hoverShape = null;
+                hoverEmp = null;
                 repaint();
             }
         }

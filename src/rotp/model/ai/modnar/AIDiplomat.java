@@ -1165,7 +1165,7 @@ public class AIDiplomat implements Base, Diplomat {
         if (v.embassy().unity() || v.embassy().finalWar())
             return;
 
-        if (v.embassy().diplomatGone() || v.otherView().embassy().diplomatGone())
+		if (!v.diplomats()) // No diplomats or out of range == no contacts
             return;
 
         // check diplomat offers from worst to best

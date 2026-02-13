@@ -44,17 +44,14 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-26-02-09 (BR)
-- DNA Workshop: fleet animation:
-  - They now match the animation speed of the Ship Design UI.
-  - Each preferred ship size ha is fleet model.
-
-26-02-08 (BR)
-- Fixed a possible crash when entering the DNA workshop (with unexpected parameters).
-- Fixed visibility issue when fleets overlapped: only those belonging to the player were displayed.
-  - When fleets overlap, the number of hidden fleets is now displayed in red in the fleet panel. Press "B" (for "below") to scroll through the fleets.
-- New option to modify ship characteristics based on the species' preferred ship size:
-  - Cost, space, or hit points can be modified according to the percentage chosen by the player.
+26-02-13 (BR)
+- Fixed AI not checking the presence of your diplomat before requesting peace.
+- Fixed AI constantly asking for peace when you are in their range but they are not in your range so you would not be able to recall the diplomat.
+  - You can recall / Reinstate your diplomat from any empire by pressing "R" while hovering their Empire. (In the Race Menu)
+  - And also Mute / unmute their Warning by pressing "M" while hovering their Empire.
+- Fixed the automatic reinstatement of a recalled diplomat.
+  - If you had recalled your diplomat (= gone for more than 2 billion turns), then agreed to join a war against them, the delay will be replaced by the standard delay for such an offense, and a few years later, your diplomat will be quietly reinstated.
+    - From now on, a long delay will never be replaced by a shorter delay.
 
 
 ### [Features Historic](FeaturesChanges.md)

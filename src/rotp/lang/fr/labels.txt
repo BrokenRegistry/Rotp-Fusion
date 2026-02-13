@@ -474,7 +474,7 @@ GAME_VERSION                      | Version : %1
 GAME_SHRINK                       | Rétrécir -
 GAME_ENLARGE                      | Élargir
 GAME_MENU_REPLAY_LAST_TURN        | Rejouer le tour
-GAME_WINDOW_SIZE                  | ( %1 % )
+GAME_WINDOW_SIZE                  | ( %1 % )
 GAME_MENU_CHECK_FOR_UPDATE		| Cliquez pour vérifier si une nouvelle version est disponible sur Github (Xilmi & BrokenRegistry).<br>Les liens vers les versions plus à jours seront affichés.
 GAME_MENU_NO_NEW_VERSION		| Il n’y a pas de nouvelle version disponible.
 GAME_MENU_GOT_NEW_VERSION		| Une nouvelle version est disponible.
@@ -5754,11 +5754,11 @@ GOVERNOR_COMPENSATE_GROWTH			| Compenser la croissance réduite : %1
 GOVERNOR_COLONY_MIN_GROWTH_DESC		| Croissance minimale (par année) des colonies.
 GOVERNOR_COLONY_MIN_GROWTH			| Croissance minimale des colonies : %1 Hab.
 GOVERNOR_COLONY_EARLY_BOOST_DESC	| Activer →GOVERNOR_LEGACY_GROWTH_MODE_LABEL← pour les colonies n’ayant pas atteint le niveau de peuplement spécifié.
-GOVERNOR_COLONY_EARLY_BOOST			| Requis de population : %1 %
+GOVERNOR_COLONY_EARLY_BOOST			| Requis de population : %1 %
 GOVERNOR_EARLY_BASE_BUILDING_DESC	| Commencer à construire des bases de missiles dès que le niveau industriel spécifié est atteint.
 GOVERNOR_EARLY_BASE_BUILDING		| Construire les bases rapidement : %1
 GOVERNOR_EARLY_BASE_BOOST_PCT_DESC	| Niveau d’industrialisation qui déclenchera la construction de la base de missiles.
-GOVERNOR_EARLY_BASE_BOOST_PCT		| Requis industriel : %1 %
+GOVERNOR_EARLY_BASE_BOOST_PCT		| Requis industriel : %1 %
 
 GOVERNOR_FLEET_AUTO_SCOUT_DESC		| Lors de l’envoi automatique de escadrons d’éclaireurs, quel doit être la composition des escadrons ?
 GOVERNOR_FLEET_AUTO_SCOUT			| Escadrons d’éclaireurs : %1
@@ -5792,6 +5792,22 @@ AUTO_ATTACK_ALL_HELP				| Envoyons nos vaisseaux vers tous les empires, le temps
 
 GOVERNOR_ARMED_COLONIZER_GUARD_DESC	| Les vaisseaux armés ayant des modules de colonisation garderont les planètes.
 GOVERNOR_ARMED_COLONIZER_GUARD		| Les colonisateurs armés gardent : %1
+GOVERNOR_ARMED_COLONIZER_FIGHT_DESC	| Les vaisseaux de colonisation armés seront envoyés vers les planètes gardées par des vaisseaux armés.
+GOVERNOR_ARMED_COLONIZER_FIGHT		| Audacieux colonisateurs : %1
+GOVERNOR_AUTO_COLONY_SMART_HELP		| Pour éviter que nos vaisseaux de colonisation soient envoyés à l’autre bout de la galaxie une année avant qu’un autre vaisseau soit finalisé dans une colonie plus proche.<br>Si un vaisseau de colonisation est plus proche d’une planète déjà ciblée, il sera également dirigé vers cette planète afin de la coloniser au plus vite.
+GOVERNOR_AUTO_COLONY_SMART_DESC		| Pour éviter que nos vaisseaux de colonisation soient envoyés à l’autre bout de la galaxie une année avant qu’un autre vaisseau soit finalisé dans une colonie plus proche. Si un vaisseau de colonisation est plus proche d’une planète déjà ciblée, il sera également dirigé vers cette planète afin de la coloniser au plus vite.
+GOVERNOR_AUTO_COLONY_SMART			| Colonisation optimisée : %1
+GOVERNOR_AUTO_COLONY_NEAR_1ST_DESC	| Les vaisseaux de colonisation seront déployés en priorité vers les planètes les plus proches, même si elles sont déjà ciblées par des vaisseaux d’origines plus lointaines. (Seulement avec l’option : Colonisation optimisée)
+GOVERNOR_AUTO_COLONY_NEAR_1ST		| Les planètes proches d’abord : %1
+GOVERNOR_AUTO_COLONY_MAX_TIME_DESC	| Pour établir une distance maximale aux vaisseaux de colonisation, afin d’éviter qu’ils ne traversent notre espace d’un bout à l’autre. (Seulement avec l’option : Colonisation optimisée)
+GOVERNOR_AUTO_COLONY_MAX_TIME		| Durée de vol maximal : %1
+GOVERNOR_AUTO_COLONY_SAVE_TIME_DESC	| Lorsque l’option « Colonisation optimisée » est active, durée minimale justifiant l’envoi d’un autre vaisseau de colonisation.
+GOVERNOR_AUTO_COLONY_SAVE_TIME		| Temps gagné minimum : %1
+GOVERNOR_AUTO_COLONY_OTHER_PCT_DESC	| Quelle priorité faut-il accorder à l’envoi d’un second vaisseau de colonisation ? 100 % = même priorité que si aucun vaisseau n'était en route, 0 % = uniquement s’il reste des vaisseaux de colonisation inutilisés.
+GOVERNOR_AUTO_COLONY_OTHER_PCT		| Poids du second vaisseau : %1 %
+GOVERNOR_AUTO_COL_OTHER_NEVER_DESC	| La possibilité d’envoyer plusieurs vaisseaux est désactivée.
+GOVERNOR_AUTO_COL_OTHER_NEVER		| Jamais
+
 GOVERNOR_ARMED_SCOUT_GUARD_DESC		| Les éclaireurs armés garderont les planètes non colonisées qu’ils ont découvertes.
 GOVERNOR_ARMED_SCOUT_GUARD			| Les éclaireurs armés gardent : %1
 GOVERNOR_AUTO_SCOUT_SMART_HELP		| Pour éviter que nos éclaireurs ne traversent sans cesse notre espace d’un bout à l’autre, les éclaireurs déjà déployés auront un rayon d’action plus limité.<br>Ceux des colonies pourront toujours être déployés sur de longues distances.<br>Plus tard, si un éclaireur est plus proche d’une étoile déjà ciblée, il sera également dirigé vers cette étoile afin de la découvrir au plus vite.
@@ -5799,7 +5815,7 @@ GOVERNOR_AUTO_SCOUT_SMART_DESC		| Pour éviter que nos éclaireurs ne traversent
 GOVERNOR_AUTO_SCOUT_SMART			| Éclaireurs moins zèlés : %1
 GOVERNOR_AUTO_SCOUT_NEAR_FIRST_DESC	| Les éclaireurs seront déployés en priorité vers les étoiles les plus proches, même si elles sont déjà ciblées par des éclaireurs d’origines très lointaines. (Seulement avec l’option : Éclaireurs moins zèlés)
 GOVERNOR_AUTO_SCOUT_NEAR_FIRST		| Les planètes proches d’abord : %1
-GOVERNOR_AUTO_SCOUT_MAX_TIME_DESC	| Pour établir une distance maximale aux éclaireurs déjà déployés, afin d’éviter qu’ils ne traversent en constamment notre espace d’un bout à l’autre. (Seulement avec l’option : Éclaireurs moins zèlés)
+GOVERNOR_AUTO_SCOUT_MAX_TIME_DESC	| Pour établir une distance maximale aux éclaireurs déjà déployés, afin d’éviter qu’ils ne traversent constamment notre espace d’un bout à l’autre. (Seulement avec l’option : Éclaireurs moins zèlés)
 GOVERNOR_AUTO_SCOUT_MAX_TIME		| Durée de vol maximal : %1
 
 HEADERS_GOVERNOR_TERRAFORM_DESC		| Déclencheurs de la terraformation de la planète.
@@ -6157,14 +6173,14 @@ TECH_HELP_HK			| →HK_HEADER← →HK_F1← <br><br>1-6/+SHIFT : augmente / di
 
 SHIP_DESIGN_HELP_HK		| →HK_HEADER← →HK_F1← <br><br>Flèches Haut / Bas : Flotte Suivante / Précédente<br>S : Supprimer le Modèle<br>R : Renommer le Modèle<br>D : Créer le Modèle<br>C / (+Ctrl) : Purger le modèle / (Juste l’armement)<br>O : Ouvrir le panneau d’options de conception des vaisseaux<br><br>(Shift) Alt-A : Conception automatique<br>(Shift) Alt-B : Conception automatique Bombardier<br>(Shift) Alt-E : Conception automatique Éclaireur<br>(Shift) Alt-F : Conception automatique Chasseur<br>(Shift) Alt-G : Conception automatique Faisceaux<br>(Shift) Alt-H : Conception automatique Hybride<br>(Shift) Alt-I : Conception automatique Intercepteur<br>(Shift) Alt-M : Conception automatique Missiles.<br>(Shift) Alt-P : Conception automatique Colonisateur.<br>Shift-Alt : Autorise le changement de la taille de la coque<br>→HK_ESCAPE←
 
-RACES_HELP_HK			| →HK_HEADER← →HK_F1← <br><br>Flèches Down/Up : Empire Suivant/Précédent. →HK_TAB←<br><br>A : →RACES_DIPLOMACY_AUDIENCE← avec l’empire sélectionné.<br><br>Lorsque l’empire du joueur est sélectionné:<br>D : →RACES_DIPLOMACY_MANAGE_DIPLOMATS←.<br>S : →RACES_INTEL_BUREAU_MANAGE←. <br>→HK_ESCAPE←
+RACES_HELP_HK			| →HK_HEADER← →HK_F1← <br><br>Flèches Down/Up : Empire Suivant/Précédent. →HK_TAB←<br><br>A : →RACES_DIPLOMACY_AUDIENCE← avec l’empire sélectionné.<br><br>M : Pour Activer/Désactiver les avertissements donnés par l’empire sous le curseur.<br>R : Rappeler/Réintégrer le diplomate de l’Empire sous le curseur.<br><br>Lorsque l’empire du joueur est sélectionné:<br>D : →RACES_DIPLOMACY_MANAGE_DIPLOMATS←.<br>S : →RACES_INTEL_BUREAU_MANAGE←. <br>→HK_ESCAPE←
 
 SYSTEMS_HELP_HK			| →HK_HEADER← →HK_F1← <br>→HK_MAP_ARROWS← →HK_MAP_ZOOM← <br> →HK_YEAR← →HK_FLAG← →HK_HOME← →HK_ALT_HOME← <br>→HK_ESCAPE←
 
-SETUP_GALAXY_HELP_HK	| →HK_HEADER← →HK_F1← →HK_GUIDE← <br><br>B : Toggle submenus call buttons. →HK_FOG← <br>T : Go to Tune Galaxy Menu. <br>→HK_SET_DEFAULT← <br><br>Enter : Start a new Game. <br><br>M : Go to Main Menu.<br>Escape : Go to Player Setup Panel.
+SETUP_GALAXY_HELP_HK	| →HK_HEADER← →HK_F1← →HK_GUIDE← <br><br>B : Basculer les boutons d'appel des sous-menus. →HK_FOG← <br>T : Accéder au menu Ajuster la Galaxie. <br>→HK_SET_DEFAULT← <br><br>Entrée : Démarrer une nouvelle partie. <br><br>M : Retourner au menu Principal.<br>Échapper : Accéder au panneau de configuration du joueur.
 
-SETUP_RACE_HELP_HK		| →HK_HEADER← →HK_F1← →HK_GUIDE← <br> →HK_FOG← <br>N : Open Name Player Species Sub Menu. <br>R : Random Species.<br>→HK_SET_DEFAULT← <br><br>Enter : Go to Galaxy Setup Panel. <br><br>Escape : Go to Main Menu.
+SETUP_RACE_HELP_HK		| →HK_HEADER← →HK_F1← →HK_GUIDE← <br> →HK_FOG← <br>N : Ouvrir le sous-menu pour choisir l'espèce du joueur. <br>R : Espèce aléatoire.<br>→HK_SET_DEFAULT← <br><br>Entrée : Aller au panneau de configuration de la Galaxie. <br><br>Échapper : Retourner au Menu principal.
 
-MOD_OPTIONS_HELP_HK		| <b><u>HOTKEYS:</u></b> →HK_SHIFT_F1← <br>F1 : Show contextual Help. <br>→HK_SET_DEFAULT←<br>→HK_GUIDE← <br>→HK_ESCAPE←
+MOD_OPTIONS_HELP_HK		| <b><u>HOTKEYS:</u></b> →HK_SHIFT_F1← <br>F1 : Afficher l’aide contextuelle. <br>→HK_SET_DEFAULT←<br>→HK_GUIDE← <br>→HK_ESCAPE←
 
-SETUP_GAME_HELP_HK		| H / F1 : Show Help.<br><br> - / + : Shrink / Expand Window.<br><br>C / Escape : Continue<br>      (Either the current game or the last saved game)<br>R : Replay Last Turn.<br>N : New Game.<br>L / Ctrl+L : Load Game / Load Options.<br>S / Ctrl+S : Save Game / Save Options.<br>T : Go to Settings.<br>O / M : Open Manual.<br>E / X : Exit Game.<br><br>Z : Hide text to get a better view of the background.<br><br>PAGE_UP / PAGE_DOWN: (Work in progress)<br>      Open / Close Console for the visually impaired people.
+SETUP_GAME_HELP_HK		| H / F1 : Afficher l'aide.<br><br> - / + : Réduire / Agrandir la fenêtre.<br><br>C / Échapper : Continuer<br>      (Soit la partie en cours, soit la dernière partie sauvegardée)<br>R : Rejouer le dernier tour.<br>N : Nouvelle Partie.<br>L / Ctrl+L : Charger une Partie / Charger des Options.<br>S / Ctrl+S : Sauver la Partie / Sauver les Options.<br>T : Accédez aux paramètres.<br>O / M : Ouvrir le manuel.<br>E / X : Quitter le jeu.<br><br>Z : Cacher le texte pour mieu voir l'arrière plan.
