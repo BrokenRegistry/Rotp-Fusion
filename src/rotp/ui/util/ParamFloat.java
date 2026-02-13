@@ -152,9 +152,9 @@ public class ParamFloat extends AbstractParam<Float> {
 				value = creationValue();
 			else
 				value = options.dynOpts().getFloat(formerName(), creationValue());
-		if (value < minValue())
+		if (minValue() != null && value < minValue())
 			value = minValue();
-		else if (value > maxValue())
+		else if (maxValue() != null && value > maxValue())
 			value = maxValue();
 		return value;
 	}
