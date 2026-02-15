@@ -8,7 +8,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-02-15 (BR)
-- Fixed a bug in the “Ground Battle” title that sometimes briefly displayed raw tokens.
+- Fixed a bug in the "Ground Battle" title that sometimes briefly displayed raw tokens.
 
 26-02-13 (BR)
 - Increased the minimum limit for the "Ship Size Factor" option to prevent crashes when used in conjunction with OGM species limitations.

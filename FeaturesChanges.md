@@ -334,7 +334,7 @@
 
 ### Fixes:
 
-- Fixed a bug in the “Ground Battle” title that sometimes briefly displayed raw tokens.
+- Fixed a bug in the "Ground Battle" title that sometimes briefly displayed raw tokens.
 - Increased the minimum limit for the "Ship Size Factor" option to prevent crashes when used in conjunction with OGM species limitations.- Fixed AI constantly asking for peace when you are in their range but they are not in your range so you would not be able to recall the diplomat.
   - You can recall / Reinstate your diplomat from any empire by pressing "R" while hovering their Empire. (In the Race Menu)
   - And also Mute / unmute their Warning by pressing "M" while hovering their Empire.
