@@ -122,14 +122,14 @@ public class GroundBattleUI extends BasePanel implements MouseListener {
         attackerEmp = transport.empire();
         defenderEmp = colony.empire();
         sysName = player().sv.name(colony.starSystem().id);
-        if (defenderEmp == attackerEmp) {
-            title = text("INVASION_BATTLE_REBELS", str(galaxy().currentYear()), sysName);
-            title = attackerEmp.replaceTokens(title, "attacker");
+        if (defenderEmp == attackerEmp) { // BR: reuse of title may be displayed before the token are replaced!
+			String str = text("INVASION_BATTLE_REBELS", str(galaxy().currentYear()), sysName);
+			title = attackerEmp.replaceTokens(str, "attacker");
         }
         else {
-            title = text("INVASION_BATTLE", str(galaxy().currentYear()), sysName);
-            title = attackerEmp.replaceTokens(title, "attacker");
-            title = defenderEmp.replaceTokens(title, "defender");
+			String str = text("INVASION_BATTLE", str(galaxy().currentYear()), sysName);
+			str = attackerEmp.replaceTokens(str, "attacker");
+			title = defenderEmp.replaceTokens(str, "defender");
         }
 
         initLandscapeImage(colony);
@@ -567,18 +567,20 @@ public class GroundBattleUI extends BasePanel implements MouseListener {
     }
 	private void updateEndOfCombatTitle()	{
 		if (transport.size() == 0) {
+			String str;
 			if (defenderEmp == attackerEmp)	// Rebels
-				title = text("INVASION_LOSS_REBEL", defenderEmp.raceName(), sysName);
+				str = text("INVASION_LOSS_REBEL", defenderEmp.raceName(), sysName);
 			else 
-				title = text("INVASION_LOSS", defenderEmp.raceName(), sysName);
-			title = defenderEmp.replaceTokens(title, "defender");
+				str = text("INVASION_LOSS", defenderEmp.raceName(), sysName);
+			title = defenderEmp.replaceTokens(str, "defender");
 		}
 		else {
+			String str;
 			if (defenderEmp == attackerEmp)	// Rebels
-				title = text("INVASION_WIN_REBEL", attackerEmp.raceName(), sysName);
+				str = text("INVASION_WIN_REBEL", attackerEmp.raceName(), sysName);
 			else 
-				title = text("INVASION_WIN", attackerEmp.raceName(), sysName);
-			title = attackerEmp.replaceTokens(title, "attacker");
+				str = text("INVASION_WIN", attackerEmp.raceName(), sysName);
+			title = attackerEmp.replaceTokens(str, "attacker");
 		}
 	}
     private void advanceScreen() {

@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-02-15 (BR)
+- Fixed a bug in the “Ground Battle” title that sometimes briefly displayed raw tokens.
+
 26-02-13 (BR)
 - Increased the minimum limit for the "Ship Size Factor" option to prevent crashes when used in conjunction with OGM species limitations.- Fixed AI not checking the presence of your diplomat before requesting peace.
 - Fixed AI constantly asking for peace when you are in their range but they are not in your range so you would not be able to recall the diplomat.
