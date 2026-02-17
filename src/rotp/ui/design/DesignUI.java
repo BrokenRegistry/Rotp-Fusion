@@ -808,7 +808,8 @@ public class DesignUI extends BasePanel {
 					repaint();
 				}
 			case KeyEvent.VK_O:
-				ParamSubUI subUI = AllSubUI.getHandle(ISubUiKeys.SHIP_DESIGN_OPTIONS_UI_KEY).getUI();
+//				ParamSubUI subUI = AllSubUI.getHandle(ISubUiKeys.SHIP_DESIGN_OPTIONS_UI_KEY).getUI();
+				ParamSubUI subUI = AllSubUI.getHandle(ISubUiKeys.AUTO_SEND_FLEET_UI_KEY).getUI();
 				subUI.start(instance);
 				return;
 		}

@@ -5794,29 +5794,32 @@ GOVERNOR_ARMED_COLONIZER_GUARD_DESC	| Les vaisseaux armés ayant des modules de 
 GOVERNOR_ARMED_COLONIZER_GUARD		| Les colonisateurs armés gardent : %1
 GOVERNOR_ARMED_COLONIZER_FIGHT_DESC	| Les vaisseaux de colonisation armés seront envoyés vers les planètes gardées par des vaisseaux armés.
 GOVERNOR_ARMED_COLONIZER_FIGHT		| Audacieux colonisateurs : %1
-GOVERNOR_AUTO_COLONY_SMART_HELP		| Pour éviter que nos vaisseaux de colonisation soient envoyés à l’autre bout de la galaxie une année avant qu’un autre vaisseau soit finalisé dans une colonie plus proche.<br>Si un vaisseau de colonisation est plus proche d’une planète déjà ciblée, il sera également dirigé vers cette planète afin de la coloniser au plus vite.
-GOVERNOR_AUTO_COLONY_SMART_DESC		| Pour éviter que nos vaisseaux de colonisation soient envoyés à l’autre bout de la galaxie une année avant qu’un autre vaisseau soit finalisé dans une colonie plus proche. Si un vaisseau de colonisation est plus proche d’une planète déjà ciblée, il sera également dirigé vers cette planète afin de la coloniser au plus vite.
-GOVERNOR_AUTO_COLONY_SMART			| Colonisation optimisée : %1
-GOVERNOR_AUTO_COLONY_NEAR_1ST_DESC	| Les vaisseaux de colonisation seront déployés en priorité vers les planètes les plus proches, même si elles sont déjà ciblées par des vaisseaux d’origines plus lointaines. (Seulement avec l’option : Colonisation optimisée)
-GOVERNOR_AUTO_COLONY_NEAR_1ST		| Les planètes proches d’abord : %1
-GOVERNOR_AUTO_COLONY_MAX_TIME_DESC	| Pour établir une distance maximale aux vaisseaux de colonisation, afin d’éviter qu’ils ne traversent notre espace d’un bout à l’autre. (Seulement avec l’option : Colonisation optimisée)
+GOVERNOR_AUTO_COLONY_TUNED_DESC		| Pour activer davantage d’options de colonisation : permettant l’envoi de vaisseaux de colonisation supplémentaires, et limitant la durée des vols.
+GOVERNOR_AUTO_COLONY_TUNED			| Colonisation avancée : %1
+GOVERNOR_AUTO_COLONY_MULTIPLE_DESC	| Pour autoriser l’envoi d'un vaisseau de colonisation supplémentaire vers une planète qui a déjà été ciblée, s’il peut l’atteindre plus rapidement. (Seulement avec l’option : Colonisation avancée)
+GOVERNOR_AUTO_COLONY_MULTIPLE		| Envois Multiples : %1
+GOVERNOR_AUTO_COLONY_MAX_TIME_DESC	| Pour établir une distance maximale aux vaisseaux de colonisation, afin d’éviter qu’ils ne traversent notre espace d’un bout à l’autre. (Seulement avec l’option : Colonisation avancée)
 GOVERNOR_AUTO_COLONY_MAX_TIME		| Durée de vol maximal : %1
-GOVERNOR_AUTO_COLONY_SAVE_TIME_DESC	| Lorsque l’option « Colonisation optimisée » est active, durée minimale justifiant l’envoi d’un autre vaisseau de colonisation.
+GOVERNOR_COLO_UNLIMITED_TIME_DESC	| Non limité.
+GOVERNOR_COLO_UNLIMITED_TIME		| ∞
+GOVERNOR_AUTO_COLONY_SAVE_TIME_DESC	| Lorsque l’option « Envois Multiples » est active, durée minimale justifiant l’envoi d’un autre vaisseau de colonisation.
 GOVERNOR_AUTO_COLONY_SAVE_TIME		| Temps gagné minimum : %1
-GOVERNOR_AUTO_COLONY_OTHER_PCT_DESC	| Quelle priorité faut-il accorder à l’envoi d’un second vaisseau de colonisation ? 100 % = même priorité que si aucun vaisseau n'était en route, 0 % = uniquement s’il reste des vaisseaux de colonisation inutilisés.
-GOVERNOR_AUTO_COLONY_OTHER_PCT		| Poids du second vaisseau : %1 %
-GOVERNOR_AUTO_COL_OTHER_NEVER_DESC	| La possibilité d’envoyer plusieurs vaisseaux est désactivée.
-GOVERNOR_AUTO_COL_OTHER_NEVER		| Jamais
+GOVERNOR_2ND_COLONY_WEIGHT_PCT_DESC	| Quelle priorité faut-il accorder à l’envoi d’un second vaisseau de colonisation ? 100 % = même priorité que si aucun vaisseau n'était en route, 0 % = uniquement s’il reste des vaisseaux de colonisation inutilisés.
+GOVERNOR_2ND_COLONY_WEIGHT_PCT		| Poids du second vaisseau : %1 %
 
 GOVERNOR_ARMED_SCOUT_GUARD_DESC		| Les éclaireurs armés garderont les planètes non colonisées qu’ils ont découvertes.
 GOVERNOR_ARMED_SCOUT_GUARD			| Les éclaireurs armés gardent : %1
 GOVERNOR_AUTO_SCOUT_SMART_HELP		| Pour éviter que nos éclaireurs ne traversent sans cesse notre espace d’un bout à l’autre, les éclaireurs déjà déployés auront un rayon d’action plus limité.<br>Ceux des colonies pourront toujours être déployés sur de longues distances.<br>Plus tard, si un éclaireur est plus proche d’une étoile déjà ciblée, il sera également dirigé vers cette étoile afin de la découvrir au plus vite.
 GOVERNOR_AUTO_SCOUT_SMART_DESC		| Pour éviter que nos éclaireurs ne traversent sans cesse notre espace d’un bout à l’autre, les éclaireurs déjà déployés auront un rayon d’action plus limité. Ceux des colonies pourront toujours être déployés sur de longues distances. Plus tard, si un éclaireur est plus proche d’une étoile déjà ciblée, il sera également dirigé vers cette étoile afin de la découvrir au plus vite.
 GOVERNOR_AUTO_SCOUT_SMART			| Éclaireurs moins zèlés : %1
-GOVERNOR_AUTO_SCOUT_NEAR_FIRST_DESC	| Les éclaireurs seront déployés en priorité vers les étoiles les plus proches, même si elles sont déjà ciblées par des éclaireurs d’origines très lointaines. (Seulement avec l’option : Éclaireurs moins zèlés)
-GOVERNOR_AUTO_SCOUT_NEAR_FIRST		| Les planètes proches d’abord : %1
+GOVERNOR_AUTO_SCOUT_NEAR_FIRST_DESC	| Pour autoriser l’envoi d'un éclaireur supplémentaire vers une étoile qui a déjà été ciblée, s’il peut l’atteindre plus rapidement. (Seulement avec l’option : Éclaireurs moins zèlés)
+GOVERNOR_AUTO_SCOUT_NEAR_FIRST		| Envois Multiples : %1
 GOVERNOR_AUTO_SCOUT_MAX_TIME_DESC	| Pour établir une distance maximale aux éclaireurs déjà déployés, afin d’éviter qu’ils ne traversent constamment notre espace d’un bout à l’autre. (Seulement avec l’option : Éclaireurs moins zèlés)
 GOVERNOR_AUTO_SCOUT_MAX_TIME		| Durée de vol maximal : %1
+GOVERNOR_AUTO_SCOUT_SAVE_TIME_DESC	| Lorsque l’option « Envois Multiples » est active, durée minimale justifiant l’envoi d’un autre éclaireur.
+GOVERNOR_AUTO_SCOUT_SAVE_TIME		| Temps gagné minimum : %1
+GOVERNOR_2ND_SCOUT_WEIGHT_PCT_DESC	| Quelle priorité faut-il accorder à l’envoi d’un second éclaireur ? 100 % = même priorité que si aucun vaisseau n'était en route, 0 % = uniquement s’il reste des éclaireurs inutilisés.
+GOVERNOR_2ND_SCOUT_WEIGHT_PCT		| Poids du second vaisseau : %1 %
 
 HEADERS_GOVERNOR_TERRAFORM_DESC		| Déclencheurs de la terraformation de la planète.
 HEADERS_GOVERNOR_TERRAFORM			| ~~~ DÉCLENCHEURS DE TERRAFORMATION ~~~

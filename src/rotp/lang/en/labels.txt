@@ -5794,29 +5794,32 @@ GOVERNOR_ARMED_COLONIZER_GUARD_DESC	| Armed Colonizers will guard planets.
 GOVERNOR_ARMED_COLONIZER_GUARD		| Armed Colonizers Guard: %1
 GOVERNOR_ARMED_COLONIZER_FIGHT_DESC	| Armed colonization ships will be sent to planets guarded by armed ships.
 GOVERNOR_ARMED_COLONIZER_FIGHT		| Brave Colonizers: %1
-GOVERNOR_AUTO_COLONY_SMART_HELP		| To prevent our colonization ships from being sent to the other side of the galaxy a year before another ship is finalized in a closer colony.<br> If a colonization ship is closer to a planet that has already been targeted, it will also be directed to that planet in order to colonize it as quickly as possible.
-GOVERNOR_AUTO_COLONY_SMART_DESC		|To prevent our colonization ships from being sent to the other side of the galaxy a year before another ship is finalized in a closer colony. If a colonization ship is closer to a planet that has already been targeted, it will also be directed to that planet in order to colonize it as quickly as possible.
-GOVERNOR_AUTO_COLONY_SMART			| Optimized colonization: %1
-GOVERNOR_AUTO_COLONY_NEAR_1ST_DESC	| Colonization ships will be deployed primarily to the closest planets, even if they are already targeted by ships from more distant origins. (Only with the option: Optimized Colonization)
-GOVERNOR_AUTO_COLONY_NEAR_1ST		| Nearby planets first: %1
-GOVERNOR_AUTO_COLONY_MAX_TIME_DESC	| To establish a maximum distance for colonization ships, to prevent them from crossing our space from one end to the other. (Only with the option: Optimized colonization)
+GOVERNOR_AUTO_COLONY_TUNED_DESC		| To activate more colonization options: allowing additional colonization ships to be sent and limiting flight times.
+GOVERNOR_AUTO_COLONY_TUNED			| Tuned colonization: %1
+GOVERNOR_AUTO_COLONY_MULTIPLE_DESC	| To allow an additional colonization ship to be sent to a planet that has already been targeted, if it can reach it faster. (Only with the option: Tuned Colonization)
+GOVERNOR_AUTO_COLONY_MULTIPLE		| Allow second colonizer: %1
+GOVERNOR_AUTO_COLONY_MAX_TIME_DESC	| To establish a maximum distance for colonization ships, to prevent them from crossing our space from one end to the other. (Only with the option: Tuned colonization)
 GOVERNOR_AUTO_COLONY_MAX_TIME		| Max Flight Duration: %1
-GOVERNOR_AUTO_COLONY_SAVE_TIME_DESC	| When the “Optimized Colonization” option is active, minimum duration justifying the dispatch of another colonization ship.
+GOVERNOR_COLO_UNLIMITED_TIME_DESC	| Unlimited.
+GOVERNOR_COLO_UNLIMITED_TIME		| ∞
+GOVERNOR_AUTO_COLONY_SAVE_TIME_DESC	| When the “Allow second colonizer” option is active, minimum duration justifying the dispatch of another colonization ship.
 GOVERNOR_AUTO_COLONY_SAVE_TIME		| Min Saved Time: %1
-OVERNOR_AUTO_COLONY_OTHER_PCT_DESC	| What priority should be given to sending a second colonization ship? 100% = same priority as if no ship were en route, 0% = only if there are unused colonization ships remaining.
-GOVERNOR_AUTO_COLONY_OTHER_PCT		| Priority of second ship: %1%
-GOVERNOR_AUTO_COL_OTHER_NEVER_DESC	| La possibilité d’envoyer plusieurs vaisseaux est désactivée.
-GOVERNOR_AUTO_COL_OTHER_NEVER		| Never
+GOVERNOR_2ND_COLONY_WEIGHT_PCT_DESC	| What priority should be given to sending a second colonization ship? 100% = same priority as if no ship were en route, 0% = only if there are unused colonization ships remaining.
+GOVERNOR_2ND_COLONY_WEIGHT_PCT		| Priority of second ship: %1%
 
 GOVERNOR_ARMED_SCOUT_GUARD_DESC		| Armed scouts will guard uncolonized planets they discover.
 GOVERNOR_ARMED_SCOUT_GUARD			| Armed Scouts Guard: %1
 GOVERNOR_AUTO_SCOUT_SMART_HELP		| To prevent our scouts from constantly crossing our space from one end to the other, scouts already deployed will have a more limited range of action.<br>Those from colonies can still be deployed over long distances.<br>Later, if a scout is closer to a star already targeted, it will also be directed towards this star in order to discover it as quickly as possible.
 GOVERNOR_AUTO_SCOUT_SMART_DESC		| To prevent our scouts from constantly crossing our space from one end to the other, scouts already deployed will have a more limited range of action. Those from colonies can still be deployed over long distances. Later, if a scout is closer to a star already targeted, it will also be directed towards this star in order to discover it as quickly as possible.
 GOVERNOR_AUTO_SCOUT_SMART			| Less zealous scouts: %1
-GOVERNOR_AUTO_SCOUT_NEAR_FIRST_DESC	| Scouts will be deployed as a priority to the closest stars, even if they are already targeted by scouts from very distant origins. (Less zealous scouts only)
-GOVERNOR_AUTO_SCOUT_NEAR_FIRST		| Nearby planets first: %1
+GOVERNOR_AUTO_SCOUT_NEAR_FIRST_DESC	| To allow an additional scout to be sent to a planet that has already been targeted, if it can reach it faster. (Less zealous scouts only)
+GOVERNOR_AUTO_SCOUT_NEAR_FIRST		| Allow second scout: %1
 GOVERNOR_AUTO_SCOUT_MAX_TIME_DESC	| To establish a maximum distance to the scouts already deployed, in order to prevent them from constantly crossing our space from one end to the other. (Less zealous scouts only)
 GOVERNOR_AUTO_SCOUT_MAX_TIME		| Max Flight Duration: %1
+GOVERNOR_AUTO_SCOUT_SAVE_TIME_DESC	| When the “Allow second scout” option is active, minimum duration justifying the dispatch of another scout.
+GOVERNOR_AUTO_SCOUT_SAVE_TIME		| Min Saved Time: %1
+GOVERNOR_2ND_SCOUT_WEIGHT_PCT_DESC	| What priority should be given to sending a second scout? 100% = same priority as if no ship were en route, 0% = only if there are unused scout ships remaining.
+GOVERNOR_2ND_SCOUT_WEIGHT_PCT		| Priority of second ship: %1%
 
 HEADERS_GOVERNOR_TERRAFORM_DESC		| Triggers for planet terraforming.
 HEADERS_GOVERNOR_TERRAFORM			| ~~~ TERRAFORMING TRIGGERS ~~~

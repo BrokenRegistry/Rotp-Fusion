@@ -190,12 +190,31 @@ public interface IGovOptions {
 
 	ParamBoolean armedScoutGuard		= new ParamBoolean(GOV_UI, "ARMED_SCOUT_GUARD", false);
 	ParamBoolean autoScoutSmart			= new ParamBoolean(GOV_UI, "AUTO_SCOUT_SMART", false);
-	ParamBoolean autoScoutNearFirst		= new ParamBoolean(GOV_UI, "AUTO_SCOUT_NEAR_FIRST", true);
-	ParamInteger autoScoutMaxTime		= new ParamInteger(GOV_UI, "AUTO_SCOUT_MAX_TIME", 5)
+	ParamBoolean autoScoutMultiple		= new ParamBoolean(GOV_UI, "AUTO_SCOUT_NEAR_FIRST", true);
+	ParamInteger autoScoutMaxTime		= new ParamInteger(GOV_UI, "AUTO_SCOUT_MAX_TIME", 8)
+			.setLimits(0, 100)
+			.setIncrements(1, 5, 20);
+	ParamInteger autoScoutSaveTime		= new ParamInteger(GOV_UI, "AUTO_SCOUT_SAVE_TIME", 1)
+			.setLimits(1, 100)
+			.setIncrements(1, 5, 20);
+	ParamInteger secondScoutWeightPct 	= new ParamInteger(GOV_UI, "2ND_SCOUT_WEIGHT_PCT", 0)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20);
 
 	ParamBoolean armedColonizerGuard	= new ParamBoolean(GOV_UI, "ARMED_COLONIZER_GUARD", false);
+	ParamBoolean armedColonizerFight	= new ParamBoolean(GOV_UI, "ARMED_COLONIZER_FIGHT", false);
+	ParamBoolean autoColonizeTuned		= new ParamBoolean(GOV_UI, "AUTO_COLONY_TUNED", false);
+	ParamBoolean autoColonizeMultiple	= new ParamBoolean(GOV_UI, "AUTO_COLONY_MULTIPLE", false);
+	ParamInteger autoColonizeMaxTime	= new ParamInteger(GOV_UI, "AUTO_COLONY_MAX_TIME", 10)
+			.setLimits(0, 100)
+			.setIncrements(1, 5, 20)
+			.specialZero(GOV_UI + "COLO_UNLIMITED_TIME");
+	ParamInteger autoColonizeSaveTime	= new ParamInteger(GOV_UI, "AUTO_COLONY_SAVE_TIME", 1)
+			.setLimits(1, 100)
+			.setIncrements(1, 5, 20);
+	ParamInteger secondColonyWeightPct 	= new ParamInteger(GOV_UI, "2ND_COLONY_WEIGHT_PCT", 0)
+			.setLimits(0, 100)
+			.setIncrements(1, 5, 20);
 
 	ParamBoolean trainSpiesASAP			= new ParamBoolean(GOV_UI, "TRAIN_SPIES_ASAP", true);
 	ParamBoolean contactUpdateSpending	= new ParamBoolean(GOV_UI, "CONTACT_UPDATE_SPENDING", false);

@@ -2,6 +2,16 @@
 
 ## What's New
 
+26-02-17 (BR)
+- New auto-colonization tuning options:
+  - Option to limit the maximum flight time: to prevent a colony from being sent to the other side of the galaxy instead of waiting for a closer planet to become accessible.
+  - Option to send a second colony ship that will reach a planet before the one already en route.
+  - Option to set a minimum time savings threshold that justifies sending a second colonial ship.
+  - Option to adjust the priority of sending a second ship to a valuable planet versus sending it to a untargeted planet.
+- A few minor changes to the auto-scout settings to make them similar to the new auto-colonization options.
+  - Option to set a minimum time savings threshold that justifies sending a second scout ship.
+  - Option to adjust the priority of sending a second scout to a nearby system rather than to a distant, untargeted System.
+
 26-02-15 (BR)
 - Fixed a bug in the "Ground Battle" title that sometimes briefly displayed raw tokens.
 

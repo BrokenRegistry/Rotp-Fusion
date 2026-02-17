@@ -186,6 +186,14 @@
 
 ### Governor:
 
+- New auto-colonization tuning options:
+  - Option to limit the maximum flight time: to prevent a colony from being sent to the other side of the galaxy instead of waiting for a closer planet to become accessible.
+  - Option to send a second colony ship that will reach a planet before the one already en route.
+  - Option to set a minimum time savings threshold that justifies sending a second colonial ship.
+  - Option to adjust the priority of sending a second ship to a valuable planet versus sending it to a untargeted planet.
+- A few minor changes to the auto-scout settings to make them similar to the new auto-colonization options.
+  - Option to set a minimum time savings threshold that justifies sending a second scout ship.
+  - Option to adjust the priority of sending a second scout to a nearby system rather than to a distant, untargeted System.
 - Auto-Scouts improvement:
   - To avoid damaging our relations with empires we are not at war with, Auto-Scouts will leave their colonies to go to the most strategic location.
 - Auto-Scouts will leave alien colonies, even if they don't have new star systems to explore. This is to avoid damaging your relationship with that empire.

@@ -235,7 +235,7 @@ public interface IShipDesignOption extends IBaseOptsTools {
 			isValueInit(false);
 			put(ASD_AI,			AUTO_SHIP_DESIGN + ASD_AI);
 			put(ASD_SPECIES,	AUTO_SHIP_DESIGN + ASD_SPECIES);
-			put(ASD_USER,		AUTO_SHIP_DESIGN + ASD_USER);
+//			put(ASD_USER,		AUTO_SHIP_DESIGN + ASD_USER);
 		}
 		private boolean isASDBest()	{ return get().equals(ASD_AI); }
 	}

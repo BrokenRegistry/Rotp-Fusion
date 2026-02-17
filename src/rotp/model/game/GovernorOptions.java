@@ -337,9 +337,17 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public float	earlyBaseBoostPct()				{ return earlyBaseBoostPct.get()/100f; }
 	public boolean	armedScoutGuard()				{ return armedScoutGuard.get(); }
 	public boolean	autoScoutSmart()				{ return autoScoutSmart.get(); }
-	public boolean	autoScoutNearFirst()			{ return autoScoutNearFirst.get(); }
+	public boolean	autoScoutMultiple()				{ return autoScoutMultiple.get(); }
 	public int		autoScoutMaxTime()				{ return autoScoutMaxTime.get(); }
+	public int		autoScoutSaveTime()				{ return autoScoutSaveTime.get(); }
+	public float	secondScoutWeightPct()			{ return secondScoutWeightPct.getFloat(); }
 	public boolean	armedColonizerGuard()			{ return armedColonizerGuard.get(); }
+	public boolean	armedColonizerFight()			{ return armedColonizerFight.get(); }
+	public boolean	autoColonizeTuned()				{ return autoColonizeTuned.get(); }
+	public boolean	autoColonizeMultiple()			{ return autoColonizeMultiple.get(); }
+	public int		autoColonizeMaxTime()			{ return autoColonizeMaxTime.get(); }
+	public int		autoColonizeSaveTime()			{ return autoColonizeSaveTime.get(); }
+	public float	secondColonyWeightPct()			{ return secondColonyWeightPct.getFloat(); }
 	public boolean	trainSpiesASAP()				{ return trainSpiesASAP.get(); }
 	public boolean	contactUpdateSpending()			{ return contactUpdateSpending.get(); }
 }

@@ -44,17 +44,15 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-26-02-15 (BR)
-- Fixed a bug in the "Ground Battle" title that sometimes briefly displayed raw tokens.
-
-26-02-13 (BR)
-- Increased the minimum limit for the "Ship Size Factor" option to prevent crashes when used in conjunction with OGM species limitations.- Fixed AI not checking the presence of your diplomat before requesting peace.
-- Fixed AI constantly asking for peace when you are in their range but they are not in your range so you would not be able to recall the diplomat.
-  - You can recall / Reinstate your diplomat from any empire by pressing "R" while hovering their Empire. (In the Race Menu)
-  - And also Mute / unmute their Warning by pressing "M" while hovering their Empire.
-- Fixed the automatic reinstatement of a recalled diplomat.
-  - If you had recalled your diplomat (= gone for more than 2 billion turns), then agreed to join a war against them, the delay will be replaced by the standard delay for such an offense, and a few years later, your diplomat will be quietly reinstated.
-    - From now on, a long delay will never be replaced by a shorter delay.
+26-02-17 (BR)
+- New auto-colonization tuning options:
+  - Option to limit the maximum flight time: to prevent a colony from being sent to the other side of the galaxy instead of waiting for a closer planet to become accessible.
+  - Option to send a second colony ship that will reach a planet before the one already en route.
+  - Option to set a minimum time savings threshold that justifies sending a second colonial ship.
+  - Option to adjust the priority of sending a second ship to a valuable planet versus sending it to a untargeted planet.
+- A few minor changes to the auto-scout settings to make them similar to the new auto-colonization options.
+  - Option to set a minimum time savings threshold that justifies sending a second scout ship.
+  - Option to adjust the priority of sending a second scout to a nearby system rather than to a distant, untargeted System.
 
 
 ### [Features Historic](FeaturesChanges.md)

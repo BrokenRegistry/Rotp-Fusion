@@ -126,21 +126,27 @@ public abstract class ParamFleetAuto extends ParamList	{
 			// non-extended range to extended range
 			// least hostile to most hostile colony bases, send out least hostile colony bases first
 			// sort ships fastest to slowest, send out fastest colony ships first
-			sort((d1, d2) -> {
-				int rangeDiff = Boolean.compare(d1.isExtendedRange(), d2.isExtendedRange());
+			sort((fleet1, fleet2) -> {
+				int rangeDiff = Boolean.compare(fleet1.isExtendedRange(), fleet2.isExtendedRange());
 				// desc order
+
+				// Sort by range if not equals
 				if (rangeDiff != 0)
 					return rangeDiff;
-				int envDiff = d1.environment() - d2.environment();
+
+				// Sort by environment if not equals
+				int envDiff = fleet1.environment() - fleet2.environment();
 				if (envDiff != 0)
 					return envDiff;
 
-				float warpDiff = d2.warpSpeed() - d1.warpSpeed();
+				// Sort by speed if not equals
+				float warpDiff = fleet2.warpSpeed() - fleet1.warpSpeed();
 				// ascendent order, cheapest first
-				int costDiff = d1.cost() - d2.cost();
+				int costDiff = fleet1.cost() - fleet2.cost();
 				if (warpDiff != 0)
 					return (int) Math.signum(warpDiff);
 				else
+					// then sort by cost.
 					return costDiff;
 			});
 		}
