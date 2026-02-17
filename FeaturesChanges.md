@@ -239,6 +239,7 @@
 
 ### Miscellaneous:
 
+- Added "Display Mode" to the error report.
 - When an error occurs, an error report file is now created.
   - Sometimes the error is so buried in Java calls that no Rotp code lines appear on the screen, making screenshots useless. These lines will appear in the new report file.
 - Updated JRE in the .exe file to Version 25.0.1_8

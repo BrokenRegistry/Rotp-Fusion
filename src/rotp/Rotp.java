@@ -394,6 +394,7 @@ public final class Rotp {
 	public static Throwable startupException;
 	private static void initUtils()	{
 		Logger.registerLogListener(Logger::logToFile);
+		// startupException = new Throwable("For debug");
 		// needed for opening ui
 		try { UserPreferences.load(true); }
 		catch (Throwable t) {
