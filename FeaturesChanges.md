@@ -239,7 +239,7 @@
 
 ### Miscellaneous:
 
-- Added "Display Mode" to the error report.
+- Added "Display Mode" and "Java Version" to the error report.
 - When an error occurs, an error report file is now created.
   - Sometimes the error is so buried in Java calls that no Rotp code lines appear on the screen, making screenshots useless. These lines will appear in the new report file.
 - Updated JRE in the .exe file to Version 25.0.1_8
@@ -343,6 +343,7 @@
 
 ### Fixes:
 
+- Fixed Transport path not being displayed while creating transport, with the option "Flight Path Display" being set to "Hide All"
 - Fixed a bug in the "Ground Battle" title that sometimes briefly displayed raw tokens.
 - Increased the minimum limit for the "Ship Size Factor" option to prevent crashes when used in conjunction with OGM species limitations.- Fixed AI constantly asking for peace when you are in their range but they are not in your range so you would not be able to recall the diplomat.
   - You can recall / Reinstate your diplomat from any empire by pressing "R" while hovering their Empire. (In the Race Menu)

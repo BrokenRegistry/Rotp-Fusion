@@ -25,9 +25,9 @@ public interface IMapOptions extends IBaseOptsTools {
 
 	ParamList flightPathDisplay	= new ParamList (MOD_UI, "FLIGHT_PATH_DISPLAY", "Important")
 			.showFullGuide(true)
-			.put("All",		 MOD_UI + "SHOW_ALL_FLIGHTPATHS")
+			.put("All",		  MOD_UI + "SHOW_ALL_FLIGHTPATHS")
 			.put("Important", MOD_UI + "SHOW_IMPORTANT_FLIGHTPATHS")
-			.put("None",		 MOD_UI + "SHOW_NO_FLIGHTPATHS");
+			.put("None",	  MOD_UI + "SHOW_NO_FLIGHTPATHS");
 	default void toggleFlightPathDisplay(boolean reverse)	{ flightPathDisplay.toggle(reverse);}
 	default boolean showFleetsOnly()			{ return flightPathDisplay.get().equals("None"); }
 	default boolean showImportantFlightPaths() 	{ return !flightPathDisplay.get().equals("None"); }

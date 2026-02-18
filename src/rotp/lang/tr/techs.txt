@@ -490,7 +490,7 @@ ENGINE_6_BRIEF   | Eğim 7  Sav %1
 ENGINE_6_BRIEF2  | Muharebe Hızı %1
 
 ENGINE_7_NAME    | Arafaz İticileri
-ENGINE_7_DETAIL  | Gemileri %1 Eğimde hareket ettirir ve savaşta maksimum sınıf VII manevra kabiliyeti sağlar.
+ENGINE_7_DETAIL  | Gemileri %1 Eğimde hareket ettirir ve savaşta maksimum sınıf VIII manevra kabiliyeti sağlar.
 ENGINE_7_ITEM    | Arafaz
 ENGINE_7_ITEM2   | Sınıf 8
 ENGINE_7_BRIEF   | Eğim 8  Sav %1

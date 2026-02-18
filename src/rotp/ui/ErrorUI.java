@@ -47,6 +47,7 @@ public final class ErrorUI extends BasePanel implements MouseListener, MouseMoti
 	private final String[] file	= new String[4];
 	private final String osTxt = "OS = " + OSUtil.getOS();
 	private final String displayModeTxt = "Display Mode = " + text(IMainOptions.displayMode.get());
+	private final String javaVersionTxt = "Java Version = " + OSUtil.getJavaVersion();
 	private Throwable exception;
 	public ErrorUI()	{ init(); }
 	private void init()	{
@@ -74,7 +75,7 @@ public final class ErrorUI extends BasePanel implements MouseListener, MouseMoti
 		str += nl + DESC_1 + file[errorMode] + DESC_2;
 		str += nl + "Email: Broken.Registry@protonmail.com";
 		str += nl + "Reddit: www.Reddit.com/r/rotp";
-		str += nl + osTxt + " / " + displayModeTxt;
+		str += nl + osTxt + " / " + javaVersionTxt + " / " + displayModeTxt;
 		str += nl + "Version:"+ Rotp.releaseId;;
 		str += nl + Rotp.getMemoryInfo(false);;
 		str += nl;

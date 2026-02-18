@@ -667,7 +667,7 @@ public class MainUI extends BasePanel implements IMapHandler {
 			if (isClicked(dest) || isHovering(dest))
 				return true;
 			StarSystem from = sts.homeSystem();
-			if (isClicked(from) || isHovering(from))
+			if (isClicked(from) || isHovering(from) || isClicked(sts))
 				return true;
 			if (map.showImportantFlightPaths())
 				return path.isPlayer() || path.aggressiveToPlayer();

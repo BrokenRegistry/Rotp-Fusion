@@ -585,7 +585,7 @@ ENGINE_6_BRIEF   | Distorsion 7  Def %1
 ENGINE_6_BRIEF2  | Vitesse de combat %1
 
 ENGINE_7_NAME    | Propulsion interphasée
-ENGINE_7_DETAIL  | Déplace les vaisseaux à Distorsion %1, et permet une maniabilité maximale de Classe VII en combat.
+ENGINE_7_DETAIL  | Déplace les vaisseaux à Distorsion %1, et permet une maniabilité maximale de Classe VIII en combat.
 ENGINE_7_ITEM    | Interphasée
 ENGINE_7_ITEM2   | Classe 8
 ENGINE_7_BRIEF   | Distorsion 8  Def %1

@@ -7,6 +7,7 @@ public class OSUtil {
 
 	private static OS os = null;
 	public static String getFullOSName()	{ return System.getProperty("os.name"); }
+	public static String getJavaVersion()	{ return System.getProperty("java.version"); }
 
 	public static OS getOS() {
 		if (os == null) {

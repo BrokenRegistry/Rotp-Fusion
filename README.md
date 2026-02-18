@@ -44,8 +44,11 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-02-18 (BR)
+- Fixed Transport path not being displayed while creating transport, with the option "Flight Path Display" being set to "Hide All"
+
 26-02-17 (BR)
-- Added "Display Mode" to the error report.
+- Added "Display Mode" and "Java Version" to the error report.
 - New auto-colonization tuning options:
   - Option to limit the maximum flight time: to prevent a colony from being sent to the other side of the galaxy instead of waiting for a closer planet to become accessible.
   - Option to send a second colony ship that will reach a planet before the one already en route.
