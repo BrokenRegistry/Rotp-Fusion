@@ -57,6 +57,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import rotp.Rotp;
+import rotp.model.ai.AIList;
+import rotp.model.empires.Empire;
 import rotp.model.empires.species.DNAFactory.RaceList;
 import rotp.model.empires.species.SpeciesSettings.AllSpeciesAttributes;
 import rotp.model.empires.species.SpeciesSettings.AvatarKey;
@@ -79,9 +81,11 @@ import rotp.ui.components.RotPComponents;
 import rotp.ui.game.GameUI;
 import rotp.ui.game.GuideUI;
 import rotp.ui.game.GuideUI.IGuide;
+import rotp.ui.game.SetupGalaxyUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.races.RacesUI;
 import rotp.ui.util.IParam;
+import rotp.ui.util.ListDialogUI;
 import rotp.util.AnimationManager;
 import rotp.util.Base;
 import rotp.util.FontManager;
@@ -115,6 +119,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	private ContentPanel contentPane;
 	private CostPanel	 costPanel;
 	private FleetPanel	 fleetPanel;
+	private RButton		 empireAIButton;
 
 	// private working
 	private boolean oldTooltipState;
@@ -157,7 +162,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 		if (allowEdit)
 			dnaFactory().setSettingTools((DynOptions) guiOptions().selectedPlayerCustomRace());
 		else
-			species().initCRToShow(dnaFactory()); 
+			species().initCRToShow(dnaFactory());
 		emptyDescription = htmlText("CUSTOM_RACE_EMPTY_DESCRIPTION");
 
 		backImage = null;
@@ -552,6 +557,12 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 				gmoSelection = newGMOSelection();
 				subPanel.add(gmoSelection, newGbc(x, y, 1,1, 0,0, CENTER, HORIZONTAL, new Insets(s5, 0, side, 0), 0,0));
 			}
+			else {
+				empireAIButton = newAIButton(empireAIButtonTxt());
+				empireAIButton.setToolTipText(text(ROOT + "RACE_AI" + LABEL_DESCRIPTION));
+				add(empireAIButton, newGbc(x, y, 1,1, 0,0, CENTER, NONE, new Insets(side, 0, side, 0), 0,0));
+				y++;
+			}
 
 			Insets bulletInset = new Insets(0, 0, s5, 0);
 			costPanel = new CostPanel(settingWidth[x]);
@@ -857,6 +868,72 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	// ========================================================================
 	// #=== Other Specific Components definition : GMO Selection
 	//
+	private String selectAIFromList(String[] choiceArray, List<String> returnList, String initialLabel, IParam<?> param)	{
+		String message = "Make your choice";
+		String initialChoice = text(initialLabel);
+		ListDialogUI dialog = RotPUI.instance().listDialog();
+		dialog.init(
+		this, getParent(),			// Frame & Location component
+		message,					// Message
+		"Empire AI selection",		// Title
+		choiceArray,				// List
+		initialChoice, 				// Initial choice
+		"XXXXXXXXXXXXXXXX",			// long Dialogue
+		true,						// isVertical
+		-1, -1,						// Position
+		scaled(220), scaled(220),	// size
+		null, null,					// Font, Preview
+		returnList,					// Alternate return
+		param); 					// help parameter
+		String input = (String) dialog.showDialog(0);
+		if (input == null)
+		return initialChoice;
+		return input;
+	}
+	private void playerAIBoxAction()	{
+		AIList list			= IGameOptions.changePlayAIset();
+		List<String> rList	= list.getAutoPlay();
+		String[] choices	= list.getNames().toArray(new String[list.size()]);
+		IGameOptions opts	= racesUI().options();
+		String aiNewKey		= selectAIFromList(choices, rList, opts.selectedAutoplayOption(), opts.autoplay());
+		opts.selectedAutoplayOption(aiNewKey);
+		racesUI().selectedEmpire().changePlayerAI(aiNewKey);
+		empireAIButton.setText(empireAIButtonTxt());
+	}
+	private void alienAIBoxAction()	{
+		AIList list			= IGameOptions.changeAlienAIset();
+		List<String> rList	= list.getAliens();
+		String[] choices	= list.getNames().toArray(new String[list.size()]);
+		Empire emp			= racesUI().selectedEmpire();
+		String aiNewKey		= selectAIFromList(choices, rList, emp.getAiName(), SetupGalaxyUI.specificAI());
+		emp.changeOpponentAI(aiNewKey);
+		empireAIButton.setText(empireAIButtonTxt());
+	}
+	private void raceAIBoxAction()	{
+		if (racesUI().selectedEmpire().isPlayer())
+			playerAIBoxAction();
+		else
+			alienAIBoxAction();
+		repaint();
+	}
+	private RButton newAIButton(String txt)	{
+		RButton button = RotPButtons.newBigButton("", false);
+		button.setText(txt);
+		button.setMinimumSize(new Dimension(scaled(158), s10));
+		button.setLabelKey();
+		button.addActionListener(e -> raceAIBoxAction());
+		return button;
+	}
+	protected String empireAIButtonTxt()	{
+		if (racesUI().selectedEmpire().isPlayer())
+			if (racesUI().selectedEmpire().isAIControlled())
+				return racesUI().selectedEmpire().getAiName();
+			else
+				return text("SETUP_OPPONENT_AI_PLAYER");
+		else
+			return racesUI().selectedEmpire().getAiName();
+	}
+
 	// -#-
 	// ========================================================================
 	// #=== Other Classes: FleetPanel

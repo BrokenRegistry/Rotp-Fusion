@@ -5330,9 +5330,9 @@ DIPLOMACY_ACCEPT_JOIN_WAR         | Accepter (Se joindre à la guerre)
 DIPLOMACY_ACCEPT_END_WAR          | Accepter (Mettre fin à la guerre, rappeler les forces)
 DIPLOMACY_ACCEPT_FORM_PACT        | Accepter (Former un pacte)
 DIPLOMACY_ACCEPT_FORM_ALLIANCE    | Accepter (Former une alliance)
-DIPLOMACY_ACCEPT_ESTABLISH_TRADE  | Accepter (Établir un accord commercial)
+DIPLOMACY_ACCEPT_ESTABLISH_TRADE  | Accepter (Conclure un accord commercial)
 DIPLOMACY_DECLINE_OFFER           | Décliner
-DIPLOMACY_DECLINE_BREAK_ALLIANCE  | Décliner (rompre l’alliance)
+DIPLOMACY_DECLINE_BREAK_ALLIANCE  | Décliner (Rompre l’alliance)
 DIPLOMACY_IGNORE_THREAT           | Ignorer la menace
 DIPLOMACY_SHUTDOWN_SPIES          | Arrêtez tous les réseaux d’espionnage dans [alien_empire]
 DIPLOMACY_HIDE_SPIES              | Ordonnez à tous les espions [alien_empireof] de se dissimuler

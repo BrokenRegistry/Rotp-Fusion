@@ -239,6 +239,8 @@
 
 ### Miscellaneous:
 
+- Restored possibility to change AI in Game. (was missing in the new interface)
+- Fixed some possible crash in the invasion panel.
 - Added "Display Mode" and "Java Version" to the error report.
 - When an error occurs, an error report file is now created.
   - Sometimes the error is so buried in Java calls that no Rotp code lines appear on the screen, making screenshots useless. These lines will appear in the new report file.

@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-02-19 (BR)
+- Restored possibility to change AI in Game. (was missing in the new interface)
+- Fixed some possible crash in the invasion panel.
+
 26-02-18 (BR)
 - Fixed Transport path not being displayed while creating transport, with the option "Flight Path Display" being set to "Hide All"
 
