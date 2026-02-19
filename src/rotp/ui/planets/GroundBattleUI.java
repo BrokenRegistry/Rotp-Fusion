@@ -824,7 +824,7 @@ public class GroundBattleUI extends BasePanel implements MouseListener {
                 if (frame < descendingFrameRefs.get(i))
                     return descendingFrames.get(i);
                 frame -= descendingFrameRefs.get(i);
-            }      
+            }
             if(descendingFrames.size() > 0)
                 return descendingFrames.get(descendingFrames.size()-1);
             return null;
@@ -835,8 +835,10 @@ public class GroundBattleUI extends BasePanel implements MouseListener {
                 if (frame < openingFrameRefs.get(i))
                     return openingFrames.get(i);
                 frame -= openingFrameRefs.get(i);
-            }      
-            return openingFrames.get(openingFrames.size()-1);
+            }
+			if(descendingFrames.size() > 0)
+				return openingFrames.get(openingFrames.size()-1);
+			return null;
         }
     }
 }
