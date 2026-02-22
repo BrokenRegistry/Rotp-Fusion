@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-02-22 (BR)
+- Fixed Star systems displaying wrong Data.
+  - When an empire invades a planet, other empires will not be aware of the new data until a spy informs them. The right panel correctly displayed the "???" while on the map, the star system displayed the former data of the invaded empire.
+
 26-02-19 (BR)
 - Restored possibility to change AI in Game. (was missing in the new interface)
 - Fixed some possible crash in the invasion panel.

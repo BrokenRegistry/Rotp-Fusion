@@ -766,7 +766,8 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
             }
         }
         else if (map.parent().showSystemData(this)) {
-            int pop = pl.sv.population(id);
+        	boolean spied = pl.sv.isSpied(id);
+            int pop = spied? pl.sv.population(id) : 0;
             int mgn = BasePanel.s6;
             int s1 = BasePanel.s1;
             String popStr = ""+pop;

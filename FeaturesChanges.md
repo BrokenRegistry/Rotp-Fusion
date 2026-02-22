@@ -345,6 +345,8 @@
 
 ### Fixes:
 
+- Fixed Star systems displaying wrong Data.
+  - When an empire invades a planet, other empires will not be aware of the new data until a spy informs them. The right panel correctly displayed the "???" while on the map, the star system displayed the former data of the invaded empire.
 - Fixed Transport path not being displayed while creating transport, with the option "Flight Path Display" being set to "Hide All"
 - Fixed a bug in the "Ground Battle" title that sometimes briefly displayed raw tokens.
 - Increased the minimum limit for the "Ship Size Factor" option to prevent crashes when used in conjunction with OGM species limitations.- Fixed AI constantly asking for peace when you are in their range but they are not in your range so you would not be able to recall the diplomat.
