@@ -345,6 +345,7 @@
 
 ### Fixes:
 
+- Fixed Winning over rebels not limiting population size to the planet size.
 - Fixed Star systems displaying wrong Data.
   - When an empire invades a planet, other empires will not be aware of the new data until a spy informs them. The right panel correctly displayed the "???" while on the map, the star system displayed the former data of the invaded empire.
 - Fixed Transport path not being displayed while creating transport, with the option "Flight Path Display" being set to "Hide All"
