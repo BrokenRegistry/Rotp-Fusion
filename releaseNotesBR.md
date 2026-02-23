@@ -8,6 +8,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-02-23 (BR)
+- Fixed ShipSet displayed text on Species Setting Panel.
 - Fixed Winning over rebels not limiting population size to the planet size.
 
 26-02-22 (BR)

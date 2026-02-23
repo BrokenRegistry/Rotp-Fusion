@@ -345,6 +345,7 @@
 
 ### Fixes:
 
+- Fixed ShipSet displayed text on Species Setting Panel.
 - Fixed Winning over rebels not limiting population size to the planet size.
 - Fixed Star systems displaying wrong Data.
   - When an empire invades a planet, other empires will not be aware of the new data until a spy informs them. The right panel correctly displayed the "???" while on the map, the star system displayed the former data of the invaded empire.

@@ -921,8 +921,8 @@ public abstract class SpeciesSettings {
 		}
 		@Override public String guideDefaultValue()	{ return defaultLangLabel(); }
 		@Override public String guideValue()		{ return langLabel(settingValue()); }
-		@Override public void settingToSkill(SpeciesSkills skills) 		{ skills.preferredShipSet(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills) 		{ set(skills.preferredShipSet()); }
+		@Override public void settingToSkill(SpeciesSkills skills)	{ skills.preferredAI(settingValue()); }
+		@Override public void skillToSetting(SpeciesSkills skills)	{ set(skills.preferredAI()); }
 	}
 
 	// ==================== PreferredShipSize ====================
@@ -969,8 +969,8 @@ public abstract class SpeciesSettings {
 		}
 		@Override public String guideDefaultValue()	{ return defaultLangLabel(); }
 		@Override public String guideValue()		{ return getSelLangLabel(); }
-		@Override public void settingToSkill(SpeciesSkills skills) 		{ skills.preferredShipSet(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills) 		{ set(skills.preferredShipSet()); }
+		@Override public void settingToSkill(SpeciesSkills skills)	{ skills.preferredShipSet(settingValue()); }
+		@Override public void skillToSetting(SpeciesSkills skills)	{ set(skills.preferredShipSet()); }
 	}
 
 	// ==================== CRObjective ====================

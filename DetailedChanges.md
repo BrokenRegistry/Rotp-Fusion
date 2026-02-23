@@ -3,6 +3,7 @@
 ## What's New
 
 26-02-23 (BR)
+- Fixed ShipSet displayed text on Species Setting Panel.
 - Fixed Winning over rebels not limiting population size to the planet size.
 
 26-02-22 (BR)

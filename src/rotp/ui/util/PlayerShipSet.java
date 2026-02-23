@@ -71,7 +71,7 @@ public class PlayerShipSet extends ParamList {
 			}
 			else {
 				String key = getLangLabel() + CUSTOM_SPECIES;
-				String str = langLabel(key, preferredShipsetName());
+				String str = langLabel(key, preferredShipSet());
 				return str;
 			}
 		}
@@ -116,11 +116,6 @@ public class PlayerShipSet extends ParamList {
 		IGameOptions opts = RulesetManager.current().newOptions();
 		Species species = opts.playerCustomSpecies(opts);
 		return species.preferredShipSet();
-	}
-	private String preferredShipsetName()	{
-		String key = rootLabelKey() + preferredShipSet().toUpperCase();
-		String str = langLabel(key);
-		return str;
 	}
 	private String shipsetName()			{
 		String key = rootLabelKey() + get().toUpperCase();
