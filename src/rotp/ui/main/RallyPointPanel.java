@@ -43,6 +43,7 @@ import rotp.model.game.IGameOptions;
 import rotp.model.ships.Design;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.BasePanel;
+import rotp.ui.map.IMapHandler;
 import rotp.ui.sprites.ShipRelocationSprite;
 import rotp.util.LanguageManager;
 
@@ -82,7 +83,7 @@ public class RallyPointPanel extends SystemPanel {
         if (!(parentSpritePanel.spriteToDisplay() instanceof ShipRelocationSprite))
             return false;
         ShipRelocationSprite sprite = (ShipRelocationSprite) parentSpritePanel.spriteToDisplay();
-        
+
     	if (chainRally()) {
             Empire player = player();
         	IGameOptions options = options();
@@ -352,7 +353,7 @@ public class RallyPointPanel extends SystemPanel {
                 y0 += s18;
                 drawString(g,line, leftM, y0);
             }
-            
+
             int checkW = s12;
             int checkX = leftM;
             y0 = y0+s25;
@@ -439,8 +440,12 @@ public class RallyPointPanel extends SystemPanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parentSpritePanel.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) {
             if (hoverBox != null){
@@ -456,7 +461,7 @@ public class RallyPointPanel extends SystemPanel {
             int y = e.getY();
             Shape prevHover = hoverBox;
             hoverBox = null;
-            
+
             if (forwardRallyBox.contains(x,y)) 
                 hoverBox = forwardRallyBox;
             else if (chainRallyBox.contains(x,y)) 
@@ -687,8 +692,12 @@ public class RallyPointPanel extends SystemPanel {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parentSpritePanel.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) {
             if (hoverBox != null) {

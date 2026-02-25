@@ -37,6 +37,7 @@ import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
+import rotp.ui.map.IMapHandler;
 
 public class AlienSystemPanel extends SystemPanel {
     private static final long serialVersionUID = 1L;
@@ -258,8 +259,12 @@ public class AlienSystemPanel extends SystemPanel {
                 RotPUI.instance().racesUI().selectedEmpire(galaxy().empire(displayEmpId));              
             }
         }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parentSpritePanel.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) { 
             if (hoverBox != null) {

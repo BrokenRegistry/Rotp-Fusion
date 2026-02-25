@@ -1440,7 +1440,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         }
             
         // sprite has changed, so pass it to the parent UI for proper handling
-        parent.hoveringOverSprite(hoverSprite);
+        parent.hoveringOverSprite(hoverSprite, true);
     }
     @Override
     public void mouseClicked(MouseEvent e)     {}

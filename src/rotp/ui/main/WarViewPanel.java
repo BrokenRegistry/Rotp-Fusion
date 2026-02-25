@@ -39,6 +39,7 @@ import rotp.model.galaxy.Transport;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
 import rotp.ui.BasePanel;
+import rotp.ui.map.IMapHandler;
 
 public class WarViewPanel extends SystemPanel {
 	private static final long serialVersionUID = 1L;
@@ -252,7 +253,12 @@ public class WarViewPanel extends SystemPanel {
 		}
 		@Override public void mousePressed(MouseEvent e) { }
 		@Override public void mouseReleased(MouseEvent e) { }
-		@Override public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parent.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
 		@Override public void mouseExited(MouseEvent e) { }
 		@Override public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() > 0)

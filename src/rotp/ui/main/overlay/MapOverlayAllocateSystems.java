@@ -57,7 +57,7 @@ public class MapOverlayAllocateSystems extends MapOverlay {
     }
     public void init(HashMap<StarSystem,List<String>> newSystems) {
         drawSprites = true;
-        // BR: remove null is any... Should not happen, but it happen!!!
+        // BR: remove null if any... Should not happen, but it happen!!!
         newSystems.remove(null);
         systemsToAllocate = newSystems;
         orderedSystems.clear();

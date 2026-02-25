@@ -29,7 +29,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.List;
+
 import javax.swing.SwingUtilities;
+
 import rotp.model.empires.SystemInfo;
 import rotp.model.empires.SystemView;
 import rotp.model.galaxy.StarSystem;
@@ -84,7 +86,7 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
         hoverBox = null;
         if (flagBox.contains(x,y))
             hoverBox = flagBox;
-        
+
         if (prevHover != hoverBox)
             repaint();
     }
@@ -111,8 +113,12 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
             	toggleFlagColor(false);
        }
     }
-    @Override
-    public void mouseEntered(MouseEvent e) { }
+	@Override public void mouseEntered(MouseEvent e)	{
+		IMapHandler mapHandler = parentSpritePanel.parent;
+		if (mapHandler.hoveringSprite() != null)
+			mapHandler.hoveringSprite().mouseExit(null);
+		mapHandler.hoveringOverSprite(null, true);
+	}
     @Override
     public void mouseExited(MouseEvent e) { 
         if (hoverBox != null) {
@@ -155,12 +161,11 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
             int w = getWidth();
             int h = getHeight();
 
-            
             if (sys.inNebula()) {
                 g.setColor(SystemPanel.nebulaC);
                 g.fillRect(0,0,w,h);
             }
-                
+
             Graphics2D g2 = (Graphics2D) g;
             drawStar(g2, sys.starType(), s40, getWidth()/2, getHeight()/2);
 
@@ -186,14 +191,14 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
                 g.fillRect(w-sz+s5-shX, 0, sz, sz-s10);
                 g.setComposite(prevC);
             }
-            
+
             Image flagImage = sv.mapFlagImage(sys.id);
             g.drawImage(flagImage, w-sz+s5-shX, 0, sz, sz, null);
             flagBox.setBounds(w-sz+s5-shX,0,sz-s20,sz-s10);         
-            
+
             //g.setColor(Color.red);
             //g.fillRect(w-sz+s25,15,sz-s20,sz-s10); 
-            
+
             if (sys.inNebula()) {
                 g.setFont(narrowFont(16));
                 g.setColor(grayText);
@@ -205,7 +210,6 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
                     y0 += ydelta;
                 }
             } 
-           
 
             g.setFont(narrowFont(16));
             g.setColor(grayText);

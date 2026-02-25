@@ -37,6 +37,7 @@ import javax.swing.border.Border;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.planet.PlanetType;
 import rotp.ui.BasePanel;
+import rotp.ui.map.IMapHandler;
 
 public class ExploredSystemPanel extends SystemPanel {
     private static final long serialVersionUID = 1L;
@@ -95,7 +96,6 @@ public class ExploredSystemPanel extends SystemPanel {
             StarSystem sys = parent.systemViewToDisplay();
             if (sys == null)
                 return;
-            //Empire pl = player();
 
             super.paintComponent(g);
             int h = getHeight();
@@ -111,7 +111,7 @@ public class ExploredSystemPanel extends SystemPanel {
             textureClip = new Rectangle2D.Float(0,0,w,topH-s5);
 
             String label;
-            
+
             if (sys.planet().isEnvironmentNone())
                 label = text("MAIN_NO_PLANETS");
             else if (sys.abandoned())
@@ -132,7 +132,7 @@ public class ExploredSystemPanel extends SystemPanel {
             Image flagImage = parentSpritePanel.parent.flagImage(sys);
             g.drawImage(flagImage, w-sz+s15-shX, topH-sz+s10, sz, sz, null);
             flagBox.setBounds(w-sz+s25-shX,topH-sz+s10,sz-s20,sz-s10);
-            
+
             // draw planet terrain background
             PlanetType pt = sys.planet().type();
 
@@ -193,8 +193,12 @@ public class ExploredSystemPanel extends SystemPanel {
                 parentSpritePanel.repaint();
             }
         }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parentSpritePanel.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) { 
             if (hoverBox != null) {

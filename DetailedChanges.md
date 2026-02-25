@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-02-25 (BR)
+- Galaxy Map: Fixed a recurring issue where the right panel would continue to display the last fleet or system flown over, instead of returning to the selected fleet or system.
+
 26-02-23 (BR)
 - Fixed ShipSet displayed text on Species Setting Panel.
 - Fixed Winning over rebels not limiting population size to the planet size.

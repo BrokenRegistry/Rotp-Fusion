@@ -345,6 +345,7 @@
 
 ### Fixes:
 
+- Galaxy Map: Fixed a recurring issue where the right panel would continue to display the last fleet or system flown over, instead of returning to the selected fleet or system.
 - Fixed ShipSet displayed text on Species Setting Panel.
 - Fixed Winning over rebels not limiting population size to the planet size.
 - Fixed Star systems displaying wrong Data.

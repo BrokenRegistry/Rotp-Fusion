@@ -30,12 +30,14 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+
 import javax.swing.SwingUtilities;
+
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
-
 import rotp.ui.RotPUI;
+import rotp.ui.map.IMapHandler;
 
 public class UnexploredAlienSystemPanel extends SystemPanel {
     private static final long serialVersionUID = 1L;
@@ -248,8 +250,12 @@ public class UnexploredAlienSystemPanel extends SystemPanel {
                 RotPUI.instance().racesUI().selectedEmpire(galaxy().empire(displayEmpId));              
             }
         }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parentSpritePanel.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) { 
             if (hoverBox != null) {

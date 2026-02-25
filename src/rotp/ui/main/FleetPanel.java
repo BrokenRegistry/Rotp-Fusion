@@ -151,7 +151,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             return true;
         if (s instanceof ShipFleet)
             return true;
-        
+
         // relinquish focus to star system if the displayed fleet
         // cannot be sent to it
         if (s instanceof StarSystem) {
@@ -169,7 +169,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             // }
             return true;
         }
-        
+
         return false;
     }
     private boolean canSendFleet() {
@@ -600,9 +600,8 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 cancelFleet();
                 return;
             }
-            
-            StarSystem sys = fl.isOrbiting() ? fl.system() : null;
 
+            StarSystem sys = fl.isOrbiting() ? fl.system() : null;
             if (sys == null) {
                 if (fl.hasDestination())
                     g.drawImage(pl.sv.starBackground(this), 0, 0, null);
@@ -1077,13 +1076,6 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 y0 += lineH;
             }
             g.setFont(narrowFont(16));
-//            if (text != null) {
-//                List<String> lines = wrappedLines(g, text, w-s30);
-//                for (String line: lines) {
-//                    drawString(g,line, x0, y0);
-//                    y0 += lineH;
-//                }
-//            }
 
             if (rallyText != null) {
                 y0 += lineH/2;
@@ -1134,12 +1126,6 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             	scaledFont(g, retreatText, w-s30-indent, 16, 10);
             	drawString(g ,retreatText, x0+indent, y0);
             	y0 += lineH;
-//                List<String> lines = wrappedLines(g, retreatText, w-s30, indent);
-//                for (String line: lines) {
-//                    drawString(g,line, x0+indent, y0);
-//                    indent = 0;
-//                    y0 += lineH;
-//                }
             }
         }
         private void drawFleet(Graphics2D g, ShipFleet origFl, ShipFleet displayFl, boolean showAdjust, int x, int y, int w, int h) {
@@ -1403,7 +1389,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             Shape prevHover2 = hoverBox2;
             hoverBox = null;
             hoverBox2 = null;
-            
+
             if (retreatBox.contains(x,y)) 
                 hoverBox = retreatBox;
             else if (rallyBox.contains(x,y)) 
@@ -1412,7 +1398,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 hoverBox = minAllBoxH;
             else if (maxAllBoxH.contains(x,y)) 
                 hoverBox = maxAllBoxH;
-           
+
             hoverStackNum = -1;
             for (int i=0;i<shipBox.length;i++) {
                 if (shipBox[i].contains(x,y)) {
@@ -1434,8 +1420,12 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parent.parent.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) {
             if ((hoverBox != null) || (hoverBox2 != null)){
@@ -1456,7 +1446,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             // selectedFleet can be null if hovering with mouse
             if (fl == null)
                 return;
-            
+
             if (retreatBox.contains(x,y)) {
                 fl.toggleRetreatOnArrival();
                 softClick();
@@ -1480,7 +1470,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
 
             if (hoverStackNum < 0)
                 return;
-            
+
             ShipDesign d = fl.visibleDesign(player().id, hoverStackNum);
 			if(d == null)
 				return;
@@ -1490,7 +1480,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             int newAdj = 1;
             boolean shiftPressed = e.isShiftDown();
             boolean ctrlPressed = e.isControlDown();
-            
+
             int adjAmt = 1;
             if (shiftPressed)
                 adjAmt = 5;
@@ -1757,8 +1747,12 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parent.parent.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) {
             if (hoverBox != null) {

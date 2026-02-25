@@ -40,6 +40,7 @@ import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.galaxy.Transport;
 import rotp.ui.BasePanel;
+import rotp.ui.map.IMapHandler;
 
 public final class TransportPanel extends BasePanel {
     private static final long serialVersionUID = 1L;
@@ -342,8 +343,12 @@ public final class TransportPanel extends BasePanel {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parent.parent.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) {
             if (hoverBox != null) {
@@ -490,8 +495,12 @@ public final class TransportPanel extends BasePanel {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parent.parent.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) {
             if (hoverBox != null) {

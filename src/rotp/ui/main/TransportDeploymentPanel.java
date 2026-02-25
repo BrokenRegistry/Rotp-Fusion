@@ -45,6 +45,7 @@ import rotp.model.Sprite;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
+import rotp.ui.map.IMapHandler;
 import rotp.ui.sprites.SystemTransportSprite;
 
 public class TransportDeploymentPanel extends SystemPanel {
@@ -298,8 +299,12 @@ public class TransportDeploymentPanel extends SystemPanel {
         public void mouseMoved(MouseEvent e) { }
         @Override
         public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parentSpritePanel.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) {
             if ((hoverBox != null) || (hoverBox2 != null)){
@@ -351,7 +356,6 @@ public class TransportDeploymentPanel extends SystemPanel {
         public void paintComponent(Graphics g0) {
             Graphics2D g = (Graphics2D) g0;
             super.paintComponent(g);
-
 
             int w = getWidth();
             int h = getHeight();
@@ -516,8 +520,12 @@ public class TransportDeploymentPanel extends SystemPanel {
         }
         @Override
         public void mouseClicked(MouseEvent arg0) { }
-        @Override
-        public void mouseEntered(MouseEvent arg0) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parentSpritePanel.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent arg0) {
             if (hoverBox != null) {
@@ -672,7 +680,7 @@ public class TransportDeploymentPanel extends SystemPanel {
             }
             String name = pl.sv.descriptiveName(id);
             drawShadowedString(g, name, 2, leftM, s22, MainUI.shadeBorderC(), SystemPanel.whiteLabelText);
-            
+
             // draw system banner
             int sz = s60;
             int shX = (options().selectedFlagColorCount() == 1)? 0 : s8; // BR: flagColorCount
@@ -784,8 +792,12 @@ public class TransportDeploymentPanel extends SystemPanel {
                     player().sv.toggleFlagColor(sys.id, false);
            }
         }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parentSpritePanel.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) { 
             if (hoverBox != null) {
@@ -964,8 +976,12 @@ public class TransportDeploymentPanel extends SystemPanel {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{
+			IMapHandler mapHandler = parentSpritePanel.parent;
+			if (mapHandler.hoveringSprite() != null)
+				mapHandler.hoveringSprite().mouseExit(null);
+			mapHandler.hoveringOverSprite(null, true);
+		}
         @Override
         public void mouseExited(MouseEvent e) {
             if (hoverBox != null) {
