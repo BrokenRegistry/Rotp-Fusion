@@ -188,33 +188,86 @@ public interface IGovOptions {
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20);
 
+	static void tagAutoScout(String id)	{
+		autoScoutMultiple.updated(true);
+		autoScoutMaxTime.updated(true);
+		autoScoutSaveTime.updated(true);
+		secondScoutWeightPct.updated(true);
+	}
 	ParamBoolean armedScoutGuard		= new ParamBoolean(GOV_UI, "ARMED_SCOUT_GUARD", false);
-	ParamBoolean autoScoutSmart			= new ParamBoolean(GOV_UI, "AUTO_SCOUT_SMART", false);
-	ParamBoolean autoScoutMultiple		= new ParamBoolean(GOV_UI, "AUTO_SCOUT_NEAR_FIRST", true);
-	ParamInteger autoScoutMaxTime		= new ParamInteger(GOV_UI, "AUTO_SCOUT_MAX_TIME", 8)
+	ParamBoolean autoScoutSmart			= new ParamBoolean(GOV_UI, "AUTO_SCOUT_SMART", false)
+			.setUpdateParameters(IGovOptions::tagAutoScout, "");
+	ParamBoolean autoScoutMultiple		= new ParamAutoScoutSmartBool(GOV_UI, "AUTO_SCOUT_NEAR_FIRST", true)
+			.setUpdateParameters(IGovOptions::tagAutoScout, "");
+	ParamInteger autoScoutMaxTime		= new ParamAutoScoutSmartInt(GOV_UI, "AUTO_SCOUT_MAX_TIME", 8)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20);
-	ParamInteger autoScoutSaveTime		= new ParamInteger(GOV_UI, "AUTO_SCOUT_SAVE_TIME", 1)
+	ParamInteger autoScoutSaveTime		= new ParamAutoScoutMultiInt(GOV_UI, "AUTO_SCOUT_SAVE_TIME", 1)
 			.setLimits(1, 100)
 			.setIncrements(1, 5, 20);
-	ParamInteger secondScoutWeightPct 	= new ParamInteger(GOV_UI, "2ND_SCOUT_WEIGHT_PCT", 0)
+	ParamInteger secondScoutWeightPct 	= new ParamAutoScoutMultiInt(GOV_UI, "2ND_SCOUT_WEIGHT_PCT", 0)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20);
+	final class ParamAutoScoutSmartBool extends ParamBoolean	{
+		public ParamAutoScoutSmartBool(String gui, String name, Boolean defaultValue) {
+			super(gui, name, defaultValue);
+		}
+		@Override public boolean isGhost()	{ return !autoScoutSmart.get(); }
+	}
+	final class ParamAutoScoutSmartInt extends ParamInteger	{
+		public ParamAutoScoutSmartInt(String gui, String name, Integer defaultValue) {
+			super(gui, name, defaultValue);
+		}
+		@Override public boolean isGhost()	{ return !autoScoutSmart.get(); }
+	}
+	final class ParamAutoScoutMultiInt extends ParamInteger	{
+		public ParamAutoScoutMultiInt(String gui, String name, Integer defaultValue) {
+			super(gui, name, defaultValue);
+		}
+		@Override public boolean isGhost()	{ return !autoScoutSmart.get() || !autoScoutMultiple.get(); }
+	}
 
+	static void tagAutoColonize(String id)	{
+		autoColonizeMultiple.updated(true);
+		autoColonizeMaxTime.updated(true);
+		autoColonizeSaveTime.updated(true);
+		secondColonyWeightPct.updated(true);
+	}
 	ParamBoolean armedColonizerGuard	= new ParamBoolean(GOV_UI, "ARMED_COLONIZER_GUARD", false);
 	ParamBoolean armedColonizerFight	= new ParamBoolean(GOV_UI, "ARMED_COLONIZER_FIGHT", false);
-	ParamBoolean autoColonizeTuned		= new ParamBoolean(GOV_UI, "AUTO_COLONY_TUNED", false);
-	ParamBoolean autoColonizeMultiple	= new ParamBoolean(GOV_UI, "AUTO_COLONY_MULTIPLE", false);
-	ParamInteger autoColonizeMaxTime	= new ParamInteger(GOV_UI, "AUTO_COLONY_MAX_TIME", 10)
+
+	ParamBoolean autoColonizeTuned		= new ParamBoolean(GOV_UI, "AUTO_COLONY_TUNED", false)
+			.setUpdateParameters(IGovOptions::tagAutoColonize, "");
+	ParamBoolean autoColonizeMultiple	= new ParamAutoColoTunedBool(GOV_UI, "AUTO_COLONY_MULTIPLE", false)
+			.setUpdateParameters(IGovOptions::tagAutoColonize, "");
+	ParamInteger autoColonizeMaxTime	= new ParamAutoColoTunedInt(GOV_UI, "AUTO_COLONY_MAX_TIME", 10)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20)
 			.specialZero(GOV_UI + "COLO_UNLIMITED_TIME");
-	ParamInteger autoColonizeSaveTime	= new ParamInteger(GOV_UI, "AUTO_COLONY_SAVE_TIME", 1)
+	ParamInteger autoColonizeSaveTime	= new ParamAutoColoMultiInt(GOV_UI, "AUTO_COLONY_SAVE_TIME", 1)
 			.setLimits(1, 100)
 			.setIncrements(1, 5, 20);
-	ParamInteger secondColonyWeightPct 	= new ParamInteger(GOV_UI, "2ND_COLONY_WEIGHT_PCT", 0)
+	ParamInteger secondColonyWeightPct 	= new ParamAutoColoMultiInt(GOV_UI, "2ND_COLONY_WEIGHT_PCT", 0)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20);
+	final class ParamAutoColoTunedBool extends ParamBoolean	{
+		public ParamAutoColoTunedBool(String gui, String name, Boolean defaultValue) {
+			super(gui, name, defaultValue);
+		}
+		@Override public boolean isGhost()	{ return !autoColonizeTuned.get(); }
+	}
+	final class ParamAutoColoTunedInt extends ParamInteger	{
+		public ParamAutoColoTunedInt(String gui, String name, Integer defaultValue) {
+			super(gui, name, defaultValue);
+		}
+		@Override public boolean isGhost()	{ return !autoColonizeTuned.get(); }
+	}
+	final class ParamAutoColoMultiInt extends ParamInteger	{
+		public ParamAutoColoMultiInt(String gui, String name, Integer defaultValue) {
+			super(gui, name, defaultValue);
+		}
+		@Override public boolean isGhost()	{ return !autoColonizeTuned.get() || !autoColonizeMultiple.get(); }
+	}
 
 	ParamBoolean trainSpiesASAP			= new ParamBoolean(GOV_UI, "TRAIN_SPIES_ASAP", true);
 	ParamBoolean contactUpdateSpending	= new ParamBoolean(GOV_UI, "CONTACT_UPDATE_SPENDING", false);

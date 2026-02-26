@@ -2132,7 +2132,7 @@ public class DesignUI extends BasePanel {
             g.setColor(darkestBrown);
             g.setFont(narrowFont(fontSize));
 
-            String str = player().tech().topFuelRangeTech().unlimited ? text("SHIP_DESIGN_RANGE_UNLIMITED") : text("SHIP_DESIGN_RANGE_VALUE", (int)des.range());
+            String str = player().tech().topFuelRangeTech().unlimited ? text("SHIP_DESIGN_RANGE_UNLIMITED") : text("SHIP_DESIGN_RANGE_VALUE", des.rangeStr());
             sw = g.getFontMetrics().stringWidth(str);
             drawString(g,str, x2-s20-sw, y2);
             str = text("SHIP_DESIGN_SPEED_VALUE", (int)des.warpSpeed());

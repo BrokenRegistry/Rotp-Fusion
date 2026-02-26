@@ -59,7 +59,6 @@ import rotp.model.events.SystemHomeworldEvent;
 import rotp.model.galaxy.Galaxy;
 import rotp.model.galaxy.GalaxyFactory;
 import rotp.model.galaxy.IMappedObject;
-import rotp.model.galaxy.Location;
 import rotp.model.galaxy.NamedObject;
 import rotp.model.galaxy.Ship;
 import rotp.model.galaxy.ShipFleet;
@@ -79,7 +78,6 @@ import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipLibrary;
 import rotp.model.tech.Tech;
-import rotp.model.tech.TechRoboticControls;
 import rotp.model.tech.TechTree;
 import rotp.ui.NoticeMessage;
 import rotp.ui.diplomacy.DialogueManager;
@@ -110,7 +108,7 @@ public final class Empire extends Species implements NamedObject {
     public static final int SHAPE_TRIANGLE2 = 4;
 
     public static Empire thePlayer() { return Galaxy.current().player(); }
-    public static long[] times = new long[6]; // BR: Never Used
+//    public static long[] times = new long[6]; // BR: Never Used
 	// Dynamic difficulty
 	private static Double turnMod; // for dynamic difficulty
 	private static long turnModCounter = 1;
@@ -226,16 +224,16 @@ public final class Empire extends Species implements NamedObject {
 
 	public static void resetPlayerId()			{ PLAYER_ID = DEFAULT_PLAYER_ID; }
 	public static void updatePlayerId(int id)	{ PLAYER_ID = id; }
-	public static boolean isPlayer(int id)		{ return id == PLAYER_ID; };	// BR: Never Used
+//	public static boolean isPlayer(int id)		{ return id == PLAYER_ID; };	// BR: Never Used
 
 	public void startingNextTurnProcess()		{ spendingNotYetMade = true; }
 	public boolean spendingNotYetMade()			{ return spendingNotYetMade; }
-	public Integer defaultDesignId()			{ return shipLab.defaultDesignId(); }	// BR: Never Used
-	public void defaultDesignId(Integer id)		{ shipLab.defaultDesignId(id); }	// BR: Never Used
-	public void clearColoniesDefaultDesignId()	{	// BR: Never Used
-		for (StarSystem sys : allColonizedSystems())
-			sys.colony().shipyard().defaultDesignId(null);
-	}
+//	public Integer defaultDesignId()			{ return shipLab.defaultDesignId(); }	// BR: Never Used
+//	public void defaultDesignId(Integer id)		{ shipLab.defaultDesignId(id); }	// BR: Never Used
+//	public void clearColoniesDefaultDesignId()	{	// BR: Never Used
+//		for (StarSystem sys : allColonizedSystems())
+//			sys.colony().shipyard().defaultDesignId(null);
+//	}
     public float benchmark() { return benchmark; }
         public void setBenchmark() {
     	if (extinct()) {
@@ -306,8 +304,8 @@ public final class Empire extends Species implements NamedObject {
 	@Override public SystemInfo sv()				{ return sv; }
 
     public List<StarSystem> shipBuildingSystems() { return shipBuildingSystems; }
-    public boolean inGalacticAlliance()           { return galacticAlliance; }	// BR: Never Used
-    void joinGalacticAlliance()						{ galacticAlliance = true; }
+//	public boolean inGalacticAlliance()			{ return galacticAlliance; }	// BR: Never Used
+	void joinGalacticAlliance()					{ galacticAlliance = true; }
     public float planetScanningRange()            { return max(3, planetScanningRange); }  // max() to correct old saves
     public void planetScanningRange(float d)      { planetScanningRange = d; }
     public float shipScanningRange()              { return shipScanningRange; }
@@ -372,7 +370,7 @@ public final class Empire extends Species implements NamedObject {
     }
 
     public Colony.Orders priorityOrders()         { return priorityOrders; }
-    public void priorityOrders(Colony.Orders o)   { priorityOrders = o; }	// BR: Never Used
+//    public void priorityOrders(Colony.Orders o)   { priorityOrders = o; }	// BR: Never Used
     @Override public int colorId()                { return bannerColor; }
     private void colorId(int i)                   { bannerColor = i; resetColors(); }
     public int shape()                            { return id / options().numColors(); }
@@ -567,57 +565,6 @@ public final class Empire extends Species implements NamedObject {
 		}
 		shipLab = new ShipDesignLab();
 	}
-
-	// modnar: add option to start game with additional colonies
-	// modnar: compId is the System ID array for these additional colonies
-	// BR: For Restart with new options and random races
-	public Empire(Galaxy g, int empId, Species species, StarSystem s, int[] compId, Integer cId, String name, EmpireBaseData empSrc) {
-		super(species);
-		log("creating empire for ", species.id());
-		if (empSrc == null)
-			randomSource = rng().nextLong();
-		else
-			randomSource = empSrc.randomSource();
-		id = empId;
-
-		// Init empire species parameters
-		raceKey		= animKey();
-		dataRaceKey	= skillKey();
-		raceOptions	= super.speciesOptions(); // BR: for custom species
-
-		// Init Home world
-		usedHomeNames().add(s.name()); // To prevent same homeworlds, as custom species may have doubles
-		homeSysId = capitalSysId = s.id;
-        compSysId = compId; // modnar: add option to start game with additional colonies
-        if (empSrc != null							// Restart
-        		&& empId != Empire.PLAYER_ID		// Is Alien
-        		&& !options().selectedRestartChangesAliensAI())	// Don't changes AI
-        	selectedAI = empSrc.raceAI();
-
-        empireViews = new EmpireView[options().selectedNumberOpponents()+1];
-        status = new EmpireStatus(this);
-        sv = new SystemInfo(this);
-        // many things need to know if this is the player civ, so set it early
-        if (empId == Empire.PLAYER_ID) {
-			resetDivertColonyExcessToResearch();
-            g.player(this);
-        }
-
-		colorId(cId);
-		raceNameIndex	= civilizationIndex(); // also initialize species Name
-		// Init Leaders
-		String leaderName = name;
-		if (leaderName == null)
-			leaderName = nextAvailableLeaderExt();
-		leader = new Leader(this, leaderName);
-		usedLeaderNames().add(leaderName);
-        if (empSrc != null && empId != Empire.PLAYER_ID
-        		&& !options().selectedRestartAppliesSettings()) { // BR: For Restart with new options 
-        	leader.personality = empSrc.personality;
-        	leader.objective   = empSrc.objective;
-        }
-        shipLab = new ShipDesignLab();
-    }
     public Empire(Galaxy g, int empId, int sysId, int cId, String name)	{
 		super(ORION_KEY);
         log("creating Monster empire for ",  name);
@@ -982,9 +929,9 @@ public final class Empire extends Species implements NamedObject {
            	if(sys != null)
            		sv.stopRally(sys.id);
     }
-    public void cancelTransport(StarSystem from) {	// BR: Never used
-        from.transportSprite().clear();
-    }
+//    public void cancelTransport(StarSystem from) {	// BR: Never used
+//        from.transportSprite().clear();
+//    }
     public void deployTransport(StarSystem from) {
         from.transportSprite().accept();
     }
@@ -1192,7 +1139,7 @@ public final class Empire extends Species implements NamedObject {
     public float darkRange()              { return max(tech().scoutRange(), planetScanningRange); }
     public float shipRange()              { return tech().shipRange(); }
     public float scoutRange()             { return tech().scoutRange(); }
-    
+	public int shipRangeLevel()	{ return tech().shipRangeLevel(); }
     public float colonyShipRange() {
         // return max range of design with colony special
         float range = shipRange();
@@ -1203,11 +1150,11 @@ public final class Empire extends Species implements NamedObject {
         }
         return range;
     }
-    public float researchingShipRange()   { return tech().researchingShipRange(); }
-    public float researchingScoutRange()  { return tech().researchingScoutRange(); }
-    public float learnableShipRange()     { return tech().learnableShipRange(); }	// BR: Never used
-    public float learnableScoutRange()    { return tech().learnableScoutRange(); }	// BR: Never used
-    public float shipReach(int turns)   { return min(shipRange(), turns*tech().topSpeed()); }	// BR: Never used
+//    public float researchingShipRange()   { return tech().researchingShipRange(); }
+//    public float researchingScoutRange()  { return tech().researchingScoutRange(); }
+//    public float learnableShipRange()     { return tech().learnableShipRange(); }	// BR: Never used
+//    public float learnableScoutRange()    { return tech().learnableScoutRange(); }	// BR: Never used
+//    public float shipReach(int turns)   { return min(shipRange(), turns*tech().topSpeed()); }	// BR: Never used
     public float scoutReach(int turns)  { return min(scoutRange(), turns*tech().topSpeed()); }
 	public float speedInNebulae()		{ return options().selectedWarpSpeedFactor(); }
 	public String speedInNebulaeStr()	{
@@ -1851,19 +1798,19 @@ public final class Empire extends Species implements NamedObject {
         }
         return transports;
     }
-    public int enemyTransportsInTransit(StarSystem s) {	// BR: Never used
-        int transports = s.orbitingTransports(id);
-        
-        boolean[] enemyMap = enemyMap();
-        for (Ship sh: visibleShips()) {
-            if (sh != null && sh.isTransport()) {
-                if (enemyMap[sh.empId()] && (sh.destSysId() == s.id))
-                if (aggressiveWith(sh.empId()) && sh.destSysId() == s.id)
-                    transports += ((Transport)sh).size();
-            }
-        }
-        return transports;
-    }
+//    public int enemyTransportsInTransit(StarSystem s) {	// BR: Never used
+//        int transports = s.orbitingTransports(id);
+//        
+//        boolean[] enemyMap = enemyMap();
+//        for (Ship sh: visibleShips()) {
+//            if (sh != null && sh.isTransport()) {
+//                if (enemyMap[sh.empId()] && (sh.destSysId() == s.id))
+//                if (aggressiveWith(sh.empId()) && sh.destSysId() == s.id)
+//                    transports += ((Transport)sh).size();
+//            }
+//        }
+//        return transports;
+//    }
     public int unfriendlyTransportsInTransit(StarSystem s) {
         int transports = s.orbitingTransports(id);
         
@@ -2254,15 +2201,15 @@ public final class Empire extends Species implements NamedObject {
         }
         return defenderDmg;
     }
-    public boolean canScoutTo(Location xyz) {	// BR: Never used
-        Galaxy gal = galaxy();
-        for (int i=0; i<gal.numStarSystems(); i++) {
-           StarSystem s = gal.system(i);
-            if ((s.empire() == this) && (s.distanceTo(xyz) <= tech.scoutRange())  )
-                return true;
-        }
-        return false;
-    }
+//    public boolean canScoutTo(Location xyz) {	// BR: Never used
+//        Galaxy gal = galaxy();
+//        for (int i=0; i<gal.numStarSystems(); i++) {
+//           StarSystem s = gal.system(i);
+//            if ((s.empire() == this) && (s.distanceTo(xyz) <= tech.scoutRange())  )
+//                return true;
+//        }
+//        return false;
+//    }
     float distanceToSystem(StarSystem sys, List<StarSystem> froms) {
         float distance = Float.MAX_VALUE;
         for (StarSystem from: froms)
@@ -2391,9 +2338,9 @@ public final class Empire extends Species implements NamedObject {
             return null;
         return empireViews[empId];
     }
-	private boolean hasContact(EmpireView ev) {
-		return (ev != null) && (ev.embassy().contact() && !ev.extinct());
-	}
+//	private boolean hasContact(EmpireView ev) {
+//		return (ev != null) && (ev.embassy().contact() && !ev.extinct());
+//	}
     public boolean hasContact(Empire c) {
         EmpireView v = viewForEmpire(c);
         return (v != null) && (v.embassy().contact() && !v.extinct());
@@ -2640,13 +2587,13 @@ public final class Empire extends Species implements NamedObject {
         }
         return n;
     }
-	public List<EmpireView> warEnemiesView() {	// BR: Never used
-		List<EmpireView> r = new ArrayList<>();
-		for (EmpireView v : empireViews())
-			if ((v!= null) && !v.extinct() && v.embassy().anyWar())
-				r.add(v);
-		return r;
-	}
+//	public List<EmpireView> warEnemiesView() {	// BR: Never used
+//		List<EmpireView> r = new ArrayList<>();
+//		for (EmpireView v : empireViews())
+//			if ((v!= null) && !v.extinct() && v.embassy().anyWar())
+//				r.add(v);
+//		return r;
+//	}
     public List<Empire> warEnemies() {
         List<Empire> r = new ArrayList<>();
         for (EmpireView v : empireViews()) {
@@ -2656,14 +2603,14 @@ public final class Empire extends Species implements NamedObject {
         }
         return r;
     }
-	public List<EmpireView> enemiesView() {	// BR: Never used
-		List<EmpireView> r = new ArrayList<>();
-		for (EmpireView v : empireViews())
-			if ((v!= null) && !v.extinct() && v.embassy().isEnemy())
-//					&& (v.embassy().anyWar() || v.embassy().onWarFooting()))
-				r.add(v);
-		return r;
-	}
+//	public List<EmpireView> enemiesView() {	// BR: Never used
+//		List<EmpireView> r = new ArrayList<>();
+//		for (EmpireView v : empireViews())
+//			if ((v!= null) && !v.extinct() && v.embassy().isEnemy())
+////					&& (v.embassy().anyWar() || v.embassy().onWarFooting()))
+//				r.add(v);
+//		return r;
+//	}
     public List<Empire> enemies() {
         List<Empire> r = new ArrayList<>();
         for (EmpireView v : empireViews()) {
@@ -2679,18 +2626,18 @@ public final class Empire extends Species implements NamedObject {
 				r.add(v.empId());
 		return r;
 	}
-    private boolean[] enemyMap() {
-        // returns a boolean array where the index is an empire id and 
-        // the array value is true if that empire is an "enemy"
-        EmpireView[] empViews = empireViews();
-        boolean[] map = new boolean[empViews.length];
-        for (int i=0;i<map.length;i++) {
-            EmpireView v = empViews[i];
-            map[i] = (v != null) && !v.extinct() && v.embassy().isEnemy();
-//                        && (v.embassy().anyWar() || v.embassy().onWarFooting());
-        }
-        return map;
-    }
+//    private boolean[] enemyMap() {
+//        // returns a boolean array where the index is an empire id and 
+//        // the array value is true if that empire is an "enemy"
+//        EmpireView[] empViews = empireViews();
+//        boolean[] map = new boolean[empViews.length];
+//        for (int i=0;i<map.length;i++) {
+//            EmpireView v = empViews[i];
+//            map[i] = (v != null) && !v.extinct() && v.embassy().isEnemy();
+////                        && (v.embassy().anyWar() || v.embassy().onWarFooting());
+//        }
+//        return map;
+//    }
     public List<EmpireView> enemyViews() {
         List<EmpireView> r = new ArrayList<>();
         for (EmpireView v : empireViews()) {
@@ -2708,9 +2655,9 @@ public final class Empire extends Species implements NamedObject {
         }
         return r;
     }
-    public boolean hasNonEnemiesKnownBy(Empire e) {	// BR: Never used
-        return !nonEnemiesKnownBy(e).isEmpty();
-    }
+//    public boolean hasNonEnemiesKnownBy(Empire e) {	// BR: Never used
+//        return !nonEnemiesKnownBy(e).isEmpty();
+//    }
     public List<Empire> nonEnemiesKnownBy(Empire empOther) { // TODO BR: to be replaced by list of EmpireView
         List<Empire> enemies = new ArrayList<>();
         // return any empires we are both in economic range of 
@@ -2735,21 +2682,21 @@ public final class Empire extends Species implements NamedObject {
         }
         return r;
     }
-    public boolean hasAlliesKnownBy(Empire emp1) {	// BR: Never used
-        for (EmpireView v : empireViews()) {
-            if ((v!= null) && !v.extinct() && (!v.is(emp1)) && v.embassy().isAlly() && emp1.hasContact(v))
-                return true;
-        }
-        return false;
-    }
-    public List<Empire> alliesKnownBy(Empire emp1) { 	// BR: Never used
-        List<Empire> allies = new ArrayList<>();
-        for (EmpireView v : empireViews()) {
-            if ((v!= null) && !v.extinct() && (!v.is(emp1)) && v.embassy().isAlly() && emp1.hasContact(v))
-                allies.add(v.empireUncut());
-        }
-        return allies;
-    }
+//    public boolean hasAlliesKnownBy(Empire emp1) {	// BR: Never used
+//        for (EmpireView v : empireViews()) {
+//            if ((v!= null) && !v.extinct() && (!v.is(emp1)) && v.embassy().isAlly() && emp1.hasContact(v))
+//                return true;
+//        }
+//        return false;
+//    }
+//    public List<Empire> alliesKnownBy(Empire emp1) { 	// BR: Never used
+//        List<Empire> allies = new ArrayList<>();
+//        for (EmpireView v : empireViews()) {
+//            if ((v!= null) && !v.extinct() && (!v.is(emp1)) && v.embassy().isAlly() && emp1.hasContact(v))
+//                allies.add(v.empireUncut());
+//        }
+//        return allies;
+//    }
     public boolean friendlyWith(int empId) {
         if (empId == id) return true;
         if (isNotEmpire() || isNotEmpire(empId)) return false;
@@ -2873,17 +2820,17 @@ public final class Empire extends Species implements NamedObject {
             return false;
         return v.trade().active();
     }
-    public int contactAge(Empire c) {	// BR: Never used
-        if (c == this) return 0;
-        if (c == null) return 0;
-        if (isMonster() || c.isMonster()) return 0;
-        if (c.extinct) return 0;
-
-        EmpireView v = viewForEmpire(c);
-        if (v == null)
-            return 0;
-        return v.embassy().contactAge();
-    }
+//    public int contactAge(Empire c) {	// BR: Never used
+//        if (c == this) return 0;
+//        if (c == null) return 0;
+//        if (isMonster() || c.isMonster()) return 0;
+//        if (c.extinct) return 0;
+//
+//        EmpireView v = viewForEmpire(c);
+//        if (v == null)
+//            return 0;
+//        return v.embassy().contactAge();
+//    }
     void shareSystemInfoWithAlly(Empire c) {
         sv.shareAllyData(c.sv);
     }
@@ -2953,16 +2900,16 @@ public final class Empire extends Species implements NamedObject {
         }
         return systems;
     }
-    public StarSystem colonyNearestToSystem(StarSystem sys) {	// BR: Never used
-        List<StarSystem> colonies = new ArrayList<>(allColonizedSystems());
-        colonies.remove(sys);
-        if (colonies.isEmpty())
-            return null;
-
-        StarSystem.TARGET_SYSTEM = sys;
-        Collections.sort(colonies, StarSystem.DISTANCE_TO_TARGET_SYSTEM);
-        return colonies.get(0);
-    }
+//    public StarSystem colonyNearestToSystem(StarSystem sys) {	// BR: Never used
+//        List<StarSystem> colonies = new ArrayList<>(allColonizedSystems());
+//        colonies.remove(sys);
+//        if (colonies.isEmpty())
+//            return null;
+//
+//        StarSystem.TARGET_SYSTEM = sys;
+//        Collections.sort(colonies, StarSystem.DISTANCE_TO_TARGET_SYSTEM);
+//        return colonies.get(0);
+//    }
     public int alliedColonyNearestToSystem(StarSystem sys, float speed) {
         List<StarSystem> colonies = allySystems();
         colonies.remove(sys);
@@ -3122,13 +3069,13 @@ public final class Empire extends Species implements NamedObject {
         }
         return fleets2;
     }
-    public boolean anyUnexploredSystems() {	// BR: Never used
-        for (int n=0;n<sv.count(); n++) {
-            if (!sv.isScouted(n))
-                return true;
-        }
-        return false;
-    }
+//    public boolean anyUnexploredSystems() {	// BR: Never used
+//        for (int n=0;n<sv.count(); n++) {
+//            if (!sv.isScouted(n))
+//                return true;
+//        }
+//        return false;
+//    }
     public List<StarSystem> unexploredSystems() {
         Galaxy gal = galaxy();
         List<StarSystem> systems = new ArrayList<>();
@@ -3168,22 +3115,22 @@ public final class Empire extends Species implements NamedObject {
         }
         return systems;
     }
-    public PlanetType minUncolonizedPlanetTypeInShipRange(boolean checkHabitable) {	// BR: Never used
-        // of all uncolonized planets in range that we can colonize
-        // find the most hostile type... this guides the colony ship design
-        PlanetType minType = PlanetType.keyed(PlanetType.TERRAN);
-        for (int n=0;n<sv.count();n++) {
-            if (sv.isScouted(n) && sv.inShipRange(n) && !sv.isColonized(n)) {
-                PlanetType pType = sv.planetType(n);
-                if (!checkHabitable || canColonize(pType)) {
-                    if (pType.hostility() > minType.hostility())
-                        minType = pType;
-                }
-            }
-        }
-        return minType;
-    }
-    public boolean knowsAllActiveEmpires() {	// BR: Never used
+//    public PlanetType minUncolonizedPlanetTypeInShipRange(boolean checkHabitable) {	// BR: Never used
+//        // of all uncolonized planets in range that we can colonize
+//        // find the most hostile type... this guides the colony ship design
+//        PlanetType minType = PlanetType.keyed(PlanetType.TERRAN);
+//        for (int n=0;n<sv.count();n++) {
+//            if (sv.isScouted(n) && sv.inShipRange(n) && !sv.isColonized(n)) {
+//                PlanetType pType = sv.planetType(n);
+//                if (!checkHabitable || canColonize(pType)) {
+//                    if (pType.hostility() > minType.hostility())
+//                        minType = pType;
+//                }
+//            }
+//        }
+//        return minType;
+//    }
+    public boolean knowsAllActiveEmpires() {	// BR: Never used, for debug only
         for (Empire e: galaxy().activeEmpires()) {
             if (this != e) {
                 if (!knowsOf(e))
@@ -3256,18 +3203,18 @@ public final class Empire extends Species implements NamedObject {
 	public List<ShipFleet> ownFleetsDeployedToSystem(StarSystem target) {
 		return galaxy().ships.deployedFleetsTo(id, target.id);
 	}
-    public void scrapExcessBases(StarSystem sys, int max) {	// BR: Never used
-        if (sv.empire(sys.id) == this) {
-            Colony col = sys.colony();
-            if (col.defense().bases() > max) {
-                log("civScrapBases  bases:", str(col.defense().bases()), " max: ", str(max), " cost: ", str(tech.newMissileBaseCost()));
-                totalReserve += ((col.defense().bases() - max) * tech.newMissileBaseCost() / 4);
-                col.defense().bases(max);
-                //ai().setColonyAllocations(col);
-                sv.refreshFullScan(sys.id);
-            }
-        }
-    }
+//    public void scrapExcessBases(StarSystem sys, int max) {	// BR: Never used
+//        if (sv.empire(sys.id) == this) {
+//            Colony col = sys.colony();
+//            if (col.defense().bases() > max) {
+//                log("civScrapBases  bases:", str(col.defense().bases()), " max: ", str(max), " cost: ", str(tech.newMissileBaseCost()));
+//                totalReserve += ((col.defense().bases() - max) * tech.newMissileBaseCost() / 4);
+//                col.defense().bases(max);
+//                //ai().setColonyAllocations(col);
+//                sv.refreshFullScan(sys.id);
+//            }
+//        }
+//    }
     public float bestEnemyShieldLevel() {
         float best = 0;
         for (EmpireView v : empireViews()) {
@@ -3357,9 +3304,9 @@ public final class Empire extends Species implements NamedObject {
     public int maxRobotControls() {
         return tech.topRobotControls() + robotControlsAdj();
     }
-    public int baseRobotControls() {	// BR: Never used
-        return TechRoboticControls.BASE_ROBOT_CONTROLS + robotControlsAdj();
-    }
+//    public int baseRobotControls() {	// BR: Never used
+//        return TechRoboticControls.BASE_ROBOT_CONTROLS + robotControlsAdj();
+//    }
     public float workerProductivity() {
         float bookFormula = ((tech.planetology().techLevel() * 3) + 50) / 100;
         return bookFormula * workerProductivityMod();
@@ -3380,7 +3327,7 @@ public final class Empire extends Species implements NamedObject {
     public boolean incrementEmpireTaxLevel()  { return empireTaxLevel(empireTaxLevel+1); }
     public boolean decrementEmpireTaxLevel()  { return empireTaxLevel(empireTaxLevel-1); }
     public float empireTaxPct()               { return (float) empireTaxLevel / 100; }
-    public float maxEmpireTaxPct()            { return (float) maxEmpireTaxLevel()/100; }	// BR: Never used
+//    public float maxEmpireTaxPct()            { return (float) maxEmpireTaxLevel()/100; }	// BR: Never used
     public int empireTaxLevel()               { return empireTaxLevel; }
     public boolean empireTaxOnlyDeveloped()   { return empireTaxOnlyDeveloped; }
     public void toggleEmpireTaxOnlyDeveloped(){ // Player only
@@ -3504,22 +3451,22 @@ public final class Empire extends Species implements NamedObject {
         		totalPop += sys.colony().population();
         return totalPop;
     }
-    public float totalPlanetaryPopulation(Empire emp) {	// BR: Never used
-        float totalPop = 0;
-        if (emp == this) {
-            List<StarSystem> systems = new ArrayList<>(allColonizedSystems());
-            for (StarSystem sys: systems)
-            	if (sys != null)
-            		totalPop += sys.colony().population();
-        }
-        else {
-            for (int n=0; n<sv.count(); n++) {
-                if ((sv.empire(n) == emp))
-                    totalPop += sv.population(n);
-            }
-        }
-        return totalPop;
-    }
+//    public float totalPlanetaryPopulation(Empire emp) {	// BR: Never used
+//        float totalPop = 0;
+//        if (emp == this) {
+//            List<StarSystem> systems = new ArrayList<>(allColonizedSystems());
+//            for (StarSystem sys: systems)
+//            	if (sys != null)
+//            		totalPop += sys.colony().population();
+//        }
+//        else {
+//            for (int n=0; n<sv.count(); n++) {
+//                if ((sv.empire(n) == emp))
+//                    totalPop += sv.population(n);
+//            }
+//        }
+//        return totalPop;
+//    }
     public float totalPlanetaryIncome() {
         float totalProductionBC = 0;
         List<StarSystem> systems = new ArrayList<>(allColonizedSystems());
@@ -3598,17 +3545,17 @@ public final class Empire extends Species implements NamedObject {
         }
         return totalEmpireNonDynaProduction;
     }
-    public float nonDynaTotalProd(Empire emp) {	// BR: Never used
-        if (emp == this)
-            return nonDynaTotalProd();
-
-        float totalProductionBC = 0;
-        for (int i=0; i<sv.count(); i++) {
-            if ((sv.empire(i) == emp) && (sv.colony(i) != null))
-                totalProductionBC += sv.colony(i).nonDynaProd();
-        }
-        return totalProductionBC;
-    }
+//    public float nonDynaTotalProd(Empire emp) {	// BR: Never used
+//        if (emp == this)
+//            return nonDynaTotalProd();
+//
+//        float totalProductionBC = 0;
+//        for (int i=0; i<sv.count(); i++) {
+//            if ((sv.empire(i) == emp) && (sv.colony(i) != null))
+//                totalProductionBC += sv.colony(i).nonDynaProd();
+//        }
+//        return totalProductionBC;
+//    }
 	double empireNonDynaTechnoIndPower() {
 		if (empireNonDynaTechnoIndPower <= 0)
 			empireNonDynaTechnoIndPower = nonDynaIndPowerLevel();
@@ -3678,14 +3625,14 @@ public final class Empire extends Species implements NamedObject {
         float empireBC = totalPlanetaryProduction();
         return totalMissileBaseCost() / empireBC;
     }
-    public float totalPlanetaryIndustrialSpending() {	// BR: Never used
-        float totalIndustrialSpendingBC = 0;
-        List<StarSystem> systems = new ArrayList<>(allColonizedSystems());
-        for (StarSystem sys: systems)
-        	if (sys != null)
-        		totalIndustrialSpendingBC += (sys.colony().pct(Colony.INDUSTRY) * sys.colony().totalIncome());
-        return totalIndustrialSpendingBC;
-    }
+//    public float totalPlanetaryIndustrialSpending() {	// BR: Never used
+//        float totalIndustrialSpendingBC = 0;
+//        List<StarSystem> systems = new ArrayList<>(allColonizedSystems());
+//        for (StarSystem sys: systems)
+//        	if (sys != null)
+//        		totalIndustrialSpendingBC += (sys.colony().pct(Colony.INDUSTRY) * sys.colony().totalIncome());
+//        return totalIndustrialSpendingBC;
+//    }
     public float totalPlanetaryResearch() {
         if (tech().researchCompleted())
             return 0;
@@ -3696,19 +3643,19 @@ public final class Empire extends Species implements NamedObject {
         		totalResearchBC += sys.colony().totalPlanetaryResearch(); // some research BC may stay with colony
         return totalResearchBC;
     }
-    public float totalEmpireResearch(float totalRp) {	// BR: Never used
-        TechTree t = tech();
-        if (t.researchCompleted())
-            return 0;
-        float total = 0.0f;
-        total += t.computer().currentResearch(totalRp);
-        total += t.construction().currentResearch(totalRp);
-        total += t.forceField().currentResearch(totalRp);
-        total += t.planetology().currentResearch(totalRp);
-        total += t.propulsion().currentResearch(totalRp);
-        total += t.weapon().currentResearch(totalRp);
-        return total;
-    }
+//    public float totalEmpireResearch(float totalRp) {	// BR: Never used
+//        TechTree t = tech();
+//        if (t.researchCompleted())
+//            return 0;
+//        float total = 0.0f;
+//        total += t.computer().currentResearch(totalRp);
+//        total += t.construction().currentResearch(totalRp);
+//        total += t.forceField().currentResearch(totalRp);
+//        total += t.planetology().currentResearch(totalRp);
+//        total += t.propulsion().currentResearch(totalRp);
+//        total += t.weapon().currentResearch(totalRp);
+//        return total;
+//    }
     public float totalPlanetaryResearchSpending() {
         if (tech().researchCompleted())
             return 0;

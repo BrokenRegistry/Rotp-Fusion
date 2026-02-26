@@ -2476,6 +2476,9 @@ SETTINGS_PLANET_QUALITY           | Qualité des planètes : %1
 SETTINGS_TERRAFORMING             | Terraformation : %1
 SETTINGS_COLONIZING               | Colonisation : %1
 SETTINGS_FUEL_RANGE               | Autonomie : %1
+SETTINGS_DYNAMIC_RANGE			| Autonomie Dynamique : %1 ‰
+SETTINGS_DYNAMIC_RANGE_FACTOR	| Facteur d'Autonomie : %1 ‰
+SETTINGS_DYNAMIC_RANGE_QUAD		| Facteur Quadratique : %1 ppm
 SETTINGS_AI_HOSTILITY             | Hostilité : %1
 SETTINGS_RANDOM_EVENTS_HELP       | Il y a vingt événements aléatoires dans RotP (seize originaux et quatre de Modnar), certains favorables et d’autres défavorables. À partir du tour 50 (cette valeur est configurable), le pourcentage de chance qu’un événement aléatoire se produise quelque part dans la galaxie commence à grimper. Après qu’un événement aléatoire se soit produit, le pourcentage de chance se réinitialise à zéro et recommence à grimper au tour suivant. Les événements aléatoires sont une mécanique de rattrapage qui favorise les factions les plus faibles (Configurable). Une fois l’événement déterminé, il ciblera un joueur en fonction de ses performances dans le jeu. Les événements favorables ont plus de chances de se produire sur les joueurs ayant une production globale plus faible, tandis que les événements défavorables ont plus de chances de se produire sur les joueurs ayant une production globale plus élevée. Certains événements ne peuvent se produire qu’une seule fois. (Configurable)
 SETTINGS_RANDOM_EVENTS_DESC       | Les monstres spatiaux sont des événements aléatoires et des menaces considérables en milieu de partie. Désactiver les monstres spatiaux ou tous les événements aléatoires.
@@ -2500,8 +2503,14 @@ SETTINGS_RANDOMIZE_AI_HELP        | « Option avancée » originale pour chang
 SETTINGS_RANDOMIZE_AI_DESC        | Choisir au hasard les personnalités des joueurs IA, les aptitudes des espèces ou les deux.
 SETTINGS_AUTOPLAY_DESC            | Automatiser complètement le jeu en faisant jouer une IA pour le joueur. Ceci est utile pour une vue de première main du fonctionnement de l’IA.
 SETTINGS_AUTOPLAY_WARNING         | Avertissement ! Le jeu est en mode automatique. Utilisez « →SETUP_BUTTON_MERGED_STATIC_SETTINGS← » pour désactiver.
-SETTINGS_FUEL_RANGE_HELP          | Augmente ou diminuer la gamme des technologies d’autonomie en carburant et les réservoirs de carburant. Les espèces tolérantes bénéficieront des autonomies réduites, tandis que les espèces à croissance rapide apprécieront des autonomies accrues...
+SETTINGS_FUEL_RANGE_HELP          | Augmente ou diminue la gamme des technologies d’autonomie en carburant et les réservoirs de carburant. Les espèces tolérantes bénéficieront des autonomies réduites, tandis que les espèces à croissance rapide apprécieront des autonomies accrues...
 SETTINGS_FUEL_RANGE_DESC          | Augmente la portée des technologies de carburant et des réservoirs de carburant supplémentaires.
+SETTINGS_DYNAMIC_RANGE_HELP			| Pour découvrir progressivement les galaxies très étalées, ce paramètre permet une augmentation progressive de l’autonomie, en fonction du niveau général des technologies de propulsion.<br>Formule : Autonomie = Carburant * (1 + Lin * Tech + Quad * Tech²)<br>Carburant = Autonomie liée au carburant.<br>Tech = Niveau général des technologies de propulsion.<br>Lin = Facteur linéaire sélectionné.<br>Quad = Facteur quadratique sélectionné.
+SETTINGS_DYNAMIC_RANGE_FACTOR_HELP	| →SETTINGS_DYNAMIC_RANGE_HELP←
+SETTINGS_DYNAMIC_RANGE_QUAD_HELP	| →SETTINGS_DYNAMIC_RANGE_HELP←
+SETTINGS_DYNAMIC_RANGE_DESC			| Pour activer l’augmentation progressive de l’autonomie en fonction du niveau général des technologies de propulsion.
+SETTINGS_DYNAMIC_RANGE_FACTOR_DESC	| Facteur linéaire de l’augmentation progressive de l’autonomie en fonction du niveau général des technologies de propulsion.
+SETTINGS_DYNAMIC_RANGE_QUAD_DESC	| Facteur Quadratique de l’augmentation progressive de l’autonomie en fonction du niveau général des technologies de propulsion.
 SETTINGS_AI_HOSTILITY_DESC        | Augmente ou diminue le niveau général d’hostilité entre les espèces extraterrestres.
 
 HEADERS_RELEVANT_PARAMETERS_DESC  | Vous serez peut-être aussi intéressé à connaître, ou ajuster ces paramètres.
@@ -5866,8 +5875,9 @@ GUIDE_KEY_MODIFIER_SHIFT          | Maj
 GUIDE_KEY_MODIFIER_CTRL           | Ctrl
 GUIDE_KEY_MODIFIER_CTRL_SHIFT     | Ctrl+Maj
 GUIDE_KEY_MODIFIER_SEPARATOR      | &nbsp : &nbsp
-GUIDE_INTEGER_PCT_VALUE           | %1 %
-GUIDE_INTEGER_PER_MILLE_VALUE		| %1 ‰
+GUIDE_INTEGER_PCT_VALUE			| %1 %
+GUIDE_INTEGER_PER_MILLE_VALUE	| %1 ‰
+GUIDE_INTEGER_PPM_VALUE			| %1 ppm
 
 // Common Guides and Help
 SETTINGS_BUTTON_EXIT_DESC         | Quitter / Appliquer / Annuler <br> (Basculer avec « Ctrl » ou « Maj »)

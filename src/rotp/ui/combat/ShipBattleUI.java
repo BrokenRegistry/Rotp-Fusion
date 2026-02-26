@@ -111,7 +111,6 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
     private int barH = s45;
     private float planetRotateSpeed = 0.1f;
     private boolean drawingPlanet = false;
-    private @SuppressWarnings("unused")
 	//private boolean planetDrawn = false;
     boolean showPlanet = false;
     //boolean exited = false;

@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 
 import rotp.ui.options.AllSubUI;
 import rotp.ui.util.LinkData;
+import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamInteger;
 import rotp.ui.util.ParamList;
 
@@ -378,6 +379,34 @@ public interface IAdvOptions extends IBaseOptsTools {
 			if (GameSession.instance().status().inProgress())
 				GameSession.instance().galaxy().resetAllAI();
 		}
+	}
+
+	static void tagDynamicRange(String id)	{
+		dynamicRangePerMille.updated(true);
+		dynamicRangeQuad.updated(true);
+	}
+	ParamBoolean dynamicRange	= new ParamBoolean(ADV_UI, "DYNAMIC_RANGE", false)
+			.setUpdateParameters(IAdvOptions::tagDynamicRange, "");
+	default boolean dynamicRange()		{ return dynamicRange.get(); }
+
+	ParamInteger dynamicRangePerMille	= new ParamDynRngInt(ADV_UI, "DYNAMIC_RANGE_FACTOR", 0)
+			.setLimits(0, 1000)
+			.setIncrements(1, 5, 20)
+			.perMilleValue(true)
+			.loop(false);
+	default int dynamicRangePerMille()	{ return dynamicRangePerMille.get(); }
+
+	ParamInteger dynamicRangeQuad	= new ParamDynRngInt(ADV_UI, "DYNAMIC_RANGE_QUAD", 0)
+			.setLimits(0, 10000)
+			.setIncrements(1, 10, 50)
+			.ppmValue(true)
+			.loop(false);
+	default int dynamicRangeQuad()	{ return dynamicRangeQuad.get(); }
+	final class ParamDynRngInt extends ParamInteger	{
+		public ParamDynRngInt(String gui, String name, Integer defaultValue) {
+			super(gui, name, defaultValue);
+		}
+		@Override public boolean isGhost()	{ return !dynamicRange.get(); }
 	}
 
 	ParamList techTrading = new TechTrading(); // Duplicate Do not add the list

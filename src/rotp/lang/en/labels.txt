@@ -2476,6 +2476,9 @@ SETTINGS_PLANET_QUALITY           | Planet Quality: %1
 SETTINGS_TERRAFORMING             | Hostile Terraforming: %1
 SETTINGS_COLONIZING               | Colonizing: %1
 SETTINGS_FUEL_RANGE               | Fuel Range: %1
+SETTINGS_DYNAMIC_RANGE			| Dynamic Range: %1
+SETTINGS_DYNAMIC_RANGE_FACTOR	| Dynamic Range Factor: %1‰
+SETTINGS_DYNAMIC_RANGE_QUAD		| Dynamic Range Quadratic: %1ppm
 SETTINGS_AI_HOSTILITY             | Hostility: %1
 SETTINGS_RANDOM_EVENTS_HELP       | There are twenty random events in Remnants of the Precursors <i> (sixteen vanilla and four from the Modnar)</i>, some favorable and some unfavorable. As of turn 50 <i> (this value can be changed) </i>, the percentage chance that a random event will occur somewhere in the galaxy begins to climb. After a random event occurs, the percentage chance resets to zero and begins climbing again next turn.<br>Random events are a catch-up mechanic that favors weaker factions <i> (this can be changed) </i>. Once the event is determined, it will target a player based on how well they're doing in the game. Favorable events are more likely to happen to players with lower overall production, whereas unfavorable events are more likely to happen to players with higher overall production. Some event can only happen once.
 SETTINGS_RANDOM_EVENTS_DESC       | Space Monsters are random events and considerable mid-game threats.<br> Turn off space monsters or all random events.
@@ -2502,6 +2505,12 @@ SETTINGS_AUTOPLAY_DESC            | Completely automate the game by having an AI
 SETTINGS_AUTOPLAY_WARNING         | Warning! Auto play is currently enabled which will prevent user gameplay.<br> Use "→SETUP_BUTTON_MERGED_STATIC_SETTINGS←" to disable.
 SETTINGS_FUEL_RANGE_HELP          | Increase or decrease the range of fuel range technologies and reserve fuel tanks. tolerant species will benefit from reduced ranges, while fast growing species will appreciate increased ranges...
 SETTINGS_FUEL_RANGE_DESC          | Increase the range of fuel range technologies and reserve fuel tanks.
+SETTINGS_DYNAMIC_RANGE_HELP			| To progressively discover widely scattered galaxies, this parameter allows for a gradual increase in range, depending on the overall level of propulsion technologies.<br>Formula: Range = Fuel * (1 + Lin * Tech + Quad * Tech²)<br>Fuel = Range related to fuel.<br>Tech = Overall level of propulsion technologies.<br>Lin = Selected linear factor.<br>Quad = Selected quadratic factor.
+SETTINGS_DYNAMIC_RANGE_FACTOR_HELP	| →SETTINGS_DYNAMIC_RANGE_HELP←
+SETTINGS_DYNAMIC_RANGE_QUAD_HELP	| →SETTINGS_DYNAMIC_RANGE_HELP←
+SETTINGS_DYNAMIC_RANGE_DESC			| To enable the qradual increase in range depending on the overall level of propulsion technologies.
+SETTINGS_DYNAMIC_RANGE_FACTOR_DESC	| Linear parameter for the gradual increase in range depending on the overall level of propulsion technologies.
+SETTINGS_DYNAMIC_RANGE_QUAD_DESC	| Quadratic parameter for the gradual increase in range depending on the overall level of propulsion technologies.
 SETTINGS_AI_HOSTILITY_DESC        | Increase or decrease the general level of hostility between alien species.<br>When the hostility between two empires reach the level 30, a war declaration will follow!
 
 HEADERS_RELEVANT_PARAMETERS_DESC  | You may also be interested in knowing, or adjusting, these settings.
@@ -5866,8 +5875,9 @@ GUIDE_KEY_MODIFIER_SHIFT          | Shift
 GUIDE_KEY_MODIFIER_CTRL           | Ctrl
 GUIDE_KEY_MODIFIER_CTRL_SHIFT     | Ctrl+Shift
 GUIDE_KEY_MODIFIER_SEPARATOR      | &nbsp : &nbsp
-GUIDE_INTEGER_PCT_VALUE           | %1%
-GUIDE_INTEGER_PER_MILLE_VALUE		| %1‰
+GUIDE_INTEGER_PCT_VALUE			| %1%
+GUIDE_INTEGER_PER_MILLE_VALUE	| %1‰
+GUIDE_INTEGER_PPM_VALUE			| %1ppm
 
 // Common Guides and Help
 SETTINGS_BUTTON_EXIT_DESC         | Exit / Apply / Cancel <br> (Switch with "Ctrl" or "Shift")

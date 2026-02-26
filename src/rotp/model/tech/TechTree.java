@@ -481,60 +481,60 @@ public final class TechTree implements Base, Serializable {
     public boolean canTerraformHostile() {
         return topAtmoEnrichmentTech() != null;
     }
-    public float researchingShipRange() {
-        float range = ((TechFuelRange) tech(topFuelRangeTech)).range();
+    public float researchingShipRangeLevel() {
+        float rangeLevel = ((TechFuelRange) tech(topFuelRangeTech)).rangeLevel();
 
         String id = propulsion().currentTech();
         if (id == null)
-            return range;
-        
+            return rangeLevel;
+
         Tech t = tech(id);
         if (t.isFuelRangeTech()) {
             TechFuelRange t0 = (TechFuelRange) t;
-            range = max(range, t0.range());
+            rangeLevel = max(rangeLevel, t0.rangeLevel());
         }
-        return range;
+        return rangeLevel;
     }
-    public float learnableShipRange() {
-        float range = ((TechFuelRange) tech(topFuelRangeTech)).range();
-
-        for (String id: propulsion().techIdsAvailableForResearch(true)) {
-            Tech t = tech(id);
-            if (t.isFuelRangeTech()) {
-                TechFuelRange t0 = (TechFuelRange) t;
-                range = max(range, t0.range());
-            }
-        }
-        return range;
-    }
-    public float researchingScoutRange() {
-        float rsv = topReserveFuelRangeTech().range();
-        float range = ((TechFuelRange) tech(topFuelRangeTech)).range()+rsv;
-
-        String id = propulsion().currentTech();
-        if (id == null)
-            return range;
-        
-        Tech t = tech(id);
-        if (t.isFuelRangeTech()) {
-            TechFuelRange t0 = (TechFuelRange) t;
-            range = max(range, t0.range()+rsv);
-        }
-        return range;
-    }
-    public float learnableScoutRange() {
-        float rsv = topReserveFuelRangeTech().range();
-        float range = ((TechFuelRange) tech(topFuelRangeTech)).range()+rsv;
-
-        for (String id: propulsion().techIdsAvailableForResearch(true)) {
-            Tech t = tech(id);
-            if (t.isFuelRangeTech()) {
-                TechFuelRange t0 = (TechFuelRange) t;
-                range = max(range, t0.range()+rsv);
-            }
-        }
-        return range;
-    }
+//    public float learnableShipRange() {
+//        float range = ((TechFuelRange) tech(topFuelRangeTech)).range();
+//
+//        for (String id: propulsion().techIdsAvailableForResearch(true)) {
+//            Tech t = tech(id);
+//            if (t.isFuelRangeTech()) {
+//                TechFuelRange t0 = (TechFuelRange) t;
+//                range = max(range, t0.range());
+//            }
+//        }
+//        return range;
+//    }
+//    public float researchingScoutRange() {
+//        float rsv = topReserveFuelRangeTech().range();
+//        float range = ((TechFuelRange) tech(topFuelRangeTech)).range()+rsv;
+//
+//        String id = propulsion().currentTech();
+//        if (id == null)
+//            return range;
+//        
+//        Tech t = tech(id);
+//        if (t.isFuelRangeTech()) {
+//            TechFuelRange t0 = (TechFuelRange) t;
+//            range = max(range, t0.range()+rsv);
+//        }
+//        return range;
+//    }
+//    public float learnableScoutRange() {
+//        float rsv = topReserveFuelRangeTech().range();
+//        float range = ((TechFuelRange) tech(topFuelRangeTech)).range()+rsv;
+//
+//        for (String id: propulsion().techIdsAvailableForResearch(true)) {
+//            Tech t = tech(id);
+//            if (t.isFuelRangeTech()) {
+//                TechFuelRange t0 = (TechFuelRange) t;
+//                range = max(range, t0.range()+rsv);
+//            }
+//        }
+//        return range;
+//    }
     public String environmentTechNeededToColonize(int hostility) {
         boolean restricted = options().restrictedColonization();
         // returns the id of the currently unknown ecology tech we need 
@@ -544,12 +544,12 @@ public final class TechTree implements Base, Serializable {
 
         if (!restricted && (hostilityAllowed >= hostility))
             return null;
-        
+
         // check current research tech first
         String currentId = planetology().currentTech();
         if (currentId == null)
             return null;
-                    
+
         Tech t = tech(currentId);
         if (t.isControlEnvironmentTech()) {
             TechControlEnvironment t0 = (TechControlEnvironment) t;
@@ -557,78 +557,80 @@ public final class TechTree implements Base, Serializable {
                 || (!restricted && t0.hostilityAllowed() >= hostility))
                     return currentId;
         }
-        
+
         for (String id: planetology().techIdsAvailableForResearch(true)) {
             t = tech(id);
             if (t.isControlEnvironmentTech()) {
                 TechControlEnvironment t0 = (TechControlEnvironment) t;
                 if ((t0.hostilityAllowed() == hostility) 
                 || (!restricted && t0.hostilityAllowed() >= hostility))
-                    return id;            
+                    return id;
             }
         }
-        return null;        
+        return null;
     }
     public String rangeTechNeededToScoutDistance(float dist) {
         // returns the id of the currently unknown propulsion tech we need 
         // to research in order for scout ships to reach range dist
         // if no tech is needed or it is impossible, return null
         float rsv = topReserveFuelRangeTech().range();
-        float range = ((TechFuelRange) tech(topFuelRangeTech)).range()+rsv;
+		float propLevel = options().dynamicRange()? propulsion().techLevel() : 0;
+		float range = ((TechFuelRange) tech(topFuelRangeTech)).range(propLevel) + rsv;
         if (range >= dist)
             return null;
-        
+
         // check current research tech first
         String currentId = propulsion().currentTech();
         if (currentId == null)
             return null;
-               
+
         Tech t = tech(currentId);
         if (t.isFuelRangeTech()) {
             TechFuelRange t0 = (TechFuelRange) t;
-            if (t0.range()+rsv >= dist)
+            if (t0.range(propLevel)+rsv >= dist)
                 return currentId;
         }
-         
+
         for (String id: propulsion().techIdsAvailableForResearch(true)) {
             t = tech(id);
             if (t.isFuelRangeTech()) {
                 TechFuelRange t0 = (TechFuelRange) t;
-                if (t0.range()+rsv >= dist)
+                if (t0.range(propLevel)+rsv >= dist)
                     return id;
             }
-        }      
-        return null;      
+        }
+        return null;
     }
     public String rangeTechNeededToReachDistance(float dist) {
         // returns the id of the currently unknown propulsion tech we need 
         // to research in order for normal ships to reach range dist
         // if no tech is needed or it is impossible, return null
-        float range = ((TechFuelRange) tech(topFuelRangeTech)).range();
+		float propLevel = options().dynamicRange()? propulsion().techLevel() : 0;
+		float range = ((TechFuelRange) tech(topFuelRangeTech)).range(propLevel);
         if (range >= dist)
             return null;
-        
+
         // check current research tech first
         String currentId = propulsion().currentTech();
         if (currentId == null)
             return null;
-        
+
         Tech t = tech(currentId);
         if (t.isFuelRangeTech()) {
             TechFuelRange t0 = (TechFuelRange) t;
-            if (t0.range() >= dist)
+            if (t0.range(propLevel) >= dist)
                 return currentId;
         }
-        
+
         for (String id: propulsion().techIdsAvailableForResearch(true)) {
             t = tech(id);
             if (t.isFuelRangeTech()) {
                 TechFuelRange t0 = (TechFuelRange) t;
-                if (t0.range() >= dist)
+                if (t0.range(propLevel) >= dist)
                     return id;
             }
-        }      
-        return null;      
+        }
+        return null;
     }
     public float maxTechLevel() {
         float lvl = 0;
@@ -848,12 +850,10 @@ public final class TechTree implements Base, Serializable {
     public float wasteElimination() {
         return topEcoRestorationTech == null ? TechEcoRestoration.BASE_WASTE_ELIMINATED : topEcoRestorationTech().wasteEliminated;
     }
-    public float shipRange() {
-        return topFuelRangeTech == null ? 1 : topFuelRangeTech().range();
-    }
-    public float scoutRange() {
-       return shipRange() + topReserveFuelRangeTech().range();
-    }
+	public int shipRangeLevel()		{ return topFuelRangeTech == null ? 1 : topFuelRangeTech().rangeLevel(); }
+	public int scoutRangeLevel()	{ return shipRangeLevel() + (int) (topReserveFuelRangeTech().range()); }
+	public float shipRange()		{ return topFuelRangeTech == null ? 1 : topFuelRangeTech().range(this); }
+	public float scoutRange()		{ return shipRange() + topReserveFuelRangeTech().range(); }
     public float bestFactoryCost() {
         return topImprovedIndustrialTech == null ? TechImprovedIndustrial.BASE_FACTORY_COST : topImprovedIndustrialTech().factoryCost;
     }

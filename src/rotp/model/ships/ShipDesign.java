@@ -770,10 +770,17 @@ public final class ShipDesign extends Design {
     }
     public float range() {
         if (isExtendedRange())
-            return empire().tech().scoutRange();
+            return empire().scoutRange();
         else
-            return empire().tech().shipRange();
+            return empire().shipRange();
     }
+	public String rangeStr() {
+		float rng =  range();
+		if (rng == (int) rng) 
+			return "" + (int) rng;
+		else
+			return df1.format(rng);
+	}
 	public int baseWarpSpeed()			{ return engine().baseWarp(); }
 	public float warpSpeed()			{ return engine().warp(); }
 	public boolean hasColonySpecial()	{ return colonySpecial() != null; }

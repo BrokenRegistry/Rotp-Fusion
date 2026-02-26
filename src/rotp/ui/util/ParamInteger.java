@@ -32,6 +32,7 @@ public class ParamInteger extends AbstractParam<Integer> {
 	private boolean specialZero		= false;
 	private boolean pctValue		= false;
 	private boolean perMilleValue	= false;
+	private boolean ppmValue		= false;
 	private String	negativeLabel	= "";
 	private String	zeroLabel		= "";
 	private LinkedHashMap<Integer, String> specialMap = new LinkedHashMap<>();
@@ -120,7 +121,11 @@ public class ParamInteger extends AbstractParam<Integer> {
 		this.perMilleValue = perMilleValue;
 		return this;
 	}
-	public float getFloat()	{ return pctValue? get()/100f : perMilleValue? get()/1000f : get(); }
+	public ParamInteger ppmValue(boolean ppmValue) {
+		this.ppmValue = ppmValue;
+		return this;
+	}
+	public float getFloat()	{ return pctValue? get()/100f : perMilleValue? get()/1000f : ppmValue? get()/1000000f : get(); }
 	// ===== Overriders =====
 	//
 	@Override public ParamInteger isValueInit(boolean is) { super.isValueInit(is)  ; return this; }
@@ -265,6 +270,8 @@ public class ParamInteger extends AbstractParam<Integer> {
 		if (pctValue && addPct)
 			return langLabel("GUIDE_INTEGER_PCT_VALUE", String.valueOf(val));
 		if (perMilleValue && addPct)
+			return langLabel("GUIDE_INTEGER_PER_MILLE_VALUE", String.valueOf(val));
+		if (ppmValue && addPct)
 			return langLabel("GUIDE_INTEGER_PER_MILLE_VALUE", String.valueOf(val));
 		return String.valueOf(val);
 	}

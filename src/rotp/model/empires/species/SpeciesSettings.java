@@ -25,7 +25,6 @@ import rotp.model.game.DynOptions;
 import rotp.model.game.DynamicOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IRaceOptions;
-import rotp.model.planet.PlanetType;
 import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
@@ -873,18 +872,18 @@ public abstract class SpeciesSettings {
 	}
 	// ==================== AvailablePlayer ====================
 	//
-	@SuppressWarnings("unused")
-	class AvailablePlayer extends SettingBoolean {
-		private static final boolean defaultValue = true;
-
-		AvailablePlayer() {
-			super(ROOT, "AVAILABLE_PLAYER", defaultValue);
-			isBullet(false);
-			hasNoCost(true);
-		}
-		@Override public void settingToSkill(SpeciesSkills skills) { skills.availablePlayer(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.availablePlayer()); }
-	}
+//	@SuppressWarnings("unused")
+//	class AvailablePlayer extends SettingBoolean {
+//		private static final boolean defaultValue = true;
+//
+//		AvailablePlayer() {
+//			super(ROOT, "AVAILABLE_PLAYER", defaultValue);
+//			isBullet(false);
+//			hasNoCost(true);
+//		}
+//		@Override public void settingToSkill(SpeciesSkills skills) { skills.availablePlayer(settingValue()); }
+//		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.availablePlayer()); }
+//	}
 	// ==================== AvailableAI ====================
 	//
 	class AvailableAI extends SettingBoolean {
@@ -1275,24 +1274,24 @@ public abstract class SpeciesSettings {
 	}
 	// ==================== PlanetType ====================
 	//
-	@SuppressWarnings("unused")
-	class RacePlanetType extends SettingBase<String> {
-		private static final String defaultValue = "Terran";
-
-		RacePlanetType() {
-			super(ROOT, "HOME_TYPE");
-			isBullet(true);
-			labelsAreFinals(true);
-			showFullGuide(true);
-			put("Ocean",	PlanetType.OCEAN,	0f, PlanetType.OCEAN);
-			put("Jungle",	PlanetType.JUNGLE,	0f, PlanetType.JUNGLE);
-			put("Terran",	PlanetType.TERRAN,	0f, PlanetType.TERRAN);
-			defaultCfgValue(defaultValue);
-			hasNoCost(true); // to be removed
-		}
-		@Override public void settingToSkill(SpeciesSkills skills) { skills.homeworldPlanetType(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.homeworldPlanetType()); }
-	}
+//	@SuppressWarnings("unused")
+//	class RacePlanetType extends SettingBase<String> {
+//		private static final String defaultValue = "Terran";
+//
+//		RacePlanetType() {
+//			super(ROOT, "HOME_TYPE");
+//			isBullet(true);
+//			labelsAreFinals(true);
+//			showFullGuide(true);
+//			put("Ocean",	PlanetType.OCEAN,	0f, PlanetType.OCEAN);
+//			put("Jungle",	PlanetType.JUNGLE,	0f, PlanetType.JUNGLE);
+//			put("Terran",	PlanetType.TERRAN,	0f, PlanetType.TERRAN);
+//			defaultCfgValue(defaultValue);
+//			hasNoCost(true); // to be removed
+//		}
+//		@Override public void settingToSkill(SpeciesSkills skills) { skills.homeworldPlanetType(settingValue()); }
+//		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.homeworldPlanetType()); }
+//	}
 	// ==================== HomeworldSize ====================
 	//
 	class HomeworldSize extends SettingInteger {
@@ -1305,34 +1304,34 @@ public abstract class SpeciesSettings {
 	}
 	// ==================== PopulationBonusPct ====================
 	//
-	@SuppressWarnings("unused")
-	class PopulationBonusPct extends SettingInteger { // BR: May be implemented later... !High risk of bugs!
-		PopulationBonusPct() {
-			super(ROOT, "POPULATION_BONUS", 100, 70, 150, 1, 5, 20,
-					DIFFERENCE, new float[]{0f, .8f}, new float[]{0f, 1.4f});
-		}
-		@Override public void settingToSkill(SpeciesSkills skills) { skills.populationBonusPct(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.populationBonusPct()); }
-	}
+//	@SuppressWarnings("unused")
+//	class PopulationBonusPct extends SettingInteger { // BR: May be implemented later... !High risk of bugs!
+//		PopulationBonusPct() {
+//			super(ROOT, "POPULATION_BONUS", 100, 70, 150, 1, 5, 20,
+//					DIFFERENCE, new float[]{0f, .8f}, new float[]{0f, 1.4f});
+//		}
+//		@Override public void settingToSkill(SpeciesSkills skills) { skills.populationBonusPct(settingValue()); }
+//		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.populationBonusPct()); }
+//	}
 	// ==================== SpeciesType ====================
 	//
-	@SuppressWarnings("unused")
-	class SpeciesType extends SettingBase<Integer> {
-		private static final String defaultValue = "Terran";
-
-		SpeciesType() {
-			super(ROOT, "RACE_TYPE");
-			isBullet(true);
-			labelsAreFinals(true);
-			put("Terran",	"RACE_TERRAN",   0f, 1);
-			put("Aquatic",	"RACE_AQUATIC",  2f, 2);
-			put("Silicate",	"RACE_SILICATE", 4f, 3);
-			put("Robotic",	"RACE_ROBOTIC",	 4f, 4);
-			defaultCfgValue(defaultValue);
-		}
-		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesType(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.speciesType()); }
-	}
+//	@SuppressWarnings("unused")
+//	class SpeciesType extends SettingBase<Integer> {
+//		private static final String defaultValue = "Terran";
+//
+//		SpeciesType() {
+//			super(ROOT, "RACE_TYPE");
+//			isBullet(true);
+//			labelsAreFinals(true);
+//			put("Terran",	"RACE_TERRAN",   0f, 1);
+//			put("Aquatic",	"RACE_AQUATIC",  2f, 2);
+//			put("Silicate",	"RACE_SILICATE", 4f, 3);
+//			put("Robotic",	"RACE_ROBOTIC",	 4f, 4);
+//			defaultCfgValue(defaultValue);
+//		}
+//		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesType(settingValue()); }
+//		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.speciesType()); }
+//	}
 	// ==================== IgnoreEco ====================
 	//
 	class IgnoresEco extends SettingBase<String> {
@@ -1436,17 +1435,17 @@ public abstract class SpeciesSettings {
 	}
 	// ==================== SpyTelepathy ====================
 	//
-	@SuppressWarnings("unused")
-	class SpyTelepathy extends SettingBoolean {
-		private static final boolean defaultValue = false;
-
-		SpyTelepathy() {
-			super(ROOT, "SPY_TELEPATHY", defaultValue, 20f, 0f);
-			isBullet(booleansAreBullet);
-		}
-		@Override public void settingToSkill(SpeciesSkills skills) { skills.telepathic(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.telepathic()); }
-	}
+//	@SuppressWarnings("unused")
+//	class SpyTelepathy extends SettingBoolean {
+//		private static final boolean defaultValue = false;
+//
+//		SpyTelepathy() {
+//			super(ROOT, "SPY_TELEPATHY", defaultValue, 20f, 0f);
+//			isBullet(booleansAreBullet);
+//		}
+//		@Override public void settingToSkill(SpeciesSkills skills) { skills.telepathic(settingValue()); }
+//		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.telepathic()); }
+//	}
 	// ==================== DiplomacyTrade ====================
 	//
 	class DiplomacyTrade extends SettingInteger {
@@ -1458,14 +1457,14 @@ public abstract class SpeciesSettings {
 	}
 	// ==================== DiploPosDP ====================
 	//
-	@SuppressWarnings("unused")
-	class DiploPosDP extends SettingInteger {
-		DiploPosDP() {
-			super(ROOT, "DIPLO_POS_DP", 100, 70, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, .3f}, new float[]{0f, .8f});
-		}
-		@Override public void settingToSkill(SpeciesSkills skills) { skills.positiveDPMod(settingValue()/100f); }
-		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.positiveDPMod() * 100)); }
-	}
+//	@SuppressWarnings("unused")
+//	class DiploPosDP extends SettingInteger {
+//		DiploPosDP() {
+//			super(ROOT, "DIPLO_POS_DP", 100, 70, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, .3f}, new float[]{0f, .8f});
+//		}
+//		@Override public void settingToSkill(SpeciesSkills skills) { skills.positiveDPMod(settingValue()/100f); }
+//		@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.positiveDPMod() * 100)); }
+//	}
 	// ==================== DiplomacyBonus ====================
 	//
 	class DiplomacyBonus extends SettingInteger {

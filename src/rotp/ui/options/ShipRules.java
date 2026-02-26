@@ -45,6 +45,11 @@ final class ShipRules extends AbstractOptionsSubUI {
 				fuelRange,
 
 				LINE_SPACER_25,
+				dynamicRange,
+				dynamicRangePerMille,
+				dynamicRangeQuad,
+
+				LINE_SPACER_25,
 				missileBaseModifier
 				)));
 		return map;

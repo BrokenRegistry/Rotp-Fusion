@@ -586,7 +586,7 @@ public class AIFleetCommander implements Base, FleetCommander {
         Collections.sort(fleetPlans, FleetPlan.PRIORITY);
     }
     private void fillFleetPlans() {
-        if (empire.tech().topFuelRangeTech().range() > 8)
+        if (empire.tech().topFuelRangeTech().rangeLevel() > 8)
             empire.shipLab().needScouts = false;
         else if (empire.scanPlanets())
             empire.shipLab().needScouts = false;

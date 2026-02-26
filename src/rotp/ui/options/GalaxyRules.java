@@ -25,6 +25,13 @@ final class GalaxyRules extends AbstractOptionsSubUI {
 				warpSpeed,
 				warpSpeedPct,
 				fuelRange,
+
+				LINE_SPACER_25,
+				dynamicRange,
+				dynamicRangePerMille,
+				dynamicRangeQuad,
+
+				LINE_SPACER_25,
 				darkGalaxy,
 
 				LINE_SPACER_25,
@@ -59,6 +66,7 @@ final class GalaxyRules extends AbstractOptionsSubUI {
 						warpSpeed,
 						warpSpeedPct,
 						fuelRange,
+						dynamicRange,
 						realNebulaSize,
 						realNebulaShape,
 						realNebulaeOpacity,

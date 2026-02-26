@@ -950,7 +950,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
             && empire.enemies().isEmpty()
             && !unexploredInRange
             && !empire.uncolonizedPlanetsInRange(empire.scoutRange()).isEmpty()
-            && (empire.tech().propulsion().techLevel() >= rangeTechLevelThreshold && empire.tech().researchingShipRange() <= empire.shipRange() || empire.tech().propulsion().techLevel() >= 2 * rangeTechLevelThreshold))
+            && (empire.tech().propulsion().techLevel() >= rangeTechLevelThreshold && empire.tech().researchingShipRangeLevel() <= empire.shipRangeLevel() || empire.tech().propulsion().techLevel() >= 2 * rangeTechLevelThreshold))
             return true;
         return false;
     }

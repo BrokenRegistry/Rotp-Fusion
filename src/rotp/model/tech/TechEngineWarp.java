@@ -33,7 +33,13 @@ public final class TechEngineWarp extends Tech {
         free = b;
         init();
     }
-    @Override public String detail()        { return detail(warp()); }
+	@Override public String detail()		{
+		float warp = warp();
+		if (warp == (int) warp) 
+			return detail((int) warp);
+		else
+			return detail(df1.format(warp)); 
+	}
     @Override
     public boolean canBeMiniaturized()      { return true; }
     @Override

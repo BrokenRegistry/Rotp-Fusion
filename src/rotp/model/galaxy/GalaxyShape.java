@@ -60,7 +60,6 @@ public abstract class GalaxyShape implements Base, Serializable {
 	int maxStars = 0;
 	private int num = 0;
 	private int homeStars = 0;
-	@SuppressWarnings("unused") // kept for debug
 	private int genAttempt = 0;
 	private boolean usingRegions = false;
 	private boolean fullyInit = false;

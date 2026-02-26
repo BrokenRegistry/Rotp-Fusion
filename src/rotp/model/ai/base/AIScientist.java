@@ -693,17 +693,17 @@ public class AIScientist implements Base, Scientist {
     @Override
     public float baseValue(TechFuelRange t) {
         TechFuelRange curr = empire.tech().topFuelRangeTech();
-        float currRange = curr == null ? 3 : curr.range();
+        int currRange = curr == null ? 3 : curr.rangeLevel();
         // obsolete?
-        if (currRange >= t.range())
+        if (currRange >= t.rangeLevel())
             return 0;
 
         // limit max range, use 13 instead of 10, for Range-inf scaling
-        float newRange = min(13,t.range());
+        int newRange = min(13, t.rangeLevel());
 
         // Count new planets this gets us to
-        List<StarSystem> possible = empire.uncolonizedPlanetsInRange(currRange);
-        List<StarSystem> newPossible = empire.uncolonizedPlanetsInRange(t.range());
+        List<StarSystem> possible = empire.uncolonizedPlanetsInRange(curr.range(empire.tech()));
+        List<StarSystem> newPossible = empire.uncolonizedPlanetsInRange(t.range(empire.tech()));
         int newPlanets = newPossible.size() - possible.size();
 
         // New planets from fuel cells are very high value (don't even need to design new colony ships).

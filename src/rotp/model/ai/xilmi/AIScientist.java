@@ -270,7 +270,7 @@ public class AIScientist implements Base, Scientist {
             return;
         }
         
-        if (empire.tech().topFuelRangeTech().range() < 4 && empire.tech().propulsion().techLevel() < 5) {
+        if (empire.tech().topFuelRangeTech().rangeLevel() < 4 && empire.tech().propulsion().techLevel() < 5) {
             empire.tech().computer().allocation(0);
             empire.tech().construction().allocation(0);
             empire.tech().forceField().allocation(0);
@@ -842,7 +842,7 @@ public class AIScientist implements Base, Scientist {
     public float baseValue(TechFuelRange t) {
         float val = 2;
         List<StarSystem> possible = empire.uncolonizedPlanetsInRange(empire.shipRange());
-        List<StarSystem> newPossible = empire.uncolonizedPlanetsInRange((int)t.range());
+        List<StarSystem> newPossible = empire.uncolonizedPlanetsInRange((int) t.range(empire.tech()));
         float newPlanets = newPossible.size() - possible.size();
         if (newPlanets > 0 && empire.fleetCommanderAI().inExpansionMode())
         {

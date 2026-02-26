@@ -16,13 +16,32 @@
 package rotp.model.tech;
 
 import rotp.model.empires.Empire;
+import rotp.model.game.IGameOptions;
 
 public final class TechFuelRange extends Tech {
     private int range;
     public boolean unlimited = false;
 
-    public float range()  { return range*options().fuelRangeMultiplier(); }
+	public int rangeLevel()			{ return range; }
+	public float range(TechTree tt)	{
+		IGameOptions opts = options();
+		if (!opts.dynamicRange())
+			return range * opts.fuelRangeMultiplier();
 
+		float propLvl = tt.propulsion().techLevel();
+		float lin = opts.dynamicRangePerMille()/1000f;
+		float quad = opts.dynamicRangeQuad()/1000000f;
+		return range * opts.fuelRangeMultiplier() * (1 + (lin + quad * propLvl) * propLvl);
+	}
+	public float range(float propLevel)	{
+		IGameOptions opts = options();
+		if (!opts.dynamicRange())
+			return range * opts.fuelRangeMultiplier();
+
+		float lin = opts.dynamicRangePerMille()/1000f;
+		float quad = opts.dynamicRangeQuad()/1000000f;
+		return range * opts.fuelRangeMultiplier() * (1 + (lin + quad * propLevel) * propLevel);
+	}
     public TechFuelRange(String typeId, int lv, int seq, boolean b, TechCategory c) {
         id(typeId, seq);
         typeSeq = seq;
@@ -50,20 +69,12 @@ public final class TechFuelRange extends Tech {
                     break;
         }
     }
-//    @Override
-//    public String detail() { 
-//        float rng = range();
-//        if (rng == (int) rng) 
-//            return text(detail, (int) rng);
-//        else
-//            return text(detail, df1.format(range())); 
-//    }
     @Override public String detail() { 
-        float rng = range();
+        float rng =  range * options().fuelRangeMultiplier();
         if (rng == (int) rng) 
             return detail((int) rng);
         else
-            return detail(df1.format(range())); 
+            return detail(df1.format(rng)); 
     }
     @Override
     public boolean isFuelRangeTech()     { return true; }
@@ -71,10 +82,7 @@ public final class TechFuelRange extends Tech {
     public float expansionModeFactor()  { return 3; }
     @Override
     public boolean providesShipComponent()  { return true; }
-    @Override
-    public boolean isObsolete(Empire c) {
-        return range() < c.tech().shipRange();
-    }
+	@Override public boolean isObsolete(Empire c)	{ return rangeLevel() < c.tech().shipRangeLevel(); }
     @Override
     public float baseValue(Empire c) { return c.ai().scientist().baseValue(this); }
     @Override
