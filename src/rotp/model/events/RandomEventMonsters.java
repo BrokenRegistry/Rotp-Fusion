@@ -37,14 +37,14 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 	protected SpaceMonster monster;
 	protected float level = 1.0f;
 	private	  float realSpeed = 1.0f;
-	
+
 	private	  HashMap<Integer, Point.Float> path;
 	protected long monsterId;
     // BR: Dynamic options for future backward compatibility
 	private DynOptions dynamicOptions = new DynOptions();
 	private Integer notifyTurnCount;
 	private Boolean notified;
-	
+	protected int nextEmpId(boolean clear)		{ return Empire.NULL_ID; }
 	@Override public DynOptions dynamicOpts()	{
 		if (dynamicOptions == null)
 			dynamicOptions = new DynOptions();
@@ -61,23 +61,14 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		int id = bounds(0, targetTurnCount, wanderPath().size()-1);
 		return wanderPath().get(id);
 	}
-	@Override public HashMap<Integer, Point.Float> wanderPath()		{
+	@Override public HashMap<Integer, Point.Float> wanderPath()	{
 		if (path == null)
 			path = new HashMap<>();
 		return path;
 	};
-
 	@Override public boolean goodEvent()		{ return false; }
 	@Override public boolean monsterEvent() 	{ return true; }
-	@Override public SpaceMonster monster(boolean track)	{
-//		if (monster != null)
-//			monster.event = this;	// ? just a security!
-//		else if (track) {
-//			trackLostMonster();		// backward compatibility
-//			monster.event = this;	// ? just a security!
-//		}
-		return monster;
-	}
+	@Override public SpaceMonster monster(boolean track)	{ return monster; }
 	@Override int nextAllowedTurn()				{ // for backward compatibility
 		String nextAllowedTurnKey = name() + "_NEXT_ALLOWED_TURN";
 		return (Integer) galaxy().dynamicOptions().getInteger(nextAllowedTurnKey, -1);
@@ -94,28 +85,32 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		return s1;
 	}
 	@Override public void trigger(Empire emp)	{
-		if (emp != null) {
-			log("Starting Space " + dispName() + " event against: "+emp.raceName());
-			// System.out.println("Starting Space " + dispName() + " event against: "+emp.raceName());
-		}
+		Empire empire = galaxy().empire(nextEmpId(true));
+		if (empire == null)
+			empire = emp;
+		if (empire == null)
+			return;
+
+		log("Starting Space " + dispName() + " event against: "+empire.raceName());
+		// System.out.println("Starting Space " + dispName() + " event against: "+emp.raceName());
 		if (realSpeed==0)
 			realSpeed=1; // backward compatibility
 
-		if (emp == null || emp.extinct()) {
-			targetEmpId = emp.id;
-			targetSysId = emp.homeSysId(); // Former home of extinct empire
+		if (empire.extinct()) {
+			targetEmpId = empire.id;
+			targetSysId = empire.homeSysId(); // Former home of extinct empire
 		}
 		else {
-			StarSystem targetSystem = random(emp.allColonizedSystems());
+			StarSystem targetSystem = random(empire.allColonizedSystems());
 			targetSystem.eventKey(systemKey());
-			targetEmpId = emp.id;
+			targetEmpId = empire.id;
 			targetSysId = targetSystem.id;
 		}
 		targetTurnCount = newNotifyTurnCount();
 		// System.out.println(galaxy().currentTurn() + " Trigger() Pre-init "+ name()+ " targetTurnCount = " + targetTurnCount);
 		initMonster();
 		// System.out.println(galaxy().currentTurn() + " Trigger: Post-init "+ name() + " targetTurnCount = " + targetTurnCount);
-		
+
 		galaxy().events().addActiveEvent(this);
 		if (mustNotify()) 
 			approachSystem();	 
@@ -144,10 +139,10 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 			System.out.println(galaxy().currentTurn() + " Next Turn: pos == null " + (int)(minimumTurn()-returnTurn().get()-galaxy().currentTurn()) );
 			// System.out.println("Next Turn:"+ name() + " targetTurnCount = " + targetTurnCount);
 		}
-		
-		if (mustNotify()) 
-			approachSystem();	 
-		else if (targetTurnCount <= 0) 
+
+		if (mustNotify())
+			approachSystem();
+		else if (targetTurnCount <= 0)
 			enterSystem();
 	}
 	@Override public int  startTurn()			{
@@ -161,7 +156,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 			trackLostMonster();
 		monster.event = this;
 	};
-	
+
 	// Mandatory and occasional override
 	abstract protected String name();
 	abstract protected SpaceMonster newMonster(Float speed, Float level);
@@ -170,10 +165,14 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		StarSystem targetSystem = galaxy().system(targetSysId);
 		// next system is one of the 10 nearest systems
 		// more likely to go to new system (25%) than visited system (5%)
-		float maxDist = 8;
-		if (options().isMoO1Monster())
+		IGameOptions opts = options();
+		float maxDist = opts.monsterMaxDistance();
+		float minDist = opts.monsterMinDistance();
+		if (opts.isMoO1Monster()) {
 			maxDist = 6;
-		List<StarSystem> near = targetSystem.nearbySystems(maxDist);
+			minDist = 0;
+		}
+		List<StarSystem> near = targetSystem.ringSystems(minDist, maxDist);
 		shuffle(near);
 		boolean stopLooking = false;		
 		int nextSysId = -1;
@@ -251,7 +250,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 			if (saleAmount != null)
 				emp.addToTreasury(saleAmount);
 		}
-		
+
 		if (player().knowsOf(targetEmpId) || !player().sv.name(targetSysId).isEmpty())
 			if (updateGNNAllowed(GNN_END)) {
 				String txt = notificationText(notifKey, emp, saleAmount);
@@ -324,7 +323,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 			startCombat();
 		else if ((col != null) && col.defense().isArmed())
 			startCombat();
-		
+
 		if (monster.alive()) {
 			degradePlanet(targetSystem);
 			if (nextSystemAllowed())
@@ -333,7 +332,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 				monsterVanished();
 		}
 		else 
-			monsterDestroyed();		 
+			monsterDestroyed();
 	}
 	private void startCombat()					{
 		StarSystem targetSystem = galaxy().system(targetSysId);
@@ -399,7 +398,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 			case "New": // GNN will notify the first attack of monsters, when they appear.
 				// Conditional notification
 				return state <= GNN_TARGET;
-				
+
 			case "All":
 			default:
 				return true;
@@ -411,7 +410,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		// colony may have already been destroyed in combat
 		if (targetSystem.isColonized() || targetSystem.abandoned())
 			monster.degradePlanet(targetSystem);
-		
+
 		if (emp == null)
 			return;
 		Empire pl = player();
@@ -438,7 +437,10 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 	private float avgSpeed()			{
 		if (options().isMoO1Monster())
 			return 1f;
-		return 1f / (1.5f * max(1, 100.0f/galaxy().maxNumStarSystems()));
+		float speed = options().monsterSpeed();
+		if (speed == 0)
+			return 1f / (1.5f * max(1, 100.0f/galaxy().maxNumStarSystems()));
+		return speed;
 	}
 	private int travelTurnsRemaining()	{ return (int) Math.ceil(distanceToTarget()/avgSpeed()); }
 	private float distanceToTarget()	{ return galaxy().system(targetSysId).distanceTo(monster); }
@@ -463,7 +465,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 			return;
 		float dx = (xSrc-xDest)/n; // because turnDest<turnSrc
 		float dy = (ySrc-yDest)/n;
-		
+
 		for (int i = 1; i<n; i++) {
 			wanderPath().put((turnDest+i), new Point.Float(xDest+i*dx, yDest+i*dy));
 		}
@@ -558,7 +560,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		remainingDistance	= (float) departurePos.distance(approachPos);
 		maxTravelTurns		= (int) (Math.ceil(remainingDistance / realSpeed));
 		wanderTurns			= remainingTurns;
-		
+
 		if (wanderTurns <= 1)
 			return;
 		int wanderTurnsAway = wanderTurns/2;
@@ -566,7 +568,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		float wanderDistanceAway = wanderTurnsAway * realSpeed;
 		float wanderDistanceBack = wanderTurnsBack * realSpeed;
 		Point.Float wanderPos = wanderPoint(departurePos, approachPos, wanderDistanceAway, wanderDistanceBack);
-		
+
 		// add wandering path
 		int wanderPointTurn = departureTurn - wanderTurnsAway;
 		lineTo(departurePos.x, departurePos.y, wanderPos.x, wanderPos.y, departureTurn, wanderPointTurn);
@@ -596,7 +598,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		// Shift back
 		float xW = (float) (xWS + src.x);
 		float yW = (float) (yWS + src.y);
-		
+
 		return new Point.Float(xW, yW);
 	}
 	private void setNotified(Boolean b)	{ notified = b; }
@@ -614,5 +616,4 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		notifyTurnCount = NOTIFY_TURN_COUNT + roll(-1, 2);
 		return notifyTurnCount;
 	}
-
 }

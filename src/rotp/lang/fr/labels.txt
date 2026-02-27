@@ -4013,7 +4013,7 @@ SETTINGS_MOD_PLAYER_SHIP_SET_CUSTOM_SPECIES  | ep : %1
 SETTINGS_MOD_PLAYER_SHIP_SET_BASE_SPECIES    | [base_raceadjec]
 
 SETTINGS_MOD_GUARDIAN_MONSTERS_DESC      | Les planètes riches et les planètes avec artéfacts peuvent être gardées par des monstres de l’espace.
-SETTINGS_MOD_GUARDIAN_MONSTERS           | Gardiens: %1
+SETTINGS_MOD_GUARDIAN_MONSTERS           | Gardiens : %1
 SETTINGS_MOD_GUARDIAN_MONSTERS_NONE_DESC | Pas de monstres de l’espace gardiens.
 SETTINGS_MOD_GUARDIAN_MONSTERS_NONE      | Aucuns
 SETTINGS_MOD_GUARDIAN_MONSTERS_ALL_DESC  | Les planètes riches, ultra-riches et artéfacts peuvent être gardées par des monstres de l’espace.
@@ -4023,12 +4023,21 @@ SETTINGS_MOD_GUARDIAN_MONSTERS_RICH      | Riches
 SETTINGS_MOD_GUARDIAN_MONSTERS_RUIN_DESC | Les planètes artéfacts peuvent être gardées par des monstres de l’espace.
 SETTINGS_MOD_GUARDIAN_MONSTERS_RUIN      | Artéfacts
 SETTINGS_MOD_GUARDIAN_MONSTERS_PCT_DESC  | Probabilité de base (en %) pour que les bonnes planètes aient un monstre spatial. Cette valeur sera multipliée par la taille de la planète (en %).<br>Des valeurs plus grandes conduisent à plus de monstres.
-SETTINGS_MOD_GUARDIAN_MONSTERS_PCT        | Prob. de gardiens: %1%
+SETTINGS_MOD_GUARDIAN_MONSTERS_PCT        | Prob. de gardiens : %1 %
 SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL_DESC | Niveau de difficulté pour les monstres de l’espace gardiens.
-SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL      | Niveaux des gardiens: %1%
+SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL      | Niveaux des gardiens : %1 %
 
 SETTINGS_MOD_IS_MOO1_MONSTER_DESC         | Pour obtenir les armes et les caractéristiques des monstres spatiaux MoO1.
 SETTINGS_MOD_IS_MOO1_MONSTER              | Monstres MoO1: %1
+
+SETTINGS_MOD_MONSTERS_MIN_DISTANCE_DESC		| Distance minimale jusqu’à la prochaine colonie visée par les monstres de l’espace.
+SETTINGS_MOD_MONSTERS_MIN_DISTANCE			| Distance minimale : %1 a.l.
+SETTINGS_MOD_MONSTERS_MAX_DISTANCE_DESC		| Distance maximale jusqu’à la prochaine colonie visée par les monstres de l’espace.
+SETTINGS_MOD_MONSTERS_MAX_DISTANCE			| Distance maximale : %1 a.l.
+
+SETTINGS_MOD_MONSTERS_SPEED_HELP			| Vitesse moyenne des monstres spatiaux.<br>Correspond à la distance entre les deux systèmes stellaires divisée par la durée du voyage.<br>Lorsque cette valeur est inférieure à 1, les monstres se déplacent en zigzag à une vitesse de 1 afin de dissimuler leur destination.
+SETTINGS_MOD_MONSTERS_SPEED_DESC			| Vitesse moyenne des monstres spatiaux.
+SETTINGS_MOD_MONSTERS_SPEED					| Vitesse des monstres : %1
 
 // ========== Random Events sub Panel
 SETTINGS_MOD_RANDOM_EVENTS_TITLE         | Personnalisation des événements aléatoires
@@ -4039,12 +4048,12 @@ SETTINGS_MOD_RANDOM_EVENT_UNIQUE         | Événement unique
 SETTINGS_MOD_RANDOM_EVENT_UNLIMITED      | Illimités
 SETTINGS_MOD_RANDOM_EVENT_MULTIPLE       | Concurrents
 
-REF_DELAY        | , délai de départ: %1
+REF_DELAY        | , délai de départ : %1
 REF_DELAY_1      | Pour définir le décalage du tour de départ aléatoire.
 REF_DELAY_2      | événements (x2 pour Facile ; x3 pour Plus facile ; x4 pour Le plus simple).<br>Off (-1) désactivera cet événement.
 REF_RETURN       | , cycle : %1
 REF_RETURN_1     | Pour régler le délai entre deux
-REF_RETURN_2     | Occurrence d’événements. (0 = Événement unique ; -1 = Simultané)
+REF_RETURN_2     | Occurrence d’événements. (0 = Événement unique ; -1 = Simultané)
 REF_MAX_SYS_1    | Pour définir le nombre de systèmes stellaires attaqués par le
 REF_MAX_SYS_2    | avant de partir. (0 = Non limité)
 REF_INTRO        | <br><u>Description de l’événement :</u><br>
@@ -4053,7 +4062,7 @@ REF_INTRO        | <br><u>Description de l’événement :</u><br>
 SETTINGS_MOD_EVENTS_START_TURN_DESC      | Pour définir le tour de départ des événements aléatoires. Si un événement a déjà été démarré, il ne sera pas arrêté.
 SETTINGS_MOD_EVENTS_START_TURN           | Tour de départ : %1
 SETTINGS_MOD_EVENTS_PACE_DESC            | Pour ajuster la probabilité que l’événement suivant se produise.<br>Des valeurs plus élevées conduisent à plus d’événements.
-SETTINGS_MOD_EVENTS_PACE                 | Rythme des événements : %1%
+SETTINGS_MOD_EVENTS_PACE                 | Rythme des événements : %1 %
 SETTINGS_MOD_EVENTS_FAVOR_WEAK_HELP      | Par défaut, oui, les événements aléatoires sont une mécanique de rattrapage qui favorise les factions les plus faibles.<br>Une fois l’événement déterminé, il ciblera une civilisation en fonction de ses performances dans le jeu. Les événements favorables sont plus susceptibles de se produire dans les empires ayant une production globale plus faible, tandis que les événements défavorables sont plus susceptibles de se produire dans les empires ayant une production globale plus élevée.<br>Cette propension peut être supprimée et remplacée par une probabilité égale pour chaque empire.
 SETTINGS_MOD_EVENTS_FAVOR_WEAK_DESC      | Pour ajuster la probabilité que le prochain événement se produise.
 SETTINGS_MOD_EVENTS_FAVOR_WEAK           | Favoriser les faibles : %1

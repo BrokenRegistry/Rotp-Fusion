@@ -4030,6 +4030,15 @@ SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL      | Guardians Level: %1%
 SETTINGS_MOD_IS_MOO1_MONSTER_DESC         | To get the MoO1 Space Monster weapons and characteristics.
 SETTINGS_MOD_IS_MOO1_MONSTER              | MoO1 Monsters: %1
 
+SETTINGS_MOD_MONSTERS_MIN_DISTANCE_DESC		| Minimum distance to the next colony targeted by the space monsters.
+SETTINGS_MOD_MONSTERS_MIN_DISTANCE			| Minimum distance: %1 ly
+SETTINGS_MOD_MONSTERS_MAX_DISTANCE_DESC		| Maximum distance to the next colony targeted by the space monsters.
+SETTINGS_MOD_MONSTERS_MAX_DISTANCE			| Maximum distance: %1 ly
+
+SETTINGS_MOD_MONSTERS_SPEED_HELP			| Average speed of space monsters.<br>Corresponds to the distance between the two star systems divided by the duration of the journey.<br>When less than 1, monsters will move in a zigzag pattern at a speed of 1, in order to conceal their destination.
+SETTINGS_MOD_MONSTERS_SPEED_DESC			| Average speed of space monsters.
+SETTINGS_MOD_MONSTERS_SPEED					| Speed of Monsters : %1
+
 // ========== Random Events sub Panel
 SETTINGS_MOD_RANDOM_EVENTS_TITLE         | Random Events Customization
 SETTINGS_MOD_RANDOM_EVENTS_UI_DESC       | Open Sub Menu to get more random events customization options.

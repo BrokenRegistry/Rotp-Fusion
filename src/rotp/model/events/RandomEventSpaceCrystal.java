@@ -34,6 +34,7 @@ public class RandomEventSpaceCrystal extends RandomEventMonsters {
 	@Override protected SpaceMonster newMonster(Float speed, Float level) {
 		return new SpaceCrystal(speed, level);
 	}
+	@Override protected int nextEmpId(boolean clear)	{ return galaxy().events().nextTargetEmpireForSpaceCrystal(clear); }
 	@Override public boolean techDiscovered()	{ return !galaxy().events().spaceCrystalNotTriggered(); }
 	@Override protected String name()			{ return "CRYSTAL"; }
 	@Override ParamInteger delayTurn()			{ return IGameOptions.crystalDelayTurn; }

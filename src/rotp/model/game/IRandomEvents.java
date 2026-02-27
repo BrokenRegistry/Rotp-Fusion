@@ -3,6 +3,7 @@ package rotp.model.game;
 import static rotp.model.game.IPreGameOptions.guardianMonstersLevel;
 
 import rotp.ui.util.ParamBoolean;
+import rotp.ui.util.ParamFloat;
 import rotp.ui.util.ParamInteger;
 import rotp.ui.util.ParamList;
 
@@ -74,7 +75,24 @@ public interface IRandomEvents extends IBaseOptsTools {
 		.put("New",		MOD_UI + "MONSTERS_GNN_NEW")
 		.put("First",	MOD_UI + "MONSTERS_GNN_FIRST");
 	default String	monstersGNNNotification()	{ return monstersGNNNotification.get(); }
-	
+
+	ParamInteger monsterMinDistance	= new ParamInteger(MOD_UI, "MONSTERS_MIN_DISTANCE", 0)
+			.setLimits(0, 25)
+			.setIncrements(1, 5, 20);
+	default int	monsterMinDistance()	{ return monsterMinDistance.get(); }
+
+	ParamInteger monsterMaxDistance	= new ParamInteger(MOD_UI, "MONSTERS_MAX_DISTANCE", 8)
+			.setLimits(5, 100)
+			.setIncrements(1, 5, 20);
+	default int	monsterMaxDistance()	{ return monsterMaxDistance.get(); }
+
+	ParamFloat monsterSpeed	= new ParamFloat(MOD_UI, "MONSTERS_SPEED", 0f)
+			.setLimits(0f, 2f)
+			.setIncrements(0.1f, 0.5f, 3f)
+			.guiFormat("0.0")
+			.specialZero("SETTINGS_DEFAULT");
+	default float	monsterSpeed()	{ return monsterSpeed.get(); }
+
 	// ========================================================================
 	// BR: RANDOM EVENT MONSTERS PARAMETERS
 	ParamInteger piratesLevelMultiplier	= new ParamInteger(MOD_UI, "PIRATES_LEVEL_MULT", 100)

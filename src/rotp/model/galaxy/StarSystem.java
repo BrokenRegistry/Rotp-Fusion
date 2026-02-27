@@ -186,15 +186,23 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         else
             return galaxy().system(nearbySystems[i]);
     }
-    public List<StarSystem> nearbySystems(float maxDist) {
-    	 Galaxy gal = galaxy();
-    	 List<StarSystem> nearSystems = new ArrayList<>();
-    	 for (StarSystem other : gal.starSystems()) {
-    		 if (other != this && distanceTo(other) < maxDist)
-                 nearSystems.add(other);
-    	 }
-    	 return nearSystems;
-    }
+	public List<StarSystem> nearbySystems(float maxDist) {
+		List<StarSystem> nearSystems = new ArrayList<>();
+		for (StarSystem other : galaxy().starSystems())
+			if (other != this && distanceTo(other) < maxDist)
+				nearSystems.add(other);
+		return nearSystems;
+	}
+	public List<StarSystem> ringSystems(float minDist, float maxDist) {
+		List<StarSystem> ringSystems = new ArrayList<>();
+		for (StarSystem other : galaxy().starSystems())
+			if (other != null && other != this) {
+				float dist = distanceTo(other);
+				if (dist < maxDist && dist > minDist)
+					ringSystems.add(other);
+			}
+		return ringSystems;
+	}
     private void initNearbySystems() {
         TARGET_SYSTEM = this;
         float maxDist = 8; // 2 * TechEngineWarp.MAX_SPEED; // modnar: change nearby distance to be more reasonable

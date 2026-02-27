@@ -47,7 +47,7 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 	protected static final boolean HEAVY = true;	// for beam Weapons
 	protected final String nameKey;
 	protected int lastAttackerId;
-	private final List<Integer> path = new ArrayList<>();
+	private final List<Integer> path = new ArrayList<>(); // visited systems
 	public  float travelSpeed = 1f / (1.5f * max(1, 100.0f/galaxy().maxNumStarSystems()));
 	private Float monsterLevel; // For non dynamic levels
 	private transient List<CombatStack> combatStacks = new ArrayList<>();

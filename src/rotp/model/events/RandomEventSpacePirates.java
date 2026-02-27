@@ -41,6 +41,7 @@ public class RandomEventSpacePirates extends RandomEventMonsters {
 	@Override protected SpaceMonster newMonster(Float speed, Float level) {
 		return new SpacePirates(speed, level);
 	}
+	@Override protected int nextEmpId(boolean clear)	{ return galaxy().events().nextTargetEmpireForSpacePirates(clear); }
 	@Override public boolean techDiscovered()	{ return !galaxy().events().spacePiratesNotTriggered(); }
 	@Override protected String name()			{ return "PIRATES"; }
 	@Override ParamInteger delayTurn()			{ return IGameOptions.piratesDelayTurn; }
@@ -97,22 +98,26 @@ public class RandomEventSpacePirates extends RandomEventMonsters {
 		// more likely to go to new system (25%) than visited system (5%)
 		// more likely to go to colony with a lot of factories (factories/2000 = additional chance)
 		// increase chance with more loops (essentially try to force a choice before loops>10)
-		int[] near = targetSystem.nearbySystems();
+		IGameOptions opts = options();
+		float maxDist = opts.monsterMaxDistance();
+		float minDist = opts.monsterMinDistance();
+
+		List<StarSystem> near = targetSystem.ringSystems(minDist, maxDist);
 		boolean stopLooking = false;		
 		int nextSysId = -1;
 		int loops = 0;
-		if (near.length > 0) {
+		if (near.size() > 0) {
 			while (!stopLooking) {
 				loops++;
-				for (int i=0;i<near.length;i++) {
-					if (galaxy().system(near[i]).isColonized()) { // check for colony
-						float chance = monster.vistedSystems().contains(near[i]) ? 0.05f : 0.25f;
+				for (StarSystem sys : near) {
+					if (sys.isColonized()) { // check for colony
+						float chance = monster.vistedSystems().contains(sys.id) ? 0.05f : 0.25f;
 						// more likely to go to colony with a lot of factories
-						chance += galaxy().system(near[i]).colony().industry().factories()/2000.0f;
+						chance += sys.colony().industry().factories()/2000.0f;
 						// increase chance with more loops
-						chance += (float)(loops/20);
+						chance += loops/20f;
 						if (random() < chance) {
-							nextSysId = near[i];
+							nextSysId = sys.id;
 							stopLooking = true;
 							break;
 						}

@@ -41,6 +41,7 @@ public class RandomEventSpaceAmoeba extends RandomEventMonsters {
 //			System.out.println(LocalTime.now() + " No Galaxy: " + " RandomEventSpaceAmoeba: newMonster was created");
 		return new SpaceAmoeba(speed, level);
 	}
+	@Override protected int nextEmpId(boolean clear)	{ return galaxy().events().nextTargetEmpireForSpaceAmoeba(clear); }
 	@Override public boolean techDiscovered()	{ return !galaxy().events().spaceAmoebaNotTriggered(); }
 	@Override protected String name()			{ return "AMOEBA"; }
 	@Override ParamInteger delayTurn()			{ return IGameOptions.amoebaDelayTurn; }

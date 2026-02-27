@@ -16,23 +16,39 @@ final class RandomEventsOptions extends AbstractOptionsSubUI {
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("RANDOM_EVENTS_GLOBAL"),
 				randomEvents,
-				eventsStartTurn, eventsPace,
-				eventsFavorWeak, fixedEventsMode,
-				monstersGiveLoots, monstersLevel,
+				eventsStartTurn,
+				eventsPace,
+				eventsFavorWeak,
+				fixedEventsMode,
+				monstersGiveLoots,
+				monstersLevel,
 				monstersGNNNotification,
 
 				HEADER_SPACER_50,
 				guardianMonstersLevel,
-				isMoO1Monster,
-				
-				HEADER_SPACER_50,
+				isMoO1Monster
+				)));
+		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("RANDOM_EVENTS_MONSTERS"),
-				piratesDelayTurn, piratesReturnTurn, piratesMaxSystems,
+				piratesDelayTurn,
+				piratesReturnTurn,
+				piratesMaxSystems,
 				piratesLevelMultiplier,
+
 				HEADER_SPACER_50,
-				amoebaDelayTurn, amoebaReturnTurn, amoebaMaxSystems,
+				amoebaDelayTurn,
+				amoebaReturnTurn,
+				amoebaMaxSystems,
+
 				HEADER_SPACER_50,
-				crystalDelayTurn, crystalReturnTurn, crystalMaxSystems
+				crystalDelayTurn,
+				crystalReturnTurn,
+				crystalMaxSystems,
+
+				HEADER_SPACER_50,
+				monsterMinDistance,
+				monsterMaxDistance,
+				monsterSpeed
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("RANDOM_EVENTS_DELAYS"),

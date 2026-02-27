@@ -30,6 +30,10 @@ public class ParamFloat extends AbstractParam<Float> {
 	private String guiFormat = "%";
 	private String cfgFormat = "0.0##";
 	private boolean loop = false;
+	private boolean specialNegative	= false;
+	private boolean specialZero		= false;
+	private String	negativeLabel	= "";
+	private String	zeroLabel		= "";
 	
 	// ========== Constructors ==========
 	//
@@ -83,6 +87,25 @@ public class ParamFloat extends AbstractParam<Float> {
 	}
 	public ParamFloat cfgFormat(String format) { cfgFormat = format; return this; }
 	public ParamFloat guiFormat(String format) { guiFormat = format; return this; }
+	public ParamFloat specialZero(String messageLabel) {
+		if (messageLabel == null) {
+			specialZero = false;
+			zeroLabel	= "";
+		}
+		specialZero	= true;
+		zeroLabel	= messageLabel;
+		return this;
+	}
+	public ParamFloat specialNegative(String messageLabel) {
+		if (messageLabel == null) {
+			specialNegative = false;
+			negativeLabel	= "";
+		}
+		specialNegative	= true;
+		negativeLabel	= messageLabel;
+		return this;
+	}
+
 	// ========== Overriders ==========
 	//
 	@Override public ParamFloat isValueInit(boolean is) { super.isValueInit(is)  ; return this; }
@@ -98,7 +121,6 @@ public class ParamFloat extends AbstractParam<Float> {
 		return this;
 	}
 
-	@Override public String guideDefaultValue()	{ return getString(defaultValue()); }
 	@Override public String[] getModifiers()	{
 		if (baseInc().equals(shiftInc()))
 			return null;
@@ -117,20 +139,20 @@ public class ParamFloat extends AbstractParam<Float> {
 		}
 		return new DecimalFormat(cfgFormat).format(value);
 	}
-	@Override public String guideValue() {
-		if (isGuiPercent()) {
-			return String.format("%d", Math.round(get() * 100f));
-		}
-		if (isGuiPerThousand()) {
-			return new DecimalFormat("0.0")
-						.format(Math.round(get() * 1000f) / 10f);
-		}
-		return new DecimalFormat(guiFormat).format(get());
+	@Override public String guideValue()		{ return guideValue(get()); }
+	@Override public String guideSelectedValue(){ return guideValue(get()); }
+	@Override public String guideDefaultValue()	{ return guideValue(defaultValue()); }
+	@Override public String guideMinimumValue()	{
+		if (minValue() == null)
+			return langLabel("GUIDE_MIN_MAX_NULL_VALUE");
+		return guideValue(dynMinValue());
 	}
-	@Override public String guideMinimumValue()	{ return getString(minValue()); }
-	@Override public String guideMaximumValue()	{ return getString(maxValue()); }
+	@Override public String guideMaximumValue()	{
+		if (maxValue() == null)
+			return langLabel("GUIDE_MIN_MAX_NULL_VALUE");
+		return guideValue(dynMaxValue());
+	}
 	@Override public String guideMinMaxHelp()	{ return minMaxValuesHelp(); } // To activate standard Min Max display
-
 	@Override public void setFromCfgValue(String newValue) {
 		if (isCfgPercent()) {
 			Integer val = stringToInteger(newValue.replace("%", ""));
@@ -195,6 +217,8 @@ public class ParamFloat extends AbstractParam<Float> {
 			return true;
 		return false;
 	}
+	public boolean isSpecialNegative()	{ return specialNegative && (get() < 0f); }
+	public boolean isSpecialZero()		{ return specialZero && (get().equals(0f)); }
 	public Float getValidMax() { return Math.min(get(), dynMaxValue()); }
 	public Float getValidMin() { return Math.max(get(), dynMinValue()); }
 	public Float getValidValue()		{
@@ -262,4 +286,21 @@ public class ParamFloat extends AbstractParam<Float> {
 	private boolean isCfgPercent()		{ return cfgFormat.equals("%"); }
 	private boolean isGuiPerThousand()	{ return guiFormat.equals("‰"); }
 	private boolean isCfgPerThousand()	{ return cfgFormat.equals("‰"); }
+	private boolean isSpecialZero(Float val)		{ return specialZero && (val.equals(0f)); }
+	private boolean isSpecialNegative(Float val)	{ return specialNegative && (val < 0f); }
+	
+	private String guideValue(Float val)	{
+		if (val == null)
+			return langLabel("GUIDE_MIN_MAX_NULL_VALUE");
+		if (isSpecialNegative(val))
+			return langLabel(negativeLabel);
+		if (isSpecialZero(val))
+			return langLabel(zeroLabel);
+		if (isGuiPercent())
+			return String.format("%d", Math.round(val * 100f));
+		if (isGuiPerThousand())
+			return new DecimalFormat("0.0").format(Math.round(val * 1000f)/10f);
+		return new DecimalFormat(guiFormat).format(get());
+	}
+
 }

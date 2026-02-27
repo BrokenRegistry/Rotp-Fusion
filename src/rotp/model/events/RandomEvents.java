@@ -42,11 +42,14 @@ public class RandomEvents implements Base, Serializable {
 	private Long targetSeed = null;
 	private long monsterId  = 0;
 	private HashMap<String, Integer> eventGNNState;
-	private Integer empireIdTechTriggerSpaceAmoeba  = Empire.NULL_ID;
-	private Integer empireIdTechTriggerSpaceCrystal = Empire.NULL_ID;
-	private Integer empireIdTechTriggerSpacePirates = Empire.NULL_ID;
+	private Integer empireIdTechTriggerSpaceAmoeba	= Empire.NULL_ID;
+	private Integer empireIdTechTriggerSpaceCrystal	= Empire.NULL_ID;
+	private Integer empireIdTechTriggerSpacePirates	= Empire.NULL_ID;
+	private int nextTargetEmpireForSpaceAmoeba	= Empire.NULL_ID;
+	private int nextTargetEmpireForSpaceCrystal	= Empire.NULL_ID;
+	private int nextTargetEmpireForSpacePirates	= Empire.NULL_ID;
 
-	public int startTurn()				{ // BR:Made it adjustable
+	private int startTurn()				{ // BR:Made it adjustable
 		return IGameOptions.eventsStartTurn.get();
 	}
 	public RandomEvents()				{
@@ -102,31 +105,58 @@ public class RandomEvents implements Base, Serializable {
 		return new Random(targetSeed).nextInt(numEmp);
 	}
 
-	public int empireIdTechTriggerSpaceAmoeba()	{
+	private int empireIdTechTriggerSpaceAmoeba()	{
 		if (empireIdTechTriggerSpaceAmoeba == null)
 			empireIdTechTriggerSpaceAmoeba = galaxy().techDiscoveryEmpireId(RandomEventSpaceAmoeba.TRIGGER_TECH);
 		return empireIdTechTriggerSpaceAmoeba;
 	}
-	public int empireIdTechTriggerSpaceCrystal()	{
+	private int empireIdTechTriggerSpaceCrystal()	{
 		if (empireIdTechTriggerSpaceCrystal == null)
 			empireIdTechTriggerSpaceCrystal = galaxy().techDiscoveryEmpireId(RandomEventSpaceCrystal.TRIGGER_TECH);
 		return empireIdTechTriggerSpaceCrystal;
 	}
-	public int empireIdTechTriggerSpacePirates()	{
+	private int empireIdTechTriggerSpacePirates()	{
 		if (empireIdTechTriggerSpacePirates == null)
 			empireIdTechTriggerSpacePirates = galaxy().techDiscoveryEmpireId(RandomEventSpacePirates.TRIGGER_TECH);
 		return empireIdTechTriggerSpacePirates;
 	}
-	public void empireIdTechTriggerSpaceAmoeba(int id)	{ empireIdTechTriggerSpaceAmoeba  = id; }
-	public void empireIdTechTriggerSpaceCrystal(int id)	{ empireIdTechTriggerSpaceCrystal = id; }
-	public void empireIdTechTriggerSpacePirates(int id)	{ empireIdTechTriggerSpacePirates = id; }
+	public void empireIdTechTriggerSpaceAmoeba(int id)	{
+		empireIdTechTriggerSpaceAmoeba = id;
+		nextTargetEmpireForSpaceAmoeba = id;
+	}
+	public void empireIdTechTriggerSpaceCrystal(int id)	{
+		empireIdTechTriggerSpaceCrystal = id;
+		nextTargetEmpireForSpaceCrystal = id;
+	}
+	public void empireIdTechTriggerSpacePirates(int id)	{
+		empireIdTechTriggerSpacePirates = id;
+		nextTargetEmpireForSpacePirates = id;
+	}
 	public boolean spaceAmoebaNotTriggered()	{ return empireIdTechTriggerSpaceAmoeba() == Empire.NULL_ID; }
 	public boolean spaceCrystalNotTriggered()	{ return empireIdTechTriggerSpaceCrystal() == Empire.NULL_ID; }
 	public boolean spacePiratesNotTriggered()	{ return empireIdTechTriggerSpacePirates() == Empire.NULL_ID; }
+	int nextTargetEmpireForSpaceAmoeba(boolean clear)	{
+		int nextTargetEmpire = nextTargetEmpireForSpaceAmoeba;
+		if (clear)
+			nextTargetEmpireForSpaceAmoeba = Empire.NULL_ID;
+		return nextTargetEmpire;
+	};
+	int nextTargetEmpireForSpaceCrystal(boolean clear)	{
+		int nextTargetEmpire = nextTargetEmpireForSpaceCrystal;
+		if (clear)
+			nextTargetEmpireForSpaceCrystal = Empire.NULL_ID;
+		return nextTargetEmpire;
+	};
+	int nextTargetEmpireForSpacePirates(boolean clear)	{
+		int nextTargetEmpire = nextTargetEmpireForSpacePirates;
+		if (clear)
+			nextTargetEmpireForSpacePirates = Empire.NULL_ID;
+		return nextTargetEmpire;
+	};
 
-	public void addActiveEvent(RandomEvent ev)		{ activeEvents.add(ev); }
-	public boolean isActiveEvent(RandomEvent ev)	{ return activeEvents.contains(ev); }
-	public void removeActiveEvent(RandomEvent ev)	{
+	void addActiveEvent(RandomEvent ev)		{ activeEvents.add(ev); }
+	//boolean isActiveEvent(RandomEvent ev)	{ return activeEvents.contains(ev); }
+	void removeActiveEvent(RandomEvent ev)	{
 		activeEvents.remove(ev);
 		if (IDebugOptions.debugAutoRun() && IDebugOptions.debugLogEvents()) {
 			turnLog(IGameOptions.AUTORUN_EVENTS, "Remove Event: " + ev.notificationText());

@@ -22,6 +22,11 @@
 
 ### Features:
 
+- Space Monsters: New option to change their speed and the distance to the next world.
+  - Minimum distance to the next world. (default = 0, up to 25)
+  - Maximum distance to the next world. (default = 8, up to 100)
+  - Because of the distance extension, and option to increase their speed has been added. (Up to 3.0 ly/turn)
+- The space monsters unleashed by technology will first target the empire that discovered this dangerous technology.
 - New option to allows for a gradual increase in range, depending on the overall level of propulsion technologies.
   - Formula: Range = Fuel * (1 + Lin * Tech + Quad * Tech²)
     - Fuel = Range related to fuel cell. (Original range)
