@@ -3313,6 +3313,12 @@ SETTINGS_MOD_SHOW_TECH_PROGRESS          | Afficher l’évolution de la recherc
 SETTINGS_MOD_SHOW_TECH_PROGRESS_YES_DESC | Afficher l’état actuel et attendu de la recherche.
 SETTINGS_MOD_SHOW_TECH_PROGRESS_NO_DESC  | N’afficher que l’état attendu de la recherche.
 
+SETTINGS_MOD_SHOW_TECH_TIPS_HELP		| Dans le panneau Empires Intelligence :<br>lorsque cette option est activée, la description de la technologie sur laquelle vous passez la souris s'affiche.<br>Pressez sur « H » pour basculer.
+SETTINGS_MOD_SHOW_TECH_TIPS_DESC		| Dans le panneau Empires Intelligence : lorsque cette option est activée, la description de la technologie sur laquelle vous passez la souris s'affiche.
+SETTINGS_MOD_SHOW_TECH_TIPS				| Décrire les Technolgies : %1
+SETTINGS_MOD_SHOW_TECH_TIPS_YES_DESC	| Afficher les descriptions.
+SETTINGS_MOD_SHOW_TECH_TIPS_NO_DESC		| Ne pas afficher les descriptions.
+
 SETTINGS_MOD_OPTIONS_DEFAULT             | Par défaut
 SETTINGS_MOD_OPTIONS_LAST                | Dernier état
 SETTINGS_MOD_OPTIONS_GAME                | Partie en cours
@@ -6196,6 +6202,8 @@ TECH_HELP_HK			| →HK_HEADER← →HK_F1← <br><br>1-6/+SHIFT : augmente / di
 SHIP_DESIGN_HELP_HK		| →HK_HEADER← →HK_F1← <br><br>Flèches Haut / Bas : Flotte Suivante / Précédente<br>S : Supprimer le Modèle<br>R : Renommer le Modèle<br>D : Créer le Modèle<br>C / (+Ctrl) : Purger le modèle / (Juste l’armement)<br>O : Ouvrir le panneau d’options de conception des vaisseaux<br><br>(Shift) Alt-A : Conception automatique<br>(Shift) Alt-B : Conception automatique Bombardier<br>(Shift) Alt-E : Conception automatique Éclaireur<br>(Shift) Alt-F : Conception automatique Chasseur<br>(Shift) Alt-G : Conception automatique Faisceaux<br>(Shift) Alt-H : Conception automatique Hybride<br>(Shift) Alt-I : Conception automatique Intercepteur<br>(Shift) Alt-M : Conception automatique Missiles.<br>(Shift) Alt-P : Conception automatique Colonisateur.<br>Shift-Alt : Autorise le changement de la taille de la coque<br>→HK_ESCAPE←
 
 RACES_HELP_HK			| →HK_HEADER← →HK_F1← <br><br>Flèches Down/Up : Empire Suivant/Précédent. →HK_TAB←<br><br>A : →RACES_DIPLOMACY_AUDIENCE← avec l’empire sélectionné.<br><br>M : Pour Activer/Désactiver les avertissements donnés par l’empire sous le curseur.<br>R : Rappeler/Réintégrer le diplomate de l’Empire sous le curseur.<br><br>Lorsque l’empire du joueur est sélectionné:<br>D : →RACES_DIPLOMACY_MANAGE_DIPLOMATS←.<br>S : →RACES_INTEL_BUREAU_MANAGE←. <br>→HK_ESCAPE←
+
+INTELLIGENCE_HELP_HK	| →HK_HEADER← →HK_F1← <br><br>H : Pour Afficher/Cacher la description des technologies<br><br>Flèches Down/Up : Empire Suivant/Précédent. →HK_TAB←<br><br>A : →RACES_DIPLOMACY_AUDIENCE← avec l’empire sélectionné.<br><br>M : Pour Activer/Désactiver les avertissements donnés par l’empire sous le curseur.<br>R : Rappeler/Réintégrer le diplomate de l’Empire sous le curseur.<br><br>Lorsque l’empire du joueur est sélectionné:<br>D : →RACES_DIPLOMACY_MANAGE_DIPLOMATS←.<br>S : →RACES_INTEL_BUREAU_MANAGE←. <br>→HK_ESCAPE←
 
 SYSTEMS_HELP_HK			| →HK_HEADER← →HK_F1← <br>→HK_MAP_ARROWS← →HK_MAP_ZOOM← <br> →HK_YEAR← →HK_FLAG← →HK_HOME← →HK_ALT_HOME← <br>→HK_ESCAPE←
 

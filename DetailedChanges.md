@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-03-01 (BR)
+- Intelligence Panel: When the mouse hovers over a technology, its description appears in a pop-up window.
+
 26-02-27 (BR)
 - Space Monsters: New option to change their speed and the distance to the next world.
   - Minimum distance to the next world. (default = 0, up to 25)

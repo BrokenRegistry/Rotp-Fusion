@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Area;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
@@ -88,6 +89,8 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
     public void showHelp()                 {  }
     public void cancelHelp()               {  }
     public void advanceHelp()              { }
+	public void toggleTips()			{ }
+	public void showTips(boolean show)	{ }
 
     public boolean hasStarBackground()     { return false; }
     public final boolean hasTexture()      { return textureName() != null; }
@@ -351,10 +354,16 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
         drawTextureWithExistingClip(g0, x,y,w,h);
         g0.setClip(null);
     }
+	public void drawTexture(Graphics g0, int x, int y, int w, int h, int arcx, int arcy) {
+		Shape clip = new RoundRectangle2D.Float(x, y, w, h, arcx, arcy);
+		g0.setClip(clip);
+		drawTextureWithExistingClip(g0, x,y,w,h);
+		g0.setClip(null);
+	}
 
     // used for keyEvents sent from RotPUI
-    public void keyPressed(KeyEvent e) { setModifierKeysState(e); }
-    public void keyReleased(KeyEvent e) { setModifierKeysState(e); }
+	public void keyPressed(KeyEvent e) { }
+	public void keyReleased(KeyEvent e) { }
     public void keyTyped(KeyEvent e) { }
     public void playAmbience() {
             playAmbience(ambienceSoundKey());

@@ -69,6 +69,7 @@ public class RacesUI extends BasePanel {
     private static final String MILITARY_PANEL = "Military";
     private static final String STATUS_PANEL = "Status";
     private static String selectedPanel = DIPLOMACY_PANEL;
+	private static BasePanel currentPanel;
 
     public static final Color scrollBarC = new Color(211,166,125);
     public static final Color lightBrown = new Color(178,124,87);
@@ -157,7 +158,10 @@ public class RacesUI extends BasePanel {
         int xHK = scaled(100);
         int yHK = scaled(70);
         int wHK = scaled(360);
-        helpUI.addBrownHelpText(xHK, yHK, wHK, 0, text("RACES_HELP_HK"));
+		if (selectedPanel.equals(INTELLIGENCE_PANEL))
+			helpUI.addBrownHelpText(xHK, yHK, wHK, 0, text("INTELLIGENCE_HELP_HK"));
+		else
+			helpUI.addBrownHelpText(xHK, yHK, wHK, 0, text("RACES_HELP_HK"));
         helpUI.open(this);
     }
     private void loadHelpUI() {
@@ -743,6 +747,10 @@ public class RacesUI extends BasePanel {
                         diploPanel.openManageDiplomatsPane();
                 //}
                 return;
+			case KeyEvent.VK_H: {	// toggle Hints
+				currentPanel.toggleTips();
+				return;
+			}
 			case KeyEvent.VK_M: {	// Mute
 				Empire emp = raceListingPanel.hoverEmp;
 				if (emp == null)
@@ -928,10 +936,22 @@ public class RacesUI extends BasePanel {
             cardLayout.show(cardPanel, panel);
 
             switch(panel) {
-                case DIPLOMACY_PANEL: diploPanel.open(); break;
-                case INTELLIGENCE_PANEL: intelPanel.open(); break;
-                case MILITARY_PANEL: militaryPanel.open(); break;
-                case STATUS_PANEL: statusPanel.open(); break;
+				case DIPLOMACY_PANEL:
+					currentPanel = diploPanel;
+					currentPanel.open();
+					break;
+				case INTELLIGENCE_PANEL:
+					currentPanel = intelPanel;
+					currentPanel.open();
+					break;
+				case MILITARY_PANEL:
+					currentPanel = militaryPanel;
+					currentPanel.open();
+					break;
+				case STATUS_PANEL:
+					currentPanel = statusPanel;
+					currentPanel.open();
+					break;
             }
             instance.repaint();
         }

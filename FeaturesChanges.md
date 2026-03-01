@@ -280,6 +280,7 @@
 
 ### User Interfaces:
 
+- Intelligence Panel: When the mouse hovers over a technology, its description appears in a pop-up window.
 - New interface for customizing species, and renamed to DNA workshop.
 - Added RotP colors and fonts to files selector that were still OS like.
 - Some sub-options, which depend on other options for their values to be taken into account, are displayed semi-transparently when their values are not taken into account.

@@ -37,7 +37,8 @@ final class GameMenuPreferences extends AbstractOptionsSubUI {
 				keepShipDesignName,
 
 				LINE_SPACER_25,
-				showTechProgress
+				showTechProgress,
+				showTechTips
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("GALAXY_PANEL"),

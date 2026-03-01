@@ -3313,6 +3313,12 @@ SETTINGS_MOD_SHOW_TECH_PROGRESS          | Show Research Progress: %1
 SETTINGS_MOD_SHOW_TECH_PROGRESS_YES_DESC | Show both current and expected state of research.
 SETTINGS_MOD_SHOW_TECH_PROGRESS_NO_DESC  | Only show expected state of research.
 
+SETTINGS_MOD_SHOW_TECH_TIPS_HELP		| In the Empires Intelligence panel:<br>When this option is enabled, the description of the technology you hover over is displayed.<br>Press "H" to toggle.
+SETTINGS_MOD_SHOW_TECH_TIPS_DESC		| In the Empires Intelligence panel: when this option is enabled, the description of the technology you hover over is displayed.
+SETTINGS_MOD_SHOW_TECH_TIPS				| Show Tech Descriptions: %1
+SETTINGS_MOD_SHOW_TECH_TIPS_YES_DESC	| Show description.
+SETTINGS_MOD_SHOW_TECH_TIPS_NO_DESC		| Do not show description.
+
 SETTINGS_MOD_OPTIONS_DEFAULT             | Default Settings
 SETTINGS_MOD_OPTIONS_LAST                | Last GUI Settings
 SETTINGS_MOD_OPTIONS_GAME                | Game Settings
@@ -6196,6 +6202,8 @@ TECH_HELP_HK			| →HK_HEADER← →HK_F1← <br><br>1-6/+SHIFT : Increment/Decr
 SHIP_DESIGN_HELP_HK		| →HK_HEADER← →HK_F1← <br><br>Arrows Down/Up : Next/Previous Slot<br><br>S : Scrap Design<br>R : Rename Design<br>D : Create Design<br>C / (+CTRL) : Clear Design / (Only Weapons)<br>O : Open the Ship Design Options Panel<br><br>(Shift) Alt-A : Auto build<br>(Shift) Alt-B : Auto build Bomber ship<br>(Shift) Alt-E : Auto build Scout ship (Explorer)<br>(Shift) Alt-F : Auto build Fighter ship<br>(Shift) Alt-G : Auto build Beam ship (Gun)<br>(Shift) Alt-H : Auto build Hybrid ship (Bomb + Beam + Missile)<br>(Shift) Alt-I : Auto build Interceptor ship (Quick Hybrid, few Bombs)<br>(Shift) Alt-M : Auto build Missile ship<br>(Shift) Alt-P : Auto build Colony ship (Pioneer)<br>Shift-Alt : Allows changing the hull size<br>→HK_ESCAPE←
 
 RACES_HELP_HK			| →HK_HEADER← →HK_F1← <br><br>Arrows Down/Up : Next/Previous Empire. →HK_TAB←<br><br>A : →RACES_DIPLOMACY_AUDIENCE← with the selected Empire.<br><br>M : To Mute/Unmute warnings given by the empire under the cursor.<br>R : To Recall/Reinstate the diplomat to the Empire under the mouse.<br><br>When the player's empire is selected:<br>D : →RACES_DIPLOMACY_MANAGE_DIPLOMATS←.<br>S : →RACES_INTEL_BUREAU_MANAGE←. <br>→HK_ESCAPE←
+
+INTELLIGENCE_HELP_HK	| →HK_HEADER← →HK_F1← <br><br>H : To Show/Hide technologies Description.<br><br>Arrows Down/Up : Next/Previous Empire. →HK_TAB←<br><br>A : →RACES_DIPLOMACY_AUDIENCE← with the selected Empire.<br><br>M : To Mute/Unmute warnings given by the empire under the cursor.<br>R : To Recall/Reinstate the diplomat to the Empire under the mouse.<br><br>When the player's empire is selected:<br>D : →RACES_DIPLOMACY_MANAGE_DIPLOMATS←.<br>S : →RACES_INTEL_BUREAU_MANAGE←. <br>→HK_ESCAPE←
 
 SYSTEMS_HELP_HK			| →HK_HEADER← →HK_F1← <br>→HK_MAP_ARROWS← →HK_MAP_ZOOM← <br> →HK_YEAR← →HK_FLAG← →HK_HOME← →HK_ALT_HOME← <br>→HK_ESCAPE←
 

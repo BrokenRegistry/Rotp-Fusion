@@ -838,4 +838,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 
 	ParamBoolean showTechProgress	= new ParamBoolean(MOD_UI, "SHOW_TECH_PROGRESS", true).isCfgFile(true);
 	default boolean showTechProgress()		{ return showTechProgress.get(); }
+
+	ParamBoolean showTechTips		= new ParamBoolean(MOD_UI, "SHOW_TECH_TIPS", true).isCfgFile(true);
+	default boolean showTechTips()			{ return showTechTips.get(); }
 }

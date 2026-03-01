@@ -42,6 +42,7 @@ import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
 import rotp.model.empires.SpyNetwork;
 import rotp.model.game.GovernorOptions;
+import rotp.model.game.IMainOptions;
 import rotp.model.tech.Tech;
 import rotp.model.tech.TechCategory;
 import rotp.model.tech.TechTree;
@@ -58,6 +59,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
     //private static final Color selectedC = new Color(178,124,87);
     private static final Color unselectedC = new Color(112,85,68);
     static final Color sliderBoxBlue = new Color(34,140,142);
+    private static final int rowH = s16;
 
     private final RacesUI parent;
     private final ManageSpiesUI manageSpiesPane;
@@ -72,39 +74,51 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
     private final Polygon missionIncr = new Polygon();
     private final Polygon missionDecr = new Polygon();
     private final Rectangle governorBox = new Rectangle();
-    Rectangle buttonSlider = new Rectangle();
-    Shape hoverShape;
-    int dragY;
-    int[] ptX = new int[3];
-    int[] ptY = new int[3];
-    
-    int[] techY = new int[6];
-    int[] techYMax = new int[6];
-    Rectangle[] techBoxes = new Rectangle[6];
-    Rectangle[] techScrollers = new Rectangle[6];
-    
-    private final Rectangle manageSpiesBox = new Rectangle();
+	private Rectangle buttonSlider = new Rectangle();
+	private Shape hoverShape;
+	private int dragY;
+	private int[] ptX = new int[3];
+	private int[] ptY = new int[3];
+
+	private int[] techY = new int[6];
+	private int[] techYMax = new int[6];
+	private Rectangle[] techBoxes = new Rectangle[6];
+	private Rectangle[] techScrollers = new Rectangle[6];
+
+	private boolean showTips = IMainOptions.showTechTips.get();
+	private int hoverTechCat;
+	private String hoverTech;
+
+	private final Rectangle manageSpiesBox = new Rectangle();
     private final Rectangle spyMissionBox = new Rectangle();
     private final Rectangle maxSpyBox = new Rectangle();
-    
+
     private final HashMap<Integer, List<String>> knownTechs = new HashMap<>();
     private final HashMap<Integer, List<String>> unknownTechs = new HashMap<>();
     private final HashMap<String, List<Empire>> techOwners = new HashMap<>();
 
     private LinearGradientPaint backGradient;
-    public RacesIntelligenceUI(RacesUI p) {
+	RacesIntelligenceUI(RacesUI p)	{
         parent = p;
         manageSpiesPane = new ManageSpiesUI(p);
         initModel();
     }
-    public void init() {
-        setValues();
-    }
+	void init()	{ setValues(); }
+	public void toggleTips()			{ showTips(!showTips);}
+	public void showTips(boolean show)	{
+		showTips = show;
+		IMainOptions.showTechTips.set(showTips);
+		repaint();
+	}
     @Override
     public void drawTexture(Graphics g)      { }
     @Override
     public String textureName()     { return TEXTURE_BROWN; }
-    public void changedEmpire()     { setValues(); }
+	void changedEmpire()	{ setValues(); }
+	@Override public void open()	{
+		hoverTechCat = -1;
+		hoverTech = "";
+	}
     @Override
     public void paintComponent(Graphics g0) {
         super.paintComponent(g0);
@@ -125,30 +139,121 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
             paintPlayerData(g);
         else
             paintAIData(g);
+
+		paintTips(g);
     }
     private void initModel() {
         for (int i=0;i<techBoxes.length;i++) 
             techBoxes[i] = new Rectangle();
         for (int i=0;i<techScrollers.length;i++) 
             techScrollers[i] = new Rectangle();
-        
+
         setBackground(RacesUI.darkerBrown);
         setBorder(newEmptyBorder(5,5,5,5));
         addMouseMotionListener(this);
         addMouseListener(this);
         addMouseWheelListener(this);        
     }
+	private void updateTips(int cat, int y)	{
+		boolean refresh = false;
+		String lastHoverTech = hoverTech;
+		if (hoverTechCat != cat) {
+			refresh = true;
+			hoverTechCat = cat;
+			hoverTech = "";
+		}
+		int my = y - techBoxes[cat].y - s4;
+		int lineY	= my + techY[cat];
+		int lineId	= lineY / rowH;
+		if (lineId < 0)
+			lineId = 0;
+		Empire emp = parent.selectedEmpire();
+		boolean isPlayer = emp.isPlayer();
+		if (isPlayer) {
+			List<String> aiUnknown = unknownTechs.get(cat);
+			if (aiUnknown.size() > lineId) {
+				String tech = aiUnknown.get(lineId);
+				if (!tech.equals(hoverTech)) {
+					refresh = true;
+					hoverTech = tech;
+				}
+			}
+		}
+		else {
+			List<String> aiUnknown = unknownTechs.get(cat);
+			if (aiUnknown.size() > lineId) {
+				String tech = aiUnknown.get(lineId);
+				if (!tech.equals(hoverTech)) {
+					refresh = true;
+					hoverTech = tech;
+				}
+			}
+			else {
+				int id = lineId - aiUnknown.size();
+				List<String> aiKnown = knownTechs.get(cat);
+				if (aiKnown.size() > id) {
+					String tech = aiKnown.get(id);
+					if (!tech.equals(hoverTech)) {
+						refresh = true;
+						hoverTech = tech;
+					}
+				}
+			}
+		}
+
+		if (refresh && showTips && !hoverTech.equals(lastHoverTech)) {
+			if (hoverTech.isEmpty()) {
+				repaint();
+				return;
+			}
+			Graphics2D g = (Graphics2D) getGraphics();
+			if (g != null) {
+				setRenderingHints(g);
+				paintTips(g);
+				drawSingleTechCategory(g, cat, emp, isPlayer);
+				g.dispose();
+			}
+		}
+	}
+	private void paintTips(Graphics2D g)	{
+		if (!showTips || hoverTechCat < 0)
+			return;
+		Tech tech = tech(hoverTech);
+		if (tech == null)
+			return;
+
+		int tipsW = scaled(355);
+		int tipsH = s55;
+		int tipsX = scaled(270);
+		int tipsY = scaled(215);
+		g.setColor(RacesUI.darkBrown);
+		int cnr = s14;
+		g.fillRoundRect(tipsX, tipsY, tipsW, tipsH, cnr, cnr);
+
+		g.setColor(SystemPanel.blackText);
+		String detail = tech.detail();
+		List<String> descLines = scaledNarrowWrappedLines(g, detail, tipsW-s14, 3, 16, 13);
+		int numLines = descLines.size();
+		int lineH = numLines <= 4 ? s16 : s13;
+		int sx = tipsX + s7;
+		int sy = tipsY + lineH;
+		for (String desc: descLines) {
+			drawString(g, desc, sx, sy);
+			sy += lineH;
+		}
+		if (UserPreferences.texturesInterface())
+			drawTexture(g, tipsX, tipsY, tipsW, tipsH, cnr, cnr);
+	}
     private void paintPlayerData(Graphics2D g) {
         // ai data only buttons - clear them
         missionDecr.reset();
         missionIncr.reset();
         spyMissionBox.setBounds(0,0,0,0);
-        
+
         Empire emp = parent.selectedEmpire();
         int w = getWidth();
         int h = getHeight();
 
-        int s200 = scaled(200);
         int s210 = scaled(210);
         int s260 = scaled(260);
         int s310 = scaled(310);
@@ -168,7 +273,6 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         int w = getWidth();
         int h = getHeight();
 
-        int s200 = scaled(200);
         int s210 = scaled(210);
         int s260 = scaled(260);
         int s310 = scaled(310);
@@ -192,7 +296,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         g.setColor(Color.black);
         Shape rect = new RoundRectangle2D.Float(x,y,w,h,w/8, h/8);
         g.fill(rect);
-        
+
         BufferedImage backImg = parent.raceIconBackImg();
         g.drawImage(backImg, x,y, null);
         
@@ -231,7 +335,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         String desc = text("RACES_INTEL_TAX_DESC");
         if (!inRange)
             desc = desc + " "+text("RACES_INTEL_TAX_OUT_OF_RANGE");
-        
+
         g.setFont(narrowFont(15));
         List<String> lines = wrappedLines(g, desc, w-s50);
         int y4 = y3+s20;
@@ -241,7 +345,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         int h0 = h;
         if (lines.size() > 2) 
             h0 += s16;
-        
+
         g.setColor(RacesUI.darkBrown);
         g.fillRect(x, y, w, h0);
 
@@ -270,7 +374,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         s = text("RACES_INTEL_SPENDING_ANNUAL", str(amt));
         sw = g.getFontMetrics().stringWidth(s);
         drawString(g,s, x+w-s20-sw, y2);
-        
+
          // draw string on right for pct 
         String cost = text("RACES_INTEL_PERCENT_AMT", player().internalSecurity());
         sw = g.getFontMetrics().stringWidth(cost);
@@ -278,7 +382,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         // need max width so slider doesn't move as cost pct changes
         String maxWidthStr = text("RACES_INTEL_PERCENT_AMT", 20);
         sw = g.getFontMetrics().stringWidth(maxWidthStr);
-       
+
         int sliderW = s90;
         int sliderH = s16;
         drawSecuritySliderBar(g,x+w-s50-sw-sliderW, y3-sliderH+s3, sliderW, sliderH);
@@ -351,7 +455,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
             s = text("RACES_INTEL_CURRENT");
         else
             s = text("RACES_INTEL_YEARS", str(age));
-        
+
         int sw = g.getFontMetrics().stringWidth(s);
         drawString(g,s, x+w-s20-sw, y1);
 
@@ -386,16 +490,16 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
                 g.setColor(SystemPanel.yellowText);
                 g.draw(maxSpyBox);
                 g.setStroke(prev);
-            }       
+            }
         }
-        
+
         // draw num & max of spy networks
         int num = view.spies().numActiveSpies();
         int max = view.spies().maxSpies();
         s  = num == max ? str(num) : text("RACES_INTEL_SPIES", str(num), str(max));
         sw = g.getFontMetrics().stringWidth(s);
         drawString(g,s, x+w-mgn-sw, y2);
-       
+
          // draw string on right for pct 
         g.setColor(SystemPanel.blackText);
         String newSpies = view.spies().newSpiesExpected();
@@ -404,7 +508,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         // need maxwidth so slider doesn't move as cost pct changes
         String maxWidthStr = text("RACES_INTEL_COMPLETION_YEARS",99);
         sw = g.getFontMetrics().stringWidth(maxWidthStr);
-       
+
         // draw security spending bar
         if (!view.embassy().unity()) {
             int sliderW = s90;
@@ -441,7 +545,6 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
                 g.setStroke(prev);
         	}
         }
-       
     }
     private void drawTechnologyTitle(Graphics2D g, Empire emp, int x, int y, int w, int h) {
         g.setColor(SystemPanel.orangeText);
@@ -452,14 +555,14 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         int y1 = y + h - s5;
         int x1 = x+s20;
         drawString(g,title, x1, y1);
-        
+
         // don't draw the spy informational message for your New Republic allies
         if (emp.isAI()) {
             EmpireView v = player().viewForEmpire(emp);
             if (v.embassy().unity())
                 return;
         }
-        
+
         int x2 = x1+sw+s40;
         int w2 = x+w-x2-s40;
         int y2 = y1 - s10;
@@ -486,34 +589,34 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         g.fillRect(x, y, w, h);
         int w1 = (w-s20)/3;
         int h1 = h/2;
-        
+
         int x1 = x+s10;
         int x2 = x1+w1;
         int x3 = x2+w1;
         int y1 = y;
         int y2 = y+h1;
-        
+
         Empire pl = player();
         TechTree tree = emp == pl ? pl.tech() : pl.viewForEmpire(emp).spies().tech();
-        drawJnknownTechCategory(g, emp, tree.computer(),    0, x1, y1, w1, h1);
-        drawJnknownTechCategory(g, emp, tree.construction(),1, x2, y1, w1, h1);
-        drawJnknownTechCategory(g, emp, tree.forceField(),  2, x3, y1, w1, h1);
-        drawJnknownTechCategory(g, emp, tree.planetology(), 3, x1, y2, w1, h1);
-        drawJnknownTechCategory(g, emp, tree.propulsion(),  4, x2, y2, w1, h1);
-        drawJnknownTechCategory(g, emp, tree.weapon(),      5, x3, y2, w1, h1);   
+        drawUnknownTechCategory(g, emp, tree.computer(),    0, x1, y1, w1, h1);
+        drawUnknownTechCategory(g, emp, tree.construction(),1, x2, y1, w1, h1);
+        drawUnknownTechCategory(g, emp, tree.forceField(),  2, x3, y1, w1, h1);
+        drawUnknownTechCategory(g, emp, tree.planetology(), 3, x1, y2, w1, h1);
+        drawUnknownTechCategory(g, emp, tree.propulsion(),  4, x2, y2, w1, h1);
+        drawUnknownTechCategory(g, emp, tree.weapon(),      5, x3, y2, w1, h1);   
     }
     private void drawTechnologyLists(Graphics2D g, Empire emp, int x, int y, int w, int h) {
         g.setColor(RacesUI.darkBrown);
         g.fillRect(x, y, w, h);
         int w1 = (w-s20)/3;
         int h1 = h/2;
-        
+
         int x1 = x+s10;
         int x2 = x1+w1;
         int x3 = x2+w1;
         int y1 = y;
         int y2 = y+h1;
-        
+
         Empire pl = player();
         // pl.viewForEmpire(emp).spies().updateTechList(); // TO DO BR: COMMENT
         TechTree tree = emp == pl ? pl.tech() : pl.viewForEmpire(emp).spies().tech();
@@ -524,6 +627,27 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         drawTechCategory(g, emp, tree.propulsion(),  4, x2, y2, w1, h1);
         drawTechCategory(g, emp, tree.weapon(),      5, x3, y2, w1, h1);   
     }
+	private void drawSingleTechCategory(Graphics2D g, int num, Empire emp, boolean isPlayer) {
+		int w = getWidth()-s40;
+		int h = getHeight();
+		int x = s20+s10;
+		int y = scaled(310);
+		int w1 = (w-s20)/3;
+		int h1 = (h - y - s10)/2;
+		int x1 = x + w1 * (num % 3);
+		int y1 = y + h1 * (num / 3);
+		Empire pl = player();
+		if (isPlayer) {
+			TechTree tree = pl.tech();
+			drawUnknownTechCategory(g, emp, tree.category(num), num, x1, y1, w1, h1);
+		}
+		else {
+			TechTree tree = pl.viewForEmpire(emp).spies().tech();
+			drawTechCategory(g, emp, tree.category(num), num, x1, y1, w1, h1);
+		}
+		if (UserPreferences.texturesInterface()) 
+			drawTexture(g, x1+s10, y1+s25+s10, w1-s20, h1-s25-s20);
+	}
     private void drawTechCategory(Graphics2D g, Empire emp, TechCategory cat, int num, int x, int y, int w, int h) {
         g.setColor(SystemPanel.whiteText);
         g.setFont(narrowFont(24));
@@ -532,54 +656,48 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         int x0 = x+((w-sw)/2);
         int y0 = y+s25;
         drawShadowedString(g, title, 1, x0, y0, SystemPanel.blackText, SystemPanel.whiteText);
-    
+
         int y1 = y0+s10;
         int x1 = x+s10;
         int w1 = w-s20;
         int listH = y+h-y1-s10;
-        
+
         g.setColor(RacesUI.brown);
         g.fillRect(x1,y1,w1,listH);
-        
         techBoxes[num].setBounds(x1,y1,w1,listH);
-        if (techBoxes[num] == hoverShape) {
-            Stroke prev = g.getStroke();
-            g.setStroke(stroke2);
-            g.setColor(Color.yellow);
-            g.draw(techBoxes[num]);
-            g.setStroke(prev);
-        }
         List<String> aiUnknown = unknownTechs.get(cat.index());
         List<String> aiKnown = knownTechs.get(cat.index());
-        
-        int rowH = s16;
+
         int x2 = x1+s10;
         int y2 = y1-techY[num];
         g.setFont(narrowFont(15));
         g.setClip(x1+s1,y1+s1,w1-s1,listH-s2);
         int rows = 0;
         for (String id: aiUnknown) {
-            Tech t = tech(id);
+			if (showTips && id.equals(hoverTech)) {
+				g.setColor(RacesUI.darkBrown);
+				g.fillRect(x1, y2+s3, w, rowH);
+			}
             if(player().tech(id).isObsolete(player()))
                 g.setColor(SystemPanel.grayText);
             else if(player().viewForEmpire(emp).spies().possibleTechs().contains(id))
                 g.setColor(SystemPanel.yellowText);
             else
                 g.setColor(SystemPanel.orangeText);
-            if ((t.level() > 0) && !t.free) {
-                y2 += rowH;
-                rows++;
-                drawString(g,tech(id).name(), x2, y2);
-            }
+            y2 += rowH;
+            rows++;
+            drawString(g,tech(id).name(), x2, y2);
         }
         g.setColor(SystemPanel.blackText);
         for (String id: aiKnown) {
-            Tech t = tech(id);
-            if ((t.level() > 0) && !t.free) {
-                y2 += rowH;
-                rows++;
-                drawString(g,tech(id).name(), x2, y2);
-            }
+			if (showTips && id.equals(hoverTech)) {
+				g.setColor(RacesUI.darkBrown);
+				g.fillRect(x1, y2+s3, w, rowH);
+				g.setColor(SystemPanel.blackText);
+			}
+            y2 += rowH;
+            rows++;
+            drawString(g,tech(id).name(), x2, y2);
         }
         techYMax[num] = max(0, s21+(rowH*rows) - listH);
         if (techYMax[num] == 0) 
@@ -601,8 +719,15 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
             }
         }
         g.setClip(null);
+		if (techBoxes[num] == hoverShape) {
+			Stroke prev = g.getStroke();
+			g.setStroke(stroke2);
+			g.setColor(Color.yellow);
+			g.draw(techBoxes[num]);
+			g.setStroke(prev);
+		}
     }
-    private void drawJnknownTechCategory(Graphics2D g, Empire emp, TechCategory cat, int num, int x, int y, int w, int h) {
+    private void drawUnknownTechCategory(Graphics2D g, Empire emp, TechCategory cat, int num, int x, int y, int w, int h) {
         g.setColor(SystemPanel.whiteText);
         g.setFont(narrowFont(24));
         String title = text(cat.id());
@@ -610,59 +735,51 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         int x0 = x+((w-sw)/2);
         int y0 = y+s25;
         drawShadowedString(g, title, 1, x0, y0, SystemPanel.blackText, SystemPanel.whiteText);
-    
+
         int y1 = y0+s10;
         int x1 = x+s10;
         int w1 = w-s20;
         int listH = y+h-y1-s10;
-        
+
         g.setColor(RacesUI.brown);
         g.fillRect(x1,y1,w1,listH);
-        
         techBoxes[num].setBounds(x1,y1,w1,listH);
-        if (techBoxes[num] == hoverShape) {
-            Stroke prev = g.getStroke();
-            g.setStroke(stroke2);
-            g.setColor(Color.yellow);
-            g.draw(techBoxes[num]);
-            g.setStroke(prev);
-        }
-        
+
         List<String> aiUnknown = unknownTechs.get(cat.index());
-        int rowH = s16;
         int x2 = x1+s10;
         int y2 = y1-techY[num];
         g.setFont(narrowFont(15));
         g.setClip(x1+s1,y1+s1,w1-s1,listH-s2);
         int rows = 0;
         for (String id: aiUnknown) {
-            Tech t = tech(id);
-            if ((t.level() > 0) && !t.free) {
-                List<Empire> emps = techOwners.get(id);
-                boolean couldSteal = false;
-                for (Empire emp1: emps) {
-                    if(player().viewForEmpire(emp1).spies().possibleTechs().contains(id))
-                        couldSteal = true;
-                }
-                if(player().tech(id).isObsolete(player()))
-                    g.setColor(SystemPanel.grayText);
-                else if(couldSteal)
-                    g.setColor(SystemPanel.yellowText);
-                else
-                    g.setColor(SystemPanel.orangeText);
-                y2 += rowH;
-                rows++;
-                String s = tech(id).name();
-                drawString(g,s, x2, y2);
-                int sw1 = g.getFontMetrics().stringWidth(s)+s5;
-                int x3 = x2 + sw1;
-                g.setColor(SystemPanel.blackText);
-                for (Empire emp1: emps) {
-                    s = emp1.raceName();
-                    sw1 = g.getFontMetrics().stringWidth(s)+s5;
-                    drawString(g,s, x3, y2);
-                    x3 += sw1;
-                }
+			if (showTips && id.equals(hoverTech)) {
+				g.setColor(RacesUI.darkBrown);
+				g.fillRect(x1, y2+s3, w, rowH);
+			}
+			y2 += rowH;
+            List<Empire> emps = techOwners.get(id);
+            boolean couldSteal = false;
+            for (Empire emp1: emps) {
+                if(player().viewForEmpire(emp1).spies().possibleTechs().contains(id))
+                    couldSteal = true;
+            }
+            if(player().tech(id).isObsolete(player()))
+                g.setColor(SystemPanel.grayText);
+            else if(couldSteal)
+                g.setColor(SystemPanel.yellowText);
+            else
+                g.setColor(SystemPanel.orangeText);
+            rows++;
+            String s = tech(id).name();
+            drawString(g,s, x2, y2);
+            int sw1 = g.getFontMetrics().stringWidth(s)+s5;
+            int x3 = x2 + sw1;
+            g.setColor(SystemPanel.blackText);
+            for (Empire emp1: emps) {
+                s = emp1.raceName();
+                sw1 = g.getFontMetrics().stringWidth(s)+s5;
+                drawString(g,s, x3, y2);
+                x3 += sw1;
             }
         }
         techYMax[num] = max(0, s21+(rowH*rows) - listH);
@@ -685,11 +802,18 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
             }
         }
         g.setClip(null);
+		if (techBoxes[num] == hoverShape) {
+			Stroke prev = g.getStroke();
+			g.setStroke(stroke2);
+			g.setColor(Color.yellow);
+			g.draw(techBoxes[num]);
+			g.setStroke(prev);
+		}
     }
     private void drawPlayerIntelligenceBureau(Graphics2D g, Empire emp, int x, int y, int w, int h) {
         g.setColor(RacesUI.darkBrown);
         g.fillRect(x, y, w, h);
-        
+
         g.setColor(SystemPanel.whiteText);
         g.setFont(narrowFont(24));
         String title = text("RACES_INTEL_BUREAU_TITLE");
@@ -697,7 +821,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         int x0 = x+((w-sw)/2);
         int y0 = y+s25;
         drawShadowedString(g, title, 1, x0, y0, SystemPanel.blackText, SystemPanel.whiteText);
-        
+
         g.setColor(SystemPanel.blackText);
         g.setFont(narrowFont(15));
         String desc = text("RACES_INTEL_BUREAU_DESC");
@@ -707,28 +831,28 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
             y1 += s16;
             drawString(g,line, x+s20, y1);
         }
-        
+
         g.setFont(narrowFont(18));
         String spies = text("RACES_INTEL_BUREAU_SPIES");
         int y2 = y0+s80;
         drawString(g,spies, x+s20, y2);
-        
+
         g.setFont(narrowFont(16));
         String str2 = str(player().totalActiveSpies());
         int sw2 = g.getFontMetrics().stringWidth(str2);
         drawString(g,str2, x+w-s20-sw2, y2);
-        
+
         y2 += s25;
         g.setFont(narrowFont(18));
         String spending = text("RACES_INTEL_BUREAU_SPENDING");
         drawString(g,spending, x+s20, y2);
         int amt = (int) externalSpyingCost;
-        
+
         g.setFont(narrowFont(16));
         str2 = amt == 0 ? text("RACES_INTEL_SECURITY_BONUS_NONE") : text("RACES_INTEL_SPENDING_ANNUAL", str(amt));
         sw2 = g.getFontMetrics().stringWidth(str2);
         drawString(g,str2, x+w-s20-sw2, y2);
-        
+
         drawManageSpiesButton(g, x+s20,y+h-s45,w-s40,s25);
     }
     private void drawAISpyOrders(Graphics2D g, Empire emp, int x, int y, int w, int h) {
@@ -744,9 +868,9 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
             if (!spies.isHide() && pl.alliedWith(emp.id))
                 treatyBreak = true;
             else if (spies.isSabotage() && pl.pactWith(emp.id))
-                treatyBreak = true;  
+                treatyBreak = true;
         }
-        
+
         if (!view.embassy().anyWar() && (spies.maxSpies() > 0)
         && view.otherView().embassy().timerIsActive(DiplomaticEmbassy.TIMER_SPY_WARNING)) {
             if (!spies.isHide()
@@ -775,13 +899,13 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         Float lastSpyBonus		= spies.lastSpyBonus();
         Float lastMissionBonus	= spies.lastMissionBonus();
        	Float lastBonus = spies.isSabotage()? lastMissionBonus:lastSpyBonus;
-        
+
         int yb = y1+sliderH+s20;
         String bonusStr = text("RACES_INTEL_SPY_EFFICIENCY");
         g.setColor(SystemPanel.whiteText);
         g.setFont(narrowFont(15));
         drawString(g, bonusStr, x+s60, yb);
-        
+
         if (lastBonus==null)
         	bonusStr = text("RACES_INTEL_NO_DATA");
         else {
@@ -812,7 +936,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
             y2 += s16;
             drawString(g,line, x+s15, y2);
         }
-        
+
         // Draw Warnings
         String desc2 = "";
         if (triggerWar) 
@@ -827,7 +951,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
             for (String line: lines2) {
                 y2 += s16;
                 drawString(g,line, x+s15, y2);
-            }           
+            }
         }
     }
     private void drawSecuritySliderBar(Graphics2D g, int x, int y, int w, int h) {
@@ -874,7 +998,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
             buttonIncr.addPoint(ptX[i], ptY[i]);
         buttonC = hoverShape == buttonIncr ? SystemPanel.yellowText :  Color.black;
         drawShadedPolygon(g, ptX, ptY, buttonC, s1, -s1);
-        
+
         if (!parent.selectedEmpire().isPlayer()) {
             g.setColor(SystemPanel.whiteText);
             g.setFont(narrowFont(15));
@@ -892,7 +1016,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         int buttonTopY = y+s5;
         int buttonMidY = y+s15;
         int buttonBotY = y+s25;
-        
+
         //left arrow
         ptX[0] = leftM; ptX[1] = leftM+buttonW; ptX[2] = leftM+buttonW;
         ptY[0] = buttonMidY; ptY[1] = buttonTopY; ptY[2] = buttonBotY;
@@ -904,7 +1028,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         else
             g.setColor(Color.black);
         g.fillPolygon(ptX, ptY, 3);
-        
+
         // right arrow
         ptX[0] = rightM; ptX[1] = rightM-buttonW; ptX[2] = rightM-buttonW;
         ptY[0] = buttonMidY; ptY[1] = buttonTopY; ptY[2] = buttonBotY;
@@ -926,12 +1050,12 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         g.setColor(Color.black);
         g.fillRect(barX, barY, barW, barH);
         spyMissionBox.setBounds(barX, barY, barW, barH);
-       
+
         if (treatyBreak)
             g.setColor(SystemPanel.redText);
         else
             g.setColor(sliderBoxBlue);
-        
+
         EmpireView view = player().viewForEmpire(emp.id);
         String name = view.spies().missionName();
         scaledFont(g, name, barW-s5, 18, 14);
@@ -1037,9 +1161,9 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
     private void setValues() {
         for (int i=0; i<techY.length; i++)
             techY[i] = 0;
-        
+
         Empire pl = player();
-        
+
         inRange = pl.inRangeOfAnyEmpire();
         if (parent.selectedEmpire().isPlayer()) {
             internalSecurityCost = pl.empireInternalSecurityCost();
@@ -1078,34 +1202,40 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
                 List<String> aiTechs = new ArrayList<>(empTree.category(i).knownTechs());
                 List<String> plTechs = new ArrayList<>(plTree.category(i).knownTechs());
                 aiTechs.removeAll(plTechs);
-                for (String id : aiTechs) {
-                    List<String> currUnknowns = unknownTechs.get(i);
-                    if (!currUnknowns.contains(id) && !tradedTechs.contains(id))
-                        currUnknowns.add(id);
-                    if (!techOwners.containsKey(id))
-                        techOwners.put(id, new ArrayList<>());
-                    techOwners.get(id).add(emp);
+				List<String> currUnknowns = unknownTechs.get(i);
+				for (String id : aiTechs) {
+					Tech t = tech(id); // BR: moved the test here to avoid repetition
+					if ((t.level() > 0) && !t.free) {
+						if (!currUnknowns.contains(id) && !tradedTechs.contains(id))
+							currUnknowns.add(id);
+						if (!techOwners.containsKey(id))
+							techOwners.put(id, new ArrayList<>());
+						techOwners.get(id).add(emp);
+					}
                 }
-            }        
+            }
         }
     }
     private void loadAllTechs(Empire emp) {
         Empire pl = player();
-        
+
         TechTree empTree = pl.viewForEmpire(emp).spies().tech();
         List<String> tradedTechs = new ArrayList<>();
         for (String techId: pl.tech().tradedTechs())
             tradedTechs.add(techId);
         TechTree plTree = pl.tech();
         for (int i=0;i<TechTree.NUM_CATEGORIES;i++) {
-            List<String> aiKnown = new ArrayList<>(empTree.category(i).knownTechs());
-            List<String> playerKnown = new ArrayList<>(plTree.category(i).knownTechs());
-            List<String> aiUnknown = new ArrayList<>();
-            for (String id : aiKnown) {
-                if (!playerKnown.contains(id) && !tradedTechs.contains(id))
-                    aiUnknown.add(id);
-            }
-            aiKnown.removeAll(aiUnknown);
+			List<String> playerKnown = new ArrayList<>(plTree.category(i).knownTechs());
+			List<String> aiUnknown = new ArrayList<>();
+			List<String> aiKnown = new ArrayList<>();
+			for (String id : empTree.category(i).knownTechs()) {
+				Tech t = tech(id); // BR: moved the test here to avoid repetition
+				if ((t.level() > 0) && !t.free)
+					if (!playerKnown.contains(id) && !tradedTechs.contains(id))
+						aiUnknown.add(id);
+					else
+						aiKnown.add(id);
+			}
             Collections.sort(aiUnknown, Tech.REVERSE_LEVEL);
             Collections.sort(aiKnown, Tech.REVERSE_LEVEL);
             knownTechs.put(i, aiKnown);
@@ -1136,8 +1266,11 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
                     techY[i] = max(0,techY[i]-s10);
                 else 
                     techY[i] = min(techYMax[i],techY[i]+s10);
-                if (techY[i] != prevY)
-                    repaint(techBoxes[i]);
+				if (techY[i] != prevY) {
+					updateTips(i, y);
+					if (!showTips)
+						repaint(techBoxes[i]);
+				}
                 return;
             }
         }
@@ -1202,11 +1335,14 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         int y = e.getY();
         Shape prevHover = hoverShape;
         hoverShape = null;
+		hoverTechCat = -1;
         for (int i=0;i<techBoxes.length;i++) {
             if (techScrollers[i].contains(x,y)) 
                 hoverShape = techScrollers[i];
-            else if (techBoxes[i].contains(x,y)) 
-                hoverShape = techBoxes[i];
+			else if (techBoxes[i].contains(x,y)) {
+				hoverShape = techBoxes[i];
+				updateTips(i, y);
+			}
         }
         if (governorBox.contains(x,y))
             hoverShape = governorBox;
@@ -1231,8 +1367,8 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         else if (missionIncr.contains(x,y))
             hoverShape = missionIncr;
 
-        if (hoverShape != prevHover) 
-            repaint();     
+        if (hoverShape != prevHover)
+            repaint();
     }
     @Override
     public void mouseClicked(MouseEvent mouseEvent) { }
