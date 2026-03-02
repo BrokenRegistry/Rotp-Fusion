@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<version>Fusion-2026-03-01</version>
+	<version>Fusion-2026-03-02</version>
 
 	<!-- Project Declaration -->
 	<groupId>com.rayfowler</groupId>
@@ -75,19 +75,6 @@
 
 	<!-- All the dependencies Declaration -->
 	<dependencies>
-		<!-- JUNIT dependencies
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>${junit.jupiter.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>${junit.jupiter.version}</version>
-			<scope>test</scope>
-		</dependency> -->
 		<!-- Base and modders ROTP dependencies -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -161,8 +148,22 @@
 			</resource>
 		</resources>
 
+<!-- To define the plugin version in your parent POM -->
+	<pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.basepom.maven</groupId>
+				<artifactId>duplicate-finder-maven-plugin</artifactId>
+				<version>2.0.1</version>
+			</plugin>
+		</plugins>
+	</pluginManagement>
 		<!-- Building tools -->
 		<plugins>
+			<plugin>
+				<groupId>org.basepom.maven</groupId>
+				<artifactId>duplicate-finder-maven-plugin</artifactId>
+			</plugin>
 			<!-- Second time stamp for sorting purpose -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -225,6 +226,15 @@
 				</configuration>
 			</plugin>
 			<!-- images & sound compression, using antrun which is standard -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<!-- <propertiesEncoding>ISO-8859-1</propertiesEncoding> -->
+					<propertiesEncoding>UTF-8</propertiesEncoding>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
