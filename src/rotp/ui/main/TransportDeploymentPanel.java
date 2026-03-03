@@ -67,6 +67,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         initModel();
     }
     public void releaseObjects() { }
+	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
     @Override
     public void handleNextTurn() {  cancel(); }
     @Override
@@ -213,22 +214,22 @@ public class TransportDeploymentPanel extends SystemPanel {
         if(transportSprite() != null)
         {
             transportSprite().cancel();
-            parentSpritePanel.parent.clickedSprite(transportSprite().homeSystem());
-            parentSpritePanel.parent.repaint();
+            mapHandler().clickedSprite(transportSprite().homeSystem());
+            mapHandler().repaint();
         }
     }
     public void clearTransport() {
         transportSprite().clear();
-        parentSpritePanel.parent.clickedSprite(transportSprite().homeSystem());
-        parentSpritePanel.parent.repaint();
+        mapHandler().clickedSprite(transportSprite().homeSystem());
+        mapHandler().repaint();
     }
     public void acceptTransport() {
         if (!canSendTransports())
             return;
 
         player().deployTransport(transportSprite().homeSystem());
-        parentSpritePanel.parent.clickedSprite(transportSprite().homeSystem());
-        parentSpritePanel.parent.repaint();
+        mapHandler().clickedSprite(transportSprite().homeSystem());
+        mapHandler().repaint();
     }
     public void decrement(boolean click) {
         if (transportSprite().decrement(1)) {
@@ -271,12 +272,13 @@ public class TransportDeploymentPanel extends SystemPanel {
         private static final long serialVersionUID = 1L;
         private Shape hoverBox, hoverBox2;
         public TransportDetailPane(SpriteDisplayPanel p) {
-            parentSpritePanel = p;
+			spritePanel(p);
             init();
         }
         private void init() {
             initModel();
         }
+    	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
         @Override
         public void animate() {
             detailPane.animate();
@@ -299,12 +301,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         public void mouseMoved(MouseEvent e) { }
         @Override
         public void mouseClicked(MouseEvent e) { }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parentSpritePanel.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
         @Override
         public void mouseExited(MouseEvent e) {
             if ((hoverBox != null) || (hoverBox2 != null)){
@@ -520,12 +517,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         }
         @Override
         public void mouseClicked(MouseEvent arg0) { }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parentSpritePanel.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
         @Override
         public void mouseExited(MouseEvent arg0) {
             if (hoverBox != null) {
@@ -685,10 +677,10 @@ public class TransportDeploymentPanel extends SystemPanel {
             int sz = s60;
             int shX = (options().selectedFlagColorCount() == 1)? 0 : s8; // BR: flagColorCount
             if (hoverBox == flagBox) {
-                Image hoverImage = parentSpritePanel.parent.flagHover(sys);
+                Image hoverImage = mapHandler().flagHover(sys);
                 g.drawImage(hoverImage, w-sz+s15-shX, -s15, sz, sz, null);
             }
-            Image flagImage = parentSpritePanel.parent.flagImage(sys);
+            Image flagImage = mapHandler().flagImage(sys);
             g.drawImage(flagImage, w-sz+s15-shX, -s15, sz, sz, null);
             flagBox.setBounds(w-sz+s25-shX,-s15,sz-s20,sz-s10);
                 
@@ -792,12 +784,7 @@ public class TransportDeploymentPanel extends SystemPanel {
                     player().sv.toggleFlagColor(sys.id, false);
            }
         }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parentSpritePanel.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
         @Override
         public void mouseExited(MouseEvent e) { 
             if (hoverBox != null) {
@@ -959,6 +946,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         public void mouseDragged(MouseEvent e) { }
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
 
@@ -976,14 +964,10 @@ public class TransportDeploymentPanel extends SystemPanel {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parentSpritePanel.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
         @Override
         public void mouseExited(MouseEvent e) {
+			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
                 repaint();

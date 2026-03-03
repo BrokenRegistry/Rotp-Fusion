@@ -25,6 +25,7 @@ import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
@@ -175,6 +176,7 @@ public class FleetMassQueryPanel extends BasePanel {
         public void mouseDragged(MouseEvent e) { }
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
             boolean repaint = false;
@@ -222,10 +224,10 @@ public class FleetMassQueryPanel extends BasePanel {
             else
                 misClick();
         }
-        @Override
-        public void mouseEntered(MouseEvent e) {  }
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, topParent); }
         @Override
         public void mouseExited(MouseEvent e) {
+			setModifierKeysState(e);
             boolean repaint = false;
             for (FleetUI.QueryFilter fl : topParent.fleetDesignFilters)
                 repaint = repaint || fl.mouseExited();
@@ -350,6 +352,7 @@ public class FleetMassQueryPanel extends BasePanel {
         public void mouseDragged(MouseEvent e) { }
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
             Rectangle prevHover = hoverBox;
@@ -380,10 +383,10 @@ public class FleetMassQueryPanel extends BasePanel {
             }
             misClick();
         }
-        @Override
-        public void mouseEntered(MouseEvent e) {  }
+    	@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, topParent); }
         @Override
         public void mouseExited(MouseEvent e) {
+			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
                 repaint();

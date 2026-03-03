@@ -62,7 +62,7 @@ public class RallyPointPanel extends SystemPanel {
 	private void toggleChainRally()		{ chainRally = !chainRally(); }
 
 	public RallyPointPanel(SpriteDisplayPanel p) {
-        parentSpritePanel = p;
+		spritePanel(p);
         init();
     }
     private void init() {
@@ -71,6 +71,7 @@ public class RallyPointPanel extends SystemPanel {
     public void releaseObjects() {
     	lastPreviewChain = null;
     }
+	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
     @Override
     public void animate() {
         topPane.animate();
@@ -214,8 +215,8 @@ public class RallyPointPanel extends SystemPanel {
 			player().processChainRally(lastPreviewChain, SystemView.CLEAR_PREVIEW);
 		defaultChainRally();
         lastPreviewChain = null;
-        parentSpritePanel.parent.clickedSprite(sys);
-        parentSpritePanel.parent.repaint();
+        mapHandler().clickedSprite(sys);
+        mapHandler().repaint();
     }
     public void createRelocationPath() {
         if (!canRelocateShips())
@@ -243,16 +244,16 @@ public class RallyPointPanel extends SystemPanel {
         }
         defaultChainRally();
         lastPreviewChain = null;
-        parentSpritePanel.parent.clickedSprite(sys);
-        parentSpritePanel.parent.repaint();
+        mapHandler().clickedSprite(sys);
+        mapHandler().repaint();
     }
     public void cancelRelocationPath() {
         StarSystem sys = relocationSprite().homeSystemView();
         player().sv.stopRally(sys.id);
         defaultChainRally();
         lastPreviewChain = null;
-        parentSpritePanel.parent.clickedSprite(sys);
-        parentSpritePanel.parent.repaint();
+        mapHandler().clickedSprite(sys);
+        mapHandler().repaint();
     }
     @Override
     protected BasePanel topPane() {
@@ -276,9 +277,10 @@ public class RallyPointPanel extends SystemPanel {
     class RallyPointDetailPane extends SystemPanel {
         private static final long serialVersionUID = 1L;
         public RallyPointDetailPane(SpriteDisplayPanel p) {
-            parentSpritePanel = p;
+			spritePanel(p);
             initModel();
         }
+    	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
         @Override
         public void animate() {
             detailPane.animate();
@@ -440,14 +442,10 @@ public class RallyPointPanel extends SystemPanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseClicked(MouseEvent e) { }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parentSpritePanel.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
         @Override
         public void mouseExited(MouseEvent e) {
+			setModifierKeysState(e);
             if (hoverBox != null){
                 hoverBox = null;
                 repaint();
@@ -457,6 +455,7 @@ public class RallyPointPanel extends SystemPanel {
         public void mouseDragged(MouseEvent e) { }
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
             Shape prevHover = hoverBox;
@@ -675,6 +674,7 @@ public class RallyPointPanel extends SystemPanel {
         public void mouseDragged(MouseEvent arg0) { }
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
 
@@ -692,14 +692,10 @@ public class RallyPointPanel extends SystemPanel {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parentSpritePanel.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
         @Override
         public void mouseExited(MouseEvent e) {
+			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
                 repaint();

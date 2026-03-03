@@ -23,6 +23,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.List;
+
 import rotp.model.colony.Colony;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
@@ -101,6 +102,7 @@ public class SystemMassSpendingPanel  extends BasePanel implements MouseMotionLi
     public void mouseDragged(MouseEvent arg0) { }
     @Override
     public void mouseMoved(MouseEvent e) {
+		setModifierKeysState(e);
         int x = e.getX();
         int y = e.getY();
 
@@ -123,10 +125,10 @@ public class SystemMassSpendingPanel  extends BasePanel implements MouseMotionLi
     }
     @Override
     public void mouseClicked(MouseEvent e) { }
-    @Override
-    public void mouseEntered(MouseEvent e) { }
+	@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, topParent); }
     @Override
     public void mouseExited(MouseEvent e) {
+		setModifierKeysState(e);
         if (hoverBox != null) {
             hoverBox = null;
             repaint();

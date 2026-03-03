@@ -1375,14 +1375,22 @@ public final class GameSession implements Base, Serializable {
 			instance().loading = true;
 			rulesetManager().setAsGameMode();
 
-            if (Rotp.isIDE()) {
-            	if (newSession.governorOptions == null)
-            		System.err.println("@ newSession.governorOptions == null ==> Not RotP-Fusion");
-            	if (newSession.options.dynOpts() == null)
-            		System.err.println("@  newSession.options.dynOpts() == null ==> Not RotP-Fusion");
+			if (Rotp.isIDE()) {
+				if (newSession.governorOptions == null)
+					System.err.println("@ newSession.governorOptions == null ==> Not RotP-Fusion");
+				DynOptions dynOpts = newSession.options().dynOpts();
+				if (dynOpts == null)
+					System.err.println("@  newSession.options.dynOpts() == null ==> Not RotP-Fusion");
+				else {
+					String mouseSens = dynOpts.getString("GAME_SETTINGS_SENSITIVITY", "Not available");
+					System.out.println("@ mouse Sensitivity = " + mouseSens);
+					String graphics = dynOpts.getString("GAME_SETTINGS_GRAPHICS", "Not available");
+					System.out.println("@ Graphics Level = " + graphics);
+				}
 				String version = ((MOO1GameOptions)newSession.options).getVersion();
 				System.out.println("@ Version = " + version);
-            }
+				
+			}
 
 			// BR: save the last loaded game initial parameters
 			instance().options().setAsGame();

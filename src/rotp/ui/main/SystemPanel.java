@@ -24,6 +24,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
@@ -96,7 +99,10 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
     protected CardLayout detailLayout = new CardLayout();
     JPanel detailCardPane;
 
-    protected SpriteDisplayPanel spritePanel()   { return parentSpritePanel; }
+	protected void spritePanel(SpriteDisplayPanel p)	{ parentSpritePanel = p; }
+	protected SpriteDisplayPanel spritePanel()			{ return parentSpritePanel; }
+//	protected IMapHandler mapHandler()	{ return spritePanel().parent; }
+	abstract protected IMapHandler mapHandler();
 
     protected void showDefaultDetail() { }
     protected void showStarDetail()    { }
@@ -544,7 +550,7 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
             drawString(g2,title, x0, y+h);
         }
     }
-    protected class SystemRangePane extends BasePanel {
+    protected class SystemRangePane extends BasePanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;
         SystemPanel parent;
         private Shape textureClip;
@@ -555,7 +561,9 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
         private void init() {
             setOpaque(false);
             setPreferredSize(new Dimension(getWidth(),s40));
-        }
+			addMouseListener(this);
+			addMouseMotionListener(this);
+		}
         @Override
         public String textureName()            { return TEXTURE_GRAY; }
         @Override
@@ -569,7 +577,7 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
 
             int w = getWidth();
             int h = getHeight();
-            StarSystem sys = parent.parentSpritePanel.systemViewToDisplay();
+            StarSystem sys = parent.spritePanel().systemViewToDisplay();
             if (sys == null)
                 return;
             float range = (float) Math.ceil(pl.sv.distance(sys.id)*10)/10;
@@ -627,5 +635,12 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
             g.setStroke(prev);
             textureClip = new Rectangle2D.Float(0, y0, w-s1, h-y0-s1);
         }
+    	@Override public void mouseDragged(MouseEvent e)	{ }
+    	@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
+		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
+		@Override public void mouseClicked(MouseEvent e)	{ }
+		@Override public void mousePressed(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{ }
     }
 }

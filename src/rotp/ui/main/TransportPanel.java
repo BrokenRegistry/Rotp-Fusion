@@ -40,7 +40,6 @@ import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.galaxy.Transport;
 import rotp.ui.BasePanel;
-import rotp.ui.map.IMapHandler;
 
 public final class TransportPanel extends BasePanel {
     private static final long serialVersionUID = 1L;
@@ -80,7 +79,7 @@ public final class TransportPanel extends BasePanel {
             add(bottomPane, BorderLayout.SOUTH);
         }
     }
-    public final class TransportGraphicPane extends BasePanel {
+    public final class TransportGraphicPane extends BasePanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;
         private final TransportPanel parent;
 		private String displayedRaceId;
@@ -91,7 +90,15 @@ public final class TransportPanel extends BasePanel {
         }
         private void init() {
             setBackground(Color.black);
+			addMouseListener(this);
         }
+		@Override public void mouseClicked(MouseEvent e)	{ }
+		@Override public void mousePressed(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{ }
+		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
+		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.parent.parent); }
         @Override
         public boolean hasStarBackground()     { return true; }
         @Override
@@ -330,6 +337,7 @@ public final class TransportPanel extends BasePanel {
         public void mouseDragged(MouseEvent e) { }
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
 
@@ -343,14 +351,10 @@ public final class TransportPanel extends BasePanel {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parent.parent.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.parent.parent); }
         @Override
         public void mouseExited(MouseEvent e) {
+			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
                 repaint();
@@ -482,6 +486,7 @@ public final class TransportPanel extends BasePanel {
         public void mouseDragged(MouseEvent e) { }
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
 
@@ -495,14 +500,10 @@ public final class TransportPanel extends BasePanel {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parent.parent.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.parent.parent); }
         @Override
         public void mouseExited(MouseEvent e) {
+			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
                 repaint();

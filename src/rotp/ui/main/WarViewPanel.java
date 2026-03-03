@@ -54,6 +54,7 @@ public class WarViewPanel extends SystemPanel {
 	private void init() { initModel(); }
     public void releaseObjects() { }
 
+	@Override protected IMapHandler mapHandler()	{ return parent.parent; }
 	@Override public void animate() {
 		topPane.animate();
 		detailPane.animate();
@@ -253,13 +254,8 @@ public class WarViewPanel extends SystemPanel {
 		}
 		@Override public void mousePressed(MouseEvent e) { }
 		@Override public void mouseReleased(MouseEvent e) { }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parent.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
-		@Override public void mouseExited(MouseEvent e) { }
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.parent); }
+		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
 		@Override public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() > 0)
 				offsetY += scrollH;

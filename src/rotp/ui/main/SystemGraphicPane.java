@@ -30,6 +30,7 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.ships.ShipLibrary;
@@ -136,6 +137,7 @@ public class SystemGraphicPane extends BasePanel implements MouseMotionListener,
     public void mouseDragged(MouseEvent arg0) {}
     @Override
     public void mouseMoved(MouseEvent e) {
+		setModifierKeysState(e);
         int x = e.getX();
         int y = e.getY();
         int prevHover = currentHover;
@@ -159,10 +161,8 @@ public class SystemGraphicPane extends BasePanel implements MouseMotionListener,
     }
     @Override
     public void mouseClicked(MouseEvent e) { }
-    @Override
-    public void mouseEntered(MouseEvent e) { }
-    @Override
-    public void mouseExited(MouseEvent e) { }
+	@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.mapHandler()); }
+	@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
     @Override
     public void mousePressed(MouseEvent e) { }
     @Override
@@ -189,6 +189,7 @@ public class SystemGraphicPane extends BasePanel implements MouseMotionListener,
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+		setModifierKeysState(e);
         boolean up = e.getWheelRotation() > 0;
         parent.scrollToNextSystem(up);
     }

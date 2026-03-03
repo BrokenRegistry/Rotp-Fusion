@@ -27,12 +27,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.List;
+
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.BasePanel;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.main.SystemViewInfoPane;
+import rotp.ui.map.IMapHandler;
 import rotp.ui.sprites.FlightPathSprite;
 
 public class FleetMassDeployPanel extends BasePanel {
@@ -203,6 +205,7 @@ public class FleetMassDeployPanel extends BasePanel {
         private void init() {
             initModel(0);
         }
+    	@Override protected IMapHandler mapHandler()	{ return topParent; }
         @Override
         protected Color backgroundColor()   { return FleetUI.backLoC; }
         @Override
@@ -219,7 +222,7 @@ public class FleetMassDeployPanel extends BasePanel {
         @Override
         protected BasePanel bottomPane() { return new FleetDeployFooterPane(); }
     }
-    class FleetDeployHeaderPane extends BasePanel {
+    class FleetDeployHeaderPane extends BasePanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;
         Shape arrow;
         int xPts[];
@@ -230,6 +233,8 @@ public class FleetMassDeployPanel extends BasePanel {
         private void initModel() {
             setPreferredSize(new Dimension(getWidth(), s65));
             setBackground(FleetUI.backHiC);
+			addMouseListener(this);
+			addMouseMotionListener(this);
         }
         @Override
         public void paintComponent(Graphics g0) {
@@ -271,6 +276,13 @@ public class FleetMassDeployPanel extends BasePanel {
                 drawString(g,line, s10, y0);
             }
         }
+		@Override public void mouseClicked(MouseEvent e)	{ }
+		@Override public void mousePressed(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{ }
+		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
+		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, topParent); }
     }
     class FleetDeployFooterPane extends BasePanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;

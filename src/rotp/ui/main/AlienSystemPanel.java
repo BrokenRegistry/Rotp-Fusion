@@ -45,11 +45,12 @@ public class AlienSystemPanel extends SystemPanel {
     static final Color dataBorders = new Color(160,160,160);
 
     public AlienSystemPanel(SpriteDisplayPanel p) {
-        parentSpritePanel = p;
+		spritePanel(p);
         initModel();
     }
     public void releaseObjects() { }
 
+	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
     @Override
     public void animate()            { overviewPane.animate(); }
     @Override
@@ -133,10 +134,10 @@ public class AlienSystemPanel extends SystemPanel {
             int sz = s70;
             int shX = (options().selectedFlagColorCount() == 1)? 0 : s8; // BR: flagColorCount
             if (hoverBox == flagBox) { // BR: swapped hover and Flag
-                Image hoverImage = parentSpritePanel.parent.flagHover(sys);
+                Image hoverImage = mapHandler().flagHover(sys);
                 g.drawImage(hoverImage, w-sz+s15-shX, topH1-sz+s10, sz, sz, null);
             }
-            Image flagImage = parentSpritePanel.parent.flagImage(sys);
+            Image flagImage = mapHandler().flagImage(sys);
             g.drawImage(flagImage, w-sz+s15-shX, topH1-sz+s10, sz, sz, null);
             flagBox.setBounds(w-sz+s25-shX,topH1-sz+s10,sz-s20,sz-s10);
             
@@ -251,7 +252,7 @@ public class AlienSystemPanel extends SystemPanel {
                 		player().sv.resetFlagColor(sys.id);
                 else
                     player().sv.toggleFlagColor(sys.id, false);
-                parentSpritePanel.parent.repaint();
+                mapHandler().repaint();
             }
             else if (hoverBox == nameBox) {
                 RotPUI.instance().selectRacesPanel();
@@ -259,12 +260,7 @@ public class AlienSystemPanel extends SystemPanel {
                 RotPUI.instance().racesUI().selectedEmpire(galaxy().empire(displayEmpId));              
             }
         }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parentSpritePanel.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
         @Override
         public void mouseExited(MouseEvent e) { 
             if (hoverBox != null) {

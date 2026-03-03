@@ -39,6 +39,7 @@ import rotp.model.ships.ShipDesign;
 import rotp.ui.BasePanel;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.main.SystemViewInfoPane;
+import rotp.ui.map.IMapHandler;
 
 public class SystemMassRallyPanel extends SystemPanel {
     private static final long serialVersionUID = 1L;
@@ -121,6 +122,7 @@ public class SystemMassRallyPanel extends SystemPanel {
             && (target != null)
             && player().canRallyFleetsTo(id(target));
     }
+	@Override protected IMapHandler mapHandler()	{ return topParent; }
     @Override
     protected Color backgroundColor()   { return FleetUI.backLoC; }
     @Override

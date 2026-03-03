@@ -19,11 +19,15 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
 
-public class SystemViewInfoPane extends BasePanel {
+public class SystemViewInfoPane extends BasePanel implements MouseListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
     private static final String EMPIRE_SYSTEM = "Empire";
     private static final String ALIEN_FRIENDLY_SYSTEM = "Alien-Friendly";
@@ -77,7 +81,16 @@ public class SystemViewInfoPane extends BasePanel {
         add(unexploredTopPanel, UNEXPLORED_SYSTEM);
         add(uncolonizedTopPanel, UNCOLONIZED_SYSTEM);
         topLayout.show(this, UNEXPLORED_SYSTEM);
+		addMouseListener(this);
+		addMouseMotionListener(this);
     }
+	@Override public void mouseClicked(MouseEvent e)	{ }
+	@Override public void mousePressed(MouseEvent e)	{ }
+	@Override public void mouseReleased(MouseEvent e)	{ }
+	@Override public void mouseDragged(MouseEvent e)	{ }
+	@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
+	@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
+	@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.mapHandler()); }
     @Override
     public void paint(Graphics g) {
         selectBestPane();

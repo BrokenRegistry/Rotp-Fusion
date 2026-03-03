@@ -90,6 +90,7 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
     public void toggleFlagColor(boolean rightClick) {
         summaryPane.toggleFlagColor(rightClick);
     }
+	@Override protected IMapHandler mapHandler()	{ return parent; }
     @Override
     public String subPanelTextureName()    { return TEXTURE_BROWN; }
     @Override

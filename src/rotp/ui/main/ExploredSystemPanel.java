@@ -54,11 +54,12 @@ public class ExploredSystemPanel extends SystemPanel {
     protected void showPlanetDetail()   { }
 
     public ExploredSystemPanel(SpriteDisplayPanel p) {
-        parentSpritePanel = p;
+		spritePanel(p);
         initModel();
     }
     public void releaseObjects() { }
 
+	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
     @Override
     public void animate()            { overviewPane.animate(); }
     @Override
@@ -126,10 +127,10 @@ public class ExploredSystemPanel extends SystemPanel {
             int sz = s70;
             int shX = (options().selectedFlagColorCount() == 1)? 0 : s8; // BR: flagColorCount
             if (hoverBox == flagBox) { // BR: swapped hover and Flag
-                Image hoverImage = parentSpritePanel.parent.flagHover(sys);
+                Image hoverImage = mapHandler().flagHover(sys);
                 g.drawImage(hoverImage, w-sz+s15-shX, topH-sz+s10, sz, sz, null);
             }
-            Image flagImage = parentSpritePanel.parent.flagImage(sys);
+            Image flagImage = mapHandler().flagImage(sys);
             g.drawImage(flagImage, w-sz+s15-shX, topH-sz+s10, sz, sz, null);
             flagBox.setBounds(w-sz+s25-shX,topH-sz+s10,sz-s20,sz-s10);
 
@@ -157,6 +158,7 @@ public class ExploredSystemPanel extends SystemPanel {
         public void mouseDragged(MouseEvent e) { }
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
             Shape prevHover = hoverBox;
@@ -193,14 +195,10 @@ public class ExploredSystemPanel extends SystemPanel {
                 parentSpritePanel.repaint();
             }
         }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parentSpritePanel.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
         @Override
         public void mouseExited(MouseEvent e) { 
+			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
                 repaint();

@@ -80,6 +80,7 @@ import rotp.ui.main.EmpireColonyInfoPane;
 import rotp.ui.main.EmpireColonySpendingPane;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.map.IMapHandler;
 import rotp.util.Palette;
 import rotp.util.ShadowBorder;
 
@@ -1301,6 +1302,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             add(topPane(), BorderLayout.NORTH);
             add(detailPane(), BorderLayout.CENTER);
         }
+		@Override protected IMapHandler mapHandler()			{ return null; }
 		@Override public void enterCurrentPane(BasePanel pane)	{ currentPane = pane; }
 		@Override public void exitCurrentPane(BasePanel pane)	{
 			if (currentPane == pane)
@@ -1372,6 +1374,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             add(topPane(), BorderLayout.NORTH);
             add(detailPane(), BorderLayout.CENTER);
         }
+		@Override protected IMapHandler mapHandler()			{ return null; }
 		@Override public void enterCurrentPane(BasePanel pane)	{ currentPane = pane; }
 		@Override public void exitCurrentPane(BasePanel pane)	{
 			if (currentPane == pane)

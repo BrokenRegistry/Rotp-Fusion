@@ -28,6 +28,7 @@ import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
@@ -43,6 +44,7 @@ import rotp.model.galaxy.StarType;
 import rotp.model.game.IDebugOptions;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.map.IMapHandler;
 import rotp.ui.util.InterfacePreview;
 import rotp.util.Base;
 import rotp.util.ThickBevelBorder;
@@ -392,4 +394,15 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
 		return false;
 	}
     public void repaintKeyBound() { repaint(); }
+	protected void clearHoverSprite(MouseEvent e, IMapHandler mapHandler)	{
+		setModifierKeysState(e);
+		if (mapHandler == null) {
+			System.out.println("clearHoverSprite: mapHandler == null"); // TODO BR: REMOVE
+			return;
+		}
+		if (mapHandler.hoveringSprite() != null)
+			mapHandler.hoveringSprite().mouseExit(null);
+		mapHandler.hoveringOverSprite(null, true);
+		mapHandler.map().clearHoverSprite();
+	}
 }

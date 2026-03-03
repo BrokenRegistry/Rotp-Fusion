@@ -44,7 +44,7 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
     Shape hoverBox;
 
     public UnexploredSystemPanel(SpriteDisplayPanel p) {
-        parentSpritePanel = p;
+		spritePanel(p);
         init();
     }
     private void init() {
@@ -55,6 +55,7 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
     }
     public void releaseObjects() { }
 
+	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
     @Override
     protected BasePanel topPane() { return null; }
     @Override
@@ -80,6 +81,7 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
     public void mouseDragged(MouseEvent e) { }
     @Override
     public void mouseMoved(MouseEvent e) {
+		setModifierKeysState(e);
         int x = e.getX();
         int y = e.getY();
         Shape prevHover = hoverBox;
@@ -113,14 +115,10 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
             	toggleFlagColor(false);
        }
     }
-	@Override public void mouseEntered(MouseEvent e)	{
-		IMapHandler mapHandler = parentSpritePanel.parent;
-		if (mapHandler.hoveringSprite() != null)
-			mapHandler.hoveringSprite().mouseExit(null);
-		mapHandler.hoveringOverSprite(null, true);
-	}
+	@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
     @Override
     public void mouseExited(MouseEvent e) { 
+		setModifierKeysState(e);
         if (hoverBox != null) {
             hoverBox = null;
             repaint();
@@ -128,6 +126,7 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+		setModifierKeysState(e);
         if (hoverBox == flagBox) {
             if (e.getWheelRotation() < 0)
                 toggleFlagColor(true);

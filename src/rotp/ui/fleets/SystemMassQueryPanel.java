@@ -25,6 +25,7 @@ import java.awt.Image;
 import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
@@ -35,8 +36,8 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.util.List;
+
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.ships.Design;
@@ -204,6 +205,7 @@ public class SystemMassQueryPanel extends BasePanel {
         public void mouseDragged(MouseEvent e) { }
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
             boolean repaint = false;
@@ -259,10 +261,10 @@ public class SystemMassQueryPanel extends BasePanel {
             else
                 misClick();
         }
-        @Override
-        public void mouseEntered(MouseEvent e) {  }
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, topParent); }
         @Override
         public void mouseExited(MouseEvent e) {
+			setModifierKeysState(e);
             boolean repaint = false;
             for (FleetUI.QueryFilter fl : designFilters())
                 repaint = repaint || fl.mouseExited();
@@ -689,10 +691,9 @@ public class SystemMassQueryPanel extends BasePanel {
         }
         @Override
         public void mouseClicked(MouseEvent arg0) { }
-        @Override
-        public void mouseEntered(MouseEvent arg0) { }
-        @Override
-        public void mouseExited(MouseEvent arg0) {
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, topParent); }
+		@Override public void mouseExited(MouseEvent e)	{
+			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
                 repaint();
@@ -755,6 +756,7 @@ public class SystemMassQueryPanel extends BasePanel {
         public void mouseDragged(MouseEvent arg0) { }
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
             Shape prevHover = hoverBox;

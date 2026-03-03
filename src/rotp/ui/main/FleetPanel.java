@@ -1420,14 +1420,10 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parent.parent.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.parent.parent); }
         @Override
         public void mouseExited(MouseEvent e) {
+			setModifierKeysState(e);
             if ((hoverBox != null) || (hoverBox2 != null)){
                 hoverBox = null;
                 hoverBox2 = null;
@@ -1730,6 +1726,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         public void mouseDragged(MouseEvent e) { }
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
 
@@ -1747,14 +1744,10 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-		@Override public void mouseEntered(MouseEvent e)	{
-			IMapHandler mapHandler = parent.parent.parent;
-			if (mapHandler.hoveringSprite() != null)
-				mapHandler.hoveringSprite().mouseExit(null);
-			mapHandler.hoveringOverSprite(null, true);
-		}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.parent.parent); }
         @Override
         public void mouseExited(MouseEvent e) {
+			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
                 repaint();

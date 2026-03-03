@@ -1,4 +1,4 @@
- Remnants of the Precursors
+﻿ Remnants of the Precursors
 
 Remnants of the Precursors is a Java-based modernization of the original Master of Orion game from 1993. <br/>
 
@@ -44,26 +44,36 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-03-03 (BR)
+- Galaxy map: new fixes for mouse responsiveness issues on maps containing thousands of stars.
+
+The hardest bugs to find are those that are multiple…
+
+The mouse responsiveness issue mostly occurs with larger galaxies and gets worse as the number of fleets and transports increases.
+
+Elements of the problem:
+
+The analysis of the management of objects (Stars, fleets or transports) selected or hovered over by the mouse comes from three sources: A mouse action (Move or click), a keyboard action, or a secondary consequence of the two previous actions.
+At some point in the analysis, it is necessary to know the current position of the mouse, and if it is outside the galaxy map the analysis ends. As the start of the analysis does not depend solely on a mouse action, a query is made to obtain the current mouse position, the result being valid only if the mouse is on an unobscured part of the galaxy map.
+
+The problem:
+
+When the cursor leaves an object (Star, fleet, or transport), a search is started to find out if another object is under the cursor: a loop will go through all the objects, to see if their position corresponds to that of the mouse. The bigger the galaxy, the more advanced the empires become, and the longer it takes.
+
+At the end of the search, comes the time to ask for the mouse position again. If the mouse is then on the right panel, the analysis takes the wrong path, and the previously hovered object is not correctly deactivated. (This step is fast enough for galaxies of reasonable size to not pose a problem)
+
+In the previous fix, I forced the deactivation of these objects, but not all the time, because the right panel is chosen from around ten panels, themselves made up of sub-panels… And not all of them had received the fix (far from it).
+
+I now think I have covered all the sub-panels.
+
+In fact some sub-panels did not capture the mouse, (notably the central part of the massive transport and fleet deployment) which had the consequence that the objects under the panel could be hovered over, redirecting the destination…
+
+Another bug, under certain conditions the hovered object is stored in two places… The fix only deactivated one, then we found ourselves with a Schrödinger object, both hovered over and not hovered over… The consequence was that if this object was hovered again, it could no longer be correctly marked as hovered.
+
+This new patch should address all of these issues. When the mouse leaves a star or a fleet, all the stars, all the fleets, all the transports will be looked up to check if the mover hovers them. This may takes times, and if
+
 26-03-01 (BR)
 - Intelligence Panel: When the mouse hovers over a technology, its description appears in a pop-up window.
-
-26-02-27 (BR)
-- Space Monsters: New option to change their speed and the distance to the next world.
-  - Minimum distance to the next world. (default = 0, up to 25)
-  - Maximum distance to the next world. (default = 8, up to 100)
-  - Because of the distance extension, and option to increase their speed has been added. (Up to 3.0 ly/turn)
-- The space monsters unleashed by technology will first target the empire that discovered this dangerous technology.
-
-26-02-26 (BR)
-- New option to allows for a gradual increase in range, depending on the overall level of propulsion technologies.
-  - Formula: Range = Fuel * (1 + Lin * Tech + Quad * Tech^2)
-    - Fuel = Range related to fuel cell. (Original range)
-    - Tech = Overall level of propulsion technologies. (Displayed on the right of the Tech panel)
-    - Lin  = Selected linear factor.
-    - Quad = Selected quadratic factor.
-
-26-02-25 (BR)
-- Galaxy Map: Fixed a recurring issue where the right panel would continue to display the last fleet or system flown over, instead of returning to the selected fleet or system.
 
 
 ### [Features Historic](FeaturesChanges.md)

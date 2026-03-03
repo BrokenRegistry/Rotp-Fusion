@@ -1229,12 +1229,10 @@ public final class FleetUI extends BasePanel implements IMapHandler, ActionListe
 
             drawString(g,"?", s16, s30);
         }
-        @Override
-        public void mouseClicked(MouseEvent e) {}
-        @Override
-        public void mouseEntered(MouseEvent e) {}
-        @Override
-        public void mouseExited(MouseEvent e) {
+		@Override public void mouseClicked(MouseEvent e)	{}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent); }
+		@Override public void mouseExited(MouseEvent e)		{
+			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
                 repaint();
@@ -1262,6 +1260,7 @@ public final class FleetUI extends BasePanel implements IMapHandler, ActionListe
         public void mouseDragged(MouseEvent e) {}
         @Override
         public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
             Rectangle prevHover = hoverBox;

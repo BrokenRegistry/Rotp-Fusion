@@ -322,6 +322,7 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
             add(cardPanel, BorderLayout.CENTER);
             showUnexplored();
         }
+    	@Override protected IMapHandler mapHandler()	{ return null; }
         @Override
         public void paintComponent(Graphics g0) {
             Graphics2D g = (Graphics2D) g0;

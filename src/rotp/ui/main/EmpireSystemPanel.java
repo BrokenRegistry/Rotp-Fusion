@@ -47,6 +47,7 @@ import rotp.model.ships.Design;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
+import rotp.ui.map.IMapHandler;
 
 public class EmpireSystemPanel extends SystemPanel {
     private static final long serialVersionUID = 1L;
@@ -78,10 +79,11 @@ public class EmpireSystemPanel extends SystemPanel {
 	private BasePanel currentPane = null;
 
     public EmpireSystemPanel(SpriteDisplayPanel p) {
-        parentSpritePanel = p;
+		spritePanel(p);
         init();
     }
 	private void init()	{ initModel(); }
+	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
 	@Override public void enterCurrentPane(BasePanel pane)	{ currentPane = pane; }
 	@Override public void exitCurrentPane(BasePanel pane)	{
 		if (currentPane == pane)
@@ -199,7 +201,7 @@ public class EmpireSystemPanel extends SystemPanel {
         detailTopPane.setOpaque(true);
         detailTopPane.setBackground(dataBorders);
 
-        foundedPane = new EmpireColonyFoundedPane(this, parentSpritePanel.parent, MainUI.paneBackground());
+        foundedPane = new EmpireColonyFoundedPane(this, mapHandler(), MainUI.paneBackground());
         infoPane = new EmpireColonyInfoPane(this, MainUI.paneBackground(), dataBorders, SystemPanel.yellowText, SystemPanel.blackText);
         BorderLayout layout = new BorderLayout();
         layout.setVgap(s1);
@@ -211,8 +213,8 @@ public class EmpireSystemPanel extends SystemPanel {
         spendingPane = new EmpireColonySpendingPane(this,
         		MainUI.paneBackground(), textC, labelBorderHi, labelBorderLo,
         		gray20C, gray90C, gray175C, gray115C, gray175C, true);
-        if (parentSpritePanel.parent != null)  
-            spendingPane.mapListener(parentSpritePanel.parent.map());
+        if (mapHandler() != null)  
+            spendingPane.mapListener(mapHandler().map());
         shipPane = new EmpireShipPane(this);
 
         BasePanel empireDetailPane = new BasePanel();
@@ -906,7 +908,7 @@ public class EmpireSystemPanel extends SystemPanel {
                 if (rallyPointEnabled()) {
                     StarSystem sys =  parentSpritePanel.systemViewToDisplay();
                     if (sys != null)
-                        parentSpritePanel.parent.clickedSprite(sys.rallySprite());
+                        mapHandler().clickedSprite(sys.rallySprite());
                     parentSpritePanel.repaint();
                 }
             }
@@ -924,7 +926,7 @@ public class EmpireSystemPanel extends SystemPanel {
                     		sys.colony().toggleGovAutoTransport();
                     	else {
 	                        TransportDeploymentPanel.enableAbandon = false; 
-	                        parentSpritePanel.parent.clickedSprite(sys.transportSprite());
+	                        mapHandler().clickedSprite(sys.transportSprite());
                     	}
                     }
                     parentSpritePanel.repaint();
@@ -935,7 +937,7 @@ public class EmpireSystemPanel extends SystemPanel {
                     StarSystem sys =  parentSpritePanel.systemViewToDisplay();
                     if (sys != null)  {
                         TransportDeploymentPanel.enableAbandon = true; 
-                        parentSpritePanel.parent.clickedSprite(sys.transportSprite());
+                        mapHandler().clickedSprite(sys.transportSprite());
                     }
                     parentSpritePanel.repaint();
                 }

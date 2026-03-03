@@ -27,10 +27,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.main.SystemViewInfoPane;
+import rotp.ui.map.IMapHandler;
 
 public class SystemMassTransportPanel  extends SystemPanel {
     private static final long serialVersionUID = 1L;
@@ -61,6 +63,7 @@ public class SystemMassTransportPanel  extends SystemPanel {
             return false;
         return player().canSendTransportsTo(target);
     }
+	@Override protected IMapHandler mapHandler()	{ return topParent; }
     @Override
     protected Color backgroundColor()   { return FleetUI.backLoC; }
     @Override
@@ -76,7 +79,7 @@ public class SystemMassTransportPanel  extends SystemPanel {
     protected BasePanel detailPane() { return new SystemViewInfoPane(this); }
     @Override
     protected BasePanel bottomPane() { return new SystemTransportFooterPane(); }
-    class SystemTransportHeaderPane extends BasePanel {
+    class SystemTransportHeaderPane extends BasePanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;
         Shape arrow;
         int xPts[];
@@ -87,6 +90,8 @@ public class SystemMassTransportPanel  extends SystemPanel {
         private void initModel() {
             setPreferredSize(new Dimension(getWidth(), scaled(120)));
             setBackground(FleetUI.backHiC);
+			addMouseListener(this);
+			addMouseMotionListener(this);
         }
         @Override
         public void paintComponent(Graphics g0) {
@@ -128,6 +133,13 @@ public class SystemMassTransportPanel  extends SystemPanel {
                 y0 += s18;
             }
         }
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
+		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
+		@Override public void mouseClicked(MouseEvent e)	{ }
+		@Override public void mousePressed(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{ }
+		@Override public void mouseDragged(MouseEvent arg0)	{ }
+		@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
     }
     class SystemTransportFooterPane extends BasePanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;
@@ -191,10 +203,9 @@ public class SystemMassTransportPanel  extends SystemPanel {
         }
         @Override
         public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
-        @Override
-        public void mouseExited(MouseEvent e) {
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
+		@Override public void mouseExited(MouseEvent e)		{
+			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
                 repaint();

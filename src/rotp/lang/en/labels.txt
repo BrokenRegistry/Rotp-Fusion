@@ -2827,7 +2827,7 @@ SETTINGS_MOD_NEBULA_POS_INSIST       | Insist
 SETTINGS_MOD_NEBULA_POS_EXTEND_DESC  | Insist twice, and allow nebulae to extend a little beyond the galaxy.<br>&emsp This to allow fine-shaped galaxies to have them.
 SETTINGS_MOD_NEBULA_POS_EXTEND       | Extend
 
-SETTINGS_MOD_NEBULA_ENRICHMENT_DESC        | Enrichment of planets in the center of nebulae:
+SETTINGS_MOD_NEBULA_ENRICHMENT_DESC        | Enrichment of planets in the center of nebulae.
 SETTINGS_MOD_NEBULA_ENRICHMENT             | Nebulae enrich: %1
 SETTINGS_MOD_NEBULA_ENRICHMENT_NONE_DESC   | Nebulae have no impact on the central planet's resources.
 SETTINGS_MOD_NEBULA_ENRICHMENT_NONE        | Never

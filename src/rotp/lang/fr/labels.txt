@@ -2827,7 +2827,7 @@ SETTINGS_MOD_NEBULA_POS_INSIST       | Insister
 SETTINGS_MOD_NEBULA_POS_EXTEND_DESC  | Insister deux fois et laissez les nébuleuses s’étendre un peu au-delà de la galaxie.<br>&emsp Ceci pour permettre aux galaxies de forme fine d’en obtenir.
 SETTINGS_MOD_NEBULA_POS_EXTEND       | Étendu
 
-SETTINGS_MOD_NEBULA_ENRICHMENT_DESC        | Enrichissement des planètes au centre des nébuleuses :
+SETTINGS_MOD_NEBULA_ENRICHMENT_DESC        | Enrichissement des planètes au centre des nébuleuses.
 SETTINGS_MOD_NEBULA_ENRICHMENT             | Nébuleuses bonifient : %1
 SETTINGS_MOD_NEBULA_ENRICHMENT_NONE_DESC   | Les nébuleuses n’ont aucun impact sur les ressources de la planète centrale.
 SETTINGS_MOD_NEBULA_ENRICHMENT_NONE        | Jamais
