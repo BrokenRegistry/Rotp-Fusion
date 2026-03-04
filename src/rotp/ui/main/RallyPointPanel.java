@@ -71,7 +71,7 @@ public class RallyPointPanel extends SystemPanel {
     public void releaseObjects() {
     	lastPreviewChain = null;
     }
-	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
+	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
     @Override
     public void animate() {
         topPane.animate();
@@ -274,13 +274,15 @@ public class RallyPointPanel extends SystemPanel {
         bottomPane.setBackground(MainUI.shadeBorderC());
         return bottomPane;
     }
-    class RallyPointDetailPane extends SystemPanel {
+    class RallyPointDetailPane extends SystemPanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;
         public RallyPointDetailPane(SpriteDisplayPanel p) {
 			spritePanel(p);
             initModel();
+			addMouseListener(this);
+			addMouseMotionListener(this);
         }
-    	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
+    	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
         @Override
         public void animate() {
             detailPane.animate();
@@ -295,8 +297,15 @@ public class RallyPointPanel extends SystemPanel {
         protected BasePanel detailPane() { return new SystemViewInfoPane(this); }
         @Override
         protected BasePanel bottomPane() { return new ToSystemDetailPane(); }
+		@Override public void mouseClicked(MouseEvent e)	{ }
+		@Override public void mousePressed(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{ }
+		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
+		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
     }
-    class FromSystemDetailPane extends BasePanel  implements MouseListener, MouseMotionListener {
+    class FromSystemDetailPane extends BasePanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;
         private Shape hoverBox;
         private final Rectangle forwardRallyBox = new Rectangle();
@@ -470,7 +479,7 @@ public class RallyPointPanel extends SystemPanel {
                 repaint();
         }
     }
-    class ToSystemDetailPane extends BasePanel {
+    class ToSystemDetailPane extends BasePanel implements MouseListener, MouseMotionListener{
         private static final long serialVersionUID = 1L;
         public ToSystemDetailPane() {
             initModel();
@@ -478,6 +487,8 @@ public class RallyPointPanel extends SystemPanel {
         private void initModel() {
             setPreferredSize(new Dimension(getWidth(),s80));
             setBackground(MainUI.paneBackground);
+			addMouseListener(this);
+			addMouseMotionListener(this);
         }
         @Override
         public String textureName()            { return TEXTURE_GRAY; }
@@ -542,6 +553,13 @@ public class RallyPointPanel extends SystemPanel {
                 drawString(g,line, leftM, y0);
             }
         }
+		@Override public void mouseClicked(MouseEvent e)	{ }
+		@Override public void mousePressed(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{ }
+		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
+		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
     }
     class RallyPointButtonPane extends BasePanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;

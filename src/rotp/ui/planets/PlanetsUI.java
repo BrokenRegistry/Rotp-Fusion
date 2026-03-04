@@ -1302,7 +1302,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             add(topPane(), BorderLayout.NORTH);
             add(detailPane(), BorderLayout.CENTER);
         }
-		@Override protected IMapHandler mapHandler()			{ return null; }
+		@Override public IMapHandler mapHandler()				{ return null; }
 		@Override public void enterCurrentPane(BasePanel pane)	{ currentPane = pane; }
 		@Override public void exitCurrentPane(BasePanel pane)	{
 			if (currentPane == pane)
@@ -1374,7 +1374,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             add(topPane(), BorderLayout.NORTH);
             add(detailPane(), BorderLayout.CENTER);
         }
-		@Override protected IMapHandler mapHandler()			{ return null; }
+		@Override public IMapHandler mapHandler()				{ return null; }
 		@Override public void enterCurrentPane(BasePanel pane)	{ currentPane = pane; }
 		@Override public void exitCurrentPane(BasePanel pane)	{
 			if (currentPane == pane)

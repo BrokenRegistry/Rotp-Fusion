@@ -191,8 +191,12 @@ public class EmpireColonyInfoPane extends BasePanel {
         abstract protected int value(List<Colony> c);
         abstract protected int maxValue(List<Colony> c);
 		@Override public void mouseClicked(MouseEvent e)	{ parentUI.enterCurrentPane(this); }
-		@Override public void mouseEntered(MouseEvent e)	{ parentUI.enterCurrentPane(this); }
+		@Override public void mouseEntered(MouseEvent e)	{
+			parentUI.enterCurrentPane(this);
+			clearHoverSprite(e, parentUI.mapHandler());
+		}
 		@Override public void mouseExited(MouseEvent e)		{
+			setModifierKeysState(e);
 			parentUI.exitCurrentPane(this);
             if (hoverBox != null) {
                 hoverBox = null;
@@ -212,6 +216,7 @@ public class EmpireColonyInfoPane extends BasePanel {
         }
 		@Override public void mouseDragged(MouseEvent e)	{ parentUI.enterCurrentPane(this); }
 		@Override public void mouseMoved(MouseEvent e)		{
+			setModifierKeysState(e);
 			parentUI.enterCurrentPane(this);
             int x = e.getX();
             int y = e.getY();

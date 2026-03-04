@@ -54,7 +54,7 @@ public class WarViewPanel extends SystemPanel {
 	private void init() { initModel(); }
     public void releaseObjects() { }
 
-	@Override protected IMapHandler mapHandler()	{ return parent.parent; }
+	@Override public IMapHandler mapHandler()	{ return parent.parent; }
 	@Override public void animate() {
 		topPane.animate();
 		detailPane.animate();

@@ -66,7 +66,7 @@ public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionLis
     public void paintComponent(Graphics g0) {
         Graphics2D g = (Graphics2D) g0;
         super.paintComponent(g);
-        
+
         List<StarSystem> systems = parent.systemsToDisplay();
         nameBox.setBounds(0,0,0,0);
         int w = getWidth();
@@ -101,7 +101,7 @@ public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionLis
             if (sys != null)
                 systems.add(sys);
         }
-        
+
         for (StarSystem sys1: systems) 
             player().sv.forceAutoFlagColor(sys1.id, all);
 
@@ -144,10 +144,10 @@ public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionLis
             if (sys != null)
                 systems.add(sys);
         }
-        
+
         for (StarSystem sys1: systems) 
             player().sv.resetFlagColor(sys1.id);
-        
+
         if (repainter != null)
             repainter.repaint();
         else if (topParent != null)
@@ -159,6 +159,7 @@ public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionLis
     public void mouseDragged(MouseEvent e) { }
     @Override
     public void mouseMoved(MouseEvent e) {
+		setModifierKeysState(e);
         int x = e.getX();
         int y = e.getY();
         Shape prevHover = hoverBox;
@@ -200,10 +201,10 @@ public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionLis
             RotPUI.instance().racesUI().selectedEmpire(player());              
         }
     }
-    @Override
-    public void mouseEntered(MouseEvent e) { }
+	@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.mapHandler()); }
     @Override
     public void mouseExited(MouseEvent e) { 
+		setModifierKeysState(e);
         if (hoverBox != null) {
             hoverBox = null;
             repaint();

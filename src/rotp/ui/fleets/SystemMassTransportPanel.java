@@ -63,7 +63,7 @@ public class SystemMassTransportPanel  extends SystemPanel {
             return false;
         return player().canSendTransportsTo(target);
     }
-	@Override protected IMapHandler mapHandler()	{ return topParent; }
+	@Override public IMapHandler mapHandler()	{ return topParent; }
     @Override
     protected Color backgroundColor()   { return FleetUI.backLoC; }
     @Override

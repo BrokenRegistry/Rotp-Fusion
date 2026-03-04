@@ -102,7 +102,7 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
 	protected void spritePanel(SpriteDisplayPanel p)	{ parentSpritePanel = p; }
 	protected SpriteDisplayPanel spritePanel()			{ return parentSpritePanel; }
 //	protected IMapHandler mapHandler()	{ return spritePanel().parent; }
-	abstract protected IMapHandler mapHandler();
+	public abstract IMapHandler mapHandler();
 
     protected void showDefaultDetail() { }
     protected void showStarDetail()    { }

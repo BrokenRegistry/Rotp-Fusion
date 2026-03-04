@@ -122,7 +122,7 @@ public class SystemMassRallyPanel extends SystemPanel {
             && (target != null)
             && player().canRallyFleetsTo(id(target));
     }
-	@Override protected IMapHandler mapHandler()	{ return topParent; }
+	@Override public IMapHandler mapHandler()	{ return topParent; }
     @Override
     protected Color backgroundColor()   { return FleetUI.backLoC; }
     @Override

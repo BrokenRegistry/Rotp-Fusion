@@ -83,7 +83,7 @@ public class EmpireSystemPanel extends SystemPanel {
         init();
     }
 	private void init()	{ initModel(); }
-	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
+	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
 	@Override public void enterCurrentPane(BasePanel pane)	{ currentPane = pane; }
 	@Override public void exitCurrentPane(BasePanel pane)	{
 		if (currentPane == pane)
@@ -832,13 +832,15 @@ public class EmpireSystemPanel extends SystemPanel {
         	return !sys.hasStargate(player()) && rallyPointEnabled() && hasStargate(); }
         private boolean rallyPointEnabled() { return !session().performingTurn() && player().canRallyFleetsFrom(id(parentSpritePanel.systemViewToDisplay())); }
         private boolean transportEnabled() { return !session().performingTurn() && player().canSendTransportsFrom(parentSpritePanel.systemViewToDisplay()); }
-		@Override public void mouseClicked(MouseEvent arg0)	{ enterCurrentPane(this); }
-		@Override public void mouseEntered(MouseEvent arg0)	{
+		@Override public void mouseClicked(MouseEvent e)	{ enterCurrentPane(this); }
+		@Override public void mouseEntered(MouseEvent e)	{
 			enterCurrentPane(this);
+			clearHoverSprite(e, mapHandler());
 			inGovLimitBox = true;
 			repaint();
 		}
-		@Override  public void mouseExited(MouseEvent arg0)	{
+		@Override  public void mouseExited(MouseEvent e)	{
+			setModifierKeysState(e);
 			exitCurrentPane(this);
 			inGovLimitBox = false;
 			if (hoverBox != null) {
@@ -846,7 +848,7 @@ public class EmpireSystemPanel extends SystemPanel {
 				repaint();
 			}
 		}
-		@Override public void mousePressed(MouseEvent arg0)	{ enterCurrentPane(this); }
+		@Override public void mousePressed(MouseEvent e)	{ enterCurrentPane(this); }
 		@Override public void mouseReleased(MouseEvent e)	{
 			enterCurrentPane(this);
             if (e.getButton() > 3)
@@ -943,8 +945,9 @@ public class EmpireSystemPanel extends SystemPanel {
                 }
             }
         }
-		@Override public void mouseDragged(MouseEvent arg0) { enterCurrentPane(this); }
+		@Override public void mouseDragged(MouseEvent e)	{ enterCurrentPane(this); }
 		@Override public void mouseMoved(MouseEvent e)		{
+			setModifierKeysState(e);
 			enterCurrentPane(this);
             int x = e.getX();
             int y = e.getY();
@@ -978,10 +981,11 @@ public class EmpireSystemPanel extends SystemPanel {
                 repaint();
         }
 		@Override public void mouseWheelMoved(MouseWheelEvent e) {
+			setModifierKeysState(e);
 			enterCurrentPane(this);
             int x = e.getX();
             int y = e.getY();
-            
+
             if (limitBox.contains(x,y)) {
                 boolean shiftPressed = e.isShiftDown();
                 boolean ctrlPressed = e.isControlDown();

@@ -50,7 +50,7 @@ public class AlienSystemPanel extends SystemPanel {
     }
     public void releaseObjects() { }
 
-	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
+	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
     @Override
     public void animate()            { overviewPane.animate(); }
     @Override

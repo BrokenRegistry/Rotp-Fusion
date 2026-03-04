@@ -55,7 +55,7 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
     }
     public void releaseObjects() { }
 
-	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
+	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
     @Override
     protected BasePanel topPane() { return null; }
     @Override

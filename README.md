@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-03-04 (BR)
+- Galaxy map: new fixes for mouse responsiveness issues on maps containing thousands of stars.
+  - (Continuation) Not all sub-panel and sub-sub-panels were fixed in the previous fixes.
+
 26-03-03 (BR)
 - Galaxy map: new fixes for mouse responsiveness issues on maps containing thousands of stars.
 

@@ -834,8 +834,9 @@ public class EmpireColonySpendingPane extends BasePanel {
 //	        }
         }
         @Override public void mouseClicked(MouseEvent e) {}
-        @Override public void mouseEntered(MouseEvent e) {}
+		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.mapHandler()); }
         @Override public void mouseExited(MouseEvent e)  {
+			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
                 repaint();
@@ -915,6 +916,7 @@ public class EmpireColonySpendingPane extends BasePanel {
         }
         @Override public void mouseDragged(MouseEvent e) { }
         @Override public void mouseMoved(MouseEvent e) {
+			setModifierKeysState(e);
             int x = e.getX();
             int y = e.getY();
 
@@ -940,6 +942,7 @@ public class EmpireColonySpendingPane extends BasePanel {
             }
         }
         @Override public void mouseWheelMoved(MouseWheelEvent e) {
+			setModifierKeysState(e);
             int rot = e.getWheelRotation();
             if (hoverBox == sliderBox) {
                 if (rot > 0)

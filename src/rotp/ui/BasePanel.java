@@ -396,12 +396,11 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
     public void repaintKeyBound() { repaint(); }
 	protected void clearHoverSprite(MouseEvent e, IMapHandler mapHandler)	{
 		setModifierKeysState(e);
-		if (mapHandler == null) {
-			System.out.println("clearHoverSprite: mapHandler == null"); // TODO BR: REMOVE
+		if (mapHandler == null)
 			return;
-		}
-		if (mapHandler.hoveringSprite() != null)
-			mapHandler.hoveringSprite().mouseExit(null);
+		Sprite hoveringSprite = mapHandler.hoveringSprite();
+		if (hoveringSprite != null)
+			hoveringSprite.mouseExit(null);
 		mapHandler.hoveringOverSprite(null, true);
 		mapHandler.map().clearHoverSprite();
 	}

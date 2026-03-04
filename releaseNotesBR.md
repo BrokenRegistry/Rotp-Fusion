@@ -7,6 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-03-04 (BR)
+- Galaxy map: new fixes for mouse responsiveness issues on maps containing thousands of stars.
+
 26-03-03 (BR)
 - Galaxy map: new fixes for mouse responsiveness issues on maps containing thousands of stars.
 

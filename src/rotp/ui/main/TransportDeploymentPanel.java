@@ -67,7 +67,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         initModel();
     }
     public void releaseObjects() { }
-	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
+	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
     @Override
     public void handleNextTurn() {  cancel(); }
     @Override
@@ -278,7 +278,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         private void init() {
             initModel();
         }
-    	@Override protected IMapHandler mapHandler()	{ return spritePanel().parent; }
+    	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
         @Override
         public void animate() {
             detailPane.animate();

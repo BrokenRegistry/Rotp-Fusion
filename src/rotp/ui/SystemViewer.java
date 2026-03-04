@@ -18,6 +18,7 @@ package rotp.ui;
 import java.util.List;
 
 import rotp.model.galaxy.StarSystem;
+import rotp.ui.map.IMapHandler;
 
 public interface SystemViewer {
     public StarSystem systemViewToDisplay();
@@ -28,4 +29,5 @@ public interface SystemViewer {
 	// BR: added for Alt Key management with mouse
 	default void enterCurrentPane(BasePanel pane)   { };
 	default void exitCurrentPane(BasePanel pane)    { };
+	default IMapHandler mapHandler()				{ return null; };
 }
