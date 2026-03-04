@@ -23,13 +23,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import rotp.model.empires.RaceCombatAnimation;
-import rotp.util.ImageTransformer;
 
 class Race extends SpeciesSkills {
 	private static final long serialVersionUID = 1L;
 	private static final List<String> notTalking = new ArrayList<>(Arrays.asList("Mouth"));
 	private static final List<String> closed	 = new ArrayList<>(Arrays.asList("Open"));
-	private static final List<String> open		 = new ArrayList<>(Arrays.asList("Closed"));
+//	private static final List<String> open		 = new ArrayList<>(Arrays.asList("Closed"));
 	static final List<String> notFiring	 = new ArrayList<>(Arrays.asList("Firing"));
 
 	String id;
@@ -38,13 +37,13 @@ class Race extends SpeciesSkills {
 	private String diplomatKey;
 	private String scientistKey;
 	private String soldierKey;
-	private String spyFaceKey;
+//	private String spyFaceKey;
 	private String leaderKey;
-	private String soldierFaceKey;
+//	private String soldierFaceKey;
 	private String mugshotKey;
-	private String wideMugshotKey;
+//	private String wideMugshotKey;
 	private String setupImageKey;
-	private String advisorFaceKey;
+//	private String advisorFaceKey;
 	private String advisorScoutKey;
 	private String advisorTransportKey;
 	private String advisorDiplomacyKey;
@@ -79,15 +78,15 @@ class Race extends SpeciesSkills {
 	private RaceCombatAnimation troopDeath4H = new RaceCombatAnimation();
 	private List<String> fortressKeys = new ArrayList<>();
 	private String shieldKey;
-	private String voiceKey;
+//	private String voiceKey;
 	private String ambienceKey;
 	private String flagWarKey, flagNormKey, flagPactKey;
 	private String dlgWarKey, dlgNormKey,dlgPactKey;
 	private String winSplashKey, lossSplashKey;
-	private Color winTextC, lossTextC;
-	private ImageTransformer diplomacyTransformer; // BR: Never Used!
-	private final List<String> soundKeys = new ArrayList<>();
-	private int espionageX, espionageY;
+//	private Color winTextC, lossTextC;
+//	private ImageTransformer diplomacyTransformer; // BR: Never Used!
+//	private final List<String> soundKeys = new ArrayList<>();
+//	private int espionageX, espionageY;
 	private int transportW, transportYOffset, transportLandingFrames, colonistWalkingFrames;
 	private int colonistDelay, colonistX1, colonistX2, colonistY1, colonistY2;
 	private int dialogLeftMargin, dialogRightMargin,  dialogTopY;
@@ -97,7 +96,8 @@ class Race extends SpeciesSkills {
 
 	private transient BufferedImage transportClosedImg;
 	private transient Image transportImg;
-	private transient BufferedImage diploMug, wideDiploMug;
+	private transient BufferedImage diploMug;
+//	private transient BufferedImage wideDiploMug;
 
 	@Override String id()				{ return id; }
 	@Override void id(String s)			{ super.id(s); id = s; }
@@ -113,51 +113,51 @@ class Race extends SpeciesSkills {
 	int dialogTopY()					{ return dialogTopY; }
 	void dialogTopY(int i)				{ dialogTopY = i; }
 	int colonistWalkingFrames()			{ return colonistWalkingFrames; }
-	void colonistWalkingFrames(int i)	{ colonistWalkingFrames = i; }
+	private void colonistWalkingFrames(int i)	{ colonistWalkingFrames = i; }
 	int transportLandingFrames()		{ return transportLandingFrames; }
 	void transportLandingFrames(int i)	{ transportLandingFrames = i; }
 	int transportDescFrames()			{ return transportDescFrames; }
-	void transportDescFrames(int i)		{ transportDescFrames = i; }
+	private void transportDescFrames(int i)		{ transportDescFrames = i; }
 	int transportOpenFrames()			{ return transportOpenFrames; }
-	void transportOpenFrames(int i)		{ transportOpenFrames = i; }
+	private void transportOpenFrames(int i)		{ transportOpenFrames = i; }
 	int transportYOffset()				{ return transportYOffset; }
 	void transportYOffset(int i)		{ transportYOffset = i; }
 	int transportW()					{ return transportW; }
 	void transportW(int i)				{ transportW = i; }
 	int flagW()							{ return flagW; }
-	void flagW(int i)					{ flagW = i; }
+	private void flagW(int i)			{ flagW = i; }
 	int flagH()							{ return flagH; }
-	void flagH(int i)					{ flagH = i; }
+	private void flagH(int i)			{ flagH = i; }
 	int diploXOffset()					{ return diploXOffset; }
-	void diploXOffset(int i)			{ diploXOffset = i; }
+	private void diploXOffset(int i)	{ diploXOffset = i; }
 	int diploYOffset()					{ return diploYOffset; }
-	void diploYOffset(int i)			{ diploYOffset = i; }
+	private void diploYOffset(int i)	{ diploYOffset = i; }
 	float diploScale()					{ return diploScale; }
-	void diploScale(float f)			{ diploScale = f; }
+	private void diploScale(float f)	{ diploScale = f; }
 	float diploOpacity()				{ return diploOpacity; }
-	void diploOpacity(float f)			{ diploOpacity = f; }
+	private void diploOpacity(float f)	{ diploOpacity = f; }
 
 	Color gnnTextColor()				{ return gnnTextColor; }
 	void gnnTextColor(Color c)			{ gnnTextColor = c; }
 
 	String lossSplashKey()				{ return lossSplashKey; }
-	void lossSplashKey(String s)		{ lossSplashKey = s; }
+//	private void lossSplashKey(String s)	{ lossSplashKey = s; }
 	String winSplashKey()				{ return winSplashKey; }
-	void winSplashKey(String s)			{ winSplashKey = s; }
+//	private void winSplashKey(String s)	{ winSplashKey = s; }
 	String shipAudioKey()				{ return shipAudioKey; }
 	void shipAudioKey(String s)			{ shipAudioKey = s; }
 	String ambienceKey()				{ return ambienceKey; }
 	void ambienceKey(String s)			{ ambienceKey = s; }
 	String transportDescKey()			{ return transportDescKey; }
-	void transportDescKey(String s)		{ transportDescKey = s; }
+	private void transportDescKey(String s)	{ transportDescKey = s; }
 	String transportOpenKey()			{ return transportOpenKey; }
-	void transportOpenKey(String s)		{ transportOpenKey = s; }
+	private void transportOpenKey(String s)	{ transportOpenKey = s; }
 	void mugshotKey(String s)			{ mugshotKey = s; }
-	void wideMugshotKey(String s)		{ wideMugshotKey = s; }
+//	void wideMugshotKey(String s)		{ wideMugshotKey = s; }
 	void setupImageKey(String s)		{ setupImageKey = s; }
-	void spyFaceKey(String s)			{ spyFaceKey = s; }
-	void soldierFaceKey(String s)		{ soldierFaceKey = s; }
-	void advisorFaceKey(String s)		{ advisorFaceKey = s; }
+//	void spyFaceKey(String s)			{ spyFaceKey = s; }
+//	void soldierFaceKey(String s)		{ soldierFaceKey = s; }
+//	void advisorFaceKey(String s)		{ advisorFaceKey = s; }
 	void advisorScoutKey(String s)		{ advisorScoutKey = s; }
 	void advisorTransportKey(String s)	{ advisorTransportKey = s; }
 	void advisorDiplomacyKey(String s)	{ advisorDiplomacyKey = s; }
@@ -189,7 +189,7 @@ class Race extends SpeciesSkills {
 	void dlgPactKey(String s)			{ dlgPactKey = s; }
 	void transportKey(String s)			{ transportKey = s; }
 	void shieldKey(String s)			{ shieldKey = s; }
-	void voiceKey(String s)				{ voiceKey = s; }
+//	void voiceKey(String s)				{ voiceKey = s; }
 
 	RaceCombatAnimation troopNormal()	{ return troopNormal; }
 	RaceCombatAnimation troopHostile()	{ return troopHostile; }
@@ -212,8 +212,8 @@ class Race extends SpeciesSkills {
 	void troopDeath2H(RaceCombatAnimation a)	{ troopDeath2H = a; }
 	void troopDeath3H(RaceCombatAnimation a)	{ troopDeath3H = a; }
 	void troopDeath4H(RaceCombatAnimation a)	{ troopDeath4H = a; }
-	ImageTransformer diplomacyTransformer()			{ return diplomacyTransformer; }
-	void diplomacyTransformer(ImageTransformer s)	{ diplomacyTransformer = s; }
+//	ImageTransformer diplomacyTransformer()			{ return diplomacyTransformer; }
+//	void diplomacyTransformer(ImageTransformer s)	{ diplomacyTransformer = s; }
 
 	Race()	{ super(); }
 	Race(String dirPath)	{ super(dirPath); }
@@ -221,11 +221,11 @@ class Race extends SpeciesSkills {
 	String diplomacyTheme()					{ return diplomacyTheme; }
 	void diplomacyTheme(String str)			{ diplomacyTheme = str; }
 
-	void espionageXY(List<String> vals)	{
-		espionageX = parseInt(vals.get(0));
-		if (vals.size() > 1)
-			espionageY = parseInt(vals.get(1));
-	}
+//	void espionageXY(List<String> vals)	{
+//		espionageX = parseInt(vals.get(0));
+//		if (vals.size() > 1)
+//			espionageY = parseInt(vals.get(1));
+//	}
 	Image flagWar()				{ return image(flagWarKey); }
 	Image flagNorm()			{ return image(flagNormKey); }
 	Image flagPact()			{ return image(flagPactKey); }
@@ -240,11 +240,11 @@ class Race extends SpeciesSkills {
 	BufferedImage laboratory()			{ return currentFrame(laboratoryKey);  }
 	BufferedImage embassy()				{ return currentFrame(embassyKey);  }
 	BufferedImage holograph()			{ return currentFrame(holographKey);  }
-	BufferedImage mugshot()				{ return currentFrame(mugshotKey);  }
+//	BufferedImage mugshot()				{ return currentFrame(mugshotKey);  }
 	BufferedImage setupImage()			{ return currentFrame(setupImageKey);  }
-	BufferedImage spyMugshotQuiet()		{ return currentFrame(spyFaceKey, notTalking);  }
-	BufferedImage soldierMugshot()		{ return currentFrame(soldierFaceKey, notTalking);  }
-	BufferedImage advisorMugshot()		{ return currentFrame(advisorFaceKey, notTalking); }
+//	BufferedImage spyMugshotQuiet()		{ return currentFrame(spyFaceKey, notTalking);  }
+//	BufferedImage soldierMugshot()		{ return currentFrame(soldierFaceKey, notTalking);  }
+//	BufferedImage advisorMugshot()		{ return currentFrame(advisorFaceKey, notTalking); }
 	BufferedImage advisorScout()		{ return currentFrame(advisorScoutKey, notTalking); }
 	BufferedImage advisorTransport()	{ return currentFrame(advisorTransportKey, notTalking); }
 	BufferedImage advisorDiplomacy()	{ return currentFrame(advisorDiplomacyKey, notTalking); }
@@ -261,7 +261,7 @@ class Race extends SpeciesSkills {
 	BufferedImage soldierTalking()		{ return currentFrame(soldierKey);  }
 	BufferedImage spyTalking()			{ return currentFrame(spyKey);  }
 	BufferedImage diploMugshotQuiet()	{ return currentFrame(mugshotKey, notTalking);  }
-	BufferedImage diploWideMugshot()	{ return currentFrame(wideMugshotKey, notTalking);  }
+//	private BufferedImage diploWideMugshot()	{ return currentFrame(wideMugshotKey, notTalking);  }
 	BufferedImage diplomatQuiet()		{ return currentFrame(diplomatKey, notTalking);  }
 	BufferedImage scientistQuiet()		{ return currentFrame(scientistKey, notTalking);  }
 	BufferedImage soldierQuiet()		{ return currentFrame(soldierKey, notTalking);  }
@@ -272,11 +272,11 @@ class Race extends SpeciesSkills {
 			diploMug = newBufferedImage(diploMugshotQuiet());
 		return diploMug;
 	}
-	BufferedImage wideDiploMug()	{
-		if (wideDiploMug == null)
-			wideDiploMug = newBufferedImage(diploWideMugshot());
-		return wideDiploMug;
-	}
+//	BufferedImage wideDiploMug()	{
+//		if (wideDiploMug == null)
+//			wideDiploMug = newBufferedImage(diploWideMugshot());
+//		return wideDiploMug;
+//	}
 	Image transport()	{
 		if (transportImg == null)
 			transportImg = image(transportKey);
@@ -287,7 +287,7 @@ class Race extends SpeciesSkills {
 			transportClosedImg = currentFrame(transportDescKey, closed);
 		return transportClosedImg;
 	}
-	BufferedImage transportOpening()	{ return currentFrame(transportDescKey, open); }
+//	BufferedImage transportOpening()	{ return currentFrame(transportDescKey, open); }
 	BufferedImage fortress(int i)		{ return currentFrame(fortressKeys.get(i)); }
 	int randomFortress()			{ return roll(1,fortressKeys.size())-1; }
 	BufferedImage shield()			{ return currentFrame(shieldKey); }
@@ -302,7 +302,7 @@ class Race extends SpeciesSkills {
 		resetAnimation(gnnHostKey);
 		resetAnimation(gnnEventKey(id));
 	}
-	void addSoundKey(String s)	{ soundKeys.add(s); }
+//	void addSoundKey(String s)	{ soundKeys.add(s); }
 	void colonistWalk(String s)	{
 		List<String> vals = substrings(s, ',');
 		if (vals.size() != 3)
@@ -371,28 +371,28 @@ class Race extends SpeciesSkills {
 		transportOpenKey(concat(vals.get(0), ",", vals.get(2)));
 		transportOpenFrames (parseInt(vals.get(1)));
 	}
-	void parseWinSplash(String s)	{
-		List<String> vals = substrings(s, ',');
-		if (vals.size() != 4)
-			err("Invalid Win Splash string: ", s);
-
-		winSplashKey(vals.get(0));
-		int r = parseInt(vals.get(1));
-		int g = parseInt(vals.get(2));
-		int b = parseInt(vals.get(3));
-		winTextC = new Color(r,g,b);
-	}
-	void parseLossSplash(String s)	{
-		List<String> vals = substrings(s, ',');
-		if (vals.size() != 4)
-			err("Invalid Loss Splash string: ", s);
-
-		lossSplashKey(vals.get(0).trim());
-		int r = parseInt(vals.get(1).trim());
-		int g = parseInt(vals.get(2).trim());
-		int b = parseInt(vals.get(3).trim());
-		lossTextC = new Color(r,g,b);
-	}
+//	void parseWinSplash(String s)	{
+//		List<String> vals = substrings(s, ',');
+//		if (vals.size() != 4)
+//			err("Invalid Win Splash string: ", s);
+//
+//		winSplashKey(vals.get(0));
+//		int r = parseInt(vals.get(1));
+//		int g = parseInt(vals.get(2));
+//		int b = parseInt(vals.get(3));
+//		winTextC = new Color(r,g,b);
+//	}
+//	void parseLossSplash(String s)	{
+//		List<String> vals = substrings(s, ',');
+//		if (vals.size() != 4)
+//			err("Invalid Loss Splash string: ", s);
+//
+//		lossSplashKey(vals.get(0).trim());
+//		int r = parseInt(vals.get(1).trim());
+//		int g = parseInt(vals.get(2).trim());
+//		int b = parseInt(vals.get(3).trim());
+//		lossTextC = new Color(r,g,b);
+//	}
 	void parseCouncilDiplomatLocation(String s)	{
 		List<String> vals = substrings(s, ',');
 		if (vals.size() != 4)

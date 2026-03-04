@@ -78,15 +78,15 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	private String planetRessource	= "Normal";
 	private String planetEnvironment	= "Normal";
 	// Custom Races:
-	private boolean isRandomizedSpecies	= false;
+//	private boolean isRandomizedSpecies	= false;
 	private boolean isCustomSpecies		= false;
-	private boolean isCopy				= false; // Security prevent modification of original 
+//	private boolean isCopy				= false; // Security prevent modification of original 
 	private String isAnimAutonomous		= ""; // Security prevent modification of original 
 	private DynOptions speciesOptions	= null;
 	// \BR:
 	private int startingYear;
-	private int speciesType;
-	private String homeworldStarType;
+//	private int speciesType;
+//	private String homeworldStarType;
 	private String homeworldPlanetType;
 	private int homeworldSize;
 	private int populationBonusPct	= 100;
@@ -96,7 +96,7 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	private int shipDefenseBonus	= 0;
 	private int shipInitiativeBonus	= 0;
 	private int groundAttackBonus	= 0;
-	private boolean telepathic	= false;
+//	private boolean telepathic	= false;
 	private float spyCostMod	= 1;
 	private float internalSecurityAdj	= 0;
 	private float spyInfiltrationAdj	= 0;
@@ -106,7 +106,7 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	private float researchBonusPct	= 1.0f;
 	private float growthRateMod		= 1;
 	private float tradePctBonus		= 0;
-	private float positiveDPMod		= 1;
+//	private float positiveDPMod		= 1;
 	private int diplomacyBonus		= 0;
 	private float councilBonus		= 0;
 	private float[] techMod			= new float[] { 1, 1, 1, 1, 1, 1 };
@@ -114,7 +114,7 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	private boolean ignoresPlanetEnvironment = false;
 	private String acceptedPlanetEnvironment = "No";
 	private boolean ignoresFactoryRefit = false;
-	private boolean availablePlayer	= true;	// BR: never used!
+//	private boolean availablePlayer	= true;	// BR: never used!
 	private boolean availableAI		= true;	// BR: Never used!
 	private boolean masksDiplomacy	= false;
 	private float labFlagX			= 0;
@@ -149,8 +149,8 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	void introTextX(int i)				{ introTextX = i; }
 	String preferredAI()				{ return favoredAI; }
 	void preferredAI(String s)			{ favoredAI = s; }
-	int speciesType()					{ return speciesType; }
-	void speciesType(int i)				{ speciesType = i; }
+//	int speciesType()					{ return speciesType; }
+//	void speciesType(int i)				{ speciesType = i; }
 
 	String languageList()				{ return languageList; }
 	void languageList(String s)			{ languageList = s; }
@@ -160,7 +160,7 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	void reworkableId(int i)			{ reworkableId = i; }
 	int startingYear()					{ return startingYear; }
 	void startingYear(int i)			{ startingYear = i; }
-	void empireTitle(String s)			{ empireTitle = s; }
+//	void empireTitle(String s)			{ empireTitle = s; }
 	String speciesPrefix()				{ return speciesPrefix; }
 	void speciesPrefix(String s)		{ speciesPrefix = s; }
 	String speciesSuffix()				{ return speciesSuffix; }
@@ -176,12 +176,12 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	String preferredShipSet()			{ return preferredShipSet; }
 	void preferredShipSet(String s)		{ preferredShipSet = s; }
 
-	String homeworldStarType()			{ return homeworldStarType; }
-	void homeworldStarType(String s)	{ homeworldStarType = s; }
+//	String homeworldStarType()			{ return homeworldStarType; }
+//	void homeworldStarType(String s)	{ homeworldStarType = s; }
 	int homeworldSize()					{ return homeworldSize; }
 	void homeworldSize(int i)			{ homeworldSize = i; }
-	int populationBonusPct()			{ return populationBonusPct; }
-	void populationBonusPct(int i)		{ populationBonusPct = i; }
+	private int populationBonusPct()	{ return populationBonusPct; }
+//	void populationBonusPct(int i)		{ populationBonusPct = i; }
 	String directoryName()				{ return directoryName; }
 	String langKey()					{ return langKey; }
 	void langKey(String s)				{ langKey = s; }
@@ -190,10 +190,10 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	StringList civilizationNames()		{ return uniqueNames.civilizationNames; }
 	StringList homeSystemNames()		{ return uniqueNames.homeSystemNames; }
 	StringList leaderNames()			{ return uniqueNames.leaderNames; }
-	StringList shipNamesSmall()			{ return shipNamesSmall; }
-	StringList shipNamesMedium()		{ return shipNamesMedium; }
-	StringList shipNamesLarge()			{ return shipNamesLarge; }
-	StringList shipNamesHuge()			{ return shipNamesHuge; }
+	private StringList shipNamesSmall()		{ return shipNamesSmall; }
+	private StringList shipNamesMedium()	{ return shipNamesMedium; }
+	private StringList shipNamesLarge()		{ return shipNamesLarge; }
+	private StringList shipNamesHuge()		{ return shipNamesHuge; }
 	private StringList remainingCivilizationNames()	{ return uniqueNames.remainingCivilizationNames; }
 	private StringList remainingHomeworldNames()	{ return uniqueNames.remainingHomeworldNames; }
 	private StringList remainingLeaderNames()		{ return uniqueNames.remainingLeaderNames; }
@@ -209,7 +209,7 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 		directoryName = dirPath;
 		labels = new LabelManager();
 	}
-	String empireTitle() {
+	private String empireTitle() {
 		String s = "[this_empire]";
 		String key = "this";
 		List<String> tokens = varTokens(s, key);
@@ -223,8 +223,8 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 			return this.empireTitle;
 		return s1;
 	}
-	protected boolean isCopy()			{ return isCopy; }
-	protected void isCopy( boolean is)	{ isCopy = is; }
+//	protected boolean isCopy()			{ return isCopy; }
+//	protected void isCopy( boolean is)	{ isCopy = is; }
 	// BR: for species customization
 	// Get a Copy the current species
 	protected SpeciesSkills copy(boolean full)	{
@@ -233,7 +233,7 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 		else
 			return copy(speciesOptions().copy(), full);
 	}
-	protected SpeciesSkills copy(DynOptions srcOptions, boolean full)	{
+	private SpeciesSkills copy(DynOptions srcOptions, boolean full)	{
 		SpeciesSkills copy	= RaceFactory.current().reloadRaceDataFile(directoryName);
 		if (full)
 			labels.copy(labels, copy.labels);
@@ -254,13 +254,14 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 		copy.uniqueNames.leaderNames.addAll(uniqueNames.leaderNames);
 		copy.speciesOptions(srcOptions);
 		copy.populationBonusPct	= populationBonusPct();
-		copy.isCopy = true;
+//		copy.isCopy = true;
 		return copy;
 	}
 	void loadNameList()		{
 		StringList secondaryNames = new StringList(civilizationNames());
 		uniqueNames.remainingCivilizationNames = new StringList();
 		remainingCivilizationNames().add(secondaryNames.remove(0));
+		Collections.shuffle(secondaryNames);
 		remainingCivilizationNames().addAll(secondaryNames);
 	}
 	void loadLeaderList()	{
@@ -277,13 +278,13 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 		Collections.shuffle(homeNames);
 		remainingHomeworldNames().addAll(homeNames);
 	}
-	String nextAvailableName()	{
-		if (remainingCivilizationNames()==null) 
-			loadNameList();
-		String name = remainingCivilizationNames().remove(0);
-		return name;
-	}
-	int nameIndex(String n)			{ return civilizationNames().indexOf(n); }
+//	String nextAvailableName()	{
+//		if (remainingCivilizationNames()==null) 
+//			loadNameList();
+//		String name = remainingCivilizationNames().remove(0);
+//		return name;
+//	}
+//	int nameIndex(String n)			{ return civilizationNames().indexOf(n); }
 	String nameVariant(int i)		{
 		StringList names = civilizationNames();
 		return i<names.size()? names.get(i): names.get(0);
@@ -293,11 +294,11 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 			loadLeaderList();
 		return remainingLeaderNames().remove(0);
 	}
-	String nextAvailableHomeworld()	{
-		if (remainingHomeworldNames()==null)
-			loadHomeworldList();
-		return remainingHomeworldNames().remove(0);
-	}
+//	String nextAvailableHomeworld()	{
+//		if (remainingHomeworldNames()==null)
+//			loadHomeworldList();
+//		return remainingHomeworldNames().remove(0);
+//	}
 	LabelManager raceLabels()			{ return labels; }
 	@Override public String toString()	{ return concat("Skills:", id); }
 	@Override public String text(String key)	{
@@ -509,8 +510,8 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	void growthRateMod(float f)		{ growthRateMod = f; }
 	float tradePctBonus()			{ return tradePctBonus; }
 	void tradePctBonus(float f)		{ tradePctBonus = f; }
-	float positiveDPMod()			{ return positiveDPMod; }
-	void positiveDPMod(float f)		{ positiveDPMod = f; }
+//	float positiveDPMod()			{ return positiveDPMod; }
+//	void positiveDPMod(float f)		{ positiveDPMod = f; }
 	int diplomacyBonus()			{ return diplomacyBonus; }
 	void diplomacyBonus(int i)		{ diplomacyBonus = i; }
 	float councilBonus()			{ return councilBonus; }
@@ -568,14 +569,14 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	boolean shipDesignModPrefTechNullif()	{ return shipDesignMods[PREF_TECH_NULLIFIER] > 0; }
 	boolean shipDesignModPrefBeamFocus()	{ return shipDesignMods[PREF_BEAM_FOCUS] > 0; }
 
-	boolean availablePlayer()			{ return availablePlayer; }
-	void availablePlayer(boolean b)		{ availablePlayer = b; }
+//	boolean availablePlayer()			{ return availablePlayer; }
+//	void availablePlayer(boolean b)		{ availablePlayer = b; }
 	boolean availableAI()				{ return availableAI; }
 	void availableAI(boolean b)			{ availableAI = b; }
 	boolean ignoresFactoryRefit()		{ return ignoresFactoryRefit; }
 	void ignoresFactoryRefit(boolean b)	{ ignoresFactoryRefit = b; }
-	boolean telepathic()				{ return telepathic; }
-	void telepathic(boolean b)			{ telepathic = b; }
+//	boolean telepathic()				{ return telepathic; }
+//	void telepathic(boolean b)			{ telepathic = b; }
 	boolean masksDiplomacy()			{ return masksDiplomacy; }
 	void masksDiplomacy(boolean b)		{ masksDiplomacy = b; }
 	int homeworldKey()					{ return homeworldKey; }
@@ -587,13 +588,13 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	// BR: Custom Species
 	boolean isCustomSpecies()			{ return isCustomSpecies; }
 	void isCustomSpecies(boolean is)	{ isCustomSpecies = is; }
-	boolean isRandomizedSpecies()		{ return isRandomizedSpecies; }
-	void isRandomizedSpecies(boolean is){ isRandomizedSpecies = is; }
+//	boolean isRandomizedSpecies()		{ return isRandomizedSpecies; }
+//	void isRandomizedSpecies(boolean is){ isRandomizedSpecies = is; }
 	String isAnimAutonomous()			{ return isAnimAutonomous; }
 	void isAnimAutonomous(String s)		{ isAnimAutonomous = s; }
 	boolean isRandomized()				{ return DNAFactory.CR_EMPIRE_NAME_RANDOM.equalsIgnoreCase(empireTitle); }
 	DynOptions speciesOptions()			{ return speciesOptions; }
-	void speciesOptions(DynOptions val)	{ speciesOptions = val; }
+	private void speciesOptions(DynOptions val)	{ speciesOptions = val; }
 	// BR: Get the values encoded in HomeworldKey
 	float bCBonus()						{ return bCBonus; }
 	void  bCBonus(float val)			{ bCBonus = val; }
@@ -657,11 +658,11 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	void baseRelations(String key, int d)	{ raceRelations.put(key, d); }
 	float labFlagX()					{ return labFlagX; }
 	void labFlagX(float d)				{ labFlagX = d; }
-	int spyFactoryFrames()				{ return spyFactoryFrames; }
+//	int spyFactoryFrames()				{ return spyFactoryFrames; }
 	void spyFactoryFrames(int d)		{ spyFactoryFrames = d; }
-	int spyMissileFrames()				{ return spyMissileFrames; }
+//	int spyMissileFrames()				{ return spyMissileFrames; }
 	void spyMissileFrames(int d)		{ spyMissileFrames = d; }
-	int spyRebellionFrames()			{ return spyRebellionFrames; }
+//	int spyRebellionFrames()			{ return spyRebellionFrames; }
 	void spyRebellionFrames(int d)		{ spyRebellionFrames = d; }
 
 	List<Image> sabotageFactoryFrames()	{
@@ -694,15 +695,15 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	boolean isHostile(PlanetType pt)	{ return ignoresPlanetEnvironment() ? false : pt.hostileToTerrans(); }
 	int preferredShipSize()				{ return preferredShipSize; }
 	void preferredShipSize(int i)		{ preferredShipSize = i; }
-	int randomShipSize()				{
-		float r = random();
-		if (r <= .5)
-			return preferredShipSize;
-		if (r <= .75)
-			return Math.min(preferredShipSize+1, ShipDesign.MAX_SIZE);
-
-		return max(preferredShipSize-1, 0);
-	}
+//	int randomShipSize()				{
+//		float r = random();
+//		if (r <= .5)
+//			return preferredShipSize;
+//		if (r <= .75)
+//			return Math.min(preferredShipSize+1, ShipDesign.MAX_SIZE);
+//
+//		return max(preferredShipSize-1, 0);
+//	}
 	int randomLeaderAttitude()	{
 		float r = random();
 		float modAccum = 0;
@@ -755,7 +756,7 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 		log("Naming system:", systemName);
 		return systemName;
 	}
-	StringList masterSystemList(Species emp)	{ // to extend Homeworld list
+	private StringList masterSystemList(Species emp)	{ // to extend Homeworld list
 		Collections.shuffle(systemNames);
 		// BR: add custom species prefix and suffix
 		StringList complexNames = new StringList();
@@ -805,7 +806,7 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	void parseShipNamesLarge(String names)		{ parseNames(shipNamesLarge(), names); }
 	void parseShipNamesHuge(String names)		{ parseNames(shipNamesHuge(), names); }
 	void parseDialogLabel(String label, String names)	{ raceLabels().addLabel(label, names); }
-	void parseNames(StringList dest, String names)	{
+	private void parseNames(StringList dest, String names)	{
 		if (names == null || names.isBlank())
 			dest.clear();
 		else

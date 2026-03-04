@@ -31,7 +31,6 @@ import rotp.util.Base;
 import rotp.util.ImageManager;
 import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
-import rotp.util.PixelShifter;
 
 public enum RaceFactory implements Base {
     INSTANCE;
@@ -364,17 +363,23 @@ public enum RaceFactory implements Base {
 		if (key.equalsIgnoreCase("key"))				{ r.id(value); return; }
 		if (key.equalsIgnoreCase("langKey"))			{ r.langKey(value); return; }
 		if (key.equalsIgnoreCase("year"))				{ r.startingYear(parseInt(value)); return; }
-		if (key.equalsIgnoreCase("homestarType"))		{ r.homeworldStarType(value); return; }
+		// if (key.equalsIgnoreCase("homestarType"))	{ r.homeworldStarType(value); return; }
+		if (key.equalsIgnoreCase("homestarType"))		{ return; }
 		if (key.equalsIgnoreCase("homeworldType"))		{ r.homeworldPlanetType(value); return; }
 		// if (key.equalsIgnoreCase("homeworldKey"))	{ r.homeworldKey(parseInt(value)); return; }
+		if (key.equalsIgnoreCase("homeworldKey"))		{ return; }
 		if (key.equalsIgnoreCase("homeworldKey"))		{ parseHomeWorlKey(r, value); return; }
 		if (key.equalsIgnoreCase("homeworldSize"))		{ r.homeworldSize(parseInt(value)); return; }
 		if (key.equalsIgnoreCase("mugshot"))			{ r.mugshotKey(value); return; }
-		if (key.equalsIgnoreCase("diploProfile"))		{ r.wideMugshotKey(value); return; }
+		// if (key.equalsIgnoreCase("diploProfile"))	{ r.wideMugshotKey(value); return; }
+		if (key.equalsIgnoreCase("diploProfile"))		{ return; }
 		if (key.equalsIgnoreCase("setupImage"))			{ r.setupImageKey(value); return; }
-		if (key.equalsIgnoreCase("spyMug"))				{ r.spyFaceKey(value); return; }
-		if (key.equalsIgnoreCase("soldierMug"))			{ r.soldierFaceKey(value); return; }
-		if (key.equalsIgnoreCase("advisorMug"))			{ r.advisorFaceKey(value); return; }
+		// if (key.equalsIgnoreCase("spyMug"))			{ r.spyFaceKey(value); return; }
+		if (key.equalsIgnoreCase("spyMug"))				{ return; }
+		// if (key.equalsIgnoreCase("soldierMug"))		{ r.soldierFaceKey(value); return; }
+		if (key.equalsIgnoreCase("soldierMug"))			{ return; }
+		// if (key.equalsIgnoreCase("advisorMug"))		{ r.advisorFaceKey(value); return; }
+		if (key.equalsIgnoreCase("advisorMug"))			{ return; }
 		if (key.equalsIgnoreCase("advisorScout"))		{ r.advisorScoutKey(value); return; }
 		if (key.equalsIgnoreCase("advisorTransport"))	{ r.advisorTransportKey(value); return; }
 		if (key.equalsIgnoreCase("advisorDiplomacy"))	{ r.advisorDiplomacyKey(value); return; }
@@ -400,9 +405,12 @@ public enum RaceFactory implements Base {
 		if (key.equalsIgnoreCase("gnnHost"))		{ r.gnnHostKey(value); return; }
 		if (key.equalsIgnoreCase("gnnColor"))		{ r.gnnColor(value); return; }
 		if (key.equalsIgnoreCase("gnnTextColor"))	{ r.gnnTextColor(parseColor(value)); return; }
-		if (key.equalsIgnoreCase("diplomatXform"))	{ r.diplomacyTransformer(PixelShifter.createFrom(value)); }
-		if (key.equalsIgnoreCase("winSplash"))		{ r.parseWinSplash(value); return; }
-		if (key.equalsIgnoreCase("lossSplash"))		{ r.parseLossSplash(value); return; }
+		// if (key.equalsIgnoreCase("diplomatXform"))	{ r.diplomacyTransformer(PixelShifter.createFrom(value)); return; }
+		if (key.equalsIgnoreCase("diplomatXform"))	{ return; }
+		// if (key.equalsIgnoreCase("winSplash"))	{ r.parseWinSplash(value); return; }
+		if (key.equalsIgnoreCase("winSplash"))		{ return; }
+		// if (key.equalsIgnoreCase("lossSplash"))	{ r.parseLossSplash(value); return; }
+		if (key.equalsIgnoreCase("lossSplash"))		{ return; }
 		if (key.equalsIgnoreCase("flagSize"))		{ r.flagSize(value); return; }
 		if (key.equalsIgnoreCase("flagWar"))		{ r.flagWarKey(value); return; }
 		if (key.equalsIgnoreCase("flagNormal"))		{ r.flagNormKey(value); return; }
@@ -447,7 +455,8 @@ public enum RaceFactory implements Base {
 		if (key.equalsIgnoreCase("spyFactories"))	{ r.spyFactoryFrames(parseInt(value)); return; }
 		if (key.equalsIgnoreCase("spyMissiles"))	{ r.spyMissileFrames(parseInt(value)); return; }
 		if (key.equalsIgnoreCase("spyRebellion"))	{ r.spyRebellionFrames(parseInt(value)); return; }
-		if (key.equalsIgnoreCase("espionageXY"))	{ r.espionageXY(substrings(value, '@')); return; }
+		// if (key.equalsIgnoreCase("espionageXY"))	{ r.espionageXY(substrings(value, '@')); return; }
+		if (key.equalsIgnoreCase("espionageXY"))	{ return; }
 		if (key.equalsIgnoreCase("dialogTextX"))	{ parseDialogTextMargins(r, substrings(value, ',')); return; }
 		if (key.equalsIgnoreCase("dialogTextY"))	{ r.dialogTopY(parseInt(value)); return; }
 		if (key.equalsIgnoreCase("fortress"))		{ r.parseFortress(value); return; }
@@ -455,7 +464,8 @@ public enum RaceFactory implements Base {
 		if (key.equalsIgnoreCase("introTextX"))		{ r.introTextX(parseInt(value)); return; }
 		if (key.equalsIgnoreCase("councilDiplo"))	{ r.parseCouncilDiplomatLocation(value); return; }
 		if (key.equalsIgnoreCase("homeworld"))		{ r.homeworldKey(parseInt(value)); return; }
-		if (key.equalsIgnoreCase("voice"))			{ r.voiceKey(value); return; }
+		// if (key.equalsIgnoreCase("voice"))		{ r.voiceKey(value); return; }
+		if (key.equalsIgnoreCase("voice"))			{ return; }
 		if (key.equalsIgnoreCase("ambience"))		{ r.ambienceKey(value); return; }
 		if (key.equalsIgnoreCase("species"))		{ parseRaceSpeciesMods(r, substrings(value, ',')); return; }
 		if (key.equalsIgnoreCase("ignoreEco"))		{
@@ -545,7 +555,7 @@ public enum RaceFactory implements Base {
 			err("Race ", r.name(), " is missing some species vars");
 		
 		// field #1 is species type (carbon,silicate,robotic) -
-		r.speciesType(parseInt(vals.get(0)));
+		// r.speciesType(parseInt(vals.get(0)));
 		// deprecated - will be overwritten by ignoreEco param
 		r.ignoresPlanetEnvironment(parseInt(vals.get(1)) == 1);
 		if (parseInt(vals.get(1)) == 1)
@@ -566,7 +576,7 @@ public enum RaceFactory implements Base {
 		r.spyCostMod((float) parseInt(vals.get(0)) / 100);
 		r.internalSecurityAdj((float) parseInt(vals.get(1)) / 100);
 		r.spyInfiltrationAdj((float) parseInt(vals.get(2)) / 100);
-		r.telepathic(parseInt(vals.get(3)) == 1);
+		// r.telepathic(parseInt(vals.get(3)) == 1);
 		r.masksDiplomacy(parseInt(vals.get(4)) == 1);
 	}
 	private void parseRaceProdMods(Race r, List<String> vals)	{
@@ -592,7 +602,7 @@ public enum RaceFactory implements Base {
 		// field #1 is trade bonus modifier (as %)
 		r.tradePctBonus((float) parseInt(vals.get(0)) / 100);
 		// field #2 is positive DP modifier (as %)
-		r.positiveDPMod((float) parseInt(vals.get(1)) / 100);
+		// r.positiveDPMod((float) parseInt(vals.get(1)) / 100);
 		// field #3 is diplomatic relations modifier (as %)
 		r.diplomacyBonus(parseInt(vals.get(2)));
 		// field #4 is council vote modifier (as %)
@@ -647,7 +657,7 @@ public enum RaceFactory implements Base {
 		if (vals.size() < 2)
 			return;
 		// field #1 is available to player
-		r.availablePlayer(!vals.get(0).equalsIgnoreCase("no"));
+		// r.availablePlayer(!vals.get(0).equalsIgnoreCase("no"));
 
 		// field #2 is available to AI
 		r.availableAI(!vals.get(1).equalsIgnoreCase("no"));

@@ -341,7 +341,7 @@ public class DNAFactory extends SpeciesSettings {
 				initWithInternalSkillsForGalaxy(anim, null, false);
 //				race(Species.getAnim(defaultRaceKey).copy(false));
 				race().isCustomSpecies(true);
-				race().isRandomizedSpecies(true);
+//				race().isRandomizedSpecies(true);
 				randomizeRace(randomAlienRacesMin.get(), randomAlienRacesMax.get(),
 						randomAlienRacesTargetMin.get(), randomAlienRacesTargetMax.get(),
 						randomAlienRaces.isTarget(), randomAlienRacesSmoothEdges.get(), false);
