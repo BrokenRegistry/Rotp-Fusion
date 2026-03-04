@@ -357,6 +357,7 @@
 
 ### Fixes:
 
+- Restoration of an original feature: The name of an empire is only randomized starting with the second of the same type.
 - Galaxy map: new fixes for mouse responsiveness issues on maps containing thousands of stars.
 - Galaxy Map: Fixed a recurring issue where the right panel would continue to display the last fleet or system flown over, instead of returning to the selected fleet or system.
 - Fixed ShipSet displayed text on Species Setting Panel.

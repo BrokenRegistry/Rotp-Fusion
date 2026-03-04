@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-03-04 (BR)
+- Restoration of an original feature: The name of an empire is only randomized starting with the second of the same type.
 - Galaxy map: new fixes for mouse responsiveness issues on maps containing thousands of stars.
   - (Continuation) Not all sub-panel and sub-sub-panels were fixed in the previous fixes.
 

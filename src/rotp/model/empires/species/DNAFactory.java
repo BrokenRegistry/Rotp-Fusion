@@ -1036,16 +1036,24 @@ public class DNAFactory extends SpeciesSettings {
 		}
 		CivilizationRecord nextRandom(boolean onlyIfAvailableAI, boolean forAnim)	{
 			int minUse = Integer.MAX_VALUE;
+			int maxUse = 0;
 			if (isEmpty())
 				return null;
-			for (CivilizationRecord civRec : this)
-				minUse = min(minUse, civRec.useCount(onlyIfAvailableAI, forAnim));
+			for (CivilizationRecord civRec : this) {
+				int useCount = civRec.useCount(onlyIfAvailableAI, forAnim);
+				if (useCount < minUse)
+					minUse = useCount;
+				else if (useCount > maxUse)
+					maxUse = useCount;
+			}
 
 			CivRecordList list = new CivRecordList();
 			for (CivilizationRecord civRec : this)
 				if (civRec.useCount(onlyIfAvailableAI, forAnim) == minUse)
 					list.add(civRec);
 			// Do not update use here, it may still be rejected
+			if (maxUse == 0) // only randomize secondary names
+				return list.get(0);
 			return random(list);
 		}
 		private int totalUseCount(boolean onlyIfAvailableAI, boolean forAnim)	{
