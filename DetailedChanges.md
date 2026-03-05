@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-03-05 (BR)
+- Fixed possible Crash on Game Over panel.
+
 26-03-04 (BR)
 - Restoration of an original feature: The name of an empire is only randomized starting with the second of the same type.
 - Galaxy map: new fixes for mouse responsiveness issues on maps containing thousands of stars.

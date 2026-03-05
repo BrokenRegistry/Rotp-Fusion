@@ -407,10 +407,8 @@ public enum RaceFactory implements Base {
 		if (key.equalsIgnoreCase("gnnTextColor"))	{ r.gnnTextColor(parseColor(value)); return; }
 		// if (key.equalsIgnoreCase("diplomatXform"))	{ r.diplomacyTransformer(PixelShifter.createFrom(value)); return; }
 		if (key.equalsIgnoreCase("diplomatXform"))	{ return; }
-		// if (key.equalsIgnoreCase("winSplash"))	{ r.parseWinSplash(value); return; }
-		if (key.equalsIgnoreCase("winSplash"))		{ return; }
-		// if (key.equalsIgnoreCase("lossSplash"))	{ r.parseLossSplash(value); return; }
-		if (key.equalsIgnoreCase("lossSplash"))		{ return; }
+		if (key.equalsIgnoreCase("winSplash"))		{ r.parseWinSplash(value); return; }
+		if (key.equalsIgnoreCase("lossSplash"))		{ r.parseLossSplash(value); return; }
 		if (key.equalsIgnoreCase("flagSize"))		{ r.flagSize(value); return; }
 		if (key.equalsIgnoreCase("flagWar"))		{ r.flagWarKey(value); return; }
 		if (key.equalsIgnoreCase("flagNormal"))		{ r.flagNormKey(value); return; }

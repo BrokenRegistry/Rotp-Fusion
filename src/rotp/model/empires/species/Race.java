@@ -141,9 +141,9 @@ class Race extends SpeciesSkills {
 	void gnnTextColor(Color c)			{ gnnTextColor = c; }
 
 	String lossSplashKey()				{ return lossSplashKey; }
-//	private void lossSplashKey(String s)	{ lossSplashKey = s; }
+	private void lossSplashKey(String s)	{ lossSplashKey = s; }
 	String winSplashKey()				{ return winSplashKey; }
-//	private void winSplashKey(String s)	{ winSplashKey = s; }
+	private void winSplashKey(String s)	{ winSplashKey = s; }
 	String shipAudioKey()				{ return shipAudioKey; }
 	void shipAudioKey(String s)			{ shipAudioKey = s; }
 	String ambienceKey()				{ return ambienceKey; }
@@ -371,28 +371,28 @@ class Race extends SpeciesSkills {
 		transportOpenKey(concat(vals.get(0), ",", vals.get(2)));
 		transportOpenFrames (parseInt(vals.get(1)));
 	}
-//	void parseWinSplash(String s)	{
-//		List<String> vals = substrings(s, ',');
-//		if (vals.size() != 4)
-//			err("Invalid Win Splash string: ", s);
-//
-//		winSplashKey(vals.get(0));
+	void parseWinSplash(String s)	{
+		List<String> vals = substrings(s, ',');
+		if (vals.size() != 4)
+			err("Invalid Win Splash string: ", s);
+
+		winSplashKey(vals.get(0));
 //		int r = parseInt(vals.get(1));
 //		int g = parseInt(vals.get(2));
 //		int b = parseInt(vals.get(3));
 //		winTextC = new Color(r,g,b);
-//	}
-//	void parseLossSplash(String s)	{
-//		List<String> vals = substrings(s, ',');
-//		if (vals.size() != 4)
-//			err("Invalid Loss Splash string: ", s);
-//
-//		lossSplashKey(vals.get(0).trim());
+	}
+	void parseLossSplash(String s)	{
+		List<String> vals = substrings(s, ',');
+		if (vals.size() != 4)
+			err("Invalid Loss Splash string: ", s);
+
+		lossSplashKey(vals.get(0).trim());
 //		int r = parseInt(vals.get(1).trim());
 //		int g = parseInt(vals.get(2).trim());
 //		int b = parseInt(vals.get(3).trim());
 //		lossTextC = new Color(r,g,b);
-//	}
+	}
 	void parseCouncilDiplomatLocation(String s)	{
 		List<String> vals = substrings(s, ',');
 		if (vals.size() != 4)
