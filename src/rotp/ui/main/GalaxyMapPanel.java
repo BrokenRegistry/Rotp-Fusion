@@ -145,6 +145,8 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
     private Area darkRangeArea;
     private int maxMouseVelocity = -1;
     private boolean searchingSprite = false;
+	public boolean pauseAnimations = false;
+	private long paintTime = 0;
 
     private final Timer zoomTimer;
 
@@ -348,6 +350,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         Graphics2D g2 = (Graphics2D) g;
         setRenderingHints(g2);
         parent.checkMapInitialized();
+        long t1 = System.currentTimeMillis();
 		try {
 			paintToImage(mapBuffer());
 		}
@@ -361,6 +364,8 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
 		}
         g2.drawImage(mapBuffer, 0, 0, null);
         parent.paintOverMap(this, g2);
+		paintTime = System.currentTimeMillis() - t1;
+		System.out.println("Paint Time = " + paintTime); // TODO BR: REMOVE
     }
     private void paintToImage(Image img) {
         Graphics2D g2 = (Graphics2D) img.getGraphics();
@@ -1305,6 +1310,8 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
     }
     @Override
     public void animate() {
+		if (pauseAnimations && paintTime > 100)
+			return;
         if (session().performingTurn() && parent.suspendAnimationsDuringNextTurn())
             return;
         if (zoomTimer.isRunning())

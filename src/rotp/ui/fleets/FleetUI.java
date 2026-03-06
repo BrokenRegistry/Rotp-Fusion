@@ -644,10 +644,12 @@ public final class FleetUI extends BasePanel implements IMapHandler, ActionListe
     }
     public void openTransportsDialog() {
         massTransportDialog.open();
+        map.pauseAnimations = true;
         repaint();
     }
     public void closeTransportsDialog() {
         massTransportDialog.close();
+        map.pauseAnimations = false;
         repaint();
     }
     private BasePanel dataPanelWith(BasePanel top, BasePanel bottom, int vGap) {

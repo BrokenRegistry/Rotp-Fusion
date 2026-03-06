@@ -3,6 +3,9 @@
 ## What's New
 
 26-03-05 (BR)
+- Mass transport panel: when the panel popup, stop the back ground animations when the refresh time is greater than 100ms.
+
+26-03-05 (BR)
 - Fixed possible Crash on Game Over panel.
 
 26-03-04 (BR)

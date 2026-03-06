@@ -280,6 +280,7 @@
 
 ### User Interfaces:
 
+- Mass transport panel: when the panel popup, stop the back ground animations when the refresh time is greater than 100ms.
 - Intelligence Panel: When the mouse hovers over a technology, its description appears in a pop-up window.
 - New interface for customizing species, and renamed to DNA workshop.
 - Added RotP colors and fonts to files selector that were still OS like.
