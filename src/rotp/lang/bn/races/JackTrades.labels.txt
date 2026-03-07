@@ -1,9 +1,0 @@
-// race-specific variables (must start with _)
-_empire                           | Jack-Trades Technocracy, Red-Mage Technocracy, Renaissance-Man Technocracy, All-in-One Technocracy, Master-None Technocracy
-_race                             | Jack-Trades, Red-Mage, Renaissance-Man, All-in-One, Master-None
-_race_plural                      | Jack-Trades, Red-Mages, Renaissance-Men, All-in-One, Master-None
-_title                            | Grand Philosopher
-_nameTitle                        | Grand Philosopher
-
-
-GOVT_Technocracy                       | %1 Technocracy

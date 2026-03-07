@@ -1,9 +1,0 @@
-// race-specific variables (must start with _)
-_empire                           | Early-Game Anarchy, Rush-Rush Anarchy, Blitzin Anarchy, Alpha-Strike Anarchy, Zuul Anarchy
-_race                             | Early-Game, Rush-Rush, Blitzin, Alpha-Strike, Zuul
-_race_plural                      | Early-Games, Rush-Rush, Blitzins, Alpha-Strikes, Zuul
-_title                            | Early Peaker
-_nameTitle                        | Early Peaker
-
-GOVT_EMPIRE                       | %1 Anarchy 
-

@@ -12,7 +12,6 @@
 en,  English          ,  ,   , 
 fr,  Français         ,  ,   ,  , ; _race , _raceadjec; _race_plural, _race_pluraladjec; _empireof, _empire; _raceadjec, _race; _raceadjecF, _race; _race_pluralnoun, _race_plural; _race_pluralnounof, _race_plural; _race_pluralnounto, _race_plural; _race_pluraladjec, _race_plural; _race_pluraladjecF, _race_plural
 bg,  българин         ,  ,   , 
-#bn,  বাংলা            ,  ,   ,  , ০১২৩৪৫৬৭৮৯
 de,  Deutsch          ,  ,   , 
 el,  Ελληνικά         ,  ,   , 
 es,  Español          ,  ,   , ; _race , _raceadjec; _race_plural, _race_pluraladjec; _empireof, _empire; _raceadjec, _race; _raceadjecF, _race; _race_pluralnoun, _race_plural; _race_pluralnounF, _race_plural; _race_pluralnounof, _race_plural; _race_pluralnounto, _race_plural; _race_pluraladjec, _race_plural; _race_pluraladjecF, _race_plural
@@ -31,13 +30,3 @@ tr,  Türkçe           ,  ,   ,
 uk,  Українська       ,  ,   , ; _empire2, _empire; _empire3, _empire; _empire4, _empire; _empire5, _empire; _race2, _race; _race3, _race; _race4, _race; _race5, _race; _race7, _race; _race_plural2, _race_plural; _race_plural3, _race_plural; _race_plural4, _race_plural; _race_plural5, _race_plural; _race_plural7, _race_plural; _title3, _title; _title7, _title
 zh,  简体中文          ,  ,   , Y
 zh2, 繁體中文          ,  ,   , Y
-
-
-//bn,     , বাংলা     , 
-//fi,     , Suomen kieli,
-//he,     , עִברִית ,
-//hi,     , हिन्दी              ,
-//jp,     , 日本語      ,
-//ko,     , 한국어      ,
-//sk,     , Slovák     , 
-//vi,     , Tiếng Việt ,

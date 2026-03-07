@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-03-07 (BR)
+- Removed unused files to reduce the .Jar and .Zip files.
 - New option: When formatting decimal numbers, use either the local Java setting or the formatting associated with the language selected in the game.
   - Main Panel --> Settings --> User Interface --> Setup UI Preferences --> Change Language Format (Default = No)
 

@@ -250,6 +250,7 @@
 
 ### Miscellaneous:
 
+- Removed unused files to reduce the .Jar and .Zip files.
 - Restored possibility to change AI in Game. (was missing in the new interface)
 - Fixed some possible crash in the invasion panel.
 - Added "Display Mode" and "Java Version" to the error report.
@@ -279,7 +280,6 @@
 
 
 ### User Interfaces:
-
 
 - New option: When formatting decimal numbers, use either the local Java setting or the formatting associated with the language selected in the game.
   - Main Panel --> Settings --> User Interface --> Setup UI Preferences --> Change Language Format (Default = No)
