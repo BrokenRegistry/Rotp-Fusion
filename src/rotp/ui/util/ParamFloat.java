@@ -24,6 +24,7 @@ import java.text.DecimalFormat;
 
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
+import rotp.util.Base;
 
 public class ParamFloat extends AbstractParam<Float> {
 	
@@ -130,13 +131,10 @@ public class ParamFloat extends AbstractParam<Float> {
 							getString(shiftCtrlInc())};
 	}
 	@Override public String getCfgValue(Float value) {
-		if (isCfgPercent()) {
+		if (isCfgPercent())
 			return String.format("%d", Math.round(value * 100f));
-		}
-		if (isCfgPerThousand()) {
-			return new DecimalFormat("0.0")
-						.format(Math.round(value  * 1000f) / 10f);
-		}
+		if (isCfgPerThousand())
+			return Base.df1.format(Math.round(value  * 1000f) / 10f);
 		return new DecimalFormat(cfgFormat).format(value);
 	}
 	@Override public String guideValue()		{ return guideValue(get()); }
@@ -247,13 +245,10 @@ public class ParamFloat extends AbstractParam<Float> {
 	private String getString(Float value) {
 		if (value == null)
 			return langLabel("GUIDE_MIN_MAX_NULL_VALUE");
-		if (isGuiPercent()) {
+		if (isGuiPercent())
 			return String.format("%d", Math.round(value * 100f)) + "%";
-		}
-		if (isGuiPerThousand()) {
-			return new DecimalFormat("0.0")
-						.format(Math.round(value * 1000f) / 10f) + "%";
-		}
+		if (isGuiPerThousand())
+			return Base.df1.format(Math.round(value * 1000f) / 10f) + "%";
 		return new DecimalFormat(guiFormat).format(value);
 	}
 	private boolean next(float i)		{
@@ -299,7 +294,7 @@ public class ParamFloat extends AbstractParam<Float> {
 		if (isGuiPercent())
 			return String.format("%d", Math.round(val * 100f));
 		if (isGuiPerThousand())
-			return new DecimalFormat("0.0").format(Math.round(val * 1000f)/10f);
+			return Base.df1.format(Math.round(val * 1000f)/10f);
 		return new DecimalFormat(guiFormat).format(get());
 	}
 

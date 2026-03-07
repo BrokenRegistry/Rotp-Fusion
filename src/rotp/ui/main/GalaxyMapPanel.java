@@ -365,7 +365,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         g2.drawImage(mapBuffer, 0, 0, null);
         parent.paintOverMap(this, g2);
 		paintTime = System.currentTimeMillis() - t1;
-		System.out.println("Paint Time = " + paintTime); // TODO BR: REMOVE
+		// System.out.println("Paint Time = " + paintTime); // TO DO BR: REMOVE
     }
     private void paintToImage(Image img) {
         Graphics2D g2 = (Graphics2D) img.getGraphics();

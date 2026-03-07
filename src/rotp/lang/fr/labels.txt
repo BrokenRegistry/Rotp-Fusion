@@ -3276,7 +3276,7 @@ SETTINGS_MOD_COMPACT_OPTION_ONLY_NO_DESC  | Display the vanilla Advanced Options
 SETTINGS_MOD_COMPACT_OPTION_ONLY_YES      | Compacte
 SETTINGS_MOD_COMPACT_OPTION_ONLY_NO       | Original
 
-SETTINGS_MOD_GAME_OVER_TITLE_DESC          | Pour alterner entre les titres des panneaux "Fin de Parties" originaux, des titres étendus (plus spécifiques) ou ceux de la communauté Realms Beyond
+SETTINGS_MOD_GAME_OVER_TITLE_DESC          | Pour alterner entre les titres des panneaux « Fin de Parties » originaux, des titres étendus (plus spécifiques) ou ceux de la communauté Realms Beyond
 SETTINGS_MOD_GAME_OVER_TITLE               | Titres de Fin de Parties : %1
 SETTINGS_MOD_GAME_OVER_TITLE_ORIGINAL_DESC | Titres de Fin de Parties du jeu original.
 SETTINGS_MOD_GAME_OVER_TITLE_EXTENDED_DESC | Titres de Fin de Parties Étendus. Informations plus détaillées sur les conditions de victoire ou de défaite.
@@ -3284,6 +3284,12 @@ SETTINGS_MOD_GAME_OVER_TITLE_RB_DESC       | Titres de Fin de Parties inspirée 
 SETTINGS_MOD_GAME_OVER_TITLE_ORIGINAL      | Originaux
 SETTINGS_MOD_GAME_OVER_TITLE_EXTENDED      | Étendus
 SETTINGS_MOD_GAME_OVER_TITLE_RB            | Realms Beyond
+
+SETUP_CHANGE_LANGUAGE_FORMAT_HELP			| Lors du formatage des nombres décimaux, utiliser soit le paramètre Java local, soit le formatage associé à la langue sélectionnée dans le jeu.<br>Lors de l’installation de Java, le format défini dans le système d’exploitation peut être copié ou non. Cette option vous permet d’ajuster l’affichage en fonction de la langue sélectionnée dans le jeu.
+SETUP_CHANGE_LANGUAGE_FORMAT_DESC			| Lors du formatage des nombres décimaux, utiliser soit le paramètre Java local, soit le formatage associé à la langue sélectionnée dans le jeu.
+SETUP_CHANGE_LANGUAGE_FORMAT				| Changer le format d'affichage : %1
+SETUP_CHANGE_LANGUAGE_FORMAT_YES_DESC		| Utiliser les paramètres associés au langage sélectionné.
+SETUP_CHANGE_LANGUAGE_FORMAT_NO_DESC		| Garder les paramètres de Java.
 
 SETTINGS_MOD_RACE_STATUS_LOG_HELP        | Les graphiques de statut Empire peuvent être affichés sur une échelle linéaire ou logarithmique.
 SETTINGS_MOD_RACE_STATUS_LOG_DESC        | Les graphiques d’état Empire peuvent être affichés sur une échelle linéaire ou logarithmique.

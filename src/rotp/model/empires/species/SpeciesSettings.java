@@ -13,7 +13,6 @@ import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.nio.file.Path;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +30,7 @@ import rotp.ui.RotPUI;
 import rotp.ui.util.PlayerShipSet;
 import rotp.ui.util.StringDialogUI;
 import rotp.ui.util.StringList;
+import rotp.util.Base;
 import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
 
@@ -1568,7 +1568,7 @@ public abstract class SpeciesSettings {
 
 			String costString(float cost) {
 				String str = "(<";
-				str +=  new DecimalFormat("0.0").format(cost);
+				str +=  Base.df1.format(cost);
 				return str + ">)";
 			}
 			public float cost() {
@@ -1664,7 +1664,7 @@ public abstract class SpeciesSettings {
 				}
 				String costString(float cost) {
 					String str = "(";
-					str +=  new DecimalFormat("0.0").format(cost);
+					str +=  Base.df1.format(cost);
 					return str + ")";
 				}
 				private Integer combinedValue() { return combinedValue(settingValue()); }
@@ -1710,7 +1710,7 @@ public abstract class SpeciesSettings {
 
 			String costString(float cost) {
 				String str = "(<";
-				str +=  new DecimalFormat("0.0").format(cost);
+				str +=  Base.df1.format(cost);
 				return str + ">)";
 			}
 			float cost() {
@@ -1809,7 +1809,7 @@ public abstract class SpeciesSettings {
 				}
 				private String costString(float cost) {
 					String str = "(";
-					str +=  new DecimalFormat("0.0").format(cost);
+					str +=  Base.df1.format(cost);
 					return str + ")";
 				}
 				private Integer combinedValue() { return combinedValue(settingValue()); }

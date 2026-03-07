@@ -27,6 +27,7 @@ import java.text.DecimalFormat;
 
 import rotp.model.game.DynamicOptions;
 import rotp.ui.BasePanel;
+import rotp.util.Base;
 
 public class SettingFloat extends SettingBase<Float> {
 
@@ -326,13 +327,10 @@ public class SettingFloat extends SettingBase<Float> {
 	private String getString(Float value) {
 		if (value == null)
 			return langLabel("GUIDE_MIN_MAX_NULL_VALUE");
-		if (isGuiPercent()) {
+		if (isGuiPercent())
 			return String.format("%d", Math.round(value * 100f)) + "%";
-		}
-		if (isGuiPerThousand()) {
-			return new DecimalFormat("0.0")
-						.format(Math.round(value * 1000f) / 10f) + "%";
-		}
+		if (isGuiPerThousand())
+			return Base.df1.format(Math.round(value * 1000f) / 10f) + "%";
 		return new DecimalFormat(cfgFormat).format(value);
 	}
 }

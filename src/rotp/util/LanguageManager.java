@@ -15,6 +15,8 @@
  */
 package rotp.util;
 
+import static rotp.model.game.IBaseOptsTools.BASE_UI;
+
 import java.awt.ComponentOrientation;
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +40,13 @@ import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
 import rotp.ui.main.EmpireColonySpendingPane;
 import rotp.ui.planets.MultiColonySpendingPane;
+import rotp.ui.util.ParamBoolean;
 
 public class LanguageManager implements Base {
     private static LanguageManager instance = new LanguageManager();
     public static LanguageManager current() { return instance; }
-
+	private static final Locale ORIGINAL_LOCALE = Locale.getDefault();
+	public static final ParamBoolean changeLanguageFormat = new ChangeLanguageFormat();
     public static int DEFAULT_LANGUAGE = 0;
     private static final String baseDir = "lang/";
     private static final String languageFile = "languages.txt";
@@ -172,7 +177,8 @@ public class LanguageManager implements Base {
         // reload default labels, since that is assured of completeness
         String currDir;
         selectedLanguage(0);
-        currDir = baseDir+defLang.directory+"/"; // BR: Uncommented
+		currDir = baseDir + defLang.directory + "/"; // BR: Uncommented
+		setDecimalFormat(defLang.directory); // BR: dot vs comma, etc
         labels().loadLabelFile(currDir); // BR: Uncommented
         labels().loadDialogueFile(currDir); // BR: Uncommented
         labels().loadTechsFile(currDir); // BR: Uncommented
@@ -184,7 +190,8 @@ public class LanguageManager implements Base {
         customDigits = newLang.digits;
 
         if (i != DEFAULT_LANGUAGE) {  // BR: Uncommented
-            currDir = baseDir+newLang.directory+"/";
+			currDir = baseDir + newLang.directory + "/";
+			setDecimalFormat(newLang.directory); // BR: dot vs comma, etc
             labels().resetDialogue(); // To avoid mixing languages
             labels().load(currDir);
             RaceFactory.current().loadRaceLangFiles(newLang.directory);
@@ -318,6 +325,47 @@ public class LanguageManager implements Base {
         }
     	return tokenMap;
     }
+	private void setDecimalFormat(String lang)	{
+		if (changeLanguageFormat.get()) {
+			Locale locale = new Locale(lang.substring(0, 2));
+			Locale.setDefault(locale);
+			DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(locale);
+			updateFormatSymbols(symbols);
+		}
+		else {
+			Locale.setDefault(ORIGINAL_LOCALE);
+			DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(ORIGINAL_LOCALE);
+			updateFormatSymbols(symbols);
+		}
+	}
+	private void updateFormatSymbols(DecimalFormatSymbols symbols)	{
+		df1.setDecimalFormatSymbols(symbols);
+		df2.setDecimalFormatSymbols(symbols);
+		df3.setDecimalFormatSymbols(symbols);
+		df4.setDecimalFormatSymbols(symbols);
+		df5.setDecimalFormatSymbols(symbols);
+		df6.setDecimalFormatSymbols(symbols);
+		sf1.setDecimalFormatSymbols(symbols);
+		sf2.setDecimalFormatSymbols(symbols);
+		sf3.setDecimalFormatSymbols(symbols);
+		sf4.setDecimalFormatSymbols(symbols);
+		sf5.setDecimalFormatSymbols(symbols);
+		sf6.setDecimalFormatSymbols(symbols);
+		sf7.setDecimalFormatSymbols(symbols);
+		sf8.setDecimalFormatSymbols(symbols);
+		pad4.setDecimalFormatSymbols(symbols);
+	}
+	public static final class ChangeLanguageFormat extends ParamBoolean {
+		public ChangeLanguageFormat() {
+			super(BASE_UI, "CHANGE_LANGUAGE_FORMAT", false);
+			isDuplicate(false);
+			isCfgFile(true);
+		}
+		@Override public void setOption(Boolean b)	{
+			if (trueChange())
+				current().reloadLanguage();
+		}
+	}
 
     class Language {
         final String directory;

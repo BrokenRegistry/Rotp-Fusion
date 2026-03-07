@@ -3285,6 +3285,12 @@ SETTINGS_MOD_GAME_OVER_TITLE_ORIGINAL      | Originals
 SETTINGS_MOD_GAME_OVER_TITLE_EXTENDED      | Extended
 SETTINGS_MOD_GAME_OVER_TITLE_RB            | Realms Beyond
 
+SETUP_CHANGE_LANGUAGE_FORMAT_HELP			| When formatting decimal numbers, use either the local Java setting or the formatting associated with the language selected in the game.<br>When installing Java, the format defined in the OS may or may not be copied. This option allows you to adjust the display according to the language selected in the game.
+SETUP_CHANGE_LANGUAGE_FORMAT_DESC			| When formatting decimal numbers, use either the local Java setting or the formatting associated with the language selected in the game.
+SETUP_CHANGE_LANGUAGE_FORMAT				| Change Language Format: %1
+SETUP_CHANGE_LANGUAGE_FORMAT_YES_DESC		| Use the settings associated with the selected language.
+SETUP_CHANGE_LANGUAGE_FORMAT_NO_DESC		| Keep Java settings.
+
 SETTINGS_MOD_RACE_STATUS_LOG_HELP        | The Empire status graphs can either be displayed on a linear or logarithmic scale.
 SETTINGS_MOD_RACE_STATUS_LOG_DESC        | The Empire status graphs can be displayed on a linear or logarithmic scale.
 SETTINGS_MOD_RACE_STATUS_LOG             | Empire status graph log: %1

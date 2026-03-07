@@ -29,7 +29,6 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -43,6 +42,7 @@ import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.util.ListDialogUI;
 import rotp.ui.util.StringList;
+import rotp.util.Base;
 
 public class SettingBase<T> implements ICRSettings<T> {
 	
@@ -553,13 +553,13 @@ public class SettingBase<T> implements ICRSettings<T> {
 			str += "" + Math.round(cost);
 			break;
 		case 2:
-			str +=  new DecimalFormat("0.00").format(cost);
+			str +=  Base.df2.format(cost);
 			break;
 		case 3:
-			str +=  new DecimalFormat("0.000").format(cost);
+			str +=  Base.df3.format(cost);
 			break;
 		default:
-			str +=  new DecimalFormat("0.0").format(cost);
+			str +=  Base.df1.format(cost);
 			break;
 		}
 		return str + ")";

@@ -2,7 +2,11 @@
 
 ## What's New
 
-26-03-05 (BR)
+26-03-07 (BR)
+- New option: When formatting decimal numbers, use either the local Java setting or the formatting associated with the language selected in the game.
+  - Main Panel --> Settings --> User Interface --> Setup UI Preferences --> Change Language Format (Default = No)
+
+26-03-06 (BR)
 - Mass transport panel: when the panel popup, stop the back ground animations when the refresh time is greater than 100ms.
 
 26-03-05 (BR)
