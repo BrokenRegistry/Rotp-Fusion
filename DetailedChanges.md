@@ -3,6 +3,7 @@
 ## What's New
 
 26-03-08 (BR)
+- Tentative to fix a bug that should not happen... No feature change.
 - Fixed search tools not working on the Rules panel.
 
 26-03-07 (BR)

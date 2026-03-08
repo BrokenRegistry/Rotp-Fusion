@@ -770,10 +770,10 @@ public class AIShipCaptain implements Base, ShipCaptain {
         }
         return distanceToBeAt;
     }
-    public static FlightPath findBestPathToAttack(CombatStack st, CombatStack tgt, int range) {
+    private FlightPath findBestPathToAttack(CombatStack st, CombatStack tgt, int range) {
         if (st.movePointsTo(tgt) <= range) {
             return new FlightPath();
-        }        
+        }
         int r = range;
         if (tgt.isColony() && st.hasBombs())
             r = 1;
@@ -1176,7 +1176,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
         allValidPaths(st.x, st.y, x1, y1, (int)st.maxMove, st, validPaths, null);
         return validPaths;
     }
-    public static FlightPath allValidPaths(int x0, int y0, int x1, int y1, int moves, CombatStack stack, List<FlightPath> validPaths, FlightPath bestPath) {
+    private FlightPath allValidPaths(int x0, int y0, int x1, int y1, int moves, CombatStack stack, List<FlightPath> validPaths, FlightPath bestPath) {
         FlightPath updatedBestPath = bestPath;
         ShipCombatManager mgr = stack.mgr;
         int gridW = ShipCombatManager.maxX+3;
@@ -1229,7 +1229,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                 return FlightPath.sPathPriority;
         }
     }
-    private static FlightPath loadValidPaths(int curr, int end, boolean[] valid, int moves, List<FlightPath> paths, List<Integer> currPath, int[] deltas, int gridW, FlightPath bestPath) {
+    private FlightPath loadValidPaths(int curr, int end, boolean[] valid, int moves, List<FlightPath> paths, List<Integer> currPath, int[] deltas, int gridW, FlightPath bestPath) {
         FlightPath updatedBestPath = bestPath;
         if (curr == end) {
             if (currPath.size() <= pathSize(bestPath)) {
