@@ -361,6 +361,7 @@
 
 ### Fixes:
 
+- Fixed being unable to redirect fleets to their originating star.
 - Fixed search tools not working on the Rules panel.
 - Fixed possible Crash on Game Over panel.
 - Restoration of an original feature: The name of an empire is only randomized starting with the second of the same type.

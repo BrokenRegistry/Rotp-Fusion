@@ -8,6 +8,8 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-03-08 (BR)
+- Fixed being unable to redirect fleets to their originating star.
+- Tentative to fix a bug that should not happen... No feature change.
 - Fixed search tools not working on the Rules panel.
 
 26-03-07 (BR)
