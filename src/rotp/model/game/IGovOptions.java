@@ -188,15 +188,20 @@ public interface IGovOptions {
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20);
 
-	static void tagAutoScout(String id)	{
+	static void tagAutoScoutAll(String id)	{
 		autoScoutMultiple.updated(true);
+		autoScoutMaxTime.updated(true);
+		autoScoutSaveTime.updated(true);
+		secondScoutWeightPct.updated(true);
+	}
+	static void tagAutoScout(String id)	{
 		autoScoutMaxTime.updated(true);
 		autoScoutSaveTime.updated(true);
 		secondScoutWeightPct.updated(true);
 	}
 	ParamBoolean armedScoutGuard		= new ParamBoolean(GOV_UI, "ARMED_SCOUT_GUARD", false);
 	ParamBoolean autoScoutSmart			= new ParamBoolean(GOV_UI, "AUTO_SCOUT_SMART", false)
-			.setUpdateParameters(IGovOptions::tagAutoScout, "");
+			.setUpdateParameters(IGovOptions::tagAutoScoutAll, "");
 	ParamBoolean autoScoutMultiple		= new ParamAutoScoutSmartBool(GOV_UI, "AUTO_SCOUT_NEAR_FIRST", true)
 			.setUpdateParameters(IGovOptions::tagAutoScout, "");
 	ParamInteger autoScoutMaxTime		= new ParamAutoScoutSmartInt(GOV_UI, "AUTO_SCOUT_MAX_TIME", 8)
@@ -227,8 +232,13 @@ public interface IGovOptions {
 		@Override public boolean isGhost()	{ return !autoScoutSmart.get() || !autoScoutMultiple.get(); }
 	}
 
-	static void tagAutoColonize(String id)	{
+	static void tagAutoColonizeAll(String id)	{
 		autoColonizeMultiple.updated(true);
+		autoColonizeMaxTime.updated(true);
+		autoColonizeSaveTime.updated(true);
+		secondColonyWeightPct.updated(true);
+	}
+	static void tagAutoColonize(String id)	{
 		autoColonizeMaxTime.updated(true);
 		autoColonizeSaveTime.updated(true);
 		secondColonyWeightPct.updated(true);
@@ -237,7 +247,7 @@ public interface IGovOptions {
 	ParamBoolean armedColonizerFight	= new ParamBoolean(GOV_UI, "ARMED_COLONIZER_FIGHT", false);
 
 	ParamBoolean autoColonizeTuned		= new ParamBoolean(GOV_UI, "AUTO_COLONY_TUNED", false)
-			.setUpdateParameters(IGovOptions::tagAutoColonize, "");
+			.setUpdateParameters(IGovOptions::tagAutoColonizeAll, "");
 	ParamBoolean autoColonizeMultiple	= new ParamAutoColoTunedBool(GOV_UI, "AUTO_COLONY_MULTIPLE", false)
 			.setUpdateParameters(IGovOptions::tagAutoColonize, "");
 	ParamInteger autoColonizeMaxTime	= new ParamAutoColoTunedInt(GOV_UI, "AUTO_COLONY_MAX_TIME", 10)
