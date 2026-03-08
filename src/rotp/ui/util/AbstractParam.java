@@ -81,11 +81,12 @@ public abstract class AbstractParam <T> implements IParam<T> {
 		if (valueUpdatedMethod != null && Rotp.initialized())
 			valueUpdatedMethod.valueUpdated(valueUpdatedMethodId);
 	}
-	@Override public void updated(boolean val)	{ updated = val; }
-	@Override public boolean updated()			{
-		callUpdatedMethod();
-		return updated;
+	@Override public void updated(boolean val)	{
+		updated = val;
+		if (updated)
+			callUpdatedMethod();
 	}
+	@Override public boolean updated()			{ return updated; }
 	@Override public boolean trueChange()		{
 		boolean mem = trueChange;
 		trueChange = false;

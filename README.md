@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-03-08 (BR)
+- Fixed search tools not working on the Rules panel.
+
 26-03-07 (BR)
 - Removed unused files to reduce the .Jar and .Zip files.
 - New option: When formatting decimal numbers, use either the local Java setting or the formatting associated with the language selected in the game.
@@ -59,37 +62,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 - Restoration of an original feature: The name of an empire is only randomized starting with the second of the same type.
 - Galaxy map: new fixes for mouse responsiveness issues on maps containing thousands of stars.
   - (Continuation) Not all sub-panel and sub-sub-panels were fixed in the previous fixes.
-
-26-03-03 (BR)
-- Galaxy map: new fixes for mouse responsiveness issues on maps containing thousands of stars.
-
-The hardest bugs to find are those that are multiple…
-
-The mouse responsiveness issue mostly occurs with larger galaxies and gets worse as the number of fleets and transports increases.
-
-Elements of the problem:
-
-The analysis of the management of objects (Stars, fleets or transports) selected or hovered over by the mouse comes from three sources: A mouse action (Move or click), a keyboard action, or a secondary consequence of the two previous actions.
-At some point in the analysis, it is necessary to know the current position of the mouse, and if it is outside the galaxy map the analysis ends. As the start of the analysis does not depend solely on a mouse action, a query is made to obtain the current mouse position, the result being valid only if the mouse is on an unobscured part of the galaxy map.
-
-The problem:
-
-When the cursor leaves an object (Star, fleet, or transport), a search is started to find out if another object is under the cursor: a loop will go through all the objects, to see if their position corresponds to that of the mouse. The bigger the galaxy, the more advanced the empires become, and the longer it takes.
-
-At the end of the search, comes the time to ask for the mouse position again. If the mouse is then on the right panel, the analysis takes the wrong path, and the previously hovered object is not correctly deactivated. (This step is fast enough for galaxies of reasonable size to not pose a problem)
-
-In the previous fix, I forced the deactivation of these objects, but not all the time, because the right panel is chosen from around ten panels, themselves made up of sub-panels… And not all of them had received the fix (far from it).
-
-I now think I have covered all the sub-panels.
-
-In fact some sub-panels did not capture the mouse, (notably the central part of the massive transport and fleet deployment) which had the consequence that the objects under the panel could be hovered over, redirecting the destination…
-
-Another bug, under certain conditions the hovered object is stored in two places… The fix only deactivated one, then we found ourselves with a Schrödinger object, both hovered over and not hovered over… The consequence was that if this object was hovered again, it could no longer be correctly marked as hovered.
-
-This new patch should address all of these issues. When the mouse leaves a star or a fleet, all the stars, all the fleets, all the transports will be looked up to check if the mover hovers them. This may takes times, and if
-
-26-03-01 (BR)
-- Intelligence Panel: When the mouse hovers over a technology, its description appears in a pop-up window.
 
 
 ### [Features Historic](FeaturesChanges.md)

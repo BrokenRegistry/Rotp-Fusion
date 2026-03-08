@@ -5617,8 +5617,8 @@ GOVERNOR_AUTO_SPY                    | Auto Spy: %1
 GOVERNOR_AUTO_SPY_LABEL              | Let AI handle spies
 
 GOVERNOR_SPARE_XENOPHOBES_DESC       | Once enjoined to stop espionage by an alien empire, the Governor will follow the player's choice for the time necessary for the empire to calm down.
-GOVERNOR_SPARE_XENOPHOBES            | Respect promises: %1
-GOVERNOR_SPARE_XENOPHOBES_LABEL      | Respect promises
+GOVERNOR_SPARE_XENOPHOBES            | Honor promises: %1
+GOVERNOR_SPARE_XENOPHOBES_LABEL      | Honor promises
 
 GOVERNOR_TRAIN_SPIES_ASAP_DESC			| Train spies as soon as possible when a new contact occurs.<br>Be careful, this will reduce other preset allocations.
 GOVERNOR_TRAIN_SPIES_ASAP				| Train Spies ASAP: %1
