@@ -3,6 +3,7 @@
 ## What's New
 
 26-03-09 (BR)
+- Updated the JRE in the windows.zip file to 25.0.2-10
 - Fixed Star System marked as targeted by Monster to early.
 
 26-03-08 (BR)

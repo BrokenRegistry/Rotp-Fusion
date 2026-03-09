@@ -250,6 +250,7 @@
 
 ### Miscellaneous:
 
+- Updated the JRE in the windows.zip file to 25.0.2-10
 - Removed unused files to reduce the .Jar and .Zip files.
 - Restored possibility to change AI in Game. (was missing in the new interface)
 - Fixed some possible crash in the invasion panel.

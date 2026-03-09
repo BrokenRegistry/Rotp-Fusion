@@ -381,11 +381,11 @@
 				<configuration>
 					<!-- ##### Think to also update the version number in Windows.xml ##### -->
 					<url>
-						https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.1%2B8/OpenJDK25U-jre_x64_windows_hotspot_25.0.1_8.zip
+						https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.2%2B10/OpenJDK25U-jdk_x64_windows_hotspot_25.0.2_10.zip
 					</url>
 					<unpack>true</unpack>
 					<outputDirectory>${project.build.directory}/jre-win</outputDirectory>
-					<sha256>317ffcdd88eec2914506ba8456a6d1717f8efb9b148d2214ae793cfa9ec7b54d</sha256>
+					<sha256>06ac5f5444a1269dd11d11cbb7ab6ebaecedc60dc1caca82cdb56f29100b7b8c</sha256>
 				</configuration>
 			</plugin>
 			<!-- Windows executable creation -->
