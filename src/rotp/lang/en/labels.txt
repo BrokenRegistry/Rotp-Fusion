@@ -1465,7 +1465,7 @@ INVASION_SOME_TROOPS_LANDED       | %1 of %2 [attacker_race] troops landed.
 INVASION_WIN					| [attacker_race] transports capture %2.
 INVASION_WIN_REBEL				| [attacker_race] transports eliminate the rebels from the %2 colony.
 INVASION_LOSS					| [defender_race] troops successfully defend %2.
-IINVASION_LOSS_REBEL			| [defender_race] rebels successfully defend %2.
+INVASION_LOSS_REBEL				| [defender_race] rebels successfully defend %2.
 INVASION_ATTACKERS_TITLE          | %1 [attacker_race] Troops
 INVASION_DEFENDERS_TITLE          | %1 [defender_race] Troops
 INVASION_REBELS_TITLE             | %1 [defender_race] Rebels

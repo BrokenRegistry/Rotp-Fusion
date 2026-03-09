@@ -8,6 +8,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-03-09 (BR)
+- Fixed Invasion loss to rebel message (Typo in the Key)
 - Updated the JRE in the windows.zip file to 25.0.2-10
 - Fixed Star System marked as targeted by Monster to early.
 

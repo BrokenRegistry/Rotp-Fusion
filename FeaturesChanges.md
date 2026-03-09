@@ -362,6 +362,7 @@
 
 ### Fixes:
 
+- Fixed Invasion loss to rebel message (Typo in the Key)
 - Fixed Star System marked as targeted by Monster to early.
 - Fixed being unable to redirect fleets to their originating star.
 - Fixed search tools not working on the Rules panel.
