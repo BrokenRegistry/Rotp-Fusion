@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-03-09 (BR)
+- Fixed Star System marked as targeted by Monster to early.
+
 26-03-08 (BR)
 - Fixed being unable to redirect fleets to their originating star.
 - Tentative to fix a bug that should not happen... No feature change.

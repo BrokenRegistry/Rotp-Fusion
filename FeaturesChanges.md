@@ -361,6 +361,7 @@
 
 ### Fixes:
 
+- Fixed Star System marked as targeted by Monster to early.
 - Fixed being unable to redirect fleets to their originating star.
 - Fixed search tools not working on the Rules panel.
 - Fixed possible Crash on Game Over panel.

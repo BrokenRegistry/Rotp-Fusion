@@ -102,7 +102,6 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		}
 		else {
 			StarSystem targetSystem = random(empire.allColonizedSystems());
-			targetSystem.eventKey(systemKey());
 			targetEmpId = empire.id;
 			targetSysId = targetSystem.id;
 		}
