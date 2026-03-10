@@ -1,7 +1,7 @@
 package rotp.model.game;
 
 import static rotp.model.game.DefaultValues.DEF_VAL;
-import static rotp.model.game.IGameOptions.DIFFICULTY_NORMAL;
+import static rotp.model.game.IGameOptions.DIFFICULTY_EASIER;
 import static rotp.model.game.IGameOptions.getGameDifficultyOptions;
 import static rotp.ui.util.IParam.langLabel;
 
@@ -478,7 +478,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 	ParamList difficultySelection		= new DifficultySelection();
 	final class DifficultySelection extends ParamList {
 		DifficultySelection() {
-			super(BASE_UI, "GAME_DIFFICULTY", getGameDifficultyOptions(), DIFFICULTY_NORMAL);
+			super(BASE_UI, "GAME_DIFFICULTY", getGameDifficultyOptions(), DIFFICULTY_EASIER);
 			isDuplicate(true);
 			showFullGuide(true);
 		}

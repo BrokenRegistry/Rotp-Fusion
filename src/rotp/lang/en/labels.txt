@@ -1687,26 +1687,26 @@ SETUP_AUTOPLAY_OFF                | Off
 SETUP_AUTOPLAY_AI_BASE            | AI : Base
 SETUP_AUTOPLAY_AI_MODNAR          | AI : Modnar
 SETUP_AUTOPLAY_AI_XILMI           | AI : Xilmi
-SETUP_GAME_DIFFICULTY_HELP        | The difficulty setting will apply a boost or penalty to AI players' production.<br>On normal or higher, Space Monsters will be introduced among the random events somewhere during the mid-game. But on the easy, easier, and easiest difficulty levels, Space Monsters will be delayed to give players more time to build up.
-SETUP_GAME_DIFFICULTY_DESC        | Select The Game Difficulty Level.
-SETUP_GAME_DIFFICULTY             | Game Difficulty Selection: %1
-SETUP_GAME_DIFFICULTY_LABEL       | Difficulty
-SETUP_DIFFICULTY_EASIEST          | Easiest
-SETUP_DIFFICULTY_EASIER           | Easier
-SETUP_DIFFICULTY_EASY             | Easy
-SETUP_DIFFICULTY_NORMAL           | Normal
-SETUP_DIFFICULTY_HARD             | Hard
-SETUP_DIFFICULTY_HARDER           | Harder
-SETUP_DIFFICULTY_HARDEST          | Hardest
-SETUP_DIFFICULTY_CUSTOM           | Custom
-SETUP_DIFFICULTY_EASIEST_HELP     | Easiest (55%)
-SETUP_DIFFICULTY_EASIER_HELP      | Easier (75%)
-SETUP_DIFFICULTY_EASY_HELP        | Easy (90%)
-SETUP_DIFFICULTY_NORMAL_HELP      | Normal (100%)
-SETUP_DIFFICULTY_HARD_HELP        | Hard (110%)
-SETUP_DIFFICULTY_HARDER_HELP      | Harder (125%)
-SETUP_DIFFICULTY_HARDEST_HELP     | Hardest (145%)
-SETUP_DIFFICULTY_CUSTOM_HELP      | This value is set by the option <b>Custom Difficulty</b> which can be found at the top Left of "→SETUP_BUTTON_MERGED_DYNAMIC_SETTINGS←" panel
+SETUP_GAME_DIFFICULTY_HELP		 | The difficulty setting will apply a boost or penalty to AI players' production.<br>On "High" or higher, Space Monsters will be introduced among the random events somewhere during the mid-game. But on the "Basic", "Moderate", and "Elevated" difficulty levels, Space Monsters will be delayed to give players more time to build up.
+SETUP_GAME_DIFFICULTY_DESC		| Select The Game Difficulty Level.
+SETUP_GAME_DIFFICULTY			| Game Difficulty Selection: %1
+SETUP_GAME_DIFFICULTY_LABEL		| Difficulty
+SETUP_DIFFICULTY_EASIEST		| Basic
+SETUP_DIFFICULTY_EASIER			| Moderate
+SETUP_DIFFICULTY_EASY			| Elevated
+SETUP_DIFFICULTY_NORMAL			| High
+SETUP_DIFFICULTY_HARD			| Severe
+SETUP_DIFFICULTY_HARDER			| Extreme
+SETUP_DIFFICULTY_HARDEST		| Deadly
+SETUP_DIFFICULTY_CUSTOM			| Custom
+SETUP_DIFFICULTY_EASIEST_HELP	| Basic (55%)
+SETUP_DIFFICULTY_EASIER_HELP	| Moderate (75%)
+SETUP_DIFFICULTY_EASY_HELP		| Elevated (90%)
+SETUP_DIFFICULTY_NORMAL_HELP	| High (100%)
+SETUP_DIFFICULTY_HARD_HELP		| Severe (110%)
+SETUP_DIFFICULTY_HARDER_HELP	| Extreme (125%)
+SETUP_DIFFICULTY_HARDEST_HELP	| Deadly (145%)
+SETUP_DIFFICULTY_CUSTOM_HELP	| This value is set by the option <b>Custom Difficulty</b> which can be found at the top Left of "→SETUP_BUTTON_MERGED_DYNAMIC_SETTINGS←" panel
 
 SETUP_RESEARCH_RATE_NORMAL_HELP   | Research costs factors = 1.
 SETUP_RESEARCH_RATE_NORMAL        | Normal

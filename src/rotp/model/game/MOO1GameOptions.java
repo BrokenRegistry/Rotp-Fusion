@@ -1007,7 +1007,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         for (int i=0;i<opponentRaces.length;i++)
         	opponentRaces[i] = null;
 
-        selectedGameDifficulty = DIFFICULTY_NORMAL;
+        selectedGameDifficulty = DIFFICULTY_EASIER;
         selectedOpponentAIOption = defaultAI.aliensKey;
         for (int i=0;i<specificOpponentAIOption.length;i++)
 		    specificOpponentAIOption[i] = defaultAI.aliensKey;

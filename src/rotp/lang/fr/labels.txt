@@ -1687,31 +1687,31 @@ SETUP_AUTOPLAY_OFF                | Désactivé
 SETUP_AUTOPLAY_AI_BASE            | IA : Base
 SETUP_AUTOPLAY_AI_MODNAR          | IA : Modnar
 SETUP_AUTOPLAY_AI_XILMI           | IA : Xilmi
-SETUP_GAME_DIFFICULTY_HELP        | La difficulté de réglage appliquera une prime ou une pénalité à la production des joueurs d’IA.<br> Avec Normale ou plus, les Monstres de l’Espace seront introduits parmi les événements aléatoires vers le milieu de la partie. Mais pour les niveaux de difficulté Faciles, Très faciles et Trop Faciles, les Monstres de l’Espace seront retardés afin de donner aux joueurs plus de temps pour se développer.
-SETUP_GAME_DIFFICULTY_DESC        | Sélectionnez le niveau de difficulté du jeu.
-SETUP_GAME_DIFFICULTY             | Difficultés du jeu : %1
-SETUP_GAME_DIFFICULTY_LABEL       | Difficulté
-SETUP_DIFFICULTY_EASIEST          | Trop facile
-SETUP_DIFFICULTY_EASIER           | Très facile
-SETUP_DIFFICULTY_EASY             | Facile
-SETUP_DIFFICULTY_NORMAL           | Normale
-SETUP_DIFFICULTY_HARD             | Difficile
-SETUP_DIFFICULTY_HARDER           | Très difficile
-SETUP_DIFFICULTY_HARDEST          | Trop difficile
-SETUP_DIFFICULTY_CUSTOM           | Personnalisé
-SETUP_DIFFICULTY_EASIEST_HELP     | Trop facile (55%)
-SETUP_DIFFICULTY_EASIER_HELP      | Très facile (75 %)
-SETUP_DIFFICULTY_EASY_HELP        | Facile (90 %)
-SETUP_DIFFICULTY_NORMAL_HELP      | Normal (100%)
-SETUP_DIFFICULTY_HARD_HELP        | Difficile (110 %)
-SETUP_DIFFICULTY_HARDER_HELP      | Très difficile (125%)
-SETUP_DIFFICULTY_HARDEST_HELP     | Trop difficile (145 %)
-SETUP_DIFFICULTY_CUSTOM_HELP      | Cette valeur est définie par l’option <b>Difficulté personnalisée</b> qui se trouve en haut à gauche du panneau «Options»
+SETUP_GAME_DIFFICULTY_HELP		| La difficulté de réglage appliquera une prime ou une pénalité à la production des joueurs d’IA.<br> Avec  « Haute » ou plus, les Monstres de l’Espace seront introduits parmi les événements aléatoires vers le milieu de la partie. Mais pour les niveaux de difficulté « Basique », « Modérée » et  « Élevée », les Monstres de l’Espace seront retardés afin de donner aux joueurs plus de temps pour se développer.
+SETUP_GAME_DIFFICULTY_DESC		| Sélectionnez le niveau de difficulté du jeu.
+SETUP_GAME_DIFFICULTY			| Difficultés du jeu : %1
+SETUP_GAME_DIFFICULTY_LABEL		| Difficulté
+SETUP_DIFFICULTY_EASIEST		| Basique
+SETUP_DIFFICULTY_EASIER			| Modérée 
+SETUP_DIFFICULTY_EASY			| Élevée
+SETUP_DIFFICULTY_NORMAL			| Haute
+SETUP_DIFFICULTY_HARD 			| Difficile
+SETUP_DIFFICULTY_HARDER			| Extrême
+SETUP_DIFFICULTY_HARDEST		| Mortelle
+SETUP_DIFFICULTY_CUSTOM			| Personnalisé
+SETUP_DIFFICULTY_EASIEST_HELP	| Basique (55 %)
+SETUP_DIFFICULTY_EASIER_HELP	| Élevée (75 %)
+SETUP_DIFFICULTY_EASY_HELP		| Facile (90 %)
+SETUP_DIFFICULTY_NORMAL_HELP	| Haute (100 %)
+SETUP_DIFFICULTY_HARD_HELP		| Difficile (110 %)
+SETUP_DIFFICULTY_HARDER_HELP	| Extrême (125 %)
+SETUP_DIFFICULTY_HARDEST_HELP	| Mortel (145 %)
+SETUP_DIFFICULTY_CUSTOM_HELP	| Cette valeur est définie par l’option <b>Difficulté personnalisée</b> qui se trouve en haut à gauche du panneau «Options»
 
 SETUP_RESEARCH_RATE_NORMAL_HELP   | Facteurs de coût de la recherche = 1.
 SETUP_RESEARCH_RATE_NORMAL        | Normale
 // modnar: add fast research option
-SETUP_RESEARCH_RATE_FAST_HELP     | Facteurs des coûts de la recherche : <br>75 % au niveau 2;&ensp 65 % au niveau 6;&ensp 60 % au niveau 8;<br>55 % au niveau 20;&ensp 52 % au niveau 50;&ensp 51 % au niveau 100.
+SETUP_RESEARCH_RATE_FAST_HELP     | Facteurs des coûts de la recherche : <br>75 % au niveau 2;&ensp 65 % au niveau 6;&ensp 60 % au niveau 8;<br>55 % au niveau 20;&ensp 52 % au niveau 50;&ensp 51 % au niveau 100.
 SETUP_RESEARCH_RATE_FAST          | Rapide
 SETUP_RESEARCH_RATE_SLOW_HELP     | Facteurs des coûts de la recherche :<br>1,15 au niveau 2;&ensp 2 au niveau 12;&ensp 2,5 au niveau 20;<br>3 au niveau 28;&ensp 4 au niveau 50;&ensp 6 au niveau 100.
 SETUP_RESEARCH_RATE_SLOW          | Lente

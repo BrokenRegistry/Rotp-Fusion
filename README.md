@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-03-10 (BR)
+- The names of the difficulty levels have been changed to be more realistic and less judgmental. The default value for new players is set to 75% (moderate).
+
 26-03-09 (BR)
 - Fixed Invasion loss to rebel message (Typo in the Key)
 - Updated the JRE in the windows.zip file to 25.0.2-10
