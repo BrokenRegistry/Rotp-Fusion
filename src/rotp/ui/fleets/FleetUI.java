@@ -66,6 +66,7 @@ import rotp.ui.main.SystemPanel;
 import rotp.ui.map.IMapHandler;
 import rotp.ui.sprites.FlightPathSprite;
 import rotp.ui.sprites.MapControlSprite;
+import rotp.ui.sprites.SystemTransportSprite;
 import rotp.util.Base;
 
 public final class FleetUI extends BasePanel implements IMapHandler, ActionListener, MouseWheelListener {
@@ -848,7 +849,25 @@ public final class FleetUI extends BasePanel implements IMapHandler, ActionListe
             if (map.showImportantFlightPaths())
                 return fp.isPlayer() || fp.aggressiveToPlayer();
             return false;
-        }      
+        }
+		if (s instanceof SystemTransportSprite) {
+			if (map.showAllFlightPaths())
+				return true;
+			SystemTransportSprite ts = (SystemTransportSprite) s;
+			StarSystem from = ts.homeSystem();
+			if (targetSystem != null && (targetSystem == ts.clickedDest() || targetSystem == from || targetSystem == ts.hoveringDest()))
+				return true;
+			if (hoverSystem != null && (hoverSystem == ts.hoveringDest() || hoverSystem == from || hoverSystem == ts.clickedDest()))
+				return true;
+			if (filteredSystems.contains(from)) {
+				if (targetSystem == null && hoverSystem == null)
+					return true;
+				if (targetSystem != null)
+					return targetSystem == ts.clickedDest();
+				return hoverSystem == ts.hoveringDest();
+			}
+			return false;
+		}
         return true;
     }
     @Override

@@ -283,6 +283,8 @@
 
 ### User Interfaces:
 
+- Mass transport Panel: Transport paths are now hidden when "Hide all flight path" is selected.
+  - On thousands stars galaxies, they were masking almost everything.
 - New option: When formatting decimal numbers, use either the local Java setting or the formatting associated with the language selected in the game.
   - Main Panel --> Settings --> User Interface --> Setup UI Preferences --> Change Language Format (Default = No)
 - Mass transport panel: when the panel popup, stop the back ground animations when the refresh time is greater than 100ms.
@@ -363,7 +365,7 @@
 
 ### Fixes:
 
-- Fixed Invasion loss to rebel message (Typo in the Key)
+- Fixed player's invasion transport displayed on the map, but not on the transport panel. This when "Only display warships" was selected.
 - Fixed Star System marked as targeted by Monster to early.
 - Fixed being unable to redirect fleets to their originating star.
 - Fixed search tools not working on the Rules panel.
