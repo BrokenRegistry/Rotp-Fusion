@@ -377,7 +377,12 @@ public class Transport extends FleetBase {
 
     @Override
     public boolean isSelectableAt(GalaxyMapPanel map, int mapX, int mapY) {
-        return map.showFriendlyTransports() && selectBox().contains(mapX, mapY);
+		if (selectBox().contains(mapX, mapY)) {
+			if (map.showFriendlyTransports())
+				return true;
+			return player() != targetEmp;
+		}
+		return false;
     }
 
     private void drawSelection(Graphics2D g, GalaxyMapPanel map, Transport fl, int x, int y, int w, int h, int cnr) {

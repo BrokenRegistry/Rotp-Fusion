@@ -1394,7 +1394,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         lastMouseX = x;
         lastMouseY = y;
         lastMouseTime = System.currentTimeMillis();
-        
+
         if (maxMouseVelocity > 0) {
             long timeS = (lastMouseTime - prevTime);
             if (timeS == 0)
@@ -1405,16 +1405,16 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
             if (speed >= maxMouseVelocity)
                 return;
         }
-        
+
         Sprite prevHover = hoverSprite;
-        
+
         // skip the check if we are currently in the midst of a check
         if (searchingSprite)
-            return;      
+            return;
         searchingSprite = true;
         try { hoverSprite = spriteAt(x,y, ctrlDown); }
         finally { searchingSprite = false; }
-        
+
         // still hovering over same sprite... do nothing
         boolean altDown = isAltDown();
         boolean altChange = altDown!=lastHoverAltDown;
@@ -1436,7 +1436,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
                 if (hoverPriority > prevPriority) {
                     hoverSprite = prevHover;
                     return;
-                }            	
+                }
             } else {
                 int hoverPriority = (hoverSprite == null) ? 0 : hoverSprite.displayPriority();
                 if (hoverPriority < prevPriority) {
@@ -1445,7 +1445,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
                 }
             }
         }
-            
+
         // sprite has changed, so pass it to the parent UI for proper handling
         parent.hoveringOverSprite(hoverSprite, true);
     }

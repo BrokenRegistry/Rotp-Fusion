@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-03-12 (BR)
+- Fixed player's invasion transport displayed on the map, but not on the transport panel. This when "Only display warships" was selected.
+
 26-03-10 (BR)
 - The names of the difficulty levels have been changed to be more realistic and less judgmental. The default value for new players is set to 75% (moderate).
 

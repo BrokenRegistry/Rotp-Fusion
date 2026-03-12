@@ -250,6 +250,7 @@
 
 ### Miscellaneous:
 
+- The names of the difficulty levels have been changed to be more realistic and less judgmental. The default value for new players is set to 75% (moderate).
 - Updated the JRE in the windows.zip file to 25.0.2-10
 - Removed unused files to reduce the .Jar and .Zip files.
 - Restored possibility to change AI in Game. (was missing in the new interface)
