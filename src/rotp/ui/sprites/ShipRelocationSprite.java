@@ -95,7 +95,7 @@ public class ShipRelocationSprite extends MapSprite {
     }
     @Override
     public void draw(GalaxyMapPanel map, Graphics2D g2) {
-        if (map.scaleX() >  GalaxyMapPanel.MAX_RALLY_SCALE) 
+        if (map.scaleX() >  GalaxyMapPanel.maxRallyScale) 
             return;
 
         StarSystem displayDest = starSystem();

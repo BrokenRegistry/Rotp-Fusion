@@ -66,7 +66,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	List<EmpireSystem> empSystems = new ArrayList<>();
 	private Point.Float orionXY;
 	IGameOptions opts;
-	
+
 	// BR: added for symmetric galaxy
 	private static float cx; // Width galaxy center
 	private static float cy; // Height galaxy center
@@ -79,14 +79,14 @@ public abstract class GalaxyShape implements Base, Serializable {
 	protected Rand randY = new Rand(randRnd.nextLong()); // for Y and Angle
 	private long tm0; // for timing computation
 	// \BR
-	
+
 	private float dynamicGrowth	= 1f;
 	private int currentEmpire	= 0;
 	private int loopReserve		= 0;
 	private int homeStarNum		= 3;
 	private int loopValid		= 0;
 	private boolean isValid		= false;
-	
+
 	protected int finalNumberStarSystems;
 	protected String finalOption1, finalOption2, finalOption3, finalOption4;
 	protected int option1, option2, option3, option4;
@@ -143,7 +143,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	}
 	protected void initFinalOption3()	{ finalOption3 = getOption3(); }
 	protected void initFinalOption4()	{ finalOption4 = getOption4(); }
-	
+
 	public int width()					{ return fullWidth; }
 	public int height()					{ return fullHeight; }
 	protected boolean fullyInit()		{ return fullyInit; }
@@ -376,7 +376,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 				empSystems.add(sys);
 				homeStars++; // the nearby system will be set later
 		   	}
-			
+
 			// ===== Then the nearby systems
 			boolean valid = true;
 			EmpireSystem player = empSystems.get(0);
@@ -402,7 +402,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 			   		homeStars++;
 			   	}
 			}
-				
+
 			float radius2 = opts.secondRingRadius();
 			float buffer2 = min(buffer1, radius2/sqrt(max(1.4f, num1)));
 			float minRel2 = buffer2/radius2;

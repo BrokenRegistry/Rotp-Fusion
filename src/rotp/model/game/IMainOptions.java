@@ -1,9 +1,5 @@
 package rotp.model.game;
 
-import static rotp.model.galaxy.StarSystem.getMinFont;
-import static rotp.model.galaxy.StarSystem.setFontPct;
-import static rotp.model.galaxy.StarSystem.setMinFont;
-import static rotp.model.galaxy.StarSystem.setMinFont2;
 import static rotp.model.game.DefaultValues.DEF_VAL;
 import static rotp.ui.UserPreferences.backupTurns;
 import static rotp.ui.UserPreferences.disableAdvisor;
@@ -21,14 +17,6 @@ import static rotp.ui.UserPreferences.sensitivityToSettingName;
 import static rotp.ui.UserPreferences.soundVolume;
 import static rotp.ui.UserPreferences.texturesMode;
 import static rotp.ui.UserPreferences.texturesToSettingName;
-import static rotp.ui.main.GalaxyMapPanel.maxFlagScale;
-import static rotp.ui.main.GalaxyMapPanel.maxFleetHugeScale;
-import static rotp.ui.main.GalaxyMapPanel.maxFleetLargeScale;
-import static rotp.ui.main.GalaxyMapPanel.maxFleetSmallScale;
-import static rotp.ui.main.GalaxyMapPanel.maxFleetTransportScale;
-import static rotp.ui.main.GalaxyMapPanel.maxFleetUnarmedScale;
-import static rotp.ui.main.GalaxyMapPanel.maxRallyScale;
-import static rotp.ui.main.GalaxyMapPanel.maxStargateScale;
 import static rotp.ui.util.IParam.langLabel;
 
 import java.awt.event.MouseEvent;
@@ -45,7 +33,6 @@ import rotp.ui.game.MainOptionsUI;
 import rotp.ui.util.ParamBoolInt;
 import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamDirectory;
-import rotp.ui.util.ParamFloat;
 import rotp.ui.util.ParamInteger;
 import rotp.ui.util.ParamList;
 import rotp.ui.util.ParamOptions;
@@ -307,8 +294,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 	}
 
 	ParamBoolean showGuide = new ParamBoolean(MOD_UI, "SHOW_GUIDE", true).isCfgFile(true);
-	default boolean showGuide()			{ return showGuide.get(); }
-	
+
 	// ==================== Mod Options ====================
 	//
 	ParamOptions menuStartup	= new ParamOptions(MOD_UI, "MENU_STARTUP", ParamOptions.LAST).isCfgFile(true);
@@ -364,9 +350,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			default:				return "";
 		}
 	}
-	default boolean originalGOTitles()	{ return gameOverTitles.get().equalsIgnoreCase("Original"); }
-	default boolean extendedGOTitles()	{ return gameOverTitles.get().equalsIgnoreCase("Extended"); }
-	default boolean rbGOTitles()		{ return gameOverTitles.get().equalsIgnoreCase("RealmsBeyond"); }
 
 	ParamBoolean showAlternateAnimation	= new ParamBoolean(MOD_UI, "SHOW_ALT_ANIMATION", true).isCfgFile(true);
 	ParamBoolean originalSpeciesOnly	= new ParamBoolean(MOD_UI, "ORIGINAL_SPECIES_ONLY", true).isCfgFile(true);
@@ -381,92 +364,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 
 	ParamBoolean  noFogOnIcons	= new ParamBoolean( BASE_UI, "NO_FOG_ON_ICONS", false).isCfgFile(true);
 	default boolean noFogOnIcons()	{ return noFogOnIcons.get(); }
-
-	ParamFloat   showFlagFactor	= new ShowFlagFactor();
-	final class ShowFlagFactor extends ParamFloat {
-		ShowFlagFactor() {
-			super(MOD_UI, "SHOW_FLAG_FACTOR", 1.0f);
-			setLimits(0.3f, 3f);
-			setIncrements(0.01f, 0.05f, 0.2f);
-			cfgFormat("%");
-			guiFormat("%");
-			isCfgFile(true);
-		}
-		@Override public void setOption(Float val) { maxFlagScale((int) (80 * val)); }
-	}
-
-	ParamFloat   showPathFactor	= new ShowPathFactor();
-	final class ShowPathFactor extends ParamFloat {
-		ShowPathFactor() {
-			super(MOD_UI, "SHOW_PATH_FACTOR", 1.0f);
-			setLimits(0.3f, 3f);
-			setIncrements(0.01f, 0.05f, 0.2f);
-			cfgFormat("%");
-			guiFormat("%");
-			isCfgFile(true);
-		}
-		@Override public void setOption(Float val) { maxRallyScale((int) (100 * val)); }
-	}
-
-	ParamInteger showNameMinFont	= new ShowNameMinFont();
-	final class ShowNameMinFont extends ParamInteger {
-		ShowNameMinFont() {
-			super(MOD_UI, "SHOW_NAME_MIN_FONT", 8);
-			setLimits(2, 24);
-			setIncrements(1, 2, 5);
-			isCfgFile(true);
-		}
-		@Override public void setOption(Integer val) {
-			setMinFont(val);
-			setMinFont2(Math.round(val/showInfoFontRatio.get()));
-		}
-	}
-
-	ParamFloat showInfoFontRatio	= new ShowInfoFontRatio();
-	final class ShowInfoFontRatio extends ParamFloat {
-		ShowInfoFontRatio() {
-			super(MOD_UI, "SHOW_INFO_FONT_RATIO", 0.7f);
-			setLimits(0.2f, 3f);
-			setIncrements(0.01f, 0.05f, 0.2f);
-			cfgFormat("%");
-			guiFormat("%");
-			isCfgFile(true);
-		}
-		@Override public void setOption(Float val) { setMinFont2(Math.round(getMinFont()/val)); }
-	}
-
-	ParamFloat mapFontFactor	= new MapFontFactor();
-	final class MapFontFactor extends ParamFloat {
-		MapFontFactor() {
-			super(MOD_UI, "MAP_FONT_FACTOR", 1.0f);
-			setLimits(0.3f, 3f);
-			setIncrements(0.01f, 0.05f, 0.2f);
-			cfgFormat("%");
-			guiFormat("%");
-			isCfgFile(true);
-		}
-		@Override public void setOption(Float val) { setFontPct(Math.round(val * 100)); }
-	}
-
-	ParamFloat showFleetFactor	= new ShowFleetFactor();
-	final class ShowFleetFactor extends ParamFloat {
-		ShowFleetFactor() {
-			super(MOD_UI, "SHOW_FLEET_FACTOR", 1.0f);
-			setLimits(0.3f, 3f);
-			setIncrements(0.01f, 0.05f, 0.2f);
-			cfgFormat("%");
-			guiFormat("%");
-			isCfgFile(true);
-		}
-		@Override public void setOption(Float val) {
-			maxStargateScale		((int) (40 * val));
-			maxFleetUnarmedScale	((int) (40 * val));
-			maxFleetTransportScale	((int) (60 * val));
-			maxFleetSmallScale		((int) (60 * val));
-			maxFleetLargeScale		((int) (80 * val));
-			maxFleetHugeScale		((int) (100 * val));	
-		}
-	}
 
 	ParamBoolean showPendingOrders	= new ParamBoolean(MOD_UI, "SHOW_PENDING_ORDERS", true)
 			.isCfgFile(true);
@@ -565,11 +462,8 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 	}
 	default int selectedRealNebulaSize()	{ return realNebulaSize.get(); }
 	default boolean selectedRealNebula()	{ return realNebulaSize.get() != 0; }
-	default ParamInteger getRealNebulaSize()	{ return realNebulaSize; }
 
 	ParamBoolean realNebulaShape	= new ParamBoolean(MOD_UI, "REAL_NEBULAE_SHAPE", true).isCfgFile(false);
-	default boolean realNebulaShape()	{ return realNebulaShape.get(); }
-	default ParamBoolean getRealNebulaShape()	{ return realNebulaShape; }
 
 	ParamInteger realNebulaeOpacity	= new ParamInteger(MOD_UI, "REAL_NEBULAE_OPACITY", 60)
 			.setLimits(10, 100)
@@ -594,7 +488,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		}
 	}
 
-	default boolean selectedShowAllAI()			{ return showAllAI.get(); }
 	String NAME_UI		= "NAME_";
 	// Customized nominal names
 	// Former English Values
@@ -830,7 +723,6 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			.put(JUSTIFIED,		MOD_UI + PANEL_ALIGNMENT + "_" + JUSTIFIED);
 	default boolean optionPanelIsCentered()		{ return optionPanelAlignment.get().equals(CENTERED); }
 	default boolean optionPanelIsLeftAlign()	{ return optionPanelAlignment.get().equals(LEFT_ALIGN); }
-	default boolean optionPanelIsRightAlign()	{ return optionPanelAlignment.get().equals(RIGHT_ALIGN); }
 	default boolean optionPanelIsJustified()	{ return optionPanelAlignment.get().equals(JUSTIFIED); }
 
 	ParamBoolean keepShipDesignName	= new ParamBoolean(MOD_UI, "KEEP_SHIP_NAME", false).isCfgFile(true);
@@ -840,5 +732,4 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 	default boolean showTechProgress()		{ return showTechProgress.get(); }
 
 	ParamBoolean showTechTips		= new ParamBoolean(MOD_UI, "SHOW_TECH_TIPS", true).isCfgFile(true);
-	default boolean showTechTips()			{ return showTechTips.get(); }
 }

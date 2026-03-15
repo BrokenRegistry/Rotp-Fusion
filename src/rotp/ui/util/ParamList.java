@@ -105,8 +105,12 @@ public class ParamList extends AbstractParam<String> {
 		super.setDefaultValue(key, value);
 		return this;
 	}
-	@Override public ParamList setUpdateParameters(IUpdated method, String id)	{
+	@Override public ParamList setUpdateParameters(IUpdated<String> method, String id)	{
 		super.setUpdateParameters(method, id);
+		return this;
+	}
+	@Override public ParamList setNewValueMethod(INewValue<String> method)	{
+		super.setNewValueMethod(method);
 		return this;
 	}
 

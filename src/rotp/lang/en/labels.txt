@@ -2599,6 +2599,8 @@ HEADERS_DEBUG_AUTO_RUN               | ~~~ AUTO RUN ~~~
 HEADERS_DEBUG_RELEVANT_DESC          | May be you may need to adjust those settings too.
 HEADERS_DEBUG_RELEVANT               | ~~~ RELEVANT ~~~
 
+HEADERS_TRANSPORT_VISIBILITY_DESC	| To specify which transports should be displayed, and with what level of transparency.
+HEADERS_TRANSPORT_VISIBILITY		| ~~~ TRANSPORTS DISPLAY ~~~
 HEADERS_ZOOM_FONT_DESC               | To set galaxy map font sizes.
 HEADERS_ZOOM_FONT                    | ~~~ ZOOM FONT FACTORS ~~~
 HEADERS_ZOOM_FLEET_DESC              | To set fleet path viewing factors.
@@ -3233,6 +3235,27 @@ SETTINGS_MOD_ORIGINAL_SPECIES_ONLY_DESC  | The character setting panel will only
 SETTINGS_MOD_ORIGINAL_SPECIES_ONLY       | 10 Species only: %1
 SETTINGS_MOD_SHOW_ALT_ANIMATION_DESC     | Select between vanilla animations (No) or Zestyclose Artwork (Yes).<br>(Younger Human diplomat)
 SETTINGS_MOD_SHOW_ALT_ANIMATION          | Alt Diplomat: %1
+
+SETTINGS_MOD_MIN_TRANSPORT_DISP_DESC	| Population transport of a size below this threshold will not be displayed.
+SETTINGS_MOD_MIN_TRANSPORT_DISP			| Transport display threshold: %1
+SETTINGS_MOD_MIN_INVASION_DISP_DESC		| Invasion Troops of a size below this threshold will not be displayed.
+SETTINGS_MOD_MIN_INVASION_DISP			| Troops display threshold: %1
+
+SETTINGS_MOD_RALLY_OPACITY_DESC			| Opacity of Rally flight path.
+SETTINGS_MOD_RALLY_OPACITY				| Rally opacity: %1
+SETTINGS_MOD_SYS_TRANSPORT_OPACITY_DESC	| Opacity of the flight paths of population flows being currently developed (between star systems).
+SETTINGS_MOD_SYS_TRANSPORT_OPACITY		| Outgoing settlers Opacity: %1
+SETTINGS_MOD_SYS_TROOP_OPACITY_DESC		| Opacity of the flight paths of invasion troops being currently developed (between star systems).
+SETTINGS_MOD_SYS_TROOP_OPACITY			| Outgoing Troops Opacity: %1
+SETTINGS_MOD_PLAYER_TRANSP_OPACITY_DESC	| Opacity of the flight paths of population on the way.
+SETTINGS_MOD_PLAYER_TRANSP_OPACITY		| Ongoing settlers Opacity: %1
+SETTINGS_MOD_PLAYER_TROOP_OPACITY_DESC	| Opacity of the flight paths of your invasion troops on the way.
+SETTINGS_MOD_PLAYER_TROOP_OPACITY		| Ongoing Troops Opacity: %1
+SETTINGS_MOD_INVADER_TROOP_OPACITY_DESC	| Opacity of the flight paths of alien invasion troops on the way to one of your colony.
+SETTINGS_MOD_INVADER_TROOP_OPACITY		| Incoming Invader Opacity: %1
+SETTINGS_MOD_ALIEN_TRANSP_OPACITY_DESC	| Opacity of the flight paths of alien transport on the way (not targeting your colonies).
+SETTINGS_MOD_ALIEN_TRANSP_OPACITY		| Ongoing Alien Transport: %1
+
 SETTINGS_MOD_SHOW_FLEET_FACTOR_DESC      | To adjust the galaxy map fleets disappearance while zooming. Bigger factor means stay longer to the screen.
 SETTINGS_MOD_SHOW_FLEET_FACTOR           | Show Fleet Factor: %1%
 SETTINGS_MOD_SHOW_FLAG_FACTOR_DESC       | To adjust the galaxy map flags disappearance while zooming. Bigger factor means stay longer to the screen.
@@ -4441,9 +4464,9 @@ SETTINGS_MOD_SETTING_MENU_PREF_TITLE     | Setup UI Preferences Configuration.
 SETTINGS_MOD_SETTING_MENU_PREF_UI        | Setup UI Preferences
 SETTINGS_MOD_SETTING_MENU_PREF_UI_DESC   | Opens a new control panel to configure Setup UI Preferences.
 
-SETTINGS_MOD_ZOOM_OPTIONS_TITLE          | Zoom Options Configuration.
-SETTINGS_MOD_ZOOM_OPTIONS_UI             | Zoom Options
-SETTINGS_MOD_ZOOM_OPTIONS_UI_DESC        | Opens a new control panel to configure Zoom Options.
+SETTINGS_MOD_ZOOM_OPTIONS_TITLE			| Galaxy Map Visual Options.
+SETTINGS_MOD_ZOOM_OPTIONS_UI			| Map Visual Options
+SETTINGS_MOD_ZOOM_OPTIONS_UI_DESC		| Opens a new control panel to configure the Galaxy Map visual Options.
 
 SETTINGS_MOD_SETUP_PARAMETERS_TITLE      | Galaxy Setup Configuration.
 SETTINGS_MOD_SETUP_PARAMETERS_UI         | Galaxy Setup

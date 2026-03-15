@@ -15,6 +15,8 @@
  */
 package rotp.ui.sprites;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -35,12 +37,24 @@ import rotp.model.galaxy.Transport;
 import rotp.model.game.GameSession;
 import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
+import rotp.ui.map.IMapHandler;
+import rotp.ui.util.ParamInteger;
+import rotp.util.Base;
 
-public class FlightPathSprite extends MapSprite {
+public final class FlightPathSprite extends MapSprite {
 	private static Stroke[][] lines;
 	private static Stroke[][] rallyStroke;
-	private static final Color rallyColor = new Color(96,0,128);
-	private static int animationSpeed = 5;
+	private static Color rallyColor 			= new Color(96, 0, 128);
+	private static Color systemTransportColor	= Color.GREEN;
+	private static Color systemTroopColor		= Color.YELLOW;
+	private static Color playerTransportColor	= Color.GREEN;
+	private static Color playerTroopColor		= Color.YELLOW;
+	private static Color invaderTroopColor		= Color.RED;
+	private static Color alienTransportColor	= Color.YELLOW;
+	private static int minInvasionDisp	= 1;
+	private static int minTransportDisp	= 1;
+	private static int animationSpeed	= 5;
+
 	private Ship ship;
 	private StarSystem from;
 	private StarSystem to;
@@ -116,7 +130,7 @@ public class FlightPathSprite extends MapSprite {
             else if ((workingPaths().contains(this))
                 && ship.passesThroughNebula(sys))
                 c0 = Color.magenta;
-            else if ((to.empId() != ship.empId()) && (ship() instanceof Transport))
+            else if ((sys.empId() != ship.empId()) && (ship() instanceof Transport))
                 c0 = Color.yellow;
             else
                 c0 = Color.green;
@@ -213,7 +227,7 @@ public class FlightPathSprite extends MapSprite {
         int y2 = dest.centerMapY(map);
 
         boolean isHovering = hovering || map.parent().isClicked(this);
-        draw(g2, map.animationCount(), map.scaleX(), isHovering, x1, y1, x2, y2, lineColor(map, dest));
+		draw(g2, map.animationCount(), map.scaleX(), isHovering, x1, y1, x2, y2, systemTransportLineColor(map, isHovering, dest));
     };
     private void drawShipPath(GalaxyMapPanel map, Graphics2D g2, StarSystem dest) {
         Sprite spr = (Sprite) ship;
@@ -222,11 +236,16 @@ public class FlightPathSprite extends MapSprite {
         int x2 = dest.centerMapX(map);
         int y2 = dest.centerMapY(map);
         boolean isHovering = hovering || map.parent().isClicked(this) ;
-
-        draw(g2, map.animationCount(), map.scaleX(), isHovering, x1, y1, x2, y2, lineColor(map, dest));
+		if (ship instanceof Transport)
+			draw(g2, map.animationCount(), map.scaleX(), isHovering, x1, y1, x2, y2, transportLineColor(map, isHovering, dest));
+		else
+			draw(g2, map.animationCount(), map.scaleX(), isHovering, x1, y1, x2, y2, lineColor(map, dest));
     };
     void draw(Graphics2D g2, int animationCount, float scale, boolean hovering, int x1, int y1, int x2, int y2, Color c0) {
-        if (lines == null)
+		if (c0 == null)
+			return;
+
+    	if (lines == null)
             initStrokes();
 
         // unless we are a working path, we should never display if our
@@ -312,4 +331,113 @@ public class FlightPathSprite extends MapSprite {
             }
         }
     }
+	private Color transportLineColor(GalaxyMapPanel map, boolean hovering, StarSystem dest)	{
+		Transport tr = (Transport) ship;
+		IMapHandler ui = map.parent();
+		if (hovering || ui.isHovering(dest) || ui.isClicked(dest)
+				|| ui.isHovering(tr) || ui.isClicked(tr)
+				|| ui.isHovering(tr.from()) || ui.isClicked(tr.from())
+				|| workingPaths().contains(this))
+			if (ship.passesThroughNebula(dest))
+				return Color.MAGENTA;
+			else if (dest.empId() != tr.empId())
+				return Color.YELLOW;
+			else
+				return Color.GREEN;
+		else if (dest.empId() != tr.empId())
+			if (tr.size() >= minInvasionDisp)
+				return systemTroopColor;
+			else
+				return null;
+		else if (tr.size() >= minTransportDisp)
+			return systemTransportColor;
+		else
+			return null;
+	}
+	private Color systemTransportLineColor(GalaxyMapPanel map, boolean hovering, StarSystem dest)	{
+		if (isColonyRelocation)
+			return rallyColor;
+
+		IMapHandler ui = map.parent();
+		if (hovering || ui.isHovering(from) || ui.isClicked(from) || ui.isHovering(dest) || ui.isClicked(dest) || workingPaths().contains(this))
+			if (ship.passesThroughNebula(dest))
+				return Color.MAGENTA;
+			else if (dest.empId() != from.empId())
+				return Color.YELLOW;
+			else
+				return Color.GREEN;
+		else if (dest.empId() != from.empId())
+			if (from.transportAmt >= minInvasionDisp)
+				return systemTroopColor;
+			else
+				return null;
+		else if (from.transportAmt >= minTransportDisp)
+			return systemTransportColor;
+		else
+			return null;
+	}
+
+	private static void setRallyOpacity(int alpha)			 { rallyColor			= Base.setAlpha(rallyColor, alpha); }
+	private static void setSystemTransportOpacity(int alpha) { systemTransportColor	= Base.setAlpha(systemTransportColor, alpha); }
+	private static void setSystemTroopOpacity(int alpha)	 { systemTroopColor		= Base.setAlpha(systemTroopColor, alpha); }
+	private static void setPlayerTransportOpacity(int alpha) { playerTransportColor	= Base.setAlpha(playerTransportColor, alpha); }
+	private static void setPlayerTroopOpacity(int alpha)	 { playerTroopColor		= Base.setAlpha(playerTroopColor, alpha); }
+	private static void setInvaderTroopOpacity(int alpha)	 { invaderTroopColor	= Base.setAlpha(invaderTroopColor, alpha); }
+	private static void setAlienTransportOpacity(int alpha)	 { alienTransportColor	= Base.setAlpha(alienTransportColor, alpha); }
+	private static void setMinInvasionDisp(int minimum)		 { minInvasionDisp		= minimum; }
+	private static void setMinTransportDisp(int minimum)	 { minTransportDisp		= minimum; }
+
+	public static ParamInteger rallyOpacity	= new ParamInteger(MOD_UI, "RALLY_OPACITY", 255)
+			.setLimits(0, 255)
+			.setIncrements(1, 5, 20)
+			.isCfgFile(true)
+			.setNewValueMethod(FlightPathSprite::setRallyOpacity);
+
+	public static ParamInteger systemTransportOpacity	= new ParamInteger(MOD_UI, "SYS_TRANSPORT_OPACITY", 255)
+			.setLimits(0, 255)
+			.setIncrements(1, 5, 20)
+			.isCfgFile(true)
+			.setNewValueMethod(FlightPathSprite::setSystemTransportOpacity);
+
+	public static ParamInteger systemTroopOpacity	= new ParamInteger(MOD_UI, "SYS_TROOP_OPACITY", 255)
+			.setLimits(0, 255)
+			.setIncrements(1, 5, 20)
+			.isCfgFile(true)
+			.setNewValueMethod(FlightPathSprite::setSystemTroopOpacity);
+
+	public static ParamInteger playerTransportOpacity	= new ParamInteger(MOD_UI, "PLAYER_TRANSP_OPACITY", 255)
+			.setLimits(0, 255)
+			.setIncrements(1, 5, 20)
+			.isCfgFile(true)
+			.setNewValueMethod(FlightPathSprite::setPlayerTransportOpacity);
+
+	public static ParamInteger playerTroopOpacity	= new ParamInteger(MOD_UI, "PLAYER_TROOP_OPACITY", 255)
+			.setLimits(0, 255)
+			.setIncrements(1, 5, 20)
+			.isCfgFile(true)
+			.setNewValueMethod(FlightPathSprite::setPlayerTroopOpacity);
+
+	public static ParamInteger invaderTroopOpacity	= new ParamInteger(MOD_UI, "INVADER_TROOP_OPACITY", 255)
+			.setLimits(0, 255)
+			.setIncrements(1, 5, 20)
+			.isCfgFile(true)
+			.setNewValueMethod(FlightPathSprite::setInvaderTroopOpacity);
+
+	public static ParamInteger alienTransportOpacity	= new ParamInteger(MOD_UI, "ALIEN_TRANSP_OPACITY", 255)
+			.setLimits(0, 255)
+			.setIncrements(1, 5, 20)
+			.isCfgFile(true)
+			.setNewValueMethod(FlightPathSprite::setAlienTransportOpacity);
+
+	public static ParamInteger minimumInvasionDisplay	= new ParamInteger(MOD_UI, "MIN_INVASION_DISP", 1)
+			.setLimits(0, 255)
+			.setIncrements(1, 5, 20)
+			.isCfgFile(true)
+			.setNewValueMethod(FlightPathSprite::setMinInvasionDisp);
+
+	public static ParamInteger minimumTransportDisplay	= new ParamInteger(MOD_UI, "MIN_TRANSPORT_DISP", 1)
+			.setLimits(0, 255)
+			.setIncrements(1, 5, 20)
+			.isCfgFile(true)
+			.setNewValueMethod(FlightPathSprite::setMinTransportDisp);
 }

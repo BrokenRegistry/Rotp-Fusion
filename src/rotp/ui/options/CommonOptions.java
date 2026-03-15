@@ -2,8 +2,10 @@ package rotp.ui.options;
 
 import java.util.Arrays;
 
+import rotp.model.galaxy.StarSystem;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
+import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.util.ParamTitle;
 
 final class CommonOptions extends AbstractOptionsSubUI {
@@ -28,11 +30,11 @@ final class CommonOptions extends AbstractOptionsSubUI {
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("ZOOM_FONT"),
-				mapFontFactor, showNameMinFont, showInfoFontRatio,
+				StarSystem.mapFontFactor, StarSystem.showNameMinFont, StarSystem.showInfoFontRatio,
 
 				HEADER_SPACER_50,
 				new ParamTitle("ZOOM_FLEET"),
-				showFleetFactor, showFlagFactor, showPathFactor,
+				GalaxyMapPanel.showFleetFactor, GalaxyMapPanel.showFlagFactor, GalaxyMapPanel.showPathFactor,
 
 				HEADER_SPACER_50,
 				new ParamTitle("ZOOM_REPLAY"),

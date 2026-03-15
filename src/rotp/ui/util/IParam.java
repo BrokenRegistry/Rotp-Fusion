@@ -32,7 +32,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
-import rotp.Rotp;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.util.LabelManager;
@@ -51,19 +50,12 @@ public interface IParam<T> extends InterfaceOptions{
 	 */
 	default void initDependencies(int level)	{}
 	// remote call
-	interface IUpdated { public void valueUpdated(String id); }
-	default void setUpdatedMethod(IUpdated method)	{}
-	default IUpdated getUpdatedMethod()				{ return null; }
-	default void setUpdatedId(String id)			{}
-	default String getUpdatedId()					{ return null; }
-	default void callUpdatedMethod()				{
-		IUpdated method = getUpdatedMethod();
-		if (method != null && Rotp.initialized())
-			method.valueUpdated(getUpdatedId());
-	}
-	default List<T> getListForUI()					{ return null; }
+	interface IUpdated<T>	{ public void valueUpdated(String id); }	// Mainly for UI: Request redraw
+	interface INewValue<T>	{ public void newValue(T value); }			// To convert to and update local values
+
+	default List<T> getListForUI()				{ return null; }
 	// For ICRSetting compatibility
-	default void selectedValue(int item, T val)		{ selectedValue(val); }
+	default void selectedValue(int item, T val)	{ selectedValue(val); }
 	void selectedValue(T val);
 
 	// user input

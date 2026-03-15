@@ -39,6 +39,8 @@
   - There is already an option to protect valuable planets using minor monsters, in order to delay their colonization somewhat... I suppose I could add a more extreme option with the most powerful monster (I'll have to remove their tendency to destroy the planet first...).
   - Yes, seeing monsters fight each other could be fun, but it won't be easy to implement, as it's the most tricky part of RotP's coding... And the Guardian will have to become more powerful if we want him to be able to defeat all the other monsters...
 - Makes Float formating to match the selected language format.
+- add an option to distinguish between invasion troops and population transport.
+
 
 ### Later:
 

@@ -2,6 +2,12 @@
 
 ## What's New
 
+26-03-15 (BR)
+- New options tool feature to call outside method without creating subclasses.
+  - Implemented as test to existing options, and relocated them where they are used. (StarSystem and GalaxyMapPanel)
+- New option to add a bit of transparency to the flight path.
+- New Option to disable flight path to small transports.
+
 26-03-12 (BR)
 - Fixed player's invasion transport displayed on the map, but not on the transport panel. This when "Only display warships" was selected.
 - Mass transport Panel: Transport paths are now hidden when "Hide all flight path" is selected.

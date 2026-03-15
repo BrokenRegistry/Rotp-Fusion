@@ -64,7 +64,7 @@ public class ParamOptions extends ParamList {
 	@Override public ParamOptions isValueInit(boolean is) { super.isValueInit(is) ; return this; }
 	@Override public ParamOptions isDuplicate(boolean is) { super.isDuplicate(is) ; return this; }
 	@Override public ParamOptions isCfgFile(boolean is)	  { super.isCfgFile(is)   ; return this; }
-	@Override public ParamOptions setUpdateParameters(IUpdated method, String id)	{
+	@Override public ParamOptions setUpdateParameters(IUpdated<String> method, String id)	{
 		super.setUpdateParameters(method, id);
 		return this;
 	}

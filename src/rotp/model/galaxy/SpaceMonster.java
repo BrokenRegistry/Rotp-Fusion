@@ -136,9 +136,9 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 			return;
 
 		int imgSize = 3;
-		if (map.scaleX() > GalaxyMapPanel.MAX_FLEET_LARGE_SCALE) 
+		if (map.scaleX() > GalaxyMapPanel.maxFleetLargeScale) 
 			imgSize--;
-		if (map.scaleX() > GalaxyMapPanel.MAX_FLEET_SMALL_SCALE)
+		if (map.scaleX() > GalaxyMapPanel.maxFleetSmallScale)
 			imgSize--;
 		// are we zoomed out too far to show a fleet of this size?
 		if (imgSize < 1)
@@ -210,7 +210,7 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 	@Override public float	 transitX()				{ return fromX(); }
 	@Override public float	 transitY()				{ return fromY(); }
 	@Override public boolean isDeployed()			{ return false; }
-	@Override public int	 maxMapScale()			{ return GalaxyMapPanel.MAX_FLEET_HUGE_SCALE; }
+	@Override public int	 maxMapScale()			{ return GalaxyMapPanel.maxFleetHugeScale; }
 	@Override public boolean isArmed()				{ return true; }
 	@Override public boolean isArmedForShipCombat()	{ return true; }
 	@Override public boolean isPotentiallyArmed(Empire e)	{ return true; }
@@ -359,9 +359,9 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 			return;
 
 		int imgSize = 3;
-		if (map.scaleX() > GalaxyMapPanel.MAX_FLEET_LARGE_SCALE) 
+		if (map.scaleX() > GalaxyMapPanel.maxFleetLargeScale) 
 			imgSize--;
-		if (map.scaleX() > GalaxyMapPanel.MAX_FLEET_SMALL_SCALE)
+		if (map.scaleX() > GalaxyMapPanel.maxFleetSmallScale)
 			imgSize--;
 		// are we zoomed out too far to show a fleet of this size?
 		if (imgSize < 1)

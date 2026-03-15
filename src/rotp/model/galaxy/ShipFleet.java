@@ -1025,11 +1025,11 @@ public class ShipFleet extends FleetBase {
     public int maxMapScale() {
         float size = hullPoints();
         if (size >= 10000)
-            return GalaxyMapPanel.MAX_FLEET_HUGE_SCALE;
+            return GalaxyMapPanel.maxFleetHugeScale;
         else if (size >= 100)
-            return GalaxyMapPanel.MAX_FLEET_LARGE_SCALE;
+            return GalaxyMapPanel.maxFleetLargeScale;
         else
-            return GalaxyMapPanel.MAX_FLEET_SMALL_SCALE;
+            return GalaxyMapPanel.maxFleetSmallScale;
     }
     @Override
     public boolean decideWhetherDisplayed(GalaxyMapPanel map) {
@@ -1050,7 +1050,7 @@ public class ShipFleet extends FleetBase {
             return false;
 
         // stop drawing unarmed AI fleets at a certain zoom level
-        if (!armed && !empire().isPlayerControlled() && (map.scaleX() > GalaxyMapPanel.MAX_FLEET_UNARMED_SCALE))
+        if (!armed && !empire().isPlayerControlled() && (map.scaleX() > GalaxyMapPanel.maxFleetUnarmedScale))
             return false;
 
         // because fleets can be disbanded asynchronously to the ui thread,
@@ -1074,9 +1074,9 @@ public class ShipFleet extends FleetBase {
         else if (size >= 10000)
             imgSize = 3;
 
-        if (map.scaleX() > GalaxyMapPanel.MAX_FLEET_LARGE_SCALE) 
+        if (map.scaleX() > GalaxyMapPanel.maxFleetLargeScale) 
             imgSize--;
-        if (map.scaleX() > GalaxyMapPanel.MAX_FLEET_SMALL_SCALE)
+        if (map.scaleX() > GalaxyMapPanel.maxFleetSmallScale)
             imgSize--;
 
         // are we zoomed out too far to show a fleet of this size?

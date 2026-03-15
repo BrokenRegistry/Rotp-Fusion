@@ -15,6 +15,8 @@
  */
 package rotp.model.galaxy;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
@@ -54,6 +56,8 @@ import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.sprites.ShipRelocationSprite;
 import rotp.ui.sprites.SystemTransportSprite;
+import rotp.ui.util.ParamFloat;
+import rotp.ui.util.ParamInteger;
 import rotp.util.Base;
 
 public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
@@ -73,10 +77,33 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     public static final Color systemDataBackC = new Color(160,160,160);
     public static final int NULL_ID = -1;
 
-    public static void setMinFont(int val)	{ minFont	 = val; }
-    public static void setFontPct(int val)	{ fontPct	 = val; }
-    public static void setMinFont2(int val)	{ minFont2	 = val; }
-    public static int getMinFont()			{ return minFont; }
+	private static void setMinFont(Integer val)	{
+		minFont	 = val;
+		minFont2 = Math.round(val/showInfoFontRatio.get());
+	}
+	private static void setFontPct(Float val)	{ fontPct	= Math.round(val * 100); }
+	private static void setMinFont2(Float val)	{ minFont2	= Math.round(getMinFont()/val); }
+	private static int getMinFont()				{ return minFont; }
+
+	public static ParamInteger showNameMinFont	= new ParamInteger(MOD_UI, "SHOW_NAME_MIN_FONT", 8)
+			.setLimits(2, 24)
+			.setIncrements(1, 2, 5)
+			.isCfgFile(true)
+			.setNewValueMethod(StarSystem::setMinFont);
+	public static ParamFloat showInfoFontRatio	= new ParamFloat(MOD_UI, "SHOW_INFO_FONT_RATIO", 0.7f)
+			.setLimits(0.2f, 3f)
+			.setIncrements(0.01f, 0.05f, 0.2f)
+			.cfgFormat("%")
+			.guiFormat("%")
+			.isCfgFile(true)
+			.setNewValueMethod(StarSystem::setMinFont2);
+	public static ParamFloat mapFontFactor	= new ParamFloat(MOD_UI, "MAP_FONT_FACTOR", 1.0f)
+			.setLimits(0.3f, 3f)
+			.setIncrements(0.01f, 0.05f, 0.2f)
+			.cfgFormat("%")
+			.guiFormat("%")
+			.isCfgFile(true)
+			.setNewValueMethod(StarSystem::setFontPct);
 
     private String name = "";
     private float x, y;
@@ -102,7 +129,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     
     // public so we can access without lazy inits from accessors
     public transient SystemTransportSprite transportSprite;
-    public transient ShipRelocationSprite rallySprite;
+    private transient ShipRelocationSprite rallySprite;
     public transient int altId; // BR:
     private transient StarType starType;
     private transient Rectangle nameBox;
@@ -186,13 +213,13 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         else
             return galaxy().system(nearbySystems[i]);
     }
-	public List<StarSystem> nearbySystems(float maxDist) {
-		List<StarSystem> nearSystems = new ArrayList<>();
-		for (StarSystem other : galaxy().starSystems())
-			if (other != this && distanceTo(other) < maxDist)
-				nearSystems.add(other);
-		return nearSystems;
-	}
+//	public List<StarSystem> nearbySystems(float maxDist) {
+//		List<StarSystem> nearSystems = new ArrayList<>();
+//		for (StarSystem other : galaxy().starSystems())
+//			if (other != this && distanceTo(other) < maxDist)
+//				nearSystems.add(other);
+//		return nearSystems;
+//	}
 	public List<StarSystem> ringSystems(float minDist, float maxDist) {
 		List<StarSystem> ringSystems = new ArrayList<>();
 		for (StarSystem other : galaxy().starSystems())
@@ -221,7 +248,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         for (int i=0;i<size;i++)
             nearbySystems[i] = nearSystems.get(i).id;
     }
-    public static StarSystem create(String key, Galaxy gal) {
+    static StarSystem create(String key, Galaxy gal) {
         StarSystem s = new StarSystem(key, gal.systemCount);
         return s;
     }
@@ -239,7 +266,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     public float x()                       { return x;  }
     @Override
     public float y()                       { return y;  }
-    public void setXY(float x0, float y0) {
+    void setXY(float x0, float y0) {
         x = x0;
         y = y0;
     }
@@ -248,7 +275,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 
     public boolean unnamed()                    { return name().isEmpty(); }
     public SpaceMonster monster()               { return monster; }
-    public void monster(SpaceMonster sm)        {
+    void monster(SpaceMonster sm)        {
     	monster = sm;
     	if (monster!= null && monster.isOrionGuardian()) {
     		monster.sysId(id);
@@ -258,7 +285,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 
     public String name()                        { return name; }
     public void name(String s)                  { name = s; }
-    public String longName()                    { return concat(name, ":", str(planet().terrainSeed())); }
+    //public String longName()                    { return concat(name, ":", str(planet().terrainSeed())); }
     public String ruinsKey()                    { return planet().ruinsKey(); }
     public String notes()                       { return notes == null ? "" : notes; }
     public void notes(String s)                 { notes = s.length() <= 40 ? s : s.substring(0,40); }
@@ -296,7 +323,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     public boolean piracy()                     { return piracy; }
     public void piracy(boolean b)               { piracy = b; }
 
-    public List<Transport> transports()         { return orbitingTransports; }
+    //public List<Transport> transports()         { return orbitingTransports; }
     public int orbitingTransports(int empId)    {
         for (Transport tr: orbitingTransports) {
             if (tr.empId() == empId)
@@ -336,11 +363,11 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     public void planet(Planet p)                { planet = p; }
     public Colony colony()                      { return planet().colony(); };
     public boolean hasBonusTechs()              { return planet().hasBonusTechs(); }
-    public Color color()                        { return starType().color(); }
-    public float monsterPlanetValue() 			{ return planet.monsterPlanetValue(); }
-    public boolean inNebula()                   { return inNebula; }
-    public void inNebula(boolean b)             { inNebula = b; }
-    public boolean canStargateTravelTo(StarSystem s) {
+	//public Color color()			{ return starType().color(); }
+	float monsterPlanetValue() 		{ return planet.monsterPlanetValue(); }
+	public boolean inNebula()		{ return inNebula; }
+	void inNebula(boolean b)		{ inNebula = b; }
+	boolean canStargateTravelTo(StarSystem s)	{
         return isColonized() && s.isColonized() && (s.empire() == empire()) && colony().hasStargate() && s.colony().hasStargate();
     }
     public float transportTimeTo(StarSystem s) { 
@@ -368,13 +395,13 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         return e == null ? Empire.NULL_ID : e.id;
     }
     public boolean hasColonyForEmpire(Empire c) { return empire() == c; }
-    public boolean hasOrbitingTransports()      { return !orbitingTransports.isEmpty(); }
+	private boolean hasOrbitingTransports()		{ return !orbitingTransports.isEmpty(); }
     public boolean hasStargate(Empire e)        { return isColonized() && colony().hasStargate(e); }
 
-    public boolean hasOrbitingFleetForEmpire(Empire emp) {
-        return galaxy().ships.orbitingFleet(emp.id, id) != null;
-    }
-    public void launchTransports() {
+//    public boolean hasOrbitingFleetForEmpire(Empire emp) {
+//        return galaxy().ships.orbitingFleet(emp.id, id) != null;
+//    }
+	void launchTransports()	{
         if (planet().isColonized()) {
             colony().launchTransports();
         }
@@ -385,23 +412,23 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     public ShipFleet orbitingFleetForEmpire(Empire emp) {
         return emp == null ? null : galaxy().ships.orbitingFleet(emp.id, id);
     }
-    public ShipFleet retreatingFleetForEmpire(Empire emp, StarSystem s) {
-        return galaxy().ships.retreatingFleet(emp.id, id, s.id);
-    }
-    public void resolveAnyShipConflict() {
+//    public ShipFleet retreatingFleetForEmpire(Empire emp, StarSystem s) {
+//        return galaxy().ships.retreatingFleet(emp.id, id, s.id);
+//    }
+	void resolveAnyShipConflict()	{
         if (orbitingShipsInConflict())
             galaxy().shipCombat().battle(this);
         else
             resolvePeacefulShipScans();
     }
-    public void resolvePeacefulShipScans() {
+	private void resolvePeacefulShipScans()	{
         List<ShipFleet> fleets = galaxy().ships.orbitingFleets(id);
-        
+
         if (fleets.size() < 2)
             return;
-        
+
         int sysEmpId = this.empId();
-                
+
         for (ShipFleet fl1: fleets) {
             boolean canScan = (fl1.empId() == sysEmpId) || (fl1.allowsScanning());
             for (ShipFleet fl2: fleets) {
@@ -420,7 +447,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
             return colony().showTransports();
         return false;
     }
-    public void resolvePendingTransports() {
+	void resolvePendingTransports()	{
         if (!hasOrbitingTransports())
             return;
 
@@ -439,7 +466,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         }
         return false;
     }
-    public boolean nonAlliedAlienShipsInOrbit(Empire emp) {
+	boolean nonAlliedAlienShipsInOrbit(Empire emp)	{
         List<ShipFleet> fleets = orbitingFleets();
         for (ShipFleet fleet: fleets) {
         	if (fleet != null) {
@@ -488,16 +515,16 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         }
         return false;
     }
-    public boolean isArmed(Empire emp) {
-        // returns true if empire has an armed presence in this system
-        if (isColonized()
-        && (colony().empire() == emp)
-        && colony().defense().isArmed())
-            return true;
-
-        ShipFleet fl = this.orbitingFleetForEmpire(emp);
-        return (fl != null) && fl.isArmed();
-    }
+//    public boolean isArmed(Empire emp) {
+//        // returns true if empire has an armed presence in this system
+//        if (isColonized()
+//        && (colony().empire() == emp)
+//        && colony().defense().isArmed())
+//            return true;
+//
+//        ShipFleet fl = this.orbitingFleetForEmpire(emp);
+//        return (fl != null) && fl.isArmed();
+//    }
     public List<Empire> empiresInConflict() {
         List<Empire> emps = new ArrayList<>();
         List<ShipFleet> fleets = orbitingFleetsNoMonster();
@@ -521,7 +548,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         orbitingFleets().add(fl);
         return fl;
     }
-    public Transport acceptTransport(Transport tr) {
+	Transport acceptTransport(Transport tr)	{
         // friendly transports always immediately land
         Colony col = colony();
         if ((col != null) && (col.empire() == tr.empire())) {
@@ -588,7 +615,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     public static Comparator<StarSystem> BASES              = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().defense().bases(),sys2.colony().defense().bases());
     public static Comparator<StarSystem> SHIELD             = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().defense().shieldLevelComp(),sys2.colony().defense().shieldLevelComp());
     public static Comparator<StarSystem> INVASION_PRIORITY  = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.empire().generalAI().invasionPriority(sys1),sys2.empire().generalAI().invasionPriority(sys2));
-    public static Comparator<StarSystem> TRANSPORT_PRIORITY = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.empire().fleetCommanderAI().transportPriority(sys1),sys2.empire().fleetCommanderAI().transportPriority(sys2));
+//    public static Comparator<StarSystem> TRANSPORT_PRIORITY = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.empire().fleetCommanderAI().transportPriority(sys1),sys2.empire().fleetCommanderAI().transportPriority(sys2));
     public static Comparator<StarSystem> VFLAG = (StarSystem sys1, StarSystem sys2) -> {
         Empire pl = Empire.thePlayer();
         return Base.compare(pl.sv.flagColorId(sys1.id),pl.sv.flagColorId(sys2.id));
@@ -706,7 +733,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         // draw stargate icon (AFTER selection box)
         boolean colonized = (emp != null) && pl.sv.isColonized(id);
         if (colonized && map.parent().drawStargate(this) && pl.sv.hasStargate(id)) {
-            if (map.scaleX() <= GalaxyMapPanel.MAX_STARGATE_SCALE) {
+            if (map.scaleX() <= GalaxyMapPanel.maxStargateScale) {
                 float mult = max(4, min(60,map.scaleX()));
                 int x1 = x0+(int)(scaled(200)/mult);
                 int y1 = y0-(int)(scaled(500)/mult);
@@ -717,7 +744,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
             }
         }
         
-        if (map.parent().drawFlag(this) && (map.scaleX() <= GalaxyMapPanel.MAX_FLAG_SCALE)) {
+        if (map.parent().drawFlag(this) && (map.scaleX() <= GalaxyMapPanel.maxFlagScale)) {
             Image flag = pl.sv.mapFlagImage(id);
             if (flag != null) {
                 int sz = BasePanel.s30;
@@ -996,17 +1023,17 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         g.drawOval(x-r, y-r, r+r, r+r);
         g.setStroke(prev);
     }
-    public static void drawShield(Graphics2D g, int shieldLevel, int x, int y, int r) {
+	private static void drawShield(Graphics2D g, int shieldLevel, int x, int y, int r)	{
         if (shieldLevel == 0)
             return;
 
         if (r < 6) // modnar: maintain shield display longer
             return;
-        
+
         Stroke prevStroke = g.getStroke();
         Stroke shieldStroke = BasePanel.stroke4; // modnar: thicker shield strokes
         Stroke shieldBorderStroke = BasePanel.stroke7; // modnar: thicker shield strokes
-        
+
         if (r < 10) { // modnar: maintain shield display longer
             shieldStroke = BasePanel.stroke2;
             shieldBorderStroke = BasePanel.stroke3;

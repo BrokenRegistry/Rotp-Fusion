@@ -136,8 +136,12 @@ public class ParamInteger extends AbstractParam<Integer> {
 		super.setDefaultValue(key, value);
 		return this;
 	}
-	@Override public ParamInteger setUpdateParameters(IUpdated method, String id)	{
+	@Override public ParamInteger setUpdateParameters(IUpdated<Integer> method, String id)	{
 		super.setUpdateParameters(method, id);
+		return this;
+	}
+	@Override public ParamInteger setNewValueMethod(INewValue<Integer> method)	{
+		super.setNewValueMethod(method);
 		return this;
 	}
 

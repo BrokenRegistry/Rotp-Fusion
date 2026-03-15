@@ -114,8 +114,12 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	@Override public ParamSubUI isValueInit(boolean is) { super.isValueInit(is) ; return this; }
 	@Override public ParamSubUI isDuplicate(boolean is) { super.isDuplicate(is) ; return this; }
 	@Override public ParamSubUI isCfgFile(boolean is)	{ super.isCfgFile(is)   ; return this; }
-	@Override public ParamSubUI setUpdateParameters(IUpdated method, String id)	{
+	@Override public ParamSubUI setUpdateParameters(IUpdated<SafeListPanel> method, String id)	{
 		super.setUpdateParameters(method, id);
+		return this;
+	}
+	@Override public ParamSubUI setNewValueMethod(INewValue<SafeListPanel> method)	{
+		super.setNewValueMethod(method);
 		return this;
 	}
 	@Override public boolean isDefaultValue()	{ 

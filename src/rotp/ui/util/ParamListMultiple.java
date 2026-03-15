@@ -64,7 +64,7 @@ public class ParamListMultiple extends ParamList {
 		super.reInit(list);
 		checkValidity(true);
 	}
-	@Override public ParamListMultiple setUpdateParameters(IUpdated method, String id)	{
+	@Override public ParamListMultiple setUpdateParameters(IUpdated<String> method, String id)	{
 		super.setUpdateParameters(method, id);
 		return this;
 	}

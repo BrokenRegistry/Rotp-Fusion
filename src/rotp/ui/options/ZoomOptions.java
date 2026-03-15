@@ -2,8 +2,11 @@ package rotp.ui.options;
 
 import java.util.Arrays;
 
+import rotp.model.galaxy.StarSystem;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
+import rotp.ui.main.GalaxyMapPanel;
+import rotp.ui.sprites.FlightPathSprite;
 import rotp.ui.util.ParamTitle;
 
 final class ZoomOptions extends AbstractOptionsSubUI {
@@ -16,15 +19,29 @@ final class ZoomOptions extends AbstractOptionsSubUI {
 		SafeListPanel map = new SafeListPanel(OPTION_ID);
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("ZOOM_FONT"),
-				mapFontFactor,
-				showNameMinFont,
-				showInfoFontRatio
+				StarSystem.mapFontFactor,
+				StarSystem.showNameMinFont,
+				StarSystem.showInfoFontRatio,
+
+				HEADER_SPACER_50,
+				new ParamTitle("ZOOM_FLEET"),
+				GalaxyMapPanel.showFleetFactor,
+				GalaxyMapPanel.showFlagFactor,
+				GalaxyMapPanel.showPathFactor
 				)));
 		map.add(new SafeListParam(Arrays.asList(
-				new ParamTitle("ZOOM_FLEET"),
-				showFleetFactor,
-				showFlagFactor,
-				showPathFactor
+				new ParamTitle("TRANSPORT_VISIBILITY"),
+				FlightPathSprite.minimumInvasionDisplay,
+				FlightPathSprite.minimumTransportDisplay,
+				LINE_SPACER_25,
+				FlightPathSprite.systemTransportOpacity,
+				FlightPathSprite.systemTroopOpacity,
+				FlightPathSprite.playerTransportOpacity,
+				FlightPathSprite.playerTroopOpacity,
+				FlightPathSprite.invaderTroopOpacity,
+				FlightPathSprite.alienTransportOpacity,
+				LINE_SPACER_25,
+				FlightPathSprite.rallyOpacity
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("ZOOM_REPLAY"),
@@ -37,13 +54,13 @@ final class ZoomOptions extends AbstractOptionsSubUI {
 	@Override public SafeListParam majorList()	{
 		SafeListParam majorList = new SafeListParam(uiMajorKey(),
 				Arrays.asList(
-						mapFontFactor,
-						showNameMinFont,
-						showInfoFontRatio,
+						StarSystem.mapFontFactor,
+						StarSystem.showNameMinFont,
+						StarSystem.showInfoFontRatio,
 						LINE_SPACER_25,
-						showFleetFactor,
-						showFlagFactor,
-						showPathFactor,
+						GalaxyMapPanel.showFleetFactor,
+						GalaxyMapPanel.showFlagFactor,
+						GalaxyMapPanel.showPathFactor,
 						LINE_SPACER_25,
 						finalReplayZoomOut,
 						empireReplayZoomOut,
@@ -54,9 +71,9 @@ final class ZoomOptions extends AbstractOptionsSubUI {
 	@Override public SafeListParam minorList()	{
 		SafeListParam minorList = new SafeListParam(uiMinorKey(),
 				Arrays.asList(
-						showFlagFactor,
-						showFleetFactor,
-						mapFontFactor
+						GalaxyMapPanel.showFlagFactor,
+						GalaxyMapPanel.showFleetFactor,
+						StarSystem.mapFontFactor
 						));
 		return minorList;
 	}

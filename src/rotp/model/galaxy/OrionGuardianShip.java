@@ -55,7 +55,7 @@ public class OrionGuardianShip extends GuardianMonsters {
 			addCombatStack(new CombatStackOrionGuardian(this, imageKey, stackLevel(), 0, shieldColor));
     }
 	@Override public SpaceMonster getCopy() { return new OrionGuardianShip(null, null); }
-	@Override public int maxMapScale()		{ return GalaxyMapPanel.MAX_FLEET_HUGE_SCALE; }
+	@Override public int maxMapScale()		{ return GalaxyMapPanel.maxFleetHugeScale; }
 	@Override public void plunder()			{ 
         notifyGalaxy();
         Empire emp = this.lastAttacker();

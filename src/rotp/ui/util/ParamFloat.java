@@ -117,8 +117,12 @@ public class ParamFloat extends AbstractParam<Float> {
 		super.setDefaultValue(key, value);
 		return this;
 	}
-	@Override public ParamFloat setUpdateParameters(IUpdated method, String id)	{
+	@Override public ParamFloat setUpdateParameters(IUpdated<Float> method, String id)	{
 		super.setUpdateParameters(method, id);
+		return this;
+	}
+	@Override public ParamFloat setNewValueMethod(INewValue<Float> method)	{
+		super.setNewValueMethod(method);
 		return this;
 	}
 

@@ -313,7 +313,7 @@ public class Transport extends FleetBase {
     @Override
     public int mapY(GalaxyMapPanel map)         { return launched() ? map.mapY(source().y())+BasePanel.s10 : map.mapY(source().y()); }
     @Override
-    public int maxMapScale()                    { return GalaxyMapPanel.MAX_FLEET_TRANSPORT_SCALE;  }
+    public int maxMapScale()                    { return GalaxyMapPanel.maxFleetTransportScale;  }
     @Override
     public boolean decideWhetherDisplayed(GalaxyMapPanel map) {
         if (!map.parent().isClicked(this)) {

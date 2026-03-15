@@ -250,6 +250,8 @@
 
 ### Miscellaneous:
 
+- New options tool feature to call outside method without creating subclasses.
+  - Implemented as test to existing options, and relocated them where they are used. (StarSystem and GalaxyMapPanel)
 - The names of the difficulty levels have been changed to be more realistic and less judgmental. The default value for new players is set to 75% (moderate).
 - Updated the JRE in the windows.zip file to 25.0.2-10
 - Removed unused files to reduce the .Jar and .Zip files.
@@ -283,6 +285,8 @@
 
 ### User Interfaces:
 
+- New option to add a bit of transparency to the flight path.
+- New Option to disable flight path to small transports.
 - Mass transport Panel: Transport paths are now hidden when "Hide all flight path" is selected.
   - On thousands stars galaxies, they were masking almost everything.
 - New option: When formatting decimal numbers, use either the local Java setting or the formatting associated with the language selected in the game.

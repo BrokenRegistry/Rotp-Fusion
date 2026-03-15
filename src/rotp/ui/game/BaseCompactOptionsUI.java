@@ -479,7 +479,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 				txtRight.enabledC(customValuesColor);
 			if (!param.isValidValue())
 				txtRight.enabledC(Color.red);
-			
+
 			if (retina) { // Adapt font size to draw image
 				txtLeft.fontMult(retinaFactor);
 				txtRight.fontMult(retinaFactor);

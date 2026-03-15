@@ -2599,6 +2599,8 @@ HEADERS_DEBUG_AUTO_RUN               | ~~~ EXÉCUTION AUTOMATIQUE ~~~
 HEADERS_DEBUG_RELEVANT_DESC          | Vous devrez peut-être également ajuster ces paramètres.
 HEADERS_DEBUG_RELEVANT               | ~~~ CONNEXE ~~~
 
+HEADERS_TRANSPORT_VISIBILITY_DESC	| Pour définir quels transports doivent être affichés, et avec quel niveau de transparence.
+HEADERS_TRANSPORT_VISIBILITY		| ~~~ AFFICHAGE DES TRANSPORTS ~~~
 HEADERS_ZOOM_FONT_DESC               | Pour définir les tailles de police de caractères de la carte de la galaxie.
 HEADERS_ZOOM_FONT                    | ~~~ ZOOM CARACTÈRES ~~~
 HEADERS_ZOOM_FLEET_DESC              | Pour définir les facteurs de visualisation des trajectoires de vol des flottes.
@@ -3233,6 +3235,27 @@ SETTINGS_MOD_ORIGINAL_SPECIES_ONLY_DESC  | Le panneau de configuration des perso
 SETTINGS_MOD_ORIGINAL_SPECIES_ONLY       | 10 Espèces seulement : %1
 SETTINGS_MOD_SHOW_ALT_ANIMATION_DESC     | Choisissez entre les animations vanilla (Non) ou les œuvres d’art Zestyclose (Oui).<br>(Jeune diplomate humain)
 SETTINGS_MOD_SHOW_ALT_ANIMATION          | Alt Diplomate : %1
+
+SETTINGS_MOD_MIN_TRANSPORT_DISP_DESC	| Les flux de population inférieurs à ce seuil ne seront pas affichés.
+SETTINGS_MOD_MIN_TRANSPORT_DISP			| Seuil d'affichage des transports : %1
+SETTINGS_MOD_MIN_INVASION_DISP_DESC		| Les transports de troupes d'invasion inférieurs à ce seuil ne seront pas affichés.
+SETTINGS_MOD_MIN_INVASION_DISP			| Seuil d'affichage des troupes : %1
+
+SETTINGS_MOD_RALLY_OPACITY_DESC			| Opacité des trajectoires de vol des vaisseaux jusqu’à leur point de ralliement.
+SETTINGS_MOD_RALLY_OPACITY				| Opacité des ralliements : %1
+SETTINGS_MOD_SYS_TRANSPORT_OPACITY_DESC	| Opacité des trajectoires de vol des flux de populations en cours de préparation.
+SETTINGS_MOD_SYS_TRANSPORT_OPACITY		| Opacité des colons en partance : %1
+SETTINGS_MOD_SYS_TROOP_OPACITY_DESC		| Opacité des trajectoires de vol des transports de troupes en cours de préparation.
+SETTINGS_MOD_SYS_TROOP_OPACITY			| Opacité des troupes en partance : %1
+SETTINGS_MOD_PLAYER_TRANSP_OPACITY_DESC	| Opacité des trajectoires de vol des transports de population en cours de route.
+SETTINGS_MOD_PLAYER_TRANSP_OPACITY		| Opacité des colons en route : %1
+SETTINGS_MOD_PLAYER_TROOP_OPACITY_DESC	| Opacité des trajectoires de vol des transports de troupes en cours de route.
+SETTINGS_MOD_PLAYER_TROOP_OPACITY		| Opacité des troupes en route : %1
+SETTINGS_MOD_INVADER_TROOP_OPACITY_DESC	| Opacité des trajectoires de vol des transports de troupes ennemies en direction  de vos colonies.
+SETTINGS_MOD_INVADER_TROOP_OPACITY		| Opacité des troupes ennemies : %1
+SETTINGS_MOD_ALIEN_TRANSP_OPACITY_DESC	| Opacité des trajectoires de vol des transports des extra terrestres.
+SETTINGS_MOD_ALIEN_TRANSP_OPACITY		| Opacité des troupes étrangères : %1
+
 SETTINGS_MOD_SHOW_FLEET_FACTOR_DESC      | Pour régler la disparition des flottes de la carte de la galaxie lors du zoom. Un facteur plus grand signifie qu’elles resteront plus longtemps à l’écran.
 SETTINGS_MOD_SHOW_FLEET_FACTOR           | Taille min. Flottes : %1%
 SETTINGS_MOD_SHOW_FLAG_FACTOR_DESC       | Pour régler la disparition des drapeaux de la carte de la galaxie lors du zoom. Un facteur plus grand signifie qu’ils resteront plus longtemps à l’écran.
@@ -4441,9 +4464,9 @@ SETTINGS_MOD_SETTING_MENU_PREF_TITLE     | Configuration des Interfaces des Pré
 SETTINGS_MOD_SETTING_MENU_PREF_UI        | Préférences utilisateur
 SETTINGS_MOD_SETTING_MENU_PREF_UI_DESC   | Ouvre un nouveau panneau de contrôle pour configurer les préférences de l’interface utilisateur.
 
-SETTINGS_MOD_ZOOM_OPTIONS_TITLE          | Configuration des Options de zoom.
-SETTINGS_MOD_ZOOM_OPTIONS_UI             | Options de zoom
-SETTINGS_MOD_ZOOM_OPTIONS_UI_DESC        | Ouvre un nouveau panneau de contrôle pour configurer les Options de zoom.
+SETTINGS_MOD_ZOOM_OPTIONS_TITLE			| Options d’affichage de la Galaxie.
+SETTINGS_MOD_ZOOM_OPTIONS_UI			| Options d’affichage de la galaxie
+SETTINGS_MOD_ZOOM_OPTIONS_UI_DESC		| Ouvre un nouveau panneau de contrôle pour configurer les Options d’affichage de la carte de la galaxies.
 
 SETTINGS_MOD_SETUP_PARAMETERS_TITLE      | Configuration des Paramètres de la Galaxie.
 SETTINGS_MOD_SETUP_PARAMETERS_UI         | Paramètres de la Galaxie

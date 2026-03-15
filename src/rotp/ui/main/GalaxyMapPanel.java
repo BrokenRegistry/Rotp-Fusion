@@ -85,33 +85,59 @@ import rotp.ui.sprites.TechStatusSprite;
 import rotp.ui.sprites.TreasurySprite;
 import rotp.ui.sprites.ZoomInWidgetSprite;
 import rotp.ui.sprites.ZoomOutWidgetSprite;
+import rotp.ui.util.ParamFloat;
 
 public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionListener, MouseListener, MouseWheelListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
     private static final int NO_TARGET = -999;
-    
-    // BR These values may be changed remotely!
-    public static int MAX_FLAG_SCALE			= 80;
-    public static int MAX_STARGATE_SCALE 		= 40;
-    public static int MAX_RALLY_SCALE 			= 100;
-    public static int MAX_FLEET_UNARMED_SCALE	= 40;
-    public static int MAX_FLEET_TRANSPORT_SCALE = 60;
-    public static int MAX_FLEET_SMALL_SCALE		= 60;
-    public static int MAX_FLEET_LARGE_SCALE		= 80;
-    public static int MAX_FLEET_HUGE_SCALE		= 100;
-    private static boolean debugShowAll = false;
+
+	// BR These values may be changed remotely!
+	public static int maxFlagScale				= 80;
+	public static int maxStargateScale 			= 40;
+	public static int maxRallyScale 			= 100;
+	public static int maxFleetUnarmedScale		= 40;
+	public static int maxFleetTransportScale	= 60;
+	public static int maxFleetSmallScale		= 60;
+	public static int maxFleetLargeScale		= 80;
+	public static int maxFleetHugeScale			= 100;
+	private static boolean debugShowAll = false;
 	// \BR:
     public static Color gridLight = new Color(160,160,160);
     public static Color gridDark = new Color(64,64,64);
 
-    public static void maxFlagScale(int val)			{ MAX_FLAG_SCALE	 = val; }
-    public static void maxStargateScale(int val)		{ MAX_STARGATE_SCALE = val; }
-    public static void maxRallyScale(int val)			{ MAX_RALLY_SCALE	 = val; }
-    public static void maxFleetUnarmedScale(int val)	{ MAX_FLEET_UNARMED_SCALE   = val; }
-    public static void maxFleetTransportScale(int val)	{ MAX_FLEET_TRANSPORT_SCALE = val; }
-    public static void maxFleetSmallScale(int val)		{ MAX_FLEET_SMALL_SCALE = val; }
-    public static void maxFleetLargeScale(int val)		{ MAX_FLEET_LARGE_SCALE = val; }
-    public static void maxFleetHugeScale(int val)		{ MAX_FLEET_HUGE_SCALE  = val; }
+	private static void maxFlagScale(Float val)		{ maxFlagScale	= (int) (80 * val); }
+	private static void maxRallyScale(Float val)	{ maxRallyScale	= (int) (100 * val); }
+	private static void setFleetScales(Float val)	{
+		maxStargateScale		= (int) (40 * val);
+		maxFleetUnarmedScale	= (int) (40 * val);
+		maxFleetTransportScale	= (int) (60 * val);
+		maxFleetSmallScale		= (int) (60 * val);
+		maxFleetLargeScale		= (int) (80 * val);
+		maxFleetHugeScale		= (int) (100 * val);	
+	}
+
+	public static ParamFloat showFlagFactor	= new ParamFloat(MOD_UI, "SHOW_FLAG_FACTOR", 1.0f)
+			.setLimits(0.3f, 3f)
+			.setIncrements(0.01f, 0.05f, 0.2f)
+			.cfgFormat("%")
+			.guiFormat("%")
+			.isCfgFile(true)
+			.setNewValueMethod(GalaxyMapPanel::maxFlagScale);
+	public static ParamFloat showPathFactor	= new ParamFloat(MOD_UI, "SHOW_PATH_FACTOR", 1.0f)
+			.setLimits(0.3f, 3f)
+			.setIncrements(0.01f, 0.05f, 0.2f)
+			.cfgFormat("%")
+			.guiFormat("%")
+			.isCfgFile(true)
+			.setNewValueMethod(GalaxyMapPanel::maxRallyScale);
+	public static ParamFloat showFleetFactor	= new ParamFloat(MOD_UI, "SHOW_FLEET_FACTOR", 1.0f)
+			.setLimits(0.3f, 3f)
+			.setIncrements(0.01f, 0.05f, 0.2f)
+			.cfgFormat("%")
+			.guiFormat("%")
+			.isCfgFile(true)
+			.setNewValueMethod(GalaxyMapPanel::setFleetScales);
+
 
     private final IMapHandler parent;
 
@@ -135,7 +161,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
     private int lastMouseX, lastMouseY;
     private long lastMouseTime;
     private boolean redrawRangeMap = true;
-    public Sprite hoverSprite;
+	Sprite hoverSprite;
     private int backOffsetX = 0;
     private int backOffsetY = 0;
     private float areaOffsetX = 0;
@@ -154,10 +180,10 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
     private static int targetSysId = NO_TARGET;
     private boolean lastHoverAltDown = false;
 
-    public static void checkForEcoClean()	{ cleanWidgetSprite.checkForEcoClean(); }
-    public static boolean isWarView()	 	{ return warView; }
-    public static void toggleWarView()	 	{ warView = !warView; }
-    private void clearWarView()				{
+	static void checkForEcoClean()		{ cleanWidgetSprite.checkForEcoClean(); }
+	static boolean isWarView()	 		{ return warView; }
+	public static void toggleWarView()	{ warView = !warView; }
+	private void clearWarView()			{
 		targetSysId	= NO_TARGET;
 		warView		= false;
     }
@@ -185,9 +211,9 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
     private float mapMaxY()          { return center.y()+(scaleY*3/5); }
     public void centerX(float x)    { center.x(x); }
     public void centerY(float y)    { center.y(y); }
-    public float centerX()          { return center.x(); }
-    public float centerY()          { return center.y(); }
-    public float sizeX()            { return sizeX; }
+	float centerX()					{ return center.x(); }
+	float centerY()					{ return center.y(); }
+	float sizeX()					{ return sizeX; }
     public float sizeY()            { return sizeY; }
     private void sizeX(float s)      { sizeX = s; }
     private void sizeY(float s)      { sizeY = s; }
@@ -276,7 +302,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         addMouseWheelListener(this);
         addMouseMotionListener(this);
     }
-    public void repaintTechStatus() {
+	void repaintTechStatus()	{
         int y = getHeight()-scaled(275);
         this.repaint(s10,y,s30,scaled(205));
     }
@@ -514,10 +540,10 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
 
         areaOffsetX += (currentFocus().x()-bestX);
         areaOffsetY += (currentFocus().y()-bestY);
-        
+
         currentFocus().setXY(bestX, bestY);
         center(parent.mapFocus());
-        
+
         clearRangeMap();
     }
     public void adjustZoom(int z) {
@@ -544,7 +570,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         // starting scale must be capped at the maximum adjustable scale
         if (parent.canChangeMapScales()) 
             parentStartingScale = min(parentStartingScale, maxScale());
-        
+
         setScale(parentStartingScale);
     }
     public void maxZoomOut(float sX, float sY) {
@@ -765,7 +791,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
 //            double ms = (time2-time1) / 1_000_000.0;
 //            System.out.format("RRR base %.2f ms\n", ms);
         }
-        
+
         g.setColor(normalBackground);
         g.fill(tmpRangeArea);
         g.setColor(normalBorder);
@@ -857,7 +883,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         Empire pl = player();
         float rng1 = pl.shipRange();
         float rng2 = pl.scoutRange();
-        
+
         for (int r=1;r<=gal.width();r++) {
             int x0 = mapX(x-r);
             int y0 = mapY(y-r);
@@ -880,10 +906,10 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         while (x0<0)   x0+=w;
         int y0 = backOffsetY;
         while (y0<0)  y0 +=h;
-        
+
         int x = x0 % w;
         int y = y0 % h;
-        
+
         if ((x > 0) && (y > 0)) {
             BufferedImage topL = sharedStarBackground.getSubimage(w-x,h-y,x, y);
             g.drawImage(topL,0,0, null);
@@ -896,23 +922,23 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
             BufferedImage botL = sharedStarBackground.getSubimage(w-x,0,x, h-y);
             g.drawImage(botL,0,y, null);
         }
-        
+
         BufferedImage botRight = sharedStarBackground.getSubimage(0,0,w-x, h-y);
         g.drawImage(botRight,x,y,null);
     }
     private void drawBackgroundNebula(Graphics2D g) {
         int w = sharedNebulaBackground.getWidth();
         int h = sharedNebulaBackground.getHeight();
-        
+
         // java modulo does not handle negative numbers properly
         int x0 = backOffsetX;
         while (x0<0)   x0+=w;
         int y0 = backOffsetY;
         while (y0<0)  y0 +=h;
-        
+
         int x = x0 % w;
         int y = y0 % h;
-        
+
         if ((x > 0) && (y > 0)) {
             BufferedImage topL = sharedNebulaBackground.getSubimage(w-x,h-y,x, y);
             g.drawImage(topL,0,0, null);
@@ -925,7 +951,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
             BufferedImage botL = sharedNebulaBackground.getSubimage(w-x,0,x, h-y);
             g.drawImage(botL,0,y, null);
         }
-        
+
         BufferedImage botRight = sharedNebulaBackground.getSubimage(0,0,w-x, h-y);
         g.drawImage(botRight,x,y,null);
     }
@@ -1185,7 +1211,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         }
 
         List<Ship> ships = null;
-        if (scaleX() <= MAX_FLEET_HUGE_SCALE) {
+        if (scaleX() <= maxFleetHugeScale) {
             if (parent.hoverOverFleets()) {
                 ships = new ArrayList<>(pl.visibleShips());
                 ships.sort(EMPIRE_ID);
@@ -1242,7 +1268,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
             if (path.isSelectableAt(this,x1,y1))
                 return path;
         }
-        if (scaleX() <= MAX_FLEET_HUGE_SCALE) {
+        if (scaleX() <= maxFleetHugeScale) {
             if (parent.hoverOverFlightPaths()) {
                 if (ships == null)
                     ships = new ArrayList<>(pl.visibleShips());
@@ -1485,12 +1511,12 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
             selectX0 = selectX1 = selectY0 = selectY1 = 0;
             dragSelecting = false;
             repaint();
-            return;               
-        }       
+            return;
+        }
 
         if (e.getButton() > 3)
             return;
-        
+
         int clicks = e.getClickCount();
         boolean rightClick = SwingUtilities.isRightMouseButton(e);
         boolean middleClick = SwingUtilities.isMiddleMouseButton(e);
@@ -1500,8 +1526,8 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
             parent.clickingNull(1, rightClick);
         else if ((clicks == 1) || newSelection.acceptDoubleClicks())
             parent.clickingOnSprite(newSelection, 1, rightClick, true, middleClick, e);
-            
+
         parent.hoveringOverSprite(newSelection);
     }
-    public void altToggled (boolean isAltDown) { parent.hoveringOverSprite(hoverSprite); }
+	void altToggled (boolean isAltDown)	{ parent.hoveringOverSprite(hoverSprite); }
 }

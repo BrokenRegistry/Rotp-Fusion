@@ -46,8 +46,12 @@ public class ParamString extends AbstractParam<String> {
 	@Override public ParamString isValueInit(boolean is) { super.isValueInit(is) ; return this; }
 	@Override public ParamString isDuplicate(boolean is) { super.isDuplicate(is) ; return this; }
 	@Override public ParamString isCfgFile(boolean is)	 { super.isCfgFile(is)   ; return this; }
-	@Override public ParamString setUpdateParameters(IUpdated method, String id)	{
+	@Override public ParamString setUpdateParameters(IUpdated<String> method, String id)	{
 		super.setUpdateParameters(method, id);
+		return this;
+	}
+	@Override public ParamString setNewValueMethod(INewValue<String> method)	{
+		super.setNewValueMethod(method);
 		return this;
 	}
 

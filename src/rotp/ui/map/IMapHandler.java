@@ -113,7 +113,7 @@ public interface IMapHandler {
     default float ownerReach(StarSystem s)               { return 0; }
     default boolean drawShield(StarSystem s)             { return true; } 
     default boolean shouldDrawEmpireName(Empire e, float scale)  { 
-        return (e.isPlayer() || Empire.thePlayer().hasContacted(e.id)) && (scale > GalaxyMapPanel.MAX_FLEET_TRANSPORT_SCALE);
+        return (e.isPlayer() || Empire.thePlayer().hasContacted(e.id)) && (scale > GalaxyMapPanel.maxFleetTransportScale);
     }
     default void drawEmpireName(Empire e, GalaxyMapPanel ui, Graphics2D g, boolean darkMode)  { e.draw(ui, g, darkMode); }
     default boolean drawStargate(StarSystem s)           { return true; }

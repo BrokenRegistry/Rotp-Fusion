@@ -43,7 +43,7 @@ import rotp.ui.BasePanel;
 import rotp.ui.UserPreferences;
 import rotp.util.sound.SoundManager;
 
-public abstract class AbstractParam <T> implements IParam<T> {
+public abstract class AbstractParam<T> implements IParam<T> {
 	// Ignore UCDetector public warning!
 	protected static final boolean GO_UP	= true;
 	protected static final boolean GO_DOWN	= false;
@@ -70,21 +70,22 @@ public abstract class AbstractParam <T> implements IParam<T> {
 	private List<LinkData> linkList;
 	private boolean processingToggle = false;
 	private boolean	forcedRefresh	 = false;
-	private IUpdated valueUpdatedMethod;
+	private INewValue<T> newValueMethod;	// Mainly to set static values
+	private IUpdated<T> valueUpdatedMethod;	// Mainly for UI: Request redraw
 	private String valueUpdatedMethodId;
 
-	@Override public void setUpdatedMethod(IUpdated method)	{ valueUpdatedMethod = method; }
-	@Override public IUpdated getUpdatedMethod()			{ return valueUpdatedMethod; }
-	@Override public void setUpdatedId(String id)			{ valueUpdatedMethodId = id; }
-	@Override public String getUpdatedId()					{ return valueUpdatedMethodId; }
-	@Override public void callUpdatedMethod()				{
-		if (valueUpdatedMethod != null && Rotp.initialized())
-			valueUpdatedMethod.valueUpdated(valueUpdatedMethodId);
+	public AbstractParam<T> setUpdatedId(String id)	{
+		valueUpdatedMethodId = id;
+		return this;
 	}
+	public IUpdated<T> getUpdatedMethod()		{ return valueUpdatedMethod; }
+	public String getUpdatedId()				{ return valueUpdatedMethodId; }
+	public INewValue<T> getNewValueMethod()		{ return newValueMethod; }
+
 	@Override public void updated(boolean val)	{
 		updated = val;
-		if (updated)
-			callUpdatedMethod();
+		if (updated && valueUpdatedMethod != null && Rotp.initialized())
+			valueUpdatedMethod.valueUpdated(valueUpdatedMethodId);
 	}
 	@Override public boolean updated()			{ return updated; }
 	@Override public boolean trueChange()		{
@@ -105,7 +106,7 @@ public abstract class AbstractParam <T> implements IParam<T> {
 		this.gui = gui;
 		this.name = name;
 		defaultValue(commonDefault);
-		value = defaultValue.get(DEF_VAL.defVal());
+		value(defaultValue.get(DEF_VAL.defVal()));
 	}
 
 	/**
@@ -142,7 +143,7 @@ public abstract class AbstractParam <T> implements IParam<T> {
 		if (isDuplicate()) { // Just in case!
 			System.err.println("getOption() Not set " + getCfgLabel());
 		}		
-		return value; // for cfg non duplicate
+		return value(); // for cfg non duplicate
 	}
 	protected void setOption(T value) { setOptionValue(opts(), value); }
 	protected abstract T getOptionValue(IGameOptions options);
@@ -186,11 +187,11 @@ public abstract class AbstractParam <T> implements IParam<T> {
 		else
 			setOptionValue(dest, val);
 	}
-	@Override public String getCfgValue()		{ return getCfgValue(value); }
+	@Override public String getCfgValue()		{ return getCfgValue(value()); }
 	@Override public String getCfgLabel()		{ return name; }
 	@Override public String getLangLabel()		{ return gui + name; }
 	@Override public String getGuiDescription() { return langLabel(descriptionId()); }
-	@Override public String guideValue()		{ return String.valueOf(value); }
+	@Override public String guideValue()		{ return String.valueOf(value()); }
 	@Override public String getGuiDisplay()		{ return langLabel(getLangLabel(), guideValue()) + END; }
 	@Override public String getGuiDisplay(int idx)	{
 		String str = langLabel(getLangLabel()); // Get from label.txt
@@ -309,7 +310,7 @@ public abstract class AbstractParam <T> implements IParam<T> {
 	}
 	protected IGameOptions   opts()		{ return RulesetManager.current().currentOptions(); }
 	private	  DynamicOptions dynOpts()	{ return opts().dynOpts(); }
-	protected T last()					{ return value; }
+	protected T last()					{ return value(); }
 	protected AbstractParam<T> formerName(String link)	{
 		formerName = link;
 		return this;
@@ -332,7 +333,7 @@ public abstract class AbstractParam <T> implements IParam<T> {
 	protected boolean processingToggle()	{ return processingToggle; }
 	protected boolean forcedRefresh()		{ return forcedRefresh; }
 	protected String formerName()	{ return formerName; }
-	protected T creationValue()		{ return isValueInit? value : defaultValue(); }
+	protected T creationValue()		{ return isValueInit? value() : defaultValue(); }
 	protected T minValue()			{ return minValue; }
 	protected T maxValue()			{ return maxValue; }
 	T baseInc()		{ return baseInc; }
@@ -342,29 +343,35 @@ public abstract class AbstractParam <T> implements IParam<T> {
 	// ========== Public Setters ==========
 	//
 	public void toggle(boolean reverse)		{ if (reverse) prev(); else next(); }
+	private T value()						{ return value; }
+	private void value(T newValue)			{
+		value = newValue;
+		if (newValueMethod != null && Rotp.initialized())
+			newValueMethod.newValue(newValue);
+	}
 	protected void setFromCfg(T newValue)	{
 		updated(true);
-		value = newValue;
+		value(newValue);
 		updateOption(dynOpts());
 	}
 	public T silentSet(T newValue) 			{ // Reserved call from governor class
 		updated(true);;
-		value = newValue;
+		value(newValue);
 		setOption(newValue); // For overrider
-		return value;
+		return newValue;
 	}
 	public T set(T newValue)				{
 		updated(true);;
 		trueChange(false);
-		if(updated() && value != null && newValue != null)
-			trueChange(!value.equals(newValue));
-		value = newValue;
+		if(updated() && value() != null && newValue != null)
+			trueChange(!value().equals(newValue));
+		value(newValue);
 		setOption(newValue); // For overrider
 		if (trueChange && (isGovernor != NOT_GOVERNOR))
 			GovernorOptions.callForRefresh(isGovernor);
 		if (isCfgFile)
 			UserPreferences.save();
-		return value;
+		return value();
 	}
 	public void maxValue (T newValue)		{ maxValue = newValue;}
 	public void minValue (T newValue)		{ minValue = newValue;}
@@ -383,9 +390,13 @@ public abstract class AbstractParam <T> implements IParam<T> {
 		forcedRefresh = forced;
 		return this;
 	}
-	public AbstractParam<T> setUpdateParameters(IUpdated method, String id)	{
-		setUpdatedMethod(method);
+	public AbstractParam<T> setUpdateParameters(IUpdated<T> method, String id)	{
+		valueUpdatedMethod = method;
 		setUpdatedId(id);
+		return this;
+	}
+	public AbstractParam<T> setNewValueMethod(INewValue<T> method)	{
+		newValueMethod = method;
 		return this;
 	}
 
