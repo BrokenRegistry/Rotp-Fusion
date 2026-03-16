@@ -25,11 +25,14 @@ import rotp.model.empires.Empire;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.IGovOptions;
 import rotp.model.game.IInGameOptions;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
 import rotp.ui.RotPUI;
 import rotp.ui.combat.ShipBattleUI;
+import rotp.ui.util.ParamBoolean;
+import rotp.ui.util.ParamList;
 import rotp.util.Base;
 
 public class ShipCombatManager implements Base {
@@ -255,11 +258,47 @@ public class ShipCombatManager implements Base {
         checkDeclareWar(emp1, emp2);
         checkDeclareWar(emp2, emp1);
 
-        if (playerInBattle())
-            RotPUI.instance().promptForShipCombat(this);
-        else {
-            resolveAllCombat();
-        }
+		if (playerInBattle())
+			switch (fleetAutoCombat.get()) {
+		case FLEET_AUTO_COMBAT_AUTO:
+			if (showAutoCombatResults.get()) {
+				RotPUI.drawNextTurnNotice = false;
+				session().pauseNextTurnProcessing("Fleet Auto combat");
+				RotPUI.instance().selectShipBattlePanel(this, ShipBattleUI.AUTO_RESOLVE);
+				session().waitUntilNextTurnCanProceed();
+				RotPUI.drawNextTurnNotice = true;
+			}
+			else {
+				autoComplete	= true;
+				autoResolve		= true;
+				showAnimations	= false;
+				allowRetreat	= false;
+				resolveAllCombat();
+			}
+			break;
+		case FLEET_AUTO_COMBAT_SMART:
+			if (showAutoCombatResults.get()) {
+				RotPUI.drawNextTurnNotice = false;
+				session().pauseNextTurnProcessing("Fleet Smart Auto combat");
+				RotPUI.instance().selectShipBattlePanel(this, ShipBattleUI.SMART_RESOLVE);
+				session().waitUntilNextTurnCanProceed();
+				RotPUI.drawNextTurnNotice = true;
+			}
+			else {
+				autoComplete	= true;
+				autoResolve		= true;
+				showAnimations	= false;
+				allowRetreat	= true;
+				resolveAllCombat();
+			}
+			break;
+		case FLEET_AUTO_COMBAT_NO:
+				default:
+					RotPUI.instance().promptForShipCombat(this);
+			}
+		else
+			resolveAllCombat();
+
         endOfCombat(true);
     }
     private void battle(StarSystem sys, Empire emp, SpaceMonster monster) {
@@ -1256,4 +1295,13 @@ public class ShipCombatManager implements Base {
         }
         // public boolean includes(Empire e1) { return (emp1 == e1) || (emp2 == e1); }
     }
+	private static final String FLEET_AUTO_COMBAT_NO	= "FLEET_AUTO_COMBAT_NO";
+	private static final String FLEET_AUTO_COMBAT_AUTO	= "FLEET_AUTO_COMBAT_AUTO";
+	private static final String FLEET_AUTO_COMBAT_SMART	= "FLEET_AUTO_COMBAT_SMART";
+	public static final ParamList fleetAutoCombat	= new ParamList(IGovOptions.GOV_UI, "FLEET_AUTO_COMBAT", FLEET_AUTO_COMBAT_NO)
+			.showFullGuide(true)
+			.put(FLEET_AUTO_COMBAT_NO, FLEET_AUTO_COMBAT_NO)
+			.put(FLEET_AUTO_COMBAT_AUTO, FLEET_AUTO_COMBAT_AUTO)
+			.put(FLEET_AUTO_COMBAT_SMART, FLEET_AUTO_COMBAT_SMART);
+	public static final ParamBoolean showAutoCombatResults	= new ParamBoolean(IGovOptions.GOV_UI, "AUTO_COMBAT_RESULTS", true);
 }

@@ -2,6 +2,7 @@ package rotp.ui.options;
 
 import java.util.Arrays;
 
+import rotp.model.combat.ShipCombatManager;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.ui.util.ParamTitle;
@@ -35,6 +36,9 @@ final class AutoSendFleetOption extends AbstractOptionsSubUI {
 				new ParamTitle("GOVERNOR_AUTO_ATTACK"),
 				fleetAutoAttackMode,
 				autoAttackEmpire,
+				LINE_SPACER_25,
+				ShipCombatManager.fleetAutoCombat,
+				ShipCombatManager.showAutoCombatResults,
 
 				HEADER_SPACER_100,
 				new ParamTitle(AUTO_SHIP_DESIGN + "SPACE"),

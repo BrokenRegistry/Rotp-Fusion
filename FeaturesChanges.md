@@ -250,6 +250,8 @@
 
 ### Miscellaneous:
 
+- New option that automatically starts fleet battles without asking the player for confirmation.
+  - With another option to choose whether to display the battle results.
 - New options tool feature to call outside method without creating subclasses.
   - Implemented as test to existing options, and relocated them where they are used. (StarSystem and GalaxyMapPanel)
 - The names of the difficulty levels have been changed to be more realistic and less judgmental. The default value for new players is set to 75% (moderate).

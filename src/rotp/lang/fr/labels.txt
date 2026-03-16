@@ -5843,6 +5843,18 @@ AUTO_ATTACK_NO_ENTENTE_HELP			| Tous les empires avec lesquels nous n’avons pa
 AUTO_ATTACK_ALL						| Tous
 AUTO_ATTACK_ALL_HELP				| Envoyons nos vaisseaux vers tous les empires, le temps de la guerre n’est plus si lointain.
 
+GOVERNOR_FLEET_AUTO_COMBAT_DESC		| Que se passe-t-il lorsqu'une de vos flottes rencontre une autre flotte ou une colonie étrangère ?
+GOVERNOR_FLEET_AUTO_COMBAT			| Combat des flottes : %1
+FLEET_AUTO_COMBAT_NO_DESC			| Show the combat prompt panel.
+FLEET_AUTO_COMBAT_NO				| Demander
+FLEET_AUTO_COMBAT_AUTO_DESC			| Ne posez aucune question ; réglez le combat automatiquement, avec l’interdiction de battre en retraite.
+FLEET_AUTO_COMBAT_AUTO				| →SHIP_COMBAT_AUTO_RESOLVE←
+FLEET_AUTO_COMBAT_SMART_DESC		| Ne posez aucune question ; réglez le combat automatiquement et battez en retraite si nécessaire.
+FLEET_AUTO_COMBAT_SMART				| →SHIP_COMBAT_SMART_RESOLVE←
+
+GOVERNOR_AUTO_COMBAT_RESULTS_DESC	| Faut-il interrompre le déroulement du jeu pour afficher les résultats des combats de flotte qui démarrent automatiquement ?
+GOVERNOR_AUTO_COMBAT_RESULTS		| Résultats des combats automatiques: %1
+
 GOVERNOR_ARMED_COLONIZER_GUARD_DESC	| Les vaisseaux armés ayant des modules de colonisation garderont les planètes.
 GOVERNOR_ARMED_COLONIZER_GUARD		| Les colonisateurs armés gardent : %1
 GOVERNOR_ARMED_COLONIZER_FIGHT_DESC	| Les vaisseaux de colonisation armés seront envoyés vers les planètes gardées par des vaisseaux armés.

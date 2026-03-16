@@ -342,7 +342,6 @@ public interface IGovOptions {
 			}
 			return targetEmpires;
 		}
-		
 	}
 
 	ParamFleetAutoScout	   fleetAutoScoutMode	 = new ParamFleetAutoScout();

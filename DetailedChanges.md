@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-03-16 (BR)
+- New option that automatically starts fleet battles without asking the player for confirmation.
+  - With another option to choose whether to display the battle results.
+
 26-03-15 (BR)
 - New options tool feature to call outside method without creating subclasses.
   - Implemented as test to existing options, and relocated them where they are used. (StarSystem and GalaxyMapPanel)

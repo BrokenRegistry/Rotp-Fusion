@@ -2,6 +2,7 @@ package rotp.ui.options;
 
 import java.util.Arrays;
 
+import rotp.model.combat.ShipCombatManager;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 
@@ -22,6 +23,10 @@ final class GameAutomation extends AbstractOptionsSubUI {
 				LINE_SPACER_25,
 				autoBombard_,
 				autoColonize_,
+				ShipCombatManager.fleetAutoCombat,
+				ShipCombatManager.showAutoCombatResults,
+
+				LINE_SPACER_25,
 				techExchangeAutoRefuse
 				)));
 		//map.add(list);

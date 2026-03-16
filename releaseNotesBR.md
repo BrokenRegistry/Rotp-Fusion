@@ -7,6 +7,10 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-03-16 (BR)
+- New option that automatically starts fleet battles without asking the player for confirmation.
+  - With another option to choose whether to display the battle results.
+
 26-03-15 (BR)
 - New option to add a bit of transparency to the flight path.
 - New Option to disable flight path to small transports.

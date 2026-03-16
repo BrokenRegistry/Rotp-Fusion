@@ -5843,6 +5843,18 @@ AUTO_ATTACK_NO_ENTENTE_HELP			| All the empires we have not signed treaties with
 AUTO_ATTACK_ALL						| All
 AUTO_ATTACK_ALL_HELP				| Let us send our ships to all the empires, the time of war is not so far away.
 
+GOVERNOR_FLEET_AUTO_COMBAT_DESC		| What happens when one of your fleets encounters another fleet or an alien colony?
+GOVERNOR_FLEET_AUTO_COMBAT			| Fleets Combat: %1
+FLEET_AUTO_COMBAT_NO_DESC			| Show the combat prompt panel.
+FLEET_AUTO_COMBAT_NO				| Ask Player
+FLEET_AUTO_COMBAT_AUTO_DESC			| Don't ask any questions; resolve the battle automatically, with no retreat allowed.
+FLEET_AUTO_COMBAT_AUTO				| →SHIP_COMBAT_AUTO_RESOLVE←
+FLEET_AUTO_COMBAT_SMART_DESC		| Don't ask any questions; handle the battle automatically and retreat if necessary.
+FLEET_AUTO_COMBAT_SMART				| →SHIP_COMBAT_SMART_RESOLVE←
+
+GOVERNOR_AUTO_COMBAT_RESULTS_DESC	| Should the game be paused to display the results of fleet battles that start automatically?
+GOVERNOR_AUTO_COMBAT_RESULTS		| Show auto combat results: %1
+
 GOVERNOR_ARMED_COLONIZER_GUARD_DESC	| Armed Colonizers will guard planets.
 GOVERNOR_ARMED_COLONIZER_GUARD		| Armed Colonizers Guard: %1
 GOVERNOR_ARMED_COLONIZER_FIGHT_DESC	| Armed colonization ships will be sent to planets guarded by armed ships.

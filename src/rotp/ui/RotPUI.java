@@ -106,7 +106,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     private static final long serialVersionUID = 1L;
     private static int FPS = 10;
     private static int ANIMATION_TIMER = 100;
-    private boolean drawNextTurnNotice = true;
+    public static boolean drawNextTurnNotice = true;
 
     public static boolean isVIPConsole = false; // BR: to avoid complex call on error!
     public static boolean useDebugFile = false;
