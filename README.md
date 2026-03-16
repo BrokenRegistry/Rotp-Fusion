@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-03-16 (BR)
+- An image of the Stargate will also appear next to the planet in the colonies panel.
 - New option that automatically starts fleet battles without asking the player for confirmation.
   - With another option to choose whether to display the battle results.
 

@@ -64,6 +64,7 @@ import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.IGameOptions;
 import rotp.model.ships.Design;
+import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseTextField;
 import rotp.ui.ExitButton;
@@ -328,52 +329,51 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         int y2 = scaled(80);
         HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("PLANETS_HELP_1A"));
         sp2.setLine(x2+(w2/2), y2, x2+(w2/2), scaled(52));
-        
+
         int x3 = industryBox.x;
         int w3 = scaled(200);
         int y3 = scaled(80);
         HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("PLANETS_HELP_1B"));
         sp3.setLine(x3+(w3/2), y3, x3+(w3/2), scaled(52));
-        
+
         int x4 = militaryBox.x;
         int w4 = scaled(200);
         int y4 = scaled(80);
         HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 3, text("PLANETS_HELP_1C"));
         sp4.setLine(x4+(w4/2), y4, x4+(w4/2), scaled(52));
-        
+
         int x5 = w-scaled(490);
         int w5 = scaled(210);
         int y5 = scaled(330);
         HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 3, text("PLANETS_HELP_1D"));
         sp5.setLine(x5+w5, y5+(sp5.height()/2), w-scaled(245), y5+(sp5.height()/2));
-        
+
         int y6 = scaled(500);
         HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x5, y6, w5, 4, text("PLANETS_HELP_1E"));
         sp6.setLine(x5+w5, y6+sp6.height(), w-scaled(230), scaled(645));
-        
+
         int x7 = scaled(30);
         int w7 = scaled(210);
         int y7 = scaled(500);
         HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 0, text("PLANETS_HELP_1F"));
         sp7.setLine(scaled(80), y7+sp7.height(), scaled(80), scaled(660));
-        
+
         int x9 = w-scaled(740);
         int w9 = scaled(230);
         int y9 = scaled(470);
         HelpUI.HelpSpec sp9 = helpUI.addBrownHelpText(x9,y9,w9, 6, text("PLANETS_HELP_1H"));
         sp9.setLine(x9+(w9/2), y9+sp9.height(), w-scaled(480), scaled(710));
-       
+
         int w8 = scaled(210);
         int x8 = x7+w7+((x9-x7-w7-w8)/2);  // center this box between the x7 & x9 boxes
         int y8 = scaled(500);
         HelpUI.HelpSpec sp8 = helpUI.addBrownHelpText(x8,y8,w8, 3, text("PLANETS_HELP_1G"));
         sp8.setLine(scaled(400), y8+sp8.height(), scaled(400), scaled(660));
-        
     }
     private void loadSmartMaxHelp() {
     	int w = getWidth();
     	HelpUI helpUI = RotPUI.helpUI();
-    	
+
     	int w0 = scaled(300);
         int x0 = w - w0 - s10;
         int y0 = scaled(20);
@@ -383,7 +383,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         int xe = w-scaled(75);
         int ye = scaled(325);
         int dye = s30;
-        
+
         HelpSpec sp1s = helpUI.addBrownHelpText(x0, y0, w0, 0, text("MAIN_HELP_4A"));
 
         HelpSpec sp2s = helpUI.addBrownHelpText(x1, y1, w1-s20, 0, text("MAIN_HELP_4B"));
@@ -427,21 +427,6 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         wBox = s65;
         sp1s.setLineArr(sp1s.rect(xBox, yBox, wBox, hBox));
         sp1s.setLine(sp1s.xe()-s30, sp1s.ye(), xBox+s30, yBox);
-
-        
-//        int xb = xe;
-//        int lx = xb;
-//        int rx = xb + s42;
-//        int by = scaled(453);
-//        int ty = by - scaled(140);
-//        sp7s.setLineArr(xb, yb,
-//        		lx, ty,
-//        		rx, ty,
-//        		rx, by,
-//        		lx, by,
-//        		lx, ty
-//           	    );
-
     }
     private void loadHelpUI2a() {
         HelpUI helpUI = RotPUI.helpUI();
@@ -456,43 +441,43 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         int y1a = scaled(190);
         HelpUI.HelpSpec sp1a = helpUI.addBrownHelpText(x1a, y1a, w1a, 3, text("PLANETS_HELP_4I"));
         sp1a.setLine(scaled(50), y1a, scaled(50), s100);
-        
+
         int x2 = scaled(60);
         int w2 = scaled(160);
         int y2 = scaled(100);
         HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("PLANETS_HELP_2A"));
         sp2.setLine(scaled(150), y2, scaled(150), s77);
-       
+
         int x3 = scaled(150);
         int w3 = scaled(190);
         int y3 = scaled(190);
         HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("PLANETS_HELP_2B"));
         sp3.setLine(scaled(240), y3, scaled(240), s77);
-        
+
         int x4 = scaled(255);
         int w4 = scaled(190);
         int y4 = scaled(100);
         HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 3, text("PLANETS_HELP_2C"));
         sp4.setLine(scaled(385), y4, scaled(385), s77);
-        
+
         int x5 = scaled(370);
         int w5 = scaled(190);
         int y5 = scaled(190);
         HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 3, text("PLANETS_HELP_2E"));
         sp5.setLine(scaled(460), y5, scaled(460), s77);
-        
+
         int x6 = scaled(475);
         int w6 = scaled(140);
         int y6 = scaled(100);
         HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 3, text("PLANETS_HELP_2D"));
         sp6.setLine(scaled(550), y6, scaled(550), s77);
-        
+
         int x7 = scaled(590);
         int w7 = scaled(210);
         int y7 = scaled(190);
         HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 3, text("PLANETS_HELP_2F"));
         sp7.setLine(scaled(630), y7, scaled(630), s77);
-        
+
         int x8 = scaled(700);
         int w8 = scaled(210);
         int y8 = scaled(100);
@@ -514,49 +499,49 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         int y1a = scaled(190);
         HelpUI.HelpSpec sp1a = helpUI.addBrownHelpText(x1a, y1a, w1a, 3, text("PLANETS_HELP_4I"));
         sp1a.setLine(scaled(50), y1a, scaled(50), s100);
-        
+
         int x2 = scaled(60);
         int w2 = scaled(160);
         int y2 = scaled(100);
         HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("PLANETS_HELP_3A"));
         sp2.setLine(scaled(150), y2, scaled(150), s77);
-        
+
         int x3 = scaled(150);
         int w3 = scaled(190);
         int y3 = scaled(190);
         HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("PLANETS_HELP_3B"));
         sp3.setLine(scaled(240), y3, scaled(240), s77);
-        
+
         int x4 = scaled(255);
         int w4 = scaled(190);
         int y4 = scaled(100);
         HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 3, text("PLANETS_HELP_3C"));
         sp4.setLine(scaled(385), y4, scaled(385), s77);
-        
+
         int x5 = scaled(370);
         int w5 = scaled(190);
         int y5 = scaled(190);
         HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 3, text("PLANETS_HELP_3D"));
         sp5.setLine(scaled(460), y5, scaled(460), s77);
-        
+
         int x6 = scaled(475);
         int w6 = scaled(140);
         int y6 = scaled(100);
         HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 3, text("PLANETS_HELP_3E"));
         sp6.setLine(scaled(565), y6, scaled(565), s77);
-        
+
         int x9 = scaled(590);
         int w9 = scaled(210);
         int y9 = scaled(190);
         HelpUI.HelpSpec sp9 = helpUI.addBrownHelpText(x9,y9,w9, 3, text("PLANETS_HELP_3H"));
         sp9.setLine(scaled(630), y9, scaled(630), s77);
-        
+
         int x7 = scaled(640);
         int w7 = scaled(180);
         int y7 = scaled(100);
         HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 3, text("PLANETS_HELP_3F"));
         sp7.setLine(scaled(690), y7, scaled(690), s77);
-        
+
         int x8 = scaled(700);
         int w8 = scaled(210);
         int y8 = s10;
@@ -578,49 +563,49 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         int y1a = scaled(190);
         HelpUI.HelpSpec sp1a = helpUI.addBrownHelpText(x1a, y1a, w1a, 3, text("PLANETS_HELP_4I"));
         sp1a.setLine(scaled(50), y1a, scaled(50), s100);
-        
+
         int x2 = scaled(60);
         int w2 = scaled(160);
         int y2 = scaled(100);
         HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("PLANETS_HELP_4A"));
         sp2.setLine(scaled(150), y2, scaled(150), s77);
-        
+
         int x3 = scaled(150);
         int w3 = scaled(190);
         int y3 = scaled(190);
         HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("PLANETS_HELP_4B"));
         sp3.setLine(scaled(240), y3, scaled(240), s77);
-        
+
         int x4 = scaled(255);
         int w4 = scaled(190);
         int y4 = scaled(100);
         HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 3, text("PLANETS_HELP_4C"));
         sp4.setLine(scaled(385), y4, scaled(385), s77);
-        
+
         int x5 = scaled(350);
         int w5 = scaled(190);
         int y5 = scaled(190);
         HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 3, text("PLANETS_HELP_4D"));
         sp5.setLine(scaled(460), y5, scaled(460), s77);
-        
+
         int x6 = scaled(475);
         int w6 = scaled(140);
         int y6 = scaled(100);
         HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 3, text("PLANETS_HELP_4E"));
         sp6.setLine(scaled(530), y6, scaled(530), s77);
-        
+
         int x7 = scaled(560);
         int w7 = scaled(200);
         int y7 = scaled(190);
         HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 3, text("PLANETS_HELP_4F"));
         sp7.setLine(scaled(630), y7, scaled(630), s92, scaled(600), s77);
-        
+
         int x8 = scaled(650);
         int w8 = scaled(200);
         int y8 = scaled(100);
         HelpUI.HelpSpec sp8 = helpUI.addBrownHelpText(x8,y8,w8, 3, text("PLANETS_HELP_4G"));
         sp8.setLine(scaled(670), y8, scaled(670), s77);
-        
+
         int x9 = scaled(700);
         int w9 = scaled(210);
         int y9 = s10;
@@ -893,7 +878,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         List<StarSystem> selectedSystems = selectedSystems();
         selectedSystems.clear();
         selectedSystems.addAll(allSystems());
-        
+
         if (selectedSystems.size() > 1)
             showMultiPlanetPanel();
         repaint();
@@ -909,7 +894,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             if(sel.colony().currentProductionCapacity() == 1)
                 selectedSystems.add(sel);
         }
-        
+
         if (selectedSystems.size() > 1)
             showMultiPlanetPanel();
         else
@@ -926,7 +911,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             if(sel.colony().workingPopulation() * sel.empire().maxRobotControls() < sel.colony().industry().factories())
                 selectedSystems.add(sel);
         }
-        
+
         if (selectedSystems.size() > 1)
             showMultiPlanetPanel();
         else
@@ -941,25 +926,25 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 
         int prevAnchorIndex = allSystems.indexOf(anchor);
         int newAnchorIndex = allSystems.indexOf(sys);
-        
+
         List<StarSystem> selectedSystems = selectedSystems();
         selectedSystems.clear();
-        
+
         if (prevAnchorIndex == newAnchorIndex) {
             selectedSystems.add(sys);
             showSinglePlanetPanel();
             return;
         }
-        
+
         int start = min(prevAnchorIndex, newAnchorIndex);
         int end = max(prevAnchorIndex, newAnchorIndex);
-        
+
         for (int i=start;i<=end;i++) {
             StarSystem sys1 = allSystems.get(i);
             selectedSystems.add(sys1);
         }
         showMultiPlanetPanel();
-        
+
         setAnchorSystem(sys, updateFieldValues);
     }
     private boolean controlSelectedSystem(StarSystem sys, boolean updateFieldValues) {
@@ -974,25 +959,25 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         }
         else
             systems.add(sys);
-        
+
         if (toggled) 
             setAnchorSystem(sys, updateFieldValues);
-        
+
         if (systems.size() == 1)
             showSinglePlanetPanel();
         else
             showMultiPlanetPanel();
-        
+
         return toggled;
     }
     private synchronized void selectedSystem(StarSystem sys, boolean updateFieldValues) {
         sessionVar("MAINUI_SELECTED_SYSTEM", sys);
         sessionVar("MAINUI_CLICKED_SPRITE", sys);
-        
+
         List<StarSystem> systems = selectedSystems();
         systems.clear();
         systems.add(sys);
-        
+
         setAnchorSystem(sys, updateFieldValues);
         showSinglePlanetPanel();
     }
@@ -1449,15 +1434,15 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                 if (sys != null)
                     systems.add(sys);
             }
-            
+
             if (systems.isEmpty())
                 return;
-            
+
             if (systems.size() == 1)
                 sys = systems.get(0);
 
             StarSystem anchorSys = lastSelectedSystem();
-            
+
             Empire pl = player();
             int w = getWidth();
             int h = getHeight();
@@ -1478,14 +1463,20 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             int x1 = showTransports? s10 : s5;
             int y1 = showTransports? s55 : s70/2;
             int r  = showTransports? s70 : s80; //modnar: increase planet size
-//            int x1 = s5;
-//            int y1 = s70/2;
-//            int r = s80; //modnar: increase planet size
             anchorSys.planet().draw(g, w, h, x1, y1, r+r, 45);
             planetCircle.setFrame(x1, y1, r+r, r+r);
-            
-            if (sys != null)
-                parent.drawPlanetInfo(g2, sys, false, false, showTransports, s40, getWidth()+s5, getHeight()-s5);
+
+			if (sys != null) {
+				if (sys.hasStargate(player())) {
+					int x2 = s10;
+					int y2 = y1;
+					Image img = ShipLibrary.current().stargate.getImage();
+					int w2 = img.getWidth(null);
+					int h2 = img.getHeight(null);
+					g.drawImage(img, x2, y2, x2+s14, y2+s14, 0, 0, w2, h2, null);  
+				}
+				parent.drawPlanetInfo(g2, sys, false, false, showTransports, s40, getWidth()+s5, getHeight()-s5);
+			}
         }
         @Override
         public void animate() {
@@ -1568,11 +1559,11 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                 if (sys != null)
                     systems.add(sys);
             }
-            
+
             List<Colony> colonies = new ArrayList<>();
             if (systems.isEmpty())
-                return colonies;           
-            
+                return colonies;
+
             for (StarSystem sys1: systems) {
                 Colony c = sys1.colony();
                 if (c != null)
@@ -2021,7 +2012,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 			repaintOnAltChange();
             int x = e.getX();
             int y = e.getY();
-            
+
             if (limitBox.contains(x,y)) {
 				boolean shiftPressed = e.isShiftDown();
 				boolean ctrlPressed = e.isControlDown();
@@ -2304,7 +2295,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             // s50 is width for data columns.. s20 is spacing
             int totalW = col1W+col2W+s50+s50;
             int spacing = (w-totalW)/3;
-            
+
             // LEFT COLUMN
             x1 = spacing;
             w1 = col1W+s50;

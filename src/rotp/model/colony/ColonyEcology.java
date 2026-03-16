@@ -323,7 +323,7 @@ public class ColonyEcology extends ColonySpendingCategory {
     public String upcomingResult(){
         Colony c = colony();
 
-        float newBC = totalAvailableBCthisCategory(colony().totalProductionIncome(), colony().maxReserveIncome());
+        float newBC = totalAvailableBCthisCategory(c.totalProductionIncome(), c.maxReserveIncome());
         newBC = max(0, newBC);
         float cost;
 
