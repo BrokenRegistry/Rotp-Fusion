@@ -594,7 +594,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         checkEcoAtClean(); // BR: to avoid wrong setting if not clean!
 //        int allocationNeeded = category(category).smartAllocationNeeded(e);
         int allocationNeeded;
-        if (category == SHIP && shipyard().buildLimit() == 0)
+        if (category == SHIP && shipyard().buildLimit() == 0 && !shipyard().buildingStargate())
         	allocationNeeded = MAX_TICKS;
         else
         	allocationNeeded = category(category).smartAllocationNeeded(e);

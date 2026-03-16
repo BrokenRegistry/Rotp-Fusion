@@ -250,6 +250,7 @@
 
 ### Miscellaneous:
 
+- Release.yml: Updated deprecated Node.js 20 to Node.js 24
 - An image of the Stargate will also appear next to the planet in the colonies panel.
 - New option that automatically starts fleet battles without asking the player for confirmation.
   - With another option to choose whether to display the battle results.
@@ -372,6 +373,10 @@
 
 ### Fixes:
 
+- Stargates:
+  - Build Limit can't be set higher than 1.
+  - Reset Build Limit once the stargate is completed.
+  - Fixed smart max (left-click will not overspend anymore).
 - Fixed player's invasion transport displayed on the map, but not on the transport panel. This when "Only display warships" was selected.
 - Fixed Star System marked as targeted by Monster to early.
 - Fixed being unable to redirect fleets to their originating star.

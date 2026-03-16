@@ -8,6 +8,10 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-03-16 (BR)
+- Stargates:
+  - Build Limit can't be set higher than 1.
+  - Reset Build Limit once the stargate is completed.
+  - Fixed smart max (left-click will not overspend anymore).
 - An image of the Stargate will also appear next to the planet in the colonies panel.
 - New option that automatically starts fleet battles without asking the player for confirmation.
   - With another option to choose whether to display the battle results.

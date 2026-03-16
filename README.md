@@ -45,6 +45,11 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-03-16 (BR)
+- Release.yml: Updated deprecated Node.js 20 to Node.js 24
+- Stargates:
+  - Build Limit can't be set higher than 1.
+  - Reset Build Limit once the stargate is completed.
+  - Fixed smart max (left-click will not overspend anymore).
 - An image of the Stargate will also appear next to the planet in the colonies panel.
 - New option that automatically starts fleet battles without asking the player for confirmation.
   - With another option to choose whether to display the battle results.

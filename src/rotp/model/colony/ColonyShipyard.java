@@ -119,6 +119,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 			if (stargateBC >= cost) {
 				hasStargate = true;
 				stargateCompleted = true;
+				buildLimit(0);
 				newShips++;
 				if (!emp.divertColonyExcessToResearch())
 					emp.addReserve(stargateBC - cost);
@@ -136,19 +137,19 @@ public class ColonyShipyard extends ColonySpendingCategory {
 			shipBC += newBC;
 			shipBC += shipRsvBC;
 			shipReserveBC -= shipRsvBC;
-			if (buildLimit == 0) {
+			if (buildLimit() == 0) {
 				while (shipBC >= cost) {
 					newShips++;
 					shipBC -= cost;
 				}
 			}
 			else {
-				while ((shipBC >= cost) && (buildLimit > 0)) {
+				while ((shipBC >= cost) && (buildLimit() > 0)) {
 					newShips++;
 					buildLimit--;
 					shipBC -= cost;
 				}
-				if (buildLimit == 0) {
+				if (buildLimit() == 0) {
 					shipLimitReached = true;
 					if (!emp.divertColonyExcessToResearch())
 						emp.addReserve(shipBC);
@@ -228,21 +229,33 @@ public class ColonyShipyard extends ColonySpendingCategory {
     public void addDesiredShips(int i)        { desiredShips += i; }
     public int buildLimit()                   { return buildLimit; }
     public void buildLimit(int i)             { buildLimit = max(0,i); }
-    public String buildLimitStr() { return buildLimit == 0 ? text("MAIN_COLONY_SHIPYARD_LIMIT_NONE") : str(buildLimit); }
-    public boolean incrementBuildLimit(int amt)  { buildLimit += amt;  return true; }
-    public boolean decrementBuildLimit(int amt)  { 
-        if (buildLimit == 0)
-            return false;
-        
-        buildLimit = max(0, buildLimit - amt);
-        return true;
-    }
-    public boolean resetBuildLimit()         {
-        if (buildLimit == 0)
-            return false;
-        buildLimit = 0;
-        return true;
-    }
+	public String buildLimitStr()	{ return buildLimit()==0? text("MAIN_COLONY_SHIPYARD_LIMIT_NONE") : str(buildLimit()); }
+	public boolean incrementBuildLimit(int amt)	{	// return: Value has changed
+		if (buildingStargate) {
+			if(buildLimit() == 1)
+				return false; // No change
+			buildLimit(1);
+			return true;
+		}
+		buildLimit(buildLimit() + amt);
+		return true;
+	}
+	public boolean decrementBuildLimit(int amt)	{	// return: Value has changed
+		if (buildLimit() == 0)
+			return false; // No change
+		if (buildingStargate) {
+			buildLimit(0);
+			return true;
+		}
+		buildLimit(max(0, buildLimit() - amt));
+		return true;
+	}
+	public boolean resetBuildLimit()	{
+		if (buildLimit() == 0)
+			return false;
+		buildLimit(0);
+		return true;
+	}
     private float maxAllowedShipBCProd() {
         if (maxAllowedShipBCProd < 0)
             maxAllowedShipBCProd = empire().governorAI().maxShipBCPermitted(colony())* planet().productionAdj();
@@ -321,7 +334,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
         shipBC = 0;
         shipReserveBC = 0;
         newShips = 0;
-        buildLimit = 0;
+        buildLimit(0);
         resetQueueData();
         shipLimitReached = false;
         clearFleetsCopies();
@@ -345,7 +358,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 		design = empire().shipLab().defaultDesign(defaultDesignId);
 		buildingStargate = design == empire().shipLab().stargateDesign();
 	}
-	public void defaultDesignId(Integer id)	{ defaultDesignId = id; }
+	//public void defaultDesignId(Integer id)	{ defaultDesignId = id; }
 	//public Integer defaultDesignId()  { return defaultDesignId==null? empire().defaultDesignId(): defaultDesignId; }
 
     public boolean canCycleDesign()   { return design.scrapped() || (empire().shipLab().numDesigns() > 1) || canBuildStargate(); }
@@ -400,10 +413,10 @@ public class ColonyShipyard extends ColonySpendingCategory {
         
         if (buildingStargate)
             return 1;
-        if (buildLimit == 0) 
+        if (buildLimit() == 0) 
             return (int) (totalBC / cost);
 
-        return min(buildLimit, (int) (totalBC / cost));
+        return min(buildLimit(), (int) (totalBC / cost));
     }
     /* public String buildLimitResult() { // BR: Commented Unused
         return text("MAIN_COLONY_SHIPYARD_LIMIT",buildLimit());
@@ -419,10 +432,10 @@ public class ColonyShipyard extends ColonySpendingCategory {
         float researchFactor = (rawProdBC+rsvBC) / totalBC;
 
         // if building ships with no build limit, then no possible overflow
-        if (!buildingStargate && (buildLimit == 0))
+        if (!buildingStargate && (buildLimit() == 0))
             return new float[] {0, 0};
 
-        int numBuild = buildLimit;
+        int numBuild = buildLimit();
         if (buildingStargate) {
             totalBC += stargateBC;
             numBuild = 1;
@@ -511,7 +524,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
             return overflowText();
 
         // if building ships with no limit, specify how many ships
-        if (buildLimit == 0)  {
+        if (buildLimit() == 0)  {
             int  ships = (int) (totalBC / cost);
             if (ships == 1)
                 return text(yearText, "1");
@@ -519,7 +532,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
                 return text(perYearText, ships);            
         }
 
-        float totalCost = buildLimit * cost;
+        float totalCost = buildLimit() * cost;
 
         // not spending enough to hit the build limit, specify how many ships
         if (totalBC <= totalCost) {
@@ -538,7 +551,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
         if (buildingStargate)
             totalCost = max(0, design.cost() - stargateBC);
         else {
-            float shipCost = design.cost() * max(desiredShips, buildLimit);
+            float shipCost = design.cost() * max(desiredShips, buildLimit());
             if (design == prevDesign)
                 shipCost -= shipBC;
 
