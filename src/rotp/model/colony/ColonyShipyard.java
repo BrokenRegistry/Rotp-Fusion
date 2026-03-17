@@ -220,6 +220,29 @@ public class ColonyShipyard extends ColonySpendingCategory {
 	}
     public boolean hasStargate()              { return hasStargate; }
     public boolean stargateCompleted()        { return stargateCompleted; }
+	public int starGateTimeToComplete()	{	// TODO BR: finish
+		if (hasStargate)
+			return 0;
+		if (!buildingStargate)
+			return Integer.MAX_VALUE;
+
+		Colony c = colony();
+		if (c.allocation(categoryType()) == 0)
+			return Integer.MAX_VALUE;
+
+		float newBC = pct() * (c.totalProductionIncome() * planet().productionAdj() + c.maxReserveIncome());
+		float totalBC = newBC + stargateBC;
+		if (totalBC <= 0)
+			return Integer.MAX_VALUE;
+
+		float missingBC = design.cost() - totalBC;
+		if (missingBC > 0)
+			if (newBC == 0)
+				return Integer.MAX_VALUE;
+			else
+				return 1 + ceil(missingBC / newBC);
+		return 1;
+	}
     void removeStargate()  { hasStargate = stargateCompleted = false; }
     public boolean shipLimitReached()         { return shipLimitReached; }
     public Design design()                    { return design; }
@@ -497,7 +520,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
             else {
             	int turns = (int) Math.ceil(missingBC/newBC);
             	tmpShipReserveBC-=fromReserve;
-            	if(tmpShipReserveBC>0) {
+            	if(tmpShipReserveBC>0 && !buildingStargate) {
             		int reserveTurns = (int) (tmpShipReserveBC/newBC);
             		turns=(int) Math.ceil(missingBC/(2*newBC));
             		if (turns > reserveTurns) {

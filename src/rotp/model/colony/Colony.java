@@ -329,7 +329,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public boolean hasStargate()         { return shipyard().hasStargate(); }
     public boolean hasStargate(Empire e) { return (empire == e) && hasStargate(); }
     public void removeStargate()         { shipyard().removeStargate(); }
-
+	public int starGateTimeToComplete()	 { return shipyard().starGateTimeToComplete(); }
     public int totalAmountAllocated()     {
         int amt = 0;
         for (ColonySpendingCategory cat : spending)
@@ -462,17 +462,17 @@ public final class Colony implements Base, IMappedObject, Serializable {
         redistributeSpending(catNum, -amt, allocation(SHIP) > 0, true);
         return true;
     }
-
-    public String shipyardProject() {
-        if (shipyard().allocation() > 0) {
-            int limit = shipyard().buildLimit();
-            if (limit == 0)
-                return shipyard().design().name();
-            else
-                return str(limit)+" "+shipyard().design().name();
-        }
-        return "";
-    }
+	public String shipyardProject()	{
+		ColonyShipyard sh = shipyard();
+		if (sh.allocation() > 0) {
+			int limit = sh.buildLimit();
+			if (limit == 0 || sh.buildStargate())
+				return sh.design().name();
+			else
+				return str(limit)+" "+sh.design().name();
+		}
+		return "";
+	}
     public void clearSpending() {
         allocation(SHIP, 0);
         allocation(DEFENSE, 0);

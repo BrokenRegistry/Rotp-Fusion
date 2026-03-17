@@ -70,7 +70,7 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 	private static final int buttonSepW			= s10;
 	private static final int UNKNOWN_COLOR_ID	= -1;
 	private static final int DEFAULT_COLOR_ID	= 0;
-	private static final int HIGHLIGHT_COLOR_ID	= 1;
+//	private static final int HIGHLIGHT_COLOR_ID	= 1;
 	private static final int VALID_COLOR_ID		= 2;
 	private static final Color VALID_COLOR		= new Color(190, 217, 115) ; // new Color(254,204,153)
 	private static final int LEFT_MARGIN		= s20;
@@ -252,11 +252,11 @@ public class NameEditorUI extends BasePanel implements RotPComponents {
 		int langManagerIdx = languageNames.indexOf(langName);
 		return languageCodes.get(langManagerIdx);
 	}
-	private String langDirFromButtonList()	{
-		String langName = languageButtonList.getFromSelectedIndex();
-		int langManagerIdx = languageNames.indexOf(langName);
-		return languageCodes.get(langManagerIdx);
-	}
+//	private String langDirFromButtonList()	{
+//		String langName = languageButtonList.getFromSelectedIndex();
+//		int langManagerIdx = languageNames.indexOf(langName);
+//		return languageCodes.get(langManagerIdx);
+//	}
 	private StringList remainingLang()	{
 		StringList list = new StringList(languageNames);
 		list.removeAll(languageButtonList);

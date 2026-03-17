@@ -616,6 +616,9 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     public static Comparator<StarSystem> SHIELD             = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().defense().shieldLevelComp(),sys2.colony().defense().shieldLevelComp());
     public static Comparator<StarSystem> INVASION_PRIORITY  = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.empire().generalAI().invasionPriority(sys1),sys2.empire().generalAI().invasionPriority(sys2));
 //    public static Comparator<StarSystem> TRANSPORT_PRIORITY = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.empire().fleetCommanderAI().transportPriority(sys1),sys2.empire().fleetCommanderAI().transportPriority(sys2));
+	public static Comparator<StarSystem> STARGATE = (StarSystem sys1, StarSystem sys2) -> {
+		return Integer.compare(sys1.colony().starGateTimeToComplete(), sys2.colony().starGateTimeToComplete());
+	};
     public static Comparator<StarSystem> VFLAG = (StarSystem sys1, StarSystem sys2) -> {
         Empire pl = Empire.thePlayer();
         return Base.compare(pl.sv.flagColorId(sys1.id),pl.sv.flagColorId(sys2.id));

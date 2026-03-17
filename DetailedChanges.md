@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-03-17 (BR)
+- Colony Panel: New Stargate column.
+
 26-03-16 (BR)
 - Release.yml: Updated deprecated Node.js 20 to Node.js 24
 - Stargates:

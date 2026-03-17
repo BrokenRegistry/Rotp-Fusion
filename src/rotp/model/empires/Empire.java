@@ -157,7 +157,7 @@ public final class Empire extends Species implements NamedObject {
     private final List<StarSystem> shipBuildingSystems = new ArrayList<>();
     private final List<StarSystem> colonizedSystems = new ArrayList<>();
     private boolean extinct = false;
-    private boolean galacticAlliance = false; // BR: never used!
+//    private boolean galacticAlliance = false; // BR: never used!
     private int lastCouncilVoteEmpId = Empire.NULL_ID;
     private Colony.Orders priorityOrders = Colony.Orders.NONE;
     private int bannerColor;
@@ -305,7 +305,7 @@ public final class Empire extends Species implements NamedObject {
 
     public List<StarSystem> shipBuildingSystems() { return shipBuildingSystems; }
 //	public boolean inGalacticAlliance()			{ return galacticAlliance; }	// BR: Never Used
-	void joinGalacticAlliance()					{ galacticAlliance = true; }
+//	void joinGalacticAlliance()					{ galacticAlliance = true; }
     public float planetScanningRange()            { return max(3, planetScanningRange); }  // max() to correct old saves
     public void planetScanningRange(float d)      { planetScanningRange = d; }
     public float shipScanningRange()              { return shipScanningRange; }

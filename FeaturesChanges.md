@@ -289,6 +289,7 @@
 
 ### User Interfaces:
 
+- Colony Panel: New Stargate column.
 - New option to add a bit of transparency to the flight path.
 - New Option to disable flight path to small transports.
 - Mass transport Panel: Transport paths are now hidden when "Hide all flight path" is selected.

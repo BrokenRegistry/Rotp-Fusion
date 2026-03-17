@@ -40,6 +40,7 @@ import javax.swing.border.Border;
 
 import rotp.model.empires.SystemView;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseTextField;
 import rotp.ui.main.SystemPanel;
@@ -157,6 +158,9 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
     public SystemFlagColumn newSystemFlagColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
         return new SystemFlagColumn(s1, s2, i, clr, c, align);
     }
+	public SystemStargateColumn newSystemStargateColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
+		return new SystemStargateColumn(s1, s2, i, clr, c, align);
+	}
     public SystemNameColumn newSystemNameColumn(BaseTextField field, String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
         return new SystemNameColumn(field, s1, s2, i, clr, c, align);
     }
@@ -850,7 +854,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             String val = sys.getAttribute(attributeKey);
             int sw = g.getFontMetrics().stringWidth(val);
             int w0 = w-s10;
-            if (sw > w0) 
+            if (sw > w0)
                 scaledFont(g, val, w0, dataFontSize()-1, 8);
             g.setColor(color(sys));
             switch(align) {
@@ -882,6 +886,56 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             g.drawImage(img, x+w-sz+shY, y-sz+s3, sz, sz, null);
         }
     }
+	public class SystemStargateColumn extends SystemDataColumn { // TODO BR: Stargate column
+		SystemStargateColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int a) {
+			super(s1, s2, i, clr, c, a);
+		}
+		@Override public void draw(Graphics g, RowSprite row, StarSystem sys, int x, int y, int w) {
+			super.draw(g, row, sys, x, y, w);
+			int time = sys.colony().starGateTimeToComplete();
+			if (time == Integer.MAX_VALUE)
+				return;
+
+			if (time == 0) {
+				Image img = ShipLibrary.current().stargate.getImage();
+				int w2 = img.getWidth(null);
+				int h2 = img.getHeight(null);
+				int x2 = x + ((w-s14)/2);
+				int y2 = y - s22;
+				g.drawImage(img, x2, y2, x2+s14, y2+s14, 0, 0, w2, h2, null);
+				return;
+			}
+
+			String val = "" + time;
+			int sw = g.getFontMetrics().stringWidth(val);
+			int w0 = w-s10;
+			if (sw > w0) {
+				scaledFont(g, val, w0, dataFontSize()-1, 8);
+				sw = g.getFontMetrics().stringWidth(val);
+			}
+			g.setColor(color(sys));
+			drawString(g,val, x+((w-sw)/2), y-s5);
+		}
+		@Override public void drawHeader(Graphics g, int x0, int y0, int w) {
+			x = x0;
+			y = y0;
+			if (s14 > w)
+				width = s14;
+
+			Image img = ShipLibrary.current().stargate.getImage();
+			int w2 = img.getWidth(null);
+			int h2 = img.getHeight(null);
+			int x2 = x + ((w-s14)/2);
+			int y2 = y - s22;
+			g.drawImage(img, x2, y2, x2+s14, y2+s14, 0, 0, w2, h2, null);
+			if (hoveringHeader == this) {
+				x2 = x + ((w-s6)/2);
+				y2 = y - s18;
+				g.setColor(palette.yellow);
+				g.fillRoundRect(x2, y2, s6, s6, s6, s6);
+			}
+		}
+	}
     public class SystemNameColumn extends SystemDataColumn {
         private final BaseTextField nameField;
         SystemNameColumn(BaseTextField fld, String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int a) {

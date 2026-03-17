@@ -1015,6 +1015,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         Column shieldCol = listingUI.newSystemDataColumn("PLANETS_LIST_SHIELD", "SHIELD", 60, palette.black, StarSystem.SHIELD, RIGHT);
         Column shipCol = listingUI.newSystemDataColumn("PLANETS_LIST_SHIPYARD", "SHIPYARD", 140, palette.black, StarSystem.SHIPYARD, LEFT);
         Column resourceCol = listingUI.newSystemDataColumn("PLANETS_LIST_RESOURCES", "RESOURCES", 90, palette.black, StarSystem.RESOURCES, LEFT);
+        Column stargateCol = listingUI.newSystemStargateColumn("", "STARGATE", 30, palette.black, StarSystem.STARGATE, RIGHT);
 
         DataView ecoView = listingUI.newDataView();
         ecoView.addColumn(rowNumCol);
@@ -1051,6 +1052,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         milView.addColumn(capacityCol);
         milView.addColumn(shieldCol);
         milView.addColumn(basesCol);
+        milView.addColumn(stargateCol);
         milView.addColumn(shipCol);
         milView.addColumn(notesCol);
         views.put(MILITARY_MODE, milView);

@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-03-17 (BR)
+- Colony Panel: New Stargate column.
+
 26-03-16 (BR)
 - Release.yml: Updated deprecated Node.js 20 to Node.js 24
 - Stargates:
@@ -59,19 +62,6 @@ java -jar target/rotp-<timestamp>-mini.jar
   - Implemented as test to existing options, and relocated them where they are used. (StarSystem and GalaxyMapPanel)
 - New option to add a bit of transparency to the flight path.
 - New Option to disable flight path to small transports.
-
-26-03-12 (BR)
-- Fixed player's invasion transport displayed on the map, but not on the transport panel. This when "Only display warships" was selected.
-- Mass transport Panel: Transport paths are now hidden when "Hide all flight path" is selected.
-  - On thousands stars galaxies, they were masking almost everything.
-
-26-03-10 (BR)
-- The names of the difficulty levels have been changed to be more realistic and less judgmental. The default value for new players is set to 75% (moderate).
-
-26-03-09 (BR)
-- Fixed Invasion loss to rebel message (Typo in the Key)
-- Updated the JRE in the windows.zip file to 25.0.2-10
-- Fixed Star System marked as targeted by Monster to early.
 
 
 ### [Features Historic](FeaturesChanges.md)

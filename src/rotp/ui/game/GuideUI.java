@@ -401,44 +401,44 @@ public class GuideUI extends BasePanel {
 			guideBox.setText(cleanHtmlText(tipText));
 			setSizeAndLocation();
 		}
-		private void createGuideBox(JComponent target, IParam<?> param, boolean fullHelp)	{ // TODO BR: add validBox
-			// Check for normal tool tip
-			if (param == null) {
-				guideBox.setText("");
-				guideBox.setSize(new Dimension());
-				return;
-			}
-			// Check for parameter
-			sourceBox = target.getBounds();
-			String txt = setSizeAndLocation(param);
-			if (txt != null && !txt.isEmpty())
-				return;
-			// TODO BR:
-			//return cleanText(tipText);
-			guideBox.setText("");
-			guideBox.setSize(new Dimension());
-		}
-		// Size and location
-		private String setSizeAndLocation(IParam<?> param)	{
-			if (param == null)
-				return null;
-			guideFontSize(GUIDE_FONT_SIZE);
-			String txt = param.getGuide();
-			if (txt == null || txt.isEmpty())
-				return txt;
-
-			txt = cleanHtmlText(txt);
-			setSizeAndLocation(); // For position and arrow
-			if (guideFontSize() < GUIDE_FONT_SIZE) {
-				// Second call to build the guide to adjust html size to current font size
-				txt = param.getGuide();
-				if (txt == null || txt.isEmpty())
-					return txt; // Should never happen
-				txt = cleanHtmlText(txt);
-				setSizeAndLocation(); // For position and arrow
-			}
-			return txt;
-		}
+//		private void createGuideBox(JComponent target, IParam<?> param, boolean fullHelp)	{ // TODO BR: add validBox
+//			// Check for normal tool tip
+//			if (param == null) {
+//				guideBox.setText("");
+//				guideBox.setSize(new Dimension());
+//				return;
+//			}
+//			// Check for parameter
+//			sourceBox = target.getBounds();
+//			String txt = setSizeAndLocation(param);
+//			if (txt != null && !txt.isEmpty())
+//				return;
+//			// TODO BR:
+//			//return cleanText(tipText);
+//			guideBox.setText("");
+//			guideBox.setSize(new Dimension());
+//		}
+//		// Size and location
+//		private String setSizeAndLocation(IParam<?> param)	{
+//			if (param == null)
+//				return null;
+//			guideFontSize(GUIDE_FONT_SIZE);
+//			String txt = param.getGuide();
+//			if (txt == null || txt.isEmpty())
+//				return txt;
+//
+//			txt = cleanHtmlText(txt);
+//			setSizeAndLocation(); // For position and arrow
+//			if (guideFontSize() < GUIDE_FONT_SIZE) {
+//				// Second call to build the guide to adjust html size to current font size
+//				txt = param.getGuide();
+//				if (txt == null || txt.isEmpty())
+//					return txt; // Should never happen
+//				txt = cleanHtmlText(txt);
+//				setSizeAndLocation(); // For position and arrow
+//			}
+//			return txt;
+//		}
 		private void setSizeAndLocation() {
 			int cover		= s5;
 			int xBoxShift	= s20;

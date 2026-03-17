@@ -682,8 +682,8 @@ public final class DiplomaticEmbassy implements Base, Serializable {
         setTreaty(new TreatyUnity(view.ownerId(), view.empId()));
         owner().setRecalcDistances();
         empire().setRecalcDistances();
-        owner().joinGalacticAlliance();
-        empire().joinGalacticAlliance();
+//        owner().joinGalacticAlliance();
+//        empire().joinGalacticAlliance();
         owner().shareSystemInfoWithAlly(empire());
         
         // stop spying
