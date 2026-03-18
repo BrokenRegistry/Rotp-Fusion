@@ -374,6 +374,8 @@
 
 ### Fixes:
 
+- Fixed stargate auto-setting!
+- Build Limit can't be set higher than 1 in the colony panel too.
 - Stargates:
   - Build Limit can't be set higher than 1.
   - Reset Build Limit once the stargate is completed.

@@ -466,7 +466,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		ColonyShipyard sh = shipyard();
 		if (sh.allocation() > 0) {
 			int limit = sh.buildLimit();
-			if (limit == 0 || sh.buildStargate())
+			if (limit == 0 || sh.buildingStargate())
 				return sh.design().name();
 			else
 				return str(limit)+" "+sh.design().name();

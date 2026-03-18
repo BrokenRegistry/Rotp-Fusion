@@ -251,7 +251,12 @@ public class ColonyShipyard extends ColonySpendingCategory {
     public int desiredShips()                 { return desiredShips; }
     public void addDesiredShips(int i)        { desiredShips += i; }
     public int buildLimit()                   { return buildLimit; }
-    public void buildLimit(int i)             { buildLimit = max(0,i); }
+	public int buildLimit(int i)	{
+		buildLimit = max(0,i);
+		if (buildingStargate)
+			buildLimit = min(1, buildLimit);
+		return buildLimit;
+	}
 	public String buildLimitStr()	{ return buildLimit()==0? text("MAIN_COLONY_SHIPYARD_LIMIT_NONE") : str(buildLimit()); }
 	public boolean incrementBuildLimit(int amt)	{	// return: Value has changed
 		if (buildingStargate) {

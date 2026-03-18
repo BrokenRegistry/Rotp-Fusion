@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-03-18 (BR)
+- Fixed stargate auto-setting!
+- Build Limit can't be set higher than 1 in the colony panel too.
+
 26-03-17 (BR)
 - Colony Panel: New Stargate column.
 
