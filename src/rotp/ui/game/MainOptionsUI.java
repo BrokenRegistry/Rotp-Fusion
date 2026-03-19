@@ -15,6 +15,11 @@
  */
 package rotp.ui.game;
 
+import static rotp.model.game.IBaseOptsTools.LIVE_OPTIONS_FILE;
+
+import rotp.ui.UserPreferences;
+import rotp.util.ModifierKeysState;
+
 // modnar: add UI panel for modnar MOD game options, based on StartOptionsUI.java
 public class MainOptionsUI extends AbstractOptionsUI {
 	private static final long serialVersionUID = 1L;
@@ -29,5 +34,26 @@ public class MainOptionsUI extends AbstractOptionsUI {
 		globalOptions = true;
 		isSubMenu	  = false;
 		duplicateList = rotp.ui.options.MainOptions.vanillaSettingsUI();
+	}
+	@Override protected void doExitBoxAction()		{
+		buttonClick();
+		UserPreferences.save();
+		disableGlassPane();
+		clearImages();
+		clearBuffer();
+		clearImages();
+		isOnTop = false;
+		descFont = null;
+
+		switch (ModifierKeysState.get()) {
+		case CTRL:
+		case CTRL_SHIFT: // Restore
+			guiOptions().updateAllNonCfgFromFile(LIVE_OPTIONS_FILE);
+			break;
+		default: // Save
+			guiOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
+			break; 
+		}
+		GameUI.setOnTop();
 	}
 }

@@ -8,6 +8,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-03-19 (BR)
+- Improved Main setting responsivity by disabling background Game Panel refresh.
 - Working Transport Flight Path will be shown even if the display threshold is not null.
 
 6-03-18 (BR)

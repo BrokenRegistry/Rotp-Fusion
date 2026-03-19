@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-03-19 (BR)
+- Improved Main setting responsivity by disabling background Game Panel refresh.
 - Working Transport Flight Path will be shown even if the display threshold is not null.
 
 26-03-18 (BR)

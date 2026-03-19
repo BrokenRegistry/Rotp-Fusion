@@ -289,6 +289,7 @@
 
 ### User Interfaces:
 
+- Improved Main setting responsivity by disabling background Game Panel refresh.
 - Colony Panel: New Stargate column.
 - New option to add a bit of transparency to the flight path.
 - New Option to disable flight path to small transports.

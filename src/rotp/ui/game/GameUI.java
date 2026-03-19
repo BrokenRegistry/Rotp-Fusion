@@ -124,6 +124,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     private static Border saveGameBorder;
     private static Border saveListBorder;
     private static int colorSet = 0;
+	private static boolean onTop = true;
 
     int fuzz = 8;
     int fuzzSc = 2;
@@ -155,6 +156,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     private long currentVersion;
     private GitInfo	gitInfoBR, gitInfoXilmi, gitInfoLast, gitInfoNew;
 
+	public static void  setOnTop()					{ onTop = true; }
     public static void  colorSet(int set)		  { colorSet = set; }
     public static Color langShade()               { return langShade[opt()]; }
 	public static Color menuHover()					{ return menuHover[opt()]; }
@@ -544,7 +546,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     }
     @Override
     public void animate() {
-        if (glassPane() != null)
+        if (onTop && glassPane() != null)
             return;
         
         animationTimer--;
@@ -577,6 +579,9 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     @Override
     public String ambienceSoundKey() { return canContinue() ? super.ambienceSoundKey() : AMBIENCE_KEY; }
     @Override public void paintComponent(Graphics g0) {
+		if (!onTop)
+			return;
+
 		boolean showTiming = false;
 		// showTiming = true; // TO DO BR: COMMENT
 		long timeStart = System.currentTimeMillis();
@@ -1233,6 +1238,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     }
     private void goToSettings() {
 		buttonClick();
+		onTop = false;
 		MainOptionsUI mainOptionsUI = RotPUI.mainOptionsUI();
 		mainOptionsUI.init();
 		return;

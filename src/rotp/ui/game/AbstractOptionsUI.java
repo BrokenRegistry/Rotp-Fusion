@@ -50,7 +50,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 	
 	private static final int settingFontSize = 20;
 	private static final int descFontSize	 = 15;
-	private Font descFont;
+	protected Font descFont;
 	private static int columnPad	= s20;
 	private static int smallButtonH = s30;
 	private static int hSetting	    = s90;
