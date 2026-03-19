@@ -334,10 +334,11 @@ public final class FlightPathSprite extends MapSprite {
 	private Color transportLineColor(GalaxyMapPanel map, boolean hovering, StarSystem dest)	{
 		Transport tr = (Transport) ship;
 		IMapHandler ui = map.parent();
-		if (hovering || ui.isHovering(dest) || ui.isClicked(dest)
-				|| ui.isHovering(tr) || ui.isClicked(tr)
-				|| ui.isHovering(tr.from()) || ui.isClicked(tr.from())
-				|| workingPaths().contains(this))
+		SystemTransportSprite sTS = tr.from().transportSprite();
+		Sprite cS = ui.clickedSprite();
+		Sprite hS = ui.hoveringSprite();
+		if (hovering || cS == sTS || hS == dest || cS == dest || hS == tr || cS == tr
+				|| hS == tr.from() || cS == tr.from() || workingPaths().contains(this))
 			if (ship.passesThroughNebula(dest))
 				return Color.MAGENTA;
 			else if (dest.empId() != tr.empId())

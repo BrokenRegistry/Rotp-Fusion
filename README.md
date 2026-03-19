@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-03-19 (BR)
+- Working Transport Flight Path will be shown even if the display threshold is not null.
+
 26-03-18 (BR)
 - Fixed stargate auto-setting!
 - Build Limit can't be set higher than 1 in the colony panel too.
