@@ -2119,6 +2119,13 @@ CUSTOM_RACE_BOUND_AI_DESC			| Should a specific AI be imposed on this species? I
 CUSTOM_RACE_BOUND_AI_NONE_HELP		| The AI selected in the opponents' configuration panel will be used.
 CUSTOM_RACE_BOUND_AI_NONE			| Unbound
 
+CUSTOM_RACE_ATTACK_CONFIDENCE_HELP	| →SETTINGS_MOD_AI_ATTACK_CONFIDENCE_DESC←<br>This percentage multiplies the confidence level assigned to the AI or to the player.
+CUSTOM_RACE_ATTACK_CONFIDENCE_DESC	| →SETTINGS_MOD_AI_ATTACK_CONFIDENCE_DESC←
+CUSTOM_RACE_ATTACK_CONFIDENCE		| Attack Confidence
+CUSTOM_RACE_DEFENSE_CONFIDENCE_HELP	|→SETTINGS_MOD_AI_DEFENSE_CONFIDENCE_DESC←<br>This percentage multiplies the confidence level assigned to the AI or to the player.
+CUSTOM_RACE_DEFENSE_CONFIDENCE_DESC	| →SETTINGS_MOD_AI_DEFENSE_CONFIDENCE_DESC←
+CUSTOM_RACE_DEFENSE_CONFIDENCE		| Defense Confidence
+
 // Unused for now
 CUSTOM_RACE_RACE_TYPE             | Species Type
 CUSTOM_RACE_RACE_TERRAN           | Terran

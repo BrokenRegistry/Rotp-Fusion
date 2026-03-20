@@ -804,7 +804,7 @@ public abstract class SpeciesSettings {
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.setDescription(id, settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.getDescription(id)); }
 	}
-	// ==================== PrefixSufix ====================
+	// ==================== PrefixSufix ==================== // Deprecated
 	//
 	class PrefixSufix extends SettingString {
 		private PrefixSufix(String guiLangLabel, String nameLangLabel, String defaultValue, int lineNum) {
@@ -826,44 +826,49 @@ public abstract class SpeciesSettings {
 			selectedValue(newName);
 			return false;
 		}
-
+		@Override public void updateOption(DynamicOptions destOptions) { // Deprecated
+			if (destOptions == null)
+				return;
+			DynOptions opts = (DynOptions) destOptions;
+			opts.stringList().remove(dynOptionIndex());
+		}
 	}
-		// ==================== RacePrefix ====================
-		//
-		class RacePrefix extends PrefixSufix	{
-		RacePrefix()	{ super(ROOT, "RACE_PREFIX", "", 1); }
-		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesPrefix(settingValue()); }
-		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.speciesPrefix()); }
+	// ==================== RacePrefix ==================== // Deprecated
+	//
+	class RacePrefix extends PrefixSufix	{
+	RacePrefix()	{ super(ROOT, "RACE_PREFIX", "", 1); }
+	@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesPrefix(settingValue()); }
+	@Override public void skillToSetting(SpeciesSkills skills) { set(skills.speciesPrefix()); }
 	}
-	// ==================== RaceSuffix ====================
+	// ==================== RaceSuffix ==================== // Deprecated
 	//
 	class RaceSuffix extends PrefixSufix	{
 		RaceSuffix()	{ super(ROOT, "RACE_SUFFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.speciesSuffix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.speciesSuffix()); }
 	}
-	// ==================== LeaderPrefix ====================
+	// ==================== LeaderPrefix ==================== // Deprecated
 	//
 	class LeaderPrefix extends PrefixSufix	{
 		LeaderPrefix()	{ super(ROOT, "LEADER_PREFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.leaderPrefix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.leaderPrefix()); }
 	}
-	// ==================== LeaderSuffix ====================
+	// ==================== LeaderSuffix ==================== // Deprecated
 	//
 	class LeaderSuffix extends PrefixSufix	{
 		LeaderSuffix()	{ super(ROOT, "LEADER_SUFFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.leaderSuffix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.leaderSuffix()); }
 	}
-	// ==================== WorldsPrefix ====================
+	// ==================== WorldsPrefix ==================== // Deprecated
 	//
 	class WorldsPrefix extends PrefixSufix	{
 		WorldsPrefix()	{ super(ROOT, "WORLDS_PREFIX", "", 1); }
 		@Override public void settingToSkill(SpeciesSkills skills) { skills.worldsPrefix(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.worldsPrefix()); }
 	}
-	// ==================== WorldsSuffix ====================
+	// ==================== WorldsSuffix ==================== // Deprecated
 	//
 	class WorldsSuffix extends PrefixSufix	{
 		WorldsSuffix()	{ super(ROOT, "WORLDS_SUFFIX", "", 1); }
@@ -923,7 +928,24 @@ public abstract class SpeciesSettings {
 		@Override public void settingToSkill(SpeciesSkills skills)	{ skills.preferredAI(settingValue()); }
 		@Override public void skillToSetting(SpeciesSkills skills)	{ set(skills.preferredAI()); }
 	}
-
+	class AttackConfidence extends SettingInteger {
+		AttackConfidence() {
+			super(ROOT, "ATTACK_CONFIDENCE", 100, 100, 500, 1, 5, 20);
+			pctValue(true);
+			hasNoCost(true);
+		}
+		@Override public void settingToSkill(SpeciesSkills skills) { skills.attackConfidence(settingValue()); }
+		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.attackConfidence()); }
+	}
+	class DefenseConfidence extends SettingInteger {
+		DefenseConfidence() {
+			super(ROOT, "DEFENSE_CONFIDENCE", 100, 100, 500, 1, 5, 20);
+			pctValue(true);
+			hasNoCost(true);
+		}
+		@Override public void settingToSkill(SpeciesSkills skills) { skills.defenseConfidence(settingValue()); }
+		@Override public void skillToSetting(SpeciesSkills skills) { set(skills.defenseConfidence()); }
+	}
 	// ==================== PreferredShipSize ====================
 	//
 	class PreferredShipSize extends SettingBase<String> {

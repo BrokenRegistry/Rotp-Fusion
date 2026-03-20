@@ -534,6 +534,11 @@ public class Species implements ISpecies, Base, Serializable {
 	public boolean canResearch(Tech t)			{ return t.canBeResearched(this); }
 	protected DynOptions speciesOptions()		{ return skills.speciesOptions(); }
 
+	public float aiAttackConfidence()		{ return skills.attackConfidence()/100f  * options().aiAttackConfidence(); }
+	public float aiDefenseConfidence()		{ return skills.defenseConfidence()/100f * options().aiDefenseConfidence(); }
+	public float playerAttackConfidence()	{ return skills.attackConfidence()/100f  * options().playerAttackConfidence(); }
+	public float playerDefenseConfidence()	{ return skills.defenseConfidence()/100f * options().playerDefenseConfidence(); }
+
 	// Modnar added features
 	protected float bCBonus()				{ return skills.bCBonus(); }
 	public float hPFactor()					{ return skills.hPFactor();  }

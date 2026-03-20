@@ -7,6 +7,12 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-03-20 (BR)
+- New Option for Custom Species:
+  - They now have Attack Confidence and Defense confidence.
+    - This value will multiply the Confidence of the AI (or the Player) in the rules setting.
+  - Prefixes and suffixes are no longer available, as they are redundant under new custom species naming system.
+
 26-03-19 (BR)
 - Improved Main setting responsivity by disabling background Game Panel refresh.
 - Working Transport Flight Path will be shown even if the display threshold is not null.

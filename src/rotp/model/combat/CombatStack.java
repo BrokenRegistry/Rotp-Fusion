@@ -136,6 +136,10 @@ public class CombatStack implements Base {
         else
             return initiative();
     }
+	public float aiAttackConfidence()		{ return empire.aiAttackConfidence(); }
+	public float aiDefenseConfidence()		{ return empire.aiDefenseConfidence(); }
+	public float playerAttackConfidence()	{ return empire.playerAttackConfidence(); }
+	public float playerDefenseConfidence()	{ return empire.playerDefenseConfidence(); }
     public boolean isShip()             { return false; }
     public boolean isColony()           { return false; }
     public boolean isMonster()          { return false; }

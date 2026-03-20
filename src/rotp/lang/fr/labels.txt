@@ -2119,6 +2119,13 @@ CUSTOM_RACE_BOUND_AI_DESC			| Faut-il imposer une IA spécifique à cette espèc
 CUSTOM_RACE_BOUND_AI_NONE_HELP		| L’IA sélectionnée dans le panneau de configuration des adversaires sera utilisée.
 CUSTOM_RACE_BOUND_AI_NONE			| Sans contraintes
 
+CUSTOM_RACE_ATTACK_CONFIDENCE_HELP	| →SETTINGS_MOD_AI_ATTACK_CONFIDENCE_DESC←<br>Ce pourcentage multiplie le pourcentage d’audace d’attaque attribué à l'IA ou au joueur.
+CUSTOM_RACE_ATTACK_CONFIDENCE_DESC	| →SETTINGS_MOD_AI_ATTACK_CONFIDENCE_DESC←
+CUSTOM_RACE_ATTACK_CONFIDENCE		| Audace d’attaque
+CUSTOM_RACE_DEFENSE_CONFIDENCE_HELP	|→SETTINGS_MOD_AI_DEFENSE_CONFIDENCE_DESC←<br>Ce pourcentage multiplie le pourcentage d’assurance défensive attribué à l'IA ou au joueur.
+CUSTOM_RACE_DEFENSE_CONFIDENCE_DESC	| →SETTINGS_MOD_AI_DEFENSE_CONFIDENCE_DESC←
+CUSTOM_RACE_DEFENSE_CONFIDENCE		| Assurance défensive
+
 // Inutilisé pour le moment
 CUSTOM_RACE_RACE_TYPE             | Species Type
 CUSTOM_RACE_RACE_TERRAN           | Terran

@@ -128,6 +128,9 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	private int reworkableId = -1; // -1 if none was used while editing
 	private String favoredAI;
 
+	private int attackConfidence	= 100;
+	private int defenseConfidence	= 100;
+
 	private static final int PERSONALITY_COUNT	= Personality.values().length;
 	private static final int OBJECTIVE_COUNT	= Objective.values().length;
 	private static final int DESIGN_MODS_COUNT	= 28;
@@ -149,6 +152,10 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	void introTextX(int i)				{ introTextX = i; }
 	String preferredAI()				{ return favoredAI; }
 	void preferredAI(String s)			{ favoredAI = s; }
+	int attackConfidence()				{ return attackConfidence; }
+	void attackConfidence(int i)		{ attackConfidence = i; }
+	int defenseConfidence()				{ return defenseConfidence; }
+	void defenseConfidence(int i)		{ defenseConfidence = i; }
 //	int speciesType()					{ return speciesType; }
 //	void speciesType(int i)				{ speciesType = i; }
 

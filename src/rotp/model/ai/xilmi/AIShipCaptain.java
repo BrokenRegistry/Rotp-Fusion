@@ -1411,22 +1411,22 @@ public class AIShipCaptain implements Base, ShipCaptain {
         {
             if(col != null && col.empire() == empire)
             {
-                baseConfidence *= options().playerDefenseConfidence();
+                baseConfidence *= stack.playerDefenseConfidence();
             }
             else
             {
-                baseConfidence *= options().playerAttackConfidence();
+                baseConfidence *= stack.playerAttackConfidence();
             }
         }
         else
         {
             if(col != null && col.empire() == empire)
             {
-                baseConfidence *= options().aiDefenseConfidence();
+                baseConfidence *= stack.aiDefenseConfidence();
             }
             else
             {
-                baseConfidence *= options().aiAttackConfidence();
+                baseConfidence *= stack.aiAttackConfidence();
             }
         }
         return baseConfidence;

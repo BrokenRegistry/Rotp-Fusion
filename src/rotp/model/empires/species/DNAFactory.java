@@ -683,12 +683,14 @@ public class DNAFactory extends SpeciesSettings {
 		settingMap.add(availableAI);
 		settingMap.add(new BoundAI());
 		spacer();
-		settingMap.add(new RacePrefix());
-		settingMap.add(new RaceSuffix());
-		settingMap.add(new LeaderPrefix());
-		settingMap.add(new LeaderSuffix());
-		settingMap.add(new WorldsPrefix());
-		settingMap.add(new WorldsSuffix());
+		settingMap.add(new AttackConfidence());
+		settingMap.add(new DefenseConfidence());
+		// settingMap.add(new RacePrefix());
+		// settingMap.add(new RaceSuffix());
+		// settingMap.add(new LeaderPrefix());
+		// settingMap.add(new LeaderSuffix());
+		// settingMap.add(new WorldsPrefix());
+		// settingMap.add(new WorldsSuffix());
 		endOfColumn();
 
 		// ====================
@@ -707,6 +709,13 @@ public class DNAFactory extends SpeciesSettings {
 		// ====================
 		// Other non displayed attributes
 		// ====================
+		settingMap.addAttribute(new RacePrefix());		// Deprecated
+		settingMap.addAttribute(new RaceSuffix());		// Deprecated
+		settingMap.addAttribute(new LeaderPrefix());	// Deprecated
+		settingMap.addAttribute(new LeaderSuffix());	// Deprecated
+		settingMap.addAttribute(new WorldsPrefix());	// Deprecated
+		settingMap.addAttribute(new WorldsSuffix());	// Deprecated
+
 		settingMap.addAttribute(new LanguageList());
 		settingMap.addAttribute(new AnimationId());
 		settingMap.addAttribute(new AnimReady(dir));

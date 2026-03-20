@@ -22,6 +22,10 @@
 
 ### Features:
 
+- New Option for Custom Species:
+  - They now have Attack Confidence and Defense confidence.
+    - This value will multiply the Confidence of the AI (or the Player) in the rules setting.
+  - Prefixes and suffixes are no longer available, as they are redundant under new custom species naming system.
 - Space Monsters: New option to change their speed and the distance to the next world.
   - Minimum distance to the next world. (default = 0, up to 25)
   - Maximum distance to the next world. (default = 8, up to 100)
