@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
+import rotp.model.planet.Planet;
 import rotp.ui.util.ParamTitle;
 
 public final class PreGameOptions extends AbstractOptionsSubUI {
@@ -40,8 +41,9 @@ public final class PreGameOptions extends AbstractOptionsSubUI {
 				HEADER_SPACER_50,
 				new ParamTitle("START_PLANET_OPTIONS"),
 				planetQuality, minDistArtifactPlanet,
-				guardianMonsters, guardianMonstersLevel,
-				guardianMonstersProbability,
+				Planet.guardianMonsters,
+				guardianMonstersLevel,
+				Planet.guardianMonstersProbability,
 
 				// headerSpacer,
 				// new ParamTitle("SUB_PANEL_OPTIONS"),

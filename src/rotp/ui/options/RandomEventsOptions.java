@@ -2,6 +2,7 @@ package rotp.ui.options;
 
 import java.util.Arrays;
 
+import rotp.model.events.RandomEventMonsters;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.ui.util.ParamTitle;
@@ -46,9 +47,12 @@ final class RandomEventsOptions extends AbstractOptionsSubUI {
 				crystalMaxSystems,
 
 				HEADER_SPACER_50,
-				monsterMinDistance,
-				monsterMaxDistance,
-				monsterSpeed
+				RandomEventMonsters.monstersMinDistance,
+				RandomEventMonsters.monstersMaxDistance,
+				RandomEventMonsters.monstersSpeed,
+
+				HEADER_SPACER_50,
+				RandomEventMonsters.monstersArePicky
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("RANDOM_EVENTS_DELAYS"),

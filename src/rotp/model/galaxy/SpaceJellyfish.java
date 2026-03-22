@@ -27,14 +27,14 @@ import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
 
-public class SpaceJellyfish extends GuardianMonsters {
+final class SpaceJellyfish extends GuardianMonsters {
 	private static final long serialVersionUID = 1L;
 	private static final Color shieldColor	= Color.blue;
 	private static final String imageKey	= "SPACE_JELLYFISH";
 	private static final boolean isFusion	= true;
 
-	public SpaceJellyfish(Float speed, Float level) {
-		super(imageKey, -2, speed, level);
+	SpaceJellyfish(Float speed, Float level)	{
+		super(imageKey, FUSION_SENTINEL_EMPIRE, speed, level);
 		num(0, 1); // Number of monsters
 	}
 
@@ -79,9 +79,9 @@ public class SpaceJellyfish extends GuardianMonsters {
 		}
 		design.special(0, lab.specialBattleScanner());
 		design.special(1, lab.specialResistStasis());		// Immune to Stasis
-		
+
 		design.monsterInitiative(100);
-		
+
 		return design;
 	}
 }

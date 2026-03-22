@@ -2092,7 +2092,7 @@ public final class Empire extends Species implements NamedObject {
     }
     public void setVisibleMonsters() {
         Galaxy gal = galaxy();
-        // visibleMonsters = null; // BR: Remove
+        // visibleMonsters = null; // TO DO BR: Remove
         if (visibleMonsters == null)
         	visibleMonsters = new ArrayList<>();
         else

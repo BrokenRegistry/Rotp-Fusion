@@ -222,11 +222,11 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 //	}
 	public List<StarSystem> ringSystems(float minDist, float maxDist) {
 		List<StarSystem> ringSystems = new ArrayList<>();
-		for (StarSystem other : galaxy().starSystems())
-			if (other != null && other != this) {
-				float dist = distanceTo(other);
+		for (StarSystem sys : galaxy().starSystems())
+			if (sys != null && sys != this) {
+				float dist = distanceTo(sys);
 				if (dist < maxDist && dist > minDist)
-					ringSystems.add(other);
+					ringSystems.add(sys);
 			}
 		return ringSystems;
 	}
@@ -1148,6 +1148,38 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
             return Base.compare(pr1, pr2);
         }
     }
+	void addMonster()	{
+		float[] prob = planet.guardianMonstersProbability();
+		if (prob[4] == 0f)
+			return;
+		// String str = IntStream.range(0, prob.length) .mapToObj(i -> String.format("%3.2f",prob[i])).collect(Collectors.joining(","));
+		// System.out.print("addMonster() prob = " + str);
+		float rnd = rng().nextFloat();
+		if (rnd < prob[0]) {
+//			System.out.println("	==> Space Jellyfish");
+			monster(new SpaceJellyfish(null, null));
+		}
+		else if (rnd < prob[1]) {
+//			System.out.println("	==> Space Cuttlefish");
+			monster(new SpaceCuttlefish(null, null));
+		}
+		else if (rnd < prob[2]) {
+//			System.out.println("	==> Space Crystal");
+			monster(new GuardianCrystal(null, null));
+		}
+		else if (rnd < prob[3]) {
+//			System.out.println("	==> Space Pirates");
+			monster(new GuardianPirates(null, null));
+		}
+		else if (rnd < prob[4]) {
+//			System.out.println("	==> Space Amoeba");
+			monster(new GuardianAmoeba(null, null));
+		}
+		else {
+//			System.out.println("	==> No Monster");
+		}
+	}
+
 	// ==================== SystemBaseData ====================
 	//
 	public static class SystemBaseData {

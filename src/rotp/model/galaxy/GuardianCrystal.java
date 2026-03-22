@@ -18,10 +18,8 @@ package rotp.model.galaxy;
 import java.awt.Color;
 import java.util.List;
 
-import rotp.model.colony.Colony;
 import rotp.model.combat.CombatStackMonster;
 import rotp.model.combat.CombatStackSpaceCrystal;
-import rotp.model.planet.PlanetType;
 import rotp.model.ships.ShipArmor;
 import rotp.model.ships.ShipComputer;
 import rotp.model.ships.ShipDesign;
@@ -30,36 +28,26 @@ import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
 
-public final class SpaceCrystal extends SpaceMonster {
-    private static final long serialVersionUID = 1L;
-    private static final Color shieldColor	= Color.cyan;
-    private static final String imageKey	= "SPACE_CRYSTAL";
-    private static final boolean isFusion	= false;
+final class GuardianCrystal extends GuardianMonsters {
+	private static final long serialVersionUID = 1L;
+	private static final Color shieldColor	= Color.cyan;
+	private static final String imageKey	= "SPACE_CRYSTAL";
+	private static final boolean isFusion	= true;
 
-    public SpaceCrystal(Float speed, Float level)	{ super(imageKey, ORIGINAL_ROAMING_EMPIRE, speed, level); }
+	GuardianCrystal(Float speed, Float level) {
+		super(imageKey, FUSION_GUARDIAN_EMPIRE, speed, level);
+		num(0, 1); // Number of monsters
+	}
 
-    @Override  public void initCombat() {
-    	super.initCombat();
+	@Override  public void initCombat() {
+		super.initCombat();
 		if (options().isMoO1Monster())
 			addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));
 		else
 			addCombatStack(new CombatStackSpaceCrystal(this, imageKey, stackLevel(), 0, shieldColor));
-    }
-    @Override public SpaceMonster getCopy()		{ return new SpaceCrystal(null, null); }
-    @Override protected int otherSpecialCount() { return options().isMoO1Monster()? 1:2; }
-    @Override public void degradePlanet(StarSystem sys) {
-        Colony col = sys.colony();
-        if (col != null) {
-            sys.empire().lastAttacker(this);
-            col.destroy();  
-        }
-        if (!options().isMoO1Monster())
-        	sys.planet().degradeToType(PlanetType.DEAD);
-        float maxWaste = sys.planet().maxWaste();
-        sys.planet().addWaste(maxWaste);
-        sys.planet().removeExcessWaste();
-        sys.abandoned(false);
-    }
+	}
+	@Override public SpaceMonster getCopy()		{ return new GuardianCrystal(null, null); }
+	@Override protected int otherSpecialCount()	{ return options().isMoO1Monster()? 1:2; }
 	private int hullHitPoints()		{ return moO1Level (5000, 1000, 500, 0.5f, 0.25f); }
 	@Override protected ShipDesign designMoO1()	{
 		ShipDesignLab lab = empire().shipLab();
@@ -100,9 +88,9 @@ public final class SpaceCrystal extends SpaceMonster {
 			}
 		}
 		design.special(0, lab.specialLightningShield());
-		design.special(1, lab.specialAdvDamControl());		// Advanced Damage control
-		design.special(2, lab.specialBlackHole());			// Black Hole Generator
-		design.special(3, lab.specialResistStasis());		// Immune to Stasis
+		design.special(1, lab.specialAdvDamControl());	// Advanced Damage control
+		design.special(2, lab.specialBlackHole());		// Black Hole Generator
+		design.special(3, lab.specialResistStasis());	// Immune to Stasis
 		return design;
 	}
 	@Override protected ShipDesign designRotP()	{

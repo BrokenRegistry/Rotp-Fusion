@@ -7,7 +7,7 @@ import rotp.model.game.DynOptions;
 
 public interface IMonsterPos {
 	
-	boolean DRAW_WANDERING = false; // TO DO BR: set to false (For debug purpose!)
+	boolean DRAW_WANDERING = false; // TO DO BR: !!! set to false (For debug purpose!)
 
 	default HashMap<Integer, Point.Float> wanderPath()	{ return null; }
 	default Point.Float	pos()				{ return null; }

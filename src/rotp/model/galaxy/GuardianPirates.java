@@ -20,7 +20,6 @@ import static rotp.model.ships.ShipDesign.maxSpecials;
 import java.awt.Color;
 import java.util.List;
 
-import rotp.model.colony.Colony;
 import rotp.model.combat.CombatStackMonster;
 import rotp.model.empires.Empire;
 import rotp.model.ships.ShipArmor;
@@ -31,31 +30,19 @@ import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
 
 // modnar: add Space Pirates random event
-public final class SpacePirates extends SpaceMonster {
+public final class GuardianPirates extends SpaceMonster {
 	private static final long serialVersionUID = 1L;
-    private static final Color shieldColor	= Color.magenta;
-    private static final String imageKey	= "SPACE_PIRATES";
-    private static final boolean isFusion	= true;
+	private static final Color shieldColor	= Color.magenta;
+	private static final String imageKey	= "SPACE_PIRATES";
+	private static final boolean isFusion	= true;
 
-	public SpacePirates(Float speed, Float level)	{ super(imageKey, ORIGINAL_ROAMING_EMPIRE, speed, level); }
+	public GuardianPirates(Float speed, Float level) {
+		super(imageKey, FUSION_GUARDIAN_EMPIRE, speed, level);
+		num(0, 1); // Number of monsters
+	}
 	@Override public void initCombat() {
 		super.initCombat();
 		addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));	   
-	}
-	// modnar: pirates pillage colonies rather than destroy
-	// half population, remove all factories, produce max waste
-	// ?? add to combat stack numbers from factories pillaged ??
-	@Override public void degradePlanet(StarSystem sys) { // was pillageColony
-		Colony col = sys.colony();
-		if (col != null) {
-			sys.empire().lastAttacker(this);
-			float prevPop = col.population();
-			col.setPopulation(prevPop*0.5f); // half population
-			col.industry().factories(0.0f); // remove all factories
-			float maxWaste = sys.planet().maxWaste(); // produce max waste
-			sys.planet().addWaste(maxWaste);
-			sys.planet().removeExcessWaste();
-		}		
 	}
 	@Override protected Float stackLevel()	{ return super.stackLevel() * options().piratesLevelMultiplier(); }
 	@Override protected void initDesigns()	{

@@ -19,13 +19,13 @@ import java.awt.Color;
 
 import rotp.model.ai.AmoebaShipCaptain;
 import rotp.model.ai.interfaces.ShipCaptain;
-import rotp.model.galaxy.SpaceAmoeba;
+import rotp.model.galaxy.SpaceMonster;
 
-public class CombatStackSpaceAmoeba extends CombatStackMonster {
+public final class CombatStackSpaceAmoeba extends CombatStackMonster {
 	private static final int DAMAGE_FOR_SPLIT = 500;
 	public float speed;
 	public float monsterLevel;
-	public CombatStackSpaceAmoeba(SpaceAmoeba amoeba, String imageKey, Float level, int desId, Color shieldC) {
+	public CombatStackSpaceAmoeba(SpaceMonster amoeba, String imageKey, Float level, int desId, Color shieldC) {
 		super(amoeba, imageKey, level, desId, false, shieldC);
 		if (level == null)
 			monsterLevel = options().monstersLevel();
@@ -58,7 +58,7 @@ public class CombatStackSpaceAmoeba extends CombatStackMonster {
 		if (options().isMoO1Monster())
 			return super.getCaptain();
 		else
-			return new AmoebaShipCaptain((SpaceAmoeba) fleet());
+			return new AmoebaShipCaptain((SpaceMonster) fleet());
 	}
 	@Override public void beginTurn() {
 		super.beginTurn();
@@ -77,7 +77,7 @@ public class CombatStackSpaceAmoeba extends CombatStackMonster {
 	}
 	@Override public boolean ignoreRepulsors()	{ return true; }
 	@Override public boolean canAttack(CombatStack target)  { 
-		if (target.destroyed()) 
+		if (target.destroyed())
 			return false;
 		if (target.isColony() && !target.isArmed())
 			return false;
@@ -96,7 +96,7 @@ public class CombatStackSpaceAmoeba extends CombatStackMonster {
 	@Override public boolean moveTo(int x1, int y1)	{
 		CombatStack potentialFood = mgr.stackAt(x1, y1);
 		boolean stillAlive = super.moveTo(x1, y1);
-		
+
 		// if we made it successfully to the new dest
 		// and there happens to be a ship here, eat it
 		if (stillAlive) 
@@ -112,15 +112,15 @@ public class CombatStackSpaceAmoeba extends CombatStackMonster {
 		float maxDamage = hits()+DAMAGE_FOR_SPLIT-maxStackHits();
 		float actualDamage = min(maxDamage, damage);
 		hits(hits() - actualDamage);
-		
+
 		// if we are on smallest form and are reduced < 0, we are dead
 		if (hits() <= 0) {
 			num = 0;
 			mgr.destroyStack(this);
 			return damage;
 		}
-		
-		return actualDamage; 
+
+		return actualDamage;
 	}
 	@Override public Color shieldBaseColor()	{ return Color.yellow; }
 
@@ -129,7 +129,7 @@ public class CombatStackSpaceAmoeba extends CombatStackMonster {
 			return;
 		if (!st.isShip() && !st.isColony())
 			return;
-		
+
 		// only eats ships
 		if (st.isShip()) {
 			st.drawFadeOut(.025f);

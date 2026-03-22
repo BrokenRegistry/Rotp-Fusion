@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import rotp.Rotp;
-import rotp.model.planet.Planet;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.util.LinkData;
@@ -276,56 +275,12 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 	default boolean randomAlienRacesUseTarget()			{ return randomAlienRaces.isTarget(); }
 	default void randomAlienRacesUseTarget(boolean b)	{ randomAlienRaces.isTarget(b); }
 
-	ParamList    guardianMonsters			 = new ParamList( MOD_UI, "GUARDIAN_MONSTERS", "None")
-		.showFullGuide(true)
-		.put("None", 	MOD_UI + "GUARDIAN_MONSTERS_NONE")
-//		.put("Rich",		MOD_UI + "GUARDIAN_MONSTERS_RICH")
-//		.put("Artefact",	MOD_UI + "GUARDIAN_MONSTERS_RUIN")
-		.put("All",		MOD_UI + "GUARDIAN_MONSTERS_ALL");
-	default boolean noPlanetHaveMonster()		{ return guardianMonsters.get().equals("None"); }
-	default boolean richPlanetHaveMonster()		{
-		return guardianMonsters.get().equals("All") || guardianMonsters.get().equals("Rich");
-	}
-	default boolean artefactPlanetHaveMonster()	{
-		return guardianMonsters.get().equals("All") || guardianMonsters.get().equals("Artefact");
-	}
-
-	ParamInteger guardianMonstersProbability = new ParamInteger(MOD_UI, "GUARDIAN_MONSTERS_PCT", 50)
-			.setLimits(0, 500)
-			.setIncrements(1, 5, 20)
-			.pctValue(true);
-	default float guardianMonstersProbability()	{
-		if (noPlanetHaveMonster())
-			return 0;
-		return guardianMonstersProbability.get()/100f;
-	}
 	ParamInteger guardianMonstersLevel = new ParamInteger(MOD_UI, "GUARDIAN_MONSTERS_LEVEL", 100)
 			.setLimits(10, 1000)
 			.setIncrements(5, 20, 100)
 			.pctValue(true);
 	default float guardianMonstersLevel()		{ return guardianMonstersLevel.get()/100f; }
 	
-	default float guardianMonstersProbability(Planet planet) {
-		if (noPlanetHaveMonster())
-			return 0;
-		if (artefactPlanetHaveMonster() && planet.isArtifact()) {
-			float basePct	= guardianMonstersProbability.get()/100f;
-			float planetPct	= planet.baseSize()/100f;
-			return basePct * planetPct;
-		}
-		if (richPlanetHaveMonster() && planet.isResourceRich()) {
-			float basePct	= guardianMonstersProbability.get()/100f;
-			float planetPct	= planet.baseSize()/100f;
-			return basePct * planetPct;
-		}
-		if (richPlanetHaveMonster() && planet.isResourceUltraRich()) {
-			float basePct	= guardianMonstersProbability.get()/100f;
-			float planetPct	= planet.baseSize()/100f;
-			return 1.5f * basePct * planetPct;
-		}
-		return 0;
-	}
-
 	String NEBULA_POS_NORMAL	= "NORMAL";
 	String NEBULA_POS_INSIST	= "INSIST";
 	String NEBULA_POS_EXTEND	= "EXTEND";

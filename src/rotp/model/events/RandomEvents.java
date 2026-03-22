@@ -186,7 +186,7 @@ public class RandomEvents implements Base, Serializable {
 			return;
 
 		eventChance = min(maxChanceIncr(), eventChance + chanceIncr());
-		// eventChance = 1; // TO DO BR: Comment
+		// eventChance = 1; // TO DO BR: COMMENT
 		// System.out.println("eventChance = " + eventChance);
 		if (turnRnd() > eventChance)
 			return;

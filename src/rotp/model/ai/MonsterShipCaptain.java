@@ -33,7 +33,7 @@ import rotp.model.galaxy.StarSystem;
 import rotp.model.ships.ShipDesign;
 import rotp.util.Base;
 
-public class MonsterShipCaptain implements Base, ShipCaptain {
+public final class MonsterShipCaptain implements Base, ShipCaptain {
 	private final Empire empire;
 	private SpaceMonster monster; // for potential later use
 
@@ -77,9 +77,9 @@ public class MonsterShipCaptain implements Base, ShipCaptain {
 				return;
 			}
 		}
-		
+
 		CombatStack prevTarget = null;
-		
+
 		boolean turnActive = true;
 		while (turnActive) {
 			float prevMove = stack.move;
@@ -100,7 +100,7 @@ public class MonsterShipCaptain implements Base, ShipCaptain {
 			// if can attack target this turn, fire when ready
 			if (stack.canAttack(stack.target)) 
 				mgr.performAttackTarget(stack);
-		 
+
 			// SANITY CHECK:
 			// make sure we fall out if we haven't moved 
 			// and we are still picking the same target

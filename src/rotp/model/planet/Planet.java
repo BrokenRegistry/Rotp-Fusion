@@ -39,6 +39,8 @@ import rotp.model.game.ISystemsOptions;
 import rotp.model.tech.TechAtmosphereEnrichment;
 import rotp.model.tech.TechSoilEnrichment;
 import rotp.model.tech.TechTree;
+import rotp.ui.util.ParamInteger;
+import rotp.ui.util.ParamList;
 import rotp.ui.util.planets.Sphere2D;
 import rotp.ui.util.planets.SphereShadowPaint;
 import rotp.util.Base;
@@ -85,10 +87,25 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     private static final int ASTEROID_DENSITY_LOW  = 1;
     private static final int ASTEROID_DENSITY_HIGH = 2;
 
+	private static final String NO_MONSTERS		= "None";
+	private static final String WEAK_MONSTERS	= "Weak";
+	private static final String STRONG_MONSTERs	= "Strong";
+	private static final String ALL_MONSTERS	= "All";
+	public static final ParamList guardianMonsters	= new ParamList( MOD_UI, "GUARDIAN_MONSTERS", "None")
+			.showFullGuide(true)
+			.put(NO_MONSTERS,		MOD_UI + "GUARDIAN_MONSTERS_NONE")
+			.put(WEAK_MONSTERS, 	MOD_UI + "GUARDIAN_MONSTERS_WEAK")
+			.put(STRONG_MONSTERs,	MOD_UI + "GUARDIAN_MONSTERS_STRONG")
+			.put(ALL_MONSTERS,		MOD_UI + "GUARDIAN_MONSTERS_ALL");
+	public static final ParamInteger guardianMonstersProbability = new ParamInteger(MOD_UI, "GUARDIAN_MONSTERS_PCT", 50)
+			.setLimits(0, 500)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
+
 	public static final int creationSizeMax()	{ return PlanetCreationSizeMax.get(); }
 	public static final int creationSizeMin()	{ return PlanetCreationSizeMin.get(); }
 	public static final int creationSizeInc()	{ return PlanetCreationRound.get(); }
-	public static final int baseSizeMax()		{ return PlanetBaseSizeMax.get(); }
+	private static final int baseSizeMax()		{ return PlanetBaseSizeMax.get(); }
 
     private String planetTypeKey;
     private final StarSystem system;
@@ -110,7 +127,7 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     private int iceLevel = 0;
     private int terrainSeed = 0;
     private float oceanPct = 0;
-    private int cloudThickness = 0;  //200 nothing, 550 all white, 400-450 terran
+	public int cloudThickness = 0;  //200 nothing, 550 all white, 400-450 terran
     private final int[] alienFactories;
     // private Integer asteroidsMin, asteroidsMax;
     private Integer asteroidsDensity;
@@ -123,7 +140,7 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     public Color iceColor = Color.white;
     public int oceanLevel;
 
-    public transient float viewPct;
+	private transient float viewPct;
     private transient PlanetType type;
 
     public PlanetType type()               {
@@ -173,18 +190,18 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     }
     
     public int iceLevel()                  { return iceLevel; }
-    public int cloudThickness()            { return cloudThickness; }
-    public int terrainSeed()               { return terrainSeed; }
-    public void terrainSeed(int i)         { terrainSeed = i; }
-    public float terrainVal()              { return (float) terrainSeed / PlanetType.TERRAIN_MAX; }
+//  public int cloudThickness()			{ return cloudThickness; }
+    int terrainSeed()					{ return terrainSeed; }
+    void terrainSeed(int i)				{ terrainSeed = i; }
+    private float terrainVal()			{ return (float) terrainSeed / PlanetType.TERRAIN_MAX; }
     public int environment()               { return environment; }
-    public float oceanPct()                { return oceanPct; }
-    public void degradeEnvironment()       { environment = min(environment(), ENVIRONMENT_NORMAL); }
+	private float oceanPct() 			{ return oceanPct; }
+//  public void degradeEnvironment()	{ environment = min(environment(), ENVIRONMENT_NORMAL); }
     public void makeEnvironmentNone()      { environment = ENVIRONMENT_NONE; }
     public void makeEnvironmentHostile()   { environment = ENVIRONMENT_HOSTILE; }
-    public void makeEnvironmentNormal()    { environment = ENVIRONMENT_NORMAL; }
-    public void makeEnvironmentFertile()   { environment = ENVIRONMENT_FERTILE; }
-    public void makeEnvironmentGaia()      { environment = ENVIRONMENT_GAIA; }
+//  public void makeEnvironmentNormal()	{ environment = ENVIRONMENT_NORMAL; }
+	void makeEnvironmentFertile()		{ environment = ENVIRONMENT_FERTILE; }
+	private void makeEnvironmentGaia()	{ environment = ENVIRONMENT_GAIA; }
 
     public boolean isResourceUltraPoor()   { return resources == ULTRA_POOR; }
     public boolean isResourcePoor()        { return resources == POOR; }
@@ -193,11 +210,11 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     public boolean isResourceUltraRich()   { return resources == ULTRA_RICH; }
 
     private int resources()                { return resources; }
-    public void depleteResources()         { resources = max(ULTRA_POOR, resources-1); }
-    public void enrichResources()          { resources = min(ULTRA_RICH, resources+1); }
+	//public void depleteResources()	{ resources = max(ULTRA_POOR, resources-1); }
+	//public void enrichResources()		{ resources = min(ULTRA_RICH, resources+1); }
     public void setResourceUltraPoor()     { resources = ULTRA_POOR; }
     public void setResourcePoor()          { resources = POOR; }
-    public void setResourceNormal()        { resources = NORMAL; }
+	//public void setResourceNormal()	{ resources = NORMAL; }
     public void setResourceRich()          { resources = RICH; }
     public void setResourceUltraRich()     { resources = ULTRA_RICH; }
 
@@ -214,9 +231,9 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
         bonusTechs = 1;
     }
 	// modnar: setArtifactRace for setting Race Homeworld to be Artifact
-	public void setArtifactRace()          { artifacts = RUINS_ANTARAN; }
+	void setArtifactRace()				{ artifacts = RUINS_ANTARAN; }
 	// BR: even more Scientific race
-	public void setOrionRace()             { artifacts = RUINS_ORION; }
+	void setOrionRace()					{ artifacts = RUINS_ORION; }
     public void setOrionArtifact()         { 
         artifacts = RUINS_ORION; 
         bonusTechs = 3;
@@ -303,7 +320,7 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
         if (systemEmp != null)
             systemEmp.sv.refreshFullScan(starSystem().id);
     }
-    public int rotationDirection()         { return rotationDirection; }
+	private int rotationDirection()	{ return rotationDirection; }
 
     public Planet(StarSystem s) {
         COUNT++;
@@ -356,7 +373,7 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     public float baseSize()        { return baseSize; }
     public void baseSize(float d)  { baseSize = d; }
     // default max base size for planet (before general terraforming) is 180
-    public void increaseBaseSize(float amt) {
+	private void increaseBaseSize(float amt)	{
         float maxSize = baseSizeMax() * session().populationBonus();
         float newSize = Math.min(maxSize, baseSize()+amt);
         baseSize(newSize);
@@ -373,11 +390,11 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     public float sizeAfterWaste()  { return currentSize() - min(maxWaste(), waste()); }
     public void removeExcessWaste() { waste = min(maxWaste(), waste); }
 
-    public void resetBiosphere()    {
-        terraformLevel= 0;
-        if (isColonized())
-            colony().ecology().resetBiosphere();
-    }
+//    public void resetBiosphere()    {
+//        terraformLevel= 0;
+//        if (isColonized())
+//            colony().ecology().resetBiosphere();
+//    }
     public float potentialSize(TechTree tech)	{
     	TechSoilEnrichment soil = tech.topSoilEnrichmentTech();
     	TechAtmosphereEnrichment atmo = tech.topAtmoEnrichmentTech();
@@ -558,40 +575,40 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     }
     public float ultimateMaxSize() { return isColonized() ? colony.ultimateMaxSize() : baseSize(); }
     public float maxSize()         { return isColonized() ? colony.maxSize() : baseSize(); }
-    public float maxSizeAfterSoilAtmoTform() {
-        float size = maxSize();
-        int tempEnv = environment();
-        Empire emp = empire();
-        
-        // if hostile, can we t-form atmosphere?
-        if (canTerraformAtmosphere(emp)) {
-            size += emp.tech().topAtmoEnrichmentTech().sizeIncrease(baseSize());
-            tempEnv = ENVIRONMENT_NORMAL;
-        }
-        
-        // still hostile, fall out
-        if (tempEnv == ENVIRONMENT_HOSTILE)
-            return size;
-        
-        // check if known soil enrich tech is better than this planet's 
-        // current environment. If not, fall out
-        TechSoilEnrichment soilTech = emp.tech().topSoilEnrichmentTech();
-        if (soilTech == null)
-            return size;
-   
-        // if we are not fertile and can be made fertile, count that
-        if ((tempEnv == ENVIRONMENT_NORMAL) && (soilTech.environment > ENVIRONMENT_NORMAL)) {
-            tempEnv = ENVIRONMENT_FERTILE;
-            size += fertileIncrease(baseSize());
-        }
-        
-        // if we are not gaia and can be made gaia, count that
-        if ((tempEnv == ENVIRONMENT_FERTILE) && (soilTech.environment > ENVIRONMENT_FERTILE)) {
-            size += gaiaIncrease(baseSize());
-        }
-
-        return size;
-    }
+//    public float maxSizeAfterSoilAtmoTform() {
+//        float size = maxSize();
+//        int tempEnv = environment();
+//        Empire emp = empire();
+//        
+//        // if hostile, can we t-form atmosphere?
+//        if (canTerraformAtmosphere(emp)) {
+//            size += emp.tech().topAtmoEnrichmentTech().sizeIncrease(baseSize());
+//            tempEnv = ENVIRONMENT_NORMAL;
+//        }
+//        
+//        // still hostile, fall out
+//        if (tempEnv == ENVIRONMENT_HOSTILE)
+//            return size;
+//        
+//        // check if known soil enrich tech is better than this planet's 
+//        // current environment. If not, fall out
+//        TechSoilEnrichment soilTech = emp.tech().topSoilEnrichmentTech();
+//        if (soilTech == null)
+//            return size;
+//   
+//        // if we are not fertile and can be made fertile, count that
+//        if ((tempEnv == ENVIRONMENT_NORMAL) && (soilTech.environment > ENVIRONMENT_NORMAL)) {
+//            tempEnv = ENVIRONMENT_FERTILE;
+//            size += fertileIncrease(baseSize());
+//        }
+//        
+//        // if we are not gaia and can be made gaia, count that
+//        if ((tempEnv == ENVIRONMENT_FERTILE) && (soilTech.environment > ENVIRONMENT_FERTILE)) {
+//            size += gaiaIncrease(baseSize());
+//        }
+//
+//        return size;
+//    }
     public float normalPopGrowth(float currentPopulation) { return normalPopGrowth(currentPopulation, empire()); }
     public float normalPopGrowth(float currentPopulation, Empire civ) {
         float maxNewPopulation = currentSize() - currentPopulation;
@@ -759,7 +776,7 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
         g.dispose();
         return lastBuffer;
     }
-    public void prepareImage() {
+	private void prepareImage()	{
         if (type().isAsteroids())
             return;
         if (type().smallSphere(this) == null) {
@@ -768,17 +785,15 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
             generate2DSphere(Sphere2D.FAST_PLANET_R);
         }
     }
-    public Runnable sphereGenerator(final int radius) {
-        return () -> { generate2DSphere(radius); };
-    }
-    public FastImage terrainSphere(int desiredW) {
+	private Runnable sphereGenerator(final int radius)	{  return () -> { generate2DSphere(radius); }; }
+	private FastImage terrainSphere(int desiredW)	{
         Sphere2D sphere = sphere2d(desiredW);
 
         if (sphere == null)
             err("Sphere2D was NULL!");
         return sphere2d(desiredW).image(viewPct);
     }
-    public Sphere2D sphere2d(int desiredW) {
+	private Sphere2D sphere2d(int desiredW)	{
         if  (type().isAsteroids())
             return null;
 
@@ -787,7 +802,7 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
             err("Sphere is null for: ", type().toString());
         return type().smallSphere(this);
     }
-    public void generate2DSphere(int radius) {
+	private void generate2DSphere(int radius)	{
         if (type().sphereResolution(this) >= radius)
             return;
 
@@ -892,6 +907,63 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     	bonusTechs		= src.bonusTechs;
     	// waste		= src.waste; // for future option: starting with random waste!
     }
+	private boolean hasResource()	{ return resources == RICH || resources == ULTRA_RICH; }
+	private boolean isGreen()		{ return environment == ENVIRONMENT_FERTILE || environment == ENVIRONMENT_GAIA; }
+
+	public float[] guardianMonstersProbability() {
+		float[] none	= new float[] {0, 0, 0, 0, 0};
+		float p = baseSize() * guardianMonstersProbability.get()/10000f;
+		if (p > 1)
+			p = 1;
+		switch (guardianMonsters.get()) {
+			case ALL_MONSTERS:
+				if (isAntaran())
+					return new float[] {p/3, 2*p/3, p, p, p};
+				else if (isResourceRich()) {
+					float p23 = 2*p/3;
+					return new float[] {p/3, p23, p23, p, p};
+				}
+				else if (isEnvironmentFertile()) {
+					float p23 = 2*p/3;
+					return new float[] {p/3, p23, p23, p23, p};
+				}
+				p *= 1.5f;
+				if (isOrionArtifact())
+					return new float[] {0, 0, p, p, p};
+				else if (isResourceUltraRich())
+					return new float[] {0, 0, 0, p, p};
+				else if (isEnvironmentGaia())
+					return new float[] {0, 0, 0, 0, p};
+				return none;
+
+			case STRONG_MONSTERs:
+				if (isAntaran())
+					return new float[] {0, 0, p, p, p};
+				else if (isResourceRich())
+					return new float[] {0, 0, 0, p, p};
+				else if (isEnvironmentFertile())
+					return new float[] {0, 0, 0, 0, p};
+				p *= 1.5f;
+				if (p > 1)
+					p = 1;
+				if (isOrionArtifact())
+					return new float[] {0, 0, p, p, p};
+				else if (isResourceUltraRich())
+					return new float[] {0, 0, 0, p, p};
+				else if (isEnvironmentGaia())
+					return new float[] {0, 0, 0, 0, p};
+				return none;
+
+			case WEAK_MONSTERS:
+				if (isArtifact() || hasResource() || isGreen())
+					return new float[] {p/2, p, p, p, p};
+				return none;
+
+			case NO_MONSTERS:
+			default:
+				return none;
+		}
+	}
 	// ==================== PlanetBaseData ====================
 	//
 	public static class PlanetBaseData {

@@ -30,18 +30,16 @@ import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
 
-public class SpaceAmoeba extends SpaceMonster {
+public final class SpaceAmoeba extends SpaceMonster {
 	private static final long serialVersionUID = 1L;
     private static final Color shieldColor	= Color.cyan;
     private static final String imageKey	= "SPACE_AMOEBA";
     private static final boolean isFusion	= false;
 
-	public SpaceAmoeba(Float speed, Float level) {
-		super("SPACE_AMOEBA", -2, speed, level);
-	}
+	public SpaceAmoeba(Float speed, Float level)	{ super("SPACE_AMOEBA", ORIGINAL_ROAMING_EMPIRE, speed, level); }
 
 	private int hullHitPoints()		{ return moO1Level (3000, 1000, 200, 0.5f, 0.5f); }
-	
+
 	@Override public void initCombat()			{
 		super.initCombat();
 		if (options().isMoO1Monster())

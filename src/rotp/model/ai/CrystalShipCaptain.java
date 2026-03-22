@@ -21,16 +21,14 @@ import rotp.model.ai.interfaces.ShipCaptain;
 import rotp.model.combat.CombatStack;
 import rotp.model.combat.FlightPath;
 import rotp.model.combat.ShipCombatManager;
-import rotp.model.galaxy.SpaceCrystal;
+import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
 import rotp.util.Base;
 
 public final class CrystalShipCaptain implements Base, ShipCaptain {
 	@SuppressWarnings("unused")
-	private SpaceCrystal monster; // for future use
-	public CrystalShipCaptain(SpaceCrystal crystal) {
-		monster = crystal;
-	}
+	private SpaceMonster monster; // for future use
+	public CrystalShipCaptain(SpaceMonster crystal)	{ monster = crystal; }
     @Override
     public StarSystem retreatSystem(StarSystem fr) { return null; }
     @Override
@@ -47,11 +45,11 @@ public final class CrystalShipCaptain implements Base, ShipCaptain {
             mgr.turnDone(stack);
             return;
         }
-        
+
         Point pt = bestAttackSpot(stack);
         if ((pt.x != stack.x) || (pt.y != stack.y))
             stack.teleportTo(pt.x, pt.y, 0.5f);
-        
+
         stack.fireWeapon(null);
         stack.mgr.turnDone(stack);
     }
@@ -59,11 +57,11 @@ public final class CrystalShipCaptain implements Base, ShipCaptain {
     public FlightPath pathTo(CombatStack st, int x, int y) { return null; }
     private Point bestAttackSpot(CombatStack st) {
         ShipCombatManager mgr = st.mgr;
-        
+
         int maxX = ShipCombatManager.maxX;
         int maxY = ShipCombatManager.maxY;
         int validGrid[][] = new int[maxX+1][maxY+1];
-        
+
         // add up stack hp values in all of their adjacent squares
         for (CombatStack stack: mgr.activeStacks()) {
             if (stack == st)
@@ -78,12 +76,12 @@ public final class CrystalShipCaptain implements Base, ShipCaptain {
                     validGrid[x][y] += maxHp;
             }
         }
-        
+
         // now set to -1 all squares that have a stack
         // we can't teleport to those
         for (CombatStack stack: mgr.activeStacks()) 
             validGrid[stack.x][stack.y] = -1;
-        
+
         // now set to -1 all squares that have asteroids
         for (int x=0;x<=maxX;x++) {
             for (int y=0;y<=maxY;y++) {
@@ -91,7 +89,7 @@ public final class CrystalShipCaptain implements Base, ShipCaptain {
                     validGrid[x][y] = -1;
             }
         }
-        
+
         // now find the square with the highest value
         // that's where we want to teleport to
         Point pt = new Point(0,0);
@@ -104,7 +102,7 @@ public final class CrystalShipCaptain implements Base, ShipCaptain {
                     pt.y = y;
                 }
             }
-        }        
+        }
         return pt;
     }
 }

@@ -15,7 +15,10 @@
  */
 package rotp.model.events;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
+
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,21 +29,38 @@ import rotp.model.galaxy.StarSystem;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
 import rotp.ui.notifications.GNNNotification;
+import rotp.ui.util.ParamBoolean;
+import rotp.ui.util.ParamFloat;
+import rotp.ui.util.ParamInteger;
 
-abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonsterPos {
+public abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonsterPos {
 	// BR: I forgot to set one... So here is the auto-generated one!
 	private static final long serialVersionUID = 7564985189828624716L;
 	private static final int NOTIFY_TURN_COUNT = 3;
-	private	  int targetEmpId;
-	protected int targetSysId;
-	private	  int targetTurnCount = 0;
+
+	public static final ParamInteger monstersMinDistance = new ParamInteger(MOD_UI, "MONSTERS_MIN_DISTANCE", 0)
+			.setLimits(0, 25)
+			.setIncrements(1, 5, 20);
+	public static final ParamInteger monstersMaxDistance = new ParamInteger(MOD_UI, "MONSTERS_MAX_DISTANCE", 8)
+			.setLimits(5, 100)
+			.setIncrements(1, 5, 20);
+	public static final ParamFloat monstersSpeed = new ParamFloat(MOD_UI, "MONSTERS_SPEED", 0f)
+			.setLimits(0f, 5f)
+			.setIncrements(0.1f, 0.5f, 2f)
+			.guiFormat("0.0")
+			.specialZero("SETTINGS_DEFAULT");
+	public static final ParamBoolean monstersArePicky = new ParamBoolean(MOD_UI, "MONSTER_ARE_PICKY", false);
+
+	private int targetEmpId;
+	private int targetSysId;
+	private int targetTurnCount = 0;
 	protected SpaceMonster monster;
 	protected float level = 1.0f;
 	private	  float realSpeed = 1.0f;
 
 	private	  HashMap<Integer, Point.Float> path;
 	protected long monsterId;
-    // BR: Dynamic options for future backward compatibility
+	// BR: Dynamic options for future backward compatibility
 	private DynOptions dynamicOptions = new DynOptions();
 	private Integer notifyTurnCount;
 	private Boolean notified;
@@ -65,7 +85,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		if (path == null)
 			path = new HashMap<>();
 		return path;
-	};
+	}
 	@Override public boolean goodEvent()		{ return false; }
 	@Override public boolean monsterEvent() 	{ return true; }
 	@Override public SpaceMonster monster(boolean track)	{ return monster; }
@@ -85,6 +105,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		return s1;
 	}
 	@Override public void trigger(Empire emp)	{
+		//System.out.println("New RandomEventMonsters trigerred : "); // TO DO BR: REMOVE
 		Empire empire = galaxy().empire(nextEmpId(true));
 		if (empire == null)
 			empire = emp;
@@ -94,16 +115,24 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		log("Starting Space " + dispName() + " event against: "+empire.raceName());
 		// System.out.println("Starting Space " + dispName() + " event against: "+emp.raceName());
 		if (realSpeed==0)
-			realSpeed=1; // backward compatibility
+			realSpeed = 1; // backward compatibility
 
 		if (empire.extinct()) {
 			targetEmpId = empire.id;
 			targetSysId = empire.homeSysId(); // Former home of extinct empire
 		}
 		else {
-			StarSystem targetSystem = random(empire.allColonizedSystems());
+			targetSysId = -1;
+			if (monstersArePicky()) {
+				targetSysId = pickSystem(empire.allColonizedSystems());
+				if (targetSysId == -1)
+					targetSysId = pickSystem(galaxy().allColonizedSystems());
+				if (targetSysId == -1)
+					return ;
+			}
+			if (targetSysId == -1)
+				targetSysId = random(empire.allColonizedSystems()).id;
 			targetEmpId = empire.id;
-			targetSysId = targetSystem.id;
 		}
 		targetTurnCount = newNotifyTurnCount();
 		// System.out.println(galaxy().currentTurn() + " Trigger() Pre-init "+ name()+ " targetTurnCount = " + targetTurnCount);
@@ -154,44 +183,34 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		if (monster == null)
 			trackLostMonster();
 		monster.event = this;
-	};
+	}
 
 	// Mandatory and occasional override
 	abstract protected String name();
 	abstract protected SpaceMonster newMonster(Float speed, Float level);
 	abstract protected Integer lootMonster(boolean lootMode);
-	protected int getNextSystem()				{
-		StarSystem targetSystem = galaxy().system(targetSysId);
-		// next system is one of the 10 nearest systems
-		// more likely to go to new system (25%) than visited system (5%)
-		IGameOptions opts = options();
-		float maxDist = opts.monsterMaxDistance();
-		float minDist = opts.monsterMinDistance();
-		if (opts.isMoO1Monster()) {
-			maxDist = 6;
-			minDist = 0;
-		}
-		List<StarSystem> near = targetSystem.ringSystems(minDist, maxDist);
-		shuffle(near);
-		boolean stopLooking = false;		
-		int nextSysId = -1;
-		int loops = 0;
-		if (near.size() > 0) {
-			while (!stopLooking) {
-				loops++;
-				for (StarSystem sys : near) {
-					float chance = monster.vistedSystems().contains(sys.id) ? 0.05f : 0.25f;
-					if (random() < chance) {
-						nextSysId = sys.id;
-						stopLooking = true;
-						break;
-					}
-				}
-				if (loops > 10) 
-					stopLooking = true;
-			}
-		}
-		return nextSysId;
+	// more likely to go to new system (25%) than visited system (5%)
+	protected float baseChance(StarSystem sys)	{
+		if (monster == null)
+			return 0.25f;
+		return monster.vistedSystems().contains(sys.id) ? 0.05f : 0.25f;
+	}
+	protected float systemChance(StarSystem s)	{ return s.isColonized() ? baseChance(s) : 0; }
+	private int getNextSystem()					{
+		float maxDist = monstersMaxDistance();
+		float minDist = monstersMinDistance();
+		return pickSystem(galaxy().system(targetSysId).ringSystems(minDist, maxDist));
+	}
+	private int pickSystem(List<StarSystem> sl)	{
+		if (sl.size() <= 0)
+			return -1;
+		List<StarSystem> shuffledList = new ArrayList<>(sl);
+		shuffle(shuffledList);
+		for (int loop=0; loop <= 10; loop++)
+			for (StarSystem sys : shuffledList)
+				if (random() < systemChance(sys))
+					return sys.id;
+		return -1;
 	}
 	// Don't use! For backward compatibility only, when a monster was already launched
 	protected int oldEmpId()					{ return targetEmpId; }
@@ -348,7 +367,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		terminateEvent(this);
 	}
 	private void moveToNextSystem()				{
-		// System.out.println(galaxy().currentTurn() + " moveToNextSystem() " + monster.name());
+		// System.out.println(galaxy().currentTurn() + " moveToNextSystem() " + monster.name()); // TO DO BR: COMMENT
 		newNotifyTurnCount();
 		setNotified(false);
 		monster.travelSpeed = realSpeed; // could have been slowed!
@@ -436,7 +455,7 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 	private float avgSpeed()			{
 		if (options().isMoO1Monster())
 			return 1f;
-		float speed = options().monsterSpeed();
+		float speed = monstersSpeed();
 		if (speed == 0)
 			return 1f / (1.5f * max(1, 100.0f/galaxy().maxNumStarSystems()));
 		return speed;
@@ -615,4 +634,11 @@ abstract class RandomEventMonsters extends AbstractRandomEvent implements IMonst
 		notifyTurnCount = NOTIFY_TURN_COUNT + roll(-1, 2);
 		return notifyTurnCount;
 	}
+
+	boolean monstersArePicky()			{ return monstersArePicky.get(); }
+	private int monstersMinDistance()	{ return monstersMinDistance.get(); }
+	private int monstersMaxDistance()	{ return monstersMaxDistance.get(); }
+	private float monstersSpeed()		{ return monstersSpeed.get(); }
+//	private int monstersMaxDistance()	{ return (monstersArePicky()? 2 : 1) * monstersMaxDistance.get(); }
+//	private float	monstersSpeed()		{ return (monstersArePicky()? 2 : 1) * monstersSpeed.get(); }
 }

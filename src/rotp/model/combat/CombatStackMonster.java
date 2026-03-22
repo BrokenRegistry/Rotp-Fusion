@@ -89,7 +89,7 @@ public class CombatStackMonster extends CombatStackShip {
 		return max(1, super.optimalFiringRange(tgt));
 	}
 
-	public final Color shieldColor()			{ return shieldColor; }
-	public final SpaceMonster spaceMonster()	{ return (SpaceMonster) fleet(); }
-	public final String monsterKey()			{ return monsterKey; }
+	public final Color shieldColor()	{ return shieldColor; }
+	final SpaceMonster spaceMonster()	{ return (SpaceMonster) fleet(); }
+	public final String monsterKey()	{ return monsterKey; }
 }

@@ -220,7 +220,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 	}
     public boolean hasStargate()              { return hasStargate; }
     public boolean stargateCompleted()        { return stargateCompleted; }
-	public int starGateTimeToComplete()	{	// TODO BR: finish
+	public int starGateTimeToComplete()	{
 		if (hasStargate)
 			return 0;
 		if (!buildingStargate)

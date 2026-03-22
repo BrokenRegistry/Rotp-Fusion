@@ -18,10 +18,11 @@ package rotp.model.events;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.SpaceAmoeba;
 import rotp.model.galaxy.SpaceMonster;
+import rotp.model.galaxy.StarSystem;
 import rotp.model.game.IGameOptions;
 import rotp.ui.util.ParamInteger;
 
-public class RandomEventSpaceAmoeba extends RandomEventMonsters {
+public final class RandomEventSpaceAmoeba extends RandomEventMonsters {
 	private static final long serialVersionUID = 1L;
 	// Static parameters for Tech Triggered Events
 	public static final String TRIGGER_TECH		= "Cloning:1";
@@ -31,16 +32,8 @@ public class RandomEventSpaceAmoeba extends RandomEventMonsters {
 	private int sysId; // Not to be set: kept for backward compatibility
 	private int turnCount; // Not to be set: kept for backward compatibility
 
-	public RandomEventSpaceAmoeba() {
-		//System.out.println(LocalTime.now() + " No Galaxy: " + " New RandomEventSpaceAmoeba was created");
-	}
-	@Override protected SpaceMonster newMonster(Float speed, Float level) {
-//		if (galaxy() != null)
-//			System.out.println(galaxy().currentTurn() + " RandomEventSpaceAmoeba: newMonster was created");
-//		else
-//			System.out.println(LocalTime.now() + " No Galaxy: " + " RandomEventSpaceAmoeba: newMonster was created");
-		return new SpaceAmoeba(speed, level);
-	}
+	RandomEventSpaceAmoeba()	{}
+	@Override protected SpaceMonster newMonster(Float speed, Float level)	{ return new SpaceAmoeba(speed, level); }
 	@Override protected int nextEmpId(boolean clear)	{ return galaxy().events().nextTargetEmpireForSpaceAmoeba(clear); }
 	@Override public boolean techDiscovered()	{ return !galaxy().events().spaceAmoebaNotTriggered(); }
 	@Override protected String name()			{ return "AMOEBA"; }
@@ -64,12 +57,23 @@ public class RandomEventSpaceAmoeba extends RandomEventMonsters {
 			if (completeAllowed) {
 				if (!emp.tech().planetology().completeResearch())
 					saleAmount = saleAmount * 5/2; // if no research then more gold
-			} else
-				if (!emp.tech().planetology().contributeToResearch(rBC))
-					saleAmount += rBC; // if no research then more gold
+			}
+			else if (!emp.tech().planetology().contributeToResearch(rBC))
+				saleAmount += rBC; // if no research then more gold
 		}
 		// Selling the amoeba flesh gives reserve BC, scaling with turn number
 		return saleAmount;
+	}
+	@Override protected float systemChance(StarSystem sys)	{
+		if (!sys.isColonized())
+			return 0;
+		if (!monstersArePicky())
+			return baseChance(sys);
+		if (sys.planet().isEnvironmentGaia())
+			return 2 * baseChance(sys);
+		if (sys.planet().isEnvironmentFertile())
+			return baseChance(sys);
+		return 0;
 	}
 	// Don't use! For backward compatibility only, when a monster was already launched
 	@Override protected int oldEmpId()			{ return empId; }

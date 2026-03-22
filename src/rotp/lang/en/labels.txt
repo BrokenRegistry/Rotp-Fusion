@@ -4054,16 +4054,17 @@ SETTINGS_MOD_PLAYER_SHIP_SET_FORCED_SHIPSET  | » %1
 SETTINGS_MOD_PLAYER_SHIP_SET_CUSTOM_SPECIES  | cs: %1
 SETTINGS_MOD_PLAYER_SHIP_SET_BASE_SPECIES    | [base_race]
 
-SETTINGS_MOD_GUARDIAN_MONSTERS_DESC      | Rich and Artifact planets can be guarded by Space Monsters.
-SETTINGS_MOD_GUARDIAN_MONSTERS           | Guardians: %1
-SETTINGS_MOD_GUARDIAN_MONSTERS_NONE_DESC | No Space Monster Guardians.
-SETTINGS_MOD_GUARDIAN_MONSTERS_NONE      | None
-SETTINGS_MOD_GUARDIAN_MONSTERS_ALL_DESC  | Rich, Ultra-Rich, and Artifact planets can be guarded by Space Monsters.
-SETTINGS_MOD_GUARDIAN_MONSTERS_ALL       | Yes
-SETTINGS_MOD_GUARDIAN_MONSTERS_RICH_DESC | Rich and Ultra-Rich planets can be guarded by Space Monsters.
-SETTINGS_MOD_GUARDIAN_MONSTERS_RICH      | Rich
-SETTINGS_MOD_GUARDIAN_MONSTERS_RUIN_DESC | Artifact planets can be guarded by Space Monsters.
-SETTINGS_MOD_GUARDIAN_MONSTERS_RUIN      | Artifact
+SETTINGS_MOD_GUARDIAN_MONSTERS_DESC			| Rich, Ultra-Rich, Artifact, Fertile and Gaia planets can be guarded by Space Monsters.
+SETTINGS_MOD_GUARDIAN_MONSTERS				| Planet Guardians: %1
+SETTINGS_MOD_GUARDIAN_MONSTERS_NONE_DESC	| No Space Monster Guardians.
+SETTINGS_MOD_GUARDIAN_MONSTERS_NONE			| Unguarded
+SETTINGS_MOD_GUARDIAN_MONSTERS_ALL_DESC		| Some monsters can be defeated right from the start of the game, while others will put up a tougher fight.
+SETTINGS_MOD_GUARDIAN_MONSTERS_ALL			| Any Monster.
+SETTINGS_MOD_GUARDIAN_MONSTERS_WEAK_DESC	| These monsters can be defeated early in the game.
+SETTINGS_MOD_GUARDIAN_MONSTERS_WEAK			| Puny Monsters
+SETTINGS_MOD_GUARDIAN_MONSTERS_STRONG_DESC	| These monsters can only be defeated with large fleets.
+SETTINGS_MOD_GUARDIAN_MONSTERS_STRONG		| Mighty Monsters
+
 SETTINGS_MOD_GUARDIAN_MONSTERS_PCT_DESC  | Base probability (in %) for good planets to have a Space Monster. This value will be multiplied by the planet size (in %).<br>Larger values ​​lead to more monsters.
 SETTINGS_MOD_GUARDIAN_MONSTERS_PCT        | Guardians Prob: %1%
 SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL_DESC | Difficulty level for Guardian Space Monsters.
@@ -4076,6 +4077,14 @@ SETTINGS_MOD_MONSTERS_MIN_DISTANCE_DESC		| Minimum distance to the next colony t
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE			| Minimum distance: %1 ly
 SETTINGS_MOD_MONSTERS_MAX_DISTANCE_DESC		| Maximum distance to the next colony targeted by the space monsters.
 SETTINGS_MOD_MONSTERS_MAX_DISTANCE			| Maximum distance: %1 ly
+
+SETTINGS_MOD_MONSTER_ARE_PICKY_HELP			| Monsters will target planets that contain certain types of resources.<br>- Space Crystals will be drawn to any populated ancient world, ANYWHERE on the map. When they can't find a populated ancient world, they will leave.<br>- Space Amoebas will be drawn to populated GAIA planets, ANYWHERE on the map. When they can't find a populated Gaia, they will leave.<br>- Space Pirates will be drawn to populated Ultra Rich planets, ANYWHERE on the map. When they can't find a populated ultra-rich, they will argue over the next target and destroy themselves.<br><br>Note: Monsters will also leave if they reach their attack limit.
+SETTINGS_MOD_MONSTER_ARE_PICKY_DESC			| Monsters will target planets that contain certain types of resources.
+SETTINGS_MOD_MONSTER_ARE_PICKY				| Monsters are picky:
+SETTINGS_MOD_MONSTER_ARE_PICKY_YES_DESC		| The next planet should ideally be to the Space Monster's liking.
+SETTINGS_MOD_MONSTER_ARE_PICKY_YES			| Yes
+SETTINGS_MOD_MONSTER_ARE_PICKY_NO_DESC		| Next planet will be randomly chosen.
+SETTINGS_MOD_MONSTER_ARE_PICKY_NO			| No
 
 SETTINGS_MOD_MONSTERS_SPEED_HELP			| Average speed of space monsters.<br>Corresponds to the distance between the two star systems divided by the duration of the journey.<br>When less than 1, monsters will move in a zigzag pattern at a speed of 1, in order to conceal their destination.
 SETTINGS_MOD_MONSTERS_SPEED_DESC			| Average speed of space monsters.

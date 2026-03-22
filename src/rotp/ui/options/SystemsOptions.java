@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
+import rotp.model.planet.Planet;
 import rotp.ui.util.ParamTitle;
 
 final class SystemsOptions extends AbstractOptionsSubUI {
@@ -69,9 +70,9 @@ final class SystemsOptions extends AbstractOptionsSubUI {
 						planetQuality,
 						minDistArtifactPlanet,
 						LINE_SPACER_25,
-						guardianMonsters,
+						Planet.guardianMonsters,
 						guardianMonstersLevel,
-						guardianMonstersProbability
+						Planet.guardianMonstersProbability
 						));
 		return majorList;
 	}

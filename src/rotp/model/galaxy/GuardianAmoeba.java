@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *     https://www.gnu.org/licenses/gpl-3.0.html
+ *	 https://www.gnu.org/licenses/gpl-3.0.html
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,10 +18,8 @@ package rotp.model.galaxy;
 import java.awt.Color;
 import java.util.List;
 
-import rotp.model.colony.Colony;
 import rotp.model.combat.CombatStackMonster;
-import rotp.model.combat.CombatStackSpaceCrystal;
-import rotp.model.planet.PlanetType;
+import rotp.model.combat.CombatStackSpaceAmoeba;
 import rotp.model.ships.ShipArmor;
 import rotp.model.ships.ShipComputer;
 import rotp.model.ships.ShipDesign;
@@ -30,40 +28,31 @@ import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
 
-public final class SpaceCrystal extends SpaceMonster {
-    private static final long serialVersionUID = 1L;
-    private static final Color shieldColor	= Color.cyan;
-    private static final String imageKey	= "SPACE_CRYSTAL";
-    private static final boolean isFusion	= false;
+public final class GuardianAmoeba extends GuardianMonsters {
+	private static final long serialVersionUID = 1L;
+	private static final Color shieldColor	= Color.cyan;
+	private static final String imageKey	= "SPACE_AMOEBA";
+	private static final boolean isFusion	= true;
 
-    public SpaceCrystal(Float speed, Float level)	{ super(imageKey, ORIGINAL_ROAMING_EMPIRE, speed, level); }
+	public GuardianAmoeba(Float speed, Float level)	{
+		super("SPACE_AMOEBA", FUSION_GUARDIAN_EMPIRE, speed, level);
+		num(0, 1); // Number of monsters
+	}
 
-    @Override  public void initCombat() {
-    	super.initCombat();
+	private int hullHitPoints()		{ return moO1Level (3000, 1000, 200, 0.5f, 0.5f); }
+
+	@Override public void initCombat()			{
+		super.initCombat();
 		if (options().isMoO1Monster())
 			addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));
 		else
-			addCombatStack(new CombatStackSpaceCrystal(this, imageKey, stackLevel(), 0, shieldColor));
-    }
-    @Override public SpaceMonster getCopy()		{ return new SpaceCrystal(null, null); }
-    @Override protected int otherSpecialCount() { return options().isMoO1Monster()? 1:2; }
-    @Override public void degradePlanet(StarSystem sys) {
-        Colony col = sys.colony();
-        if (col != null) {
-            sys.empire().lastAttacker(this);
-            col.destroy();  
-        }
-        if (!options().isMoO1Monster())
-        	sys.planet().degradeToType(PlanetType.DEAD);
-        float maxWaste = sys.planet().maxWaste();
-        sys.planet().addWaste(maxWaste);
-        sys.planet().removeExcessWaste();
-        sys.abandoned(false);
-    }
-	private int hullHitPoints()		{ return moO1Level (5000, 1000, 500, 0.5f, 0.25f); }
+			addCombatStack(new CombatStackSpaceAmoeba(this, imageKey, stackLevel(), 0, shieldColor));
+	}
+	@Override public SpaceMonster getCopy()		{ return new GuardianAmoeba(null, null); }
+	@Override protected int otherSpecialCount() { return options().isMoO1Monster()? 1:3; }
 	@Override protected ShipDesign designMoO1()	{
 		ShipDesignLab lab = empire().shipLab();
-		ShipDesign design = lab.newBlankDesign(4, hullHitPoints());
+		ShipDesign design = lab.newBlankDesign(ShipDesign.maxSpecials, stackLevel(hullHitPoints()));
 		design.mission	(ShipDesign.DESTROYER);
 
 		List<ShipEngine> engines = lab.engines();
@@ -77,7 +66,7 @@ public final class SpaceCrystal extends SpaceMonster {
 		design.armor	(armors.get(stackLevel(0, armors.size()-1)));
 
 		List<ShipShield> shields = lab.shields();
-		design.shield	(shields.get(stackLevel(5, shields.size()-1)));
+		design.shield	(shields.get(stackLevel(0, shields.size()-1)));
 
 		List<ShipECM> ecms = lab.ecms();
 		design.ecm		(ecms.get(stackLevel(2, ecms.size()-1)));
@@ -90,30 +79,37 @@ public final class SpaceCrystal extends SpaceMonster {
 		design.monsterEcmDefense(1);
 		design.monsterInitiative(100);
 
-		int wpnAll = max(1, stackLevel(10));
+		int wpnAll = max(1, stackLevel(1));
 		for (int i=4; i>0; i--) {
 			int count = wpnAll/i;
 			if (count != 0) {
-				// Crystal ray
-				design.weapon(i-1, lab.crystalRay(), count);
+				design.weapon(i-1, lab.amoebaStream(), count); // Amoeba stream
 				wpnAll -= count;
 			}
 		}
-		design.special(0, lab.specialLightningShield());
-		design.special(1, lab.specialAdvDamControl());		// Advanced Damage control
-		design.special(2, lab.specialBlackHole());			// Black Hole Generator
-		design.special(3, lab.specialResistStasis());		// Immune to Stasis
+		design.special(0, lab.specialAdvDamControl());	// Advanced Damage control
+		design.special(1, lab.specialResistStasis());	// Immune to Stasis
+
 		return design;
 	}
 	@Override protected ShipDesign designRotP()	{
 		ShipDesignLab lab = empire().shipLab();
-		int hp = (int) (stackLevel(7000));
+		int hp = 3500;
+		if (stackLevel() < 0.75f)
+			hp = 1500;
+		else if (stackLevel() > 1.35f)
+			hp = 7500;
+		else if (stackLevel() >= 2f)
+			hp = 15500;
+		else if (stackLevel() >= 4f)
+			hp = 31500;
+		else if (stackLevel() >= 8f)
+			hp = 63500;
 		ShipDesign design = lab.newBlankDesign(5, hp);
-
 		design.mission	(ShipDesign.DESTROYER);
 
 		List<ShipEngine> engines = lab.engines();
-		design.engine	(engines.get(stackLevel(0, engines.size()-1)));
+		design.engine	(engines.get(stackLevel(1, engines.size()-1)));
 
 		List<ShipComputer> computers = lab.computers();
 		int computerLevel = stackLevel(10);
@@ -123,7 +119,7 @@ public final class SpaceCrystal extends SpaceMonster {
 		design.armor	(armors.get(stackLevel(0, armors.size()-1)));
 
 		List<ShipShield> shields = lab.shields();
-		design.shield	(shields.get(stackLevel(5, shields.size()-1)));
+		design.shield	(shields.get(stackLevel(0, shields.size()-1)));
 
 		List<ShipECM> ecms = lab.ecms();
 		design.ecm		(ecms.get(stackLevel(0, ecms.size()-1)));
@@ -131,16 +127,16 @@ public final class SpaceCrystal extends SpaceMonster {
 		int maneuver = max(2, stackLevel(2));
 		design.maneuver(lab.maneuver(maneuver));
 		design.monsterManeuver(maneuver);
-		design.monsterAttackLevel(stackLevel(20)); // Normal = Always hit
+		design.monsterAttackLevel(20); // Always hit
 		design.monsterBeamDefense(1);
 		design.monsterEcmDefense(1);
 		design.monsterInitiative(100);
 
-		design.special(0, lab.specialZyroShield());
-		design.special(1, lab.specialTeleporter());
-		design.special(2, lab.specialCrystalPulsar());
-		design.special(3, lab.specialCrystalNullifier());
-		design.special(4, lab.specialResistStasis());
+		design.special(0, lab.specialAmoebaMaxDamage());	// Limited Damage
+		design.special(1, lab.specialAmoebaMitosis());		// Mitosis
+		design.special(2, lab.specialAmoebaEatShips());		// Eat Ships
+		design.special(3, lab.specialResistRepulsor());		// Resist Repulsors
+		design.special(4, lab.specialResistStasis());		// Immune to Stasis
 		return design;
 	}
 }

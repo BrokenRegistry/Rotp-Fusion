@@ -44,38 +44,19 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-03-22 (BR)
+- New fearsome guardian Monsters: Space Crystal and Space Amoeba can now be selected to guard valuable planets.
+- New Picky Roaming Space Monsters.
+  - Space Crystals will be drawn to any populated ancient world, ANYWHERE on the map. When they can't find a populated ancient world, they will leave.
+  - Space Amoebas will be drawn to populated GAIA planets, ANYWHERE on the map. When they can't find a populated Gaia, they will leave.
+  - Space Pirates will be drawn to populated Ultra Rich planets, ANYWHERE on the map. When they can't find a populated ultra-rich, they will argue over the next target and destroy themselves.
+  - Note: Monsters will also leave if they reach their attack limit.
+
 26-03-20 (BR)
 - New Option for Custom Species:
   - They now have Attack Confidence and Defense confidence.
     - This value will multiply the Confidence of the AI (or the Player) in the rules setting.
   - Prefixes and suffixes are no longer available, as they are redundant under new custom species naming system.
-
-26-03-19 (BR)
-- Improved Main setting responsivity by disabling background Game Panel refresh.
-- Working Transport Flight Path will be shown even if the display threshold is not null.
-
-26-03-18 (BR)
-- Fixed stargate auto-setting!
-- Build Limit can't be set higher than 1 in the colony panel too.
-
-26-03-17 (BR)
-- Colony Panel: New Stargate column.
-
-26-03-16 (BR)
-- Release.yml: Updated deprecated Node.js 20 to Node.js 24
-- Stargates:
-  - Build Limit can't be set higher than 1.
-  - Reset Build Limit once the stargate is completed.
-  - Fixed smart max (left-click will not overspend anymore).
-- An image of the Stargate will also appear next to the planet in the colonies panel.
-- New option that automatically starts fleet battles without asking the player for confirmation.
-  - With another option to choose whether to display the battle results.
-
-26-03-15 (BR)
-- New options tool feature to call outside method without creating subclasses.
-  - Implemented as test to existing options, and relocated them where they are used. (StarSystem and GalaxyMapPanel)
-- New option to add a bit of transparency to the flight path.
-- New Option to disable flight path to small transports.
 
 
 ### [Features Historic](FeaturesChanges.md)

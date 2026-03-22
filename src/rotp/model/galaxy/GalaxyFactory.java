@@ -575,7 +575,7 @@ public final class GalaxyFactory implements Base {
 						&& opts.selectedMinDistArtifactPlanet() > 0.0f
 						&& galaxy().tooCloseToHomeWorld(refSys, opts.selectedMinDistArtifactPlanet()))
 					refSys.planet().removeArtifact();
-				addMonsters(refSys);
+				refSys.addMonster();
 				g.addStarSystem(refSys);
 				// other symmetry systems
 				for (int k=i+1; k<i+sh.numEmpires(); k++) {
@@ -595,24 +595,11 @@ public final class GalaxyFactory implements Base {
 						&& opts.selectedMinDistArtifactPlanet() > 0.0f
 						&& galaxy().tooCloseToHomeWorld(sys, opts.selectedMinDistArtifactPlanet()))
 					sys.planet().removeArtifact();
-				addMonsters(sys);
+				sys.addMonster();
 				g.addStarSystem(sys);
 			}
 		}
 		log("total systems created: ", str(g.numStarSystems()));
-	}
-	private void addMonsters(StarSystem sys) {
-		IGameOptions opts	= options();
-		Planet planet		= sys.planet();
-		float prob = opts.guardianMonstersProbability(planet);
-		if (prob == 0)
-			return;
-		if (prob <= rng().nextFloat())
-			return;
-		if (rng().nextBoolean())
-			sys.monster(new SpaceJellyfish(null, null));
-		else
-			sys.monster(new SpaceCuttlefish(null, null));
 	}
 	private void addNebulas(Galaxy g, GalaxyCopy src) { // BR: For Restart with new options
 		int numNebula = src.galSrc.nebulas.size();

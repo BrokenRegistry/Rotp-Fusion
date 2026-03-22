@@ -655,7 +655,8 @@ public final class Galaxy implements Base, Serializable {
                     pop += tr.size();
             }
         }
-        for (StarSystem system : player().allColonizedSystems()) {
+		List<StarSystem> allColonizedSystems = new ArrayList<>(player().allColonizedSystems());
+		for (StarSystem system : allColonizedSystems) {
         	if (system != null) {
         		Colony col = system.planet().colony();
         		pop += col.plannedTransport(sys.id);
@@ -768,6 +769,13 @@ public final class Galaxy implements Base, Serializable {
         }
         return systems;
     }
+	public List<StarSystem> allColonizedSystems()	{
+		List<StarSystem> systems = new ArrayList<>();
+		for (StarSystem sys : starSystems)
+			if (sys != null && sys.isColonized())
+				systems.add(sys);
+		return systems;
+	}
     public String nextSystemName(String rId) {
         if (!raceSystemNames().containsKey(rId))
             loadRaceNames(rId, 0);

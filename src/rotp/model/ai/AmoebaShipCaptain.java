@@ -25,15 +25,14 @@ import rotp.model.combat.CombatStackColony;
 import rotp.model.combat.CombatStackSpaceAmoeba;
 import rotp.model.combat.FlightPath;
 import rotp.model.combat.ShipCombatManager;
-import rotp.model.galaxy.SpaceAmoeba;
+import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
 import rotp.util.Base;
 
 public final class AmoebaShipCaptain implements Base, ShipCaptain {
-	private SpaceAmoeba monster;
-	public AmoebaShipCaptain (SpaceAmoeba amoeba) {
-		monster = amoeba;
-	}
+	private SpaceMonster monster;
+	public AmoebaShipCaptain (SpaceMonster amoeba)	{ monster = amoeba; }
+
     @Override
     public StarSystem retreatSystem(StarSystem fr) { return null; }
     @Override

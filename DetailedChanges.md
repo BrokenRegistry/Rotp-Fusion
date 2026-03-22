@@ -2,6 +2,14 @@
 
 ## What's New
 
+26-03-22 (BR)
+- New fearsome guardian Monsters: Space Crystal and Space Amoeba can now be selected to guard valuable planets.
+- New Picky Roaming Space Monsters.
+  - Space Crystals will be drawn to any populated ancient world, ANYWHERE on the map. When they can't find a populated ancient world, they will leave.
+  - Space Amoebas will be drawn to populated GAIA planets, ANYWHERE on the map. When they can't find a populated Gaia, they will leave.
+  - Space Pirates will be drawn to populated Ultra Rich planets, ANYWHERE on the map. When they can't find a populated ultra-rich, they will argue over the next target and destroy themselves.
+  - Note: Monsters will also leave if they reach their attack limit.
+
 26-03-20 (BR)
 - New Option for Custom Species:
   - They now have Attack Confidence and Defense confidence.

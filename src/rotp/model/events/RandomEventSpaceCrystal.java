@@ -18,10 +18,11 @@ package rotp.model.events;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.SpaceCrystal;
 import rotp.model.galaxy.SpaceMonster;
+import rotp.model.galaxy.StarSystem;
 import rotp.model.game.IGameOptions;
 import rotp.ui.util.ParamInteger;
 
-public class RandomEventSpaceCrystal extends RandomEventMonsters {
+public final class RandomEventSpaceCrystal extends RandomEventMonsters {
 	private static final long serialVersionUID = 1L;
 	// Static parameters for Tech Triggered Events
 	public static final String TRIGGER_TECH		= "Stargate:0";
@@ -30,10 +31,9 @@ public class RandomEventSpaceCrystal extends RandomEventMonsters {
 	private int empId; // Not to be set: kept for backward compatibility
 	private int sysId; // Not to be set: kept for backward compatibility
 	private int turnCount; // Not to be set: kept for backward compatibility
-	
-	@Override protected SpaceMonster newMonster(Float speed, Float level) {
-		return new SpaceCrystal(speed, level);
-	}
+
+	RandomEventSpaceCrystal()	{};
+	@Override protected SpaceMonster newMonster(Float speed, Float level)	{ return new SpaceCrystal(speed, level); }
 	@Override protected int nextEmpId(boolean clear)	{ return galaxy().events().nextTargetEmpireForSpaceCrystal(clear); }
 	@Override public boolean techDiscovered()	{ return !galaxy().events().spaceCrystalNotTriggered(); }
 	@Override protected String name()			{ return "CRYSTAL"; }
@@ -63,6 +63,17 @@ public class RandomEventSpaceCrystal extends RandomEventMonsters {
 		}
 		// Selling the Crystal part gives reserve BC, scaling with turn number
 		return saleAmount;
+	}
+	@Override protected float systemChance(StarSystem sys)	{
+		if (!sys.isColonized())
+			return 0;
+		if (!monstersArePicky())
+			return baseChance(sys);
+		if (sys.planet().isOrionArtifact())
+			return 2 * baseChance(sys);
+		if (sys.planet().isAntaran())
+			return baseChance(sys);
+		return 0;
 	}
 	// Don't use! For backward compatibility only, when a monster was already launched
 	@Override protected int oldEmpId()			{ return empId; }

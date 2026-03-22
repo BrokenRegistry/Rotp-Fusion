@@ -35,15 +35,15 @@ import rotp.model.ships.ShipManeuver;
 import rotp.model.ships.ShipShield;
 import rotp.ui.main.GalaxyMapPanel;
 
-public class OrionGuardianShip extends GuardianMonsters {
+final class OrionGuardianShip extends GuardianMonsters {
     private static final long serialVersionUID = 1L;
     private static final Color shieldColor	= Color.blue;
     private static final String imageKey	= "ORION_GUARDIAN";
     private static final boolean isFusion	= false;
     private final List<String> techs = new ArrayList<>();
 
-    public OrionGuardianShip(Float speed, Float level)	{
-		super(imageKey, -2, speed, level);
+	OrionGuardianShip(Float speed, Float level)	{
+		super(imageKey, ORIGINAL_GUARDIAN_EMPIRE, speed, level);
 		num(0, 1); // Number of monsters
 		techs.add("ShipWeapon:16");  // death ray
     }
@@ -63,7 +63,7 @@ public class OrionGuardianShip extends GuardianMonsters {
             emp.plunderShipTech(tech(techId), -2); 
 
         removeGuardian();
-    } 
+    }
 	@Override public boolean isOrionGuardian()	{ return true; }
 	@Override public boolean isFusionGuardian()	{ return false; }
 	@Override protected DiplomaticIncident killIncident(Empire emp)	{
@@ -81,7 +81,7 @@ public class OrionGuardianShip extends GuardianMonsters {
 	private int torpedoesCount()	{ return moO1Level (12,  3, 1, 0.3f, 0.15f); }
 	@Override protected ShipDesign designMoO1()	{
 		ShipDesignLab lab = empire().shipLab();
-		
+
 		ShipDesign design = lab.newBlankDesign(ShipDesign.maxSpecials, stackLevel(hullHitPoints()));
 		design.mission	(ShipDesign.DESTROYER);
 
@@ -109,7 +109,7 @@ public class OrionGuardianShip extends GuardianMonsters {
 		design.weapon(1, lab.stellarConverter(), convertersCount());
 		design.weapon(2, lab.plasmaTorpedoes(), torpedoesCount());
 		design.weapon(3, lab.deathRay(), 1);
-		
+
 		design.special(0, lab.specialLightningShield());		// Lightning Shield
 		float pFactor = options().aiProductionModifier();
 		if (pFactor > 1.4f)
@@ -117,7 +117,7 @@ public class OrionGuardianShip extends GuardianMonsters {
 		else if (pFactor > 1.2f)
 			design.special(1, lab.specialAutomatedRepair());	// Automated Repair System
 		design.special(2, lab.specialResistStasis());			// Immune to Stasis
-		
+
 		int maneuver = max(2, stackLevel(2));
 		design.maneuver(lab.maneuver(maneuver));
 		design.monsterManeuver(maneuver);
@@ -125,7 +125,7 @@ public class OrionGuardianShip extends GuardianMonsters {
 		design.monsterBeamDefense(defense);
 		design.monsterEcmDefense(defense);
 		design.monsterInitiative(100);
-		
+
 		return design;
 	}
 	@Override protected ShipDesign designRotP()	{
@@ -163,12 +163,12 @@ public class OrionGuardianShip extends GuardianMonsters {
 		design.weapon(1, lab.stellarConverter(), stackLevel(45));
 		design.weapon(2, lab.plasmaTorpedoes(), stackLevel(18));
 		design.weapon(3, lab.deathRay(), 1);
-		
+
 		design.special(0, lab.specialZyroShield());
 		design.special(1, lab.specialHighEnergyFocus());	// High Energy Focus
 		design.special(2, lab.specialAdvDamControl());		// Advanced Damage control
 		design.special(3, lab.specialResistStasis());		// Immune to Stasis
-		
+
 		return design;
 	}
 }

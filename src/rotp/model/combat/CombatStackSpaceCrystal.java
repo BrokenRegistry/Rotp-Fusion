@@ -18,16 +18,16 @@ package rotp.model.combat;
 import java.awt.Color;
 
 import rotp.model.ai.CrystalShipCaptain;
-import rotp.model.galaxy.SpaceCrystal;
+import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.ships.ShipWeaponMissileType;
 
-public class CombatStackSpaceCrystal extends CombatStackMonster {
+public final class CombatStackSpaceCrystal extends CombatStackMonster {
     private static final int MAX_WEAPON_DAMAGE = 1000;
     private boolean weaponUsed = false;
-    public SpaceCrystal monster;
-    public float monsterLevel;
-    public CombatStackSpaceCrystal(SpaceCrystal crystal, String imageKey, Float level, int desId, Color shieldC) {
+	private SpaceMonster monster;
+	private float monsterLevel;
+	public CombatStackSpaceCrystal(SpaceMonster crystal, String imageKey, Float level, int desId, Color shieldC) {
     	super(crystal, imageKey, level, desId, false, shieldC);
     	monster = crystal;
         if (level == null)
@@ -44,7 +44,7 @@ public class CombatStackSpaceCrystal extends CombatStackMonster {
         maxShield = shield = 5.0f;
         captain = new CrystalShipCaptain(monster);
         image = image(imageKey);
-    }    
+    }
     @Override
 	public float missileInterceptPct(ShipWeaponMissileType wpn)   {
         return max(0, 0.75f - (0.01f * wpn.tech().level));
@@ -96,10 +96,10 @@ public class CombatStackSpaceCrystal extends CombatStackMonster {
     public float initiativeRank() {
         return 100;
     }
-    public void drawAttack() { 
+	private void drawAttack()	{ 
         if (!mgr.showAnimations())
             return;
-        
+
         brighten = 1.0f;
         for (int i=0;i<2;i++) {
             scale += 1.5;
@@ -125,4 +125,3 @@ public class CombatStackSpaceCrystal extends CombatStackMonster {
         mgr.ui.paintAllImmediately();
     }
 }
-        

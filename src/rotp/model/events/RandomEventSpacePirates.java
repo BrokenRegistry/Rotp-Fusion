@@ -28,7 +28,7 @@ import rotp.model.tech.TechCategory;
 import rotp.ui.util.ParamInteger;
 
 // modnar: add Space Pirates random event
-public class RandomEventSpacePirates extends RandomEventMonsters {
+public final class RandomEventSpacePirates extends RandomEventMonsters {
 	private static final long serialVersionUID = 1L;
 	// Static parameters for Tech Triggered Events
 	public static final String TRIGGER_TECH		= "EngineWarp:8";
@@ -37,10 +37,9 @@ public class RandomEventSpacePirates extends RandomEventMonsters {
 	private int empId; // Not to be set: kept for backward compatibility
 	private int sysId; // Not to be set: kept for backward compatibility
 	private int turnCount; // Not to be set: kept for backward compatibility
-	
-	@Override protected SpaceMonster newMonster(Float speed, Float level) {
-		return new SpacePirates(speed, level);
-	}
+
+	RandomEventSpacePirates()	{}
+	@Override protected SpaceMonster newMonster(Float speed, Float level)	{ return new SpacePirates(speed, level); }
 	@Override protected int nextEmpId(boolean clear)	{ return galaxy().events().nextTargetEmpireForSpacePirates(clear); }
 	@Override public boolean techDiscovered()	{ return !galaxy().events().spacePiratesNotTriggered(); }
 	@Override protected String name()			{ return "PIRATES"; }
@@ -58,7 +57,7 @@ public class RandomEventSpacePirates extends RandomEventMonsters {
 			catList.add(heroEmp.tech().computer());
 			catList.add(heroEmp.tech().forceField());
 			Collections.shuffle(catList);
-			
+
 			float rProb	= researchLootProbability();
 			int rBC		= researchLootAmount();
 			boolean completeAllowed = (rProb >= 1) && !repeatable();
@@ -92,42 +91,16 @@ public class RandomEventSpacePirates extends RandomEventMonsters {
 		}
 		return spoilsBC;
 	}
-	@Override protected int getNextSystem()		{
-		StarSystem targetSystem = galaxy().system(targetSysId);
-		// next system is one of the 10 nearest systems
-		// more likely to go to new system (25%) than visited system (5%)
-		// more likely to go to colony with a lot of factories (factories/2000 = additional chance)
-		// increase chance with more loops (essentially try to force a choice before loops>10)
-		IGameOptions opts = options();
-		float maxDist = opts.monsterMaxDistance();
-		float minDist = opts.monsterMinDistance();
-
-		List<StarSystem> near = targetSystem.ringSystems(minDist, maxDist);
-		boolean stopLooking = false;		
-		int nextSysId = -1;
-		int loops = 0;
-		if (near.size() > 0) {
-			while (!stopLooking) {
-				loops++;
-				for (StarSystem sys : near) {
-					if (sys.isColonized()) { // check for colony
-						float chance = monster.vistedSystems().contains(sys.id) ? 0.05f : 0.25f;
-						// more likely to go to colony with a lot of factories
-						chance += sys.colony().industry().factories()/2000.0f;
-						// increase chance with more loops
-						chance += loops/20f;
-						if (random() < chance) {
-							nextSysId = sys.id;
-							stopLooking = true;
-							break;
-						}
-					}
-				}
-				if (loops > 10)
-					stopLooking = true;
-			}
-		}
-		return nextSysId;
+	@Override protected float systemChance(StarSystem sys)	{
+		if (!sys.isColonized())
+			return 0;
+		if (!monstersArePicky())
+			return baseChance(sys) + sys.colony().industry().factories()/2000.0f;
+		if (sys.planet().isResourceUltraRich())
+			return 2 * baseChance(sys);
+		if (sys.planet().isResourceRich())
+			return baseChance(sys);
+		return 0;
 	}
 	// Don't use! For backward compatibility only, when a monster was already launched
 	@Override protected int oldEmpId()			{ return empId; }
