@@ -24,7 +24,7 @@ GREETING_04                | Soyez bref, ambassadeur : [my_title] arrête notre
 GREETING_07                | Misérable [your_raceadjec] ! Interrompre notre guerre sacrée, c'est inviter notre colère sur vous !
 //
 DECLAREWAR_HATE_01         | Il est plus clair que jamais que votre peuple est les Enfants de Quaralone tant recherchés ! Nous prendrons le plus grand plaisir à retirer votre espèce de cette galaxie comme le fléau que vous êtes !
-DECLAREWAR_HATE_02         | Le moment cité dans la légende est enfin arrivée ! Préparez-vous, La Couvée de Quaralone ! Car quel que soit le vainqueur, notre croisade prendra bientôt fin !
+DECLAREWAR_HATE_02         | Le moment cité dans la légende est enfin arrivé ! Préparez-vous, La Couvée de Quaralone ! Car quel que soit le vainqueur, notre croisade prendra bientôt fin !
 DECLAREWAR_HATE_03         | Nous vous avons enfin trouvé, la Progéniture de Quaralone ! Et maintenant notre bataille sera jointe ! Votre force est sans importance : la force de Diamodus nous guidera !
 DECLAREWAR_ERRATIC_01      | Depuis notre première rencontre, [my_title] s'est demandé si vous étiez ou non notre ennemi le plus détesté. Nous continuerons de le faire après que nous ayons mis fin à votre race.
 DECLAREWAR_ERRATIC_02      | Notre temps en tant que voisins célestes a été assez amical, mais la moindre chance que votre peuple soit les enfants de Quaralone nous suffit pour déclarer la guerre.

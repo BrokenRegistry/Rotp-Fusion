@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-03-23 (Frank Zago)
+- French Translation improvement.
+
 26-03-22 (BR)
 - New fearsome guardian Monsters: Space Crystal and Space Amoeba can now be selected to guard valuable planets.
 - New Picky Roaming Space Monsters.

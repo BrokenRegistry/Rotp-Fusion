@@ -7,6 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-03-23 (Frank Zago)
+- French Translation improvement.
+
 26-03-22 (BR)
 - New fearsome guardian Monsters: Space Crystal and Space Amoeba can now be selected to guard valuable planets.
 - New Picky Roaming Space Monsters.

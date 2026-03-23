@@ -887,8 +887,8 @@ MAIN_PLANET_EVENT_AMOEBA          | l’Amibe Spatiale
 MAIN_PLANET_EVENT_CRYSTAL         | le Cristal Spatial
 // modnar: add space pirate random event
 MAIN_PLANET_EVENT_PIRATES         | les Pirates de l’espace
-MAIN_ADVANCING_YEAR               | Passer à l’Année  %1...
-MAIN_ADVANCING_TURN               | Passer au Tour %1...
+MAIN_ADVANCING_YEAR               | Passage à l’Année  %1...
+MAIN_ADVANCING_TURN               | Passage au Tour %1...
 TURN_SAVING                       | Sauvegarde de la Partie
 TURN_LAUNCHING_FLEETS             | Lancement des Flottes
 TURN_SHIP_COMBAT                  | Combat entre Vaisseaux
@@ -905,7 +905,7 @@ TURN_ACQUIRE_TECHS                | Apprentissage des Technologies Échangées
 TURN_MAKE_DECISIONS               | Prendre des Décisions
 TURN_RECALC_DISTANCES             | Recalcul des Distances Système
 TURN_REFRESHING                   | Actualisation des Vues
-TURN_SCRAP_SHIPS                  | Démolir des Vaisseaux
+TURN_SCRAP_SHIPS                  | Démolition des Vaisseaux
 TURN_FLEET_PLANS                  | Plans de Flotte
 TURN_DEPLOY_FLEETS                | Déployer des Vaisseaux
 TURN_DEPLOY_FLEET_X               | Déployer des vaisseaux (%1/%2 terminé)
@@ -926,7 +926,7 @@ MAIN_FLEET_IN_TRANSIT             | En transit
 MAIN_FLEET_RETREATING             | En Retraite
 MAIN_FLEET_LOCATION               | par %1
 MAIN_FLEET_ORIGIN                 | de %1
-MAIN_FLEET_DESTINATION            | à %1
+MAIN_FLEET_DESTINATION            | vers %1
 MAIN_FLEET_DEST_UNSCOUTED         | à inexploré
 MAIN_FLEET_ALLY                   | Allié
 MAIN_FLEET_ENEMY                  | Ennemi
@@ -1859,7 +1859,7 @@ SETUP_RANDOMIZE_AI_ABILITY_HELP		| Les aptitudes de l’espèce seront remplacé
 SETUP_RANDOMIZE_AI_ABILITY			| Aptitudes (10)
 SETUP_RANDOMIZE_AI_BOTH_HELP		| Cette option modifiera à la fois la personnalité et les aptitudes (choisie aléatoirement parmis les 10 espèces originales) de l’espèce... Notez que les options du menu Galaxie ont précédence !
 SETUP_RANDOMIZE_AI_BOTH				| Les deux (10)
-SETUP_RANDOMIZE_AI_ABILITY_16_HELP	| Les aptitudes de l’espèce seront remplacées aléatoirement par celles de l’une des <b>16<\b> espèces originales. Notez que les options du menu Galaxie ont précédence !
+SETUP_RANDOMIZE_AI_ABILITY_16_HELP	| Les aptitudes de l’espèce seront remplacées aléatoirement par celles de l’une des <b>16</b> espèces originales. Notez que les options du menu Galaxie ont précédence !
 SETUP_RANDOMIZE_AI_ABILITY_16		| Aptitudes (16)
 SETUP_RANDOMIZE_AI_BOTH_16_HELP		| Cette option modifiera à la fois la personnalité et les aptitudes (choisie aléatoirement parmis les <b>16</b> espèces originales) de l’espèce... Notez que les options du menu Galaxie ont précédence !
 SETUP_RANDOMIZE_AI_BOTH_16			| Les deux (16)
@@ -2959,9 +2959,9 @@ SETTINGS_MOD_DIST_ARTIFACT_PLANET_DESC | Distance minimale entre les mondes d’
 SETTINGS_MOD_CHALLENGE_MODE_DESC       | Donnez aux Empires d’IA des ressources supplémentaires au début (plus de population, de usines et de vaisseaux.)
 SETTINGS_MOD_NEW_RACES_ON_DESC         | Inclure les nouvelles espèces comme adversaires potentiels.
 SETTINGS_MOD_BATTLE_SCOUT_DESC         | Conception d’un éclaireur armé, à coque moyenne, pour le joueur en début de partie. Constructible malgré le non-respect des limitations d’espace du vaisseau.
-SETTINGS_MOD_COMPANION_WORLDS_HELP     | Ajoute 0 à 6 colonies supplémentaires, en début de partie, à <b>TOUS<\b> les mondes d’origine.<br> - Utilisez des valeurs négatives, de -1 à -4, pour conserver la disposition pré-assignée d’origine.<br> - Utilisez des valeurs positives, de 1 à 6, pour activer la nouvelle disposition attribuée aléatoirement.
+SETTINGS_MOD_COMPANION_WORLDS_HELP     | Ajoute 0 à 6 colonies supplémentaires, en début de partie, à <b>TOUS</b> les mondes d’origine.<br> - Utilisez des valeurs négatives, de -1 à -4, pour conserver la disposition pré-assignée d’origine.<br> - Utilisez des valeurs positives, de 1 à 6, pour activer la nouvelle disposition attribuée aléatoirement.
 SETTINGS_MOD_COMPANION_WORLDS_DESC     | Ajoute 0 à 6 colonies supplémentaires, en début de partie, à tous les mondes d’origine. (Valeur négative pour la disposition d’origine)
-SETTINGS_MOD_RANDOM_TECH_START_DESC    | En début de partie, donne aléatoirement à <b>TOUS<\b> les empires 2 technologies de premier niveau. Aucune planète artéfact ne sera alors présente dans la galaxie. (Les technologies peuvent différer d’un empire à l’autre.)
+SETTINGS_MOD_RANDOM_TECH_START_DESC    | En début de partie, donne aléatoirement à <b>TOUS</b> les empires 2 technologies de premier niveau. Aucune planète artéfact ne sera alors présente dans la galaxie. (Les technologies peuvent différer d’un empire à l’autre.)
 SETTINGS_MOD_CUSTOM_DIFFICULTY_DESC    | Définit le Modificateur de Production de l’IA de 20 % à 500 %. Assurez-vous de sélectionner "Difficulté : Personnalisé". (Presser Maj / Ctrl, puis faire défiler la molette de la souris pour changer en unités de 5 % / 20 %.)
 SETTINGS_MOD_DYNAMIC_DIFFICULTY_DESC		| Adapte la production des IA à la force du joueur. L’effet augmente vers le 150ème tour. (L’ajustement n’est pas infini. Les Empires d’IA très forts seront presque inchangés.)
 SETTINGS_MOD_DYNAMIC_DIFFICULTY_DELAY_DESC	| Tour auquel la difficulté dynamique est à 50% de son potentiel.
@@ -3066,7 +3066,7 @@ SETTINGS_MOD_END_OF_GAME					| →HK_END_OF_GAME← : %1
 SETTINGS_MOD_END_OF_GAME_NORMAL_DESC		| La fin de partie classique : par domination ou par un majorité suffisante au conseil.
 SETTINGS_MOD_END_OF_GAME_NORMAL				| Classique
 SETTINGS_MOD_END_OF_GAME_TURN_COUNCIL_DESC	| →HK_END_OF_GAME_COND←Le conseil se réunira et le gagnant sera élu à la majorité simple.
-SETTINGS_MOD_END_OF_GAME_TURN_COUNCIL		| Council vote
+SETTINGS_MOD_END_OF_GAME_TURN_COUNCIL		| Vote du Conseil
 SETTINGS_MOD_END_OF_GAME_TURN_POP_DESC		| →HK_END_OF_GAME_COND←L’empire ayant la population la plus importante sera déclaré vainqueur.
 SETTINGS_MOD_END_OF_GAME_TURN_POP			| Population
 SETTINGS_MOD_END_OF_GAME_TURN_TEC_IND_DESC	| →HK_END_OF_GAME_COND←L’empire disposant de la plus grande puissance techno-industrielle sera déclaré vainqueur. (= produit du niveau technologique et de la production totale)
@@ -3351,7 +3351,7 @@ SETTINGS_MOD_SHOW_TECH_PROGRESS_NO_DESC  | N’afficher que l’état attendu de
 
 SETTINGS_MOD_SHOW_TECH_TIPS_HELP		| Dans le panneau Empires Intelligence :<br>lorsque cette option est activée, la description de la technologie sur laquelle vous passez la souris s'affiche.<br>Pressez sur « H » pour basculer.
 SETTINGS_MOD_SHOW_TECH_TIPS_DESC		| Dans le panneau Empires Intelligence : lorsque cette option est activée, la description de la technologie sur laquelle vous passez la souris s'affiche.
-SETTINGS_MOD_SHOW_TECH_TIPS				| Décrire les Technolgies : %1
+SETTINGS_MOD_SHOW_TECH_TIPS				| Décrire les Technologies : %1
 SETTINGS_MOD_SHOW_TECH_TIPS_YES_DESC	| Afficher les descriptions.
 SETTINGS_MOD_SHOW_TECH_TIPS_NO_DESC		| Ne pas afficher les descriptions.
 

@@ -388,7 +388,7 @@ ACCEPT_BREAK_ALLIANCE_01	| The [other_empire] is no longer an ally of the [my_ra
 ACCEPT_BREAK_ALLIANCE_01	| The Alliance of the [my_empire] and [other_empire] now lies in shreds under our feet.
 ACCEPT_BREAK_ALLIANCE_01	| As you wish, we no longer shall call the [other_race] our ally.
 OFFER_JOINT_WAR_01         | Le moment est venu pour [your_empire] et [my_empire] de s'unir dans la guerre contre [other_race_pluralnoun].
-ACCEPT_JOINT_WAR_01        | [other_empire] doit tomber avant la puissance combinée [my_empireof] et [your_empireof].
+ACCEPT_JOINT_WAR_01        | [other_empire] doit tomber devant la puissance combinée [my_empireof] et [your_empireof].
 ACCEPT_JOINT_WAR_01        | Avec [my_race] et [your_race] alliés, [other_race_pluralnoun] ne dureront pas longtemps.
 ACCEPT_JOINT_WAR_01        | En [year], [my_empire] et [your_empire] unissent leurs forces pour débarrasser la galaxie de la menace [other_raceadjecF].
 COUNTER_JOINT_WAR_01       | Nous vous rejoindrons dans votre guerre contre [other_empire] en échange de la compensation suivante :
