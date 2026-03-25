@@ -15,6 +15,8 @@
  */
 package rotp.model.galaxy;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -27,12 +29,17 @@ import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
+import rotp.ui.util.ParamInteger;
 
-final class GuardianCrystal extends GuardianMonsters {
+public final class GuardianCrystal extends GuardianMonsters {
 	private static final long serialVersionUID = 1L;
 	private static final Color shieldColor	= Color.cyan;
 	private static final String imageKey	= "SPACE_CRYSTAL";
 	private static final boolean isFusion	= true;
+	public static final ParamInteger guardCrystalLevelPct = new ParamInteger(MOD_UI, "GUARD_CRYSTAL_LEVEL", 100)
+			.setLimits(10, 500)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
 
 	GuardianCrystal(Float speed, Float level) {
 		super(imageKey, FUSION_GUARDIAN_EMPIRE, speed, level);
@@ -46,6 +53,7 @@ final class GuardianCrystal extends GuardianMonsters {
 		else
 			addCombatStack(new CombatStackSpaceCrystal(this, imageKey, stackLevel(), 0, shieldColor));
 	}
+	@Override protected Float stackLevel()		{ return super.stackLevel() * guardCrystalLevelPct.get()/100f; }
 	@Override public SpaceMonster getCopy()		{ return new GuardianCrystal(null, null); }
 	@Override protected int otherSpecialCount()	{ return options().isMoO1Monster()? 1:2; }
 	private int hullHitPoints()		{ return moO1Level (5000, 1000, 500, 0.5f, 0.25f); }

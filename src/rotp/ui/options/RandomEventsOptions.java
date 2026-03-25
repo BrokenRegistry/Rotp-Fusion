@@ -3,6 +3,9 @@ package rotp.ui.options;
 import java.util.Arrays;
 
 import rotp.model.events.RandomEventMonsters;
+import rotp.model.galaxy.SpaceAmoeba;
+import rotp.model.galaxy.SpaceCrystal;
+import rotp.model.galaxy.SpacePirates;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.ui.util.ParamTitle;
@@ -14,7 +17,7 @@ final class RandomEventsOptions extends AbstractOptionsSubUI {
 
 	@Override public SafeListPanel optionsMap()	{
 		SafeListPanel map = new SafeListPanel(OPTION_ID);
-		map.add(new SafeListParam(Arrays.asList(
+		SafeListParam list = new SafeListParam(Arrays.asList(
 				new ParamTitle("RANDOM_EVENTS_GLOBAL"),
 				randomEvents,
 				eventsStartTurn,
@@ -23,28 +26,50 @@ final class RandomEventsOptions extends AbstractOptionsSubUI {
 				fixedEventsMode,
 				monstersGiveLoots,
 				monstersLevel,
-				monstersGNNNotification,
-
-				HEADER_SPACER_50,
-				guardianMonstersLevel,
-				isMoO1Monster
-				)));
+				monstersGNNNotification
+				));
+		list.add(HEADER_SPACER_50);
+		list.addAll(AllSubUI.getHandle(MONSTER_RULES_UI_KEY).getUiMajor(false));
+		map.add(list);
+//		map.add(new SafeListParam(Arrays.asList(
+//				new ParamTitle("RANDOM_EVENTS_GLOBAL"),
+//				randomEvents,
+//				eventsStartTurn,
+//				eventsPace,
+//				eventsFavorWeak,
+//				fixedEventsMode,
+//				monstersGiveLoots,
+//				monstersLevel,
+//				monstersGNNNotification,
+//
+//				HEADER_SPACER_50,
+//				isMoO1Monster,
+//				guardianMonstersLevel,
+//				LINE_SPACER_25,
+//				GuardianPirates.guardPiratesLevelPct,
+//				GuardianAmoeba.guardAmoebaLevelPct,
+//				GuardianCrystal.guardCrystalLevelPct,
+//				SpaceJellyfish.guardJellyfishLevelPct,
+//				SpaceCuttlefish.guardCuttlefishLevelPct
+//				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("RANDOM_EVENTS_MONSTERS"),
 				piratesDelayTurn,
 				piratesReturnTurn,
 				piratesMaxSystems,
-				piratesLevelMultiplier,
+				SpacePirates.piratesLevelPct,
 
 				HEADER_SPACER_50,
 				amoebaDelayTurn,
 				amoebaReturnTurn,
 				amoebaMaxSystems,
+				SpaceAmoeba.amoebaLevelPct,
 
 				HEADER_SPACER_50,
 				crystalDelayTurn,
 				crystalReturnTurn,
 				crystalMaxSystems,
+				SpaceCrystal.crystalLevelPct,
 
 				HEADER_SPACER_50,
 				RandomEventMonsters.monstersMinDistance,

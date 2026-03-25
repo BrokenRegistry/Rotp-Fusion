@@ -165,6 +165,8 @@ PLANET_ORION                      | Orion
 PLANET_ORION_GUARDIAN             | Gardien
 PLANET_SPACE_JELLYFISH            | Méduse Spatiale
 PLANET_SPACE_CUTTLEFISH           | Seiche Spatiale
+PLANET_SPACE_CRYSTAL			| Cristal Spatial
+PLANET_SPACE_AMOEBA				| Amibe Spatiale
 
 // Nebula names  ("starName" Nebula)
 NEBULA_NAME                       | Nébuleuse %1
@@ -2599,6 +2601,13 @@ HEADERS_RANDOM_EVENTS_DELAYS         | ~~~ PARAMÈTRES DE RETARDS ~~~
 HEADERS_RANDOM_EVENTS_RETURNS_DESC   | Paramètres liés à la réitération des événements aléatoires.
 HEADERS_RANDOM_EVENTS_RETURNS        | ~~~ PARAMÈTRES DE RÉCURRENCE ~~~
 
+HEADERS_GUARD_MONSTERS_RULES_DESC	| Paramètres reliés aux caractéristiques des monstres gardant les planètes.
+HEADERS_GUARD_MONSTERS_RULES		| ~~~ PARAMÈTRES DES MONSTRES GARDIENS ~~~
+HEADERS_ROAMING_MONSTERS_RULES_DESC	| Paramètres reliés aux caractéristiques des monstres voyageurs.
+HEADERS_ROAMING_MONSTERS_RULES		| ~~~ PARAMÈTRES DES MONSTRES ERRANTS ~~~
+HEADERS_EVENT_MONSTERS_RULES_DESC	| Paramètres reliés aux événements aléatoires des monstres.
+HEADERS_EVENT_MONSTERS_RULES		| ~~~ PARAMÈTRES DES MONSTERS ALEATOIRES ~~~
+
 HEADERS_DEBUG_MEMORY_DESC            | Activation ou désactivation de la surveillance de la mémoire utilisée.
 HEADERS_DEBUG_MEMORY                 | ~~~ SURVEILLANCE DE LA MÉMOIRE ~~~
 HEADERS_DEBUG_AUTO_RUN_DESC          | Activation et configuration de l’exécution automatique.
@@ -2665,6 +2674,11 @@ HEADERS_UNCLASSIFIED_DESC            | Il reste encore à trouver la bonne posit
 HEADERS_UNCLASSIFIED                 | ~~~ NON-CLASSIFIÉ ~~~
 HEADERS_SPACER_DESC                  |
 HEADERS_SPACER                       |  %1
+
+SETTINGS_MOD_MONSTER_RULES_TITLE         | Gestion des Monstres
+SETTINGS_MOD_MONSTER_RULES_UI            | - Gestion des Monstres -
+SETTINGS_MOD_MONSTER_RULES_UI_DESC       | Ouvre un sous-menu pour configurer les caractéristiques des monstres de l’espace.
+SETTINGS_MOD_MONSTER_RULES_UI_HELP       | →SETTINGS_MOD_MONSTER_RULES_UI_DESC←<br>Ces paramètres sont enregistrés avec le jeu. Ce sous-menu est également disponible pendant le jeu.
 
 // BR: add UI panel for Systems options
 SETTINGS_MOD_SYSTEMS_OPTIONS_TITLE   | Configuration avancée des Étoiles et des Planètes
@@ -4065,13 +4079,13 @@ SETTINGS_MOD_GUARDIAN_MONSTERS_WEAK			| Des monstres poids légers.
 SETTINGS_MOD_GUARDIAN_MONSTERS_STRONG_DESC	| Ces monstres ne pourront être vaincu qu'avec des flottes conséquentes.
 SETTINGS_MOD_GUARDIAN_MONSTERS_STRONG		| Des monstres redoutables
 
-SETTINGS_MOD_GUARDIAN_MONSTERS_PCT_DESC  | Probabilité de base (en %) pour que les bonnes planètes aient un monstre spatial. Cette valeur sera multipliée par la taille de la planète (en %).<br>Des valeurs plus grandes conduisent à plus de monstres.
-SETTINGS_MOD_GUARDIAN_MONSTERS_PCT        | Prob. de gardiens : %1 %
-SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL_DESC | Niveau de difficulté pour les monstres de l’espace gardiens.
-SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL      | Niveaux des gardiens : %1 %
+SETTINGS_MOD_GUARDIAN_MONSTERS_PCT_DESC		| Probabilité de base (en %) pour que les bonnes planètes aient un monstre spatial. Cette valeur sera multipliée par la taille de la planète (en %).<br>Des valeurs plus grandes conduisent à plus de monstres.
+SETTINGS_MOD_GUARDIAN_MONSTERS_PCT			| Prob. de gardiens : %1 %
+SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL_DESC	| Un niveau de difficulté commun à tous les monstres spatiaux qui gardent une planète.
+SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL		| Niveaux des gardiens : %1 %
 
-SETTINGS_MOD_IS_MOO1_MONSTER_DESC         | Pour obtenir les armes et les caractéristiques des monstres spatiaux MoO1.
-SETTINGS_MOD_IS_MOO1_MONSTER              | Monstres MoO1: %1
+SETTINGS_MOD_IS_MOO1_MONSTER_DESC 			| Pour attribuer aux monstres de l’espace l’armement et les caractéristiques de MoO1.
+SETTINGS_MOD_IS_MOO1_MONSTER				| Monstres MoO1: %1
 
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE_DESC		| Distance minimale jusqu’à la prochaine colonie visée par les monstres de l’espace.
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE			| Distance minimale : %1 a.l.
@@ -4152,6 +4166,17 @@ SETTINGS_MOD_MONSTERS_GNN_ALL_DESC       | GNN vous avertira chaque fois qu’un
 SETTINGS_MOD_MONSTERS_GNN_NEW_DESC       | GNN avertira de la première attaque de monstres, lorsqu’ils apparaîtront.
 SETTINGS_MOD_MONSTERS_GNN_FIRST_DESC     | GNN notifiera uniquement la première attaque de chaque type de monstre.
 
+SETTINGS_MOD_GUARD_PIRATES_LEVEL_DESC	| Les gardiens →REF_PIRATES_2← ayant un niveau particulièrement élevé, ce paramètre vous permettra de les rendre un peu plus accessibles.
+SETTINGS_MOD_GUARD_PIRATES_LEVEL		| Niveau des gardiens →REF_PIRATES← : %1 %
+SETTINGS_MOD_GUARD_AMOEBA_LEVEL_DESC	| Les amibes gardiennes ayant un niveau particulièrement élevé, ce paramètre vous permettra de les rendre un peu plus accessibles.
+SETTINGS_MOD_GUARD_AMOEBA_LEVEL			| Niveau des amibes gardiennes : %1 %
+SETTINGS_MOD_GUARD_CRYSTAL_LEVEL_DESC	| Les cristaux gardiens →REF_CRYSTAL_2← ayant un niveau particulièrement élevé, ce paramètre vous permettra de les rendre un peu plus accessibles.
+SETTINGS_MOD_GUARD_CRYSTAL_LEVEL		| Niveau des cristaux gardiens : %1 %
+SETTINGS_MOD_GUARD_CUTTLEFISH_LEV_DESC	| Les seiches gardiennes ayant un niveau particulièrement bas, ce paramètre vous permettra de les rendre un peu plus musclées.
+SETTINGS_MOD_GUARD_CUTTLEFISH_LEV		| Niveau des seiches gardiennes : %1 %
+SETTINGS_MOD_GUARD_JELLYFISH_LEVEL_DESC	| Les méduses gardiennes ayant un niveau particulièrement bas, ce paramètre vous permettra de les rendre un peu plus musclées.
+SETTINGS_MOD_GUARD_JELLYFISH_LEVEL		| Niveau des méduses gardiennes : %1 %
+
 // ========== RANDOM EVENT MONSTERS PARAMETERS
 REF_PIRATES                              | Pirates
 REF_PIRATES_2                            | Pirates de l’espace
@@ -4163,8 +4188,10 @@ SETTINGS_MOD_PIRATES_RETURN_TURN_DESC    | →REF_RETURN_1← →REF_PIRATES_2�
 SETTINGS_MOD_PIRATES_RETURN_TURN         | →REF_PIRATES← →REF_RETURN←
 SETTINGS_MOD_PIRATES_MAX_SYSTEMS_DESC    | →REF_MAX_SYS_1← →REF_PIRATES_2← →REF_MAX_SYS_1←
 SETTINGS_MOD_PIRATES_MAX_SYSTEMS         | Max →REF_PIRATES← Attaque : %1
-REF_AMOEBA                               | Amibe
-REF_AMOEBA_2                             | Amibe Spatiale
+REF_AMOEBA                               | Amibes
+REF_AMOEBA_2							| Amibes Spatiales
+SETTINGS_MOD_AMOEBA_LEVEL_MULT_DESC		| Les →REF_AMOEBA_2← ayant un niveau particulièrement élevé, ce paramètre vous permettra de les rendre un peu plus accessibles.
+SETTINGS_MOD_AMOEBA_LEVEL_MULT			| Niveau des →REF_AMOEBA← : %1 %
 SETTINGS_MOD_AMOEBA_DELAY_TURN_DESC      | →REF_DELAY_1← →REF_AMOEBA_2← →REF_DELAY_2←
 SETTINGS_MOD_AMOEBA_DELAY_TURN           | →REF_AMOEBA← →REF_DELAY←
 SETTINGS_MOD_AMOEBA_RETURN_TURN_DESC     | →REF_RETURN_1← Espace →REF_AMOEBA_2← →REF_RETURN_2←
@@ -4172,7 +4199,9 @@ SETTINGS_MOD_AMOEBA_RETURN_TURN          | →REF_AMOEBA← →REF_RETURN←
 SETTINGS_MOD_AMOEBA_MAX_SYSTEMS_DESC     | →REF_MAX_SYS_1← →REF_AMOEBA_2← →REF_RETURN_2←
 SETTINGS_MOD_AMOEBA_MAX_SYSTEMS          | Max →REF_AMOEBA← Attaque : %1
 REF_CRYSTAL                              | Cristal
-REF_CRYSTAL_2                            | Cristal Spatial
+REF_CRYSTAL_2							| Cristaux Spatiaux
+SETTINGS_MOD_CRYSTAL_LEVEL_MULT_DESC	| Les →REF_CRYSTAL_2← ayant un niveau particulièrement élevé, ce paramètre vous permettra de les rendre un peu plus accessibles.
+SETTINGS_MOD_CRYSTAL_LEVEL_MULT			| Niveau du →REF_CRYSTAL← : %1 %
 SETTINGS_MOD_CRYSTAL_DELAY_TURN_DESC     | →REF_DELAY_1← →REF_CRYSTAL_2← →REF_DELAY_2←
 SETTINGS_MOD_CRYSTAL_DELAY_TURN          | →REF_CRYSTAL← →REF_DELAY←
 SETTINGS_MOD_CRYSTAL_RETURN_TURN_DESC    | →REF_RETURN_1← Espace →REF_CRYSTAL_2← →REF_RETURN_2←

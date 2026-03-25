@@ -26,6 +26,8 @@ public final class SetupParameters extends AbstractOptionsSubUI {
 		list = new SafeListParam(AllSubUI.getHandle(SETUP_HOMEWORLD_UI_KEY).getUiMajor(false));
 		list.add(HEADER_SPACER_100);
 		list.addAll(AllSubUI.getHandle(SYSTEMS_OPTIONS_UI_KEY).getUiMajor(false));
+		list.add(HEADER_SPACER_100);
+		list.addAll(AllSubUI.getHandle(MONSTER_RULES_UI_KEY).getUiMinor(true));
 		map.add(list);
 
 		list = new SafeListParam(AllSubUI.getHandle(SETUP_TECH_OPTIONS_UI_KEY).getUiMajor(false));

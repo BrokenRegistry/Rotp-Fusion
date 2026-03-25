@@ -15,6 +15,8 @@
  */
 package rotp.model.galaxy;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -29,12 +31,17 @@ import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
+import rotp.ui.util.ParamInteger;
 
 public final class SpaceCrystal extends SpaceMonster {
     private static final long serialVersionUID = 1L;
     private static final Color shieldColor	= Color.cyan;
     private static final String imageKey	= "SPACE_CRYSTAL";
     private static final boolean isFusion	= false;
+	public static final ParamInteger crystalLevelPct = new ParamInteger(MOD_UI, "CRYSTAL_LEVEL_MULT", 100)
+			.setLimits(10, 500)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
 
     public SpaceCrystal(Float speed, Float level)	{ super(imageKey, ORIGINAL_ROAMING_EMPIRE, speed, level); }
 
@@ -45,6 +52,7 @@ public final class SpaceCrystal extends SpaceMonster {
 		else
 			addCombatStack(new CombatStackSpaceCrystal(this, imageKey, stackLevel(), 0, shieldColor));
     }
+	@Override protected Float stackLevel()		{ return super.stackLevel() * crystalLevelPct.get()/100f; }
     @Override public SpaceMonster getCopy()		{ return new SpaceCrystal(null, null); }
     @Override protected int otherSpecialCount() { return options().isMoO1Monster()? 1:2; }
     @Override public void degradePlanet(StarSystem sys) {

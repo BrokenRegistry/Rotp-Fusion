@@ -15,6 +15,8 @@
  */
 package rotp.model.galaxy;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -26,12 +28,17 @@ import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
+import rotp.ui.util.ParamInteger;
 
-final class SpaceCuttlefish extends GuardianMonsters {
+public final class SpaceCuttlefish extends GuardianMonsters {
 	private static final long serialVersionUID = 1L;
     private static final Color shieldColor	= Color.yellow;
     private static final String imageKey	= "SPACE_CUTTLEFISH";
     private static final boolean isFusion	= true;
+	public static final ParamInteger guardCuttlefishLevelPct = new ParamInteger(MOD_UI, "GUARD_CUTTLEFISH_LEV", 100)
+			.setLimits(10, 500)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
 
 	SpaceCuttlefish(Float speed, Float level)	{
 		super(imageKey, FUSION_SENTINEL_EMPIRE, speed, level);
@@ -42,6 +49,7 @@ final class SpaceCuttlefish extends GuardianMonsters {
 		super.initCombat();
 		addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));
 	}
+	@Override protected Float stackLevel()		{ return super.stackLevel() * guardCuttlefishLevelPct.get()/100f; }
 	@Override public SpaceMonster getCopy() 	{ return new SpaceCuttlefish(null, null); }
 	@Override public float bcValue()			{ return 100 * stackLevel(); }
 	@Override protected int otherSpecialCount() { return 2; } // change if needed

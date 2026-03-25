@@ -741,25 +741,25 @@ public final class SystemsUI extends BasePanel implements IMapHandler, ActionLis
         
         return null; 
     } 
-    public String alertDescription(SystemView sv) { 
+    public String alertDescription(SystemView sv) {
         switch(selectedTab) {
             case exploreTab:     return exploreAlertDescription(sv);
             case expandTab:      return expandAlertDescription(sv);
             case exploitTab:     return exploitAlertDescription(sv);
             case exterminateTab: return exterminateAlertDescription(sv);
         }
-        return null; 
+        return null;
     }
     private String exploreAlertDescription(SystemView sv) { 
         String eventMessage = randomEventStatus(sv);
         if (!eventMessage.isEmpty()) 
              return eventMessage; 
-        
+
         if (sv.scouted())
-            return null;      
-        if (sv.isGuarded()) 
+            return null;
+        if (sv.isGuarded())
             return text("SYSTEMS_UNSCOUTED_GUARDED");
-        
+
         float sysDistance = sv.distance();
         Empire pl = player();
         if (sysDistance <= pl.scoutRange()) {
@@ -770,13 +770,13 @@ public final class SystemsUI extends BasePanel implements IMapHandler, ActionLis
             else
                 return text("SYSTEMS_UNSCOUTED_COLONIZED");
         }
-        
+
         String neededTechId = pl.rangeTechNeededToScout(sv.sysId);
         if (neededTechId != null) {
             Tech t = tech(neededTechId);
             return text("SYSTEMS_UNSCOUTED_NEED_TECH", t.name());
-        }     
-        return text("SYSTEMS_UNSCOUTED_UNREACHABLE"); 
+        }
+        return text("SYSTEMS_UNSCOUTED_UNREACHABLE");
     }
     private String expandAlertDescription(SystemView sv) { 
         if (!sv.scouted())

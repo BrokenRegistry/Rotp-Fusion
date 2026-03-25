@@ -22,7 +22,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+
 import javax.swing.border.Border;
+
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
@@ -57,7 +59,7 @@ public class UnexploredGraphicInfoPane extends BasePanel implements MouseListene
 
         Empire pl = player();
         g.drawImage(pl.sv.starBackground(this), 0, 0, null);
-        
+
         if (sys.inNebula()) {
             g.setColor(SystemPanel.nebulaC);
             g.fillRect(0, 0, w, h);
@@ -65,7 +67,7 @@ public class UnexploredGraphicInfoPane extends BasePanel implements MouseListene
 
         int adjW = min(w,h*3/2);
         drawStar(g, sys.starType(), adjW*2/5, w*2/5, h/3);
-        
+
         String name = player().sv.name(sys.id);
         if (!name.isEmpty()) {
             g0.setFont(narrowFont(36*adjW/w));

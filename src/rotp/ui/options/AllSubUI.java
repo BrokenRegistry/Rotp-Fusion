@@ -46,6 +46,7 @@ public final class AllSubUI {
 		put(new GovSpecialOptions());
 		put(new HelpAndAdvice());
 		put(new IronmanLittle());
+		put(new MonstersRules());
 		put(new NewOptionsBeta());
 		put(new NewRulesBeta());
 		put(new SettingMenuPreferences());

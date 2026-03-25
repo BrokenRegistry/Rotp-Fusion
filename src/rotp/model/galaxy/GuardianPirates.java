@@ -15,6 +15,7 @@
  */
 package rotp.model.galaxy;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
 import static rotp.model.ships.ShipDesign.maxSpecials;
 
 import java.awt.Color;
@@ -28,6 +29,7 @@ import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
+import rotp.ui.util.ParamInteger;
 
 // modnar: add Space Pirates random event
 public final class GuardianPirates extends SpaceMonster {
@@ -35,6 +37,10 @@ public final class GuardianPirates extends SpaceMonster {
 	private static final Color shieldColor	= Color.magenta;
 	private static final String imageKey	= "SPACE_PIRATES";
 	private static final boolean isFusion	= true;
+	public static final ParamInteger guardPiratesLevelPct = new ParamInteger(MOD_UI, "GUARD_PIRATES_LEVEL", 100)
+			.setLimits(10, 500)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
 
 	public GuardianPirates(Float speed, Float level) {
 		super(imageKey, FUSION_GUARDIAN_EMPIRE, speed, level);
@@ -44,7 +50,7 @@ public final class GuardianPirates extends SpaceMonster {
 		super.initCombat();
 		addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));	   
 	}
-	@Override protected Float stackLevel()	{ return super.stackLevel() * options().piratesLevelMultiplier(); }
+	@Override protected Float stackLevel()	{ return super.stackLevel() * guardPiratesLevelPct.get()/100f; }
 	@Override protected void initDesigns()	{
 		super.initDesigns();
 		float numLevel	 = stackLevel();

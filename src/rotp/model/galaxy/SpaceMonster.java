@@ -108,6 +108,7 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 	public Image image()					{ return image(nameKey); }
 	public Image shipImage()				{ return image(); };
 	public void	 initCombat()				{ 
+		// System.out.println(nameKey +  " stack Level " + stackLevel()); // TO DO BR: !!! COMMENT
 		stackLevel(); // initialize
 		combatStacks().clear();
 	}
@@ -128,10 +129,11 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 		monsterLevel = stackLevel;
 		return stackLevel;
 	}
-	protected int	 stackLevel(int val)			{ return (int) (val * stackLevel()); }
-	protected int	 stackLevel(int val, int max)	{ return Math.min(max, stackLevel(val)); }
-	@Override public String name()					{ return text(nameKey); }
-	@Override public IMappedObject source()			{ return this; }
+	protected int stackLevel(int val)			{ return (int) (val * stackLevel()); }
+	protected int stackLevel(int val, int max)	{ return Math.min(max, stackLevel(val)); }
+	public String nameKey()						{ return nameKey; }
+	@Override public String name()				{ return text(nameKey); }
+	@Override public IMappedObject source()		{ return this; }
 	@Override public void draw(GalaxyMapPanel map, Graphics2D g2)	{
 		if (isOrionGuardian())
 			drawGuard(map, g2);

@@ -886,7 +886,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             g.drawImage(img, x+w-sz+shY, y-sz+s3, sz, sz, null);
         }
     }
-	public class SystemStargateColumn extends SystemDataColumn { // TODO BR: Stargate column
+	public class SystemStargateColumn extends SystemDataColumn	{
 		SystemStargateColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int a) {
 			super(s1, s2, i, clr, c, a);
 		}

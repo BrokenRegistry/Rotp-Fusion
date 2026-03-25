@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-03-24 (BR)
+- Each space monster now has its own level.
+- The space monster that prevented you from exploring a system will appear in the star panel.
+
 26-03-23 (Frank Zago)
 - French Translation improvement.
 

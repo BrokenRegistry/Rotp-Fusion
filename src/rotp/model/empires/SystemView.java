@@ -46,6 +46,7 @@ import rotp.model.colony.Colony;
 import rotp.model.events.SystemScoutedEvent;
 import rotp.model.galaxy.IMappedObject;
 import rotp.model.galaxy.ShipFleet;
+import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.IFlagOptions;
 import rotp.model.planet.Planet;
@@ -141,7 +142,8 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     private String vPlanetTypeKey;
     private final List<ShipFleet> vOrbitingFleets = new ArrayList<>();
     private final List<ShipFleet> vExitingFleets = new ArrayList<>();
-    private boolean vGuarded = false;
+    private boolean vGuarded = false; // BR: kept for backward compatibility
+    private String monsterKey;
     private int vBases = 0;
     private int vShieldLevel = 0;
     private int vFactories = 0;
@@ -205,6 +207,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     public float spyTime()                   { return spyTime; }
     public float scoutTime()                 { return scoutTime; }
     public boolean isGuarded()               { return vGuarded; }
+	public Image monsterImage()				{ return monsterKey == null ? null : image(monsterKey); }
     public StarSystem rallySystem()          { return relocationSystem; }
     public float spyTurn()                   { return spyTime - galaxy().beginningYear(); }
     public float scoutTurn()                 { return scoutTime - galaxy().beginningYear(); }
@@ -220,7 +223,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     	StarSystem from = system();
     	if (speed == null)
     		speed = options().chainRallySpeed(owner());
-    	
+
     	//float topSpeed = owner().tech().topSpeed();
     	int destSize = destList.size();
     	int minTime = Integer.MAX_VALUE;
@@ -237,7 +240,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
        		// Check for min distance for older non TopSpeed units
        		else if (travelTime == minTime && distance < minDist) {
     			minDist = distance;
-    			minIdx  = dest;	       			
+    			minIdx  = dest;
        		}
     	}
 		StarSystem destSys = destList.get(minIdx);
@@ -432,7 +435,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     		color = flagNotNebulaColor.getIndex();
 		setFlagColor(color, id);
     }
-    
+
     private void clearFlagColor(Planet planet, int id) { setFlagColor(0, id); }
     private void setFlagColor(int color, int id)	{ // BR: flagColorCount
     	flagColor = getMixedColor(flagColor, color, id);
@@ -440,13 +443,13 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     int getFlagColor(int id)				{ return getBaseColor(flagColor, id); }
     public	String getFlagColorName(int id)	{ return getColorName(getFlagColor(id)); }
     private	String getColorName(int id)		{ return flagImageNameList.get(id).replace("Flag_", "");  }
-    
+
     public	boolean hasFlag(int id)			{ return getFlagColor(id) != FLAG_NONE; }
     public	boolean hasFlagColor(int id, int color) { return getFlagColor(id) == color; }
     private int getMixedColor(int mixedColor, int color, int id) { // BR: flagColorCount
     	return getFilteredColor(mixedColor, id) | getShiftedColor(color, id);
     }
-    
+
     private int getFilteredColor(int mixedColor, int id) { // BR: flagColorCount
     	int idx = min(4, max(1, id))-1;
     	return (mixedColor & COLOR_IMASK[idx]);
@@ -573,8 +576,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     public void raiseHostility()                   { hostilityLevel++; }
     public void resetSystemData()                  { setLocationSecurity(); }
     public void refreshSystemEntryScan() {
-        vGuarded = system().hasMonster();      
-        if (vGuarded)
+        if (checkIfGuarded())
             setName();
     }
     private void autoFlagAssignation(Planet p, String assignation, int id) {
@@ -611,9 +613,9 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     }
     private void autoFlagPlanet(Planet p) {
     	autoFlagAssignation(p, options().selectedAutoFlagAssignation1(), 1);
-    	autoFlagAssignation(p, options().selectedAutoFlagAssignation2(), 2);    	
-    	autoFlagAssignation(p, options().selectedAutoFlagAssignation3(), 3);    	
-    	autoFlagAssignation(p, options().selectedAutoFlagAssignation4(), 4);    	
+    	autoFlagAssignation(p, options().selectedAutoFlagAssignation2(), 2);
+    	autoFlagAssignation(p, options().selectedAutoFlagAssignation3(), 3);
+    	autoFlagAssignation(p, options().selectedAutoFlagAssignation4(), 4);
     }
     public void refreshFullScan() {
         if (!scouted()) {
@@ -635,7 +637,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
         setColonyData();
         setOrbitingFleets();
         refreshSystemEntryScan();
-                
+
         if (system().hasBonusTechs())
             owner().plunderAncientTech(system());
     }
@@ -735,17 +737,26 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     private void setOrbitingFleets() {
         orbitingFleets().clear();
         exitingFleets().clear();
-        vGuarded = system().hasMonster();
+        checkIfGuarded();
         vOrbitingFleets.clear();
         vOrbitingFleets.addAll(system().orbitingFleets());
         vExitingFleets.clear();
         vExitingFleets.addAll(system().exitingFleets());
     }
+	private boolean checkIfGuarded()	{
+		monsterKey = null;
+		vGuarded = system().hasMonster();
+		if (vGuarded) {
+			SpaceMonster monster = system().monster();
+			if (monster != null)
+				monsterKey = monster.nameKey();
+		}
+		return vGuarded;
+	}
     public void clearFleetInfo() {
         orbitingFleets().clear();
         exitingFleets().clear();
     }
-
     public float distance()                  { return owner().sv.distance(system().id); }
     public boolean hasRallyPoint()           { return rallySystem() != null; }
     public Colony colony()                   { return system() == null ? null : system().colony(); }
@@ -762,7 +773,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     public boolean resourceUltraPoor()       { return (planet() != null) && planet().isResourceUltraPoor(); }
     public boolean artifact()                { return (planet() != null) && planet().isArtifact(); }
     public boolean orionArtifact()           { return (planet() != null) && planet().isOrionArtifact(); }
-    
+
     public boolean environmentHostile()      { return (planet() != null) && planet().isEnvironmentHostile(); }
     public boolean environmentFertile()      { return (planet() != null) && planet().isEnvironmentFertile(); }
     public boolean environmentGaia()         { return (planet() != null) && planet().isEnvironmentGaia(); }
@@ -848,7 +859,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
         // if we are rebelling against the New Republic
         Empire leader = galaxy().council().leader();
         if (leader != null) {
-            if (owner().viewForEmpire(vEmpire).embassy().finalWar()) {                   
+            if (owner().viewForEmpire(vEmpire).embassy().finalWar()) {
                 if ((vEmpire == leader) || vEmpire.viewForEmpire(leader).embassy().unity())
                     return false;
             }
@@ -876,7 +887,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
 
     public boolean isColonized()             { return (empire() != null) && (colony() != null); }
     public boolean isInEmpire()              { return owner() == system().empire();}
-    
+
     public boolean isAlert() {
         if (vName.isEmpty())
             return false;
@@ -888,7 +899,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
                 if (fl.isPotentiallyArmed(player())) {
                     if (player().atWarWith(fl.empId())) { 
                         return true;
-                    }  
+                    }
                 }
             }
         }
@@ -914,7 +925,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
             name = text("PLANET_COLONY",empire().raceName());
         else
             name = text("PLANET_WORLD",empire().raceName());
-        
+
         name = empire().replaceTokens(name, "alien");
         return name;
     }

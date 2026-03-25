@@ -14,7 +14,7 @@ public final class PreGameOptions extends AbstractOptionsSubUI {
 
 	@Override public SafeListPanel optionsMap()	{ return preGameOptionsMap(); }
 
-	public static SafeListPanel preGameOptionsMap()	{
+	private static SafeListPanel preGameOptionsMap()	{
 		SafeListPanel map = new SafeListPanel(OPTION_ID);
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("START_GALAXY_OPTIONS"),
@@ -31,24 +31,31 @@ public final class PreGameOptions extends AbstractOptionsSubUI {
 				realNebulaShape,
 				realNebulaeOpacity
 				)));
-		map.add(new SafeListParam(Arrays.asList(
+		SafeListParam list = new SafeListParam(Arrays.asList(
 				new ParamTitle("START_EMPIRE_OPTIONS"),
-				orionLikeHomeworld, artifactsHomeworld,
-				fertileHomeworld, gaiaHomeworld,
-				richHomeworld, ultraRichHomeworld,
-				companionWorlds, battleScout, randomTechStart, randomizeAI,
+				orionLikeHomeworld,
+				artifactsHomeworld,
+				fertileHomeworld,
+				gaiaHomeworld,
+				richHomeworld,
+				ultraRichHomeworld,
+				companionWorlds,
+				battleScout,
+				randomTechStart,
+				randomizeAI,
 
 				HEADER_SPACER_50,
 				new ParamTitle("START_PLANET_OPTIONS"),
-				planetQuality, minDistArtifactPlanet,
+				planetQuality,
+				minDistArtifactPlanet,
 				Planet.guardianMonsters,
-				guardianMonstersLevel,
-				Planet.guardianMonstersProbability,
-
-				// headerSpacer,
-				// new ParamTitle("SUB_PANEL_OPTIONS"),
-				AllSubUI.systemSubUI()
-				)));
+				Planet.guardianMonstersProbability
+				));
+		list.add(HEADER_SPACER_50);
+		list.addAll(AllSubUI.getHandle(MONSTER_RULES_UI_KEY).getUiMinor(false));
+		list.add(HEADER_SPACER_50);
+		list.add(AllSubUI.getHandle(SYSTEMS_OPTIONS_UI_KEY).getUI());
+		map.add(list);
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("START_TECH_CONTROL"),
 				techIrradiated, techCloning, techAtmospheric,

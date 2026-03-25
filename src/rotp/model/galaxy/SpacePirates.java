@@ -15,6 +15,7 @@
  */
 package rotp.model.galaxy;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
 import static rotp.model.ships.ShipDesign.maxSpecials;
 
 import java.awt.Color;
@@ -29,6 +30,7 @@ import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
+import rotp.ui.util.ParamInteger;
 
 // modnar: add Space Pirates random event
 public final class SpacePirates extends SpaceMonster {
@@ -36,6 +38,10 @@ public final class SpacePirates extends SpaceMonster {
     private static final Color shieldColor	= Color.magenta;
     private static final String imageKey	= "SPACE_PIRATES";
     private static final boolean isFusion	= true;
+	public static final ParamInteger piratesLevelPct = new ParamInteger(MOD_UI, "PIRATES_LEVEL_MULT", 100)
+			.setLimits(10, 500)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
 
 	public SpacePirates(Float speed, Float level)	{ super(imageKey, ORIGINAL_ROAMING_EMPIRE, speed, level); }
 	@Override public void initCombat() {
@@ -57,7 +63,7 @@ public final class SpacePirates extends SpaceMonster {
 			sys.planet().removeExcessWaste();
 		}		
 	}
-	@Override protected Float stackLevel()	{ return super.stackLevel() * options().piratesLevelMultiplier(); }
+	@Override protected Float stackLevel()	{ return super.stackLevel() * piratesLevelPct.get()/100f; }
 	@Override protected void initDesigns()	{
 		super.initDesigns();
 		float numLevel	 = stackLevel();

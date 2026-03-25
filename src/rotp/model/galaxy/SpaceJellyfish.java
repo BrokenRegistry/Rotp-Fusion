@@ -15,6 +15,8 @@
  */
 package rotp.model.galaxy;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -26,12 +28,17 @@ import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
+import rotp.ui.util.ParamInteger;
 
-final class SpaceJellyfish extends GuardianMonsters {
+public final class SpaceJellyfish extends GuardianMonsters {
 	private static final long serialVersionUID = 1L;
 	private static final Color shieldColor	= Color.blue;
 	private static final String imageKey	= "SPACE_JELLYFISH";
 	private static final boolean isFusion	= true;
+	public static final ParamInteger guardJellyfishLevelPct = new ParamInteger(MOD_UI, "GUARD_JELLYFISH_LEVEL", 100)
+			.setLimits(10, 500)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
 
 	SpaceJellyfish(Float speed, Float level)	{
 		super(imageKey, FUSION_SENTINEL_EMPIRE, speed, level);
@@ -42,6 +49,7 @@ final class SpaceJellyfish extends GuardianMonsters {
 		super.initCombat();
 		addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));
 	}
+	@Override protected Float stackLevel()		{ return super.stackLevel() * guardJellyfishLevelPct.get()/100f; }
 	@Override public SpaceMonster getCopy()		{ return new SpaceJellyfish(null, null); }
 	@Override protected int otherSpecialCount() { return 2; }
 	@Override protected ShipDesign designRotP()	{

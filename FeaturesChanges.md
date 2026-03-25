@@ -22,6 +22,8 @@
 
 ### Features:
 
+- Each space monster now has its own level.
+- The space monster that prevented you from exploring a system will appear in the star panel.
 - New fearsome guardian Monsters: Space Crystal and Space Amoeba can now be selected to guard valuable planets.
 - New Picky Roaming Space Monsters.
   - Space Crystals will be drawn to any populated ancient world, ANYWHERE on the map. When they can't find a populated ancient world, they will leave.

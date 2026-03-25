@@ -15,6 +15,8 @@
  */
 package rotp.model.galaxy;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -27,12 +29,17 @@ import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
+import rotp.ui.util.ParamInteger;
 
 public final class GuardianAmoeba extends GuardianMonsters {
 	private static final long serialVersionUID = 1L;
 	private static final Color shieldColor	= Color.cyan;
 	private static final String imageKey	= "SPACE_AMOEBA";
 	private static final boolean isFusion	= true;
+	public static final ParamInteger guardAmoebaLevelPct = new ParamInteger(MOD_UI, "GUARD_AMOEBA_LEVEL", 100)
+			.setLimits(10, 500)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
 
 	public GuardianAmoeba(Float speed, Float level)	{
 		super("SPACE_AMOEBA", FUSION_GUARDIAN_EMPIRE, speed, level);
@@ -48,6 +55,7 @@ public final class GuardianAmoeba extends GuardianMonsters {
 		else
 			addCombatStack(new CombatStackSpaceAmoeba(this, imageKey, stackLevel(), 0, shieldColor));
 	}
+	@Override protected Float stackLevel()		{ return super.stackLevel() * guardAmoebaLevelPct.get()/100f; }
 	@Override public SpaceMonster getCopy()		{ return new GuardianAmoeba(null, null); }
 	@Override protected int otherSpecialCount() { return options().isMoO1Monster()? 1:3; }
 	@Override protected ShipDesign designMoO1()	{

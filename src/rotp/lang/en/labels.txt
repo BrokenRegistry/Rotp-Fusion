@@ -163,8 +163,10 @@ PLANET_WORLD                      | [alien_race] World
 PLANET_COLONY                     | [alien_race] Colony
 PLANET_ORION                      | Orion
 PLANET_ORION_GUARDIAN             | Guardian
-PLANET_SPACE_JELLYFISH            | Space Cyaneidae
-PLANET_SPACE_CUTTLEFISH           | Space Sepiidae
+PLANET_SPACE_JELLYFISH			| →SPACE_JELLYFISH←
+PLANET_SPACE_CUTTLEFISH			| →SPACE_CUTTLEFISH←
+PLANET_SPACE_CRYSTAL			| →SPACE_CRYSTAL←
+PLANET_SPACE_AMOEBA				| →SPACE_AMOEBA←
 
 // Nebula names  ("starName" Nebula)
 NEBULA_NAME                       | %1 Nebula
@@ -2599,6 +2601,13 @@ HEADERS_RANDOM_EVENTS_DELAYS         | ~~~ DELAYS PARAMETERS ~~~
 HEADERS_RANDOM_EVENTS_RETURNS_DESC   | Parameters related to random events reiteration.
 HEADERS_RANDOM_EVENTS_RETURNS        | ~~~ RECURRING PARAMETERS ~~~
 
+HEADERS_GUARD_MONSTERS_RULES_DESC	| Parameters related to random events reiteration.
+HEADERS_GUARD_MONSTERS_RULES		| ~~~ GUARDIAN MONSTERS RULES ~~~
+HEADERS_ROAMING_MONSTERS_RULES_DESC	| Parameters related to random events reiteration.
+HEADERS_ROAMING_MONSTERS_RULES		| ~~~ ROAMING MONSTERS RULES ~~~
+HEADERS_EVENT_MONSTERS_RULES_DESC	| Parameters related to random events Monsters stats.
+HEADERS_EVENT_MONSTERS_RULES		| ~~~ EVENT MONSTERS RULES ~~~
+
 HEADERS_DEBUG_MEMORY_DESC            | To enable or disable Memory monitoring.
 HEADERS_DEBUG_MEMORY                 | ~~~ MEMORY MONITORING ~~~
 HEADERS_DEBUG_AUTO_RUN_DESC          | To enable and configure Full Auto Run.
@@ -2665,6 +2674,11 @@ HEADERS_UNCLASSIFIED_DESC            | The right position has still to be found!
 HEADERS_UNCLASSIFIED                 | ~~~ UNCLASSIFIED MOD ~~~
 HEADERS_SPACER_DESC                  |
 HEADERS_SPACER                       |  %1
+
+SETTINGS_MOD_MONSTER_RULES_TITLE         | Rules for Space Monsters
+SETTINGS_MOD_MONSTER_RULES_UI            | Rules for Space Monsters
+SETTINGS_MOD_MONSTER_RULES_UI_DESC       | Opens a submenu to configure the characteristics of the space monsters.
+SETTINGS_MOD_MONSTER_RULES_UI_HELP       | →SETTINGS_MOD_RULES_OPTIONS_UI_DESC←<br>These settings are finals.<br>These settings are saved with the game.
 
 // BR: add UI panel for Systems options
 SETTINGS_MOD_SYSTEMS_OPTIONS_TITLE   | Advanced Stars and Planets Configuration
@@ -4065,13 +4079,13 @@ SETTINGS_MOD_GUARDIAN_MONSTERS_WEAK			| Puny Monsters
 SETTINGS_MOD_GUARDIAN_MONSTERS_STRONG_DESC	| These monsters can only be defeated with large fleets.
 SETTINGS_MOD_GUARDIAN_MONSTERS_STRONG		| Mighty Monsters
 
-SETTINGS_MOD_GUARDIAN_MONSTERS_PCT_DESC  | Base probability (in %) for good planets to have a Space Monster. This value will be multiplied by the planet size (in %).<br>Larger values ​​lead to more monsters.
-SETTINGS_MOD_GUARDIAN_MONSTERS_PCT        | Guardians Prob: %1%
-SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL_DESC | Difficulty level for Guardian Space Monsters.
-SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL      | Guardians Level: %1%
+SETTINGS_MOD_GUARDIAN_MONSTERS_PCT_DESC		| Base probability (in %) for good planets to have a Space Monster. This value will be multiplied by the planet size (in %).<br>Larger values ​​lead to more monsters.
+SETTINGS_MOD_GUARDIAN_MONSTERS_PCT			| Guardians probability: %1%
+SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL_DESC	| A common difficulty level that applies to all space monsters guarding a planet.
+SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL		| Guardians global Level: %1%
 
-SETTINGS_MOD_IS_MOO1_MONSTER_DESC         | To get the MoO1 Space Monster weapons and characteristics.
-SETTINGS_MOD_IS_MOO1_MONSTER              | MoO1 Monsters: %1
+SETTINGS_MOD_IS_MOO1_MONSTER_DESC			| To give the space monsters the weapons and characteristics from MoO1.
+SETTINGS_MOD_IS_MOO1_MONSTER				| MoO1 Monsters: %1
 
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE_DESC		| Minimum distance to the next colony targeted by the space monsters.
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE			| Minimum distance: %1 ly
@@ -4152,6 +4166,17 @@ SETTINGS_MOD_MONSTERS_GNN_ALL_DESC       | GNN will notify every time a system i
 SETTINGS_MOD_MONSTERS_GNN_NEW_DESC       | GNN will notify the first attack of monsters, when they appear.
 SETTINGS_MOD_MONSTERS_GNN_FIRST_DESC     | GNN will only notify the first attack of each monster type.
 
+SETTINGS_MOD_GUARD_PIRATES_LEVEL_DESC	| Since →REF_PIRATES_2← Guardians have a particularly high level, this setting will allow you to make them a little more accessible.
+SETTINGS_MOD_GUARD_PIRATES_LEVEL		| →REF_PIRATES← Guardians Level: %1%
+SETTINGS_MOD_GUARD_AMOEBA_LEVEL_DESC	| Since →REF_AMOEBA_2← have a particularly high level, this setting will allow you to make them a little more accessible.
+SETTINGS_MOD_GUARD_AMOEBA_LEVEL			| →REF_AMOEBA← Guardian Level: %1%
+SETTINGS_MOD_GUARD_CRYSTAL_LEVEL_DESC	| Since →REF_CRYSTAL_2← Guardians have a particularly high level, this setting will allow you to make them a little more accessible.
+SETTINGS_MOD_GUARD_CRYSTAL_LEVEL		| →REF_CRYSTAL← Guardian Level: %1%
+SETTINGS_MOD_GUARD_CUTTLEFISH_LEV_DESC	| Since Cyaneidae Guardians have a particularly low level, this setting will allow you to make them a little more stronger.
+SETTINGS_MOD_GUARD_CUTTLEFISH_LEV		| Cyaneidae Guardian Level: %1%
+SETTINGS_MOD_GUARD_JELLYFISH_LEVEL_DESC	| Since Sepiidae Guardians have a particularly low level, this setting will allow you to make them a little more stronger.
+SETTINGS_MOD_GUARD_JELLYFISH_LEVEL		| Sepiidae Guardian Level: %1%
+
 // ========== RANDOM EVENT MONSTERS PARAMETERS
 REF_PIRATES                              | Pirates
 REF_PIRATES_2                            | Space Pirates
@@ -4165,6 +4190,8 @@ SETTINGS_MOD_PIRATES_MAX_SYSTEMS_DESC    | →REF_MAX_SYS_1← →REF_PIRATES_2�
 SETTINGS_MOD_PIRATES_MAX_SYSTEMS         | Max →REF_PIRATES← Attack: %1
 REF_AMOEBA                               | Amoeba
 REF_AMOEBA_2                             | Space Amoeba
+SETTINGS_MOD_AMOEBA_LEVEL_MULT_DESC		| Since →REF_AMOEBA_2← have a particularly high level, this setting will allow you to make them a little more accessible.
+SETTINGS_MOD_AMOEBA_LEVEL_MULT			| →REF_AMOEBA← Level Multiplier: %1%
 SETTINGS_MOD_AMOEBA_DELAY_TURN_DESC      | →REF_DELAY_1← →REF_AMOEBA_2← →REF_DELAY_2←
 SETTINGS_MOD_AMOEBA_DELAY_TURN           | →REF_AMOEBA← →REF_DELAY←
 SETTINGS_MOD_AMOEBA_RETURN_TURN_DESC     | →REF_RETURN_1← Space →REF_AMOEBA_2← →REF_RETURN_2←
@@ -4173,6 +4200,8 @@ SETTINGS_MOD_AMOEBA_MAX_SYSTEMS_DESC     | →REF_MAX_SYS_1← →REF_AMOEBA_2�
 SETTINGS_MOD_AMOEBA_MAX_SYSTEMS          | Max →REF_AMOEBA← Attack: %1
 REF_CRYSTAL                              | Crystal
 REF_CRYSTAL_2                            | Space Crystal
+SETTINGS_MOD_CRYSTAL_LEVEL_MULT_DESC	| Since →REF_CRYSTAL_2← have a particularly high level, this setting will allow you to make them a little more accessible. 
+SETTINGS_MOD_CRYSTAL_LEVEL_MULT			| →REF_CRYSTAL← Level Multiplier: %1%
 SETTINGS_MOD_CRYSTAL_DELAY_TURN_DESC     | →REF_DELAY_1← →REF_CRYSTAL_2← →REF_DELAY_2←
 SETTINGS_MOD_CRYSTAL_DELAY_TURN          | →REF_CRYSTAL← →REF_DELAY←
 SETTINGS_MOD_CRYSTAL_RETURN_TURN_DESC    | →REF_RETURN_1← Space →REF_CRYSTAL_2← →REF_RETURN_2←

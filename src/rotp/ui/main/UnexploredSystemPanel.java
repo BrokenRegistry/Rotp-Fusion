@@ -173,7 +173,7 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
             String label = text("MAIN_UNEXPLORED_SYSTEM");
             scaledFont(g, label, w-sz, 36, 24);
             drawBorderedString(g, label, 2, s10, s40, Color.black, SystemPanel.orangeText);
-            
+
             // draw system banner
             SystemInfo sv = player().sv;
             if (hoverBox == flagBox) {
@@ -220,6 +220,22 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
                 drawString(g,line, s8, y0);
                 y0 += ydelta;
             }
+
+			// Guarded by a monster ?
+			SystemView sysView = sv.view(sys.id); // TODO BR: REMOVE
+			boolean isGuarded = sysView.isGuarded();
+			if (isGuarded) {
+				int cx = getWidth()/2;
+				int cy = getHeight()/2;
+				label = text("SYSTEMS_UNSCOUTED_GUARDED");
+				scaledFont(g, label, w-s10, 24, 12);
+				drawBorderedString(g, label, 2, s10, cy+s60, Color.black, redText);
+				Image monsterImage = sysView.monsterImage();
+				if (monsterImage != null) {
+					sz = s50;
+					g.drawImage(monsterImage, cx-s60, cy-s60, sz, sz, null);
+				}
+			}
         }
     }
 }

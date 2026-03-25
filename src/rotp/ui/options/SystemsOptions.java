@@ -71,7 +71,6 @@ final class SystemsOptions extends AbstractOptionsSubUI {
 						minDistArtifactPlanet,
 						LINE_SPACER_25,
 						Planet.guardianMonsters,
-						guardianMonstersLevel,
 						Planet.guardianMonstersProbability
 						));
 		return majorList;

@@ -183,29 +183,28 @@ public final class GameOverUI extends FadeInPanel
         int sw0 = g.getFontMetrics().stringWidth(exitText);
         int sw1 = g.getFontMetrics().stringWidth(replayText);
         int sw2 = g.getFontMetrics().stringWidth(continueText);
-        
+
         exitBox.setBounds(w-sw0-s70, h-s45, sw0+s60, s40);
         replayBox.setBounds(exitBox.x-s80-sw1, h-s45, sw1+s60, s40);
         if (galaxy().player().extinct())
         	continueBox.setBounds(0, 0, 0, 0);
         else
         	continueBox.setBounds(replayBox.x-s80-sw2, h-s45, sw2+s60, s40);
-        
+
         if (back1 == null) {
             float[] dist = {0.0f, 0.5f, 1.0f};
             Color[] greenColors = {greenEdgeC, greenMidC, greenEdgeC};
             Point2D pt1 = new Point2D.Float(replayBox.x, 0);
             Point2D pt2 = new Point2D.Float(replayBox.x + replayBox.width, 0);
-            back1 = new LinearGradientPaint(pt1, pt2, dist, greenColors);                
+            back1 = new LinearGradientPaint(pt1, pt2, dist, greenColors);
             pt1 = new Point2D.Float(exitBox.x, 0);
             pt2 = new Point2D.Float(exitBox.x + exitBox.width, 0);
-            back2 = new LinearGradientPaint(pt1, pt2, dist, greenColors);                
+            back2 = new LinearGradientPaint(pt1, pt2, dist, greenColors);
         }
-        
 
         // draw replay button
         g.setColor(SystemPanel.blackText);
-        g.fillRoundRect(replayBox.x+s3, replayBox.y+s3, replayBox.width, replayBox.height, s8, s8);           
+        g.fillRoundRect(replayBox.x+s3, replayBox.y+s3, replayBox.width, replayBox.height, s8, s8);
         boolean hovering = hoverBox == replayBox;
         g.setPaint(back1);
         g.fillRoundRect(replayBox.x, replayBox.y, replayBox.width, replayBox.height, s8, s8);
@@ -224,7 +223,6 @@ public final class GameOverUI extends FadeInPanel
         g.setStroke(prevStr);
         int x2a = replayBox.x + ((replayBox.width - sw1) / 2);
         drawShadowedString(g, replayText, x2a, replayBox.y + replayBox.height - s12, Color.black, c0);
-
 
         // draw continue button
         if (!galaxy().player().extinct()) {
@@ -262,7 +260,7 @@ public final class GameOverUI extends FadeInPanel
         }
         else {
             c0 = SystemPanel.whiteText;
-            g.setStroke(BasePanel.stroke1);              
+            g.setStroke(BasePanel.stroke1);
         }
         g.setColor(c0);
         g.drawRoundRect(exitBox.x, exitBox.y, exitBox.width, exitBox.height, s8, s8);
@@ -510,8 +508,11 @@ public final class GameOverUI extends FadeInPanel
     }
     @Override
     public void keyPressed(KeyEvent e) {
-        if (!textFinished())
-            return;
+        if (!textFinished()) {
+        	if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+        		transIndex = 19;
+        	return;
+        }
         switch(e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
                 advanceMode();
