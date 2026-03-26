@@ -28,7 +28,7 @@ public class CombatStackOrionGuardian extends CombatStackMonster {
 	}
 
 	@Override protected ShipCaptain getCaptain()		{
-		if (options().isMoO1Monster())
+		if (isMoO1Monster())
 			return super.getCaptain();
 		else
 			return new OrionGuardianCaptain();
@@ -58,5 +58,4 @@ public class CombatStackOrionGuardian extends CombatStackMonster {
 		rotateToUsableWeapon(target);
 		return currentWeaponCanAttack(target);
 	}
-
 }

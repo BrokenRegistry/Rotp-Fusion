@@ -19,6 +19,7 @@ import static rotp.model.game.IBaseOptsTools.MOD_UI;
 import static rotp.model.ships.ShipDesign.maxSpecials;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import rotp.model.combat.CombatStackMonster;
@@ -32,11 +33,13 @@ import rotp.model.ships.ShipShield;
 import rotp.ui.util.ParamInteger;
 
 // modnar: add Space Pirates random event
-public final class GuardianPirates extends SpaceMonster {
+public final class GuardianPirates extends GuardianMonsters {
 	private static final long serialVersionUID = 1L;
 	private static final Color shieldColor	= Color.magenta;
 	private static final String imageKey	= "SPACE_PIRATES";
 	private static final boolean isFusion	= true;
+	private static BufferedImage monsterImage; // no need to have hundred copy of this
+
 	public static final ParamInteger guardPiratesLevelPct = new ParamInteger(MOD_UI, "GUARD_PIRATES_LEVEL", 100)
 			.setLimits(10, 500)
 			.setIncrements(1, 5, 20)
@@ -49,6 +52,11 @@ public final class GuardianPirates extends SpaceMonster {
 	@Override public void initCombat() {
 		super.initCombat();
 		addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));	   
+	}
+	protected BufferedImage getMapImage()	{
+		if (monsterImage == null)
+			monsterImage = super.getMapImage();
+		return monsterImage;
 	}
 	@Override protected Float stackLevel()	{ return super.stackLevel() * guardPiratesLevelPct.get()/100f; }
 	@Override protected void initDesigns()	{
@@ -64,7 +72,7 @@ public final class GuardianPirates extends SpaceMonster {
 			num = (int) Math.ceil(numLevel * stackScale * maxTechLvl);
 		num(0, num);
 	}
-	@Override protected ShipDesign designRotP() {
+	@Override protected ShipDesign monsterDesign() {
 		ShipDesignLab lab = empire().shipLab();
 		float maxTechLvl  = maxTechLvl();
 		float weaponScale = 1.0f;

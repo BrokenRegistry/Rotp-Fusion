@@ -36,7 +36,6 @@ import rotp.model.incidents.DiplomaticIncident;
 import rotp.model.incidents.KillMonsterIncident;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
-import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 
 public abstract class SpaceMonster extends ShipFleet implements NamedObject {
@@ -55,7 +54,6 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 	public  float travelSpeed = 1f / (1.5f * max(1, 100.0f/galaxy().maxNumStarSystems()));
 	private Float monsterLevel; // For non dynamic levels
 	private transient List<CombatStack> combatStacks = new ArrayList<>();
-	private transient BufferedImage shipImage;
 	public  IMonsterPos event;
 	private transient Float stackLevel = 1f;
 	private transient int designTurn;
@@ -72,9 +70,8 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 			travelSpeed = speed;
 	}
 
-	abstract protected ShipDesign designRotP();
+	abstract protected ShipDesign monsterDesign();
 
-	protected ShipDesign designMoO1()		{ return designRotP(); }
 	protected void initDesigns()			{
 		designs = new ShipDesign[ShipDesignLab.MAX_DESIGNS];
 		monsterLevel = null;
@@ -84,17 +81,13 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 			num(i, 0);
 		int id = 0;
 		num(id, 1);
-		ShipDesign des;
-		if (options().isMoO1Monster())
-			des = designMoO1();
-		else
-			des = designRotP();
+		ShipDesign des = monsterDesign();
 		des.setImage(image());
 		des.name(text(nameKey));
 		des.id(id);
 		designs[id] = des;
 	}
-
+	public boolean isMoO1Monster()			{ return false; }
 	public Empire lastAttacker()			{ return galaxy().empire(lastAttackerId); }
 	public void lastAttacker(Empire c)		{ lastAttackerId = c.id; }
 	public void visitSystem(int sysId)		{ path.add(sysId); }
@@ -112,8 +105,8 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 		stackLevel(); // initialize
 		combatStacks().clear();
 	}
-	public void	 addCombatStack(CombatStack c)		{ combatStacks.add(c); }
-	protected Float	 stackLevel()					{
+	public void	 addCombatStack(CombatStack c)	{ combatStacks.add(c); }
+	protected Float	stackLevel()				{
 		if (stackLevel == null) {
 			if (monsterLevel == null) {
 				if (isFusionGuardian() && system() != null) {
@@ -156,7 +149,7 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 			pos = event.pos();
 			return;
 		}
-		BufferedImage img = getImage();
+		BufferedImage img = getMapImage();
 		int w = img.getWidth();
 		int h = img.getHeight();
 		int x = map.mapX(pos.x) - w/4;
@@ -167,11 +160,9 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 		else
 			g2.drawImage(img, x+w, y, -w, h, map);
 
-		int pad = BasePanel.s8;
+		int pad = s8;
 		selectBox().setBounds(x-pad,y-pad,w+pad+pad,h+pad+pad);
-		int s5 = BasePanel.s5;
-		int s10 = BasePanel.s10;
-		int cnr = BasePanel.s10;
+		int cnr = s10;
 		if (map.parent().isClicked(this))
 			drawSelection(g2, map, x-s5, y-s5, w+s10, h+s10, cnr);
 		else if (map.parent().isHovering(this))
@@ -183,12 +174,12 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 		HashMap<Integer, Point.Float> wanderPath = event.wanderPath();
 		if (wanderPath==null || wanderPath.isEmpty())
 			return;
-		BasicStroke stroke2 = new BasicStroke(scaled(2), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: round cap and join
+		BasicStroke stroke2 = new BasicStroke(s2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: round cap and join
 		Stroke prev = g2.getStroke();
 		g2.setStroke(stroke2);
 		g2.setColor(Color.blue);
 		Point.Float lastPos = wanderPath.get(0);
-		int r = scaled(3);
+		int r = s3;
 		int d = 2*r;
 		int size = wanderPath.size();
 		int xL = map.mapX(lastPos.x);
@@ -328,33 +319,32 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 		}
 		return new int[]{xMin, yMin, xMax, yMax};
 	}
-	protected BufferedImage getImage()			{
-		// shipImage = null;
-		if (shipImage == null) {
-			Image baseShipImg = shipImage();
-			int[] loc = locateImage(baseShipImg);
-			int imgW  = loc[2]-loc[0];
-			int imgH  = loc[3]-loc[1];
-			int destW = BasePanel.s30;
-			int destH = BasePanel.s20;
-			float scaleW = (float) destW / imgW;
-			float scaleH = (float) destH / imgH;
-			if (scaleH < scaleW) {
-				destW *= scaleH/scaleW;
-			} else {
-				destH *= scaleW/scaleH;
-			}
-
-			shipImage = newBufferedImage(destW, destH);
-			Graphics2D g = (Graphics2D) shipImage.getGraphics();
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
-			g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-			g.drawImage(baseShipImg, 0, 0, destW, destH, loc[0], loc[1], loc[2], loc[3], null);
-			g.dispose();
+	protected int imageWidth()					{ return s30; }
+	protected int imageHeight()					{ return s20; }
+	protected BufferedImage getMapImage()		{
+		Image baseShipImg = shipImage();
+		int[] loc = locateImage(baseShipImg);
+		int imgW  = loc[2]-loc[0];
+		int imgH  = loc[3]-loc[1];
+		int destW = imageWidth();
+		int destH = imageHeight();
+		float scaleW = (float) destW / imgW;
+		float scaleH = (float) destH / imgH;
+		if (scaleH < scaleW) {
+			destW *= scaleH/scaleW;
+		} else {
+			destH *= scaleW/scaleH;
 		}
+
+		BufferedImage shipImage = newBufferedImage(destW, destH);
+		Graphics2D g = (Graphics2D) shipImage.getGraphics();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
+		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.drawImage(baseShipImg, 0, 0, destW, destH, loc[0], loc[1], loc[2], loc[3], null);
+		g.dispose();
 		return shipImage;
 	}
 	public boolean isFusionGuardian()			{ return false; } // Not Orion Guardian
@@ -374,7 +364,7 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 			return;
 
 		Point.Float	  pos = new Point.Float(fromX(), fromY());
-		BufferedImage img = getImage();
+		BufferedImage img = getMapImage();
 		int w = img.getWidth();
 		int h = img.getHeight();
 		int x = map.mapX(pos.x)-w;
@@ -383,11 +373,9 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 //		g2.drawImage(img, x-w/4, y-h/4, w, h, map);
 		g2.drawImage(img, x, y, w, h, map);
 
-		int pad = BasePanel.s8;
+		int pad = s8;
 		selectBox().setBounds(x-pad,y-pad,w+pad+pad,h+pad+pad);
-		int s5 = BasePanel.s5;
-		int s10 = BasePanel.s10;
-		int cnr = BasePanel.s10;
+		int cnr = s10;
 		if (map.parent().isClicked(this))
 			drawSelection(g2, map, x-s5, y-s5, w+s10, h+s10, cnr);
 		else if (map.parent().isHovering(this))

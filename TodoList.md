@@ -24,7 +24,6 @@
 - Would it be possible to have a governor option to extend autospend - to prioritise artifacts planets with spending?
   - (and on a similar topic, per-planet taxes? maybe that's kinda weird idk)
 - Limit / Customize the flag colors (to be changed when scrolling over them)
-- Could we get the same logic as scouts, where if a colony ship is on a long voyage and a closer one is idle, it'll also choose the same destination?
 
 - Suggestion: in the colony rules panel, make the ability to use the specific colonizing tech valid only for players ("restricted" colonizing rule).
   - Suggestion: in the galaxy rules panel, allow the research rate setting to be splitted between player and AIs.
@@ -34,11 +33,7 @@
     - Fixed selections are also more in line with the spirit of MoO1 and the original RotP, so I'll start by extending my options tools to be compatible with both fine-tuning and fixed selections. 
 - Add same civ name as the player with bad starting relationship.
 - Monsters:
-  - It seems quite natural that the first target should be the empire conducting the research.
-  - Currently, when a monster leaves a system, the next target must be within 8 ly (6 ly for MoO1 monsters). It shouldn't be too complicated to add two new options: minimum and maximum distance for monsters...
-  - There is already an option to protect valuable planets using minor monsters, in order to delay their colonization somewhat... I suppose I could add a more extreme option with the most powerful monster (I'll have to remove their tendency to destroy the planet first...).
   - Yes, seeing monsters fight each other could be fun, but it won't be easy to implement, as it's the most tricky part of RotP's coding... And the Guardian will have to become more powerful if we want him to be able to defeat all the other monsters...
-- Makes Float formating to match the selected language format.
 - add an option to distinguish between invasion troops and population transport.
 
 
@@ -46,13 +41,8 @@
 
 - Add subterraneans equivalent in custom species..
   - Population Bonus/Malus per empire imply a lot of method call changes... -> Postponed
-- Declare war and ask join war the same turn:
-  - Swap the messages
   - Option to remove "Ask join war"
 - Some Achievements options.
-- Monsters:
-  - More Planet Monsters Guardian.
-- Add a temerity setting to custom species.
 - Color List for opponents...
 - Some kind of positive monster like instead of attacking strong empires it defends weak empires
 - Stronger GNN filters

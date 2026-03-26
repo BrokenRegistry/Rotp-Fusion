@@ -453,7 +453,7 @@ public abstract class RandomEventMonsters extends AbstractRandomEvent implements
 		return s1;
 	}
 	private float avgSpeed()			{
-		if (options().isMoO1Monster())
+		if (monster.isMoO1Monster())
 			return 1f;
 		float speed = monstersSpeed();
 		if (speed == 0)

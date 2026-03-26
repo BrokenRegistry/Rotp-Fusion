@@ -31,27 +31,6 @@ final class RandomEventsOptions extends AbstractOptionsSubUI {
 		list.add(HEADER_SPACER_50);
 		list.addAll(AllSubUI.getHandle(MONSTER_RULES_UI_KEY).getUiMajor(false));
 		map.add(list);
-//		map.add(new SafeListParam(Arrays.asList(
-//				new ParamTitle("RANDOM_EVENTS_GLOBAL"),
-//				randomEvents,
-//				eventsStartTurn,
-//				eventsPace,
-//				eventsFavorWeak,
-//				fixedEventsMode,
-//				monstersGiveLoots,
-//				monstersLevel,
-//				monstersGNNNotification,
-//
-//				HEADER_SPACER_50,
-//				isMoO1Monster,
-//				guardianMonstersLevel,
-//				LINE_SPACER_25,
-//				GuardianPirates.guardPiratesLevelPct,
-//				GuardianAmoeba.guardAmoebaLevelPct,
-//				GuardianCrystal.guardCrystalLevelPct,
-//				SpaceJellyfish.guardJellyfishLevelPct,
-//				SpaceCuttlefish.guardCuttlefishLevelPct
-//				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("RANDOM_EVENTS_MONSTERS"),
 				piratesDelayTurn,
@@ -64,12 +43,14 @@ final class RandomEventsOptions extends AbstractOptionsSubUI {
 				amoebaReturnTurn,
 				amoebaMaxSystems,
 				SpaceAmoeba.amoebaLevelPct,
+				SpaceAmoeba.isMoO1Monster,
 
 				HEADER_SPACER_50,
 				crystalDelayTurn,
 				crystalReturnTurn,
 				crystalMaxSystems,
 				SpaceCrystal.crystalLevelPct,
+				SpaceCrystal.isMoO1Monster,
 
 				HEADER_SPACER_50,
 				RandomEventMonsters.monstersMinDistance,

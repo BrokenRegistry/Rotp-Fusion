@@ -19,6 +19,7 @@ import static rotp.model.game.IBaseOptsTools.MOD_UI;
 import static rotp.model.ships.ShipDesign.maxSpecials;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import rotp.model.colony.Colony;
@@ -38,6 +39,8 @@ public final class SpacePirates extends SpaceMonster {
     private static final Color shieldColor	= Color.magenta;
     private static final String imageKey	= "SPACE_PIRATES";
     private static final boolean isFusion	= true;
+	private static BufferedImage monsterImage; // no need to have hundred copy of this
+
 	public static final ParamInteger piratesLevelPct = new ParamInteger(MOD_UI, "PIRATES_LEVEL_MULT", 100)
 			.setLimits(10, 500)
 			.setIncrements(1, 5, 20)
@@ -63,6 +66,11 @@ public final class SpacePirates extends SpaceMonster {
 			sys.planet().removeExcessWaste();
 		}		
 	}
+	protected BufferedImage getMapImage()		{
+		if (monsterImage == null)
+			monsterImage = super.getMapImage();
+		return monsterImage;
+	}
 	@Override protected Float stackLevel()	{ return super.stackLevel() * piratesLevelPct.get()/100f; }
 	@Override protected void initDesigns()	{
 		super.initDesigns();
@@ -77,7 +85,7 @@ public final class SpacePirates extends SpaceMonster {
 			num = (int) Math.ceil(numLevel * stackScale * maxTechLvl);
 		num(0, num);
 	}
-	@Override protected ShipDesign designRotP() {
+	@Override protected ShipDesign monsterDesign() {
 		ShipDesignLab lab = empire().shipLab();
 		float maxTechLvl  = maxTechLvl();
 		float weaponScale = 1.0f;

@@ -16,8 +16,10 @@
 package rotp.model.galaxy;
 
 import static rotp.model.game.IBaseOptsTools.MOD_UI;
+import static rotp.model.game.IBaseOptsTools.MOO1_DEFAULT;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import rotp.model.colony.Colony;
@@ -31,6 +33,7 @@ import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
+import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamInteger;
 
 public final class SpaceCrystal extends SpaceMonster {
@@ -38,38 +41,55 @@ public final class SpaceCrystal extends SpaceMonster {
     private static final Color shieldColor	= Color.cyan;
     private static final String imageKey	= "SPACE_CRYSTAL";
     private static final boolean isFusion	= false;
+	private static BufferedImage monsterImage; // no need to have hundred copy of this
+
 	public static final ParamInteger crystalLevelPct = new ParamInteger(MOD_UI, "CRYSTAL_LEVEL_MULT", 100)
 			.setLimits(10, 500)
 			.setIncrements(1, 5, 20)
 			.pctValue(true);
+	public static ParamBoolean isMoO1Monster = new ParamBoolean(MOD_UI, "IS_MOO1_SPACE_CRYSTAL", false)
+			.setDefaultValue(MOO1_DEFAULT, true)
+			.formerName(MOD_UI + "IS_MOO1_MONSTER");
 
     public SpaceCrystal(Float speed, Float level)	{ super(imageKey, ORIGINAL_ROAMING_EMPIRE, speed, level); }
 
-    @Override  public void initCombat() {
+	@Override public boolean isMoO1Monster()	{ return isMoO1Monster.get(); };
+    @Override public void initCombat()	{
     	super.initCombat();
-		if (options().isMoO1Monster())
+		if (isMoO1Monster.get())
 			addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));
 		else
 			addCombatStack(new CombatStackSpaceCrystal(this, imageKey, stackLevel(), 0, shieldColor));
     }
+	@Override protected BufferedImage getMapImage()	{
+		if (monsterImage == null)
+			monsterImage = super.getMapImage();
+		return monsterImage;
+	}
 	@Override protected Float stackLevel()		{ return super.stackLevel() * crystalLevelPct.get()/100f; }
     @Override public SpaceMonster getCopy()		{ return new SpaceCrystal(null, null); }
-    @Override protected int otherSpecialCount() { return options().isMoO1Monster()? 1:2; }
+    @Override protected int otherSpecialCount()	{ return isMoO1Monster.get() ? 1 : 2; }
     @Override public void degradePlanet(StarSystem sys) {
         Colony col = sys.colony();
         if (col != null) {
             sys.empire().lastAttacker(this);
             col.destroy();  
         }
-        if (!options().isMoO1Monster())
+        if (!isMoO1Monster.get())
         	sys.planet().degradeToType(PlanetType.DEAD);
         float maxWaste = sys.planet().maxWaste();
         sys.planet().addWaste(maxWaste);
         sys.planet().removeExcessWaste();
         sys.abandoned(false);
     }
+	@Override protected ShipDesign monsterDesign()	{
+		if (isMoO1Monster.get())
+			return designMoO1();
+		else
+			return designRotP();
+	}
 	private int hullHitPoints()		{ return moO1Level (5000, 1000, 500, 0.5f, 0.25f); }
-	@Override protected ShipDesign designMoO1()	{
+	private ShipDesign designMoO1()	{
 		ShipDesignLab lab = empire().shipLab();
 		ShipDesign design = lab.newBlankDesign(4, hullHitPoints());
 		design.mission	(ShipDesign.DESTROYER);
@@ -113,7 +133,7 @@ public final class SpaceCrystal extends SpaceMonster {
 		design.special(3, lab.specialResistStasis());		// Immune to Stasis
 		return design;
 	}
-	@Override protected ShipDesign designRotP()	{
+	private ShipDesign designRotP()	{
 		ShipDesignLab lab = empire().shipLab();
 		int hp = (int) (stackLevel(7000));
 		ShipDesign design = lab.newBlankDesign(5, hp);

@@ -38,7 +38,7 @@ public class CombatStackMonster extends CombatStackShip {
 	public CombatStackMonster(SpaceMonster m, String key, Float level, int desId, boolean fusion, Color shieldC) {
 		super(m, desId, GameSession.instance().galaxy().shipCombat());
 		fusionGuardian	= m.isFusionGuardian();
-		moo1Monster		= options().isMoO1Monster();
+		moo1Monster		= m.isMoO1Monster();
 		fusionMonster	= fusion;
 		rotPMonster		= !(fusionMonster || moo1Monster);
 		shieldColor		= shieldC;
@@ -88,7 +88,11 @@ public class CombatStackMonster extends CombatStackShip {
 	@Override public int optimalFiringRange(CombatStack tgt)			{
 		return max(1, super.optimalFiringRange(tgt));
 	}
-
+	protected boolean isMoO1Monster()	{
+		if (fleet() instanceof SpaceMonster)
+			return ((SpaceMonster) fleet()).isMoO1Monster();
+		return false;
+	}
 	public final Color shieldColor()	{ return shieldColor; }
 	final SpaceMonster spaceMonster()	{ return (SpaceMonster) fleet(); }
 	public final String monsterKey()	{ return monsterKey; }

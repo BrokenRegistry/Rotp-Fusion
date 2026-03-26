@@ -26,4 +26,6 @@ public abstract class GuardianMonsters extends SpaceMonster {
 	@Override public boolean isFusionGuardian()	{ return true; }
 	@Override public boolean isOrionGuardian()	{ return true; }
 	@Override public StarSystem system()		{ return galaxy().system(sysId()); }
+	@Override protected int imageWidth()		{ return s21; } // Guardians are a little smaller
+	@Override protected int imageHeight()		{ return s14; } // Guardians are a little smaller
 }

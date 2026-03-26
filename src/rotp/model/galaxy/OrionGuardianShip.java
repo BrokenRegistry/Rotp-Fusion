@@ -15,6 +15,9 @@
  */
 package rotp.model.galaxy;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
+import static rotp.model.game.IBaseOptsTools.MOO1_DEFAULT;
+
 import java.awt.Color;
 import java.awt.Image;
 import java.util.ArrayList;
@@ -34,12 +37,21 @@ import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipManeuver;
 import rotp.model.ships.ShipShield;
 import rotp.ui.main.GalaxyMapPanel;
+import rotp.ui.util.ParamBoolean;
+import rotp.ui.util.ParamInteger;
 
-final class OrionGuardianShip extends GuardianMonsters {
+public final class OrionGuardianShip extends GuardianMonsters {
     private static final long serialVersionUID = 1L;
     private static final Color shieldColor	= Color.blue;
     private static final String imageKey	= "ORION_GUARDIAN";
     private static final boolean isFusion	= false;
+	public static final ParamInteger guardOrionLevelPct = new ParamInteger(MOD_UI, "GUARD_ORION_LEVEL", 100)
+			.setLimits(10, 500)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
+	public static ParamBoolean isMoO1Monster = new ParamBoolean(MOD_UI, "IS_MOO1_ORION_GUARDIAN", false)
+			.setDefaultValue(MOO1_DEFAULT, true)
+			.formerName(MOD_UI + "IS_MOO1_MONSTER");
     private final List<String> techs = new ArrayList<>();
 
 	OrionGuardianShip(Float speed, Float level)	{
@@ -47,9 +59,10 @@ final class OrionGuardianShip extends GuardianMonsters {
 		num(0, 1); // Number of monsters
 		techs.add("ShipWeapon:16");  // death ray
     }
+	@Override public boolean isMoO1Monster()	{ return isMoO1Monster.get(); };
 	@Override public void initCombat()		{
 		super.initCombat();
-		if (options().isMoO1Monster())
+		if (isMoO1Monster.get())
 			addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));
 		else
 			addCombatStack(new CombatStackOrionGuardian(this, imageKey, stackLevel(), 0, shieldColor));
@@ -69,17 +82,21 @@ final class OrionGuardianShip extends GuardianMonsters {
 	@Override protected DiplomaticIncident killIncident(Empire emp)	{
 		return KillGuardianIncident.create(emp.id, lastAttackerId, nameKey);
 	}
-
 	// BR: Redundant for backward compatibility
 	@Override public Image image()	{ return image(imageKey); }
-
 	@Override protected int otherSpecialCount() { return 1; } // change if needed
+	@Override protected ShipDesign monsterDesign()	{
+		if (isMoO1Monster.get())
+			return designMoO1();
+		else
+			return designRotP();
+	}
 	private int hullHitPoints()		{ return moO1Level (8000, 1000, 2000, 0.4f, 0.15f); }
 	private int defenseValue()		{ return moO1Level ( 7,  1, 1, 0.3f, 0.15f); }
 	private int rocketsCount()		{ return moO1Level (45, 20, 1, 0.3f, 0.15f); }
 	private int convertersCount()	{ return moO1Level (25, 10, 1, 0.3f, 0.15f); }
 	private int torpedoesCount()	{ return moO1Level (12,  3, 1, 0.3f, 0.15f); }
-	@Override protected ShipDesign designMoO1()	{
+	private ShipDesign designMoO1()	{
 		ShipDesignLab lab = empire().shipLab();
 
 		ShipDesign design = lab.newBlankDesign(ShipDesign.maxSpecials, stackLevel(hullHitPoints()));
@@ -128,7 +145,7 @@ final class OrionGuardianShip extends GuardianMonsters {
 
 		return design;
 	}
-	@Override protected ShipDesign designRotP()	{
+	private ShipDesign designRotP()	{
 		ShipDesignLab lab = empire().shipLab();
 		ShipDesign design = lab.newBlankDesign(4, stackLevel(10000));
 		design.mission	(ShipDesign.DESTROYER);

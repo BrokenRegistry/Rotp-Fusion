@@ -35,13 +35,13 @@ import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.Empire;
 import rotp.model.empires.ShipView;
 import rotp.model.ships.ShipDesign;
-import rotp.ui.BasePanel;
+import rotp.ui.ScaledInteger;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.map.IMapHandler;
 import rotp.ui.sprites.FlightPathSprite;
 import rotp.util.Base;
 
-public class ShipFleet extends FleetBase {
+public class ShipFleet extends FleetBase implements ScaledInteger {
 	private static final long serialVersionUID = 1L;
 	private enum Status { ORBITING, DEPLOYED, IN_TRANSIT, RETREAT_ON_ARRIVAL };
 	private final int empId;
@@ -978,7 +978,7 @@ public class ShipFleet extends FleetBase {
     }
     @Override
     public int mapY(GalaxyMapPanel map) {
-        int vSpacing = BasePanel.s14;
+        int vSpacing = s14;
         int y = map.mapY(y());
         if (inTransit())
             return y;
@@ -1015,11 +1015,11 @@ public class ShipFleet extends FleetBase {
     }
     @Override
     public int centerMapX(GalaxyMapPanel map) { // BR: Only used by drawShipPath
-        return mapX(map) + BasePanel.s7;
+        return mapX(map) + s7;
     }
     @Override
     public int centerMapY(GalaxyMapPanel map) { // BR: Only used by drawShipPath
-        return mapY(map) + BasePanel.s5;
+        return mapY(map) + s5;
     }
     @Override
     public int maxMapScale() {
@@ -1110,12 +1110,10 @@ public class ShipFleet extends FleetBase {
         else
             g2.drawImage(img, x+w, y, -w, h, map);
 
-        int pad = BasePanel.s8;
+        int pad = s8;
         selectBox().setBounds(x-pad,y-pad,w+pad+pad,h+pad+pad);
 
-        int s5 = BasePanel.s5;
-        int s10 = BasePanel.s10;
-        int cnr = BasePanel.s10;
+        int cnr = s10;
         if (map.parent().isClicked(this))
             drawSelection(g2, map, x-s5, y-s5, w+s10, h+s10, cnr);
         else if (map.parent().isHovering(this))
@@ -1129,7 +1127,7 @@ public class ShipFleet extends FleetBase {
         g.fillRoundRect(x, y, w, h, cnr, cnr);
 
         Stroke prev = g.getStroke();
-        g.setStroke(BasePanel.stroke2);
+        g.setStroke(stroke2);
         g.setColor(empire().color());
         g.drawRoundRect(x,y,w,h, cnr, cnr);
         g.setStroke(prev);
@@ -1139,7 +1137,7 @@ public class ShipFleet extends FleetBase {
             return;
 
         Stroke prev = g.getStroke();
-        g.setStroke(BasePanel.stroke2);
+        g.setStroke(stroke2);
         g.setColor(empire().color());
         g.drawRoundRect(x,y,w,h, cnr, cnr);
         g.setStroke(prev);

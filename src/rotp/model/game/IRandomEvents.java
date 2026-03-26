@@ -64,9 +64,9 @@ public interface IRandomEvents extends IBaseOptsTools {
 			default:				return 1.0f;
 		}
 	}
-	ParamBoolean isMoO1Monster				= new ParamBoolean(MOD_UI, "IS_MOO1_MONSTER", false)
-			.setDefaultValue(MOO1_DEFAULT, true);
-	default Boolean	isMoO1Monster()				{ return isMoO1Monster.get(); }
+//	ParamBoolean isMoO1Monster				= new ParamBoolean(MOD_UI, "IS_MOO1_MONSTER", false)
+//			.setDefaultValue(MOO1_DEFAULT, true);
+//	default Boolean	isMoO1Monster()				{ return isMoO1Monster.get(); }
 
 	ParamList    monstersGNNNotification	= new ParamList( MOD_UI, "MONSTERS_GNN", "All")
 		.showFullGuide(true)

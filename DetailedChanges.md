@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-03-26 (BR)
+- Space monsters can be customized individually using either the MoO1 stats or the RotP stats.
+- On the map, the Guardians are slightly smaller than the Wanderers.
+
 26-03-24 (BR)
 - Each space monster now has its own level.
 - The space monster that prevented you from exploring a system will appear in the star panel.

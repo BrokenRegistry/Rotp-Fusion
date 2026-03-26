@@ -38,7 +38,7 @@ public final class CombatStackSpaceAmoeba extends CombatStackMonster {
 			maxStackHits(1500);			
 		hits(maxStackHits());
 		streamProjectorHits(0); // BR:
-		if (options().isMoO1Monster()) {
+		if (isMoO1Monster()) {
 			maxMove = move = 2;
 			beamDefense = 1;
 			missileDefense = 1;	 
@@ -55,14 +55,14 @@ public final class CombatStackSpaceAmoeba extends CombatStackMonster {
 	}
 
 	@Override protected ShipCaptain getCaptain()		{
-		if (options().isMoO1Monster())
+		if (isMoO1Monster())
 			return super.getCaptain();
 		else
 			return new AmoebaShipCaptain((SpaceMonster) fleet());
 	}
 	@Override public void beginTurn() {
 		super.beginTurn();
-		if (options().isMoO1Monster())
+		if (isMoO1Monster())
 			return;
 		// ok, we are splitting
 		if ((maxStackHits() - hits()) >= DAMAGE_FOR_SPLIT) {
@@ -85,9 +85,9 @@ public final class CombatStackSpaceAmoeba extends CombatStackMonster {
 	}
 	@Override public boolean selectBestWeapon(CombatStack target)	{ return canAttack(target); }
 	@Override public void fireWeapon(CombatStack target)	{
-        if (target != null && target.mgr.ui != null)
-        	target.mgr.ui.newAnimationStarted();
-		if (options().isMoO1Monster())
+		if (target != null && target.mgr.ui != null)
+			target.mgr.ui.newAnimationStarted();
+		if (isMoO1Monster())
 			super.fireWeapon(target);
 		else
 			if ((x == target.x) && (y == target.y)) 

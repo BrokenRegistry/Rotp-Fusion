@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-03-26 (BR)
+- Space monsters can be customized individually using either the MoO1 stats or the RotP stats.
+- On the map, the Guardians are slightly smaller than the Wanderers.
+
 26-03-24 (BR)
 - Each space monster now has its own level.
 - The space monster that prevented you from exploring a system will appear in the star panel.
@@ -58,12 +62,6 @@ java -jar target/rotp-<timestamp>-mini.jar
   - Space Amoebas will be drawn to populated GAIA planets, ANYWHERE on the map. When they can't find a populated Gaia, they will leave.
   - Space Pirates will be drawn to populated Ultra Rich planets, ANYWHERE on the map. When they can't find a populated ultra-rich, they will argue over the next target and destroy themselves.
   - Note: Monsters will also leave if they reach their attack limit.
-
-26-03-20 (BR)
-- New Option for Custom Species:
-  - They now have Attack Confidence and Defense confidence.
-    - This value will multiply the Confidence of the AI (or the Player) in the rules setting.
-  - Prefixes and suffixes are no longer available, as they are redundant under new custom species naming system.
 
 
 ### [Features Historic](FeaturesChanges.md)

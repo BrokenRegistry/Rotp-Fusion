@@ -4086,6 +4086,16 @@ SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL		| Guardians global Level: %1%
 
 SETTINGS_MOD_IS_MOO1_MONSTER_DESC			| To give the space monsters the weapons and characteristics from MoO1.
 SETTINGS_MOD_IS_MOO1_MONSTER				| MoO1 Monsters: %1
+SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN_DESC	| To give the Guardian of Orion the weapons and characteristics from MoO1.
+SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN			| MoO1 Orion Guardian: %1
+SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN_DESC	| To give the Amoeba Gardian the weapons and characteristics from MoO1.
+SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN		| MoO1 Amoeba Gardian: %1
+SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN_DESC	| To give the Crystal Guardian the weapons and characteristics from MoO1.
+SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN		| MoO1 Crystal Guardian: %1
+SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA_DESC		| To give the →SPACE_AMOEBA← the weapons and characteristics from MoO1.
+SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA			| MoO1 →SPACE_AMOEBA←: %1
+SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL_DESC		| To give the →SPACE_CRYSTAL← the weapons and characteristics from MoO1.
+SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL			| MoO1 →SPACE_CRYSTAL←: %1
 
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE_DESC		| Minimum distance to the next colony targeted by the space monsters.
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE			| Minimum distance: %1 ly
@@ -4166,6 +4176,8 @@ SETTINGS_MOD_MONSTERS_GNN_ALL_DESC       | GNN will notify every time a system i
 SETTINGS_MOD_MONSTERS_GNN_NEW_DESC       | GNN will notify the first attack of monsters, when they appear.
 SETTINGS_MOD_MONSTERS_GNN_FIRST_DESC     | GNN will only notify the first attack of each monster type.
 
+SETTINGS_MOD_GUARD_ORION_LEVEL_DESC		| This setting allows you to adjust the difficulty level of the Guardian of Orion.
+SETTINGS_MOD_GUARD_ORION_LEVEL			| Orion Guardian Level: %1%
 SETTINGS_MOD_GUARD_PIRATES_LEVEL_DESC	| Since →REF_PIRATES_2← Guardians have a particularly high level, this setting will allow you to make them a little more accessible.
 SETTINGS_MOD_GUARD_PIRATES_LEVEL		| →REF_PIRATES← Guardians Level: %1%
 SETTINGS_MOD_GUARD_AMOEBA_LEVEL_DESC	| Since →REF_AMOEBA_2← have a particularly high level, this setting will allow you to make them a little more accessible.

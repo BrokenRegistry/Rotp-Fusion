@@ -4085,7 +4085,17 @@ SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL_DESC	| Un niveau de difficulté commun à t
 SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL		| Niveaux des gardiens : %1 %
 
 SETTINGS_MOD_IS_MOO1_MONSTER_DESC 			| Pour attribuer aux monstres de l’espace l’armement et les caractéristiques de MoO1.
-SETTINGS_MOD_IS_MOO1_MONSTER				| Monstres MoO1: %1
+SETTINGS_MOD_IS_MOO1_MONSTER				| Monstres MoO1 : %1
+SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN_DESC	| Pour attribuer au Gardien d’Orion l’armement et les caractéristiques de MoO1.
+SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN			| Gardien d’Orion MoO1 : %1
+SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN_DESC	| Pour attribuer aux Amibes gardiennes l’armement et les caractéristiques de MoO1.
+SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN		| Amibe gardienne de MoO1 : %1
+SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN_DESC	| Pour attribuer aux Crystaux Gardiens l’armement et les caractéristiques de MoO1.
+SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN		| Cristaux gardiens de MoO1 : %1
+SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA_DESC		| Pour attribuer aux →REF_AMOEBA_2← l’armement et les caractéristiques de MoO1.
+SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA			| →SPACE_AMOEBA← de MoO1 : %1
+SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL_DESC		| Pour attribuer aux →REF_CRYSTAL_2← l’armement et les caractéristiques de MoO1.
+SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL			| →SPACE_CRYSTAL← de MoO1 : %1
 
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE_DESC		| Distance minimale jusqu’à la prochaine colonie visée par les monstres de l’espace.
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE			| Distance minimale : %1 a.l.
@@ -4166,6 +4176,8 @@ SETTINGS_MOD_MONSTERS_GNN_ALL_DESC       | GNN vous avertira chaque fois qu’un
 SETTINGS_MOD_MONSTERS_GNN_NEW_DESC       | GNN avertira de la première attaque de monstres, lorsqu’ils apparaîtront.
 SETTINGS_MOD_MONSTERS_GNN_FIRST_DESC     | GNN notifiera uniquement la première attaque de chaque type de monstre.
 
+SETTINGS_MOD_GUARD_ORION_LEVEL_DESC		| Ce paramètre vous permet d’ajuster le niveau de difficulté du Gardien d'Orion.
+SETTINGS_MOD_GUARD_ORION_LEVEL			| Niveau du Gardien d’Orion : %1 %
 SETTINGS_MOD_GUARD_PIRATES_LEVEL_DESC	| Les gardiens →REF_PIRATES_2← ayant un niveau particulièrement élevé, ce paramètre vous permettra de les rendre un peu plus accessibles.
 SETTINGS_MOD_GUARD_PIRATES_LEVEL		| Niveau des gardiens →REF_PIRATES← : %1 %
 SETTINGS_MOD_GUARD_AMOEBA_LEVEL_DESC	| Les amibes gardiennes ayant un niveau particulièrement élevé, ce paramètre vous permettra de les rendre un peu plus accessibles.
