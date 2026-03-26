@@ -56,7 +56,6 @@ class ShapeOptionFile extends ShapeOptionString {
 			return file.getName();
 		return path;
 	}
-
 }
 
 final class GalaxyBitmapShape extends GalaxyShape {

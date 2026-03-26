@@ -38,7 +38,7 @@ import rotp.ui.options.AllSubUI;
 
 
 public class ParamSubUI extends AbstractParam<SafeListPanel> {
-	
+	private static final int MAX_HELP_SIZE = 20;
 	private final String GUI_TITLE_ID;
 	private final String GUI_ID;
 	private SafeListPanel optionsMap;
@@ -225,8 +225,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	private String getTableHelp()		{
 		List<String> rowList = getRowList();
 		int size = rowList.size();
-		int maxSize = 30;
-		int lim = Math.min(maxSize, size);
+		int lim = Math.min(MAX_HELP_SIZE, size);
 		String rows = "";
 		if (size>0) {
 			if (IDebugOptions.showVIPPanel.get()) {
@@ -238,7 +237,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 				rows = rowList.get(0);
 				for (int i=1; i<lim; i++)
 					rows += rowsSeparator() + rowList.get(i);
-				if (maxSize==lim)
+				if (MAX_HELP_SIZE == lim)
 					rows += rowsSeparator() + "<b>...</b>";
 			}
 		}
@@ -247,11 +246,13 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	private List<String> getRowList() {
 		List<String> strList = new ArrayList<>();
 		for ( IParam<?> param : optionsMap.getListNoTitle()) {
-			if (param.isSubMenu()) {
+			if (param.isSubMenu())
 				strList.add("<b>" + param.getGuiDisplay() + "</b>");
-			}
-			else
+			else {
 				strList.add(param.getGuiDisplay());
+				if (strList.size() > MAX_HELP_SIZE)
+					return strList;
+			}
 		}
 		return strList;
 	}

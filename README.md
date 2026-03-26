@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-03-26 (BR)
+- Fixed an issue where the Guide pop-up window was slow to load when hovering over a link to a big sub-panel.
 - Fixed an issue that sometimes caused an excessive delay before the “Game Over” screen appeared.
 - Space monsters can be customized individually using either the MoO1 stats or the RotP stats.
 - On the map, the Guardians are slightly smaller than the Wanderers.
