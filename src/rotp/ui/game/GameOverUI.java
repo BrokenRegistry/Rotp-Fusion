@@ -434,11 +434,10 @@ public final class GameOverUI extends FadeInPanel
         }
         RotPUI.instance().selectGamePanel();
     }
-    @Override
-    public void animate() {
-		if (advanceFade())
+	@Override public void animate()	{
+		if (advanceFade() && !textFinished())
 			repaint();
-    }
+	}
     @Override
     public String ambienceSoundKey() { 
         if (session().status().won())

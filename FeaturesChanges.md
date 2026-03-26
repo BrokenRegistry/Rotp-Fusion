@@ -389,6 +389,7 @@
 
 ### Fixes:
 
+- Fixed an issue that sometimes caused an excessive delay before the “Game Over” screen appeared.
 - Working Transport Flight Path will be shown even if the display threshold is not null.
 - Fixed stargate auto-setting!
 - Build Limit can't be set higher than 1 in the colony panel too.
