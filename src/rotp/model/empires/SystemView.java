@@ -168,6 +168,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     public List<ShipFleet> exitingFleets()   { return vExitingFleets; }
     public StarSystem system()               { return galaxy().system(sysId); }
     public String name()                     { return vName; }
+	public boolean hasName()	{ return !vName.isEmpty(); }
     public void name(String s) {
         system().name(s);
         vName = s;
