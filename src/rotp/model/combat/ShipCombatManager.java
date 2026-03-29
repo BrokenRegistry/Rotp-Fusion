@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import rotp.Rotp;
 import rotp.model.empires.DiplomaticEmbassy;
 import rotp.model.empires.DiplomaticTreaty;
 import rotp.model.empires.Empire;
@@ -70,6 +71,7 @@ public class ShipCombatManager implements Base {
     public boolean[][] asteroidMap = new boolean[maxX+1][maxY+1];
     private boolean initialPause;
     private List<CombatStack> currentTurnList;
+	private boolean playerShouldRetreat = false;
     boolean moO1Asteroids; // if true => impact beam and missiles
     boolean isAsteroid(float x, float y) { return asteroidMap[(int)(x+0.5)][(int)(y+0.5)]; }
     public int asteroidsInPath(float srcX, float srcY, float tarX, float tarY) {
@@ -101,6 +103,7 @@ public class ShipCombatManager implements Base {
        	}
     	return count;
     }
+	public boolean playerShouldRetreat()	{ return playerShouldRetreat; }
     boolean interdiction()                     { return interdiction; }
     public ShipCombatResults results()         { return results; }
     public StarSystem system()                 { return system; }
@@ -280,7 +283,10 @@ public class ShipCombatManager implements Base {
 			if (showAutoCombatResults.get()) {
 				RotPUI.drawNextTurnNotice = false;
 				session().pauseNextTurnProcessing("Fleet Smart Auto combat");
-				RotPUI.instance().selectShipBattlePanel(this, ShipBattleUI.SMART_RESOLVE);
+				if (playerShouldRetreat)
+					RotPUI.instance().selectShipBattlePanel(this, ShipBattleUI.RETREAT_ALL);
+				else
+					RotPUI.instance().selectShipBattlePanel(this, ShipBattleUI.SMART_RESOLVE);
 				session().waitUntilNextTurnCanProceed();
 				RotPUI.drawNextTurnNotice = true;
 			}
@@ -648,15 +654,21 @@ public class ShipCombatManager implements Base {
         boolean retreating = true;
         List<CombatStack> retreatingFleets = new ArrayList<>();
 
+		playerShouldRetreat = true;
         while (retreating) {
             retreatingFleets.clear();
 			// BR: already crashed there because of ConcurrentModificationException 
 			List<CombatStack> as = new ArrayList<>(results.activeStacks());
 			for (CombatStack st : as) {
-                if (st.usingAI() && st.wantToRetreat()) {
-                    if (st.retreat())
-                        retreatingFleets.add(st);
-                }
+				if (st.usingAI()) {
+					if (st.wantToRetreat())
+						if (st.retreat())
+							retreatingFleets.add(st);
+				}
+				else if (st.isPlayer()) {
+					playerShouldRetreat &= st.wantToRetreat(); // Do not retreat if one of the stack want to fight
+					Rotp.ifIDE("player Should Retreat " + playerShouldRetreat); // TODO BR: COMMENT
+				}
             }
             results.activeStacks().removeAll(retreatingFleets);
             retreating = !retreatingFleets.isEmpty();
@@ -693,13 +705,19 @@ public class ShipCombatManager implements Base {
         boolean retreating = true;
         List<CombatStack> retreatingFleets = new ArrayList<>();
 
+		playerShouldRetreat = true;
         while (retreating) {
             retreatingFleets.clear();
             for (CombatStack st : results.activeStacks()) {
-                if (st.usingAI() && st.wantToRetreat()) {
-                    if (st.retreat())
-                        retreatingFleets.add(st);
-                }
+				if (st.usingAI()) {
+					if (st.wantToRetreat())
+						if (st.retreat())
+							retreatingFleets.add(st);
+				}
+				else if (st.isPlayer()) {
+					playerShouldRetreat &= st.wantToRetreat(); // Do not retreat if one of the stack want to fight
+					Rotp.ifIDE("player Should Retreat " + playerShouldRetreat); // TODO BR: COMMENT
+				}
             }
             results.activeStacks().removeAll(retreatingFleets);
             retreating = !retreatingFleets.isEmpty();

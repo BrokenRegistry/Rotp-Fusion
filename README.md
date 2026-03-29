@@ -44,8 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-26-03-27 (BR)
+26-03-29 (BR)
 - Removed obsolete galaxy shape building methods.
+- Smart resolve combat can retreat earlier.
 
 26-03-27 (BR)
 - Fixed an issue related to duplicate names of guarded star systems (guarded by a monster or another empire).
@@ -56,21 +57,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 - Fixed an issue that sometimes caused an excessive delay before the “Game Over” screen appeared.
 - Space monsters can be customized individually using either the MoO1 stats or the RotP stats.
 - On the map, the Guardians are slightly smaller than the Wanderers.
-
-26-03-24 (BR)
-- Each space monster now has its own level.
-- The space monster that prevented you from exploring a system will appear in the star panel.
-
-26-03-23 (Frank Zago)
-- French Translation improvement.
-
-26-03-22 (BR)
-- New fearsome guardian Monsters: Space Crystal and Space Amoeba can now be selected to guard valuable planets.
-- New Picky Roaming Space Monsters.
-  - Space Crystals will be drawn to any populated ancient world, ANYWHERE on the map. When they can't find a populated ancient world, they will leave.
-  - Space Amoebas will be drawn to populated GAIA planets, ANYWHERE on the map. When they can't find a populated Gaia, they will leave.
-  - Space Pirates will be drawn to populated Ultra Rich planets, ANYWHERE on the map. When they can't find a populated ultra-rich, they will argue over the next target and destroy themselves.
-  - Note: Monsters will also leave if they reach their attack limit.
 
 
 ### [Features Historic](FeaturesChanges.md)

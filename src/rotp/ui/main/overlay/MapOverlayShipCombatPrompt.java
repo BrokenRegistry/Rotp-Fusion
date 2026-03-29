@@ -531,8 +531,11 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
                     startCombat(ShipBattleUI.AUTO_RESOLVE);
                 break;
             case KeyEvent.VK_S:
-                if (aiEmpire != null)
-                    startCombat(ShipBattleUI.SMART_RESOLVE);
+				if (aiEmpire != null)
+					if (mgr.playerShouldRetreat())
+						startCombat(ShipBattleUI.RETREAT_ALL); // Immediate retreat
+					else
+						startCombat(ShipBattleUI.SMART_RESOLVE);
                 break;
             case KeyEvent.VK_R:
                 if (aiEmpire != null)
@@ -672,7 +675,12 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
 
         public int width()        { return buttonW; }
         public int height()       { return buttonH; }
-        private String label()    { return text("SHIP_COMBAT_SMART_RESOLVE"); }
+		private String label()    {
+			if (mgr.playerShouldRetreat())
+				return text("SHIP_COMBAT_RETREAT_ALL");
+			else
+				return text("SHIP_COMBAT_SMART_RESOLVE");
+		}
         private Font font()       {
         	String language = LanguageManager.current().selectedLanguageName();
         	if (language.equals("Português")) {
@@ -739,10 +747,12 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
             int x2a = mapX+((buttonW-sw)/2);
             drawBorderedString(g, str, x2a, mapY+buttonH-s10, SystemPanel.textShadowC, c0);
         }
-        @Override
-        public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-            startCombat(ShipBattleUI.SMART_RESOLVE);
-        };
+		@Override public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+			if (mgr.playerShouldRetreat())
+				startCombat(ShipBattleUI.RETREAT_ALL); // Immediate retreat
+			else
+				startCombat(ShipBattleUI.SMART_RESOLVE);
+		};
     }
     class RetreatAllBattleSprite extends MapSprite {
         private LinearGradientPaint background;
