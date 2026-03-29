@@ -363,8 +363,8 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     @Override public float densitySizeFactor() {
     	return densitySizeFactor(selectedStarDensityOption());
     }
-	@Override public int numGalaxyShapeOption1() { return galaxyShape().numOptions1(); }
-	@Override public int numGalaxyShapeOption2() { return galaxyShape().numOptions2(); }
+//	@Override public int numGalaxyShapeOption1() { return galaxyShape().numOptions1(); }
+//	@Override public int numGalaxyShapeOption2() { return galaxyShape().numOptions2(); }
 	@Override public int numberStarSystems(boolean refresh)	{
 		if (refresh)
 			currentNumSystem = null;
@@ -674,10 +674,6 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         p.initPlanetType(species.homeworldPlanetType());
         return p;
     }
-    // @Override public List<String> galaxySizeOptions()     { return IGameOptions.getGalaxySizeOptions(); }
-    // @Override public List<String> galaxyShapeOptions()    { return IGameOptions.getGalaxyShapeOptions(); }
-	@Override public List<String> galaxyShapeOptions1()   { return galaxyShape().options1(); }
-	@Override public List<String> galaxyShapeOptions2()   { return galaxyShape().options2(); }
     @Override public List<String> galaxyAgeOptions()      { return IGameOptions.getGalaxyAgeOptions(); }
     @Override public List<String> gameDifficultyOptions() { return IGameOptions.getGameDifficultyOptions(); }
     @Override public List<String> researchRateOptions()   { return IGameOptions.getResearchRateOptions(); }

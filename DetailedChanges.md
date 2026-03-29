@@ -3,6 +3,9 @@
 ## What's New
 
 26-03-27 (BR)
+- Removed obsolete galaxy shape building methods.
+
+26-03-27 (BR)
 - Fixed an issue related to duplicate names of guarded star systems (guarded by a monster or another empire).
   - This was caused by the fact that only the names of explored systems were checked, whereas guarded systems are named without having been explored.
 

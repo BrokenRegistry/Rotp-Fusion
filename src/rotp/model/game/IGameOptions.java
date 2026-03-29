@@ -376,8 +376,6 @@ public interface IGameOptions extends IModOptions {
     public Color color(int i);
 
     // selectable options
-    public List<String> galaxyShapeOptions1();
-    public List<String> galaxyShapeOptions2();
     public List<String> galaxyAgeOptions();
     public List<String> researchRateOptions();
     public List<String> techTradingOptions();
@@ -450,9 +448,6 @@ public interface IGameOptions extends IModOptions {
     public void selectedAutoplayOption(String s);
     public String specificOpponentCROption(int empId);
     public void specificOpponentCROption(String s, int empId);
-
-    public int numGalaxyShapeOption1();
-    public int numGalaxyShapeOption2();
 
     public String selectedGameDifficulty();
     public void selectedGameDifficulty(String s);

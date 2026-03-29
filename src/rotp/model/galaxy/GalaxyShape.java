@@ -167,12 +167,8 @@ public abstract class GalaxyShape implements Base, Serializable {
 	public IShapeOption<?> paramOption3()	{ return null; }
 	public IShapeOption<?> paramOption4()	{ return null; }
 
-	public void setOption1(String value)	{}
-	public void setOption2(String value)	{}
 	public List<String> options1()	{ return new ArrayList<>(); }
 	public List<String> options2()	{ return new ArrayList<>(); }
-	public int numOptions1()		{ return options1().size(); }
-	public int numOptions2()		{ return options2().size(); }
 	public String getOption1()		{
 		if (paramOption1() == null || Rotp.noOptions())
 			return "";

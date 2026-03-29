@@ -69,8 +69,6 @@ final class GalaxyFractalShape extends GalaxyShape {
 
 	@Override public IShapeOption<?> paramOption1()	{ return param1(); }
 	@Override public IShapeOption<?> paramOption2()	{ return param2(); }
-	@Override public void setOption1(String value)	{ param1().set(value); }
-	@Override public void setOption2(String value)	{ param2().set(value); }
 	@Override public List<String> options1()		{ return param1().getOptions(); }
 	@Override public List<String> options2()		{ return param2().getOptions(); }
 	@Override public String name()					{ return NAME; }

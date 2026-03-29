@@ -109,7 +109,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 	interface IShapeOption<T> extends IParam<T>	{
 		IParam<?> getParam();
 		default String	defaulttoString()	{ return getAsInt().toString(); }
-		default String	gettoString()		{ return getAsInt().toString(); }
+		default String	getToString()		{ return getAsInt().toString(); }
 		default Integer	getAsInt()			{ return 0; }
 		void setString(String str);
 	}
@@ -154,7 +154,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 		}
 		@Override public IParam<?> getParam()		{ return this; }
 		@Override public String defaulttoString()	{ return defaultValue().toString(); }
-		@Override public String gettoString()		{
+		@Override public String getToString()		{
 			Integer i = get();
 			return i == null? "" : i.toString();
 		}
@@ -190,7 +190,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 		}
 		@Override public IParam<?> getParam()			{ return this; }
 		@Override public String defaulttoString()	{ return defaultValue(); }
-		@Override public String gettoString()		{
+		@Override public String getToString()		{
 			String str = get();
 			return str == null? "" : str;
 		}
@@ -221,7 +221,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 
 		@Override public IParam<?> getParam()		{ return this; }
 		@Override public String defaulttoString()	{ return defaultValue(); }
-		@Override public String gettoString()		{
+		@Override public String getToString()		{
 			String str = get();
 			return str == null? "" : str;
 		}
@@ -241,7 +241,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 
 		@Override public IParam<?> getParam()		{ return this; }
 		@Override public String defaulttoString()	{ return defaultValue(); }
-		@Override public String gettoString()		{ return get(); }
+		@Override public String getToString()		{ return get(); }
 		@Override public void setString(String str)	{ set(str); }
 		@Override public String set(String val)		{
 			String str = super.set(val);

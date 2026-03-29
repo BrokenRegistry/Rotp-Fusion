@@ -94,8 +94,6 @@ final class GalaxyRandomShape extends GalaxyShape {
 	@Override public IShapeOption<?> paramOption2()	{ return param2(); }
 	@Override public IShapeOption<?> paramOption3()	{ return null; }
 	@Override public IShapeOption<?> paramOption4()	{ return null; }
-	@Override public void setOption1(String value)	{ param1().set(value); }
-	@Override public void setOption2(String value)	{ param2().set(value); }
 	@Override public List<String> options1()	{ return param1().getOptions(); }
 	@Override public List<String> options2()	{ return param2().getOptions(); }
 	@Override public String name()				{ return finalShape==null? NAME : finalShape.name(); }
@@ -161,8 +159,6 @@ final class GalaxyRandomShape extends GalaxyShape {
 			finalShape.initFinalOption4();
 	}
 	@Override public ListShapeParam paramList()	{ return super.paramList(); }
-	@Override public int numOptions1()			{ return super.numOptions1(); }
-	@Override public int numOptions2()			{ return super.numOptions1(); }
 	@Override public String getOption1()		{ return super.getOption1(); }
 	@Override public String getOption2()		{ return super.getOption2(); }
 	@Override public String getOption3()		{ return super.getOption3(); }

@@ -247,8 +247,6 @@ final class GalaxyTextShape extends GalaxyShape {
 	@Override public IShapeOption<?> paramOption2()	{ return param2(); }
 	@Override public IShapeOption<?> paramOption3()	{ return param3(); }
 	@Override public IShapeOption<?> paramOption4()	{ return param4(); }
-	@Override public void setOption1(String value)	{ param1().set(value); }
-	@Override public void setOption2(String value)	{ param2().set(value); }
 	@Override public List<String> options1()		{ return param1().getOptions(); }
 	@Override public List<String> options2()		{ return param2().getOptions(); }
 

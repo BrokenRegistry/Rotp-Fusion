@@ -59,6 +59,7 @@ public final class GuardianPirates extends GuardianMonsters {
 		return monsterImage;
 	}
 	@Override protected Float stackLevel()	{ return super.stackLevel() * guardPiratesLevelPct.get()/100f; }
+	@Override public SpaceMonster getCopy()	{ return new GuardianPirates(null, null); }
 	@Override protected void initDesigns()	{
 		super.initDesigns();
 		float numLevel	 = stackLevel();

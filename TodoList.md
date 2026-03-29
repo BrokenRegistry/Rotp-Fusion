@@ -35,7 +35,7 @@
 - Monsters:
   - Yes, seeing monsters fight each other could be fun, but it won't be easy to implement, as it's the most tricky part of RotP's coding... And the Guardian will have to become more powerful if we want him to be able to defeat all the other monsters...
 - add an option to distinguish between invasion troops and population transport.
-
+- Battle Scanner and Reserve Fuel Tanks miniaturization option (As in MoO1)
 
 ### Later:
 
