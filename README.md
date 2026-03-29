@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-03-29 (BR)
+- Fixed an issue that caused retreating fleets to disappear for no apparent reason.
 - Removed obsolete galaxy shape building methods.
 - Smart resolve combat can retreat earlier.
 

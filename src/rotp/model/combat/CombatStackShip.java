@@ -390,6 +390,7 @@ public class CombatStackShip extends CombatStack {
     }
     @Override
     public boolean retreatToSystem(StarSystem s) {
+		markedForRetreat = false;
         if (s == null)
             return false;
 

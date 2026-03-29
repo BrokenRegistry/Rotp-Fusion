@@ -8,6 +8,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-03-29 (BR)
+- Fixed an issue that caused retreating fleets to disappear for no apparent reason.
 - Smart resolve combat can retreat earlier.
 
 26-03-27 (BR)
