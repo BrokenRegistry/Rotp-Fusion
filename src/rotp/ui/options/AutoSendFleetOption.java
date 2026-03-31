@@ -46,7 +46,9 @@ final class AutoSendFleetOption extends AbstractOptionsSubUI {
 
 				HEADER_SPACER_100,
 				RELEVANT_TITLE,
-				keepShipDesignName
+				keepShipDesignName,
+				LINE_SPACER_25,
+				scoutAndColonyOnly
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("GOVERNOR_AUTO_COLONIZE"),

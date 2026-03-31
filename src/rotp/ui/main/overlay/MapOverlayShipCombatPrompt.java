@@ -48,7 +48,6 @@ import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
-import rotp.ui.RotPUI;
 import rotp.ui.combat.ShipBattleUI;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
@@ -112,7 +111,11 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
         drawSprites = false;
         parent.clearOverlay();
         parent.repaintAllImmediately();
-        RotPUI.instance().selectShipBattlePanel(mgr, combatFlag);
+
+		mgr.playerSelection(combatFlag);
+		session().resumeNextTurnProcessing();
+
+//        RotPUI.instance().selectShipBattlePanel(mgr, combatFlag);
     }
     private StarSystem starSystem() {
         return galaxy().system(sysId);
@@ -336,7 +339,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
         smartResolveButton.mapY(battleButton.mapY());
         smartResolveButton.draw(parent.map(), g);
 
-        if(options().selectedRetreatRestrictions() < 2) {
+        if(options().playerCanRetreat()) {
             parent.addNextTurnControl(retreatButton);
             retreatButton.init(this, g);
             retreatButton.mapX(smartResolveButton.mapX()+smartResolveButton.width()+s7);
@@ -1218,7 +1221,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
 		List<ConsoleOptions> options = new ArrayList<>();
 		options.add(new ConsoleOptions(KeyEvent.VK_A, "A", "Auto Resolve combat."));
 		options.add(new ConsoleOptions(KeyEvent.VK_S, "S", "Smart Resolve combat, retreat if overwhelmed."));
-		if(options().selectedRetreatRestrictions() < 2 || options().selectedRetreatRestrictionTurns() == 0)
+		if(options().playerCanRetreat())
 			options.add(new ConsoleOptions(KeyEvent.VK_R, "R", "Retreat Fleet."));
 		return options;
 	}

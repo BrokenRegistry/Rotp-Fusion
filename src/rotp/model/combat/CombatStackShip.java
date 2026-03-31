@@ -59,7 +59,7 @@ public class CombatStackShip extends CombatStack {
 	private boolean usingAI = true;
 	private int repulsorRange = 0;
 	private CombatStack ward;
-	private boolean markedForRetreat  = false;
+	private boolean markedMoO1Retreat = false;
 	private StarSystem retreatTarget;
 
 	@Override public int shotsRemaining(int idx)	{ return shotsRemaining[idx]; }
@@ -69,12 +69,24 @@ public class CombatStackShip extends CombatStack {
 	public int wpnTurnsToFire(int idx)	{ return wpnTurnsToFire[idx]; }
 	public ShipFleet fleet()			{ return fleet; }
 	public  StarSystem retreatTarget()	{ return retreatTarget; }
-	@Override public boolean markedForRetreat()	{ return markedForRetreat; }
-	public void markForRetreat(StarSystem s)	{
-		markedForRetreat = true;
-		retreatTarget = s;
+	public boolean markedMoO1Retreat()	{ return markedMoO1Retreat; }
+	public void markedMoO1Retreat(boolean b)	{ markedMoO1Retreat = b; }
+	public void markForRetreat(StarSystem s)	{ retreatTarget = s; }
+	@Override public void performTurn()	{
+		if (markedMoO1Retreat()) {
+			markedMoO1Retreat(false);
+			mgr.retreatStack(this);
+			return;
+		}
+		captain.performTurn(this);
 	}
-
+	@Override public void beginTurn()	{
+		super.beginTurn();
+		if (markedMoO1Retreat()) {
+			markedMoO1Retreat(false);
+			mgr.retreatStack(this);
+		}
+	}
     @Override
     public String toString() {
         if (target != null)
@@ -159,19 +171,14 @@ public class CombatStackShip extends CombatStack {
     public boolean canScan()        { return design.allowsScanning(); }
     @Override
     public boolean canRetreat()     {
-		if (markedForRetreat())
+		if (markedMoO1Retreat())
 			return false;
-        boolean checkRetreatTurn = false;
-        int retreatRestrictions = options().selectedRetreatRestrictions();
-        if(empire().isAIControlled()) {
-            if(retreatRestrictions == 1 || retreatRestrictions == 3)
-                checkRetreatTurn = true;
-        } else {
-            if(retreatRestrictions >= 2)
-                checkRetreatTurn = true;
-        }
-        if(checkRetreatTurn && mgr.turnCounter() < options().selectedRetreatRestrictionTurns())
-            return false;
+		if(empire().isAIControlled()) {
+			if (!options().aiCanRetreat(mgr.turnCounter()))
+				return false;
+		}
+		else if(!options().playerCanRetreat(mgr.turnCounter()))
+			return false;
         return !atLastColony && (maneuverability > 0); 
     }
     @Override
@@ -390,7 +397,7 @@ public class CombatStackShip extends CombatStack {
     }
     @Override
     public boolean retreatToSystem(StarSystem s) {
-		markedForRetreat = false;
+		markedMoO1Retreat(false);
         if (s == null)
             return false;
 

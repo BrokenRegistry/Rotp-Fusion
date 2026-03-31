@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-03-31 (BR)
+- From now on, when deciding whether or not to fight, both the player and the AI follow the same relationship penalties rules: the player will no longer incur a relationship penalty when retreating.
+
 26-03-29 (BR)
 - Fixed an issue that caused retreating fleets to disappear for no apparent reason.
 - Removed obsolete galaxy shape building methods.

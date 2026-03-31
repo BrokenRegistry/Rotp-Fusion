@@ -667,13 +667,12 @@ public final class Galaxy implements Base, Serializable {
     public int friendlyPopApproachingSystemNextTurn(StarSystem sys) {
         int pop = 0;
         Galaxy gal = galaxy();
+		List<Transport> allTransport = new ArrayList<>(gal.transports()); // ! Concurrent modifications
+		for (Transport tr: allTransport)
+			if (tr != null && tr.empId() == sys.empire().id)
+				if (tr.destSysId() == sys.id && tr.travelTurnsRemainingAdjusted() <= 1)
+					pop += tr.size();
 
-        for (Transport tr: gal.transports()) {
-            if (tr != null && tr.empId() == sys.empire().id) {
-                if (tr.destSysId() == sys.id && tr.travelTurnsRemainingAdjusted() <= 1)
-                    pop += tr.size();
-            }
-        }
         for (int i=0; i<gal.numStarSystems(); i++) {
             StarSystem system = gal.system(i);
             if (system.planet().isColonized()) {

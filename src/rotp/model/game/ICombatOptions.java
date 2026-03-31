@@ -198,6 +198,8 @@ public interface ICombatOptions extends IBaseOptsTools {
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20);
 	default int selectedRetreatRestrictionTurns()	{ return retreatRestrictionTurns.get(); }
+	default boolean canRetreat(int turn)			{ return retreatRestrictionTurns.get() <= turn; }
+	
 
 	ParamList retreatRestrictions			= new ParamList(MOD_UI, "RETREAT_RESTRICTIONS", "None")
 			.setDefaultValue(MOO1_DEFAULT, "Both")
@@ -206,7 +208,19 @@ public interface ICombatOptions extends IBaseOptsTools {
 			.put("AI",		MOD_UI + "RETREAT_AI")
 			.put("Player",	MOD_UI + "RETREAT_PLAYER")
 			.put("Both",	MOD_UI + "RETREAT_BOTH");
-	default int selectedRetreatRestrictions()	{ return retreatRestrictions.getIndex(); }
+//	default int selectedRetreatRestrictions()	{ return retreatRestrictions.getIndex(); }
+	default boolean playerCanRetreat(int turn)	{ return playerCanRetreat() || canRetreat(turn); }
+	default boolean aiCanRetreat(int turn)		{ return aiCanRetreat() || canRetreat(turn); }
+	default boolean playerCanRetreat()			{ return retreatRestrictions.getIndex() < 2; }
+	default boolean aiCanRetreat()	{
+		switch (retreatRestrictions.get()) {
+			case "AI":
+			case "Both":
+				return false;
+			default:
+				return true;
+		}
+	}
 
 	ParamInteger maxCombatTurns				= new ParamInteger(MOD_UI, "MAX_COMBAT_TURNS", 100)
 			.setDefaultValue(MOO1_DEFAULT, 50)

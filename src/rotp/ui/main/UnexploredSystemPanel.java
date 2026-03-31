@@ -222,7 +222,7 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
             }
 
 			// Guarded by a monster ?
-			SystemView sysView = sv.view(sys.id); // TODO BR: REMOVE
+			SystemView sysView = sv.view(sys.id);
 			boolean isGuarded = sysView.isGuarded();
 			if (isGuarded) {
 				int cx = getWidth()/2;

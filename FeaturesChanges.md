@@ -22,6 +22,7 @@
 
 ### Features:
 
+- From now on, when deciding whether or not to fight, both the player and the AI follow the same relationship penalties rules: the player will no longer incur a relationship penalty when retreating.
 - Space monsters can be customized individually using either the MoO1 stats or the RotP stats.
 - On the map, the Guardians are slightly smaller than the Wanderers.
 - Each space monster now has its own level.
