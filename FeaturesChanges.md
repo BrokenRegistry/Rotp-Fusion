@@ -390,6 +390,7 @@
 
 ### Fixes:
 
+- Fixed an issue when more than two empires where fighting for a star system.
 - Fixed an issue that caused retreating fleets to disappear for no apparent reason.
 - Smart resolve combat can retreat earlier.
 - Fixed an issue related to duplicate names of guarded star systems (guarded by a monster or another empire).

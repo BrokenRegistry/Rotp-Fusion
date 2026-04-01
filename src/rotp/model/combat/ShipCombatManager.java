@@ -706,12 +706,11 @@ public class ShipCombatManager implements Base {
             log("retreating empires from init: ",passives.toString());
             empiresInConflict.remove(passiveEmp);
         }
-		// Remove Passive player empires
-		promptPlayer(1);
+		// Ask Player & Remove Passive player empire
+		if (playerInBattle() && passives.isEmpty())
+			promptPlayer();
 	}
-	private void promptPlayer(int numAlienEmp)	{
-		if (!playerInBattle || empiresInConflict.size() <= numAlienEmp)
-			return;
+	private void promptPlayer()	{
 		// Get the player selection
 		switch (fleetAutoCombat.get()) {
 			case FLEET_AUTO_COMBAT_AUTO:
@@ -793,11 +792,6 @@ public class ShipCombatManager implements Base {
             results.activeStacks().removeAll(retreatingFleets);
             retreating = !retreatingFleets.isEmpty();
         }
-		if (playerInBattle()) {
-			promptPlayer(0);
-			return;
-		}
-
         // Remove Passive alien empires
         List<Empire> passives = new ArrayList<>();
         passives.add(emp);
@@ -810,6 +804,9 @@ public class ShipCombatManager implements Base {
             log("retreating empires from init: ",passives.toString());
             empiresInConflict.remove(passiveEmp);
         }
+		// Ask Player & Remove Passive player empire
+		if (playerInBattle() && passives.isEmpty())
+			promptPlayer();
     }
     private void retreatEmpire(Empire e) {
         List<CombatStack> retreatingStacks = new ArrayList<>();

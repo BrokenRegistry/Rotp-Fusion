@@ -7,6 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-04-01 (BR)
+- Fixed an issue when more than two empires where fighting for a star system.
+
 26-03-31 (BR)
 - From now on, when deciding whether or not to fight, both the player and the AI follow the same relationship penalties rules: the player will no longer incur a relationship penalty when retreating.
 
