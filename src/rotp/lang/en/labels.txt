@@ -4957,7 +4957,7 @@ SHIP_COMBAT_NEXT                  | Next Ship
 SHIP_COMBAT_AUTO_RESOLVE          | Auto-Resolve
 SHIP_COMBAT_SMART_RESOLVE         | Smart-Resolve
 SHIP_COMBAT_SMART_RETREAT		| Our fleet will retreat immediately
-SHIP_COMBAT_DEFENSLESS_FLEET	| Our fleet is not equiped
+SHIP_COMBAT_DEFENSELESS_FLEET	| Our fleet is not armed
 SHIP_COMBAT_FLEET_WILL_LOOSE	| They're stronger than us
 SHIP_COMBAT_NOT_ENEMY_COLONY	| It is not an enemy colony
 SHIP_COMBAT_WE_CAN_WIN			| We can win this fight!

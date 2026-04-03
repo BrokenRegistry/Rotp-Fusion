@@ -734,7 +734,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
 			if (advisor.notAnEnemyColony())
 				list.add(pl.text("SHIP_COMBAT_NOT_ENEMY_COLONY"));
 			if (advisor.isCivilFleet())
-				list.add(pl.text("SHIP_COMBAT_DEFENSLESS_FLEET"));
+				list.add(pl.text("SHIP_COMBAT_DEFENSELESS_FLEET"));
 			else if (advisor.facingOverwhelmingForce())
 				list.add(pl.text("SHIP_COMBAT_FLEET_WILL_LOOSE"));
 			else if (advisor.fleetWantToFight() && advisor.playerCanDeclareWar()) {
