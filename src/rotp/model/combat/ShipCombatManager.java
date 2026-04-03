@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import rotp.model.ai.governor.ShipCaptainAdvisor;
 import rotp.model.empires.DiplomaticEmbassy;
 import rotp.model.empires.DiplomaticTreaty;
 import rotp.model.empires.Empire;
@@ -71,7 +72,6 @@ public class ShipCombatManager implements Base {
     public boolean[][] asteroidMap = new boolean[maxX+1][maxY+1];
     private boolean initialPause;
     private List<CombatStack> currentTurnList;
-	private boolean playerShouldRetreat = false;
 	private boolean combatAlreadyEnded = false;
 	private int playerSelection = ShipBattleUI.ENTER_COMBAT;
     boolean moO1Asteroids; // if true => impact beam and missiles
@@ -105,7 +105,6 @@ public class ShipCombatManager implements Base {
        	}
     	return count;
     }
-	public boolean playerShouldRetreat()	{ return playerShouldRetreat; }
 	private int playerSelection()			{ return playerSelection; }
 	public void playerSelection(int i)		{ playerSelection = i; }
     boolean interdiction()                     { return interdiction; }
@@ -215,14 +214,9 @@ public class ShipCombatManager implements Base {
         List<Empire> empires = new ArrayList<>(empiresInConflict);
         Collections.shuffle(empires);
         for (Empire emp: empires) {
-//        	if (sys.orbitingFleetForEmpire(emp).isArmed()) // TO DO BR: COMMENT
-//        		System.out.println( getTurn() +  " " + monster.name() + " attacked by " + emp.name() + " (" + emp.id + ")");
             battle(sys, emp, monster);
-            if (!monster.alive()) {
-            	// TO DO BR: COMMENT
-//            	System.out.println("  --> " + this.getTurn() +  " " + monster.name() + " killed by " + emp.name() + " (" + emp.id + ")");
+            if (!monster.alive())
             	break;
-            }
         }
     }
     public boolean validSquare(int x, int y) {
@@ -294,7 +288,7 @@ public class ShipCombatManager implements Base {
 					if (showAutoCombatResults.get()) {
 						RotPUI.drawNextTurnNotice = false;
 						session().pauseNextTurnProcessing("Fleet Smart Auto combat");
-						if (playerShouldRetreat)
+						if (playerShouldRetreat())
 							RotPUI.instance().selectShipBattlePanel(this, ShipBattleUI.RETREAT_ALL);
 						else
 							RotPUI.instance().selectShipBattlePanel(this, ShipBattleUI.SMART_RESOLVE);
@@ -493,7 +487,6 @@ public class ShipCombatManager implements Base {
         performingStackTurn = false;
         autoComplete = false;
         autoResolve = false;
-//        allowRetreat = false;
         showAnimations = true;
         redrawMap = true;
         initCombatStacks(emp1, emp2);
@@ -651,7 +644,6 @@ public class ShipCombatManager implements Base {
         fl.retreating(false);
         for (int i=0;i<ShipDesignLab.MAX_DESIGNS;i++) {
             if (fl.num(i) > 0) {
-                //ShipDesign d = fl.empire().shipLab().design(i);
                 ShipDesign d = fl.design(i);
                 if (d != null) {
                     CombatStackShip stack = new CombatStackShip(fl, i, this);
@@ -674,7 +666,6 @@ public class ShipCombatManager implements Base {
         if (system.hasMonster())
             return;
 		allowRetreat = true;
-		playerShouldRetreat = playerCanRetreat;
 		playerSelection(ShipBattleUI.ENTER_COMBAT);
         boolean retreating = true;
         List<CombatStack> retreatingFleets = new ArrayList<>();
@@ -686,8 +677,6 @@ public class ShipCombatManager implements Base {
 			for (CombatStack st : as)
 				if (st.usingAI() && aiCanRetreat && st.wantToRetreat() && st.retreat())
 					retreatingFleets.add(st);
-				else if (st.isPlayer() && playerCanRetreat)
-					playerShouldRetreat &= st.wantToRetreat(); // Do not retreat if one of the stack want to fight
 
             results.activeStacks().removeAll(retreatingFleets);
             retreating = !retreatingFleets.isEmpty();
@@ -710,6 +699,7 @@ public class ShipCombatManager implements Base {
 		if (playerInBattle() && passives.isEmpty())
 			promptPlayer();
 	}
+	private boolean playerShouldRetreat()	{ return new ShipCaptainAdvisor(player()).playerShouldRetreat(); }
 	private void promptPlayer()	{
 		// Get the player selection
 		switch (fleetAutoCombat.get()) {
@@ -776,7 +766,6 @@ public class ShipCombatManager implements Base {
         }
 
 		allowRetreat = true;
-		playerShouldRetreat = playerCanRetreat;
 		playerSelection(ShipBattleUI.ENTER_COMBAT);
         boolean retreating = true;
         List<CombatStack> retreatingFleets = new ArrayList<>();
@@ -786,8 +775,6 @@ public class ShipCombatManager implements Base {
             for (CombatStack st : results.activeStacks())
 				if (st.usingAI() && aiCanRetreat && st.wantToRetreat() && st.retreat())
 					retreatingFleets.add(st);
-				else if (st.isPlayer() && playerCanRetreat)
-					playerShouldRetreat &= st.wantToRetreat(); // Do not retreat if one of the stack want to fight
 
             results.activeStacks().removeAll(retreatingFleets);
             retreating = !retreatingFleets.isEmpty();
@@ -1002,8 +989,6 @@ public class ShipCombatManager implements Base {
         int tgtY = nearY.get(index);
         CombatStack tgtStack = stackAt(tgtX, tgtY);
         this.moveStack(newStack, tgtX, tgtY);
-        //newStack.x = tgtX;
-        //newStack.y = tgtY;
         return tgtStack;
     }
 	private void scanShips() { // BR: Fixed ConcurrentModificationException

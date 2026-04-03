@@ -36,14 +36,14 @@ public final class ShipCombatResults implements Base {
     private StarSystem system;
     public CombatStackColony colonyStack;
     private Empire attacker, defender;
-    private final SpaceMonster monster;
-    private List<Empire> empires = new ArrayList<>();
-    private List<CombatStack> activeStacks = new ArrayList<>();
-    private Map<ShipDesign, Integer> shipsDestroyed = new HashMap<>();
-    //private Map<ShipDesign, Integer> shipsDamaged = new HashMap<>();
-    private Map<ShipDesign, Integer> shipsRetreated = new HashMap<>();
-    int basesDestroyed = 0;
-    private List<Empire> usedBioweapons = new ArrayList<>();
+	private final SpaceMonster monster;
+	private final List<Empire> empires = new ArrayList<>();
+	private final List<CombatStack> activeStacks = new ArrayList<>();
+	private final Map<ShipDesign, Integer> shipsDestroyed = new HashMap<>();
+	//private Map<ShipDesign, Integer> shipsDamaged = new HashMap<>();
+	private final Map<ShipDesign, Integer> shipsRetreated = new HashMap<>();
+	int basesDestroyed = 0;
+	private final List<Empire> usedBioweapons = new ArrayList<>();
     private Float currentFactories  = null; // BR: for bioweapons destruction only, null otherwise
     private Float startingFactories = null; // BR: for bioweapons destruction only, null otherwise
 

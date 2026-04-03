@@ -4956,6 +4956,12 @@ SHIP_COMBAT_RETREAT_ALL           | Retreat All
 SHIP_COMBAT_NEXT                  | Next Ship
 SHIP_COMBAT_AUTO_RESOLVE          | Auto-Resolve
 SHIP_COMBAT_SMART_RESOLVE         | Smart-Resolve
+SHIP_COMBAT_SMART_RETREAT		| Our fleet will retreat immediately
+SHIP_COMBAT_DEFENSLESS_FLEET	| Our fleet is not equiped
+SHIP_COMBAT_FLEET_WILL_LOOSE	| They're stronger than us
+SHIP_COMBAT_NOT_ENEMY_COLONY	| It is not an enemy colony
+SHIP_COMBAT_WE_CAN_WIN			| We can win this fight!
+SHIP_COMBAT_HOW_TO_START_WAR	| Press "W" to wage war
 SHIP_COMBAT_START_WAR             | Click the icon to declare War.
 SHIP_COMBAT_AUTO_RESOLVING        | Resolving Combat...
 SHIP_COMBAT_PLAY_BATTLE           | Auto-Play Battle

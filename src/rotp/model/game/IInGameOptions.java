@@ -704,7 +704,11 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	default boolean alwaysAlly()	{ return gameAgressiveness.get().equals(AGGRESSIV_ALLIANCE); }
 	default boolean alwaysAtWar()	{ return gameAgressiveness.get().equals(AGGRESSIV_ALWAYS_WAR); }
 	default boolean canStopWar()	{ return !alwaysAtWar(); }
-	default boolean canStartWar(Empire ask, Empire target)	{ return canStartWar(ask.isPlayer(), target.isPlayer()); }
+	default boolean canStartWar(Empire ask, Empire target)	{
+		boolean askIsPlayer		= ask == null ?		false : ask.isPlayer();
+		boolean targetIsPlayer	= target == null ?	false : target.isPlayer();
+		return canStartWar(askIsPlayer, targetIsPlayer);
+	}
 	default boolean canStartWar(boolean askIsPlayer, boolean targetIsPlayer)	{
 		// Player vs AI
 		if (askIsPlayer)

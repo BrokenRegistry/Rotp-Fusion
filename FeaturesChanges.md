@@ -22,6 +22,7 @@
 
 ### Features:
 
+- Ship Combat prompt: The “Smart-Resolve” button will once again display only “Smart-Resolve,” but if the action is “immediate withdrawal,” a pop-up window will explain why. If the reason is that the alien is not considered an enemy, pressing ‘W’ will start a war and update the “Smart-Resolve” button's action. (As always, hovering over the flag icon will provide more information about our relations.)
 - From now on, when deciding whether or not to fight, both the player and the AI follow the same relationship penalties rules: the player will no longer incur a relationship penalty when retreating.
 - Space monsters can be customized individually using either the MoO1 stats or the RotP stats.
 - On the map, the Guardians are slightly smaller than the Wanderers.
@@ -390,6 +391,7 @@
 
 ### Fixes:
 
+- Ship Combat: Fixed "retreat all" button acting wrong.
 - Fixed an issue when more than two empires where fighting for a star system.
 - Fixed an issue that caused retreating fleets to disappear for no apparent reason.
 - Smart resolve combat can retreat earlier.

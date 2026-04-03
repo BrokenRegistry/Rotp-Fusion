@@ -4956,6 +4956,12 @@ SHIP_COMBAT_RETREAT_ALL           | Se retirer
 SHIP_COMBAT_NEXT                  | Vaisseau suivant
 SHIP_COMBAT_AUTO_RESOLVE          | Réso. automatique
 SHIP_COMBAT_SMART_RESOLVE         | Réso. intelligente
+SHIP_COMBAT_SMART_RETREAT		| Notre flotte se retirera immédiatement
+SHIP_COMBAT_DEFENSLESS_FLEET	| Notre flotte n’est pas armée
+SHIP_COMBAT_FLEET_WILL_LOOSE	| Ils sont plus fort que nous
+SHIP_COMBAT_NOT_ENEMY_COLONY	| Ce n’est pas une colonie ennemie
+SHIP_COMBAT_WE_CAN_WIN			| On peut gagner ce combat!
+SHIP_COMBAT_HOW_TO_START_WAR	| Pressez « W » pour Guerroyer
 SHIP_COMBAT_START_WAR             | Cliquez sur l’icône pour déclarer la guerre.
 SHIP_COMBAT_AUTO_RESOLVING        | En train de résoudre le combat...
 SHIP_COMBAT_PLAY_BATTLE           | Bataille en lecture automatique
