@@ -729,6 +729,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
 				startCombat(ShipBattleUI.SMART_RESOLVE);
 		};
 		private void drawComments (GalaxyMapPanel map, Graphics2D g) { // TODO BR:
+			// advisor.performRetreatAnalysis();
 			StringList list = new StringList();
 			if (advisor.notAnEnemyColony())
 				list.add(pl.text("SHIP_COMBAT_NOT_ENEMY_COLONY"));

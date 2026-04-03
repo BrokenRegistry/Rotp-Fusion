@@ -10,6 +10,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 26-04-03 (BR)
 - Ship Combat: Fixed "retreat all" button acting wrong.
 - Ship Combat prompt: The “Smart-Resolve” button will once again display only “Smart-Resolve,” but if the action is “immediate withdrawal,” a pop-up window will explain why. If the reason is that the alien is not considered an enemy, pressing ‘W’ will start a war and update the “Smart-Resolve” button's action. (As always, hovering over the flag icon will provide more information about our relations.)
+- Fixed “Smart-Resolve” popup text for Monsters.
 
 26-04-01 (BR)
 - Fixed an issue when more than two empires where fighting for a star system.

@@ -63,7 +63,7 @@ public final class ShipCaptainAdvisor extends rotp.model.ai.xilmi.AIShipCaptain 
 
 		// Basic info
 		isCivilFleet		= civilFleetAnalysis();
-		playerCanDeclareWar	= options.canStartWar(empire, alien);
+		playerCanDeclareWar	= (alien == null) ? true : options.canStartWar(empire, alien);
 		playerCanRetreat	= options.playerCanRetreat();
 		inPact				= (colView != null) && colView.embassy().pact();
 		notAnEnemyColony	= (colView != null) && !colView.isMember(empire.enemies());
@@ -88,7 +88,8 @@ public final class ShipCaptainAdvisor extends rotp.model.ai.xilmi.AIShipCaptain 
 				fleetWantToFight = true;	// Do not retreat if one of the stack want to fight
 				break;
 			}
-		boolean wantToLeave = !fleetWantToFight || notAnEnemyColony;
+		facingOverwhelmingForce = !fleetWantToFight;
+		boolean wantToLeave = facingOverwhelmingForce || notAnEnemyColony;
 		playerShouldRetreat = playerCanRetreat && wantToLeave;
 
 		// Restore the activeStacks
@@ -118,11 +119,6 @@ public final class ShipCaptainAdvisor extends rotp.model.ai.xilmi.AIShipCaptain 
 			return inPact || !atLeastOneStackStillArmed;
 		}
 
-		// if stack is pacted with colony and doesn't want war, then retreat
-		// ail: Whether I want a war or not depends on whether the other faction is an enemy, not on relation!
-		if ((colView != null) && !colView.isMember(empire.enemies()))
-			return true;
-
 		List<CombatStack> activeStacks = new ArrayList<>(mgr.activeStacks());
 		// don't retreat if all enemies can only target planets
 		boolean canBeTargeted = false;
@@ -138,9 +134,8 @@ public final class ShipCaptainAdvisor extends rotp.model.ai.xilmi.AIShipCaptain 
 		if(!canTarget)
 			return true;
 
-		if (facingOverwhelmingForce(currStack, false)) {
+		if (facingOverwhelmingForce(currStack, false))
 			return true;
-		}
 		return false;
 	}
 	
