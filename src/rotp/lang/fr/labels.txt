@@ -2958,9 +2958,13 @@ SETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Le bouton « Retraite » permet de retir
 SETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Le bouton « Retraite » retire instantanément le vaisseau actuel du combat. L’ennemi ne pourra pas tirer sur votre vaisseau pendant qu’il se retire de l’écran.
 SETTINGS_MOD_MOO1_RETREAT				| Règles de retraite de MoO1 : %1
 SETTINGS_MOD_MOO1_COMBAT_RESOL_DESC		| Contrairement à MoO1, les dégâts infligés par les armes dans RotP ne sont pas affectés par la différence entre les niveaux d’attaque et de défense. (Cela n’affecte que la probabilité de toucher.)
-SETTINGS_MOD_MOO1_COMBAT_RESOL_YES_DESC	| Un écart important entre l’attaque et la défense augmente les dégâts minimums de l'arme.
-SETTINGS_MOD_MOO1_COMBAT_RESOL_NO_DESC	| La différence entre les niveaux d'attaque et de défense n'affecte pas les dégâts infligés par l'arme.
+SETTINGS_MOD_MOO1_COMBAT_RESOL_YES_DESC	| Un écart important entre l’attaque et la défense augmente les dégâts minimums de l’arme.
+SETTINGS_MOD_MOO1_COMBAT_RESOL_NO_DESC	| La différence entre les niveaux d’attaque et de défense n'affecte pas les dégâts infligés par l’arme.
 SETTINGS_MOD_MOO1_COMBAT_RESOL			| Résolution des combats de MoO1 : %1
+SETTINGS_MOD_MOO1_MINIATURIZE_DESC		| Contrairement à MoO1, la miniaturisation des composants des vaisseaux dans RotP ne s’applique pas aux scanners de combat ni aux réservoirs de carburant de réserve.
+SETTINGS_MOD_MOO1_MINIATURIZE_YES_DESC	| Appliquer les règles de miniaturisation des composants de vaisseau décrites dans MoO1.
+SETTINGS_MOD_MOO1_MINIATURIZE_NO_DESC	| Conserver les règles de miniaturisation des composants de vaisseau de l'édition originale de RotP.
+SETTINGS_MOD_MOO1_MINIATURIZE			| Miniaturisation de MoO1 : %1
 
 SETTINGS_MOD_HOME_ORION              | Planète mère avec Vestiges : %1
 SETTINGS_MOD_HOME_ARTIFACT           | Planète mère avec Artéfact : %1

@@ -728,7 +728,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
 			else
 				startCombat(ShipBattleUI.SMART_RESOLVE);
 		};
-		private void drawComments (GalaxyMapPanel map, Graphics2D g) { // TODO BR:
+		private void drawComments (GalaxyMapPanel map, Graphics2D g) {
 			// advisor.performRetreatAnalysis();
 			StringList list = new StringList();
 			if (advisor.notAnEnemyColony())

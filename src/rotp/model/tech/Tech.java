@@ -15,6 +15,9 @@
  */
 package rotp.model.tech;
 
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
+import static rotp.model.game.IBaseOptsTools.MOO1_DEFAULT;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -29,6 +32,7 @@ import rotp.model.empires.species.Species;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.ScaledInteger;
 import rotp.ui.combat.ShipBattleUI;
+import rotp.ui.util.ParamBoolean;
 import rotp.util.Base;
 
 public class Tech implements Base, ScaledInteger {
@@ -144,6 +148,12 @@ public class Tech implements Base, ScaledInteger {
     	typeMap.put(FUTURE_PROPULSION, "FUTUREPROP");
     	typeMap.put(FUTURE_WEAPON, "FUTUREWEAPON");
     }
+	protected static boolean moo1Mini = false;
+	public static void newMiniaturizationValue(Boolean value)	{ moo1Mini = value; }
+	public static ParamBoolean moo1Miniaturization	= new ParamBoolean(MOD_UI, "MOO1_MINIATURIZE", false)
+			.setDefaultValue(MOO1_DEFAULT, true)
+			.setNewValueMethod(Tech::newMiniaturizationValue);
+
 	public static String buildId(String s, int i)	{ return s + ":" + i; }
 
     public String id;

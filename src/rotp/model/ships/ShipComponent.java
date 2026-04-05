@@ -19,6 +19,7 @@ import java.awt.Component;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
+
 import rotp.model.combat.CombatStack;
 import rotp.model.combat.CombatStackColony;
 import rotp.model.combat.ShipCombatManager;
@@ -95,6 +96,16 @@ public class ShipComponent implements Base, Serializable {
         	cost *= options().selectedMissileShipModifier();
         return cost;
     }
+	public float poweredCost(ShipDesign d)	{
+		float rawCost = cost(d);
+		float powerCost = enginesRequired(d) * d.engine().cost(d);
+		return powerCost + rawCost;
+	}
+	public float poweredSize(ShipDesign d)	{
+		float rawSize = size(d);
+		float powerSize = enginesRequired(d) * d.engine().size(d);
+		return powerSize + rawSize;
+	}
     public float space(ShipDesign d) { return  nullTech() ? 0 : (float) Math.ceil(size(d) + engineSpaceRequired(d)); }
     public float power(ShipDesign d) {
     	float power = nullTech() ? 0 :  tech().basePower(d);

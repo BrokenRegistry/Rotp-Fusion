@@ -5,6 +5,7 @@ import java.util.Arrays;
 import rotp.model.combat.ShipCombatManager;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
+import rotp.model.tech.Tech;
 import rotp.ui.util.ParamTitle;
 
 final class AutoSendFleetOption extends AbstractOptionsSubUI {
@@ -48,7 +49,9 @@ final class AutoSendFleetOption extends AbstractOptionsSubUI {
 				RELEVANT_TITLE,
 				keepShipDesignName,
 				LINE_SPACER_25,
-				scoutAndColonyOnly
+				scoutAndColonyOnly,
+				LINE_SPACER_25,
+				Tech.moo1Miniaturization
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("GOVERNOR_AUTO_COLONIZE"),

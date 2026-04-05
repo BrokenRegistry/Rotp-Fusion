@@ -34,7 +34,8 @@ public final class ShipShield extends ShipComponent {
         switch(n) {
             case 0: return name().isEmpty() ? text("SHIP_DESIGN_COMPONENT_NONE") : name();
             case 1: return str((int)(cost(d)+(enginesRequired(d)*d.engine().cost(d))));
-            case 2: return str((int)size(d));
+//            case 2: return str((int)size(d));
+			case 2: return str((int)poweredSize(d));
             case 3: return str((int)power(d));
             case 4: return str((int)space(d));
         }

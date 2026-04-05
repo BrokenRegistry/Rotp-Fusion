@@ -2961,6 +2961,10 @@ SETTINGS_MOD_MOO1_COMBAT_RESOL_DESC		| Unlike in MoO1, damage inflicted by weapo
 SETTINGS_MOD_MOO1_COMBAT_RESOL_YES_DESC	| A high differential between attack and defense increases the weapon's minimum damage.
 SETTINGS_MOD_MOO1_COMBAT_RESOL_NO_DESC	| The difference between attack and defense levels does not affect the damage inflicted by the weapon.
 SETTINGS_MOD_MOO1_COMBAT_RESOL			| MoO1 Combat Resolution: %1
+SETTINGS_MOD_MOO1_MINIATURIZE_DESC		| Unlike in MoO1, the miniaturization of ship components in RotP does not apply to Battle Scanners, nor to Reserve Fuel Tanks.
+SETTINGS_MOD_MOO1_MINIATURIZE_YES_DESC	| Apply the rules for miniaturizing ship components described in MoO1.
+SETTINGS_MOD_MOO1_MINIATURIZE_NO_DESC	| Retain the rules for miniaturizing ship components from the original edition of RotP.
+SETTINGS_MOD_MOO1_MINIATURIZE			| MoO1 Miniaturization: %1
 
 SETTINGS_MOD_HOME_ORION              | Orion Ruin HomeWorld: %1
 SETTINGS_MOD_HOME_ARTIFACT           | Get Artifact HomeWorld: %1

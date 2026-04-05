@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-04-05 (BR)
+- New option to select MoO1 rules for the miniaturization of the Battle Scanners and the Reserve Fuel Tanks.
+- Ship Design UI: The "Size" of ship components is replaced by the space they occupy once powered by the engines; the same applies to their cost.
+
 26-04-03 (BR)
 - Ship Combat: Fixed "retreat all" button acting wrong.
 - Ship Combat prompt: The “Smart-Resolve” button will once again display only “Smart-Resolve,” but if the action is “immediate withdrawal,” a pop-up window will explain why. If the reason is that the alien is not considered an enemy, pressing ‘W’ will start a war and update the “Smart-Resolve” button's action. (As always, hovering over the flag icon will provide more information about our relations.)
@@ -54,11 +58,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 26-03-31 (BR)
 - From now on, when deciding whether or not to fight, both the player and the AI follow the same relationship penalties rules: the player will no longer incur a relationship penalty when retreating.
-
-26-03-29 (BR)
-- Fixed an issue that caused retreating fleets to disappear for no apparent reason.
-- Removed obsolete galaxy shape building methods.
-- Smart resolve combat can retreat earlier.
 
 
 ### [Features Historic](FeaturesChanges.md)

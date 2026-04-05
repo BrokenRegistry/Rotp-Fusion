@@ -33,6 +33,7 @@ public final class TechReserveFuelRange extends Tech {
         free = b;
         init();
     }
+	@Override public boolean canBeMiniaturized()	{ return moo1Mini; }
     @Override
     public void init() {
         super.init();

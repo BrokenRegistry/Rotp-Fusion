@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
+import rotp.model.tech.Tech;
 import rotp.ui.util.ParamTitle;
 
 final class ShipRules extends AbstractOptionsSubUI {
@@ -21,6 +22,9 @@ final class ShipRules extends AbstractOptionsSubUI {
 				LINE_SPACER_25,
 				scrapRefundOption,
 				scrapRefundFactor,
+
+				LINE_SPACER_25,
+				Tech.moo1Miniaturization,
 
 				new ParamTitle("PREF_SHIP_SIZE_IMPACT"),
 				prefShipSizeImpacts,
