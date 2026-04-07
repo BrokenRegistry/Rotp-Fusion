@@ -77,6 +77,7 @@ class WarViewPanel extends SystemPanel {
 			bottomPane = new ExitWarViewButton(getWidth(), s40);
 		return bottomPane;
 	}
+	@Override public StarSystem systemViewToDisplay()	{ return parent.systemViewToDisplay(); }
 
 	private final class FleetRecord {
 		private YearRecordMap playerYearMap = new YearRecordMap();
