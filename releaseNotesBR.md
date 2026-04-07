@@ -7,6 +7,14 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-04-07 (BR)
+- DNA Workshop: Fixed a display issue where elements overlapped at certain specific resolutions.
+- The “War View” panel is now available for all colonies.
+- The Shift-F7 and Shift-F8 shortcuts let you scroll through the alien colonies to which you are sending troops.
+- The Ctrl-F7 and Ctrl-F8 shortcuts let you browse the war enemy colonies to which you are sending armed ships or troops.
+- The Ctrl-Shift-F7 and Ctrl-Shift-F8 shortcuts let you cycle through all the alien colonies to which you are sending armed ships or troops. (This will include all targets of armed scouts.)
+- Pressing the F7 or F8 keys will open the “War View” panel.
+
 26-04-05 (BR)
 - New option to select MoO1 rules for the miniaturization of the Battle Scanners and the Reserve Fuel Tanks.
 - Ship Design UI: The "Size" of ship components is replaced by the space they occupy once powered by the engines; the same applies to their cost.
@@ -15,12 +23,6 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 - Ship Combat: Fixed "retreat all" button acting wrong.
 - Ship Combat prompt: The “Smart-Resolve” button will once again display only “Smart-Resolve,” but if the action is “immediate withdrawal,” a pop-up window will explain why. If the reason is that the alien is not considered an enemy, pressing ‘W’ will start a war and update the “Smart-Resolve” button's action. (As always, hovering over the flag icon will provide more information about our relations.)
 - Fixed “Smart-Resolve” popup text for Monsters.
-
-26-04-01 (BR)
-- Fixed an issue when more than two empires where fighting for a star system.
-
-26-03-31 (BR)
-- From now on, when deciding whether or not to fight, both the player and the AI follow the same relationship penalties rules: the player will no longer incur a relationship penalty when retreating.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

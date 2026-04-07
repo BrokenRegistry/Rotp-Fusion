@@ -4061,6 +4061,35 @@ public final class Empire extends Species implements NamedObject {
         Collections.sort(list, IMappedObject.MAP_ORDER);
         return list;
     }
+	public List<StarSystem> orderedWarTargetSystems(boolean transportOnly, boolean WarOnly) {
+		List<StarSystem> list = new ArrayList<>();
+		Galaxy gal = galaxy();
+
+		for (Transport tr: gal.transports())
+			if (tr != null && tr.empId() == id && tr.targetCiv() != this && !tr.retreating()) {
+				StarSystem sys = tr.destination();
+				if (sys != null && !list.contains(sys))
+					list.add(sys);
+			}
+
+		if (!transportOnly) {
+			for (ShipFleet fl: gal.ships.allFleets(id))
+				if (fl != null) {
+					StarSystem sys = WarOnly? fl.warEnemyTarget() : fl.ennemyAlienTarget();
+					if (sys != null && !list.contains(sys))
+						list.add(sys);
+				}
+		}
+
+		Collections.sort(list, IMappedObject.MAP_ORDER);
+		return list;
+	}
+	public boolean couldTargetAlien(int sysId)	{
+		int sysEmpId = sv.empId(sysId);
+		EmpireView v = viewForEmpire(sysEmpId);
+		return v == null ? false : !v.embassy().isFriend();
+	}
+	public boolean isWarEnemySystem(int sysId)	{ return atWarWith(sv.empId(sysId)); }
     public static Set<Empire> allContacts(Empire e1, Empire e2) {
         Set<Empire> contacts = new HashSet<>();
         contacts.addAll(e1.contactedEmpires());

@@ -28,6 +28,7 @@ import rotp.ui.game.BaseCompactOptionsUI;
 import rotp.ui.main.FleetPanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
+import rotp.ui.main.SpriteDisplayPanel;
 import rotp.ui.main.TransportDeploymentPanel;
 import rotp.ui.sprites.ShipRelocationSprite;
 import rotp.ui.sprites.SystemTransportSprite;
@@ -37,6 +38,8 @@ public class MapOverlayNone extends MapOverlay {
     public MapOverlayNone(MainUI p) {
         parent = p;
     }
+    private GalaxyMapPanel map()	{ return parent.map(); }
+    private SpriteDisplayPanel displayPanel()	{ return parent.displayPanel(); }
     @Override public boolean hideNextTurnNotice()         { return false; }
     @Override public boolean canChangeMapScale()          { return true; }
     @Override public boolean consumesClicks(Sprite spr)   { return false; }
@@ -56,8 +59,8 @@ public class MapOverlayNone extends MapOverlay {
     	}
         if (session().performingTurn()) {
             // allocate systems overlay should pass keystrokes
-            if (parent.displayPanel().isVisible())
-                parent.displayPanel().keyPressed(e);
+            if (displayPanel().isVisible())
+                displayPanel().keyPressed(e);
             return true;
         }
         boolean shift = e.isShiftDown();
@@ -77,8 +80,6 @@ public class MapOverlayNone extends MapOverlay {
                 break;
 			case KeyEvent.VK_NUMBER_SIGN:
 			case KeyEvent.VK_DEAD_TILDE:
-//				player().autoscout();
-//				player().govAI().fleetCommander().nextTurn();
 				player().fleetCommanderAI().nextTurn();
 				break;
             case KeyEvent.VK_EQUALS:
@@ -243,25 +244,9 @@ public class MapOverlayNone extends MapOverlay {
             	if (e.isAltDown()) {
             		options().toggleSquareGridDisplay();
                     parent.repaint();
-                    break;
             	}
-            	GalaxyMapPanel.toggleWarView();
-            	// Refresh to force activation
-            	StarSystem currSys = null;
-            	// are we transporting?
-                if (parent.clickedSprite() instanceof SystemTransportSprite)
-                    currSys = ((SystemTransportSprite) parent.clickedSprite()).homeSystem();
-                    // are we ship relocating?
-                else if (parent.clickedSprite() instanceof ShipRelocationSprite)
-                    currSys = ((ShipRelocationSprite) parent.clickedSprite()).homeSystemView();
-                else if (parent.clickedSprite() instanceof StarSystem)
-                    currSys = (StarSystem) parent.clickedSprite();
-                
-                if (currSys != null) {
-                	parent.clickedSprite(currSys);
-                	parent.map().recenterMapOn(currSys);
-                }
-                parent.repaint();
+				else
+					toggleWarView();
                 break;
             case KeyEvent.VK_F1:
             	if (shift)
@@ -281,14 +266,36 @@ public class MapOverlayNone extends MapOverlay {
             case KeyEvent.VK_F6:
             	prevSystem(player().orderedShipConstructingColonies());
                 break;
-            case KeyEvent.VK_F7:
-            	nextSystem(player().orderedUnderAttackSystems(
-            			parent.map().showUnarmedShips(), !parent.map().showFleetsOnly()));
-                break;
-            case KeyEvent.VK_F8:
-            	prevSystem(player().orderedUnderAttackSystems(
-            			parent.map().showUnarmedShips(), !parent.map().showFleetsOnly()));
-                break;
+			case KeyEvent.VK_F7: {
+				boolean foundSys = false;
+				if (shift && ctrl)
+					foundSys = nextSystem(player().orderedWarTargetSystems(false, false)); // Max target
+				else if (shift)
+					foundSys = nextSystem(player().orderedWarTargetSystems(true, true)); // Troops only
+				else if (ctrl)
+					foundSys = nextSystem(player().orderedWarTargetSystems(false, true)); // At war
+				else
+					foundSys = nextSystem(player().orderedUnderAttackSystems(map().showUnarmedShips(), !map().showFleetsOnly()));
+
+				if (foundSys)
+					setWarView(true);
+				break;
+			}
+			case KeyEvent.VK_F8: {
+				boolean foundSys = false;
+				if (shift && ctrl)
+					foundSys = prevSystem(player().orderedWarTargetSystems(false, false)); // Max target
+				else if (shift)
+					foundSys = prevSystem(player().orderedWarTargetSystems(true, true)); // Troops only
+				else if (ctrl)
+					foundSys = prevSystem(player().orderedWarTargetSystems(false, true)); // At war
+				else
+					foundSys = prevSystem(player().orderedUnderAttackSystems(map().showUnarmedShips(), !map().showFleetsOnly()));
+
+				if (foundSys)
+					setWarView(true);
+				break;
+			}
             case KeyEvent.VK_F9:
             	nextFleet(player().orderedFleets());
                 break;
@@ -347,6 +354,26 @@ public class MapOverlayNone extends MapOverlay {
         }
         return true;
     }
+	private void toggleWarView()		{ setWarView(!GalaxyMapPanel.isWarView()); }
+	private void setWarView(boolean b)	{
+		GalaxyMapPanel.warView(b);
+    	// Refresh to force activation
+    	StarSystem currSys = null;
+    	// are we transporting?
+		if (parent.clickedSprite() instanceof SystemTransportSprite)
+			currSys = ((SystemTransportSprite) parent.clickedSprite()).homeSystem();
+		// are we ship relocating?
+		else if (parent.clickedSprite() instanceof ShipRelocationSprite)
+			currSys = ((ShipRelocationSprite) parent.clickedSprite()).homeSystemView();
+		else if (parent.clickedSprite() instanceof StarSystem)
+			currSys = (StarSystem) parent.clickedSprite();
+
+		if (currSys != null) {
+			parent.clickedSprite(currSys);
+			parent.map().recenterMapOn(currSys);
+		}
+		parent.repaint();
+	}
     private void nextFlag(int flagId, boolean shift, boolean ctrl) {
     	StarSystem currSys = parent.lastSystemSelected();
         currSys = player().nextFlaggedSystems(currSys, flagId, ctrl, shift);
@@ -388,10 +415,10 @@ public class MapOverlayNone extends MapOverlay {
             parent.map().recenterMapOn(system);
         }
     }
-    private void nextSystem(List<StarSystem> systems) {
+	private boolean nextSystem(List<StarSystem> systems)	{
     	if (systems.isEmpty()) {
             misClick();
-            return;
+			return false;
     	}
     	StarSystem currSys = currentSystem();
     	// find next index (exploit that missing element returns -1, so set to 0)
@@ -400,11 +427,12 @@ public class MapOverlayNone extends MapOverlay {
             index = 0;
         goToSystem(systems.get(index));
         parent.repaint();
+		return true;
     }
-    private void prevSystem(List<StarSystem> systems) {
+	private boolean prevSystem(List<StarSystem> systems)	{
     	if (systems.isEmpty()) {
             misClick();
-            return;
+			return false;
     	}
     	StarSystem currSys = currentSystem();
     	int index = systems.indexOf(currSys)-1;
@@ -412,6 +440,7 @@ public class MapOverlayNone extends MapOverlay {
             index = systems.size()-1;
         goToSystem(systems.get(index));
         parent.repaint();
+		return true;
     }
     private void nextFleet(List<ShipFleet> fleets) {
     	ShipFleet currFleet = null;

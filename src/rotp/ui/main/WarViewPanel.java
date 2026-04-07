@@ -16,13 +16,19 @@
 package rotp.ui.main;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.LinearGradientPaint;
 import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -30,7 +36,6 @@ import java.util.TreeMap;
 
 import javax.swing.SwingUtilities;
 
-import rotp.model.Sprite;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.Ship;
 import rotp.model.galaxy.ShipFleet;
@@ -41,18 +46,16 @@ import rotp.model.ships.ShipDesignLab;
 import rotp.ui.BasePanel;
 import rotp.ui.map.IMapHandler;
 
-public class WarViewPanel extends SystemPanel {
+class WarViewPanel extends SystemPanel {
 	private static final long serialVersionUID = 1L;
-	SpriteDisplayPanel parent;
-	BasePanel topPane;
+	private SpriteDisplayPanel parent;
+	private BasePanel topPane;
 
-	public WarViewPanel(SpriteDisplayPanel p) {
+	WarViewPanel(SpriteDisplayPanel p) {
 		parent = p;
 		init();
 	}
-
 	private void init() { initModel(); }
-    public void releaseObjects() { }
 
 	@Override public IMapHandler mapHandler()	{ return parent.parent; }
 	@Override public void animate() {
@@ -69,30 +72,28 @@ public class WarViewPanel extends SystemPanel {
 			detailPane = new IncomingFleetsPane();
 		return detailPane;
 	}
-	@Override
-    public StarSystem systemViewToDisplay() {
-        // return galaxy().system(0);
-		Sprite clickedSprite = parent.parent.clickedSprite();
-		if (clickedSprite instanceof StarSystem)
-			return (StarSystem) clickedSprite;
-		return galaxy().system(0);
+	@Override protected BasePanel bottomPane() {
+		if (bottomPane == null)
+			bottomPane = new ExitWarViewButton(getWidth(), s40);
+		return bottomPane;
 	}
-	final class FleetRecord {
+
+	private final class FleetRecord {
 		private YearRecordMap playerYearMap = new YearRecordMap();
 		private YearRecordMap alienYearMap  = new YearRecordMap();
 		private String[] playerReport, alienReport;
 
-		String[] getPlayerReport()	{
+		private String[] getPlayerReport()	{
 			if (playerReport == null)
 				playerReport = buildReport(playerYearMap);
 			return playerReport;
 		}
-		String[] getAlienReport()	{
+		private String[] getAlienReport()	{
 			if (alienReport == null)
 				alienReport = buildReport(alienYearMap);
 			return alienReport;
 		}
-		void add(Ship sh)	{
+		private void add(Ship sh)	{
 			Empire empire = sh.empire();
 			boolean isPlayer = isPlayer(empire);
 			YearRecordMap yearMap = isPlayer ? playerYearMap : alienYearMap;
@@ -135,14 +136,13 @@ public class WarViewPanel extends SystemPanel {
 			return report;
 		}
 	}
-	final class FleetRecordMap extends TreeMap<Integer, FleetRecord> {
+	private final class FleetRecordMap extends TreeMap<Integer, FleetRecord> {
 		private static final long serialVersionUID = 1L;
 	}
-	final class YearRecordMap extends HashMap<String, Integer> {
+	private final class YearRecordMap extends HashMap<String, Integer> {
 		private static final long serialVersionUID = 1L;
 	}
-	
-	final class IncomingFleetsPane extends BasePanel implements MouseListener, MouseWheelListener {
+	private final class IncomingFleetsPane extends BasePanel implements MouseListener, MouseWheelListener {
 		private static final long serialVersionUID = 1L;
 		private static final int fontSize = 16;
 		private final int lineH = scaled(fontSize);
@@ -150,10 +150,10 @@ public class WarViewPanel extends SystemPanel {
 		// private StarSystem sys, lastSys;
 		private Integer sysId;
 		//private FleetRecordMap fleetsMap = new FleetRecordMap();
-		int offsetY = 0;
-		
-		Rectangle eventsBox = new Rectangle();
-		IncomingFleetsPane() {
+		private int offsetY = 0;
+
+		private Rectangle eventsBox = new Rectangle();
+		private IncomingFleetsPane() {
 			setBackground(Color.DARK_GRAY);
 			addMouseListener(this);
 			addMouseWheelListener(this);
@@ -197,7 +197,7 @@ public class WarViewPanel extends SystemPanel {
 			sysId = sys.id;
 			offsetY = 0;
 			FleetRecordMap fleetsMap = buildLists();
-			
+
 			String title = text("WAR_VIEW_TITLE");
 			g.setFont(narrowFont(20));
 			drawShadowedString(g, title, 2, s10, s23, MainUI.shadeBorderC(), SystemPanel.whiteLabelText);
@@ -261,6 +261,96 @@ public class WarViewPanel extends SystemPanel {
 				offsetY += scrollH;
 			else
 				offsetY = max(0, offsetY-scrollH);
+		}
+	}
+	private final class ExitWarViewButton extends BasePanel implements MouseListener, MouseMotionListener {
+		private static final long serialVersionUID = 1L;
+		private final Color redEdgeC	= new Color(92, 20, 20);
+		private final Color redMidC		= new Color(117, 42, 42);
+		private final Rectangle exitBox	= new Rectangle();
+		private LinearGradientPaint buttonBack;
+		private Rectangle hoverBox;
+		private Shape textureClip;
+
+		private ExitWarViewButton(int w, int h)	{ init(w,h); }
+		private void init(int w, int h)	{
+			Point2D start = new Point2D.Float(s2, 0);
+			Point2D end = new Point2D.Float(w-s2, 0);
+			float[] dist = {0.0f, 0.5f, 1.0f};
+			Color[] redColors = {redEdgeC, redMidC, redEdgeC };
+			buttonBack = new LinearGradientPaint(start, end, dist, redColors);
+			setPreferredSize(new Dimension(w, h));
+			setOpaque(false);
+			addMouseListener(this);
+			addMouseMotionListener(this);
+		}
+		private void clickAction(int numClicks)	{ GalaxyMapPanel.warView(false); }
+		private void drawButton(Graphics2D g, LinearGradientPaint gradient, String label, Rectangle actionBox, int x1, int x2)	{
+			int y = s4;
+			int h = getHeight()-s7;
+			int w = x2 - x1;
+			//if (actionBox != null)
+				actionBox.setBounds(x1, y, w, h);
+			g.setColor(buttonShadowC);
+			Stroke prev = g.getStroke();
+			g.setStroke(stroke2);
+			g.drawRoundRect(x1+s3, y+s2, w-s2, h, s10, s10);
+			g.setStroke(prev);
+
+			g.setPaint(gradient);
+			g.fillRoundRect(x1,y,w,h,s10,s10);
+
+			boolean hovering = (actionBox != null) && (actionBox == hoverBox);
+			Color c0 = hovering ? SystemPanel.yellowText : SystemPanel.whiteText;
+
+			g.setFont(narrowFont(22));
+			int sw = g.getFontMetrics().stringWidth(label);
+			int x0 = x1+((w-sw)/2);
+			drawShadowedString(g, label, 3, x0, y+h-s9, SystemPanel.textShadowC, c0);
+
+			g.setColor(c0);
+			Stroke prev2 = g.getStroke();
+			g.setStroke(stroke2);
+			g.drawRoundRect(x1+s1,y,w-s2,h,s10,s10);
+			g.setStroke(prev2);
+		}
+		@Override public String textureName()				{ return TEXTURE_BROWN; }
+		@Override public Shape textureClip()				{ return textureClip; }
+		@Override public void paintComponent(Graphics g0)	{
+			super.paintComponent(g0);
+			Graphics2D g = (Graphics2D) g0;
+			drawButton(g,buttonBack, text("WAR_VIEW_EXIT"), exitBox, s2, getWidth()-s2);
+		}
+		@Override public void mouseClicked(MouseEvent e)	{ }
+		@Override public void mousePressed(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{
+			if (e.getButton() > 3)
+				return;
+			int x = e.getX();
+			int y = e.getY();
+			if (exitBox.contains(x,y)) {
+				clickAction(e.getClickCount());
+				return;
+			}
+		}
+		@Override public void mouseEntered(MouseEvent e)	{ }
+		@Override public void mouseExited(MouseEvent e)		{
+			if (hoverBox != null) {
+				hoverBox = null;
+				repaint();
+			}
+		}
+		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseMoved(MouseEvent e)		{
+			int x = e.getX();
+			int y = e.getY();
+			Rectangle prevHover = hoverBox;
+			hoverBox = null;
+			if (exitBox.contains(x,y))
+				hoverBox = exitBox;
+
+			if (hoverBox != prevHover)
+				repaint();
 		}
 	}
 }

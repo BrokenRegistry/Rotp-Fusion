@@ -151,6 +151,20 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
 	@Override public boolean isDeployed()	{ return status() == Status.DEPLOYED; }
 	@Override public boolean inTransit()	{ return status() == Status.IN_TRANSIT || retreatOnArrival(); }
 	public boolean retreatOnArrival()		{ return status() == Status.RETREAT_ON_ARRIVAL; }
+	public StarSystem ennemyAlienTarget()	{
+		if (isOrbiting() && isArmed())
+			return empire().couldTargetAlien(sysId()) ? galaxy().system(sysId()) : null;
+		if (hasDestination() && !retreatOnArrival() && isArmed())
+			return empire().couldTargetAlien(destSysId()) ? galaxy().system(destSysId()) : null;
+		return null;
+	}
+	public StarSystem warEnemyTarget()		{
+		if (isOrbiting() && isArmed())
+			return empire().isWarEnemySystem(sysId()) ? galaxy().system(sysId()) : null;
+		if (hasDestination() && !retreatOnArrival() && isArmed())
+			return empire().isWarEnemySystem(destSysId()) ? galaxy().system(destSysId()) : null;
+		return null;
+	}
 	public void toggleRetreatOnArrival()	{
 		switch (status()) {
 			case IN_TRANSIT:
@@ -166,7 +180,7 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
 	public void setXY(float x, float y)		{ fromX(x); fromY(y); }
 	public void setXY(StarSystem sys)		{ fromX(sys.x()); fromY(sys.y()); }
 	@Override public boolean isRallied()	{ return rallySysId() != StarSystem.NULL_ID; }
-	public boolean isRalliedThisTurn()		{ return isRallied() && (launchTime() == galaxy().currentTime());  }
+	public boolean isRalliedThisTurn()		{ return isRallied() && (launchTime() == galaxy().currentTime()); }
 	public boolean isRetreatingThisTurn()	{
 		return retreating() &&
 				(launchTime() == galaxy().currentTime() || launchTime() == NOT_LAUNCHED); 

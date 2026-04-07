@@ -2,6 +2,14 @@
 
 ## What's New
 
+26-04-07 (BR)
+- DNA Workshop: Fixed a display issue where elements overlapped at certain specific resolutions.
+- The “War View” panel is now available for all colonies.
+- The Shift-F7 and Shift-F8 shortcuts let you scroll through the alien colonies to which you are sending troops.
+- The Ctrl-F7 and Ctrl-F8 shortcuts let you browse the war enemy colonies to which you are sending armed ships or troops.
+- The Ctrl-Shift-F7 and Ctrl-Shift-F8 shortcuts let you cycle through all the alien colonies to which you are sending armed ships or troops. (This will include all targets of armed scouts.)
+- Pressing the F7 or F8 keys will open the “War View” panel.
+
 26-04-05 (BR)
 - New option to select MoO1 rules for the miniaturization of the Battle Scanners and the Reserve Fuel Tanks.
 - Ship Design UI: The "Size" of ship components is replaced by the space they occupy once powered by the engines; the same applies to their cost.

@@ -181,22 +181,20 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
     private boolean lastHoverAltDown = false;
 
 	static void checkForEcoClean()		{ cleanWidgetSprite.checkForEcoClean(); }
-	static boolean isWarView()	 		{ return warView; }
-	public static void toggleWarView()	{ warView = !warView; }
-	private void clearWarView()			{
+	public static boolean isWarView()		{ return warView; }
+	public static void warView(boolean b)	{
+		warView = b;
+		if (!warView)
+			targetSysId	= NO_TARGET;
+	}
+	private static void clearWarView()		{
 		targetSysId	= NO_TARGET;
 		warView		= false;
     }
-    private boolean setTargetSys(int sysId)	{
-    	List<StarSystem> systems = player().orderedUnderAttackSystems(true, true);
-    	StarSystem sys = galaxy().system(sysId);
-    	if (systems.contains(sys)) {
-    		targetSysId = sysId;
-    		return true;
-    	}
-    	clearWarView();
-    	return false;
-    }
+	private boolean setTargetSys(int sysId)	{
+		targetSysId = sysId;
+		return true;
+	}
 
     public IMapHandler parent()     { return parent; }
     public boolean showArmedShips() { return true; }

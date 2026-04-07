@@ -5408,7 +5408,8 @@ SYSTEMS_STATUS_SPACE_CRYSTAL      | A gigantic space crystal is heading towards 
 SYSTEMS_STATUS_SPACE_PIRATES      | A fleet of space pirates are headed towards this system.
 
 // War View UI
-WAR_VIEW_TITLE                    | Years · Incoming Fleets
+WAR_VIEW_TITLE					| Years · Incoming Fleets
+WAR_VIEW_EXIT					| Exit War View
 
 DIPLOMACY_RECEIVING               | Translating Incoming Message...
 DIPLOMACY_MENU_CONTINUE           | Continue

@@ -91,7 +91,7 @@ import rotp.util.Base;
 import rotp.util.FontManager;
 import rotp.util.ImageManager;
 
-public final class DNAWorkshop extends BasePanel implements RotPComponents {//, KeyListener {
+public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//, KeyListener {
 	private static final long serialVersionUID = 1L;
 	private static final String ROOT		= DNAFactory.ROOT;
 	private static final int BUTTON_SEP_H	= s5;
@@ -115,7 +115,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	private Image backImage;
 
 	// Panels
-	private final DNAWorkshop workshop;
+	private final DNAWorkshopUI workshop;
 	private ContentPanel contentPane;
 	private CostPanel	 costPanel;
 	private FleetPanel	 fleetPanel;
@@ -137,7 +137,7 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 	private RSettingPanel hasPopUp;
 	private RaceList raceList;
 
-	public DNAWorkshop()	{
+	public DNAWorkshopUI()	{
 		workshop = this;
 		setName("CustomSpeciesUI");
 		setOpaque(true);
@@ -576,6 +576,8 @@ public final class DNAWorkshop extends BasePanel implements RotPComponents {//, 
 					//continue;
 				}
 				if (columnList.contains(i)) {
+					// add empty space in the last column to gives space to the Total Value
+					subPanel.add(new JLabel(), newGbc(0, y, 1,1, 0,0, SOUTH, NONE, new Insets(s30, 0, 0, 0), 0,0));
 					x+=1;
 					y = 0;
 					subPanel = newSubPanel(subPanelWidth[x]);

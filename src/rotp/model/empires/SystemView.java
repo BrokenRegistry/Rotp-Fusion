@@ -885,7 +885,6 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     public boolean supportSystem()           { return false; }
     public boolean borderSystem()            { return locationSecurity() == BORDER_SYSTEM; }
     public boolean attackTarget()            { return locationSecurity() == ATTACK_TARGET; }
-
     public boolean isColonized()             { return (empire() != null) && (colony() != null); }
     public boolean isInEmpire()              { return owner() == system().empire();}
 
@@ -1003,7 +1002,8 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
             StarSystem sys = system().nearbySystem(i);
             if (distanceTo(sys) > dangerRange)
                 break;
-            int empId = owner().sv.empId(sys.id);
+            //int empId = owner().sv.empId(sys.id); // !!!
+            int empId = empId();
             if (empId != Empire.NULL_ID) {
                 if (owner().atWarWith(empId)) {
                     locationSecurity = ATTACK_TARGET;

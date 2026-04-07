@@ -48,7 +48,7 @@ import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.Empire;
 import rotp.model.empires.EspionageMission;
 import rotp.model.empires.SabotageMission;
-import rotp.model.empires.species.DNAWorkshop;
+import rotp.model.empires.species.DNAWorkshopUI;
 import rotp.model.empires.species.NameEditorUI;
 import rotp.model.empires.species.SpeciesSettings.AllSpeciesAttributes;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
@@ -213,7 +213,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
 	private StringDialogUI	stringDialog;
 	private ListDialogUI	listDialog;
 	private final List<BaseCompactOptionsUI> optionsPanels = new ArrayList<>();
-	private final DNAWorkshop dnaWorkshopUI = new DNAWorkshop();
+	private final DNAWorkshopUI dnaWorkshopUI = new DNAWorkshopUI();
 	private final NameEditorUI nameEditorUI = new NameEditorUI();
 
     private final AdvancedOptionsUI advancedOptionsUI = new AdvancedOptionsUI();

@@ -306,6 +306,11 @@
 
 ### User Interfaces:
 
+- The “War View” panel is now available for all colonies.
+  - The Shift-F7 and Shift-F8 shortcuts let you scroll through the alien colonies to which you are sending troops.
+  - The Ctrl-F7 and Ctrl-F8 shortcuts let you browse the war enemy colonies to which you are sending armed ships or troops.
+  - The Ctrl-Shift-F7 and Ctrl-Shift-F8 shortcuts let you cycle through all the alien colonies to which you are sending armed ships or troops. (This will include all targets of armed scouts.)
+  - Pressing the F7 or F8 keys will open the “War View” panel.
 - Ship Design UI: The "Size" of ship components is replaced by the space they occupy once powered by the engines; the same applies to their cost.
 - Improved Main setting responsivity by disabling background Game Panel refresh.
 - Colony Panel: New Stargate column.
@@ -393,7 +398,7 @@
 
 ### Fixes:
 
-- Ship Combat: Fixed "retreat all" button acting wrong.
+- DNA Workshop: Fixed a display issue where elements overlapped at certain specific resolutions.- Ship Combat: Fixed "retreat all" button acting wrong.
 - Fixed an issue when more than two empires where fighting for a star system.
 - Fixed an issue that caused retreating fleets to disappear for no apparent reason.
 - Smart resolve combat can retreat earlier.

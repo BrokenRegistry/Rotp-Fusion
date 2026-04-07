@@ -194,7 +194,10 @@ public class SpriteDisplayPanel extends BasePanel implements SystemViewer, Mouse
             else if (!pl.sv.isColonized(sys.id))
                 selectExploredSystemPanel();
             else if (!(sys.empire() == pl))
-                selectAlienSystemPanel();
+				if (GalaxyMapPanel.isWarView())
+					selectWarViewPanel();
+				else
+					selectAlienSystemPanel();
             else if (GalaxyMapPanel.isWarView())
                 selectWarViewPanel();
             else
@@ -230,7 +233,10 @@ public class SpriteDisplayPanel extends BasePanel implements SystemViewer, Mouse
             else if (!player().sv.isColonized(sys.id))
                 return exploredSystemPane;
             else if (!(sys.empire() == pl))
-                return alienSystemPane;
+				if (GalaxyMapPanel.isWarView())
+					return warViewPane;
+				else
+					return alienSystemPane;
             else if (GalaxyMapPanel.isWarView())
                 return warViewPane;
             else

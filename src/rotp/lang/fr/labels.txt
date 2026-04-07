@@ -5408,9 +5408,10 @@ SYSTEMS_STATUS_SPACE_CRYSTAL      | Un gigantesque Cristal Spatial se dirige ver
 SYSTEMS_STATUS_SPACE_PIRATES      | Une flotte de Pirates de l’Espace se dirige vers ce système.
 
 // War View UI
-WAR_VIEW_TITLE                    | Années · Flottes approchantes
+WAR_VIEW_TITLE					| Années · Flottes approchantes
+WAR_VIEW_EXIT					| Quitter la vue de Guerre
 
-DIPLOMACY_RECEIVING               | En train de traduire le message entrant ...
+DIPLOMACY_RECEIVING				| La traduction du message entrant est en cours...
 DIPLOMACY_MENU_CONTINUE           | Continuer
 DIPLOMACY_MENU_ACKNOWLEDGE        | Reconnaître
 DIPLOMACY_MENU_ACCEPT             | Accepter
