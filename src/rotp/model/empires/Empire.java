@@ -20,6 +20,7 @@ import static rotp.model.tech.Tech.miniFastRate;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import rotp.Rotp;
 import rotp.model.ai.AI;
@@ -221,6 +223,7 @@ public final class Empire extends Species implements NamedObject {
     private transient List<SpaceMonster> visibleMonsters = new ArrayList<>();
     private transient UfoTracker ufoTracker;
     private transient boolean spendingNotYetMade;
+    private Point.Float playerMapCenter;
 
 	public static void resetPlayerId()			{ PLAYER_ID = DEFAULT_PLAYER_ID; }
 	public static void updatePlayerId(int id)	{ PLAYER_ID = id; }
@@ -515,6 +518,11 @@ public final class Empire extends Species implements NamedObject {
         }
         return reachColor;
     }
+	public Point.Float getPlayerMapCenter()	{
+		if (playerMapCenter == null)
+			updatePlayerMapCenter();
+		return playerMapCenter;
+	}
 	public void resetDivertColonyExcessToResearch()	{
 		divertColonyExcessToResearch = options().divertColonyExcessToResearch();
 	}
@@ -1012,6 +1020,16 @@ public final class Empire extends Species implements NamedObject {
             if(view != null)
                 view.validateOnLoad();
     }
+	private void updatePlayerMapCenter()	{
+		int size = colonizedSystems.size();
+		float sumX = 0;
+		float sumY = 0;
+		for (StarSystem sys : colonizedSystems) {
+			sumX += sys.x();
+			sumY += sys.y();
+		}
+		playerMapCenter = new Point.Float(sumX / size, sumY / size);
+	}
     public void cancelTransports(List<StarSystem> fromSystems) {
         for (StarSystem from: fromSystems)
         	if (from != null)
@@ -1298,6 +1316,8 @@ public final class Empire extends Species implements NamedObject {
           if ((v!= null) && v.embassy().contact())
                 v.nextTurn(civProd, spyMod);
         }
+		if (id == PLAYER_ID)
+			updatePlayerMapCenter();
     }
     public void assessTurn() {
          log(this + ": AssessTurn"); 
@@ -4058,8 +4078,9 @@ public final class Empire extends Species implements NamedObject {
                 }
             }
         }
-        Collections.sort(list, IMappedObject.MAP_ORDER);
-        return list;
+		return circularSort(list);
+//        Collections.sort(list, IMappedObject.MAP_ORDER);
+//        return list;
     }
 	public List<StarSystem> orderedWarTargetSystems(boolean transportOnly, boolean WarOnly) {
 		List<StarSystem> list = new ArrayList<>();
@@ -4081,8 +4102,25 @@ public final class Empire extends Species implements NamedObject {
 				}
 		}
 
-		Collections.sort(list, IMappedObject.MAP_ORDER);
-		return list;
+		return circularSort(list);
+//		Collections.sort(list, IMappedObject.MAP_ORDER);
+//		return list;
+	}
+	public List<StarSystem> circularSort(List<StarSystem> systems)	{
+		if (systems.size() <= 2)
+			return systems;
+		HashMap<StarSystem, Double> map = new HashMap<>();
+		//StarSystem home = galaxy().system(homeSysId);
+		float cx = getPlayerMapCenter().x;
+		float cy = getPlayerMapCenter().y;
+		for (StarSystem sys : systems)
+			map.put(sys, Math.atan2(sys.x() - cx, sys.y() - cy));
+
+		List<StarSystem> sorted = map.entrySet().stream()
+				.sorted(Map.Entry.comparingByValue())
+				.map(Map.Entry::getKey)
+				.collect(Collectors.toList());
+		return sorted;
 	}
 	public boolean couldTargetAlien(int sysId)	{
 		int sysEmpId = sv.empId(sysId);

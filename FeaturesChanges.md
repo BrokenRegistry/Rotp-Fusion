@@ -306,6 +306,8 @@
 
 ### User Interfaces:
 
+- Since the colonies under attack are usually located on the empire's periphery, the current sequence from left to right and top to bottom isn't always ideal. The new sequence revolves around the center of the player's empire.
+  - To browse the attacked colonies, use the F8 key to rotate clockwise and the F7 key to rotate counterclockwise.
 - The “War View” panel is now available for all colonies.
   - The Shift-F7 and Shift-F8 shortcuts let you scroll through the alien colonies to which you are sending troops.
   - The Ctrl-F7 and Ctrl-F8 shortcuts let you browse the war enemy colonies to which you are sending armed ships or troops.
@@ -398,7 +400,8 @@
 
 ### Fixes:
 
-- DNA Workshop: Fixed a display issue where elements overlapped at certain specific resolutions.- Ship Combat: Fixed "retreat all" button acting wrong.
+- DNA Workshop: Fixed a display issue where elements overlapped at certain specific resolutions.
+- Ship Combat: Fixed "retreat all" button acting wrong.
 - Fixed an issue when more than two empires where fighting for a star system.
 - Fixed an issue that caused retreating fleets to disappear for no apparent reason.
 - Smart resolve combat can retreat earlier.

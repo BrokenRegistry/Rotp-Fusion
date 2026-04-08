@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-04-08 (BR)
+- Since the colonies under attack are usually located on the empire's periphery, the current sequence from left to right and top to bottom isn't always ideal. The new sequence revolves around the center of the player's empire.
+  - To browse the attacked colonies, use the F8 key to rotate clockwise and the F7 key to rotate counterclockwise.
+
 26-04-07 (BR)
 - DNA Workshop: Fixed a display issue where elements overlapped at certain specific resolutions.
 - The “War View” panel is now available for all colonies.
