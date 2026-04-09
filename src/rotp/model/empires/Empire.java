@@ -4086,6 +4086,16 @@ public final class Empire extends Species implements NamedObject {
 		List<StarSystem> list = new ArrayList<>();
 		Galaxy gal = galaxy();
 
+		// Ready to lauch transports
+		for (StarSystem sys: allColonizedSystems()) {
+			if (sys != null && sys.transportAmt > 0) {
+				StarSystem dest = gal.system(sys.transportDestId);
+				if (dest != null && this != dest.empire() && !list.contains(dest))
+					list.add(dest);
+			}
+		}
+
+		// Transport on the way
 		for (Transport tr: gal.transports())
 			if (tr != null && tr.empId() == id && tr.targetCiv() != this && !tr.retreating()) {
 				StarSystem sys = tr.destination();
@@ -4093,6 +4103,7 @@ public final class Empire extends Species implements NamedObject {
 					list.add(sys);
 			}
 
+		// War ship
 		if (!transportOnly) {
 			for (ShipFleet fl: gal.ships.allFleets(id))
 				if (fl != null) {
@@ -4103,8 +4114,6 @@ public final class Empire extends Species implements NamedObject {
 		}
 
 		return circularSort(list);
-//		Collections.sort(list, IMappedObject.MAP_ORDER);
-//		return list;
 	}
 	public List<StarSystem> circularSort(List<StarSystem> systems)	{
 		if (systems.size() <= 2)
