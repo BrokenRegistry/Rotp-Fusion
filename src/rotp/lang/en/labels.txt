@@ -5410,6 +5410,8 @@ SYSTEMS_STATUS_SPACE_PIRATES      | A fleet of space pirates are headed towards 
 // War View UI
 WAR_VIEW_TITLE					| Years · Incoming Fleets
 WAR_VIEW_EXIT					| Exit War View
+WAR_VIEW_TRANSPORT				| Transports
+WAR_VIEW_TROOPS					| %1 Troops
 
 DIPLOMACY_RECEIVING               | Translating Incoming Message...
 DIPLOMACY_MENU_CONTINUE           | Continue

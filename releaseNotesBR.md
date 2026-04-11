@@ -7,6 +7,12 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-04-11 (BR)
+- Troops that have not yet been deployed now appear in the “War View”, along with an indication of the turn in which they will arrive.
+- Loading an original RotP game will not crash the game any more. (But the game might not be complete)
+- Fixed some glitches in Ship auto-design.
+- Fixed embedded English text in war view.
+
 26-04-09 (BR)
 - When searching for targeted alien colonies, the system also checks whether the player's colonies are currently deploying troops. (F7/F8)
 

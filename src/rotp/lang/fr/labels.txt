@@ -5410,6 +5410,8 @@ SYSTEMS_STATUS_SPACE_PIRATES      | Une flotte de Pirates de l’Espace se dirig
 // War View UI
 WAR_VIEW_TITLE					| Années · Flottes approchantes
 WAR_VIEW_EXIT					| Quitter la vue de Guerre
+WAR_VIEW_TRANSPORT				| Transports
+WAR_VIEW_TROOPS					| Troupes %1
 
 DIPLOMACY_RECEIVING				| La traduction du message entrant est en cours...
 DIPLOMACY_MENU_CONTINUE           | Continuer

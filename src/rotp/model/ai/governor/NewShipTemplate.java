@@ -1163,10 +1163,12 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 						overKillMod = avgHP / expectedDamagePerShot;
 					currentScore *= overKillMod;
 
-					if (wpn.isBioWeapon() && ai.empire().shipDesignModBioWeapons())
-						currentScore = bioWeaponScoreMod(ai) * TechBiologicalWeapon.avgDamage(wpn.maxDamage(), (int)antiDote) * 200 / wpn.space(d);
-					else
-						currentScore = 0;
+					if (wpn.isBioWeapon())
+						if (ai.empire().shipDesignModBioWeapons())
+							currentScore = bioWeaponScoreMod(ai) * TechBiologicalWeapon.avgDamage(wpn.maxDamage(), (int)antiDote) * 200 / wpn.space(d);
+						else
+							currentScore = 0;
+
 					if (currentScore > bestScore) {
 						bestWeapon = wpn;
 						bestScore = currentScore;

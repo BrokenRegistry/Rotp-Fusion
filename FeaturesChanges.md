@@ -400,6 +400,10 @@
 
 ### Fixes:
 
+- Troops that have not yet been deployed now appear in the “War View”, along with an indication of the turn in which they will arrive.
+- Loading an original RotP game will not crash the game any more. (But the game might not be complete)
+- Fixed some glitches in Ship auto-design.
+- Fixed embedded English text in war view.
 - DNA Workshop: Fixed a display issue where elements overlapped at certain specific resolutions.
 - Ship Combat: Fixed "retreat all" button acting wrong.
 - Fixed an issue when more than two empires where fighting for a star system.

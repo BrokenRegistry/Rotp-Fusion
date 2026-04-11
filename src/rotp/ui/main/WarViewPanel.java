@@ -37,6 +37,7 @@ import java.util.TreeMap;
 import javax.swing.SwingUtilities;
 
 import rotp.model.empires.Empire;
+import rotp.model.galaxy.Galaxy;
 import rotp.model.galaxy.Ship;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
@@ -103,7 +104,7 @@ class WarViewPanel extends SystemPanel {
 			if (sh instanceof Transport) {
 				Transport tranport = (Transport) sh;
 				num	 = tranport.size();
-				name = isPlayer ? "Transport" : (empire.raceName() + " Troop");
+				name = isPlayer ? text("WAR_VIEW_TRANSPORT") : text("WAR_VIEW_TRANSPORT", empire.raceName());
 				add(yearMap, name, num);
 			}
 			else {
@@ -120,7 +121,7 @@ class WarViewPanel extends SystemPanel {
 				}
 			}
 		}
-		private void add (YearRecordMap yearMap, String name, Integer num)	{
+		private void add(YearRecordMap yearMap, String name, Integer num)	{
 			Integer oldVal = yearMap.get(name);
 			if (oldVal == null)
 				oldVal = 0;
@@ -148,9 +149,7 @@ class WarViewPanel extends SystemPanel {
 		private static final int fontSize = 16;
 		private final int lineH = scaled(fontSize);
 		private final int scrollH = 3 * lineH;
-		// private StarSystem sys, lastSys;
 		private Integer sysId;
-		//private FleetRecordMap fleetsMap = new FleetRecordMap();
 		private int offsetY = 0;
 
 		private Rectangle eventsBox = new Rectangle();
@@ -159,19 +158,23 @@ class WarViewPanel extends SystemPanel {
 			addMouseListener(this);
 			addMouseWheelListener(this);
 		}
-		private FleetRecordMap buildLists() {
+		private FleetRecordMap buildLists()	{
+			Galaxy gal = galaxy();
+			Empire pl = player();
 			FleetRecordMap fleetsMap = new FleetRecordMap();
 			if (sysId == null)
 				return fleetsMap;
-			//fleetsMap.clear();
+
 			// Process orbiting fleet
 			FleetRecord orbitingRecord = new FleetRecord();
 			fleetsMap.put(0, orbitingRecord);
-			List<ShipFleet> orbitingFleet = player().visibleOrbitingFleet(galaxy().system(sysId));
+			List<ShipFleet> orbitingFleet = pl.visibleOrbitingFleet(galaxy().system(sysId));
 			for (Ship fleet : orbitingFleet) {
 				orbitingRecord.add(fleet);
 			}
-			List<Ship> incomingFleet = player().incomingKnownETAFleets(sysId);
+
+			// Process moving fleets
+			List<Ship> incomingFleet = pl.incomingKnownETAFleets(sysId);
 			for (Ship fleet : incomingFleet) {
 				Integer turn = fleet.travelTurnsRemainingAdjusted();
 				FleetRecord incomingRecord = fleetsMap.get(turn);
@@ -181,6 +184,21 @@ class WarViewPanel extends SystemPanel {
 				}
 				incomingRecord.add(fleet);
 			}
+			// Process Ready to launch transports
+			for (StarSystem sys: pl.allColonizedSystems()) {
+				if (sys != null && sys.transportAmt > 0) {
+					StarSystem dest = gal.system(sys.transportDestId);
+					if (dest != null && dest.id == sysId) {
+						Integer turn = ceil(sys.colony().transport().travelTimeAdjusted(dest));
+						FleetRecord incomingRecord = fleetsMap.get(turn);
+						if (incomingRecord == null) {
+							incomingRecord = new FleetRecord();
+							fleetsMap.put(turn, incomingRecord);
+						}
+						incomingRecord.add(incomingRecord.playerYearMap, text("WAR_VIEW_TRANSPORT"), sys.transportAmt);
+					}
+				}
+			} 
 			return fleetsMap;
 		}
 		@Override

@@ -4086,7 +4086,7 @@ public final class Empire extends Species implements NamedObject {
 		List<StarSystem> list = new ArrayList<>();
 		Galaxy gal = galaxy();
 
-		// Ready to lauch transports
+		// Ready to launch transports
 		for (StarSystem sys: allColonizedSystems()) {
 			if (sys != null && sys.transportAmt > 0) {
 				StarSystem dest = gal.system(sys.transportDestId);

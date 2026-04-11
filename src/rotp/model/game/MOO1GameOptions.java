@@ -118,8 +118,14 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
 	public void updateVersion()					{ version = Rotp.version; }
 	public String getVersion()					{ return version; }
 	public void validateOnLoad()				{
-		if (dynamicOptions == null)
+		if (dynamicOptions == null) {
 			dynamicOptions = new DynOptions();
+			Toolkit.getDefaultToolkit().beep();
+			sleep(600);
+			Toolkit.getDefaultToolkit().beep();
+			sleep(600);
+			Toolkit.getDefaultToolkit().beep();
+		}
 	}
 	@Override public IGameOptions opts()		{ return this;	}
 	@Override public DynOptions dynOpts()		{ return dynamicOptions; }

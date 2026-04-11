@@ -1373,7 +1373,6 @@ public final class GameSession implements Base, Serializable {
 
 			GameSession.instance(newSession);
 			instance().loading = true;
-			rulesetManager().setAsGameMode();
 
 			if (Rotp.isIDE()) {
 				if (newSession.governorOptions == null)
@@ -1389,8 +1388,9 @@ public final class GameSession implements Base, Serializable {
 				}
 				String version = ((MOO1GameOptions)newSession.options).getVersion();
 				System.out.println("@ Version = " + version);
-				
 			}
+			((MOO1GameOptions)newSession.options()).validateOnLoad(); // In case of non Fusion version
+			rulesetManager().setAsGameMode();
 
 			// BR: save the last loaded game initial parameters
 			instance().options().setAsGame();
