@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-04-13 (intothecornfield)
+- 60 new scientists' names have been added to the list of names of Psilon systems.
+
 26-04-11 (BR)
 - Troops that have not yet been deployed now appear in the “War View”, along with an indication of the turn in which they will arrive.
 - Loading an original RotP game will not crash the game any more. (But the game might not be complete)
