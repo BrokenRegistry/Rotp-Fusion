@@ -748,7 +748,8 @@ public class RacesUI extends BasePanel {
                 //}
                 return;
 			case KeyEvent.VK_H: {	// toggle Hints
-				currentPanel.toggleTips();
+				if (currentPanel != null)
+					currentPanel.toggleTips();
 				return;
 			}
 			case KeyEvent.VK_M: {	// Mute

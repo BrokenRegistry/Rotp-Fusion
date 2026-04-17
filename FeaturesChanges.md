@@ -401,6 +401,8 @@
 
 ### Fixes:
 
+- Fixed improbable crash when pressing "H" on the empire panel.
+- Mac OS: Tentative to fix display glitch on intelligence panel.
 - Troops that have not yet been deployed now appear in the “War View”, along with an indication of the turn in which they will arrive.
 - Loading an original RotP game will not crash the game any more. (But the game might not be complete)
 - Fixed some glitches in Ship auto-design.

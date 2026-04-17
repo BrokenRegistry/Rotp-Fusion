@@ -202,17 +202,18 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
 		}
 
 		if (refresh && showTips && !hoverTech.equals(lastHoverTech)) {
-			if (hoverTech.isEmpty()) {
-				repaint();
-				return;
-			}
-			Graphics2D g = (Graphics2D) getGraphics();
-			if (g != null) {
-				setRenderingHints(g);
-				paintTips(g);
-				drawSingleTechCategory(g, cat, emp, isPlayer);
-				g.dispose();
-			}
+			repaint();
+//			if (hoverTech.isEmpty()) {
+//				repaint();
+//				return;
+//			}
+//			Graphics2D g = (Graphics2D) getGraphics();
+//			if (g != null) {
+//				setRenderingHints(g);
+//				paintTips(g);
+//				drawSingleTechCategory(g, cat, emp, isPlayer);
+//				g.dispose();
+//			}
 		}
 	}
 	private void paintTips(Graphics2D g)	{

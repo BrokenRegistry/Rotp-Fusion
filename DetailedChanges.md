@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-04-17 (BR)
+- Fixed improbable crash when pressing "H" on the empire panel.
+- Mac OS: Tentative to fix display glitch on intelligence panel.
+
 26-04-13 (intothecornfield)
 - 60 new scientists' names have been added to the list of names of Psilon systems.
 
