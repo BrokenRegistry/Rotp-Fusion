@@ -401,6 +401,9 @@
 
 ### Fixes:
 
+- Improved looping through overlapping fleets:
+  - The Zoom factor is now taken into account.
+  - A more explicit message.
 - Fixed improbable crash when pressing "H" on the empire panel.
 - Mac OS: Tentative to fix display glitch on intelligence panel.
 - Troops that have not yet been deployed now appear in the “War View”, along with an indication of the turn in which they will arrive.

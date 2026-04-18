@@ -920,6 +920,7 @@ COLONY_VIEW_HELP_1                | Rien de fantaisiste là-bas...<br><br>Profit
 HISTORY_HELP_MAIN                 | HISTORIQUE : <br>Pour voir comment la galaxie s’est développée depuis le premier tour.<br>Cela vous permet de voir tout ça ! À condition, bien sûr, que vous ayez les informations nécessaires.
 HISTORY_HELP_HK                   | →HK_HEADER← →HK_F1←<br>1-0 : Pour régler le rythme.→HK_MAP_ZOOM←→HK_MAP_ARROWS←<br>B / F : tour Précédent / Suivant<br>P : Pause <br>R : Réinitialiser<br>→HK_ESCAPE←
 // Fleet labels
+MAIN_FLEET_SWARM				| « L » pour parcourir la nuée de flottes.
 MAIN_FLEET_TITLE                  | Flotte [fleet_raceadjecF]
 MAIN_FLEET_TITLE_UNKNOWN          | Flotte Inconnue
 MAIN_FLEET_IN_ORBIT               | En orbite

@@ -18,6 +18,7 @@ package rotp.model.galaxy;
 import static rotp.model.ships.ShipDesignLab.MAX_DESIGNS;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
@@ -966,12 +967,21 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
             ui.repaint();
         }
     }
+	public boolean isCloseTo(ShipFleet fl)	{
+		Rectangle selectBox = selectBox();
+		float centerX = selectBox.x + (selectBox.width/2);
+		float centerY = selectBox.y + (selectBox.height/2);
+		selectBox = fl.selectBox();
+		float fleetX = selectBox.x + (selectBox.width/2);
+		float fleetY = selectBox.y + (selectBox.height/2);
+		return distance(fleetX-centerX, fleetY-centerY) <= s8;
+	}
     @Override
     public boolean isSelectableAt(GalaxyMapPanel map, int mapX, int mapY) {
         return displayed() && selectBox().contains(mapX, mapY);
     }
     @Override
-    public float selectDistance(GalaxyMapPanel map, int mapX, int mapY)  { 
+    public float selectDistance(GalaxyMapPanel map, int mapX, int mapY)  {
         float centerX = selectBox().x+(selectBox().width/2);
         float centerY = selectBox().y+(selectBox().height/2);
         return distance(mapX, mapY, centerX, centerY);

@@ -454,7 +454,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 //parent.parent.hoveringOverSprite(systems.get(index).sprite());
                 parent.repaint();
                 return;
-			case KeyEvent.VK_B:
+			case KeyEvent.VK_L:
 				showHiddenFleet();
 				return;
 			case KeyEvent.VK_H:
@@ -524,36 +524,28 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         bottomPane.setBackground(MainUI.shadeBorderC());
         return bottomPane;
     }
-	private int searchForHiddenFleet(List<Ship> altShips, float maxDist)	{
+	private int searchForHiddenFleet(List<Ship> altShips)	{
 		int nextIndex = -1;
 		ShipFleet fleet = displayedFleet();
-		if (fleet == null || fleet.isOrbiting() || fleet.isDeployed())
-			return nextIndex;
-		if (fleet.launchTime() == galaxy().currentTime())
+		if (fleet == null)
 			return nextIndex;
 
-		float x = fleet.x();
-		float y = fleet.y();
 		List<Ship> ships = new ArrayList<>(player().visibleShips());
-		for (Ship sh: ships) {
+		for (Ship sh: ships)
 			if (fleet == sh)
 				nextIndex = altShips.size();
-			else if (sh != null && sh.displayed() && sh instanceof ShipFleet) {
-				float dist = distance(sh.x(), sh.y(), x, y);
-				if (dist <= maxDist)
-					altShips.add(sh);
-			}
-		}
+			else if (sh != null && sh.displayed() && sh instanceof ShipFleet && fleet.isCloseTo((ShipFleet) sh))
+				altShips.add(sh);
 		return nextIndex;
 	}
 	private int countHiddenFleets()	{
 		List<Ship> altShips = new ArrayList<>();
-		searchForHiddenFleet(altShips, 1);
+		searchForHiddenFleet(altShips);
 		return altShips.size();
 	}
 	private void showHiddenFleet()	{
 		List<Ship> altShips = new ArrayList<>();
-		int nextIndex = searchForHiddenFleet(altShips, 1);
+		int nextIndex = searchForHiddenFleet(altShips);
 		if (altShips.isEmpty()) {
 			misClick();
 			return;
@@ -665,6 +657,16 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
 
             scaledFont(g, str1, w-s25, 36, 20);
             drawBorderedString(g, str1, 2, s15, s42, Color.black, SystemPanel.orangeText);
+
+			// Draw near fleet info
+			int hiddenCount = countHiddenFleets();
+			if (hiddenCount>0) {
+				String hidden = text("MAIN_FLEET_SWARM");
+				scaledFont(g, hidden, w-s25, 24, 16);
+				g.setColor(Color.RED);
+				drawString(g, hidden, s15, s60);
+			}
+
             // draw orbiting data, bottom up
             int y0 = h-s12;
             g.setColor(SystemPanel.whiteText);
@@ -929,14 +931,6 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             scaledFont(g, title, w-s20, 22, 15);
             drawShadowedString(g, title, 4, x0, y0, SystemPanel.textShadowC, Color.white);
 
-			int hiddenCount = countHiddenFleets();
-			if (hiddenCount>0) {
-				String hidden = "+"+hiddenCount;
-				g.setFont(narrowFont(24));
-				g.setColor(Color.RED);
-				int sw = g.getFontMetrics().stringWidth(hidden);
-				drawString(g, hidden, w-sw-s5, y0);
-			}
             if (showAdjust) {
                 int a[] = new int[3];
                 int b[] = new int[3];
@@ -1759,10 +1753,6 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         public void mouseReleased(MouseEvent e) {
             if (e.getButton() > 3)
                 return;
-			if (isRightClick(e)) {
-				showHiddenFleet();
-				return;
-			}
             int x = e.getX();
             int y = e.getY();
 

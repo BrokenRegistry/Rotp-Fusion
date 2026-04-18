@@ -2,6 +2,11 @@
 
 ## What's New
 
+26-04-18 (BR)
+- Improved looping through overlapping fleets:
+  - The Zoom factor is now taken into account.
+  - A more explicit message.
+
 26-04-17 (BR)
 - Fixed improbable crash when pressing "H" on the empire panel.
 - Mac OS: Tentative to fix display glitch on intelligence panel.

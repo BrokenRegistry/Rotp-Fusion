@@ -920,6 +920,7 @@ COLONY_VIEW_HELP_1                | Nothing fancy there...<br><br>Just enjoy the
 HISTORY_HELP_MAIN                 | HISTORY VIEW:<br>To see how the galaxy has developed since the first turn.<br>This lets you see it all! Provided, of course, you have the necessary intel.
 HISTORY_HELP_HK                   | →HK_HEADER← →HK_F1←<br>1-0 : To set the pace.→HK_MAP_ZOOM←→HK_MAP_ARROWS←<br>B / F : Previous / Next Turn<br>P : Pause <br>R : Reset<br>→HK_ESCAPE←
 // Fleet labels
+MAIN_FLEET_SWARM				| "L" to Loop through the swarm of fleets.
 MAIN_FLEET_TITLE                  | [fleet_race] Fleet
 MAIN_FLEET_TITLE_UNKNOWN          | Unknown Fleet
 MAIN_FLEET_IN_ORBIT               | In orbit

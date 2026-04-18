@@ -210,18 +210,6 @@ public class MapOverlayNone extends MapOverlay {
                 }
                 misClick();
                 break;
-            case KeyEvent.VK_L:
-                if (parent.clickedSprite() instanceof StarSystem) {
-                    StarSystem sys = (StarSystem) parent.clickedSprite();
-                    if (player().canRallyFleetsFrom(id(sys))) {
-                        softClick();
-                        parent.clickedSprite(sys.rallySprite());
-                        parent.displayPanel().repaint();
-                        break;
-                    }
-                }
-                misClick();
-                break;
             case KeyEvent.VK_N:
                 //softClick();
             	if (options().ironmanLocked() || options().autoRunAILocked()) {

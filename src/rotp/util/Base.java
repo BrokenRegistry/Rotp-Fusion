@@ -354,6 +354,7 @@ public interface Base extends InputEventUtil {
     public default List<BufferedImage> allExplosionFrames(String key) {
         return AnimationManager.current().allExplosionFrames(key);
     }
+	public default double distance(float dx, float dy)	{ return Math.sqrt(dx*dx + dy*dy); }
     public default float distance(float x0, float y0, float x1, float y1) {
         return (float) Math.sqrt( ((x1-x0)*(x1-x0)) + ((y1-y0)*(y1-y0)) );
     }
