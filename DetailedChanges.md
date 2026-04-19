@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-04-19 (BR)
+- Fixed Governor "Honor Promise" conflict with "No Relation Bar" AI.
+
 26-04-18 (BR)
 - Improved looping through overlapping fleets:
   - The Zoom factor is now taken into account.

@@ -107,7 +107,7 @@ public final class SpyNetwork implements Base, Serializable {
     public void lastSpyThreatReply(int r) { lastSpyThreatReply = r; }
     public int  lastSpyThreatReply()      {
     	if (lastSpyThreatReply == null)
-    		lastSpyThreatReply = GOV_SPY_SHUTDOWN;
+			lastSpyThreatReply = GOV_SPY_HIDE;
     	return lastSpyThreatReply;
     }
     public Float lastSpyBonus()		 { return lastSpyBonus; }

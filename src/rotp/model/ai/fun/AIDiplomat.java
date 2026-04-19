@@ -1183,16 +1183,17 @@ public class AIDiplomat implements Base, Diplomat {
             if (ev.triggersWarning() && ev.moreSevere(maxIncident))
                 maxIncident = ev;
         }
-        
+
         if (maxIncident == null)
             return false;
-        
+
         if (maxIncident.currentSeverity() > threshold)
             return false;
 
         log("cumulative severity: "+cumulativeSeverity);
-        view.embassy().logWarning(maxIncident);
-        
+        if(!(maxIncident instanceof SpyConfessionIncident || maxIncident instanceof EspionageTechIncident))
+            view.embassy().logWarning(maxIncident);
+
         // if we are warning player, send a notification
         if (view.isPlayerControlled()) {
             // we will only give one expansion warning

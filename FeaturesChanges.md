@@ -401,6 +401,7 @@
 
 ### Fixes:
 
+- Fixed Governor "Honor Promise" conflict with "No Relation Bar" AI.
 - Improved looping through overlapping fleets:
   - The Zoom factor is now taken into account.
   - A more explicit message.

@@ -5712,8 +5712,8 @@ GOVERNOR_AUTO_SPY                    | L’IA espionne : %1
 GOVERNOR_AUTO_SPY_LABEL              | L’IA gère les espions
 
 GOVERNOR_SPARE_XENOPHOBES_DESC       | Une fois appelé de mettre un terme à l’espionnage d’un empire extraterrestre, le gouverneur suivra le choix du joueur pendant le temps nécessaire pour que l’empire se calme.
-GOVERNOR_SPARE_XENOPHOBES            | Promesses tenues : %1
-GOVERNOR_SPARE_XENOPHOBES_LABEL      | Promesses tenues
+GOVERNOR_SPARE_XENOPHOBES            | Tenir parole : %1
+GOVERNOR_SPARE_XENOPHOBES_LABEL      | Tenir parole
 
 GOVERNOR_TRAIN_SPIES_ASAP_DESC			| Entraînez les espions dès que possible lorsqu’un nouveau contact se produit.<br>Attention, cela réduira les autres allocations prédéfinies.
 GOVERNOR_TRAIN_SPIES_ASAP				| Entraînez les espions immédiatement : %1
