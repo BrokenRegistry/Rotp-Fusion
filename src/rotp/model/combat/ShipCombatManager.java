@@ -1149,6 +1149,7 @@ public class ShipCombatManager implements Base {
             finished = true;
             if (showAnimations())
                 ui.showResult();
+			endOfCombat(true); // BR: was missing
             return true;
         }
 

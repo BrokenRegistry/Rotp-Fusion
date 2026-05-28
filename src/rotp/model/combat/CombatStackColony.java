@@ -212,6 +212,8 @@ public class CombatStackColony extends CombatStack {
     @Override
     public void fireWeapon(CombatStack newTarget) {
         //ail: @Ray: My AI usually doesn't build missile-bases and there's also no hook in it to control the used missile type, so'll do some very basic logic here to help the auto-play and the other AIs pick the right missile
+		if (!isArmed()) // BR: Global fix as some combatStack were told to fire when destroyed
+			return;
         int missileToUse = 0;
         float bestDamage = 0;
 		float defense = newTarget.missileDefense();
@@ -231,7 +233,7 @@ public class CombatStackColony extends CombatStack {
         fireWeapon(newTarget, missileToUse);
     }
     @Override public void fireWeapon(CombatStack newTarget, int i, boolean b) {
-        if (missileFired)
+        if (missileFired || !isArmed())
             return;
         target = newTarget;
         if (target.mgr.ui != null)

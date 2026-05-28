@@ -206,16 +206,18 @@ public class CombatStackShip extends CombatStack {
         for (ShipComponent c: weapons)
             c.becomeDestroyed();
     }
-    @Override
-    public boolean canFireWeapon() {
+	@Override public boolean canFireWeapon()	{
+		if(destroyed())
+			return false;
         for (CombatStack st: mgr.activeStacks()) {
             if ((empire() != st.empire()) && canAttack(st))
                 return true;
         }
         return false;
     }
-    @Override
-    public boolean canFireWeaponAtTarget(CombatStack st) {
+	@Override public boolean canFireWeaponAtTarget(CombatStack st)	{
+		if(destroyed())
+			return false;
         if (st == null)
             return false;
         if (st.inStasis)
@@ -446,9 +448,10 @@ public class CombatStackShip extends CombatStack {
         if (targetStack == null)
             return;
 
-        if (targetStack.destroyed())
-            return;
-        
+		// BR: Global fix as some combatStack were told to fire when destroyed
+		if (destroyed() || targetStack.destroyed())
+			return;
+
         selectedWeaponIndex = index;
         target = targetStack;
         if (target != null && target.mgr.ui != null)

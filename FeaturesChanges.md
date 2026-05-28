@@ -413,6 +413,8 @@
 
 ### Fixes:
 
+- Fixe: Ships destroyed by reaction fire continued to fire using their special weapons.
+- Fixed a potential issue with battles ending when the maximum number of turns is reached: it was incomplete.
 - Fixes (attempt) to prevent a display offset bug.
 - Fix in “MoO1 Asteroids”: Missiles were slowing down above the asteroids (this was a forgotten debugging feature!)
 - Fixed weapon action text that overflows the boxes.

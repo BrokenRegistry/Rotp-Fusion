@@ -184,7 +184,7 @@ public class CombatStack implements Base {
     public float maxStackHits()					{ return maxStackHits; } // BR:
     public float maxMove()          { return maxMove; }
     public float totalHits()        { return maxStackHits * num; }
-    public boolean canMove()        { return (move > 0) || canTeleport(); }
+    public boolean canMove()        { return ((move > 0) || canTeleport()) && !destroyed(); }
     public boolean canFireWeapon()  { return false; }
     public boolean canFireWeaponAtTarget(CombatStack st)  { return false; }
     public boolean immuneToStasis() { return false; }
@@ -339,6 +339,8 @@ public class CombatStack implements Base {
         return turns;
     } */
     public boolean moveTo(int x1, int y1) {
+		if (destroyed()) // BR: Should never happen! But...
+			return false;
         float plannedDistance = movePointsTo(x1,y1);
 
         while (submoveTo(x1,y1))
