@@ -63,6 +63,7 @@ public class FadeInPanel extends BasePanel {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         g2.setColor(newColor(0,0,0,(int)(alpha*255)));
         g2.fillRect(0,0,getWidth(), getHeight());
+        g2.dispose();
         return image;
     }
 }

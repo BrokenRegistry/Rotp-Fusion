@@ -80,7 +80,7 @@ public class ColonizePlanetUI extends FadeInPanel implements MouseListener, Mous
 
     private ShipFleet fleet;
 
-    private Image landscapeImg;
+    private BufferedImage landscapeImg;
     private Image shipImg;
     private Image flagPole;
     private BufferedImage raceImg;
@@ -167,7 +167,7 @@ public class ColonizePlanetUI extends FadeInPanel implements MouseListener, Mous
         int h = getHeight();
 
         landscapeImg = newOpaqueImage(w,h);
-        Graphics2D g = (Graphics2D) landscapeImg.getGraphics();
+        Graphics2D g = landscapeImg.createGraphics();
         g.setColor(Color.black);
         g.fillRect(0, 0, w, h);
         super.paintComponent(g);

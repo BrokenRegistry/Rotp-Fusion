@@ -168,7 +168,7 @@ public final class TechTorpedoWeapon extends Tech {
         int x1 = st1X+stW/2;
         int y1 = st1Y+stH/2;
 
-        Graphics2D g = (Graphics2D) ui.getGraphics();
+        Graphics2D g = ui.getGraphicsCopy();
         target.drawAttackResult(g,x1,y1,x1, dmg,text("SHIP_COMBAT_MISS"));
         g.dispose();
         ui.paintAllImmediately();

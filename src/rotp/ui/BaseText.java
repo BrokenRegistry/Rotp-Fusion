@@ -160,7 +160,7 @@ public class BaseText implements Base, ScaledInteger {
         return visible && bounds.contains(x, y);
     }
     public void repaint(String s) {
-        Graphics g = panel.getGraphics();
+        Graphics g = panel.getGraphicsCopy();
         int oldW = stringWidth(g);
         displayText(s);
         int newW = stringWidth(g);
@@ -170,7 +170,7 @@ public class BaseText implements Base, ScaledInteger {
         repaint();
     }
     public void repaint(String s1, String s2) {
-        Graphics g = panel.getGraphics();
+        Graphics g = panel.getGraphicsCopy();
         int oldW = stringWidth(g);
         displayText(s1);
         hoverText(s2);
@@ -218,13 +218,13 @@ public class BaseText implements Base, ScaledInteger {
             return text;
     }
     public int draw() {
-		Graphics g = panel.getGraphics();
+		Graphics g = panel.getGraphicsCopy();
 		int draw = draw(g);
 		g.dispose();
 		return draw;
     }
     public int drawCentered() {
-		Graphics g = panel.getGraphics();
+		Graphics g = panel.getGraphicsCopy();
 		int drawCentered = drawCentered(g);
 		g.dispose();
 		return drawCentered;
@@ -274,14 +274,14 @@ public class BaseText implements Base, ScaledInteger {
         int hPad = sw/20;
         int vPad = fontH/5;
         setBounds(x1,y1+sp-fontH,sw+s5,fontH-sp/2);
-        
+
         int shadowImgW = sw+hPad+hPad;
         if ((textShadow == null)                                      // first time through?
         || (bufferedLanguage != LanguageManager.selectedLanguage())   // language changed?
         || (shadowImgW != textShadow.getWidth())) {                   // font resized?
             bufferedLanguage = LanguageManager.selectedLanguage();
             textShadow = newBufferedImage(shadowImgW, fontH+vPad);
-            Graphics g0 = textShadow.getGraphics();
+            Graphics g0 = textShadow.createGraphics();
             g0.setFont(font());
             g0.setColor(shadeC);
             int topThick = scaled(topLBdr);

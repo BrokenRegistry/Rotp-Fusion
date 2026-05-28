@@ -55,7 +55,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 	private static final boolean RIGHT	= true;
 	private static final boolean LEFT	= false;
 
-	private Image landscapeImg;
+	private BufferedImage landscapeImg;
 	private boolean landscapeOnly = false;
 	private boolean exited = false;
 	private int sysId;
@@ -357,7 +357,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		Color cCenter	= new Color(255, 150, 60);
 		Color[] colors	= {cCenter, cCenter, cDark, cDark};
 		float[] dist	= {0.0f, 0.1f, 0.95f, 1.0f};
-		Graphics2D g	= (Graphics2D) img.getGraphics();
+		Graphics2D g	= img.createGraphics();
 		RadialGradientPaint grad = new RadialGradientPaint(center, radius, dist, colors);
 		g.setPaint(grad);
 		g.fillRoundRect(0, 0, w, w, w, w);
@@ -366,7 +366,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 	}
 	private BufferedImage chimney(int w, int h)	{
 		BufferedImage img = new BufferedImage(w, h, TYPE_INT_ARGB);
-		Graphics2D g	= (Graphics2D) img.getGraphics();
+		Graphics2D g = img.createGraphics();
 		GradientPaint grad = new GradientPaint(0, 0, Color.LIGHT_GRAY, 0, h, Color.DARK_GRAY);
 		g.setPaint(grad);
 		g.fillRect(0, 0, w, h);
@@ -375,7 +375,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 	}
 	private BufferedImage walls(int w, int h)	{
 		BufferedImage img = new BufferedImage(w, h, TYPE_INT_ARGB);
-		Graphics2D g	= (Graphics2D) img.getGraphics();
+		Graphics2D g = img.createGraphics();
 		GradientPaint grad = new GradientPaint(0, 0, Color.GRAY, 0, h, Color.DARK_GRAY);
 		g.setPaint(grad);
 		g.fillRect(0, 0, w, h);
@@ -384,7 +384,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 	}
 	private BufferedImage porch(int w, int h)	{
 		BufferedImage img = new BufferedImage(w, h, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) img.getGraphics();
+		Graphics2D g = img.createGraphics();
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, w, h);
 		GradientPaint grad = new GradientPaint(0, 0, Color.GRAY, w/2, 0, Color.DARK_GRAY, true);
@@ -396,7 +396,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 	}
 	private BufferedImage windows(int w, int h)	{
 		BufferedImage img = new BufferedImage(w, h, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) img.getGraphics();
+		Graphics2D g = img.createGraphics();
 		g.setColor(new Color(48, 48, 112));
 		g.fillRect(0, 0, w, h);
 		g.dispose();

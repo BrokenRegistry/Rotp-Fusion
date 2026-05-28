@@ -94,7 +94,7 @@ public final class CombatShield {
 	public BufferedImage shieldBackGround() {
 		if (shieldBackGround == null) {
 			shieldBackGround = new BufferedImage(shieldColumns, shieldRows, TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) shieldBackGround.getGraphics();
+			Graphics2D g = shieldBackGround.createGraphics();
 			g.setColor(Color.black);
 			g.fillOval(0, 0, shieldColumns, shieldRows);
 			g.dispose();

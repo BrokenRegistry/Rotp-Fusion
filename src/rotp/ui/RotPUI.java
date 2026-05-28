@@ -500,7 +500,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     }
 	public void paintCouncilNotice(boolean shading)  {
 		//galacticCouncilUI.repaint();
-		Graphics g = galacticCouncilUI.getGraphics();
+		Graphics g = galacticCouncilUI.getGraphicsCopy();
 		drawNotice(g, 28, -s100, shading);
 		g.dispose();
 	}

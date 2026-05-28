@@ -70,7 +70,7 @@ public interface RotPPanels {
 			width = w;
 			height = h;
 			backImg = new BufferedImage(w, h, TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) backImg.getGraphics();
+			Graphics2D g = backImg.createGraphics();
 			setHiRenderingHints(g);
 			g.setPaint(GameUI.modBackground(0, w, alpha));
 			g.fillRect(0, 0, w, h);

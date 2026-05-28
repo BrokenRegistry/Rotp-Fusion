@@ -404,4 +404,10 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
 		mapHandler.hoveringOverSprite(null, true);
 		mapHandler.map().clearHoverSprite();
 	}
+	public Graphics2D getGraphicsCopy()	{
+		Graphics g = getGraphics();
+		if (g == null)
+			return null;
+		return (Graphics2D) g.create();
+	}
 }

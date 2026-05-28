@@ -177,7 +177,7 @@ public class RaceIntroUI extends BasePanel implements MouseListener {
     private BufferedImage fadeLab(int w, int h) {
         if (fadeLab == null) {
             fadeLab = newBufferedImage(w, h);
-            Graphics2D g = (Graphics2D) fadeLab.getGraphics();
+            Graphics2D g = fadeLab.createGraphics();
             g.drawImage(player().laboratory(), 0, 0, w, h, this);
             g.setPaint(backGradient(w));
             g.setComposite(AlphaComposite.DstOut);
@@ -204,7 +204,7 @@ public class RaceIntroUI extends BasePanel implements MouseListener {
         int h1 = min(h,w*5/8);
         int w1 = h*8/5;
         introBack = this.newBufferedImage(w, h);
-        Graphics2D g = (Graphics2D) introBack.getGraphics();
+        Graphics2D g = introBack.createGraphics();
         setRenderingHints(g);
         g.setColor(Color.black);
         g.fillRect(0,0, w, h);

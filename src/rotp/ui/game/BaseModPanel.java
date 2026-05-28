@@ -299,7 +299,7 @@ public abstract class BaseModPanel extends BasePanel
     }
 	@Override public void repaintKeyBound() {
 		initButtonBackImg();
-		Graphics2D g = (Graphics2D) getGraphics();
+		Graphics2D g = getGraphicsCopy();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
         g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -392,7 +392,7 @@ public abstract class BaseModPanel extends BasePanel
 	public BufferedImage initButtonBackImg() {
 		initButtonPosition();
 		keyBoundBackImg = new BufferedImage(retina(wButton), retina(hButton), TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) keyBoundBackImg.getGraphics();
+		Graphics2D g = keyBoundBackImg.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
 		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -436,7 +436,7 @@ public abstract class BaseModPanel extends BasePanel
 			loadGuide();
 		else
 			clearGuide();
-		Graphics g = getGraphics();
+		Graphics g = getGraphicsCopy();
 		paintComponent(g);
 		g.dispose();
 	}	

@@ -179,7 +179,7 @@ public enum AnimationManager implements Base {
             BufferedImage targetImg = newFullScreenImage(1200,1200);
             int w = targetImg.getWidth();
             int h = targetImg.getHeight();
-            Graphics g = targetImg.getGraphics();
+            Graphics g = targetImg.createGraphics();
             setRenderingHints(g);
             g.drawImage(baseImg,0,0,w,h,null);
             g.dispose();
@@ -512,7 +512,7 @@ public enum AnimationManager implements Base {
 			this.h = h;
 		}
 		@Override public void run() {
-			Graphics2D g = (Graphics2D) newImg.getGraphics();
+			Graphics2D g = newImg.createGraphics();
 			setRenderingHints(g);
 			g.drawImage(srcImg, 0, 0, w, h, 0, 0, srcImg.getWidth(null), srcImg.getHeight(null), null);
 			g.dispose();

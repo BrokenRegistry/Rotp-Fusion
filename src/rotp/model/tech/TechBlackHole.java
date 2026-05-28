@@ -79,7 +79,7 @@ public final class TechBlackHole extends Tech {
         source.mgr.performingStackTurn = true;
         ui.paintAllImmediately();
 
-        Graphics2D g = (Graphics2D) ui.getGraphics();
+        Graphics2D g = ui.getGraphicsCopy();
         Stroke prev = g.getStroke();
 
         g.setStroke(baseStroke(4));

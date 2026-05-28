@@ -683,7 +683,7 @@ public class SystemMassQueryPanel extends BasePanel {
             || (starBackground.getWidth() != w)
             || (starBackground.getHeight() != h)) {
                 starBackground = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-                Graphics g = starBackground.getGraphics();
+                Graphics g = starBackground.createGraphics();
                 drawBackgroundStars(g,w,h);
                 g.dispose();
             }

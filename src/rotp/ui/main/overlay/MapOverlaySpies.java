@@ -221,7 +221,7 @@ public class MapOverlaySpies extends MapOverlay {
 
         if (labImg == null) {
             labImg = asBufferedImage(pl.laboratory());
-            Graphics imgG = labImg.getGraphics();
+            Graphics imgG = labImg.createGraphics();
             BufferedImage spyImg = pl.spyQuiet();
             int w0a = labImg.getWidth();
             int h0a = labImg.getHeight();

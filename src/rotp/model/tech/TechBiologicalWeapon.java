@@ -169,7 +169,7 @@ public final class TechBiologicalWeapon extends Tech {
             return;
         ShipBattleUI ui = source.mgr.ui;
 
-        Graphics2D g = (Graphics2D) ui.getGraphics();
+        Graphics2D g = ui.getGraphicsCopy();
         Stroke prev = g.getStroke();
 
         int FRAMES = source.mgr.autoComplete ? 1 : 4;

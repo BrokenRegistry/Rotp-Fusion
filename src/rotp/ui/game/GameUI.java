@@ -566,7 +566,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         else if (animationTimer < 20) {
             float pct = bounds(0.0f, (20-animationTimer)/20f, 1.0f);
             BufferedImage img = newOpaqueImage(backImg1);
-            Graphics2D imgG = (Graphics2D) img.getGraphics();
+            Graphics2D imgG = img.createGraphics();
             AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, pct);
             imgG.setComposite(composite);
             imgG.drawImage(backImg2, 0,0,null);
@@ -633,7 +633,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 
         if (titleImg == null) {
             titleImg = newBufferedImage(getWidth(), scaled(200));
-            Graphics2D imgG = (Graphics2D) titleImg.getGraphics();
+            Graphics2D imgG = titleImg.createGraphics();
             setRenderingHints(imgG);
             int bigFont = scaledLogoFont(imgG, titleStr1+titleStr3, w*3/4, 80, 65);
             int smallFont = scaledLogoFont(imgG, titleStr2, w*3/20, 60, 40);
@@ -1445,7 +1445,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
             r1.start();
         }
         private void renderFonts() {
-            Graphics g = getGraphics();
+            Graphics g = getGraphicsCopy();
             int y0 = 0;
             for (int i=0; i<names.size(); i++) {
                 String code = codes.get(i);

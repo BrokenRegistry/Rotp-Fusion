@@ -1728,7 +1728,7 @@ public class DesignUI extends BasePanel {
             drawSpecialInfo(g, des,s10, y3, boxW2, sect4H);
         }
         private void repaintShip() {
-            Graphics g = getGraphics();
+            Graphics g = getGraphicsCopy();
             drawShip(g, s10,s10,shipW,shipH);
             g.dispose();
         }

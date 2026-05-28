@@ -133,7 +133,7 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 		}
 		@Override public BufferedImage getImage(int width, int height)	{
 			BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) img.getGraphics();
+			Graphics2D g = img.createGraphics();
 			XYChart chart = getChart();
 			chart.paint(g, width, height);
 			g.dispose();
@@ -280,7 +280,7 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 		}
 		@Override public BufferedImage getImage(int width, int height)	{
 			BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) img.getGraphics();
+			Graphics2D g = img.createGraphics();
 			XYChart chart = dynamicDifficultyMode.getChart();
 			chart.paint(g, width, height);
 			g.dispose();

@@ -21,6 +21,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+
 import rotp.ui.sprites.RoundGradientPaint;
 import rotp.util.Base;
 
@@ -107,7 +108,7 @@ public class StarType implements Base {
         rgp().set(x, y, c1, new Point2D.Float(0, r), c0, f);
 
         BufferedImage img = newBufferedImage(w,w);
-        Graphics2D g = (Graphics2D) img.getGraphics();
+        Graphics2D g = img.createGraphics();
         g.setPaint(rgp());
         g.fill(rect);
         g.dispose();

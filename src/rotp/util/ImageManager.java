@@ -59,7 +59,7 @@ public enum ImageManager implements Base {
             return img;
 
         BufferedImage newImg = newBufferedImage(newW, newH);
-        Graphics g = newImg.getGraphics();
+        Graphics g = newImg.createGraphics();
         g.drawImage(img, 0,0, newW, newH, null);
         g.dispose();
         return newImg;

@@ -161,7 +161,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 		elementsPositioning();
 		forceUpdate = true;
 		backImg = newOpaqueImage(wFull, hFull);
-		Graphics2D g = (Graphics2D) backImg.getGraphics();
+		Graphics2D g = backImg.createGraphics();
 		// modnar: use (slightly) better upsampling
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
@@ -242,7 +242,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 			int imgHR	= retina(imgH);
 
 			BufferedImage img = new BufferedImage(imgWR, imgHR, TYPE_INT_ARGB);
-			Graphics2D gi = (Graphics2D) img.getGraphics();
+			Graphics2D gi = img.createGraphics();
 			gi.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			gi.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
 			

@@ -20,6 +20,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 import rotp.model.ships.ShipWeaponMissileType;
 import rotp.ui.BasePanel;
@@ -32,7 +33,7 @@ public class CombatStackMissile extends CombatStack implements ScaledInteger {
     public CombatStack owner;
     public ShipWeaponMissileType missile;
     public int turnsLeft = 0;
-    Image missiles;
+    BufferedImage missiles;
     public float moveRate = 0;
     float range = 0;
 
@@ -59,7 +60,7 @@ public class CombatStackMissile extends CombatStack implements ScaledInteger {
             Image missileImg = image(miss.tech().imageKey());
             int imgH   = imgW*missileImg.getHeight(null)/missileImg.getWidth(null);        	
             missiles   = newBufferedImage(imgW,imgH);
-            Graphics g = missiles.getGraphics();
+            Graphics g = missiles.createGraphics();
             g.drawImage(missileImg,0,0,imgW,imgH,null);
             g.dispose();        	
         }
@@ -133,7 +134,7 @@ public class CombatStackMissile extends CombatStack implements ScaledInteger {
         	return pursueMoO1(tgtMoveDist);
         if (!target.visible)
             return true;
-        	
+
         float targetDist = distanceTo(target.x(), target.y());
         float moveDist = min(move, moveRate * tgtMoveDist);
         float stepPct = min(1,moveDist/targetDist);
@@ -149,7 +150,7 @@ public class CombatStackMissile extends CombatStack implements ScaledInteger {
 
         move = max(0, move - moveDist);
         range -= moveDist;
-       
+
         // return 'true' if missile is done
         return ((move <= 0) || destroyed());
     }
@@ -174,7 +175,7 @@ public class CombatStackMissile extends CombatStack implements ScaledInteger {
         	else {
         		num = afterDecay(num, missile.decay(), moveDist/2);
         	}
-        	sleep(500);
+        	//sleep(500);
         	if (num == 0)
         		return true;
         }
@@ -184,11 +185,11 @@ public class CombatStackMissile extends CombatStack implements ScaledInteger {
 
         move = max(0, move - moveDist);
         range -= moveDist;
-       
+
         // return 'true' if missile is done
         return ((move <= 0) || destroyed());
     }
-   
+
     private boolean selfDestruct() {
         if (turnsLeft < 1)
             return true;

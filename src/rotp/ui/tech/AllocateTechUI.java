@@ -411,7 +411,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         g.fillRect(s10,getHeight()-scaled(200),getWidth()-s20, scaled(190));
 
         drawHelpButton(g);
-        
+
         String title = text("TECH_RESEARCH");
         g.setFont(narrowFont(32));
         g.setColor(yellowTextC);
@@ -441,7 +441,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
             y0 += gap;
         }
         catArea.setBounds(leftM,topM,catW,y0-topM);
-        
+
         if (techSelections.keySet().contains(hoverBox)) {
             RoundRectangle2D rect = (RoundRectangle2D) hoverBox;
             Stroke prev = g.getStroke();
@@ -466,7 +466,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
             g.setColor(Color.black);
             drawString(g,costLbl, x1-costSW, y1);        
         }
-        
+
         // draw right-side panel
         int subPanelX = w-scaled(250);
         int subPanelW = scaled(233);
@@ -527,7 +527,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         y6 += s28;
         x6 = subPanelX+((subPanelW-detSW)/2);
         drawString(g,detailLine2, x6, y6);
-        
+
         int y6a = y6+s10;
         g.setFont(plainFont(16));
         String divertLine = text("TECH_EMPIRE_TECH_RESERVE_OPT");
@@ -537,10 +537,10 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
             y6a += s15;
             drawString(g,line, subPanelX+s20+indent, y6a);
         }
-     
+
         int checkW = s12;
         int checkX= subPanelX+s20;
-            
+
         int y6b = y6+s18+(max(2,divertLines.size())*s15/2);
         techBox.setBounds(checkX, y6b-checkW, checkW, checkW);
         Stroke prev = g.getStroke();
@@ -557,7 +557,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
             g.drawLine(checkX+s3, y6b-s3, checkX+checkW, y6b-s12);
         }
         g.setStroke(prev);
-    
+
         // draw tech spending area
         String allocateTitle = text("TECH_ALLOCATE_POINTS");
         g.setFont(narrowFont(20));
@@ -715,7 +715,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         int x8 = x+w-rpSW-s10;
         int y8 = y+s32;
         drawString(g,rpText, x8, y8);
-        
+
         String levelTxt = text("TECH_LEVEL", shortFmt(cat.techLevel()));
         g.setColor(Color.black);
         g.setFont(plainFont(16));
@@ -723,7 +723,6 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         int x9 = x+w-lvlSW-s10;
         int y9 = y+s15;
         drawString(g, levelTxt, x9, y9);
-        
     }
     private void drawOpenTechCategory(Graphics2D g, int catNum, int x, int y, int w, int h, int titleH) {
         catBox[catNum].setBounds(0,0,0,0);
@@ -742,7 +741,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         int y1 = y+titleH;
         int h1 = h-s10-titleH;
         treeBox.setBounds(x1,y1,w1,h1);
-        
+
         drawTexture(g, x,y,w,h);
         paintTree(g);
     }
@@ -913,13 +912,13 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
 
         int maxQ = cat.maxResearchableQuintile();
         int minQ = showFreeTechs? 0 : 1;
-        
+
         // if we haven't started any research yet (currentT == null)
         // but have acquired a tech through other means (e.g. artifact planet),
         // show all of the known tiers but not the next tier
         if (currentT == null)
             maxQ--;
-        
+
         int minTechLvl = showFreeTechs? 0 : 1;
         int maxTechLvl = (maxQ + 1) * 5;
         List<String> knownT = cat.knownTechs();
@@ -970,7 +969,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
     private void drawUnknownTechTier(Graphics g, TechCategory cat, String currentT, int tier, int x, int w, int h) {
         String title = text("TECH_NEXT_TIER_TITLE");
         String desc;
-        
+
         if (currentT == null)
             desc = text("TECH_FIRST_TIER_DESC");
         else if (tier < 10)
@@ -1037,7 +1036,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         TechCategory cat =  player().tech().category(selectedCategory);
         Color backC = unknownTechC;
         Color textC = Color.white;
-        
+
         boolean known = knownT.contains(tech.id);
         boolean allowSelect = !known && newResearch && !tech.id().equals(currentT);
 
@@ -1047,7 +1046,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         }
         else if (tech.id.equals(currentT)) 
             backC = currentTechC;
-        
+
         Color c0 = backC;
         Color c1 = new Color(backC.getRed(), backC.getGreen(), backC.getBlue(), 80);
         Point2D start = new Point2D.Float(x, y);
@@ -1109,7 +1108,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
             drawString(g,desc, x+s7, y0);
             y0+= lineH;
         }
-        
+
         techForGuide.put(techDetailBox, tech.id);
         if (allowSelect) {
             techSelections.put(techDetailBox, tech.id);

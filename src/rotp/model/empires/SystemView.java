@@ -466,7 +466,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     private static BufferedImage bufferedImage(Image left, Image right) { // BR: flagColorCount
     	BufferedImage result = new BufferedImage(
                 SIDE, SIDE, BufferedImage.TYPE_INT_ARGB);
-    	Graphics g = result.getGraphics();
+    	Graphics g = result.createGraphics();
     	g.drawImage(right, MID2, 0, SIDE, SIDE, MAST, 0, MAST-FLAG_W, SIDE, null);
     	g.drawImage(left,  0,    0, MID1, SIDE, MAST-FLAG_W, 0, MAST, SIDE, null);
     	g.dispose();
@@ -474,7 +474,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     }
     private static Image joinImage(Image bL, Image bR, Image tR, Image tL) { // BR: flagColorCount
     	BufferedImage result = bufferedImage(bL, bR);
-    	Graphics g = result.getGraphics();
+    	Graphics g = result.createGraphics();
 		g.drawImage(joinImage(tL, tR), LF_LEFT, LF_TOP,  LF_RIGHT, LF_BOTTOM, 0, 0, SIDE, SIDE-LF_CUT, null);
 		g.dispose();
     	return new ImageIcon(result).getImage();

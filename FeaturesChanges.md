@@ -413,6 +413,8 @@
 
 ### Fixes:
 
+- Fixes (attempt) to prevent a display offset bug.
+- Fix in “MoO1 Asteroids”: Missiles were slowing down above the asteroids (this was a forgotten debugging feature!)
 - Fixed weapon action text that overflows the boxes.
 - Fixed a bug that caused retreating ships to leave the victorious faction in certain cases.
   - This occurred when the retreating ships had never engaged in combat and none of the ships that had participated in the battle had retreated.

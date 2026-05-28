@@ -571,7 +571,7 @@ public final class TechShipWeapon extends Tech {
         }
 
         BufferedImage shipImg = new BufferedImage(boxW, boxH, TYPE_INT_ARGB);
-		Graphics2D gS = (Graphics2D) shipImg.getGraphics();
+		Graphics2D gS = shipImg.createGraphics();
         drawStack(ui, gS, target, 0, 0, boxW, boxH);
         gS.dispose();
 
@@ -603,7 +603,7 @@ public final class TechShipWeapon extends Tech {
         int shieldBorders = opt.shieldBorder(sourceSize);
 		boolean playerIsTarget = (target.empire() != null) && target.empire().isPlayer();
 
-        Graphics2D g = (Graphics2D) ui.getGraphics();
+        Graphics2D g = ui.getGraphicsCopy();
         ShipComponent wpn = source.weapon(wpnNum);
         int wpnCount = count / attacksPerRound / source.num;
 
@@ -647,7 +647,7 @@ public final class TechShipWeapon extends Tech {
 		int weaponX3B	= weaponX - shieldTLx;
 		int weaponY3B	= weaponY - shieldTLy;
 		shieldBackGround = new BufferedImage(shieldWidth, shieldHeight, TYPE_INT_ARGB);
-		Graphics2D gbg = (Graphics2D) shieldBackGround.getGraphics();
+		Graphics2D gbg = shieldBackGround.createGraphics();
 		gbg.setColor(Color.black);
 		gbg.fillOval(0, 0, shieldWidth, shieldHeight);
 		gbg.dispose();
@@ -772,7 +772,7 @@ public final class TechShipWeapon extends Tech {
 		if (tripleBuffer) {
 			if (isAbove) {
 				BufferedImage buffer = new BufferedImage(shieldWidth, shieldHeight, TYPE_INT_ARGB);
-				Graphics2D gb = (Graphics2D) buffer.getGraphics();
+				Graphics2D gb = buffer.createGraphics();
 				setPaint(gb, windUpFramesNum, weaponX3B, weaponY3B, weaponDx, weaponDy);
 				gb.drawImage(shieldArray[BELLOW][0], 0, 0, null);
 				gb.drawImage(shipImg, shipX3B, shipY3B, null);
@@ -787,7 +787,7 @@ public final class TechShipWeapon extends Tech {
 				paintLines(partLines, g); // visible line are above
 			} else {
 				BufferedImage buffer = new BufferedImage(shieldWidth, shieldHeight, TYPE_INT_ARGB);
-				Graphics2D gb = (Graphics2D) buffer.getGraphics();
+				Graphics2D gb = buffer.createGraphics();
 				setPaint(gb, windUpFramesNum, weaponX3B, weaponY3B, weaponDx, weaponDy);
 				gb.drawImage(shieldArray[BELLOW][0], 0, 0, null);
 				paintLines(hitLines, gb); // hitting lines are in-between
@@ -823,7 +823,7 @@ public final class TechShipWeapon extends Tech {
 			if (isAbove) {
 				for(int i = 0; i < holdFramesNum; i++) {
 					BufferedImage buffer = new BufferedImage(shieldWidth, shieldHeight, TYPE_INT_ARGB);
-					Graphics2D gb = (Graphics2D) buffer.getGraphics();
+					Graphics2D gb = buffer.createGraphics();
 					gb.drawImage(shieldBackGround, 0, 0, null);
 					setPaint(gb, i+1+windUpFramesNum, weaponX3B, weaponY3B, weaponDx, weaponDy);
 					int shieldIdx = i+1;
@@ -834,7 +834,7 @@ public final class TechShipWeapon extends Tech {
 					gb.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 					gb.drawImage(shieldArray[ABOVE][shieldIdx], 0, 0, null);
 					gb.dispose();
-		
+
 					g.drawImage(buffer, shieldTLx, shieldTLy, null);
 					setPaint(g, i+1+windUpFramesNum, weaponX, weaponY, weaponDx, weaponDy);
 					paintLines(partLines, g); // visible line are above
@@ -843,7 +843,7 @@ public final class TechShipWeapon extends Tech {
 			} else {
 				for(int i = 0; i < holdFramesNum; i++) {
 					BufferedImage buffer = new BufferedImage(shieldWidth, shieldHeight, TYPE_INT_ARGB);
-					Graphics2D gb = (Graphics2D) buffer.getGraphics();
+					Graphics2D gb = buffer.createGraphics();
 					gb.drawImage(shieldBackGround, 0, 0, null);
 					setPaint(gb, i+1+windUpFramesNum, weaponX3B, weaponY3B, weaponDx, weaponDy);
 					paintLines(bellowLines, gb);
@@ -853,7 +853,7 @@ public final class TechShipWeapon extends Tech {
 					gb.drawImage(shipImg, shipX3B, shipY3B, null);
 					gb.drawImage(shieldArray[ABOVE][shieldIdx], 0, 0, null);
 					gb.dispose();
-	
+
 					setPaint(g, i+1+windUpFramesNum, weaponX, weaponY, weaponDx, weaponDy);
 					paintLines(partLines, g); // visible line are bellow
 					g.drawImage(buffer, shieldTLx, shieldTLy, null);
@@ -902,11 +902,11 @@ public final class TechShipWeapon extends Tech {
 			if (isAbove) {
 				for(int i = 0; i < windUpFramesNum; ++i) {
 					BufferedImage buffer = new BufferedImage(shieldWidth, shieldHeight, TYPE_INT_ARGB);
-					Graphics2D gb = (Graphics2D) buffer.getGraphics();
+					Graphics2D gb = buffer.createGraphics();
 					gb.drawImage(shieldBackGround, 0, 0, null);
 					setPaint(gb, i+1+windUpFramesNum+holdFramesNum, weaponX3B, weaponY3B, weaponDx, weaponDy);
 					int shieldIdx = i+1+holdFramesNum;
-					
+
 					gb.drawImage(shieldArray[BELLOW][shieldIdx], 0, 0, null);
 					gb.drawImage(shipImg, shipX3B, shipY3B, null);
 					gb.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, hiddenBeamAlpha));
@@ -925,7 +925,7 @@ public final class TechShipWeapon extends Tech {
 			} else {
 				for(int i = 0; i < windUpFramesNum; ++i) {
 					BufferedImage buffer = new BufferedImage(shieldWidth, shieldHeight, TYPE_INT_ARGB);
-					Graphics2D gb = (Graphics2D) buffer.getGraphics();
+					Graphics2D gb = buffer.createGraphics();
 					gb.drawImage(shieldBackGround, 0, 0, null);
 					setPaint(gb, i+1+windUpFramesNum+holdFramesNum, weaponX3B, weaponY3B, weaponDx, weaponDy);
 					bellowLines.get(i).clear();
@@ -991,10 +991,10 @@ public final class TechShipWeapon extends Tech {
 		if (tripleBuffer) {
 			for(int i = 0; i < fadingFramesNum; ++i) {
 				BufferedImage buffer = new BufferedImage(shieldWidth, shieldHeight, TYPE_INT_ARGB);
-				Graphics2D gb = (Graphics2D) buffer.getGraphics();
+				Graphics2D gb = buffer.createGraphics();
 				gb.drawImage(shieldBackGround, 0, 0, null);
 				int shieldIdx = i+1+holdFramesNum+windUpFramesNum;
-				
+
 				gb.drawImage(shieldArray[BELLOW][shieldIdx], 0, 0, null);
 				gb.drawImage(shipImg, shipX3B, shipY3B, null);
 				gb.drawImage(shieldArray[ABOVE][shieldIdx], 0, 0, null);
@@ -1010,11 +1010,11 @@ public final class TechShipWeapon extends Tech {
 				else
 					ui.paintImmediately(shieldRec);
 				int shieldIdx = i+1+holdFramesNum+windUpFramesNum;
-				
+
 				g.drawImage(shieldArray[BELLOW][shieldIdx], shieldTLx, shieldTLy, null);
 				g.drawImage(shipImg, shipTLx, shipTLy, null);
 				g.drawImage(shieldArray[ABOVE][shieldIdx], shieldTLx, shieldTLy, null);
-	
+
 				pause(sleepTime);
 			}
 		}
@@ -1038,7 +1038,7 @@ public final class TechShipWeapon extends Tech {
 
         ShipComponent wpn = source.weapon(wpnNum);
         int wpnCount = count / attacksPerRound / source.num;
-        Graphics2D g = (Graphics2D) ui.getGraphics();
+        Graphics2D g = ui.getGraphicsCopy();
         Stroke prev = g.getStroke();
 
         int distFactor = 8*source.movePointsTo(target.x, target.y);
@@ -1171,7 +1171,7 @@ public final class TechShipWeapon extends Tech {
 
         ShipComponent wpn = source.weapon(wpnNum);
         int wpnCount = count / attacksPerRound / source.num;
-        Graphics2D g = (Graphics2D) ui.getGraphics();
+        Graphics2D g = ui.getGraphicsCopy();
         Stroke prev = g.getStroke();
 
         int distFactor = 8*source.movePointsTo(target.x, target.y);
@@ -1205,7 +1205,7 @@ public final class TechShipWeapon extends Tech {
             playAudioClip(soundEffectMulti());
         else
             playAudioClip(soundEffect());
-       
+
         if (showShield) {
             windUpFrames = WIND_UP_FRAMES;
             holdFrames = HOLD_FRAMES;        	

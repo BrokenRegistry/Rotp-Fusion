@@ -888,7 +888,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
             int newW = retina(wCtrFrame);
             int newH = retina(hCtrFrame);
             raceImg = new BufferedImage(newW, newH, TYPE_INT_ARGB);
-            Graphics2D g = (Graphics2D) raceImg.getGraphics();
+            Graphics2D g = raceImg.createGraphics();
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
             g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -910,7 +910,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
             int newW = retina(iconSize);
             int newH = retina(iconSize);
             String selRace = newGameOptions().selectedPlayerRace();
-    		Image image = new Species(selRace).flagNorm();
+            Image image = new Species(selRace).flagNorm();
             raceIconImg = resizeImage(image, newW, newH);
         }
         return raceIconImg;
@@ -934,7 +934,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
     private void initFleetBackImg() {
 		long timeStart = System.currentTimeMillis();
 		fleetBackImg = new BufferedImage(retina(fleetWidth), retina(fleetHeight), TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) fleetBackImg.getGraphics();
+		Graphics2D g = fleetBackImg.createGraphics();
         g.setComposite(AlphaComposite.SrcOver);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
@@ -963,7 +963,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         float[] dist = {0.0f, 0.55f, 0.85f, 1.0f};
         Color[] colors = {GameUI.raceCenterColor(), GameUI.raceCenterColor(), GameUI.raceEdgeColor(), GameUI.raceEdgeColor()};
         RadialGradientPaint p = new RadialGradientPaint(center, radius, dist, colors);
-        Graphics2D g = (Graphics2D) shipBackImg.getGraphics();
+        Graphics2D g = shipBackImg.createGraphics();
 		g.setPaint(p);
         g.fillRect(0, 0, shipW, shipH);
         g.dispose();
@@ -976,7 +976,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         int w = getWidth();
         int h = getHeight();
         backImg = newOpaqueImage(w, h);
-        Graphics2D g = (Graphics2D) backImg.getGraphics();
+        Graphics2D g = backImg.createGraphics();
         setHiRenderingHints(g);
 
         // background image
@@ -1125,7 +1125,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 	        int  rbH = (int)(raceBoxSize * bH);
 
 	        raceMugs[num] = new BufferedImage(rbW, rbH, TYPE_INT_ARGB);
-            Graphics2D g = (Graphics2D) raceMugs[num].getGraphics();
+            Graphics2D g = raceMugs[num].createGraphics();
             g.setComposite(AlphaComposite.SrcOver);
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 

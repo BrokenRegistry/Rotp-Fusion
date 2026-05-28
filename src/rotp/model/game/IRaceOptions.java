@@ -54,7 +54,7 @@ public interface IRaceOptions extends IBaseOptsTools {
 		float[] dist = {0.0f, 0.1f, 0.5f, 1.0f};
 		Color[] colors = {GameUI.raceCenterColor(), GameUI.raceCenterColor(), GameUI.raceEdgeColor(), GameUI.raceEdgeColor()};
 		RadialGradientPaint p = new RadialGradientPaint(center, radius, dist, colors);
-		Graphics2D g = (Graphics2D) backImg.getGraphics();
+		Graphics2D g = backImg.createGraphics();
 		g.setPaint(p);
 		g.fillRect(0, 0, w, h);
 		g.dispose();

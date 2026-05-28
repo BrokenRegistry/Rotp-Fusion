@@ -1351,7 +1351,7 @@ public class RacesUI extends BasePanel {
             float[] dist = {0.0f, 0.1f, 0.5f, 1.0f};
             Color[] colors = {raceCenterColor, raceCenterColor, raceEdgeColor, raceEdgeColor};
             RadialGradientPaint p = new RadialGradientPaint(center, radius, dist, colors);
-            Graphics2D g = (Graphics2D) raceBackImg.getGraphics();
+            Graphics2D g = raceBackImg.createGraphics();
             g.setPaint(p);
             g.fillRect(0, 0, w, h);
             g.dispose();

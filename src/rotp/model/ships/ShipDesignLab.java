@@ -1004,7 +1004,7 @@ public class ShipDesignLab implements Base, Serializable {
         int imgW = image.getWidth(null);
         int imgH = image.getHeight(null);
         BufferedImage srcImg = new BufferedImage(imgW, imgH, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = (Graphics2D) srcImg.getGraphics();
+        Graphics2D g = srcImg.createGraphics();
         if (flip)
             g.drawImage(image, 0, 0, imgW, imgH, imgW, imgH, 0, 0, null);
         else
@@ -1035,7 +1035,7 @@ public class ShipDesignLab implements Base, Serializable {
         }
 
         BufferedImage img = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
-        g = (Graphics2D) img.getGraphics();
+        g = img.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
 		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);

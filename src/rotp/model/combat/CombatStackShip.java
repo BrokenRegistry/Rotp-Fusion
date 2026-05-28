@@ -892,7 +892,7 @@ public class CombatStackShip extends CombatStack {
             return;
 
         ShipBattleUI ui = mgr.ui;
-        Graphics2D g = (Graphics2D) ui.getGraphics();
+        Graphics2D g = (Graphics2D) ui.getGraphicsCopy();
 
         Color portalColor = Color.white;
         g.setColor(portalColor);

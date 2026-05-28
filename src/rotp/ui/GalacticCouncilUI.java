@@ -1031,7 +1031,7 @@ public final class GalacticCouncilUI extends FadeInPanel
             int h = getHeight() * 2/5;
             int w = h;
             diplomatImg = newBufferedImage(w, h);
-            Graphics2D imgG =  (Graphics2D) diplomatImg.getGraphics();
+            Graphics2D imgG = diplomatImg.createGraphics();
 			// modnar: use (slightly) better sampling
 			imgG.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			imgG.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -1092,7 +1092,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         float[] dist = {0.0f, 0.1f, 0.5f, 1.0f};
         Color[] colors = {raceCenterColor, raceCenterColor, raceEdgeColor, raceEdgeColor};
         RadialGradientPaint p = new RadialGradientPaint(center, radius, dist, colors);
-        Graphics2D g = (Graphics2D) iconBackImg.getGraphics();
+        Graphics2D g = iconBackImg.createGraphics();
         g.setPaint(p);
         g.fillRect(0, 0, w, h);
         g.dispose();
@@ -1107,7 +1107,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         float[] dist = {0.0f, 0.1f, 0.5f, 1.0f};
         Color[] colors = {raceCenterColor, raceCenterColor, raceEdgeColor, raceEdgeColor};
         RadialGradientPaint p = new RadialGradientPaint(center, radius, dist, colors);
-        Graphics2D g = (Graphics2D) raceBackImg.getGraphics();
+        Graphics2D g = raceBackImg.createGraphics();
         g.setPaint(p);
         g.fillRect(0, 0, w, h);
         g.dispose();
@@ -1122,7 +1122,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         float[] dist = {0.0f, 0.1f, 0.5f, 1.0f};
         Color[] colors = {raceCenterColor, raceCenterColor, raceEdgeColor, raceEdgeColor};
         RadialGradientPaint p = new RadialGradientPaint(center, radius, dist, colors);
-        Graphics2D g = (Graphics2D) wideBackImg.getGraphics();
+        Graphics2D g = wideBackImg.createGraphics();
         g.setPaint(p);
         g.fillRect(0, 0, w, h);
         g.dispose();

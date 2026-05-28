@@ -442,7 +442,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		int dw = diplo.getWidth();
 		int dh = diplo.getHeight();
 		BufferedImage mug = new BufferedImage(bw, bh, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) mug.getGraphics();
+		Graphics2D g = mug.createGraphics();
 	
 		float fog = opts.noFogOnIcons()? 1.0f : 0.5f;
 		Composite raceComp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER , fog);
@@ -510,7 +510,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		int bw = back.getWidth();
 		int bh = back.getHeight();
 		BufferedImage mug = new BufferedImage(bw, bh, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) mug.getGraphics();
+		Graphics2D g = mug.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
 		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -1984,7 +1984,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		int w = getWidth();
 		int h = getHeight();
 		backImg = newOpaqueImage(w, h);
-		Graphics2D g = (Graphics2D) backImg.getGraphics();
+		Graphics2D g = backImg.createGraphics();
 		setRenderingHints(g);
 		// modnar: use (slightly) better upsampling
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

@@ -382,10 +382,9 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         	refreshCombatScreen(false);
         	repaint = true;
         }
-		if (!targetingMissiles.isEmpty() && IMainOptions.shipBasedMissiles.get()) {
-			for (CombatStackMissile missile : targetingMissiles) {
+		if (!mgr.performingStackTurn && !targetingMissiles.isEmpty() && IMainOptions.shipBasedMissiles.get()) {
+			for (CombatStackMissile missile : targetingMissiles)
 				missile.updateImage();
-			}
 			repaint = true;
 		}
         if (repaint)
@@ -394,7 +393,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
     private Image combatBackground() {
         if (combatBackground == null) {
             combatBackground = newOpaqueImage(getWidth(), getHeight());
-            Graphics g = combatBackground.getGraphics();
+            Graphics g = combatBackground.createGraphics();
             g.drawImage(starBackground(),0,0,null);
             g.dispose();
         }
@@ -402,7 +401,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
     }
     private void resetCombatBackground() {
         BufferedImage newCombatBackground = newOpaqueImage(getWidth(), getHeight());
-        Graphics g = newCombatBackground.getGraphics();
+        Graphics g = newCombatBackground.createGraphics();
         g.drawImage(starBackground(),0,0,null);
         g.dispose();
         combatBackground = newCombatBackground;
@@ -886,6 +885,8 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
 		drawMissileWarning(g, target, x, y, w, h, borderColor);
     }
 	private void drawMissileWarning(Graphics2D g, CombatStack target, int x, int y, int w, int h, Color borderCol)	{
+		if (mgr.performingStackTurn)
+			return;
 		targetingMissiles = target.targetingMissiles();
 		if (!targetingMissiles.isEmpty()) {
 			borderCol = new Color(192,96,0);
@@ -905,7 +906,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
 					AffineTransform tx = AffineTransform.getRotateInstance(missile.rotateRadians(), aX, aY);
 					AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BICUBIC);
 					BufferedImage image = new BufferedImage(iW, iH, img.getType());
-					Graphics gi = image.getGraphics();
+					Graphics gi = image.createGraphics();
 					gi.drawImage(img, mrg, mrg + (mW-mH)/2, null);
 					gi.dispose();
 

@@ -133,7 +133,7 @@ public class DemoShields extends JPanel implements Base, ActionListener {
 		shipHeight = (int) (baseShipHeight * shipScale);
 
 		shipImg = new BufferedImage(shipWidth, shipHeight, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) shipImg.getGraphics();
+		Graphics2D g = (Graphics2D) shipImg.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
 		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -143,7 +143,7 @@ public class DemoShields extends JPanel implements Base, ActionListener {
 		g.dispose();
 		imageWidth  = boxWidth + scaled(IMAGE_SEP);
 		imageHeight = boxHeight + scaled(IMAGE_SEP);
-		
+
 		windowWidth  = imageWidth * 23/10 + 10; // + IMAGE_SEP;
 		windowHeight = imageHeight * 3  + 30; // + IMAGE_SEP;
 		winRec	= new Rectangle(windowWidth, windowHeight);

@@ -109,7 +109,7 @@ public final class TechEnergyPulsar extends Tech {
         source.mgr.performingStackTurn = true;
         ui.paintAllImmediately();
 
-        Graphics2D g = (Graphics2D) ui.getGraphics();
+        Graphics2D g = ui.getGraphicsCopy();
         Stroke prev = g.getStroke();
 
         g.setStroke(baseStroke(4));
@@ -135,7 +135,7 @@ public final class TechEnergyPulsar extends Tech {
                 int startJ = i;
                 int endJ = min(n, i+5);
                 for (int j=startJ;j<endJ;j++) {
-                    Graphics2D g0 = (Graphics2D) frames[j].getGraphics();
+                    Graphics2D g0 = frames[j].createGraphics();
                     g0.setStroke(baseStroke(5));
                     g0.setColor(c0);
                     g0.drawOval(x0, y0, w0, h0);

@@ -85,7 +85,7 @@ public final class TechStasisField extends Tech {
         source.mgr.performingStackTurn = true;
         ui.paintAllImmediately();
 
-        Graphics2D g0 = (Graphics2D) ui.getGraphics();
+        Graphics2D g0 = ui.getGraphicsCopy();
         Stroke prev = g0.getStroke();
 
         g0.setStroke(baseStroke(1));
@@ -113,7 +113,7 @@ public final class TechStasisField extends Tech {
             frames[i] = newBufferedImage(ui.boxW*3, ui.boxH*3);
         for (int i=0;i<n;i++) {
             for (int j=i;j<n;j++) {
-                Graphics2D g1 = (Graphics2D) frames[j].getGraphics();
+                Graphics2D g1 = frames[j].createGraphics();
                 g1.setColor(c0);
                 AffineTransform tx = g1.getTransform();
                 g1.rotate(radians, rX, rY);
@@ -126,9 +126,9 @@ public final class TechStasisField extends Tech {
             w0 += dW;
             h0 += dH;
         }
-        
+
         int repeat = 1;
-        
+
         // create shade boxes for target as it gets increasingly in stasis
         int r = STASIS_COLOR.getRed();
         int g = STASIS_COLOR.getGreen();
@@ -140,7 +140,7 @@ public final class TechStasisField extends Tech {
             alpha += dA;
             Color shade = new Color(r,g,b,alpha);
             BufferedImage img = newBufferedImage(ui.boxW, ui.boxH);
-            Graphics g1 = img.getGraphics();
+            Graphics g1 = img.createGraphics();
             g1.setColor(shade);
             g1.fillRect(0,0,ui.boxW, ui.boxH);
             g1.dispose();

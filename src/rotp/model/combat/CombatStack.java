@@ -616,7 +616,7 @@ public class CombatStack implements Base {
         int st1Y = mgr.ui.stackY(this);
         int x1 = st1X+stW/2;
         int y1 = st1Y+stH/2;
-        Graphics2D g = (Graphics2D) mgr.ui.getGraphics();
+        Graphics2D g = mgr.ui.getGraphicsCopy();
         drawAttackResult(g,x1,y1,x1, dmg,result);
         g.dispose();
         mgr.ui.paintAllImmediately();    
@@ -624,10 +624,10 @@ public class CombatStack implements Base {
     public void drawAttackResult(Graphics g, int x1, int y1, int x0, float dmg, String result) {
         if (!mgr.showAnimations())
             return;
-         
+
         int xleft = x0 < x1 ? x : max(0, x-1);
         Rectangle rTopLeft = mgr.ui.combatGrids[xleft][max(0,y-1)];
-        
+
         int FRAMES = mgr.autoComplete ? 4 : 12;
         int dx = x0 <= x1 ? BasePanel.s1 : -BasePanel.s1;
         int dy = -BasePanel.s1;
@@ -708,7 +708,7 @@ public class CombatStack implements Base {
         BufferedImage overlayImg = null;
         if (brighten > 0) {
             overlayImg = newBufferedImage(w1,h1);
-            Graphics2D g0 = (Graphics2D) overlayImg.getGraphics();
+            Graphics2D g0 = overlayImg.createGraphics();
             if (transparency < 1) {
                 AlphaComposite ac = java.awt.AlphaComposite.getInstance(AlphaComposite.SRC_OVER,max(0,transparency));
                 g0.setComposite(ac);
@@ -947,7 +947,7 @@ public class CombatStack implements Base {
 
 	        paint = new RadialGradientPaint(center, shieldW/2, focus, distances, colors, NO_CYCLE);
 	    	BufferedImage buffImg = new BufferedImage(shieldW, shieldW, TYPE_INT_ARGB);
-	        Graphics2D g = (Graphics2D) buffImg.getGraphics();
+	        Graphics2D g = buffImg.createGraphics();
 	        g.setComposite(AlphaComposite.SrcOver);
 	        g.setPaint(paint);
 	        g.fill(shieldArea);
@@ -972,7 +972,7 @@ public class CombatStack implements Base {
 
         paint = new RadialGradientPaint(center, shieldW/2, focus, distances, colors, NO_CYCLE);
     	BufferedImage buffImg = new BufferedImage(shieldW, shieldW, TYPE_INT_ARGB);
-        Graphics2D g = (Graphics2D) buffImg.getGraphics();
+        Graphics2D g = buffImg.createGraphics();
         g.setComposite(AlphaComposite.SrcOver);
         g.setPaint(paint);
         g.fill(shieldArea);

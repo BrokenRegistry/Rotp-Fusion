@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-05-28 (BR)
+- Fixes (attempt) to prevent a display offset bug.
+- Fix in “MoO1 Asteroids”: Missiles were slowing down above the asteroids (this was a forgotten debugging feature!)
+
 26-05-25 (BR)
 - The option to automate space battles, added on May 26, 2023, has been moved to the remnant.cfg file. (You may need to reset your preferences.)
 - During a space battle, a ship targeted by missiles will display a missile warning in the information panel, and incoming missiles will be highlighted with an animation.

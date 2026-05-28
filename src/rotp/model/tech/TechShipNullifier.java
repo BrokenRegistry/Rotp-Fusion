@@ -127,7 +127,7 @@ public final class TechShipNullifier extends Tech {
         source.mgr.performingStackTurn = true;
         ui.paintAllImmediately();
 
-        Graphics2D g0 = (Graphics2D) ui.getGraphics();
+        Graphics2D g0 = ui.getGraphicsCopy();
         Stroke prev = g0.getStroke();
 
         Rectangle rect = ui.combatGrids[x][y];
@@ -152,7 +152,7 @@ public final class TechShipNullifier extends Tech {
             frames[i] = newBufferedImage(ui.boxW*3, ui.boxH*3);
         for (int i=0;i<n;i++) {
             for (int j=i;j<n;j++) {
-                Graphics2D g1 = (Graphics2D) frames[j].getGraphics();
+                Graphics2D g1 = (Graphics2D) frames[j].createGraphics();
                 g1.setStroke(baseStroke(3));
                 g1.setColor(beamColor);
                 AffineTransform tx = g1.getTransform();

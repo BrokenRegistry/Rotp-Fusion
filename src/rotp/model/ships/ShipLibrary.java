@@ -83,7 +83,7 @@ public class ShipLibrary implements Base {
         pY[2] = BasePanel.s5;
         
         BufferedImage destImg = newBufferedImage(destW, destH);
-        Graphics2D g = (Graphics2D) destImg.getGraphics();
+        Graphics2D g = destImg.createGraphics();
         setRenderingHints(g);
         Color c0 = options().shipColor(colorId);
         g.setColor(c0);
@@ -114,7 +114,7 @@ public class ShipLibrary implements Base {
         pY[2] = BasePanel.s6;
         
         BufferedImage destImg = newBufferedImage(destW, destH);
-        Graphics2D g = (Graphics2D) destImg.getGraphics();
+        Graphics2D g = destImg.createGraphics();
         setRenderingHints(g);
         Color c0 = options().shipColor(colorId);
         g.setColor(c0);
@@ -150,7 +150,7 @@ public class ShipLibrary implements Base {
         pY[2] = BasePanel.s8;
         
         BufferedImage destImg = newBufferedImage(destW, destH);
-        Graphics2D g = (Graphics2D) destImg.getGraphics();
+        Graphics2D g = destImg.createGraphics();
         setRenderingHints(g);
         Color c0 = options().shipColor(colorId);
         g.setColor(c0);
@@ -188,7 +188,7 @@ public class ShipLibrary implements Base {
         pY[2] = BasePanel.s10;
         
         BufferedImage destImg = newBufferedImage(destW, destH);
-        Graphics2D g = (Graphics2D) destImg.getGraphics();
+        Graphics2D g = destImg.createGraphics();
         setRenderingHints(g);
         Color c0 = options().shipColor(colorId);
         g.setColor(c0);
@@ -213,7 +213,7 @@ public class ShipLibrary implements Base {
         int s2 = BasePanel.s2;
         int crv = BasePanel.s4;
         BufferedImage destImg = newBufferedImage(destW, destH);
-        Graphics2D g = (Graphics2D) destImg.getGraphics();
+        Graphics2D g = destImg.createGraphics();
         setRenderingHints(g);
         Color c0 = options().shipColor(colorId);
         g.setColor(c0);

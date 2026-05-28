@@ -71,7 +71,7 @@ public class GroundBattleUI extends BasePanel implements MouseListener {
     private int totalDefenders = 0;
     private int landingCount;
 
-    private Image landscapeImg;
+    private BufferedImage landscapeImg;
     private LinearGradientPaint soldierBackG;
     String subtitle;
 
@@ -253,7 +253,7 @@ public class GroundBattleUI extends BasePanel implements MouseListener {
         int w = getWidth();
         int h = getHeight();
         landscapeImg = newBufferedImage(w,h);
-        Graphics2D g = (Graphics2D) landscapeImg.getGraphics();
+        Graphics2D g = landscapeImg.createGraphics();
         g.setColor(Color.black);
         g.fillRect(0, 0, getWidth(), getHeight());
 		// modnar: use (slightly) better upsampling

@@ -355,7 +355,7 @@ public class Tech implements Base, ScaledInteger {
         int x1 = st1X+stW/2;
         int y1 = st1Y+stH/2;
 
-        Graphics2D g = (Graphics2D) ui.getGraphics();
+        Graphics2D g = ui.getGraphicsCopy();
         Stroke prev = g.getStroke();
 
         g.setColor(Color.yellow);

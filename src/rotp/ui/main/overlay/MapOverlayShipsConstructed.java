@@ -25,6 +25,7 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
 import rotp.model.Sprite;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
@@ -106,7 +107,7 @@ public class MapOverlayShipsConstructed extends MapOverlay {
         // draw planet image
         if (planetImg == null) {
             planetImg = newBufferedImage(boxW, boxH-boxH1);
-            Graphics imgG = planetImg.getGraphics();
+            Graphics imgG = planetImg.createGraphics();
             imgG.setColor(Color.black);
             imgG.fillRect(0, 0, boxW, boxH-boxH1);
             drawBackgroundStars(imgG, boxW, boxH-boxH1);

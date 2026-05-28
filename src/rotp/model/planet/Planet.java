@@ -832,7 +832,7 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
         int r = 100;
         RoundRectangle2D rect = new RoundRectangle2D.Float(0,0, r+r, r+r, 0, 0);
         BufferedImage img = new BufferedImage(r+r, r+r, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = (Graphics2D) img.getGraphics();
+        Graphics2D g = img.createGraphics();
         ssp.set(r, r, new Point2D.Float(0, r), Color.black, direction, 0.1f);
         g.setPaint(ssp);
         g.fill(rect);

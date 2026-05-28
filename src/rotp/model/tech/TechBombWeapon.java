@@ -172,7 +172,7 @@ public final class TechBombWeapon extends Tech {
             return;
 
         ShipBattleUI ui = source.mgr.ui;       
-        Graphics2D g = (Graphics2D) ui.getGraphics();
+        Graphics2D g = ui.getGraphicsCopy();
         Stroke prev = g.getStroke();
         g.setColor(Color.white);
 

@@ -1002,7 +1002,7 @@ public interface Base extends InputEventUtil {
         int w = img.getWidth();
         int h = img.getHeight();
         BufferedImage flippedImg = newBufferedImage(w, h);
-        Graphics g = flippedImg.getGraphics();
+        Graphics g = flippedImg.createGraphics();
         g.drawImage(img, w, 0, 0, h, 0, 0, w, h, null);
         g.dispose();
         return flippedImg;
@@ -1381,12 +1381,12 @@ public interface Base extends InputEventUtil {
         }
     }
     public default void drawBackgroundStars(BufferedImage img, ImageObserver obs) {
-		Graphics g = img.getGraphics();
+		Graphics g = img.createGraphics();
 		drawBackgroundStars(img, g, img.getWidth(obs), img.getHeight(obs), scaled(50), scaled(100));
 		g.dispose();
     }
     public default void drawBackgroundStars(BufferedImage img, ImageObserver obs, int minDist, int varDist) {
-		Graphics g = img.getGraphics();
+		Graphics g = img.createGraphics();
 		drawBackgroundStars(img, g, img.getWidth(obs), img.getHeight(obs), minDist, varDist);
 		g.dispose();
     }
@@ -1571,7 +1571,7 @@ public interface Base extends InputEventUtil {
 
         BufferedImage back = fImg.image();
 
-        Graphics g = img.getGraphics();
+        Graphics g = img.createGraphics();
         g.drawImage(back, 0, 0, imgW, imgH, null);
         g.dispose();
     }
@@ -1722,8 +1722,8 @@ public interface Base extends InputEventUtil {
 			return null;
 		}
 	}
-    default Graphics2D getGraphicsRH(Image image) {
-		Graphics2D g = (Graphics2D) image.getGraphics();
+    default Graphics2D getGraphicsRH(BufferedImage image) {
+		Graphics2D g = image.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
 		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);

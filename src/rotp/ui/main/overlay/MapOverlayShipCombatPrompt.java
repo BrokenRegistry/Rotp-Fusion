@@ -256,7 +256,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
         if (planetImg == null) {
             if (!scouted || sys.planet().type().isAsteroids()) {
                 planetImg = newBufferedImage(boxW, boxH2);
-                Graphics imgG = planetImg.getGraphics();
+                Graphics imgG = planetImg.createGraphics();
                 imgG.setColor(Color.black);
                 imgG.fillRect(0, 0, boxW, boxH2);
                 drawBackgroundStars(imgG, boxW, boxH2);
@@ -276,7 +276,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
                     int fortScaleH = fortH*planetW/w;
                     int fortX = planetImg.getWidth()-fortScaleW;
                     int fortY = planetImg.getHeight()-fortScaleH+(planetH/5);
-                	Graphics imgG = planetImg.getGraphics();
+                	Graphics imgG = planetImg.createGraphics();
                     imgG.drawImage(fortImg, fortX, fortY, fortX+fortScaleW, fortY+fortScaleH, 0, 0, fortImg.getWidth(), fortImg.getHeight(), null);
                     imgG.dispose();
                 }

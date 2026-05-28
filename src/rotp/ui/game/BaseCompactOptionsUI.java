@@ -302,7 +302,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		// Background image is FullWindow width
 		long timeStart = System.currentTimeMillis();
 		backImg = newOpaqueImage(wFull, hFull);
-		Graphics2D g = (Graphics2D) backImg.getGraphics();
+		Graphics2D g = backImg.createGraphics();
 		// modnar: use (slightly) better upsampling
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
@@ -459,7 +459,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			float hFactor = param.heightFactor();
 			int boxH = (int) (textBoxH * hFactor);
 			BufferedImage img = new BufferedImage(retina(columnWidth), retina(boxH), TYPE_INT_ARGB);
-			Graphics2D gi = (Graphics2D) img.getGraphics();
+			Graphics2D gi = img.createGraphics();
 			gi.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			gi.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
 			if (param.isGhost())

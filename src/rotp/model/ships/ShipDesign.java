@@ -660,6 +660,14 @@ public final class ShipDesign extends Design {
             lvl += spec.initiativeBonus();
         return lvl;
     }
+	public float initiative(int computerLevel, int maneuverability)	{
+		if (monsterInitiative != null)
+			return monsterInitiative;
+		float lvl = computerLevel + maneuverability;
+		for (ShipSpecial spec: special)
+			lvl += spec.initiativeBonus();
+		return lvl;
+	}
     public float attackLevel() {
     	if (monsterAttackLevel != null)
     		return monsterAttackLevel;

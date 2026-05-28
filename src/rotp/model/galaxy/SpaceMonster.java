@@ -297,7 +297,7 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 		int imgW = img.getWidth(null);
 		int imgH = img.getHeight(null);
 		BufferedImage shipImg = new BufferedImage(imgW, imgH, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) shipImg.getGraphics();
+		Graphics2D g = (Graphics2D) shipImg.createGraphics();
 		g.drawImage(img, 0, 0, null);
 		g.dispose();
 		int yMin = Integer.MAX_VALUE;
@@ -337,7 +337,7 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 		}
 
 		BufferedImage shipImage = newBufferedImage(destW, destH);
-		Graphics2D g = (Graphics2D) shipImage.getGraphics();
+		Graphics2D g = shipImage.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
 		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);

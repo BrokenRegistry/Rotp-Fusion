@@ -148,7 +148,7 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
 		int mugH = s20;
 		int mugW = mugH;
 		mixedGovernorImage = new BufferedImage(mugW, mugH, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) mixedGovernorImage.getGraphics();
+		Graphics2D g = mixedGovernorImage.createGraphics();
 		g.setComposite(AlphaComposite.SrcOver);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
@@ -169,7 +169,7 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
 		int mugH = s20; // s82
 		int mugW = mugH * 76 / 82; // s76
 		governorImage = new BufferedImage(mugW, mugH, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) governorImage.getGraphics();
+		Graphics2D g = governorImage.createGraphics();
 		g.setComposite(AlphaComposite.SrcOver);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
@@ -187,7 +187,7 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
 		int mugH = s22;
 		int mugW = mugH;
 		noGovernorImage = new BufferedImage(mugW, mugH, TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) noGovernorImage.getGraphics();
+		Graphics2D g = noGovernorImage.createGraphics();
 		g.setComposite(AlphaComposite.SrcOver);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
