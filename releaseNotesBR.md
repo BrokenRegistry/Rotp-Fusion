@@ -7,9 +7,11 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
-26-05-28 (BR)
+26-05-29 (BR)
 - Fixe: Ships destroyed by reaction fire continued to fire using their special weapons.
 - Fixed a potential issue with battles ending when the maximum number of turns is reached: it was incomplete.
+
+26-05-28 (BR)
 - Fixes (attempt) to prevent a display offset bug.
 - Fix in “MoO1 Asteroids”: Missiles were slowing down above the asteroids (this was a forgotten debugging feature!)
 

@@ -408,6 +408,8 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
 		Graphics g = getGraphics();
 		if (g == null)
 			return null;
-		return (Graphics2D) g.create();
+		Graphics2D gc = (Graphics2D) g.create();
+		g.dispose();
+		return gc;
 	}
 }
