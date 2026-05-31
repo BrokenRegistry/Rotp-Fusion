@@ -45,6 +45,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-05-31 (BR)
+- Fixed a few rare null pointer exceptions that were reported to me.
+  - An unexplained missing image key will no longer cause the image manager to crash.
+  - An unexplained missing image will no longer cause the ground battle panel to crash.
+  - Under highly unlikely circumstances, certain keyboard actions that clear a critical variable will no longer cause the game to crash.
 - Fixes related to space combat:
   - Asteroids were sometimes displayed at the wrong position. (The one of the previous battle)
   - Ship initiative is now correctly affected by technology nullifiers and warp dissipators.

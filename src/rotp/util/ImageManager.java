@@ -47,7 +47,7 @@ public enum ImageManager implements Base {
     }
     @Override
     public Image image(String key) {
-        return key.equalsIgnoreCase("NULL") || key.isEmpty() ? null : icon(random(imageFiles.get(key))).getImage();
+        return key==null || key.isEmpty() || key.equalsIgnoreCase("NULL") ? null : icon(random(imageFiles.get(key))).getImage();
     }
     @Override
     public Image scaledImageW(String key, int newW) {

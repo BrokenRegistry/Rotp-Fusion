@@ -198,7 +198,12 @@ public class MapOverlaySystemsScouted extends MapOverlay {
             mask.subtract(st1);
         }
         g.setColor(maskC);
-        g.fill(mask);
+		try { // for the case mask is set to null at the wrong time by a key action.
+			g.fill(mask);
+		}
+		catch(Exception e) {
+			return;
+		}
         // draw border
         g.setColor(MainUI.paneShadeC);
         g.fillRect(x0, y0, w0, h0);
