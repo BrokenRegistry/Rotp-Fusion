@@ -5026,7 +5026,9 @@ SHIP_COMBAT_SCAN_MISSILE_DEF      | Déf. antimissile
 SHIP_COMBAT_SCAN_BEAM_DEF         | Déf. de faisceau
 SHIP_COMBAT_SCAN_SHIELD_CLASS     | Classe du bouclier
 SHIP_COMBAT_SCAN_ATTACK_LEVEL     | Niveau d’attaque
+SHIP_COMBAT_SCAN_INITIATIVE			| Initiative
 SHIP_COMBAT_SCAN_SPEED            | Vitesse
+SHIP_COMBAT_SCAN_MANEUVRABILITY		| Maneuvrabilité
 SHIP_COMBAT_SCAN_WEAPONS          | Armes
 SHIP_COMBAT_SCAN_DEVICES          | Dispositifs
 SHIP_COMBAT_SCAN_HITS_VALUE       | %1/%2

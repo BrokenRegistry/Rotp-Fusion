@@ -472,7 +472,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
     }
     public List<FlightPath> allValidPathsTo(CombatStack st, int x1, int y1) {
         List<FlightPath> validPaths = new ArrayList<>();
-        allValidPaths(st.x, st.y, x1, y1, (int)st.maxMove, st, validPaths, null);
+        allValidPaths(st.x, st.y, x1, y1, (int)st.maxMove(), st, validPaths, null);
         return validPaths;
     }
     public static FlightPath allValidPaths(int x0, int y0, int x1, int y1, int moves, CombatStack stack, List<FlightPath> validPaths, FlightPath bestPath) {

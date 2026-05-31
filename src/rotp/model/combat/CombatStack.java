@@ -75,17 +75,20 @@ public class CombatStack implements Base {
     public int y = 0;
     public float scale = 1.0f;
     protected float brighten = 0.0f;
-    public float attackLevel = 0;
-    public float maneuverability = 0;
-    public float missileDefense = 0;
-    public float beamDefense = 0;
+	private float computerLevel = 0;
+	private float initiativeTech = 0;
+	private float initiativeFinal = 0;
+	private float attackLevel = 0;
+	private float maneuverability = 0;
+	private float missileDefense = 0;
+	private float beamDefense = 0;
     public float offsetX = 0;
     public float offsetY = 0;
     private float startingMaxHits = 1;
     private float maxStackHits = 1; // BR: renamed maxHit
     private float hits = 0;
     private float streamProjectorHits = 0;  // BR:
-    public float maxMove = 0;
+    private float maxMove = 0;
     public float move = 0;
     public float maxShield = 0;
     protected float shield = 0;
@@ -122,7 +125,15 @@ public class CombatStack implements Base {
     public String fullName()            { return concat(str(num), ":", raceName(), " ", name()); }
     private String raceName()           { return empire != null ? empire.raceName() : name(); }
     public String name()                { return "object"; }
-    public float initiative()           { return 0; }
+    public void updateDynamicLevels()	{}
+	public float initiative()			{ return initiativeFinal; }
+	public void decInitiativeTech(float r)	{
+		initiativeTech = max(0, initiativeTech-r);
+		updateInitiative();
+	}
+	private void updateInitiative()			{ initiative(initiativeTech + maneuverability() + empire().shipInitiativeBonus()); }
+	public void initiativeTech(float val)	{ initiativeTech = val; }
+	private void initiative(float val)		{ initiativeFinal = val; }
     public float initiativeRank() {
         if (cloaked)
             return 200+initiative();
@@ -182,6 +193,8 @@ public class CombatStack implements Base {
     public float hits()							{ return hits; } // BR:
     private float startingMaxHits()				{ return startingMaxHits; } // BR:
     public float maxStackHits()					{ return maxStackHits; } // BR:
+	public void decMaxMove(float r)	{ maxMove(max(0, maxMove-r)); };
+	public void maxMove(float val)	{ maxMove = val; }
     public float maxMove()          { return maxMove; }
     public float totalHits()        { return maxStackHits * num; }
     public boolean canMove()        { return ((move > 0) || canTeleport()) && !destroyed(); }
@@ -191,10 +204,31 @@ public class CombatStack implements Base {
     public float autoMissPct()      { return 0; } 
     public boolean interceptsMissile(ShipWeaponMissileType wpn)  { return random() < missileInterceptPct(wpn);}
     public float missileInterceptPct(ShipWeaponMissileType wpn)  { return 0; }
-    public float maneuverablity()     { return maneuverability; }
-    public float missileDefense()     { return cloaked ? missileDefense +5 : missileDefense; }
-    public float beamDefense()        { return cloaked ? beamDefense + 5 : beamDefense; }
-    public float attackLevel()      { return attackLevel; }
+	public void computerLevel(float val)	{
+		computerLevel = val;
+		updateInitiative();
+	}
+	public void decComputerLevel(float red)	{
+		computerLevel(max(0, computerLevel-red));
+		decInitiativeTech(red);
+		decAttackLevel(red);
+	}
+	public float computerLevel()			{ return computerLevel; }
+	public void decManeuverability(float r)	{ maneuverability(max(0, maneuverability-r)); };
+	public void maneuverability(float val)	{
+		maneuverability = val;
+		updateInitiative();
+	}
+	public float maneuverability()			{ return maneuverability; }
+	public void missileDefense(float val)	{ missileDefense = val; }
+	public void decMissileDefense(float r)	{ missileDefense(max(0, missileDefense-r)); };
+	public float missileDefense()			{ return cloaked ? missileDefense+5 : missileDefense; }
+	public void beamDefense(float val)		{ beamDefense = val; }
+	public void decBeamDefense(float r)		{ beamDefense(max(0, beamDefense-r)); };
+	public float beamDefense()				{ return cloaked ? beamDefense+5 : beamDefense; }
+	public void attackLevel(float val)		{ attackLevel = val; }
+	protected void decAttackLevel(float r)	{ attackLevel(max(0, attackLevel-r)); };
+	public float attackLevel()				{ return attackLevel; }
     public float bombDefense()      { return 0; }
     public float bioweaponDefense() { return 0; }
     public void cloak()             {  }

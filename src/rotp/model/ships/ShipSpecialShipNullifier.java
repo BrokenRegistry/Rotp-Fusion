@@ -16,8 +16,6 @@
 package rotp.model.ships;
 
 import rotp.model.combat.CombatStack;
-import rotp.model.combat.CombatStackColony;
-import rotp.model.combat.CombatStackShip;
 import rotp.model.combat.ShipCombatManager;
 import rotp.model.tech.TechShipNullifier;
 
@@ -48,18 +46,17 @@ public final class ShipSpecialShipNullifier extends ShipSpecial {
         int compRed = roll(tech().minComputerRed, tech().maxComputerRed);
         int ecmRed = roll(tech().minECMRed, tech().maxECMRed);
 
-        if (target.isShip()) {
-            CombatStackShip st = (CombatStackShip) target;
-            st.attackLevel = max(0, target.attackLevel - compRed);
-            st.maxMove = max(0, st.maxMove - tech().speedRed);
-            st.missileDefense = max(0, target.missileDefense - ecmRed - tech().manvRed);
-            st.beamDefense = max(0, st.beamDefense - tech().manvRed);
-            st.maneuverability = max(0, st.maneuverability - tech().manvRed);
-        } else if (target.isColony()) {
-            CombatStackColony st = (CombatStackColony) target;
-            st.attackLevel = max(0, target.attackLevel - compRed);
-            st.missileDefense = max(0, target.missileDefense - ecmRed);
-        }
+		if (target.isShip()) {
+			target.decComputerLevel(compRed);
+			target.decMaxMove(tech().speedRed);
+			target.decMissileDefense(ecmRed + tech().manvRed);
+			target.decBeamDefense(tech().manvRed);
+			target.decManeuverability(tech().manvRed);
+		}
+		else if (target.isColony()) {
+			target.decComputerLevel(compRed);
+			target.decMissileDefense(ecmRed);
+		}
         tech().drawSpecialAttack(source, target, 1, 0);
     }
     private void makeUnsuccessfulAttack(CombatStack source, CombatStack target) {

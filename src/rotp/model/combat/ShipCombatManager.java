@@ -852,12 +852,14 @@ public class ShipCombatManager implements Base {
             for (int y=0;y<=maxY;y++)
                 initialMap[x][y] = 0;
         }
+		redrawMap = true;
     }
     private void clearAsteroids() {
         for (int x=0;x<=maxX;x++) {
             for (int y=0;y<=maxY;y++)
                 asteroidMap[x][y] = false;
         }
+		redrawMap = true;
     }
     private void placeAsteroids() {
         // clear the asteroid map before starting
@@ -895,6 +897,7 @@ public class ShipCombatManager implements Base {
        			}
        				
         	}
+			redrawMap = true;
         	return;
         }
 
@@ -921,6 +924,7 @@ public class ShipCombatManager implements Base {
                 }
             }
         }
+		redrawMap = true;
     }
     private void trimAsteroids() {
     	if (options().asteroidsVanish()) {

@@ -111,7 +111,7 @@ public class CombatStackShip extends CombatStack {
         maxStackHits(design.hits());
         streamProjectorHits(0); // BR:
         startingMaxHits(maxStackHits());
-        maxMove = design.moveRange();
+		maxMove(design.moveRange());
         StarSystem sys = m.system();
         if (sys == null) {
         	sys = fl.system();
@@ -125,14 +125,16 @@ public class CombatStackShip extends CombatStack {
         	m.system(sys); // As m.system() will be called again
         }
         maxShield = sys.inNebula() ? 0 : design.shieldLevel();
-        attackLevel = design.attackLevel() + empire().shipAttackBonus();
-        maneuverability = design.maneuverability();
+		computerLevel(design.computer().level());
+		initiativeTech(computerLevel() + design.specialInitiative());
+		attackLevel(design.attackLevel() + empire().shipAttackBonus());
+		maneuverability(design.maneuverability());
         repulsorRange = design.repulsorRange();
         hits(maxStackHits());
-        move = maxMove;
+        move = maxMove();
         shield = maxShield;
-        missileDefense = design.missileDefense() + empire().shipDefenseBonus();
-        beamDefense = design.beamDefense() + empire().shipDefenseBonus();
+		missileDefense(design.missileDefense() + empire().shipDefenseBonus());
+		beamDefense(design.beamDefense() + empire().shipDefenseBonus());
         displacementPct = design.missPct();
         repairPct = designShipRepairPct();
         beamRangeBonus = designBeamRangeBonus();
@@ -141,6 +143,14 @@ public class CombatStackShip extends CombatStack {
     }
     protected ShipDesign getDesign(int id) { return empire().shipLab().design(id); }
     protected ShipCaptain getCaptain()     { return empire().ai().shipCaptain(); }
+	@Override protected void decAttackLevel(float val)	{
+		attackLevel(max(empire().shipAttackBonus(), attackLevel()-val));
+		// Forward to missiles
+		List<CombatStackMissile> missiles = new ArrayList<>(missiles());
+		for (CombatStackMissile miss: missiles) {
+			miss.attackLevel(attackLevel());;
+		}
+	};
     @Override
     public boolean usingAI()          { return usingAI; }
     @Override
@@ -179,7 +189,7 @@ public class CombatStackShip extends CombatStack {
 		}
 		else if(!options().playerCanRetreat(mgr.turnCounter()))
 			return false;
-        return !atLastColony && (maneuverability > 0); 
+		return !atLastColony && (maneuverability() > 0); 
     }
     @Override
     public float autoMissPct()      { return displacementPct; }
@@ -406,10 +416,13 @@ public class CombatStackShip extends CombatStack {
         galaxy().ships.retreatSubfleet(fleet, design.id(), s.id);
         return true;
     }
-    @Override
-    public float initiative() {
-        return design.initiative() + empire().shipInitiativeBonus();
-    }
+//    @Override
+//    public float initiative() {
+//        return design.initiative() + empire().shipInitiativeBonus();
+//    }
+	@Override public void updateDynamicLevels()	{
+		
+	}
     @Override
     public boolean selectBestWeapon(CombatStack target) {
         if (target.destroyed())
@@ -550,12 +563,12 @@ public class CombatStackShip extends CombatStack {
                 //ail: take attack and defense into account
                 float hitPct = 1.0f;
                 if(comp.isBeamWeapon())
-                    hitPct = (5 + attackLevel - target.beamDefense()) / 10;
+                    hitPct = (5 + attackLevel() - target.beamDefense()) / 10;
                 if(comp.isMissileWeapon())
                 {
                     if(ignoreMissiles)
                         continue;
-                    hitPct = (5 + attackLevel - target.missileDefense()) / 10;
+                    hitPct = (5 + attackLevel() - target.missileDefense()) / 10;
                 }
                 hitPct = max(.05f, hitPct);
                 hitPct = min(hitPct, 1.0f);

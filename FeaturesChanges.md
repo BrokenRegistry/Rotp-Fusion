@@ -311,6 +311,7 @@
 
 ### User Interfaces:
 
+- Space combat: Initiative and maneuverability have been added to ship information bubble.
 - During a space battle, a ship targeted by missiles will display a missile warning in the information panel, and incoming missiles will be highlighted with an animation.
 - In the mass transport deployment panel, the troop bonus and colony size will be displayed along with the planet's information.
 - New option to change ship sprites opacity.
@@ -413,6 +414,11 @@
 
 ### Fixes:
 
+- Fixes related to space combat:
+  - Asteroids were sometimes displayed at the wrong position. (The one of the previous battle)
+  - Ship initiative is now correctly affected by technology nullifiers and warp dissipators.
+  - Missiles already launched are now affected when the ships that launched them are hit by technology nullifiers.
+  - Values in ship info bubble are now displayed without the extra decimal place.
 - Fixe: Ships destroyed by reaction fire continued to fire using their special weapons.
 - Fixed a potential issue with battles ending when the maximum number of turns is reached: it was incomplete.
 - Fixes (attempt) to prevent a display offset bug.

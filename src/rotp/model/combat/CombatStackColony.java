@@ -18,6 +18,8 @@ package rotp.model.combat;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.util.ArrayList;
+import java.util.List;
 
 import rotp.model.colony.Colony;
 import rotp.model.colony.MissileBase;
@@ -58,9 +60,11 @@ public class CombatStackColony extends CombatStack {
         maxShield = colony.defense().missileShieldLevel();
         maxStackHits(mBase.maxHits());
         startingMaxHits(maxStackHits());
-        attackLevel = mBase.computerLevel();
-        missileDefense = mBase.missileDefense();
-        beamDefense = mBase.beamDefense();
+		computerLevel(mBase.computerLevel());
+		initiativeTech(isArmed() ? computerLevel() + TechScanner.BATTLE_SCANNER_INITIATIVE : -1);
+        attackLevel(mBase.computerLevel());
+        missileDefense(mBase.missileDefense());
+        beamDefense(mBase.beamDefense());
         startingPop = colony.population();
         startingFactories = colony.industry().factories();
         planetaryShieldLevel = colony.defense().shieldLevel();
@@ -73,6 +77,14 @@ public class CombatStackColony extends CombatStack {
 			return false;
 		return empire().aggressiveWith(st.empire(), sys);
 	}
+	@Override protected void decAttackLevel(float val)	{
+		attackLevel(max(0, attackLevel()-val));
+		// Forward to missiles
+		List<CombatStackMissile> missiles = new ArrayList<>(missiles());
+		for (CombatStackMissile miss: missiles) {
+			miss.attackLevel(attackLevel());;
+		}
+	};
     @Override
     public boolean usingAI()          { return usingAI; }
     @Override
@@ -104,8 +116,8 @@ public class CombatStackColony extends CombatStack {
     final public MissileBase missileBase()  { return colony.defense().missileBase(); }
     @Override
     public float designCost()         { return  missileBase().cost(colony.empire()); }
-    @Override
-    public float initiative()         { return isArmed() ? TechScanner.BATTLE_SCANNER_INITIATIVE : -1; }
+//    @Override
+//    public float initiative()         { return isArmed() ? TechScanner.BATTLE_SCANNER_INITIATIVE : -1; }
     @Override
     public boolean hasWard()          { return true; }
     @Override
@@ -175,7 +187,7 @@ public class CombatStackColony extends CombatStack {
         if(ignoreMissiles)
             return 0;
         //ail: take attack and defense into account
-        float hitPct = (5 + attackLevel - target.missileDefense) / 10;
+        float hitPct = (5 + attackLevel() - target.missileDefense()) / 10;
         hitPct = max(.05f, hitPct);
         //ail: each missile base fires 3 missiles, even in the estimate
         float missileDamage = hitPct * missile.estimatedKills(this, target, 3*num);

@@ -50,7 +50,7 @@ public class CombatStackMissile extends CombatStack implements ScaledInteger {
         y = ship.y;
         offsetX = ship.offsetX;
         offsetY = ship.offsetY;
-        attackLevel = ship.attackLevel();
+		attackLevel(ship.attackLevel());
 
         int imgW = s60;
         if (options().shipBasedMissiles() && empire().isEmpire()) {
@@ -65,10 +65,10 @@ public class CombatStackMissile extends CombatStack implements ScaledInteger {
             g.dispose();        	
         }
 
-        maxMove = miss.speed();
+		maxMove(miss.speed());
         //image = missile.image(num);
         turnsLeft = MAX_TURNS;
-        moveRate = target.maxMove() == 0 ? maxMove : maxMove / target.maxMove();
+        moveRate = target.maxMove() == 0 ? maxMove() : maxMove() / target.maxMove();
     }
     @Override
     public String fullName() {

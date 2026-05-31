@@ -315,7 +315,7 @@ public final class MonsterShipCaptain implements Base, ShipCaptain {
 	}
 	private List<FlightPath> allValidPathsTo(CombatStack st, int x1, int y1)	{
 		List<FlightPath> validPaths = new ArrayList<>();
-		allValidPaths(st.x, st.y, x1, y1, (int)st.maxMove, st, validPaths, null);
+		allValidPaths(st.x, st.y, x1, y1, (int)st.maxMove(), st, validPaths, null);
 		return validPaths;
 	}
 	private static FlightPath allValidPaths(int x0, int y0, int x1, int y1, int moves,

@@ -39,14 +39,16 @@ public final class CombatStackSpaceAmoeba extends CombatStackMonster {
 		hits(maxStackHits());
 		streamProjectorHits(0); // BR:
 		if (isMoO1Monster()) {
-			maxMove = move = 2;
-			beamDefense = 1;
-			missileDefense = 1;	 
+			move = 2;
+			maxMove(move);
+			beamDefense(1);
+			missileDefense(1);	 
 		}
 		else {
-			maxMove = move = 2;
-			beamDefense = 1;
-			missileDefense = 1;	 
+			move = 2;
+			maxMove(move);
+			beamDefense(1);
+			missileDefense(1);	 
 		}
 
 		reversed = random() < .5;

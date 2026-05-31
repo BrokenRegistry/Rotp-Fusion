@@ -18,6 +18,7 @@ package rotp.model.combat;
 import java.awt.Color;
 
 import rotp.model.ai.CrystalShipCaptain;
+import rotp.model.ai.interfaces.ShipCaptain;
 import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.ships.ShipWeaponMissileType;
@@ -39,12 +40,18 @@ public final class CombatStackSpaceCrystal extends CombatStackMonster {
         hits(maxStackHits());
         streamProjectorHits(0); // BR:
         canTeleport = true;
-        beamDefense = 1;
-        missileDefense = 1;
+        beamDefense(1);
+        missileDefense(1);
         maxShield = shield = 5.0f;
-        captain = new CrystalShipCaptain(monster);
+//        captain = new CrystalShipCaptain(monster);
         image = image(imageKey);
     }
+	@Override protected ShipCaptain getCaptain()		{
+		if (isMoO1Monster())
+			return super.getCaptain();
+		else
+			return new CrystalShipCaptain((SpaceMonster) fleet());
+	}
     @Override
 	public float missileInterceptPct(ShipWeaponMissileType wpn)   {
         return max(0, 0.75f - (0.01f * wpn.tech().level));
@@ -79,7 +86,7 @@ public final class CombatStackSpaceCrystal extends CombatStackMonster {
                     if (st.isShip() || st.isMonster() || st.isColony()) {
                         st.drawDamageTaken(dam, attackText);
                         st.takePulsarDamage(dam, 1);
-                        st.attackLevel = max(0, st.attackLevel-1);
+                        st.decComputerLevel(1);
                         st.repairPct = max(0, st.repairPct-0.05f);
                     }
                     if (st.isColony() && st.destroyed()) {

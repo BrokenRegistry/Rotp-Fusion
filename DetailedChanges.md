@@ -2,6 +2,14 @@
 
 ## What's New
 
+26-05-31 (BR)
+- Fixes related to space combat:
+  - Asteroids were sometimes displayed at the wrong position. (The one of the previous battle)
+  - Ship initiative is now correctly affected by technology nullifiers and warp dissipators.
+  - Missiles already launched are now affected when the ships that launched them are hit by technology nullifiers.
+  - Values in ship info bubble are now displayed without the extra decimal place.
+- Initiative and maneuverability have been added to ship information bubble.
+
 26-05-29 (BR)
 - Fixe: Ships destroyed by reaction fire continued to fire using their special weapons.
 - Fixed a potential issue with battles ending when the maximum number of turns is reached: it was incomplete.

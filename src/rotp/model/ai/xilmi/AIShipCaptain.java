@@ -238,7 +238,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
 
             if(currentTarget != null)
             {
-                if(stack.movePointsTo(currentTarget) + stack.maxMove > currentTarget.optimalFiringRange(stack) + currentTarget.maxMove)
+                if(stack.movePointsTo(currentTarget) + stack.maxMove() > currentTarget.optimalFiringRange(stack) + currentTarget.maxMove())
                     shouldPerformKiting = true;
                 if(!currentTarget.canPotentiallyAttack(stack))
                     shouldPerformKiting = false;
@@ -307,7 +307,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                 turnActive = false;
             }
             //ail: no more handling retreat from here, only kiting
-            if(stack.maxMove == stack.move && allWeaponsCanStillFire && stack.isShip() && !moved)
+            if(stack.maxMove() == stack.move && allWeaponsCanStillFire && stack.isShip() && !moved)
             {
                 if(currentTarget == null)
                 {
@@ -507,7 +507,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                     }
                     if(stack.repulsorRange() > 0)
                         shouldPerformKiting = true;
-                    if(stack.movePointsTo(target) + stack.maxMove > target.optimalFiringRange(stack) + target.maxMove)
+                    if(stack.movePointsTo(target) + stack.maxMove() > target.optimalFiringRange(stack) + target.maxMove())
                         shouldPerformKiting = true;
                     if(!target.canPotentiallyAttack(stack))
                         shouldPerformKiting = false;
@@ -748,7 +748,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                     continue;
                 if(enemy.isArmed())
                 {
-                    if(enemy.maxFiringRange(mine) + enemy.maxMove <= enemy.distanceTo(mine.x(), mine.y()))
+                    if(enemy.maxFiringRange(mine) + enemy.maxMove() <= enemy.distanceTo(mine.x(), mine.y()))
                     {
                         enemyCanAttackAnythingFromMe = true;
                         break;
@@ -758,11 +758,11 @@ public class AIShipCaptain implements Base, ShipCaptain {
         }
         if(!enemyCanAttackAnythingFromMe)
             shallGoForFirstStrike = true;
-        if(st.maxMove <= tgt.maxMove || st.canTeleport)
+        if(st.maxMove() <= tgt.maxMove() || st.canTeleport)
             shallGoForFirstStrike = false;
         if(st.move < st.movePointsTo(tgt) - st.optimalFiringRange(tgt) && shallGoForFirstStrike)
         {
-            int rangeToAssume = (int) (tgt.optimalFiringRange(st) + tgt.maxMove + 1);
+            int rangeToAssume = (int) (tgt.optimalFiringRange(st) + tgt.maxMove() + 1);
             if(rangeToAssume <= st.movePointsTo(tgt))
             {
                 distanceToBeAt = max(distanceToBeAt, rangeToAssume);
@@ -881,7 +881,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                 if (miss.target == currStack && (st.isShip() || st.isMonster()))
                 {
                     float hitPct;
-                    hitPct = (5 + miss.attackLevel - miss.target.missileDefense()) / 10;
+                    hitPct = (5 + miss.attackLevel() - miss.target.missileDefense()) / 10;
                     hitPct = max(.05f, hitPct);
                     hitPct = min(hitPct, 1.0f);
                     killPct += ((miss.maxDamage()-miss.target.shieldLevel())*miss.num*hitPct)/(miss.target.maxStackHits()*(miss.target.num - 1) + currStack.hits());
@@ -890,7 +890,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                     if(maxHit >= currStack.hits())
                     {
                         Point safestPoint = findSafestPoint(currStack);
-                        if(miss.maxMove * Math.max(1.0, miss.moveRate) + 0.7 < miss.distanceTo((float)safestPoint.x, (float)safestPoint.y))
+                        if(miss.maxMove() * Math.max(1.0, miss.moveRate) + 0.7 < miss.distanceTo((float)safestPoint.x, (float)safestPoint.y))
                         {
                             kiteMissiles = true;
                             //System.out.println(currStack.fullName()+" should kite missiles because "+(miss.maxMove*miss.moveRate+0.7)+" at x:"+miss.x()+" y:"+miss.y()+" < "+miss.distanceTo((float)safestPoint.x, (float)safestPoint.y)+" to x:"+safestPoint.x+" y: "+safestPoint.y+" Moverate: "+miss.moveRate );
@@ -1004,7 +1004,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
             if(col != null && col.empire() == st1.empire() && mgr.currentStack() != null)
                 if(col.movePointsTo(st1) == 1)
                     foesBlockPlanet++;
-            if(st1.inStasis || (st1.maneuverablity() == 0 && st1.isShip()))
+            if(st1.inStasis || (st1.maneuverability() == 0 && st1.isShip()))
                 continue;
             boolean previousCloakingState = st1.cloaked;
             st1.cloaked = false; //decloack in our mind for estimates
@@ -1059,7 +1059,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
         CombatStack invulnerableFriend = null;
 
         for (CombatStack st1 : friends) {
-            if(st1.inStasis || (st1.maneuverablity() == 0 && st1.isShip()))
+            if(st1.inStasis || (st1.maneuverability() == 0 && st1.isShip()))
                 continue;
             boolean previousCloakingState = st1.cloaked;
             st1.cloaked = false;
@@ -1173,7 +1173,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
     }
     public List<FlightPath> allValidPathsTo(CombatStack st, int x1, int y1) {
         List<FlightPath> validPaths = new ArrayList<>();
-        allValidPaths(st.x, st.y, x1, y1, (int)st.maxMove, st, validPaths, null);
+        allValidPaths(st.x, st.y, x1, y1, (int)st.maxMove(), st, validPaths, null);
         return validPaths;
     }
     private FlightPath allValidPaths(int x0, int y0, int x1, int y1, int moves, CombatStack stack, List<FlightPath> validPaths, FlightPath bestPath) {
@@ -1394,7 +1394,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
         float killPct = 0;
         for (CombatStackMissile miss: target.missiles()) {
             float hitPct;
-            hitPct = (5 + miss.attackLevel - miss.target.missileDefense()) / 10;
+            hitPct = (5 + miss.attackLevel() - miss.target.missileDefense()) / 10;
             hitPct = max(.05f, hitPct);
             hitPct = min(hitPct, 1.0f);
             killPct += ((miss.maxDamage()-miss.target.shieldLevel())*miss.num*hitPct)/(miss.target.maxStackHits()*miss.target.num);

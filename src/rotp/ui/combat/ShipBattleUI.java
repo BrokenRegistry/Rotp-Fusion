@@ -444,7 +444,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         int y = pad;
         int w = getWidth()-pad-pad;
         int h = getHeight()-pad-pad;
-
+        //mgr.redrawMap = true;
         if (mgr.redrawMap) {
             resetCombatBackground();
             Graphics g1 = combatBackground().getGraphics();
@@ -940,6 +940,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         int gridH = grid.height;
         int buttonW = gridW*9/20;
         int buttonH = (gridH-s21)/4;
+        int stepH = gridH/5;
 
         List<Rectangle> quickButtons = new ArrayList<>();
         for (int i=0;i<actions.size();i++) {
@@ -961,7 +962,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
 
         ShipView view = player().shipViewFor(target.design());
         if (view != null) {
-            overlayScanH = s100+s5; // space for title and combat stats
+            overlayScanH = s100+s20; // space for title and combat stats
             if (!view.weapons().isEmpty()) {
                 overlayScanH += s8;
                 overlayScanH += (view.weapons().size() * s13);
@@ -974,7 +975,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
 
         int w = grid.width+grid.width+s100+s20;
         int h = overlayHeaderH+overlayButtonH+overlayScanH+overlayFooterH;
-        int y = drawUpper ? grid.y + grid.height - h - (grid.height/5) : grid.y + (grid.height/5);
+        int y = drawUpper ? grid.y + gridH - h - stepH : grid.y + stepH;
         int x =  drawLeft ? grid.x - w : grid.x + grid.width;
 
         Color borderColor = friendlyBorderC;
@@ -1074,8 +1075,8 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         String lbl2 = text("SHIP_COMBAT_SCAN_SHIELD_CLASS");
         int currHits = (int) Math.ceil(target.hits());
         int maxHits = (int) Math.ceil(target.maxStackHits());
-        String val1 = currHits == maxHits ? "" + maxHits : ""+currHits+"/"+maxHits;
-        String val2 = view.shieldKnown() ? ""+target.shieldLevel() : unk;
+        String val1 = currHits == maxHits ? shortFmt(maxHits) : (int)currHits + "/" + (int)maxHits;
+        String val2 = view.shieldKnown() ? shortFmt(target.shieldLevel()) : unk;
         int sw1 = g.getFontMetrics().stringWidth(val1);
         int sw2 = g.getFontMetrics().stringWidth(val2);
         g.setColor(textColor);
@@ -1100,8 +1101,8 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         g.setColor(textColor);
         drawString(g,lbl1, x1a,y2+s12);
         drawString(g,lbl2, x1b,y2+s12);
-        val1 = view.missileDefenseKnown() ? "" +target.missileDefense() : unk;
-        val2 = view.attackLevelKnown() ? ""+target.attackLevel() : unk;
+        val1 = view.missileDefenseKnown() ? shortFmt(target.missileDefense()) : unk;
+        val2 = view.attackLevelKnown() ? shortFmt(target.attackLevel()) : unk;
         sw1 = g.getFontMetrics().stringWidth(val1);
         sw2 = g.getFontMetrics().stringWidth(val2);
         g.setColor(textColor);
@@ -1119,7 +1120,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
             g.fillOval(x1b+lblW+s5, y2+s2, s12, s12);
         }
 
-         y2 += s15;
+        y2 += s15;
         g.setColor(lineColor);
         g.fillRect(x1,y2,w1,s1);
 
@@ -1129,8 +1130,8 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         g.setColor(textColor);
         drawString(g,lbl1, x1a,y2+s12);
         drawString(g,lbl2, x1b,y2+s12);
-        val1 = view.beamDefenseKnown() ? ""+target.beamDefense() : unk;
-        val2 = view.combatSpeedKnown() ? ""+target.maxMove() : unk;
+        val1 = view.beamDefenseKnown() ? shortFmt(target.beamDefense()) : unk;
+        val2 = view.combatSpeedKnown() ? shortFmt(target.maxMove()) : unk;
         sw1 = g.getFontMetrics().stringWidth(val1);
         sw2 = g.getFontMetrics().stringWidth(val2);
         g.setColor(textColor);
@@ -1144,6 +1145,32 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
             g.setColor(CombatStack.shipBeamDefenseC);
             g.fillOval(x1a+lblW+s5, y2+s2, s12, s12);
         }
+
+		y2 += s15;
+		g.setColor(lineColor);
+		g.fillRect(x1,y2,w1,s1);
+
+		lbl1 = text("SHIP_COMBAT_SCAN_INITIATIVE");
+		lbl2 = text("SHIP_COMBAT_SCAN_MANEUVRABILITY");
+		g.setFont(narrowFont(12));
+		g.setColor(textColor);
+		drawString(g, lbl1, x1a, y2+s12);
+		drawString(g, lbl2, x1b, y2+s12);
+		val1 = view.attackLevelKnown() ? shortFmt(target.initiative()) : unk;
+		val2 = view.maneuverKnown() ? shortFmt(target.maneuverability()) : unk;
+		sw1 = g.getFontMetrics().stringWidth(val1);
+		sw2 = g.getFontMetrics().stringWidth(val2);
+		g.setColor(textColor);
+		drawString(g,lbl1, x1a,y2+s12);
+		drawString(g,val1, x1b-s10-sw1, y2+s12);
+		drawString(g,lbl2, x1b,y2+s12);
+		drawString(g,val2, x1+w1-sw2-s5, y2+s12);
+
+//		if (showTacticalInfo()) {
+//			int lblW = g.getFontMetrics().stringWidth(lbl1);
+//			g.setColor(CombatStack.shipBeamDefenseC);
+//			g.fillOval(x1a+lblW+s5, y2+s2, s12, s12);
+//		}
 
         y2 += s15;
         g.setColor(lineColor);

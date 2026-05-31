@@ -44,6 +44,14 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-05-31 (BR)
+- Fixes related to space combat:
+  - Asteroids were sometimes displayed at the wrong position. (The one of the previous battle)
+  - Ship initiative is now correctly affected by technology nullifiers and warp dissipators.
+  - Missiles already launched are now affected when the ships that launched them are hit by technology nullifiers.
+  - Values in ship info bubble are now displayed without the extra decimal place.
+- Initiative and maneuverability have been added to ship information bubble.
+
 26-05-29 (BR)
 - Fixe: Ships destroyed by reaction fire continued to fire using their special weapons.
 - Fixed a potential issue with battles ending when the maximum number of turns is reached: it was incomplete.
@@ -51,23 +59,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 26-05-28 (BR)
 - Fixes (attempt) to prevent a display offset bug.
 - Fix in “MoO1 Asteroids”: Missiles were slowing down above the asteroids (this was a forgotten debugging feature!)
-
-26-05-25 (BR)
-- The option to automate space battles, added on May 26, 2023, has been moved to the remnant.cfg file. (You may need to reset your preferences.)
-- During a space battle, a ship targeted by missiles will display a missile warning in the information panel, and incoming missiles will be highlighted with an animation.
-
-26-05-23 (BR)
-- Fixed a bug that caused retreating ships to leave the victorious faction in certain cases.
-  - This occurred when the retreating ships had never engaged in combat and none of the ships that had participated in the battle had retreated.
-- Fixed weapon action text that overflows the boxes.
-- New option to tell the combat automation to not target a colony that doesn't have missile bases.
-  - Later, when selecting the automation, you can change the default value. You can force a “Yes” by pressing the “Shift” key, or force a ‘No’ by pressing the “Control” key.
-
-26-05-21 (Xilmi)
-- Fix in retreat logic
-  - Ships that still can attack enemies with specials that deal no damage but not anything else will no longer want to stay in combat.
-- Bio-bomber-fix
-  - Bio-bombers shouldn't retreat if they can inflict damage to colonies with missile-bases.
 
 
 ### [Features Historic](FeaturesChanges.md)
