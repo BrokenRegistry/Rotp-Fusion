@@ -1482,9 +1482,9 @@ GNN_TITLE                         | Le Réseau d’actualités galactique [playe
 GNN_EMPIRE_RANKING                | %1. [empire_race_pluralnoun]
 GNN_EXTINCTION_KNOWN_VICTIM       | [victim_race_pluralnoun]
 GNN_EXTINCTION_KNOWN_KILLER       | [killer_race_pluralnoun]
-GNN_EXTINCTION_UNKNOWN_VICTIM     | Une civilisation inconnue
+GNN_EXTINCTION_UNKNOWN_VICTIM     | une civilisation inconnue
 GNN_EXTINCTION_UNKNOWN_KILLER     | un empire inconnu
-GNN_EXTINCTION                    | %1 ont été complètement éliminés par %2.
+GNN_EXTINCTION                    | %2 ont exterminé %1.
 GNN_EXTINCTION_NO_KILLER          | %1 a été complètement détruit.
 GNN_EXPANSION_1                   | [expanding_empire] couvre maintenant %1 systèmes stellaires, dépassant toutes les autres races.
 GNN_EXPANSION_2                   | [expanding_empire] compte maintenant %1 systèmes stellaires. Si leur expansion n’est pas contenue, ils contrôleront bientôt la galaxie.

@@ -8,6 +8,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-05-31 (BR)
+- Minor improvements to the French translation.
 - Fixes related to space combat:
   - Asteroids were sometimes displayed at the wrong position. (The one of the previous battle)
   - Ship initiative is now correctly affected by technology nullifiers and warp dissipators.

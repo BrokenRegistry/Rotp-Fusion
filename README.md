@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-05-31 (BR)
+- Minor improvements to the French translation.
 - Fixed a few rare null pointer exceptions that were reported to me.
   - An unexplained missing image key will no longer cause the image manager to crash.
   - An unexplained missing image will no longer cause the ground battle panel to crash.
