@@ -2480,7 +2480,7 @@ SETTINGS_RANDOM_EVENTS            | Random Events: %1
 SETTINGS_RESEARCH_RATE            | Research Rate: %1
 SETTINGS_COUNCIL_WIN              | Council Win: %1
 SETTINGS_RANDOMIZE_AI             | Randomize AI: %1
-SETTINGS_AUTOPLAY                 | Auto play: %1
+SETTINGS_AUTOPLAY                 | Auto play AI: %1
 SETTINGS_TECH_TRADING             | Tech Trading: %1
 SETTINGS_GALAXY_AGE               | Galaxy Age: %1
 SETTINGS_WARP_SPEED				| Warp Speed Progression: %1

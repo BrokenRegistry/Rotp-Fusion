@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-06-01 (BR)
+- Fixed an infinite loop that occurred when a destroyed ship continued to attempt to fire (a side effect of the fix implemented in version 05-29)
+- Fixed certain cases where ships were deployed outside the permitted range.
+
 26-05-31 (BR)
 - Minor improvements to the French translation.
 - Fixed a few rare null pointer exceptions that were reported to me.

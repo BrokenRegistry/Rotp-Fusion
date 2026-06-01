@@ -414,6 +414,8 @@
 
 ### Fixes:
 
+- Fixed an infinite loop that occurred when a destroyed ship continued to attempt to fire (a side effect of the fix implemented in version 05-29)
+- Fixed certain cases where ships were deployed outside the permitted range.
 - Fixed a few rare null pointer exceptions that were reported to me.
   - An unexplained missing image key will no longer cause the image manager to crash.
   - An unexplained missing image will no longer cause the ground battle panel to crash.

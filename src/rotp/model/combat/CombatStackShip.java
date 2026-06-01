@@ -425,7 +425,7 @@ public class CombatStackShip extends CombatStack {
 	}
     @Override
     public boolean selectBestWeapon(CombatStack target) {
-        if (target.destroyed())
+        if (destroyed() || target.destroyed())
             return false;
         if (shipComponentCanAttack(target, selectedWeaponIndex))
             return true;

@@ -92,6 +92,11 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
 		fromY(s.y());
 		reloadBombs();
 	}
+	public ShipFleet(int emp, int[] counts) { // Temporary fleet not to be sent
+		empId = emp;
+		for (int i=0; i<counts.length; i++)
+			num(i, counts[i]);
+	}
 
 	// =========================================================
 	// Local variables management
@@ -751,11 +756,11 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
     	float attackerDefenderRatio = attackerPower/defenderPower;
         return attackerDefenderRatio < securityFactor;
     }
-	public boolean canReach(StarSystem dest)	{
-		boolean inRange = empire().sv.withinRange(dest.id, range());
-		if (inRange && retreating()) {
-			return canSendTo(dest.id);
-		}
+	public boolean canReach(StarSystem dest)	{ return canReach(dest.id); }
+	public boolean canReach(int destId)			{
+		boolean inRange = empire().sv.withinRange(destId, range());
+		if (inRange && retreating())
+			return canSendTo(destId);
 		return inRange;
 	}
     public float travelTimeAdjusted(StarSystem to)	{ return travelTimeAdjusted(to, travelSpeed()); }

@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import rotp.Rotp;
 import rotp.model.colony.ColonyShipyard;
 import rotp.model.empires.Empire;
 import rotp.model.game.IGameOptions;
@@ -138,74 +139,22 @@ public class Ships implements Base, Serializable {
         }
         existingFleet.addShips(designId, count);
     }
- /*   public void deployShips(int empId, int sysId, int[] counts, int destSysId) {    
-        // get orbiting fleet to pull ships from
-        ShipFleet orbitingFleet = orbitingFleet(empId, sysId);
-        if (orbitingFleet == null) {
-            err("Attempting to deploy fleet from a system that has no orbiting fleet");
-            return;
-        }
-        
-        // adjust ship counts
-        int[] actual = new int[counts.length];
-        int totalDeployed = 0;
-        int totalOrbiting = 0;
-        for (int i=0;i<actual.length;i++) {
-            actual[i] = min(counts[i], orbitingFleet.num(i));
-            totalOrbiting += orbitingFleet.num(i);
-            totalDeployed += actual[i];
-        }
-        if (totalDeployed == 0) {
-            // err("Unable to deploy.. actual ships deployed = 0");
-            log("Unable to deploy.. actual ships deployed = 0");
-            return;
-        }
-
-        // if entire orbiting fleet is being deployed just use it
-        if (totalOrbiting == totalDeployed) {
-            orbitingFleet.destSysId(destSysId);
-            orbitingFleet.makeDeployed();
-            return;
-        }
-            
-        // else we create a new deployed fleet 
-        // else we create a new deployed subfleet from the source 
-        StarSystem sys = galaxy().system(sysId);
-        StarSystem destSys = galaxy().system(destSysId);
-        
-        // calculate warp speed of new fleet and travel turns to the destination
-        int minSpeed = 9;
-        Empire sourceEmp = orbitingFleet.empire();
-        for (int i=0; i<actual.length; i++) {
-            if (counts[i] > 0) 
-                minSpeed = min(minSpeed, sourceEmp.shipLab().design(i).warpSpeed());
-        }   
-        int turns = sourceEmp.travelTurnsAdjusted(sys, destSys, minSpeed);
-        // find any existing deployed fleets to that dest with the same travel turns
-        ShipFleet deployedFleet = deployedFleet(empId, sysId, destSysId, turns);    
-        
-        if (deployedFleet == null) {
-            deployedFleet = new ShipFleet(empId, sys);
-            deployedFleet.destSysId(destSysId);
-            deployedFleet.makeDeployed();
-            allFleets.add(deployedFleet);            
-            galaxy().empire(empId).addVisibleShip(deployedFleet);
-        }
-        
-        // transfer ships from orbiting to deplooyed fleet
-        for (int i=0; i<actual.length; i++) {
-            int startCount = orbitingFleet.num(i);
-            deployedFleet.num(i, actual[i]);
-            orbitingFleet.num(i, startCount-actual[i]);
-        }
-        deployedFleet.setArrivalTimeAdjusted();
-        // if source fleet is gone, remove it and subst session vars
-        if (orbitingFleet.isEmpty()) {
-            deleteFleet(orbitingFleet);
-            session().replaceVarValue(orbitingFleet, deployedFleet);
-        }
-    } */
+	private void logIllegalDeployment(ShipFleet fleet, int destSysId)	{
+		String txt = "Illegal Deployment Tentative of ";
+		txt += fleet;
+		txt += " to ";
+		txt += galaxy().system(destSysId).toString();
+		txt += "AI:";
+		txt += fleet.empire().getAiName();
+		log(txt);
+		Rotp.ifIDE(txt);
+	}
     public ShipFleet deployFleet(ShipFleet sourceFleet, int destSysId) {
+		if (!sourceFleet.canReach(destSysId)) {
+			logIllegalDeployment(sourceFleet, destSysId);
+			return sourceFleet;
+		}
+
         if (sourceFleet.inTransit()) {
             if (sourceFleet.canSend())
                 return redirectFleet(sourceFleet, destSysId);
@@ -257,6 +206,7 @@ public class Ships implements Base, Serializable {
         return deployedFleet;
     }
     public boolean deploySubfleet(ShipFleet sourceFleet, List<ShipDesign> designs, int destSysId) {
+		// Called from UI, no further range validation is needed
 		if (sourceFleet.sysId() == destSysId) {
 			if (sourceFleet.isOrbiting())
 				return false;
@@ -272,6 +222,14 @@ public class Ships implements Base, Serializable {
     public boolean deploySubfleet(ShipFleet sourceFleet, int[] counts, int destSysId) {
         // returns true if a new subfleet was created
         // adjust ship counts
+
+		int empId = sourceFleet.empId();
+		ShipFleet subFleet = new ShipFleet(empId, counts);
+		if (!subFleet.canReach(destSysId)) {
+			logIllegalDeployment(subFleet, destSysId);
+			return false;
+		}
+
         int[] actual = new int[MAX_DESIGNS];
         int totalDeployed = 0;
         int totalOrbiting = 0;
@@ -308,7 +266,6 @@ public class Ships implements Base, Serializable {
         int turns = sourceEmp.travelTurnsAdjusted(sys, destSys, minSpeed);
 
         // find any existing deployed fleets to that dest with the same travel turns
-        int empId = sourceFleet.empId();
         ShipFleet deployedFleet = deployedFleet(empId, sys.id, destSysId, turns);
 
         if (deployedFleet == null) {
@@ -343,7 +300,7 @@ public class Ships implements Base, Serializable {
         return true;
     }
     public ShipFleet redirectFleet(ShipFleet sourceFleet, int destSysId) {   
-        // else we create a new deployed subfleet from the source 
+		// Range validation has already be done
         float currX = sourceFleet.x();
         float currY = sourceFleet.y();
 
@@ -663,9 +620,9 @@ public class Ships implements Base, Serializable {
         }
         return null;
     }
-    ShipFleet retreatingFleet(int empId, int sysId, int destSysId) {
+    private ShipFleet retreatingFleet(int empId, int sysId, int destSysId) {
         List<ShipFleet> fleetsAll = allFleetsCopy();
-        
+
         for (ShipFleet fl: fleetsAll) {
             if (fl != null && (fl.empId() == empId) && (fl.sysId() == sysId) 
             		&& fl.isDeployed() && fl.retreating() && (fl.destSysId() == destSysId))

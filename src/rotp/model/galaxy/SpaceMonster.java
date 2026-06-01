@@ -199,6 +199,7 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 		}
 		g2.setStroke(prev);
 	}
+	@Override public boolean canReach(int sysId)	{ return true; }
 	@Override public boolean canSendTo(int sysId)	{ return false; }
 	@Override public float	 travelSpeed()			{ return travelSpeed; }
 	@Override public boolean visibleTo(int empId)	{ return true; }

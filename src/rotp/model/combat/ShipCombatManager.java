@@ -1295,7 +1295,7 @@ public class ShipCombatManager implements Base {
         st.teleportTo(x1,y1, 0.1f);
     }
     public void performAttackTarget(CombatStack st) {
-        while (st.selectBestWeapon(st.target)) 
+        while (st.selectBestWeapon(st.target))
             st.fireWeapon(st.target);
     }
     /* public void attackTarget(CombatStack st) {
