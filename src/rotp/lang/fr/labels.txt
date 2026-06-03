@@ -594,8 +594,8 @@ SETTINGS_MOD_DEBUG_NO_AUTOSAVE       | Stop "Sauve-Auto" : %1
 SETTINGS_MOD_DEBUG_NO_AUTOSAVE_DESC  | Désactiver la sauvegarde automatique de sécurité en arrière-plan. La sauvegarde doit être arrêtée indépendamment.
 
 SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY			| Problème d’affichage : %1
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_YES		| J'ai vu les lignes horizontale.
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_NO		| Je n'ai pas ce problème.
+SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_YES		| J’ai vu les lignes horizontale.
+SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_NO		| Je n’ai pas ce problème.
 SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_YES_DESC	| On va essayer de résoudre ce problème.
 SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_NO_DESC	| Cette option ne me concerne pas.
 SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_DESC		| Sur les systèmes Linux, des lignes horizontales peuvent parfois apparaître sur carte de la galaxie, dans la zone de d’accessibilité des vaisseaux.

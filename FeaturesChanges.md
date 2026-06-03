@@ -312,6 +312,7 @@
 
 ### User Interfaces:
 
+- Council panel: You can now vote by clicking on the candidate's picture.
 - Space combat: Initiative and maneuverability have been added to ship information bubble.
 - During a space battle, a ship targeted by missiles will display a missile warning in the information panel, and incoming missiles will be highlighted with an animation.
 - In the mass transport deployment panel, the troop bonus and colony size will be displayed along with the planet's information.

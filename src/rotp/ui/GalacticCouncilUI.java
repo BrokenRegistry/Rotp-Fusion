@@ -72,6 +72,8 @@ public final class GalacticCouncilUI extends FadeInPanel
     private final Rectangle summaryBox = new Rectangle();
     private final Rectangle continueBox = new Rectangle();
     private final Rectangle skipBox = new Rectangle();
+	private final Rectangle leader1Box = new Rectangle();
+	private final Rectangle leader2Box = new Rectangle();
     private final Rectangle candidate1Box = new Rectangle();
     private final Rectangle candidate2Box = new Rectangle();
     private final Rectangle abstainBox = new Rectangle();
@@ -143,6 +145,8 @@ public final class GalacticCouncilUI extends FadeInPanel
         voterListBox.setBounds(0,0,0,0);
         candidate1Box.setBounds(0,0,0,0);
         candidate2Box.setBounds(0,0,0,0);
+		leader1Box.setBounds(0,0,0,0);
+		leader2Box.setBounds(0,0,0,0);
         abstainBox.setBounds(0,0,0,0);
         acceptBox.setBounds(0,0,0,0);
         rejectBox.setBounds(0,0,0,0);
@@ -446,6 +450,8 @@ public final class GalacticCouncilUI extends FadeInPanel
         g.drawImage(img1, x3a, y3, w3, h3, null);
         g.drawImage(backImg, x3b, y3, w3, h3, null);
         g.drawImage(img2, x3b, y3, w3, h3, null);
+		leader1Box.setBounds(x3a, y3, w3, h3);
+		leader2Box.setBounds(x3b, y3, w3, h3);
 
         float[] dist = {0.0f, 0.5f, 1.0f};
         Color[] colors = {greenEdgeC, greenMidC, greenEdgeC};
@@ -1352,6 +1358,10 @@ public final class GalacticCouncilUI extends FadeInPanel
             hoverTarget = candidate1Box;      
         else if (candidate2Box.contains(x,y))  
             hoverTarget = candidate2Box;      
+		else if (leader1Box.contains(x,y))  
+			hoverTarget = candidate1Box;      
+		else if (leader2Box.contains(x,y))  
+			hoverTarget = candidate2Box;      
         else if (abstainBox.contains(x,y))   
             hoverTarget = abstainBox;      
         else if (acceptBox.contains(x,y))  
