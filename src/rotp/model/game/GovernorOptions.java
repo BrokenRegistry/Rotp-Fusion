@@ -20,53 +20,15 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	private static boolean callForRefresh	= false;
 	private static boolean callForReset		= false;
 
-	public enum GatesGovernor {
-		None,
-		Rich,
-		All
-	}
 	// The old options are kept Active for compatibility
 	// The new dynamic options are needed for multiple access
 	// Remnant.cfg options will be read once, the ignored.
 	// keep backwards compatibility with system properties
-//	private boolean governorOnByDefault = UserPreferences.governorOnByDefault();
-//	private boolean legacyGrowthMode = UserPreferences.legacyGrowth(); // BR: moved to remnant.cfg
-//	private boolean autotransport = "true".equalsIgnoreCase(System.getProperty("autotransport", "false"));
-//	private boolean autotransportXilmi = "true".equalsIgnoreCase(System.getProperty("autotransportXilmi", "false"));
-//	private boolean autotransportUngoverned = "true".equalsIgnoreCase(System.getProperty("autotransportUngoverned", "false"));
-//	private GatesGovernor gates = "false".equalsIgnoreCase(System.getProperty("autogate", "true")) ? GatesGovernor.None : GatesGovernor.Rich;
-//
-//	// 1.5x for destinations inside nebulae
-//	private int transportMaxTurns = 5;
-//	private boolean transportRichDisabled = true;
-//	private boolean transportPoorDouble = true;
-//
-//	private int minimumMissileBases = 0;
-//	private boolean shieldWithoutBases = false;
-//	private boolean autospend = UserPreferences.governorAutoSpendByDefault();
-//	private boolean autoApply = UserPreferences.S();
-//	private boolean autoInfiltrate = "true".equalsIgnoreCase(System.getProperty("autoInfiltrate", "true"));
-//	private boolean autoSpy = "true".equalsIgnoreCase(System.getProperty("autoSpy", "false"));
-//	private int reserve = 1000;
-// 
-//	private boolean shipbuilding = true;
-//
-//	// if true, automatically scout new planets
-//	private boolean autoScout = true;
-//	// if true, automatically colonize new planets
-//	private boolean autoColonize = true;
-//	// if true, send ships to enemy colonies
-//	private boolean autoAttack = false;
-//	// How many ships should Auto* missions send?
-//	private int autoScoutShipCount  = 1;
-//	private int autoColonyShipCount = 1;
-//	private int autoAttackShipCount = 1;
 	private boolean governorOnByDefault		= isGovernorOnByDefault();
 	private boolean legacyGrowthMode		= legacyGrowthMode();
 	private boolean autotransport			= isAutotransportFull();
 	private boolean autotransportXilmi		= isAutotransportAI();
 	private boolean autotransportUngoverned	= isAutotransportUngoverned();
-	private GatesGovernor gates				= getGates();
 
 	// 1.5x for destinations inside nebulae
 	private int 	transportMaxTurns		= getTransportMaxTurns();
@@ -129,7 +91,6 @@ public class GovernorOptions implements Serializable, IGovOptions {
 			transportNoRich.silentSet(transportRichDisabled);
 			transportPoorX2.silentSet(transportPoorDouble);
 			transportMaxDist.silentSet(transportMaxTurns);
-			starGateOption.silentSet(gates.name());
 			missileBasesMin.silentSet(minimumMissileBases);
 			shieldAlones.silentSet(shieldWithoutBases);
 			autoSpend.silentSet(autospend);
@@ -227,21 +188,17 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public int		getTransportMaxTurns()			{ return transportMaxDist.get(); }
 	public void		setTransportMaxTurns(int i)		{ transportMaxDist.silentSet(i); }
 
-	public GatesGovernor getGates()					{
-		String gate = starGateOption.get();
-		for (GatesGovernor value: GatesGovernor.values())
-			if (gate.equalsIgnoreCase(value.name()))
-				return value;
-		return GatesGovernor.Rich; // Default Value
-	}
-	public void		setGates(GatesGovernor gates)	{ starGateOption.silentSet(gates.name()); }
+	public String	getGates()						{ return starGateOption.get(); }
+	public void		setGates(String gates)			{ starGateOption.silentSet(gates); }
+	public boolean	governorCanBuildGates()			{ return !getGates().equals(IGovOptions.STARGATES_NONE); }
 	public boolean	shouldBuildGate(Colony col)		{
 		if (!col.shipyard().canBuildStargate())
 			return false;
 		switch (getGates()) {
-			case All:	return true;
-			case None:	return false;
-			case Rich:
+			case IGovOptions.STARGATES_ALL:			return true;
+			case IGovOptions.STARGATES_NONE:		return false;
+			case IGovOptions.STARGATES_ULTRA_RICH:	return col.planet().isResourceUltraRich();
+			case IGovOptions.STARGATES_RICH:
 				Planet p = col.planet();
 				return p.isResourceRich() || p.isResourceUltraRich();
 		}

@@ -1589,7 +1589,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
             }
         }
         drawSkipText(g, true);
-        clearCustomShipSounds(); // TODO BR: Validate clearCustomShipSounds()
+        clearCustomShipSounds();
     }
     private void drawMonsterResult(Graphics2D g, SpaceMonster monster, int x, int y, int w, int h) {
         Image img = monster.image();

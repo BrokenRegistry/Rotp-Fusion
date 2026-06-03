@@ -34,14 +34,14 @@ final class GovOptions extends AbstractOptionsSubUI {
 		map.add(new SafeListParam(Arrays.asList(				
 				new ParamTitle(HEAD_ID + "INTELLIGENCE_OPTIONS"),
 				auto_Infiltrate, auto_Spy, respectPromises,
-				
+
 				HEADER_SPACER_50,
 				new ParamTitle(HEAD_ID + "FLEET_OPTIONS"),
 				// autoShipsByDefault,	// TODO: for future use
 				auto_Scout, autoScoutCount,
 				govAutoColonize, autoColonyCount,
 				auto_Attack, autoAttackCount,
-				
+
 				HEADER_SPACER_50,
 				new ParamTitle(HEAD_ID + "STARGATES_OPTIONS"),
 				starGateOption,

@@ -2480,7 +2480,7 @@ SETTINGS_RANDOM_EVENTS            | Événements aléatoires : %1
 SETTINGS_RESEARCH_RATE            | Vitesse de la recherche : %1
 SETTINGS_COUNCIL_WIN              | Victoire par élection : %1
 SETTINGS_RANDOMIZE_AI             | IA aléatoire : %1
-SETTINGS_AUTOPLAY                 | L’IA joue pour vous : %1
+SETTINGS_AUTOPLAY				| L’IA qui joue pour vous : %1
 SETTINGS_TECH_TRADING             | Échanges de technologies : %1
 SETTINGS_GALAXY_AGE               | Âge de la galaxie : %1
 SETTINGS_WARP_SPEED				| Vitesse de distorsion : %1
@@ -5654,23 +5654,22 @@ GOVERNOR_TRANSPORT_MAX_TURNS_NEBULA_TT     | →GOVERNOR_TRANSPORT_MAX_TURNS_DES
 HEADERS_GOVERNOR_STARGATES_OPTIONS_DESC | Options de portes des étoiles
 HEADERS_GOVERNOR_STARGATES_OPTIONS      | ~~~ PORTES DES ÉTOILES ~~~
 GOVERNOR_STARGATES_OPTIONS_LABEL        | Portes des étoiles
-GOVERNOR_STARGATES_OPTIONS_TT           | Où l’IA devrait-elle construire des portes des étoiles ?
+GOVERNOR_STARGATES_OPTIONS_TT			| Dans quelles colonies le gouverneur devrait-il construire les portes des étoiles ?
 
-GOVERNOR_STARGATES_OPTIONS_DESC      | Quelles colonies vont construire automatiquement des portes des étoiles ?
-GOVERNOR_STARGATES_OPTIONS           | Construire les portes des étoiles : %1
-GOVERNOR_STARGATES_NONE              | Aucunes
-GOVERNOR_STARGATES_RICH              | Riches
-GOVERNOR_STARGATES_ALL               | Toutes
-GOVERNOR_STARGATES_NONE_HELP         | Ne jamais construire de portes des étoiles.
-GOVERNOR_STARGATES_RICH_HELP         | Construire des portes des étoiles sur les planètes riches et ultra riches.
-GOVERNOR_STARGATES_ALL_HELP          | Construire des portes des étoiles sur toutes les planètes.
-GOVERNOR_STARGATES_NONE_LABEL        | Ne jamais en construire
-GOVERNOR_STARGATES_RICH_LABEL        | Construire des portes des étoiles sur les planètes riches et ultra riches.
-GOVERNOR_STARGATES_ALL_LABEL         | Sur toutes les planètes
-GOVERNOR_STARGATES_RICH_1_LABEL      | Sur les planètes riches
-GOVERNOR_STARGATES_RICH_2_LABEL      | et ultra riches
-GOVERNOR_STARGATES_RICH_1_TT         | →GOVERNOR_STARGATES_RICH_HELP←
-GOVERNOR_STARGATES_RICH_2_TT         | →GOVERNOR_STARGATES_RICH_HELP←
+GOVERNOR_STARGATES_OPTIONS_DESC			| Dans quelles colonies le gouverneur devrait-il construire les portes des étoiles ?
+GOVERNOR_STARGATES_OPTIONS				| Colonies avec portes des étoiles : %1
+GOVERNOR_STARGATES_NONE					| Aucunes
+GOVERNOR_STARGATES_ULTRA_RICH			| Ultra Riches
+GOVERNOR_STARGATES_RICH					| Riches
+GOVERNOR_STARGATES_ALL					| Toutes
+GOVERNOR_STARGATES_NONE_HELP			| Le gouverneur ne construira jamais de portes des étoiles.
+GOVERNOR_STARGATES_ULTRA_RICH_HELP		| Le gouverneur construira des portes des étoiles uniquement sur les planètes ultra riches.
+GOVERNOR_STARGATES_RICH_HELP			| Le gouverneur construira des portes des étoiles sur les planètes riches et ultra riches.
+GOVERNOR_STARGATES_ALL_HELP				| Le gouverneur construira des portes des étoiles sur toutes les planètes.
+GOVERNOR_STARGATES_NONE_LABEL			| Aucunes
+GOVERNOR_STARGATES_ULTRA_RICH_LABEL		| Ultra Riches
+GOVERNOR_STARGATES_RICH_LABEL			| Riches & Ultra riches
+GOVERNOR_STARGATES_ALL_LABEL			| Partout
 
 HEADERS_GOVERNOR_COLONY_OPTIONS_DESC | Options des colonies.
 HEADERS_GOVERNOR_COLONY_OPTIONS      | ~~~ OPTIONS DES COLONIES ~~~

@@ -322,9 +322,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="stargateOff" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="stargateRich" linkSize="20" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="stargateUltraRich" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="stargateRich" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="stargateOn" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel1" linkSize="20" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -335,9 +335,9 @@
               <Group type="102" alignment="0" attributes="0">
                   <Component id="stargateOff" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="stargateUltraRich" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="stargateRich" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="stargateOn" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
@@ -351,11 +351,23 @@
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="stargateOptions"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Never build stargates"/>
+            <Property name="text" type="java.lang.String" value="Never build Stargates"/>
             <Property name="name" type="java.lang.String" value="STARGATES_NONE" noResource="true"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stargateOffActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="stargateUltraRich">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="stargateOptions"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="On Ultra Rich Planets"/>
+            <Property name="name" type="java.lang.String" value="STARGATES_ULTRA_RICH" noResource="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stargateUltraRichActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JRadioButton" name="stargateRich">
@@ -363,8 +375,8 @@
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="stargateOptions"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Build stargates on Rich"/>
-            <Property name="name" type="java.lang.String" value="STARGATES_RICH_1" noResource="true"/>
+            <Property name="text" type="java.lang.String" value="On Rich &amp; Ultra Rich"/>
+            <Property name="name" type="java.lang.String" value="STARGATES_RICH" noResource="true"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stargateRichActionPerformed"/>
@@ -381,13 +393,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stargateOnActionPerformed"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel1">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="and Ultra Rich planets"/>
-            <Property name="name" type="java.lang.String" value="STARGATES_RICH_2" noResource="true"/>
-          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -497,25 +502,25 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace pref="7" max="32767" attributes="0"/>
+                  <EmptySpace pref="9" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="autoScoutShipCount" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoScoutShipCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoScout" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="7" max="32767" attributes="0"/>
+                  <EmptySpace pref="9" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="autoColonize" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoColonyShipCount" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoColonyShipCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="7" max="32767" attributes="0"/>
+                  <EmptySpace pref="9" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="autoAttackShipCount" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoAttackShipCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoAttack" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="8" max="32767" attributes="0"/>
+                  <EmptySpace pref="10" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -644,18 +649,13 @@
                           <Component id="missileBasesLabel" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="terraformEarly" max="32767" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="terraformEarlyLabel" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="shipbuilding" alignment="0" max="-2" attributes="0"/>
-                              <Component id="shieldWithoutBases" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="legacyGrowthMode" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="terraformEarly" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="terraformEarlyLabel" max="32767" attributes="0"/>
                       </Group>
+                      <Component id="shipbuilding" alignment="0" max="-2" attributes="0"/>
+                      <Component id="shieldWithoutBases" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="legacyGrowthMode" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -1003,7 +1003,7 @@
                       <Component id="brightnessPct" linkSize="6" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="brightnessLabel" linkSize="6" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <EmptySpace pref="8" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

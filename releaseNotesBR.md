@@ -7,6 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-06-03 (BR)
+- Governor Stargate building can now be set to Ultra Rich only.
+
 26-06-01 (BR)
 - Fixed an infinite loop that occurred when a destroyed ship continued to attempt to fire (a side effect of the fix implemented in version 05-29)
 - Fixed certain cases where ships were deployed outside the permitted range.

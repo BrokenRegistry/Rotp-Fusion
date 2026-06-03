@@ -17,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import rotp.Rotp;
 import rotp.model.empires.species.SettingString;
 import rotp.ui.BasePanel;
 import rotp.ui.game.GameUI;
@@ -162,7 +163,7 @@ public class RotPTextFields { //extends RotPComponents {
 			if (param!= null)
 				param.selectedValue(currentId, getText());
 			else
-				System.out.println("Failed textChangedAction(): " + getText() + " Id = " + currentId); // TODO BR: REMOVE
+				Rotp.ifIDE("Failed textChangedAction(): " + getText() + " Id = " + currentId);
 		}
 	}
 }

@@ -12,7 +12,6 @@ import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
 import rotp.model.galaxy.Galaxy;
 import rotp.model.galaxy.ShipFleet;
-import rotp.model.game.GovernorOptions.GatesGovernor;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
 import rotp.ui.util.ParamBoolean;
@@ -41,13 +40,20 @@ public interface IGovOptions {
 			.setIncrements(1, 3, 5);
 
 	// StarGates Options
-	// Using an Enum object instead of a list will break the game save if the enum is changed! 
+	// Using an Enum object instead of a list will break the game save if the enum is changed!
+	
+	String STARGATES_NONE		= "None";
+	String STARGATES_ULTRA_RICH	= "Ultra Rich";
+	String STARGATES_RICH		= "Rich";
+	String STARGATES_ALL		= "All";
 	ParamList	 starGateOption		= initStarGateOption();
 	static ParamList initStarGateOption() {
-		ParamList list = new ParamList(GOV_UI, "STARGATES_OPTIONS", GatesGovernor.Rich.name());
+		ParamList list = new ParamList(GOV_UI, "STARGATES_OPTIONS", STARGATES_RICH);
 		list.showFullGuide(true);
-		for (GatesGovernor value: GatesGovernor.values())
-			list.put(value.name(), GOV_UI + "STARGATES_" + value.name().toUpperCase());
+		list.put(STARGATES_NONE,		GOV_UI + "STARGATES_" + STARGATES_NONE);
+		list.put(STARGATES_ULTRA_RICH,	GOV_UI + "STARGATES_" + STARGATES_ULTRA_RICH);
+		list.put(STARGATES_RICH,		GOV_UI + "STARGATES_" + STARGATES_RICH);
+		list.put(STARGATES_ALL,			GOV_UI + "STARGATES_" + STARGATES_ALL);
 		return list;
 	}
 

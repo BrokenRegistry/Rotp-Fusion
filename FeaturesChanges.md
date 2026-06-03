@@ -216,6 +216,7 @@
 
 ### Governor:
 
+- Governor Stargate building can now be set to Ultra Rich only.
 - New option to tell the combat automation to not target a colony that doesn't have missile bases.
   - Later, when selecting the automation, you can change the default value. You can force a “Yes” by pressing the “Shift” key, or force a ‘No’ by pressing the “Control” key.
 - New auto-colonization tuning options:

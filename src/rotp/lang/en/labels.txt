@@ -2480,7 +2480,7 @@ SETTINGS_RANDOM_EVENTS            | Random Events: %1
 SETTINGS_RESEARCH_RATE            | Research Rate: %1
 SETTINGS_COUNCIL_WIN              | Council Win: %1
 SETTINGS_RANDOMIZE_AI             | Randomize AI: %1
-SETTINGS_AUTOPLAY                 | Auto play AI: %1
+SETTINGS_AUTOPLAY				| AI for Auto play: %1
 SETTINGS_TECH_TRADING             | Tech Trading: %1
 SETTINGS_GALAXY_AGE               | Galaxy Age: %1
 SETTINGS_WARP_SPEED				| Warp Speed Progression: %1
@@ -5654,23 +5654,22 @@ GOVERNOR_TRANSPORT_MAX_TURNS_NEBULA_TT     | →GOVERNOR_TRANSPORT_MAX_TURNS_DES
 HEADERS_GOVERNOR_STARGATES_OPTIONS_DESC | Stargates Options.
 HEADERS_GOVERNOR_STARGATES_OPTIONS      | ~~~ STARGATES OPTIONS ~~~
 GOVERNOR_STARGATES_OPTIONS_LABEL        | Stargates Options
-GOVERNOR_STARGATES_OPTIONS_TT           | Where should the AI ​​build Stargates?
+GOVERNOR_STARGATES_OPTIONS_TT			| On which colonies should the governor build the stargates?
 
-GOVERNOR_STARGATES_OPTIONS_DESC      | To select when the stargates should be build automatically.
-GOVERNOR_STARGATES_OPTIONS           | Gates Built: %1
-GOVERNOR_STARGATES_NONE              | Never
-GOVERNOR_STARGATES_RICH              | Rich
-GOVERNOR_STARGATES_ALL               | All
-GOVERNOR_STARGATES_NONE_HELP         | Never build stargates.
-GOVERNOR_STARGATES_RICH_HELP         | Build stargates on Rich and Ultra Rich planets.
-GOVERNOR_STARGATES_ALL_HELP          | Always build stargates.
-GOVERNOR_STARGATES_NONE_LABEL        | Never build stargates
-GOVERNOR_STARGATES_RICH_LABEL        | Build stargates on Rich and Ultra Rich planets
-GOVERNOR_STARGATES_ALL_LABEL         | Always build stargates
-GOVERNOR_STARGATES_RICH_1_LABEL      | Build stargates on Rich
-GOVERNOR_STARGATES_RICH_2_LABEL      | and Ultra Rich planets
-GOVERNOR_STARGATES_RICH_1_TT         | →GOVERNOR_STARGATES_RICH_HELP←
-GOVERNOR_STARGATES_RICH_2_TT         | →GOVERNOR_STARGATES_RICH_HELP←
+GOVERNOR_STARGATES_OPTIONS_DESC			| On which colonies should the governor build the stargates?
+GOVERNOR_STARGATES_OPTIONS				| Gates Built: %1
+GOVERNOR_STARGATES_NONE					| Never
+GOVERNOR_STARGATES_ULTRA_RICH			| Ultra Rich
+GOVERNOR_STARGATES_RICH					| Rich
+GOVERNOR_STARGATES_ALL					| All
+GOVERNOR_STARGATES_NONE_HELP			| The governor will never build stargates.
+GOVERNOR_STARGATES_ULTRA_RICH_HELP		| The governor will build stargates only on Ultra Rich planets.
+GOVERNOR_STARGATES_RICH_HELP			| The governor will build stargates on Rich and Ultra Rich planets.
+GOVERNOR_STARGATES_ALL_HELP				| The governor will build stargates on all the planets.
+GOVERNOR_STARGATES_NONE_LABEL			| Never build stargates
+GOVERNOR_STARGATES_ULTRA_RICH_LABEL		| On Ultra Rich planets
+GOVERNOR_STARGATES_RICH_LABEL			| On Rich & Ultra Rich
+GOVERNOR_STARGATES_ALL_LABEL			| Always build stargates
 
 HEADERS_GOVERNOR_COLONY_OPTIONS_DESC | Colony Options.
 HEADERS_GOVERNOR_COLONY_OPTIONS      | ~~~ COLONY OPTIONS ~~~

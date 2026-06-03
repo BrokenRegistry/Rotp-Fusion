@@ -1024,7 +1024,7 @@ public class CombatStack implements Base {
 
         return shieldArr;
     }
-	public List<CombatStackMissile> targetingMissiles()	{ // TODO BR: Try to memorize
+	public List<CombatStackMissile> targetingMissiles()	{
 		List<CombatStackMissile> list = new ArrayList<>();
 		for (CombatStack st: mgr.activeStacks())
 			for (CombatStackMissile miss: st.missiles())

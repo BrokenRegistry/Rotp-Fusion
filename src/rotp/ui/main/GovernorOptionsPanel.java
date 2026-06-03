@@ -56,6 +56,7 @@ import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.GameSession;
 import rotp.model.game.GovernorOptions;
+import rotp.model.game.IGovOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.game.GameUI;
 import rotp.ui.options.AllSubUI;
@@ -695,14 +696,17 @@ public class GovernorOptionsPanel extends BasePanel{
 
 		// StarGates Options
 		switch (govOptions().getGates()) {
-			case None:
-				this.stargateOff.setSelected(true);
+			case IGovOptions.STARGATES_ALL:
+				stargateOn.setSelected(true);
 				break;
-			case Rich:
-				this.stargateRich.setSelected(true);
+			case IGovOptions.STARGATES_NONE:
+				stargateOff.setSelected(true);
 				break;
-			case All:
-				this.stargateOn.setSelected(true);
+			case IGovOptions.STARGATES_ULTRA_RICH:
+				stargateUltraRich.setSelected(true);
+				break;
+			case IGovOptions.STARGATES_RICH:
+				stargateRich.setSelected(true);
 				break;
 		}
 
@@ -789,11 +793,13 @@ public class GovernorOptionsPanel extends BasePanel{
 	}								   
 	private void applyStargates() {// BR: 
 		if (stargateOff.isSelected())
-			govOptions().setGates(GovernorOptions.GatesGovernor.None);
+			govOptions().setGates(IGovOptions.STARGATES_NONE);
+		else if (stargateUltraRich.isSelected())
+			govOptions().setGates(IGovOptions.STARGATES_ULTRA_RICH);
 		else if (stargateRich.isSelected())
-			govOptions().setGates(GovernorOptions.GatesGovernor.Rich);
+			govOptions().setGates(IGovOptions.STARGATES_RICH);
 		else if (stargateOn.isSelected())
-			govOptions().setGates(GovernorOptions.GatesGovernor.All);
+			govOptions().setGates(IGovOptions.STARGATES_ALL);
 	}
 
 	// ========== Completionist tools ==========
@@ -858,9 +864,9 @@ public class GovernorOptionsPanel extends BasePanel{
         allGovernorsOff = new JButton();
         JPanel stargatePanel = new JPanel();
         stargateOff = new JRadioButton();
+        stargateUltraRich = new JRadioButton();
         stargateRich = new JRadioButton();
         stargateOn = new JRadioButton();
-        jLabel1 = new JLabel();
         okButton = new JButton();
         cancelButton = new JButton();
         completionist = new JButton();
@@ -908,8 +914,7 @@ public class GovernorOptionsPanel extends BasePanel{
         governorDefault.setText("Governor is on by default");
         governorDefault.setName("ON_BY_DEFAULT"); // NOI18N
         governorDefault.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 governorDefaultActionPerformed(evt);
             }
         });
@@ -921,22 +926,19 @@ public class GovernorOptionsPanel extends BasePanel{
         autotransportFull.setMinimumSize(new Dimension(0, 0));
         autotransportFull.setName("AUTOTRANSPORT_GOV"); // NOI18N
         autotransportFull.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 autotransportFullActionPerformed(evt);
             }
         });
 
         transportMaxTurns.setModel(new SpinnerNumberModel(15, 1, 15, 1));
         transportMaxTurns.addChangeListener(new ChangeListener() {
-            @Override
-			public void stateChanged(ChangeEvent evt) {
+            public void stateChanged(ChangeEvent evt) {
                 transportMaxTurnsStateChanged(evt);
             }
         });
         transportMaxTurns.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-			public void mouseWheelMoved(MouseWheelEvent evt) {
+            public void mouseWheelMoved(MouseWheelEvent evt) {
                 transportMaxTurnsMouseWheelMoved(evt);
             }
         });
@@ -944,8 +946,7 @@ public class GovernorOptionsPanel extends BasePanel{
         transportMaxTurnsLabel.setText("Maximum transport distance in turns");
         transportMaxTurnsLabel.setName("TRANSPORT_MAX_TURNS"); // NOI18N
         transportMaxTurnsLabel.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-			public void mouseWheelMoved(MouseWheelEvent evt) {
+            public void mouseWheelMoved(MouseWheelEvent evt) {
                 transportMaxTurnsLabelMouseWheelMoved(evt);
             }
         });
@@ -956,8 +957,7 @@ public class GovernorOptionsPanel extends BasePanel{
         transportRichDisabled.setText("Don't send from Rich/Artifacts planets");
         transportRichDisabled.setName("TRANSPORT_RICH_OFF"); // NOI18N
         transportRichDisabled.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 transportRichDisabledActionPerformed(evt);
             }
         });
@@ -965,8 +965,7 @@ public class GovernorOptionsPanel extends BasePanel{
         transportPoorDouble.setText("Send double from Poor planets");
         transportPoorDouble.setName("TRANSPORT_POOR_DBL"); // NOI18N
         transportPoorDouble.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 transportPoorDoubleActionPerformed(evt);
             }
         });
@@ -974,8 +973,7 @@ public class GovernorOptionsPanel extends BasePanel{
         autotransportAI.setText("Let AI handle population transportation (Xilmi AI)");
         autotransportAI.setName("AUTO_TRANSPORT"); // NOI18N
         autotransportAI.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 autotransportAIActionPerformed(evt);
             }
         });
@@ -983,8 +981,7 @@ public class GovernorOptionsPanel extends BasePanel{
         allowUngoverned.setText("Allow sending population from ungoverned colonies");
         allowUngoverned.setName("TRANSPORT_UNGOVERNED"); // NOI18N
         allowUngoverned.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 allowUngovernedActionPerformed(evt);
             }
         });
@@ -1029,8 +1026,7 @@ public class GovernorOptionsPanel extends BasePanel{
         allGovernorsOn.setText("All Governors ON");
         allGovernorsOn.setName("ALL_GOVERNORS_ON"); // NOI18N
         allGovernorsOn.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 allGovernorsOnActionPerformed(evt);
             }
         });
@@ -1038,8 +1034,7 @@ public class GovernorOptionsPanel extends BasePanel{
         allGovernorsOff.setText("All Governors OFF");
         allGovernorsOff.setName("ALL_GOVERNORS_OFF"); // NOI18N
         allGovernorsOff.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 allGovernorsOffActionPerformed(evt);
             }
         });
@@ -1048,21 +1043,28 @@ public class GovernorOptionsPanel extends BasePanel{
         stargatePanel.setName("STARGATES_OPTIONS"); // NOI18N
 
         stargateOptions.add(stargateOff);
-        stargateOff.setText("Never build stargates");
+        stargateOff.setText("Never build Stargates");
         stargateOff.setName("STARGATES_NONE"); // NOI18N
         stargateOff.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 stargateOffActionPerformed(evt);
             }
         });
 
+        stargateOptions.add(stargateUltraRich);
+        stargateUltraRich.setText("On Ultra Rich Planets");
+        stargateUltraRich.setName("STARGATES_ULTRA_RICH"); // NOI18N
+        stargateUltraRich.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                stargateUltraRichActionPerformed(evt);
+            }
+        });
+
         stargateOptions.add(stargateRich);
-        stargateRich.setText("Build stargates on Rich");
-        stargateRich.setName("STARGATES_RICH_1"); // NOI18N
+        stargateRich.setText("On Rich & Ultra Rich");
+        stargateRich.setName("STARGATES_RICH"); // NOI18N
         stargateRich.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 stargateRichActionPerformed(evt);
             }
         });
@@ -1071,15 +1073,10 @@ public class GovernorOptionsPanel extends BasePanel{
         stargateOn.setText("Always build stargates");
         stargateOn.setName("STARGATES_ALL"); // NOI18N
         stargateOn.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 stargateOnActionPerformed(evt);
             }
         });
-
-        jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
-        jLabel1.setText("and Ultra Rich planets");
-        jLabel1.setName("STARGATES_RICH_2"); // NOI18N
 
         GroupLayout stargatePanelLayout = new GroupLayout(stargatePanel);
         stargatePanel.setLayout(stargatePanelLayout);
@@ -1088,21 +1085,18 @@ public class GovernorOptionsPanel extends BasePanel{
                 .addContainerGap()
                 .addGroup(stargatePanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(stargateOff)
+                    .addComponent(stargateUltraRich)
                     .addComponent(stargateRich)
-                    .addComponent(stargateOn)
-                    .addComponent(jLabel1, GroupLayout.Alignment.TRAILING))
+                    .addComponent(stargateOn))
                 .addContainerGap())
         );
-
-        stargatePanelLayout.linkSize(SwingConstants.HORIZONTAL, new Component[] {jLabel1, stargateRich});
-
         stargatePanelLayout.setVerticalGroup(stargatePanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(stargatePanelLayout.createSequentialGroup()
                 .addComponent(stargateOff)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(stargateUltraRich)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(stargateRich)
-                .addGap(0, 0, 0)
-                .addComponent(jLabel1)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(stargateOn)
                 .addGap(0, 0, 0))
@@ -1112,8 +1106,7 @@ public class GovernorOptionsPanel extends BasePanel{
         okButton.setToolTipText("Apply settings and close the GUI");
         okButton.setName("OK_BUTTON"); // NOI18N
         okButton.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
@@ -1121,8 +1114,7 @@ public class GovernorOptionsPanel extends BasePanel{
         cancelButton.setText("Cancel");
         cancelButton.setName("CANCEL_BUTTON"); // NOI18N
         cancelButton.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
@@ -1131,8 +1123,7 @@ public class GovernorOptionsPanel extends BasePanel{
         completionist.setToolTipText("<html>\nI like completing games fully. <br/>\nAllow all Empires to Research the following Technologies:<br/>\n<br/>\nControlled Irradiated Environment<br/>\nAtmospheric Terraforming<br/>\nComplete Terraforming<br/>\nAdvanced Soil Enrichment<br/>\nIntergalactic Star Gates<br/>\n<br/>\nMore than 30% of the Galaxy needs to be colonized.<br/>\nPlayer must control more than 50% of colonized systems.<br/>\nPlayer must have completed all Research in their Tech Tree (Future Techs too).<br/>\n</html>");
         completionist.setName("COMPLETIONIST_TECHNOLOGIES"); // NOI18N
         completionist.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 completionistActionPerformed(evt);
             }
         });
@@ -1141,8 +1132,7 @@ public class GovernorOptionsPanel extends BasePanel{
         applyButton.setToolTipText("Apply settings and keep GUI open");
         applyButton.setName("APPLY_BUTTON"); // NOI18N
         applyButton.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 applyButtonActionPerformed(evt);
             }
         });
@@ -1152,8 +1142,7 @@ public class GovernorOptionsPanel extends BasePanel{
         autoApplyToggleButton.setToolTipText("For the settings to be applied live.");
         autoApplyToggleButton.setName("AUTO_APPLY"); // NOI18N
         autoApplyToggleButton.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 autoApplyToggleButtonActionPerformed(evt);
             }
         });
@@ -1164,8 +1153,7 @@ public class GovernorOptionsPanel extends BasePanel{
         autoScout.setText("Auto Scout");
         autoScout.setName("AUTO_SCOUT"); // NOI18N
         autoScout.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 autoScoutActionPerformed(evt);
             }
         });
@@ -1173,8 +1161,7 @@ public class GovernorOptionsPanel extends BasePanel{
         autoColonize.setText("Auto Colonize");
         autoColonize.setName("AUTO_COLONIZE"); // NOI18N
         autoColonize.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 autoColonizeActionPerformed(evt);
             }
         });
@@ -1182,8 +1169,7 @@ public class GovernorOptionsPanel extends BasePanel{
         autoAttack.setText("Auto Attack");
         autoAttack.setName("AUTO_ATTACK"); // NOI18N
         autoAttack.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 autoAttackActionPerformed(evt);
             }
         });
@@ -1191,14 +1177,12 @@ public class GovernorOptionsPanel extends BasePanel{
         autoColonyShipCount.setModel(new SpinnerNumberModel(1, 1, 9999, 1));
         autoColonyShipCount.setName("AUTO_COLONY_COUNT"); // NOI18N
         autoColonyShipCount.addChangeListener(new ChangeListener() {
-            @Override
-			public void stateChanged(ChangeEvent evt) {
+            public void stateChanged(ChangeEvent evt) {
                 autoColonyShipCountStateChanged(evt);
             }
         });
         autoColonyShipCount.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-			public void mouseWheelMoved(MouseWheelEvent evt) {
+            public void mouseWheelMoved(MouseWheelEvent evt) {
                 autoColonyShipCountMouseWheelMoved(evt);
             }
         });
@@ -1209,14 +1193,12 @@ public class GovernorOptionsPanel extends BasePanel{
         autoScoutShipCount.setModel(new SpinnerNumberModel(1, 1, 9999, 1));
         autoScoutShipCount.setName("AUTO_SCOUT_COUNT"); // NOI18N
         autoScoutShipCount.addChangeListener(new ChangeListener() {
-            @Override
-			public void stateChanged(ChangeEvent evt) {
+            public void stateChanged(ChangeEvent evt) {
                 autoScoutShipCountStateChanged(evt);
             }
         });
         autoScoutShipCount.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-			public void mouseWheelMoved(MouseWheelEvent evt) {
+            public void mouseWheelMoved(MouseWheelEvent evt) {
                 autoScoutShipCountMouseWheelMoved(evt);
             }
         });
@@ -1224,14 +1206,12 @@ public class GovernorOptionsPanel extends BasePanel{
         autoAttackShipCount.setModel(new SpinnerNumberModel(1, 1, 9999, 1));
         autoAttackShipCount.setName("AUTO_ATTACK_COUNT"); // NOI18N
         autoAttackShipCount.addChangeListener(new ChangeListener() {
-            @Override
-			public void stateChanged(ChangeEvent evt) {
+            public void stateChanged(ChangeEvent evt) {
                 autoAttackShipCountStateChanged(evt);
             }
         });
         autoAttackShipCount.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-			public void mouseWheelMoved(MouseWheelEvent evt) {
+            public void mouseWheelMoved(MouseWheelEvent evt) {
                 autoAttackShipCountMouseWheelMoved(evt);
             }
         });
@@ -1273,22 +1253,22 @@ public class GovernorOptionsPanel extends BasePanel{
 
         fleetPanelLayout.setVerticalGroup(fleetPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(fleetPanelLayout.createSequentialGroup()
-                .addContainerGap(7, Short.MAX_VALUE)
+                .addContainerGap(9, Short.MAX_VALUE)
                 .addGroup(fleetPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(autoScoutShipCount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(autoScoutShipCountLabel)
                     .addComponent(autoScout))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(fleetPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(autoColonize)
                     .addComponent(autoColonyShipCount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(autoColonyShipCountLabel))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(fleetPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(autoAttackShipCount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(autoAttackShipCountLabel)
                     .addComponent(autoAttack))
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         colonyPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Colony Options", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Tahoma", 0, 13))); // NOI18N
@@ -1298,8 +1278,7 @@ public class GovernorOptionsPanel extends BasePanel{
         autospend.setToolTipText("Automatically spend reserve on planets with lowest production");
         autospend.setName("AUTOSPEND"); // NOI18N
         autospend.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 autospendActionPerformed(evt);
             }
         });
@@ -1307,14 +1286,12 @@ public class GovernorOptionsPanel extends BasePanel{
         reserve.setModel(new SpinnerNumberModel(1000, 0, 100000, 10));
         reserve.setName("RESERVE"); // NOI18N
         reserve.addChangeListener(new ChangeListener() {
-            @Override
-			public void stateChanged(ChangeEvent evt) {
+            public void stateChanged(ChangeEvent evt) {
                 reserveStateChanged(evt);
             }
         });
         reserve.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-			public void mouseWheelMoved(MouseWheelEvent evt) {
+            public void mouseWheelMoved(MouseWheelEvent evt) {
                 reserveMouseWheelMoved(evt);
             }
         });
@@ -1326,8 +1303,7 @@ public class GovernorOptionsPanel extends BasePanel{
         shipbuilding.setToolTipText("Divert resources into shipbuilding and not research if planet is already building ships");
         shipbuilding.setName("SHIP_BUILDING"); // NOI18N
         shipbuilding.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 shipbuildingActionPerformed(evt);
             }
         });
@@ -1335,8 +1311,7 @@ public class GovernorOptionsPanel extends BasePanel{
         shieldWithoutBases.setText("Allow shields without bases");
         shieldWithoutBases.setName("SHIELD_WITHOUT_BASES"); // NOI18N
         shieldWithoutBases.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 shieldWithoutBasesActionPerformed(evt);
             }
         });
@@ -1344,8 +1319,7 @@ public class GovernorOptionsPanel extends BasePanel{
         legacyGrowthMode.setText("Develop colonies as quickly as possible");
         legacyGrowthMode.setName("LEGACY_GROWTH_MODE"); // NOI18N
         legacyGrowthMode.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 legacyGrowthModeActionPerformed(evt);
             }
         });
@@ -1353,14 +1327,12 @@ public class GovernorOptionsPanel extends BasePanel{
         missileBases.setModel(new SpinnerNumberModel(0, 0, 1000, 1));
         missileBases.setName("MIN_MISSILE_BASES"); // NOI18N
         missileBases.addChangeListener(new ChangeListener() {
-            @Override
-			public void stateChanged(ChangeEvent evt) {
+            public void stateChanged(ChangeEvent evt) {
                 missileBasesStateChanged(evt);
             }
         });
         missileBases.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-			public void mouseWheelMoved(MouseWheelEvent evt) {
+            public void mouseWheelMoved(MouseWheelEvent evt) {
                 missileBasesMouseWheelMoved(evt);
             }
         });
@@ -1371,14 +1343,12 @@ public class GovernorOptionsPanel extends BasePanel{
         terraformEarly.setModel(new SpinnerNumberModel(0, 0, 400, 1));
         terraformEarly.setName("TERRAFORM_EARLY"); // NOI18N
         terraformEarly.addChangeListener(new ChangeListener() {
-            @Override
-			public void stateChanged(ChangeEvent evt) {
+            public void stateChanged(ChangeEvent evt) {
                 terraformEarlyStateChanged(evt);
             }
         });
         terraformEarly.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-			public void mouseWheelMoved(MouseWheelEvent evt) {
+            public void mouseWheelMoved(MouseWheelEvent evt) {
                 terraformEarlyMouseWheelMoved(evt);
             }
         });
@@ -1390,8 +1360,7 @@ public class GovernorOptionsPanel extends BasePanel{
         followColonyRequests.setToolTipText("Follow Colony Requests");
         followColonyRequests.setName("FOLLOW_COLONY_REQUESTS"); // NOI18N
         followColonyRequests.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 followColonyRequestsActionPerformed(evt);
             }
         });
@@ -1400,8 +1369,7 @@ public class GovernorOptionsPanel extends BasePanel{
         reserveFromRich.setToolTipText("Automatically spend reserve on planets with lowest production");
         reserveFromRich.setName("RESERVE_FROM_RICH"); // NOI18N
         reserveFromRich.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 reserveFromRichActionPerformed(evt);
             }
         });
@@ -1410,8 +1378,7 @@ public class GovernorOptionsPanel extends BasePanel{
         excessToResearch.setToolTipText("Automatically spend reserve on planets with lowest production");
         excessToResearch.setName("DIVERT_EXCESS_TO_RESEARCH"); // NOI18N
         excessToResearch.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 excessToResearchActionPerformed(evt);
             }
         });
@@ -1427,15 +1394,12 @@ public class GovernorOptionsPanel extends BasePanel{
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(missileBasesLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(colonyPanelLayout.createSequentialGroup()
-                        .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(colonyPanelLayout.createSequentialGroup()
-                                .addComponent(terraformEarly)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(terraformEarlyLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(shipbuilding)
-                            .addComponent(shieldWithoutBases)
-                            .addComponent(legacyGrowthMode))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(terraformEarly)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(terraformEarlyLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(shipbuilding)
+                    .addComponent(shieldWithoutBases)
+                    .addComponent(legacyGrowthMode))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(colonyPanelLayout.createSequentialGroup()
@@ -1498,8 +1462,7 @@ public class GovernorOptionsPanel extends BasePanel{
         spareXenophobes.setToolTipText("Once enjoined to stop espionage by an alien empire, the Governor will follow the player's choice for the time necessary for the empire to calm down.");
         spareXenophobes.setName("SPARE_XENOPHOBES"); // NOI18N
         spareXenophobes.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 spareXenophobesActionPerformed(evt);
             }
         });
@@ -1508,8 +1471,7 @@ public class GovernorOptionsPanel extends BasePanel{
         autoSpy.setToolTipText("Hand control over spies to AI");
         autoSpy.setName("AUTO_SPY"); // NOI18N
         autoSpy.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 autoSpyActionPerformed(evt);
             }
         });
@@ -1518,8 +1480,7 @@ public class GovernorOptionsPanel extends BasePanel{
         autoInfiltrate.setToolTipText("Automatically sends spies to infiltrate other empires");
         autoInfiltrate.setName("AUTO_INFILTRATE"); // NOI18N
         autoInfiltrate.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 autoInfiltrateActionPerformed(evt);
             }
         });
@@ -1551,8 +1512,7 @@ public class GovernorOptionsPanel extends BasePanel{
         isOriginal.setText("Original View");
         isOriginal.setName("ORIGINAL_PANEL"); // NOI18N
         isOriginal.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 isOriginalActionPerformed(evt);
             }
         });
@@ -1560,8 +1520,7 @@ public class GovernorOptionsPanel extends BasePanel{
         customSize.setText("CustomSize");
         customSize.setName("CUSTOM_SIZE"); // NOI18N
         customSize.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 customSizeActionPerformed(evt);
             }
         });
@@ -1570,14 +1529,12 @@ public class GovernorOptionsPanel extends BasePanel{
         sizePct.setToolTipText("Size Factor");
         sizePct.setName("SIZE_FACTOR"); // NOI18N
         sizePct.addChangeListener(new ChangeListener() {
-            @Override
-			public void stateChanged(ChangeEvent evt) {
+            public void stateChanged(ChangeEvent evt) {
                 sizePctStateChanged(evt);
             }
         });
         sizePct.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-			public void mouseWheelMoved(MouseWheelEvent evt) {
+            public void mouseWheelMoved(MouseWheelEvent evt) {
                 sizePctMouseWheelMoved(evt);
             }
         });
@@ -1589,14 +1546,12 @@ public class GovernorOptionsPanel extends BasePanel{
         brightnessPct.setToolTipText("Color Brightness");
         brightnessPct.setName("BRIGHTNESS"); // NOI18N
         brightnessPct.addChangeListener(new ChangeListener() {
-            @Override
-			public void stateChanged(ChangeEvent evt) {
+            public void stateChanged(ChangeEvent evt) {
                 brightnessPctStateChanged(evt);
             }
         });
         brightnessPct.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-			public void mouseWheelMoved(MouseWheelEvent evt) {
+            public void mouseWheelMoved(MouseWheelEvent evt) {
                 brightnessPctMouseWheelMoved(evt);
             }
         });
@@ -1642,7 +1597,7 @@ public class GovernorOptionsPanel extends BasePanel{
                 .addGroup(jPanelAspectLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(brightnessPct, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(brightnessLabel))
-                .addGap(0, 0, 0))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         jPanelAspectLayout.linkSize(SwingConstants.VERTICAL, new Component[] {brightnessLabel, brightnessPct});
@@ -1656,8 +1611,7 @@ public class GovernorOptionsPanel extends BasePanel{
         raceImage.setRequestFocusEnabled(false);
         raceImage.setVerifyInputWhenFocusTarget(false);
         raceImage.addMouseListener(new MouseAdapter() {
-            @Override
-			public void mouseClicked(MouseEvent evt) {
+            public void mouseClicked(MouseEvent evt) {
                 raceImageMouseClicked(evt);
             }
         });
@@ -1665,8 +1619,7 @@ public class GovernorOptionsPanel extends BasePanel{
         fineTuningButton.setText("Fine Tuning");
         fineTuningButton.setName("FINE_TUNING_BUTTON"); // NOI18N
         fineTuningButton.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 fineTuningButtonActionPerformed(evt);
             }
         });
@@ -1891,6 +1844,10 @@ public class GovernorOptionsPanel extends BasePanel{
 		if (isAutoApply()) applyStargates();
 	}//GEN-LAST:event_stargateOffActionPerformed
 
+    private void stargateUltraRichActionPerformed(ActionEvent evt) {//GEN-FIRST:event_stargateUltraRichActionPerformed
+    	if (isAutoApply()) applyStargates();
+    }//GEN-LAST:event_stargateUltraRichActionPerformed
+
 	private void stargateRichActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stargateRichActionPerformed
 		if (isAutoApply()) applyStargates();
 	}//GEN-LAST:event_stargateRichActionPerformed
@@ -2081,7 +2038,6 @@ public class GovernorOptionsPanel extends BasePanel{
     JCheckBox followColonyRequests;
     JCheckBox governorDefault;
     JCheckBox isOriginal;
-    JLabel jLabel1;
     JPanel jPanelAspect;
     JCheckBox legacyGrowthMode;
     JSpinner missileBases;
@@ -2100,6 +2056,7 @@ public class GovernorOptionsPanel extends BasePanel{
     JRadioButton stargateOn;
     ButtonGroup stargateOptions;
     JRadioButton stargateRich;
+    JRadioButton stargateUltraRich;
     JSpinner terraformEarly;
     JLabel terraformEarlyLabel;
     JSpinner transportMaxTurns;

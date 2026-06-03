@@ -2398,11 +2398,12 @@ public final class Colony implements Base, IMappedObject, Serializable {
             allocation(RESEARCH, allocationRemaining());
 
         // if we were building ships, or a stargate, keep 1 tick in shipbuilding
-        if ((buildingShips && gov.isShipbuilding()) ||
-            (buildingStargate && gov.getGates() != GovernorOptions.GatesGovernor.None)) {
-            if(allocation(SHIP) < 1 && shipAllocNeeded < 1) //only do it if we aren't already spending into ship as we otherwise could get waste
-                increment(SHIP, 1);
-        }
+		if ((buildingShips && gov.isShipbuilding())
+				|| (buildingStargate && gov.governorCanBuildGates()))
+			//only do it if we aren't already spending into ship as we otherwise could get waste
+			if(allocation(SHIP) < 1 && shipAllocNeeded < 1)
+				increment(SHIP, 1);
+
         if ((buildingStargate || buildingShips)
                 && gov.isShipbuilding() && allocation[RESEARCH] > 0) {
             // if we were building ships, push all research into shipbuilding.
@@ -2832,18 +2833,10 @@ public final class Colony implements Base, IMappedObject, Serializable {
         if (!this.shipyard().canBuildStargate()) {
             return;
         }
-        if (session().getGovernorOptions().getGates() == GovernorOptions.GatesGovernor.None) {
-            return;
-        }
         // if the stargate build was already started (whether by governor or by the player),
         // then continue building it
-        if(!wasPreviouslyBuildingStargate) {
-            if (session().getGovernorOptions().getGates() == GovernorOptions.GatesGovernor.Rich) {
-                if (!planet().isResourceRich() && !planet.isResourceUltraRich()) {
-                    return;
-                }
-            }
-        }
+		if (!wasPreviouslyBuildingStargate && !session().getGovernorOptions().shouldBuildGate(this))
+			return;
         // don't build gate if planet production is below 300
         // Not sure about this one, now that maintenance is taken from global pool
 //        if (production() < 300) {
