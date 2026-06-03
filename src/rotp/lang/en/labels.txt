@@ -593,6 +593,13 @@ SETTINGS_MOD_DEBUG_BM_ZOOM_OUT_DESC  | When running a benchmark, the whole galax
 SETTINGS_MOD_DEBUG_NO_AUTOSAVE       | Disable Auto Save : %1
 SETTINGS_MOD_DEBUG_NO_AUTOSAVE_DESC  | Disable background security auto saving. Backup has to be shut off independently.
 
+SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY			| Display Glitch: %1
+SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_YES		| I saw the horizontal lines.
+SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_NO		| I don't have that problem.
+SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_YES_DESC	| We'll try to fix this problem.
+SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_NO_DESC	| This option doesn't apply to me.
+SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_DESC		| On Linux systems, horizontal lines may sometimes appear within the ship range area of the galaxy map.
+
 GAME_SETTINGS_CONSOLE_AUTO_PLAY      | Log to console: %1
 GAME_SETTINGS_CONSOLE_AUTO_PLAY_DESC | When enabled, the logged data are also shown on the console.
 GAME_SETTINGS_DEBUG_LOG_NOTIF        | Log Notifications: %1

@@ -41,11 +41,13 @@ import javax.swing.border.Border;
 import rotp.Rotp;
 import rotp.model.Sprite;
 import rotp.model.galaxy.StarType;
+import rotp.model.game.IBaseOptsTools;
 import rotp.model.game.IDebugOptions;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.map.IMapHandler;
 import rotp.ui.util.InterfacePreview;
+import rotp.ui.util.ParamBoolean;
 import rotp.util.Base;
 import rotp.util.ThickBevelBorder;
 
@@ -408,8 +410,11 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
 		Graphics g = getGraphics();
 		if (g == null)
 			return null;
+		if (debugNoGraphicCopy.get())
+			return (Graphics2D) g;
 		Graphics2D gc = (Graphics2D) g.create();
 		g.dispose();
 		return gc;
 	}
+	public static ParamBoolean debugNoGraphicCopy	= new ParamBoolean(IBaseOptsTools.MOD_UI, "DEBUG_NO_GRAPHIC_COPY", false, true, true);
 }

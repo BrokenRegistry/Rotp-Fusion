@@ -415,6 +415,8 @@
 
 ### Fixes:
 
+- Fixe (attempt): On some Linux systems, horizontal lines may sometimes appear within the ship range area of the galaxy map.
+  - A new option is available in the debug panel to try to fix this.
 - Fixed an infinite loop that occurred when a destroyed ship continued to attempt to fire (a side effect of the fix implemented in version 05-29)
 - Fixed certain cases where ships were deployed outside the permitted range.
 - Fixed a few rare null pointer exceptions that were reported to me.

@@ -3,6 +3,8 @@
 ## What's New
 
 26-06-03 (BR)
+- Fixe (attempt): On some Linux systems, horizontal lines may sometimes appear within the ship range area of the galaxy map.
+  - A new option is available in the debug panel to try to fix this.
 - Governor Stargate building can now be set to Ultra Rich only.
 
 26-06-01 (BR)
