@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-06-04 (BR)
+- Fixed Crash on Space Monster Attack.
+
 26-06-03 (BR)
 - Council panel: You can now vote by clicking on the candidate's picture.
 - Fixe (attempt): On some Linux systems, horizontal lines may sometimes appear within the ship range area of the galaxy map.
@@ -66,14 +69,6 @@ java -jar target/rotp-<timestamp>-mini.jar
   - Missiles already launched are now affected when the ships that launched them are hit by technology nullifiers.
   - Values in ship info bubble are now displayed without the extra decimal place.
 - Initiative and maneuverability have been added to ship information bubble.
-
-26-05-29 (BR)
-- Fixe: Ships destroyed by reaction fire continued to fire using their special weapons.
-- Fixed a potential issue with battles ending when the maximum number of turns is reached: it was incomplete.
-
-26-05-28 (BR)
-- Fixes (attempt) to prevent a display offset bug.
-- Fix in “MoO1 Asteroids”: Missiles were slowing down above the asteroids (this was a forgotten debugging feature!)
 
 
 ### [Features Historic](FeaturesChanges.md)

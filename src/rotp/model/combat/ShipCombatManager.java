@@ -708,7 +708,8 @@ public class ShipCombatManager implements Base {
             log("retreating empires from init: ",passives.toString());
             empiresInConflict.remove(passiveEmp);
         }
-		if (results.attacker().isPlayer())
+		Empire attacker = results().attacker();
+		if (attacker != null && attacker.isPlayer())
 			doNotTargetHarmlessColony = playerDontTargetHarmlessColony.get();
 		// Ask Player & Remove Passive player empire
 		if (playerInBattle() && passives.isEmpty())

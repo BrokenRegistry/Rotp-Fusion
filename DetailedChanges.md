@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-06-04 (BR)
+- Fixed Crash on Space Monster Attack.
+
 26-06-03 (BR)
 - Council panel: You can now vote by clicking on the candidate's picture.
 - Fixe (attempt): On some Linux systems, horizontal lines may sometimes appear within the ship range area of the galaxy map.

@@ -3615,13 +3615,13 @@ SETTINGS_MOD_SHOW_PENDING_ORDERS         | Afficher les ordres : %1
 
 SETTINGS_MOD_DARK_GALAXY_NO_DESC         | Désactivé; tous les systèmes de la Galaxie apparaissent sur la carte.
 SETTINGS_MOD_DARK_GALAXY_NO              | Non
-SETTINGS_MOD_DARK_GALAXY_SPY_DESC        | L’espionnage peut donner quelques informations sur les systèmes des empire contactés mais hors de portée.
+SETTINGS_MOD_DARK_GALAXY_SPY_DESC		| Nos espions peuvent donner quelques informations sur les systèmes des empires contactés mais hors de portée.
 SETTINGS_MOD_DARK_GALAXY_SPY             | Vue Espion
 SETTINGS_MOD_DARK_GALAXY_NO_SPY_DESC     | Se rappeler des noms et emplacements des Empires, pas de mémoire des systèmes explorés.
 SETTINGS_MOD_DARK_GALAXY_NO_SPY          | Nommé
 SETTINGS_MOD_DARK_GALAXY_SHRINK_DESC     | Ne montre que les systèmes à portée, pas d’espion, pas de mémoire des systèmes explorés.
 SETTINGS_MOD_DARK_GALAXY_SHRINK          | Vue Brouillée
-SETTINGS_MOD_DARK_GALAXY_DESC            | Seuls les systèmes aux alentours sont montrés.
+SETTINGS_MOD_DARK_GALAXY_DESC			| Seuls les systèmes aux alentours sont affichés.
 SETTINGS_MOD_DARK_GALAXY                 | Brouillard de Guerre : %1
 SETTINGS_MOD_DARK_GALAXY_HELP            |<br><b>Pourquoi ? par u/dweller_below</b><br><br><b>Ennuyeux :</b> Nous sommes tous dans une nébuleuse particulièrement épaisse. La supernova qui a créé cette nébuleuse a craché des éléments lourds PARTOUT. La combinaison particulière d’éléments dans notre nébuleuse locale bloque TOUT.<br><br><b>Plus drôle/autoréférentiel :</b> Nous participons à une vaste simulation créée par les Orions/Antarans. Naturellement, la simulation doit être suffisamment bonne pour que nous exprimions tous notre sensibilité/sapience. Dans l’itération 42 de la simulation, nos Dieux/Maîtres ont décidé d’isoler chaque race jusqu’à ce que nous nous rencontrions.<br><br><b>Le plus drôle :</b> Les Antarans ont gagné la guerre Orion/Antaran et ont décidé d’exterminer TOUT. Nos races ont toutes été récemment secourues/déplacées/copiées dans notre ARC (Antaran Rescue Craft) par les Orions. L’ARC ressemble juste à une petite galaxie. L’ARC est en fait une dimension de poche/un vaisseau de sauvetage. Cela explique plusieurs choses :<br>- La forte densité de races intelligentes au sein de notre ARC.<br>- Pourquoi les Orions ne dominent pas notre ARC. Les Orions s’opposent aux Antarans. L’une des différences est que les Orions ne dominent pas/exterminent pas les autres races. Cela correspond à l’histoire précédente.<br>- Pourquoi nous n’avons pas ressenti d’émissions radio les uns des autres. Ou de lumière provenant de l’étoile de l’autre. Le jeu commence à la création de l’ARC. Nous avions l’habitude de voir d’autres étoiles. Mais, maintenant, tout est différent. Maintenant, lorsque nous commençons à sortir de nos petites bulles de lumière, nous constatons que tout est différent. En fait, chaque étoile émet une bulle de lumière décroissante pleine d’informations obsolètes/sans signification. Mais, lorsque vous vous rapprochez des étoiles adjacentes, vous pouvez voir ce qui est vraiment là MAINTENANT.<br>- Pourquoi la loi physique change. Les Orions ont fabriqué différentes lois physiques dans chaque jeu/ARC pour des « raisons ». À chaque fois que nous jouons, l’ARC peut être légèrement différent. Les Orions avaient suffisamment de ressources pour copier nos races plusieurs fois et créer plusieurs ARC. Chaque partie/ARC est une tentative de créer une combinaison différente de survivants.
 
@@ -3938,6 +3938,11 @@ NAME_RACE_MRRSHAN_FR_HELP  | →NAME_FR_HELP←
 NAME_RACE_PSILON_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SAKKRA_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SILICOID_FR_HELP | →NAME_FR_HELP←
+
+SETTINGS_MOD_MOO1_OPTIONS_TITLE			| Rétablir les paramètres de MoO1
+SETTINGS_MOD_MOO1_OPTIONS_UI			| Rétablir les paramètres de MoO1
+SETTINGS_MOD_MOO1_OPTIONS_UI_DESC		| Ouvrir le panneau de configuration contenant les paramètres permettant de rétablir les fonctionalités d'origine de MoO1.
+SETTINGS_MOD_MOO1_OPTIONS_UI_HELP		| Certains paramètres de Rotp diffèrent légèrement de ceux de MoO1. Ce panneau contient toutes les options disponibles permettant de rétablir la plupart des paramètres et des valeurs d'origine de MoO1.
 
 SETTINGS_MOD_DEBUG_OPTIONS_TITLE         | Options pour les développeurs
 SETTINGS_MOD_DEBUG_OPTIONS_UI            | Options de débogage

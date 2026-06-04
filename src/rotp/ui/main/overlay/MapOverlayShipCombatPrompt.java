@@ -519,7 +519,8 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
             		break;
             	}
             case KeyEvent.VK_E:
-				if (mgr.results().attacker().isPlayer())
+				Empire attacker = mgr.results().attacker();
+				if (attacker != null && attacker.isPlayer())
 					if (e.isShiftDown())
 						mgr.dontTargetHarmlessColony(true);
 					else if (e.isControlDown())
@@ -662,7 +663,8 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
         }
         @Override
         public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-			if (mgr.results().attacker().isPlayer())
+			Empire attacker = mgr.results().attacker();
+			if (attacker != null && attacker.isPlayer())
 				if (e.isShiftDown())
 					mgr.dontTargetHarmlessColony(true);
 				else if (e.isControlDown())
@@ -748,7 +750,8 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
 			if (advisor.playerShouldRetreat())
 				startCombat(ShipBattleUI.RETREAT_ALL); // Immediate retreat
 			else {
-				if (mgr.results().attacker().isPlayer())
+				Empire attacker = mgr.results().attacker();
+				if (attacker != null && attacker.isPlayer())
 					if (e.isShiftDown())
 						mgr.dontTargetHarmlessColony(true);
 					else if (e.isControlDown())
@@ -1144,7 +1147,8 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
         }
         @Override
         public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-			if (mgr.results().attacker().isPlayer())
+			Empire attacker = mgr.results().attacker();
+			if (attacker != null && attacker.isPlayer())
 				if (e.isShiftDown())
 					mgr.dontTargetHarmlessColony(true);
 				else if (e.isControlDown())

@@ -3939,6 +3939,11 @@ NAME_RACE_PSILON_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SAKKRA_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SILICOID_FR_HELP | →NAME_FR_HELP←
 
+SETTINGS_MOD_MOO1_OPTIONS_TITLE			| Reinstate MoO1 settings
+SETTINGS_MOD_MOO1_OPTIONS_UI			| Panel for reinstating MoO1 settings
+SETTINGS_MOD_MOO1_OPTIONS_UI_DESC		| Open a new control panel containtings the setting allowing to restore the original MoO1 Settings.
+SETTINGS_MOD_MOO1_OPTIONS_UI_HELP		| Some Rotp settings differ slightly from those in MoO1. This panel contains all the options available to restore most of the original MoO1 settings and values.
+
 SETTINGS_MOD_DEBUG_OPTIONS_TITLE         | Developer's Options
 SETTINGS_MOD_DEBUG_OPTIONS_UI            | Debug Options
 SETTINGS_MOD_DEBUG_OPTIONS_UI_DESC       | Open Sub Menu to set development tools.

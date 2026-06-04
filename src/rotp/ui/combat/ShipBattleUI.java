@@ -1931,7 +1931,8 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
                 repaint();
                 return;
             case KeyEvent.VK_A:
-				if (mgr.results().attacker().isPlayer())
+				Empire attacker = mgr.results().attacker();
+				if (attacker != null && attacker.isPlayer())
 					if (e.isShiftDown())
 						mgr.dontTargetHarmlessColony(true);
 					else if (e.isControlDown())
@@ -2001,7 +2002,8 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
 
 		if (hoverBox == resolveBox) {
 			if (!mgr.autoResolve) {
-				if (mgr.results().attacker().isPlayer())
+				Empire attacker = mgr.results().attacker();
+				if (attacker != null && attacker.isPlayer())
 					if (e.isShiftDown())
 						mgr.dontTargetHarmlessColony(true);
 					else if (e.isControlDown())
