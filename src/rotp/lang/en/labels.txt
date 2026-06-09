@@ -3932,10 +3932,34 @@ NAME_RACE_PSILON_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SAKKRA_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SILICOID_FR_HELP | →NAME_FR_HELP←
 
+HEADERS_MOO1_RANDOMNESS_DESC				| MoO1 Rules related randomness permanency.
+HEADERS_MOO1_RANDOMNESS						| ~~~ RANDOMNESS ~~~
+
+HEADERS_MOO1_GALAXY_SIZE_DESC				| MoO1 rules regarding the size and layout of worlds in the galaxy.
+HEADERS_MOO1_GALAXY_SIZE					| ~~~ GALAXY SIZE AND LAYOUT ~~~
+HEADERS_MOO1_HOME_VICINITY_DESC				| MoO1 rules regarding systems neighboring home worlds.
+HEADERS_MOO1_HOME_VICINITY					| ~~~ HOME WORLDS VICINITY ~~~
+
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_TITLE		| Reinstate MoO1 settings
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI			| Panel for reinstating MoO1 settings
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_DESC	| Open a new control panel containtings the setting allowing to restore the original MoO1 Settings.
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_HELP	| Some Rotp settings differ slightly from those in MoO1. This panel contains all the options available to restore most of the original MoO1 settings and values.
+
+HEADERS_MOO1_SPACE_COMBAT_START_DESC		| MoO1 rules regarding the start of space battles.
+HEADERS_MOO1_SPACE_COMBAT_START				| ~~~ SPACE COMBATS START ~~~
+HEADERS_MOO1_SPACE_COMBAT_LAYOUT_DESC		| MoO1 Rules related to space combats planet, ships and asteroids location.
+HEADERS_MOO1_SPACE_COMBAT_LAYOUT			| ~~~ SPACE COMBATS LAYOUT ~~~
+HEADERS_MOO1_SPACE_COMBAT_RULES_DESC		| MoO1 Rules related to space combats.
+HEADERS_MOO1_SPACE_COMBAT_RULES				| ~~~ SPACE COMBATS RULES ~~~
+HEADERS_MOO1_SPACE_COMBAT_END_DESC			| MoO1 rules regarding the end of space battles.
+HEADERS_MOO1_SPACE_COMBAT_END				| ~~~ SPACE COMBATS END ~~~
+
+HEADERS_MOO1_GROUND_COMBAT_DESC				| MoO1 Rules related to ground combats.
+HEADERS_MOO1_GROUND_COMBAT					| ~~~ GROUND COMBATS ~~~
+HEADERS_MOO1_MONSTERS_COMBAT_DESC			| MoO1 rules regarding the design and behavior of space monsters.
+HEADERS_MOO1_MONSTERS_COMBAT				| ~~~ SPACE MONSTERS ~~~
+HEADERS_MOO1_SHIP_DESIGN_DESC				| MoO1 Rules related to Ship design.
+HEADERS_MOO1_SHIP_DESIGN					| ~~~ SHIP DESIGN ~~~
 
 SETTINGS_MOD_MOO1_RULES_OPTIONS_TITLE		| Reinstate MoO1 Rules
 SETTINGS_MOD_MOO1_RULES_OPTIONS_UI			| Panel for reinstating MoO1 Rules

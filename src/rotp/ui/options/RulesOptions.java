@@ -62,6 +62,9 @@ public final class RulesOptions extends AbstractOptionsSubUI {
 			list.addAll(AllSubUI.getHandle(SETTINGS_OPTIONS_UI_KEY).getUiMinor(false));
 		else
 			list.add(AllSubUI.getHandle(SETTINGS_OPTIONS_UI_KEY).getUI());
+		list.add(HEADER_SPACER_50);
+		list.add(AllSubUI.getHandle(MOO1_RULES_OPTIONS_UI_KEY).getUI());
+
 		map.add(list);
 		return map;
 	}

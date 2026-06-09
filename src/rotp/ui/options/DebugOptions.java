@@ -9,7 +9,7 @@ import rotp.model.game.SafeListParam;
 import rotp.ui.util.ParamTitle;
 
 final class DebugOptions extends AbstractOptionsSubUI {
-	static final String OPTION_ID = "DEBUG_OPTIONS";
+	static final String OPTION_ID = DEBUG_OPTIONS_UI_KEY;
 	
 	@Override public String optionId()			{ return OPTION_ID; }
 	@Override public boolean isCfgFile()		{ return true; }

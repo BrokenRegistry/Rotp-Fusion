@@ -312,6 +312,9 @@
 
 ### User Interfaces:
 
+- Two new subpanels have been created. They group together the options for restoring the MoO1 rules.
+  - One is located in the galaxy settings panel
+  - And the other is in the rules settings panel.
 - Council panel: You can now vote by clicking on the candidate's picture.
 - Space combat: Initiative and maneuverability have been added to ship information bubble.
 - During a space battle, a ship targeted by missiles will display a missile warning in the information panel, and incoming missiles will be highlighted with an animation.

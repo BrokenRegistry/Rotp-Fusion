@@ -3932,15 +3932,42 @@ NAME_RACE_PSILON_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SAKKRA_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SILICOID_FR_HELP | →NAME_FR_HELP←
 
+HEADERS_MOO1_RANDOMNESS_DESC				| MoO1 Rules related randomness permanency.
+HEADERS_MOO1_RANDOMNESS						| ~~~ RANDOMNESS ~~~
+
+HEADERS_MOO1_GALAXY_SIZE_DESC				| Règles de MoO1 concernant la taille et la disposition des mondes dans la galaxie.
+HEADERS_MOO1_GALAXY_SIZE					| ~~~ TAILLE ET DISPOSITION ~~~
+HEADERS_MOO1_HOME_VICINITY_DESC				| Règles de MoO1 concernant les systèmes dans le voisinage des mondes d’origine.
+HEADERS_MOO1_HOME_VICINITY					| ~~~ VOISINAGE MONDE D’ORIGINE ~~~
+
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_TITLE		| Rétablir les paramètres de MoO1
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI			| Rétablir les paramètres de MoO1
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_DESC	| Ouvrir le panneau de configuration contenant les paramètres permettant de rétablir les fonctionalités d'origine de MoO1.
-SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_HELP	| Certains paramètres de Rotp diffèrent légèrement de ceux de MoO1. Ce panneau contient toutes les options disponibles permettant de rétablir la plupart des paramètres et des valeurs d'origine de MoO1.
+SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_HELP	| Certains paramètres de Rotp diffèrent légèrement de ceux de MoO1. Ce panneau contient toutes les options disponibles permettant de rétablir la plupart des paramètres et des valeurs d’origine de MoO1.
+
+HEADERS_MOO1_SPACE_COMBAT_DESC				| Règles de MoO1 relatives aux combats spatiaux.
+HEADERS_MOO1_SPACE_COMBAT					| ~~~ COMBATS SPACIAUX ~~~
+
+HEADERS_MOO1_SPACE_COMBAT_START_DESC		| Règles de MoO1 relatives au début des combats spatiaux.
+HEADERS_MOO1_SPACE_COMBAT_START				| ~~~ DÉBUT DES COMBATS SPATIAUX ~~~
+HEADERS_MOO1_SPACE_COMBAT_LAYOUT_DESC		| Règles de MoO1 concernant les combats spatiaux, la position des planètes, des vaisseaux et des astéroïdes.
+HEADERS_MOO1_SPACE_COMBAT_LAYOUT			| ~~~ DISPOSITION DES COMBATS SPATIAUX ~~~
+HEADERS_MOO1_SPACE_COMBAT_RULES_DESC		| Règles de MoO1 relatives aux combats spatiaux.
+HEADERS_MOO1_SPACE_COMBAT_RULES				| ~~~ RÈGLES DES COMBATS SPACIAUX ~~~
+HEADERS_MOO1_SPACE_COMBAT_END_DESC			| Règles de MoO1 relatives à la fin des combats spatiaux.
+HEADERS_MOO1_SPACE_COMBAT_END				| ~~~ FIN DES COMBATS SPACIAUX ~~~
+
+HEADERS_MOO1_GROUND_COMBAT_DESC				| Règles de MoO1 relatives aux combats au sol.
+HEADERS_MOO1_GROUND_COMBAT					| ~~~ COMBATS SUR LE TERRAIN ~~~
+HEADERS_MOO1_MONSTERS_COMBAT_DESC			| Règles de MoO1 concernant la conception et le comportement des monstres de l’espace.
+HEADERS_MOO1_MONSTERS_COMBAT				| ~~~ MONSTRES SPACIAUX ~~~
+HEADERS_MOO1_SHIP_DESIGN_DESC				| Règles de MoO1 relatives à la conception des vaisseaux.
+HEADERS_MOO1_SHIP_DESIGN					| ~~~ CONCEPTION DES VAISSEAUX ~~~
 
 SETTINGS_MOD_MOO1_RULES_OPTIONS_TITLE		| Rétablir les règles de MoO1
 SETTINGS_MOD_MOO1_RULES_OPTIONS_UI			| Rétablir les règles de MoO1
-SETTINGS_MOD_MOO1_RULES_OPTIONS_UI_DESC		| Ouvrir le panneau de configuration contenant les paramètres permettant de rétablir les fonctionalités d'origine de MoO1.
-SETTINGS_MOD_MOO1_RULES_OPTIONS_UI_HELP		| Certains paramètres de Rotp diffèrent légèrement de ceux de MoO1. Ce panneau contient toutes les options disponibles permettant de rétablir la plupart des paramètres et des valeurs d'origine de MoO1.
+SETTINGS_MOD_MOO1_RULES_OPTIONS_UI_DESC		| Ouvrir le panneau de configuration contenant les paramètres permettant de rétablir les fonctionalités d’origine de MoO1.
+SETTINGS_MOD_MOO1_RULES_OPTIONS_UI_HELP		| Certains paramètres de Rotp diffèrent légèrement de ceux de MoO1. Ce panneau contient toutes les options disponibles permettant de rétablir la plupart des paramètres et des valeurs d’origine de MoO1.
 
 SETTINGS_MOD_DEBUG_OPTIONS_TITLE         | Options pour les développeurs
 SETTINGS_MOD_DEBUG_OPTIONS_UI            | Options de débogage

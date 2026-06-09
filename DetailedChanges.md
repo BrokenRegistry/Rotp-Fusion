@@ -3,6 +3,9 @@
 ## What's New
 
 26-06-09 (BR)
+- Two new subpanels have been created. They group together the options for restoring the MoO1 rules.
+  - One is located in the galaxy settings panel
+  - And the other is in the rules settings panel.
 - Removed the Fixe (attempt) of 26-06-03: useless.
 - Added constant in SpyConfessionIncident.java to improve readability.
 

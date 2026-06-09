@@ -53,6 +53,9 @@ public final class SetupParameters extends AbstractOptionsSubUI {
 		else
 			list.add(AllSubUI.getHandle(PRE_GAME_OPTIONS_UI_KEY).getUI());
 		map.add(list);
+		list.add(HEADER_SPACER_50);
+		list.add(AllSubUI.getHandle(MOO1_GALAXY_OPTIONS_UI_KEY).getUI());
+
 		return map;
 	}
 }

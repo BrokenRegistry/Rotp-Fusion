@@ -79,6 +79,8 @@ public final class AllSubUI {
 		put(new InGameOptions());
 		put(new IronmanOptions());
 		put(new MainOptions());
+		put(new MoO1GalaxyOptions());
+		put(new MoO1RulesOptions());
 		put(new NameOptions());
 		put(new NameFrOptions());
 		put(new PreGameOptions());
