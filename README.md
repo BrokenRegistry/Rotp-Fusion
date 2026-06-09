@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-06-09 (BR)
+- Added constant in SpyConfessionIncident.java to improve readability.
+
 26-06-04 (BR)
 - Fixed Crash on Space Monster Attack.
 

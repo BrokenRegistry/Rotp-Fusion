@@ -22,6 +22,10 @@ import rotp.ui.diplomacy.DialogueManager;
 
 public class SpyConfessionIncident extends DiplomaticIncident {
     private static final long serialVersionUID = 1L;
+	// BR: added named constant for better readability
+	private static final int MISSION_HIDE		= 0;
+	private static final int MISSION_ESPIONAGE	= 1;
+	private static final int MISSION_SABOTAGE	= 2;
     public final int empVictim;
     public final int empSpy;
     public final int remainingSpies;
@@ -31,10 +35,10 @@ public class SpyConfessionIncident extends DiplomaticIncident {
         remainingSpies = spies.numActiveSpies();
         empVictim = ev.owner().id;
         empSpy = ev.empId();
-        
+
         if (spies.isEspionage()) {
             mission = text("NOTICE_SPYING_MISSION_ESPIONAGE");
-            missionType = 1;
+            missionType = MISSION_ESPIONAGE;
             
             if (!ev.owner().diplomatAI().setSeverityAndDuration(this, ev.embassy().currentSpyIncidentSeverity()))
             {
@@ -45,19 +49,19 @@ public class SpyConfessionIncident extends DiplomaticIncident {
         else if (spies.isHide() && ev.owner().diplomatAI().leaderHatesAllSpies()) {
             mission = text("NOTICE_SPYING_MISSION_SABOTAGE");
             severity = max(-20, -10+ev.embassy().currentSpyIncidentSeverity());
-            missionType = 0;
+			missionType = MISSION_HIDE;
             duration = 10;
         }
         else if (spies.isSabotage()) {
             mission = text("NOTICE_SPYING_MISSION_SABOTAGE");
             severity = max(-20, -10+ev.embassy().currentSpyIncidentSeverity());
-            missionType = 2;
+			missionType = MISSION_SABOTAGE;
             duration = 10;
         }
         else {
             mission = text("NOTICE_SPYING_MISSION_HIDE");
             severity = max(-5, -2+ev.embassy().currentSpyIncidentSeverity());
-            missionType = 0;
+			missionType = MISSION_HIDE;
             duration = 2;
         }
 
@@ -66,21 +70,19 @@ public class SpyConfessionIncident extends DiplomaticIncident {
         
         dateOccurred = galaxy().currentYear();
     }
-    @Override
-    public boolean isSpying()           { return (missionType > 0) || galaxy().empire(empVictim).diplomatAI().leaderHatesAllSpies() ; }
+	@Override public boolean isSpying()		{ return (missionType != MISSION_HIDE) || galaxy().empire(empVictim).diplomatAI().leaderHatesAllSpies() ; }
     @Override
     public int timerKey()               { return DiplomaticEmbassy.TIMER_SPY_WARNING; }
     @Override
     public String title()               { return text("INC_SPY_CONFESSION_TITLE"); }
-    @Override
-    public String description() {
-        switch(missionType) {
-            case 0: return decode(text("INC_SPY_CAPTURED_DESC"));
-            case 1: return decode(text("INC_SPY_CONFESS_ESPIONAGE_DESC"));
-            case 2: return decode(text("INC_SPY_CONFESS_SABOTAGE_DESC"));
-            default: return decode(text("INC_SPY_CAPTURED_DESC"));
-        }
-    }
+	@Override public String description()	{
+		switch(missionType) {
+			case MISSION_HIDE:		return decode(text("INC_SPY_CAPTURED_DESC"));
+			case MISSION_ESPIONAGE:	return decode(text("INC_SPY_CONFESS_ESPIONAGE_DESC"));
+			case MISSION_SABOTAGE:	return decode(text("INC_SPY_CONFESS_SABOTAGE_DESC"));
+			default:				return decode(text("INC_SPY_CAPTURED_DESC"));
+		}
+	}
     @Override
     public boolean triggersWar()        { return false; } // war is only triggered after a warning
     @Override
@@ -89,9 +91,9 @@ public class SpyConfessionIncident extends DiplomaticIncident {
     public String warningMessageId() {
         if (galaxy().empire(empVictim).isPlayerControlled())
             return "";
-        else if (missionType == 2)
+		else if (missionType == MISSION_SABOTAGE)
             return DialogueManager.WARNING_SABOTAGE;
-        else if (missionType == 1)
+		else if (missionType == MISSION_ESPIONAGE)
             return DialogueManager.WARNING_ESPIONAGE;
         else
             return DialogueManager.WARNING_SABOTAGE;        
@@ -102,9 +104,8 @@ public class SpyConfessionIncident extends DiplomaticIncident {
     public String key() {
         return concat(str(dateOccurred), ":SpyConfession");
     }
-    @Override
-    public String decode(String s) {
-        String forceMessage = missionType > 0 ? "" : text("SPY_FORCED_CONFESSION");
+	@Override public String decode(String s)	{
+        String forceMessage = missionType != MISSION_HIDE ? "" : text("SPY_FORCED_CONFESSION");
         String s1 = super.decode(s);
         s1 = s1.replace("[spyrace]",  galaxy().empire(empSpy).raceName());
         s1 = galaxy().empire(empSpy).replaceTokens(s1, "spy");
