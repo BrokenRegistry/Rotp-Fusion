@@ -593,13 +593,6 @@ SETTINGS_MOD_DEBUG_BM_ZOOM_OUT_DESC  | Lors de l’exécution d’un benchmark, 
 SETTINGS_MOD_DEBUG_NO_AUTOSAVE       | Stop "Sauve-Auto" : %1
 SETTINGS_MOD_DEBUG_NO_AUTOSAVE_DESC  | Désactiver la sauvegarde automatique de sécurité en arrière-plan. La sauvegarde doit être arrêtée indépendamment.
 
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY			| Problème d’affichage : %1
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_YES		| J’ai vu les lignes horizontale.
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_NO		| Je n’ai pas ce problème.
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_YES_DESC	| On va essayer de résoudre ce problème.
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_NO_DESC	| Cette option ne me concerne pas.
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_DESC		| Sur les systèmes Linux, des lignes horizontales peuvent parfois apparaître sur carte de la galaxie, dans la zone de d’accessibilité des vaisseaux.
-
 GAME_SETTINGS_CONSOLE_AUTO_PLAY      | Écrire sur console : %1
 GAME_SETTINGS_CONSOLE_AUTO_PLAY_DESC | Lorsque cette option est activée, les données enregistrées sont également affichées sur la console.
 GAME_SETTINGS_DEBUG_LOG_NOTIF        | Écrire Notifications : %1
@@ -3939,10 +3932,15 @@ NAME_RACE_PSILON_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SAKKRA_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SILICOID_FR_HELP | →NAME_FR_HELP←
 
-SETTINGS_MOD_MOO1_OPTIONS_TITLE			| Rétablir les paramètres de MoO1
-SETTINGS_MOD_MOO1_OPTIONS_UI			| Rétablir les paramètres de MoO1
-SETTINGS_MOD_MOO1_OPTIONS_UI_DESC		| Ouvrir le panneau de configuration contenant les paramètres permettant de rétablir les fonctionalités d'origine de MoO1.
-SETTINGS_MOD_MOO1_OPTIONS_UI_HELP		| Certains paramètres de Rotp diffèrent légèrement de ceux de MoO1. Ce panneau contient toutes les options disponibles permettant de rétablir la plupart des paramètres et des valeurs d'origine de MoO1.
+SETTINGS_MOD_MOO1_GALAXY_OPTIONS_TITLE		| Rétablir les paramètres de MoO1
+SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI			| Rétablir les paramètres de MoO1
+SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_DESC	| Ouvrir le panneau de configuration contenant les paramètres permettant de rétablir les fonctionalités d'origine de MoO1.
+SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_HELP	| Certains paramètres de Rotp diffèrent légèrement de ceux de MoO1. Ce panneau contient toutes les options disponibles permettant de rétablir la plupart des paramètres et des valeurs d'origine de MoO1.
+
+SETTINGS_MOD_MOO1_RULES_OPTIONS_TITLE		| Rétablir les règles de MoO1
+SETTINGS_MOD_MOO1_RULES_OPTIONS_UI			| Rétablir les règles de MoO1
+SETTINGS_MOD_MOO1_RULES_OPTIONS_UI_DESC		| Ouvrir le panneau de configuration contenant les paramètres permettant de rétablir les fonctionalités d'origine de MoO1.
+SETTINGS_MOD_MOO1_RULES_OPTIONS_UI_HELP		| Certains paramètres de Rotp diffèrent légèrement de ceux de MoO1. Ce panneau contient toutes les options disponibles permettant de rétablir la plupart des paramètres et des valeurs d'origine de MoO1.
 
 SETTINGS_MOD_DEBUG_OPTIONS_TITLE         | Options pour les développeurs
 SETTINGS_MOD_DEBUG_OPTIONS_UI            | Options de débogage

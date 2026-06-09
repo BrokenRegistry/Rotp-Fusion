@@ -3,6 +3,7 @@
 ## What's New
 
 26-06-09 (BR)
+- Removed the Fixe (attempt) of 26-06-03: useless.
 - Added constant in SpyConfessionIncident.java to improve readability.
 
 26-06-04 (BR)

@@ -6,7 +6,6 @@ import rotp.Rotp;
 import rotp.model.game.GameSession;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
-import rotp.ui.BasePanel;
 import rotp.ui.util.ParamTitle;
 
 final class DebugOptions extends AbstractOptionsSubUI {
@@ -38,10 +37,7 @@ final class DebugOptions extends AbstractOptionsSubUI {
 		SafeListParam list = new SafeListParam(Arrays.asList(
 				new ParamTitle("GAME_OTHER"),
 				menuStartup,
-				continueAnyway,
-
-				HEADER_SPACER_50,
-				BasePanel.debugNoGraphicCopy
+				continueAnyway
 				));
 		if (!Rotp.noOptions()) {
 			GameSession session = GameSession.instance();

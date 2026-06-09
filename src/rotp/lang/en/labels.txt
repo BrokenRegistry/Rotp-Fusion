@@ -593,13 +593,6 @@ SETTINGS_MOD_DEBUG_BM_ZOOM_OUT_DESC  | When running a benchmark, the whole galax
 SETTINGS_MOD_DEBUG_NO_AUTOSAVE       | Disable Auto Save : %1
 SETTINGS_MOD_DEBUG_NO_AUTOSAVE_DESC  | Disable background security auto saving. Backup has to be shut off independently.
 
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY			| Display Glitch: %1
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_YES		| I saw the horizontal lines.
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_NO		| I don't have that problem.
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_YES_DESC	| We'll try to fix this problem.
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_NO_DESC	| This option doesn't apply to me.
-SETTINGS_MOD_DEBUG_NO_GRAPHIC_COPY_DESC		| On Linux systems, horizontal lines may sometimes appear within the ship range area of the galaxy map.
-
 GAME_SETTINGS_CONSOLE_AUTO_PLAY      | Log to console: %1
 GAME_SETTINGS_CONSOLE_AUTO_PLAY_DESC | When enabled, the logged data are also shown on the console.
 GAME_SETTINGS_DEBUG_LOG_NOTIF        | Log Notifications: %1
@@ -3939,10 +3932,15 @@ NAME_RACE_PSILON_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SAKKRA_FR_HELP   | →NAME_FR_HELP←
 NAME_RACE_SILICOID_FR_HELP | →NAME_FR_HELP←
 
-SETTINGS_MOD_MOO1_OPTIONS_TITLE			| Reinstate MoO1 settings
-SETTINGS_MOD_MOO1_OPTIONS_UI			| Panel for reinstating MoO1 settings
-SETTINGS_MOD_MOO1_OPTIONS_UI_DESC		| Open a new control panel containtings the setting allowing to restore the original MoO1 Settings.
-SETTINGS_MOD_MOO1_OPTIONS_UI_HELP		| Some Rotp settings differ slightly from those in MoO1. This panel contains all the options available to restore most of the original MoO1 settings and values.
+SETTINGS_MOD_MOO1_GALAXY_OPTIONS_TITLE		| Reinstate MoO1 settings
+SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI			| Panel for reinstating MoO1 settings
+SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_DESC	| Open a new control panel containtings the setting allowing to restore the original MoO1 Settings.
+SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_HELP	| Some Rotp settings differ slightly from those in MoO1. This panel contains all the options available to restore most of the original MoO1 settings and values.
+
+SETTINGS_MOD_MOO1_RULES_OPTIONS_TITLE		| Reinstate MoO1 Rules
+SETTINGS_MOD_MOO1_RULES_OPTIONS_UI			| Panel for reinstating MoO1 Rules
+SETTINGS_MOD_MOO1_RULES_OPTIONS_UI_DESC		| Open a new control panel containtings the setting allowing to restore the original MoO1 Settings.
+SETTINGS_MOD_MOO1_RULES_OPTIONS_UI_HELP		| Some Rotp settings differ slightly from those in MoO1. This panel contains all the options available to restore most of the original MoO1 settings and values.
 
 SETTINGS_MOD_DEBUG_OPTIONS_TITLE         | Developer's Options
 SETTINGS_MOD_DEBUG_OPTIONS_UI            | Debug Options

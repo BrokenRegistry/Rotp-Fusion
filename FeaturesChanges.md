@@ -416,6 +416,7 @@
 
 ### Fixes:
 
+- Removed the Fixe (attempt) of 26-06-03: useless.
 - Fixed Crash on Space Monster Attack.
 - Fixe (attempt): On some Linux systems, horizontal lines may sometimes appear within the ship range area of the galaxy map.
   - A new option is available in the debug panel to try to fix this.
