@@ -9,6 +9,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 import rotp.ui.game.GameUI;
@@ -113,6 +114,18 @@ public class CustomIcons implements Base {
 	}
 	@Override public BufferedImage magnifierIcon(int side, Color lineCol) {
 		BufferedImage img = magnifierImage(96, 96, lineCol);
+		return resizeImage(img, side, side);
+	}
+	@Override public BufferedImage glassesIcon(int side, Color lineCol)		{
+		BufferedImage img = glassesImage(96, 96, lineCol);
+		return resizeImage(img, side, side);
+	}
+	@Override public BufferedImage spyglassIcon(int side, Color lineCol)	{
+		BufferedImage img = spyglassImage(96, 96, lineCol, Math.toRadians(-30));
+		return resizeImage(img, side, side);
+	}
+	@Override public BufferedImage moreIcon(int side, Color lineCol)		{
+		BufferedImage img = moreImage(96, 96, lineCol);
 		return resizeImage(img, side, side);
 	}
 
@@ -546,6 +559,84 @@ public class CustomIcons implements Base {
 		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g.drawLine(width-junction, junction, 0, height);
 
+		g.dispose();
+		return img;
+	}
+	private BufferedImage glassesImage(int width, int height, Color lineCol)	{
+		int strokeW	= width/24;
+		int border	= width/8;
+		int ctr		= width/2;
+		int start	= border;
+		int stop	= width - border;
+		int glassH	= (stop - start) * 3/4;
+		int glassW	= (stop - start)/2;
+		int top		= ctr - width/10;
+		int glassT	= top - glassH/2;
+
+		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
+		Graphics2D g = getGraphicsRH(img);
+		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		g.drawLine(start, top, stop, top);
+		g.drawArc(start, glassT, glassW, glassH, 0, -180);
+		g.drawArc(ctr, glassT, glassW, glassH, 0, -180);
+		g.dispose();
+		return img;
+	}
+	private BufferedImage spyglassImage(int width, int height, Color lineCol, double rotationRequired)	{
+		int strokeW	= width/24;
+		int border	= width/8;
+		int ctr		= width/2;
+		int start	= border;
+		int stop	= width - border;
+		int rectW	= (stop - start)/3;
+		int smallH	= rectW/6;
+		int stepH	= rectW/8;
+
+		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
+		Graphics2D g = getGraphicsRH(img);
+		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		int hh = smallH;
+		int h = hh + hh;
+		int x = start;
+		int y = ctr - hh;
+		g.drawRect(x, y, rectW, h);
+		hh += stepH;
+		h = hh + hh;
+		x += rectW;
+		y = ctr - hh;
+		g.drawRect(x, y, rectW, h);
+		hh += stepH;
+		h = hh + hh;
+		x += rectW;
+		y = ctr - hh;
+		g.drawRect(x, y, rectW, h);
+		g.dispose();
+		
+		if (rotationRequired == 0)
+			return img;
+
+		BufferedImage rotImg = new BufferedImage(width, height, TYPE_INT_ARGB);
+		Graphics2D gr = getGraphicsRH(rotImg);
+		AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, ctr, ctr);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BICUBIC);
+		gr.drawImage(op.filter(img, null), 0, 0, null);
+		gr.dispose();
+
+		return rotImg;
+	}
+	private BufferedImage moreImage(int width, int height, Color lineCol)	{
+		int stroke_	= width/24;
+		int strokeW	= stroke_+stroke_;
+		int border	= width/3;
+		int ctr		= width/2;
+		int start	= border;
+		int stop	= width - border;
+
+		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
+		Graphics2D g = getGraphicsRH(img);
+		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		g.drawLine(start, ctr, stop, ctr);
+		g.drawLine(ctr, start, ctr, stop);
 		g.dispose();
 		return img;
 	}

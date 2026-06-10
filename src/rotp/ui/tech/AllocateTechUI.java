@@ -17,6 +17,7 @@ package rotp.ui.tech;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -55,9 +56,11 @@ import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.game.HelpUI;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.util.ParamList;
 
-public class AllocateTechUI extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
+public final class AllocateTechUI extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
     private static final long serialVersionUID = 1L;
+    private static AllocateTechUI INSTANCE;
     private int selectedCategory = 0;
     private final Color yellowTextC = new Color(255,192,0);
     private final Color whiteTextC = new Color(239,239,239);
@@ -80,13 +83,15 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
     private static final Color techUnderscoreC = new Color(255,255,255,90);
     static final Color currentTechC = new Color(217,164,0);
     static final Color tierBackC = new Color(24,18,14);
+	private static final int ICON_HEIGHT = s25;
 
     private LinearGradientPaint backGradient;
     private ExitTechButton exitButton;
     private final Rectangle equalizeButton = new Rectangle();
     private Shape hoverBox;
-    private Rectangle techBox = new Rectangle();
-    private Rectangle helpBox = new Rectangle();
+	private final Rectangle techBox = new Rectangle();
+	private final Rectangle helpBox = new Rectangle();
+	private final Rectangle moreBox = new Rectangle();
     private final Rectangle[] catBox = new Rectangle[TechTree.NUM_CATEGORIES];
     private final Polygon[] leftArrow = new Polygon[TechTree.NUM_CATEGORIES];
     private final Polygon[] rightArrow = new Polygon[TechTree.NUM_CATEGORIES];
@@ -97,7 +102,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
     private final Map<RoundRectangle2D.Float,String> techSelections = new HashMap<>();
     private final Map<RoundRectangle2D.Float,String> techForGuide = new HashMap<>();
     private Point2D.Float[] currentTechs = new Point2D.Float[TechTree.NUM_CATEGORIES];
-    private BufferedImage visualTree;
+	private BufferedImage visualTree, moreIcon;
     private int treeX, treeY;
     private int dragX, dragY;
     private float totalPlanetaryResearch = -1;
@@ -106,6 +111,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
     // private boolean showFreeTechs = false;
 
     public AllocateTechUI() {
+		INSTANCE = this;
         initModel();
     }
 
@@ -248,13 +254,13 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         int xMargin	= s50;
         int xSep	= s20;
         int boxW	= (width - 2*(xMargin + xSep))/3;
-        
+
     	// Category related Info
         int xCat = xMargin;
         int yCat = xMargin;
         int wCat = boxW;
         TechCategory cat = player().tech().category(selectedCategory);
-        
+
         String catName	= text(cat.id());
         String catHead	= text("TECH_CATEGORY_HEADER", catName.toUpperCase());
         String catInfo	= catHead;
@@ -323,31 +329,31 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         int y2 = scaled(100);
         HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 5, text("TECH_HELP_1B"));
         sp2.setLine(scaled(60), y2, s60, s70);
-        
+
         int x3 = scaled(180);
         int w3 = scaled(190);
         int y3 = y2;
         HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 6, text("TECH_HELP_1C"));
         sp3.setLine(scaled(200), y3, scaled(200), s70);
-        
+
         int x4 = scaled(380);
         int w4 = scaled(190);
         int y4 = y2;
         HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 5, text("TECH_HELP_1D"));
         sp4.setLine(scaled(390), y4, scaled(340), s70);
-        
+
         int x5 = scaled(580);
         int w5 = scaled(190);
         int y5 = y2;
         HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 5, text("TECH_HELP_1E"));
         sp5.setLine(scaled(575), s70, scaled(675), y5, scaled(755), s70);
-        
+
         int w6 = scaled(190);
         int x6 = w - scaled(260) - w6;
         int y6 = y2;
         HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 5, text("TECH_HELP_1F"));
         sp6.setLine(x6+w6, scaled(140), w-scaled(190), scaled(140));
-        
+
         int xRight = w - scaled(280);
         int yStep  = s10;
         int w7 = scaled(300);
@@ -355,7 +361,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         int y7 = scaled(220);
         HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 0, text("TECH_HELP_1G"));
         sp7.setLine(x7+w7, y7+(sp7.height()/2), w-scaled(235), scaled(200));
-        
+
         int w8 = w7;
         int x8 = xRight - w8;
         int y8 = sp7.ye() + yStep;
@@ -367,13 +373,13 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         int yk = sp8.ye() + yStep;
         HelpUI.HelpSpec spk = helpUI.addBrownHelpText(xk,yk,wk, 0, text("TECH_HELP_1K"));
         spk.setLine(xk+wk, yk+(spk.height()/2), w-scaled(85), scaled(454));
-        
+
         int w9 = scaled(210);
         int x9 = xRight - w9;
         int y9 = scaled(580);
         HelpUI.HelpSpec sp9 = helpUI.addBrownHelpText(x9,y9,w9, 4, text("TECH_HELP_1I"));
         sp9.setLine(x9+w9, scaled(610), w-scaled(240), scaled(610));
-        
+
         int wj = w1+s40;
         int xj = x1-s20;
         int yj = sp1.ye() + s20;
@@ -411,11 +417,12 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         g.fillRect(s10,getHeight()-scaled(200),getWidth()-s20, scaled(190));
 
         drawHelpButton(g);
+		drawMoreButton(g);
 
         String title = text("TECH_RESEARCH");
         g.setFont(narrowFont(32));
         g.setColor(yellowTextC);
-        drawString(g,title,s50, s40);
+		drawString(g, title, s90, s40);
 
         int cats = TechTree.NUM_CATEGORIES;
         int gap = s5;
@@ -610,17 +617,34 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         g.dispose();
     }
     private void drawHelpButton(Graphics2D g) {
-        helpBox.setBounds(s20,s20,s20,s25);
+		int x = s20;
+		int y = s17;
+        helpBox.setBounds(x, y, ICON_HEIGHT, ICON_HEIGHT);
         g.setColor(darkBrownC);
-        g.fillOval(s20, s20, s20, s25);
+        g.fillOval(x, y, ICON_HEIGHT, ICON_HEIGHT);
         g.setFont(narrowFont(25));
         if (helpBox == hoverBox)
             g.setColor(Color.yellow);
         else
             g.setColor(Color.white);
 
-        drawString(g,"?", s26, s40);
+        drawString(g,"?", s29, s38);
     }
+	private void drawMoreButton(Graphics2D g)	{
+		int x = s50;
+		int y = s17;
+		int h = ICON_HEIGHT;
+		moreBox.setBounds(x, y, h, h);
+		g.setColor(darkBrownC);
+		g.fillOval(x, y, h, h);
+		g.drawImage(moreIcon(), x, y, null);
+
+		if (moreBox != hoverBox)
+			return;
+		
+		g.setColor(Color.yellow);
+		g.drawOval(x, y, h, h);
+	}
     private String techCostString(TechCategory cat, Tech tech) {
         if (tech == null)
             return "";
@@ -906,62 +930,97 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         TechCategory cat = player().tech().category(selectedCategory);
         techSelections.clear();
         techForGuide.clear();
-    	boolean showFreeTechs = options().displayFreeTech();
+
+        boolean showFreeTechs = options().displayFreeTech();
         boolean newResearch = cat.researchStarted();
         String currentT = cat.currentTech();
-
-        int maxQ = cat.maxResearchableQuintile();
-        int minQ = showFreeTechs? 0 : 1;
+		int maxQCurr = cat.maxResearchableQuintile();
+		int minQDisp = showFreeTechs? 0 : 1;
 
         // if we haven't started any research yet (currentT == null)
         // but have acquired a tech through other means (e.g. artifact planet),
         // show all of the known tiers but not the next tier
-        if (currentT == null)
-            maxQ--;
+		if (currentT == null)
+			maxQCurr--;
 
-        int minTechLvl = showFreeTechs? 0 : 1;
-        int maxTechLvl = (maxQ + 1) * 5;
-        List<String> knownT = cat.knownTechs();
-        List<String> allT = new ArrayList<>(cat.possibleTechs());
-        for (String techId: knownT) {
+		int maxQDisp = maxQCurr;
+
+		boolean showMoreTechs = false;
+		boolean showAllTechs = !moreTechBubbles.get().equalsIgnoreCase(MORE_BUBBLE_NO);
+		switch (moreTechBubbles.get().toUpperCase()) {
+			case MORE_BUBBLE_ALL:
+				showMoreTechs = true;
+				showAllTechs = true;
+				if (maxQDisp < 10)
+					maxQDisp = 10;
+				break;
+			case MORE_BUBBLE_FEW:
+				showMoreTechs = true;
+				showAllTechs = false;
+				break;
+			case MORE_BUBBLE_NO:
+			default:
+				showMoreTechs = false;
+				showAllTechs = false;
+		}
+
+		int minTechLvlDisp = showFreeTechs? 0 : 1;
+		int maxTechLvlDisp = (maxQDisp + 1) * 5;
+
+		List<String> knownTechs		= cat.knownTechs();
+		List<String> possibleTechs	= new ArrayList<>(cat.possibleTechs());
+		List<String> allTechs		= new ArrayList<>(cat.allTechs());
+        for (String techId: knownTechs) {
             if (showFreeTechs || !tech(techId).free)
-                allT.add(techId);
+                possibleTechs.add(techId);
         }
-
-        int tierW = scaled(300);
+        int tierW = s300;
         int tierGap = s100;
-        int w = max(treeBox.width, (tierW*(maxQ-minQ+2))+(tierGap*(maxQ-minQ+3)));
+        int w = max(treeBox.width, (tierW*(maxQDisp-minQDisp+2))+(tierGap*(maxQDisp-minQDisp+3)));
         int h = treeBox.height;
         visualTree = newOpaqueImage(w, h);
         Graphics2D g = (Graphics2D) visualTree.createGraphics();
         setRenderingHints(g);
-        Tech[] techs = new Tech[maxTechLvl - minTechLvl + 7];
+        Tech[] techs = new Tech[maxTechLvlDisp - minTechLvlDisp + 7];
         int freeId = 0;
-        for (String techId: allT) {
-            Tech tech = tech(techId);
-            if ((tech.level >= minTechLvl) && (tech.level <= maxTechLvl))
-            	if (tech.free) {
-            		techs[freeId] = tech;
-            		freeId++;
-            	}
-            	else
-            		techs[tech.level+5] = tech;
-        }
+		if (showMoreTechs)
+			for (String techId: allTechs) {
+				Tech tech = tech(techId);
+				if ((tech.level >= minTechLvlDisp) && (tech.level <= maxTechLvlDisp) && !tech.restricted)
+					if (tech.free) {
+						techs[freeId] = tech;
+						freeId++;
+					}
+					else
+						techs[tech.level+5] = tech;
+			}
+		else
+			for (String techId: possibleTechs) {
+				Tech tech = tech(techId);
+				if ((tech.level >= minTechLvlDisp) && (tech.level <= maxTechLvlDisp))
+					if (tech.free) {
+						techs[freeId] = tech;
+						freeId++;
+					}
+					else
+						techs[tech.level+5] = tech;
+			}
         g.setColor(Color.black);
         g.fillRect(0,0,w,h);
         // draw quintiles from 1 (0) to maxQ
         int x0=0;
-        for (int i=minQ; i<=maxQ+1; i++) {
+        for (int i=minQDisp; i<=maxQDisp+1; i++) {
             drawTierLevel(g,x0,tierGap,i);
-            if (i > minQ)
+            if (i > minQDisp)
                 drawTierArrow(g,x0,tierGap,h);
             x0 += tierGap;
             int minLevel = i==0? 0 : (5*i)+1;
             int maxLevel = minLevel+4;
-            if (i>maxQ)
+			boolean asInfo = i>maxQCurr;
+			if (asInfo && !showAllTechs)
                 drawUnknownTechTier(g,cat,currentT, i-1, x0,tierW,h);
             else
-                drawTechTier(g,techs,newResearch,knownT,currentT,minLevel,maxLevel,x0,tierW,h);
+				drawTechTier(g, techs, newResearch, knownTechs, possibleTechs, currentT, minLevel, maxLevel, asInfo, x0, tierW, h);
             x0 += tierW;
         }
         g.dispose();
@@ -1011,7 +1070,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         int sw = g.getFontMetrics().stringWidth(numStr);
         drawString(g,numStr, x0+w-sw-s5, s25);
     }
-    private void drawTechTier(Graphics2D g, Tech[] allT, boolean newResearch, List<String> knownT, String currentT, int minLevel, int maxLevel, int x, int w, int h) {
+	private void drawTechTier(Graphics2D g, Tech[] allT, boolean newResearch, List<String> knownT, List<String> possibleT, String currentT, int minLevel, int maxLevel, boolean asInfo, int x, int w, int h)	{
         g.setColor(tierBackC);
         g.fillRect(x,0,w,h);
         // get available techs in this tier
@@ -1028,17 +1087,19 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         int boxY = 0;
         for (Tech tech: displayT) {
             boxY += boxG;
-            drawTechBox(g, tech, newResearch, knownT, currentT, boxX, boxY, boxW, boxH);
+			drawTechBox(g, tech, newResearch, knownT, possibleT, currentT, asInfo, boxX, boxY, boxW, boxH);
             boxY += boxH;
         }
     }
-    private void drawTechBox(Graphics2D g, Tech tech, boolean newResearch, List<String> knownT, String currentT, int x, int y, int w, int h) {
+	private void drawTechBox(Graphics2D g, Tech tech, boolean newResearch, List<String> knownT, List<String> possibleT, String currentT, boolean asInfo, int x, int y, int w, int h)	{
         TechCategory cat =  player().tech().category(selectedCategory);
-        Color backC = unknownTechC;
-        Color textC = Color.white;
 
         boolean known = knownT.contains(tech.id);
-        boolean allowSelect = !known && newResearch && !tech.id().equals(currentT);
+		boolean possible = !asInfo && possibleT.contains(tech.id);
+		boolean allowSelect = !known && newResearch && possible && !tech.id().equals(currentT);
+
+		Color backC = possible? unknownTechC : Color.GRAY;
+		Color textC = possible?  Color.WHITE : tierBackC;
 
         if(known) {
             backC = knownTechC;
@@ -1073,12 +1134,12 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
 
         int fontSize = scaledFont(g, name, w-s80, 20, 16);
         int y0 = y+hdr1;
-        if (known)
+		if (known || !possible)
             drawString(g,name, x+s7, y0);
         else
             drawShadowedString(g, name, 2, x+s7, y0, SystemPanel.buttonShadowC, textC);
-        
-        if (!known) {
+
+		if (!known && possible) {
             // for current techs, the cost label is drawn dynamically over the visualTree
             // image instead of within the image. This allows adjustments of the tech
             // sliders to update the current tech cost label without the costly effort
@@ -1095,14 +1156,14 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
                 int costSW = g.getFontMetrics().stringWidth(costLbl);
                 g.setColor(Color.black);
                 drawString(g,costLbl, x+w-s10-costSW, y0);
-            }            
+            }
         }
 
         g.setColor(techUnderscoreC);
         g.fillRect(x,y0+s7,w,s2);
 
         y0 = y0 + hdr2;
-        g.setColor(Color.black);
+		g.setColor(possible? Color.BLACK : tierBackC);
         descLines = this.scaledPlainWrappedLines(g, tech.detail(), w-s14, 4, 16, 13);
         for (String desc: descLines) {
             drawString(g,desc, x+s7, y0);
@@ -1316,6 +1377,11 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
         int h = img.getHeight();
         int x = treeBox.x - treeX;
         int y = treeBox.y - treeY;
+		if (x+w < 0) {
+			resetData();
+			paintTree(g);
+			return;
+		}
         g.drawImage(img, x, y, x+w, y+h, 0, 0, w, h, null);
         g.setClip(null);
     }
@@ -1338,16 +1404,23 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
     public void mouseReleased(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
+		boolean rightClick = SwingUtilities.isRightMouseButton(e);
+
         if (hoverBox == helpBox) {
-        	if (SwingUtilities.isRightMouseButton(e))
+			if (rightClick)
         		showHotKeys();
         	else
         		showHelp();
             return;
         }
-        
+		if (hoverBox == moreBox) {
+			moreTechBubbles.next();
+			repaint();
+			return;
+		}
+
         if (treeBox.contains(x,y)) {
-            if (techSelections.keySet().contains(hoverBox)) {
+			if (!rightClick && techSelections.keySet().contains(hoverBox)) {
                 String techId = techSelections.get(hoverBox);
                 player().tech().category(selectedCategory).currentTech(tech(techId));
                 visualTree = null;
@@ -1413,8 +1486,8 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
                 }
             }
         }
-        if (SwingUtilities.isRightMouseButton(e))
-        	showInfo();
+		if (rightClick)
+			showInfo();
     }
     @Override
     public void mouseEntered(MouseEvent e) { }
@@ -1477,8 +1550,10 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
             return equalizeButton;
         if (helpBox.contains(x,y))
             return helpBox;
+		else if (moreBox.contains(x,y))
+			return moreBox;
         else if (techBox.contains(x,y))
-            return techBox;                    
+            return techBox;
         for (int i=0;i<catBox.length;i++) {
             if (catBox[i].contains(x,y))
                 return catBox[i];
@@ -1511,4 +1586,41 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
             exit(true);
         }
     }
+	private BufferedImage moreIcon()	{
+		// moreIcon = null; // TO DO BR: Comment
+		if (moreIcon == null) {
+			String s = moreTechBubbles.get();
+			if (s == null)
+				s = "";
+			switch (s.toUpperCase()) {
+				case MORE_BUBBLE_ALL:
+					moreIcon = spyglassIcon(ICON_HEIGHT, SystemPanel.blackText);
+					break;
+				case MORE_BUBBLE_FEW:
+					moreIcon = glassesIcon(ICON_HEIGHT, SystemPanel.blackText);
+					break;
+				case MORE_BUBBLE_NO:
+				default:
+					moreIcon = moreIcon(ICON_HEIGHT, SystemPanel.blackText);
+					break;
+			}
+		}
+		return moreIcon;
+	}
+	private static void setMoreIcon(String s)	{
+		INSTANCE.moreIcon = null;
+		INSTANCE.visualTree = null;
+		INSTANCE.repaint();
+	}
+	private static final String MORE_BUBBLE		= "MORE_TECH_BUBBLE";
+	private static final String MORE_BUBBLE_NO	= "NO";
+	private static final String MORE_BUBBLE_FEW	= "FEW";
+	private static final String MORE_BUBBLE_ALL	= "ALL";
+	public static final ParamList moreTechBubbles = new ParamList( MOD_UI, MORE_BUBBLE, MORE_BUBBLE_NO)
+			.isCfgFile(true)
+			.showFullGuide(true)
+			.put(MORE_BUBBLE_NO,	MOD_UI + MORE_BUBBLE + "_" + MORE_BUBBLE_NO)
+			.put(MORE_BUBBLE_FEW,	MOD_UI + MORE_BUBBLE + "_" + MORE_BUBBLE_FEW)
+			.put(MORE_BUBBLE_ALL,	MOD_UI + MORE_BUBBLE + "_" + MORE_BUBBLE_ALL)
+			.setNewValueMethod(AllocateTechUI::setMoreIcon);
 }

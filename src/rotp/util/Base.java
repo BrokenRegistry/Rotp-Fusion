@@ -1804,6 +1804,15 @@ public interface Base extends InputEventUtil {
 	default BufferedImage magnifierIcon(int side, Color lineCol) {
 		return CustomIcons.instance.magnifierIcon(side, lineCol);
 	}
+	default BufferedImage glassesIcon(int side, Color lineCol) {
+		return CustomIcons.instance.glassesIcon(side, lineCol);
+	}
+	default BufferedImage spyglassIcon(int side, Color lineCol) {
+		return CustomIcons.instance.spyglassIcon(side, lineCol);
+	}
+	default BufferedImage moreIcon(int side, Color lineCol) {
+		return CustomIcons.instance.moreIcon(side, lineCol);
+	}
     default void copyLabels(String baseName) {
 		// First copy file from the modified source to final destination
 		// Validated for eclipse IDE

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import rotp.model.game.IMainOptions;
 import rotp.model.game.SafeListParam;
+import rotp.ui.tech.AllocateTechUI;
 import rotp.ui.util.IParam;
 import rotp.ui.util.ParamSubUI;
 
@@ -104,6 +105,7 @@ public final class AllSubUI {
 			allModOptions = new SafeListParam(ALL_MOD_OPTIONS);
 			allModOptions.add(IMainOptions.showGuide);
 			allModOptions.add(IMainOptions.speciesDirectory);
+			allModOptions.add(AllocateTechUI.moreTechBubbles);
 			allModOptions.addAll(allOptions);
 		}
 		return allModOptions;
