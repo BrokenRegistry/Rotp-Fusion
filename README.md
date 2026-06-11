@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-06-11 (BR)
+- Fixed an issue where the search field was obscuring part of the guide's pop-up window.
+
 26-06-10 (BR)
 - A new option now allows you to view all technologies in the technology allocation panel. This means you no longer need to open the user manual to find out the level of an unknown technology.
 

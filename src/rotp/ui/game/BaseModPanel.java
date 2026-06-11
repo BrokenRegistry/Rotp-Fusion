@@ -1197,7 +1197,8 @@ public abstract class BaseModPanel extends BasePanel
 			margin.setVisible(false);
 			pane.setVisible(false);
 		}
-		public void clear()		{ hide(); }
+		public boolean isVisible()		{ return pane.isVisible(); }
+		public void clear()				{ hide(); }
 		// ========== Private Methods ==========
 		//
 		private void paintGuide(Graphics g0)	{

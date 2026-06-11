@@ -420,6 +420,7 @@
 
 ### Fixes:
 
+- Fixed an issue where the search field was obscuring part of the guide's pop-up window.
 - Removed the Fixe (attempt) of 26-06-03: useless.
 - Fixed Crash on Space Monster Attack.
 - Fixe (attempt): On some Linux systems, horizontal lines may sometimes appear within the ship range area of the galaxy map.

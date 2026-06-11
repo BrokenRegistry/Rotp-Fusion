@@ -82,6 +82,8 @@ class SearchTextField extends BaseTextField	{
 		newSearchResults = true;
 	}
 	@Override public void paintComponent(Graphics g0)	{
+		if (parent.guidePopUp.isVisible())
+			return;
 		super.paintComponent(g0);
 		Graphics2D g = (Graphics2D) g0;
 		paintSearchResults(g);
