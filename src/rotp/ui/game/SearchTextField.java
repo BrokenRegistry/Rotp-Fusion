@@ -25,7 +25,7 @@ class SearchTextField extends BaseTextField	{
 	private SafeListPanel optionsPanel;
 	ResultTextArea resultField;
 	//ParamSearchList finalList;
-	private boolean newSearchResults;
+	private SearchLoop lastSearch = new SearchLoop();
 
 	SearchTextField(BaseCompactOptionsUI parent)	{
 		super(parent);
@@ -35,6 +35,8 @@ class SearchTextField extends BaseTextField	{
 	}
 
 	void setOptions(SafeListPanel optionsPanel)	{ this.optionsPanel = optionsPanel; }
+	private boolean newSearchResults()			{ return lastSearch.newSearchResults; }
+	private void newSearchResults(boolean b)	{ lastSearch.newSearchResults = false; }
 	private boolean hasMouse()	{
 		Point loc = MouseInfo.getPointerInfo().getLocation();
 		if (loc == null)
@@ -58,29 +60,6 @@ class SearchTextField extends BaseTextField	{
 	}
 	public IParam<?> getHoveredParam()	{ return resultField.selectedResult.param; }
 	public IParam<?> getHoveredUI()		{ return resultField.selectedResult.ui; }
-	void search()	{
-		String toSearch = getText();
-		if (toSearch.length() < 1) {
-			clearResult();
-			return;
-		}
-		boolean stripAccent = !LanguageManager.isDefaultLanguage();
-		ParamSearchList paramList = optionsPanel.getSearchList(null, toSearch, MIN_PCT, stripAccent);
-		newSearchResults = false;
-		if (paramList.isEmpty()) {
-			clearResult();
-			return;
-		}
-
-		paramList.sort();
-		resultField.finalList = new ParamSearchList();
-		for (ParamSearchResult p : paramList) {
-			if (resultField.finalList.size() >= MAX_PARAM)
-				break;
-			resultField.finalList.smartAdd(p);
-		}
-		newSearchResults = true;
-	}
 	@Override public void paintComponent(Graphics g0)	{
 		if (parent.guidePopUp.isVisible())
 			return;
@@ -90,23 +69,64 @@ class SearchTextField extends BaseTextField	{
 	}
 	private void paintSearchResults(Graphics2D g)	{
 		validFocus();
-		if (resultField.finalList == null) {
+		if (resultField.finalList == null)
 			return;
-		}
 		int resSize = resultField.finalList.size();
 		if (resSize == 0)
 			return;
-		if (newSearchResults) {
+		if (newSearchResults()) {
 			resultField.updateText();
 			resultField.setVisible(true);
-			newSearchResults = false;
+			newSearchResults(false);
 			requestFocus();
 		}
 		validFocus();
 	}
+	void newSearch()	{
+		lastSearch = new SearchLoop();
+		lastSearch.start();
+	}
 	private class SearchFieldListener implements DocumentListener	{
-		@Override public void changedUpdate(DocumentEvent evt)	{ search(); }
-		@Override public void removeUpdate(DocumentEvent evt)	{ search(); }
-		@Override public void insertUpdate(DocumentEvent evt)	{ search(); }
+		@Override public void changedUpdate(DocumentEvent evt)	{ newSearch(); }
+		@Override public void removeUpdate(DocumentEvent evt)	{ newSearch(); }
+		@Override public void insertUpdate(DocumentEvent evt)	{ newSearch(); }
+	}
+
+	private class SearchLoop {
+		private boolean newSearchResults = false;
+		ParamSearchList finalList;
+		Search search;
+		Thread searchThread;
+		private void start()	{
+			resultField.finalList = new ParamSearchList();
+			finalList = resultField.finalList;
+			search = new Search();
+			searchThread = new Thread(search, "SearchLoop");
+			searchThread.start();
+		}
+		private class Search implements Runnable {
+			@Override public void run() {
+				clearResult();
+				resultField.finalList = new ParamSearchList();
+				finalList = resultField.finalList;
+				newSearchResults = false;
+				String toSearch = getText();
+				if (toSearch.length() < 1)
+					return;
+
+				boolean stripAccent = !LanguageManager.isDefaultLanguage();
+				ParamSearchList paramList = optionsPanel.getSearchList(null, toSearch.toLowerCase(), MIN_PCT, stripAccent);
+				if (paramList.isEmpty())
+					return;
+
+				paramList.sort();
+				for (ParamSearchResult p : paramList) {
+					if (finalList.size() >= MAX_PARAM)
+						break;
+					finalList.smartAdd(p);
+				}
+				newSearchResults = true;
+			}
+		}
 	}
 }

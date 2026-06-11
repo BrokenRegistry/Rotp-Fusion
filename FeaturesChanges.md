@@ -420,6 +420,8 @@
 
 ### Fixes:
 
+- Improved the responsiveness of the search field.
+- Fixed an issue that prevented the search field from accepting uppercase letters.
 - Fixed an issue where the search field was obscuring part of the guide's pop-up window.
 - Removed the Fixe (attempt) of 26-06-03: useless.
 - Fixed Crash on Space Monster Attack.

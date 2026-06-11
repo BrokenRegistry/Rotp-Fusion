@@ -437,7 +437,7 @@ public interface IParam<T> extends InterfaceOptions{
 //			return format(ui) + COL_SEP + format(param) + " (" + result + "/" + partialRatio + "/" + ratio + ")";
 		}
 		private String subPanelFormat(String s)	{ return "[" + s.strip() + "]"; }
-		private String format(IParam<?> p)			{
+		private String format(IParam<?> p)		{
 			if (p == null)
 				return subPanelFormat(langLabel("SETTINGS_MOD_SEARCH_RESULT_THIS_PANEL"));
 			if (p.isSubMenu())

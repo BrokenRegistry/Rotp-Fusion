@@ -957,7 +957,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		setModifierKeysState(e);
 		if (e.getComponent() == searchField) {
 			hoverBox = searchBox;
-			searchField.search();
+			searchField.newSearch();
 			searchField.requestFocus();
 		}
 		if (e.getComponent() == resultField) {

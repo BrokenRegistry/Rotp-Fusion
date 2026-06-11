@@ -3,6 +3,8 @@
 ## What's New
 
 26-06-11 (BR)
+- Improved the responsiveness of the search field.
+- Fixed an issue that prevented the search field from accepting uppercase letters.
 - Fixed an issue where the search field was obscuring part of the guide's pop-up window.
 
 26-06-10 (BR)
