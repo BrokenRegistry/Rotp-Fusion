@@ -730,6 +730,7 @@ public class ShipDesignLab implements Base, Serializable {
     public ShipSpecial specialHighEnergyFocus()		{ return getSpecial("BeamFocus", 0); }
     public ShipSpecial specialInertialStabilizer()	{ return getSpecial("ShipInertial", 0); }
     public ShipSpecial specialInertialNullifier()	{ return getSpecial("ShipInertial", 1); }
+    public ShipSpecial specialRepulsor()			{ return getSpecial("Repulsor", 0); }
     public ShipSpecial specialReserveFuel()			{
         for (ShipSpecial spec : specials()) {
             if (spec.isFuelRange())

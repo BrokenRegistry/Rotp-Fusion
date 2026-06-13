@@ -219,19 +219,18 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 			return false;
 		return true;
 	}
-    @Override public Empire	 empire()				{ return galaxy().orionEmpire(); }
-    @Override protected ShipDesign[] designs()		{
+	@Override public Empire	 empire()				{ return galaxy().orionEmpire(); }
+	@Override protected ShipDesign[] designs()		{
 		// To allow the player to change the level in game.
-    	validate(); // BR: For backward compatibility.
+		validate(); // BR: For backward compatibility.
 		int turn = galaxy().currentTurn();
-		designs = null; // TO DO BR: REMOVE
+ 		//designs = null; // TO DO BR: COMMENT
 		if (designs == null || designTurn != turn) {
 			designTurn = turn;
-			// clearFleetStats();
 			initDesigns();
 		}
 		return designs;
-    }
+	}
 	@Override public ShipDesign design(int i)		{ return designs()[i]; }
 	@Override public StarSystem system()			{ return destination(); }
 	@Override public void launch()					{ launch(fromX(), fromY()); }

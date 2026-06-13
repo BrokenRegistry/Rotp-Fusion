@@ -64,13 +64,13 @@ WARN_OATHBREAKER_01        | Mon petit ! Briser votre parole est la honte ultim
 WARN_ATTACKED_ALLY_01      | Les petits [defender_race_pluraladjec] sont sous notre protection ! Cessez votre guerre et faites amende honorable, ou vous mourrez de notre main avant de savoir ce qui vous frappe !
 WARN_REBELLING_AGAINST_01    | Le Grand Hiérarque est le seul digne de s'asseoir sur le trône du Conseil Galactique ! Nous n'accepterons jamais votre vile usurpation !
 //
-PRAISE_COUNCIL_VOTE_01     | Ha ! Les regards sur leurs visages alors que vous vous rangez du côté de nous s'avèrent très amusants. Mais maintenant, ils savent où se trouve le vrai pouvoir, et nous remercions nos petits amis de les avoir aidés à apprendre !
+PRAISE_COUNCIL_VOTE_01     | Ha ! Les regards sur leurs visages, alors que vous vous rangez de notre côté, s'avèrent très amusants. Mais maintenant, ils savent où se trouve le vrai pouvoir, et nous remercions nos petits amis de les avoir aidés à comprendre !
 PRAISE_COUNCIL_VOTE_02     | C'est assez fastidieux d'être obligé d'endurer des babillages d'idiots lors de ces réunions. Que vous nous ayez aidés à y mettre fin plus rapidement ou parce que vous êtes conscient de notre pouvoir, nous reconnaissons ce que vous avez fait aujourd'hui.
-PRAISE_COUNCIL_VOTE_03     | Vous nous intriguez, le petit. Mais il est bon pour votre peuple que vous ayez choisi de reconnaître notre puissance aujourd'hui. Pour votre bien, j'espère que vous continuerez à le faire.
+PRAISE_COUNCIL_VOTE_03     | Vous nous intriguez, le petit. Mais il est bon pour votre peuple que vous ayez choisi de reconnaître notre puissance aujourd'hui. Pour votre bien, j'espère que vous continuerez ainsi.
 
 PRAISE_ATTACKED_ENEMY_01   | Ha ha ! Content de vous voir sur le champ de bataille aujourd'hui, mon petit ami ! Écrasons ensemble ces pathétiques [defender_race_pluraladjec] ! Que leur sang coule sur leurs mondes jusqu'à ce qu'il n'en reste plus un seul !
-PRAISE_ATTACKED_ENEMY_02   | Quelle glorieuse bataille nous allons faire aujourd'hui, mon petit ! Montrez-nous comment vous vous battez contre [defender_race_pluralnoun], afin que nous puissions vous donner le respect qui convient à partir de ce jour !
-PRAISE_ATTACKED_ENEMY_03   | Il est douloureusement évident que vous ne combattez que contre [defender_race_pluralnoun] parce que nous le faisons aussi. Pourtant, que vous ne craignez pas complètement le combat... peut-être vous avons-nous mal jugé après tout.
+PRAISE_ATTACKED_ENEMY_02   | Quelle glorieuse bataille nous allons faire aujourd'hui, mon petit ! Montrez-nous comment vous vous battez contre [defender_race_pluralnoun], afin que nous puissions vous accorder le respect qui convient à partir de ce jour !
+PRAISE_ATTACKED_ENEMY_03   | Il est clairement évident que vous ne combattez [defender_race_pluralnoun] uniquement parce que nous le faisons aussi. Néanmoins, le fait est que vous ne faites pas l'impasse sur le combat... il est possible que nous vous ayons mal jugé, après tout.
 
 PRAISE_TRADE_01            | Notre accord commercial a été des plus profitables pour nos deux races, mon petit ami. Mais la confiance est la pièce la plus précieuse, et nous continuerons à vous faire confiance tant que vous agirez ainsi.
 PRAISE_TRADE_02            | Si la guerre est peut-être le moyen le plus exaltant de progresser, ce n'est pas le seul, comme le prouve notre accord commercial. Que cela continue longtemps pour que nos deux peuples puissent prospérer !

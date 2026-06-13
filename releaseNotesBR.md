@@ -8,6 +8,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-06-13 (BR)
+- Repulsor fix: They now work the same way as in MoO1.
+  - Applies only to the player. The AI will continue to avoid repulsor cells.
+  - Ships may be repelled multiple times, but not indefinitely. They will stop if they pass through the same spot again.
 - Fleet Deployment UI: fixed an issue with arrows clickable area being smaller than hover detection.
 
 26-06-11 (BR)

@@ -514,6 +514,19 @@ public class CombatStackShip extends CombatStack {
         ShipWeapon wpn = design.weapon(i);
         return wpn.isWeapon() && !wpn.noWeapon();
     }
+	@Override public void autoRepulse(CombatStack target)	{
+		if (repulsorRange == 0)
+			return;
+		ShipComponent repulsor = design.lab().specialRepulsor();
+		repulsor.fireUpon(this, target, 1, mgr);
+	}
+	@Override public boolean canAutoRepulse(CombatStack target)	{
+		if (repulsorRange == 0)
+			return false;
+
+		int minMove = movePointsTo(target);
+		return repulsorRange >= minMove;
+	}
     @Override
     public boolean canAttack(CombatStack st) {
         if (st == null)

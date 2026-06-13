@@ -214,6 +214,7 @@ public final class GameSession implements Base, Serializable {
     public void aFewMoreTurns(boolean b) { aFewMoreTurns = b; }
     public boolean aFewMoreTurns() 		 { return aFewMoreTurns; }
     public boolean performingTurn()      { return performingTurn; }
+	public void performingTurn(boolean b)	{ performingTurn = b; }
     @Override
     public IGameOptions options()        { return options; }
     public void options(IGameOptions o)  { options = o; o.setAsGame(); }

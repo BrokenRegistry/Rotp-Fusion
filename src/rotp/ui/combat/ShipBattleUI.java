@@ -64,6 +64,7 @@ import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipSpecial;
 import rotp.model.ships.ShipWeapon;
 import rotp.ui.FadeInPanel;
+import rotp.ui.RotPUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.vipconsole.IVIPConsole;
 import rotp.ui.vipconsole.IVIPListener;
@@ -95,6 +96,9 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
     private static final Color grayLeftC = new Color(173,173,173);
     private static final Color grayRightC = new Color(115,115,115);
     private static final Color grayBorderC = new Color(210,210,210);
+	private static final Color validCellColor  = new Color(0, 0, 255, 64);
+	private static final Color repulsiveCellColor = new Color(255, 128, 0, 28);
+	private static final Color currentCellColor = new Color(255, 255, 255, 64);
 
     public static final Color spaceBlue = new Color(0,0,32);
     private static final long exitDelay = 500; // ms
@@ -538,21 +542,24 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         CombatStack currStack = mgr.currentStack();
 
         // unless we are in auto-complete mode, color grid squares blue that are in reach
-// BR:       if ((!mgr.performingStackTurn) && (mode != Display.RESULT)) {
-        if ((!mgr.performingStackTurn) && !readyToShowResult()) {
-            g.setColor(new Color(0, 0, 255, 64));
-            if (!currStack.usingAI()) {
-                for (int y0 = 0; y0 < GRID_COUNT_Y; y0++) {
-                    for (int x0 = 0; x0 < GRID_COUNT_X; x0++) {
-                        if (mgr.canTacticallyMoveTo(currStack, x0, y0) && (currStack.pathTo(x0, y0) != null)) 
-                            g.fill(combatGrids[x0][y0]);
-                    }
-                }
-            }
-        }
+		if ((!mgr.performingStackTurn) && !readyToShowResult() && !currStack.usingAI())
+			for (int y0 = 0; y0 < GRID_COUNT_Y; y0++)
+				for (int x0 = 0; x0 < GRID_COUNT_X; x0++)
+					if (mgr.canTacticallyMoveTo(currStack, x0, y0)) {
+//						FlightPath path = currStack.pathTo(x0, y0);
+						FlightPath path = FlightPath.pathTo(currStack, x0, y0);
+						if (path != null) {
+							if (path.repulsive())
+								g.setColor(repulsiveCellColor);
+//								g.setColor(new Color(255, 128, 0, 28));
+							else
+								g.setColor(validCellColor);
+							g.fill(combatGrids[x0][y0]);
+						}
+					}
 
         if ((currentGrid != null) && !mgr.performingStackTurn && (mode == Display.INTRO)) {
-            g.setColor(new Color(255,255,255,64));
+            g.setColor(currentCellColor);
             g.fill(currentGrid);
         }
 
@@ -1237,7 +1244,8 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         if (!mgr.canTacticallyMoveTo(stack, hoveringX, hoveringY))
             return;
 
-        shipTravelPath = stack.pathTo(hoveringX, hoveringY);
+//        shipTravelPath = stack.pathTo(hoveringX, hoveringY);
+		shipTravelPath = FlightPath.pathTo(stack, hoveringX, hoveringY);
         if (shipTravelPath == null)
             return;
 
@@ -1788,11 +1796,16 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
 			refreshCombatScreen(true);
 			refreshResultScreen(true);
 			repaint();
+			return;
 		}
-		else {
-			mode = Display.RESULT;
-			repaint();
-			session().resumeNextTurnProcessing();
+		mode = Display.RESULT;
+		repaint();
+		session().resumeNextTurnProcessing();
+
+		if (ShipCombatManager.forDebug) {
+			ShipCombatManager.forDebug = false;
+			RotPUI.instance().mainUI().showDisplayPanel();
+			RotPUI.instance().selectMainPanel();
 		}
 	}
     private void finishAndResume() {

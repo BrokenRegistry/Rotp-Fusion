@@ -22,6 +22,9 @@
 
 ### Features:
 
+- Repulsor fix: They now work the same way as in MoO1.
+  - Applies only to the player. The AI will continue to avoid repulsor cells.
+  - Ships may be repelled multiple times, but not indefinitely. They will stop if they pass through the same spot again.
 - New Options: Max Range Tech Gap & Max Warp Tech Gap
   - It's always frustrating when no engine technologies or no fuel technologies are available for research... These options ensure that at least some of these technologies are included in the technology tree.
 - New option to select MoO1 rules for the miniaturization of the Battle Scanners and the Reserve Fuel Tanks.

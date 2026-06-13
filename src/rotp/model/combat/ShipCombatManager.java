@@ -37,16 +37,17 @@ import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamList;
 import rotp.util.Base;
 
-public class ShipCombatManager implements Base {
+public final class ShipCombatManager implements Base {
     // private static final int MAX_TURNS = 100;
     private static int MAX_TURNS() { return IInGameOptions.maxCombatTurns.get(); };
     private static Thread autoRunThread;
     @SuppressWarnings("unused")
 	private static Thread runningThread;
-    private static int EMPTY    = 0;
-    private static int ASTEROID = 1;
-    private static int SHIPS    = 2;
-    private static int PLANET   = 3;
+	private static final int EMPTY    = 0;
+	private static final int ASTEROID = 1;
+	private static final int SHIPS    = 2;
+	private static final int PLANET   = 3;
+	public static boolean forDebug = false;
     // combat vars
     public ShipBattleUI ui;
     private StarSystem system;
@@ -108,7 +109,7 @@ public class ShipCombatManager implements Base {
     	return count;
     }
 	public void dontTargetHarmlessColony(boolean b)	{ doNotTargetHarmlessColony = b; }
-	public boolean dontTargetHarmlessColony()		{ return doNotTargetHarmlessColony; }
+	boolean dontTargetHarmlessColony()		{ return doNotTargetHarmlessColony; }
 	private int playerSelection()			{ return playerSelection; }
 	public void playerSelection(int i)		{ playerSelection = i; }
     boolean interdiction()                     { return interdiction; }
@@ -717,6 +718,10 @@ public class ShipCombatManager implements Base {
 	}
 	private boolean playerShouldRetreat()	{ return new ShipCaptainAdvisor(player()).playerShouldRetreat(); }
 	private void promptPlayer()	{
+		if (forDebug) {
+			playerSelection(ShipBattleUI.ENTER_COMBAT);
+			return;
+		}
 		// Get the player selection
 		switch (fleetAutoCombat.get()) {
 			case FLEET_AUTO_COMBAT_AUTO:
@@ -1238,7 +1243,7 @@ public class ShipCombatManager implements Base {
         for (CombatStack stack: stacks) {
             List<CombatStackMissile> missiles = new ArrayList<>(stack.missiles());
             for (CombatStackMissile miss: missiles) {
-                if (miss.owner == st) 
+                if (miss.owner == st)
                     removeMissileFromCombat(miss);
             }
         }
@@ -1275,7 +1280,7 @@ public class ShipCombatManager implements Base {
 
         // proposed path may be too long for this stack. If stack
         // can't teleport, cut down length of path
-        if (path.size() > st.move) 
+        if (path.size() > st.move)
             path.limitMoves((int)st.move);
 
         // move the stack along it's path until done or destroyed (by missiles)
@@ -1289,8 +1294,18 @@ public class ShipCombatManager implements Base {
         boolean moved = st.moveTo(x1,y1);
         if(moved)
             CheckForReactionFire(st);
+		st.resetRepulsorsActions();
         return moved;
     }
+	public boolean pushBackStack(CombatStack st, int x1, int y1)	{
+		//log(currentStack.fullName(), " pushed back to: ", str(x1), ",", str(y1));
+		boolean moved = st.moveTo(x1,y1);
+		if(moved) {
+			st.addRepulsorsActions(x1, y1);
+			CheckForReactionFire(st);
+		}
+		return moved;
+	}
     private void teleportStack(CombatStack st, int x1, int y1) {
         //log(currentStack.fullName() + " teleporting to: " + x1 + "," + y1);
         st.teleportTo(x1,y1, 0.1f);
@@ -1311,31 +1326,29 @@ public class ShipCombatManager implements Base {
     private double riskAt(CombatStack stack, int x, int y) {
         return 0.0d;
     }
-    public boolean[] validMoveMap(CombatStack stack) {
+	public boolean[] validMoveMap(CombatStack stack)	{
         int gridW = maxX+3;
         int gridH = maxY+3;
         boolean[] valid = new boolean[gridW*gridH];
 
         // outside borders are non-traversable
-        for (int x=0;x<gridW;x++) {
+        for (int x=0;x<gridW;x++)
             for (int y=0;y<gridH;y++)
                 valid[y*gridW+x] = (x>0) && (x<gridW-1) && (y>0) && (y<gridH-1);
-        }
 
         // asteroids are not traversable
-        for (int x=0;x<=maxX;x++) {
-            for (int y=0;y<=maxY;y++) {
+        for (int x=0;x<=maxX;x++)
+            for (int y=0;y<=maxY;y++)
                 if (asteroidMap[x][y])
                     valid[(y+1)*gridW+(x+1)] = false;
-            }
-        }
 
         // combat stacks are not traversable
         // enemy stacks may have a repulsor range that is also not traversable
         List<CombatStack> stacks = new ArrayList<>(results.activeStacks());
-        for (CombatStack s: stacks) {            
-            int r = stack.ignoreRepulsors() || (s.empire() == stack.empire()) || s.inStasis ? 0 : s.repulsorRange();
-            if ((r == 0) && stack.canEat(s)) 
+		boolean ignoreRepulsors = stack.ignoreRepulsors() || stack.isPlayerControlled();
+        for (CombatStack s: stacks) {
+			int r = ignoreRepulsors || (s.empire() == stack.empire()) || s.inStasis ? 0 : s.repulsorRange();
+            if ((r == 0) && stack.canEat(s))
                 continue;
             else if (r == 0) 
                 valid[(s.y+1)*gridW+(s.x+1)] = false;
@@ -1351,20 +1364,45 @@ public class ShipCombatManager implements Base {
         }
         return valid;
     }
-    private void CheckForReactionFire(CombatStack stack)
+	boolean[] repulsorMap(CombatStack stack)		{
+		int gridW = maxX+3;
+		int gridH = maxY+3;
+		boolean[] repulsorMap = new boolean[gridW*gridH];
+		if (stack.ignoreRepulsors())
+			return repulsorMap;
+		List<CombatStack> stacks = new ArrayList<>(results.activeStacks());
+		for (CombatStack s: stacks) {
+			int range = s.empire() == stack.empire() || s.inStasis ? 0 : s.repulsorRange();
+			if (range > 0)
+				for (int x=0-range; x<=range; x++)
+					for (int y=0-range; y<=range; y++) {
+						int x0 = s.x + x + 1;
+						int y0 = s.y + y + 1;
+						repulsorMap[y0 * gridW + x0] = true;
+					}
+		}
+		return repulsorMap;		
+	}
+    private void CheckForReactionFire(CombatStack movingStack)
     {
-        if(stack.cloaked)
+        if(movingStack.cloaked)
             return;
         List<CombatStack> stacks = new ArrayList<>(results.activeStacks());
         for (CombatStack s: stacks) {
-            if(s.empire() == stack.empire())
+            if(s.empire() == movingStack.empire())
                 continue;
-            if(s.initiative() <= stack.initiative())
+			if (!movingStack.ignoreRepulsors() && s.canAutoRepulse(movingStack)) {
+				if(s.initiative() > movingStack.initiative() && !s.cloaked)
+					performReactionFire(s, movingStack); // Reaction fire before pushing back
+				if (movingStack.destroyed())
+					continue;
+				s.autoRepulse(movingStack);
+				continue;
+			}
+            if(s.initiative() <= movingStack.initiative())
                 continue;
-            if(s.canAttack(stack) && !s.cloaked)
-            {
-                performReactionFire(s, stack);
-            }
+            if(s.canAttack(movingStack) && !s.cloaked)
+                performReactionFire(s, movingStack);
         }
     }
     private void performReactionFire(CombatStack stack, CombatStack target)

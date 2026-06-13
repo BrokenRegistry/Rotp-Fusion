@@ -69,6 +69,7 @@ public class CombatStack implements Base {
     public ShipCombatManager mgr;
     protected ShipCaptain captain;
     protected final List<CombatStackMissile> targetingMissiles = new ArrayList<>();
+	private final List<Integer> repulsorsActions = new ArrayList<>();
     public int num = 0;
     protected int origNum = 0;
     public int x = 0;
@@ -110,6 +111,9 @@ public class CombatStack implements Base {
     public boolean visible = true;
     protected float transparency = 1;
 
+	public boolean validRepulsorsActions(int x, int y)	{ return !repulsorsActions.contains(FlightPath.encode(x, y)); }
+	public void addRepulsorsActions(int x, int y)		{ repulsorsActions.add(FlightPath.encode(x, y)); }
+	public void resetRepulsorsActions()					{ repulsorsActions.clear(); }
     public Empire empire()               { return empire; }
     protected void empire(Empire emp)       { empire = emp; }
     //public String destroyedSoundEffect() { return "ShipExplosion"; }
@@ -237,6 +241,7 @@ public class CombatStack implements Base {
     public boolean hostileTo(CombatStack st, StarSystem sys)                  { return empire != st.empire; }
     public boolean selectBestWeapon(CombatStack target)       { return false; }
     public boolean currentWeaponCanAttack(CombatStack target) { return false; }
+	public boolean canAutoRepulse(CombatStack target)         { return false; }
     public boolean canAttack(CombatStack target)              { return false; }
     public boolean canPotentiallyAttack(CombatStack target)   { return false; }
     public boolean canDamage(CombatStack target)              { return maxDamage() > target.shieldLevel(); }
@@ -248,6 +253,7 @@ public class CombatStack implements Base {
     public void fireWeapon(CombatStack target, int i, boolean shots) { }
     public void fireWeapon(CombatStack target, int i) { fireWeapon(target,i,false); }
     public void fireWeapon(CombatStack target)       {  }
+	public void autoRepulse(CombatStack target)      {  }
     public int weaponIndex()                         { return 0; }
     public int shots()                               { return 1; }
     public int maxFiringRange(CombatStack tgt)       { return 1; }
@@ -388,7 +394,7 @@ public class CombatStack implements Base {
         boolean b = submoveTo(x1,y1, targetingMissiles);
         if (mgr.showAnimations()) 
             mgr.ui.paintAllImmediately(20);
-        
+
         return b;
     }
     private boolean submoveTo(float x1, float y1, List<CombatStackMissile> missiles) {

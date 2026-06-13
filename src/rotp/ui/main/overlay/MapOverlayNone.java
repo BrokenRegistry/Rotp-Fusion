@@ -20,7 +20,9 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 import rotp.model.Sprite;
+import rotp.model.combat.ShipCombatManager;
 import rotp.model.galaxy.ShipFleet;
+import rotp.model.galaxy.SpaceTestRepulsor;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
@@ -33,13 +35,25 @@ import rotp.ui.main.TransportDeploymentPanel;
 import rotp.ui.sprites.ShipRelocationSprite;
 import rotp.ui.sprites.SystemTransportSprite;
 
-public class MapOverlayNone extends MapOverlay {
+public final class MapOverlayNone extends MapOverlay {
+	private static boolean allowTestBattle = false;
     MainUI parent;
     public MapOverlayNone(MainUI p) {
         parent = p;
     }
     private GalaxyMapPanel map()	{ return parent.map(); }
     private SpriteDisplayPanel displayPanel()	{ return parent.displayPanel(); }
+	private void startTestBattle()	{
+		if (!allowTestBattle)
+			return;
+		Sprite spr = parent.displayPanel().spriteToDisplay();
+		if (spr instanceof StarSystem) {
+			StarSystem sys = (StarSystem) spr;
+			SpaceTestRepulsor monster = new SpaceTestRepulsor(1f, 1f);
+			ShipCombatManager.forDebug = true;
+			galaxy().shipCombat().battle(sys, monster);
+		}
+	}
     @Override public boolean hideNextTurnNotice()         { return false; }
     @Override public boolean canChangeMapScale()          { return true; }
     @Override public boolean consumesClicks(Sprite spr)   { return false; }
@@ -80,6 +94,10 @@ public class MapOverlayNone extends MapOverlay {
                 break;
 			case KeyEvent.VK_NUMBER_SIGN:
 			case KeyEvent.VK_DEAD_TILDE:
+				if (e.isAltDown()) {
+					startTestBattle();
+					return true;
+				}
 				player().fleetCommanderAI().nextTurn();
 				break;
             case KeyEvent.VK_EQUALS:

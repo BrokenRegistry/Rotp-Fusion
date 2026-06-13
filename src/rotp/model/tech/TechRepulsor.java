@@ -33,6 +33,7 @@ public final class TechRepulsor extends Tech {
     public float range = 0;
     public float move = 0;
     private transient Color beamColor;
+    private String soundEffect = "ShipRepulsor";
 
     public TechRepulsor (String typeId, int lv, int seq, boolean b, TechCategory c) {
         id(typeId, seq);
@@ -42,6 +43,7 @@ public final class TechRepulsor extends Tech {
         free = b;
         init();
     }
+    protected String soundEffect()		{ return soundEffect; }
     @Override
     public float warModeFactor()        { return 2; }
     @Override
@@ -84,6 +86,22 @@ public final class TechRepulsor extends Tech {
         int x = source.x;
         int y = source.y;
 
+		// push ship back destination loop validation
+		int destX = target.x;
+		if (target.x < source.x)
+			destX--;
+		else if (target.x > source.x)
+			destX++;
+
+		int destY = target.y;
+		if (target.y < source.y)
+			destY--;
+		else if (target.y > source.y)
+			destY++;
+
+		if (!target.validRepulsorsActions(destX, destY))
+			return;
+
         source.mgr.performingStackTurn = true;
         ui.paintAllImmediately();
 
@@ -97,6 +115,8 @@ public final class TechRepulsor extends Tech {
         int dY = rect.height/(n*2);
         int dW = BasePanel.s5;
         int dH = 2*dY;
+
+		playAudioClip(soundEffect());
 
         // calculate proper image rotation for attack frames
         int rX = (int) (ui.boxW*3/2);
@@ -151,18 +171,6 @@ public final class TechRepulsor extends Tech {
         g0.setStroke(prev);
         g0.dispose();
 
-        // push ship back
-        int destX = target.x;
-        if (target.x < source.x)
-            destX--;
-        else if (target.x > source.x)
-            destX++;
-
-        int destY = target.y;
-        if (target.y < source.y)
-            destY--;
-        else if (target.y > source.y)
-            destY++;
 
         if (!source.mgr.validSquare(destX, destY))
             return;
@@ -170,7 +178,7 @@ public final class TechRepulsor extends Tech {
         if (source.mgr.stackAt(destX, destY) != null)
             return;
 
-        source.mgr.moveStack(target, destX, destY);
+		source.mgr.pushBackStack(target, destX, destY);
         source.mgr.performingStackTurn = false;
     }
 }
