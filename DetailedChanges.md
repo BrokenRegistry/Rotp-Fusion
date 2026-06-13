@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-06-13 (BR)
+- Fleet Deployment UI: fixed an issue with arrows clickable area being smaller than hover detection.
+
 26-06-11 (BR)
 - Improved the responsiveness of the search field.
 - Fixed an issue that prevented the search field from accepting uppercase letters.

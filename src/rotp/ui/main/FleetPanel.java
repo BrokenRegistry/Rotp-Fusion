@@ -57,15 +57,13 @@ import rotp.ui.sprites.FlightPathSprite;
 public final class FleetPanel extends BasePanel implements MapSpriteViewer {
     private static final long serialVersionUID = 1L;
     private final SpriteDisplayPanel parent;
-    protected BasePanel topPane;
-    protected FleetDetailPane detailPane;
-    protected BasePanel bottomPane;
-    String nebulaText;
-    private final int[] stackAdjustment = new int[ShipDesignLab.MAX_DESIGNS];
-    public void toggleShowFleetInfo() {
-    	parent.parent.showFleetInfo(!parent.parent.showFleetInfo());
-    }
-    public void clearShowFleetInfo() { parent.parent.showFleetInfo(false); }
+	private BasePanel topPane;
+	private FleetDetailPane detailPane;
+	private BasePanel bottomPane;
+	private String nebulaText;
+	private final int[] stackAdjustment = new int[ShipDesignLab.MAX_DESIGNS];
+	private void toggleShowFleetInfo()	{ parent.parent.showFleetInfo(!parent.parent.showFleetInfo()); }
+	//public void clearShowFleetInfo()	{ parent.parent.showFleetInfo(false); }
 
     //session vars
     private StarSystem selectedDest()         { return (StarSystem) sessionVar("FLEETDEPLOY_SELECTED_DEST"); }
@@ -112,21 +110,18 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         return (fl == null) ? adjustedFleet() : fl;
     }
     private void  displayedFleet(ShipFleet s)       { sessionVar("DISPLAYED_FLEET", s); }
-    public FleetPanel(SpriteDisplayPanel p) {
+	FleetPanel(SpriteDisplayPanel p)	{
         parent = p;
         selectNewFleet(null);
         initModel();
     }
-    public void releaseObjects() { }
+	void releaseObjects()	{ }
 
-    @Override
-    public void handleNextTurn()             {  clearStackAdjustments(); }
-    public ShipFleet fleetToDisplay()        { return parent.shipFleetToDisplay(); }
-    @Override
-    public boolean hoverOverFleets()         { return (selectedFleet() == null) || (selectedFleet().empire() != player()); }
-    @Override
-    public boolean hoverOverFlightPaths()    { return selectedFleet() == null; }
-    public StarSystem displayedDestination() {
+	@Override public void handleNextTurn()			{ clearStackAdjustments(); }
+	@Override public boolean hoverOverFleets()		{ return (selectedFleet() == null) || (selectedFleet().empire() != player()); }
+	@Override public boolean hoverOverFlightPaths()	{ return selectedFleet() == null; }
+	private ShipFleet fleetToDisplay()				{ return parent.shipFleetToDisplay(); }
+	private StarSystem displayedDestination()		{
         if (tentativeDest() != null)
             return tentativeDest();
         else if (selectedDest() != null)
@@ -204,7 +199,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         newFleet.retreating(selectedFleet.retreating());
         return newFleet;
     }
-    public void sendFleet() {
+	private void sendFleet()	{
         // attempts to send fleet (OK button) if that selected
         // vars are valid
         if (!canSendFleet()) 
@@ -241,7 +236,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         parent.parent.reselectCurrentSystem();
         parent.parent.map().repaint();
     }
-    public void cancelFleet() {
+	private void cancelFleet()	{
         selectNewFleet(null);
         parent.parent.reselectCurrentSystem();
     }
@@ -257,7 +252,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
     private void adjustStacksToMatchFleet(ShipFleet selected, ShipFleet deployed) {
         int selectedCount = 0;
         for (int i=0;i<stackAdjustment.length;i++) {
-            if (selected.num(i) <= deployed.num(i)) 
+            if (selected.num(i) <= deployed.num(i))
                 stackAdjustment[i] = 0;
             else
                 stackAdjustment[i] = deployed.num(i) - selected.num(i);
@@ -265,7 +260,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         }
         // if what remains is a selected fleet adjusted down to 0, then
         // clear the adjustments
-        if (selectedCount == 0) 
+        if (selectedCount == 0)
             clearStackAdjustments();
     }
     @Override
@@ -352,18 +347,18 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             return false;
         }
 
-        if (o instanceof FlightPathSprite)  
+        if (o instanceof FlightPathSprite)
             return true;    
 
         // clicking on anything but a systemview
         // will leave this screen
-        if (!(o instanceof StarSystem)) 
+        if (!(o instanceof StarSystem))
             return false;
 
         // special case check:
         // on Cancel, then selected fleet is null and we get
         // here when the last selected system is reselected
-        if (selectedFleet() == null) 
+        if (selectedFleet() == null)
             return false;
 
         if (selectedFleet().empire() != player())
@@ -371,16 +366,16 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
 
         StarSystem sys = (StarSystem) o;
 
-        if (selectedFleet().destSysId() == sys.id) 
+        if (selectedFleet().destSysId() == sys.id)
             return false;
 
         tentativeDest(sys);
         // don't accept clicks for out of range systems
         // but consume the click (to stay on this view)
         ShipFleet adjustedFleet = adjustedFleet();
-        if (adjustedFleet == null) 
+        if (adjustedFleet == null)
             return false;
-        if (!adjustedFleet.canReach(sys)) { 
+        if (!adjustedFleet.canReach(sys)) {
             misClick();
             return true;
         }
@@ -508,17 +503,17 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             add(bottomPane, BorderLayout.SOUTH);
         }
     }
-    protected BasePanel topPane() {
+	private BasePanel topPane()	{
         if (topPane == null)
             topPane = new FleetGraphicPane(this);
         return topPane;
     }
-    protected FleetDetailPane detailPane() {
+	private FleetDetailPane detailPane()	{
         if (detailPane == null)
             detailPane = new FleetDetailPane(this);
         return detailPane;
     }
-    protected BasePanel bottomPane() {
+	private BasePanel bottomPane()	{
         if (bottomPane == null)
             bottomPane = new FleetButtonPane(this);
         bottomPane.setBackground(MainUI.shadeBorderC());
@@ -556,10 +551,10 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
 		Ship nexShip = altShips.get(nextIndex);
 		RotPUI.instance().mainUI().hoveringSprite(nexShip);
 	}
-    public final class FleetGraphicPane extends BasePanel implements MouseWheelListener {
+	private final class FleetGraphicPane extends BasePanel implements MouseWheelListener {
         private static final long serialVersionUID = 1L;
         private final FleetPanel parent;
-        public FleetGraphicPane(FleetPanel p){
+		private FleetGraphicPane(FleetPanel p)	{
             parent = p;
             init();
         }
@@ -727,7 +722,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             g.setColor(MainUI.shadeBorderC());
             g.fillRect(0, h-s5, w, s5);
         }
-        public void scrollToNextFleet(boolean forward) {
+		private void scrollToNextFleet(boolean forward)	{
             ShipFleet fl = parent.fleetToDisplay();
             if (fl == null)
                 return;
@@ -735,9 +730,9 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             List<ShipFleet> fleets = fl.empire().orderedFleets();
 
             int index = fleets.indexOf(fl);
-            if (forward) 
+            if (forward)
                 index = (index == (fleets.size()-1)) ? 0 : index + 1;
-            else 
+            else
                 index = (index == 0) ? fleets.size()-1 : index -1;
 
             IMapHandler topPanel = parent.parent.parent;
@@ -751,7 +746,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             scrollToNextFleet(up);
         }
     }
-    public final class FleetDetailPane extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
+	private final class FleetDetailPane extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener	{
         private static final long serialVersionUID = 1L;
         private final Color fleetBackC = new Color(255,255,255,40);
         private BufferedImage starImg;
@@ -774,10 +769,10 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         private final Rectangle maxBoxH[]	= new Rectangle[ShipDesignLab.MAX_DESIGNS];
         private final Rectangle downBoxH[]	= new Rectangle[ShipDesignLab.MAX_DESIGNS];
         private final Rectangle upBoxH[]	= new Rectangle[ShipDesignLab.MAX_DESIGNS];
-        protected Shape textureClip;
+		private Shape textureClip;
 		private boolean showAdjust;
 
-        public FleetDetailPane(FleetPanel p) {
+		private FleetDetailPane(FleetPanel p)	{
             parent = p;
             init();
         }
@@ -865,7 +860,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
 					System.err.println("Null Pointer Exception while painting the Fleet Detail Pane");
 			}
 		}
-        public void paintDetailPane(Graphics g0) {
+		private void paintDetailPane(Graphics g0)	{
             Graphics2D g = (Graphics2D) g0;
             super.paintComponent(g0);
             int w = getWidth();
@@ -888,8 +883,8 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             clearButtons();
 
             boolean sameFleet = (origFleet.empId() == displayFleet.empId())
-			            		&& (origFleet.sysId() == displayFleet.sysId())
-			            		&& (origFleet.destSysId() == displayFleet.destSysId());
+								&& (origFleet.sysId() == displayFleet.sysId())
+								&& (origFleet.destSysId() == displayFleet.destSysId());
             showAdjust = canAdjust && sameFleet;
 
             if (showAdjust)
@@ -1159,7 +1154,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 if (cnt > 0)
                     num++;
             }
-            
+
             boolean contact = origFl.empire().isPlayer() 
             					|| origFl.empire().isMonster()
             					|| player().hasContacted(origFl.empId());
@@ -1476,16 +1471,16 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 adjAmt = 5;
             else if (ctrlPressed)
                 adjAmt = 20;
- 
+
             for (int i=0;i<shipBox.length;i++) {
                 if (minBoxH[i].contains(x,y))
                     newAdj = 0-stackNum;
-                else if (downBox[i].contains(x,y))
+                else if (downBoxH[i].contains(x,y))
                     newAdj = max(currAdj-adjAmt, 0-stackNum);
-                else if (upBox[i].contains(x,y))
+                else if (upBoxH[i].contains(x,y))
                     newAdj = min(currAdj+adjAmt, 0);
-                else if (maxBox[i].contains(x,y))
-                            newAdj = 0;
+                else if (maxBoxH[i].contains(x,y))
+                    newAdj = 0;
             }
 
             // nothing in click range
@@ -1554,11 +1549,11 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
     	adjustedFleet(newAdjustedFleet());
     	return true;
     }
-    public final class FleetButtonPane extends BasePanel implements MouseListener, MouseMotionListener {
+	private final class FleetButtonPane extends BasePanel implements MouseListener, MouseMotionListener	{
         private static final long serialVersionUID = 1L;
         private final FleetPanel parent;
         private final Color buttonShadowC = new Color(33,33,33);
-        int leftM, midM1, midM2, rightM;
+		private int leftM, midM1, midM2, rightM;
         private LinearGradientPaint fullGrayBackC;
         private LinearGradientPaint largeGreenBackC;
         private LinearGradientPaint largeRedBackC;
@@ -1569,7 +1564,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         private final Rectangle cancelBox = new Rectangle();
         private final Rectangle deployBox = new Rectangle();
         private final Rectangle undeployBox = new Rectangle();
-        public FleetButtonPane(FleetPanel p) {
+		private FleetButtonPane(FleetPanel p)	{
             parent = p;
             init();
         }
@@ -1619,7 +1614,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
 					System.err.println("Null Pointer Exception while painting the Fleet Button Pane");
 			}
 		}
-		public void paintButtonPane(Graphics g0) {
+		private void paintButtonPane(Graphics g0)	{
             Graphics2D g = (Graphics2D) g0;
             super.paintComponent(g);
 
@@ -1638,7 +1633,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
 
             StarSystem dest = parent.displayedDestination();
             if (dest != null) {
-                if (!fleet.canReach(dest))  {
+                if (!fleet.canReach(dest)) {
                     drawFullOutOfRangeButton(g);
                     return;
                 }
@@ -1703,7 +1698,6 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             boolean hovering = (actionBox != null) && (actionBox == hoverBox);
             Color c0 = hovering ? SystemPanel.yellowText : SystemPanel.whiteText;
 
-            //g.setFont(narrowFont(22));
             scaledFont(g, label, w-s10, 22, 14);
             int sw = g.getFontMetrics().stringWidth(label);
             int x0 = x1+((w-sw)/2);

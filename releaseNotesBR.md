@@ -7,6 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-06-13 (BR)
+- Fleet Deployment UI: fixed an issue with arrows clickable area being smaller than hover detection.
+
 26-06-11 (BR)
 - Improved the responsiveness of the search field.
 - Fixed an issue that prevented the search field from accepting uppercase letters.
@@ -19,15 +22,6 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 - Two new subpanels have been created. They group together the options for restoring the MoO1 rules.
   - One is located in the galaxy settings panel
   - And the other is in the rules settings panel.
-
-26-06-04 (BR)
-- Fixed Crash on Space Monster Attack.
-
-26-06-03 (BR)
-- Council panel: You can now vote by clicking on the candidate's picture.
-- Fixe (attempt): On some Linux systems, horizontal lines may sometimes appear within the ship range area of the galaxy map.
-  - A new option is available in the debug panel to try to fix this.
-- Governor Stargate building can now be set to Ultra Rich only.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)
