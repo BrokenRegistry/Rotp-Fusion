@@ -28,6 +28,7 @@ import rotp.model.empires.Empire;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.IGameOptions;
 import rotp.model.game.IInGameOptions;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
@@ -112,6 +113,8 @@ public final class ShipCombatManager implements Base {
 	boolean dontTargetHarmlessColony()		{ return doNotTargetHarmlessColony; }
 	private int playerSelection()			{ return playerSelection; }
 	public void playerSelection(int i)		{ playerSelection = i; }
+	public boolean playerCanRetreat()		{ return playerCanRetreat; }
+	public boolean aiCanRetreat()			{ return aiCanRetreat; }
     boolean interdiction()                     { return interdiction; }
     public ShipCombatResults results()         { return results; }
     public StarSystem system()                 { return system; }
@@ -210,8 +213,15 @@ public final class ShipCombatManager implements Base {
         }
     }
     public void battle(StarSystem sys, SpaceMonster monster) {
-		aiCanRetreat = options().aiCanRetreat();
-		playerCanRetreat = options().playerCanRetreat();
+		IGameOptions options = options();
+		if (options.monsterEasyRetreat()) {
+			aiCanRetreat = true;
+			playerCanRetreat = true;
+		}
+		else {
+			aiCanRetreat = options().aiCanRetreat();
+			playerCanRetreat = options().playerCanRetreat();
+		}
 
     	system = sys;
         monster.initCombat();

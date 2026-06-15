@@ -2972,6 +2972,12 @@ SETTINGS_MOD_MOO1_MINIATURIZE_YES_DESC	| Apply the rules for miniaturizing ship 
 SETTINGS_MOD_MOO1_MINIATURIZE_NO_DESC	| Retain the rules for miniaturizing ship components from the original edition of RotP.
 SETTINGS_MOD_MOO1_MINIATURIZE			| MoO1 Miniaturization: %1
 
+SETTINGS_MOD_MONSTER_RETREAT_HELP		| →SETTINGS_MOD_MONSTER_RETREAT_DESC←<br>Since AIs don’t know the monsters’ levels in advance, preventing them from retreating against them is particularly unfair.
+SETTINGS_MOD_MONSTER_RETREAT_DESC		| Always allow the fleet to retreat when fighting a monster.
+SETTINGS_MOD_MONSTER_RETREAT			| Retreat Against Monsters: %1
+SETTINGS_MOD_MONSTER_RETREAT_YES_DESC	| Always allow the fleet to retreat.
+SETTINGS_MOD_MONSTER_RETREAT_NO_DESC	| Apply the same withdrawal restrictions as those in effect for empires.
+
 SETTINGS_MOD_HOME_ORION              | Orion Ruin HomeWorld: %1
 SETTINGS_MOD_HOME_ARTIFACT           | Get Artifact HomeWorld: %1
 SETTINGS_MOD_HOME_FERTILE            | Get Fertile HomeWorld: %1

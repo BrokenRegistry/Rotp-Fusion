@@ -184,10 +184,10 @@ public class CombatStackShip extends CombatStack {
 		if (markedMoO1Retreat())
 			return false;
 		if(empire().isAIControlled()) {
-			if (!options().aiCanRetreat(mgr.turnCounter()))
+			if (!(mgr.aiCanRetreat() || options().aiCanRetreat(mgr.turnCounter())))
 				return false;
 		}
-		else if(!options().playerCanRetreat(mgr.turnCounter()))
+		else if(!(mgr.playerCanRetreat() || options().playerCanRetreat(mgr.turnCounter())))
 			return false;
 		return !atLastColony && (maneuverability() > 0); 
     }

@@ -40,6 +40,7 @@ final class MoO1RulesOptions extends AbstractOptionsSubUI {
 				new ParamTitle("MOO1_SPACE_COMBAT_END"),
 				retreatRestrictionTurns,
 				retreatRestrictions,
+				monsterEasyRetreat,
 				retreatDestination,
 				hyperComRetreatExtended
 				)));

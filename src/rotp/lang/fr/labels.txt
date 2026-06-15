@@ -2972,6 +2972,12 @@ SETTINGS_MOD_MOO1_MINIATURIZE_YES_DESC	| Appliquer les règles de miniaturisatio
 SETTINGS_MOD_MOO1_MINIATURIZE_NO_DESC	| Conserver les règles de miniaturisation des composants de vaisseau de l'édition originale de RotP.
 SETTINGS_MOD_MOO1_MINIATURIZE			| Miniaturisation de MoO1 : %1
 
+SETTINGS_MOD_MONSTER_RETREAT_HELP		| →SETTINGS_MOD_MONSTER_RETREAT_DESC←<br>Comme les IA ne connaissent pas à l’avance le niveau des monstres, leur interdire de battre en retraite face à eux est particulièrement injuste.
+SETTINGS_MOD_MONSTER_RETREAT_DESC		| Lors d’un combat contre un monstre, toujours permettre à la flotte de battre en retraite.
+SETTINGS_MOD_MONSTER_RETREAT			| Retraite contre Monstres : %1
+SETTINGS_MOD_MONSTER_RETREAT_YES_DESC	| Toujours permettre à la flotte de battre en retraite.
+SETTINGS_MOD_MONSTER_RETREAT_NO_DESC	| Appliquer les mêmes restrictions de retraite que celles en vigueur pour les empires.
+
 SETTINGS_MOD_HOME_ORION              | Planète mère avec Vestiges : %1
 SETTINGS_MOD_HOME_ARTIFACT           | Planète mère avec Artéfact : %1
 SETTINGS_MOD_HOME_FERTILE            | Planète mère Fertile : %1

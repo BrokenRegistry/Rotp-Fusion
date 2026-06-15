@@ -201,6 +201,10 @@ public interface ICombatOptions extends IBaseOptsTools {
 	default boolean canRetreat(int turn)			{ return retreatRestrictionTurns.get() <= turn; }
 	
 
+	ParamBoolean monsterEasyRetreat			= new ParamBoolean(MOD_UI, "MONSTER_RETREAT", true)
+			.setDefaultValue(MOO1_DEFAULT, false);
+	default boolean monsterEasyRetreat()		{ return monsterEasyRetreat.get(); }
+
 	ParamList retreatRestrictions			= new ParamList(MOD_UI, "RETREAT_RESTRICTIONS", "None")
 			.setDefaultValue(MOO1_DEFAULT, "Both")
 			.showFullGuide(true)

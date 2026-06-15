@@ -64,7 +64,7 @@ public final class ShipCaptainAdvisor extends rotp.model.ai.xilmi.AIShipCaptain 
 		// Basic info
 		isCivilFleet		= civilFleetAnalysis();
 		playerCanDeclareWar	= (alien == null) ? true : options.canStartWar(empire, alien);
-		playerCanRetreat	= options.playerCanRetreat();
+		playerCanRetreat	= mgr.playerCanRetreat();
 		inPact				= (colView != null) && colView.embassy().pact();
 		notAnEnemyColony	= (colView != null) && !colView.isMember(empire.enemies());
 

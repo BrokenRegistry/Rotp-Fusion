@@ -16,7 +16,8 @@ final class CombatTiming extends AbstractOptionsSubUI {
 				maxCombatTurns,
 				retreatRestrictions,
 				retreatRestrictionTurns,
-				moo1RetreatRules
+				moo1RetreatRules,
+				monsterEasyRetreat
 				)));
 		return map;
 	}
@@ -26,7 +27,8 @@ final class CombatTiming extends AbstractOptionsSubUI {
 						maxCombatTurns,
 						retreatRestrictions,
 						retreatRestrictionTurns,
-						moo1RetreatRules
+						moo1RetreatRules,
+						monsterEasyRetreat
 						));
 		return majorList;
 	}

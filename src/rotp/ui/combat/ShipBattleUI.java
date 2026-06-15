@@ -1324,7 +1324,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
             if (!mgr.autoResolve) {
                 String retreatText = text("SHIP_COMBAT_RETREAT_ALL");
                 boolean retreatDisabled = performingTurn;
-                if (!options().playerCanRetreat(mgr.turnCounter()))
+                if (!(mgr.playerCanRetreat() || options().playerCanRetreat(mgr.turnCounter())))
                 {
                     retreatText += " - "+(options().selectedRetreatRestrictionTurns()-mgr.turnCounter());
                     retreatDisabled = true;
@@ -1865,7 +1865,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         finish();
     }
     private void retreatAllPlayerShips(boolean inCombat) {
-    	if (!options().playerCanRetreat(mgr.turnCounter()))
+		if (!(mgr.playerCanRetreat() || options().playerCanRetreat(mgr.turnCounter())))
             return;
         newAnimationStarted(-1L);
         refreshResultScreen(true);
