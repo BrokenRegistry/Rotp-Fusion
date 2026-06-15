@@ -3940,6 +3940,9 @@ HEADERS_MOO1_GALAXY_SIZE					| ~~~ GALAXY SIZE AND LAYOUT ~~~
 HEADERS_MOO1_HOME_VICINITY_DESC				| MoO1 rules regarding systems neighboring home worlds.
 HEADERS_MOO1_HOME_VICINITY					| ~~~ HOME WORLDS VICINITY ~~~
 
+HEADERS_MOO1_SPACE_COMBAT_DESC				| MoO1 rules regarding space combat.
+HEADERS_MOO1_SPACE_COMBAT					| ~~~ SPACE COMBATS ~~~
+
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_TITLE		| Reinstate MoO1 settings
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI			| Panel for reinstating MoO1 settings
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_DESC	| Open a new control panel containtings the setting allowing to restore the original MoO1 Settings.
@@ -4004,7 +4007,6 @@ SETTINGS_MOD_AUTO_FLAG_ASSIGN_4          | Auto-Flag 4: %1
 
 FLAG_SELECT_SC1                          | Select the Flag Color to set automatically when
 FLAG_SELECT_SC2                          | Planet is scouted.
-
 SETTINGS_MOD_AUTO_FLAG_ARID_DESC         | →FLAG_SELECT_SC1← an →PLANET_ARID← →FLAG_SELECT_SC2←
 SETTINGS_MOD_AUTO_FLAG_BARREN_DESC       | →FLAG_SELECT_SC1← a →PLANET_BARREN← →FLAG_SELECT_SC2←
 SETTINGS_MOD_AUTO_FLAG_DEAD_DESC         | →FLAG_SELECT_SC1← a →PLANET_DEAD← →FLAG_SELECT_SC2←
@@ -4142,18 +4144,25 @@ SETTINGS_MOD_GUARDIAN_MONSTERS_PCT			| Guardians probability: %1%
 SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL_DESC	| A common difficulty level that applies to all space monsters guarding a planet.
 SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL		| Guardians global Level: %1%
 
-SETTINGS_MOD_IS_MOO1_MONSTER_DESC			| To give the space monsters the weapons and characteristics from MoO1.
+SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY	| The space monsters in RotP are different from those in MoO1.<br>This option lets you choose between<br>- using the monsters from MoO1 (100%)<br>- keeping those from RotP (0%)<br>- or letting the game select them at random.<br>  
+SETTINGS_MOD_IS_MOO1_MONSTER_HELP			| →SETTINGS_MOD_IS_MOO1_MONSTER_DESC←<br><br>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_MONSTER_DESC			| Probability that the space monsters will have the same weaponry and characteristics as those in MoO1.
 SETTINGS_MOD_IS_MOO1_MONSTER				| MoO1 Monsters: %1
-SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN_DESC	| To give the Guardian of Orion the weapons and characteristics from MoO1.
-SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN			| MoO1 Orion Guardian: %1
-SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN_DESC	| To give the Amoeba Gardian the weapons and characteristics from MoO1.
-SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN		| MoO1 Amoeba Gardian: %1
-SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN_DESC	| To give the Crystal Guardian the weapons and characteristics from MoO1.
-SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN		| MoO1 Crystal Guardian: %1
-SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA_DESC		| To give the →SPACE_AMOEBA← the weapons and characteristics from MoO1.
-SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA			| MoO1 →SPACE_AMOEBA←: %1
-SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL_DESC		| To give the →SPACE_CRYSTAL← the weapons and characteristics from MoO1.
-SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL			| MoO1 →SPACE_CRYSTAL←: %1
+SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN_HELP	| →SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN_DESC←<br><br>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN_DESC	| Probability that the Orion Guardian will have the same weaponry and specifications as the one in MoO1.
+SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN			| MoO1 Orion Guardian: %1%
+SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN_HELP	| →SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN_DESC←<br><br>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN_DESC	| Probability that the Amoeba Gardians will have the same weaponry and characteristics as the →SPACE_AMOEBA← in MoO1.
+SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN		| MoO1 Amoeba Gardian: %1%
+SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN_HELP	| →SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN_DESC←<br><br>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN_DESC	| Probability that the Crystal Guardians will have the same weaponry and characteristics as the →SPACE_CRYSTAL← in MoO1.
+SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN		| MoO1 Crystal Guardian: %1%
+SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA_HELP		| →SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA_DESC←<br><br>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA_DESC		| Probability that the →SPACE_AMOEBA← will have the same weaponry and characteristics as those in MoO1.
+SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA			| MoO1 →SPACE_AMOEBA←: %1%
+SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL_HELP		| →SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL_DESC←<br<br>>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL_DESC		| Probability that the →SPACE_CRYSTAL← will have the same weaponry and characteristics as those in MoO1.
+SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL			| MoO1 →SPACE_CRYSTAL←: %1%
 
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE_DESC		| Minimum distance to the next colony targeted by the space monsters.
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE			| Minimum distance: %1 ly

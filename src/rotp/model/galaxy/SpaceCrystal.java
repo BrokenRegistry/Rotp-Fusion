@@ -33,8 +33,8 @@ import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
-import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamInteger;
+import rotp.ui.util.ParamIntegerFormerBoolean;
 
 public final class SpaceCrystal extends SpaceMonster {
     private static final long serialVersionUID = 1L;
@@ -47,16 +47,17 @@ public final class SpaceCrystal extends SpaceMonster {
 			.setLimits(10, 500)
 			.setIncrements(1, 5, 20)
 			.pctValue(true);
-	public static ParamBoolean isMoO1Monster = new ParamBoolean(MOD_UI, "IS_MOO1_SPACE_CRYSTAL", false)
-			.setDefaultValue(MOO1_DEFAULT, true)
+	public static ParamInteger isMoO1Monster = new ParamIntegerFormerBoolean(MOD_UI, "IS_MOO1_SPACE_CRYSTAL", 0)
+			.setDefaultValue(MOO1_DEFAULT, 100)
 			.formerName(MOD_UI + "IS_MOO1_MONSTER");
 
     public SpaceCrystal(Float speed, Float level)	{ super(imageKey, ORIGINAL_ROAMING_EMPIRE, speed, level); }
 
-	@Override public boolean isMoO1Monster()	{ return isMoO1Monster.get(); };
+	@Override protected int randomMoO1Trigger()	{ return isMoO1Monster.get(); }
+	@Override public boolean isMoO1Monster()	{ return getRandomMoO1(); }
     @Override public void initCombat()	{
     	super.initCombat();
-		if (isMoO1Monster.get())
+		if (isMoO1Monster())
 			addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));
 		else
 			addCombatStack(new CombatStackSpaceCrystal(this, imageKey, stackLevel(), 0, shieldColor));
@@ -68,14 +69,14 @@ public final class SpaceCrystal extends SpaceMonster {
 	}
 	@Override protected Float stackLevel()		{ return super.stackLevel() * crystalLevelPct.get()/100f; }
     @Override public SpaceMonster getCopy()		{ return new SpaceCrystal(null, null); }
-    @Override protected int otherSpecialCount()	{ return isMoO1Monster.get() ? 1 : 2; }
+    @Override protected int otherSpecialCount()	{ return isMoO1Monster() ? 1 : 2; }
     @Override public void degradePlanet(StarSystem sys) {
         Colony col = sys.colony();
         if (col != null) {
             sys.empire().lastAttacker(this);
             col.destroy();  
         }
-        if (!isMoO1Monster.get())
+        if (!isMoO1Monster())
         	sys.planet().degradeToType(PlanetType.DEAD);
         float maxWaste = sys.planet().maxWaste();
         sys.planet().addWaste(maxWaste);
@@ -83,7 +84,7 @@ public final class SpaceCrystal extends SpaceMonster {
         sys.abandoned(false);
     }
 	@Override protected ShipDesign monsterDesign()	{
-		if (isMoO1Monster.get())
+		if (isMoO1Monster())
 			return designMoO1();
 		else
 			return designRotP();

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import rotp.Rotp;
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
 import rotp.model.events.IMonsterPos;
@@ -53,6 +54,7 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 	private final List<Integer> path = new ArrayList<>(); // visited systems
 	public  float travelSpeed = 1f / (1.5f * max(1, 100.0f/galaxy().maxNumStarSystems()));
 	private Float monsterLevel; // For non dynamic levels
+	private Integer randomMoO1Value;
 	private transient List<CombatStack> combatStacks = new ArrayList<>();
 	public  IMonsterPos event;
 	private transient Float stackLevel = 1f;
@@ -87,6 +89,13 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 		des.id(id);
 		designs[id] = des;
 	}
+	private int getRandomMoO1Value()		{
+		if (randomMoO1Value == null)
+			randomMoO1Value = Rotp.rand().nextInt(100);
+		return randomMoO1Value;
+	}
+	protected int randomMoO1Trigger()		{ return 0; }
+	protected boolean getRandomMoO1()		{ return getRandomMoO1Value() < randomMoO1Trigger(); }
 	public boolean isMoO1Monster()			{ return false; }
 	public Empire lastAttacker()			{ return galaxy().empire(lastAttackerId); }
 	public void lastAttacker(Empire c)		{ lastAttackerId = c.id; }
@@ -224,7 +233,7 @@ public abstract class SpaceMonster extends ShipFleet implements NamedObject {
 		// To allow the player to change the level in game.
 		validate(); // BR: For backward compatibility.
 		int turn = galaxy().currentTurn();
- 		//designs = null; // TO DO BR: COMMENT
+ 		designs = null; // TO DO BR: COMMENT
 		if (designs == null || designTurn != turn) {
 			designTurn = turn;
 			initDesigns();

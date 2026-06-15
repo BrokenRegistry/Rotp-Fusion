@@ -20,6 +20,7 @@ import static rotp.model.ships.ShipDesign.maxSpecials;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 import rotp.model.combat.CombatStackMonster;
@@ -63,19 +64,19 @@ public final class GuardianPirates extends GuardianMonsters {
 	@Override protected void initDesigns()	{
 		super.initDesigns();
 		float numLevel	 = stackLevel();
-		float maxTechLvl = maxTechLvl();
+		float maxTechLvl = refTechLvl();
 		float stackScale = stackScale();
 		int pirateLevel	 = pirateLevel(maxTechLvl);
 		int num = 1;
 		if (pirateLevel == 0)
-			num = (int) (5 * numLevel);
+			num = (int) max(1, (5 * numLevel));
 		else
 			num = (int) Math.ceil(numLevel * stackScale * maxTechLvl);
 		num(0, num);
 	}
 	@Override protected ShipDesign monsterDesign() {
 		ShipDesignLab lab = empire().shipLab();
-		float maxTechLvl  = maxTechLvl();
+		float maxTechLvl  = refTechLvl();
 		float weaponScale = 1.0f;
 		int pirateLevel	  = pirateLevel(maxTechLvl);
 
@@ -100,9 +101,9 @@ public final class GuardianPirates extends GuardianMonsters {
 				design.engine	(engines.get(0));
 				design.maneuver	(lab.maneuver(1));
 				design.special	(0, lab.specialBattleScanner());
-				design.weapon	(0, lab.laserBeam(LIGHT),	 round(weaponScale*3));
-				design.weapon	(1, lab.laserBeam(HEAVY),	 round(weaponScale*5));
-				design.weapon	(2, lab.nuclearMissiles(x5), round(weaponScale*3));
+				design.weapon	(0, lab.laserBeam(LIGHT),	 max(1, round(weaponScale*5)));
+				design.weapon	(1, lab.laserBeam(HEAVY),	 max(1, round(weaponScale*3)));
+				design.weapon	(2, lab.nuclearMissiles(x5), max(1, round(weaponScale*3)));
 				design.weapon	(3, lab.nuclearBomb(), 		 2);
 				break;
 
@@ -117,8 +118,8 @@ public final class GuardianPirates extends GuardianMonsters {
 				design.maneuver	(lab.maneuver(2));
 
 				design.special	(0, lab.specialBattleScanner());
-				design.weapon	(0, lab.gatlingLaser(),		round(weaponScale * 3));
-				design.weapon	(1, lab.netronPelletGun(),	round(weaponScale * 6));
+				design.weapon	(0, lab.gatlingLaser(),		round(weaponScale * 4));
+				design.weapon	(1, lab.netronPelletGun(),	round(weaponScale * 5));
 				design.weapon	(2, lab.hyperVRockets(x5),	round(weaponScale * 3));
 				design.weapon	(3, lab.fusionBomb(), 		2);
 				break;
@@ -134,8 +135,8 @@ public final class GuardianPirates extends GuardianMonsters {
 				design.maneuver	(lab.maneuver(3));
 
 				design.special	(0, lab.specialBattleScanner());
-				design.weapon	(0, lab.ionCannon(LIGHT),	round(weaponScale * 4));
-				design.weapon	(1, lab.ionCannon(HEAVY),	round(weaponScale * 7));
+				design.weapon	(0, lab.ionCannon(LIGHT),	round(weaponScale * 7));
+				design.weapon	(1, lab.ionCannon(HEAVY),	round(weaponScale * 4));
 				design.weapon	(2, lab.hyperXRockets(x5),	round(weaponScale * 4));
 				design.weapon	(3, lab.fusionBomb(), 		round(weaponScale * 3));
 				break;
@@ -152,8 +153,8 @@ public final class GuardianPirates extends GuardianMonsters {
 
 				design.special	(0, lab.specialBattleScanner());
 				design.special	(1, lab.specialInertialStabilizer());
-				design.weapon	(0, lab.neutronBlaster(LIGHT),	round(weaponScale * 4));
-				design.weapon	(1, lab.neutronBlaster(HEAVY),	round(weaponScale * 7));
+				design.weapon	(0, lab.neutronBlaster(LIGHT),	round(weaponScale * 7));
+				design.weapon	(1, lab.neutronBlaster(HEAVY),	round(weaponScale * 4));
 				design.weapon	(2, lab.merculiteMissiles(x5),	round(weaponScale * 4));
 				design.weapon	(3, lab.antiMatterBomb(), 		round(weaponScale * 4));
 				break;
@@ -170,8 +171,8 @@ public final class GuardianPirates extends GuardianMonsters {
 
 				design.special	(0, lab.specialBattleScanner());
 				design.special	(1, lab.specialInertialStabilizer());
-				design.weapon	(0, lab.hardBeam(),				round(weaponScale * 5));
-				design.weapon	(1, lab.fusionBeam(HEAVY),		round(weaponScale * 8));
+				design.weapon	(0, lab.hardBeam(),				round(weaponScale * 8));
+				design.weapon	(1, lab.fusionBeam(HEAVY),		round(weaponScale * 5));
 				design.weapon	(2, lab.stingerMissiles(x5),	round(weaponScale * 5));
 				design.weapon	(3, lab.omegaVBomb(), 			round(weaponScale * 4));
 				break;
@@ -321,18 +322,26 @@ public final class GuardianPirates extends GuardianMonsters {
 
 		return design;
 	}
-	private float maxTechLvl()	{
-		// find highest average tech level among all active empires
-		float maxTechLvl = 1.0f;
-		float empTechLvl = 1.0f;
+	private Empire closestEmpire(StarSystem sys)	{
+		List<Empire> list = new ArrayList<>();
+		float maxDist = Float.MAX_VALUE;
 		for (Empire e: galaxy().activeEmpires()) {
-			empTechLvl = e.tech().avgTechLevel();
-			if (empTechLvl > maxTechLvl)
-				maxTechLvl = empTechLvl;
+			float dist = e.distanceTo(sys);
+			if (dist == maxDist)
+				list.add(e);
+			else if (dist < maxDist) {
+				list.clear();
+				list .add(e);
+			}
 		}
+		shuffle(list);
+		return list.get(0);
+	}
+	private float refTechLvl()	{
+		float refTechLvl = closestEmpire(system()).tech().avgTechLevel();
 		// reduce maxTechLvl to fine-tune Space Pirate strength
-		maxTechLvl = (float)Math.max(1.0f, maxTechLvl - 2.0f);
-		return maxTechLvl;
+		refTechLvl = (float)Math.max(1.0f, refTechLvl - 2.0f);
+		return refTechLvl;
 	}
 	private float stackScale()	{
 		// modnar: adjust Space Pirate ship stack stats based on galaxy empire development
@@ -347,5 +356,5 @@ public final class GuardianPirates extends GuardianMonsters {
 		stackScale *= options().aiProductionModifier();
 		return stackScale;
 	}
-	private int pirateLevel(float maxTechLvl)	{ return (int) ((maxTechLvl-1)/5); }
+	private int pirateLevel(float maxTechLvl)	{ return (int) ((maxTechLvl-1)/10); }
 }

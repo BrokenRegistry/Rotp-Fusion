@@ -4037,7 +4037,6 @@ SETTINGS_MOD_AUTO_FLAG_POOR_DESC          | →FLAG_SELECT_SC1← →PLANET_POOR
 SETTINGS_MOD_AUTO_FLAG_ULTRA_POOR_DESC    | →FLAG_SELECT_SC1← →PLANET_ULTRA_POOR← →FLAG_SELECT_SC2←
 SETTINGS_MOD_AUTO_FLAG_NONE_DESC          | Sélectionnez la couleur du drapeau à définir automatiquement lorsqu’aucune ressource n’a été détectée.
 
-
 FR_SETTING_MOD_AUTO_FLAG_COLO_TECH        | (Nécessite un vaisseau avec un module de colonisation adéquat pour coloniser ces planètes)
 SETTINGS_MOD_AUTO_FLAG_TECH_GAIA_DESC     | →FLAG_SELECT_SC1← →PLANET_GAIA← →FLAG_SELECT_SC2← (Vaisseau de colonisation standard)
 SETTINGS_MOD_AUTO_FLAG_TECH_FERTILE_DESC  | →FLAG_SELECT_SC1← →PLANET_FERTILE← →FLAG_SELECT_SC2← (Vaisseau de colonisation standard)
@@ -4145,18 +4144,25 @@ SETTINGS_MOD_GUARDIAN_MONSTERS_PCT			| Prob. de gardiens : %1 %
 SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL_DESC	| Un niveau de difficulté commun à tous les monstres spatiaux qui gardent une planète.
 SETTINGS_MOD_GUARDIAN_MONSTERS_LEVEL		| Niveaux des gardiens : %1 %
 
-SETTINGS_MOD_IS_MOO1_MONSTER_DESC 			| Pour attribuer aux monstres de l’espace l’armement et les caractéristiques de MoO1.
-SETTINGS_MOD_IS_MOO1_MONSTER				| Monstres MoO1 : %1
-SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN_DESC	| Pour attribuer au Gardien d’Orion l’armement et les caractéristiques de MoO1.
-SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN			| Gardien d’Orion MoO1 : %1
-SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN_DESC	| Pour attribuer aux Amibes gardiennes l’armement et les caractéristiques de MoO1.
-SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN		| Amibe gardienne de MoO1 : %1
-SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN_DESC	| Pour attribuer aux Crystaux Gardiens l’armement et les caractéristiques de MoO1.
-SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN		| Cristaux gardiens de MoO1 : %1
-SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA_DESC		| Pour attribuer aux →REF_AMOEBA_2← l’armement et les caractéristiques de MoO1.
-SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA			| →SPACE_AMOEBA← de MoO1 : %1
-SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL_DESC		| Pour attribuer aux →REF_CRYSTAL_2← l’armement et les caractéristiques de MoO1.
-SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL			| →SPACE_CRYSTAL← de MoO1 : %1
+SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY	| Les monstres spatiaux de RotP sont différents de ceux de MoO1.<br>Cette option vous permet de choisir entre<br>- utiliser les monstres de MoO1 (100 %)<br>- conserver ceux de RotP (0 %)<br>- ou laisser le jeu les sélectionner au hasard.<br>  
+SETTINGS_MOD_IS_MOO1_MONSTER_HELP			| →SETTINGS_MOD_IS_MOO1_MONSTER_DESC←<br><br>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_MONSTER_DESC			| Probabilité que les monstres de l’espace aient l’armement et les caractéristiques de ceux de MoO1.
+SETTINGS_MOD_IS_MOO1_MONSTER				| Monstres MoO1 : %1 %
+SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN_HELP	| →SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN_DESC←<br><br>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN_DESC	| Probabilité que le Gardien d’Orion ait l’armement et les caractéristiques de celui de MoO1.
+SETTINGS_MOD_IS_MOO1_ORION_GUARDIAN			| Gardien d’Orion MoO1 : %1 %
+SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN_HELP	| →SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN_DESC←<br><br>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN_DESC	| Probabilité que les Amibes gardiennes aient l’armement et les caractéristiques des →REF_AMOEBA_2← de MoO1.
+SETTINGS_MOD_IS_MOO1_AMOEBA_GUARDIAN		| Amibe gardienne de MoO1 : %1 %
+SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN_HELP	| →SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN_DESC←<br><br>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN_DESC	| Probabilité que les Crystaux Gardiens aient l’armement et les caractéristiques des →REF_CRYSTAL_2← de MoO1.
+SETTINGS_MOD_IS_MOO1_CRYSTAL_GUARDIAN		| Cristaux gardiens de MoO1 : %1 %
+SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA_HELP		| →SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA_DESC←<br><br>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA_DESC		| Probabilité que les →REF_AMOEBA_2← aient l’armement et les caractéristiques de celles de MoO1.
+SETTINGS_MOD_IS_MOO1_SPACE_AMOEBA			| →SPACE_AMOEBA← de MoO1 : %1 %
+SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL_HELP		| →SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL_DESC←<br><br>→SETTINGS_MOD_IS_MOO1_MONSTER_PROBABILITY←
+SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL_DESC		| Probabilité que les →REF_CRYSTAL_2← aient l’armement et les caractéristiques de ceux de MoO1.
+SETTINGS_MOD_IS_MOO1_SPACE_CRYSTAL			| →SPACE_CRYSTAL← de MoO1 : %1 %
 
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE_DESC		| Distance minimale jusqu’à la prochaine colonie visée par les monstres de l’espace.
 SETTINGS_MOD_MONSTERS_MIN_DISTANCE			| Distance minimale : %1 a.l.
@@ -5983,8 +5989,7 @@ FLEET_AUTO_COMBAT_SMART				| →SHIP_COMBAT_SMART_RESOLVE←
 GOVERNOR_AUTO_COMBAT_RESULTS_DESC	| Faut-il interrompre le déroulement du jeu pour afficher les résultats des combats de flotte qui démarrent automatiquement ?
 GOVERNOR_AUTO_COMBAT_RESULTS		| Résultats des combats automatiques : %1
 
-GOVERNOR_IGNORE_HARMLESS_COLONY_HELP	| Les flottes du joueur automatisées peuvent-elles prendre pour cible une colonie qui ne dispose pas de bases de missiles ?<br>
-Par la suite, lorsque vous sélectionnerez l’automatisation, vous pourrez forcer un « Oui » en appuyant sur la touche « Maj », ou forcer un « Non » en appuyant sur la touche « Ctrl ».
+GOVERNOR_IGNORE_HARMLESS_COLONY_HELP	| Les flottes du joueur automatisées peuvent-elles prendre pour cible une colonie qui ne dispose pas de bases de missiles ?<br>Par la suite, lorsque vous sélectionnerez l’automatisation, vous pourrez forcer un « Oui » en appuyant sur la touche « Maj », ou forcer un « Non » en appuyant sur la touche « Ctrl ».
 GOVERNOR_IGNORE_HARMLESS_COLONY_DESC	| Les flottes du joueur automatisées peuvent-elles prendre pour cible une colonie qui ne dispose pas de bases de missiles ?
 GOVERNOR_IGNORE_HARMLESS_COLONY			| Ignorer la colonie inoffensive : %1
 

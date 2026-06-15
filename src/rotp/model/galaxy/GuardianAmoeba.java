@@ -31,8 +31,8 @@ import rotp.model.ships.ShipDesignLab;
 import rotp.model.ships.ShipECM;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipShield;
-import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamInteger;
+import rotp.ui.util.ParamIntegerFormerBoolean;
 
 public final class GuardianAmoeba extends GuardianMonsters {
 	private static final long serialVersionUID = 1L;
@@ -45,9 +45,9 @@ public final class GuardianAmoeba extends GuardianMonsters {
 			.setLimits(10, 500)
 			.setIncrements(1, 5, 20)
 			.pctValue(true);
-	public static ParamBoolean isMoO1Monster = new ParamBoolean(MOD_UI, "IS_MOO1_AMOEBA_GUARDIAN", false)
-			.setDefaultValue(MOO1_DEFAULT, true)
-			.formerName(MOD_UI + "IS_MOO1_MONSTER");
+	public static ParamInteger isMoO1Monster = new ParamIntegerFormerBoolean(MOD_UI, "IS_MOO1_AMOEBA_GUARDIAN", 0)
+			.setDefaultValue(MOO1_DEFAULT, 100)
+			.formerName(MOD_UI + "IS_MOO1_AMOEBA_GUARDIAN");
 
 	public GuardianAmoeba(Float speed, Float level)	{
 		super(imageKey, FUSION_GUARDIAN_EMPIRE, speed, level);
@@ -56,10 +56,11 @@ public final class GuardianAmoeba extends GuardianMonsters {
 
 	private int hullHitPoints()		{ return moO1Level (3000, 1000, 200, 0.5f, 0.5f); }
 
-	@Override public boolean isMoO1Monster()	{ return isMoO1Monster.get(); };
+	@Override protected int randomMoO1Trigger()	{ return isMoO1Monster.get(); }
+	@Override public boolean isMoO1Monster()	{ return getRandomMoO1(); }
 	@Override public void initCombat()			{
 		super.initCombat();
-		if (isMoO1Monster.get())
+		if (isMoO1Monster())
 			addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));
 		else
 			addCombatStack(new CombatStackSpaceAmoeba(this, imageKey, stackLevel(), 0, shieldColor));
@@ -71,9 +72,9 @@ public final class GuardianAmoeba extends GuardianMonsters {
 	}
 	@Override protected Float stackLevel()		{ return super.stackLevel() * guardAmoebaLevelPct.get()/100f; }
 	@Override public SpaceMonster getCopy()		{ return new GuardianAmoeba(null, null); }
-	@Override protected int otherSpecialCount()	{ return isMoO1Monster.get() ? 1 : 3; }
+	@Override protected int otherSpecialCount()	{ return isMoO1Monster() ? 1 : 3; }
 	@Override protected ShipDesign monsterDesign()	{
-		if (isMoO1Monster.get())
+		if (isMoO1Monster())
 			return designMoO1();
 		else
 			return designRotP();

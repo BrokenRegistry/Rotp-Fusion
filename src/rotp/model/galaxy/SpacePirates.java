@@ -80,7 +80,7 @@ public final class SpacePirates extends SpaceMonster {
 		int pirateLevel	 = pirateLevel(maxTechLvl);
 		int num = 1;
 		if (pirateLevel == 0)
-			num = (int) (5 * numLevel);
+			num = (int) max(1, (5 * numLevel));
 		else
 			num = (int) Math.ceil(numLevel * stackScale * maxTechLvl);
 		num(0, num);
@@ -112,9 +112,9 @@ public final class SpacePirates extends SpaceMonster {
 				design.engine	(engines.get(0));
 				design.maneuver	(lab.maneuver(1));
 				design.special	(0, lab.specialBattleScanner());
-				design.weapon	(0, lab.laserBeam(LIGHT),	 round(weaponScale*3));
-				design.weapon	(1, lab.laserBeam(HEAVY),	 round(weaponScale*5));
-				design.weapon	(2, lab.nuclearMissiles(x5), round(weaponScale*3));
+				design.weapon	(0, lab.laserBeam(LIGHT),	 max(1, round(weaponScale*3)));
+				design.weapon	(1, lab.laserBeam(HEAVY),	 max(1, round(weaponScale*5)));
+				design.weapon	(2, lab.nuclearMissiles(x5), max(1, round(weaponScale*3)));
 				design.weapon	(3, lab.nuclearBomb(), 		 2);
 				break;
 

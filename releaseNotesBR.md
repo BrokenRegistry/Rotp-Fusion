@@ -7,6 +7,12 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-06-15 (BR)
+- Improvements to space monsters and guardian monsters:
+  - They will now be updated in real time when you change their level in the options panel.
+  - The choice between MoO1 monsters and RotP monsters has been replaced by a probability value indicating whether it is one or the other. (100% = always MoO1; 0% = always RotP)
+  - Guardian pirate levels are half those of space pirates and are based on the level of the nearest Empire.
+
 26-06-13 (BR)
 - Repulsor fix: They now work the same way as in MoO1.
   - Applies only to the player. The AI will continue to avoid repulsor cells.
