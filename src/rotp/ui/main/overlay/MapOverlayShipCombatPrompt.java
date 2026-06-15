@@ -89,6 +89,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
     }
     public void releaseObjects() { }
     public void init(ShipCombatManager m) {
+    	planetImg = null;
         mgr = m;
         sysId = mgr.system().id;
 		pl = player();
@@ -97,7 +98,6 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
         StarSystem sys = galaxy().system(sysId);
         showInfo = 0;
 //        fleet = null;
-        planetImg = null;
         drawSprites = true;
 //        pop = pl.sv.population(sysId);
 //        bases = pl.sv.bases(sysId);

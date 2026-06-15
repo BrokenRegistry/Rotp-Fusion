@@ -96,7 +96,10 @@ public final class MonsterShipCaptain implements Base, ShipCaptain {
 					mgr.performMoveStackAlongPath(stack, bestPathToTarget);
 				}
 			}
-
+			if (stack.destroyed()) {
+				turnActive = false;
+				break;
+			}
 			// if can attack target this turn, fire when ready
 			if (stack.canAttack(stack.target)) 
 				mgr.performAttackTarget(stack);

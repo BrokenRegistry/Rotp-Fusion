@@ -3,6 +3,7 @@
 ## What's New
 
 26-06-15 (BR)
+- Fixed a bug where the Orion Guardian's ship captain did not check whether their ship had been destroyed during movement, and added a safety measure for all monster ship captains.
 - Fixed an issue with the text display for the Meklar rebellion advisor.
 - Improvements to space monsters and guardian monsters:
   - They will now be updated in real time when you change their level in the options panel.

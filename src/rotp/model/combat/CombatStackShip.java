@@ -533,6 +533,8 @@ public class CombatStackShip extends CombatStack {
             return false;
         if (st.inStasis)
             return false;
+		if (destroyed())
+			return false;
 		if (st.isColony() && mgr.dontTargetHarmlessColony() && st.num < 1)
 			return false;
         for (int i=0;i<weapons.size();i++) {

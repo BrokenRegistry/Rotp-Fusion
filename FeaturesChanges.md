@@ -428,6 +428,7 @@
 
 ### Fixes:
 
+- Fixed a bug where the Orion Guardian's ship captain did not check whether their ship had been destroyed during movement, and added a safety measure for all monster ship captains.
 - Fixed an issue with the text display for the Meklar rebellion advisor.
 - Fleet Deployment UI: fixed an issue with arrows clickable area being smaller than hover detection.
 - Improved the responsiveness of the search field.

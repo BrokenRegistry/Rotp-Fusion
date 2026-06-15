@@ -56,7 +56,11 @@ public final class AmoebaShipCaptain implements Base, ShipCaptain {
             // if we need to move towards target, do it now
             if ((bestPathToTarget == null) || (bestPathToTarget.size() == 0)) 
                 break;
-        
+
+			if (stack.destroyed()) {
+				stack.move = 0;
+				break;
+			}
             float prevMove = stack.move;
             mgr.performMoveStackAlongPath(stack, bestPathToTarget);
 
