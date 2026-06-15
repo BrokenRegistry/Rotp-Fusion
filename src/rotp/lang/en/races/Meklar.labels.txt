@@ -26,17 +26,17 @@ _nameTitle                        | Supreme Arbiter
 // Advisor text
 MAIN_ADVISOR_TITLE                | %1 Advisor
 MAIN_ADVISOR_BUTTON_OK            | Dismiss
-MAIN_ADVISOR_SCOUT                | Fleet prepared for exploration and colonization. Awaiting directive to commence operations. 
-MAIN_ADVISOR_TRANSPORT            | First colony founded on nearby world. Designated "%1." Able to accommodate %2 additional population. Can transport population from %3 to supplement population. 
-MAIN_ADVISOR_DIPLOMACY            | New species detected. Designated "[alien_race]." Awaiting further instruction from Mainframe. 
-MAIN_ADVISOR_SHIP_ENGINE          | Research into improved means of propulsion complete. Confer with engineers on how best to implement new design. 
-MAIN_ADVISOR_RALLY_POINTS         | Species "[alien_race]" has acted to impede discovery of immortality protocol. Create rally point to centralize fleet and strike against them. 
+MAIN_ADVISOR_SCOUT                | Fleet prepared for exploration and colonization. Awaiting directive to commence operations.
+MAIN_ADVISOR_TRANSPORT            | First colony founded on nearby world. Designated "%1." Able to accommodate %2 additional population. Can transport population from %3 to supplement population.
+MAIN_ADVISOR_DIPLOMACY            | New species detected. Designated "[alien_race]." Awaiting further instruction from Mainframe.
+MAIN_ADVISOR_SHIP_ENGINE          | Research into improved means of propulsion complete. Confer with engineers on how best to implement new design.
+MAIN_ADVISOR_RALLY_POINTS         | Species "[alien_race]" has acted to impede discovery of immortality protocol. Create rally point to centralize fleet and strike against them.
 MAIN_ADVISOR_MISSILE_BASES        | Request from military division: construct defensive missile bases on surface of outer worlds. Will enable defense of worlds from external aggression.
-MAIN_ADVISOR_SHIP_WEAPON          | Research into high-powered weaponry complete. Confer with engineers on how best to implement new design. 
-MAIN_ADVISOR_COUNCIL              | Notification for convergence of interstellar empires. Designated "Galactic Council." Will send delegation to ensure will of Mainframe made clear. 
-MAIN_ADVISOR_REBELLION            | Warning. Rogue program infecting colony on %1. Must commence eradicating affected %3 to ensure Dominion solidarity. 
+MAIN_ADVISOR_SHIP_WEAPON          | Research into high-powered weaponry complete. Confer with engineers on how best to implement new design.
+MAIN_ADVISOR_COUNCIL              | Notification for convergence of interstellar empires. Designated "Galactic Council." Will send delegation to ensure will of Mainframe made clear.
+MAIN_ADVISOR_REBELLION            | Warning. Rogue program infecting colony on %1. Must commence eradicating affected [my_race_plural] to ensure Dominion solidarity.
 MAIN_ADVISOR_RESIST_COUNCIL       | New leader of Galactic Council noted as threat to Dominion objectives. Mobilize all forces to eliminate leader and allies
-MAIN_ADVISOR_COUNCIL_RESISTED     | Rebellion by enemy species ill-chosen. Dominion now rules known galaxy. Send all fleets to silence dissenters. 
+MAIN_ADVISOR_COUNCIL_RESISTED     | Rebellion by enemy species ill-chosen. Dominion now rules known galaxy. Send all fleets to silence dissenters.
 
 // text for endings... '#' represents a paragraph break
 // variables: %1 Game year, %2 player name, %3 player race, %4 player empire, %5 leader name, %6 leader race, %7 leader empire, %8 is special race-specific text described below

@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-06-15 (BR)
+- Fixed an issue with the text display for the Meklar rebellion advisor.
 - Improvements to space monsters and guardian monsters:
   - They will now be updated in real time when you change their level in the options panel.
   - The choice between MoO1 monsters and RotP monsters has been replaced by a probability value indicating whether it is one or the other. (100% = always MoO1; 0% = always RotP)

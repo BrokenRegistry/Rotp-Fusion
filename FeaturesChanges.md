@@ -428,6 +428,7 @@
 
 ### Fixes:
 
+- Fixed an issue with the text display for the Meklar rebellion advisor.
 - Fleet Deployment UI: fixed an issue with arrows clickable area being smaller than hover detection.
 - Improved the responsiveness of the search field.
 - Fixed an issue that prevented the search field from accepting uppercase letters.
