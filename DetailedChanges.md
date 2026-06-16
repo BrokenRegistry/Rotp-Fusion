@@ -3,6 +3,7 @@
 ## What's New
 
 26-06-16 (BR)
+- Tentative to make mini.jar compatible wit arm64.
 - Added some diagnostic logs to try to pinpoint an old crash issue affecting Linux.
 - New option to select how the ship repulsors works.
   - As in Moo1: You can access the cells adjacent to the repulsors, which are not highlighted.
