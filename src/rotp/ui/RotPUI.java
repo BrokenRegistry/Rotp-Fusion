@@ -391,7 +391,9 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
 	}
 
     public void selectSetupGalaxyPanel() {
+		log("Linux crash debug", " RotPUI", " setupGalaxyUI.init()");
     	setupGalaxyUI.init();
+		log("Linux crash debug", " RotPUI", " selectPanel(SETUP_GALAXY_PANEL, setupGalaxyUI)");
     	selectPanel(SETUP_GALAXY_PANEL, setupGalaxyUI);
     }
     public void selectLoadGamePanel() {

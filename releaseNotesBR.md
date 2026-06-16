@@ -8,6 +8,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-06-16 (BR)
+- Added some diagnostic logs to try to pinpoint an old crash issue affecting Linux.
 - New option to select how the ship repulsors works.
   - As in Moo1: You can access the cells adjacent to the repulsors, which are not highlighted.
   - As in Original RotP: Access to the cells adjacent to the repulsors is prohibited.

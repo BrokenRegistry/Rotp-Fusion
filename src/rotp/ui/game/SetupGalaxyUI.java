@@ -381,14 +381,20 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 				param.initDependencies(i);
 	}
 	@Override public void init() {
+		log("Linux crash debug", " SetupGalaxyUI", " init");
 		showGrid = prevShowGrid;
 		opts = guiOptions();
+		log("Linux crash debug", " SetupGalaxyUI", " got the options");
 		isOnTop = true;
 		super.init();
+		log("Linux crash debug", " SetupGalaxyUI", " past super.init()");
 		playerMug  = null;
 		initAIandAbilitiesList();
+		log("Linux crash debug", " SetupGalaxyUI", " AIandAbilitiesList are initialized");
 		opts.saveOptionsToFile(LIVE_OPTIONS_FILE);
+		log("Linux crash debug", " SetupGalaxyUI", " options files are saved");
 		refreshGui(0);
+		log("Linux crash debug", " SetupGalaxyUI", " refreshGui(0) was called");
 	}
 	@Override protected String GUI_ID() { return GUI_ID; }
 	@Override public void refreshGui(int level) {
@@ -1374,16 +1380,20 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		}
 	}
 	@Override public void paintComponent(Graphics g0) {
+		log("Linux crash debug", " SetupGalaxyUI", " first line of paintComponent(Graphics g0)");
 		//showTiming = true; // TO DO BR: COMMENTS
 		if (!isOnTop)
 			return;
+		log("Linux crash debug", " SetupGalaxyUI", " paintComponent(Graphics g0) real start");
 		long timeStart = System.currentTimeMillis();
 		Graphics2D g = paintInit(g0);
+		log("Linux crash debug", " SetupGalaxyUI", " paintComponent(Graphics g0) past paintInit");
 
 		drawOpponentCount(g);
 		drawGalaxy(g);
 		highlightHovered(g);
 		drawOpponentTopSection(g);
+		log("Linux crash debug", " SetupGalaxyUI", " paintComponent(Graphics g0) galaxy and opponents drawn");
 
 		int y5 = drawGalaxyTopOptions(g);
 		drawGalaxySizeAndDiff(g, y5);
@@ -1391,6 +1401,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 
 		drawHelpButton(g);
 		showGuide(g);
+		log("Linux crash debug", " SetupGalaxyUI", " paintComponent(Graphics g0) guide drawn");
 
 		if (starting) {
 			NoticeMessage.setStatus(text("SETUP_CREATING_GALAXY"));

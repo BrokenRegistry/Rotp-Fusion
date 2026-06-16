@@ -458,6 +458,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 		case CTRL:
 		case CTRL_SHIFT:
 		default: // Save
+			log("Linux crash debug", " SetupRaceUI", " call save options");
 			newGameOptions().saveOptionsToFile(LIVE_OPTIONS_FILE);
 			break; 
 		}
@@ -802,8 +803,11 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
     }
     private void goToGalaxySetup() {
         buttonClick();
+		log("Linux crash debug", " SetupRaceUI", " RotPUI.instance().selectSetupGalaxyPanel()");
         RotPUI.instance().selectSetupGalaxyPanel();
+		log("Linux crash debug", " SetupRaceUI", " close()");
         close();
+		log("Linux crash debug", " SetupRaceUI", " closed");
     }
 	@Override public void clearImages() {
 		super.clearImages();
