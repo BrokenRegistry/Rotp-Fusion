@@ -2963,6 +2963,17 @@ SETTINGS_MOD_MOO1_RETREAT_DESC			| Delayed retreat from MoO1 or instant retreat 
 SETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Retreat Button will removes the current ship from combat. The enemy will have one turn to fire on your ship as it retreats off the screen.
 SETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Retreat Button will instantaneously removes the current ship from combat. The enemy will not be able to fire on your ship as it retreats off the screen.
 SETTINGS_MOD_MOO1_RETREAT				| MoO1 Retreat Rules: %1
+
+SETTINGS_MOD_REPULSOR_MODE_HELP			| →SETTINGS_MOD_REPULSOR_MODE_DESC← Unlike MoO1, RotP does not automatically repel ships approaching those equipped with repulsors; instead, it simply blocks their access to the squares adjacent.
+SETTINGS_MOD_REPULSOR_MODE_DESC			| Select the type of access to the squares adjacent to ships equipped with repulsors.
+SETTINGS_MOD_REPULSOR_MODE_MOO1_DESC	| You can access the cells adjacent to the repulsors, which are not highlighted, just as in MoO1.
+SETTINGS_MOD_REPULSOR_MODE_MOO1			| MoO1
+SETTINGS_MOD_REPULSOR_MODE_MIXT_DESC	| You can access the cells adjacent to the repulsors, which will be highlighted.
+SETTINGS_MOD_REPULSOR_MODE_MIXT			| Intermediate
+SETTINGS_MOD_REPULSOR_MODE_ROTP_DESC	| Access to the cells adjacent to the repulsors is prohibited, just as in the original version of RotP.
+SETTINGS_MOD_REPULSOR_MODE_ROTP			| Original RotP
+SETTINGS_MOD_REPULSOR_MODE				| Cells near the Repulsors : %1
+
 SETTINGS_MOD_MOO1_COMBAT_RESOL_DESC		| Unlike in MoO1, damage inflicted by weapons in RotP is not affected by the difference between attack and defense levels. (Only affects the probability of hitting.)
 SETTINGS_MOD_MOO1_COMBAT_RESOL_YES_DESC	| A high differential between attack and defense increases the weapon's minimum damage.
 SETTINGS_MOD_MOO1_COMBAT_RESOL_NO_DESC	| The difference between attack and defense levels does not affect the damage inflicted by the weapon.

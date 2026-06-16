@@ -119,7 +119,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
     private float planetRotateSpeed = 0.1f;
     private boolean drawingPlanet = false;
 	//private boolean planetDrawn = false;
-    boolean showPlanet = false;
+	private boolean showPlanet = false;
     //boolean exited = false;
     private boolean shiftPressed = false;
     private boolean showTactics = true;
@@ -183,12 +183,12 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
     private Color[] grayColors = new Color[3];
     private BufferedImage combatBackground;
 	private List<CombatStackMissile> targetingMissiles = new ArrayList<>();
-    public int boxH() {
+    /* public int boxH() {
     	if (boxH < 0)
             boxH = (getHeight()-pad-pad-barH) / GRID_COUNT_Y;
     	return boxH;
     }
-    /* public int boxW() {
+    public int boxW() {
     	if (boxW < 0)
             boxW = (getWidth()-pad-pad) / GRID_COUNT_X;
     	return boxW;
@@ -538,6 +538,12 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         g.drawImage(screenBuffer(),0,0,null);
         drawOverlay(g);
     }
+	private FlightPath getPlayerPath(CombatStack stack, int x, int y)	{
+		if (mgr.isRepulsorRotP())
+			return stack.pathTo(x, y);
+		else
+			return FlightPath.pathTo(stack, x, y);
+	}
     private void paintShipsToImage(Graphics2D g, int x, int y, int w, int h, int hoveringX, int hoveringY) {
         CombatStack currStack = mgr.currentStack();
 
@@ -546,12 +552,13 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
 			for (int y0 = 0; y0 < GRID_COUNT_Y; y0++)
 				for (int x0 = 0; x0 < GRID_COUNT_X; x0++)
 					if (mgr.canTacticallyMoveTo(currStack, x0, y0)) {
-//						FlightPath path = currStack.pathTo(x0, y0);
-						FlightPath path = FlightPath.pathTo(currStack, x0, y0);
+						FlightPath path = getPlayerPath(currStack, x0, y0);
 						if (path != null) {
 							if (path.repulsive())
-								g.setColor(repulsiveCellColor);
-//								g.setColor(new Color(255, 128, 0, 28));
+								if (mgr.isRepulsorMoO1())
+									g.setColor(validCellColor);
+								else
+									g.setColor(repulsiveCellColor);
 							else
 								g.setColor(validCellColor);
 							g.fill(combatGrids[x0][y0]);
@@ -1244,8 +1251,9 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         if (!mgr.canTacticallyMoveTo(stack, hoveringX, hoveringY))
             return;
 
-//        shipTravelPath = stack.pathTo(hoveringX, hoveringY);
-		shipTravelPath = FlightPath.pathTo(stack, hoveringX, hoveringY);
+		shipTravelPath = getPlayerPath(stack, hoveringX, hoveringY);
+//		shipTravelPath = stack.pathTo(hoveringX, hoveringY);
+//		shipTravelPath = FlightPath.pathTo(stack, hoveringX, hoveringY);
         if (shipTravelPath == null)
             return;
 
@@ -1971,13 +1979,34 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
                 else
                     finish();
                 return;
-            case KeyEvent.VK_L:
-            	if (e.isAltDown()) {
-            		debugReloadLabels(this);
-            		break;
-            	}
-            	misClick();
-            	break;
+			case KeyEvent.VK_L:
+				if (e.isAltDown()) {
+					debugReloadLabels(this);
+					break;
+				}
+				misClick();
+				break;
+			case KeyEvent.VK_F9:
+				if (e.isAltDown()) {
+					mgr.setRepulsorMoO1();
+					break;
+				}
+				misClick();
+				break;
+			case KeyEvent.VK_F10:
+				if (e.isAltDown()) {
+					mgr.setRepulsorMixt();
+					break;
+				}
+				misClick();
+				break;
+			case KeyEvent.VK_F11:
+				if (e.isAltDown()) {
+					mgr.setRepulsorRotP();
+					break;
+				}
+				misClick();
+				break;
         }
     }
     @Override public void mouseClicked(MouseEvent e)  { }

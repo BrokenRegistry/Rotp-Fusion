@@ -2,6 +2,7 @@ package rotp.ui.options;
 
 import java.util.Arrays;
 
+import rotp.model.combat.ShipCombatManager;
 import rotp.model.galaxy.OrionGuardianShip;
 import rotp.model.galaxy.SpaceAmoeba;
 import rotp.model.galaxy.SpaceCrystal;
@@ -35,6 +36,7 @@ final class MoO1RulesOptions extends AbstractOptionsSubUI {
 				moo1ShieldRules,
 				moo1RetreatRules,
 				maxCombatTurns,
+				ShipCombatManager.repulsorMode,
 
 				HEADER_SPACER_50,
 				new ParamTitle("MOO1_SPACE_COMBAT_END"),

@@ -44,6 +44,12 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-06-16 (BR)
+- New option to select how the ship repulsors works.
+  - As in Moo1: You can access the cells adjacent to the repulsors, which are not highlighted.
+  - As in Original RotP: Access to the cells adjacent to the repulsors is prohibited.
+  - Intermediate: You can access the cells adjacent to the repulsors, which will be highlighted.
+
 26-06-15 (BR)
 - Fixed a bug where the Orion Guardian's ship captain did not check whether their ship had been destroyed during movement, and added a safety measure for all monster ship captains.
 - Fixed an issue with the text display for the Meklar rebellion advisor.
@@ -58,21 +64,6 @@ java -jar target/rotp-<timestamp>-mini.jar
   - Applies only to the player. The AI will continue to avoid repulsor cells.
   - Ships may be repelled multiple times, but not indefinitely. They will stop if they pass through the same spot again.
 - Fleet Deployment UI: fixed an issue with arrows clickable area being smaller than hover detection.
-
-26-06-11 (BR)
-- Improved the responsiveness of the search field.
-- Fixed an issue that prevented the search field from accepting uppercase letters.
-- Fixed an issue where the search field was obscuring part of the guide's pop-up window.
-
-26-06-10 (BR)
-- A new option now allows you to view all technologies in the technology allocation panel. This means you no longer need to open the user manual to find out the level of an unknown technology.
-
-26-06-09 (BR)
-- Two new subpanels have been created. They group together the options for restoring the MoO1 rules.
-  - One is located in the galaxy settings panel
-  - And the other is in the rules settings panel.
-- Removed the Fixe (attempt) of 26-06-03: useless.
-- Added constant in SpyConfessionIncident.java to improve readability.
 
 
 ### [Features Historic](FeaturesChanges.md)

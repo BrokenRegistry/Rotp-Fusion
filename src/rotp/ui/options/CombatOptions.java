@@ -2,6 +2,7 @@ package rotp.ui.options;
 
 import java.util.Arrays;
 
+import rotp.model.combat.ShipCombatManager;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.ui.util.ParamTitle;
@@ -56,6 +57,7 @@ final class CombatOptions extends AbstractOptionsSubUI {
 
 				HEADER_SPACER_50,
 				new ParamTitle("GAME_OTHER"),
+				ShipCombatManager.repulsorMode,
 				maxCombatTurns,
 				retreatRestrictions, retreatRestrictionTurns,
 				moo1RetreatRules, monsterEasyRetreat

@@ -2,6 +2,12 @@
 
 ## What's New
 
+26-06-16 (BR)
+- New option to select how the ship repulsors works.
+  - As in Moo1: You can access the cells adjacent to the repulsors, which are not highlighted.
+  - As in Original RotP: Access to the cells adjacent to the repulsors is prohibited.
+  - Intermediate: You can access the cells adjacent to the repulsors, which will be highlighted.
+
 26-06-15 (BR)
 - Fixed a bug where the Orion Guardian's ship captain did not check whether their ship had been destroyed during movement, and added a safety measure for all monster ship captains.
 - Fixed an issue with the text display for the Meklar rebellion advisor.
@@ -9,7 +15,7 @@
   - They will now be updated in real time when you change their level in the options panel.
   - The choice between MoO1 monsters and RotP monsters has been replaced by a probability value indicating whether it is one or the other. (100% = always MoO1; 0% = always RotP)
   - Guardian pirate levels are half those of space pirates and are based on the level of the nearest Empire.
- - New option to always allow the fleet to retreat when fighting a monster.
+  - New option to always allow the fleet to retreat when fighting a monster.
 
 26-06-13 (BR)
 - Repulsor fix: They now work the same way as in MoO1.

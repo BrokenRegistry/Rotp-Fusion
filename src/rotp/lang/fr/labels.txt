@@ -2963,6 +2963,17 @@ SETTINGS_MOD_MOO1_RETREAT_DESC			| Retraite différée de MoO1 ou retraite immé
 SETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Le bouton « Retraite » permet de retirer le vaisseau actuel du combat. L’ennemi aura un tour pour tirer sur votre vaisseau pendant qu’il se retire de l’écran.
 SETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Le bouton « Retraite » retire instantanément le vaisseau actuel du combat. L’ennemi ne pourra pas tirer sur votre vaisseau pendant qu’il se retire de l’écran.
 SETTINGS_MOD_MOO1_RETREAT				| Règles de retraite de MoO1 : %1
+
+SETTINGS_MOD_REPULSOR_MODE_HELP			| →SETTINGS_MOD_REPULSOR_MODE_DESC← Contrairement à MoO1, RotP ne repousse pas automatiquement les vaisseaux qui s'approchent de ceux équipés de répulseurs ; il se contente simplement de leur bloquer l'accès aux cases adjacentes.
+SETTINGS_MOD_REPULSOR_MODE_DESC			| Sélectionnez le type d'accès aux cases adjacentes aux vaisseaux équipés de répulseurs.
+SETTINGS_MOD_REPULSOR_MODE_MOO1_DESC	| Vous pouvez accéder aux cellules adjacentes aux répulseurs, qui ne sont pas mises en évidences, tout comme dans MoO1.
+SETTINGS_MOD_REPULSOR_MODE_MOO1			| MoO1
+SETTINGS_MOD_REPULSOR_MODET_MIXT_DESC	| Vous pouvez accéder aux cellules adjacentes aux répulseurs, qui seront mises en évidences.
+SETTINGS_MOD_REPULSOR_MODET_MIXT		| Intermédiaire
+SETTINGS_MOD_REPULSOR_MODE_ROTP_DESC	| L’accès aux cellules adjacentes aux répulseurs est interdit, tout comme dans la version orignale de RotP.
+SETTINGS_MOD_REPULSOR_MODE_ROTP			| RotP Original
+SETTINGS_MOD_REPULSOR_MODE				| Cases proche des répulseurs : %1
+
 SETTINGS_MOD_MOO1_COMBAT_RESOL_DESC		| Contrairement à MoO1, les dégâts infligés par les armes dans RotP ne sont pas affectés par la différence entre les niveaux d’attaque et de défense. (Cela n’affecte que la probabilité de toucher.)
 SETTINGS_MOD_MOO1_COMBAT_RESOL_YES_DESC	| Un écart important entre l’attaque et la défense augmente les dégâts minimums de l’arme.
 SETTINGS_MOD_MOO1_COMBAT_RESOL_NO_DESC	| La différence entre les niveaux d’attaque et de défense n'affecte pas les dégâts infligés par l’arme.

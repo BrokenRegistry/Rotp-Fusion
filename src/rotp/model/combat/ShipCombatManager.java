@@ -15,6 +15,10 @@
  */
 package rotp.model.combat;
 
+import static rotp.model.game.IBaseOptsTools.FUSION_DEFAULT;
+import static rotp.model.game.IBaseOptsTools.MOD_UI;
+import static rotp.model.game.IBaseOptsTools.MOO1_DEFAULT;
+import static rotp.model.game.IBaseOptsTools.ROTP_DEFAULT;
 import static rotp.model.game.IGovOptions.GOV_UI;
 
 import java.util.ArrayList;
@@ -114,7 +118,7 @@ public final class ShipCombatManager implements Base {
 	private int playerSelection()			{ return playerSelection; }
 	public void playerSelection(int i)		{ playerSelection = i; }
 	public boolean playerCanRetreat()		{ return playerCanRetreat; }
-	public boolean aiCanRetreat()			{ return aiCanRetreat; }
+	boolean aiCanRetreat()					{ return aiCanRetreat; }
     boolean interdiction()                     { return interdiction; }
     public ShipCombatResults results()         { return results; }
     public StarSystem system()                 { return system; }
@@ -1299,7 +1303,7 @@ public final class ShipCombatManager implements Base {
                 moveStack(st, path.mapX(i), path.mapY(i));
         }
     }
-    public boolean moveStack(CombatStack st, int x1, int y1) {
+    private boolean moveStack(CombatStack st, int x1, int y1) {
         //log(currentStack.fullName(), " moving to: ", str(x1), ",", str(y1));
         boolean moved = st.moveTo(x1,y1);
         if(moved)
@@ -1355,7 +1359,7 @@ public final class ShipCombatManager implements Base {
         // combat stacks are not traversable
         // enemy stacks may have a repulsor range that is also not traversable
         List<CombatStack> stacks = new ArrayList<>(results.activeStacks());
-		boolean ignoreRepulsors = stack.ignoreRepulsors() || stack.isPlayerControlled();
+		boolean ignoreRepulsors = stack.ignoreRepulsors() || (stack.isPlayerControlled() && !isRepulsorRotP());
         for (CombatStack s: stacks) {
 			int r = ignoreRepulsors || (s.empire() == stack.empire()) || s.inStasis ? 0 : s.repulsorRange();
             if ((r == 0) && stack.canEat(s))
@@ -1451,4 +1455,23 @@ public final class ShipCombatManager implements Base {
 	public static final ParamBoolean showAutoCombatResults	= new ParamBoolean(GOV_UI, "AUTO_COMBAT_RESULTS", true);
 	public static final ParamBoolean playerDontTargetHarmlessColony	= new ParamBoolean(GOV_UI, "IGNORE_HARMLESS_COLONY", false)
 			.isCfgFile(true);
+
+	private static final String REPULSOR_MODE = "REPULSOR_MODE";
+	private static final String REPULSOR_MOO1 = "MOO1";
+	private static final String REPULSOR_MIXT = "MIXT";
+	private static final String REPULSOR_ROTP = "ROTP";
+	public static final ParamList repulsorMode	= new ParamList(MOD_UI, REPULSOR_MODE, REPULSOR_MIXT)
+			.showFullGuide(true)
+			.put(REPULSOR_MOO1, MOD_UI + REPULSOR_MODE + "_" + REPULSOR_MOO1)
+			.put(REPULSOR_MIXT, MOD_UI + REPULSOR_MODE + "_" + REPULSOR_MIXT)
+			.put(REPULSOR_ROTP, MOD_UI + REPULSOR_MODE + "_" + REPULSOR_ROTP)
+			.setDefaultValue(FUSION_DEFAULT, REPULSOR_MIXT)
+			.setDefaultValue(MOO1_DEFAULT, REPULSOR_MOO1)
+			.setDefaultValue(ROTP_DEFAULT, REPULSOR_ROTP);
+	public boolean isRepulsorMoO1()	{ return repulsorMode.get().equals(REPULSOR_MOO1); }
+	public boolean isRepulsorRotP()	{ return repulsorMode.get().equals(REPULSOR_ROTP); }
+	public void setRepulsorMoO1()	{ repulsorMode.set(REPULSOR_MOO1); }
+	public void setRepulsorMixt()	{ repulsorMode.set(REPULSOR_MIXT); }
+	public void setRepulsorRotP()	{ repulsorMode.set(REPULSOR_ROTP); }
+
 }
