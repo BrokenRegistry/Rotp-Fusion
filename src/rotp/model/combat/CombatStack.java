@@ -78,7 +78,7 @@ public class CombatStack implements Base {
     protected float brighten = 0.0f;
 	private float computerLevel = 0;
 	private float initiativeTech = 0;
-	private float initiativeFinal = 0;
+	private float initiativeCurrent = 0;
 	private float attackLevel = 0;
 	private float maneuverability = 0;
 	private float missileDefense = 0;
@@ -110,6 +110,7 @@ public class CombatStack implements Base {
     protected boolean ally = true;
     public boolean visible = true;
     protected float transparency = 1;
+    private Float initiativeRank;
 
 	public boolean validRepulsorsActions(int x, int y)	{ return !repulsorsActions.contains(FlightPath.encode(x, y)); }
 	public void addRepulsorsActions(int x, int y)		{ repulsorsActions.add(FlightPath.encode(x, y)); }
@@ -130,26 +131,40 @@ public class CombatStack implements Base {
     private String raceName()           { return empire != null ? empire.raceName() : name(); }
     public String name()                { return "object"; }
     public void updateDynamicLevels()	{}
-	public float initiative()			{ return initiativeFinal; }
+	public float initiative()			{ return initiativeCurrent; }
 	public void decInitiativeTech(float r)	{
 		initiativeTech = max(0, initiativeTech-r);
 		updateInitiative();
 	}
 	private void updateInitiative()			{ initiative(initiativeTech + maneuverability() + empire().shipInitiativeBonus()); }
 	public void initiativeTech(float val)	{ initiativeTech = val; }
-	private void initiative(float val)		{ initiativeFinal = val; }
-    public float initiativeRank() {
-        if (cloaked)
-            return 200+initiative();
-        // modnar: replace canTeleport from this 'if' check
-		// In ShipCombatManager.java, the CombatStack.INITIATIVE comparison/sort in setupBattle
-		// is called before currentStack.beginTurn(). So while beginTurn() in this file
-		// sets the correct value for canTeleport, it won't be used for initiative ordering.
-		// This change correctly gives boosted turn/initiative order for ship stacks with teleporters.
-        else if (hasTeleporting() && !mgr.interdiction())
-            return 100+initiative();
-        else
-            return initiative();
+	private void initiative(float val)		{ initiativeCurrent = val; initiativeRank = null;}
+	public float initiativeRank() {
+		if (initiativeRank == null) {
+			if (cloaked)
+				initiativeRank = 200 + initiative();
+			// modnar: replace canTeleport from this 'if' check
+			// In ShipCombatManager.java, the CombatStack.INITIATIVE comparison/sort in setupBattle
+			// is called before currentStack.beginTurn(). So while beginTurn() in this file
+			// sets the correct value for canTeleport, it won't be used for initiative ordering.
+			// This change correctly gives boosted turn/initiative order for ship stacks with teleporters.
+			else if (hasTeleporting() && !mgr.interdiction())
+				initiativeRank = 100 + initiative();
+			else
+				initiativeRank = initiative();
+		}
+		return initiativeRank;
+//        if (cloaked)
+//            return 200+initiative();
+//        // modnar: replace canTeleport from this 'if' check
+//		// In ShipCombatManager.java, the CombatStack.INITIATIVE comparison/sort in setupBattle
+//		// is called before currentStack.beginTurn(). So while beginTurn() in this file
+//		// sets the correct value for canTeleport, it won't be used for initiative ordering.
+//		// This change correctly gives boosted turn/initiative order for ship stacks with teleporters.
+//        else if (hasTeleporting() && !mgr.interdiction())
+//            return 100+initiative();
+//        else
+//            return initiative();
     }
 	public float aiAttackConfidence()		{ return empire.aiAttackConfidence(); }
 	public float aiDefenseConfidence()		{ return empire.aiDefenseConfidence(); }
@@ -856,29 +871,6 @@ public class CombatStack implements Base {
             g.drawString(hpStr, x5, y4+BasePanel.s9);
         }
     }
-    //Used for making AI capable of assessing the power of Monsters
-//    public float firePower(float shield, float defense, float missileDefense) {
-//        float dmg = 0;
-//        for (int i=0;i<numWeapons(); i++) {
-//            if (weapon(i).canAttackShips()) {
-//                if(weapon(i).isWeapon()) {
-//                    if(weapon(i).isSpecial())
-//                    	continue;
-//                    ShipWeapon wpn = (ShipWeapon)weapon(i);
-//                    float attack = attackLevel() + wpn.computerLevel();
-//                    float hitPct = 1;
-//                    if(weapon(i).isBeamWeapon())
-//                        hitPct = (5 + attack - defense) / 10;
-//                    if(weapon(i).isMissileWeapon())
-//                        hitPct = (5 + attack - missileDefense) / 10;
-//                    hitPct = max(.05f, hitPct);
-//                    hitPct = min(hitPct, 1.0f);
-//                    dmg += (wpnCount(i) * wpn.firepower(shield) * hitPct);
-//                }
-//            }
-//        }
-//        return dmg;
-//    }
     public Dimension shieldSize(int boxW, int boxH) {
     	final float fW  = 4.0f;	// To convert shipSize to Shield Width
     	final float fH  = 4.0f;	// To estimate the target size

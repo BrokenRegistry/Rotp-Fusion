@@ -434,6 +434,8 @@
 
 ### Fixes:
 
+- Ship Combat: Finalized the fix for the initiative bug.
+  - The ships' action sequence is now dynamic as well, so that it corresponds to the initiative levels communicated to the AIs.
 - Fixed a bug where the Orion Guardian's ship captain did not check whether their ship had been destroyed during movement, and added a safety measure for all monster ship captains.
 - Fixed an issue with the text display for the Meklar rebellion advisor.
 - Fleet Deployment UI: fixed an issue with arrows clickable area being smaller than hover detection.

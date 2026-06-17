@@ -1188,6 +1188,22 @@ public final class ShipCombatManager implements Base {
         }
         return false;
     }
+	private void updateCurrentTurnList(CombatStack doneStack) {
+		int currIndex = currentTurnList.indexOf(doneStack);
+		int lastIndex =currentTurnList.size()-1;
+
+		List<CombatStack> newList = new ArrayList<>();
+		for (int i=currIndex+1; i<=lastIndex; i++) {
+			CombatStack stack = currentTurnList.get(i);
+			if (stack.destroyed())
+				continue;
+			newList.add(stack);
+		}
+
+		if (!newList.isEmpty())
+			Collections.sort(newList, CombatStack.INITIATIVE);
+		currentTurnList = newList;
+	}
     public void turnDone(CombatStack st) {
         //log(st.fullName(), " - Done");
         st.endTurn();
@@ -1197,41 +1213,64 @@ public final class ShipCombatManager implements Base {
             return;
         }
 
-        int currIndex = currentTurnList.indexOf(st);
-        int nextIndex = -1;
-        int lastIndex =currentTurnList.size()-1;
+		updateCurrentTurnList(st);
+		// makes unarmed colonies move their already launched missiles
+		if (!currentTurnList.isEmpty()) {
+			CombatStack stack = currentTurnList.get(0);
+			if (stack.isColony() && !stack.isArmed()) {
+				stack.beginTurn();
+				stack.endTurn();
+				currentTurnList.remove(0);
+			}
+		}
+		// if no valid stack found in the current turn list
+		// then reset the turn list and start a new combat round
+		if (currentTurnList.isEmpty()) {
+			setupCurrentTurnList();
+			currentStack = currentTurnList.get(0);
+			turnCounter++;
+			trimAsteroids();
+		}
+		else
+			currentStack = currentTurnList.get(0);
+		currentStack.beginTurn();
+	}
 
-        // we need to find the next available stack to take a turn 
-        // from the currentTurnList. Skip any stacks that are:
-        // -- destroyed (by any earlier stack in the list)
-        // -- unarmed colonies (they can't shoot or move, so skip)
-        // when we find one, set nextIndex and break out of the loop
-        for (int i=currIndex+1;i<=lastIndex;i++) {
-            CombatStack stack = currentTurnList.get(i);
-            if (stack.destroyed())
-                continue;
-            if (stack.isColony() && !stack.isArmed()) {
-                stack.beginTurn();
-                stack.endTurn();
-                continue;
-            }
-            nextIndex = i;
-            break;
-        }
-
-        // if no valid stack found in the current turn list
-        // then reset the turn list and start a new combat round
-        if (nextIndex < 0) {
-            setupCurrentTurnList();
-            currentStack = currentTurnList.get(0);
-            turnCounter++;
-            trimAsteroids();
-        }
-        else
-            currentStack = currentTurnList.get(nextIndex);
-
-        currentStack.beginTurn();
-    }
+//        int currIndex = currentTurnList.indexOf(st);
+//        int nextIndex = -1;
+//        int lastIndex =currentTurnList.size()-1;
+//
+//        // we need to find the next available stack to take a turn 
+//        // from the currentTurnList. Skip any stacks that are:
+//        // -- destroyed (by any earlier stack in the list)
+//        // -- unarmed colonies (they can't shoot or move, so skip)
+//        // when we find one, set nextIndex and break out of the loop
+//        for (int i=currIndex+1;i<=lastIndex;i++) {
+//            CombatStack stack = currentTurnList.get(i);
+//            if (stack.destroyed())
+//                continue;
+//            if (stack.isColony() && !stack.isArmed()) {
+//                stack.beginTurn();
+//                stack.endTurn();
+//                continue;
+//            }
+//            nextIndex = i;
+//            break;
+//        }
+//
+//        // if no valid stack found in the current turn list
+//        // then reset the turn list and start a new combat round
+//        if (nextIndex < 0) {
+//            setupCurrentTurnList();
+//            currentStack = currentTurnList.get(0);
+//            turnCounter++;
+//            trimAsteroids();
+//        }
+//        else
+//            currentStack = currentTurnList.get(nextIndex);
+//
+//        currentStack.beginTurn();
+//    }
     private void performNextStackTurn() {
         generateRiskMap(currentStack);
         currentStack.performTurn();

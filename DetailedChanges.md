@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-06-18 (BR)
+- Ship Combat: Finalized the fix for the initiative bug.
+  - The ships' action sequence is now dynamic as well, so that it corresponds to the initiative levels communicated to the AIs.
+
 26-06-16 (BR)
 - Tentative to make mini.jar compatible wit arm64.
 - Added some diagnostic logs to try to pinpoint an old crash issue affecting Linux.

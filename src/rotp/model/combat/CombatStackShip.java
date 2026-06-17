@@ -387,7 +387,7 @@ public class CombatStackShip extends CombatStack {
             wpnTurnsToFire[i] = thisWeaponFired ? baseTurnsToFire[i] : wpnTurnsToFire[i]-1;          
         }
         
-        if (!anyWeaponFired)
+        if (!anyWeaponFired && !destroyed())
             cloak();
         if (bombardedThisTurn)
             fleet.bombarded(design.id());
