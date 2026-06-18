@@ -434,6 +434,8 @@
 
 ### Fixes:
 
+- Fixed an issue where the governor did not always comply with the request not to build a shield in the absence of a missile base.
+  - This could occur after the construction of the requested number of ships was complete.
 - Ship Combat:
   - Reactivation of safe retreat in Xilmi's AIs when threatened to be completely disabled by warp-dissipater.
   - A validation check is now performed after each ship movement to ensure that the turn is properly completed in the event of the ship's destruction.

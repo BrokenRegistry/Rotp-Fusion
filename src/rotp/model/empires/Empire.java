@@ -1600,7 +1600,8 @@ public final class Empire extends Species implements NamedObject {
     public void redoGovTurnDecisions() { // Only for player
     	for (int i = 0; i < sv.count(); ++i)
             if (sv.empire(i) == this && sv.isColonized(i))
-                sv.colony(i).governIfPlayerHasRequest();
+                sv.colony(i).governIfNeeded();
+//                sv.colony(i).governIfPlayerHasRequest();
     }
 	public void redoGovTurnDecisionsRich() { // Only for player
 		for (int i = 0; i < sv.count(); ++i)
