@@ -63,6 +63,11 @@ public final class AmoebaShipCaptain implements Base, ShipCaptain {
 			}
             float prevMove = stack.move;
             mgr.performMoveStackAlongPath(stack, bestPathToTarget);
+			// BR: stop everything if destroyed while moving.
+			if (stack.destroyed()) {
+				mgr.turnDone(stack);
+				return;
+			}
 
             // if can attack target this turn, fire when ready
             if (stack.canAttack(stack.target)) 

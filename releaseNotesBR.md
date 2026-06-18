@@ -8,8 +8,10 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-06-18 (BR)
-- Ship Combat: Finalized the fix for the initiative bug.
-  - The ships' action sequence is now dynamic as well, so that it corresponds to the initiative levels communicated to the AIs.
+- Ship Combat:
+  - A validation check is now performed after each ship movement to ensure that the turn is properly completed in the event of the ship's destruction.
+  - Finalized the fix for the initiative bug.
+    - The ships' action sequence is now dynamic as well, so that it corresponds to the initiative levels communicated to the AIs.
 
 26-06-16 (BR)
 - Tentative to make mini.jar compatible wit arm64.

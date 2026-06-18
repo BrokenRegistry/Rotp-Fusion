@@ -149,14 +149,26 @@ public class AIShipCaptain implements Base, ShipCaptain {
                 //System.out.print("\n"+stack.fullName()+" should be kiting now. Destination: "+findSafestPoint(stack));
                 if (mgr.autoResolve) {
                     Point destPt = findSafestPoint(stack);
-                    if (destPt != null)
-                        mgr.performMoveStackToPoint(stack, destPt.x, destPt.y);
+					if (destPt != null) {
+						mgr.performMoveStackToPoint(stack, destPt.x, destPt.y);
+						// BR: stop everything if destroyed while moving.
+						if (stack.destroyed()) {
+							mgr.turnDone(stack);
+							return;
+						}
+					}
                 }
                 else
                 {
                     FlightPath bestPathToSaveSpot = findSafestPath(stack);
-                    if(bestPathToSaveSpot != null)
+                    if(bestPathToSaveSpot != null) {
                         mgr.performMoveStackAlongPath(stack, bestPathToSaveSpot);
+						// BR: stop everything if destroyed while moving.
+						if (stack.destroyed()) {
+							mgr.turnDone(stack);
+							return;
+						}
+                    }
                     //System.out.print("\n"+stack.fullName()+" Kiting performed: "+(bestPathToSaveSpot != null));
                 }
             }
@@ -188,6 +200,11 @@ public class AIShipCaptain implements Base, ShipCaptain {
                         x = stack.ward().x - 1;
                     if (mgr.autoResolve) {
                         mgr.performMoveStackToPoint(stack, x, y);
+						// BR: stop everything if destroyed while moving.
+						if (stack.destroyed()) {
+							mgr.turnDone(stack);
+							return;
+						}
                         moved = true;
                     }
                     else {
@@ -198,6 +215,11 @@ public class AIShipCaptain implements Base, ShipCaptain {
                         {
                             Collections.sort(validPaths,FlightPath.SORT);
                             mgr.performMoveStackAlongPath(stack, validPaths.get(0));
+							// BR: stop everything if destroyed while moving.
+							if (stack.destroyed()) {
+								mgr.turnDone(stack);
+								return;
+							}
                             moved = true;
                         }
                     }
@@ -207,11 +229,22 @@ public class AIShipCaptain implements Base, ShipCaptain {
                 if(!moved) {
                     if (mgr.autoResolve) {
                         Point destPt = findClosestPoint(stack, currentTarget);
-                        if (destPt != null)
-                            mgr.performMoveStackToPoint(stack, destPt.x, destPt.y);
+						if (destPt != null) {
+							mgr.performMoveStackToPoint(stack, destPt.x, destPt.y);
+							// BR: stop everything if destroyed while moving.
+							if (stack.destroyed()) {
+								mgr.turnDone(stack);
+								return;
+							}
+                        }
                     }
                     else if ((bestPathToTarget != null) && (bestPathToTarget.size() > 0)) {
                         mgr.performMoveStackAlongPath(stack, bestPathToTarget);
+						// BR: stop everything if destroyed while moving.
+						if (stack.destroyed()) {
+							mgr.turnDone(stack);
+							return;
+						}
                     }
                 }
             }
@@ -288,14 +321,26 @@ public class AIShipCaptain implements Base, ShipCaptain {
             {
                 if (mgr.autoResolve) {
                     Point destPt = findSafestPoint(stack);
-                    if (destPt != null)
-                        mgr.performMoveStackToPoint(stack, destPt.x, destPt.y);
+					if (destPt != null) {
+						mgr.performMoveStackToPoint(stack, destPt.x, destPt.y);
+						// BR: stop everything if destroyed while moving.
+						if (stack.destroyed()) {
+							mgr.turnDone(stack);
+							return;
+						}
+					}
                 }
                 else
                 {
                     FlightPath bestPathToSaveSpot = findSafestPath(stack);
-                    if(bestPathToSaveSpot != null)
-                        mgr.performMoveStackAlongPath(stack, bestPathToSaveSpot);
+					if(bestPathToSaveSpot != null) {
+						mgr.performMoveStackAlongPath(stack, bestPathToSaveSpot);
+						// BR: stop everything if destroyed while moving.
+						if (stack.destroyed()) {
+							mgr.turnDone(stack);
+							return;
+						}
+					}
                     //System.out.print("\n"+stack.fullName()+" Kiting performed: "+(bestPathToSaveSpot != null));
                 }
                 //turnActive = false;
@@ -313,14 +358,26 @@ public class AIShipCaptain implements Base, ShipCaptain {
                 {
                     if (mgr.autoResolve) {
                         Point destPt = findSafestPoint(stack);
-                        if (destPt != null)
-                            mgr.performMoveStackToPoint(stack, destPt.x, destPt.y);
+						if (destPt != null) {
+							mgr.performMoveStackToPoint(stack, destPt.x, destPt.y);
+							// BR: stop everything if destroyed while moving.
+							if (stack.destroyed()) {
+								mgr.turnDone(stack);
+								return;
+							}
+						}
                     }
                     else
                     {
                         FlightPath bestPathToSaveSpot = findSafestPath(stack);
-                        if(bestPathToSaveSpot != null)
-                            mgr.performMoveStackAlongPath(stack, bestPathToSaveSpot);
+						if(bestPathToSaveSpot != null) {
+							mgr.performMoveStackAlongPath(stack, bestPathToSaveSpot);
+							// BR: stop everything if destroyed while moving.
+							if (stack.destroyed()) {
+								mgr.turnDone(stack);
+								return;
+							}
+						}
                         //System.out.print("\n"+stack.fullName()+" No target-kite performed: "+(bestPathToSaveSpot != null));
                     }
                 }

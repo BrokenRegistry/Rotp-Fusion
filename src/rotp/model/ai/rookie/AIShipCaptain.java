@@ -99,11 +99,22 @@ public class AIShipCaptain implements Base, ShipCaptain {
             if (stack.target != null) {
                 if (stack.mgr.autoResolve) {
                     Point destPt = findClosestPoint(stack, stack.target);
-                    if (destPt != null)
-                        mgr.performMoveStackToPoint(stack, destPt.x, destPt.y);
+					if (destPt != null) {
+						mgr.performMoveStackToPoint(stack, destPt.x, destPt.y);
+						// BR: stop everything if destroyed while moving.
+						if (stack.destroyed()) {
+							mgr.turnDone(stack);
+							return;
+						}
+					}
                 }
                 else if ((bestPathToTarget != null) && (bestPathToTarget.size() > 0)) {
                     mgr.performMoveStackAlongPath(stack, bestPathToTarget);
+					// BR: stop everything if destroyed while moving.
+					if (stack.destroyed()) {
+						mgr.turnDone(stack);
+						return;
+					}
                 }
             }
 
