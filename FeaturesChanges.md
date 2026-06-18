@@ -284,6 +284,7 @@
 
 ### Miscellaneous:
 
+- Changed the vorbis library to something that is actively supported.
 - Tentative to make mini.jar compatible wit arm64.
 - Added some diagnostic logs to try to pinpoint an old crash issue affecting Linux.
 - 60 new scientists' names have been added to the list of names of Psilon systems.

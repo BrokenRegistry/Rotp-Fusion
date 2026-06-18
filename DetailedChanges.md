@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-06-18 (frojas)
+- Changed the vorbis library to something that is actively supported.
+
 26-06-18 (BR)
 - Fixed an issue where the governor did not always comply with the request not to build a shield in the absence of a missile base.
   - This could occur after the construction of the requested number of ships was complete.
