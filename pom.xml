@@ -88,14 +88,9 @@
 			<version>3.12.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode.soundlibs</groupId>
-			<artifactId>tritonus-share</artifactId>
-			<version>0.3.7.4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.soundlibs</groupId>
-			<artifactId>vorbisspi</artifactId>
-			<version>1.0.3.3</version>
+			<groupId>com.github.trilarion</groupId>
+			<artifactId>java-vorbis-support</artifactId>
+			<version>1.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.usefulness</groupId>
