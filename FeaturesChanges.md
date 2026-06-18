@@ -435,6 +435,7 @@
 ### Fixes:
 
 - Ship Combat:
+  - Reactivation of safe retreat in Xilmi's AIs when threatened to be completely disabled by warp-dissipater.
   - A validation check is now performed after each ship movement to ensure that the turn is properly completed in the event of the ship's destruction.
   - Finalized the fix for the initiative bug.
     - The ships' action sequence is now dynamic as well, so that it corresponds to the initiative levels communicated to the AIs.

@@ -924,9 +924,9 @@ public class AIShipCaptain implements Base, ShipCaptain {
             return false;
 
         // threatened to be completely disabled by warp-dissipater
-        /*System.out.print("\n"+currStack.fullName()+" currStack.maxMove(): "+currStack.maxMove()+" currStack.maneuverablity()"+currStack.maneuverablity()+" currStack.design().combatSpeed(): "+currStack.design().combatSpeed());
+        /*System.out.print("\n"+currStack.fullName()+" currStack.maxMove(): "+currStack.maxMove()+" currStack.maneuverablity()"+currStack.maneuverablity()+" currStack.design().combatSpeed(): "+currStack.design().combatSpeed());*/
         if(currStack.maxMove() <= 1 && currStack.design().combatSpeed() > currStack.maxMove())
-            return true;*/
+            return true;
 
         // don't retreat if we still have missiles in flight
         float killPct = 0;
