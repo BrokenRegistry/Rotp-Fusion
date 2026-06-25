@@ -435,6 +435,9 @@
 
 ### Fixes:
 
+- Fixed Modnar species missing their special abilities. (Removed a forgotten debug line)
+- Fixed Missile range English description (some range were wrong)
+- Fixed Event messages and UI display, when related to a system unknown to the player.
 - Fixed an issue where the governor did not always comply with the request not to build a shield in the absence of a missile base.
   - This could occur after the construction of the requested number of ships was complete.
 - Ship Combat:

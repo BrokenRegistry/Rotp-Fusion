@@ -7,6 +7,11 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-06-25 (BR)
+- Fixed Modnar species missing their special abilities. (Removed a forgotten debug line)
+- Fixed Missile range English description (some range were wrong)
+- Fixed Event messages and UI display, when related to a system unknown to the player.
+
 26-06-18 (frojas)
 - Changed the vorbis library to something that is actively supported.
 
