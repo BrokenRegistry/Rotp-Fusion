@@ -976,7 +976,7 @@ MISSWPN_0_DETAIL    | Missiles tipped with nuclear warheads that explode for 4 p
 MISSWPN_1_NAME      | Hyper-V Rockets
 MISSWPN_1_BRIEF     | 2 shots, +1 speed
 MISSWPN_1_BRIEF2    | 5 shots
-MISSWPN_1_DETAIL    | Swift missiles that explode for 6 points of damage. They move at a speed of 2.5, and have a range of 4. (Speed = 3.5 and range = 7 for the 2-shots version)
+MISSWPN_1_DETAIL    | Swift missiles that explode for 6 points of damage. They move at a speed of 2.5, and have a range of 5. (Speed = 3.5 and range = 7 for the 2-shots version)
 
 MISSWPN_2_NAME      | Hyper-X Rockets
 MISSWPN_2_BRIEF     | 2 shots, +1 to hit
@@ -986,7 +986,7 @@ MISSWPN_2_DETAIL    | Missiles equipped with high energy warheads that explode f
 MISSWPN_3_NAME      | Scatter Pack V Rockets
 MISSWPN_3_BRIEF     | 2 shots, +1 speed
 MISSWPN_3_BRIEF2    | 5 shots
-MISSWPN_3_DETAIL    | MIRV versions of Hyper-V Rockets, splitting into five separate warheads that each explode for 6 points of damage. They move at a speed of 2.5, and have a range of 4. (Speed = 3.5 and range = 7 for the 2-shots version)
+MISSWPN_3_DETAIL    | MIRV versions of Hyper-V Rockets, splitting into five separate warheads that each explode for 6 points of damage. They move at a speed of 2.5, and have a range of 5. (Speed = 3.5 and range = 7 for the 2-shots version)
 
 MISSWPN_4_NAME      | Merculite Missiles
 MISSWPN_4_BRIEF     | 2 shots, +2 to hit
