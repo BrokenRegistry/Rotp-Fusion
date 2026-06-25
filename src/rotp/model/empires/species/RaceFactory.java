@@ -366,8 +366,6 @@ public enum RaceFactory implements Base {
 		// if (key.equalsIgnoreCase("homestarType"))	{ r.homeworldStarType(value); return; }
 		if (key.equalsIgnoreCase("homestarType"))		{ return; }
 		if (key.equalsIgnoreCase("homeworldType"))		{ r.homeworldPlanetType(value); return; }
-		// if (key.equalsIgnoreCase("homeworldKey"))	{ r.homeworldKey(parseInt(value)); return; }
-		if (key.equalsIgnoreCase("homeworldKey"))		{ return; }
 		if (key.equalsIgnoreCase("homeworldKey"))		{ parseHomeWorlKey(r, value); return; }
 		if (key.equalsIgnoreCase("homeworldSize"))		{ r.homeworldSize(parseInt(value)); return; }
 		if (key.equalsIgnoreCase("mugshot"))			{ r.mugshotKey(value); return; }
