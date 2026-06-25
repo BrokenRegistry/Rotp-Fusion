@@ -173,13 +173,13 @@ public final class TransportPanel extends BasePanel {
             g.setFont(narrowFont(20));
 
             if (pl.knowETA(tr)) {
-                String dest =  pl.sv.name(tr.destination().id);
+                String dest =  pl.sv.knownName(tr.destination().id);
                 String str2 = dest.isEmpty() ? text("MAIN_FLEET_DEST_UNSCOUTED") : text("MAIN_FLEET_DESTINATION", dest);
                 int sw2 = g.getFontMetrics().stringWidth(str2);
                 drawString(g,str2, w-sw2-s10, y0);
                 y0 -= s25;
                 StarSystem sys = tr.from();
-                String str3 = text("MAIN_FLEET_ORIGIN", pl.sv.name(sys.id));
+                String str3 = text("MAIN_FLEET_ORIGIN", pl.sv.knownName(sys.id));
                 int sw3 = g.getFontMetrics().stringWidth(str3);
                 drawString(g,str3, w-sw3-s10, y0);
                 y0 -= s25;
@@ -446,7 +446,7 @@ public final class TransportPanel extends BasePanel {
             destBox.setBounds(0,0,0,0);
         }
         private void drawShowDestButton(Graphics2D g, Transport tr, StarSystem sys) {
-            drawButton(g,fullGrayBackC,text("MAIN_TRANSPORTS_SHOW_DEST",player().sv.name(sys.id), tr.travelTurnsRemainingAdjusted()), destBox, leftM, rightM);
+            drawButton(g,fullGrayBackC,text("MAIN_TRANSPORTS_SHOW_DEST",player().sv.knownName(sys.id), tr.travelTurnsRemainingAdjusted()), destBox, leftM, rightM);
         }
         private void drawCancelButton(Graphics2D g) {
             drawButton(g,fullGrayBackC,text("MAIN_TRANSPORT_CANCEL"), destBox, leftM, rightM);

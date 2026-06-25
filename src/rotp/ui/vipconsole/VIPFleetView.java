@@ -110,7 +110,7 @@ public class VIPFleetView implements IVIPConsole {
 							rallyText = text("MAIN_FLEET_SET_RALLY");
 						}
 						int dist = fleet.travelTurnsAdjusted(currDest);
-						String destName = player().sv.name(currDest.id);
+						String destName = player().sv.knownName(currDest.id);
 						if (destName.isEmpty())
 							text = text("MAIN_FLEET_ETA_UNNAMED", dist);
 						else
@@ -118,7 +118,7 @@ public class VIPFleetView implements IVIPConsole {
 					}
 				}
 				else {
-					String name = player().sv.name(dest.id);
+					String name = player().sv.knownName(dest.id);
 					if (name.isEmpty())
 						text = text("MAIN_FLEET_INVALID_DESTINATION2");
 					else 
@@ -132,7 +132,7 @@ public class VIPFleetView implements IVIPConsole {
 				}
 				dest = dest == null ? fleet.destination() : dest;
 				int dist = fleet.travelTurnsAdjusted(dest);
-				String destName = player().sv.name(dest.id);
+				String destName = player().sv.knownName(dest.id);
 				if (destName.isEmpty())
 					text = text("MAIN_FLEET_ETA_UNNAMED", dist);
 				else
@@ -144,7 +144,7 @@ public class VIPFleetView implements IVIPConsole {
 				int dist = 0;
 				if (fleet.canReach(dest)) {
 					dist = fleet.travelTurnsAdjusted(dest);
-					String destName = player().sv.name(dest.id);
+					String destName = player().sv.knownName(dest.id);
 					if (destName.isEmpty())
 						text = text("MAIN_FLEET_ETA_UNNAMED", dist);
 					else
@@ -169,7 +169,7 @@ public class VIPFleetView implements IVIPConsole {
 			if (player().knowETA(fleet)) {
 				int dist = fleet.travelTurnsRemainingAdjusted();
 				if (fleet.hasDestination()) {
-					String destName = player().sv.name(fleet.destSysId());
+					String destName = player().sv.knownName(fleet.destSysId());
 					if (destName.isEmpty())
 						text = text("MAIN_FLEET_ETA_UNNAMED", dist);
 					else

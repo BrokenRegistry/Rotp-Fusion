@@ -48,7 +48,7 @@ public class RandomEventDepletedPlanet extends AbstractRandomEvent {
         List<StarSystem> systems = new ArrayList<>();
         for (StarSystem sys : emp.allColonizedSystems()) {
             Planet pl = sys.planet();
-            if (!pl.isResourcePoor() && !pl.isResourceUltraPoor() && !pl.isArtifact()) 
+            if (!pl.isResourcePoor() && !pl.isResourceUltraPoor() && !pl.isArtifact())
                 systems.add(sys);
         }
         if (systems.isEmpty())
@@ -57,11 +57,10 @@ public class RandomEventDepletedPlanet extends AbstractRandomEvent {
         StarSystem targetSystem = random(systems);
         targetSystem.planet().setResourcePoor();
         targetSystem.addEvent(new SystemRandomEvent("SYSEVENT_DEPLETED"));
-        
+
         empId = emp.id;
         sysId = targetSystem.id;
-        if (player().knowsOf(empId)
-        && !player().sv.name(sysId).isEmpty())
+        if (player().knowsOf(empId) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Depleted");
     }
 }

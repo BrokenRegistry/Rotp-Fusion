@@ -141,7 +141,7 @@ public class MapOverlayBombardedNotice  extends MapOverlay {
         g.setColor(MainUI.paneBackground);
         g.fillRect(boxX, boxY, boxW, boxH1);
 
-        String sysName = pl.sv.name(sysId);
+        String sysName = pl.sv.knownName(sysId);
 
         // draw planet image
         if (planetImg == null) {

@@ -92,7 +92,7 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
         if (sysId < 1)
             return "";
 
-        String sysName = player().sv.name(sysId);
+        String sysName = player().sv.knownName(sysId);
         if (sysName.isEmpty())
             return text("NEBULA_ID", sysId);
         else

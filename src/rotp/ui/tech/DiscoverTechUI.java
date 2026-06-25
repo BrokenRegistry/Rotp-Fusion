@@ -182,9 +182,9 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
         sourceEmpire = empId == Empire.NULL_ID ? null : gal.empire(empId);  // could be null for artifact planets
         player().resetSoldier();
         if (sourceEmpire == null)
-            title = text("TECH_SCOUTED_TITLE", player().sv.name(sysId));
+            title = text("TECH_SCOUTED_TITLE", player().sv.knownName(sysId));
         else
-            title = text("TECH_PLUNDERED_TITLE", player().sv.name(sysId));
+            title = text("TECH_PLUNDERED_TITLE", player().sv.knownName(sysId));
         finished = false;
         mission = null;
         frameEmpire1 = null;
@@ -252,7 +252,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
         BufferedImage holoImg;
         boolean talking = (System.currentTimeMillis() - startTimeMs) < talkTimeMs;
         Empire pl = player();
-        
+
         if (mode == MODE_REALLOCATE)
             sourceEmpire = pl;
 
@@ -512,7 +512,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
 
         g.setFont(narrowFont(16));
         drawShadowedString(g, key, 1, x1+s10, y+h-s11, SystemPanel.textShadowC, c0);
-        
+
        // g.setFont(narrowFont(20));
         scaledFont(g, label, w-s30, 20, 14);
         int sw = g.getFontMetrics().stringWidth(label);
@@ -532,9 +532,9 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
         int bdr = s10;
         int titleLineH = s25;
         int detailLineH = s18;
-     
+
         String titleLine = text("TECH_COMPLETED_TITLE");
-        
+
         String detail, detail2;
         if (player().tech().researchCompleted()) {
             detail = text("TECH_COMPLETED_ALL");
@@ -581,7 +581,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
             int detail2H = detail2Lines.size()*detailLineH;
             boxBottomY = boxBottomY+detail2H+s20;
         }
-        
+
         int boxHeight = boxBottomY - boxTopY;
 
         // draw main box with shaded borders
@@ -606,7 +606,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
             y0 += detailLineH;
             drawString(g,line, x0, y0);
         }
-        
+
         if (!detail2.isEmpty()) {
             y0 = y0+s20;
             for (String line: detail2Lines) {
@@ -652,7 +652,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
             player().lowerECOToCleanIfEcoComplete();
         finished = true;
         repaint();
-        
+
         if (!researchedTech)
             RotPUI.instance().selectMainPanel();
         session().resumeNextTurnProcessing();
@@ -698,9 +698,9 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
     }
     private void handleReallocateSystemsAction(int buttonId) {
         float amt = tech().baseReallocateAmount();
-        
+
         softClick();
-        
+
         // add appropriate colony spending orders based on button
         switch (buttonId) {
             case 1: break;
@@ -708,7 +708,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
             case 3: player().addColonyOrder(tech().followup(), amt*2); break;
             case 4: player().addColonyOrder(tech().followup(), amt*3); break;
         }
-        
+
         // if we have completed research, go to that mode
         if (showCompletion()) {
             mode = MODE_COMPLETED;
@@ -858,7 +858,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
     }
     @Override public List<ConsoleOptions> getOptions()	{
     	List<ConsoleOptions> options = new ArrayList<>();
-    	
+
         if (mode == MODE_REALLOCATE) {
         	int amt = (int) (tech().baseReallocateAmount() * 100);
         	options.add(new ConsoleOptions(KeyEvent.VK_1, "1", text("TECH_ALLOCATE_NO")));
@@ -880,7 +880,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
 		String message	= "";
 		talkTimeMs = 10;
         Empire player = player();
-        
+
         if (mode == MODE_REALLOCATE)
             sourceEmpire = player;
 

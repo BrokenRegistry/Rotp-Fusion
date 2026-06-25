@@ -59,7 +59,7 @@ public class RandomEventEarthquake extends AbstractRandomEvent  {
         StarSystem targetSystem = random(systems);
         empId = emp.id;
         sysId = targetSystem.id;
-        
+
         Colony targetColony = targetSystem.colony();
 
         float popLossPct = 0.2f + (random()*0.1f);
@@ -75,8 +75,7 @@ public class RandomEventEarthquake extends AbstractRandomEvent  {
 
         targetColony.setPopulation(newPop);
         targetColony.industry().factories(newFact);
-        if (player().knowsOf(empId)
-        && !player().sv.name(sysId).isEmpty())
+        if (player().knowsOf(empId) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Earthquake");
     }
 }

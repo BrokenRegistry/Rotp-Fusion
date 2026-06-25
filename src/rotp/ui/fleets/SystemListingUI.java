@@ -769,7 +769,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         }
         private void drawUnableToSendTransports(Graphics2D g, RowSprite row, StarSystem sys, int x0, int y1, int w) {
             g.setColor(Color.black);
-            String sysName = player().sv.name(sys.id);
+            String sysName = player().sv.knownName(sys.id);
             String detail = text("FLEETS_CANNOT_SEND_TRANSPORTS", sysName);
             scaledFont(g, detail, w-s20, 20, 12);
             drawString(g,detail, x0+s10, y1+s18);
@@ -809,7 +809,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 
             g.setColor(Color.black);
             SystemTransportSprite spr = sys.transportSprite();
-            String sysName = player().sv.name(spr.starSystem().id);
+            String sysName = player().sv.knownName(spr.starSystem().id);
             String detail = text("FLEETS_EXISTING_TRANSPORT", str(spr.amt()), sysName);
             List<String> detailLines = scaledWrappedLines(g, detail, boxL-s25-x0, 2, 14, 12);
 

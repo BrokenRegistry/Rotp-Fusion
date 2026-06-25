@@ -83,7 +83,7 @@ public interface IMapHandler {
     default public boolean hoverOverSystems()              { return true; }
     default public boolean hoverOverFlightPaths()          { return true; }
 
-    default public String systemLabel(StarSystem s)        { return Empire.thePlayer().sv.name(s.id); }
+    default public String systemLabel(StarSystem s)        { return Empire.thePlayer().sv.knownName(s.id); }
     default public String systemLabel2(StarSystem s)       { return ""; }
     default public Color systemLabelColor(StarSystem s)    { return Empire.thePlayer().sv.empireColor(s.id); }
     default public List<Sprite> nextTurnSprites()          { return new ArrayList<>(); }

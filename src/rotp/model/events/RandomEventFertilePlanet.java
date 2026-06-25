@@ -60,11 +60,10 @@ public class RandomEventFertilePlanet extends AbstractRandomEvent {
         StarSystem targetSystem = random(systems);
         empId = emp.id;
         sysId = targetSystem.id;
-        
+
         targetSystem.addEvent(new SystemTerraformingEvent("SYSEVENT_SOIL_ENRICHED"));
         targetSystem.planet().enrichSoil();
-        if (player().knowsOf(empId)
-        && !player().sv.name(sysId).isEmpty())
+        if (player().knowsOf(empId) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Fertile");
     }
 }

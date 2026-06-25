@@ -322,9 +322,7 @@ public class CombatStackColony extends CombatStack {
         // int y1 = y;
 
         int sysId = colony.starSystem().id;
-        String sname = player().sv.name(sysId);
-        if (sname == null)
-            sname = "";
+        String sname = player().sv.knownName(sysId);
         int iconW = BasePanel.s30;
         int iconH = BasePanel.s18;
         int y2 = y+stackH-BasePanel.s5;
@@ -337,8 +335,7 @@ public class CombatStackColony extends CombatStack {
 
         g.setColor(Color.lightGray);
         drawString(g, name, x2, y2);
-        
-        
+
         int mgn = BasePanel.s2;
         int x4 = x+mgn;
         int y4 = y+mgn;

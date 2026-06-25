@@ -77,12 +77,11 @@ public class RandomEventPlague extends AbstractRandomEvent implements ColonyRese
         StarSystem targetSystem = random(systems);
         empId = emp.id;
         sysId = targetSystem.id;
-        
+
         targetSystem.eventKey(systemKey());
         researchNeeded = roll(3,10) * targetSystem.colony().totalProductionIncome();
         researchRemaining = researchNeeded;
-        if (player().knowsOf(empId)
-        && !player().sv.name(sysId).isEmpty())
+        if (player().knowsOf(empId) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Plague");
 
         affectColony();
@@ -106,10 +105,10 @@ public class RandomEventPlague extends AbstractRandomEvent implements ColonyRese
             endPlague();
             return;
         }
-            
+
         targetColony.becomeQuarantined();
         targetColony.research().project(this);
-        
+
         Empire sysEmp = sys.empire();
 
         // if colony changed hands instead
@@ -120,7 +119,7 @@ public class RandomEventPlague extends AbstractRandomEvent implements ColonyRese
             if (sysEmp.isPlayerControlled())
                 turnCount = -1;  // resets the notification counter so player is immediately notified
         }
-        
+
         float popLossPct = roll(5,10)/100.0f;
         float newPop = targetColony.population() * (1-popLossPct);
         targetColony.setPopulation(newPop);
@@ -128,12 +127,13 @@ public class RandomEventPlague extends AbstractRandomEvent implements ColonyRese
     private String continuingText() {
         String s1 = text("EVENT_PLAGUE_2");
         s1 = s1.replace("[amt]", str((int)Math.ceil(researchRemaining)));
-        s1 = s1.replace("[system]", galaxy().empire(empId).sv.name(sysId));
-        s1 = galaxy().empire(empId).replaceTokens(s1, "target");        return s1;
+        s1 = s1.replace("[system]", galaxy().empire(empId).sv.knownName(sysId));
+        s1 = galaxy().empire(empId).replaceTokens(s1, "target");
+        return s1;
     }
     private String endText() {
         String s1 = text("EVENT_PLAGUE_3");
-        s1 = s1.replace("[system]", galaxy().empire(empId).sv.name(sysId));
+        s1 = s1.replace("[system]", galaxy().empire(empId).sv.knownName(sysId));
         s1 = galaxy().empire(empId).replaceTokens(s1, "target");
         return s1;
     }
@@ -144,13 +144,12 @@ public class RandomEventPlague extends AbstractRandomEvent implements ColonyRese
         sys.addEvent(new SystemRandomEvent("SYSEVENT_PLAGUE_ENDED"));
         Colony col = sys.colony();
         // possible colony is destroyed before plague ends
-        
+
         session().removePendingNotification("GNN_Event_Plague");
         if (col != null) {
             col.research().endProject();
             col.clearQuarantine();
-            if (player().knowsOf(empId)
-            && !player().sv.name(sysId).isEmpty())
+            if (player().knowsOf(empId) && player().sv.hasName(sysId))
                 GNNNotification.notifyRandomEvent(endText(), "GNN_Event_Plague");
         }
     }

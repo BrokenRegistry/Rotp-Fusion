@@ -123,7 +123,7 @@ public class RaceIntroUI extends BasePanel implements MouseListener {
     }
     public void drawSystemName(Graphics2D g) {
         Empire pl = player();
-        String str = pl.sv.name(pl.homeSysId());
+        String str = pl.sv.knownName(pl.homeSysId());
         g.setFont(narrowFont(36));
 
         int y0 = s50; //modnar: move name due to increased planet size

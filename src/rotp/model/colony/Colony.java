@@ -1766,7 +1766,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             allocation(INDUSTRY,0);
             allocation(ECOLOGY,0);
             allocation(RESEARCH,0);
-            String str1 = text("MAIN_ALLOCATE_COLONY_CAPTURED", pl.sv.name(starSystem().id), pl.raceName());
+            String str1 = text("MAIN_ALLOCATE_COLONY_CAPTURED", pl.sv.knownName(starSystem().id), pl.raceName());
             str1 = pl.replaceTokens(str1, "spy");
             session().addSystemToAllocate(starSystem(), str1);
         }
@@ -1905,7 +1905,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             fl.empire().sv.refreshFullScan(sys.id);
 
         for (Empire emp: galaxy().empires()) {
-            if (emp.knowsOf(empire) && !emp.sv.name(sys.id).isEmpty()) 
+            if (emp.knowsOf(empire) && emp.sv.hasName(sys.id)) 
                 emp.sv.view(sys.id).setEmpire();
         }
     }
@@ -1934,7 +1934,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             fl.empire().sv.refreshFullScan(sys.id);
 
         for (Empire emp: galaxy().empires()) {
-            if (emp.knowsOf(empire) && !emp.sv.name(sys.id).isEmpty()) 
+            if (emp.knowsOf(empire) && emp.sv.hasName(sys.id)) 
                 emp.sv.view(sys.id).setEmpire();
         }
     }

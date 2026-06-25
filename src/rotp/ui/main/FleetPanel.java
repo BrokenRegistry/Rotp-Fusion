@@ -668,7 +668,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             g.setFont(narrowFont(20));
             if (fl.launched() || ( fl.isDeployed() && !pl.knowETA(fl) )) {
                 if (pl.knowETA(fl) && (fl.hasDestination())) {
-                    String dest =  pl.sv.name(fl.destSysId());
+                    String dest =  pl.sv.knownName(fl.destSysId());
                     String str2 = dest.isEmpty() ? text("MAIN_FLEET_DEST_UNSCOUTED") : text("MAIN_FLEET_DESTINATION", dest);
                     int sw2 = g.getFontMetrics().stringWidth(str2);
                     drawString(g,str2, w-sw2-s10, y0);
@@ -693,13 +693,13 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 }
             }
             else if (fl.isDeployed()) {
-                String dest =  pl.sv.name(fl.destSysId());
+                String dest =  pl.sv.knownName(fl.destSysId());
                 String str2 = dest.isEmpty() ? text("MAIN_FLEET_DEST_UNSCOUTED") : text("MAIN_FLEET_DESTINATION", dest);
                 int sw2 = g.getFontMetrics().stringWidth(str2);
                 drawString(g,str2, w-sw2-s10, y0);
                 y0 -= s25;
                 StarSystem sys1 = fl.system();
-                String str3 = text("MAIN_FLEET_ORIGIN", pl.sv.name(sys1.id));
+                String str3 = text("MAIN_FLEET_ORIGIN", pl.sv.knownName(sys1.id));
                 int sw3 = g.getFontMetrics().stringWidth(str3);
                 drawString(g,str3, w-sw3-s10, y0);
                 y0 -= s25;
@@ -709,9 +709,9 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             }
             else {
                 StarSystem sys1 = fl.system();
-                String str2 = sys1 == null ? "" : text("MAIN_FLEET_LOCATION", pl.sv.name(sys1.id));
+                String str2 = sys1 == null ? "" : text("MAIN_FLEET_LOCATION", pl.sv.knownName(sys1.id));
                 if (str2.isEmpty()) 
-                    log("ERROR: No system assigned to fleet ");             
+                    log("ERROR: No system assigned to fleet ");
                 int sw2 = g.getFontMetrics().stringWidth(str2);
                 drawString(g,str2, w-sw2-s10, y0);
                 y0 -= s25;
@@ -911,6 +911,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             maxAllBoxH.setBounds(0,0,0,0);
         }
         private void drawInfo(Graphics2D g, ShipFleet displayFl, boolean showAdjust, int x, int y, int w, int h) {
+        	Empire player = player();
             textureClip = new Rectangle2D.Float(x,y,w,h);
             g.setColor(MainUI.paneBackground());
             g.fillRect(x, y, w, h);
@@ -921,7 +922,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             int x0 =s10;
             int y0 = s20;
             int lineH = s16;
-            String title = displayFl.canBeSentBy(player()) ? text("MAIN_FLEET_DEPLOYMENT") : text("MAIN_FLEET_DISPLAY");
+            String title = displayFl.canBeSentBy(player) ? text("MAIN_FLEET_DEPLOYMENT") : text("MAIN_FLEET_DISPLAY");
             // g.setFont(narrowFont(22));
             scaledFont(g, title, w-s20, 22, 15);
             drawShadowedString(g, title, 4, x0, y0, SystemPanel.textShadowC, Color.white);
@@ -975,7 +976,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             nebulaText = null;
             String retreatText = null;
             String rallyText = null;
-            if (displayFl.canBeSentBy(player())) {
+            if (displayFl.canBeSentBy(player)) {
                 if (!displayFl.canSendTo(id(dest))) {
                     if (dest == null) {
                         StarSystem currDest = displayFl.destination();
@@ -987,7 +988,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                                 rallyText = text("MAIN_FLEET_SET_RALLY");
                             }
                             int dist = displayFl.travelTurnsAdjusted(currDest);
-                            String destName = player().sv.name(currDest.id);
+                            String destName = player.sv.knownName(currDest.id);
                             if (destName.isEmpty())
                                 text = text("MAIN_FLEET_ETA_UNNAMED", dist);
                             else
@@ -995,7 +996,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                         }
                     }
                     else {
-                        String name = player().sv.name(dest.id);
+                        String name = player.sv.knownName(dest.id);
                         g.setColor(SystemPanel.redText);
                         if (name.isEmpty())
                             text = text("MAIN_FLEET_INVALID_DESTINATION2");
@@ -1010,7 +1011,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                     }
                     dest = dest == null ? displayFl.destination() : dest;
                     int dist = displayFl.travelTurnsAdjusted(dest);
-                    String destName = player().sv.name(dest.id);
+                    String destName = player.sv.knownName(dest.id);
                     if (destName.isEmpty())
                         text = text("MAIN_FLEET_ETA_UNNAMED", dist);
                     else
@@ -1022,14 +1023,14 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                     int dist = 0;
                     if (displayFl.canReach(dest)) {
                         dist = displayFl.travelTurnsAdjusted(dest);
-                        String destName = player().sv.name(dest.id);
+                        String destName = player.sv.knownName(dest.id);
                         if (destName.isEmpty())
                             text = text("MAIN_FLEET_ETA_UNNAMED", dist);
                         else
                             text = text("MAIN_FLEET_ETA_NAMED", destName, dist);
                     }
                     else {
-                        dist = player().rangeTo(dest);
+                        dist = player.rangeTo(dest);
                         text = text("MAIN_FLEET_OUT_OF_RANGE_DESC", dist);
                     }
                     if ((dist > 1) && displayFl.passesThroughNebula(dest))
@@ -1047,7 +1048,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 if (player().knowETA(displayFl)) {
                     int dist = displayFl.travelTurnsRemainingAdjusted();
                     if (displayFl.hasDestination()) {
-                        String destName = player().sv.name(displayFl.destSysId());
+                        String destName = player.sv.knownName(displayFl.destSysId());
                         if (destName.isEmpty())
                             text = text("MAIN_FLEET_ETA_UNNAMED", dist);
                         else

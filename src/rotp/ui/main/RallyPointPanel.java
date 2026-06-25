@@ -543,7 +543,7 @@ public class RallyPointPanel extends SystemPanel {
                 return;
 
             int turns = (int) Math.ceil(system().rallyTimeTo(destination()));
-            String destName = player().sv.name(destination().id);
+            String destName = player().sv.knownName(destination().id);
 
             String prompt = turns == 0 ? text("MAIN_RALLY_INSTANT_TIME", destName) : text("MAIN_RALLY_TRAVEL_TIME", destName, turns);
             g.setColor(MainUI.darkShadowC);

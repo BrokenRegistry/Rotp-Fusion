@@ -1484,7 +1484,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         g.setColor(shadeC);
         g.fillRect(x,y,w,h);
         g.setColor(Color.lightGray);
-        String sysName =  player().sv.name(mgr.system().id);
+        String sysName =  player().sv.knownName(mgr.system().id);
         mgr.showAnimations = false;
 
         Map<ShipDesign,Integer> destroyed = mgr.results().shipsDestroyed();
@@ -2599,7 +2599,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
     // ##### Console Tools
     @Override public void consoleEntry() { finishAndResume(); }
 	@Override public String getMessage() {
-		String sysName =  player().sv.name(mgr.system().id);
+		String sysName =  player().sv.knownName(mgr.system().id);
         Map<ShipDesign,Integer> destroyed = mgr.results().shipsDestroyed();
         Map<ShipDesign,Integer> retreated = mgr.results().shipsPostRetreated();
         Empire victor	 = mgr.results().victor();
@@ -2627,7 +2627,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
             message += NEWLINE + drawShipResult(design, start, dead, retr);
         }
         if (colonyEmp == leftEmpire)
-            message += NEWLINE + drawPlanetResult(sysName);
+            message += NEWLINE + drawPlanetResult();
 
         // right empire()
         if (monster != null)
@@ -2649,7 +2649,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
                 message += NEWLINE + drawShipResult(design, start, dead, retr);
             }
             if (colonyEmp == rightEmpire)
-            	message += NEWLINE + drawPlanetResult(sysName);
+            	message += NEWLINE + drawPlanetResult();
         }
         message += NEWLINE + IVIPConsole.PRESS_ANY_KEY;
 		return message;
@@ -2665,7 +2665,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         	out += ", " + text("SHIP_COMBAT_RESULTS_DESTROYED");
         return out;
     }
-    private String drawPlanetResult( String name) {
+    private String drawPlanetResult() {
     	ShipCombatResults res = mgr.results();
         Colony col = mgr.system().colony();
         int popLost  = res.popDestroyed();

@@ -18,6 +18,7 @@ package rotp.model.empires;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import rotp.model.colony.Colony;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.incidents.SabotageBasesIncident;
@@ -118,7 +119,7 @@ public class SabotageMission implements Base, Serializable {
         }
     }
     public void inciteRebellion(StarSystem sys) {
-        log(spies.empire().name()+ " spies incite rebellion on "+sys.empire().raceName()+" system: "+player().sv.name(sys.id));
+        log(spies.empire().name()+ " spies incite rebellion on "+sys.empire().raceName()+" system: "+player().sv.knownName(sys.id));
         system = sys;
         missionType = REBELLION;
         Colony col = sys.colony();

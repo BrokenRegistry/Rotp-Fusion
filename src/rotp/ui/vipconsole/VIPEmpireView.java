@@ -387,7 +387,7 @@ public class VIPEmpireView implements IVIPConsole {
     }
 	private String playerDiploBaseInfo(Empire player, boolean verbose)		{
 		String out = text("RACES_DIPLOMACY_HOMEWORLD");
-		out += EQUAL_SEP + player.sv.name(player.capitalSysId());
+		out += EQUAL_SEP + player.sv.knownName(player.capitalSysId());
 
 		out += NEWLINE + text("RACES_DIPLOMACY_LEADER");
 		String s = text("TITLE_LEADERNAME", player.labels().text("_nameTitle"), player.leader().name());
@@ -459,7 +459,7 @@ public class VIPEmpireView implements IVIPConsole {
 	private String aiDiploBaseInfo(Empire empire, boolean verbose)			{
 		Leader leader = empire.leader();
 		String out = text("RACES_DIPLOMACY_HOMEWORLD");
-		out += EQUAL_SEP + empire.sv.name(empire.capitalSysId());
+		out += EQUAL_SEP + empire.sv.knownName(empire.capitalSysId());
 
 		out += NEWLINE + text("RACES_DIPLOMACY_LEADER");
 		String str = text("TITLE_LEADERNAME", empire.labels().text("_nameTitle"), leader.name());

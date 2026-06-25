@@ -1455,7 +1455,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             starCircle.setFrame((getWidth()/3)-s20, s10, s40, s40);
 
             g.setFont(narrowFont(36));
-            String str = sys == null ? text("PLANETS_MULTI_SYSTEMS", systems.size()) : player().sv.name(sys.id);
+            String str = sys == null ? text("PLANETS_MULTI_SYSTEMS", systems.size()) : player().sv.knownName(sys.id);
             scaledFont(g, str, w-s30, 36, 24);
             int y0 = s32; //modnar: move colony name up due to increase planet size
             int x0 = s25;

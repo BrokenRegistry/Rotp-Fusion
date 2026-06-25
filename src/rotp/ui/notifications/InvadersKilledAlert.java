@@ -33,7 +33,7 @@ public class InvadersKilledAlert  extends GameAlert {
         desc = empire.replaceTokens(desc, "alien");
         return desc;
     }
-    private String systemName() { return player().sv.name(system.id); }
+    private String systemName() { return player().sv.knownName(system.id); }
     private InvadersKilledAlert(Empire e, StarSystem s, int n) {
         empire = e;
         system = s;

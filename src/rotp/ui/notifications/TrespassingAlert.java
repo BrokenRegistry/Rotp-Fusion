@@ -29,7 +29,7 @@ public class TrespassingAlert extends GameAlert {
     public String description() {
         Empire empHost = galaxy().empire(empHostId);
         Empire empShip = galaxy().empire(empShipId);
-        String sysName = player().sv.name(sysId);
+        String sysName = player().sv.knownName(sysId);
         String desc;
         if (empHost.isPlayer()) {
            desc = text("MAIN_ALERT_TRESPASSING1", sysName);

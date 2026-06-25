@@ -159,7 +159,7 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
             starCircle.setFrame((getWidth()/3)-s20, s10, s40, s40);
 
             g.setFont(narrowFont(36));
-            String str = player().sv.name(sys.id);
+            String str = player().sv.knownName(sys.id);
             int y0 = s32; //modnar: move colony name up due to increase planet size
             int x0 = s25;
             drawBorderedString(g, str, 2, x0, y0, Color.black, SystemPanel.orangeText);

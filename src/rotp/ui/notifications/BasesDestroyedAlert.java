@@ -31,11 +31,11 @@ public class BasesDestroyedAlert extends GameAlert {
     public String description() {
         String desc;
         if (spy == null)
-            desc = text("MAIN_ALERT_BASES_DESTROYED2", str(count), player().sv.name(system.id));
+            desc = text("MAIN_ALERT_BASES_DESTROYED2", str(count), player().sv.knownName(system.id));
         else {
-            desc = text("MAIN_ALERT_BASES_DESTROYED", str(count), player().sv.name(system.id));      
+            desc = text("MAIN_ALERT_BASES_DESTROYED", str(count), player().sv.knownName(system.id));
             desc = spy.replaceTokens(desc, "alien");
-        }       
+        }
         return desc;
     }
     private BasesDestroyedAlert(Empire e, int num, StarSystem sys) {

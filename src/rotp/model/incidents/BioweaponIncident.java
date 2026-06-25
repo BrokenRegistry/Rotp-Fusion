@@ -53,7 +53,7 @@ public class BioweaponIncident extends DiplomaticIncident {
         empVictim = v.id;
         sysId = sys.id;
         dateOccurred = galaxy().currentYear();
-        
+
         // no penalty in final war
         if (galaxy().council().finalWar()) {
             duration = 1;
@@ -63,11 +63,11 @@ public class BioweaponIncident extends DiplomaticIncident {
 
         if (n.diplomatAI().setSeverityAndDuration(this))
             return;
-              
+
         severity = max(-30, -20*n.diplomatAI().leaderBioweaponMod());
         duration = 50;
     }
-    private String systemName() { return player().sv.name(sysId); }
+    private String systemName() { return player().sv.knownName(sysId); }
     @Override
     public String title()         { return text("INC_USED_BIOWEAPONS_TITLE"); }
     @Override

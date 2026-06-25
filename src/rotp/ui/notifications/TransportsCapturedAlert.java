@@ -41,7 +41,7 @@ public class TransportsCapturedAlert extends GameAlert {
         }
         return desc;
     }
-    private String systemName() { return player().sv.name(system.id); }
+    private String systemName() { return player().sv.knownName(system.id); }
     private TransportsCapturedAlert(Empire att, Empire def, StarSystem s, int n) {
         attacker = att;
         defender = def;

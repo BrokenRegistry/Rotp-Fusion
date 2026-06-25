@@ -360,12 +360,12 @@ public class MapOverlaySystemsScouted extends MapOverlay {
             y2 -= scaled(5);
         }
         // planet name
-        String sysName = pl.sv.name(sys.id);
+        String sysName = pl.sv.knownName(sys.id);
         y2 -= scaled(5);
         g.setColor(SystemPanel.orangeText);
         g.setFont(narrowFont(40));
         drawBorderedString(g, sysName, 1, x2, y2, Color.darkGray, SystemPanel.orangeText);
-        
+
         // planet flag
         parent.addNextTurnControl(flagButton);
         flagButton.init(this, g);

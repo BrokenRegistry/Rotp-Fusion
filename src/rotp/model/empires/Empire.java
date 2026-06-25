@@ -4176,7 +4176,7 @@ public final class Empire extends Species implements NamedObject {
         for (int i=0; i<n; i++) {
             int empId = sv.empId(i);
             if (empId >= 0) {
-                if (!sv.name(i).isEmpty()) {
+                if (sv.hasName(i)) {
                     StarSystem sys = sv.system(i);
                     xAvg[empId] += sys.x();
                     yAvg[empId] += sys.y();

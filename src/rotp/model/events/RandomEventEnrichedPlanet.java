@@ -57,11 +57,10 @@ public class RandomEventEnrichedPlanet extends AbstractRandomEvent {
         StarSystem targetSystem = random(systems);
         empId = emp.id;
         sysId = targetSystem.id;
-        
+
         targetSystem.addEvent(new SystemRandomEvent("SYSEVENT_ENRICHED"));
         targetSystem.planet().setResourceRich();
-        if (player().knowsOf(empId)
-        && !player().sv.name(sysId).isEmpty())
+        if (player().knowsOf(empId) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Enriched");
     }
 }

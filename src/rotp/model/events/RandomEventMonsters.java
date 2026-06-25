@@ -269,7 +269,7 @@ public abstract class RandomEventMonsters extends AbstractRandomEvent implements
 				emp.addToTreasury(saleAmount);
 		}
 
-		if (player().knowsOf(targetEmpId) || !player().sv.name(targetSysId).isEmpty())
+		if (player().knowsOf(targetEmpId) || player().sv.hasName(targetSysId))
 			if (updateGNNAllowed(GNN_END)) {
 				String txt = notificationText(notifKey, emp, saleAmount);
 				GNNNotification.notifyRandomEvent(txt, gnnEvent());
@@ -298,7 +298,7 @@ public abstract class RandomEventMonsters extends AbstractRandomEvent implements
 		targetSystem.eventKey(systemKey());
 		Empire pl = player();
 		if (targetSystem.isColonized()) { 
-			if (pl.knowsOf(targetSystem.empire()) || !pl.sv.name(targetSysId).isEmpty())
+			if (pl.knowsOf(targetSystem.empire()) || pl.sv.hasName(targetSysId))
 				if (updateGNNAllowed(GNN_TARGET)) {
 					String txt = notificationText(eventName(), targetSystem.empire(), null);
 					GNNNotification.notifyRandomEvent(txt, gnnEvent());
@@ -358,7 +358,7 @@ public abstract class RandomEventMonsters extends AbstractRandomEvent implements
 	}
 	private void monsterVanished()				{ // BR: To allow disappearance
 		// System.out.println(galaxy().currentTurn() + " monsterVanished() " + monster.name());
-		if (player().knowsOf(galaxy().empire(targetEmpId)) || !player().sv.name(targetSysId).isEmpty())
+		if (player().knowsOf(galaxy().empire(targetEmpId)) || player().sv.hasName(targetSysId))
 			if (updateGNNAllowed(GNN_END)) {
 				String txt = notificationText(eventName()+"_4", monster.lastAttacker(), null);
 				GNNNotification.notifyRandomEvent(txt, gnnEvent());
@@ -432,7 +432,7 @@ public abstract class RandomEventMonsters extends AbstractRandomEvent implements
 		if (emp == null)
 			return;
 		Empire pl = player();
-		if (pl.knowsOf(emp) || !pl.sv.name(targetSysId).isEmpty())
+		if (pl.knowsOf(emp) || pl.sv.hasName(targetSysId))
 			if (updateGNNAllowed(GNN_REDIR)) {
 				String txt = notificationText(eventName()+"_2", emp, null);
 				GNNNotification.notifyRandomEvent(txt, gnnEvent());

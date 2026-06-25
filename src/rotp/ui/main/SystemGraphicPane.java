@@ -86,14 +86,14 @@ public class SystemGraphicPane extends BasePanel implements MouseMotionListener,
         drawStar(g, sys.starType(), adjW*2/5, w-s20, s20); //modnar: move star due to increased planet size
         starCircle.setFrame((w/3)-s20, s10, s40, s40);
 
-        String str = player().sv.name(sys.id);
+        String str = player().sv.knownName(sys.id);
         scaledFont(g,str,w-s30,36,24);
         // BR: removed the offset bringing the text out of the box
 //        int y0 = s32*adjW/w; //modnar: move colony name up due to increase planet size
         int y0 = s32; //modnar: move colony name up due to increase planet size
         int x0 = s25;
         drawBorderedString(g0, str, 1, x0, y0, Color.black, SystemPanel.orangeText);
-        
+
         // BR: Incoming transport
         boolean showTransports = sys.canShowIncomingTransports();
 

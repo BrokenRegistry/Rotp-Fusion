@@ -55,14 +55,13 @@ public class RandomEventPiracy extends AbstractRandomEvent {
         StarSystem targetSystem = random(emp.allColonizedSystems());
         empId = emp.id;
         sysId = targetSystem.id;
-  
+
         targetSystem.eventKey(systemKey());
         targetSystem.piracy(true);
         pirateHP = roll(300,450);
         affectEmpireTrade();
         galaxy().events().addActiveEvent(this);
-        if (player().knowsOf(empId)
-        && !player().sv.name(sysId).isEmpty())
+        if (player().knowsOf(empId) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Piracy");
     }
     @Override
@@ -124,13 +123,13 @@ public class RandomEventPiracy extends AbstractRandomEvent {
     private String continuingText() {
         String s1 = text("EVENT_PIRACY_2");
         s1 = s1.replace("[amt]", str((int)Math.ceil(100*piracyRate())));
-        s1 = s1.replace("[system]", galaxy().empire(empId).sv.name(sysId));
+        s1 = s1.replace("[system]", galaxy().empire(empId).sv.knownName(sysId));
         s1 = galaxy().empire(empId).replaceTokens(s1, "target");
         return s1;
     }
     private String endText() {
         String s1 = text("EVENT_PIRACY_3");
-        s1 = s1.replace("[system]", galaxy().empire(empId).sv.name(sysId));
+        s1 = s1.replace("[system]", galaxy().empire(empId).sv.knownName(sysId));
         s1 = galaxy().empire(empId).replaceTokens(s1, "target");
         return s1;
     }
@@ -141,10 +140,9 @@ public class RandomEventPiracy extends AbstractRandomEvent {
         sys.clearEvent();
         sys.piracy(false);
         emp.tradePiracyRate(0.0f);
-        
+
         session().removePendingNotification("GNN_Event_Piracy");
-        if (player().knowsOf(empId)
-        && !player().sv.name(sysId).isEmpty())
+        if (player().knowsOf(empId) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(endText(), "GNN_Event_Piracy");
     }
 }

@@ -53,6 +53,7 @@ public class SystemInfo implements Serializable, Base {
         return empire;
     }
     public String name(int i)            { return missing(i) ? String.valueOf(i) : view(i).name(); }
+    public String knownName(int i)       { return missing(i) ? "" : view(i).name(); } // Restored the original call for test if empty
     public void name(int i, String s)    { view(i).name(s); }
     public String descriptiveName(int i) { return missing(i) ? "" : view(i).descriptiveName(); }
     public StarSystem system(int i)      { return galaxy().system(i); }

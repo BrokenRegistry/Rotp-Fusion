@@ -60,14 +60,13 @@ public class RandomEventIndustrialAccident extends AbstractRandomEvent {
         StarSystem targetSystem = random(systems);
         empId = emp.id;
         sysId = targetSystem.id;
-        
+
         targetSystem.addEvent(new SystemRandomEvent("SYSEVENT_ACCIDENT"));
         targetSystem.planet().irradiateEnvironment(0);
         float maxWaste = targetSystem.planet().maxWaste(); // calc max waste after irradiation
         targetSystem.planet().addWaste(maxWaste);
         targetSystem.planet().removeExcessWaste();
-        if (player().knowsOf(empId)
-        && !player().sv.name(sysId).isEmpty())
+        if (player().knowsOf(empId) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Accident");
     }
 }

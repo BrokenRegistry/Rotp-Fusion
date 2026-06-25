@@ -69,7 +69,7 @@ public class SabotageFactoriesIncident extends DiplomaticIncident {
             }
         }
     }
-    private String systemName()      { return player().sv.name(sysId); }
+    private String systemName()      { return player().sv.knownName(sysId); }
     @Override
     public boolean isSpying()        { return true; }
     @Override

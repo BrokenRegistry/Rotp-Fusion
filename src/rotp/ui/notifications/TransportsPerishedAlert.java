@@ -31,7 +31,7 @@ public class TransportsPerishedAlert extends GameAlert {
     public String description() {
         return text("MAIN_ALERT_TRANSPORTS_PERISHED", systemName());
     }
-    private String systemName() { return player().sv.name(system.id); }
+    private String systemName() { return player().sv.knownName(system.id); }
     private TransportsPerishedAlert(Empire e, StarSystem s) {
         empire = e;
         system = s;

@@ -40,7 +40,7 @@ public class EncroachmentIncident extends DiplomaticIncident {
         else  if (ev.owner().leader().isDiplomat())
             duration /= 2;
     }
-    private String systemName()      { return player().sv.name(sysId); }
+    private String systemName()      { return player().sv.knownName(sysId); }
     @Override
     public String title()            { return text("INC_ENCROACHING_TITLE"); }
     @Override

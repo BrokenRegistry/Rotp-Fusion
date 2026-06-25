@@ -64,7 +64,7 @@ public class RandomEventComet extends AbstractRandomEvent {
         turnsNeeded = roll(10,15);
         cometHP = 40*turnsNeeded;
         galaxy().events().addActiveEvent(this);
-        if ((empId != Empire.NULL_ID) && !player().sv.name(sysId).isEmpty())
+        if ((empId != Empire.NULL_ID) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Comet");
     }
     @Override
@@ -110,20 +110,20 @@ public class RandomEventComet extends AbstractRandomEvent {
     }
     private String continuingText() {
         String s1 = text("EVENT_COMET_2");
-        s1 = s1.replace("[system]", player().sv.name(sysId));
+        s1 = s1.replace("[system]", player().sv.knownName(sysId));
         s1 = s1.replace("[years]", str((int)Math.ceil(turnsNeeded-turnCount)));
         s1 = galaxy().empire(empId).replaceTokens(s1, "target");
         return s1;
     }
     private String goodEndText() {
         String s1 = text("EVENT_COMET_3");
-        s1 = s1.replace("[system]", player().sv.name(sysId));
+        s1 = s1.replace("[system]", player().sv.knownName(sysId));
         s1 = galaxy().empire(empId).replaceTokens(s1, "target");
         return s1;
     }
     private String badEndText() {
         String s1 = text("EVENT_COMET_4");
-        s1 = s1.replace("[system]", player().sv.name(sysId));
+        s1 = s1.replace("[system]", player().sv.knownName(sysId));
         s1 = galaxy().empire(empId).replaceTokens(s1, "target");
         return s1;
     }
@@ -131,18 +131,18 @@ public class RandomEventComet extends AbstractRandomEvent {
     	terminateEvent(this);
         StarSystem sys = galaxy().system(sysId);
         sys.clearEvent();
-        
+
         session().removePendingNotification("GNN_Event_Comet");
-        if ((empId != Empire.NULL_ID) && !player().sv.name(sysId).isEmpty())
+        if ((empId != Empire.NULL_ID) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(goodEndText(), "GNN_Event_Comet");
     }
     private void destroyColony() {
     	terminateEvent(this);
-        StarSystem sys = galaxy().system(sysId);       
+        StarSystem sys = galaxy().system(sysId);
         sys.addEvent(new SystemRandomEvent("SYSEVENT_COMET"));
         sys.clearEvent();
         sys.planet().sufferImpactEvent(new ObjectNamedByKey(systemKey())); // destroys colony, downgrades planet type to Barren
-        if ((empId != Empire.NULL_ID) && !player().sv.name(sysId).isEmpty())
+        if ((empId != Empire.NULL_ID) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(badEndText(), "GNN_Event_Comet");
     }
 }

@@ -58,10 +58,9 @@ public class RandomEventRebellion extends AbstractRandomEvent {
         sysId = targetSystem.id;
 
         targetSystem.colony().inciteRebels(0.5f, "GNN_PLAYER_REBELLION");
-        String systemName = player().sv.name(sysId);
 
         // if a player colony rebels, he already gets a GNN notice. Don't need to send another
-        if (!emp.isPlayerControlled() && !systemName.isEmpty())
+        if (!emp.isPlayerControlled() && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Rebellion");
     }
 }

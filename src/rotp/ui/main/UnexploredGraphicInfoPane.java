@@ -52,7 +52,7 @@ public class UnexploredGraphicInfoPane extends BasePanel implements MouseListene
         Graphics2D g = (Graphics2D) g0;
         int w = getWidth();
         int h = getHeight();
-        
+
         StarSystem sys = parent.systemViewToDisplay();
         if (sys == null)
             return;
@@ -68,7 +68,7 @@ public class UnexploredGraphicInfoPane extends BasePanel implements MouseListene
         int adjW = min(w,h*3/2);
         drawStar(g, sys.starType(), adjW*2/5, w*2/5, h/3);
 
-        String name = player().sv.name(sys.id);
+        String name = player().sv.knownName(sys.id);
         if (!name.isEmpty()) {
             g0.setFont(narrowFont(36*adjW/w));
             int y0 = s42*adjW/w;

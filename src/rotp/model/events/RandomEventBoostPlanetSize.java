@@ -59,11 +59,10 @@ public class RandomEventBoostPlanetSize extends AbstractRandomEvent {
         // increase that planet's base size by 50
         targetSystem.planet().baseSize(targetSystem.planet().baseSize() + 50.0f);
         targetSystem.addEvent(new SystemRandomEvent("SYSEVENT_SIZEBOOST"));
-        
+
         empId = emp.id;
         sysId = targetSystem.id;
-        if (player().knowsOf(empId)
-        && !player().sv.name(sysId).isEmpty())
+        if (player().knowsOf(empId) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_SizeBoost");
     }
 }

@@ -121,7 +121,7 @@ public class GroundBattleUI extends BasePanel implements MouseListener {
         exited = false;
         attackerEmp = transport.empire();
         defenderEmp = colony.empire();
-        sysName = player().sv.name(colony.starSystem().id);
+        sysName = player().sv.knownName(colony.starSystem().id);
         if (defenderEmp == attackerEmp) { // BR: reuse of title may be displayed before the token are replaced!
 			String str = text("INVASION_BATTLE_REBELS", str(galaxy().currentYear()), sysName);
 			title = attackerEmp.replaceTokens(str, "attacker");

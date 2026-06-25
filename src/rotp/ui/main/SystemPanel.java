@@ -367,7 +367,7 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
     public void drawSystemName(Graphics2D g2, StarSystem sys, int y, int w, int h) {
         g2.setFont(narrowFont(unscaled(h)));
         int h0 = g2.getFontMetrics().getHeight();
-        drawBorderedString(g2, player().sv.name(sys.id), 2, s15, h0-s10, Color.black, Color.white);
+        drawBorderedString(g2, player().sv.knownName(sys.id), 2, s15, h0-s10, Color.black, Color.white);
     }
     public void drawSystemPlanetType(Graphics2D g2, StarSystem sys, Font textF, int y, int w, int h) {
         PlanetType pt = sys.planet().type();

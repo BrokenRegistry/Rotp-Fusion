@@ -204,7 +204,7 @@ public final class HistoryUI extends BasePanel implements MouseListener {
         else {
             SystemInfo sv = player().sv;
             for (int sysId=0;sysId<numSystems;sysId++) {
-                if (!sv.name(sysId).isEmpty())
+                if (sv.hasName(sysId))
                     loadOwnershipData(sysId);
             }
         }        

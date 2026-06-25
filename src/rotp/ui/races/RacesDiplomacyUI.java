@@ -276,7 +276,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
 
         g.setFont(narrowFont(20));
         g.setColor(SystemPanel.blackText);
-        String s = emp.sv.name(emp.capitalSysId());
+        String s = emp.sv.knownName(emp.capitalSysId());
         int sw = g.getFontMetrics().stringWidth(s);
         drawString(g,s, x+w-s20-sw, y1);
 
@@ -329,7 +329,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
 
         g.setFont(narrowFont(20));
         g.setColor(SystemPanel.blackText);
-        String s = emp.sv.name(emp.capitalSysId());
+        String s = emp.sv.knownName(emp.capitalSysId());
         int sw = g.getFontMetrics().stringWidth(s);
         drawString(g,s, x+w-s20-sw, y1);
 

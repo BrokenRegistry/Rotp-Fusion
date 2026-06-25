@@ -758,7 +758,7 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 			if (!e.extinct())
 				for (int i=0; i<n; i++)
 					if (e.sv.hasName(i))
-						allPossibleNames.remove(e.sv.name(i));
+						allPossibleNames.remove(e.sv.knownName(i));
 		String systemName = allPossibleNames.isEmpty() ? galaxy().nextSystemName(id) : allPossibleNames.get(0);
 		log("Naming system:", systemName);
 		return systemName;

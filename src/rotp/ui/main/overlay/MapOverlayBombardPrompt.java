@@ -221,7 +221,7 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
         g.setColor(MainUI.paneBackground);
         g.fillRect(boxX, boxY, boxW, boxH1);
 
-        String sysName = player().sv.name(sys.id);
+        String sysName = player().sv.knownName(sys.id);
         // draw planet image
         if (planetImg == null) {
             if (sys.planet().type().isAsteroids()) {
@@ -666,7 +666,7 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
         Empire player = player();
 
         //boolean targetOK = options().targetBombardAllowedForPlayer();
-        String sysName = player().sv.name(sys.id);
+        String sysName = player().sv.knownName(sys.id);
 
         // draw header info
         String message = displayYearOrTurn();

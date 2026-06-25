@@ -323,20 +323,20 @@ public class MapOverlaySpies extends MapOverlay {
                 drawString(g,line, x2, y2);
             }
         }
-        
+
         // show any sabotage
         if (rpt.sabotageCount() > 0) {
             y2 += lineH;
             String desc = "";
             switch (rpt.sabotageMission()) {
-                case SabotageMission.BASES: 
-                    desc = text("NOTICE_SPIES_SABOTAGE_BASES", str(rpt.sabotageCount()), pl.sv.name(rpt.sabotageSystem)); 
+                case SabotageMission.BASES:
+                    desc = text("NOTICE_SPIES_SABOTAGE_BASES", str(rpt.sabotageCount()), pl.sv.knownName(rpt.sabotageSystem));
                     break;
-                case SabotageMission.FACTORIES: 
-                    desc = text("NOTICE_SPIES_SABOTAGE_FACTORIES", str(rpt.sabotageCount()), pl.sv.name(rpt.sabotageSystem)); 
+                case SabotageMission.FACTORIES:
+                    desc = text("NOTICE_SPIES_SABOTAGE_FACTORIES", str(rpt.sabotageCount()), pl.sv.knownName(rpt.sabotageSystem));
                     break;
-                case SabotageMission.REBELLION: 
-                    desc = text("NOTICE_SPIES_SABOTAGE_REBELS", str(rpt.sabotageCount()), pl.sv.name(rpt.sabotageSystem)); 
+                case SabotageMission.REBELLION:
+                    desc = text("NOTICE_SPIES_SABOTAGE_REBELS", str(rpt.sabotageCount()), pl.sv.knownName(rpt.sabotageSystem));
                     break;
             }
             g.setFont(narrowFont(15));
@@ -346,7 +346,7 @@ public class MapOverlaySpies extends MapOverlay {
                 drawString(g,line, x2, y2);
             }
         }
-                
+
         // show any techs we stole
         if (rpt.stolenTech() != null) {
             y2 += lineH;

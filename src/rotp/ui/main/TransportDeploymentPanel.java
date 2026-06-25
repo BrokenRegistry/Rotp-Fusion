@@ -378,7 +378,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         	Color sliderBoxC = autoEco ? sliderBoxEcoGreen : sliderBoxEnabled;
         	Color sliderBgC	 = autoEco ? sliderButtonEcoColor : sliderBackEnabled;
 
-            String fromName = pl.sv.name(from.id);
+            String fromName = pl.sv.knownName(from.id);
 
             int maxAllowed = pl.maxTransportsAllowed(dest);
             Color promptColor = MainUI.darkShadowC;
@@ -496,7 +496,7 @@ public class TransportDeploymentPanel extends SystemPanel {
             }
 
             // draw ETA line under slider
-            String destName = pl.sv.name(dest.id);
+            String destName = pl.sv.knownName(dest.id);
             String etaLine = text("MAIN_TRANSPORT_ETA", destName, turns);
             y0 += s21;
             g.setColor(SystemPanel.blackText);

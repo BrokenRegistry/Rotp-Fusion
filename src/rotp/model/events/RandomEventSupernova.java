@@ -85,8 +85,7 @@ public class RandomEventSupernova extends AbstractRandomEvent implements ColonyR
         targetSystem.eventKey(systemKey());
         researchNeeded = turnsNeeded * targetSystem.colony().totalProductionIncome();
         researchRemaining = researchNeeded;
-        if (player().knowsOf(empId)
-        && !player().sv.name(sysId).isEmpty())
+        if (player().knowsOf(empId) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Supernova");
 
         affectColony();
@@ -108,10 +107,10 @@ public class RandomEventSupernova extends AbstractRandomEvent implements ColonyR
         // research ends if colony is destroyed
         if (targetColony != null)
             targetColony.research().project(this);
-        
+
         if (turnCount == turnsNeeded)
             goSupernova();
-        
+
         // if colony changed hands instead
         // transfer project to  new empire
         Empire sysEmp = sys.empire();
@@ -125,7 +124,7 @@ public class RandomEventSupernova extends AbstractRandomEvent implements ColonyR
     }
     private String continuingText() {
         String s1 = text("EVENT_SUPERNOVA_2");
-        s1 = s1.replace("[system]", player().sv.name(sysId));
+        s1 = s1.replace("[system]", player().sv.knownName(sysId));
         s1 = s1.replace("[amt]", str((int)Math.ceil(researchRemaining)));
         s1 = s1.replace("[years]", str((int)Math.ceil(1+turnsNeeded-turnCount)));
         s1 = galaxy().empire(empId).replaceTokens(s1, "target");
@@ -133,13 +132,13 @@ public class RandomEventSupernova extends AbstractRandomEvent implements ColonyR
     }
     private String goodEndText() {
         String s1 = text("EVENT_SUPERNOVA_3");
-        s1 = s1.replace("[system]", player().sv.name(sysId));
+        s1 = s1.replace("[system]", player().sv.knownName(sysId));
         s1 = galaxy().empire(empId).replaceTokens(s1, "target");
         return s1;
     }
     private String badEndText() {
         String s1 = text("EVENT_SUPERNOVA_4");
-        s1 = s1.replace("[system]", player().sv.name(sysId));
+        s1 = s1.replace("[system]", player().sv.knownName(sysId));
         s1 = galaxy().empire(empId).replaceTokens(s1, "target");
         return s1;
     }
@@ -148,13 +147,12 @@ public class RandomEventSupernova extends AbstractRandomEvent implements ColonyR
         terminateEvent(this);
         targetSystem.clearEvent();
         Colony col = targetSystem.colony();
-        
+
         session().removePendingNotification("GNN_Event_Supernova");
         // possible colony is destroyed before supernova
         if (col != null) {
             col.research().endProject();
-            if (player().knowsOf(empId)
-            && !player().sv.name(sysId).isEmpty())
+            if (player().knowsOf(empId) && player().sv.hasName(sysId))
                 GNNNotification.notifyRandomEvent(goodEndText(), "GNN_Event_Supernova");
         }
     }
@@ -168,12 +166,11 @@ public class RandomEventSupernova extends AbstractRandomEvent implements ColonyR
         targetSystem.addEvent(new SystemRandomEvent("SYSEVENT_SUPERNOVA"));
 
         Colony col = targetSystem.colony();
-        
+
         // possible colony is destroyed before supernova
         if (col != null) {
             col.research().endProject();
-            if (player().knowsOf(empId)
-            && !player().sv.name(sysId).isEmpty())
+            if (player().knowsOf(empId) && player().sv.hasName(sysId))
                 GNNNotification.notifyRandomEvent(badEndText(), "GNN_Event_Supernova");
         }
     }
