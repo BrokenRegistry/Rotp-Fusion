@@ -24,6 +24,7 @@ import rotp.model.combat.ShipCombatManager;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.SpaceTestRepulsor;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.IBaseOptsTools;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.game.BaseCompactOptionsUI;
@@ -34,6 +35,7 @@ import rotp.ui.main.SpriteDisplayPanel;
 import rotp.ui.main.TransportDeploymentPanel;
 import rotp.ui.sprites.ShipRelocationSprite;
 import rotp.ui.sprites.SystemTransportSprite;
+import rotp.ui.util.ParamBoolean;
 
 public final class MapOverlayNone extends MapOverlay {
 	private static boolean allowTestBattle = false;
@@ -283,7 +285,7 @@ public final class MapOverlayNone extends MapOverlay {
 				else
 					foundSys = nextSystem(player().orderedUnderAttackSystems(map().showUnarmedShips(), !map().showFleetsOnly()));
 
-				if (foundSys)
+				if (foundSys && autoWarView.get())
 					setWarView(true);
 				break;
 			}
@@ -298,7 +300,7 @@ public final class MapOverlayNone extends MapOverlay {
 				else
 					foundSys = prevSystem(player().orderedUnderAttackSystems(map().showUnarmedShips(), !map().showFleetsOnly()));
 
-				if (foundSys)
+				if (foundSys && autoWarView.get())
 					setWarView(true);
 				break;
 			}
@@ -478,4 +480,5 @@ public final class MapOverlayNone extends MapOverlay {
             parent.repaint();
         }
     }
+	public static ParamBoolean autoWarView = new ParamBoolean(IBaseOptsTools.MOD_UI, "AUTO_VAR_VIEW", true);
 }

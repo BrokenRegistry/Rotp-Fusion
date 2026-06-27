@@ -193,10 +193,10 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
     protected abstract BasePanel detailPane();
     protected BasePanel bottomPane()  { return null; }
 
-    public void recenterMap() {
+	public void recenterMap()	{
 		if (parentSpritePanel() != null)
 			parentSpritePanel().parent.map().recenterMapOn(systemViewToDisplay());
-    }
+	}
     public void scrollToNextSystem(boolean forward) {
        StarSystem sys = systemViewToDisplay();
         if (sys == null)
@@ -205,11 +205,11 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
         if (emp == null)
             return;
         List<StarSystem> systems = emp.orderedColonies();
-        
+
         int index = systems.indexOf(sys);
-        if (forward) 
+        if (forward)
             index = (index == (systems.size()-1)) ? 0 : index + 1;
-        else 
+        else
             index = (index == 0) ? systems.size()-1 : index -1;
 
         if (parentSpritePanel() == null)

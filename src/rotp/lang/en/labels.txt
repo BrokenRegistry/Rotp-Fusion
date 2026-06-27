@@ -2969,9 +2969,9 @@ SETTINGS_MOD_REPULSOR_MODE_DESC			| Select the type of access to the squares adj
 SETTINGS_MOD_REPULSOR_MODE_MOO1_DESC	| You can access the cells adjacent to the repulsors, which are not highlighted, just as in MoO1.
 SETTINGS_MOD_REPULSOR_MODE_MOO1			| MoO1
 SETTINGS_MOD_REPULSOR_MODE_MIXT_DESC	| You can access the cells adjacent to the repulsors, which will be highlighted.
-SETTINGS_MOD_REPULSOR_MODE_MIXT			| Intermediate
+SETTINGS_MOD_REPULSOR_MODE_MIXT			| Highlighted
 SETTINGS_MOD_REPULSOR_MODE_ROTP_DESC	| Access to the cells adjacent to the repulsors is prohibited, just as in the original version of RotP.
-SETTINGS_MOD_REPULSOR_MODE_ROTP			| Original RotP
+SETTINGS_MOD_REPULSOR_MODE_ROTP			| Blocked
 SETTINGS_MOD_REPULSOR_MODE				| Cells near the Repulsors : %1
 
 SETTINGS_MOD_MOO1_COMBAT_RESOL_DESC		| Unlike in MoO1, damage inflicted by weapons in RotP is not affected by the difference between attack and defense levels. (Only affects the probability of hitting.)
@@ -3317,6 +3317,9 @@ SETTINGS_MOD_ALIEN_TRANSP_OPACITY		| Ongoing Alien Transport: %1
 
 SETTINGS_MOD_SHIP_SPRITES_OPACITY_DESC	| Opacity of the fleets and transports sprites.
 SETTINGS_MOD_SHIP_SPRITES_OPACITY		| Ship Sprites Opacity: %1
+
+SETTINGS_MOD_AUTO_VAR_VIEW_DESC			| Should using the F7/F8 keys to quickly move from one threatened colony to another automatically activate war view?
+SETTINGS_MOD_AUTO_VAR_VIEW				| F7/F8 activate War View: %1
 
 SETTINGS_MOD_SHOW_FLEET_FACTOR_DESC      | To adjust the galaxy map fleets disappearance while zooming. Bigger factor means stay longer to the screen.
 SETTINGS_MOD_SHOW_FLEET_FACTOR           | Show Fleet Factor: %1%
@@ -4643,9 +4646,9 @@ SETTINGS_MOD_SETUP_RESTART_UI            | Restart Options
 SETTINGS_MOD_SETUP_RESTART_UI_DESC       | Options controlling the way a game will be restarted. Only read when restarting a game.
 SETTINGS_MOD_SETUP_RESTART_UI_HELP       | Hidden behind the&nbsp <b>→SETUP_BUTTON_START←</b>&nbsp button, using the&nbsp <b>Ctrl</b>&nbsp Key you will find the&nbsp <b>→SETUP_BUTTON_RESTART←</b>&nbsp button.<br>You will be asked to select an old played game to start a new one on the same galaxy.<br>- With the same opponents or new ones.<br>- With the same player species, a new one, or swapped with a previous opponent.<br> You can keep your home world or swap it with a previous opponent.<br> The following options are controlling the way a game will be restarted.
 
-SETTINGS_MOD_GOV_SPECIAL_TITLE				| Advanced Governor Configurations.
-SETTINGS_MOD_GOV_SPECIAL_UI					| Fine Tuning
-SETTINGS_MOD_GOV_SPECIAL_UI_DESC			| Options not displayed on the main panel... Use with caution.
+GOVERNOR_SPECIAL_OPTIONS_TITLE				| Advanced Governor Configurations.
+GOVERNOR_SPECIAL_OPTIONS_UI					| Fine Tuning
+GOVERNOR_SPECIAL_OPTIONS_UI_DESC			| Options not displayed on the main panel... Use with caution.
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_TITLE		| Automatic Ship Design Configuration.
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_UI			| Automatic ship design settings
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_UI_DESC	| Options to change the settings controlling automatic ship design.
@@ -4871,13 +4874,13 @@ AUTO_SD_SPECIES_DESC			| Follow the instructions given to the species in their c
 AUTO_SD_USER					| Users Preferences
 AUTO_SD_USER_DESC				| Follow the instructions in this Panel.
 
-AUTO_SD_SIZE					| Auto Mode Size: %1
+AUTO_SD_SIZE					| Hull Size Selection: %1
 AUTO_SD_SIZE_DESC				| What are the rules that the automatic ship designer should follow when choosing the hull dimension?
-AUTO_SD_SPACE					| Auto Mode Space: %1
-AUTO_SD_SPACE_DESC				| What are the rules that the automatic ship designer should follow when distributing available space?
-AUTO_SD_BOOLEAN					| Auto Mode Misc: %1
+AUTO_SD_SPACE					| Space Distribution: %1
+AUTO_SD_SPACE_DESC				| What are the rules that the automatic ship designer should follow when distributing available space? (Armor, Weapons, Specials)
+AUTO_SD_BOOLEAN					| Auto Design Misc: %1
 AUTO_SD_BOOLEAN_DESC			| What are the rules that the automatic ship designer must follow when choosing other devices? (Maneuvers, chemical weapons, reinforced structure)
-AUTO_SD_SPECIAL					| Auto Mode Specials: %1
+AUTO_SD_SPECIAL					| Special Devices: %1
 AUTO_SD_SPECIAL_DESC			| What are the rules that the automatic ship designer should follow when choosing special devices?
 
 AUTO_SD_SPECIAL_TRUE			| Species Mode "Prioritize" Pct: %1%
@@ -5678,10 +5681,44 @@ GOVERNOR_SETUP_TITLE              | Governor Configuration Panel
 GOVERNOR_SETUP_MENU_DESC          | Open the Governor Options Control Panel
 GOVERNOR_SETUP_MENU               | Governor Mandate
 
-HEADERS_GOVERNOR_TRANSPORT_OPTIONS_DESC | Auto Transport Options.
-HEADERS_GOVERNOR_TRANSPORT_OPTIONS  | ~~~ AUTO-TRANSPORT OPTIONS ~~~
-GOVERNOR_TRANSPORT_OPTIONS_LABEL    | Auto Transport Options
-GOVERNOR_TRANSPORT_OPTIONS_TT       | How AI should handle transportation automation.
+HEADERS_GOVERNOR_BASE_OPTIONS_DESC		| Options available in the original control panel.
+HEADERS_GOVERNOR_BASE_OPTIONS			| ~~~ BASIC OPTIONS ~~~
+HEADERS_GOVERNOR_ADVANCED_OPTIONS_DESC	| Options allowing more precise control of the governor's actions.
+HEADERS_GOVERNOR_ADVANCED_OPTIONS		| ~~~ ADVANCED OPTIONS ~~~
+HEADERS_GOVERNOR_SHIP_DESIGN_DESC		| Options dedicated to the ship design panel.
+HEADERS_GOVERNOR_SHIP_DESIGN			| ~~~ SHIP DESIGN OPTIONS ~~~
+
+GOVERNOR_AUTO_ATTACK_OPTIONS_UI_HELP	| →GOVERNOR_AUTO_ATTACK_OPTIONS_UI_DESC←
+GOVERNOR_AUTO_ATTACK_OPTIONS_UI_DESC	| When and how should the governor direct the dispatch of the war ships?
+GOVERNOR_AUTO_ATTACK_OPTIONS_TITLE		| Governor Auto Send War Ships Options
+GOVERNOR_AUTO_ATTACK_OPTIONS_UI			| Auto Send Attack Options
+
+GOVERNOR_AUTO_COLONY_OPTIONS_UI_HELP	| →GOVERNOR_AUTO_COLONY_OPTIONS_UI_DESC←
+GOVERNOR_AUTO_COLONY_OPTIONS_UI_DESC	| When and how should the governor direct the dispatch of the colony ships?
+GOVERNOR_AUTO_COLONY_OPTIONS_TITLE		| Governor Auto Send Colony Ships Options
+GOVERNOR_AUTO_COLONY_OPTIONS_UI			| Auto Send Colony Options
+
+GOVERNOR_AUTO_SCOUT_OPTIONS_UI_HELP		| →GOVERNOR_AUTO_SCOUT_OPTIONS_UI_DESC←
+GOVERNOR_AUTO_SCOUT_OPTIONS_UI_DESC		| When and how should the governor direct the dispatch of the scouts?
+GOVERNOR_AUTO_SCOUT_OPTIONS_TITLE		| Governor Auto Send Souts Options
+GOVERNOR_AUTO_SCOUT_OPTIONS_UI			| Auto Send Scout Options
+
+GOVERNOR_AUTO_FLEET_OPTIONS_UI_HELP		| →GOVERNOR_AUTO_FLEET_OPTIONS_UI_DESC←
+GOVERNOR_AUTO_FLEET_OPTIONS_UI_DESC		| When and how should the governor direct the dispatch of the fleets?
+GOVERNOR_AUTO_FLEET_OPTIONS_TITLE		| Governor Auto Send Fleet Options
+GOVERNOR_AUTO_FLEET_OPTIONS_UI			| Auto Send Fleet Options
+
+GOVERNOR_ASPECT_OPTIONS_UI_HELP			| →GOVERNOR_ASPECT_OPTIONS_UI_DESC←
+GOVERNOR_ASPECT_OPTIONS_UI_DESC			| Visual appearance of the original governor interface.
+GOVERNOR_ASPECT_OPTIONS_TITLE			| Governor UI visual options
+GOVERNOR_ASPECT_OPTIONS_UI				| Governor UI visual options
+
+GOVERNOR_TRANSPORT_OPTIONS_LABEL		| Auto Transport Options
+GOVERNOR_TRANSPORT_OPTIONS_TT			| →GOVERNOR_TRANSPORT_OPTION_UI_DESC←
+GOVERNOR_TRANSPORT_OPTIONS_UI_HELP		| →GOVERNOR_TRANSPORT_OPTION_UI_DESC←
+GOVERNOR_TRANSPORT_OPTIONS_UI_DESC		| How the Governor should handle transportation automation.
+GOVERNOR_TRANSPORT_OPTIONS_TITLE		| Governor Auto Transport Options
+GOVERNOR_TRANSPORT_OPTIONS_UI			| Auto Transport Options
 
 GOVERNOR_AUTO_TRANSPORT_HELP        | The AI ​​handles population transport (To help populate new colonies).<br>Many colonies will contribute small transports.<br>The population will then regenerate naturally.<br>This automation is dominant, being the first to be activated.<br>Both transport automation options can be activated independently of each other.
 GOVERNOR_AUTO_TRANSPORT_DESC        | AI handles population transportation. (To help populate new colonies)<br>Many colonies will contribute with small transports.
@@ -5731,10 +5768,24 @@ GOVERNOR_STARGATES_ULTRA_RICH_LABEL		| On Ultra Rich planets
 GOVERNOR_STARGATES_RICH_LABEL			| On Rich & Ultra Rich
 GOVERNOR_STARGATES_ALL_LABEL			| Always build stargates
 
-HEADERS_GOVERNOR_COLONY_OPTIONS_DESC | Colony Options.
-HEADERS_GOVERNOR_COLONY_OPTIONS      | ~~~ COLONY OPTIONS ~~~
-GOVERNOR_COLONY_OPTIONS_LABEL        | Colony Options
-GOVERNOR_COLONY_OPTIONS_TT           | How should AI handle colonies?
+HEADERS_GOVERNOR_COLONY_OPTIONS_DESC	| Colony Options.
+HEADERS_GOVERNOR_COLONY_OPTIONS			| ~~~ COLONY OPTIONS ~~~
+GOVERNOR_COLONY_OPTIONS_LABEL			| Colony Options
+GOVERNOR_COLONY_OPTIONS_TT				| →GOVERNOR_COLONIES_OPTIONS_UI_DESC←
+GOVERNOR_COLONIES_OPTIONS_UI_HELP		| →GOVERNOR_COLONIES_OPTIONS_UI_DESC←
+GOVERNOR_COLONIES_OPTIONS_UI_DESC		| How should the Governor handle colonies?
+GOVERNOR_COLONIES_OPTIONS_TITLE			| Governor Colonies Options
+GOVERNOR_COLONIES_OPTIONS_UI			| Colonies Options
+
+GOVERNOR_BUILDING_OPTIONS_UI_HELP		| →GOVERNOR_BUILDING_OPTIONS_UI_DESC←
+GOVERNOR_BUILDING_OPTIONS_UI_DESC		| How should the governor manage infrastructure construction and settlement growth?
+GOVERNOR_BUILDING_OPTIONS_TITLE			| Governor Infrastructure Options
+GOVERNOR_BUILDING_OPTIONS_UI			| Infrastructure Options
+
+GOVERNOR_TAXES_OPTIONS_UI_HELP			| →GOVERNOR_TAXES_OPTIONS_UI_DESC←
+GOVERNOR_TAXES_OPTIONS_UI_DESC			| How should the Governor handle the taxed funds?
+GOVERNOR_TAXES_OPTIONS_TITLE			| Governor Empire Taxes Options
+GOVERNOR_TAXES_OPTIONS_UI				| Empire Taxes Options
 
 GOVERNOR_MIN_MISSILE_BASES_DESC      | Minimum missile bases to be built automatically.
 GOVERNOR_MIN_MISSILE_BASES           | Min Bases: %1
@@ -5744,9 +5795,15 @@ GOVERNOR_SHIELD_WITHOUT_BASES_DESC   | Allow shields without bases.
 GOVERNOR_SHIELD_WITHOUT_BASES        | Shields alone: %1
 GOVERNOR_SHIELD_WITHOUT_BASES_LABEL  | Allow shields without bases
 
+GOVERNOR_AUTOSPEND_HELP				| Spend reserve automatically to build new colonies:<br>&emsp - Spend only the amount planet can consume this turn.<br>&emsp - Start with planet with lowest production, and end when money runs out or no suitable planets are available.<br>&emsp - Spend only on planets with governor on.<br>&emsp - Spend only if industry and ecology are not complete.
 GOVERNOR_AUTOSPEND_DESC              | Automatically spend reserve on planets with lowest production.
-GOVERNOR_AUTOSPEND                   | auto spend: %1
-GOVERNOR_AUTOSPEND_LABEL             | Autospend
+GOVERNOR_AUTOSPEND                   | Autospend on new colonie: %1
+GOVERNOR_AUTOSPEND_LABEL             | Autospend on new colonies
+
+GOVERNOR_AUTOSPEND_ARTEFACTS_HELP	| The Governor automatically spends reserves to maximize research on colonies with artifacts:<br>&emsp - Spends only the amount the planet can consume this turn. <br>&emsp - Starts with fully built Orion Artefacts planets, then Antaran Artefacts planets.<br>&emsp - If funds remain, helps build new Orion Artefacts colonies, then Antaran Artifact colonies. <br>&emsp - Starts with the planet with the highest production and stops when funds run out or there are no more eligible planets.<br>&emsp - Spends only on planets where a Governor is in office.
+GOVERNOR_AUTOSPEND_ARTEFACTS_DESC	| Automatically spend reserve to boost rechearch on Artefact colonies.
+GOVERNOR_AUTOSPEND_ARTEFACTS		| Autospend on Artefacts: %1
+GOVERNOR_AUTOSPEND_ARTEFACTS_LABEL	| Autospend on Artefacts
 
 GOVERNOR_RESERVE_DESC                | Keep in reserve.
 GOVERNOR_RESERVE                     | Reserve: %1
@@ -5777,10 +5834,14 @@ GOVERNOR_TERRAFORM_EARLY_DESC        | Favor atmosphere and soil enrichment, as 
 GOVERNOR_TERRAFORM_EARLY             | Boost Planet Early: %1%
 GOVERNOR_TERRAFORM_EARLY_LABEL       | Boost Planet Early
 
-HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS_DESC | Spying activities related Options.
-HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS      | ~~~ INTELLIGENCE OPTIONS ~~~
-GOVERNOR_INTELLIGENCE_OPTIONS_LABEL  | Intelligence Options
-GOVERNOR_INTELLIGENCE_OPTIONS_TT     | How AI should handle espionage activities.
+HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS_DESC	| Spying activities related Options.
+HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS		| ~~~ INTELLIGENCE OPTIONS ~~~
+GOVERNOR_INTELLIGENCE_OPTIONS_LABEL		| Intelligence Options
+GOVERNOR_INTELLIGENCE_OPTIONS_TT		| →GOVERNOR_INTELLIGENCE_OPTIONS_UI_DESC←
+GOVERNOR_INTELLIGENCE_OPTIONS_UI_HELP	| →GOVERNOR_INTELLIGENCE_OPTIONS_UI_DESC←
+GOVERNOR_INTELLIGENCE_OPTIONS_UI_DESC	| How should the Governor handle espionage activities?
+GOVERNOR_INTELLIGENCE_OPTIONS_TITLE		| Governor Intelligence Options
+GOVERNOR_INTELLIGENCE_OPTIONS_UI		| Intelligence Options
 
 GOVERNOR_AUTO_INFILTRATE_DESC        | Automatically sends spies to infiltrate other empires.
 GOVERNOR_AUTO_INFILTRATE             | Auto Infiltrate: %1
@@ -5898,8 +5959,8 @@ GOVERNOR_COMPLETIONIST_TECHNOLOGIES_LABEL | Completionist Technologies
 GOVERNOR_COMPLETIONIST_TECHNOLOGIES_TT    | I like completing games fully. <br> Allow all Empires to Research the following Technologies:<br><br> Controlled Irradiated Environment<br> Atmospheric Terraforming<br> Complete Terraforming<br> Advanced Soil Enrichment<br> Intergalactic Star Gates<br><br> More than 30% of the Galaxy needs to be colonized.<br> Player must control more than 50% of colonized systems.<br> Player must have completed all Research in their Tech Tree (Future Techs too).<br>
 GOVERNOR_CANCEL_BUTTON_LABEL         | Cancel
 GOVERNOR_CANCEL_BUTTON_TT            | Close the GUI
-GOVERNOR_FINE_TUNING_BUTTON_LABEL	| →SETTINGS_MOD_GOV_SPECIAL_UI←
-GOVERNOR_FINE_TUNING_BUTTON_TT		| →SETTINGS_MOD_GOV_SPECIAL_UI_DESC←
+GOVERNOR_FINE_TUNING_BUTTON_LABEL	| →GOVERNOR_SPECIAL_OPTIONS_UI←
+GOVERNOR_FINE_TUNING_BUTTON_TT		| →GOVERNOR_SPECIAL_OPTIONS_UI_DESC←
 // Leave label empty
 GOVERNOR_RACE_IMAGE_LABEL            |
 GOVERNOR_RACE_IMAGE_TT               | If the animation is disturbing you, you can stop it by clicking on it!<br>another click will reactivate it.

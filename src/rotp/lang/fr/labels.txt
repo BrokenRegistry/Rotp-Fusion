@@ -2969,10 +2969,10 @@ SETTINGS_MOD_REPULSOR_MODE_DESC			| Sélectionnez le type d'accès aux cases adj
 SETTINGS_MOD_REPULSOR_MODE_MOO1_DESC	| Vous pouvez accéder aux cellules adjacentes aux répulseurs, qui ne sont pas mises en évidences, tout comme dans MoO1.
 SETTINGS_MOD_REPULSOR_MODE_MOO1			| MoO1
 SETTINGS_MOD_REPULSOR_MODE_MIXT_DESC	| Vous pouvez accéder aux cellules adjacentes aux répulseurs, qui seront mises en évidences.
-SETTINGS_MOD_REPULSOR_MODE_MIXT			| Intermédiaire
+SETTINGS_MOD_REPULSOR_MODE_MIXT			| Colorées
 SETTINGS_MOD_REPULSOR_MODE_ROTP_DESC	| L’accès aux cellules adjacentes aux répulseurs est interdit, tout comme dans la version orignale de RotP.
-SETTINGS_MOD_REPULSOR_MODE_ROTP			| RotP Original
-SETTINGS_MOD_REPULSOR_MODE				| Cases proche des répulseurs : %1
+SETTINGS_MOD_REPULSOR_MODE_ROTP			| Bloquées
+SETTINGS_MOD_REPULSOR_MODE				| Cases à portée des répulseurs : %1
 
 SETTINGS_MOD_MOO1_COMBAT_RESOL_DESC		| Contrairement à MoO1, les dégâts infligés par les armes dans RotP ne sont pas affectés par la différence entre les niveaux d’attaque et de défense. (Cela n’affecte que la probabilité de toucher.)
 SETTINGS_MOD_MOO1_COMBAT_RESOL_YES_DESC	| Un écart important entre l’attaque et la défense augmente les dégâts minimums de l’arme.
@@ -3317,6 +3317,9 @@ SETTINGS_MOD_ALIEN_TRANSP_OPACITY		| Opacité des troupes étrangères : %1
 
 SETTINGS_MOD_SHIP_SPRITES_OPACITY_DESC	| Opacité des sprites des flottes et des transports.
 SETTINGS_MOD_SHIP_SPRITES_OPACITY		| Opacité des sprites : %1
+
+SETTINGS_MOD_AUTO_VAR_VIEW_DESC			| L’utilisation les touches F7/F8, pour se déplacer rapidement d'une colonie menacée à l'autre, doit-elle activer automatiquement la vue de guerre ?
+SETTINGS_MOD_AUTO_VAR_VIEW				| F7/F8 activent la vue de guerre : %1
 
 SETTINGS_MOD_SHOW_FLEET_FACTOR_DESC      | Pour régler la disparition des flottes de la carte de la galaxie lors du zoom. Un facteur plus grand signifie qu’elles resteront plus longtemps à l’écran.
 SETTINGS_MOD_SHOW_FLEET_FACTOR           | Taille min. Flottes : %1%
@@ -4643,9 +4646,9 @@ SETTINGS_MOD_SETUP_RESTART_UI            | Options de Redémarrage
 SETTINGS_MOD_SETUP_RESTART_UI_DESC       | Options contrôlant la manière dont un jeu sera redémarré.
 SETTINGS_MOD_SETUP_RESTART_UI_HELP       | Derrière le bouton <b>→SETUP_BUTTON_START←</b>, en utilisant la touche <b>Ctrl</b>, vous trouverez le bouton <b>→SETUP_BUTTON_RESTART←</b>.<br>Il vous sera demandé de sélectionner une ancienne partie pour en démarrer une nouvelle en réutilisant la même galaxie.<br>- Avec les mêmes adversaires ou de nouveaux.<br>- Avec la même espèce pour le joueur, une nouvelle, ou échangée avec celle d’un précédent adversaire.<br>Vous pouvez conserver votre monde d’origine ou l’échanger avec celui d’un précédent adversaire.<br>Les options suivantes contrôlent la manière dont une partie sera redémarrée.
 
-SETTINGS_MOD_GOV_SPECIAL_TITLE				| Configurations Avancées du Gouverneur.
-SETTINGS_MOD_GOV_SPECIAL_UI					| Réglages Avancés
-SETTINGS_MOD_GOV_SPECIAL_UI_DESC			| Options non affichées sur le panneau principal... À utiliser prudemment.
+GOVERNOR_SPECIAL_OPTIONS_TITLE				| Configurations Avancées du Gouverneur.
+GOVERNOR_SPECIAL_OPTIONS_UI					| Réglages Avancés
+GOVERNOR_SPECIAL_OPTIONS_UI_DESC			| Options non affichées sur le panneau principal... À utiliser prudemment.
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_TITLE		| Conception Automatique des Vaisseaux.
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_UI			| Concepteur de Vaisseaux
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_UI_DESC	| Options pour modifier les paramètres contrôlant la conception automatique des vaisseaux.
@@ -4874,7 +4877,7 @@ AUTO_SD_USER_DESC				| Suivre les instructions dans ce panneau de configuration.
 AUTO_SD_SIZE					| Taille de la Coque : %1
 AUTO_SD_SIZE_DESC				| Quelles sont les règles que doit suivre le concepteur automatique de vaisseaux lors du choix de la dimension de la coque ?
 AUTO_SD_SPACE					| Répartition de l’espace : %1
-AUTO_SD_SPACE_DESC				| Quelles sont les règles que doit suivre le concepteur automatique de vaisseaux lors de la répartion de l’espace disponible ?
+AUTO_SD_SPACE_DESC				| Quelles sont les règles que doit suivre le concepteur automatique de vaisseaux lors de la répartion de l’espace disponible ? (Armure, Armement, Dispositifs Spéciaux)
 AUTO_SD_BOOLEAN					| Dispositifs Divers : %1
 AUTO_SD_BOOLEAN_DESC			| Quelles sont les règles que doit suivre le concepteur automatique de vaisseaux lors du choix des autres dispositifs ? (Manoeuvres, armes chimiques, stucture renforcée)
 AUTO_SD_SPECIAL					| Dispositifs Spéciaux : %1
@@ -5678,10 +5681,46 @@ GOVERNOR_SETUP_TITLE              | Mandat du Gouverneur
 GOVERNOR_SETUP_MENU_DESC          | Ouvre le sous-menu de configuration du mandat du gouverneur.
 GOVERNOR_SETUP_MENU               | Mandat du Gouverneur
 
-HEADERS_GOVERNOR_TRANSPORT_OPTIONS_DESC | Paramètres de migration automatisé.
-HEADERS_GOVERNOR_TRANSPORT_OPTIONS  | ~~~ MIGRATION AUTOMATISÉE ~~~
-GOVERNOR_TRANSPORT_OPTIONS_LABEL    | Paramètres d’automatisation des migrations.
-GOVERNOR_TRANSPORT_OPTIONS_TT       | Comment l’IA doit gérer l’automatisation des migrations.
+HEADERS_GOVERNOR_BASE_OPTIONS_DESC		| Options disponibles dans le panneau de configuration original.
+HEADERS_GOVERNOR_BASE_OPTIONS			| ~~~ OPTIONS DE BASE ~~~
+HEADERS_GOVERNOR_ADVANCED_OPTIONS_DESC	| Options permettant un contrôle plus précis des actions du gouverneur.
+HEADERS_GOVERNOR_ADVANCED_OPTIONS		| ~~~ OPTIONS AVANCÉES ~~~
+HEADERS_GOVERNOR_SHIP_DESIGN_DESC		| Options dédiées au panneau de conception des vaisseaux.
+HEADERS_GOVERNOR_SHIP_DESIGN			| ~~~ OPTIONS DE CONCEPTION ~~~
+
+GOVERNOR_AUTO_ATTACK_OPTIONS_UI_HELP	| →GOVERNOR_AUTO_ATTACK_OPTIONS_UI_DESC←
+GOVERNOR_AUTO_ATTACK_OPTIONS_UI_DESC	| Quand et comment le gouverneur doit-il diriger l'envoi des vaisseaux de guerre ?
+GOVERNOR_AUTO_ATTACK_OPTIONS_TITLE		| Envoi automatisé des vaisseaux de guerre
+GOVERNOR_AUTO_ATTACK_OPTIONS_UI			| Envoi des vaisseaux de Guerre
+
+GOVERNOR_AUTO_COLONY_OPTIONS_UI_HELP	| →GOVERNOR_AUTO_COLONY_OPTIONS_UI_DESC←
+GOVERNOR_AUTO_COLONY_OPTIONS_UI_DESC	| Quand et comment le gouverneur doit-il diriger l'envoi des vaisseaux avec de colonisation ?
+GOVERNOR_AUTO_COLONY_OPTIONS_TITLE		| Envoi automatisé des vaisseaux colonies
+GOVERNOR_AUTO_COLONY_OPTIONS_UI			| Envoi des colonies
+
+GOVERNOR_AUTO_SCOUT_OPTIONS_UI_HELP		| →GOVERNOR_AUTO_SCOUT_OPTIONS_UI_DESC←
+GOVERNOR_AUTO_SCOUT_OPTIONS_UI_DESC		| Quand et comment le gouverneur doit-il diriger l'envoi des éclaireurs ?
+GOVERNOR_AUTO_SCOUT_OPTIONS_TITLE		| Envoi automatisé des éclaireurs
+GOVERNOR_AUTO_SCOUT_OPTIONS_UI			| Envoi des éclaireurs
+
+GOVERNOR_AUTO_FLEET_OPTIONS_UI_HELP		| →GOVERNOR_AUTO_FLEET_OPTIONS_UI_DESC←
+GOVERNOR_AUTO_FLEET_OPTIONS_UI_DESC		| Quand et comment le gouverneur doit-il diriger l'envoi des flottes ?
+GOVERNOR_AUTO_FLEET_OPTIONS_TITLE		| Envoi automatisé des flottes
+GOVERNOR_AUTO_FLEET_OPTIONS_UI			| Envoi des flottes
+
+GOVERNOR_ASPECT_OPTIONS_UI_HELP			| →GOVERNOR_ASPECT_OPTIONS_UI_DESC←
+GOVERNOR_ASPECT_OPTIONS_UI_DESC			| Aspect visuel de l'interface originale du gouverneur.
+GOVERNOR_ASPECT_OPTIONS_TITLE			| Aspect visuel de l’UI du Gouverneur 
+GOVERNOR_ASPECT_OPTIONS_UI				| Aspect de l’UI du Gouverneur
+
+HEADERS_GOVERNOR_TRANSPORT_OPTIONS_DESC	| Paramètres de migration automatisée.
+HEADERS_GOVERNOR_TRANSPORT_OPTIONS		| ~~~ MIGRATION AUTOMATISÉE ~~~
+GOVERNOR_TRANSPORT_OPTIONS_LABEL		| Paramètres d’automatisation des migrations.
+GOVERNOR_TRANSPORT_OPTIONS_TT			| →GOVERNOR_TRANSPORT_OPTION_UI_DESC←
+GOVERNOR_TRANSPORT_OPTIONS_UI_HELP		| →GOVERNOR_TRANSPORT_OPTION_UI_DESC←
+GOVERNOR_TRANSPORT_OPTIONS_UI_DESC		| Comment le Gouverneur doit gérer l’automatisation des migrations.
+GOVERNOR_TRANSPORT_OPTIONS_TITLE		| Paramètres d’automatisation des migrations.
+GOVERNOR_TRANSPORT_OPTIONS_UI			| Migration automatisée
 
 GOVERNOR_AUTO_TRANSPORT_HELP        | L’IA gère les migrations de population (Pour aider à peupler de nouvelles colonies).<br>De nombreuses colonies contribueront avec des migrations de faible taille.<br>La population se régénérera ensuite naturellement.<br>Cette automatisation est dominante, étant la première à être activée.<br>Les deux options d’automatisation des migrations peuvent être activées indépendamment l’une de l’autre.
 GOVERNOR_AUTO_TRANSPORT_DESC        | L’IA gère les migrations de population (Pour aider à peupler de nouvelles colonies).<br>De nombreuses colonies contribueront avec des migrations de faible taille.
@@ -5731,10 +5770,24 @@ GOVERNOR_STARGATES_ULTRA_RICH_LABEL		| Ultra Riches
 GOVERNOR_STARGATES_RICH_LABEL			| Riches & Ultra riches
 GOVERNOR_STARGATES_ALL_LABEL			| Partout
 
-HEADERS_GOVERNOR_COLONY_OPTIONS_DESC | Options des colonies.
-HEADERS_GOVERNOR_COLONY_OPTIONS      | ~~~ OPTIONS DES COLONIES ~~~
-GOVERNOR_COLONY_OPTIONS_LABEL        | Paramètres des colonies
-GOVERNOR_COLONY_OPTIONS_TT           | Comment l’IA devrait-elle gérer les colonies ?
+HEADERS_GOVERNOR_COLONY_OPTIONS_DESC	| Options des colonies.
+HEADERS_GOVERNOR_COLONY_OPTIONS			| ~~~ OPTIONS DES COLONIES ~~~
+GOVERNOR_COLONY_OPTIONS_LABEL			| Paramètres des colonies
+GOVERNOR_COLONY_OPTIONS_TT				| →GOVERNOR_COLONIES_OPTIONS_UI_DESC←
+GOVERNOR_COLONIES_OPTIONS_UI_HELP		| →GOVERNOR_COLONIES_OPTIONS_UI_DESC←
+GOVERNOR_COLONIES_OPTIONS_UI_DESC		| Comment le Gouverneur devrait-il gérer les colonies ?
+GOVERNOR_COLONIES_OPTIONS_TITLE			| Paramètres de gestion des colonies
+GOVERNOR_COLONIES_OPTIONS_UI			| Options des colonies
+
+GOVERNOR_BUILDING_OPTIONS_UI_HELP		| →GOVERNOR_BUILDING_OPTIONS_UI_DESC←
+GOVERNOR_BUILDING_OPTIONS_UI_DESC		| Comment le gouverneur devrait-il gérer la construction des infrastructures et la croissance des colonies ?
+GOVERNOR_BUILDING_OPTIONS_TITLE			| Options d'Infrastructures et Croissance
+GOVERNOR_BUILDING_OPTIONS_UI			| Infrastructures et Croissance
+
+GOVERNOR_TAXES_OPTIONS_UI_HELP			| →GOVERNOR_TAXES_OPTIONS_UI_DESC←
+GOVERNOR_TAXES_OPTIONS_UI_DESC			| Comment le gouverneur devrait-il Utilisation les fonds publics provenant de la taxation des colonies ?
+GOVERNOR_TAXES_OPTIONS_TITLE			| Utilisation des fonds publics
+GOVERNOR_TAXES_OPTIONS_UI				| Utilisation des fonds publics
 
 GOVERNOR_MIN_MISSILE_BASES_DESC      | Nombre minimal de bases de missiles à construire automatiquement.
 GOVERNOR_MIN_MISSILE_BASES           | Bases minimum : %1
@@ -5744,9 +5797,15 @@ GOVERNOR_SHIELD_WITHOUT_BASES_DESC   | Autoriser les boucliers sans bases.
 GOVERNOR_SHIELD_WITHOUT_BASES        | Boucliers seuls : %1
 GOVERNOR_SHIELD_WITHOUT_BASES_LABEL  | Autoriser les boucliers sans bases.
 
-GOVERNOR_AUTOSPEND_DESC              | Dépensez automatiquement les réserves sur les planètes ayant la production la plus faible.
-GOVERNOR_AUTOSPEND                   | L’IA dépense IA : %1
-GOVERNOR_AUTOSPEND_LABEL             | L’IA gère les dépenses.
+GOVERNOR_AUTOSPEND_HELP				| Le Gouverneur dépense automatiquement les réserves pour aider à construire les nouvelles colonies :<br>&emsp - Ne dépense que le montant que la planète peut consommer ce tour-ci.<br>&emsp - Commence par la planète dont la production est la plus faible, et s'arrête lorsque l'argent vient à manquer ou qu'il n'y a plus de planètes éligibles.<br>&emsp - Ne dépense que sur les planètes où un gouverneur est en poste.<br>&emsp - Ne dépense que si l'industrie et l'écologie ne sont pas terminées.
+GOVERNOR_AUTOSPEND_DESC              | Le Gouverneur dépense automatiquement les réserves pour aider à construire les nouvelles colonies.
+GOVERNOR_AUTOSPEND                   | Aider les nouvelles colonies : %1
+GOVERNOR_AUTOSPEND_LABEL             | Aider les nouvelles colonies.
+
+GOVERNOR_AUTOSPEND_ARTEFACTS_HELP	| Le Gouverneur dépense automatiquement les réserves pour maximiser la recherche sur les colonies avec artéfacts:<br>&emsp - Ne dépense que le montant que la planète peut consommer ce tour-ci.<br>&emsp - Commence par les planètes pleinement construites, Vestiges puis Artefact.<br>&emsp - S'il reste des fonds, aide à construire les nouvelles colonies Vestiges, puis Artéfacts.<br>&emsp - Commence par la planète dont la production est la plus forte, et s'arrête lorsque l'argent vient à manquer ou qu'il n'y a plus de planètes éligibles.<br>&emsp - Ne dépense que sur les planètes où un gouverneur est en poste.
+GOVERNOR_AUTOSPEND_ARTEFACTS_DESC	| Le Gouverneur dépense automatiquement les réserves pour maximiser la recherche sur les colonies avec artéfacts.
+GOVERNOR_AUTOSPEND_ARTEFACTS		| Maximise Artéfacts : %1
+GOVERNOR_AUTOSPEND_ARTEFACTS_LABEL	| Maximise Artéfacts
 
 GOVERNOR_RESERVE_DESC                | Économies à garder en réserve (Non dépensée par l’IA)
 GOVERNOR_RESERVE                     | Réserves : %1
@@ -5777,10 +5836,14 @@ GOVERNOR_TERRAFORM_EARLY_DESC        | Favoriser l’enrichissement de l’atmos
 GOVERNOR_TERRAFORM_EARLY             | Terraformation rapide : %1 %
 GOVERNOR_TERRAFORM_EARLY_LABEL       | Terraformation rapide
 
-HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS_DESC | Mandats liés aux activités d’espionnage.
-HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS      | ~~~ SERVICES SECRETS ~~~
-GOVERNOR_INTELLIGENCE_OPTIONS_LABEL  | Services Secrets
-GOVERNOR_INTELLIGENCE_OPTIONS_TT     | Comment l’IA devrait gérer les activités d’espionnage.
+HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS_DESC	| Mandats liés aux activités d’espionnage.
+HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS		| ~~~ SERVICES SECRETS ~~~
+GOVERNOR_INTELLIGENCE_OPTIONS_LABEL		| Services Secrets
+GOVERNOR_INTELLIGENCE_OPTIONS_TT		| →GOVERNOR_INTELLIGENCE_OPTIONS_UI_DESC←
+GOVERNOR_INTELLIGENCE_OPTIONS_UI_HELP	| →GOVERNOR_INTELLIGENCE_OPTIONS_UI_DESC←
+GOVERNOR_INTELLIGENCE_OPTIONS_UI_DESC	| Comment le gouverneur devrait gérer les activités d’espionnage ?
+GOVERNOR_INTELLIGENCE_OPTIONS_TITLE		| Mandats des Services Secret.
+GOVERNOR_INTELLIGENCE_OPTIONS_UI		| Services Secrets
 
 GOVERNOR_AUTO_INFILTRATE_DESC        | L’IA gère l’envoi des espions pour infiltrer les autres empires.
 GOVERNOR_AUTO_INFILTRATE             | L’IA infiltre : %1
@@ -5898,8 +5961,8 @@ GOVERNOR_COMPLETIONIST_TECHNOLOGIES_LABEL | Perfectionnistes
 GOVERNOR_COMPLETIONIST_TECHNOLOGIES_TT    | J’aime terminer les jeux entièrement. <br> Autoriser tous les empires à rechercher les technologies suivantes :<br><br> Environnement irradié contrôlé<br> Terraformation atmosphérique<br> Terminer la terraformation<br> Enrichissement avancé du sol<br> Portes des étoiles<br><br> Plus de 30 % de la galaxie doit être colonisée.<br> Le joueur doit contrôler plus de 50 % des systèmes colonisés.<br> Le joueur doit avoir terminé toutes les recherches de son arbre technologique (Incluant les technologies futures).<br>
 GOVERNOR_CANCEL_BUTTON_LABEL         | Annuler
 GOVERNOR_CANCEL_BUTTON_TT            | Fermer l’interface graphique sans appliquer les changements.
-GOVERNOR_FINE_TUNING_BUTTON_LABEL	| →SETTINGS_MOD_GOV_SPECIAL_UI←
-GOVERNOR_FINE_TUNING_BUTTON_TT		| →SETTINGS_MOD_GOV_SPECIAL_UI_DESC←
+GOVERNOR_FINE_TUNING_BUTTON_LABEL	| →GOVERNOR_SPECIAL_OPTIONS_UI←
+GOVERNOR_FINE_TUNING_BUTTON_TT		| →GOVERNOR_SPECIAL_OPTIONS_UI_DESC←
 // Leave label empty
 GOVERNOR_RACE_IMAGE_LABEL            |
 GOVERNOR_RACE_IMAGE_TT               | Si l’animation vous dérange, vous pouvez l’arrêter en cliquant dessus !<br>un autre clic la réactivera.
@@ -6384,7 +6447,7 @@ HK_SET_DEFAULT | <br>Alt-F : Définir les valeurs par défaut à →FUSION_HK�
 // Shortcuts Full lists*
 MAIN_HELP_SHIPFLEET_H	| Raccourcis clavier QUAND LA FLOTTE EST SÉLECTIONNÉE :<br><br>H : Afficher plus d’informations détaillées (si elles sont connues)<br><br> MODE DE REDIRECTION DES FLOTTES :<br><br>Appuyez sur «Alt» pour montrer des informations sur l’étoile ou la flotte survolée par la souris.
 
-MAIN_HELP_HK			| →HK_HEADER← →HK_F1←<br>H : Afficher les caractéristiques connues de la flotte sous le curseur<br><br>F2/F3 Votre colonie Suivante/Précédente<br>F5/F6 : Votre colonie Suivante/Précédente ayant construit un vaisseau<br>F7/F8 : Votre colonie Suivante/Précédente ciblée par un ennemi<br><br>Maj + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des troupes.<br>Ctrl + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des vaisseaux de guerre ou des troupes.<br>Maj + Ctrl + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des troupes ou des vaisseaux armés (incluant les éclaireurs)<br>W : Basculer la vue de guerre, n’affichant que les vaisseaux ciblant la planète en danger<br>F9/F10 : Votre flotte Suivante/Précédente<br>F11/F12 : flotte IA Suivante/Précédente<br>Espace/Page Down/Page Up : Votre flotte inactive Suivante/Précédente<br>«Maj-» Espace/Page Down/Page Up : Votre flotte Auto. mais inactive Suivante/Précédente→HK_FLAG_LOOP←<br><br>G : --> Menu (Game)<br>S : --> Systèmes<br>F : --> Flottes<br>D : --> Conception (Design)<br>R, E : --> Empires<br>C : --> Colonies<br>T : --> Tech        /        Ctrl+T Envoyer des Transports<br>N : Tour Suivant (Next)<br>O : --> Panneau d’Option →HK_YEAR←<br>Maj-S : Rapport d’espionnage (Spy)<br>→HK_HOME← →HK_ALT_HOME← →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← <br>ALT-W : Afficher/Cacher la grille carrée <br> →HK_MAP_ARROWS← →HK_MAP_ZOOM← <br>Molette de la souris : Incrémenter les quantités/ajuster la coulisse<br>→HK_ESCAPE←
+MAIN_HELP_HK			| →HK_HEADER← →HK_F1←<br>H : Afficher les caractéristiques connues de la flotte sous le curseur<br><br>F2/F3 Votre colonie Suivante/Précédente<br>F5/F6 : Votre colonie Suivante/Précédente ayant construit un vaisseau<br>F7/F8 : Votre colonie Suivante/Précédente ciblée par un ennemi<br>Maj + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des troupes.<br>Ctrl + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des vaisseaux de guerre ou des troupes.<br>Maj + Ctrl + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des troupes ou des vaisseaux armés (incluant les éclaireurs)<br>W : Basculer la vue de guerre, n’affichant que les vaisseaux ciblant la planète en danger<br>F9/F10 : Votre flotte Suivante/Précédente<br>F11/F12 : flotte IA Suivante/Précédente<br>Espace/Page Down/Page Up : Votre flotte inactive Suivante/Précédente<br>«Maj-» Espace/Page Down/Page Up : Votre flotte Auto. mais inactive Suivante/Précédente→HK_FLAG_LOOP←<br><br>G : --> Menu (Game)<br>S : --> Systèmes<br>F : --> Flottes<br>D : --> Conception (Design)<br>R, E : --> Empires<br>C : --> Colonies<br>T : --> Tech        /        Ctrl+T Envoyer des Transports<br>N : Tour Suivant (Next)<br>O : --> Panneau d’Option →HK_YEAR←<br>Maj-S : Rapport d’espionnage (Spy)<br>→HK_HOME← →HK_ALT_HOME← →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← <br>ALT-W : Afficher/Cacher la grille carrée <br> →HK_MAP_ARROWS← →HK_MAP_ZOOM← <br>Molette de la souris : Incrémenter les quantités/ajuster la coulisse<br>→HK_ESCAPE←
 
 PLANETS_HELP_HK			| →HK_HEADER← →HK_F1←<br><br>Flèches Haut / Bas : Bouge barre de défilement<br>Flèches Droite / Gauche : Colonie suivante / précédente. →HK_TAB← →HK_FLAG← →HK_HOME←<br> →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← (Aussi pour Sélection multiple)<br><br>Ctrl+A : Sélectionner tous les systèmes<br>Q/+Ctrl : Sélectionner normales et riches en pleine économie / + Définissez les dépenses des vaisseaux à 100%<br>Y,Z/+Ctrl : Planète en manque de population / + Dépenses ÉCO à 100%<br><br>S→HK_SEL_B← Vaisseaux →HK_SEL_E←<br>D→HK_SEL_B← Défense →HK_SEL_E←<br> W→HK_SEL_B← Industrie →HK_SEL_E←<br>E→HK_SEL_B← Écologie →HK_SEL_E←<br>R→HK_SEL_B← Recherche →HK_SEL_E←<br>G / +Ctrl /+Maj : Basculer activation du gouverneur / Activé / Désactivé <br>→HK_ESCAPE←
 

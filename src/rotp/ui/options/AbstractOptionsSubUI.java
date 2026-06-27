@@ -8,6 +8,7 @@ import rotp.model.game.SafeListParam;
 import rotp.ui.util.ParamSubUI;
 
 public abstract class AbstractOptionsSubUI implements IModOptions {
+	
 	private boolean hasExtraParam = false;
 	
 	public abstract String optionId();
@@ -47,7 +48,7 @@ public abstract class AbstractOptionsSubUI implements IModOptions {
 	final SafeListParam getListNoSpacer()					{ return optionsMap().getListNoSpacer(); }
 	public final SafeListParam getUiAll(boolean relevant)	{ return buildList(fullList(), uiFullKey(), relevant); }
 	final SafeListParam getUiMajor(boolean relevant)		{ return buildList(majorList(), uiMajorKey(), relevant); }
-	final SafeListParam getUiMinor(boolean relevant)		{ return buildList(minorList(), uiMinorKey(), relevant); }
+	public final SafeListParam getUiMinor(boolean relevant)	{ return buildList(minorList(), uiMinorKey(), relevant); }
 	private SafeListParam buildList (SafeListParam list, String key, boolean relevant) {
 		int fullSize = optionsMap().listSizeNoSpacer();
 		int listSize = list.sizeNoSpacer();

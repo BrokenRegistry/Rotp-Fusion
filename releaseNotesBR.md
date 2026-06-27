@@ -7,6 +7,10 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-06-27 (BR)
+- Double clicking on the war view planet image will now also recenter the map.
+- New option to disable the auto war view on F7/F8 activation. (User Interface --> Visual Options)
+
 26-06-26 (BR)
 - Fixed a bug occurring when double clicking on the planet image to recenter the map, when done with totally improbable timing.
 

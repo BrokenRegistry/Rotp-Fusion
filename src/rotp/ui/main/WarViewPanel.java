@@ -49,11 +49,12 @@ import rotp.ui.map.IMapHandler;
 
 class WarViewPanel extends SystemPanel {
 	private static final long serialVersionUID = 1L;
-	private SpriteDisplayPanel parent;
+	private final SpriteDisplayPanel parent;
 	private BasePanel topPane;
 
 	WarViewPanel(SpriteDisplayPanel p) {
 		parent = p;
+		spritePanel(p);
 		init();
 	}
 	private void init() { initModel(); }

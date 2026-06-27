@@ -693,6 +693,8 @@ public final class TechCategory implements Base, Serializable {
     public void resetResearchBC()    { totalBC = 0; }
     boolean learnTech(String id)     {
         Tech t = tech(id);
+		if (t == null) // BR: should not happen, but may happen when the mouse and the display are not on the same coordinates!
+			return false;
         // infrequently we get here for a tech we already know... perhaps
         // if a tech is discovered/stolen on the same turn it is researched
         // in this case, we'll return false so that players don't get an

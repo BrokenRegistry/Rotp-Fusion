@@ -25,7 +25,9 @@ public interface IBaseOptsTools extends ISubUiKeys{
 	int GAME_ID  = 1;
 	int SETUP_ID = 2;
 
-	ParamTitle RELEVANT_TITLE	= new ParamTitle("RELEVANT_PARAMETERS");
+	ParamTitle RELEVANT_TITLE					= new ParamTitle("RELEVANT_PARAMETERS");
+	ParamTitle GOVERNOR_BASE_OPTIONS_TITLE		= new ParamTitle("GOVERNOR_BASE_OPTIONS");
+	ParamTitle GOVERNOR_ADVANCED_OPTIONS_TITLE	= new ParamTitle("GOVERNOR_ADVANCED_OPTIONS");
 
 	ParamSpacer HEADER_SPACER_100	= new ParamSpacer(1f);
 	ParamSpacer HEADER_SPACER_50	= new ParamSpacer(0.5f);

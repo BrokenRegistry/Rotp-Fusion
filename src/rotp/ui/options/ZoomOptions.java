@@ -7,6 +7,7 @@ import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.model.ships.ShipLibrary;
 import rotp.ui.main.GalaxyMapPanel;
+import rotp.ui.main.overlay.MapOverlayNone;
 import rotp.ui.sprites.FlightPathSprite;
 import rotp.ui.util.ParamTitle;
 
@@ -51,7 +52,11 @@ final class ZoomOptions extends AbstractOptionsSubUI {
 				new ParamTitle("ZOOM_REPLAY"),
 				finalReplayZoomOut,
 				empireReplayZoomOut,
-				replayTurnPace
+				replayTurnPace,
+
+				HEADER_SPACER_100,
+				RELEVANT_TITLE,
+				MapOverlayNone.autoWarView
 				)));
 		return map;
 	}

@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
+import rotp.ui.main.overlay.MapOverlayNone;
 import rotp.ui.util.ParamTitle;
 
 final class GameMenuPreferences extends AbstractOptionsSubUI {
@@ -49,7 +50,10 @@ final class GameMenuPreferences extends AbstractOptionsSubUI {
 				showShipRanges,
 				LINE_SPACER_25,
 				showSquareGrid,
-				squareGridSize
+				squareGridSize,
+
+				LINE_SPACER_25,
+				MapOverlayNone.autoWarView
 				)));
 		return map;
 	}
@@ -73,7 +77,10 @@ final class GameMenuPreferences extends AbstractOptionsSubUI {
 						raceStatusView,
 
 						LINE_SPACER_25,
-						shipBasedMissiles
+						shipBasedMissiles,
+
+						LINE_SPACER_25,
+						MapOverlayNone.autoWarView
 						));
 		return majorList;
 	}

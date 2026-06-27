@@ -934,19 +934,19 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 				}
 				return;
 			case KeyEvent.VK_J:
-				if (e.isControlDown()) {
+				if (e.isControlDown() && !e.isAltDown()) {
 					IGameOptions.optionPanelAlignment.set(IGameOptions.JUSTIFIED);
 					forceUpdate(true);
 				}
 				return;
 			case KeyEvent.VK_L:
-				if (e.isControlDown()) {
+				if (e.isControlDown() && !e.isAltDown()) {
 					IGameOptions.optionPanelAlignment.set(IGameOptions.LEFT_ALIGN);
 					forceUpdate(true);
 				}
 				return;
 			case KeyEvent.VK_R:
-				if (e.isControlDown()) {
+				if (e.isControlDown() && !e.isAltDown()) {
 					IGameOptions.optionPanelAlignment.set(IGameOptions.RIGHT_ALIGN);
 					forceUpdate(true);
 				}

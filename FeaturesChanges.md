@@ -327,6 +327,7 @@
 
 ### User Interfaces:
 
+- New option to disable the auto war view on F7/F8 activation. (User Interface --> Visual Options)
 - A new option now allows you to view all technologies in the technology allocation panel. This means you no longer need to open the user manual to find out the level of an unknown technology.
 - Two new subpanels have been created. They group together the options for restoring the MoO1 rules.
   - One is located in the galaxy settings panel
@@ -435,6 +436,7 @@
 
 ### Fixes:
 
+- Double clicking on the war view planet image will now also recenter the map.
 - Fixed a bug occurring when double clicking on the planet image to recenter the map, when done with totally improbable timing.
 - Fixed Modnar species missing their special abilities. (Removed a forgotten debug line)
 - Fixed Missile range English description (some range were wrong)
