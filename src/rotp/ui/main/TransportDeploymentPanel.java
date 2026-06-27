@@ -60,14 +60,14 @@ public class TransportDeploymentPanel extends SystemPanel {
     static final Color sliderButtonEcoColor = Color.darkGray;
     //session vars
     public TransportDeploymentPanel(SpriteDisplayPanel p) {
-        parentSpritePanel = p;
+        spritePanel(p);
         init();
     }
     private void init() {
         initModel();
     }
     public void releaseObjects() { }
-	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
+	@Override public IMapHandler mapHandler()	{ return parentSpritePanel().parent; }
     @Override
     public void handleNextTurn() {  cancel(); }
     @Override
@@ -94,7 +94,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         if (!canConsume(o)) 
             return false;
 
-        Sprite sprite =  parentSpritePanel.spriteToDisplay();
+        Sprite sprite =  parentSpritePanel().spriteToDisplay();
         if (!(sprite instanceof SystemTransportSprite))
             return false;
 
@@ -120,7 +120,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         if (!canConsume(o))  {
             return true;
         }
-        SystemTransportSprite sprite = (SystemTransportSprite) parentSpritePanel.spriteToDisplay();
+        SystemTransportSprite sprite = (SystemTransportSprite) parentSpritePanel().spriteToDisplay();
         if (o instanceof StarSystem) {
             StarSystem sys = (StarSystem) o;
             if (enableAbandon) {
@@ -180,7 +180,7 @@ public class TransportDeploymentPanel extends SystemPanel {
                         break;
                 }
                 useClickedSprite(systems.get(index), 1, false);
-                parentSpritePanel.repaint();
+                parentSpritePanel().repaint();
                 return;
             case KeyEvent.VK_L:
             	if (e.isAltDown()) {
@@ -202,9 +202,9 @@ public class TransportDeploymentPanel extends SystemPanel {
         return transportSprite() == null ? null : transportSprite().starSystem();
     }
     private SystemTransportSprite transportSprite() {
-        if (!(parentSpritePanel.spriteToDisplay() instanceof SystemTransportSprite))
+        if (!(parentSpritePanel().spriteToDisplay() instanceof SystemTransportSprite))
             return null;
-        return (SystemTransportSprite) parentSpritePanel.spriteToDisplay();
+        return (SystemTransportSprite) parentSpritePanel().spriteToDisplay();
     }
     private boolean canSendTransports() {
         return player().canSendTransportsTo(transportSprite().starSystem()) && transportSprite().amt() > 0;
@@ -235,7 +235,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         if (transportSprite().decrement(1)) {
             if (click)
                 softClick();
-            parentSpritePanel.repaint();
+            parentSpritePanel().repaint();
         }
         else if (click)
             misClick();
@@ -244,7 +244,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         if (transportSprite().increment(1)) {
             if (click)
                 softClick();
-            parentSpritePanel.repaint();
+            parentSpritePanel().repaint();
         }
         else if (click)
             misClick();
@@ -258,7 +258,7 @@ public class TransportDeploymentPanel extends SystemPanel {
     @Override
     protected BasePanel detailPane() {
         if (detailPane == null)
-            detailPane = new TransportDetailPane(parentSpritePanel);
+            detailPane = new TransportDetailPane(parentSpritePanel());
         return detailPane;
     }
     @Override
@@ -278,7 +278,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         private void init() {
             initModel();
         }
-    	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
+    	@Override public IMapHandler mapHandler()	{ return parentSpritePanel().parent; }
         @Override
         public void animate() {
             detailPane.animate();
@@ -544,7 +544,7 @@ public class TransportDeploymentPanel extends SystemPanel {
                 if (e.isControlDown()) {
                 	if (system().toggleTransportAutoEco()) {
                 		softClick();
-                		// parentSpritePanel.repaint();
+                		// parentSpritePanel().repaint();
                 	} else
                 		misClick();
                  	// return;
@@ -566,7 +566,7 @@ public class TransportDeploymentPanel extends SystemPanel {
                 	newAmt = bounds(0, (int)(pct*maxSendingSize), maxSendingSize);
                 }
                 transportSprite().amt(newAmt);
-                parentSpritePanel.repaint();
+                parentSpritePanel().repaint();
             }
         }
         @Override
@@ -801,7 +801,7 @@ public class TransportDeploymentPanel extends SystemPanel {
                     player().sv.toggleFlagColor(sys.id, true);
                 else
                     player().sv.toggleFlagColor(sys.id, false);
-                parentSpritePanel.repaint();
+                parentSpritePanel().repaint();
             }
         }
     }

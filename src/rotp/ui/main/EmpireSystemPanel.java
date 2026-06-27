@@ -83,7 +83,7 @@ public class EmpireSystemPanel extends SystemPanel {
         init();
     }
 	private void init()	{ initModel(); }
-	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
+	@Override public IMapHandler mapHandler()	{ return parentSpritePanel().parent; }
 	@Override public void enterCurrentPane(BasePanel pane)	{ currentPane = pane; }
 	@Override public void exitCurrentPane(BasePanel pane)	{
 		if (currentPane == pane)
@@ -155,7 +155,7 @@ public class EmpireSystemPanel extends SystemPanel {
 		repaintOnAltChange();
 	}
     public void nextShipDesign() {
-        StarSystem sys = parentSpritePanel.systemViewToDisplay();
+        StarSystem sys = parentSpritePanel().systemViewToDisplay();
         if (sys == null)
             return;
         Colony c = sys.colony();
@@ -168,11 +168,11 @@ public class EmpireSystemPanel extends SystemPanel {
             c.shipyard().goToNextDesign();
             if (c.shipyard().buildLimit()>0)
             	c.governIfNeeded();
-            parentSpritePanel.repaint();
+            parentSpritePanel().repaint();
         }
     }
     public void prevShipDesign() {
-        StarSystem sys = parentSpritePanel.systemViewToDisplay();
+        StarSystem sys = parentSpritePanel().systemViewToDisplay();
         if (sys == null)
             return;
         Colony c = sys.colony();
@@ -186,7 +186,7 @@ public class EmpireSystemPanel extends SystemPanel {
             c.shipyard().goToPrevDesign();
             if (c.shipyard().buildLimit()>0)
             	c.governIfNeeded();
-            parentSpritePanel.repaint();
+            parentSpritePanel().repaint();
         }
     }
     @Override
@@ -291,7 +291,7 @@ public class EmpireSystemPanel extends SystemPanel {
 
             int midMargin = scaled(105);
 
-            StarSystem sys = parentSpritePanel.systemViewToDisplay();
+            StarSystem sys = parentSpritePanel().systemViewToDisplay();
             Colony col = sys == null ? null : sys.colony();
             if (col == null)
                 return;
@@ -563,7 +563,7 @@ public class EmpireSystemPanel extends SystemPanel {
             }
         }
         private void drawRallyPointButton(Graphics2D g, int x, int y, int w, int h) {
-            StarSystem sys = parentSpritePanel.systemViewToDisplay();
+            StarSystem sys = parentSpritePanel().systemViewToDisplay();
             if (sys == null)
                 return;
 
@@ -599,7 +599,7 @@ public class EmpireSystemPanel extends SystemPanel {
             drawString(g,s, x0, y+h-s7);
         }
         private void drawRallyToSG(Graphics2D g, int x, int y, int w, int h) {
-            StarSystem sys = parentSpritePanel.systemViewToDisplay();
+            StarSystem sys = parentSpritePanel().systemViewToDisplay();
             if (sys == null)
                 return;
 
@@ -636,7 +636,7 @@ public class EmpireSystemPanel extends SystemPanel {
             g.drawImage(img, x1, y1, x2, y2, 0, 0, imgW, imgH, null);
         }
         private int drawTransportButton(Graphics2D g, int x, int y, int w, int h, int maxSize) {
-            StarSystem sys = parentSpritePanel.systemViewToDisplay();
+            StarSystem sys = parentSpritePanel().systemViewToDisplay();
             if (sys == null || sys.colony() == null)
                 return 20;
 
@@ -692,7 +692,7 @@ public class EmpireSystemPanel extends SystemPanel {
             return fontSize;
         }
         private int drawAbandonButton(Graphics2D g, int x, int y, int w, int h, int maxSize) {
-            StarSystem sys = parentSpritePanel.systemViewToDisplay();
+            StarSystem sys = parentSpritePanel().systemViewToDisplay();
             if (sys == null)
                 return 20;
 
@@ -730,7 +730,7 @@ public class EmpireSystemPanel extends SystemPanel {
             return fontSize;
         }
         private void incrementGovBuildPct(int amt) {
-            StarSystem sys = parentSpritePanel.systemViewToDisplay();
+            StarSystem sys = parentSpritePanel().systemViewToDisplay();
             Colony col = sys == null ? null : sys.colony();
             if (col == null)
                 return;
@@ -740,7 +740,7 @@ public class EmpireSystemPanel extends SystemPanel {
             parent.repaint();
         }
         private void resetGovBuildPct() {
-            StarSystem sys = parentSpritePanel.systemViewToDisplay();
+            StarSystem sys = parentSpritePanel().systemViewToDisplay();
             Colony col = sys == null ? null : sys.colony();
             if (col == null)
                 return;
@@ -750,7 +750,7 @@ public class EmpireSystemPanel extends SystemPanel {
             repaint();
         }
         private void incrementBuildLimit(int amt) {
-            StarSystem sys = parentSpritePanel.systemViewToDisplay();
+            StarSystem sys = parentSpritePanel().systemViewToDisplay();
             Colony col = sys == null ? null : sys.colony();
             if (col == null)
                 return;
@@ -764,7 +764,7 @@ public class EmpireSystemPanel extends SystemPanel {
                 misClick();
         }
         private void decrementBuildLimit(int amt) {
-            StarSystem sys = parentSpritePanel.systemViewToDisplay();
+            StarSystem sys = parentSpritePanel().systemViewToDisplay();
             Colony col = sys == null ? null : sys.colony();
             if (col == null)
                 return;
@@ -778,7 +778,7 @@ public class EmpireSystemPanel extends SystemPanel {
                 misClick();
         }
         private void resetBuildLimit() {
-            StarSystem sys = parentSpritePanel.systemViewToDisplay();
+            StarSystem sys = parentSpritePanel().systemViewToDisplay();
             Colony col = sys == null ? null : sys.colony();
             if (col == null)
                 return;
@@ -803,10 +803,10 @@ public class EmpireSystemPanel extends SystemPanel {
             return starBackground;
         }
         private void rallyToNearestSG(int action, Float speed) {
-        	player().sv.rallyNearestStarGate(parentSpritePanel.systemViewToDisplay().id, action, speed);
+        	player().sv.rallyNearestStarGate(parentSpritePanel().systemViewToDisplay().id, action, speed);
         }
         private void rallyToNearestSG(int action) {
-        	StarSystem sys =parentSpritePanel.systemViewToDisplay();
+        	StarSystem sys =parentSpritePanel().systemViewToDisplay();
         	Float speed = null;
         	if (sys != null) {
         		ColonyShipyard shipyard = sys.colony().shipyard();
@@ -828,10 +828,10 @@ public class EmpireSystemPanel extends SystemPanel {
         	}
         }
         private boolean rallyToSGEnabled()	{
-        	StarSystem sys = parentSpritePanel.systemViewToDisplay();
+        	StarSystem sys = parentSpritePanel().systemViewToDisplay();
         	return !sys.hasStargate(player()) && rallyPointEnabled() && hasStargate(); }
-        private boolean rallyPointEnabled() { return !session().performingTurn() && player().canRallyFleetsFrom(id(parentSpritePanel.systemViewToDisplay())); }
-        private boolean transportEnabled() { return !session().performingTurn() && player().canSendTransportsFrom(parentSpritePanel.systemViewToDisplay()); }
+        private boolean rallyPointEnabled() { return !session().performingTurn() && player().canRallyFleetsFrom(id(parentSpritePanel().systemViewToDisplay())); }
+        private boolean transportEnabled() { return !session().performingTurn() && player().canSendTransportsFrom(parentSpritePanel().systemViewToDisplay()); }
 		@Override public void mouseClicked(MouseEvent e)	{ enterCurrentPane(this); }
 		@Override public void mouseEntered(MouseEvent e)	{
 			enterCurrentPane(this);
@@ -908,21 +908,21 @@ public class EmpireSystemPanel extends SystemPanel {
             }
             else if (rallyPointBox.contains(x,y)){
                 if (rallyPointEnabled()) {
-                    StarSystem sys =  parentSpritePanel.systemViewToDisplay();
+                    StarSystem sys =  parentSpritePanel().systemViewToDisplay();
                     if (sys != null)
                         mapHandler().clickedSprite(sys.rallySprite());
-                    parentSpritePanel.repaint();
+                    parentSpritePanel().repaint();
                 }
             }
             else if (rallyToSGBox.contains(x,y)){
                 if (rallyToSGEnabled()) {
                 	rallyToNearestSG(SystemView.SET_RALLY);
-                    parentSpritePanel.repaint();
+                    parentSpritePanel().repaint();
                 }
             }
             else if (transportBox.contains(x,y)){
                 if (transportEnabled()) {
-                    StarSystem sys =  parentSpritePanel.systemViewToDisplay();
+                    StarSystem sys =  parentSpritePanel().systemViewToDisplay();
                     if (sys != null) {
                     	if (e.isControlDown())
                     		sys.colony().toggleGovAutoTransport();
@@ -931,17 +931,17 @@ public class EmpireSystemPanel extends SystemPanel {
 	                        mapHandler().clickedSprite(sys.transportSprite());
                     	}
                     }
-                    parentSpritePanel.repaint();
+                    parentSpritePanel().repaint();
                 }
             }
             else if (abandonBox.contains(x,y)){
                 if (transportEnabled()) {
-                    StarSystem sys =  parentSpritePanel.systemViewToDisplay();
+                    StarSystem sys =  parentSpritePanel().systemViewToDisplay();
                     if (sys != null)  {
                         TransportDeploymentPanel.enableAbandon = true; 
                         mapHandler().clickedSprite(sys.transportSprite());
                     }
-                    parentSpritePanel.repaint();
+                    parentSpritePanel().repaint();
                 }
             }
         }

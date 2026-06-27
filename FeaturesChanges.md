@@ -435,6 +435,7 @@
 
 ### Fixes:
 
+- Fixed a bug occurring when double clicking on the planet image to recenter the map, when done with totally improbable timing.
 - Fixed Modnar species missing their special abilities. (Removed a forgotten debug line)
 - Fixed Missile range English description (some range were wrong)
 - Fixed Event messages and UI display, when related to a system unknown to the player.

@@ -90,7 +90,7 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
     public static Color rangeExtendedOnly = orangeText;
     public static Color rangeGood = greenText;
 
-    protected SpriteDisplayPanel parentSpritePanel;
+	private SpriteDisplayPanel parentSpritePanel;
     protected BasePanel overviewPane;
     protected BasePanel detailPane;
     protected BasePanel bottomPane;
@@ -103,8 +103,7 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
     JPanel detailCardPane;
 
 	protected void spritePanel(SpriteDisplayPanel p)	{ parentSpritePanel = p; }
-	protected SpriteDisplayPanel spritePanel()			{ return parentSpritePanel; }
-//	protected IMapHandler mapHandler()	{ return spritePanel().parent; }
+	protected SpriteDisplayPanel parentSpritePanel()	{ return parentSpritePanel; }
 	public abstract IMapHandler mapHandler();
 
     protected void showDefaultDetail() { }
@@ -113,7 +112,9 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
 
     @Override
     public StarSystem systemViewToDisplay() {
-        return spritePanel().systemViewToDisplay();
+		if (parentSpritePanel() == null)
+			return null;
+        return parentSpritePanel().systemViewToDisplay();
     }
     public Border buttonBorder() {
         if (buttonBorder == null)
@@ -182,7 +183,7 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
         setLayout(new BorderLayout(0,gap));
         if (overviewPane != null) 
             add(overviewPane, BorderLayout.NORTH);
-        
+
         add(detailPane, BorderLayout.CENTER);
         if (bottomPane != null) 
             add(bottomPane, BorderLayout.SOUTH); 
@@ -193,7 +194,8 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
     protected BasePanel bottomPane()  { return null; }
 
     public void recenterMap() {
-        spritePanel().parent.map().recenterMapOn(systemViewToDisplay());
+		if (parentSpritePanel() != null)
+			parentSpritePanel().parent.map().recenterMapOn(systemViewToDisplay());
     }
     public void scrollToNextSystem(boolean forward) {
        StarSystem sys = systemViewToDisplay();
@@ -210,9 +212,9 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
         else 
             index = (index == 0) ? systems.size()-1 : index -1;
 
-        if (spritePanel() == null)
+        if (parentSpritePanel() == null)
             return;
-        IMapHandler topPanel = spritePanel().parent;
+        IMapHandler topPanel = parentSpritePanel().parent;
         topPanel.clickedSprite(systems.get(index));
         topPanel.map().recenterMapOn(systems.get(index));
         topPanel.repaint();
@@ -611,6 +613,8 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
         public Shape textureClip()    { return textureClip; }
         @Override
         public void paintComponent(Graphics g0) {
+			if (parent.parentSpritePanel() == null)
+				return;
             Graphics2D g = (Graphics2D) g0;
             super.paintComponent(g);
 
@@ -618,7 +622,7 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
 
             int w = getWidth();
             int h = getHeight();
-            StarSystem sys = parent.spritePanel().systemViewToDisplay();
+            StarSystem sys = parent.parentSpritePanel().systemViewToDisplay();
             if (sys == null)
                 return;
             float range = (float) Math.ceil(pl.sv.distance(sys.id)*10)/10;

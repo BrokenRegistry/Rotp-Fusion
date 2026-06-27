@@ -54,7 +54,7 @@ public class UnexploredAlienSystemPanel extends SystemPanel {
     }
     public void releaseObjects() { }
 
-	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
+	@Override public IMapHandler mapHandler()	{ return parentSpritePanel().parent; }
     @Override
     public void animate()            { overviewPane.animate(); }
     @Override
@@ -231,7 +231,7 @@ public class UnexploredAlienSystemPanel extends SystemPanel {
             boolean rightClick  = SwingUtilities.isRightMouseButton(e);
             boolean middleClick = SwingUtilities.isMiddleMouseButton(e);
             if (hoverBox == flagBox) {
-                StarSystem sys = parentSpritePanel.systemViewToDisplay();
+                StarSystem sys = parentSpritePanel().systemViewToDisplay();
             	// BR: if 3 buttons:
             	//   - Middle click = Reset
             	//   - Right click = Reverse
@@ -265,12 +265,12 @@ public class UnexploredAlienSystemPanel extends SystemPanel {
         public void mouseWheelMoved(MouseWheelEvent e) {
         	setModifierKeysState(e); // BR: For the Flag color selection
             if (hoverBox == flagBox) {
-                StarSystem sys = parentSpritePanel.systemViewToDisplay();
+                StarSystem sys = parentSpritePanel().systemViewToDisplay();
                 if (e.getWheelRotation() < 0)
                     player().sv.toggleFlagColor(sys.id, true);
                 else
                     player().sv.toggleFlagColor(sys.id, false);
-                parentSpritePanel.repaint();
+                parentSpritePanel().repaint();
             }
         }
     }

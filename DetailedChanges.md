@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-06-26 (BR)
+- Fixed a bug occurring when double clicking on the planet image to recenter the map, when done with totally improbable timing.
+
 26-06-25 (BR)
 - Fixed Modnar species missing their special abilities. (Removed a forgotten debug line)
 - Fixed Missile range English description (some range were wrong)

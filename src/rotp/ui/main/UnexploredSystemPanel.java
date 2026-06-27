@@ -55,7 +55,7 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
     }
     public void releaseObjects() { }
 
-	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
+	@Override public IMapHandler mapHandler()	{ return parentSpritePanel().parent; }
     @Override
     protected BasePanel topPane() { return null; }
     @Override
@@ -64,17 +64,17 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
     }
     @Override
     protected BasePanel detailPane() {
-        return new UnexploredDetailPane(parentSpritePanel);
+        return new UnexploredDetailPane(parentSpritePanel());
     }
     public void toggleFlagColor(boolean reverse) {
-        StarSystem sys = parentSpritePanel.systemViewToDisplay();
+        StarSystem sys = parentSpritePanel().systemViewToDisplay();
         player().sv.toggleFlagColor(sys.id, reverse);
-        spritePanel().repaint();
+        parentSpritePanel().repaint();
     }
     public void resetFlagColor() {
-        StarSystem sys = parentSpritePanel.systemViewToDisplay();
+        StarSystem sys = parentSpritePanel().systemViewToDisplay();
         player().sv.resetFlagColor(sys.id);
-        IMapHandler topPanel = spritePanel().parent;
+        IMapHandler topPanel = parentSpritePanel().parent;
         topPanel.repaint();
     }
     @Override

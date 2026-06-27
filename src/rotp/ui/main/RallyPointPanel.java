@@ -71,7 +71,7 @@ public class RallyPointPanel extends SystemPanel {
     public void releaseObjects() {
     	lastPreviewChain = null;
     }
-	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
+	@Override public IMapHandler mapHandler()	{ return parentSpritePanel().parent; }
     @Override
     public void animate() {
         topPane.animate();
@@ -81,9 +81,9 @@ public class RallyPointPanel extends SystemPanel {
     public boolean canEscape()                      { return true; }
     @Override
     public boolean useHoveringSprite(Sprite o) {
-        if (!(parentSpritePanel.spriteToDisplay() instanceof ShipRelocationSprite))
+        if (!(parentSpritePanel().spriteToDisplay() instanceof ShipRelocationSprite))
             return false;
-        ShipRelocationSprite sprite = (ShipRelocationSprite) parentSpritePanel.spriteToDisplay();
+        ShipRelocationSprite sprite = (ShipRelocationSprite) parentSpritePanel().spriteToDisplay();
 
     	if (chainRally()) {
             Empire player = player();
@@ -128,7 +128,7 @@ public class RallyPointPanel extends SystemPanel {
     }
     @Override
     public boolean useClickedSprite(Sprite o, int count, boolean rightClick) {
-        ShipRelocationSprite sprite = (ShipRelocationSprite) parentSpritePanel.spriteToDisplay();
+        ShipRelocationSprite sprite = (ShipRelocationSprite) parentSpritePanel().spriteToDisplay();
         if (o instanceof StarSystem)
             sprite.clickedDest((StarSystem) o);
 
@@ -169,7 +169,7 @@ public class RallyPointPanel extends SystemPanel {
                         break;
                 }
                 useClickedSprite(systems.get(index), 1, false);
-                parentSpritePanel.repaint();
+                parentSpritePanel().repaint();
             case KeyEvent.VK_L:
             	if (e.isAltDown()) {
             		debugReloadLabels(this);
@@ -184,9 +184,9 @@ public class RallyPointPanel extends SystemPanel {
         return system();
     }
     private ShipRelocationSprite relocationSprite() {
-        Sprite sprite = parentSpritePanel.spriteToDisplay();
+        Sprite sprite = parentSpritePanel().spriteToDisplay();
         if (sprite instanceof ShipRelocationSprite)
-            return (ShipRelocationSprite) parentSpritePanel.spriteToDisplay();
+            return (ShipRelocationSprite) parentSpritePanel().spriteToDisplay();
         return null;
     }
     private StarSystem system() {
@@ -264,7 +264,7 @@ public class RallyPointPanel extends SystemPanel {
     @Override
     protected BasePanel detailPane() {
         if (detailPane == null)
-            detailPane = new RallyPointDetailPane(parentSpritePanel);
+            detailPane = new RallyPointDetailPane(parentSpritePanel());
         return detailPane;
     }
     @Override
@@ -282,7 +282,7 @@ public class RallyPointPanel extends SystemPanel {
 			addMouseListener(this);
 			addMouseMotionListener(this);
         }
-    	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
+    	@Override public IMapHandler mapHandler()	{ return parentSpritePanel().parent; }
         @Override
         public void animate() {
             detailPane.animate();

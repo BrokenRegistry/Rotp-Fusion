@@ -59,7 +59,7 @@ public class ExploredSystemPanel extends SystemPanel {
     }
     public void releaseObjects() { }
 
-	@Override public IMapHandler mapHandler()	{ return spritePanel().parent; }
+	@Override public IMapHandler mapHandler()	{ return parentSpritePanel().parent; }
     @Override
     public void animate()            { overviewPane.animate(); }
     @Override
@@ -179,7 +179,7 @@ public class ExploredSystemPanel extends SystemPanel {
             boolean rightClick = SwingUtilities.isRightMouseButton(e);
             boolean middleClick = SwingUtilities.isMiddleMouseButton(e);
             if (hoverBox == flagBox) {
-                StarSystem sys = parentSpritePanel.systemViewToDisplay();
+                StarSystem sys = parentSpritePanel().systemViewToDisplay();
             	// BR: if 3 buttons:
             	//   - Middle click = Reset
             	//   - Right click = Reverse
@@ -192,7 +192,7 @@ public class ExploredSystemPanel extends SystemPanel {
                 		player().sv.resetFlagColor(sys.id);
                 else
                     player().sv.toggleFlagColor(sys.id, false);
-                parentSpritePanel.repaint();
+                parentSpritePanel().repaint();
             }
         }
 		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
@@ -208,12 +208,12 @@ public class ExploredSystemPanel extends SystemPanel {
         public void mouseWheelMoved(MouseWheelEvent e) {
         	setModifierKeysState(e); // BR: For the Flag color selection
             if (hoverBox == flagBox) {
-                StarSystem sys = parentSpritePanel.systemViewToDisplay();
+                StarSystem sys = parentSpritePanel().systemViewToDisplay();
                 if (e.getWheelRotation() < 0)
                     player().sv.toggleFlagColor(sys.id, true);
                 else
                     player().sv.toggleFlagColor(sys.id, false);
-                parentSpritePanel.repaint();
+                parentSpritePanel().repaint();
             }
         }
     }
