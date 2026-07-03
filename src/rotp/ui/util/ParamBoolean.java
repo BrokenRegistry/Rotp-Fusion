@@ -25,6 +25,7 @@ import static rotp.ui.util.IParam.tableFormat;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.function.BooleanSupplier;
 
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
@@ -80,6 +81,10 @@ public class ParamBoolean extends AbstractParam<Boolean> {
 	}
 	@Override public ParamBoolean setNewValueMethod(INewValue<Boolean> method)	{
 		super.setNewValueMethod(method);
+		return this;
+	}
+	@Override public ParamBoolean setIsGhostMethod(BooleanSupplier method)	{
+		super.setIsGhostMethod(method);
 		return this;
 	}
 	@Override public String	getFullHelp()		{ return getHeadGuide() + getTableHelp(); }

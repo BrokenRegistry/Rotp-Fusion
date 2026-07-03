@@ -21,6 +21,7 @@ import static rotp.ui.util.IParam.langLabel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.LinkedHashMap;
+import java.util.function.BooleanSupplier;
 
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
@@ -144,7 +145,10 @@ public class ParamInteger extends AbstractParam<Integer> {
 		super.setNewValueMethod(method);
 		return this;
 	}
-
+	@Override public ParamInteger setIsGhostMethod(BooleanSupplier method)	{
+		super.setIsGhostMethod(method);
+		return this;
+	}
 	@Override public String[] getModifiers()	{
 		if (baseInc().equals(shiftInc()))
 			return null;

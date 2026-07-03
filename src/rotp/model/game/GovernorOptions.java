@@ -37,14 +37,14 @@ public class GovernorOptions implements Serializable, IGovOptions {
 
 	private int		minimumMissileBases		= getMinimumMissileBases();
 	private boolean shieldWithoutBases		= getShieldWithoutBases();
-	private boolean autospend				= isAutospend();
+	private boolean autospend				= isAutospendOnNewColonies();
 	private boolean autoApply				= isAutoApply();
 	private boolean autoInfiltrate			= isAutoInfiltrate();
 	private boolean autoSpy					= isAutoSpy();
 	private int		reserve					= getReserve();
  
 	private boolean shipbuilding			= isShipbuilding();
-	private boolean colonyRequests			= isFollowingColonyRequests();
+	private boolean colonyRequests			= isManageableGovernor();
 
 	// if true, automatically scout new planets
 	private boolean autoScout				= isAutoScout();
@@ -93,10 +93,10 @@ public class GovernorOptions implements Serializable, IGovOptions {
 			transportMaxDist.silentSet(transportMaxTurns);
 			missileBasesMin.silentSet(minimumMissileBases);
 			shieldAlones.silentSet(shieldWithoutBases);
-			autoSpend.silentSet(autospend);
-			reserveForSlow.silentSet(reserve);
+			autoSpendOnNewColonies.silentSet(autospend);
+			reserveForPlayer.silentSet(reserve);
 			shipBuilding.silentSet(shipbuilding);
-			followColonyRequests.silentSet(colonyRequests);
+			isManageableGovernor.silentSet(colonyRequests);
 			maxGrowthMode.silentSet(legacyGrowthMode);
 			auto_Infiltrate.silentSet(autoInfiltrate);
 			auto_Spy.silentSet(autoSpy);
@@ -218,11 +218,14 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public boolean	getShieldWithoutBases()			{ return shieldAlones.get(); }
 	public void		setShieldWithoutBases(boolean b){ shieldAlones.silentSet(b); }
 
-	public boolean	isAutospend()					{ return autoSpend.get(); }
-	public void		setAutospend(boolean b)			{ autoSpend.silentSet(b); }
+	public boolean	isAutospendOnNewColonies()		{ return autoSpendOnNewColonies.get(); }
+	public void		setAutospendOnNewColonies(boolean b)	{ autoSpendOnNewColonies.silentSet(b); }
 
-	public int		getReserve()					{ return reserveForSlow.get(); }
-	public void		setReserve(int i)				{ reserveForSlow.silentSet(i); }
+	public boolean	isAutospendOnArtefacts()			{ return autoSpendOnArtefacts.get(); }
+	public void		setAutospendOnArtefacts(boolean b)	{ autoSpendOnArtefacts.silentSet(b); }
+
+	public int		getReserve()					{ return reserveForPlayer.get(); }
+	public void		setReserve(int i)				{ reserveForPlayer.silentSet(i); }
 
 	public boolean	isReserveFromRich()				{ return reserveFromRich.get(); }
 	public void		setReserveFromRich(boolean b)	{ reserveFromRich.silentSet(b); }
@@ -234,8 +237,8 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public boolean	isShipbuilding()				{ return shipBuilding.get(); }
 	public void		setShipbuilding(boolean b)		{ shipBuilding.silentSet(b); }
 
-	public boolean	isFollowingColonyRequests()		{ return followColonyRequests.get(); }
-	public void	setfollowColonyRequests(boolean b)	{ followColonyRequests.silentSet(b); }
+	public boolean	isManageableGovernor()			{ return isManageableGovernor.get(); }
+	public void	setManageableGovernor(boolean b)	{ isManageableGovernor.silentSet(b); }
 
 	public boolean	isAutoInfiltrate()				{ return auto_Infiltrate.get(); }
 	public void		setAutoInfiltrate(boolean b)	{ auto_Infiltrate.silentSet(b); }
@@ -307,4 +310,9 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public float	secondColonyWeightPct()			{ return secondColonyWeightPct.getFloat(); }
 	public boolean	trainSpiesASAP()				{ return trainSpiesASAP.get(); }
 	public boolean	contactUpdateSpending()			{ return contactUpdateSpending.get(); }
+	public boolean	isAutospendOnNewColoniesFirst()	{ return autoSpendOnNewColoniesFirst.get(); }
+	public float	autospendMaxIndustryPct()		{ return autospendMaxIndustryPct.getFloat(); }
+	public boolean	allowTransportToUnderSiege()	{ return transportToSiege.get(); }
+
 }
+

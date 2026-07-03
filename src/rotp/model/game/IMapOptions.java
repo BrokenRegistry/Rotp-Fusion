@@ -90,6 +90,17 @@ public interface IMapOptions extends IBaseOptsTools {
 					GameSession.instance().galaxy().player().redoGovTurnDecisionsRich();
 			return val;
 		}
+		@Override public Boolean silentSet(Boolean b)	{
+			Boolean val = super.silentSet(b);
+			if (GameSession.instance().isReady())
+				if (IGameOptions.reserveFromRich.get())
+					GameSession.instance().galaxy().player().redoGovTurnDecisionsRich();
+			return val;
+		}
+		@Override public void updated(boolean val)	{
+			super.updated(val);
+			IGovOptions.reserveFromRich.updated(true);
+		}
 	}
 
 	ParamBoolean displayYear	= new ParamBoolean( // Duplicate Do not add the list

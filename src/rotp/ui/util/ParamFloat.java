@@ -21,6 +21,7 @@ import static rotp.ui.util.IParam.langLabel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.text.DecimalFormat;
+import java.util.function.BooleanSupplier;
 
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
@@ -125,7 +126,10 @@ public class ParamFloat extends AbstractParam<Float> {
 		super.setNewValueMethod(method);
 		return this;
 	}
-
+	@Override public ParamFloat setIsGhostMethod(BooleanSupplier method)	{
+		super.setIsGhostMethod(method);
+		return this;
+	}
 	@Override public String[] getModifiers()	{
 		if (baseInc().equals(shiftInc()))
 			return null;

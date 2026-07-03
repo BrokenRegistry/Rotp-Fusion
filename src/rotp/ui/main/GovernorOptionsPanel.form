@@ -61,9 +61,10 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="stargatePanel" linkSize="12" alignment="0" max="32767" attributes="0"/>
-                          <Component id="spyPanel" linkSize="12" alignment="0" max="32767" attributes="0"/>
                           <Component id="raceImage" linkSize="12" alignment="0" max="32767" attributes="0"/>
                           <Component id="fineTuningButton" alignment="0" max="32767" attributes="0"/>
+                          <Component id="spyPanel" linkSize="12" alignment="0" max="32767" attributes="0"/>
+                          <Component id="followColonyRequests" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -75,7 +76,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="raceImage" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="2" attributes="0">
                           <Component id="governorDefault" linkSize="3" alignment="2" min="-2" max="-2" attributes="0"/>
@@ -85,15 +87,16 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="autotransportPanel" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="raceImage" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
                   <Component id="colonyPanel" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="spyPanel" min="-2" max="-2" attributes="0"/>
+                      <Component id="followColonyRequests" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="fineTuningButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="spyPanel" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -120,6 +123,10 @@
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Governor is on by default"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+          <Insets value="[2, 10, 2, 10]"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="ON_BY_DEFAULT" noResource="true"/>
       </Properties>
       <Events>
@@ -440,6 +447,9 @@
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Auto Apply"/>
         <Property name="toolTipText" type="java.lang.String" value="For the settings to be applied live."/>
+        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+          <Insets value="[2, 10, 2, 10]"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="AUTO_APPLY" noResource="true"/>
       </Properties>
       <Events>
@@ -502,25 +512,25 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace pref="9" max="32767" attributes="0"/>
+                  <EmptySpace pref="8" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="autoScoutShipCount" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoScoutShipCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoScout" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="9" max="32767" attributes="0"/>
+                  <EmptySpace pref="11" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="autoColonize" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoColonyShipCount" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoColonyShipCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="9" max="32767" attributes="0"/>
+                  <EmptySpace pref="12" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="autoAttackShipCount" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoAttackShipCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="autoAttack" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="10" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -659,67 +669,52 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="reserve" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="reserveLabel" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="autospend" max="32767" attributes="0"/>
-                              <Component id="reserveFromRich" max="32767" attributes="0"/>
-                              <Component id="excessToResearch" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="followColonyRequests" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="reserve" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="reserveLabel" max="32767" attributes="0"/>
                       </Group>
+                      <Component id="autospend" max="32767" attributes="0"/>
+                      <Component id="reserveFromRich" max="32767" attributes="0"/>
+                      <Component id="excessToResearch" max="32767" attributes="0"/>
+                      <Component id="autospendOnArtefacts" max="32767" attributes="0"/>
                   </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="2" attributes="0">
-                              <Component id="missileBases" linkSize="18" alignment="2" min="-2" max="-2" attributes="0"/>
-                              <Component id="missileBasesLabel" linkSize="18" alignment="2" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="2" attributes="0">
-                              <Component id="autospend" alignment="2" min="-2" max="-2" attributes="0"/>
-                              <Component id="shieldWithoutBases" alignment="2" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="reserveFromRich" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="shipbuilding" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="excessToResearch" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="legacyGrowthMode" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="103" alignment="0" groupAlignment="2" attributes="0">
-                          <Component id="reserve" linkSize="19" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="reserveLabel" linkSize="19" alignment="2" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="missileBases" linkSize="18" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="missileBasesLabel" linkSize="18" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="reserve" linkSize="19" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="reserveLabel" linkSize="19" alignment="2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="autospend" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="shieldWithoutBases" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                          <Component id="terraformEarlyLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="terraformEarly" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="followColonyRequests" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="shipbuilding" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="autospendOnArtefacts" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="legacyGrowthMode" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="reserveFromRich" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="excessToResearch" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="terraformEarlyLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="terraformEarly" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -727,7 +722,7 @@
       <SubComponents>
         <Component class="javax.swing.JCheckBox" name="autospend">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Autospend"/>
+            <Property name="text" type="java.lang.String" value="Autospend on new colonies"/>
             <Property name="toolTipText" type="java.lang.String" value="Automatically spend reserve on planets with lowest production"/>
             <Property name="name" type="java.lang.String" value="AUTOSPEND" noResource="true"/>
           </Properties>
@@ -826,16 +821,6 @@
             <Property name="name" type="java.lang.String" value="TERRAFORM_EARLY" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="followColonyRequests">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Follow Colony Requests"/>
-            <Property name="toolTipText" type="java.lang.String" value="Follow Colony Requests"/>
-            <Property name="name" type="java.lang.String" value="FOLLOW_COLONY_REQUESTS" noResource="true"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="followColonyRequestsActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JCheckBox" name="reserveFromRich">
           <Properties>
             <Property name="text" type="java.lang.String" value="Reserve from Rich and Ultra Rich colonies"/>
@@ -860,6 +845,16 @@
           </AccessibilityProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="excessToResearchActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="autospendOnArtefacts">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Autospend on Artefacts colonies"/>
+            <Property name="toolTipText" type="java.lang.String" value="Automatically spend reserve on planets with lowest production"/>
+            <Property name="name" type="java.lang.String" value="AUTOSPEND_ARTEFACTS" noResource="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autospendOnArtefactsActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -901,11 +896,10 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="autoInfiltrate" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="autoSpy" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="spareXenophobes" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="autoSpy" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="spareXenophobes" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -943,6 +937,15 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="fineTuningButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Fine Tuning"/>
+        <Property name="name" type="java.lang.String" value="FINE_TUNING_BUTTON" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fineTuningButtonActionPerformed"/>
+      </Events>
+    </Component>
     <Container class="javax.swing.JPanel" name="jPanelAspect">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -1003,7 +1006,7 @@
                       <Component id="brightnessPct" linkSize="6" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="brightnessLabel" linkSize="6" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="8" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -1089,13 +1092,15 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="raceImageMouseClicked"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="fineTuningButton">
+    <Component class="javax.swing.JCheckBox" name="followColonyRequests">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Fine Tuning"/>
-        <Property name="name" type="java.lang.String" value="FINE_TUNING_BUTTON" noResource="true"/>
+        <Property name="text" type="java.lang.String" value="Follow Colony Requests"/>
+        <Property name="toolTipText" type="java.lang.String" value="Follow Colony Requests"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="name" type="java.lang.String" value="FOLLOW_COLONY_REQUESTS" noResource="true"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fineTuningButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="followColonyRequestsActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

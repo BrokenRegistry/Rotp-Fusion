@@ -21,14 +21,13 @@ import javax.swing.SwingUtilities;
 
 import rotp.model.empires.Empire;
 
-public class ColonyResearch extends ColonySpendingCategory {
+public final class ColonyResearch extends ColonySpendingCategory {
     private static final long serialVersionUID = 1L;
     private float projectBC = 0;
     private float unallocatedBC = 0;
     private ColonyResearchProject project;
     private transient ColonyResearchProject completedProject;
 
-    public ColonyResearchProject project()         { return project; }
     public boolean hasProject()                    { return project != null; }
     public void project(ColonyResearchProject p)   { project = p; }
     public void endProject()                       { 
@@ -47,8 +46,8 @@ public class ColonyResearch extends ColonySpendingCategory {
     public float totalBC()              { return totalSpending() * researchBonus(); }
     @Override
     public float totalBCForEmpire()     { return max(0, totalBC() - projectRemainingBC()); }
-    public float totalSpending()        { return super.totalBC(); }
-    public float projectRemainingBC()   { return project == null ? 0 : project.remainingResearchBC(); }
+	float totalSpending()		{ return super.totalBC(); }
+	float projectRemainingBC()	{ return project == null ? 0 : project.remainingResearchBC(); }
     @Override
     public void nextTurn(float totalProd, float totalReserve) {
         completedProject = null;
@@ -61,7 +60,7 @@ public class ColonyResearch extends ColonySpendingCategory {
             unallocatedBC -= projectBC;
         }       
     }
-    public float researchBonus() {
+	float researchBonus()	{
     	return  planet().researchAdj()
     			* empire().researchBonusPct()
     			* empire().researchNoSpyBonusPct()
@@ -89,13 +88,13 @@ public class ColonyResearch extends ColonySpendingCategory {
     }
     @Override
     public void assessTurn() { }
-    public void commitTurn() { 
+	void commitTurn()	{ 
         if (empire().tech().researchCompleted()) 
             empire().addReserve(unallocatedBC);
            
         unallocatedBC = 0;
     }
-    public void capturedBy(Empire newCiv) {
+	void capturedBy(Empire newCiv)	{
         if (newCiv == empire())
             return;
         projectBC = 0;

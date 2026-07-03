@@ -71,7 +71,7 @@ class RotpJSpinnerIcon implements Icon {
 		}
 		else if (buttonModel.isRollover()) {
 			borderC = spinner.hoverColor();
-			border = 2;
+			centerC = spinner.hoverColor();
 		}
 		// Fill background to go over OS choices...
 		g.setColor(spinner.panelBgColor());

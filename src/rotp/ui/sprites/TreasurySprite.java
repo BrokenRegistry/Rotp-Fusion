@@ -44,7 +44,7 @@ public class TreasurySprite extends MapControlSprite {
     public void draw(GalaxyMapPanel map, Graphics2D g2) {
         if (!map.parent().showTreasuryResearchBar())
             return;
-        
+
         int amt = (int)player().totalReserve();
         int tax = player().empireTaxLevel();
         String label2 = amt >= 100 ? text("MAIN_TECH_RESERVE_BC", "") : "";
@@ -54,15 +54,22 @@ public class TreasurySprite extends MapControlSprite {
         List<String> detailLines = null;
         int fontSize = 13;
         int labelW;
-        
+
         int w = width;
         if (hovering) {
             if (tax == 0)
                 detail = text("MAIN_TECH_RESERVE_TAX_NONE");
             else if (player().empireTaxOnlyDeveloped())
-                detail = text("MAIN_TECH_RESERVE_TAX",str(tax));
-            else 
-                detail = text("MAIN_TECH_RESERVE_TAX_ALL",str(tax));
+                detail = text("MAIN_TECH_RESERVE_TAX", str(tax));
+            else
+                detail = text("MAIN_TECH_RESERVE_TAX_ALL", str(tax));
+
+			boolean shieldWithoutBases = options().shieldAlones();
+			float revenue = player().empireTaxRevenue(shieldWithoutBases);
+			if (revenue > 0) {
+				String revStr = revenue<100? fmt(player().empireTaxRevenue(shieldWithoutBases), 1) : shortFmt(revenue);
+				detail += "  (" + text("PLANETS_RESERVE_INCREASE", revStr) + ")";
+			}
 
             g2.setFont(narrowFont(fontSize));
             labelW = g2.getFontMetrics().stringWidth(label);
@@ -103,7 +110,7 @@ public class TreasurySprite extends MapControlSprite {
             x0 = startX+((width-sw)/2);
             drawString(g2,label2, x0, startY+height-BasePanel.s4);
         }
-        
+
         if (hovering) {
             g2.setColor(Color.lightGray);
             g2.setFont(narrowFont(fontSize));

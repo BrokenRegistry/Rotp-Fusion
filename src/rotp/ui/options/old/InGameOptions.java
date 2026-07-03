@@ -1,13 +1,15 @@
-package rotp.ui.options;
+package rotp.ui.options.old;
 
 import java.util.Arrays;
 
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
+import rotp.ui.options.AbstractOptionsSubUI;
+import rotp.ui.options.AllSubUI;
 import rotp.ui.util.ParamTitle;
 
 public final class InGameOptions extends AbstractOptionsSubUI {
-	static final String OPTION_ID = IN_GAME_OPTIONS_UI_KEY;
+	public static final String OPTION_ID = IN_GAME_OPTIONS_UI_KEY;
 	
 	@Override public String optionId()			{ return OPTION_ID; }
 

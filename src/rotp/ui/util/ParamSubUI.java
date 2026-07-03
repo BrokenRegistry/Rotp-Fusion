@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
@@ -120,6 +121,10 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	}
 	@Override public ParamSubUI setNewValueMethod(INewValue<SafeListPanel> method)	{
 		super.setNewValueMethod(method);
+		return this;
+	}
+	@Override public ParamSubUI setIsGhostMethod(BooleanSupplier method)	{
+		super.setIsGhostMethod(method);
 		return this;
 	}
 	@Override public boolean isDefaultValue()	{ 

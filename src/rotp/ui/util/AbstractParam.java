@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 import javax.swing.SwingUtilities;
 
@@ -73,6 +74,7 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	private INewValue<T> newValueMethod;	// Mainly to set static values
 	private IUpdated<T> valueUpdatedMethod;	// Mainly for UI: Request redraw
 	private String valueUpdatedMethodId;
+	private BooleanSupplier isGhostMethod;
 
 	public AbstractParam<T> setUpdatedId(String id)	{
 		valueUpdatedMethodId = id;
@@ -81,7 +83,8 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	public IUpdated<T> getUpdatedMethod()		{ return valueUpdatedMethod; }
 	public String getUpdatedId()				{ return valueUpdatedMethodId; }
 	public INewValue<T> getNewValueMethod()		{ return newValueMethod; }
-
+	public BooleanSupplier getIsGhostMethod()	{ return isGhostMethod; }
+	@Override public boolean isGhost()			{ return isGhostMethod == null ? false : isGhostMethod.getAsBoolean(); } // TODO BR: Upgrade overridden Methods
 	@Override public void updated(boolean val)	{
 		updated = val;
 		if (updated && valueUpdatedMethod != null && Rotp.initialized())
@@ -397,6 +400,10 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	}
 	public AbstractParam<T> setNewValueMethod(INewValue<T> method)	{
 		newValueMethod = method;
+		return this;
+	}
+	public AbstractParam<T> setIsGhostMethod(BooleanSupplier method)	{
+		isGhostMethod = method;
 		return this;
 	}
 

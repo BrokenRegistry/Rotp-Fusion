@@ -22,7 +22,7 @@ import javax.swing.SwingUtilities;
 
 import rotp.model.empires.Empire;
 
-public class ColonyDefense extends ColonySpendingCategory {
+public final class ColonyDefense extends ColonySpendingCategory {
     private static final long serialVersionUID = 1L;
     public static final int MAX_BASES = 9999; // BR: != Default Max bases
     private MissileBase missileBase;
@@ -41,36 +41,59 @@ public class ColonyDefense extends ColonySpendingCategory {
     public MissileBase missileBase()       { return missileBase; }
     public float bases()                   { return bases; }
     public void bases(float d)             { bases = d; }
-    public float shield()                  { return shield; }
+	float shield()							{ return shield; }
     public boolean shieldCompleted()       { return shieldCompleted && shieldAtMaxLevel(); }
     public boolean missileBasesUpgraded()  { return missileBasesUpgraded && (missileBase == tech().bestMissileBase()); }
-
-    public void updateMissileBase()        { missileBase = colony().tech().bestMissileBase(); }
+	void updateMissileBase()				{ missileBase = colony().tech().bestMissileBase(); }
     public void destroyBases(int i)        { bases -= i; }
     @Override public boolean isCompleted() {
         boolean missilesDone = (maxBases == 0)
         		|| ((missileBase == colony().tech().bestMissileBase()) &&  missileBasesCompleted());
         return missilesDone && shieldAtMaxLevel();
     }
+	public float completedPct(boolean shieldWithoutBases)	{
+		float totcalCost;
+		float currentValue;
+		// Shield
+		if (maxBases == 0 && !shieldWithoutBases) {
+			totcalCost = 0;
+			currentValue = 0;
+		}
+		else {
+			totcalCost = maxShieldLevel() * 100;
+			currentValue = shield * 100;
+		}
+
+		// missile upgrade
+		totcalCost += missileUpgradeCost();
+		currentValue += baseUpgradeBC;
+
+		// New Missile
+		float newMissileBaseCost = tech().newMissileBaseCost();
+		totcalCost += maxBases() * newMissileBaseCost;
+		currentValue += bases * newMissileBaseCost;
+
+		if (totcalCost == 0)
+			return 1;
+		return bounds(0, currentValue/totcalCost, 1);
+	}
+	public boolean isCompleted(int maxMissingBase, boolean shieldWithoutBases)	{
+		if (maxBases == 0 && !shieldWithoutBases)
+			return true;
+		if (!shieldAtMaxLevel())
+			return false;
+		return (maxBases() - bases) <= maxMissingBase;
+	}
+	@Override public boolean isCompleted(int maxMissingBase) { return isCompleted(maxMissingBase, govOptions().getShieldWithoutBases()); }
     public boolean shieldAtMaxLevel()      {
         return colony().starSystem().inNebula() || (shield >= maxShieldLevel());
     }
-    public boolean missileBasesCompleted() {
+	boolean missileBasesCompleted()	{
         return (bases >= maxBases())
             && (missileBase == empire().tech().bestMissileBase());
     }
     public boolean missileBasesCompletedThisTurn() {
         return (deltaBases() > 0) && missileBasesCompleted();
-    }
-    public void init() {
-        missileBase = null;
-        bases = 0;
-        shield = 0;
-        newBases = 0;
-        newShield = 0;
-        baseUpgradeBC = 0;
-        unallocatedBC = 0;
-        newBaseUpgradeCost = 0;
     }
     @Override
     public int categoryType()          { return Colony.DEFENSE; }
@@ -90,15 +113,6 @@ public class ColonyDefense extends ColonySpendingCategory {
         else if (maxBases < 0) 
         	maxBases = MAX_BASES;
     }
-//    public boolean incrementMaxBases() {
-//        maxBases = max(0, maxBases+1);
-//        return true;
-//    }
-//    public boolean decrementMaxBases() {
-//        int prev = maxBases;
-//        maxBases = max(0, maxBases-1);
-//        return prev != maxBases;
-//    }
     public String armorDesc()        { return tech().topArmorTech().shortName(); }
     public String battleSuitDesc()   { return tech().topBattleSuitTech().name(); }
     public String weaponDesc()       { return tech().topHandWeaponTech().name(); }
@@ -123,7 +137,7 @@ public class ColonyDefense extends ColonySpendingCategory {
         colony().removeColonyOrder(Colony.Orders.BASES);
         colony().removeColonyOrder(Colony.Orders.SHIELD);
     }
-    public void capturedBy(Empire newCiv) {
+	void capturedBy(Empire newCiv)	{
         if (newCiv == empire())
             return;
         bases = 0;
@@ -195,7 +209,7 @@ public class ColonyDefense extends ColonySpendingCategory {
         if (missileBasesCompleted()) 
             c.removeColonyOrder(Colony.Orders.BASES);
     }
-    public void commitTurn() {
+	void commitTurn()	{
         // upgrade shield
         shield += newShield;
         shieldCompleted = (newShield > 0) && shieldAtMaxLevel();
@@ -242,7 +256,6 @@ public class ColonyDefense extends ColonySpendingCategory {
     public int shieldLevel()             { return (int) (shield / 5) * 5; }
     public int shieldLevelComp()         { return planet().starSystem().inNebula()? -1 : shieldLevel(); }
     public int missileBases()            { return (int) bases; }
-    public int defenders()               { return (int) colony().population(); }
     @Override
     public boolean canLowerMaintenance() { return bases > 0; }
     @Override
@@ -374,7 +387,7 @@ public class ColonyDefense extends ColonySpendingCategory {
         return totalCost;
     }
     public int maxAllocationNeeded() { return maxAllocationNeeded(colony().totalIncome()); }
-    public int maxAllocationNeeded(float totalIncome) {
+	int maxAllocationNeeded(float totalIncome)		{
         float needed = maxSpendingNeeded();
         if (needed <= 0)
             return 0;
@@ -382,8 +395,8 @@ public class ColonyDefense extends ColonySpendingCategory {
         int ticks = ceil(pctNeeded * MAX_TICKS);
         return ticks;
     }
-    public int shieldAllocationNeeded() { return shieldAllocationNeeded(colony().totalIncome()); }
-    public int shieldAllocationNeeded(float totalIncome) {
+	private int shieldAllocationNeeded()			{ return shieldAllocationNeeded(colony().totalIncome()); }
+	int shieldAllocationNeeded(float totalIncome)	{
         float needed = (maxShieldLevel() - shield) * 100;
         if (needed <= 0)
             return 0;

@@ -713,12 +713,13 @@ public class GovernorOptionsPanel extends BasePanel{
 		// Colony Options
 		this.missileBases.setValue(options.getMinimumMissileBases());
 		this.shieldWithoutBases.setSelected(options.getShieldWithoutBases());
-		this.autospend.setSelected(options.isAutospend());
+		this.autospend.setSelected(options.isAutospendOnNewColonies());
+		this.autospendOnArtefacts.setSelected(options.isAutospendOnArtefacts());
 		this.reserveFromRich.setSelected(options.isReserveFromRich());
 		this.excessToResearch.setSelected(options.isExcessToResearch());
 		this.reserve.setValue(options.getReserve());
 		this.shipbuilding.setSelected(options.isShipbuilding());
-		this.followColonyRequests.setSelected(options.isFollowingColonyRequests());
+		this.followColonyRequests.setSelected(options.isManageableGovernor());
 		this.legacyGrowthMode.setSelected(options.legacyGrowthMode());
 		this.terraformEarly.setValue(options.terraformEarly());
 
@@ -760,12 +761,13 @@ public class GovernorOptionsPanel extends BasePanel{
 		// Colony Options
 		options.setMinimumMissileBases((Integer)missileBases.getValue());
 		options.setShieldWithoutBases(shieldWithoutBases.isSelected());
-		options.setAutospend(autospend.isSelected());
+		options.setAutospendOnNewColonies(autospend.isSelected());
+		options.setAutospendOnArtefacts(autospendOnArtefacts.isSelected());
 		options.setReserveFromRich(reserveFromRich.isSelected());
 		options.setExcessToResearch(excessToResearch.isSelected());
 		options.setReserve((Integer)reserve.getValue());
 		options.setShipbuilding(shipbuilding.isSelected());
-		options.setfollowColonyRequests(followColonyRequests.isSelected());
+		options.setManageableGovernor(followColonyRequests.isSelected());
 		options.setLegacyGrowthMode(legacyGrowthMode.isSelected());
 		options.setTerraformEarly((Integer)terraformEarly.getValue());
 
@@ -893,13 +895,14 @@ public class GovernorOptionsPanel extends BasePanel{
         missileBasesLabel = new JLabel();
         terraformEarly = new GovernorJSpinner();
         terraformEarlyLabel = new JLabel();
-        followColonyRequests = new JCheckBox();
         reserveFromRich = new JCheckBox();
         excessToResearch = new JCheckBox();
+        autospendOnArtefacts = new JCheckBox();
         JPanel spyPanel = new JPanel();
         spareXenophobes = new JCheckBox();
         autoSpy = new JCheckBox();
         autoInfiltrate = new JCheckBox();
+        fineTuningButton = new JButton();
         jPanelAspect = new JPanel();
         isOriginal = new JCheckBox();
         customSize = new JCheckBox();
@@ -908,10 +911,12 @@ public class GovernorOptionsPanel extends BasePanel{
         brightnessPct = new GovernorJSpinner();
         brightnessLabel = new JLabel();
         raceImage = new JLabel();
-        fineTuningButton = new JButton();
+        followColonyRequests = new JCheckBox();
 
         governorDefault.setSelected(true);
         governorDefault.setText("Governor is on by default");
+        governorDefault.setHorizontalAlignment(SwingConstants.CENTER);
+        governorDefault.setMargin(new Insets(2, 10, 2, 10));
         governorDefault.setName("ON_BY_DEFAULT"); // NOI18N
         governorDefault.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -1140,6 +1145,7 @@ public class GovernorOptionsPanel extends BasePanel{
         autoApplyToggleButton.setSelected(true);
         autoApplyToggleButton.setText("Auto Apply");
         autoApplyToggleButton.setToolTipText("For the settings to be applied live.");
+        autoApplyToggleButton.setMargin(new Insets(2, 10, 2, 10));
         autoApplyToggleButton.setName("AUTO_APPLY"); // NOI18N
         autoApplyToggleButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -1253,28 +1259,28 @@ public class GovernorOptionsPanel extends BasePanel{
 
         fleetPanelLayout.setVerticalGroup(fleetPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(fleetPanelLayout.createSequentialGroup()
-                .addContainerGap(9, Short.MAX_VALUE)
+                .addContainerGap(8, Short.MAX_VALUE)
                 .addGroup(fleetPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(autoScoutShipCount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(autoScoutShipCountLabel)
                     .addComponent(autoScout))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(fleetPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(autoColonize)
                     .addComponent(autoColonyShipCount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(autoColonyShipCountLabel))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(fleetPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(autoAttackShipCount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(autoAttackShipCountLabel)
                     .addComponent(autoAttack))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         colonyPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Colony Options", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Tahoma", 0, 13))); // NOI18N
         colonyPanel.setName("COLONY_OPTIONS"); // NOI18N
 
-        autospend.setText("Autospend");
+        autospend.setText("Autospend on new colonies");
         autospend.setToolTipText("Automatically spend reserve on planets with lowest production");
         autospend.setName("AUTOSPEND"); // NOI18N
         autospend.addActionListener(new ActionListener() {
@@ -1356,15 +1362,6 @@ public class GovernorOptionsPanel extends BasePanel{
         terraformEarlyLabel.setText("Boost Planet Early");
         terraformEarlyLabel.setName("TERRAFORM_EARLY"); // NOI18N
 
-        followColonyRequests.setText("Follow Colony Requests");
-        followColonyRequests.setToolTipText("Follow Colony Requests");
-        followColonyRequests.setName("FOLLOW_COLONY_REQUESTS"); // NOI18N
-        followColonyRequests.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                followColonyRequestsActionPerformed(evt);
-            }
-        });
-
         reserveFromRich.setText("Reserve from Rich and Ultra Rich colonies");
         reserveFromRich.setToolTipText("Automatically spend reserve on planets with lowest production");
         reserveFromRich.setName("RESERVE_FROM_RICH"); // NOI18N
@@ -1380,6 +1377,15 @@ public class GovernorOptionsPanel extends BasePanel{
         excessToResearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 excessToResearchActionPerformed(evt);
+            }
+        });
+
+        autospendOnArtefacts.setText("Autospend on Artefacts colonies");
+        autospendOnArtefacts.setToolTipText("Automatically spend reserve on planets with lowest production");
+        autospendOnArtefacts.setName("AUTOSPEND_ARTEFACTS"); // NOI18N
+        autospendOnArtefacts.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                autospendOnArtefactsActionPerformed(evt);
             }
         });
 
@@ -1403,49 +1409,41 @@ public class GovernorOptionsPanel extends BasePanel{
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(colonyPanelLayout.createSequentialGroup()
-                        .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(colonyPanelLayout.createSequentialGroup()
-                                .addComponent(reserve, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(reserveLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(autospend, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(reserveFromRich, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(excessToResearch, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(colonyPanelLayout.createSequentialGroup()
-                        .addComponent(followColonyRequests)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(reserve, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(reserveLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(autospend, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(reserveFromRich, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(excessToResearch, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(autospendOnArtefacts, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         colonyPanelLayout.setVerticalGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(colonyPanelLayout.createSequentialGroup()
-                .addGap(1, 1, 1)
-                .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(colonyPanelLayout.createSequentialGroup()
-                        .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                            .addComponent(missileBases, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(missileBasesLabel))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                            .addComponent(autospend)
-                            .addComponent(shieldWithoutBases))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(reserveFromRich)
-                            .addComponent(shipbuilding))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(excessToResearch)
-                            .addComponent(legacyGrowthMode)))
-                    .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(reserve, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(reserveLabel)))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                    .addComponent(missileBases, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(missileBasesLabel)
+                    .addComponent(reserve, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(reserveLabel))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                    .addComponent(autospend)
+                    .addComponent(shieldWithoutBases))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(terraformEarlyLabel)
-                        .addComponent(terraformEarly, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addComponent(followColonyRequests))
-                .addGap(0, 0, 0))
+                .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(shipbuilding)
+                    .addComponent(autospendOnArtefacts))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(legacyGrowthMode)
+                    .addComponent(reserveFromRich))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(colonyPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(excessToResearch)
+                    .addComponent(terraformEarlyLabel)
+                    .addComponent(terraformEarly, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         colonyPanelLayout.linkSize(SwingConstants.VERTICAL, new Component[] {missileBases, missileBasesLabel});
@@ -1499,12 +1497,19 @@ public class GovernorOptionsPanel extends BasePanel{
         spyPanelLayout.setVerticalGroup(spyPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(spyPanelLayout.createSequentialGroup()
                 .addComponent(autoInfiltrate)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(autoSpy)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(spareXenophobes)
-                .addContainerGap())
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spareXenophobes))
         );
+
+        fineTuningButton.setText("Fine Tuning");
+        fineTuningButton.setName("FINE_TUNING_BUTTON"); // NOI18N
+        fineTuningButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                fineTuningButtonActionPerformed(evt);
+            }
+        });
 
         jPanelAspect.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Aspect", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Tahoma", 0, 13))); // NOI18N
         jPanelAspect.setName("ASPECT_OPTIONS"); // NOI18N
@@ -1597,7 +1602,7 @@ public class GovernorOptionsPanel extends BasePanel{
                 .addGroup(jPanelAspectLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(brightnessPct, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(brightnessLabel))
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
 
         jPanelAspectLayout.linkSize(SwingConstants.VERTICAL, new Component[] {brightnessLabel, brightnessPct});
@@ -1616,11 +1621,13 @@ public class GovernorOptionsPanel extends BasePanel{
             }
         });
 
-        fineTuningButton.setText("Fine Tuning");
-        fineTuningButton.setName("FINE_TUNING_BUTTON"); // NOI18N
-        fineTuningButton.addActionListener(new ActionListener() {
+        followColonyRequests.setText("Follow Colony Requests");
+        followColonyRequests.setToolTipText("Follow Colony Requests");
+        followColonyRequests.setHorizontalAlignment(SwingConstants.CENTER);
+        followColonyRequests.setName("FOLLOW_COLONY_REQUESTS"); // NOI18N
+        followColonyRequests.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                fineTuningButtonActionPerformed(evt);
+                followColonyRequestsActionPerformed(evt);
             }
         });
 
@@ -1662,9 +1669,10 @@ public class GovernorOptionsPanel extends BasePanel{
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                             .addComponent(stargatePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(spyPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(raceImage, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(fineTuningButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(fineTuningButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(spyPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(followColonyRequests, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -1673,22 +1681,24 @@ public class GovernorOptionsPanel extends BasePanel{
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(raceImage, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                             .addComponent(governorDefault)
                             .addComponent(allGovernorsOff)
                             .addComponent(allGovernorsOn))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(autotransportPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addComponent(raceImage, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                        .addComponent(autotransportPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                     .addComponent(colonyPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(spyPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(followColonyRequests)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(fineTuningButton)))
+                        .addComponent(fineTuningButton)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(spyPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(fleetPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -1919,17 +1929,17 @@ public class GovernorOptionsPanel extends BasePanel{
 
     private void excessToResearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excessToResearchActionPerformed
         if (isAutoApply())
-        govOptions().setExcessToResearch(excessToResearch.isSelected());;
+            govOptions().setExcessToResearch(excessToResearch.isSelected());;
     }//GEN-LAST:event_excessToResearchActionPerformed
 
     private void reserveFromRichActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reserveFromRichActionPerformed
         if (isAutoApply())
-        govOptions().setReserveFromRich(reserveFromRich.isSelected());;
+            govOptions().setReserveFromRich(reserveFromRich.isSelected());;
     }//GEN-LAST:event_reserveFromRichActionPerformed
 
     private void followColonyRequestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_followColonyRequestsActionPerformed
         if (isAutoApply())
-        govOptions().setfollowColonyRequests(followColonyRequests.isSelected());
+            govOptions().setManageableGovernor(followColonyRequests.isSelected());
     }//GEN-LAST:event_followColonyRequestsActionPerformed
 
     private void terraformEarlyMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_terraformEarlyMouseWheelMoved
@@ -1938,7 +1948,7 @@ public class GovernorOptionsPanel extends BasePanel{
 
     private void terraformEarlyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_terraformEarlyStateChanged
         if (isAutoApply())
-        govOptions().setTerraformEarly((Integer)terraformEarly.getValue());
+            govOptions().setTerraformEarly((Integer)terraformEarly.getValue());
     }//GEN-LAST:event_terraformEarlyStateChanged
 
     private void missileBasesMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_missileBasesMouseWheelMoved
@@ -1947,12 +1957,12 @@ public class GovernorOptionsPanel extends BasePanel{
 
     private void missileBasesStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_missileBasesStateChanged
         if (isAutoApply())
-        govOptions().setMinimumMissileBases((Integer)missileBases.getValue());
+            govOptions().setMinimumMissileBases((Integer)missileBases.getValue());
     }//GEN-LAST:event_missileBasesStateChanged
 
     private void legacyGrowthModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_legacyGrowthModeActionPerformed
         if (isAutoApply())
-        govOptions().setLegacyGrowthMode(legacyGrowthMode.isSelected());
+            govOptions().setLegacyGrowthMode(legacyGrowthMode.isSelected());
     }//GEN-LAST:event_legacyGrowthModeActionPerformed
 
     private void shieldWithoutBasesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shieldWithoutBasesActionPerformed
@@ -1962,7 +1972,7 @@ public class GovernorOptionsPanel extends BasePanel{
 
     private void shipbuildingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shipbuildingActionPerformed
         if (isAutoApply())
-        govOptions().setShipbuilding(shipbuilding.isSelected());
+            govOptions().setShipbuilding(shipbuilding.isSelected());
     }//GEN-LAST:event_shipbuildingActionPerformed
 
     private void reserveMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_reserveMouseWheelMoved
@@ -1976,14 +1986,19 @@ public class GovernorOptionsPanel extends BasePanel{
 
     private void autospendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autospendActionPerformed
         if (isAutoApply())
-        govOptions().setAutospend(autospend.isSelected());
+            govOptions().setAutospendOnNewColonies(autospend.isSelected());
     }//GEN-LAST:event_autospendActionPerformed
 
     private void fineTuningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fineTuningButtonActionPerformed
-		ParamSubUI subUI = AllSubUI.getHandle(ISubUiKeys.GOVERNOR_SPECIAL_KEY).getUI();
+		ParamSubUI subUI = AllSubUI.getHandle(ISubUiKeys.GOVERNOR_SPECIAL_UI_KEY).getUI();
 		subUI.start(this);
 		frame.setVisible(false);
     }//GEN-LAST:event_fineTuningButtonActionPerformed
+
+    private void autospendOnArtefactsActionPerformed(ActionEvent evt) {//GEN-FIRST:event_autospendOnArtefactsActionPerformed
+        if (isAutoApply())
+            govOptions().setAutospendOnArtefacts(autospendOnArtefacts.isSelected());
+    }//GEN-LAST:event_autospendOnArtefactsActionPerformed
 
 	private  void mouseWheel(JSpinner spinner, java.awt.event.MouseWheelEvent evt) {
 		if (evt.getScrollType() != MouseWheelEvent.WHEEL_UNIT_SCROLL) {
@@ -2026,6 +2041,7 @@ public class GovernorOptionsPanel extends BasePanel{
     JLabel autoScoutShipCountLabel;
     JCheckBox autoSpy;
     JCheckBox autospend;
+    JCheckBox autospendOnArtefacts;
     JCheckBox autotransportAI;
     JCheckBox autotransportFull;
     JLabel brightnessLabel;
@@ -2130,7 +2146,7 @@ public class GovernorOptionsPanel extends BasePanel{
 			ButtonModel buttonModel = ((AbstractButton) component).getModel();
 			Graphics2D g = (Graphics2D) g0;
 			float y	= (float) (0.5 * (component.getSize().getHeight() - dim()));
-			float x	= 2f;
+			float x	= Math.max(xi-s2, s2);
 			int corner = 0;
 			int border = 1;
 			int d2 = (int)(iconSize*0.8f);
@@ -2138,7 +2154,7 @@ public class GovernorOptionsPanel extends BasePanel{
 				corner = dim();
 				d2 = (int)(iconSize*0.7f);
 			}
-			
+
 			if (buttonModel.isRollover()) {
 				g.setColor(hoverColor);
 				border = 2;

@@ -35,6 +35,7 @@ public interface IGovOptions {
 	ParamBoolean autotransportAll	= new ParamBoolean(GOV_UI, "TRANSPORT_UNGOVERNED", false);
 	ParamBoolean transportNoRich	= new ParamBoolean(GOV_UI, "TRANSPORT_RICH_OFF", true);
 	ParamBoolean transportPoorX2	= new ParamBoolean(GOV_UI, "TRANSPORT_POOR_DBL", true);
+	ParamBoolean transportToSiege	= new ParamBoolean(GOV_UI, "TRANSPORT_TO_SIEGE", true);
 	ParamInteger transportMaxDist	= new ParamInteger(GOV_UI, "TRANSPORT_MAX_TURNS", 5)
 			.setLimits(1, 15)
 			.setIncrements(1, 3, 5);
@@ -50,10 +51,10 @@ public interface IGovOptions {
 	static ParamList initStarGateOption() {
 		ParamList list = new ParamList(GOV_UI, "STARGATES_OPTIONS", STARGATES_RICH);
 		list.showFullGuide(true);
-		list.put(STARGATES_NONE,		GOV_UI + "STARGATES_" + STARGATES_NONE);
-		list.put(STARGATES_ULTRA_RICH,	GOV_UI + "STARGATES_" + STARGATES_ULTRA_RICH);
-		list.put(STARGATES_RICH,		GOV_UI + "STARGATES_" + STARGATES_RICH);
-		list.put(STARGATES_ALL,			GOV_UI + "STARGATES_" + STARGATES_ALL);
+		list.put(STARGATES_NONE,		GOV_UI + "STARGATES_" + STARGATES_NONE.toUpperCase());
+		list.put(STARGATES_ULTRA_RICH,	GOV_UI + "STARGATES_" + STARGATES_ULTRA_RICH.toUpperCase());
+		list.put(STARGATES_RICH,		GOV_UI + "STARGATES_" + STARGATES_RICH.toUpperCase());
+		list.put(STARGATES_ALL,			GOV_UI + "STARGATES_" + STARGATES_ALL.toUpperCase());
 		return list;
 	}
 
@@ -62,17 +63,51 @@ public interface IGovOptions {
 			.setLimits(0, 1000)
 			.setIncrements(1, 5, 20);
 	ParamBoolean shieldAlones		= new ParamBoolean(GOV_UI, "SHIELD_WITHOUT_BASES", false);
-	ParamBoolean autoSpend			= new ParamBoolean(GOV_UI, "AUTOSPEND", false);
-	ParamInteger reserveForSlow		= new ParamInteger(GOV_UI, "RESERVE", 0)
+	default boolean shieldAlones()	{ return shieldAlones.get(); }
+	ParamBoolean autoSpendOnNewColonies			= new ParamBoolean(GOV_UI, "AUTOSPEND", false);
+	ParamBoolean autoSpendOnNewColoniesFirst	= new ParamBoolean(GOV_UI, "AUTOSPEND_NEW_FIRST", false);
+	ParamBoolean autoSpendOnArtefacts			= new ParamBoolean(GOV_UI, "AUTOSPEND_ARTEFACTS", false);
+	ParamInteger autospendMaxIndustryPct		= new ParamInteger(GOV_UI, "AUTOSPEND_MAX_IND", 100)
+			.setLimits(10, 100)
+			.setIncrements(1, 5, 20)
+			.pctValue(true);
+	ParamInteger reserveForPlayer		= new ParamInteger(GOV_UI, "RESERVE", 0)
 			.setLimits(0, 100000)
 			.setIncrements(10, 50, 200);
 	ParamBoolean shipBuilding		= new ParamBoolean(GOV_UI, "SHIP_BUILDING", true);
-	ParamBoolean maxGrowthMode		= new ParamBoolean(GOV_UI, "LEGACY_GROWTH_MODE", true);
+
+	private static void tagGrowthMode(String id)	{
+		compensateGrowth.updated(true);
+		minColonyGrowth.updated(true);
+		earlyBaseBuilding.updated(true);
+		colonyEarlyBoostPct.updated(true);
+	}
+	ParamBoolean maxGrowthMode		= new ParamBoolean(GOV_UI, "LEGACY_GROWTH_MODE", true)
+			.setUpdateParameters(IGovOptions::tagGrowthMode, "");
 	ParamInteger terraformEarly		= new ParamInteger(GOV_UI, "TERRAFORM_EARLY", 0)
 			.setLimits(0, 400)
 			.setIncrements(1, 5, 20)
 			.pctValue(true);
-	ParamBoolean followColonyRequests	= new ParamBoolean(GOV_UI, "FOLLOW_COLONY_REQUESTS", false);
+
+	private static void tagManageableGovernor(String id)	{ // TODO BR: tagManageableGovernor
+		terraformFactoryPct.updated(true);
+		terraformPopulationPct.updated(true);
+		terraformPopulation.updated(true);
+		terraformCost2Income.updated(true);
+		defaultShipTakePct.updated(true);
+		compensateGrowth.updated(true);
+		minColonyGrowth.updated(true);
+		colonyEarlyBoostPct.updated(true);
+		subsidyTerraformUse.updated(true);
+		subsidyNormalUse.updated(true);
+		earlyBaseBuilding.updated(true);
+		workerToFactoryROI.updated(true);
+		maxColoniesForROI.updated(true);
+	}
+	ParamBoolean isManageableGovernor	= new ParamBoolean(GOV_UI, "FOLLOW_COLONY_REQUESTS", false)
+			.setUpdateParameters(IGovOptions::tagManageableGovernor, "");
+	static boolean isOriginalGovernor()	{ return !isManageableGovernor.get(); }
+
 	ParamBoolean reserveFromRich	= new ReserveFromRich();
 	class ReserveFromRich extends ParamBoolean {
 		ReserveFromRich() { super(GOV_UI, "RESERVE_FROM_RICH", false); }
@@ -83,6 +118,14 @@ public interface IGovOptions {
 				galaxy.player().redoGovTurnDecisionsRich();
 			return val;
 		}
+		@Override public Boolean silentSet(Boolean b)	{
+			Boolean val = super.silentSet(b);
+			Galaxy galaxy = GameSession.instance().galaxy();
+			if (GameSession.instance().isReady())
+				galaxy.player().redoGovTurnDecisionsRich();
+			return val;
+		}
+		@Override public boolean isGhost()	{ return IMapOptions.divertExcessToResearch.get(); }
 	}
 
 	// Intelligence Options
@@ -134,10 +177,12 @@ public interface IGovOptions {
 	// Advanced Tuning options: Not in the floating windows
 	ParamInteger workerToFactoryROI	= new ParamInteger(GOV_UI, "WORKER_TO_FACTORY_ROI", 150)
 			.setLimits(100, 1000)
-			.setIncrements(5, 20, 100);
+			.setIncrements(5, 20, 100)
+			.setIsGhostMethod(IGovOptions::isOriginalGovernor);
 	ParamInteger maxColoniesForROI	= new ParamInteger(GOV_UI, "MAX_COLONIES_FOR_ROI", 6)
 			.setLimits(0, 1000)
-			.setIncrements(1, 5, 20);
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::isOriginalGovernor);
 	ParamBoolean showTriggeredROI	= new ParamBoolean(GOV_UI, "SHOW_TRIGGERED_ROI", true);
 
 	String INDUSTRY			= "INDUSTRY";
@@ -150,7 +195,8 @@ public interface IGovOptions {
 			.put(INDUSTRY,		SUBSIDY_NORMAL + "_" + INDUSTRY)
 			.put(ECOLOGY,		SUBSIDY_NORMAL + "_" + ECOLOGY)
 			.put(PLANET_BASED,	SUBSIDY_NORMAL + "_" + PLANET_BASED)
-			.put(GOV_CHOICE,	SUBSIDY_NORMAL + "_" + GOV_CHOICE);
+			.put(GOV_CHOICE,	SUBSIDY_NORMAL + "_" + GOV_CHOICE)
+			.setIsGhostMethod(IGovOptions::isOriginalGovernor);
 
 	String SUBSIDY_TERRAFORM	= "SUBSIDY_TFORM";
 	ParamList subsidyTerraformUse	= new ParamList(GOV_UI, SUBSIDY_TERRAFORM, GOV_CHOICE)
@@ -158,49 +204,66 @@ public interface IGovOptions {
 			.put(INDUSTRY,		SUBSIDY_TERRAFORM + "_" + INDUSTRY)
 			.put(ECOLOGY,		SUBSIDY_TERRAFORM + "_" + ECOLOGY)
 			.put(PLANET_BASED,	SUBSIDY_TERRAFORM + "_" + PLANET_BASED)
-			.put(GOV_CHOICE,	SUBSIDY_TERRAFORM + "_" + GOV_CHOICE);
+			.put(GOV_CHOICE,	SUBSIDY_TERRAFORM + "_" + GOV_CHOICE)
+			.setIsGhostMethod(IGovOptions::isOriginalGovernor);
 
 	ParamInteger terraformFactoryPct	= new ParamInteger(GOV_UI, "TERRAFORM_FACTORY_PCT", 60)
 			.setLimits(0, 100)
-			.setIncrements(1, 5, 20);
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::isOriginalGovernor);
 	ParamInteger terraformPopulationPct	= new ParamInteger(GOV_UI, "TERRAFORM_POP_PCT", 75)
 			.setLimits(0, 100)
-			.setIncrements(1, 5, 20);
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::isOriginalGovernor);
 	ParamInteger terraformPopulation	= new ParamInteger(GOV_UI, "TERRAFORM_POPULATION", 5)
 			.setLimits(0, 300)
-			.setIncrements(1, 5, 20);
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::isOriginalGovernor);
 	ParamInteger terraformCost2Income	= new ParamInteger(GOV_UI, "TERRAFORM_COST", 100)
 			.setLimits(0, 500)
-			.setIncrements(1, 5, 20);
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::isOriginalGovernor);
 	ParamInteger defaultShipTakePct		= new ParamInteger(GOV_UI, "DEFAULT_SHIP_TAKE", 100)
 			.setLimits(10, 100)
-			.setIncrements(1, 5, 20);
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::isOriginalGovernor);
 
 	ParamInteger colonyDistanceWeight	= new ParamInteger(GOV_UI, "COLONY_DISTANCE_WEIGHT", 50)
 			.isCfgFile(true)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20);
 
-	ParamBoolean compensateGrowth		= new ParamBoolean(GOV_UI, "COMPENSATE_GROWTH", true);
+	private static boolean isMaxGrowthMode()	{ return maxGrowthMode.get() || isOriginalGovernor(); }
+	ParamBoolean compensateGrowth		= new ParamBoolean(GOV_UI, "COMPENSATE_GROWTH", true)
+			.setIsGhostMethod(IGovOptions::isMaxGrowthMode);
 	ParamFloat minColonyGrowth			= new ParamFloat(GOV_UI, "COLONY_MIN_GROWTH", 2.0f)
 			.setLimits(0f, 10f)
 			.setIncrements(0.1f, 0.5f, 2f)
-			.guiFormat("0.0");
+			.guiFormat("0.0")
+			.setIsGhostMethod(IGovOptions::isMaxGrowthMode);
 	ParamInteger colonyEarlyBoostPct	= new ParamInteger(GOV_UI, "COLONY_EARLY_BOOST", 50)
 			.setLimits(0, 100)
-			.setIncrements(1, 5, 20);
-	ParamBoolean earlyBaseBuilding		= new ParamBoolean(GOV_UI, "EARLY_BASE_BUILDING", false);
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::isMaxGrowthMode);
+
+	ParamBoolean earlyBaseBuilding		= new ParamBoolean(GOV_UI, "EARLY_BASE_BUILDING", false)
+			.setUpdateParameters(IGovOptions::tagEarlyBaseBoostPct, "")
+			.setIsGhostMethod(IGovOptions::isMaxGrowthMode);
+	private static boolean notEarlyBaseBuilding()		{ return !earlyBaseBuilding.get() || isMaxGrowthMode(); }
+	private static void tagEarlyBaseBoostPct(String id)	{ earlyBaseBoostPct.updated(true); }
+
 	ParamInteger earlyBaseBoostPct		= new ParamInteger(GOV_UI, "EARLY_BASE_BOOST_PCT", 50)
 			.setLimits(0, 100)
-			.setIncrements(1, 5, 20);
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::notEarlyBaseBuilding);
 
-	static void tagAutoScoutAll(String id)	{
+	private static void tagAutoScoutAll(String id)	{
 		autoScoutMultiple.updated(true);
 		autoScoutMaxTime.updated(true);
 		autoScoutSaveTime.updated(true);
 		secondScoutWeightPct.updated(true);
 	}
-	static void tagAutoScout(String id)	{
+	private static void tagAutoScout(String id)	{
 		autoScoutMaxTime.updated(true);
 		autoScoutSaveTime.updated(true);
 		secondScoutWeightPct.updated(true);
@@ -208,43 +271,32 @@ public interface IGovOptions {
 	ParamBoolean armedScoutGuard		= new ParamBoolean(GOV_UI, "ARMED_SCOUT_GUARD", false);
 	ParamBoolean autoScoutSmart			= new ParamBoolean(GOV_UI, "AUTO_SCOUT_SMART", false)
 			.setUpdateParameters(IGovOptions::tagAutoScoutAll, "");
-	ParamBoolean autoScoutMultiple		= new ParamAutoScoutSmartBool(GOV_UI, "AUTO_SCOUT_NEAR_FIRST", true)
-			.setUpdateParameters(IGovOptions::tagAutoScout, "");
-	ParamInteger autoScoutMaxTime		= new ParamAutoScoutSmartInt(GOV_UI, "AUTO_SCOUT_MAX_TIME", 8)
-			.setLimits(0, 100)
-			.setIncrements(1, 5, 20);
-	ParamInteger autoScoutSaveTime		= new ParamAutoScoutMultiInt(GOV_UI, "AUTO_SCOUT_SAVE_TIME", 1)
-			.setLimits(1, 100)
-			.setIncrements(1, 5, 20);
-	ParamInteger secondScoutWeightPct 	= new ParamAutoScoutMultiInt(GOV_UI, "2ND_SCOUT_WEIGHT_PCT", 0)
-			.setLimits(0, 100)
-			.setIncrements(1, 5, 20);
-	final class ParamAutoScoutSmartBool extends ParamBoolean	{
-		public ParamAutoScoutSmartBool(String gui, String name, Boolean defaultValue) {
-			super(gui, name, defaultValue);
-		}
-		@Override public boolean isGhost()	{ return !autoScoutSmart.get(); }
-	}
-	final class ParamAutoScoutSmartInt extends ParamInteger	{
-		public ParamAutoScoutSmartInt(String gui, String name, Integer defaultValue) {
-			super(gui, name, defaultValue);
-		}
-		@Override public boolean isGhost()	{ return !autoScoutSmart.get(); }
-	}
-	final class ParamAutoScoutMultiInt extends ParamInteger	{
-		public ParamAutoScoutMultiInt(String gui, String name, Integer defaultValue) {
-			super(gui, name, defaultValue);
-		}
-		@Override public boolean isGhost()	{ return !autoScoutSmart.get() || !autoScoutMultiple.get(); }
-	}
+	private static boolean notAutoScoutSmart()		{ return !autoScoutSmart.get(); }
+	private static boolean notScoutSmartOrSingle()	{ return !autoScoutSmart.get() || !autoScoutMultiple.get(); }
 
-	static void tagAutoColonizeAll(String id)	{
+	ParamBoolean autoScoutMultiple		= new ParamBoolean(GOV_UI, "AUTO_SCOUT_NEAR_FIRST", true)
+			.setUpdateParameters(IGovOptions::tagAutoScout, "")
+			.setIsGhostMethod(IGovOptions::notAutoScoutSmart);
+	ParamInteger autoScoutMaxTime		= new ParamInteger(GOV_UI, "AUTO_SCOUT_MAX_TIME", 8)
+			.setLimits(0, 100)
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::notAutoScoutSmart);
+	ParamInteger autoScoutSaveTime		= new ParamInteger(GOV_UI, "AUTO_SCOUT_SAVE_TIME", 1)
+			.setLimits(1, 100)
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::notScoutSmartOrSingle);
+	ParamInteger secondScoutWeightPct 	= new ParamInteger(GOV_UI, "2ND_SCOUT_WEIGHT_PCT", 0)
+			.setLimits(0, 100)
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::notScoutSmartOrSingle);
+
+	private static void tagAutoColonizeAll(String id)	{
 		autoColonizeMultiple.updated(true);
 		autoColonizeMaxTime.updated(true);
 		autoColonizeSaveTime.updated(true);
 		secondColonyWeightPct.updated(true);
 	}
-	static void tagAutoColonize(String id)	{
+	private static void tagAutoColonize(String id)	{
 		autoColonizeMaxTime.updated(true);
 		autoColonizeSaveTime.updated(true);
 		secondColonyWeightPct.updated(true);
@@ -254,36 +306,25 @@ public interface IGovOptions {
 
 	ParamBoolean autoColonizeTuned		= new ParamBoolean(GOV_UI, "AUTO_COLONY_TUNED", false)
 			.setUpdateParameters(IGovOptions::tagAutoColonizeAll, "");
-	ParamBoolean autoColonizeMultiple	= new ParamAutoColoTunedBool(GOV_UI, "AUTO_COLONY_MULTIPLE", false)
-			.setUpdateParameters(IGovOptions::tagAutoColonize, "");
-	ParamInteger autoColonizeMaxTime	= new ParamAutoColoTunedInt(GOV_UI, "AUTO_COLONY_MAX_TIME", 10)
+	private static boolean autoColonizeNotTuned()	{ return !autoColonizeTuned.get() || isOriginalGovernor(); }
+	private static boolean notTunedOrSingle()		{ return autoColonizeNotTuned() || !autoColonizeMultiple.get(); }
+
+	ParamBoolean autoColonizeMultiple	= new ParamBoolean(GOV_UI, "AUTO_COLONY_MULTIPLE", false)
+			.setUpdateParameters(IGovOptions::tagAutoColonize, "")
+			.setIsGhostMethod(IGovOptions::autoColonizeNotTuned);
+	ParamInteger autoColonizeMaxTime	= new ParamInteger(GOV_UI, "AUTO_COLONY_MAX_TIME", 10)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20)
-			.specialZero(GOV_UI + "COLO_UNLIMITED_TIME");
-	ParamInteger autoColonizeSaveTime	= new ParamAutoColoMultiInt(GOV_UI, "AUTO_COLONY_SAVE_TIME", 1)
+			.specialZero(GOV_UI + "COLO_UNLIMITED_TIME")
+			.setIsGhostMethod(IGovOptions::autoColonizeNotTuned);
+	ParamInteger autoColonizeSaveTime	= new ParamInteger(GOV_UI, "AUTO_COLONY_SAVE_TIME", 1)
 			.setLimits(1, 100)
-			.setIncrements(1, 5, 20);
-	ParamInteger secondColonyWeightPct 	= new ParamAutoColoMultiInt(GOV_UI, "2ND_COLONY_WEIGHT_PCT", 0)
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::notTunedOrSingle);
+	ParamInteger secondColonyWeightPct 	= new ParamInteger(GOV_UI, "2ND_COLONY_WEIGHT_PCT", 0)
 			.setLimits(0, 100)
-			.setIncrements(1, 5, 20);
-	final class ParamAutoColoTunedBool extends ParamBoolean	{
-		public ParamAutoColoTunedBool(String gui, String name, Boolean defaultValue) {
-			super(gui, name, defaultValue);
-		}
-		@Override public boolean isGhost()	{ return !autoColonizeTuned.get(); }
-	}
-	final class ParamAutoColoTunedInt extends ParamInteger	{
-		public ParamAutoColoTunedInt(String gui, String name, Integer defaultValue) {
-			super(gui, name, defaultValue);
-		}
-		@Override public boolean isGhost()	{ return !autoColonizeTuned.get(); }
-	}
-	final class ParamAutoColoMultiInt extends ParamInteger	{
-		public ParamAutoColoMultiInt(String gui, String name, Integer defaultValue) {
-			super(gui, name, defaultValue);
-		}
-		@Override public boolean isGhost()	{ return !autoColonizeTuned.get() || !autoColonizeMultiple.get(); }
-	}
+			.setIncrements(1, 5, 20)
+			.setIsGhostMethod(IGovOptions::notTunedOrSingle);
 
 	ParamBoolean trainSpiesASAP			= new ParamBoolean(GOV_UI, "TRAIN_SPIES_ASAP", true);
 	ParamBoolean contactUpdateSpending	= new ParamBoolean(GOV_UI, "CONTACT_UPDATE_SPENDING", false);

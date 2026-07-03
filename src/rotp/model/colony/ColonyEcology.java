@@ -24,7 +24,7 @@ import rotp.model.planet.Planet;
 import rotp.model.tech.TechAtmosphereEnrichment;
 import rotp.model.tech.TechTree;
 
-public class ColonyEcology extends ColonySpendingCategory {
+public final class ColonyEcology extends ColonySpendingCategory {
     private static final long serialVersionUID = 1L;
     private static final int SOIL_UPGRADE_BC = 150;
     private float hostileBC = 0;
@@ -47,24 +47,9 @@ public class ColonyEcology extends ColonySpendingCategory {
     public boolean soilEnrichCompletedThisTurn()        { return soilEnrichCompleted; }
     public boolean terraformCompletedThisTurn()         { return terraformCompleted; }
     public boolean populationGrowthCompletedThisTurn()  { return populationGrowthCompleted && populationGrowthCompleted(); }
-    public boolean populationGrowthCompleted()          { return colony().population() >= colony().maxSize(); }
+	boolean populationGrowthCompleted()					{ return colony().population() >= colony().maxSize(); }
     public boolean terraformCompleted()                 { return planet().currentSize() >= colony().maxSize(); }
 
-    public void resetBiosphere() {
-        hostileBC = 0;
-        soilEnrichBC = 0;
-    }
-    public void init() {
-        hostileBC = 0;
-        soilEnrichBC = 0;
-        planet().resetWaste();
-        unallocatedBC = 0;
-
-        wasteCleaned = 0;
-        newGrownPopulation = 0;
-        newPurchasedPopulation = 0;
-        newBiosphereIncrease = 0;
-    }
     public boolean isTerraformed() {
     	switch (options().selectedAutoTerraformEnding()) {
     	case "Cleaned":
@@ -98,6 +83,7 @@ public class ColonyEcology extends ColonySpendingCategory {
 		return colony().population() >= colony().planet().maxSize()
         		&& (empire().ignoresPlanetEnvironment() || waste() == 0);
     }
+	public float completedPct()	{ return colony().population() / colony().planet().maxSize(); }
 	@Override public boolean isCompleted(int maxMissingPop) {
     	boolean noWaste = empire().ignoresPlanetEnvironment() || waste() == 0;
     	Colony col = colony();
@@ -120,7 +106,7 @@ public class ColonyEcology extends ColonySpendingCategory {
         colony().removeColonyOrder(Colony.Orders.ATMOSPHERE);
         colony().removeColonyOrder(Colony.Orders.TERRAFORM);
     }
-    public void capturedBy(Empire newCiv) {
+	void capturedBy(Empire newCiv)	{
         if (newCiv == empire())
             return;
         hostileBC = 0;
@@ -137,11 +123,9 @@ public class ColonyEcology extends ColonySpendingCategory {
         expectedPopGrowth = 0;
     }
     public float waste()           { return planet().waste(); }
-    public void addWaste(float w)  { planet().addWaste(w); }
-    public float atmosphereTerraformCost() {
-        return TechAtmosphereEnrichment.hostileTech.cost;
-    }
-    public float enrichSoilCost() {
+	void addWaste(float w)			{ planet().addWaste(w); }
+	private float atmosphereTerraformCost()	{ return TechAtmosphereEnrichment.hostileTech.cost; }
+	private float enrichSoilCost()	{
         if (!tech().enrichSoil())
             return 0;
 
@@ -155,16 +139,14 @@ public class ColonyEcology extends ColonySpendingCategory {
 
         return roomToGrow * tech().popIncreaseCost();
     }
-    public float wasteWillClean(float availableBC, float wasteToClean) {
+	private float wasteWillClean(float availableBC, float wasteToClean)	{
         Empire emp = colony().empire();
         if (emp.ignoresPlanetEnvironment())
             return 0;
         else
             return max(0, min((availableBC * emp.tech().wasteElimination()), wasteToClean));
     }
-    public float wasteWillClean(float availableBC) {
-        return wasteWillClean(availableBC, waste());
-    }
+	private float wasteWillClean(float availableBC)	{  return wasteWillClean(availableBC, waste()); }
     @Override
     public void nextTurn(float totalProd, float totalReserve) {
         Colony c = colony();
@@ -273,10 +255,10 @@ public class ColonyEcology extends ColonySpendingCategory {
             orderAmt = max(orderAmt, c.orderAmount(Colony.Orders.POPULATION));
             c.removeColonyOrder(Colony.Orders.POPULATION);
         }
-        
+
         c.addFollowUpSpendingOrder(orderAmt);
     }
-    public void commitTurn() {
+	void commitTurn()	{
         Colony c = colony();
         addWaste(-wasteCleaned);
         c.setPopulation(c.population() + newGrownPopulation + newPurchasedPopulation);
@@ -302,7 +284,7 @@ public class ColonyEcology extends ColonySpendingCategory {
             empire().addReserve(unallocatedBC);
         unallocatedBC = 0;
     }
-    public int upcomingPopGrowth() {
+	int upcomingPopGrowth()	{
         upcomingResult();
         return expectedPopGrowth;
     }
@@ -314,7 +296,7 @@ public class ColonyEcology extends ColonySpendingCategory {
     public boolean warning() {
         if (empire().ignoresPlanetEnvironment())
             return false;
-        
+
         float newBC = totalAvailableBCthisCategory(colony().totalProductionIncome(), colony().maxReserveIncome());
         newBC = max(0, newBC);
         return (newBC < colony().wasteCleanupCost());
@@ -507,7 +489,7 @@ public class ColonyEcology extends ColonySpendingCategory {
         return tform + newPopCost;
     }
     public float maxSpendingNeeded() { return targetSpendingNeeded(1.0f); }
-    public float[] planetBoostCost() {
+	float[] planetBoostCost()	{
     	float[] planetBoostCost = new float[5];
         Empire emp = empire();
         TechTree tech = emp.tech();
@@ -556,8 +538,7 @@ public class ColonyEcology extends ColonySpendingCategory {
 
         return planetBoostCost;
     }
-    
-    public float terraformSpendingNeeded() {
+	private float terraformSpendingNeeded()	{
         float cleanCost = colony().minimumCleanupCost();
         Empire emp = empire();
         TechTree tech = emp.tech();
@@ -606,8 +587,7 @@ public class ColonyEcology extends ColonySpendingCategory {
         int ticks = (int) Math.ceil(pctNeeded * MAX_TICKS);
         return ticks;
     }
-    public int maxAllocationNeeded(GovWorksheet gws)	{
-    	return targetAllocationNeeded(gws.targetPopPercent, gws.totalIncome); }
+	int maxAllocationNeeded(GovWorksheet gws)	{ return targetAllocationNeeded(gws.targetPopPercent, gws.totalIncome); }
     public int maxAllocationNeeded()	{ return targetAllocationNeeded(1.0f, colony().totalIncome()); }
     private int targetAllocationNeeded(float targetPopPct, float totalIncome)	{
         float needed = targetSpendingNeeded(targetPopPct);

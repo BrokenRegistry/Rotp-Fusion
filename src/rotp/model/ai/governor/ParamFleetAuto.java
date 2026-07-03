@@ -22,9 +22,9 @@ import rotp.ui.util.ParamList;
 
 public abstract class ParamFleetAuto extends ParamList	{
 	protected static final String FLEET_AUTO_ALONE	= "FLEET_AUTO_SEND_ALONE";	// Single design (Old Way)
-	protected static final String FLEET_AUTO_TEAMS	= "FLEET_AUTO_SEND_TEAMS";	// Teamed design
-	protected static final String FLEET_AUTO_ALL	= "FLEET_AUTO_SEND_ALL";	// All designs
-	protected static final String FLEET_AUTO_ANY	= "FLEET_AUTO_SEND_ANY";	// Old Way
+	private static final String FLEET_AUTO_TEAMS	= "FLEET_AUTO_SEND_TEAMS";	// Teamed design
+	private static final String FLEET_AUTO_ALL		= "FLEET_AUTO_SEND_ALL";	// All designs
+	private static final String FLEET_AUTO_ANY		= "FLEET_AUTO_SEND_ANY";	// Old Way
 	
 	public ParamFleetAuto(String name, String defaultCfgLabel)	{
 		super(IGovOptions.GOV_UI, name, defaultCfgLabel);
@@ -96,7 +96,7 @@ public abstract class ParamFleetAuto extends ParamList	{
 			super();
 			this.empire = empire;
 		}
-		public boolean splitAndAdd(ShipFleet fleet)	{
+		boolean splitAndAdd(ShipFleet fleet)	{
 			AutoSendFleet autoSendFleet = new AutoSendFleet(fleet);
 			boolean hasSubFleet = false;
 			while (autoSendFleet.hasSubFleet()) {

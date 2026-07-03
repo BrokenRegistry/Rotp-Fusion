@@ -2465,7 +2465,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             String desc = text("PLANETS_TAX_DESC");
             //int fontSize = scaledFont(g, desc, w-xd-xd, 15, minFontSize);
             //System.out.println("description font Size: " + fontSize); // TO DO BR: Comment
-            
+
             List<String> lines = scaledNarrowWrappedLines(g, desc, w-xd-xd, 1, 15, minFontSize);
             int lineSep = extra? s6 : s10;
             if (extra && lines.size() > 1) { // try to reduce margin
@@ -2546,24 +2546,21 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             x1 = x1+sw+s5;
             drawSliderBox(g, x1, y1-s15, boxW, s18);
 
-            String result;
-            if (player().empireTaxLevel() > 0) {
-                float revenue = player().empireTaxRevenue();
-                String revStr;
-                if (revenue < 100)
-                    revStr = fmt(player().empireTaxRevenue(),1);
-                else
-                    revStr = shortFmt(revenue);
-                result = text("PLANETS_RESERVE_INCREASE", revStr);
-            }
+			String result;
+			boolean shieldWithoutBases = options().shieldAlones();
+			float revenue = player().empireTaxRevenue(shieldWithoutBases);
+			if (revenue > 0) {
+				String revStr = revenue<100? fmt(player().empireTaxRevenue(shieldWithoutBases), 1) : shortFmt(revenue);
+				result = text("PLANETS_RESERVE_INCREASE", revStr);
+			}
             else
                 result = text("PLANETS_RESERVE_NO_TAX");
-            
+
             x1 = x1+boxW+s5;
             scaledFont(g, result, w-x1-border-s5, 16, 13);
             g.setColor(palette.black);
             drawString(g,result, x1, y1);
-            
+
 
             // draw check box
             g.setFont(narrowFont(14));
@@ -2592,7 +2589,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             g.setStroke(prev);
             g.setColor(palette.black);
             drawString(g,opt,labelX,y1);
-            
+
             if (!extra)
             	return;
 
@@ -2604,7 +2601,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             int boxH = lineH + boxDY + boxDY;
             y1 += s18;
             x1 = s20;
-            
+
             // label
             label = text("PLANETS_RES_FULL_DEF_LABEL");
             g.setFont(narrowFont(15));
@@ -2614,7 +2611,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             int left  = x1 + sw + s20;
             int infoW = w1-left;
             int halfW = infoW/2;
-            
+
             // Population
             int maxPop = opts.maxMissingPopulation();
             String pop = text("PLANETS_RES_FULL_DEF_POP", maxPop);
@@ -2630,7 +2627,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             }
             g.setColor(palette.black);
             drawString(g, pop, x1, y1);
-            
+
             // Factories
             int maxFact = opts.maxMissingFactories();
             String fact = text("PLANETS_RES_FULL_DEF_FACT", maxFact);

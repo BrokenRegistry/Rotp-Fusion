@@ -228,6 +228,13 @@
 
 ### Governor:
 
+- New option to allocate funds to colonies with artifacts. (Added to the original governor interface)
+- New option to select which colonies with artifacts or new colonies receive funds first.
+- New option to define the level of industry necessary for a colony to cease being a new colony.
+- The option "follow colony requests" is renamed to "Manageable Governor".
+- Reorganized the compact options panel related to original Governor options.
+- Reorganized the compact options panel related to advanced governor options.
+- More options, disabled by other options, are shaded when disabled.
 - Governor Stargate building can now be set to Ultra Rich only.
 - New option to tell the combat automation to not target a colony that doesn't have missile bases.
   - Later, when selecting the automation, you can change the default value. You can force a “Yes” by pressing the “Shift” key, or force a ‘No’ by pressing the “Control” key.
@@ -327,6 +334,9 @@
 
 ### User Interfaces:
 
+- More informative empire reserves display:
+  - The amount now includes excess spending, when redirected to the reserve.
+  - The sprite to the left of the galaxy also displays the amount that will be added to the reserve.
 - New option to disable the auto war view on F7/F8 activation. (User Interface --> Visual Options)
 - A new option now allows you to view all technologies in the technology allocation panel. This means you no longer need to open the user manual to find out the level of an unknown technology.
 - Two new subpanels have been created. They group together the options for restoring the MoO1 rules.

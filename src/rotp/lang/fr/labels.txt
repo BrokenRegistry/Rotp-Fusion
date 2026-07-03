@@ -2035,7 +2035,7 @@ CUSTOM_RACE_BUTTON_NAMES_DESC	| Pour rédiger la nouvelle terminologie à associ
 CUSTOM_RACE_EMPTY_DESCRIPTION	| « Maj » et « Ctrl » peuvent être utilisés pour modifier les fonctionnalités des boutons, des clics et des défilements.
 
 CUSTOM_RACE_FLEET_DESC			| Exemple d’une flottille composée de navires issus du modèle choisi pour cette espèce.
-CUSTOM_RACE_FLEET_HELP			| Exemple d’une flottille composée de navires issus du modèle choisi pour cette espèce.<br>Si l'animation vous dérange, vous pouvez la désactiver ou l’activer en cliquant sur l’image.
+CUSTOM_RACE_FLEET_HELP			| Exemple d’une flottille composée de navires issus du modèle choisi pour cette espèce.<br>Si l’animation vous dérange, vous pouvez la désactiver ou l’activer en cliquant sur l’image.
 
 // BR : Customize Player Race
 CUSTOM_RACE_DESCRIPTION			| ADN Aléatoire
@@ -2115,7 +2115,7 @@ CUSTOM_RACE_HOME_ENVIRONMENT      | Environnement planétaire
 CUSTOM_RACE_POPULATION_BONUS_DESC	| Certaines espèces ont besoin de plus ou moins d’espace que d’autres. Ce bonus multiplie la taille nominale des planètes.
 CUSTOM_RACE_POPULATION_BONUS		| Bonus de Population
 CUSTOM_RACE_RACE_KEY				| Nom du fichier
-CUSTOM_RACE_RACE_KEY_DESC			| Nom du fichier OGM, sans l'extension, mais incluant les sous-répertoires jusqu'au dossier de l'espèce.<br>Exemple: Human\Priman
+CUSTOM_RACE_RACE_KEY_DESC			| Nom du fichier OGM, sans l’extension, mais incluant les sous-répertoires jusqu’au dossier de l’espèce.<br>Exemple: Human\Priman
 CUSTOM_RACE_RACE_KEY_INPUT			| Entrez le nom du fichier de l’espèce personnalisée.
 CUSTOM_RACE_REWORKED_RACE_KEY		| Avatar
 CUSTOM_RACE_REWORKED_RACE_KEY_DESC	| Avatar préféré pour l’affichage des animations. Lorsque l’option aptitudes →ABILITIES_REWORKED← est sélectionnée, cette aptitudes pourra être choisie au hasard.
@@ -2126,10 +2126,10 @@ CUSTOM_RACE_BOUND_AI_DESC			| Faut-il imposer une IA spécifique à cette espèc
 CUSTOM_RACE_BOUND_AI_NONE_HELP		| L’IA sélectionnée dans le panneau de configuration des adversaires sera utilisée.
 CUSTOM_RACE_BOUND_AI_NONE			| Sans contraintes
 
-CUSTOM_RACE_ATTACK_CONFIDENCE_HELP	| →SETTINGS_MOD_AI_ATTACK_CONFIDENCE_DESC←<br>Ce pourcentage multiplie le pourcentage d’audace d’attaque attribué à l'IA ou au joueur.
+CUSTOM_RACE_ATTACK_CONFIDENCE_HELP	| →SETTINGS_MOD_AI_ATTACK_CONFIDENCE_DESC←<br>Ce pourcentage multiplie le pourcentage d’audace d’attaque attribué à l’IA ou au joueur.
 CUSTOM_RACE_ATTACK_CONFIDENCE_DESC	| →SETTINGS_MOD_AI_ATTACK_CONFIDENCE_DESC←
 CUSTOM_RACE_ATTACK_CONFIDENCE		| Audace d’attaque
-CUSTOM_RACE_DEFENSE_CONFIDENCE_HELP	|→SETTINGS_MOD_AI_DEFENSE_CONFIDENCE_DESC←<br>Ce pourcentage multiplie le pourcentage d’assurance défensive attribué à l'IA ou au joueur.
+CUSTOM_RACE_DEFENSE_CONFIDENCE_HELP	|→SETTINGS_MOD_AI_DEFENSE_CONFIDENCE_DESC←<br>Ce pourcentage multiplie le pourcentage d’assurance défensive attribué à l’IA ou au joueur.
 CUSTOM_RACE_DEFENSE_CONFIDENCE_DESC	| →SETTINGS_MOD_AI_DEFENSE_CONFIDENCE_DESC←
 CUSTOM_RACE_DEFENSE_CONFIDENCE		| Assurance défensive
 
@@ -2444,16 +2444,16 @@ CUSTOM_RACE_IGNORES_ECO_ALL_DESC     | Tous les types de planètes peuvent immé
 // Custom Race Naming Sub Panel
 CUSTOM_RACE_UI_NAMES_TITLE			| Nouvelle Terminologie de l’Avatar
 CUSTOM_RACE_UI_BUTTON_EXIT			| Quitter
-CUSTOM_RACE_UI_BUTTON_EXIT_DESC		| Conservez les paramètres actuels, puis quittez l'interface.
+CUSTOM_RACE_UI_BUTTON_EXIT_DESC		| Conservez les paramètres actuels, puis quittez l’interface.
 CUSTOM_RACE_UI_BUTTON_CANCEL		| Annuler
-CUSTOM_RACE_UI_BUTTON_CANCEL_DESC	| Annulez les modifications, puis quittez l'interface.
+CUSTOM_RACE_UI_BUTTON_CANCEL_DESC	| Annulez les modifications, puis quittez l’interface.
 
 BUTTON_BAR_INSERT_LEFT				| <+
 BUTTON_BAR_INSERT_LEFT_DESC			| Insère un nouvel onglet à gauche de celui sélectionné.
 BUTTON_BAR_INSERT_RIGHT				| +>
 BUTTON_BAR_INSERT_RIGHT_DESC		| Insère un nouvel onglet à droite de celui sélectionné.
 BUTTON_BAR_REMOVE					| -
-BUTTON_BAR_REMOVE_DESC				| Supprimer l'onglet actuellement sélectionné.
+BUTTON_BAR_REMOVE_DESC				| Supprimer l’onglet actuellement sélectionné.
 
 // Advanced Settings
 SETTINGS_TITLE                    | Options Avancées
@@ -2491,7 +2491,7 @@ SETTINGS_TERRAFORMING             | Terraformation : %1
 SETTINGS_COLONIZING               | Colonisation : %1
 SETTINGS_FUEL_RANGE               | Autonomie : %1
 SETTINGS_DYNAMIC_RANGE			| Autonomie Dynamique : %1 ‰
-SETTINGS_DYNAMIC_RANGE_FACTOR	| Facteur d'Autonomie : %1 ‰
+SETTINGS_DYNAMIC_RANGE_FACTOR	| Facteur d’Autonomie : %1 ‰
 SETTINGS_DYNAMIC_RANGE_QUAD		| Facteur Quadratique : %1 ppm
 SETTINGS_AI_HOSTILITY             | Hostilité : %1
 SETTINGS_RANDOM_EVENTS_HELP       | Il y a vingt événements aléatoires dans RotP (seize originaux et quatre de Modnar), certains favorables et d’autres défavorables. À partir du tour 50 (cette valeur est configurable), le pourcentage de chance qu’un événement aléatoire se produise quelque part dans la galaxie commence à grimper. Après qu’un événement aléatoire se soit produit, le pourcentage de chance se réinitialise à zéro et recommence à grimper au tour suivant. Les événements aléatoires sont une mécanique de rattrapage qui favorise les factions les plus faibles (Configurable). Une fois l’événement déterminé, il ciblera un joueur en fonction de ses performances dans le jeu. Les événements favorables ont plus de chances de se produire sur les joueurs ayant une production globale plus faible, tandis que les événements défavorables ont plus de chances de se produire sur les joueurs ayant une production globale plus élevée. Certains événements ne peuvent se produire qu’une seule fois. (Configurable)
@@ -2622,7 +2622,7 @@ HEADERS_DEBUG_RELEVANT               | ~~~ CONNEXE ~~~
 
 HEADERS_TRANSPORT_VISIBILITY_DESC	| Pour définir quels transports doivent être affichés, et avec quel niveau de transparence.
 HEADERS_TRANSPORT_VISIBILITY		| ~~~ AFFICHAGE DES TRANSPORTS ~~~
-HEADERS_MAP_SHIP_OPACITY_DESC		| Pour définir l'apparence des flottes et des transports.
+HEADERS_MAP_SHIP_OPACITY_DESC		| Pour définir l’apparence des flottes et des transports.
 HEADERS_MAP_SHIP_OPACITY			| ~~~ AFFICHAGE DES VAISSEAUX ~~~
 HEADERS_ZOOM_FONT_DESC               | Pour définir les tailles de police de caractères de la carte de la galaxie.
 HEADERS_ZOOM_FONT                    | ~~~ ZOOM CARACTÈRES ~~~
@@ -2704,7 +2704,7 @@ HEADERS_ARTIFACT_OPTIONS             | ~~~ ARTÉFACTS ~~~
 HEADERS_RICH_OPTIONS_HELP            | To customize Ultra-Poor, Poor, Rich, and Ultra-Rich Resources probabilities.<br>The first resource to be set win ! (From Ultra-Poor to Ultra-Rich). The default probability is first multiplied by the modifier, then the offset is added.
 HEADERS_RICH_OPTIONS_DESC            | Personnalisation des probabilités des ressources ultra-pauvres, pauvres, riches et ultra-riches.
 HEADERS_RICH_OPTIONS                 | ~~~ RESSOURCES ~~~
-HEADERS_PLANET_SIZE_OPTIONS_DESC	| Pour personnaliser le bonus des tailles des planètes, leurs dimensions minimales et maximales, ainsi que l'arrondi des valeurs.
+HEADERS_PLANET_SIZE_OPTIONS_DESC	| Pour personnaliser le bonus des tailles des planètes, leurs dimensions minimales et maximales, ainsi que l’arrondi des valeurs.
 HEADERS_PLANET_SIZE_OPTIONS			| ~~~ TAILLE DES PLANÈTES ~~~
 HEADERS_NEBULAE_OPTION_DESC          | Personnalisation du placement des nébuleuses et leurs impacts sur les planètes.
 HEADERS_NEBULAE_OPTION               | ~~~ NÉBULEUSES ~~~
@@ -2930,11 +2930,11 @@ HEADERS_PREF_SHIP_SIZE_IMPACT_DESC		| Par défaut, le choix d’une taille de va
 SETTINGS_MOD_PREF_SIZE_IMPACTS			| La taille préférée importe : %1
 SETTINGS_MOD_PREF_SIZE_IMPACTS_DESC		| La taille préférée des vaisseaux de l’espèce aura une incidence sur leur coût, leur taille et leurs points de vie.<br>Définis par les paramètres ci-dessous.
 SETTINGS_MOD_PREF_SIZE_SPACE			| Impact sur l’espace : %1 %
-SETTINGS_MOD_PREF_SIZE_SPACE_DESC		| L’espace interne des vaisseaux de la taille préférée par l'espèce sera augmenté de ce facteur.
+SETTINGS_MOD_PREF_SIZE_SPACE_DESC		| L’espace interne des vaisseaux de la taille préférée par l’espèce sera augmenté de ce facteur.
 SETTINGS_MOD_PREF_SIZE_HITS				| Impact sur les points de vie : %1 %
-SETTINGS_MOD_PREF_SIZE_HITS_DESC		| Les point de vie des vaisseaux de la taille préférée par l'espèce sera augmenté de ce facteur.
+SETTINGS_MOD_PREF_SIZE_HITS_DESC		| Les point de vie des vaisseaux de la taille préférée par l’espèce sera augmenté de ce facteur.
 SETTINGS_MOD_PREF_SIZE_COST				| Impact sur le coût : %1 %
-SETTINGS_MOD_PREF_SIZE_COST_DESC		| Le coût des vaisseaux de la taille préférée par l'espèce sera réduit de ce facteur.
+SETTINGS_MOD_PREF_SIZE_COST_DESC		| Le coût des vaisseaux de la taille préférée par l’espèce sera réduit de ce facteur.
 
 SETTINGS_MOD_SCRAP_REFUND            | Casse pour vaisseaux : %1
 SETTINGS_MOD_SCRAP_REFUND_ALL        | Partout
@@ -2964,8 +2964,8 @@ SETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Le bouton « Retraite » permet de retir
 SETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Le bouton « Retraite » retire instantanément le vaisseau actuel du combat. L’ennemi ne pourra pas tirer sur votre vaisseau pendant qu’il se retire de l’écran.
 SETTINGS_MOD_MOO1_RETREAT				| Règles de retraite de MoO1 : %1
 
-SETTINGS_MOD_REPULSOR_MODE_HELP			| →SETTINGS_MOD_REPULSOR_MODE_DESC← Contrairement à MoO1, RotP ne repousse pas automatiquement les vaisseaux qui s'approchent de ceux équipés de répulseurs ; il se contente simplement de leur bloquer l'accès aux cases adjacentes.
-SETTINGS_MOD_REPULSOR_MODE_DESC			| Sélectionnez le type d'accès aux cases adjacentes aux vaisseaux équipés de répulseurs.
+SETTINGS_MOD_REPULSOR_MODE_HELP			| →SETTINGS_MOD_REPULSOR_MODE_DESC← Contrairement à MoO1, RotP ne repousse pas automatiquement les vaisseaux qui s’approchent de ceux équipés de répulseurs ; il se contente simplement de leur bloquer l’accès aux cases adjacentes.
+SETTINGS_MOD_REPULSOR_MODE_DESC			| Sélectionnez le type d’accès aux cases adjacentes aux vaisseaux équipés de répulseurs.
 SETTINGS_MOD_REPULSOR_MODE_MOO1_DESC	| Vous pouvez accéder aux cellules adjacentes aux répulseurs, qui ne sont pas mises en évidences, tout comme dans MoO1.
 SETTINGS_MOD_REPULSOR_MODE_MOO1			| MoO1
 SETTINGS_MOD_REPULSOR_MODE_MIXT_DESC	| Vous pouvez accéder aux cellules adjacentes aux répulseurs, qui seront mises en évidences.
@@ -2976,11 +2976,11 @@ SETTINGS_MOD_REPULSOR_MODE				| Cases à portée des répulseurs : %1
 
 SETTINGS_MOD_MOO1_COMBAT_RESOL_DESC		| Contrairement à MoO1, les dégâts infligés par les armes dans RotP ne sont pas affectés par la différence entre les niveaux d’attaque et de défense. (Cela n’affecte que la probabilité de toucher.)
 SETTINGS_MOD_MOO1_COMBAT_RESOL_YES_DESC	| Un écart important entre l’attaque et la défense augmente les dégâts minimums de l’arme.
-SETTINGS_MOD_MOO1_COMBAT_RESOL_NO_DESC	| La différence entre les niveaux d’attaque et de défense n'affecte pas les dégâts infligés par l’arme.
+SETTINGS_MOD_MOO1_COMBAT_RESOL_NO_DESC	| La différence entre les niveaux d’attaque et de défense n’affecte pas les dégâts infligés par l’arme.
 SETTINGS_MOD_MOO1_COMBAT_RESOL			| Résolution des combats de MoO1 : %1
 SETTINGS_MOD_MOO1_MINIATURIZE_DESC		| Contrairement à MoO1, la miniaturisation des composants des vaisseaux dans RotP ne s’applique pas aux scanners de combat ni aux réservoirs de carburant de réserve.
 SETTINGS_MOD_MOO1_MINIATURIZE_YES_DESC	| Appliquer les règles de miniaturisation des composants de vaisseau décrites dans MoO1.
-SETTINGS_MOD_MOO1_MINIATURIZE_NO_DESC	| Conserver les règles de miniaturisation des composants de vaisseau de l'édition originale de RotP.
+SETTINGS_MOD_MOO1_MINIATURIZE_NO_DESC	| Conserver les règles de miniaturisation des composants de vaisseau de l’édition originale de RotP.
 SETTINGS_MOD_MOO1_MINIATURIZE			| Miniaturisation de MoO1 : %1
 
 SETTINGS_MOD_MONSTER_RETREAT_HELP		| →SETTINGS_MOD_MONSTER_RETREAT_DESC←<br>Comme les IA ne connaissent pas à l’avance le niveau des monstres, leur interdire de battre en retraite face à eux est particulièrement injuste.
@@ -3231,12 +3231,12 @@ SETTINGS_MOD_TECH_GAIA                   | Planètes Gaïa : %1
 
 SETTINGS_MOD_TECH_UNLIMITED_MAX_GAP		| Illimité 
 
-SETTINGS_MOD_TECH_RANGE_MAX_GAP_HELP	| Nombre maximal de colonnes séparant deux technologies de carburant dans le tableau des technologies à étudier.<br>Il est toujours frustrant de ne disposer d'aucune technologie de carburant à rechercher.<br>Cette option permet de garantir qu'au moins quelques technologies de carburant seront incluses dans l'arbre des technologies.
-SETTINGS_MOD_TECH_RANGE_MAX_GAP_DESC	| Il est toujours frustrant de ne disposer d'aucune technologie de carburant à rechercher.<br>Cette option garantit qu'au moins quelques technologies de carburant seront incluses dans l'arbre des technologies.
+SETTINGS_MOD_TECH_RANGE_MAX_GAP_HELP	| Nombre maximal de colonnes séparant deux technologies de carburant dans le tableau des technologies à étudier.<br>Il est toujours frustrant de ne disposer d’aucune technologie de carburant à rechercher.<br>Cette option permet de garantir qu’au moins quelques technologies de carburant seront incluses dans l’arbre des technologies.
+SETTINGS_MOD_TECH_RANGE_MAX_GAP_DESC	| Il est toujours frustrant de ne disposer d’aucune technologie de carburant à rechercher.<br>Cette option garantit qu’au moins quelques technologies de carburant seront incluses dans l’arbre des technologies.
 SETTINGS_MOD_TECH_RANGE_MAX_GAP			| Écarts max. des Carburants : %1
 
-SETTINGS_MOD_TECH_WARP_MAX_GAP_HELP		| Nombre maximal de colonnes séparant deux technologies de motorisation dans le tableau des technologies à étudier.<br>Il est toujours frustrant de ne disposer d'aucune technologie de motorisation à rechercher.<br>Cette option permet de garantir qu'au moins quelques technologies de motorisation seront incluses dans l'arbre des technologies.
-SETTINGS_MOD_TECH_WARP_MAX_GAP_DESC		| Nombre maximal de colonnes séparant deux technologies de motorisation dans le tableau des technologies à étudier.<br>Cette option garantit qu'au moins quelques technologies de motorisation seront incluses dans l'arbre des technologies.
+SETTINGS_MOD_TECH_WARP_MAX_GAP_HELP		| Nombre maximal de colonnes séparant deux technologies de motorisation dans le tableau des technologies à étudier.<br>Il est toujours frustrant de ne disposer d’aucune technologie de motorisation à rechercher.<br>Cette option permet de garantir qu’au moins quelques technologies de motorisation seront incluses dans l’arbre des technologies.
+SETTINGS_MOD_TECH_WARP_MAX_GAP_DESC		| Nombre maximal de colonnes séparant deux technologies de motorisation dans le tableau des technologies à étudier.<br>Cette option garantit qu’au moins quelques technologies de motorisation seront incluses dans l’arbre des technologies.
 SETTINGS_MOD_TECH_WARP_MAX_GAP			| Écarts max. des Motorisations : %1
 
 // Pas encore certain de la traduction finale...
@@ -3296,9 +3296,9 @@ SETTINGS_MOD_SHOW_ALT_ANIMATION_DESC     | Choisissez entre les animations vanil
 SETTINGS_MOD_SHOW_ALT_ANIMATION          | Alt Diplomate : %1
 
 SETTINGS_MOD_MIN_TRANSPORT_DISP_DESC	| Les flux de population inférieurs à ce seuil ne seront pas affichés.
-SETTINGS_MOD_MIN_TRANSPORT_DISP			| Seuil d'affichage des transports : %1
-SETTINGS_MOD_MIN_INVASION_DISP_DESC		| Les transports de troupes d'invasion inférieurs à ce seuil ne seront pas affichés.
-SETTINGS_MOD_MIN_INVASION_DISP			| Seuil d'affichage des troupes : %1
+SETTINGS_MOD_MIN_TRANSPORT_DISP			| Seuil d’affichage des transports : %1
+SETTINGS_MOD_MIN_INVASION_DISP_DESC		| Les transports de troupes d’invasion inférieurs à ce seuil ne seront pas affichés.
+SETTINGS_MOD_MIN_INVASION_DISP			| Seuil d’affichage des troupes : %1
 
 SETTINGS_MOD_RALLY_OPACITY_DESC			| Opacité des trajectoires de vol des vaisseaux jusqu’à leur point de ralliement.
 SETTINGS_MOD_RALLY_OPACITY				| Opacité des ralliements : %1
@@ -3318,7 +3318,7 @@ SETTINGS_MOD_ALIEN_TRANSP_OPACITY		| Opacité des troupes étrangères : %1
 SETTINGS_MOD_SHIP_SPRITES_OPACITY_DESC	| Opacité des sprites des flottes et des transports.
 SETTINGS_MOD_SHIP_SPRITES_OPACITY		| Opacité des sprites : %1
 
-SETTINGS_MOD_AUTO_VAR_VIEW_DESC			| L’utilisation les touches F7/F8, pour se déplacer rapidement d'une colonie menacée à l'autre, doit-elle activer automatiquement la vue de guerre ?
+SETTINGS_MOD_AUTO_VAR_VIEW_DESC			| L’utilisation les touches F7/F8, pour se déplacer rapidement d’une colonie menacée à l’autre, doit-elle activer automatiquement la vue de guerre ?
 SETTINGS_MOD_AUTO_VAR_VIEW				| F7/F8 activent la vue de guerre : %1
 
 SETTINGS_MOD_SHOW_FLEET_FACTOR_DESC      | Pour régler la disparition des flottes de la carte de la galaxie lors du zoom. Un facteur plus grand signifie qu’elles resteront plus longtemps à l’écran.
@@ -3375,7 +3375,7 @@ SETTINGS_MOD_GAME_OVER_TITLE_RB            | Realms Beyond
 
 SETUP_CHANGE_LANGUAGE_FORMAT_HELP			| Lors du formatage des nombres décimaux, utiliser soit le paramètre Java local, soit le formatage associé à la langue sélectionnée dans le jeu.<br>Lors de l’installation de Java, le format défini dans le système d’exploitation peut être copié ou non. Cette option vous permet d’ajuster l’affichage en fonction de la langue sélectionnée dans le jeu.
 SETUP_CHANGE_LANGUAGE_FORMAT_DESC			| Lors du formatage des nombres décimaux, utiliser soit le paramètre Java local, soit le formatage associé à la langue sélectionnée dans le jeu.
-SETUP_CHANGE_LANGUAGE_FORMAT				| Changer le format d'affichage : %1
+SETUP_CHANGE_LANGUAGE_FORMAT				| Changer le format d’affichage : %1
 SETUP_CHANGE_LANGUAGE_FORMAT_YES_DESC		| Utiliser les paramètres associés au langage sélectionné.
 SETUP_CHANGE_LANGUAGE_FORMAT_NO_DESC		| Garder les paramètres de Java.
 
@@ -3407,8 +3407,8 @@ SETTINGS_MOD_SHOW_TECH_PROGRESS          | Afficher l’évolution de la recherc
 SETTINGS_MOD_SHOW_TECH_PROGRESS_YES_DESC | Afficher l’état actuel et attendu de la recherche.
 SETTINGS_MOD_SHOW_TECH_PROGRESS_NO_DESC  | N’afficher que l’état attendu de la recherche.
 
-SETTINGS_MOD_SHOW_TECH_TIPS_HELP		| Dans le panneau Empires Intelligence :<br>lorsque cette option est activée, la description de la technologie sur laquelle vous passez la souris s'affiche.<br>Pressez sur « H » pour basculer.
-SETTINGS_MOD_SHOW_TECH_TIPS_DESC		| Dans le panneau Empires Intelligence : lorsque cette option est activée, la description de la technologie sur laquelle vous passez la souris s'affiche.
+SETTINGS_MOD_SHOW_TECH_TIPS_HELP		| Dans le panneau Empires Intelligence :<br>lorsque cette option est activée, la description de la technologie sur laquelle vous passez la souris s’affiche.<br>Pressez sur « H » pour basculer.
+SETTINGS_MOD_SHOW_TECH_TIPS_DESC		| Dans le panneau Empires Intelligence : lorsque cette option est activée, la description de la technologie sur laquelle vous passez la souris s’affiche.
 SETTINGS_MOD_SHOW_TECH_TIPS				| Décrire les Technologies : %1
 SETTINGS_MOD_SHOW_TECH_TIPS_YES_DESC	| Afficher les descriptions.
 SETTINGS_MOD_SHOW_TECH_TIPS_NO_DESC		| Ne pas afficher les descriptions.
@@ -3962,7 +3962,7 @@ HEADERS_MOO1_HOME_VICINITY					| ~~~ VOISINAGE MONDE D’ORIGINE ~~~
 
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_TITLE		| Rétablir les paramètres de MoO1
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI			| Rétablir les paramètres de MoO1
-SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_DESC	| Ouvrir le panneau de configuration contenant les paramètres permettant de rétablir les fonctionalités d'origine de MoO1.
+SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_DESC	| Ouvrir le panneau de configuration contenant les paramètres permettant de rétablir les fonctionalités d’origine de MoO1.
 SETTINGS_MOD_MOO1_GALAXY_OPTIONS_UI_HELP	| Certains paramètres de Rotp diffèrent légèrement de ceux de MoO1. Ce panneau contient toutes les options disponibles permettant de rétablir la plupart des paramètres et des valeurs d’origine de MoO1.
 
 HEADERS_MOO1_SPACE_COMBAT_DESC				| Règles de MoO1 relatives aux combats spatiaux.
@@ -4152,11 +4152,11 @@ SETTINGS_MOD_GUARDIAN_MONSTERS_DESC			| Les planètes riches, avec artéfacts, f
 SETTINGS_MOD_GUARDIAN_MONSTERS				| Gardiens : %1
 SETTINGS_MOD_GUARDIAN_MONSTERS_NONE_DESC	| Les planètes ne sont pas gardées par des monstres de l’espace.
 SETTINGS_MOD_GUARDIAN_MONSTERS_NONE			| Aucuns
-SETTINGS_MOD_GUARDIAN_MONSTERS_ALL_DESC		| Certains monstres pourront être vaincus dès le début du jeu, tandis que d'autres résisteront davantage.
+SETTINGS_MOD_GUARDIAN_MONSTERS_ALL_DESC		| Certains monstres pourront être vaincus dès le début du jeu, tandis que d’autres résisteront davantage.
 SETTINGS_MOD_GUARDIAN_MONSTERS_ALL			| Toutes sortes de monstres
 SETTINGS_MOD_GUARDIAN_MONSTERS_WEAK_DESC	| Ces monstres pourront être vaincus en début de partie.
 SETTINGS_MOD_GUARDIAN_MONSTERS_WEAK			| Des monstres poids légers.
-SETTINGS_MOD_GUARDIAN_MONSTERS_STRONG_DESC	| Ces monstres ne pourront être vaincu qu'avec des flottes conséquentes.
+SETTINGS_MOD_GUARDIAN_MONSTERS_STRONG_DESC	| Ces monstres ne pourront être vaincu qu’avec des flottes conséquentes.
 SETTINGS_MOD_GUARDIAN_MONSTERS_STRONG		| Des monstres redoutables
 
 SETTINGS_MOD_GUARDIAN_MONSTERS_PCT_DESC		| Probabilité de base (en %) pour que les bonnes planètes aient un monstre spatial. Cette valeur sera multipliée par la taille de la planète (en %).<br>Des valeurs plus grandes conduisent à plus de monstres.
@@ -4263,7 +4263,7 @@ SETTINGS_MOD_MONSTERS_GNN_ALL_DESC       | GNN vous avertira chaque fois qu’un
 SETTINGS_MOD_MONSTERS_GNN_NEW_DESC       | GNN avertira de la première attaque de monstres, lorsqu’ils apparaîtront.
 SETTINGS_MOD_MONSTERS_GNN_FIRST_DESC     | GNN notifiera uniquement la première attaque de chaque type de monstre.
 
-SETTINGS_MOD_GUARD_ORION_LEVEL_DESC		| Ce paramètre vous permet d’ajuster le niveau de difficulté du Gardien d'Orion.
+SETTINGS_MOD_GUARD_ORION_LEVEL_DESC		| Ce paramètre vous permet d’ajuster le niveau de difficulté du Gardien d’Orion.
 SETTINGS_MOD_GUARD_ORION_LEVEL			| Niveau du Gardien d’Orion : %1 %
 SETTINGS_MOD_GUARD_PIRATES_LEVEL_DESC	| Les gardiens →REF_PIRATES_2← ayant un niveau particulièrement élevé, ce paramètre vous permettra de les rendre un peu plus accessibles.
 SETTINGS_MOD_GUARD_PIRATES_LEVEL		| Niveau des gardiens →REF_PIRATES← : %1 %
@@ -4648,7 +4648,10 @@ SETTINGS_MOD_SETUP_RESTART_UI_HELP       | Derrière le bouton <b>→SETUP_BUTTO
 
 GOVERNOR_SPECIAL_OPTIONS_TITLE				| Configurations Avancées du Gouverneur.
 GOVERNOR_SPECIAL_OPTIONS_UI					| Réglages Avancés
-GOVERNOR_SPECIAL_OPTIONS_UI_DESC			| Options non affichées sur le panneau principal... À utiliser prudemment.
+GOVERNOR_SPECIAL_OPTIONS_UI_DESC			| Options permettant un meilleur contrôle des gouverneurs, principalement reliées au →GOVERNOR_FOLLOW_COLONY_REQUESTS_LABEL←. À utiliser avec prudence. (Ces options ne sont pas disponibles sur l’interface originale)
+GOVERNOR_FINE_TUNING_BUTTON_LABEL			| →GOVERNOR_SPECIAL_OPTIONS_UI←
+GOVERNOR_FINE_TUNING_BUTTON_TT				| Options permettant un meilleur contrôle des gouverneurs,<br>principalement reliées au →GOVERNOR_FOLLOW_COLONY_REQUESTS_LABEL←.<br>À utiliser avec prudence.
+
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_TITLE		| Conception Automatique des Vaisseaux.
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_UI			| Concepteur de Vaisseaux
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_UI_DESC	| Options pour modifier les paramètres contrôlant la conception automatique des vaisseaux.
@@ -5689,32 +5692,30 @@ HEADERS_GOVERNOR_SHIP_DESIGN_DESC		| Options dédiées au panneau de conception 
 HEADERS_GOVERNOR_SHIP_DESIGN			| ~~~ OPTIONS DE CONCEPTION ~~~
 
 GOVERNOR_AUTO_ATTACK_OPTIONS_UI_HELP	| →GOVERNOR_AUTO_ATTACK_OPTIONS_UI_DESC←
-GOVERNOR_AUTO_ATTACK_OPTIONS_UI_DESC	| Quand et comment le gouverneur doit-il diriger l'envoi des vaisseaux de guerre ?
+GOVERNOR_AUTO_ATTACK_OPTIONS_UI_DESC	| Quand et comment le gouverneur doit-il diriger l’envoi des vaisseaux de guerre ?
 GOVERNOR_AUTO_ATTACK_OPTIONS_TITLE		| Envoi automatisé des vaisseaux de guerre
 GOVERNOR_AUTO_ATTACK_OPTIONS_UI			| Envoi des vaisseaux de Guerre
 
 GOVERNOR_AUTO_COLONY_OPTIONS_UI_HELP	| →GOVERNOR_AUTO_COLONY_OPTIONS_UI_DESC←
-GOVERNOR_AUTO_COLONY_OPTIONS_UI_DESC	| Quand et comment le gouverneur doit-il diriger l'envoi des vaisseaux avec de colonisation ?
+GOVERNOR_AUTO_COLONY_OPTIONS_UI_DESC	| Quand et comment le gouverneur doit-il diriger l’envoi des vaisseaux avec de colonisation ?
 GOVERNOR_AUTO_COLONY_OPTIONS_TITLE		| Envoi automatisé des vaisseaux colonies
 GOVERNOR_AUTO_COLONY_OPTIONS_UI			| Envoi des colonies
 
 GOVERNOR_AUTO_SCOUT_OPTIONS_UI_HELP		| →GOVERNOR_AUTO_SCOUT_OPTIONS_UI_DESC←
-GOVERNOR_AUTO_SCOUT_OPTIONS_UI_DESC		| Quand et comment le gouverneur doit-il diriger l'envoi des éclaireurs ?
+GOVERNOR_AUTO_SCOUT_OPTIONS_UI_DESC		| Quand et comment le gouverneur doit-il diriger l’envoi des éclaireurs ?
 GOVERNOR_AUTO_SCOUT_OPTIONS_TITLE		| Envoi automatisé des éclaireurs
 GOVERNOR_AUTO_SCOUT_OPTIONS_UI			| Envoi des éclaireurs
 
 GOVERNOR_AUTO_FLEET_OPTIONS_UI_HELP		| →GOVERNOR_AUTO_FLEET_OPTIONS_UI_DESC←
-GOVERNOR_AUTO_FLEET_OPTIONS_UI_DESC		| Quand et comment le gouverneur doit-il diriger l'envoi des flottes ?
+GOVERNOR_AUTO_FLEET_OPTIONS_UI_DESC		| Quand et comment le gouverneur doit-il diriger l’envoi des flottes ?
 GOVERNOR_AUTO_FLEET_OPTIONS_TITLE		| Envoi automatisé des flottes
 GOVERNOR_AUTO_FLEET_OPTIONS_UI			| Envoi des flottes
 
 GOVERNOR_ASPECT_OPTIONS_UI_HELP			| →GOVERNOR_ASPECT_OPTIONS_UI_DESC←
-GOVERNOR_ASPECT_OPTIONS_UI_DESC			| Aspect visuel de l'interface originale du gouverneur.
+GOVERNOR_ASPECT_OPTIONS_UI_DESC			| Aspect visuel de l’interface originale du gouverneur.
 GOVERNOR_ASPECT_OPTIONS_TITLE			| Aspect visuel de l’UI du Gouverneur 
 GOVERNOR_ASPECT_OPTIONS_UI				| Aspect de l’UI du Gouverneur
 
-HEADERS_GOVERNOR_TRANSPORT_OPTIONS_DESC	| Paramètres de migration automatisée.
-HEADERS_GOVERNOR_TRANSPORT_OPTIONS		| ~~~ MIGRATION AUTOMATISÉE ~~~
 GOVERNOR_TRANSPORT_OPTIONS_LABEL		| Paramètres d’automatisation des migrations.
 GOVERNOR_TRANSPORT_OPTIONS_TT			| →GOVERNOR_TRANSPORT_OPTION_UI_DESC←
 GOVERNOR_TRANSPORT_OPTIONS_UI_HELP		| →GOVERNOR_TRANSPORT_OPTION_UI_DESC←
@@ -5722,29 +5723,29 @@ GOVERNOR_TRANSPORT_OPTIONS_UI_DESC		| Comment le Gouverneur doit gérer l’auto
 GOVERNOR_TRANSPORT_OPTIONS_TITLE		| Paramètres d’automatisation des migrations.
 GOVERNOR_TRANSPORT_OPTIONS_UI			| Migration automatisée
 
-GOVERNOR_AUTO_TRANSPORT_HELP        | L’IA gère les migrations de population (Pour aider à peupler de nouvelles colonies).<br>De nombreuses colonies contribueront avec des migrations de faible taille.<br>La population se régénérera ensuite naturellement.<br>Cette automatisation est dominante, étant la première à être activée.<br>Les deux options d’automatisation des migrations peuvent être activées indépendamment l’une de l’autre.
-GOVERNOR_AUTO_TRANSPORT_DESC        | L’IA gère les migrations de population (Pour aider à peupler de nouvelles colonies).<br>De nombreuses colonies contribueront avec des migrations de faible taille.
+GOVERNOR_AUTO_TRANSPORT_HELP		| Les gouverneurs gèrent les migrations de population (Pour peupler plus rapidement les nouvelles colonies).<br>De nombreuses colonies contribueront avec des migrations de faible taille.<br>La population se régénérant ensuite naturellement.<br>Cette automatisation est dominante, étant la première à être activée.<br>Les deux options d’automatisation des migrations peuvent être activées indépendamment l’une de l’autre.
+GOVERNOR_AUTO_TRANSPORT_DESC		| Les gouverneurs gèrent les migrations de population (Pour peupler plus rapidement les nouvelles colonies).<br>De nombreuses colonies contribueront avec des migrations de faible taille.
 GOVERNOR_AUTO_TRANSPORT             | L’IA gère les migrations : %1
-GOVERNOR_AUTO_TRANSPORT_LABEL       | L’IA gère les migrations de population.
+GOVERNOR_AUTO_TRANSPORT_LABEL		| Les gouverneurs gèrent les migrations de population.
 
 GOVERNOR_AUTOTRANSPORT_GOV_HELP     | Migrations automatisées du gouverneur original.<br>La population migre automatiquement depuis les colonies ayant une population proche de la taille maximale.<br>N’a que peu d’impact lorsque les deux options de migration sont activées.
 GOVERNOR_AUTOTRANSPORT_GOV_DESC     | Migrations automatisées du gouverneur original.<br>La population migre automatiquement depuis les colonies ayant une population proche de la taille maximale.
-GOVERNOR_AUTOTRANSPORT_GOV          | Migrations surplus : %1
-GOVERNOR_AUTOTRANSPORT_GOV_LABEL    | Migrations automatisées depuis les colonies ayant une population proche de la taille maximale.
+GOVERNOR_AUTOTRANSPORT_GOV			| Migrations surplus : %1
+GOVERNOR_AUTOTRANSPORT_GOV_LABEL	| Migrations depuis les colonies ayant une population proche de la taille maximale.
 
 GOVERNOR_TRANSPORT_UNGOVERNED_DESC  | Autoriser la migration depuis des colonies non gouvernées.<br>« →GOVERNOR_AUTO_TRANSPORT_LABEL← » doit également être activé.
 GOVERNOR_TRANSPORT_UNGOVERNED       | Toutes les colonies : %1
 GOVERNOR_TRANSPORT_UNGOVERNED_LABEL | Autoriser la migration depuis des colonies non gouvernées.
 
-GOVERNOR_TRANSPORT_RICH_OFF_DESC    | Les planètes riches ou avec artéfacts ne contribuent pas aux migrations.
+GOVERNOR_TRANSPORT_RICH_OFF_DESC    | Les gouverneurs des planètes riches ou avec des artéfacts ne contribueront pas aux migrations automatisées.
 GOVERNOR_TRANSPORT_RICH_OFF         | Sans les riches : %1
 GOVERNOR_TRANSPORT_RICH_OFF_LABEL   | Les planètes Riches ou avec artéfacts ne contribuent pas aux migrations.
 
-GOVERNOR_TRANSPORT_POOR_DBL_DESC    | Les planètes pauvres contribuent doublement aux migrations.
+GOVERNOR_TRANSPORT_POOR_DBL_DESC    | Les gouverneurs des planètes pauvres contribuent doublement aux migrations automatisées.
 GOVERNOR_TRANSPORT_POOR_DBL         | Pauvres x2 : %1
 GOVERNOR_TRANSPORT_POOR_DBL_LABEL   | Les planètes pauvres contribuent doublement aux migrations.
 
-GOVERNOR_TRANSPORT_MAX_TURNS_DESC   | Distance de migration maximale (en années).<br>(Distance 1,5 fois plus élevée lorsque des nébuleuses sont traversées)
+GOVERNOR_TRANSPORT_MAX_TURNS_DESC   | Distance maximale des migrations automatisées (en années).<br>(Distance 1,5 fois plus élevée lorsque des nébuleuses sont traversées)
 GOVERNOR_TRANSPORT_MAX_TURNS        | Distance Maximale : %1 tour(s)
 GOVERNOR_TRANSPORT_MAX_TURNS_LABEL  | Distance de migration maximale (en années)
 GOVERNOR_TRANSPORT_MAX_TURNS_NEBULA_LABEL  | (Distance 1,5 fois plus élevée lorsque des nébuleuses sont traversées).
@@ -5764,7 +5765,7 @@ GOVERNOR_STARGATES_ALL					| Toutes
 GOVERNOR_STARGATES_NONE_HELP			| Le gouverneur ne construira jamais de portes des étoiles.
 GOVERNOR_STARGATES_ULTRA_RICH_HELP		| Le gouverneur construira des portes des étoiles uniquement sur les planètes ultra riches.
 GOVERNOR_STARGATES_RICH_HELP			| Le gouverneur construira des portes des étoiles sur les planètes riches et ultra riches.
-GOVERNOR_STARGATES_ALL_HELP				| Le gouverneur construira des portes des étoiles sur toutes les planètes.
+GOVERNOR_STARGATES_ALL_HELP				| Le gouverneur construira des portes des étoiles sur toutes les planètes.<br>Ceci est vraiment déconseillé, car les portes des étoiles sont très coûteuses à entretenir.
 GOVERNOR_STARGATES_NONE_LABEL			| Aucunes
 GOVERNOR_STARGATES_ULTRA_RICH_LABEL		| Ultra Riches
 GOVERNOR_STARGATES_RICH_LABEL			| Riches & Ultra riches
@@ -5781,7 +5782,7 @@ GOVERNOR_COLONIES_OPTIONS_UI			| Options des colonies
 
 GOVERNOR_BUILDING_OPTIONS_UI_HELP		| →GOVERNOR_BUILDING_OPTIONS_UI_DESC←
 GOVERNOR_BUILDING_OPTIONS_UI_DESC		| Comment le gouverneur devrait-il gérer la construction des infrastructures et la croissance des colonies ?
-GOVERNOR_BUILDING_OPTIONS_TITLE			| Options d'Infrastructures et Croissance
+GOVERNOR_BUILDING_OPTIONS_TITLE			| Options d’Infrastructures et Croissance
 GOVERNOR_BUILDING_OPTIONS_UI			| Infrastructures et Croissance
 
 GOVERNOR_TAXES_OPTIONS_UI_HELP			| →GOVERNOR_TAXES_OPTIONS_UI_DESC←
@@ -5797,44 +5798,59 @@ GOVERNOR_SHIELD_WITHOUT_BASES_DESC   | Autoriser les boucliers sans bases.
 GOVERNOR_SHIELD_WITHOUT_BASES        | Boucliers seuls : %1
 GOVERNOR_SHIELD_WITHOUT_BASES_LABEL  | Autoriser les boucliers sans bases.
 
-GOVERNOR_AUTOSPEND_HELP				| Le Gouverneur dépense automatiquement les réserves pour aider à construire les nouvelles colonies :<br>&emsp - Ne dépense que le montant que la planète peut consommer ce tour-ci.<br>&emsp - Commence par la planète dont la production est la plus faible, et s'arrête lorsque l'argent vient à manquer ou qu'il n'y a plus de planètes éligibles.<br>&emsp - Ne dépense que sur les planètes où un gouverneur est en poste.<br>&emsp - Ne dépense que si l'industrie et l'écologie ne sont pas terminées.
-GOVERNOR_AUTOSPEND_DESC              | Le Gouverneur dépense automatiquement les réserves pour aider à construire les nouvelles colonies.
-GOVERNOR_AUTOSPEND                   | Aider les nouvelles colonies : %1
-GOVERNOR_AUTOSPEND_LABEL             | Aider les nouvelles colonies.
+GOVERNOR_AUTOSPEND_HELP				| Le Gouverneur dépense automatiquement les réserves pour aider à construire les nouvelles colonies :<br>&emsp - Ne dépense que le montant que la planète peut consommer ce tour-ci.<br>&emsp - Commence par la planète dont la production est la plus faible, et s’arrête lorsque l’argent vient à manquer ou qu’il n’y a plus de planètes éligibles.<br>&emsp - Ne dépense que sur les planètes où un gouverneur est en poste.<br>&emsp - Ne dépense que si l’industrie et l’écologie ne sont pas terminées.
+GOVERNOR_AUTOSPEND_DESC				| Le Gouverneur dépense automatiquement les réserves pour aider à construire les nouvelles colonies.
+GOVERNOR_AUTOSPEND					| Aider les nouvelles colonies : %1
+GOVERNOR_AUTOSPEND_LABEL			| Aider les nouvelles colonies.
 
-GOVERNOR_AUTOSPEND_ARTEFACTS_HELP	| Le Gouverneur dépense automatiquement les réserves pour maximiser la recherche sur les colonies avec artéfacts:<br>&emsp - Ne dépense que le montant que la planète peut consommer ce tour-ci.<br>&emsp - Commence par les planètes pleinement construites, Vestiges puis Artefact.<br>&emsp - S'il reste des fonds, aide à construire les nouvelles colonies Vestiges, puis Artéfacts.<br>&emsp - Commence par la planète dont la production est la plus forte, et s'arrête lorsque l'argent vient à manquer ou qu'il n'y a plus de planètes éligibles.<br>&emsp - Ne dépense que sur les planètes où un gouverneur est en poste.
+GOVERNOR_AUTOSPEND_NEW_FIRST_HELP	| Lorsque le gouverneur doit aider à la fois les nouvelles colonies et les colonies avec des artéfacts, il devra donner la priorité aux nouvelles colonies.
+GOVERNOR_AUTOSPEND_NEW_FIRST_DESC	| Le Gouverneur priorise les nouvelles colonies, celles avec des artefacts passent après.
+GOVERNOR_AUTOSPEND_NEW_FIRST		| Priorité aux nouvelles colonies : %1
+
+GOVERNOR_AUTOSPEND_MAX_IND_HELP		| Lorsque le gouverneur doit aider à la fois les nouvelles colonies et les colonies avec des artefacts, et doit donner la priorité aux nouvelles colonies, il peut être utile de fixer une limite à partir de laquelle une colonie n'est plus considérée comme nouvelle.
+GOVERNOR_AUTOSPEND_MAX_IND_DESC		| Niveau de développement maximal définissant une colonie comme étant nouvelle.
+GOVERNOR_AUTOSPEND_MAX_IND			| Limite de développement : %1
+
+GOVERNOR_AUTOSPEND_ARTEFACTS_HELP	| Le Gouverneur dépense automatiquement les réserves pour maximiser la recherche sur les colonies avec artéfacts:<br>&emsp - Ne dépense que le montant que la planète peut consommer ce tour-ci.<br>&emsp - Commence par les planètes pleinement construites, Vestiges puis Artefact.<br>&emsp - S’il reste des fonds, aide à construire les nouvelles colonies Vestiges, puis Artéfacts.<br>&emsp - Commence par la planète dont la production est la plus forte, et s’arrête lorsque l’argent vient à manquer ou qu’il n’y a plus de planètes éligibles.<br>&emsp - Ne dépense que sur les planètes où un gouverneur est en poste.
 GOVERNOR_AUTOSPEND_ARTEFACTS_DESC	| Le Gouverneur dépense automatiquement les réserves pour maximiser la recherche sur les colonies avec artéfacts.
 GOVERNOR_AUTOSPEND_ARTEFACTS		| Maximise Artéfacts : %1
 GOVERNOR_AUTOSPEND_ARTEFACTS_LABEL	| Maximise Artéfacts
 
-GOVERNOR_RESERVE_DESC                | Économies à garder en réserve (Non dépensée par l’IA)
-GOVERNOR_RESERVE                     | Réserves : %1
-GOVERNOR_RESERVE_LABEL               | Fond de secours
+GOVERNOR_RESERVE_DESC				| Fond d’urgence à garder en réserve à l’usage exclusif tu joueur.<br>(Non dépensée par les gouverneurs)
+GOVERNOR_RESERVE					| Fond d’urgence : %1
+GOVERNOR_RESERVE_LABEL				| Fond d’urgence
 
-GOVERNOR_SHIP_BUILDING_DESC          | Construction navale avec gouverneur activé. Détournez les ressources vers la construction navale et ne faites pas de recherches si la planète construit déjà des vaisseaux.
-GOVERNOR_SHIP_BUILDING               | Chantiers navals : %1
-GOVERNOR_SHIP_BUILDING_LABEL         | Construction navale avec gouverneur activé.
+GOVERNOR_SHIP_BUILDING_DESC 		| Continuer la construction navale avec gouverneur activé. Détournez les ressources vers la construction navale et ne faites pas de recherches si la planète construit déjà des vaisseaux.
+GOVERNOR_SHIP_BUILDING				| Financer les chantiers navals : %1
+GOVERNOR_SHIP_BUILDING_LABEL		| Continuer la construction navale avec gouverneur activé.
 
-GOVERNOR_FOLLOW_COLONY_REQUESTS_HELP     | Il est en quelque sorte un gouverneur junior obéissant.<br>- Il s’assure d’abord que la colonie reste propre.<br>- Ensuite, il s’occupe de vos demandes urgentes, dans l’ordre : Boucliers, Bases, Population, Usines, Croissance de la colonie.<br>- Ensuite, il exécute vos tâches prioritaires, en leur attribuant le pourcentage de fonds alloués. Dans l’ordre : Quantité spécifiée de navires, Recherche (Violet)<br>- Vient ensuite le moment de faire grandir la colonie en équilibrant la construction d’usines et la croissance de la population.<br>- S’il reste des fonds, ils seront à nouveau assignés aux tâches prioritaires<br>- Viennent ensuite les tâches de moindre priorité en suivant vos instructions (Bleu). Dans l’ordre : Défenses, Navires, Recherche.<br>- S’il n’y a pas d’instructions, la séquence sera : Défense, Recherche.<br>Note: Si vous verrouillez les allocations des Vaisseaux : Il ne les modifiera pas
+GOVERNOR_FOLLOW_COLONY_REQUESTS_HELP     | Le gouverneur flexible va s’adapter aux demandes spécifiques du joueur.<br>- Il s’assure d’abord que la colonie reste propre.<br>- Ensuite, il s’occupe de vos demandes urgentes, dans l’ordre suivant : Boucliers, Bases, Population, Usines, Croissance de la colonie.<br>- Ensuite, il exécute vos tâches prioritaires, en leur attribuant le pourcentage de fonds alloués. Dans l’ordre suivant : Quantité spécifiée de navires, Recherche (Violet)<br>- Vient ensuite le moment de faire grandir la colonie en équilibrant la construction d’usines et la croissance de la population.<br>- S’il reste des fonds, ils seront à nouveau assignés aux tâches prioritaires<br>- Viennent ensuite les tâches de moindre priorité en suivant vos instructions (Bleu). Dans l’ordre suivant : Défenses, Navires, Recherche.<br>- S’il n’y a pas d’instructions, la séquence sera : Défense, Recherche.<br>Note: Si vous verrouillez les allocations des Vaisseaux : Il ne les modifiera pas<br>D’autres ajustements sont disponibles dans les paramètres avancés.<br><br>Le gouverneur autonome (Celui d’origine)  suivra vos consignes générales, et gérera les détails par lui même.
 GOVERNOR_FOLLOW_COLONY_REQUESTS_DESC     | Si une « →MAIN_COLONY_SHIPYARD_LIMIT← » est définie, elle sera construite en priorité. Si vous verrouillez les allocations de navires : Il ne les modifiera pas. Il suivra également la priorité indiquée en bleu (Ctrl-Clic sur le texte à gauche)
-GOVERNOR_FOLLOW_COLONY_REQUESTS          | Requêtes des colonies : %1
-GOVERNOR_FOLLOW_COLONY_REQUESTS_LABEL    | Prioriser les requêtes des colonies.
-GOVERNOR_FOLLOW_COLONY_REQUESTS_YES      | Prioriser
-GOVERNOR_FOLLOW_COLONY_REQUESTS_NO       | Ignorer
-GOVERNOR_FOLLOW_COLONY_REQUESTS_YES_DESC | Le joueur garde un certain contrôle sur le gouverneur.
-GOVERNOR_FOLLOW_COLONY_REQUESTS_NO_DESC  | Le gouverneur sait ce qui est bon pour les colonies.
+GOVERNOR_FOLLOW_COLONY_REQUESTS          | Gouverneurs : %1
+GOVERNOR_FOLLOW_COLONY_REQUESTS_LABEL    | Gouverneurs Flexibles
+GOVERNOR_FOLLOW_COLONY_REQUESTS_YES      | Flexibles
+GOVERNOR_FOLLOW_COLONY_REQUESTS_NO       | Autonomes
+GOVERNOR_FOLLOW_COLONY_REQUESTS_YES_DESC | Le joueur expérimenté gardera davantage de contrôle sur les actions du gouverneur. (Priorisation des requêtes des colonies).
+GOVERNOR_FOLLOW_COLONY_REQUESTS_NO_DESC  | Un gouverneur expérimenté et autonome prend le contrôle de la colonie. (Gouverneurs d’origine)
 
-GOVERNOR_RESERVE_FROM_RICH_DESC      | Affecter les dépenses des colonies riches et ultra-riches entièrement construites à « l’industrie » afin de rediriger la production de crédit vers les réserves de la colonie. Seulement activé lorque les crédits ne sont pas redirigé vers la recherche.
+GOVERNOR_RESERVE_FROM_RICH_HELP		| Affecter les dépenses des colonies riches et ultra-riches entièrement construites à « l’industrie » afin de rediriger la production de crédit vers les réserves de l’empire.<br>(À la condition que les crédits ne soient pas redirigés vers la recherche)
+GOVERNOR_RESERVE_FROM_RICH_DESC		| Affecter les dépenses des colonies riches et ultra-riches entièrement construites à « l’industrie » afin de rediriger la production de crédit vers les réserves de l’empire.
 GOVERNOR_RESERVE_FROM_RICH           | Les colonies riches épargnent : %1
 GOVERNOR_RESERVE_FROM_RICH_LABEL     | Assigner les colonies riches à la création de réserves.
 
+GOVERNOR_LEGACY_GROWTH_MODE_HELP	| Par défaut, le gouverneur commence par ajuster les dépenses pour maximiser la croissance démographique, tout en équilibrant la construction d’usines.<br>Ceci tant que le retour sur investissement en vaut la peine.<br>Après cela, la croissance démographique ne sera plus forcée et la construction d’usines suivra la croissance démographique naturelle.<br>Les dépenses restantes seront orientées soit vers la recherche, soit vers la construction des vaisseaux, au choix du joueur.<br><br>Lorsque cette option est activée, la croissance démographique sera forcée jusqu’à ce que la planète soit entièrement peuplée.
 GOVERNOR_LEGACY_GROWTH_MODE_DESC     | Développer les colonies le plus rapidement possible.
-GOVERNOR_LEGACY_GROWTH_MODE          | Croissance rapide : %1
+GOVERNOR_LEGACY_GROWTH_MODE          | Développer les colonies rapidement : %1
 GOVERNOR_LEGACY_GROWTH_MODE_LABEL    | Développer les colonies le plus rapidement possible.
 
 GOVERNOR_TERRAFORM_EARLY_DESC        | Favoriser l’enrichissement de l’atmosphère et des sols, ainsi que la terraformation de la planète. <br>Pourrait être utilisé avant la séance du conseil, pour augmenter votre pouvoir de vote.
 GOVERNOR_TERRAFORM_EARLY             | Terraformation rapide : %1 %
 GOVERNOR_TERRAFORM_EARLY_LABEL       | Terraformation rapide
+
+GOVERNOR_POPULATION_OPTIONS_UI_HELP		| Comment le gouverneur doit-il gérer l’écologie et la croissance de la population ?
+GOVERNOR_POPULATION_OPTIONS_UI_DESC		| Comment le gouverneur doit-il gérer l’écologie et la croissance de la population ?
+GOVERNOR_POPULATION_OPTIONS_TITLE		| Gestion de l’écologie et de la population
+GOVERNOR_POPULATION_OPTIONS_UI			| Écologie et Population
 
 HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS_DESC	| Mandats liés aux activités d’espionnage.
 HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS		| ~~~ SERVICES SECRETS ~~~
@@ -5845,17 +5861,18 @@ GOVERNOR_INTELLIGENCE_OPTIONS_UI_DESC	| Comment le gouverneur devrait gérer les
 GOVERNOR_INTELLIGENCE_OPTIONS_TITLE		| Mandats des Services Secret.
 GOVERNOR_INTELLIGENCE_OPTIONS_UI		| Services Secrets
 
-GOVERNOR_AUTO_INFILTRATE_DESC        | L’IA gère l’envoi des espions pour infiltrer les autres empires.
-GOVERNOR_AUTO_INFILTRATE             | L’IA infiltre : %1
-GOVERNOR_AUTO_INFILTRATE_LABEL       | L’IA gère l’infiltration
+GOVERNOR_AUTO_INFILTRATE_DESC			| Le gouverneur gère l’envoi des espions pour infiltrer les autres empires.
+GOVERNOR_AUTO_INFILTRATE				| Le gouverneur infiltre : %1
+GOVERNOR_AUTO_INFILTRATE_LABEL			| Le gouverneur gère l’infiltration
 
-GOVERNOR_AUTO_SPY_DESC               | Confiez le contrôle des espions à l’IA.
-GOVERNOR_AUTO_SPY                    | L’IA espionne : %1
-GOVERNOR_AUTO_SPY_LABEL              | L’IA gère les espions
+GOVERNOR_AUTO_SPY_HELP					| Remettez le contrôle des espions au gouverneur<br>Des fonds seront alloués pour espionner des empires avec des technologies qui nous sont inconnues.<br>Lorsque toutes les technologies d’un empire en guerre contre nous nous seront connues, les fonds seront redirigés vers le sabotage.
+GOVERNOR_AUTO_SPY_DESC					| Confiez le contrôle des espions au Gouverneur.
+GOVERNOR_AUTO_SPY						| Le gouverneur espionne : %1
+GOVERNOR_AUTO_SPY_LABEL					| Le gouverneur gère les espions
 
-GOVERNOR_SPARE_XENOPHOBES_DESC       | Une fois appelé de mettre un terme à l’espionnage d’un empire extraterrestre, le gouverneur suivra le choix du joueur pendant le temps nécessaire pour que l’empire se calme.
-GOVERNOR_SPARE_XENOPHOBES            | Tenir parole : %1
-GOVERNOR_SPARE_XENOPHOBES_LABEL      | Tenir parole
+GOVERNOR_SPARE_XENOPHOBES_DESC			| Une fois appelé à mettre un terme à l’espionnage d’un empire extraterrestre, le gouverneur suivra le choix du joueur pendant le temps nécessaire pour que l’empire se calme.
+GOVERNOR_SPARE_XENOPHOBES				| Honorer ses engagements : %1
+GOVERNOR_SPARE_XENOPHOBES_LABEL			| Honorer ses engagements
 
 GOVERNOR_TRAIN_SPIES_ASAP_DESC			| Entraînez les espions dès que possible lorsqu’un nouveau contact se produit.<br>Attention, cela réduira les autres allocations prédéfinies.
 GOVERNOR_TRAIN_SPIES_ASAP				| Entraînez les espions immédiatement : %1
@@ -5865,10 +5882,10 @@ GOVERNOR_CONTACT_UPDATE_SPENDING_DESC	| Après avoir modifié les dépenses d’
 GOVERNOR_CONTACT_UPDATE_SPENDING		| Réajuster les dépenses après contact : %1
 GOVERNOR_CONTACT_UPDATE_SPENDING_LABEL	| Réajuster les dépenses après contact
 
-HEADERS_GOVERNOR_FLEET_OPTIONS_DESC  | Comment l’IA doit-elle gérer les activités des flottes.
-HEADERS_GOVERNOR_FLEET_OPTIONS       | ~~~ OPTIONS DES FLOTTES ~~~
-GOVERNOR_FLEET_OPTIONS_LABEL         | Paramètres des Flottes
-GOVERNOR_FLEET_OPTIONS_TT            | Comment l’IA doit-elle gérer les activités des flottes.
+HEADERS_GOVERNOR_FLEET_OPTIONS_DESC	| Comment les gouverneurs doivent-ils gérer les activités des flottes.
+HEADERS_GOVERNOR_FLEET_OPTIONS		| ~~~ OPTIONS DES FLOTTES ~~~
+GOVERNOR_FLEET_OPTIONS_LABEL		| Paramètres des Flottes
+GOVERNOR_FLEET_OPTIONS_TT			| Comment les gouverneurs doivent-ils gérer les activités des flottes.
 
 GOVERNOR_AUTO_SCOUT_DESC_0			| Le gouverneur enverra automatiquement des vaisseaux pour explorer de nouvelles planètes.
 GOVERNOR_AUTO_SCOUT_DESC_1			| (Vaisseaux étiquetés comme « →SHIP_DESIGN_AUTO_SCOUT← » dans l’écran de conception.)
@@ -5939,9 +5956,9 @@ GOVERNOR_AUTO_APPLY_DESC            | Appliquez l’option à la volée, sans av
 GOVERNOR_AUTO_APPLY                 | À la volée : %1
 GOVERNOR_AUTO_APPLY_LABEL           | À la volée
 
-GOVERNOR_ON_BY_DEFAULT_DESC         | Pour mandater automatiquement un gouverneur à toutes les nouvelles colonies, créées ou envahies.
-GOVERNOR_ON_BY_DEFAULT              | Actif par défaut : %1
-GOVERNOR_ON_BY_DEFAULT_LABEL        | Actif par défaut
+GOVERNOR_ON_BY_DEFAULT_DESC			| Pour mandater automatiquement un gouverneur sur toutes les nouvelles colonies, créées ou envahies.
+GOVERNOR_ON_BY_DEFAULT				| Établi par défaut : %1
+GOVERNOR_ON_BY_DEFAULT_LABEL		| Établi par défaut
 
 GOVERNOR_ANIMATED_IMAGE_DESC        | Si l’animation vous dérange, vous pouvez l’arrêter en cliquant dessus !<br>un autre clic la réactivera.
 GOVERNOR_ANIMATED_IMAGE             | Animer l’image : %1
@@ -5949,20 +5966,18 @@ GOVERNOR_FULL_REFRESH_ON_LOAD_HELP  | Sur certains ordinateurs, le chargement et
 GOVERNOR_FULL_REFRESH_ON_LOAD_DESC  | La position, la taille et la couleur seront actualisées lors du chargement d’une nouvelle partie.<br>Définissez sur faux en cas de problèmes d’affichage.
 GOVERNOR_FULL_REFRESH_ON_LOAD       | Réinitialisation complète : %1
 
-GOVERNOR_ALL_GOVERNORS_ON_LABEL      | Activer tous les Gouverneurs
-GOVERNOR_ALL_GOVERNORS_ON_TT         | Toutes les colonies seront gouvernées
-GOVERNOR_ALL_GOVERNORS_OFF_LABEL     | Démettre tous les Gouverneurs
-GOVERNOR_ALL_GOVERNORS_OFF_TT        | Toutes les colonies seront sous le contrôle total du joueur
+GOVERNOR_ALL_GOVERNORS_ON_LABEL		| Rétablir les Gouverneurs
+GOVERNOR_ALL_GOVERNORS_ON_TT		| Pour que toutes les colonies soient gouvernées.
+GOVERNOR_ALL_GOVERNORS_OFF_LABEL	| Démettre les Gouverneurs
+GOVERNOR_ALL_GOVERNORS_OFF_TT		| Pour que toutes colonies soient sous le contrôle total du joueur.
 GOVERNOR_OK_BUTTON_LABEL             | Quitter
 GOVERNOR_OK_BUTTON_TT                | Appliquer les paramètres et fermer l’interface graphique.
 GOVERNOR_APPLY_BUTTON_LABEL          | Appliquer
 GOVERNOR_APPLY_BUTTON_TT             | Appliquer les paramètres tout en gardant l’interface graphique ouverte.
-GOVERNOR_COMPLETIONIST_TECHNOLOGIES_LABEL | Perfectionnistes
-GOVERNOR_COMPLETIONIST_TECHNOLOGIES_TT    | J’aime terminer les jeux entièrement. <br> Autoriser tous les empires à rechercher les technologies suivantes :<br><br> Environnement irradié contrôlé<br> Terraformation atmosphérique<br> Terminer la terraformation<br> Enrichissement avancé du sol<br> Portes des étoiles<br><br> Plus de 30 % de la galaxie doit être colonisée.<br> Le joueur doit contrôler plus de 50 % des systèmes colonisés.<br> Le joueur doit avoir terminé toutes les recherches de son arbre technologique (Incluant les technologies futures).<br>
+GOVERNOR_COMPLETIONIST_TECHNOLOGIES_LABEL	| Perfectionnistes
+GOVERNOR_COMPLETIONIST_TECHNOLOGIES_TT		| Pour ceux qui aiment pouvoir aller jusqu’à la fin de l’histoire.<br> Cela Autorisera tous les empires à rechercher les technologies suivantes :<br><br> Contrôle des environnements irradiés<br> Terraformation atmosphérique<br> Terraformation complète<br> Enrichissement avancé du sol<br> Portes des étoiles<br><br> Conditions: Plus de 30 % de la galaxie doit être colonisée.<br> Le joueur doit contrôler au moins 50 % des systèmes colonisés.<br> Le joueur doit avoir terminé toutes les recherches de son arbre technologique (Incluant les technologies futures).<br>
 GOVERNOR_CANCEL_BUTTON_LABEL         | Annuler
 GOVERNOR_CANCEL_BUTTON_TT            | Fermer l’interface graphique sans appliquer les changements.
-GOVERNOR_FINE_TUNING_BUTTON_LABEL	| →GOVERNOR_SPECIAL_OPTIONS_UI←
-GOVERNOR_FINE_TUNING_BUTTON_TT		| →GOVERNOR_SPECIAL_OPTIONS_UI_DESC←
 // Leave label empty
 GOVERNOR_RACE_IMAGE_LABEL            |
 GOVERNOR_RACE_IMAGE_TT               | Si l’animation vous dérange, vous pouvez l’arrêter en cliquant dessus !<br>un autre clic la réactivera.
@@ -6009,19 +6024,22 @@ GOVERNOR_TERRAFORM_POPULATION        | Espace restant pour : %1 habitants
 GOVERNOR_TERRAFORM_COST_DESC         | La terraformation de la planète sera déclenchée si le rapport coût/revenu (~ Nombre d’années de construction) est inférieur à ce pourcentage.
 GOVERNOR_TERRAFORM_COST              | Le rapport coût/revenu : %1< %1 %
 
-GOVERNOR_DEFAULT_SHIP_TAKE_DESC      | Pourcentage par défaut à attribuer à la construction de flottes prioritaires, et à la recherche prioritaire, lors de la fondation de nouvelles colonies.
+GOVERNOR_DEFAULT_SHIP_TAKE_HELP		| Pourcentage par défaut à attribuer à la construction des flottes prioritaires, et à la recherche prioritaire.<br>Cette valeur est attribuée lors de la fondation de nouvelles colonies, mais peut être mise à jour par la suite en Alt-Clicquant sur la valeur « Utiliser ». (à droite de l'image de la « Flotte en Construction »)
+GOVERNOR_DEFAULT_SHIP_TAKE_DESC		| Pourcentage par défaut à attribuer à la construction des flottes prioritaires, et à la recherche prioritaire.
 GOVERNOR_DEFAULT_SHIP_TAKE           | Allocation prioritaire par défaut : %1 %
 
 GOVERNOR_COLONY_DISTANCE_WEIGHT_HELP | Lors de la sélection de  la meilleure planète par la colonisation automatique : Pondération de la distance planétaire.<br>Pondération de la valeur planétaire = 100 % - pondération de la distance planétaire.<br>Ce paramètre est partagé par tous les jeux. (Enregistré dans Remnant.cfg)
 GOVERNOR_COLONY_DISTANCE_WEIGHT_DESC | Lors de la sélection de  la meilleure planète par la colonisation automatique : Pondération de la distance planétaire. (Pondération de la valeur planétaire = 100 % - pondération de la distance planétaire)
 GOVERNOR_COLONY_DISTANCE_WEIGHT      | Pondération de la distance : %1 %
 
+GOVERNOR_COMPENSATE_GROWTH_HELP		| Lorsque la croissance démographique est en mode naturel, le gouverneur investira encore un peu dans la croissance des colonies sur les planètes hostiles, ainsi que des espèces à croissance réduite, afin qu’elle devienne équivalente à celle des planètes non hostiles et des espèces standards.
 GOVERNOR_COMPENSATE_GROWTH_DESC		| Compenser la croissance réduite des espèces ou des planètes.
 GOVERNOR_COMPENSATE_GROWTH			| Compenser la croissance réduite : %1
-GOVERNOR_COLONY_MIN_GROWTH_DESC		| Croissance minimale (par année) des colonies.
+GOVERNOR_COLONY_MIN_GROWTH_DESC		| Croissance minimale (par année) des colonies lorsque le mode « Développer les colonies rapidement » n'est pas actif.
 GOVERNOR_COLONY_MIN_GROWTH			| Croissance minimale des colonies : %1 Hab.
-GOVERNOR_COLONY_EARLY_BOOST_DESC	| Activer →GOVERNOR_LEGACY_GROWTH_MODE_LABEL← pour les colonies n’ayant pas atteint le niveau de peuplement spécifié.
+GOVERNOR_COLONY_EARLY_BOOST_DESC	| Activer le mode « Développer les colonies rapidement » pour les colonies n’ayant pas atteint le niveau de peuplement spécifié.
 GOVERNOR_COLONY_EARLY_BOOST			| Requis de population : %1 %
+
 GOVERNOR_EARLY_BASE_BUILDING_DESC	| Commencer à construire des bases de missiles dès que le niveau industriel spécifié est atteint.
 GOVERNOR_EARLY_BASE_BUILDING		| Construire les bases rapidement : %1
 GOVERNOR_EARLY_BASE_BOOST_PCT_DESC	| Niveau d’industrialisation qui déclenchera la construction de la base de missiles.
@@ -6057,7 +6075,7 @@ AUTO_ATTACK_NO_ENTENTE_HELP			| Tous les empires avec lesquels nous n’avons pa
 AUTO_ATTACK_ALL						| Tous
 AUTO_ATTACK_ALL_HELP				| Envoyons nos vaisseaux vers tous les empires, le temps de la guerre n’est plus si lointain.
 
-GOVERNOR_FLEET_AUTO_COMBAT_DESC		| Que se passe-t-il lorsqu'une de vos flottes rencontre une autre flotte ou une colonie étrangère ?
+GOVERNOR_FLEET_AUTO_COMBAT_DESC		| Que se passe-t-il lorsqu’une de vos flottes rencontre une autre flotte ou une colonie étrangère ?
 GOVERNOR_FLEET_AUTO_COMBAT			| Combat des flottes : %1
 FLEET_AUTO_COMBAT_NO_DESC			| Show the combat prompt panel.
 FLEET_AUTO_COMBAT_NO				| Demander
@@ -6079,7 +6097,7 @@ GOVERNOR_ARMED_COLONIZER_FIGHT_DESC	| Les vaisseaux de colonisation armés seron
 GOVERNOR_ARMED_COLONIZER_FIGHT		| Audacieux colonisateurs : %1
 GOVERNOR_AUTO_COLONY_TUNED_DESC		| Pour activer davantage d’options de colonisation : permettant l’envoi de vaisseaux de colonisation supplémentaires, et limitant la durée des vols.
 GOVERNOR_AUTO_COLONY_TUNED			| Colonisation avancée : %1
-GOVERNOR_AUTO_COLONY_MULTIPLE_DESC	| Pour autoriser l’envoi d'un vaisseau de colonisation supplémentaire vers une planète qui a déjà été ciblée, s’il peut l’atteindre plus rapidement. (Seulement avec l’option : Colonisation avancée)
+GOVERNOR_AUTO_COLONY_MULTIPLE_DESC	| Pour autoriser l’envoi d’un vaisseau de colonisation supplémentaire vers une planète qui a déjà été ciblée, s’il peut l’atteindre plus rapidement. (Seulement avec l’option : Colonisation avancée)
 GOVERNOR_AUTO_COLONY_MULTIPLE		| Envois Multiples : %1
 GOVERNOR_AUTO_COLONY_MAX_TIME_DESC	| Pour établir une distance maximale aux vaisseaux de colonisation, afin d’éviter qu’ils ne traversent notre espace d’un bout à l’autre. (Seulement avec l’option : Colonisation avancée)
 GOVERNOR_AUTO_COLONY_MAX_TIME		| Durée de vol maximal : %1
@@ -6087,7 +6105,7 @@ GOVERNOR_COLO_UNLIMITED_TIME_DESC	| Non limité.
 GOVERNOR_COLO_UNLIMITED_TIME		| ∞
 GOVERNOR_AUTO_COLONY_SAVE_TIME_DESC	| Lorsque l’option « Envois Multiples » est active, durée minimale justifiant l’envoi d’un autre vaisseau de colonisation.
 GOVERNOR_AUTO_COLONY_SAVE_TIME		| Temps gagné minimum : %1
-GOVERNOR_2ND_COLONY_WEIGHT_PCT_DESC	| Quelle priorité faut-il accorder à l’envoi d’un second vaisseau de colonisation ? 100 % = même priorité que si aucun vaisseau n'était en route, 0 % = uniquement s’il reste des vaisseaux de colonisation inutilisés.
+GOVERNOR_2ND_COLONY_WEIGHT_PCT_DESC	| Quelle priorité faut-il accorder à l’envoi d’un second vaisseau de colonisation ? 100 % = même priorité que si aucun vaisseau n’était en route, 0 % = uniquement s’il reste des vaisseaux de colonisation inutilisés.
 GOVERNOR_2ND_COLONY_WEIGHT_PCT		| Poids du second vaisseau : %1 %
 
 GOVERNOR_ARMED_SCOUT_GUARD_DESC		| Les éclaireurs armés garderont les planètes non colonisées qu’ils ont découvertes.
@@ -6095,13 +6113,13 @@ GOVERNOR_ARMED_SCOUT_GUARD			| Les éclaireurs armés gardent : %1
 GOVERNOR_AUTO_SCOUT_SMART_HELP		| Pour éviter que nos éclaireurs ne traversent sans cesse notre espace d’un bout à l’autre, les éclaireurs déjà déployés auront un rayon d’action plus limité.<br>Ceux des colonies pourront toujours être déployés sur de longues distances.<br>Plus tard, si un éclaireur est plus proche d’une étoile déjà ciblée, il sera également dirigé vers cette étoile afin de la découvrir au plus vite.
 GOVERNOR_AUTO_SCOUT_SMART_DESC		| Pour éviter que nos éclaireurs ne traversent sans cesse notre espace d’un bout à l’autre, les éclaireurs déjà déployés auront un rayon d’action plus limité. Ceux des colonies pourront toujours être déployés sur de longues distances. Plus tard, si un éclaireur est plus proche d’une étoile déjà ciblée, il sera également dirigé vers cette étoile afin de la découvrir au plus vite.
 GOVERNOR_AUTO_SCOUT_SMART			| Éclaireurs moins zèlés : %1
-GOVERNOR_AUTO_SCOUT_NEAR_FIRST_DESC	| Pour autoriser l’envoi d'un éclaireur supplémentaire vers une étoile qui a déjà été ciblée, s’il peut l’atteindre plus rapidement. (Seulement avec l’option : Éclaireurs moins zèlés)
+GOVERNOR_AUTO_SCOUT_NEAR_FIRST_DESC	| Pour autoriser l’envoi d’un éclaireur supplémentaire vers une étoile qui a déjà été ciblée, s’il peut l’atteindre plus rapidement. (Seulement avec l’option : Éclaireurs moins zèlés)
 GOVERNOR_AUTO_SCOUT_NEAR_FIRST		| Envois Multiples : %1
 GOVERNOR_AUTO_SCOUT_MAX_TIME_DESC	| Pour établir une distance maximale aux éclaireurs déjà déployés, afin d’éviter qu’ils ne traversent constamment notre espace d’un bout à l’autre. (Seulement avec l’option : Éclaireurs moins zèlés)
 GOVERNOR_AUTO_SCOUT_MAX_TIME		| Durée de vol maximal : %1
 GOVERNOR_AUTO_SCOUT_SAVE_TIME_DESC	| Lorsque l’option « Envois Multiples » est active, durée minimale justifiant l’envoi d’un autre éclaireur.
 GOVERNOR_AUTO_SCOUT_SAVE_TIME		| Temps gagné minimum : %1
-GOVERNOR_2ND_SCOUT_WEIGHT_PCT_DESC	| Quelle priorité faut-il accorder à l’envoi d’un second éclaireur ? 100 % = même priorité que si aucun vaisseau n'était en route, 0 % = uniquement s’il reste des éclaireurs inutilisés.
+GOVERNOR_2ND_SCOUT_WEIGHT_PCT_DESC	| Quelle priorité faut-il accorder à l’envoi d’un second éclaireur ? 100 % = même priorité que si aucun vaisseau n’était en route, 0 % = uniquement s’il reste des éclaireurs inutilisés.
 GOVERNOR_2ND_SCOUT_WEIGHT_PCT		| Poids du second vaisseau : %1 %
 
 HEADERS_GOVERNOR_TERRAFORM_DESC		| Déclencheurs de la terraformation de la planète.
@@ -6466,10 +6484,10 @@ INTELLIGENCE_HELP_HK	| →HK_HEADER← →HK_F1← <br><br>H : Pour Afficher/Cac
 
 SYSTEMS_HELP_HK			| →HK_HEADER← →HK_F1← <br>→HK_MAP_ARROWS← →HK_MAP_ZOOM← <br> →HK_YEAR← →HK_FLAG← →HK_HOME← →HK_ALT_HOME← <br>→HK_ESCAPE←
 
-SETUP_GALAXY_HELP_HK	| →HK_HEADER← →HK_F1← →HK_GUIDE← <br><br>B : Basculer les boutons d'appel des sous-menus. →HK_FOG← <br>T : Accéder au menu Ajuster la Galaxie. <br>→HK_SET_DEFAULT← <br><br>Entrée : Démarrer une nouvelle partie. <br><br>M : Retourner au menu Principal.<br>Échapper : Accéder au panneau de configuration du joueur.
+SETUP_GALAXY_HELP_HK	| →HK_HEADER← →HK_F1← →HK_GUIDE← <br><br>B : Basculer les boutons d’appel des sous-menus. →HK_FOG← <br>T : Accéder au menu Ajuster la Galaxie. <br>→HK_SET_DEFAULT← <br><br>Entrée : Démarrer une nouvelle partie. <br><br>M : Retourner au menu Principal.<br>Échapper : Accéder au panneau de configuration du joueur.
 
-SETUP_RACE_HELP_HK		| →HK_HEADER← →HK_F1← →HK_GUIDE← <br> →HK_FOG← <br>N : Ouvrir le sous-menu pour choisir l'espèce du joueur. <br>R : Espèce aléatoire.<br>→HK_SET_DEFAULT← <br><br>Entrée : Aller au panneau de configuration de la Galaxie. <br><br>Échapper : Retourner au Menu principal.
+SETUP_RACE_HELP_HK		| →HK_HEADER← →HK_F1← →HK_GUIDE← <br> →HK_FOG← <br>N : Ouvrir le sous-menu pour choisir l’espèce du joueur. <br>R : Espèce aléatoire.<br>→HK_SET_DEFAULT← <br><br>Entrée : Aller au panneau de configuration de la Galaxie. <br><br>Échapper : Retourner au Menu principal.
 
 MOD_OPTIONS_HELP_HK		| <b><u>HOTKEYS:</u></b> →HK_SHIFT_F1← <br>F1 : Afficher l’aide contextuelle. <br>→HK_SET_DEFAULT←<br>→HK_GUIDE← <br>→HK_ESCAPE←
 
-SETUP_GAME_HELP_HK		| H / F1 : Afficher l'aide.<br><br> - / + : Réduire / Agrandir la fenêtre.<br><br>C / Échapper : Continuer<br>      (Soit la partie en cours, soit la dernière partie sauvegardée)<br>R : Rejouer le dernier tour.<br>N / Ctrl+N : Nouvelle Partie / Relancer les dés.<br>L / Ctrl+L : Charger une Partie / Charger des Options.<br>S / Ctrl+S : Sauver la Partie / Sauver les Options.<br>T : Accédez aux paramètres.<br>O / M : Ouvrir le manuel.<br>E / X : Quitter le jeu.<br><br>Z : Cacher le texte pour mieu voir l'arrière plan.
+SETUP_GAME_HELP_HK		| H / F1 : Afficher l’aide.<br><br> - / + : Réduire / Agrandir la fenêtre.<br><br>C / Échapper : Continuer<br>      (Soit la partie en cours, soit la dernière partie sauvegardée)<br>R : Rejouer le dernier tour.<br>N / Ctrl+N : Nouvelle Partie / Relancer les dés.<br>L / Ctrl+L : Charger une Partie / Charger des Options.<br>S / Ctrl+S : Sauver la Partie / Sauver les Options.<br>T : Accédez aux paramètres.<br>O / M : Ouvrir le manuel.<br>E / X : Quitter le jeu.<br><br>Z : Cacher le texte pour mieu voir l’arrière plan.

@@ -99,7 +99,7 @@ public final class GovWorksheet {
 		int maxBase = defense.maxBases();
 		if (minBase > 0 && maxBase < minBase)
 			defense.maxBases(minBase);
-		promoteBases = gov.earlyBaseBuilding() && !defense.isCompleted();
+		promoteBases = !defense.isCompleted() && gov.earlyBaseBuilding() && c.industry().completedPct() >= gov.earlyBaseBoostPct();
 
 		// Ships management
 		boolean isDirectShipAlloc	= !loweredShipPriority && wasBuildingShips && !wasShipRequest;

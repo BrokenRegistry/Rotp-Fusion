@@ -168,30 +168,14 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public boolean govUrgeFactories()			{ return govUrgeFactories; }
     public void    govUrgeFactories(boolean b)	{ govUrgeFactories = b; }
     public boolean govUrgeShips()				{ return govUrgeShips; }
-    public void    govUrgeShips(boolean b)		{ govUrgeShips = b; }
+    private void   govUrgeShips(boolean b)		{ govUrgeShips = b; }
     public boolean govUrgeBuildUp()				{ return govUrgeBuildUp; }
     public void    govUrgeBuildUp(boolean b)	{ govUrgeBuildUp = b; }
-    public boolean govUrgeResearch()			{ return govUrgeResearch; }
-    public void    govUrgeResearch(boolean b)	{ govUrgeResearch = b; }
+    private boolean govUrgeResearch()			{ return govUrgeResearch; }
+    private void    govUrgeResearch(boolean b)	{ govUrgeResearch = b; }
 
-    /* private boolean hasCustomRequest() {
-    	return govUrgeShield
-    			|| govUrgeBases
-    			|| govUrgePop
-    			|| govUrgeFactories
-    			|| govUrgeShips
-    			|| govUrgeBuildUp
-    			|| govUrgeResearch
-    			|| prioritizeShips
-    			|| prioritizeResearch
-    			|| shipyard().buildLimit() > 0;
-    } */
-//    private boolean governorGotPlayerRequest()	{ return govOptions().isFollowingColonyRequests() || hasCustomRequest(); }
-//    public boolean isObedientGovernor()			{ return isGovernor() && governorGotPlayerRequest(); }
-//    private boolean governorGotPlayerRequest()	{ return govOptions().isFollowingColonyRequests() && hasCustomRequest(); }
-//    public boolean isObedientGovernor()			{ return govOptions().isFollowingColonyRequests() && hasCustomRequest(); }
-    private boolean governorGotPlayerRequest()	{ return govOptions().isFollowingColonyRequests(); }
-    public boolean isObedientGovernor()			{ return govOptions().isFollowingColonyRequests(); }
+    private boolean governorGotPlayerRequest()	{ return govOptions().isManageableGovernor(); }
+    public boolean isObedientGovernor()			{ return govOptions().isManageableGovernor(); }
     public boolean noGovAutoTransport()			{ return noGovAutoTransport && governor; }
     public void    toggleGovAutoTransport()		{ noGovAutoTransport = !noGovAutoTransport; }
     public boolean transportAutoEco()			{ return transportAutoEco && !governor; }
@@ -256,7 +240,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         float maxPop = planet().maxSizeAfterSoilAtmoTform();
         float maxFactories = maxPop * industry().maxRobotControls();
         float factories = min(maxFactories, industry().factories(), industry().maxUseableFactories());
-        
+
         float workerProd = empire.workerProductivity();
         float maxProd = maxFactories + (maxPop * workerProd);
         float currProd = factories + (pop*workerProd);
@@ -340,33 +324,28 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public int allocationRemaining()      { return MAX_TICKS - totalAmountAllocated(); }
     public float totalPlanetaryResearch() {
     	float totalBC = totalPlanetaryResearchSpending();
-        // float totalBC = research().totalSpending();
-        // float productAdj = planet().productionAdj();
-        // if (empire.divertColonyExcessToResearch()) {
-        //     totalBC += shipyard().excessSpending() / productAdj;
-        //     totalBC += defense().excessSpending() / productAdj;
-        //     totalBC += industry().excessSpending() / productAdj;
-        //     totalBC += ecology().excessSpending();
-        // }        
         float totalRP = totalBC * research().researchBonus();
         return max(0, totalRP-research().projectRemainingBC());
     }
     public float totalPlanetaryResearchSpending() {
         float totalBC = research().totalSpending(); 
-        // float productAdj = planet().productionAdj();
         if (empire.divertColonyExcessToResearch()) {
         	int id = 1;
             totalBC += shipyard().excessSpending()[id];
             totalBC += defense().excessSpending()[id];
             totalBC += industry().excessSpending()[id];
             totalBC += ecology().excessSpending()[id];
-            // totalBC += shipyard().excessSpending() / productAdj;
-            // totalBC += defense().excessSpending() / productAdj;
-            // totalBC += industry().excessSpending() / productAdj;
-            // totalBC += ecology().excessSpending();
         }
         return totalBC;
-    }  
+    }
+	public float totalPlanetaryExcessSpending(int id)	{	// To estimate tax revenue; Player only
+		float totalBC = 0; 
+		totalBC += shipyard().excessSpending()[id];
+		totalBC += defense().excessSpending()[id];
+		totalBC += industry().excessSpending()[id];
+		totalBC += ecology().excessSpending()[id];
+		return totalBC;
+	}
     private String printString()          {
         return empire.sv.name(starSystem().id) + "-- pop:"
                 + (float) Math.round(population() * 100) / 100 + " reb:"
@@ -409,7 +388,13 @@ public final class Colony implements Base, IMappedObject, Serializable {
     			return false;
     	}
     }
-    public boolean isDeveloped()  { return options().isDeveloped(this); }
+	public boolean isDeveloped(boolean shieldWithoutBases)	{ return options().isDeveloped(this, shieldWithoutBases); }
+	public boolean isDeveloped()	{
+		IGameOptions options = options();
+		if (empire().isPlayer())
+			return options.isDeveloped(this, options.shieldAlones());
+		return defense().isCompleted() && industry().isCompleted() && ecology().isCompleted();
+	}
     float orderAmount(Colony.Orders order) {
         Colony.Orders priorityOrder = empire.priorityOrders();
         // amount for this order
@@ -622,7 +607,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     }
     // modnar: add challengeMode option from UserPreferences to give AI more initial resources
 	private boolean challengeMode = options().selectedChallengeMode();
-	
+
 	public void setHomeworldValues() {
         Empire emp = empire();
         ShipDesignLab lab = emp.shipLab();
@@ -637,7 +622,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 	        previousPopulation = population();
 	        industry().factories(30);
 	        industry().previousFactories(30);
-	
+
 	        galaxy().ships.buildShips(emp.id, starSystem().id, scout.id(), 2);
 	        galaxy().ships.buildShips(emp.id, starSystem().id, colony.id(), 1);
 	        lab.recordConstruction(scout, 2);
@@ -717,20 +702,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
             message = empire.replaceTokens(message, "rebelling");
             GNNNotification.notifyRebellion(message, false);
         }
-//        if (message != null)
-//            GNNNotification.notifyRebellion(message);
     }
 
-    /* public float orderAdjustment() {
-        // if orders for different spending categories exceed 100%
-        // we need a modifier to adjust them back down so they don't
-        float totalOrders = 0;
-        for (int i = 0; i < NUM_CATS; i++) {
-            ColonySpendingCategory cat = category(i);
-            totalOrders += cat.orderedValue();
-        }
-        return totalOrders <= 100 ? 1.0f : 100.0f / totalOrders;
-    } */
     public void validate() {
         int maxTicks = ColonySpendingCategory.MAX_TICKS;
 
@@ -960,7 +933,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
                 allocation(ECOLOGY, maxAlloc);
                 realignSpending(ecology());
         }
-        
     }
     public boolean canLowerMaintenance() { return transporting(); }
 
@@ -979,80 +951,11 @@ public final class Colony implements Base, IMappedObject, Serializable {
             }
         }
     }
-    /* public void reallocateSpending(int cat, int ticks) {
-        if (allocation(cat) >= ticks)
-            return;
-
-        int tmp = allocation(cat);
-        int delta = ticks - tmp;
-
-        allocation(cat, ticks);
-
-        // deduct from research 1st
-        if (cat != RESEARCH) {
-            tmp = allocation(RESEARCH);
-            if (tmp >= delta) {
-                allocation(RESEARCH, allocation(RESEARCH) - delta);
-                return;
-            } else {
-                allocation(RESEARCH, 0);
-                delta -= tmp;
-            }
-        }
-
-        // deduct from ships 2nd
-        if (cat != SHIP) {
-            tmp = allocation(SHIP);
-            if (tmp >= delta) {
-                allocation(SHIP, allocation(SHIP) - delta);
-                return;
-            } else {
-                allocation(SHIP, 0);
-                delta -= tmp;
-            }
-        }
-
-        // deduct from defense 3rd
-        if (cat != DEFENSE) {
-            tmp = allocation(DEFENSE);
-            if (tmp >= delta) {
-                allocation(DEFENSE, allocation(DEFENSE) - delta);
-                return;
-            } else {
-                allocation(DEFENSE, 0);
-                delta -= tmp;
-            }
-        }
-
-        // deduct from industry 4th
-        if (cat != INDUSTRY) {
-            tmp = allocation(INDUSTRY);
-            if (tmp >= delta) {
-                allocation(INDUSTRY, allocation(INDUSTRY) - delta);
-                return;
-            } else {
-                allocation(INDUSTRY, 0);
-                delta -= tmp;
-            }
-        }
-
-        // deduct from ecology last
-        if (cat != ECOLOGY) {
-            tmp = allocation(ECOLOGY);
-            if (tmp >= delta)
-                allocation(ECOLOGY, allocation(ECOLOGY) - delta);
-            else {
-                allocation(ECOLOGY, 0);
-                delta -= tmp;
-            }
-        }
-    } */
     public void redistributeReducedEcoSpending() {
         int maxAllocation = ColonySpendingCategory.MAX_TICKS;
         // determine how much categories are over/under spent
         int spendingTotal = 0;
         for (int i = 0; i < NUM_CATS; i++) {
-        	//ColonySpendingCategory sp = spending[i];
         	spendingTotal += spending[i].allocation();
         }
 
@@ -1229,43 +1132,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		IGameOptions opts = options();
 		if (!isPlayer && opts.selectedDynamicDifficulty() && !(galaxy().currentTurn() < 5)) {
 			dynaMod = empire.dynaMod();
-			/*
-            // scale with relative empire industrialPowerLevel (production*tech) compared with player
-            // use custom created nonDynaIndPowerLevel, to avoid infinite recursion
-            float empIndPowerLevel = empire().nonDynaIndPowerLevel();
-            float playerIndPowerLevel = player().nonDynaIndPowerLevel();
-            // r_empInd > 1 means more powerful than player, r_empInd < 1 means less powerful than player
-            float r_empInd = empIndPowerLevel / playerIndPowerLevel;
-
-            // relative empire industrialPowerLevel compared with galactic average
-            float galIndPowerLevel = 0.0f;
-            for (Empire emp: galaxy().empires()) {
-                galIndPowerLevel += emp.nonDynaIndPowerLevel(emp);
-            }
-            // multiply numActiveEmpires to assess against balanced power distribution relative to galaxy
-            // r_empInd > 1 means more powerful than average, r_empInd < 1 means less powerful than average
-            float r_empInd = galaxy().numActiveEmpires() * empIndPowerLevel / galIndPowerLevel;
-
-            // scale with turns, between 0 to 1, ramp up at around turn 150
-            // (little to no dynamic production change in early turns)
-            // turnMod(0)=2.12%, turnMod(50)=3.17%, turnMod(100)=6.28%, turnMod(150)=50.0%, turnMod(200)=93.7%, 
-			// float turnMod = (float) (0.5f + Math.atan(galaxy().currentTurn()/10 - 15)/Math.PI);
-
-            // scaling with base function: f(x) = x^3/(x^2+1), asymptotically approach f(x)=x, with flattening near x=0
-            // adjust scaling with base function: g(x) = 1-1/(x+1), to get g(0)=0
-			// if (r_empInd > 1.0f) {
-			//     scaleMod = (1 + Math.pow(r_empInd-1, 3) / (Math.pow(r_empInd-1, 2) + 0.25)) / r_empInd;
-			// }
-			// else {
-			//     scaleMod = (1.01 - 1.01/(100*r_empInd+1)) * (1 + Math.pow(r_empInd-1, 3) / (Math.pow(r_empInd-1, 2) + 0.25)) / r_empInd;
-			// }
-
-            // put it all together with: h(x,t) = 1+(scaleMod-1)*turnMod, h(x,t) will then multiply onto mod
-            // at turns << 150, turnMod ~ 0, h(x,t) ~ 1
-            // at turns >> 150, turnMod ~ 1, h(x,t) ~ scaleMod
-			// dynaMod = 1.0f + (scaleMod - 1.0f) * turnMod;
-			dynaMod = (float) (1.0 + (opts.getDynamicDifficultyScale(r_empInd) - 1.0) * turnMod());
-			*/
         }
 
 		float mod = isPlayer ? 1.0f : (opts.aiProductionModifier()*dynaMod);
@@ -1306,7 +1172,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         float empireTaxPct = empire.empireTaxPct();
         float colonyTaxPct = 0.0f;
         if (empireTaxPct > 0) { // let's avoid unnecessary calls to isDeveloped()
-            if (!empire.empireTaxOnlyDeveloped() || options().isDeveloped(this))
+            if (!empire.empireTaxOnlyDeveloped() || isDeveloped())
                 colonyTaxPct = empireTaxPct;
         }
         return colonyTaxPct;
@@ -1353,13 +1219,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public int calcPopNeeded(float desiredPct) {
         return (int) ((planet.currentSize() * desiredPct) - expectedPopulationLongTerm());
     }
-    /* public int calcPopToGive(float retainPct) {
-        if (!canTransport())
-            return 0;
-        int p1 = maxTransportsAllowed();
-        int p2 = (int) (population() - (retainPct * planet().currentSize()));
-        return min(p1,p2);
-    } */
     float newWaste() {
         float mod = empire().isPlayer() ? 1.0f : options().aiWasteModifier();
         return max(0, usedFactories() * tech().factoryWasteMod() * mod);
@@ -1716,7 +1575,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         int popLost = (int) startingPop -  (int) population();
         int rebelsLost = (int) Math.ceil(pctLost*rebels);
         rebels = rebels - rebelsLost;
-        
+
         DiplomaticTreaty treaty = empire().treaty(tr.empire());
         if (treaty != null) {
             treaty.losePopulation(empire(), startingPop-population());
@@ -1958,33 +1817,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
     private void prioritizeShips(boolean prioritize)    { prioritizeShips = prioritize; }
     boolean prioritizeResearch()                        { return prioritizeResearch; }
     private void prioritizeResearch(boolean prioritize) { prioritizeResearch = prioritize; }
-
-    /*
-     * Increment slider. Stop moving when results no longer contains "stopWhenDisappears".
-     * Stop when results contain "stopWhenAppears".
-     * If moving slider doesn't change production, stop as well.
-    private void moveSlider(int category, String stopWhenDisappears, String stopWhenAppears) {
-        ColonySpendingCategory cat = category(category);
-        int previousAllocaton = -1;
-        for (;;) {
-            String result = cat.upcomingResult();
-            if (stopWhenDisappears != null && !result.contains(stopWhenDisappears)) {
-                break;
-            }
-            if (stopWhenAppears != null) {
-                if (result.contains(stopWhenAppears)) {
-                    break;
-                }
-            }
-            increment(category, 1);
-            if (previousAllocaton == cat.allocation()) {
-                break;
-            }
-            previousAllocaton = cat.allocation();
-        }
-    }
-     */
-
     private boolean balanceCategories(int[] categories, GovWorksheet gws)	{
     	for (int cat : categories)
             if (!locked(cat))
@@ -2217,10 +2049,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
         if (maxAlloc != 0)
            	redistributeReducedEcoSpending();
     }
-    public void governIfPlayerHasRequest() {
-        if (isObedientGovernor())
-        	governIfNeeded(false);
-    }
     public void governIfNeeded(boolean lowerShipPriority) {
         if (!this.isAutopilot() && this.isGovernor())
             govern(lowerShipPriority);
@@ -2291,9 +2119,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 	private void checkForReserveFromRich() {
 		// Check if Rich and Ultra contribute to reserve
 		if (planet.isResourceRich() || planet.isResourceUltraRich()) {
-			if(!govUrgeResearch()
-					&& !prioritizeResearch()
-					&& govOptions().isReserveFromRich()
+			if(govOptions().isReserveFromRich()
 					&& !options().divertColonyExcessToResearch()) {
 				int research = allocation(RESEARCH);
 				addAllocation(INDUSTRY, research);

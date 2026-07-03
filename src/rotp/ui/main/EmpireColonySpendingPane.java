@@ -55,6 +55,7 @@ import rotp.ui.RotPUI;
 import rotp.ui.SystemViewer;
 import rotp.ui.UserPreferences;
 import rotp.ui.options.AllSubUI;
+import rotp.ui.options.ISubUiKeys;
 import rotp.ui.util.ParamSubUI;
 import rotp.util.ImageManager;
 
@@ -866,7 +867,11 @@ public class EmpireColonySpendingPane extends BasePanel {
                 if (governorBox.contains(x,y))
                 	toggleGovernor();
                 else if (optionsBox.contains(x,y))
-                	if (e.isShiftDown()) {
+					if (SwingUtilities.isRightMouseButton(e)) {
+						ParamSubUI optionsUI = AllSubUI.getHandle(ISubUiKeys.GOVERNOR_SPECIAL_UI_KEY).getUI();
+						optionsUI.start(null);
+					}
+					else if (e.isShiftDown()) {
                 		ParamSubUI optionsUI = AllSubUI.governorSubUI();
                 		optionsUI.start(null);
                 	}

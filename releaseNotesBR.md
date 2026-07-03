@@ -7,6 +7,19 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-07-03 (BR)
+- New governor options:
+  - New option to allocate funds to colonies with artifacts. (Added to the original governor interface)
+  - New option to select which colonies with artifacts or new colonies receive funds first.
+  - New option to define the level of industry necessary for a colony to cease being a new colony.
+  - The option "follow colony requests" is renamed to "Manageable Governor".
+  - Reorganized the compact options panel related to original Governor options.
+  - Reorganized the compact options panel related to advanced governor options.
+  - More options, disabled by other options, are shaded when disabled.
+- More informative empire reserves display:
+  - The amount now includes excess spending, when redirected to the reserve.
+  - The sprite to the left of the galaxy also displays the amount that will be added to the reserve.
+
 26-06-27 (BR)
 - Double clicking on the war view planet image will now also recenter the map.
 - New option to disable the auto war view on F7/F8 activation. (User Interface --> Visual Options)
@@ -18,18 +31,6 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 - Fixed Modnar species missing their special abilities. (Removed a forgotten debug line)
 - Fixed Missile range English description (some range were wrong)
 - Fixed Event messages and UI display, when related to a system unknown to the player.
-
-26-06-18 (frojas)
-- Changed the vorbis library to something that is actively supported.
-
-26-06-18 (BR)
-- Fixed an issue where the governor did not always comply with the request not to build a shield in the absence of a missile base.
-  - This could occur after the construction of the requested number of ships was complete.
-- Ship Combat:
- - Reactivation of safe retreat in Xilmi's AIs when threatened to be completely disabled by warp-dissipater.
- - A validation check is now performed after each ship movement to ensure that the turn is properly completed in the event of the ship's destruction.
-  - Finalized the fix for the initiative bug.
-    - The ships' action sequence is now dynamic as well, so that it corresponds to the initiative levels communicated to the AIs.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

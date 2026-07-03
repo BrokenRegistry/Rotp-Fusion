@@ -4648,7 +4648,10 @@ SETTINGS_MOD_SETUP_RESTART_UI_HELP       | Hidden behind the&nbsp <b>→SETUP_BU
 
 GOVERNOR_SPECIAL_OPTIONS_TITLE				| Advanced Governor Configurations.
 GOVERNOR_SPECIAL_OPTIONS_UI					| Fine Tuning
-GOVERNOR_SPECIAL_OPTIONS_UI_DESC			| Options not displayed on the main panel... Use with caution.
+GOVERNOR_SPECIAL_OPTIONS_UI_DESC			| Options allowing better control of governors, mainly related to →GOVERNOR_FOLLOW_COLONY_REQUESTS_LABEL←.<br>Use with caution. (These options are not available on the original interface)
+GOVERNOR_FINE_TUNING_BUTTON_LABEL			| →GOVERNOR_SPECIAL_OPTIONS_UI←
+GOVERNOR_FINE_TUNING_BUTTON_TT				| Options allowing better control of governors,<br>mainly related to →GOVERNOR_FOLLOW_COLONY_REQUESTS_LABEL←.<br>Use with caution.
+
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_TITLE		| Automatic Ship Design Configuration.
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_UI			| Automatic ship design settings
 SETTINGS_MOD_SHIP_DESIGN_OPTIONS_UI_DESC	| Options to change the settings controlling automatic ship design.
@@ -5720,25 +5723,25 @@ GOVERNOR_TRANSPORT_OPTIONS_UI_DESC		| How the Governor should handle transportat
 GOVERNOR_TRANSPORT_OPTIONS_TITLE		| Governor Auto Transport Options
 GOVERNOR_TRANSPORT_OPTIONS_UI			| Auto Transport Options
 
-GOVERNOR_AUTO_TRANSPORT_HELP        | The AI ​​handles population transport (To help populate new colonies).<br>Many colonies will contribute small transports.<br>The population will then regenerate naturally.<br>This automation is dominant, being the first to be activated.<br>Both transport automation options can be activated independently of each other.
-GOVERNOR_AUTO_TRANSPORT_DESC        | AI handles population transportation. (To help populate new colonies)<br>Many colonies will contribute with small transports.
-GOVERNOR_AUTO_TRANSPORT             | AI Autotransport: %1
-GOVERNOR_AUTO_TRANSPORT_LABEL       | AI handles population transportation
+GOVERNOR_AUTO_TRANSPORT_HELP		| The Governors ​​handle population transport (To help populate new colonies).<br>Many colonies will contribute small transports.<br>The population will then regenerate naturally.<br>This automation is dominant, being the first to be activated.<br>Both transport automation options can be activated independently of each other.<br>Based on the AI's way to transport population.
+GOVERNOR_AUTO_TRANSPORT_DESC        | The Governors handle population transportation. (To help populate new colonies)<br>Many colonies will contribute with small transports.
+GOVERNOR_AUTO_TRANSPORT				| Main Autotransport: %1
+GOVERNOR_AUTO_TRANSPORT_LABEL       | AI handle population transportation
 
 GOVERNOR_AUTOTRANSPORT_GOV_HELP     | Original Governor's Automated Transport.<br>Population is automatically transported from colonies with a population close to the maximum size.<br>Has little impact when both transport automation options are enabled.
 GOVERNOR_AUTOTRANSPORT_GOV_DESC     | Original Governor Automated Transport.<br>Population is automatically transported from colonies with a population close to the maximum size.
-GOVERNOR_AUTOTRANSPORT_GOV          | Gov Autotransport: %1
-GOVERNOR_AUTOTRANSPORT_GOV_LABEL    | Population automatically transported from colonies close to max population capacity
+GOVERNOR_AUTOTRANSPORT_GOV			| Suplemental Autotransport: %1
+GOVERNOR_AUTOTRANSPORT_GOV_LABEL    | Population is automatically transported from colonies with a population close to the maximum size.
 
 GOVERNOR_TRANSPORT_UNGOVERNED_DESC  | Allow sending population from ungoverned colonies.<br>"→GOVERNOR_AUTO_TRANSPORT_LABEL←" must also be activated.
 GOVERNOR_TRANSPORT_UNGOVERNED       | From Ungoverned: %1
 GOVERNOR_TRANSPORT_UNGOVERNED_LABEL | Allow sending population from ungoverned colonies
 
-GOVERNOR_TRANSPORT_RICH_OFF_DESC    | Don't send from Rich/Artifacts planets.
+GOVERNOR_TRANSPORT_RICH_OFF_DESC    | Governors of planets rich or with artifacts will not contribute to automated migrations.
 GOVERNOR_TRANSPORT_RICH_OFF         | Spare Rich: %1
 GOVERNOR_TRANSPORT_RICH_OFF_LABEL   | Don't send from Rich/Artifacts planets
 
-GOVERNOR_TRANSPORT_POOR_DBL_DESC    | Send double from Poor planets.
+GOVERNOR_TRANSPORT_POOR_DBL_DESC    | Governors of poor planets doubly contribute to automated migrations.
 GOVERNOR_TRANSPORT_POOR_DBL         | Double from Poor: %1
 GOVERNOR_TRANSPORT_POOR_DBL_LABEL   | Send double from Poor planets
 
@@ -5762,7 +5765,7 @@ GOVERNOR_STARGATES_ALL					| All
 GOVERNOR_STARGATES_NONE_HELP			| The governor will never build stargates.
 GOVERNOR_STARGATES_ULTRA_RICH_HELP		| The governor will build stargates only on Ultra Rich planets.
 GOVERNOR_STARGATES_RICH_HELP			| The governor will build stargates on Rich and Ultra Rich planets.
-GOVERNOR_STARGATES_ALL_HELP				| The governor will build stargates on all the planets.
+GOVERNOR_STARGATES_ALL_HELP				| The governor will build stargates on all the planets.<br>This is definitely not recommended, as stargates are very expensive to maintain.
 GOVERNOR_STARGATES_NONE_LABEL			| Never build stargates
 GOVERNOR_STARGATES_ULTRA_RICH_LABEL		| On Ultra Rich planets
 GOVERNOR_STARGATES_RICH_LABEL			| On Rich & Ultra Rich
@@ -5796,43 +5799,58 @@ GOVERNOR_SHIELD_WITHOUT_BASES        | Shields alone: %1
 GOVERNOR_SHIELD_WITHOUT_BASES_LABEL  | Allow shields without bases
 
 GOVERNOR_AUTOSPEND_HELP				| Spend reserve automatically to build new colonies:<br>&emsp - Spend only the amount planet can consume this turn.<br>&emsp - Start with planet with lowest production, and end when money runs out or no suitable planets are available.<br>&emsp - Spend only on planets with governor on.<br>&emsp - Spend only if industry and ecology are not complete.
-GOVERNOR_AUTOSPEND_DESC              | Automatically spend reserve on planets with lowest production.
-GOVERNOR_AUTOSPEND                   | Autospend on new colonie: %1
-GOVERNOR_AUTOSPEND_LABEL             | Autospend on new colonies
+GOVERNOR_AUTOSPEND_DESC				| Spend reserve automatically to help building new colonies.
+GOVERNOR_AUTOSPEND					| Autospend on new colonie: %1
+GOVERNOR_AUTOSPEND_LABEL			| Autospend on new colonies
+
+GOVERNOR_AUTOSPEND_NEW_FIRST_HELP	| When the governor needs to help both new colonies and colonies with artifacts, he will need to prioritize new settlements.
+GOVERNOR_AUTOSPEND_NEW_FIRST_DESC	| The Governor prioritizes new colonies, those with artifacts come second.
+GOVERNOR_AUTOSPEND_NEW_FIRST		| Priority to new colonies : %1
+
+GOVERNOR_AUTOSPEND_MAX_IND_HELP		| When the governor needs to help both new colonies and colonies with artifacts, and needs to prioritize new colonies, it can be useful to set a limit at which a colony is no longer considered new.
+GOVERNOR_AUTOSPEND_MAX_IND_DESC		| Maximum development level defining a colony as new.
+GOVERNOR_AUTOSPEND_MAX_IND			| Development limit : %1
 
 GOVERNOR_AUTOSPEND_ARTEFACTS_HELP	| The Governor automatically spends reserves to maximize research on colonies with artifacts:<br>&emsp - Spends only the amount the planet can consume this turn. <br>&emsp - Starts with fully built Orion Artefacts planets, then Antaran Artefacts planets.<br>&emsp - If funds remain, helps build new Orion Artefacts colonies, then Antaran Artifact colonies. <br>&emsp - Starts with the planet with the highest production and stops when funds run out or there are no more eligible planets.<br>&emsp - Spends only on planets where a Governor is in office.
 GOVERNOR_AUTOSPEND_ARTEFACTS_DESC	| Automatically spend reserve to boost rechearch on Artefact colonies.
 GOVERNOR_AUTOSPEND_ARTEFACTS		| Autospend on Artefacts: %1
 GOVERNOR_AUTOSPEND_ARTEFACTS_LABEL	| Autospend on Artefacts
 
-GOVERNOR_RESERVE_DESC                | Keep in reserve.
-GOVERNOR_RESERVE                     | Reserve: %1
-GOVERNOR_RESERVE_LABEL               | Keep in reserve
+GOVERNOR_RESERVE_DESC				| Emergency fund to be kept in reserve for the exclusive use of the player.<br>(Not spent by governors)
+GOVERNOR_RESERVE					| Keep in reserve: %1
+GOVERNOR_RESERVE_LABEL				| Keep in reserve
 
-GOVERNOR_SHIP_BUILDING_DESC          | Shipbuilding with Governor enabled. Divert resources into shipbuilding and not research if planet is already building ships.
-GOVERNOR_SHIP_BUILDING               | Shipbuilding: %1
+GOVERNOR_SHIP_BUILDING_DESC          | Continue shipbuilding with Governor enabled. Divert resources into shipbuilding and not research if planet is already building ships.
+GOVERNOR_SHIP_BUILDING               | Continue Shipbuilding: %1
 GOVERNOR_SHIP_BUILDING_LABEL         | Shipbuilding with Governor enabled
 
-GOVERNOR_FOLLOW_COLONY_REQUESTS_HELP     | He is sort of an obedient junior governor.<br>- He first makes sure the colony remains clean.<br>- Then he takes care of your urgent requests, in order: Shields, Bases, Population, Factories, Colony Growth.<br>- Then he carries out your priority tasks, assigning them the percentage of funds allocated. In order: Specified quantity of ships, Research (Purple)<br>- Then comes the time to grow the colony by balancing factory construction and population growth.<br>- If there are funds left, they will be assigned to the priority tasks again<br>- Then come the lower priority tasks following your instructions (Blue). In order: Defenses, Ships, Research.<br>- If there are no instructions, the sequence will be: Defense, Research.<br>Note: If you lock Ship allocations: He will not change them.
-GOVERNOR_FOLLOW_COLONY_REQUESTS_DESC     | If a "→MAIN_COLONY_SHIPYARD_LIMIT←" is set, it will be built first. If you lock ship allocations: It will not change them. It will also follow the priority shown in blue (Ctrl-Click on the text on the left)
-GOVERNOR_FOLLOW_COLONY_REQUESTS          | Colony Requests: %1
-GOVERNOR_FOLLOW_COLONY_REQUESTS_LABEL    | Follow Colony Request
-GOVERNOR_FOLLOW_COLONY_REQUESTS_YES      | Follow
-GOVERNOR_FOLLOW_COLONY_REQUESTS_NO       | Ignore
-GOVERNOR_FOLLOW_COLONY_REQUESTS_YES_DESC | The Player still have some control over the Governor.
-GOVERNOR_FOLLOW_COLONY_REQUESTS_NO_DESC  | The Governor know what is good for the colonies.
+GOVERNOR_FOLLOW_COLONY_REQUESTS_HELP     | The Manageable governor will adapt to the player's specific requests.<br>- He first ensures that the colony remains clean.<br>- Then he takes care of your urgent requests, in the following order: Shields, Bases, Population, Factories, Colony Growth.<br>- Then he carries out your priority tasks, assigning them the percentage of allocated funds. In the following order: Specified quantity of ships, Research (Purple)<br>- Next is time to grow the colony by balancing factory construction and population growth.<br>- If there are any funds left, they will be reassigned to priority tasks<br>- Next comes lower priority tasks following your instructions (Blue). In the following order: Defenses, Ships, Research.<br>- If there are no instructions, the sequence will be: Defense, Research.<br>Note: If you lock the Ship allocations: It will not modify them<br>Other adjustments are available in the advanced settings.<br><br>The Autonomous Governor (the original one) will follow your general instructions, and will manage the details on its own.
+GOVERNOR_FOLLOW_COLONY_REQUESTS_DESC		| If a "→MAIN_COLONY_SHIPYARD_LIMIT←" is set, it will be built first. If you lock ship allocations: It will not change them. It will also follow the priority shown in blue (Ctrl-Click on the text on the left)
+GOVERNOR_FOLLOW_COLONY_REQUESTS				| Governors: %1
+GOVERNOR_FOLLOW_COLONY_REQUESTS_LABEL		| Manageable Governors
+GOVERNOR_FOLLOW_COLONY_REQUESTS_YES			| Manageable
+GOVERNOR_FOLLOW_COLONY_REQUESTS_NO			| Autonomous
+GOVERNOR_FOLLOW_COLONY_REQUESTS_YES_DESC	| The experienced player will maintain more control over the governor's actions. (Colony requests).
+GOVERNOR_FOLLOW_COLONY_REQUESTS_NO_DESC		| An experienced and autonomus Governor takes control of the colony. (Original Governors)
 
-GOVERNOR_RESERVE_FROM_RICH_DESC      | Allocate spending from fully built rich and ultra-rich colonies to “industry” in order to redirect credit production to their planetary reserve.
-GOVERNOR_RESERVE_FROM_RICH           | Reserve from Rich: %1
+GOVERNOR_RESERVE_FROM_RICH_HELP		| Allocate spending from fully built rich and ultra-rich colonies to “industry” in order to redirect credit production to their Empire reserve.<br>(Provided that the credits are not redirected to research)
+GOVERNOR_RESERVE_FROM_RICH_DESC		| Allocate spending from fully built rich and ultra-rich colonies to “industry” in order to redirect credit production to their Empire reserve.
+GOVERNOR_RESERVE_FROM_RICH           | Reserve from Rich colonies: %1
 GOVERNOR_RESERVE_FROM_RICH_LABEL     | Reserve from Rich and Ultra Rich colonies.
 
-GOVERNOR_LEGACY_GROWTH_MODE_DESC     | Develop colonies as quickly as possible.
-GOVERNOR_LEGACY_GROWTH_MODE          | Rapid growth: %1
+GOVERNOR_LEGACY_GROWTH_MODE_HELP	| By default, the governor starts by adjusting spending to maximize population growth, while balancing factory construction.<br>This is as long as the return on investment is worth it.<br>After this, population growth will no longer be forced, and factory construction will follow natural population growth.<br>The remaining spending will either be directed towards research or ship construction, at the player's choice.<br><br>When this option is enabled, population growth will be forced until the planet is fully populated.
+GOVERNOR_LEGACY_GROWTH_MODE_DESC     | Population growth will be forced until the planet is fully populated.
+GOVERNOR_LEGACY_GROWTH_MODE          | Develop colonies as quickly as possible: %1
 GOVERNOR_LEGACY_GROWTH_MODE_LABEL    | Develop colonies as quickly as possible
 
 GOVERNOR_TERRAFORM_EARLY_DESC        | Favor atmosphere and soil enrichment, as well as planet terraforming. <br>Could be used before a council, to boost your vote power.
 GOVERNOR_TERRAFORM_EARLY             | Boost Planet Early: %1%
 GOVERNOR_TERRAFORM_EARLY_LABEL       | Boost Planet Early
+
+GOVERNOR_POPULATION_OPTIONS_UI_HELP		| How should the governor manage ecology and population growth?
+GOVERNOR_POPULATION_OPTIONS_UI_DESC		| How should the governor manage ecology and population growth?
+GOVERNOR_POPULATION_OPTIONS_TITLE		| Governor Ecology and Population Management
+GOVERNOR_POPULATION_OPTIONS_UI			| Ecology and Population
 
 HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS_DESC	| Spying activities related Options.
 HEADERS_GOVERNOR_INTELLIGENCE_OPTIONS		| ~~~ INTELLIGENCE OPTIONS ~~~
@@ -5843,17 +5861,18 @@ GOVERNOR_INTELLIGENCE_OPTIONS_UI_DESC	| How should the Governor handle espionage
 GOVERNOR_INTELLIGENCE_OPTIONS_TITLE		| Governor Intelligence Options
 GOVERNOR_INTELLIGENCE_OPTIONS_UI		| Intelligence Options
 
-GOVERNOR_AUTO_INFILTRATE_DESC        | Automatically sends spies to infiltrate other empires.
-GOVERNOR_AUTO_INFILTRATE             | Auto Infiltrate: %1
-GOVERNOR_AUTO_INFILTRATE_LABEL       | Auto Infiltrate
+GOVERNOR_AUTO_INFILTRATE_DESC			| The governor automatically sends spies to infiltrate other empires.
+GOVERNOR_AUTO_INFILTRATE				| The Governor Infiltrates: %1
+GOVERNOR_AUTO_INFILTRATE_LABEL			| The Governor Infiltrates
 
-GOVERNOR_AUTO_SPY_DESC               | Hand control over spies to AI.
-GOVERNOR_AUTO_SPY                    | Auto Spy: %1
-GOVERNOR_AUTO_SPY_LABEL              | Let AI handle spies
+GOVERNOR_AUTO_SPY_HELP					| Hand control over spies to the Governor.<br>Funds will be allocated to spy on empires with technologies unknown to us.<br>When all technologies of an empire at war with us are known to us, funding will be redirected towards sabotage.
+GOVERNOR_AUTO_SPY_DESC					| Hand control over spies to the Governor.
+GOVERNOR_AUTO_SPY						| The Governor handles spies: %1
+GOVERNOR_AUTO_SPY_LABEL					| The Governor handles spies
 
-GOVERNOR_SPARE_XENOPHOBES_DESC       | Once enjoined to stop espionage by an alien empire, the Governor will follow the player's choice for the time necessary for the empire to calm down.
-GOVERNOR_SPARE_XENOPHOBES            | Honor promises: %1
-GOVERNOR_SPARE_XENOPHOBES_LABEL      | Honor promises
+GOVERNOR_SPARE_XENOPHOBES_DESC			| Once enjoined to stop espionage by an alien empire, the Governor will follow the player's choice for the time necessary for the empire to calm down.
+GOVERNOR_SPARE_XENOPHOBES				| The Governor honors promises: %1
+GOVERNOR_SPARE_XENOPHOBES_LABEL			| The Governor honors promises
 
 GOVERNOR_TRAIN_SPIES_ASAP_DESC			| Train spies as soon as possible when a new contact occurs.<br>Be careful, this will reduce other preset allocations.
 GOVERNOR_TRAIN_SPIES_ASAP				| Train Spies ASAP: %1
@@ -5959,8 +5978,6 @@ GOVERNOR_COMPLETIONIST_TECHNOLOGIES_LABEL | Completionist Technologies
 GOVERNOR_COMPLETIONIST_TECHNOLOGIES_TT    | I like completing games fully. <br> Allow all Empires to Research the following Technologies:<br><br> Controlled Irradiated Environment<br> Atmospheric Terraforming<br> Complete Terraforming<br> Advanced Soil Enrichment<br> Intergalactic Star Gates<br><br> More than 30% of the Galaxy needs to be colonized.<br> Player must control more than 50% of colonized systems.<br> Player must have completed all Research in their Tech Tree (Future Techs too).<br>
 GOVERNOR_CANCEL_BUTTON_LABEL         | Cancel
 GOVERNOR_CANCEL_BUTTON_TT            | Close the GUI
-GOVERNOR_FINE_TUNING_BUTTON_LABEL	| →GOVERNOR_SPECIAL_OPTIONS_UI←
-GOVERNOR_FINE_TUNING_BUTTON_TT		| →GOVERNOR_SPECIAL_OPTIONS_UI_DESC←
 // Leave label empty
 GOVERNOR_RACE_IMAGE_LABEL            |
 GOVERNOR_RACE_IMAGE_TT               | If the animation is disturbing you, you can stop it by clicking on it!<br>another click will reactivate it.
@@ -6005,21 +6022,24 @@ GOVERNOR_TERRAFORM_POP_PCT           | Population Pct Trigger: %1%
 GOVERNOR_TERRAFORM_POPULATION_DESC   | Terraforming of the planet will be triggered when the population missing to fill the planet reaches this value.
 GOVERNOR_TERRAFORM_POPULATION        | Full Population Trigger: %1
 GOVERNOR_TERRAFORM_COST_DESC         | Terraforming of the planet will be triggered if the cost/income ratio (~Number of years of construction) is below this percentage.
-GOVERNOR_TERRAFORM_COST              | Cost / Income Trigger: %1
+GOVERNOR_TERRAFORM_COST              | Cost / Income Trigger: %1< %1%
 
-GOVERNOR_DEFAULT_SHIP_TAKE_DESC      | Default percentage to allocate to priority fleet building, and priority research, when founding new colonies.
+GOVERNOR_DEFAULT_SHIP_TAKE_HELP		| Default percentage to assign to priority fleet construction, and priority research.<br>This value is assigned when founding new colonies, but can be updated afterwards by Alt-Clicking the "Take" value. (To the right of the "fleet under construction" image)
+GOVERNOR_DEFAULT_SHIP_TAKE_DESC		| Default percentage to allocate to priority fleet building, and priority research.
 GOVERNOR_DEFAULT_SHIP_TAKE           | Default priority takes: %1%
 
 GOVERNOR_COLONY_DISTANCE_WEIGHT_HELP | When selecting the best planet by automatic colonization: Planetary distance weighting.<br>Planetary value weighting = 100% - planetary distance weighting.<br>This parameter is shared by to all game. (Saved in Remnant.cfg)
 GOVERNOR_COLONY_DISTANCE_WEIGHT_DESC | When selecting the best planet by automatic colonization: Planetary distance weighting. (Planetary value weighting = 100% - planetary distance weighting)
 GOVERNOR_COLONY_DISTANCE_WEIGHT      | Planet distance weight: %1%
 
+GOVERNOR_COMPENSATE_GROWTH_HELP		| When population growth is in natural mode, the governor will still invest a little in the growth of colonies on hostile planets, as well as species with reduced growth, so that it becomes equivalent to that of non-hostile planets and standard species.
 GOVERNOR_COMPENSATE_GROWTH_DESC		| Compensate the species or planetary reduced growth.
 GOVERNOR_COMPENSATE_GROWTH			| Compensate reduced growth: %1
-GOVERNOR_COLONY_MIN_GROWTH_DESC		| Minimum growth (per year) of colonies.
+GOVERNOR_COLONY_MIN_GROWTH_DESC		| Minimum growth (per year) of colonies when "Develop colonies as quickly as possible" mode is not active.
 GOVERNOR_COLONY_MIN_GROWTH			| Colonies min growth: %1 Pop
 GOVERNOR_COLONY_EARLY_BOOST_DESC	| Enable →GOVERNOR_LEGACY_GROWTH_MODE_LABEL← for colonies that have not reached the specified population level.
 GOVERNOR_COLONY_EARLY_BOOST			| Early boost percentage: %1%
+
 GOVERNOR_EARLY_BASE_BUILDING_DESC	| Start building missile bases as soon as the specified industrial level is reached.
 GOVERNOR_EARLY_BASE_BUILDING		| Build Bases Early: %1
 GOVERNOR_EARLY_BASE_BOOST_PCT_DESC	| Level of industrialization that will trigger the construction of the missile base.

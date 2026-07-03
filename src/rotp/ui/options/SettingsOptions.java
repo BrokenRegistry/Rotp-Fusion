@@ -34,6 +34,8 @@ public final class SettingsOptions extends AbstractOptionsSubUI {
 		list.add(HEADER_SPACER_50);
 		list.addAll(AllSubUI.getHandle(SHIP_COMBAT_SETTINGS_UI_KEY).getUiMinor(false));
 		list.add(HEADER_SPACER_50);
+		list.addAll(AllSubUI.getHandle(GOVERNOR_UI_KEY).getUiMinor(false));
+		list.add(HEADER_SPACER_50);
 		list.addAll(AllSubUI.getHandle(NEW_OPTIONS_BETA_UI_KEY).getUiMajor(false));
 		map.add(list);
 

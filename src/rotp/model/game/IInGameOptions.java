@@ -585,7 +585,7 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 			.put(DEVELOPED_ALL, 	 MOD_UI + "DEVELOPED_ALL")
 			.put(DEVELOPED_NO_BASE,  MOD_UI + "DEVELOPED_NO_BASE")
 			.put(DEVELOPED_INDUSTRY, MOD_UI + "DEVELOPED_INDUSTRY");
-	default boolean isDeveloped(Colony col)	{
+	default boolean isDeveloped(Colony col, boolean shieldWithoutBases)	{
 		switch (developedDefinition.get()) {
 		case DEVELOPED_NO_BASE:
 			return col.industry().isCompleted(maxMissingFactories())
@@ -594,9 +594,26 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 			return col.industry().isCompleted(maxMissingFactories());
 		case DEVELOPED_ALL:
 		default:
-			return col.defense().isCompleted(0)
+			return col.defense().isCompleted(0, shieldWithoutBases)
 					&& col.industry().isCompleted(maxMissingFactories())
 					&& col.ecology().isCompleted(maxMissingPopulation());
+		}
+	}
+	default float completionRatio(Colony col, boolean shieldWithoutBases)	{
+		switch (developedDefinition.get()) {
+		case DEVELOPED_NO_BASE:
+			return (col.industry().completedPct() + col.ecology().completedPct())/2;
+		case DEVELOPED_INDUSTRY:
+			return col.industry().completedPct();
+		case DEVELOPED_ALL:
+		default:
+//			String log = col.name();
+//			log += " def: " + col.defense().completedPct(shieldWithoutBases);
+//			log += " ind: " + col.industry().completedPct();
+//			log += " eco: " + col.ecology().completedPct();
+//			log += " avg: " + (col.defense().completedPct(shieldWithoutBases) + col.industry().completedPct() + col.ecology().completedPct())/3;
+//			System.out.println(log);
+			return (col.defense().completedPct(shieldWithoutBases) + col.industry().completedPct() + col.ecology().completedPct())/3;
 		}
 	}
 	ParamInteger maxMissingPopulation	= new ParamInteger(MOD_UI, "DEV_MAX_MISSING_POP", 3)

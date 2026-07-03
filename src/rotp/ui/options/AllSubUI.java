@@ -6,6 +6,7 @@ import java.util.Map;
 
 import rotp.model.game.IMainOptions;
 import rotp.model.game.SafeListParam;
+import rotp.ui.options.old.InGameOptions;
 import rotp.ui.tech.AllocateTechUI;
 import rotp.ui.util.IParam;
 import rotp.ui.util.ParamSubUI;
@@ -44,7 +45,19 @@ public final class AllSubUI {
 		put(new GameDifficulty());
 		put(new GameMenuPreferences());
 		put(new GNNandPopupFilter());
+
+		put(new GovAspectOptions());
+		put(new GovAutoAttackOptions());
+		put(new GovAutoColonizeOptions());
+		put(new GovAutoScoutOptions());
+		put(new GovAutoFleetOptions());
+		put(new GovBuildingOptions());
+		put(new GovIntelligenceOptions());
+		put(new GovPopulationOptions());
 		put(new GovSpecialOptions());
+		put(new GovTaxesOptions());
+		put(new GovTransportOptions());
+
 		put(new HelpAndAdvice());
 		put(new IronmanLittle());
 		put(new MonstersRules());
@@ -129,11 +142,11 @@ public final class AllSubUI {
 	private static ParamSubUI	getUI(String name)				{ return getHandle(name).getUI(); }
 
 	// Panels Level 1
-	static ParamSubUI combatSubUI()			{ return getUI(CombatOptions.OPTION_ID); }
+	public static ParamSubUI combatSubUI()			{ return getUI(CombatOptions.OPTION_ID); }
 	static ParamSubUI debugSubUI()			{ return getUI(DebugOptions.OPTION_ID); }
-	static ParamSubUI flagSubUI()			{ return getUI(FlagOptions.OPTION_ID); }
+	public static ParamSubUI flagSubUI()			{ return getUI(FlagOptions.OPTION_ID); }
 	static ParamSubUI ironmanSubUI()		{ return getUI(IronmanOptions.OPTION_ID); }
-	static ParamSubUI randomEventsSubUI()	{ return getUI(RandomEventsOptions.OPTION_ID); }
+	public static ParamSubUI randomEventsSubUI()	{ return getUI(RandomEventsOptions.OPTION_ID); }
 
 	public static ParamSubUI commonSubUI()		{ return getUI(CommonOptions.OPTION_ID); }
 	public static ParamSubUI governorSubUI()	{ return getUI(GovOptions.OPTION_ID); }

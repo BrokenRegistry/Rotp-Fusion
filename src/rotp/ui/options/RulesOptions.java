@@ -41,7 +41,7 @@ public final class RulesOptions extends AbstractOptionsSubUI {
 		list.add(HEADER_SPACER_50);
 		list.add(AllSubUI.getHandle(MONSTER_RULES_UI_KEY).getUI());
 		list.add(HEADER_SPACER_50);
-		list.addAll(AllSubUI.getHandle(GOVERNOR_UI_KEY).getUiMinor(false));
+		list.addAll(AllSubUI.getHandle(GOVERNOR_UI_KEY).getUiMinor(false)); // To be able to acess it from galaxy setup panel.
 		list.add(HEADER_SPACER_50);
 		list.addAll(AllSubUI.getHandle(SHIP_COMBAT_RULES_UI_KEY).getUiMinor(false));
 		list.add(HEADER_SPACER_50);

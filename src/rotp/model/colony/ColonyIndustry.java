@@ -23,7 +23,7 @@ import rotp.model.empires.Empire;
 import rotp.model.planet.Planet;
 import rotp.model.tech.TechRoboticControls;
 
-public class ColonyIndustry extends ColonySpendingCategory {
+public final class ColonyIndustry extends ColonySpendingCategory {
     private static final long serialVersionUID = 1L;
     private float factories = 0;
     private float previousFactories = 0;
@@ -45,7 +45,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
     public int categoryType()              { return Colony.INDUSTRY; }
     public float factories()               { return factories; }
     public void factories(float d)         { factories = max(0,d); }
-    public void previousFactories(float d) { previousFactories = d; }
+	void previousFactories(float d)		{ previousFactories = d; }
     public int deltaFactories()            { return (int)factories - (int)previousFactories; }
     public int robotControls()             { return robotControls; }
     public float newFactoryCost()          { return tech().newFactoryCost(robotControls()); }
@@ -54,17 +54,17 @@ public class ColonyIndustry extends ColonySpendingCategory {
             return maxRobotControls();
         return robotControls() + empire().robotControlsAdj(); 
     }
-    public int maxRobotControls()          { return tech().topRobotControls() + empire().robotControlsAdj(); }
+	int maxRobotControls()				{ return tech().topRobotControls() + empire().robotControlsAdj(); }
     @Override
     public float totalBC()              { return super.totalBC() * planet().productionAdj(); }
     int currentBuildableFactories()     { return maxBuildableFactories(robotControls); }
 	public float completedPct()			{ return factories / maxFactories(); }
     public float maxFactories()         { return planet().maxSize() * maxRobotControls(); }
-    public float maxFactories(int rc)   { return planet().maxSize() * rc; }
+	// public float maxFactories(int rc)   { return planet().maxSize() * rc; }
     public int maxBuildableFactories()  { return (int) (planet().currentSize() * maxRobotControls()); }
-    public int maxBuildableFactories(int rc) { return (int) (planet().currentSize() * (rc+empire().robotControlsAdj())); }
+	private int maxBuildableFactories(int rc)	{ return (int) (planet().currentSize() * (rc+empire().robotControlsAdj())); }
     public int maxUseableFactories()         { return maxUseableFactories(robotControls()); }
-    public int maxUseableFactories(int rc)   { return (int) colony().population() * (rc+empire().robotControlsAdj()); }
+	private int maxUseableFactories(int rc)		{ return (int) colony().population() * (rc+empire().robotControlsAdj()); }
     @Override public boolean isCompleted()   { return factories >= maxBuildableFactories(); }
     @Override public boolean isCompleted(int maxMissingFactories)	{
     	return (maxBuildableFactories()-factories) <= maxMissingFactories;
@@ -74,7 +74,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
     public float orderedValue()          { return max(super.orderedValue(), colony().orderAmount(Colony.Orders.FACTORIES)); }
     @Override
     public void removeSpendingOrders()   { colony().removeColonyOrder(Colony.Orders.FACTORIES); }
-    public void capturedBy(Empire newCiv) {
+	void capturedBy(Empire newCiv)			{
         if (newCiv == empire())
             return;
 
@@ -88,22 +88,22 @@ public class ColonyIndustry extends ColonySpendingCategory {
         newFactories = 0;
         previousFactories = 0;
     }
-    public float upgradeCost() {
+    /* public float upgradeCost() {
         float upgradeCost = 0;
         float factoriesToUpgrade = min(factories+newFactories, maxBuildableFactories(robotControls));
         if (!empire().ignoresFactoryRefit())
             upgradeCost = factoriesToUpgrade * tech().bestFactoryCost() / 2;
         return upgradeCost;
-    }
+    } */
     @Override
     public void nextTurn(float totalProd, float totalReserve) {
         if (factories < 0) // correct possible data issue
             factories = 0;
-        
+
         // correct for any captured errors in existing saves where a
         // captured colony had higher controls
         robotControls = min(robotControls, tech().topRobotControls());
-        
+
         previousFactories = factories;
         // prod gets planetary bonus, but not reserve
         float prodBC = pct()* totalProd * planet().productionAdj();
@@ -111,7 +111,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
         float newBC = prodBC+rsvBC+industryReserveBC;
         industryReserveBC = 0;
         newFactories = 0;
-        
+
         while ((newBC > 0) && (robotControls <= tech().topRobotControls())) {
             // how many total factories can we have at current controls?
             float buildableFactories = maxBuildableFactories(robotControls);        
@@ -136,7 +136,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
                         buildableFactories = maxBuildableFactories(robotControls);
                     }
                 }
-            }          
+            }
             // first, try to convert existing alien factories to our max build limit
             if ((newFactories+factories) < buildableFactories) {
                 while (convertableAlienFactories() > 0 && (newBC > factoryConversionCost()) && (newFactories + factories < buildableFactories)) {
@@ -176,7 +176,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
     	else
     		return newFactoryCost();
     }
-    public void commitTurn() {
+	void commitTurn()	{
         factories += newFactories;
         if (!empire().divertColonyExcessToResearch())
            empire().addReserve(unallocatedBC);
@@ -378,7 +378,7 @@ public class ColonyIndustry extends ColonySpendingCategory {
         return totalCost;
     }
     public int maxAllocationNeeded() { return maxAllocationNeeded(colony().totalIncome()); }
-    public int maxAllocationNeeded(float totalIncome) {
+	int maxAllocationNeeded(float totalIncome)	{
         float needed = maxSpendingNeeded();
         if (needed <= 0)
             return 0;
