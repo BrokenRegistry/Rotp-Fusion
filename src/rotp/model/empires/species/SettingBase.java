@@ -34,7 +34,7 @@ import java.util.LinkedList;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import rotp.model.game.DynamicOptions;
 import rotp.model.game.IGameOptions;
@@ -430,11 +430,11 @@ public class SettingBase<T> implements ICRSettings<T> {
 			return realLabel;
 		}
 		String labelEnd = langDir;
-		langLabel = StringUtils.removeEnd(langLabel, labelEnd);
+		langLabel = Strings.CS.removeEnd(langLabel, labelEnd);
 		realLabel = realLangLabel(langLabel);
 		if (realLabel != null)
 			return realLabel;
-		return StringUtils.removeEnd(getCfgLabel(), labelEnd);
+		return Strings.CS.removeEnd(getCfgLabel(), labelEnd);
 	}
 	// ===== Other Public Methods =====
 	//

@@ -5,7 +5,6 @@ import java.util.Arrays;
 import rotp.model.combat.ShipCombatManager;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
-import rotp.ui.util.ParamTitle;
 
 final class GovAutoAttackOptions extends AbstractOptionsSubUI {
 	static final String OPTION_ID = GOVERNOR_AUTO_ATTACK_UI_KEY;
