@@ -47,14 +47,14 @@ public interface IGovOptions {
 	String STARGATES_ULTRA_RICH	= "Ultra Rich";
 	String STARGATES_RICH		= "Rich";
 	String STARGATES_ALL		= "All";
-	ParamList	 starGateOption		= initStarGateOption();
+	ParamList starGateOption	= initStarGateOption();
 	static ParamList initStarGateOption() {
 		ParamList list = new ParamList(GOV_UI, "STARGATES_OPTIONS", STARGATES_RICH);
 		list.showFullGuide(true);
-		list.put(STARGATES_NONE,		GOV_UI + "STARGATES_" + STARGATES_NONE.toUpperCase());
-		list.put(STARGATES_ULTRA_RICH,	GOV_UI + "STARGATES_" + STARGATES_ULTRA_RICH.toUpperCase());
-		list.put(STARGATES_RICH,		GOV_UI + "STARGATES_" + STARGATES_RICH.toUpperCase());
-		list.put(STARGATES_ALL,			GOV_UI + "STARGATES_" + STARGATES_ALL.toUpperCase());
+		list.put(STARGATES_NONE,		GOV_UI + "STARGATES_NONE");
+		list.put(STARGATES_ULTRA_RICH,	GOV_UI + "STARGATES_ULTRA_RICH");
+		list.put(STARGATES_RICH,		GOV_UI + "STARGATES_RICH");
+		list.put(STARGATES_ALL,			GOV_UI + "STARGATES_ALL");
 		return list;
 	}
 

@@ -446,6 +446,7 @@
 
 ### Fixes:
 
+- Fixed a typo preventing the correct display of the "Ultra-Rich" option in the selection of colonies to build a stargate.
 - Double clicking on the war view planet image will now also recenter the map.
 - Fixed a bug occurring when double clicking on the planet image to recenter the map, when done with totally improbable timing.
 - Fixed Modnar species missing their special abilities. (Removed a forgotten debug line)

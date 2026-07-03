@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-07-03 (BR)
+- Fixed a typo preventing the correct display of the "Ultra-Rich" option in the selection of colonies to build a stargate.
 - New governor options:
   - New option to allocate funds to colonies with artifacts. (Added to the original governor interface)
   - New option to select which colonies with artifacts or new colonies receive funds first.
