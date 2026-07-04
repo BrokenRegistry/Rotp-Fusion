@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-07-04 (BR)
+- Fixed slow display of very large colony lists.
+
 26-07-03 (BR)
 - Fixed a typo preventing the correct display of the "Ultra-Rich" option in the selection of colonies to build a stargate.
 - New governor options:
@@ -57,18 +60,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 - More informative empire reserves display:
   - The amount now includes excess spending, when redirected to the reserve.
   - The sprite to the left of the galaxy also displays the amount that will be added to the reserve.
-
-26-06-27 (BR)
-- Double clicking on the war view planet image will now also recenter the map.
-- New option to disable the auto war view on F7/F8 activation. (User Interface --> Visual Options)
-
-26-06-26 (BR)
-- Fixed a bug occurring when double clicking on the planet image to recenter the map, when done with totally improbable timing.
-
-26-06-25 (BR)
-- Fixed Modnar species missing their special abilities. (Removed a forgotten debug line)
-- Fixed Missile range English description (some range were wrong)
-- Fixed Event messages and UI display, when related to a system unknown to the player.
 
 
 ### [Features Historic](FeaturesChanges.md)

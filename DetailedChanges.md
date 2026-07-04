@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-07-04 (BR)
+- Fixed slow display of very large colony lists.
+
 26-07-03 (BR)
 - Fixed a typo preventing the correct display of the "Ultra-Rich" option in the selection of colonies to build a stargate.
 - Fixed a typo preventing the correct display of the "Ultra-Rich" option in the selection of colonies to build a stargate.
