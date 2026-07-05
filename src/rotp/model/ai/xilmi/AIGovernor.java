@@ -32,7 +32,7 @@ import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
 import rotp.util.Base;
 
-public class AIGovernor implements Base, Governor {
+public final class AIGovernor implements Base, Governor {
     public static final int SHIP = Colony.SHIP;
     public static final int DEFENSE = Colony.DEFENSE;
     public static final int INDUSTRY = Colony.INDUSTRY;
@@ -475,11 +475,6 @@ public class AIGovernor implements Base, Governor {
         for (int i=0;i<col.spending.length;i++)
             col.locked(i, false);
     }
-    @Override
-    public float maxShipBCPermitted(Colony col) {
-        float maxAllowed = max(0, col.totalIncome() - col.wasteCleanupCost());
-        return min(maxAllowed, col.totalIncome()*shipPctForColony(col));
-    }
     public void suggestMissileBaseCount(Colony col) {
         if (empire.isAIControlled())
             suggestMissileBaseCount(col, col.production());
@@ -544,37 +539,7 @@ public class AIGovernor implements Base, Governor {
             col.defense().maxBases(max(currBases,0));                           // ail: missile-bases are simply not worth it.
     }
     @Override
-    public int suggestedEmpireTaxLevel() {
-        // this will hopefully be handled at the planet level,so return 0
-        return 0;
-    }
-    @Override
-    public void lowerExpenses(Colony col) {
-        float totalProd = col.totalIncome();
-
-        // does this colony have a positive income? If not, start canceling some activities
-        // 1. start by reducing outgoing transports
-        while ((totalProd <= 0) && col.canLowerMaintenance()) {
-            col.lowerMaintenance();
-            totalProd = col.totalIncome();
-        }
-
-        // 2. try reducing shipyard maintenance (stargate)
-        while ((totalProd <= 0) && col.shipyard().canLowerMaintenance()) {
-            col.shipyard().lowerMaintenance();
-            totalProd = col.totalIncome();
-        }
-
-        // 3. try reducing defense maintenance (bases)
-        while ((totalProd <= 0) && col.defense().canLowerMaintenance()) {
-            col.defense().lowerMaintenance();
-            totalProd = col.totalIncome();
-        }
-        col.validate();
-    }
-    @Override
-    public float targetPopPct(int sysId) {
-        SystemView sv = empire.sv.view(sysId);
+    public float targetPopPct(SystemView sv) {
         if(empire.generalAI().totalEmpirePopulationCapacity(empire) > 0)
         {
             float tgtPercentage = empire.totalEmpirePopulation() / empire.generalAI().totalEmpirePopulationCapacity(empire);
@@ -612,9 +577,7 @@ public class AIGovernor implements Base, Governor {
             col.setCleanupPct(minPct);
         return true;
     }
-    private float shipPctForColony(Colony col) {
-        return 1;
-    }
+    @Override public float shipPctForColony(Colony col)	{ return 1; }
     @Override
     public float productionScore(StarSystem sys)
     {
