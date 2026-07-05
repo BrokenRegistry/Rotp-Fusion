@@ -32,6 +32,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import rotp.model.empires.EmpireView;
 import rotp.ui.BasePanel;
 import rotp.ui.diplomacy.DialogueManager;
@@ -39,7 +40,7 @@ import rotp.ui.diplomacy.DiplomaticMessage;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 
-public class ManageDiplomatsUI  extends BasePanel implements MouseListener, MouseWheelListener, MouseMotionListener {
+final class ManageDiplomatsUI  extends BasePanel implements MouseListener, MouseWheelListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
     private static final Color backgroundHaze = new Color(0,0,0,160);
     private static final Color okButtonBdrC = new Color(158,165,156);
@@ -49,22 +50,22 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
     private static final Color greenMidC = new Color(71,93,48);
     private static final Color unselectedC = new Color(112,85,68);
 
-    final RacesUI parent;
+	private final RacesUI parent;
     private Shape hoverBox, hoverButton;
     private int dragY = 0;
     private final Rectangle okButton = new Rectangle();
-    final Rectangle listBox = new Rectangle();
-    final Rectangle listScroller = new Rectangle();
-    int listY, listYMax;
-    int button1W, button2W, button3W, maxNameW;
-    private LinearGradientPaint smallGreenBackC, largeGreenBackC;
-    Shape textureClip;
-    List<Rectangle> audienceBoxes = new ArrayList<>();
-    List<Rectangle> diploBoxes = new ArrayList<>();
-    List<Rectangle> muteBoxes = new ArrayList<>();
-    List<EmpireView> empireViews = new ArrayList<>();
+	private final Rectangle listBox = new Rectangle();
+	private final Rectangle listScroller = new Rectangle();
+	private int listY, listYMax;
+	private int button1W, button2W, button3W, maxNameW;
+	private LinearGradientPaint smallGreenBackC, largeGreenBackC;
+	private Shape textureClip;
+	private List<Rectangle> audienceBoxes = new ArrayList<>();
+	private List<Rectangle> diploBoxes = new ArrayList<>();
+	private List<Rectangle> muteBoxes = new ArrayList<>();
+	private List<EmpireView> empireViews = new ArrayList<>();
 
-    public ManageDiplomatsUI(RacesUI p) {
+	ManageDiplomatsUI(RacesUI p) {
         parent = p;
         initModel();
     }
@@ -74,7 +75,7 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
         addMouseMotionListener(this);
         addMouseWheelListener(this);
     }
-    public void init() {
+	void init() {
         listY = 0;
         for (Rectangle r: audienceBoxes)
             r.setBounds(0,0,0,0);
@@ -87,6 +88,38 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
     public String textureName()     { return TEXTURE_BROWN; }
     @Override
     public Shape textureClip()     { return textureClip; }
+	private void initButtons(Graphics2D g)	{
+		empireViews.clear();
+		for (EmpireView v: player().contacts())
+			if (!v.embassy().finalWar() && v.inEconomicRange())
+				empireViews.add(v);
+
+		Collections.sort(empireViews, EmpireView.BY_RACENAME);
+		String button1A = text("RACES_DIPLOMACY_AUDIENCE");
+		String button1B = text("RACES_MANAGE_OUR_RECALLED");
+		String button1C = text("RACES_MANAGE_THEIR_RECALLED");
+		String button1D = text("RACES_MANAGE_BOTH_RECALLED");
+		String button2A = text("RACES_MANAGE_REINSTATE_DIPLOMAT");
+		String button2B = text("RACES_MANAGE_RECALL_DIPLOMAT");
+		String button3A = text("RACES_MANAGE_MUTE_WARNING_SPY");
+		String button3B = text("RACES_MANAGE_UNMUTE_WARNING_SPY");
+		g.setFont(narrowFont(20));
+		maxNameW = s60;
+		for (EmpireView view: player().contacts()) 
+			maxNameW = max(maxNameW, s30 + g.getFontMetrics().stringWidth(view.raceName()));       
+		g.setFont(narrowFont(18));
+		button1W = max(s80, s30 + g.getFontMetrics().stringWidth(button1A));
+		if (galaxy().council().finalWar()) {
+			button2W = 0;
+			button3W = 0;
+		}
+		else {
+			button2W = max(s80, s30 + g.getFontMetrics().stringWidth(button2A), s20 + g.getFontMetrics().stringWidth(button2B));
+			button3W = max(s80, s20 + g.getFontMetrics().stringWidth(button3A), s30 + g.getFontMetrics().stringWidth(button3B));
+		}
+		g.setFont(narrowFont(16));
+		button1W = max(button1W, g.getFontMetrics().stringWidth(button1B), g.getFontMetrics().stringWidth(button1C), g.getFontMetrics().stringWidth(button1D));
+	}
     @Override
     public void paintComponent(Graphics g0) {
         Graphics2D g = (Graphics2D) g0;
@@ -95,56 +128,20 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
 
         int w = getWidth();
         int h = getHeight();
-        
-        if (maxNameW == 0) { // don't do this every repaint. c'mon man.
-            empireViews.clear();
-            for (EmpireView v: player().contacts()) {
-                if (!v.embassy().finalWar() && v.inEconomicRange())
-                    empireViews.add(v);
-            }
-            Collections.sort(empireViews, EmpireView.BY_RACENAME);
-            String button1A = text("RACES_DIPLOMACY_AUDIENCE");
-            String button1B = text("RACES_MANAGE_OUR_RECALLED");
-            String button1C = text("RACES_MANAGE_THEIR_RECALLED");
-            String button1D = text("RACES_MANAGE_BOTH_RECALLED");
-            String button2A = text("RACES_MANAGE_REINSTATE_DIPLOMAT");
-            String button2B = text("RACES_MANAGE_RECALL_DIPLOMAT");
-            String button3A = text("RACES_MANAGE_MUTE_WARNING_SPY");
-            String button3B = text("RACES_MANAGE_UNMUTE_WARNING_SPY");
-            g.setFont(narrowFont(20));
-            maxNameW = s60;
-            for (EmpireView view: player().contacts()) 
-                maxNameW = max(maxNameW, s30+g.getFontMetrics().stringWidth(view.raceName()));       
-            g.setFont(narrowFont(18));
-            button1W = max(s80, s30+g.getFontMetrics().stringWidth(button1A));
-            if (galaxy().council().finalWar()) {
-            	button2W = 0;
-            	button3W = 0;
-            }
-            else {
-                button2W = max(s80, s30+g.getFontMetrics().stringWidth(button2A),
-                					s20+g.getFontMetrics().stringWidth(button2B));
-                button3W = max(s80, s20+g.getFontMetrics().stringWidth(button3A),
-    								s30+g.getFontMetrics().stringWidth(button3B));
-            }
-            g.setFont(narrowFont(16));
-            button1W = max(button1W, g.getFontMetrics().stringWidth(button1B),
-				            		g.getFontMetrics().stringWidth(button1C),
-				            		g.getFontMetrics().stringWidth(button1D));
-        }
+
+		if (maxNameW == 0)
+			initButtons(g);
 
         // draw background "haze"
         g.setColor(backgroundHaze);
         g.fillRect(0, 0, w, h);
-        
 
         // get length of title and rows to determine box width
         g.setFont(narrowFont(24));
         String title = text("RACES_DIPLOMACY_BUREAU");
         int titleSW = g.getFontMetrics().stringWidth(title);
-        
+
         int scrollBoxW = s20;
-        
         int maxDisplayRows = 9;
         int topM = s15;
         int bottomM = s30;
@@ -174,14 +171,14 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
         int x1 = (w-titleSW)/2;
         g.setFont(narrowFont(24));
         drawShadowedString(g, title, 3, x1, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
-        
+
         // fill data area
         int x2 = x0+s25;
         int y2 = y0+s55;
         int w2 = boxWidth-s50;
         int h2 = numRows*rowH;
         g.setColor(RacesUI.darkBrown);
-        
+
         g.fillRect(x2, y2, w2, h2); 
 
         int rowx1 = x2;
@@ -189,10 +186,10 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
         int rowx3 = rowx2+button1W+s20;
         int rowx4 = rowx3+button2W+s20;
         int rowx5 = rowx4+button3W+s20;
-        
+
         int listH = h2;
         int fullListH = empireViews.size()* rowH;
-        
+
         g.setClip(x2,y2,w2, h2);
         int y3 = y2-listY;
         for (int i=0;i<empireViews.size();i++) {
@@ -208,7 +205,7 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
             g.setColor(RacesUI.scrollBarC);
             int scrollW = scrollBoxW-s5;
             int scrollH = (int) ((float)listH*listH/(listH+listYMax));
-            int scrollX = rowx4+s3;
+            int scrollX = rowx5+s3;
             int scrollY =(int) (y2+ (float)listH*listY/(listYMax+listH));
             g.fillRoundRect(scrollX, scrollY, scrollW, scrollH, s4, s4);
             listScroller.setBounds(scrollX, scrollY, scrollW, scrollH);
@@ -226,9 +223,10 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
         g.setColor(brownDividerC);
         g.drawLine(rowx2, y2, rowx2, y2+h2);
         g.drawLine(rowx3, y2, rowx3, y2+h2);
+        g.drawLine(rowx4, y2, rowx4, y2+h2);
         if (empireViews.size() > maxDisplayRows)
-            g.drawLine(rowx4, y2, rowx4, y2+h2);     
-        
+            g.drawLine(rowx5, y2, rowx5, y2+h2);     
+
         // OK button vars
         int buttonM = s30;  // L/R margin
         int buttonW = (boxWidth-buttonM-buttonM)/2;
@@ -269,23 +267,23 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
     }
     private void drawEmpireInformation(Graphics2D g, EmpireView view, int index, int x, int y, int w, int h, int x2, int x3, int x4, int x5) {
         int y1 = y+h-s12;
-        
+
         if (audienceBoxes.size() <= index)
             audienceBoxes.add(new Rectangle());
         if (diploBoxes.size() <= index)
             diploBoxes.add(new Rectangle());
         if (muteBoxes.size() <= index)
             muteBoxes.add(new Rectangle());
-        
+
         g.setColor(SystemPanel.blackText);
-        
+
         // race name in column 1
         g.setFont(narrowFont(20));
         String s = view.raceName();
         int w1 = x2-x;
         int sw = g.getFontMetrics().stringWidth(s);
         drawString(g,s, x+(w1-sw)/2, y1);
-        
+
         // audience button or recalled text in column 2
         int w2 = x3-x2;
         boolean ourRecalled = view.embassy().diplomatGone();
@@ -297,7 +295,7 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
             label = text("RACES_MANAGE_OUR_RECALLED");
         else if (theirRecalled)
             label = text("RACES_MANAGE_THEIR_RECALLED");
-        
+
         // set up background gradients
         if (smallGreenBackC == null) {  // don't do this every repaint
             Point2D start1 = new Point2D.Float(x+s15, 0);
@@ -319,7 +317,7 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
             Rectangle rect = audienceBoxes.get(index);
             drawButton(g, rect, label, smallGreenBackC, x2+s15,y+s5, w2-s30, h-s10);
         }
-        
+
         // recall or reinstate button in column 3
         if (button2W > 0) {
             int w3 = x4-x3;
@@ -410,12 +408,12 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
     private void recallReinstateDiplomat(EmpireView view) {
         if (view == null)
             return;
-        
+
         if (view.embassy().diplomatGone())
             view.embassy().reopenEmbassy();
         else
             view.embassy().closeEmbassy();
-                
+
         parent.repaint();
     }
     private void openEmbassy(EmpireView view) {
@@ -474,19 +472,19 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
                 exit();
                 openEmbassy(empireViews.get(i));
                 return;
-            }         
+            }
         }
         for (int i=0;i<diploBoxes.size();i++) {
             if (hoverButton == diploBoxes.get(i)) {
                 recallReinstateDiplomat(empireViews.get(i));
                 return;
-            }         
+            }
         }
         for (int i=0;i<muteBoxes.size();i++) {
             if (hoverButton == muteBoxes.get(i)) {
             	muteUnmuteDiplomat(empireViews.get(i));
                 return;
-            }         
+            }
         }
     }
     @Override
@@ -553,7 +551,7 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
         Shape prevHoverButton = hoverButton;
         hoverBox = null;
         hoverButton = null;
-        
+
         for (Rectangle r: audienceBoxes) {
             if (r.contains(x,y)) {
                 hoverButton = r;
@@ -578,7 +576,7 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
             hoverBox = listScroller;
         else if (listBox.contains(x,y))
             hoverBox = listBox;
-        
+
         if ((prevHoverBox != hoverBox) 
         || (prevHoverButton != hoverButton))
             repaint();

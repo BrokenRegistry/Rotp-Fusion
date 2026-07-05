@@ -7,6 +7,12 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-07-05 (BR)
+- Empire Status panel:
+  - Fixed display of lists not scrolling all the way to the bottom when there were a high number of empires.
+  - Fixed the empire names of the top boxes dripping onto those of the bottom boxes when scrolling through the bottom boxes.
+- Fixed misplaced scrollbar in the Manage Diplomats subpanel.
+
 26-07-04 (BR)
 - Fixed slow display of very large colony lists.
 

@@ -446,6 +446,10 @@
 
 ### Fixes:
 
+- Empire Status panel:
+  - Fixed display of lists not scrolling all the way to the bottom when there were a high number of empires.
+  - Fixed the empire names of the top boxes dripping onto those of the bottom boxes when scrolling through the bottom boxes.
+- Fixed misplaced scrollbar in the Manage Diplomats subpanel.
 - Fixed slow display of very large colony lists.
 - Fixed a typo preventing the correct display of the "Ultra-Rich" option in the selection of colonies to build a stargate.
 - Double clicking on the war view planet image will now also recenter the map.
