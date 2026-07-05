@@ -185,7 +185,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     	return !governor;
     }
     public void    toggleRecalcSpending()		{ recalcSpendingForNewTaxRate = true; }
-    private boolean underSiege()               { return underSiege; }
+	public boolean underSiege()					{ return underSiege; }
     public float reserveIncome()               { return reserveIncomeBC; }
     private void clearReserveIncome()          { reserveIncomeBC = 0; }
     public void adjustReserveIncome(float bc)  { reserveIncomeBC += bc; }
@@ -1216,7 +1216,9 @@ public final class Colony implements Base, IMappedObject, Serializable {
     private int incomingTransports()	{ return galaxy().friendlyPopApproachingSystem(starSystem()); }
     public float populationPct()	{ return (population() / planet.currentSize()); }
     public float expectedPopPct()	{ return (expectedPopulationLongTerm() / planet.currentSize()); }
-    public int calcPopNeeded(float desiredPct) {
+	public int calcPopNeeded(float desiredPct, boolean excludeUnderSiege)	{ // TODO BR: Add option for local exclusion
+		if (excludeUnderSiege && underSiege())
+			return 0;
         return (int) ((planet.currentSize() * desiredPct) - expectedPopulationLongTerm());
     }
     float newWaste() {

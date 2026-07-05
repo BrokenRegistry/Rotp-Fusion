@@ -22,6 +22,7 @@ final class GovTransportOptions extends AbstractOptionsSubUI {
 				autotransportAll,
 				transportNoRich,
 				transportPoorX2,
+				transportExcludeBesieged,
 				transportMaxDist
 				)));
 		return map;
@@ -34,8 +35,26 @@ final class GovTransportOptions extends AbstractOptionsSubUI {
 						autotransportAll,
 						transportNoRich,
 						transportPoorX2,
+
+						LINE_SPACER_25,
+						transportExcludeBesieged,
 						transportMaxDist
 						));
 		return minorList;
+	}
+	@Override public SafeListParam majorList()	{
+		SafeListParam majorList = new SafeListParam(uiMajorKey(),
+				Arrays.asList(
+						autoTransportAI,
+						autotransportFull,
+						autotransportAll,
+						transportNoRich,
+						transportPoorX2,
+
+						LINE_SPACER_25,
+						transportExcludeBesieged,
+						transportMaxDist
+						));
+		return majorList;
 	}
 }

@@ -5745,6 +5745,10 @@ GOVERNOR_TRANSPORT_POOR_DBL_DESC    | Les gouverneurs des planètes pauvres cont
 GOVERNOR_TRANSPORT_POOR_DBL         | Pauvres x2 : %1
 GOVERNOR_TRANSPORT_POOR_DBL_LABEL   | Les planètes pauvres contribuent doublement aux migrations.
 
+GOVERNOR_TRANSPORT_TO_BESIEGED_HELP	| Les gouverneurs n’enverront jamais de transports lorsque des navires ennemis en orbite peuvent intercepter vos troupes.<br>Mais si leur flotte est majoritairement composée de bombardiers, les troupes pourraient s’y faufiler, pour être malheureusement éliminées lors du prochain bombardement.<br>Il est également possible que des troupes ennemies mieux équipées soient en route, et que toute reconquête par combat terrestre soit impossible.<br>Il devient alors préférable de conserver sa population pour renforcer les défenses des colonies proches du front.
+GOVERNOR_TRANSPORT_TO_BESIEGED_DESC	| Les gouverneurs n’enverront pas de transports vers des colonies assiégées par un empire ennemi.
+GOVERNOR_TRANSPORT_TO_BESIEGED		| Exclure les assiégés: %1
+
 GOVERNOR_TRANSPORT_MAX_TURNS_DESC   | Distance maximale des migrations automatisées (en années).<br>(Distance 1,5 fois plus élevée lorsque des nébuleuses sont traversées)
 GOVERNOR_TRANSPORT_MAX_TURNS        | Distance Maximale : %1 tour(s)
 GOVERNOR_TRANSPORT_MAX_TURNS_LABEL  | Distance de migration maximale (en années)

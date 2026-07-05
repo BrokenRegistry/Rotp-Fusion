@@ -1745,129 +1745,169 @@ public final class Empire extends Species implements NamedObject {
 		}
 		return false;
 	}
-    // New autotransport. Start with targets first.
-    private void autotransport() {
-        GovernorOptions options = govOptions();
-        if (isAIControlled()) {
-            return;
-        }
-        if(options.isAutotransportAI())
-            ai.sendTransports();
-        if(!options.isAutotransportFull())
-            return;
+	private final class ColonyTransporter {
+		private final Colony colony;
+		private final float currentSize;
+		private float expectedPopulationLongTerm;
+		private float expectedPopPct;
+		private float travelTimeAdjusted;
+		private float growthBaseFactor;
+		private float population;
+		private ColonyTransporter(Colony c, float current, float longTerm) {
+			colony = c;
+			currentSize = current;
+			expectedPopulationLongTerm = longTerm;
+			expectedPopPct = expectedPopulationLongTerm/currentSize;
+		}
+		@Override public String toString()	{
+			return expectedPopPct + " " + expectedPopulationLongTerm + " / " + currentSize + " " + colony.name();
+		}
+		private void setTravelTimeAdjusted(Colony target, float transportTravelSpeed)	{
+			travelTimeAdjusted = colony.travelTimeAdjusted(colony, target, transportTravelSpeed);
+		}
+		private double expectedPopAtTransportTime(float transportTime) {
+			if (growthBaseFactor == 0) {
+				population = colony.population();
+				growthBaseFactor = 1 + colony.unrestrictedPopGrowth() / population;
+			}
+			return population + Math.pow(growthBaseFactor, transportTime);
+		}
+		private void updateLongTerm(int sentPop)	{
+			expectedPopulationLongTerm += sentPop;
+			expectedPopPct = expectedPopulationLongTerm/currentSize;
+		}
+	}
+	private final class ColonyTransporterList extends ArrayList<ColonyTransporter> {
+		private static final long serialVersionUID = 1L;
+		private float transportTravelSpeed = tech().transportTravelSpeed();
 
-        List<Colony> colonies = new LinkedList<>();
-        for (int i = 0; i < this.sv.count(); ++i) {
-            if (this.sv.empire(i) == this && this.sv.isColonized(i)) {
-                Colony c = this.sv.colony(i);
-                // don't transport to populations that are missing less than 4 population
-                if (c.planet().currentSize() - c.expectedPopulationLongTerm() > 4 ) {
-                    colonies.add(c);
-                }
-            }
-        }
-        // all colonies at full population- nothing to do
-        if (colonies.isEmpty()) {
-            return;
-        }
+		private void sortByExpectedPopPct()	{
+			sort((ColonyTransporter col1, ColonyTransporter col2)
+					-> Float.compare(col1.expectedPopPct, col2.expectedPopPct));
+		}
+		private ColonyTransporter getMinTravelTime(Colony target)	{
+			// BR: To allow quicker sorting, travel Time are computed only once.
+			for (ColonyTransporter colTr : this)
+				colTr.setTravelTimeAdjusted(target, transportTravelSpeed);
+			return Collections.min(this, (ColonyTransporter o1, ColonyTransporter o2)
+					-> (int) Math.signum(o1.travelTimeAdjusted - o2.travelTimeAdjusted));
+		}
+	}
 
-        Collections.sort(colonies,
-                (Colony o1, Colony o2) -> (int)Math.signum(o1.expectedPopPct() - o2.expectedPopPct()));
-        /*for (Colony c: colonies) {
-            System.out.println("Transport Recipient "+c.expectedPopPct()+" "+c.expectedPopulation()+"/"+c.planet().currentSize()+" "+c.name());
-        }*/
+	// New autotransport. Start with targets first.
+	private void autotransport() {
+		GovernorOptions govOptions = govOptions();
+		if (isAIControlled())
+			return;
+		if(govOptions.isAutotransportAI())
+			ai.sendTransports();
+		if(!govOptions.isAutotransportFull())
+			return;
 
-        List<Colony> donors = new LinkedList<>();
-        for (int i = 0; i < this.sv.count(); ++i) {
-            if (this.sv.empire(i) == this && this.sv.isColonized(i)) {
-                Colony c = this.sv.colony(i);
-                // don't send population from planets with governor off
-                if (!c.isGovernor() || c.noGovAutoTransport()) {
-                    continue;
-                }
-                if (c.transporting() || !c.canTransport() || c.maxTransportsAllowed() < 1) {
-                    continue;
-                }
-                // don't ship population from planets with 20 or less population
-                if (c.planet().currentSize() <= 20) {
-                    continue;
-                }
-                // we don't have excess population. Allow transporting 1 pop to stabilize planet ant max-1
-                if (c.expectedPopulationLongTerm() < (c.planet().currentSize() - 2)) {
-                    continue;
-                }
-                // if this option is checked, don't send out population out of planets which are Rich or Artefacts
-                if (options.isTransportRichDisabled() &&
-                        (c.planet().isResourceRich() || c.planet().isResourceUltraRich() ||
-                                c.planet().isArtifact() || c.planet().isOrionArtifact())) {
-                    continue;
-                }
-                // ship population out earlier, don't check if ecology is all done.
-                // ship population out earlier, don't check if industry is all done.
-                donors.add(c);
-            }
-        }
-        /*for (Colony c: donors) {
-            System.out.println("Transport Donor "+c.expectedPopulation()+"/"+c.planet().currentSize()+" "+c.name());
-        }*/
-        // no potential donors- no reason to do any of this.
-        if (donors.isEmpty()) {
-            return;
-        }
-        // for each underpopulated colony, find a suitable donor and ship some population
-        // More expensive approach- after sending out some population, resort the target list, so that
-        // population is more evenly distributed when there are many colonies that need population transported
-        while (!colonies.isEmpty() && !donors.isEmpty()) {
-            Colony c = colonies.get(0);
-            float neededPopulation = (int) (c.planet().currentSize() - c.expectedPopulationLongTerm());
-            // Sort donors by distance
-            Colony donor = Collections.min(donors, (Colony o1, Colony o2) -> (int) Math.signum(
-                    o1.travelTimeAdjusted(o1, c, this.tech().transportTravelSpeed()) -
-                            o2.travelTimeAdjusted(o2, c, this.tech().transportTravelSpeed())));
-            if (neededPopulation > 1) {
-                float transportTime = donor.travelTimeAdjusted(donor, c, this.tech().transportTravelSpeed());
-                // limit max transport time
-                double maxTime = c.starSystem().inNebula() ? options.getTransportMaxTurns() * 1.5 : options.getTransportMaxTurns();
-                if (transportTime > maxTime) {
-                    // if first donor doesn't match max travel time, others surely won't.
-                    // so no way we're going to transport population to this colony, remove it from the list
-                    colonies.remove(c);
-                    continue;
-                }
-                // TODO: Take into account proper governing, simulate X turns
-                // That's close to impossible, Colony has multiple side effects on Planet and on Empire and
-                // produces ships
-                // if population will grow large enough naturally before transports arrive, don't transport.
-                double expectedPopAtTransportTime = c.population() +
-                        Math.pow(1+c.unrestrictedPopGrowth() / c.population(), transportTime);
-                if (expectedPopAtTransportTime >= c.planet().currentSize()) {
-                    // colony will be full by the time population arrives from the closest donor, skip this colony
-                    colonies.remove(c);
-                    continue;
-                }
+		boolean isTransportRichDisabled = govOptions.isTransportRichDisabled();
+		boolean excludeBesieged = govOptions.excludeTransportToBesieged();
+		ColonyTransporterList targets = new ColonyTransporterList();
+		ColonyTransporterList donors = new ColonyTransporterList();
 
-//                System.out.println("Will transport from "+donor.name()+" to "+c.name());
-//                System.out.println("Before transport expectedPopulation= "+c.expectedPopulation());
-                // if we expect transports in excess of maximum population, ship that away too.
-                int expectedOverPopulation = Math.round(donor.expectedPopulationLongTerm() - donor.planet().currentSize());
-                int growth = Math.max(1, Math.round(donor.unrestrictedPopGrowth()));
-                //System.out.println("Donor "+donor.name()+" overPopulation="+expectedOverPopulation+" growth="+growth);
-                int populationToTransport = Math.max(expectedOverPopulation, growth);
-                // if this option is set, transport 2x population from poor planets
-                if (options.isTransportPoorDouble() && (donor.planet().isResourcePoor() || donor.planet().isResourceUltraPoor()) ) {
-                    populationToTransport *= 2;
-                }
-				// BR: to prevent abandon...
-				donor.scheduleTransportsToSystem(c.starSystem(), populationToTransport, true);
-//                System.out.println("After transport expectedPopulation="+c.expectedPopulation());
-                donors.remove(donor);
-            } else {
-                colonies.remove(c);
-            }
-            Collections.sort(colonies,
-                    (Colony o1, Colony o2) -> (int)Math.signum(o1.expectedPopPct() - o2.expectedPopPct()));
-        }
-    }
+		for (StarSystem sys: allColonizedSystems()) {
+			Colony c = sys.colony();
+			float currentSize = c.planet().currentSize();
+			float expectedPopulationLongTerm = c.expectedPopulationLongTerm();
+			// don't transport to populations that are missing less than 4 population
+			if (currentSize - expectedPopulationLongTerm > 4 ) {
+				if (excludeBesieged && c.underSiege())
+					continue;
+				targets.add(new ColonyTransporter(c, currentSize, expectedPopulationLongTerm));
+			}
+			else {
+				// don't send population from planets with governor off
+				if (!c.isGovernor() || c.noGovAutoTransport())
+					continue;
+				if (c.transporting() || !c.canTransport() || c.maxTransportsAllowed() < 1)
+					continue;
+				// don't ship population from planets with 20 or less population
+				if (currentSize <= 20)
+					continue;
+				// we don't have excess population. Allow transporting 1 pop to stabilize planet at max-1
+				if (expectedPopulationLongTerm < currentSize - 2)
+					continue;
+				// if this option is checked, don't send out population out of planets which are Rich or Artefacts
+				if (isTransportRichDisabled && (c.planet().hasResource() || c.planet().isArtifact()))
+					continue;
+				// ship population out earlier, don't check if ecology is all done.
+				// ship population out earlier, don't check if industry is all done.
+				donors.add(new ColonyTransporter(c, currentSize, expectedPopulationLongTerm));
+			}
+		}
+		// all colonies at full population- nothing to do
+		// or no potential donors- no reason to do any of this
+		if (targets.isEmpty() || donors.isEmpty())
+			return;
+
+		targets.sortByExpectedPopPct();
+		/*for (ColonyTransporter c: colonies) {
+			 System.out.println("Transport Recipient " + c.toString);
+		}*/
+		/*for (Colony c: donors) {
+			System.out.println("Transport Givers " + c.toString);
+		}*/
+
+		int transportMaxTurns = govOptions.getTransportMaxTurns();
+		boolean isTransportPoorDouble = govOptions.isTransportPoorDouble();
+
+		// for each under populated colony, find a suitable donor and ship some population
+		// More expensive approach- after sending out some population, resort the target list, so that
+		// population is more evenly distributed when there are many colonies that need population transported
+		while (!targets.isEmpty() && !donors.isEmpty()) {
+			ColonyTransporter target = targets.get(0);
+			//Colony c = .colony;
+			float neededPopulation = (int) (target.currentSize - target.expectedPopulationLongTerm);
+
+			if (neededPopulation > 1) {
+				// Sort donors by distance
+				ColonyTransporter donor = donors.getMinTravelTime(target.colony);
+				float transportTime = donor.travelTimeAdjusted;
+				// limit max transport time
+				double maxTime = target.colony.starSystem().inNebula() ? transportMaxTurns * 1.5 : transportMaxTurns;
+				if (transportTime > maxTime) {
+					// if first donor doesn't match max travel time, others surely won't.
+					// so no way we're going to transport population to this colony, remove it from the list
+					targets.remove(target);
+					continue;
+				}
+				// TODO: Take into account proper governing, simulate X turns
+				// That's close to impossible, Colony has multiple side effects on Planet and on Empire and
+				// produces ships
+				// if population will grow large enough naturally before transports arrive, don't transport.
+				double expectedPopAtTransportTime = target.expectedPopAtTransportTime(transportTime);
+				if (expectedPopAtTransportTime >= target.currentSize) {
+					// colony will be full by the time population arrives from the closest donor, skip this colony
+					targets.remove(target);
+					continue;
+				}
+
+				//System.out.println("Will transport from " + donor.colony.name() + " to " + c.colony.name());
+				//System.out.println("Before transport expectedPopulation= " + c.colony.expectedPopulation());
+				// if we expect transports in excess of maximum population, ship that away too.
+				int expectedOverPopulation = Math.round(donor.expectedPopulationLongTerm - donor.currentSize);
+				int growth = Math.max(1, Math.round(donor.colony.unrestrictedPopGrowth()));
+				//System.out.println("Donor "+ donor.colony.name() + " overPopulation=" + expectedOverPopulation + " growth=" + growth);
+				int populationToTransport = Math.max(expectedOverPopulation, growth);
+				// if this option is set, transport 2x population from poor planets
+				if (isTransportPoorDouble && (donor.colony.planet().isResourcePoor() || donor.colony.planet().isResourceUltraPoor()) )
+					populationToTransport *= 2;
+
+				donor.colony.scheduleTransportsToSystem(target.colony.starSystem(), populationToTransport, true);
+				target.updateLongTerm(populationToTransport);
+				//System.out.println("After transport expectedPopulation=" + c.colony.expectedPopulation());
+				donors.remove(donor);
+			}
+			else
+				targets.remove(target);
+
+			targets.sortByExpectedPopPct();
+		}
+	}
 
     public String decode(String s, Empire listener) {
         String s1 = this.replaceTokens(s, "my");
@@ -2136,7 +2176,7 @@ public final class Empire extends Species implements NamedObject {
     	StarSystem closestSystem = null;
     	for (StarSystem sys : colonizedSystems) {
     		if (sys != null) {
-	    		float dist = sys.distanceTo(mapObj);
+				float dist = sys.squareDistanceTo(mapObj);
 	    		if (dist < minDistance) {
 	    			minDistance	  = dist;
 	    			closestSystem = sys;

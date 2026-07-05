@@ -8,6 +8,7 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 <b><ins>Very last changes:</ins></b>
 
 26-07-05 (BR)
+- New option to prevent governors to send transports to besieged colonies, even if the troops are able to sneak in. As sometime it is preferable to conserve its population to strengthen the defenses of the colonies close to the front.
 - Empire Status panel:
   - Fixed display of lists not scrolling all the way to the bottom when there were a high number of empires.
   - Fixed the empire names of the top boxes dripping onto those of the bottom boxes when scrolling through the bottom boxes.

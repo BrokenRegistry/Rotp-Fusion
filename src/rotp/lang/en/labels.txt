@@ -5745,6 +5745,10 @@ GOVERNOR_TRANSPORT_POOR_DBL_DESC    | Governors of poor planets doubly contribut
 GOVERNOR_TRANSPORT_POOR_DBL         | Double from Poor: %1
 GOVERNOR_TRANSPORT_POOR_DBL_LABEL   | Send double from Poor planets
 
+GOVERNOR_TRANSPORT_TO_BESIEGED_HELP	| Governors will never send transports when enemy ships in orbit can intercept your troops.<br>But if their fleet is mostly made up of bombers, the troops could sneak in, only to be unfortunately eliminated during the next bombardment.<br>It is also possible that better equipped enemy troops are on the way, and that any reconquest by ground combat will be impossible.<br>It then becomes preferable to conserve its population to strengthen the defenses of the colonies close to the front.
+GOVERNOR_TRANSPORT_TO_BESIEGED_DESC	| Governors will not send transports to besieged colonies by an enemy empire.
+GOVERNOR_TRANSPORT_TO_BESIEGED		| Exclude besieged: %1
+
 GOVERNOR_TRANSPORT_MAX_TURNS_DESC   | Maximum transport distance in turns.<br>(1.5x higher distance when transporting to nebulae)
 GOVERNOR_TRANSPORT_MAX_TURNS        | Max Distance: %1 turn(s)
 GOVERNOR_TRANSPORT_MAX_TURNS_LABEL  | Maximum transport distance in turns

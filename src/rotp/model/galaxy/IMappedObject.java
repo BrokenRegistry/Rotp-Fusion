@@ -30,6 +30,11 @@ public interface IMappedObject {
     default public float distanceTo (IMappedObject obj) {
         return distanceTo(obj.x(), obj.y());
     }
+	default public float squareDistanceTo (IMappedObject obj) { // For comparators, no need of the square root
+		float dx = x() - obj.x();
+		float dy = y() - obj.y();
+		return dx * dx + dy * dy;
+	}
     public static Comparator<IMappedObject> MAP_ORDER = new MapOrderComparator();
     default public boolean passesThroughNebula(IMappedObject fr, IMappedObject to) {
         Line2D.Float path = new Line2D.Float(fr.x(), fr.y(), to.x(), to.y());

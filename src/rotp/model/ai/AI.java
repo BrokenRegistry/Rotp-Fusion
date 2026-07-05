@@ -34,9 +34,6 @@ import static rotp.model.game.IGameOptions.baseAIset;
 import static rotp.model.game.IGameOptions.noRelationBarAIset;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import rotp.model.ai.interfaces.Diplomat;
 import rotp.model.ai.interfaces.FleetCommander;
@@ -49,19 +46,16 @@ import rotp.model.ai.interfaces.SpyMaster;
 import rotp.model.ai.interfaces.Treasurer;
 import rotp.model.colony.Colony;
 import rotp.model.empires.Empire;
-import rotp.model.empires.EmpireView;
-import rotp.model.empires.SystemView;
 import rotp.model.galaxy.IMappedObject;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
-import rotp.model.game.GameSession;
-import rotp.model.planet.Planet;
+import rotp.model.game.GovernorOptions;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.notifications.BombardSystemNotification;
 import rotp.ui.notifications.ColonizeSystemNotification;
 import rotp.util.Base;
 
-public class AI implements Base {
+public final class AI implements Base {
 
     private final Empire empire;
 
@@ -109,7 +103,7 @@ public class AI implements Base {
 	            spyMaster =      new rotp.model.ai.governor.AISpyMaster(empire);
 	            treasurer =      new rotp.model.ai.xilmi.AITreasurer(empire);
 	            break;
-            case BASE: // BR: Tentative
+            case BASE:
                 general =        new rotp.model.ai.base.AIGeneral(empire);
                 captain =        new rotp.model.ai.base.AIShipCaptain(empire);
                 governor =       new rotp.model.ai.base.AIGovernor(empire);
@@ -120,7 +114,7 @@ public class AI implements Base {
                 spyMaster =      new rotp.model.ai.base.AISpyMaster(empire);
                 treasurer =      new rotp.model.ai.base.AITreasurer(empire);
                 break;
-            case MODNAR: // BR: Tentative
+            case MODNAR:
                 general =        new rotp.model.ai.modnar.AIGeneral(empire);
                 captain =        new rotp.model.ai.modnar.AIShipCaptain(empire);
                 governor =       new rotp.model.ai.modnar.AIGovernor(empire);
@@ -131,7 +125,7 @@ public class AI implements Base {
                 spyMaster =      new rotp.model.ai.modnar.AISpyMaster(empire);
                 treasurer =      new rotp.model.ai.modnar.AITreasurer(empire);
                 break;
-            case ROOKIE: // BR: Tentative
+            case ROOKIE:
                 general =        new rotp.model.ai.rookie.AIGeneral(empire);
                 captain =        new rotp.model.ai.rookie.AIShipCaptain(empire);
                 governor =       new rotp.model.ai.rookie.AIGovernor(empire);
@@ -202,9 +196,7 @@ public class AI implements Base {
     }
 
     // MISC INTERFACE
-    // public boolean isAI()     {  return empire.isAI(); }
-    // public boolean isPlayer() {  return empire.isPlayer(); }
-    
+
     // direct
     public ShipCaptain shipCaptain()                   { return captain; }
     public General general()                           { return general; }
@@ -217,50 +209,40 @@ public class AI implements Base {
     public SpyMaster spyMaster()                       { return spyMaster; }
 
     // uncategorized
-    public List<StarSystem> bestSystemsForInvasion(EmpireView v) {
-        // invoked when going to war
-        List<StarSystem> systems = empire.systemsInShipRange(v);
-        Collections.sort(systems,StarSystem.INVASION_PRIORITY);
-        return systems;
-    }
-    private int popNeeded(int sysId, float pct) {
-        if (empire.sv.missing(sysId))
-            return 0;
-        StarSystem sys = empire.sv.view(sysId).system();
-        Colony col = sys.colony();
-        if (col == null)
-            return 0;
-       
-        return col.calcPopNeeded(pct);
-    }
-    private ColonyTransporter createColony(StarSystem sys, int minTransports) {
-        int sysId = id(sys);
-        float targetPct = empire.governorAI().targetPopPct(sysId);
-        int popNeeded = popNeeded(sysId, targetPct);        
+    private ColonyTransporter createColony(int sysId, Colony colony, int minTransports, boolean excludeUnderSiege) {
+        float targetPct = empire.governorAI().targetPopPct(empire.sv.view(sysId));
+		int popNeeded = colony.calcPopNeeded(targetPct, excludeUnderSiege);
         int maxPopToGive = (int) empire.sv.maxPopToGive(sysId, targetPct);
         if ((popNeeded < minTransports) && (maxPopToGive < minTransports))
             return null;
 
-        return new ColonyTransporter(sys.colony(), popNeeded, maxPopToGive, minTransports);
+        return new ColonyTransporter(colony, popNeeded, maxPopToGive, minTransports);
     }
     public void sendTransports() {
         long tm0 = System.currentTimeMillis();
         int minTransportSize = empire.generalAI().minTransportSize();
-        List<ColonyTransporter> needy = new ArrayList<>();
-        List<ColonyTransporter> givey = new ArrayList<>();
+		GovernorOptions govOptions = session().getGovernorOptions();
+		boolean isPlayerControlled = empire.isPlayerControlled();
+		boolean excludeBesieged = isPlayerControlled? govOptions.excludeTransportToBesieged() : false;
+		boolean forceGivey = !isPlayerControlled || govOptions.isAutotransportUngoverned();
+		boolean richDisabled = isPlayerControlled && govOptions.isTransportRichDisabled();
+
+		ColonyTransporterList needy = new ColonyTransporterList();
+		ColonyTransporterList givey = new ColonyTransporterList();
         for (StarSystem sys: empire.allColonizedSystems()) {
-        	if (sys.colony().noGovAutoTransport() && !empire.isAIControlled())
-        		continue;
-            ColonyTransporter col = createColony(sys, minTransportSize);
+			Colony colony = sys.colony();
+			if (colony == null || (isPlayerControlled && colony.noGovAutoTransport()))
+				continue;
+            ColonyTransporter col = createColony(id(sys), colony, minTransportSize, excludeBesieged);
             if (col != null) {
                 if((col.popNeeded >= minTransportSize) && (col.popNeeded >= col.maxPopToGive)
                    && (empire.estimatedFleetDamagePerRoundToArrivingTransports(sys.orbitingFleets()) < empire.tech().topArmorTech().transportHP))
                     needy.add(col);
                 else if ((col.maxPopToGive >= minTransportSize) && (col.maxPopToGive > col.popNeeded))
                 {
-                    if(empire.isPlayerControlled() && session().getGovernorOptions().isTransportRichDisabled() && (sys.planet().productionAdj() > 1 || sys.planet().researchAdj() > 1))
+                    if(richDisabled && (sys.planet().hasResource() || sys.planet().isArtifact()))
                         continue;
-                    if(empire.isAIControlled() || sys.colony().isGovernor() || GameSession.instance().getGovernorOptions().isAutotransportUngoverned())
+                    if(forceGivey || colony.isGovernor())
                         givey.add(col);
                 }
             }
@@ -271,15 +253,13 @@ public class AI implements Base {
             return;
         }
 
-        Collections.sort(needy,TRANSPORT_PRIORITY);
+        needy.sortByTransportPriority();
 
         float allowableTurns = (float) (1 + Math.min(7, Math.floor(22 / empire.tech().topSpeed())));
-        if(empire.isPlayerControlled())
-            allowableTurns = Math.min(session().getGovernorOptions().getTransportMaxTurns(), allowableTurns);
-        for(ColonyTransporter needer : needy)
-        {
-            TARGET_COLONY = needer;
-            Collections.sort(givey,DISTANCE_TO_TARGET);
+        if(isPlayerControlled)
+            allowableTurns = Math.min(govOptions.getTransportMaxTurns(), allowableTurns);
+        for(ColonyTransporter needer : needy) {
+			givey.sortByTarget(needer);
             boolean allGiversBusy = true;
             for(ColonyTransporter giver : givey)
             {
@@ -351,11 +331,11 @@ public class AI implements Base {
             BombardSystemNotification.create(id(sys), fl, autoBomb, bombTarget);
             return 0;
         }
-        
+
         // ail: asking our general for permission
         if(!empire.generalAI().allowedToBomb(sys))
             return 0;
-        
+
         // estimate bombardment damage and resulting population loss
         float damage = fl.expectedBombardDamage(false);
         float popLoss = damage / 200;
@@ -383,31 +363,15 @@ public class AI implements Base {
         }
         return 0;
     }
-    @SuppressWarnings("unused")
-	private float targetPopPct(SystemView sv) {
-        if (sv.borderSystem()) return .75f;
-        
-        Planet pl = sv.system().planet();
-
-        if (pl.isResourceRich()) return .75f;
-        if (pl.isResourceUltraRich()) return .75f;
-        if (pl.isArtifact()) return .75f;
-        if (pl.isOrionArtifact()) return .75f;
-        if (pl.currentSize() <= 20) return .75f;
-
-        if (sv.supportSystem()) return .5f;
-        if (pl.currentSize() <= 40) return .5f;
-
-        return .25f;
-    }
-    class ColonyTransporter implements IMappedObject {
-        Colony colony;
-        float x, y;
-        float transportPriority;
-        float growth;
-        int popNeeded;
-        int maxPopToGive;
-        public ColonyTransporter(Colony c, int needs, int gives, int min) {
+	private final class ColonyTransporter implements IMappedObject {
+		private final Colony colony;
+		private final float x, y;
+		private float transportPriority;
+		private float growth;
+		private int popNeeded;
+		private int maxPopToGive;
+		private float squareDist;
+		private ColonyTransporter(Colony c, int needs, int gives, int min) {
             colony = c;
             StarSystem sys = c.starSystem();
             x = sys.x();
@@ -425,23 +389,32 @@ public class AI implements Base {
         public float x() { return x; }
         @Override
         public float y() { return y; }
-        public float transportTimeTo(ColonyTransporter dest) {
+        private float transportTimeTo(ColonyTransporter dest) {
             return colony.starSystem().transportTimeTo(dest.colony.starSystem());
         }
-        public void sendTransportsTo(ColonyTransporter dest, int trPop) {
+        private void sendTransportsTo(ColonyTransporter dest, int trPop) {
             colony.scheduleTransportsToSystem(dest.colony.starSystem(), trPop);
             maxPopToGive = 0;
             dest.popNeeded -= trPop;
         }
+		private void setSquareDistance(ColonyTransporter target) {
+			float dx = x-target.x;
+			float dy = y-target.y;
+			squareDist = dx*dx + dy*dy;
+		}
     }
-    public static Comparator<ColonyTransporter> TRANSPORT_PRIORITY = (ColonyTransporter col1, ColonyTransporter col2) -> Base.compare(col1.transportPriority,col2.transportPriority);
-    public static ColonyTransporter TARGET_COLONY;
-    public static Comparator<ColonyTransporter> DISTANCE_TO_TARGET = new DistanceToTargetComparator();
-    private static class DistanceToTargetComparator implements Comparator<ColonyTransporter> {
-    	@Override public int compare(ColonyTransporter sys1, ColonyTransporter sys2) {
-            float pr1 = sys1.distanceTo(TARGET_COLONY);
-            float pr2 = sys2.distanceTo(TARGET_COLONY);
-            return Base.compare(pr1, pr2);
-        }
-    }
+	private final class ColonyTransporterList extends ArrayList<ColonyTransporter> {
+		private static final long serialVersionUID = 1L;
+		private void sortByTransportPriority()	{
+			sort((ColonyTransporter col1, ColonyTransporter col2)
+					-> Float.compare(col1.transportPriority, col2.transportPriority));
+		}
+		private void sortByTarget(ColonyTransporter target)	{
+			// BR: To allow quicker sorting, distances are computed only once.
+			for (ColonyTransporter colTr : this)
+				colTr.setSquareDistance(target);
+			sort( (ColonyTransporter col1, ColonyTransporter col2)
+					-> Float.compare(col1.squareDist, col2.squareDist));
+		}
+	}
 }

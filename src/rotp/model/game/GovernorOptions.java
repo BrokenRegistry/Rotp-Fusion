@@ -312,7 +312,7 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public boolean	contactUpdateSpending()			{ return contactUpdateSpending.get(); }
 	public boolean	isAutospendOnNewColoniesFirst()	{ return autoSpendOnNewColoniesFirst.get(); }
 	public float	autospendMaxIndustryPct()		{ return autospendMaxIndustryPct.getFloat(); }
-	public boolean	allowTransportToUnderSiege()	{ return transportToSiege.get(); }
+	public boolean	excludeTransportToBesieged()	{ return transportExcludeBesieged.get(); }
 
 }
 

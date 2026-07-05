@@ -232,12 +232,12 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 	}
     private void initNearbySystems() {
         TARGET_SYSTEM = this;
-        float maxDist = 8; // 2 * TechEngineWarp.MAX_SPEED; // modnar: change nearby distance to be more reasonable
+        float maxDist = 64; // 2 * TechEngineWarp.MAX_SPEED; // modnar: change nearby distance to be more reasonable
         Galaxy gal = galaxy();
         List<StarSystem> nearSystems = new ArrayList<>();
         for (int n=0;n<gal.numStarSystems();n++) {
             StarSystem other = gal.system(n);
-            if (distanceTo(other) < maxDist)
+            if (squareDistanceTo(other) < maxDist)
                 nearSystems.add(other);
         }
         nearSystems.remove(this);
@@ -1129,8 +1129,8 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     }
     private static class DistanceToTargetSystemComparator implements Comparator<StarSystem> {
     	@Override public int compare(StarSystem sys1, StarSystem sys2) {
-            float pr1 = sys1.distanceTo(TARGET_SYSTEM);
-            float pr2 = sys2.distanceTo(TARGET_SYSTEM);
+            float pr1 = sys1.squareDistanceTo(TARGET_SYSTEM);
+            float pr2 = sys2.squareDistanceTo(TARGET_SYSTEM);
             return Base.compare(pr1, pr2);
         }
     }

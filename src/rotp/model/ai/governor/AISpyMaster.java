@@ -283,7 +283,7 @@ public class AISpyMaster implements Base, SpyMaster {
 		Location colonyCenter = empire.generalAI().colonyCenter(empire);
 		float lowestDistance = Float.MAX_VALUE;
 		for (StarSystem tgt: inTransportRange) {
-			float distance = colonyCenter.distanceTo(tgt);
+			float distance = colonyCenter.squareDistanceTo(tgt);
 			if (distance < lowestDistance) {
 				lowestDistance = distance;
 				best = tgt;

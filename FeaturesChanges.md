@@ -228,7 +228,7 @@
 
 ### Governor:
 
-- New option to allocate funds to colonies with artifacts. (Added to the original governor interface)
+- New option to prevent governors to send transports to besieged colonies, even if the troops are able to sneak in. As sometime it is preferable to conserve its population to strengthen the defenses of the colonies close to the front.
 - New option to select which colonies with artifacts or new colonies receive funds first.
 - New option to define the level of industry necessary for a colony to cease being a new colony.
 - The option "follow colony requests" is renamed to "Manageable Governor".
@@ -291,6 +291,8 @@
 
 ### Miscellaneous:
 
+- Improved some distance sorting by removing the square root.
+- Improved some sorting by computing the sorted value only once.
 - Changed the vorbis library to something that is actively supported.
 - Tentative to make mini.jar compatible wit arm64.
 - Added some diagnostic logs to try to pinpoint an old crash issue affecting Linux.

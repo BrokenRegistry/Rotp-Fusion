@@ -907,7 +907,7 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     	bonusTechs		= src.bonusTechs;
     	// waste		= src.waste; // for future option: starting with random waste!
     }
-	private boolean hasResource()	{ return resources == RICH || resources == ULTRA_RICH; }
+	public boolean hasResource()	{ return resources == RICH || resources == ULTRA_RICH; }
 	private boolean isGreen()		{ return environment == ENVIRONMENT_FERTILE || environment == ENVIRONMENT_GAIA; }
 
 	public float[] guardianMonstersProbability() {
