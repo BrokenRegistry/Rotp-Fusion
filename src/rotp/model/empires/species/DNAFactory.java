@@ -267,20 +267,24 @@ public class DNAFactory extends SpeciesSettings {
 
 	private void initSkillsForGalaxy(SpeciesSkills anim, DynOptions srcOptions)	{
 		String skillKey = AvatarKey.getRawAvatarKey(srcOptions);
+		log("Linux crash debug", " DNAFactory.initSkillsForGalaxy " + "start " + "initWithInternalSkillsForGalaxy");
 		initWithInternalSkillsForGalaxy(anim, skillKey, false);
 
 		isReference(false);
 		// update the skills from the source option
+		log("Linux crash debug", " DNAFactory.initSkillsForGalaxy " + "loop thru " + "setting.updateOptionTool");
 		List<ICRSettings<?>> settings = settingMap.getAll();
 		for (ICRSettings<?> setting : settings)
 			setting.updateOptionTool(srcOptions);
 
 		// Fills the skills options from the settings
+		log("Linux crash debug", " DNAFactory.initSkillsForGalaxy " + "loop thru " + "setting.updateOption");
 		DynOptions destOptions = race().speciesOptions();
 		for (ICRSettings<?> setting : settings)
 			setting.updateOption(destOptions);
 
 		// Fills with selected settings
+		log("Linux crash debug", " DNAFactory.initSkillsForGalaxy " + "loop thru " + "setting.settingToSkill");
 		for (ICRSettings<?> setting : settings)
 			setting.settingToSkill(race());
 
@@ -307,9 +311,11 @@ public class DNAFactory extends SpeciesSettings {
 	private void initWithDefaultSkillsForGalaxy(boolean fullCopy)	{
 		race(Species.getAnim(defaultRaceKey).copy(fullCopy));
 		// Create the settings if necessary
+		log("Linux crash debug", " DNAFactory.initWithDefaultSkillsForGalaxy " + "fullCopy = " + fullCopy);
 		newSettingList(true);
 		// Fills with default settings (instead of default Species settings)
 		List<ICRSettings<?>> settings = settingMap.getAll();
+		log("Linux crash debug", " DNAFactory.initWithDefaultSkillsForGalaxy " + "start loop setting.settingToSkill(race())");
 		for (ICRSettings<?> setting : settings)
 			setting.settingToSkill(race());
 	}
@@ -582,6 +588,7 @@ public class DNAFactory extends SpeciesSettings {
 	// #========== Setting initialization ==========
 	//
 	private void newSettingList(boolean clear) {
+		log("Linux crash debug", " DNAFactory.newSettingList " + "clear = " + clear);
 		if(settingMap.filled) {
 			if (clear)
 				for (ICRSettings<?> setting : settingMap.getAll())

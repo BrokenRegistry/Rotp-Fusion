@@ -34,7 +34,7 @@ import rotp.util.Base;
 import rotp.util.LabelManager;
 import rotp.util.LanguageManager;
 
-public abstract class SpeciesSettings {
+public abstract class SpeciesSettings implements Base{
 	protected static final String DEFAULT_LANGUAGE	= "en";
 	private	static final String PLANET				= "PLANET_";
 	public	static final String ROOT				= "CUSTOM_RACE_";
@@ -53,6 +53,7 @@ public abstract class SpeciesSettings {
 	private static final HashMap<String, StringList> ONE_PER_SPECIES_MAP = new HashMap<>();
 	protected void updateEmpireSpeciesMap() {
 		List<String> languageCodes = LanguageManager.current().languageCodes();
+		log("Linux crash debug", " SpeciesSettings.updateEmpireSpeciesMap " + "loop through languageCodes");
 		for (String lang : languageCodes) {
 			String dir = "lang/" + lang + "/races/Human.";
 			StringList multiple	= new StringList();
@@ -1950,15 +1951,22 @@ public abstract class SpeciesSettings {
 
 		SpeciesAttributes(String langDir)	{
 			labelKey = langDir;
+			log("Linux crash debug", " SpeciesSettings.SpeciesAttributes " + "new speciesNameItems");
 			speciesNameItems		= new SpeciesNameItems(labelKey);
+			log("Linux crash debug", " SpeciesSettings.SpeciesAttributes " + "new speciesDescriptionItems");
 			speciesDescriptionItems	= new SpeciesDescriptionItems(labelKey);
+			log("Linux crash debug", " SpeciesSettings.SpeciesAttributes " + "new speciesShipNamesItems");
 			speciesShipNamesItems	= new SpeciesShipNamesItems(labelKey);
+			log("Linux crash debug", " SpeciesSettings.SpeciesAttributes " + "new speciesLabelItems");
 			speciesLabelItems		= new SpeciesLabelItems(labelKey);
+			log("Linux crash debug", " SpeciesSettings.SpeciesAttributes " + "new civilizationNameItems");
 			civilizationNameItems	= new CivilizationNameItems(labelKey);
+			log("Linux crash debug", " SpeciesSettings.SpeciesAttributes " + "new civilizationLabelItems");
 			civilizationLabelItems	= new CivilizationLabelItems(labelKey);
 		}
 		@Override public String  getLabel()	{ return ""; }
 		@Override public void updateOption(DynamicOptions destOptions) {
+			log("Linux crash debug", " SpeciesSettings.SpeciesAttributes " + "updateOption");
 			speciesNameItems.updateOption(destOptions);
 			speciesDescriptionItems.updateOption(destOptions);
 			speciesShipNamesItems.updateOption(destOptions);
@@ -1967,6 +1975,7 @@ public abstract class SpeciesSettings {
 			civilizationLabelItems.updateOption(destOptions);
 		}
 		@Override public void updateOptionTool(DynamicOptions srcOptions) {
+			log("Linux crash debug", " SpeciesSettings.SpeciesAttributes " + "updateOptionTool");
 			speciesNameItems.updateOptionTool(srcOptions);
 			speciesDescriptionItems.updateOptionTool(srcOptions);
 			speciesShipNamesItems.updateOptionTool(srcOptions);
@@ -2018,6 +2027,7 @@ public abstract class SpeciesSettings {
 		private static final long serialVersionUID = 1L;
 		private SpeciesNameItems(String langDir)	{
 			super(langDir);
+			log("Linux crash debug", " SpeciesSettings.SpeciesNameItems " + "start " + "langDir = " + langDir);
 			SettingStringLanguage setting = (SettingStringLanguage) settingMap.get(ROOT + LeaderTitle.KEY + langKey);
 			if (setting == null) {
 				setting	= new LeaderTitle(langDir);
@@ -2033,6 +2043,7 @@ public abstract class SpeciesSettings {
 			}
 			setting.skillToSetting(race());
 			add(setting);
+			log("Linux crash debug", " SpeciesSettings.SpeciesNameItems " + "ended succesfully");
 		}
 	}
 	class SpeciesDescriptionItems extends ICSSettingsStringList {
@@ -2041,6 +2052,7 @@ public abstract class SpeciesSettings {
 		private SpeciesDescriptionItems(String langDir)	{
 			super(langDir);
 			String langKey = toLanguageKey(langDir);
+			log("Linux crash debug", " SpeciesSettings.SpeciesDescriptionItems " + "loop through " + "descriptions settings; isForShow = " + isForShow());
 			for (int i : SEQ) {
 				if (isForShow()) {
 					SettingStringLanguage setting = (SettingStringLanguage) settingMap.get(ROOT + RaceDescription.KEY(i));
@@ -2069,6 +2081,7 @@ public abstract class SpeciesSettings {
 		private SpeciesShipNamesItems(String langDir)	{
 			super(langDir);
 			String langKey = toLanguageKey(langDir);
+			log("Linux crash debug", " SpeciesSettings.SpeciesShipNamesItems " + "loop through " + "ship settings; isForShow = " + isForShow());
 			for (int i : SEQ) {
 				if (isForShow()) {
 					SettingStringLanguage setting = (SettingStringLanguage) settingMap.get(ROOT + ShipNames.KEY(i));
@@ -2095,7 +2108,9 @@ public abstract class SpeciesSettings {
 		private static final long serialVersionUID = 1L;
 		private SpeciesLabelItems(String langDir)	{
 			super(langDir);
+			log("Linux crash debug", " SpeciesSettings.SpeciesLabelItems " + "start " + "getOnePerSpeciesMap");
 			StringList list = getOnePerSpeciesMap().get(langDir);
+			log("Linux crash debug", " SpeciesSettings.SpeciesLabelItems " + "loop through " + "SpeciesDialogLabel");
 			for (String label : list) {
 				SpeciesDialogLabel setting = (SpeciesDialogLabel) settingMap.get(ROOT + label + langKey);
 				if (setting == null) {

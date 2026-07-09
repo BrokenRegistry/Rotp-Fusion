@@ -247,8 +247,8 @@ public class UserPreferences implements IMainOptions {
 		for (int i=2;i<args.length;i++)
 			fullVal = fullVal+":"+args[i];
 
-		if (Rotp.logging)
-			System.out.println("Key:"+key+"  value:"+val);
+		//if (Rotp.logging)
+		//	System.out.println("Key:"+key+"  value:"+val);
 		switch(key) {
 			case "DEFAULT_OPTIONS": DEF_VAL.setFromSettingName(val); return;
 			case "DISPLAY_MODE": displayMode = displayModeFromSettingName(val); return;

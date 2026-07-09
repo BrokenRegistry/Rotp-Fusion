@@ -291,6 +291,7 @@
 
 ### Miscellaneous:
 
+- New debug tools to track Linux Mint crash.
 - Removed unused methods from AI governors and consolidated redundant methods.
 - Improved some distance sorting by removing the square root.
 - Improved some sorting by computing the sorted value only once.

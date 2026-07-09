@@ -291,29 +291,42 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	public void initOpponentGuide() {
 		opponentRandom = text(OPPONENT_RANDOM);
 		LinkedList<String> list = new LinkedList<>();
+		log("Linux crash debug", " SetupGalaxyUI.initOpponentGuide " + "start" + "opts.getInternalSpeciesList()");
 		list.addAll(opts.getInternalSpeciesList());
 		list.add(opponentRandom); // For Random (Randomized)
+
+		log("Linux crash debug", " SetupGalaxyUI.initOpponentGuide " + "start" + "specificOpponent.reInit(list)");
 		specificOpponent.reInit(list);
 		specificOpponent.defaultValue(opponentRandom);
 	}
 	private void initAIandAbilitiesList() {
+		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "initOpponentGuide()");
 		initOpponentGuide();
+
+		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getAllowedAlienSkills()");
 		StringList allowedAlien = getAllowedAlienSkills();
+
+		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getBaseRaceList()");
 		StringList baseRaceList = getBaseRaceList();
 		StringList list = new StringList();
 
 		// specific Abilities
+		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getSpecificOptions()");
 		list.addAll(SpecificCROption.getSpecificOptions());
-//		list.removeLast(); // The blank one (USER_CHOICE)
 		list.addAll(allowedAlien);
 		list.addAll(baseRaceList);
+
+		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "specificAbilities.reInit(list)");
 		specificAbilities.reInit(list);
 
 		// global Abilities
 		list.clear();
+		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "globalCROptions.getBaseOptions()");
 		list.addAll(globalCROptions.getBaseOptions());
 		list.addAll(allowedAlien);
 		list.addAll(baseRaceList);
+
+		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "globalAbilities.reInit(list)");
 		globalAbilities.reInit(list);
 	}
 	private ListShapeParam shapeOptionsList()	{
