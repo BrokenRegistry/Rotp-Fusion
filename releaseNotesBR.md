@@ -7,6 +7,9 @@ New Java requirement: minimum JRE-17, recommended JRE-23.
 
 <b><ins>Very last changes:</ins></b>
 
+26-07-10 (BR)
+- New debug tools to track Linux Mint and Arch crash.
+
 26-07-09 (BR)
 - New debug tools to track Linux Mint crash.
 

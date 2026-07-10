@@ -304,6 +304,18 @@ public interface Base extends InputEventUtil {
         }
         catch(Exception e) { e.printStackTrace(); }
     }
+    static void slog(String output) {
+        if (!Rotp.logging)
+            return;
+        try {
+            System.out.println(output);
+            if (Logger.logListener != null) {
+                Logger.logListener.accept(output);
+            }
+        }
+        catch(Exception e) { e.printStackTrace(); }
+    }
+
     public default int maximumSystems()    { return Rotp.maximumSystems; }
     public default boolean veryLowMemory() {
         return (Rotp.maxHeapMemory < 500)

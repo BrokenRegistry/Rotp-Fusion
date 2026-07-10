@@ -260,9 +260,14 @@ public class DNAFactory extends SpeciesSettings {
 		return factory;
 	}
 	private static RaceList newRaceList()	{
+		Base.slog("Linux crash debug" + " DNAFactory.newRaceList " + "start " + "new DNAFactory()");
 		DNAFactory factory = new DNAFactory();
+		Base.slog("Linux crash debug" + " DNAFactory.newRaceList " + "start " + "factory.initWithDefaultSkillsForGalaxy(false)");
 		factory.initWithDefaultSkillsForGalaxy(false);
-		return factory.new RaceList();
+		Base.slog("Linux crash debug" + " DNAFactory.newRaceList " + "start " + "factory.new RaceList()");
+		RaceList list = factory.new RaceList();
+		Base.slog("Linux crash debug" + " DNAFactory.newRaceList " + "newRaceList completed");
+		return list;
 	}
 
 	private void initSkillsForGalaxy(SpeciesSkills anim, DynOptions srcOptions)	{
@@ -315,9 +320,12 @@ public class DNAFactory extends SpeciesSettings {
 		newSettingList(true);
 		// Fills with default settings (instead of default Species settings)
 		List<ICRSettings<?>> settings = settingMap.getAll();
-		log("Linux crash debug", " DNAFactory.initWithDefaultSkillsForGalaxy " + "start loop setting.settingToSkill(race())");
-		for (ICRSettings<?> setting : settings)
+		log("Linux crash debug", " DNAFactory.initWithDefaultSkillsForGalaxy " + "start loop setting.settingToSkill(race()) size = " + settings.size());
+		for (ICRSettings<?> setting : settings) {
+			log("Linux crash debug", " setting = " + setting.toString());
 			setting.settingToSkill(race());
+		}
+		log("Linux crash debug", " DNAFactory.initWithDefaultSkillsForGalaxy " + "loop completed");
 	}
 	private void initWithAnimSkillsForGalaxy(SpeciesSkills anim, boolean fullCopy)	{
 		race(anim.copy(fullCopy));
@@ -1098,14 +1106,17 @@ public class DNAFactory extends SpeciesSettings {
 			labelsAreFinals(true);
 			hasNoCost(true);
 			showFullGuide(false);
+			log("Linux crash debug", " DNAFactory.RaceList Constructor " + "start " + "reload(false)");
 			reload(false);
 		}
 		// ---------- Initializers ----------
 		//
 		public void reload(boolean foldersRedesign)	{
 			String currentValue = settingValue();
+			log("Linux crash debug", " DNAFactory.RaceList.reload " + "start " + "clearLists");
 			clearLists();
 			animationMap.clear();
+			log("Linux crash debug", " DNAFactory.RaceList.reload " + "loop through " + "animationMap");
 			for (String raceKey : IGameOptions.allRaceKeyList)
 				animationMap.put(raceKey, new StringList());
 			animationMap.put(AvatarKey.DEFAULT_VALUE, new StringList());
@@ -1114,6 +1125,7 @@ public class DNAFactory extends SpeciesSettings {
 //			add((DynOptions) IGameOptions.playerCustomRace.get());
 //			defaultIndex(0);
 			// Add existing files
+			log("Linux crash debug", " DNAFactory.RaceList.reload " + "loop through " + "loadListing()");
 			File[] fileList = loadListing();
 			if (fileList != null)
 				for (File file : fileList) {
@@ -1132,11 +1144,13 @@ public class DNAFactory extends SpeciesSettings {
 					}
 				}
 			// Add Game races
+			log("Linux crash debug", " DNAFactory.RaceList.reload " + "loop through " + "loadListing()");
 			for (String raceKey : IGameOptions.allRaceKeyList)
 				add(raceKey);
 
 			defaultIndex(0);
 			reload = true;
+			log("Linux crash debug", " DNAFactory.RaceList.reload " + "start " + "set(currentValue)");
 			set(currentValue);
 		}
 //		HashMap<String, StringList> animationMap()		{ return animationMap; }
@@ -1150,12 +1164,16 @@ public class DNAFactory extends SpeciesSettings {
 			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
 		}
 		private void add(String raceKey)	{
+			log("Linux crash debug", " DNAFactory.RaceList.add " + "start " + "new Species(raceKey) " +raceKey );
 			Species species	  = new Species(raceKey);	    	
 			String cfgValue	  = species.skillKey();
 			String langLabel  = BASE_RACE_MARKER + species.setupName();
 			String tooltipKey = species.getDescription(3);
+			log("Linux crash debug", " DNAFactory.RaceList.add " + "start " + "getFactoryForRaceList" +raceKey );
 			DNAFactory cr  = getFactoryForRaceList(species);
+			log("Linux crash debug", " DNAFactory.RaceList.add " + "start " + "getTotalCost()" +raceKey );
 			float cost = cr.getTotalCost();
+			log("Linux crash debug", " DNAFactory.RaceList.add " + "start " + "put(cfgValue, langLabel, cost, langLabel, tooltipKey)" +raceKey );
 			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
 		}
 		public boolean newValue()	{
