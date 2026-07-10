@@ -29,6 +29,7 @@ import static rotp.model.game.IRaceOptions.defaultRaceKey;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,6 +43,7 @@ import rotp.model.empires.species.SpeciesSettings.Technologies.TechDiscovery;
 import rotp.model.empires.species.SpeciesSettings.Technologies.TechResearch;
 import rotp.model.game.DynOptions;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.IMainOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.util.StringList;
 import rotp.util.Base;
@@ -261,36 +263,36 @@ public class DNAFactory extends SpeciesSettings {
 		return factory;
 	}
 	private static RaceList newRaceList()	{
-		Base.slog("Linux crash debug" + " DNAFactory.newRaceList " + "start " + "new DNAFactory()");
+		Base.slog("Unresponsive Linux debug " + " DNAFactory.newRaceList " + "start " + "new DNAFactory()");
 		DNAFactory factory = new DNAFactory();
-		Base.slog("Linux crash debug" + " DNAFactory.newRaceList " + "start " + "factory.initWithDefaultSkillsForGalaxy(false)");
+		Base.slog("Unresponsive Linux debug " + " DNAFactory.newRaceList " + "start " + "factory.initWithDefaultSkillsForGalaxy(false)");
 		factory.initWithDefaultSkillsForGalaxy(false);
-		Base.slog("Linux crash debug" + " DNAFactory.newRaceList " + "start " + "factory.new RaceList()");
+		Base.slog("Unresponsive Linux debug " + " DNAFactory.newRaceList " + "start " + "factory.new RaceList()");
 		RaceList list = factory.new RaceList();
-		Base.slog("Linux crash debug" + " DNAFactory.newRaceList " + "newRaceList completed");
+		Base.slog("Unresponsive Linux debug " + " DNAFactory.newRaceList " + "newRaceList completed");
 		return list;
 	}
 
 	private void initSkillsForGalaxy(SpeciesSkills anim, DynOptions srcOptions)	{
 		String skillKey = AvatarKey.getRawAvatarKey(srcOptions);
-		log("Linux crash debug", " DNAFactory.initSkillsForGalaxy " + "start " + "initWithInternalSkillsForGalaxy");
+		log("Unresponsive Linux debug ", " DNAFactory.initSkillsForGalaxy " + "start " + "initWithInternalSkillsForGalaxy");
 		initWithInternalSkillsForGalaxy(anim, skillKey, false);
 
 		isReference(false);
 		// update the skills from the source option
-		log("Linux crash debug", " DNAFactory.initSkillsForGalaxy " + "loop thru " + "setting.updateOptionTool");
+		log("Unresponsive Linux debug ", " DNAFactory.initSkillsForGalaxy " + "loop thru " + "setting.updateOptionTool");
 		List<ICRSettings<?>> settings = settingMap.getAll();
 		for (ICRSettings<?> setting : settings)
 			setting.updateOptionTool(srcOptions);
 
 		// Fills the skills options from the settings
-		log("Linux crash debug", " DNAFactory.initSkillsForGalaxy " + "loop thru " + "setting.updateOption");
+		log("Unresponsive Linux debug ", " DNAFactory.initSkillsForGalaxy " + "loop thru " + "setting.updateOption");
 		DynOptions destOptions = race().speciesOptions();
 		for (ICRSettings<?> setting : settings)
 			setting.updateOption(destOptions);
 
 		// Fills with selected settings
-		log("Linux crash debug", " DNAFactory.initSkillsForGalaxy " + "loop thru " + "setting.settingToSkill");
+		log("Unresponsive Linux debug ", " DNAFactory.initSkillsForGalaxy " + "loop thru " + "setting.settingToSkill");
 		for (ICRSettings<?> setting : settings)
 			setting.settingToSkill(race());
 
@@ -317,16 +319,16 @@ public class DNAFactory extends SpeciesSettings {
 	private void initWithDefaultSkillsForGalaxy(boolean fullCopy)	{
 		race(Species.getAnim(defaultRaceKey).copy(fullCopy));
 		// Create the settings if necessary
-		log("Linux crash debug", " DNAFactory.initWithDefaultSkillsForGalaxy " + "fullCopy = " + fullCopy);
+		log("Unresponsive Linux debug ", " DNAFactory.initWithDefaultSkillsForGalaxy " + "fullCopy = " + fullCopy);
 		newSettingList(true);
 		// Fills with default settings (instead of default Species settings)
 		List<ICRSettings<?>> settings = settingMap.getAll();
-		log("Linux crash debug", " DNAFactory.initWithDefaultSkillsForGalaxy " + "start loop setting.settingToSkill(race()) size = " + settings.size());
+		log("Unresponsive Linux debug ", " DNAFactory.initWithDefaultSkillsForGalaxy " + "start loop setting.settingToSkill(race()) size = " + settings.size());
 		for (ICRSettings<?> setting : settings) {
-			// log("Linux crash debug", " setting = " + setting.toString());
+			// log("Unresponsive Linux debug ", " setting = " + setting.toString());
 			setting.settingToSkill(race());
 		}
-		log("Linux crash debug", " DNAFactory.initWithDefaultSkillsForGalaxy " + "loop completed");
+		log("Unresponsive Linux debug ", " DNAFactory.initWithDefaultSkillsForGalaxy " + "loop completed");
 	}
 	private void initWithAnimSkillsForGalaxy(SpeciesSkills anim, boolean fullCopy)	{
 		race(anim.copy(fullCopy));
@@ -597,7 +599,7 @@ public class DNAFactory extends SpeciesSettings {
 	// #========== Setting initialization ==========
 	//
 	private void newSettingList(boolean clear) {
-		log("Linux crash debug", " DNAFactory.newSettingList " + "clear = " + clear);
+		log("Unresponsive Linux debug ", " DNAFactory.newSettingList " + "clear = " + clear);
 		if(settingMap.filled) {
 			if (clear)
 				for (ICRSettings<?> setting : settingMap.getAll())
@@ -790,10 +792,13 @@ public class DNAFactory extends SpeciesSettings {
 	//
 	private boolean isFilled(String value)	{ return value != null && !value.isEmpty() && !value.startsWith("_"); }
 	private File[] loadListing()	{
+		log("Unresponsive Linux debug " + "DNAFactory.loadListing " + "Species Directory is default = " + IMainOptions.speciesDirectory.isDefaultValue());
 		File speciesDir = new File(speciesDirectoryPath());
 		List<File> speciesList = new ArrayList<>();
 		List<File> folderList = new ArrayList<>();
-		scanSubDir(speciesList, folderList, speciesDir);
+		int max = Rotp.logging? 3 : 16;
+		scanSubDir(speciesList, folderList, speciesDir, 0, max);
+		log("Unresponsive Linux debug " + "DNAFactory.RaceList " + "loadListing() finalized size = " + speciesList.size());
 		return speciesList.toArray(new File[0]);
 	}
 	private boolean contains (List<File> folderList, File dir) {
@@ -805,29 +810,40 @@ public class DNAFactory extends SpeciesSettings {
 				for (File folder : folderList) {
 					String folderName = folder.getCanonicalPath();
 					if (dirName.equals(folderName)) {
-						log("Linux crash debug " + "DNAFactory.RaceList " + "Directory loop detected and ignored");
-						System.out.println("Linux crash debug " + "DNAFactory.RaceList " + "Directory loop detected and ignored");
+						log("Unresponsive Linux debug " + "DNAFactory.RaceList " + "Directory loop detected and ignored");
+						//System.out.println("Unresponsive Linux debug " + "DNAFactory.RaceList " + "Directory loop detected and ignored");
 						return true;
 					}
 				}
 			} catch (IOException e) {
+				System.out.println(e.toString());
+				System.out.println(e.getMessage());
 				return true;
 			}
 		return false;
 	}
-	private void scanSubDir(List<File> speciesList, List<File> folderList, File speciesDir)	{
-		if (speciesDir == null || !speciesDir.exists() || !speciesDir.isDirectory() || contains(folderList, speciesDir))
+	private void scanSubDir(List<File> speciesList, List<File> folderList, File speciesDir, int subDirCount, int max)	{
+		if (subDirCount >= max || speciesDir == null || !speciesDir.exists() || !speciesDir.isDirectory() || contains(folderList, speciesDir))
 			return;
+		String name = speciesDir.getName();
+		boolean isLink = Files.isSymbolicLink(speciesDir.toPath());
+		boolean isUp = name.equals("..");
+		boolean isDot = name.equals(".");
+		log("Unresponsive Linux debug " + "folderList.add(speciesDir) " + subDirCount + " isLink:"+isLink + " isUp:"+isUp +" isDot:"+isDot + " " + name);
+		//System.out.println("Unresponsive Linux debug " + "folderList.add(speciesDir) " + subDirCount + " isLink:"+isLink + " isUp:"+isUp +" isDot:"+isDot + " " + name);
 		folderList.add(speciesDir);
 		// Local files
 		File[] array = speciesDir.listFiles(SPECIES_FILTER);
+		if (array != null)
+			log("Unresponsive Linux debug " + "Number of files) " + array.length);
 		if (array != null && array.length > 0)
 			speciesList.addAll(Arrays.asList(array));
 		// Sub Dir files
 		File[] subDirectories = speciesDir.listFiles(File::isDirectory);
+		log("Unresponsive Linux debug " + "Loop through subDirectories N = " + subDirectories.length);
 		if(subDirectories != null && subDirectories.length > 0)
 			for (File subDir : subDirectories)
-				scanSubDir(speciesList, folderList, subDir);
+				scanSubDir(speciesList, folderList, subDir, subDirCount + 1, max);
 	}
 	final class CivilizationRecord {
 		final String skillsKey;
@@ -1127,17 +1143,17 @@ public class DNAFactory extends SpeciesSettings {
 			labelsAreFinals(true);
 			hasNoCost(true);
 			showFullGuide(false);
-			log("Linux crash debug", " DNAFactory.RaceList Constructor " + "start " + "reload(false)");
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList Constructor " + "start " + "reload(false)");
 			reload(false);
 		}
 		// ---------- Initializers ----------
 		//
 		public void reload(boolean foldersRedesign)	{
 			String currentValue = settingValue();
-			log("Linux crash debug", " DNAFactory.RaceList.reload " + "start " + "clearLists");
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList.reload " + "start " + "clearLists");
 			clearLists();
 			animationMap.clear();
-			log("Linux crash debug", " DNAFactory.RaceList.reload " + "loop through " + "animationMap");
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList.reload " + "loop through " + "animationMap");
 			for (String raceKey : IGameOptions.allRaceKeyList)
 				animationMap.put(raceKey, new StringList());
 			animationMap.put(AvatarKey.DEFAULT_VALUE, new StringList());
@@ -1146,11 +1162,11 @@ public class DNAFactory extends SpeciesSettings {
 //			add((DynOptions) IGameOptions.playerCustomRace.get());
 //			defaultIndex(0);
 			// Add existing files
-			log("Linux crash debug", " DNAFactory.RaceList.reload " + "go through " + "loadListing()");
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList.reload " + "go through " + "loadListing()");
 			File[] fileList = loadListing();
-			log("Linux crash debug", " DNAFactory.RaceList.reload " + "listing loaded: size = " +  fileList.length);
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList.reload " + "listing loaded: size = " + fileList.length);
 
-			log("Linux crash debug", " DNAFactory.RaceList.reload " + "Loop through " + "loadOptions(file)");
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList.reload " + "Loop through " + "loadOptions(file)");
 			if (fileList != null)
 				for (File file : fileList) {
 					if (file == null)
@@ -1168,13 +1184,13 @@ public class DNAFactory extends SpeciesSettings {
 					}
 				}
 			// Add Game races
-			log("Linux crash debug", " DNAFactory.RaceList.reload " + "loop through " + "add(raceKey)");
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList.reload " + "loop through " + "add(raceKey)");
 			for (String raceKey : IGameOptions.allRaceKeyList)
 				add(raceKey);
 
 			defaultIndex(0);
 			reload = true;
-			log("Linux crash debug", " DNAFactory.RaceList.reload " + "start " + "set(currentValue)");
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList.reload " + "start " + "set(currentValue)");
 			set(currentValue);
 		}
 //		HashMap<String, StringList> animationMap()		{ return animationMap; }
@@ -1188,16 +1204,16 @@ public class DNAFactory extends SpeciesSettings {
 			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
 		}
 		private void add(String raceKey)	{
-			log("Linux crash debug", " DNAFactory.RaceList.add " + "start " + "new Species(raceKey) " +raceKey );
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList.add " + "start " + "new Species(raceKey) " +raceKey );
 			Species species	  = new Species(raceKey);	    	
 			String cfgValue	  = species.skillKey();
 			String langLabel  = BASE_RACE_MARKER + species.setupName();
 			String tooltipKey = species.getDescription(3);
-			log("Linux crash debug", " DNAFactory.RaceList.add " + "start " + "getFactoryForRaceList" +raceKey );
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList.add " + "start " + "getFactoryForRaceList" +raceKey );
 			DNAFactory cr  = getFactoryForRaceList(species);
-			log("Linux crash debug", " DNAFactory.RaceList.add " + "start " + "getTotalCost()" +raceKey );
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList.add " + "start " + "getTotalCost()" +raceKey );
 			float cost = cr.getTotalCost();
-			log("Linux crash debug", " DNAFactory.RaceList.add " + "start " + "put(cfgValue, langLabel, cost, langLabel, tooltipKey)" +raceKey );
+			log("Unresponsive Linux debug ", " DNAFactory.RaceList.add " + "start " + "put(cfgValue, langLabel, cost, langLabel, tooltipKey)" +raceKey );
 			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
 		}
 		public boolean newValue()	{

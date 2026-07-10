@@ -291,42 +291,42 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	public void initOpponentGuide() {
 		opponentRandom = text(OPPONENT_RANDOM);
 		LinkedList<String> list = new LinkedList<>();
-		log("Linux crash debug", " SetupGalaxyUI.initOpponentGuide " + "start" + "opts.getInternalSpeciesList()");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI.initOpponentGuide " + "start" + "opts.getInternalSpeciesList()");
 		list.addAll(opts.getInternalSpeciesList());
 		list.add(opponentRandom); // For Random (Randomized)
 
-		log("Linux crash debug", " SetupGalaxyUI.initOpponentGuide " + "start" + "specificOpponent.reInit(list)");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI.initOpponentGuide " + "start" + "specificOpponent.reInit(list)");
 		specificOpponent.reInit(list);
 		specificOpponent.defaultValue(opponentRandom);
 	}
 	private void initAIandAbilitiesList() {
-		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "initOpponentGuide()");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "initOpponentGuide()");
 		initOpponentGuide();
 
-		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getAllowedAlienSkills()");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getAllowedAlienSkills()");
 		StringList allowedAlien = getAllowedAlienSkills();
 
-		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getBaseRaceList()");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getBaseRaceList()");
 		StringList baseRaceList = getBaseRaceList();
 		StringList list = new StringList();
 
 		// specific Abilities
-		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getSpecificOptions()");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getSpecificOptions()");
 		list.addAll(SpecificCROption.getSpecificOptions());
 		list.addAll(allowedAlien);
 		list.addAll(baseRaceList);
 
-		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "specificAbilities.reInit(list)");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "specificAbilities.reInit(list)");
 		specificAbilities.reInit(list);
 
 		// global Abilities
 		list.clear();
-		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "globalCROptions.getBaseOptions()");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "globalCROptions.getBaseOptions()");
 		list.addAll(globalCROptions.getBaseOptions());
 		list.addAll(allowedAlien);
 		list.addAll(baseRaceList);
 
-		log("Linux crash debug", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "globalAbilities.reInit(list)");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "globalAbilities.reInit(list)");
 		globalAbilities.reInit(list);
 	}
 	private ListShapeParam shapeOptionsList()	{
@@ -394,20 +394,20 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 				param.initDependencies(i);
 	}
 	@Override public void init() {
-		log("Linux crash debug", " SetupGalaxyUI", " init");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI", " init");
 		showGrid = prevShowGrid;
 		opts = guiOptions();
-		log("Linux crash debug", " SetupGalaxyUI", " got the options");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI", " got the options");
 		isOnTop = true;
 		super.init();
-		log("Linux crash debug", " SetupGalaxyUI", " past super.init()");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI", " past super.init()");
 		playerMug  = null;
 		initAIandAbilitiesList();
-		log("Linux crash debug", " SetupGalaxyUI", " AIandAbilitiesList are initialized");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI", " AIandAbilitiesList are initialized");
 		opts.saveOptionsToFile(LIVE_OPTIONS_FILE);
-		log("Linux crash debug", " SetupGalaxyUI", " options files are saved");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI", " options files are saved");
 		refreshGui(0);
-		log("Linux crash debug", " SetupGalaxyUI", " refreshGui(0) was called");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI", " refreshGui(0) was called");
 	}
 	@Override protected String GUI_ID() { return GUI_ID; }
 	@Override public void refreshGui(int level) {
@@ -1393,20 +1393,20 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		}
 	}
 	@Override public void paintComponent(Graphics g0) {
-		log("Linux crash debug", " SetupGalaxyUI", " first line of paintComponent(Graphics g0)");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI", " first line of paintComponent(Graphics g0)");
 		//showTiming = true; // TO DO BR: COMMENTS
 		if (!isOnTop)
 			return;
-		log("Linux crash debug", " SetupGalaxyUI", " paintComponent(Graphics g0) real start");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI", " paintComponent(Graphics g0) real start");
 		long timeStart = System.currentTimeMillis();
 		Graphics2D g = paintInit(g0);
-		log("Linux crash debug", " SetupGalaxyUI", " paintComponent(Graphics g0) past paintInit");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI", " paintComponent(Graphics g0) past paintInit");
 
 		drawOpponentCount(g);
 		drawGalaxy(g);
 		highlightHovered(g);
 		drawOpponentTopSection(g);
-		log("Linux crash debug", " SetupGalaxyUI", " paintComponent(Graphics g0) galaxy and opponents drawn");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI", " paintComponent(Graphics g0) galaxy and opponents drawn");
 
 		int y5 = drawGalaxyTopOptions(g);
 		drawGalaxySizeAndDiff(g, y5);
@@ -1414,7 +1414,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 
 		drawHelpButton(g);
 		showGuide(g);
-		log("Linux crash debug", " SetupGalaxyUI", " paintComponent(Graphics g0) guide drawn");
+		log("Unresponsive Linux debug ", " SetupGalaxyUI", " paintComponent(Graphics g0) guide drawn");
 
 		if (starting) {
 			NoticeMessage.setStatus(text("SETUP_CREATING_GALAXY"));
