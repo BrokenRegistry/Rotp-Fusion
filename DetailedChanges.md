@@ -2,6 +2,12 @@
 
 ## What's New
 
+26-07-10 (BR)
+- Possible Fix for Linux infinite loop.
+  - Could be a directory link looping back to itself.
+  - Added directory loop detection when parsing the custom species folder.
+- New debug tools to track Linux Mint and Arch crash.
+
 26-07-09 (BR)
 - New debug tools to track Linux Mint crash.
 

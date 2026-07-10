@@ -28,6 +28,7 @@ import static rotp.model.game.IRaceOptions.defaultRaceKey;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -322,7 +323,7 @@ public class DNAFactory extends SpeciesSettings {
 		List<ICRSettings<?>> settings = settingMap.getAll();
 		log("Linux crash debug", " DNAFactory.initWithDefaultSkillsForGalaxy " + "start loop setting.settingToSkill(race()) size = " + settings.size());
 		for (ICRSettings<?> setting : settings) {
-			log("Linux crash debug", " setting = " + setting.toString());
+			// log("Linux crash debug", " setting = " + setting.toString());
 			setting.settingToSkill(race());
 		}
 		log("Linux crash debug", " DNAFactory.initWithDefaultSkillsForGalaxy " + "loop completed");
@@ -740,7 +741,7 @@ public class DNAFactory extends SpeciesSettings {
 	}
 	private void endOfColumn()	{ columnList.add(settingMap.getSettings().size()); }
 	private void spacer()		{ spacerList.add(settingMap.getSettings().size()); }
-	
+
 	public boolean autoUpdate(KeyEvent e, RaceList raceList)	{ // For developers only
 		if(!(Rotp.isIDE() && e.isShiftDown() && e.isControlDown()))
 			return false;
@@ -787,17 +788,37 @@ public class DNAFactory extends SpeciesSettings {
 	// -#-
 	// #==================== RaceList ====================
 	//
-	
 	private boolean isFilled(String value)	{ return value != null && !value.isEmpty() && !value.startsWith("_"); }
 	private File[] loadListing()	{
 		File speciesDir = new File(speciesDirectoryPath());
 		List<File> speciesList = new ArrayList<>();
-		scanSubDir(speciesList, speciesDir);
+		List<File> folderList = new ArrayList<>();
+		scanSubDir(speciesList, folderList, speciesDir);
 		return speciesList.toArray(new File[0]);
 	}
-	private void scanSubDir(List<File> speciesList, File speciesDir)	{
-		if (speciesDir == null || !speciesDir.exists() || !speciesDir.isDirectory())
+	private boolean contains (List<File> folderList, File dir) {
+			String dirName;
+			try {
+				dirName = dir.getCanonicalPath();
+				if (dirName == null || dirName.isEmpty())
+					return true;
+				for (File folder : folderList) {
+					String folderName = folder.getCanonicalPath();
+					if (dirName.equals(folderName)) {
+						log("Linux crash debug " + "DNAFactory.RaceList " + "Directory loop detected and ignored");
+						System.out.println("Linux crash debug " + "DNAFactory.RaceList " + "Directory loop detected and ignored");
+						return true;
+					}
+				}
+			} catch (IOException e) {
+				return true;
+			}
+		return false;
+	}
+	private void scanSubDir(List<File> speciesList, List<File> folderList, File speciesDir)	{
+		if (speciesDir == null || !speciesDir.exists() || !speciesDir.isDirectory() || contains(folderList, speciesDir))
 			return;
+		folderList.add(speciesDir);
 		// Local files
 		File[] array = speciesDir.listFiles(SPECIES_FILTER);
 		if (array != null && array.length > 0)
@@ -806,7 +827,7 @@ public class DNAFactory extends SpeciesSettings {
 		File[] subDirectories = speciesDir.listFiles(File::isDirectory);
 		if(subDirectories != null && subDirectories.length > 0)
 			for (File subDir : subDirectories)
-				scanSubDir(speciesList, subDir);
+				scanSubDir(speciesList, folderList, subDir);
 	}
 	final class CivilizationRecord {
 		final String skillsKey;
@@ -1125,8 +1146,11 @@ public class DNAFactory extends SpeciesSettings {
 //			add((DynOptions) IGameOptions.playerCustomRace.get());
 //			defaultIndex(0);
 			// Add existing files
-			log("Linux crash debug", " DNAFactory.RaceList.reload " + "loop through " + "loadListing()");
+			log("Linux crash debug", " DNAFactory.RaceList.reload " + "go through " + "loadListing()");
 			File[] fileList = loadListing();
+			log("Linux crash debug", " DNAFactory.RaceList.reload " + "listing loaded: size = " +  fileList.length);
+
+			log("Linux crash debug", " DNAFactory.RaceList.reload " + "Loop through " + "loadOptions(file)");
 			if (fileList != null)
 				for (File file : fileList) {
 					if (file == null)
@@ -1144,7 +1168,7 @@ public class DNAFactory extends SpeciesSettings {
 					}
 				}
 			// Add Game races
-			log("Linux crash debug", " DNAFactory.RaceList.reload " + "loop through " + "loadListing()");
+			log("Linux crash debug", " DNAFactory.RaceList.reload " + "loop through " + "add(raceKey)");
 			for (String raceKey : IGameOptions.allRaceKeyList)
 				add(raceKey);
 

@@ -450,6 +450,9 @@
 
 ### Fixes:
 
+- Possible Fix for Linux infinite loop.
+  - Could be a directory link looping back to itself.
+  - Added directory loop detection when parsing the custom species folder.
 - Empire Status panel:
   - Fixed display of lists not scrolling all the way to the bottom when there were a high number of empires.
   - Fixed the empire names of the top boxes dripping onto those of the bottom boxes when scrolling through the bottom boxes.
