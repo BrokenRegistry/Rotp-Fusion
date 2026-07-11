@@ -782,9 +782,7 @@ public class DNAFactory extends SpeciesSettings {
 	private boolean isFilled(String value)	{ return value != null && !value.isEmpty() && !value.startsWith("_"); }
 	private File[] loadListing()	{
 		boolean isJarPath = IMainOptions.speciesDirectory.isJarPath();
-		log("Unresponsive Linux debug " + "DNAFactory.loadListing Species Directory is default = " + isJarPath);
-		log("Unresponsive Linux debug " + "DNAFactory.loadListing JarPath = " + Rotp.jarPath());
-		log("Unresponsive Linux debug " + "DNAFactory.loadListing Species Path = " + IMainOptions.speciesDirectory.get());
+		log("DNAFactory.loadListing Species Directory is Jar Path = " + isJarPath);
 		File speciesDir = new File(speciesDirectoryPath());
 		List<File> speciesList = new ArrayList<>();
 		List<File> folderList = new ArrayList<>();
@@ -853,7 +851,7 @@ public class DNAFactory extends SpeciesSettings {
 		// Local files
 		File[] array = dir.listFiles(SPECIES_FILTER);
 		if (array != null)
-			log("Unresponsive Linux debug " + "Number of files) " + array.length);
+			log("Number of files = " + array.length);
 		if (array != null && array.length > 0)
 			speciesList.addAll(Arrays.asList(array));
 		// Sub Dir files
