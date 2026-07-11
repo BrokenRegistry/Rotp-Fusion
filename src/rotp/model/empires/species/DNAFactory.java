@@ -781,8 +781,10 @@ public class DNAFactory extends SpeciesSettings {
 	//
 	private boolean isFilled(String value)	{ return value != null && !value.isEmpty() && !value.startsWith("_"); }
 	private File[] loadListing()	{
-		boolean isJarPath = IMainOptions.speciesDirectory.isDefaultValue();
+		boolean isJarPath = IMainOptions.speciesDirectory.isJarPath();
 		log("Unresponsive Linux debug " + "DNAFactory.loadListing Species Directory is default = " + isJarPath);
+		log("Unresponsive Linux debug " + "DNAFactory.loadListing JarPath = " + Rotp.jarPath());
+		log("Unresponsive Linux debug " + "DNAFactory.loadListing Species Path = " + IMainOptions.speciesDirectory.get());
 		File speciesDir = new File(speciesDirectoryPath());
 		List<File> speciesList = new ArrayList<>();
 		List<File> folderList = new ArrayList<>();
