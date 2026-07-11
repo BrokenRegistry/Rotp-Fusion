@@ -291,42 +291,29 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	public void initOpponentGuide() {
 		opponentRandom = text(OPPONENT_RANDOM);
 		LinkedList<String> list = new LinkedList<>();
-		log("Unresponsive Linux debug ", " SetupGalaxyUI.initOpponentGuide " + "start" + "opts.getInternalSpeciesList()");
 		list.addAll(opts.getInternalSpeciesList());
 		list.add(opponentRandom); // For Random (Randomized)
 
-		log("Unresponsive Linux debug ", " SetupGalaxyUI.initOpponentGuide " + "start" + "specificOpponent.reInit(list)");
 		specificOpponent.reInit(list);
 		specificOpponent.defaultValue(opponentRandom);
 	}
 	private void initAIandAbilitiesList() {
-		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "initOpponentGuide()");
 		initOpponentGuide();
-
-		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getAllowedAlienSkills()");
 		StringList allowedAlien = getAllowedAlienSkills();
-
-		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getBaseRaceList()");
 		StringList baseRaceList = getBaseRaceList();
 		StringList list = new StringList();
 
 		// specific Abilities
-		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "getSpecificOptions()");
 		list.addAll(SpecificCROption.getSpecificOptions());
 		list.addAll(allowedAlien);
 		list.addAll(baseRaceList);
-
-		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "specificAbilities.reInit(list)");
 		specificAbilities.reInit(list);
 
 		// global Abilities
 		list.clear();
-		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "globalCROptions.getBaseOptions()");
 		list.addAll(globalCROptions.getBaseOptions());
 		list.addAll(allowedAlien);
 		list.addAll(baseRaceList);
-
-		log("Unresponsive Linux debug ", " SetupGalaxyUI.AIandAbilitiesList " + "start" + "globalAbilities.reInit(list)");
 		globalAbilities.reInit(list);
 	}
 	private ListShapeParam shapeOptionsList()	{
@@ -394,20 +381,14 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 				param.initDependencies(i);
 	}
 	@Override public void init() {
-		log("Unresponsive Linux debug ", " SetupGalaxyUI", " init");
 		showGrid = prevShowGrid;
 		opts = guiOptions();
-		log("Unresponsive Linux debug ", " SetupGalaxyUI", " got the options");
 		isOnTop = true;
 		super.init();
-		log("Unresponsive Linux debug ", " SetupGalaxyUI", " past super.init()");
 		playerMug  = null;
 		initAIandAbilitiesList();
-		log("Unresponsive Linux debug ", " SetupGalaxyUI", " AIandAbilitiesList are initialized");
 		opts.saveOptionsToFile(LIVE_OPTIONS_FILE);
-		log("Unresponsive Linux debug ", " SetupGalaxyUI", " options files are saved");
 		refreshGui(0);
-		log("Unresponsive Linux debug ", " SetupGalaxyUI", " refreshGui(0) was called");
 	}
 	@Override protected String GUI_ID() { return GUI_ID; }
 	@Override public void refreshGui(int level) {
@@ -1393,20 +1374,16 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		}
 	}
 	@Override public void paintComponent(Graphics g0) {
-		log("Unresponsive Linux debug ", " SetupGalaxyUI", " first line of paintComponent(Graphics g0)");
 		//showTiming = true; // TO DO BR: COMMENTS
 		if (!isOnTop)
 			return;
-		log("Unresponsive Linux debug ", " SetupGalaxyUI", " paintComponent(Graphics g0) real start");
 		long timeStart = System.currentTimeMillis();
 		Graphics2D g = paintInit(g0);
-		log("Unresponsive Linux debug ", " SetupGalaxyUI", " paintComponent(Graphics g0) past paintInit");
 
 		drawOpponentCount(g);
 		drawGalaxy(g);
 		highlightHovered(g);
 		drawOpponentTopSection(g);
-		log("Unresponsive Linux debug ", " SetupGalaxyUI", " paintComponent(Graphics g0) galaxy and opponents drawn");
 
 		int y5 = drawGalaxyTopOptions(g);
 		drawGalaxySizeAndDiff(g, y5);
@@ -1414,7 +1391,6 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 
 		drawHelpButton(g);
 		showGuide(g);
-		log("Unresponsive Linux debug ", " SetupGalaxyUI", " paintComponent(Graphics g0) guide drawn");
 
 		if (starting) {
 			NoticeMessage.setStatus(text("SETUP_CREATING_GALAXY"));

@@ -53,7 +53,7 @@ public abstract class SpeciesSettings implements Base{
 	private static final HashMap<String, StringList> ONE_PER_SPECIES_MAP = new HashMap<>();
 	protected void updateEmpireSpeciesMap() {
 		List<String> languageCodes = LanguageManager.current().languageCodes();
-		log("Unresponsive Linux debug ", " SpeciesSettings.updateEmpireSpeciesMap " + "loop through languageCodes");
+		//log("SpeciesSettings.updateEmpireSpeciesMap loop through languageCodes");
 		for (String lang : languageCodes) {
 			String dir = "lang/" + lang + "/races/Human.";
 			StringList multiple	= new StringList();
@@ -1951,22 +1951,15 @@ public abstract class SpeciesSettings implements Base{
 
 		SpeciesAttributes(String langDir)	{
 			labelKey = langDir;
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesAttributes " + "new speciesNameItems");
 			speciesNameItems		= new SpeciesNameItems(labelKey);
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesAttributes " + "new speciesDescriptionItems");
 			speciesDescriptionItems	= new SpeciesDescriptionItems(labelKey);
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesAttributes " + "new speciesShipNamesItems");
 			speciesShipNamesItems	= new SpeciesShipNamesItems(labelKey);
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesAttributes " + "new speciesLabelItems");
 			speciesLabelItems		= new SpeciesLabelItems(labelKey);
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesAttributes " + "new civilizationNameItems");
 			civilizationNameItems	= new CivilizationNameItems(labelKey);
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesAttributes " + "new civilizationLabelItems");
 			civilizationLabelItems	= new CivilizationLabelItems(labelKey);
 		}
 		@Override public String  getLabel()	{ return ""; }
 		@Override public void updateOption(DynamicOptions destOptions) {
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesAttributes " + "updateOption");
 			speciesNameItems.updateOption(destOptions);
 			speciesDescriptionItems.updateOption(destOptions);
 			speciesShipNamesItems.updateOption(destOptions);
@@ -1975,7 +1968,6 @@ public abstract class SpeciesSettings implements Base{
 			civilizationLabelItems.updateOption(destOptions);
 		}
 		@Override public void updateOptionTool(DynamicOptions srcOptions) {
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesAttributes " + "updateOptionTool");
 			speciesNameItems.updateOptionTool(srcOptions);
 			speciesDescriptionItems.updateOptionTool(srcOptions);
 			speciesShipNamesItems.updateOptionTool(srcOptions);
@@ -2027,7 +2019,6 @@ public abstract class SpeciesSettings implements Base{
 		private static final long serialVersionUID = 1L;
 		private SpeciesNameItems(String langDir)	{
 			super(langDir);
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesNameItems " + "start " + "langDir = " + langDir);
 			SettingStringLanguage setting = (SettingStringLanguage) settingMap.get(ROOT + LeaderTitle.KEY + langKey);
 			if (setting == null) {
 				setting	= new LeaderTitle(langDir);
@@ -2043,7 +2034,6 @@ public abstract class SpeciesSettings implements Base{
 			}
 			setting.skillToSetting(race());
 			add(setting);
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesNameItems " + "ended succesfully");
 		}
 	}
 	class SpeciesDescriptionItems extends ICSSettingsStringList {
@@ -2052,7 +2042,6 @@ public abstract class SpeciesSettings implements Base{
 		private SpeciesDescriptionItems(String langDir)	{
 			super(langDir);
 			String langKey = toLanguageKey(langDir);
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesDescriptionItems " + "loop through " + "descriptions settings; isForShow = " + isForShow());
 			for (int i : SEQ) {
 				if (isForShow()) {
 					SettingStringLanguage setting = (SettingStringLanguage) settingMap.get(ROOT + RaceDescription.KEY(i));
@@ -2081,7 +2070,6 @@ public abstract class SpeciesSettings implements Base{
 		private SpeciesShipNamesItems(String langDir)	{
 			super(langDir);
 			String langKey = toLanguageKey(langDir);
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesShipNamesItems " + "loop through " + "ship settings; isForShow = " + isForShow());
 			for (int i : SEQ) {
 				if (isForShow()) {
 					SettingStringLanguage setting = (SettingStringLanguage) settingMap.get(ROOT + ShipNames.KEY(i));
@@ -2108,9 +2096,7 @@ public abstract class SpeciesSettings implements Base{
 		private static final long serialVersionUID = 1L;
 		private SpeciesLabelItems(String langDir)	{
 			super(langDir);
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesLabelItems " + "start " + "getOnePerSpeciesMap");
 			StringList list = getOnePerSpeciesMap().get(langDir);
-			log("Unresponsive Linux debug ", " SpeciesSettings.SpeciesLabelItems " + "loop through " + "SpeciesDialogLabel");
 			for (String label : list) {
 				SpeciesDialogLabel setting = (SpeciesDialogLabel) settingMap.get(ROOT + label + langKey);
 				if (setting == null) {

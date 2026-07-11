@@ -4,6 +4,7 @@ import static rotp.ui.util.IParam.langLabel;
 
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.nio.file.Paths;
 
 import javax.swing.JFileChooser;
 
@@ -13,6 +14,10 @@ import rotp.ui.BasePanel;
 public class ParamDirectory extends ParamString	{
 	public ParamDirectory(String gui, String name)	{
 		super(gui, name, Rotp.jarPath());
+		isCfgFile(true);
+	}
+	public ParamDirectory(String gui, String name, String folderName)	{
+		super(gui, name, Paths.get(Rotp.jarPath(), folderName).toString());
 		isCfgFile(true);
 	}
 	@Override protected String descriptionId()	{
@@ -51,5 +56,19 @@ public class ParamDirectory extends ParamString	{
 			}
 		}
 		return dir;
+	}
+	public boolean isJarPath() { return Rotp.jarPath().equalsIgnoreCase(get()); }
+	public boolean createNewDefault(String folderName) {
+		File newFolder = new File(Rotp.jarPath(), folderName);
+		if (newFolder.exists()) {
+			if (!newFolder.isDirectory())
+				return false;
+			set(newFolder.getPath());
+			return true;
+		}
+		else if (!newFolder.mkdirs())
+			return false;
+		set(newFolder.getPath());
+		return true;
 	}
 }

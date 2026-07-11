@@ -450,6 +450,10 @@
 
 ### Fixes:
 
+- New fix for unresponsive Linux.
+  - Custom species folders won't be scanned deeper than 8 levels. This is to avoid infinite loops due to symbolic links.
+  - If custom species folders are set to jar or exe folder, subfolders will not be scanned. This is in case the jar file has not been placed in its own folder.
+  - The default for the custom species folder will be set to "CustomSpecies". If another folder has already been selected, the choice will be kept.
 - Possible Fix for Linux infinite loop.
   - Could be a directory link looping back to itself.
   - Added directory loop detection when parsing the custom species folder.

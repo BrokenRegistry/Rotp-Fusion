@@ -267,7 +267,8 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 	}
 	static String	backupDirectoryPath()	{ return saveDirectoryPath() + "/" + GameSession.BACKUP_DIRECTORY; }
 
-	ParamString speciesDirectory = new ParamDirectory(GAME_UI, "SPECIES_DIR");
+	static String DEFAULT_CUSTOM_SPECIES_FOLDER = "CustomSpecies";
+	ParamDirectory speciesDirectory = new ParamDirectory(GAME_UI, "SPECIES_DIR", DEFAULT_CUSTOM_SPECIES_FOLDER);
 	static String speciesDirectoryPath()	{ return speciesDirectory.get(); }
 
 	ParamBoolean disableAdvisor = new DisableAdvisor();
