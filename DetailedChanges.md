@@ -2,6 +2,24 @@
 
 ## What's New
 
+26-07-19 (BR)
+- In parallel with the permanent fund transfer, it is now possible to establish a budget and modify it. New tasks may be assigned to the governor to collect funds and distribute them.
+- New Governor option for ho to allocate subsidies: (Gold coin on the side of the Governor button)
+  - Metal color: Follow global instructions.
+  - Gold color: Allocate subsidies.
+  - Red arc (right click): Can draw from the player's reserve.
+  - Uncircled: active until the player deactivates it.
+  - Magenta circle: Active while an emergency is activated.
+  - Uncircled: active until the player deactivates it.
+  - Green circle: Active as long as the colony has not reached the development limit.
+  - Blue circle: Active as long as a blue priority is present. (With the exception of research and shipsyard, as they do not deactivate automatically)
+- New Budget tab in the Colony panel, to review the governor's choices and refine the budget for yourself.
+- Right-clicking the Mandate button will open the Governor's Advanced Panel, providing access to the new funding options:
+  - Activation and deactivation of the collection of funds
+  - Amounts to be collected (absolute or relative)
+  - Reserve for the player (absolute or relative)
+  - Development limit of a colony for receiving subsidies.
+
 26-07-11 (BR)
 - New fix for unresponsive Linux.
   - Custom species folders won't be scanned deeper than 8 levels. This is to avoid infinite loops due to symbolic links.

@@ -36,11 +36,13 @@ class RotpJSpinnerUI extends BasicSpinnerUI {
 	}
 	@Override public void installUI(JComponent c) {
 		super.installUI(c);
-		c.removeAll();
-		c.setLayout(new RotpSpinnerBorderLayout());
-		c.add(createNextButton(), BorderLayout.EAST);
-		c.add(createPreviousButton(), BorderLayout.WEST);
-		c.add(createEditor(), BorderLayout.CENTER);
+		spinner.removeAll();
+		spinner.setLayout(new RotpSpinnerBorderLayout());
+		spinner.add(createNextButton(), BorderLayout.EAST);
+		spinner.add(createPreviousButton(), BorderLayout.WEST);
+//		JSpinner.NumberEditor editor = new JSpinner.NumberEditor(spinner, "#");
+//		spinner.add(editor, BorderLayout.CENTER);
+		spinner.add(createEditor(), BorderLayout.CENTER);
 	}
 }
 class RotpSpinnerBorderLayout extends BorderLayout {

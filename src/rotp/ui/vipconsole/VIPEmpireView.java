@@ -354,10 +354,10 @@ public class VIPEmpireView implements IVIPConsole {
 
         if (player.empireTaxLevel() > 0) {
 			boolean shieldWithoutBases = options().shieldAlones();
-            float revenue = player.empireTaxRevenue(shieldWithoutBases);
+            float revenue = player.empireTaxIncome(shieldWithoutBases);
             String revStr;
             if (revenue < 100)
-                revStr = fmt(player.empireTaxRevenue(shieldWithoutBases),1);
+                revStr = fmt(player.empireTaxIncome(shieldWithoutBases),1);
             else
                 revStr = shortFmt(revenue);
             int pct = player.empireTaxLevel();

@@ -13,6 +13,8 @@ public class RotpJSpinner extends JSpinner {
 		if (isNewFormat()) {
 			setUI(new RotpJSpinnerUI(arrowSize()));
 			//setUI(new LeftRightSpinnerUI());
+//			JSpinner.NumberEditor editor = new JSpinner.NumberEditor(this, "#");
+//			setEditor(editor);
 		}
 	}
 //	@Override public void setLayout(LayoutManager mgr) {
@@ -34,7 +36,9 @@ public class RotpJSpinner extends JSpinner {
 	
 	public void	centerText() {
 		JComponent c = getEditor();
-		if (c instanceof DefaultEditor)
-			((DefaultEditor) c).getTextField().setHorizontalAlignment(JTextField.CENTER);
+		if (c instanceof DefaultEditor) {
+			DefaultEditor ed = (DefaultEditor)c;
+			ed.getTextField().setHorizontalAlignment(JTextField.CENTER);
+		}
 	}
 }

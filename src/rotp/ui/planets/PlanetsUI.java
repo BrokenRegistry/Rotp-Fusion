@@ -15,6 +15,7 @@
  */
 package rotp.ui.planets;
 
+import static rotp.ui.fleets.SystemListingUI.CENTER;
 import static rotp.ui.fleets.SystemListingUI.LEFT;
 import static rotp.ui.fleets.SystemListingUI.RIGHT;
 
@@ -82,14 +83,18 @@ import rotp.ui.main.EmpireColonySpendingPane;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.map.IMapHandler;
+import rotp.ui.options.AllSubUI;
+import rotp.ui.options.ISubUiKeys;
+import rotp.ui.util.ParamSubUI;
 import rotp.util.Palette;
 import rotp.util.ShadowBorder;
 
 public class PlanetsUI extends BasePanel implements SystemViewer {
     private static final long serialVersionUID = 1L;
-    private static final int ECOLOGY_MODE = 1;
-    private static final int INDUSTRY_MODE = 2;
-    private static final int MILITARY_MODE = 3;
+	private static final int ECOLOGY_MODE	= 1;
+	private static final int INDUSTRY_MODE	= 2;
+	private static final int BUDGET_MODE	= 3;
+	private static final int MILITARY_MODE	= 4;
     private static int selectedMode = ECOLOGY_MODE;
     private static final String SINGLE_PLANET_PANEL = "SinglePlanet";
     private static final String MULTI_PLANET_PANEL = "MultiPlanet";
@@ -114,6 +119,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 
     private Rectangle ecologyBox = new Rectangle();
     private Rectangle industryBox = new Rectangle();
+	private Rectangle budgetBox = new Rectangle();
     private Rectangle militaryBox = new Rectangle();
 
     private final TransferReserveUI transferReservePane;
@@ -257,6 +263,10 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
     public boolean hasStarBackground()     { return true; }
     @Override
     public void animate() {
+		if(player().budget().isObsolete()) {
+			player().budget().computeIfNeeded(false);
+			repaint();
+		}
         if (!playAnimations())
             return;
         planetListing.animate();
@@ -310,6 +320,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                     case ECOLOGY_MODE: loadHelpUI2a(); break;
                     case INDUSTRY_MODE: loadHelpUI2b(); break;
                     case MILITARY_MODE: loadHelpUI2c(); break;
+                    case BUDGET_MODE: loadHelpUI2d(); break;
                 }
                 break;
         }
@@ -324,23 +335,33 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         int y1 = scaled(270);
         helpUI.addBrownHelpText(x1, y1, w1, 4, text("PLANETS_HELP_ALL"));
 
-        int x2 = ecologyBox.x;
-        int w2 = scaled(200);
-        int y2 = scaled(80);
-        HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("PLANETS_HELP_1A"));
-        sp2.setLine(x2+(w2/2), y2, x2+(w2/2), scaled(52));
+		int x2e = ecologyBox.x;
+		int x2 = x2e - s60;
+		int w2 = s200;
+		int y2 = s80;
+		HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 4, text("PLANETS_HELP_1A"));
+		sp2.setLine(x2+(w2/2), y2, x2e+(w2/2), s52);
 
-        int x3 = industryBox.x;
-        int w3 = scaled(200);
-        int y3 = scaled(80);
-        HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("PLANETS_HELP_1B"));
-        sp3.setLine(x3+(w3/2), y3, x3+(w3/2), scaled(52));
+		int x3e = industryBox.x;
+		int x3 = x3e - s20;
+		int w3 = w2;
+		int y3 = y2;
+		HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 4, text("PLANETS_HELP_1B"));
+		sp3.setLine(x3+(w3/2), y3, x3e+(w3/2), s52);
 
-        int x4 = militaryBox.x;
-        int w4 = scaled(200);
-        int y4 = scaled(80);
-        HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 3, text("PLANETS_HELP_1C"));
-        sp4.setLine(x4+(w4/2), y4, x4+(w4/2), scaled(52));
+		int x3be = budgetBox.x;
+		int x3b = x3be + s20;
+		int w3b = w2;
+		int y3b = y2;
+		HelpUI.HelpSpec sp3b = helpUI.addBrownHelpText(x3b, y3b, w3b, 4, text("PLANETS_HELP_1BUD"));
+		sp3b.setLine(x3b+(w3b/2), y3b, x3be+(w3b/2), s52);
+
+		int x4e = militaryBox.x;
+		int x4 = x4e + s60;
+		int w4 = w2;
+		int y4 = y2;
+		HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 4, text("PLANETS_HELP_1C"));
+		sp4.setLine(x4+(w4/2), y4, x4e+(w4/2), s52);
 
         int x5 = w-scaled(490);
         int w5 = scaled(210);
@@ -374,37 +395,37 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
     	int w = getWidth();
     	HelpUI helpUI = RotPUI.helpUI();
 
-    	int w0 = scaled(300);
+    	int w0 = scaled(320);
         int x0 = w - w0 - s10;
-        int y0 = scaled(20);
+        int y0 = s10;
         int w1 = scaled(470);
         int x1 = w - scaled(750);
         int y1 = scaled(280);
-        int xe = w-scaled(75);
+        int xe = w-s75;
         int ye = scaled(325);
         int dye = s30;
 
-        HelpSpec sp1s = helpUI.addBrownHelpText(x0, y0, w0, 0, text("MAIN_HELP_4A"));
+        HelpSpec sp1s = helpUI.addBrownHelpText(x0, y0, w0, 0, text("MAIN_HELP_4A")); // Min/Max assistants
 
-        HelpSpec sp2s = helpUI.addBrownHelpText(x1, y1, w1-s20, 0, text("MAIN_HELP_4B"));
+        HelpSpec sp2s = helpUI.addBrownHelpText(x1, y1, w1-s20, 0, text("MAIN_HELP_4B")); // Shipyard
         sp2s.setLine(sp2s.xe(), y1+s10, xe, ye);
         y1 += (sp2s.height()+s25);
         int yb = y1-s12;
 
         ye += dye;
-        HelpSpec sp3s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4C"));
+        HelpSpec sp3s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4C")); // Defenses
         sp3s.setLine(sp3s.xe(), y1+(sp3s.height()/2), xe, ye);
         y1 += (sp3s.height()+s5);
         ye += dye;
-        HelpSpec sp4s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4D"));
+        HelpSpec sp4s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4D")); // Industry
         sp4s.setLine(sp4s.xe(), y1+(sp4s.height()/2), xe, ye);
         y1 += (sp4s.height()+s5);
         ye += dye;
-        HelpSpec sp5s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4E"));
+        HelpSpec sp5s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4E")); // Ecology
         sp5s.setLine(sp5s.xe(), y1+(sp5s.height()/2), xe, ye);
         y1 += (sp5s.height()+s5);
         ye += dye;
-        HelpSpec sp6s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4F"));
+        HelpSpec sp6s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4F")); // Technology
         sp6s.setLine(sp6s.xe(), y1+(sp6s.height()/2), xe, ye);
         y1 += (sp6s.height()+s5);
 
@@ -419,7 +440,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         int x7 = x1-w7-s10;
         ye = yb;
         xe = w-scaled(253);
-        HelpSpec sp7s = helpUI.addBlueHelpText(x7, y7, w7, 0, text("MAIN_HELP_4G"));
+        HelpSpec sp7s = helpUI.addBlueHelpText(x7, y7, w7, 0, text("MAIN_HELP_4G")); // lock / Unlock
         sp7s.setLine(sp7s.xe(), yb, xe, ye);
         sp7s.setLineArr(sp7s.rect(xBox, yBox, wBox, hBox));
 
@@ -428,194 +449,305 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         sp1s.setLineArr(sp1s.rect(xBox, yBox, wBox, hBox));
         sp1s.setLine(sp1s.xe()-s30, sp1s.ye(), xBox+s30, yBox);
     }
-    private void loadHelpUI2a() {
-        HelpUI helpUI = RotPUI.helpUI();
+	private void loadHelpUI2a() {
+		HelpUI helpUI = RotPUI.helpUI();
 
-        int x1 = scaled(50);
-        int w1 = scaled(400);
-        int y1 = scaled(500);
-        helpUI.addBrownHelpText(x1, y1, w1, 0, text("PLANETS_HELP_ALL"));
+		int x1 = s50;
+		int w1 = s400;
+		int y1 = s500;
+		helpUI.addBrownHelpText(x1, y1, w1, 0, text("PLANETS_HELP_ALL"));
 
-        int x1a = scaled(10);
-        int w1a = scaled(130);
-        int y1a = scaled(190);
-        HelpUI.HelpSpec sp1a = helpUI.addBrownHelpText(x1a, y1a, w1a, 3, text("PLANETS_HELP_4I"));
-        sp1a.setLine(scaled(50), y1a, scaled(50), s100);
+		int x1a = s10;
+		int w1a = s130;
+		int y1a = s190;
+		int a1a = s50;
+		HelpUI.HelpSpec sp1a = helpUI.addBrownHelpText(x1a, y1a, w1a, 3, text("PLANETS_HELP_4I")); // Flag
+		sp1a.setLine(a1a, y1a, a1a, s100);
 
-        int x2 = scaled(60);
-        int w2 = scaled(160);
-        int y2 = scaled(100);
-        HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("PLANETS_HELP_2A"));
-        sp2.setLine(scaled(150), y2, scaled(150), s77);
+		int x2 = s60;
+		int w2 = s160;
+		int y2 = s100;
+		int a2 = s150;
+		HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("PLANETS_HELP_2A")); // Name
+		sp2.setLine(a2, y2, a2, s77);
 
-        int x3 = scaled(150);
-        int w3 = scaled(190);
-        int y3 = scaled(190);
-        HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("PLANETS_HELP_2B"));
-        sp3.setLine(scaled(240), y3, scaled(240), s77);
+		int x3 = s150;
+		int w3 = s190;
+		int y3 = s190;
+		int a3 = scaled(240);
+		HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("PLANETS_HELP_2B")); // Population
+		sp3.setLine(a3, y3, a3, s77);
 
-        int x4 = scaled(255);
-        int w4 = scaled(190);
-        int y4 = scaled(100);
-        HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 3, text("PLANETS_HELP_2C"));
-        sp4.setLine(scaled(385), y4, scaled(385), s77);
+		int x4 = scaled(255);
+		int w4 = s160;
+		int y4 = s100;
+		int a4 = scaled(350);
+		HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 3, text("PLANETS_HELP_2C")); // Type
+		sp4.setLine(a4, y4, a4, s77);
 
-        int x5 = scaled(370);
-        int w5 = scaled(190);
-        int y5 = scaled(190);
-        HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 3, text("PLANETS_HELP_2E"));
-        sp5.setLine(scaled(460), y5, scaled(460), s77);
+		int x5 = scaled(370);
+		int w5 = s150;
+		int y5 = s190;
+		int a5 = scaled(430);
+		HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 3, text("PLANETS_HELP_2E")); // Size
+		sp5.setLine(a5, y5, a5, s77);
 
-        int x6 = scaled(475);
-        int w6 = scaled(140);
-        int y6 = scaled(100);
-        HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 3, text("PLANETS_HELP_2D"));
-        sp6.setLine(scaled(550), y6, scaled(550), s77);
+		int x6 = scaled(450);
+		int w6 = s160;
+		int y6 = s100;
+		int a6 = scaled(510);
+		HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 3, text("PLANETS_HELP_2D")); // Resources
+		sp6.setLine(a6, y6, a6, s77);
 
-        int x7 = scaled(590);
-        int w7 = scaled(210);
-        int y7 = scaled(190);
-        HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 3, text("PLANETS_HELP_2F"));
-        sp7.setLine(scaled(630), y7, scaled(630), s77);
+		int x7 = scaled(550);
+		int w7 = s200;
+		int y7 = s190;
+		int a7 = scaled(590);
+		HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 3, text("PLANETS_HELP_2F")); // Waste
+		sp7.setLine(a7+s30, y7, a7+s30, s92, a7, s77);
 
-        int x8 = scaled(700);
-        int w8 = scaled(210);
-        int y8 = scaled(100);
-        HelpUI.HelpSpec sp8 = helpUI.addBrownHelpText(x8,y8,w8, 3, text("PLANETS_HELP_2G"));
-        sp8.setLine(scaled(805), y8, scaled(805), s77);
+		int x8 = scaled(660);
+		int w8 = s200;
+		int y8 = s100;
+		int a8 = scaled(775);
+		HelpUI.HelpSpec sp8 = helpUI.addBrownHelpText(x8,y8,w8, 3, text("PLANETS_HELP_2G")); // Notes
+		sp8.setLine(a8, y8, a8, s77);
 
-        loadSmartMaxHelp();
-    }
-    private void loadHelpUI2b() {
-        HelpUI helpUI = RotPUI.helpUI();
+		loadSmartMaxHelp();
+	}
+	private void loadHelpUI2b() {
+		HelpUI helpUI = RotPUI.helpUI();
 
-        int x1 = scaled(50);
-        int w1 = scaled(400);
-        int y1 = scaled(500);
-        helpUI.addBrownHelpText(x1, y1, w1, 4, text("PLANETS_HELP_ALL"));
+		int x1 = s50;
+		int w1 = s400;
+		int y1 = s500;
+		helpUI.addBrownHelpText(x1, y1, w1, 4, text("PLANETS_HELP_ALL"));
 
-        int x1a = scaled(10);
-        int w1a = scaled(130);
-        int y1a = scaled(190);
-        HelpUI.HelpSpec sp1a = helpUI.addBrownHelpText(x1a, y1a, w1a, 3, text("PLANETS_HELP_4I"));
-        sp1a.setLine(scaled(50), y1a, scaled(50), s100);
+		int x1a = s10;
+		int w1a = s130;
+		int y1a = s190;
+		int a1a = s50;
+		HelpUI.HelpSpec sp1a = helpUI.addBrownHelpText(x1a, y1a, w1a, 3, text("PLANETS_HELP_4I")); // Flag
+		sp1a.setLine(a1a, y1a, a1a, s100);
 
-        int x2 = scaled(60);
-        int w2 = scaled(160);
-        int y2 = scaled(100);
-        HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("PLANETS_HELP_3A"));
-        sp2.setLine(scaled(150), y2, scaled(150), s77);
+		int x2 = s60;
+		int w2 = s150;
+		int y2 = s100;
+		int a2 = s150;
+		HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("PLANETS_HELP_3A")); // Name
+		sp2.setLine(a2, y2, a2, s77);
 
-        int x3 = scaled(150);
-        int w3 = scaled(190);
-        int y3 = scaled(190);
-        HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("PLANETS_HELP_3B"));
-        sp3.setLine(scaled(240), y3, scaled(240), s77);
+		int x3 = s150;
+		int w3 = s190;
+		int y3 = s190;
+		int a3 = scaled(230);
+		HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("PLANETS_HELP_3B")); // Population
+		sp3.setLine(a3, y3, a3, s77);
 
-        int x4 = scaled(255);
-        int w4 = scaled(190);
-        int y4 = scaled(100);
-        HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 3, text("PLANETS_HELP_3C"));
-        sp4.setLine(scaled(385), y4, scaled(385), s77);
+		int x4 = scaled(245);
+		int w4 = s170;
+		int y4 = s100;
+		int a4 = scaled(330);
+		HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 3, text("PLANETS_HELP_3C")); // Resources
+		sp4.setLine(a4, y4, a4, s77);
 
-        int x5 = scaled(370);
-        int w5 = scaled(190);
-        int y5 = scaled(190);
-        HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 3, text("PLANETS_HELP_3D"));
-        sp5.setLine(scaled(460), y5, scaled(460), s77);
+		int x5 = scaled(360);
+		int w5 = s190;
+		int y5 = s190;
+		int a5 = scaled(430);
+		HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 3, text("PLANETS_HELP_3D")); // Factories
+		sp5.setLine(a5, y5, a5, s77);
 
-        int x6 = scaled(475);
-        int w6 = scaled(140);
-        int y6 = scaled(100);
-        HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 3, text("PLANETS_HELP_3E"));
-        sp6.setLine(scaled(565), y6, scaled(565), s77);
+		int x6 = scaled(450);
+		int w6 = s160;
+		int y6 = s100;
+		int a6 = scaled(500);
+		HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 3, text("PLANETS_HELP_3E")); // Production
+		sp6.setLine(a6, y6, a6, s77);
 
-        int x9 = scaled(590);
-        int w9 = scaled(210);
-        int y9 = scaled(190);
-        HelpUI.HelpSpec sp9 = helpUI.addBrownHelpText(x9,y9,w9, 3, text("PLANETS_HELP_3H"));
-        sp9.setLine(scaled(630), y9, scaled(630), s77);
+		int x9 = scaled(500);
+		int w9 = scaled(210);
+		int y9 = s10;
+		int a9 = scaled(550);
+		HelpUI.HelpSpec sp9 = helpUI.addBrownHelpText(x9,y9,w9, 3, text("PLANETS_HELP_3H")); // Capacity
+		sp9.setLine(a9, y9+sp9.height(), a9, s77);
 
-        int x7 = scaled(640);
-        int w7 = scaled(180);
-        int y7 = scaled(100);
-        HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 3, text("PLANETS_HELP_3F"));
-        sp7.setLine(scaled(690), y7, scaled(690), s77);
+		int x7 = scaled(580);
+		int w7 = s180;
+		int y7 = s190;
+		int a7 = scaled(630);
+		HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 3, text("PLANETS_HELP_3F")); // Reserves
+		sp7.setLine(a7, y7, a7, s77);
 
-        int x8 = scaled(700);
-        int w8 = scaled(210);
-        int y8 = s10;
-        HelpUI.HelpSpec sp8 = helpUI.addBrownHelpText(x8,y8,w8, 3, text("PLANETS_HELP_3G"));
-        sp8.setLine(sp8.xe()-s20, y8+sp8.height(), scaled(875), s97);
+		int x8 = scaled(650);
+		int w8 = scaled(210);
+		int y8 = s100;
+		int a8 = scaled(700);
+		HelpUI.HelpSpec sp8 = helpUI.addBrownHelpText(x8,y8,w8, 3, text("PLANETS_HELP_3G")); // Notes
+		sp8.setLine(a8, y8, a8, s77);
 
-        loadSmartMaxHelp();
-    }
-    private void loadHelpUI2c() {
-        HelpUI helpUI = RotPUI.helpUI();
+		loadSmartMaxHelp();
+	}
+	private void loadHelpUI2c() {
+		HelpUI helpUI = RotPUI.helpUI();
 
-        int x1 = scaled(50);
-        int w1 = scaled(400);
-        int y1 = scaled(500);
-        helpUI.addBrownHelpText(x1, y1, w1, 4, text("PLANETS_HELP_ALL"));
+		int x1 = s50;
+		int w1 = s400;
+		int y1 = s500;
+		helpUI.addBrownHelpText(x1, y1, w1, 4, text("PLANETS_HELP_ALL"));
 
-        int x1a = scaled(10);
-        int w1a = scaled(130);
-        int y1a = scaled(190);
-        HelpUI.HelpSpec sp1a = helpUI.addBrownHelpText(x1a, y1a, w1a, 3, text("PLANETS_HELP_4I"));
-        sp1a.setLine(scaled(50), y1a, scaled(50), s100);
+		int x1a = s10;
+		int w1a = s130;
+		int y1a = s190;
+		int a1a = s50;
+		HelpUI.HelpSpec sp1a = helpUI.addBrownHelpText(x1a, y1a, w1a, 3, text("PLANETS_HELP_4I")); // Flag
+		sp1a.setLine(a1a, y1a, a1a, s100);
 
-        int x2 = scaled(60);
-        int w2 = scaled(160);
-        int y2 = scaled(100);
-        HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("PLANETS_HELP_4A"));
-        sp2.setLine(scaled(150), y2, scaled(150), s77);
+		int x2 = s60;
+		int w2 = s160;
+		int y2 = s100;
+		int a2 = scaled(150);
+		HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("PLANETS_HELP_4A")); // Name
+		sp2.setLine(a2, y2, a2, s77);
 
-        int x3 = scaled(150);
-        int w3 = scaled(190);
-        int y3 = scaled(190);
-        HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("PLANETS_HELP_4B"));
-        sp3.setLine(scaled(240), y3, scaled(240), s77);
+		int x3 = s150;
+		int w3 = s190;
+		int y3 = s190;
+		int a3 = scaled(240);
+		HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("PLANETS_HELP_4B")); // Population
+		sp3.setLine(a3, y3, a3, s77);
 
-        int x4 = scaled(255);
-        int w4 = scaled(190);
-        int y4 = scaled(100);
-        HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 3, text("PLANETS_HELP_4C"));
-        sp4.setLine(scaled(385), y4, scaled(385), s77);
+		int x4 = scaled(255);
+		int w4 = s190;
+		int y4 = s100;
+		int a4 = scaled(355);
+		HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 3, text("PLANETS_HELP_4C")); // Resources
+		sp4.setLine(a4, y4, a4, s77);
 
-        int x5 = scaled(350);
-        int w5 = scaled(190);
-        int y5 = scaled(190);
-        HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 3, text("PLANETS_HELP_4D"));
-        sp5.setLine(scaled(460), y5, scaled(460), s77);
+		int x5 = scaled(350);
+		int w5 = s190;
+		int y5 = s190;
+		int a5 = scaled(460);
+		HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 3, text("PLANETS_HELP_4D")); // Production
+		sp5.setLine(a5, y5, a5, s92, a5-s30, s77);
 
-        int x6 = scaled(475);
-        int w6 = scaled(140);
-        int y6 = scaled(100);
-        HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 3, text("PLANETS_HELP_4E"));
-        sp6.setLine(scaled(530), y6, scaled(530), s77);
+		int x6 = scaled(475);
+		int w6 = s140;
+		int y6 = s100;
+		int a6 = scaled(530);
+		HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 3, text("PLANETS_HELP_4E")); //Shield
+		sp6.setLine(a6, y6, a6, s77);
 
-        int x7 = scaled(560);
-        int w7 = scaled(200);
-        int y7 = scaled(190);
-        HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 3, text("PLANETS_HELP_4F"));
-        sp7.setLine(scaled(630), y7, scaled(630), s92, scaled(600), s77);
+		int x7 = scaled(560);
+		int w7 = s200;
+		int y7 = s190;
+		int a7 = scaled(630);
+		HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 3, text("PLANETS_HELP_4F")); // Bases
+		sp7.setLine(a7, y7, a7, s92, a7-s40, s77);
 
-        int x8 = scaled(650);
-        int w8 = scaled(200);
-        int y8 = scaled(100);
-        HelpUI.HelpSpec sp8 = helpUI.addBrownHelpText(x8,y8,w8, 3, text("PLANETS_HELP_4G"));
-        sp8.setLine(scaled(670), y8, scaled(670), s77);
+		int x8 = scaled(650);
+		int w8 = s200;
+		int y8 = s100;
+		HelpUI.HelpSpec sp8 = helpUI.addBrownHelpText(x8,y8,w8, 3, text("PLANETS_HELP_4G")); // Shipyard
+		sp8.setLine(scaled(670), y8, scaled(670), s77);
 
-        int x9 = scaled(700);
-        int w9 = scaled(210);
-        int y9 = s10;
-        HelpUI.HelpSpec sp9 = helpUI.addBrownHelpText(x9,y9,w9, 3, text("PLANETS_HELP_4H"));
-        sp9.setLine(sp9.xe()-s20, y9+sp9.height(), scaled(875), s97);
+		int x9 = scaled(670);
+		int w9 = scaled(210);
+		int y9 = s10;
+		int a9 = scaled(800);
+		HelpUI.HelpSpec sp9 = helpUI.addBrownHelpText(x9,y9,w9, 3, text("PLANETS_HELP_4H")); // Notes
+		sp9.setLine(a9, y9+sp9.height(), a9, s92);
 
-        loadSmartMaxHelp();
-    }
+		loadSmartMaxHelp();
+	}
+	private void loadHelpUI2d() {
+		HelpUI helpUI = RotPUI.helpUI();
+		int yTop = s75;
+		int sep1 = s15;
+		int sep2 = s20;
+		int dyRow = s90;
+		int yRow1 = s100;
+		int yRow2 = yRow1 + dyRow;
+		int yRow3 = yRow2 + dyRow;
+		int yRow4 = yRow3 + dyRow;
+		int boxWidth = scaled(210);
+
+		int w0 = s400;
+		int x0 = s50;
+		int y0 = s500;
+		helpUI.addBrownHelpText(x0, y0, w0, 4, text("PLANETS_HELP_ALL"));
+
+		int a4 = scaled(640);
+		int w4 = boxWidth;
+		int x4 = a4 - s20;
+		int y4 = yRow4;
+		HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 4, text("PLANETS_HELP_5D")); // Gets
+		sp4.setLine(a4, y4, a4, yTop);
+
+		int a3 = scaled(690);
+		int w3 = boxWidth;
+		int x3 = a4 + sep1;
+		int y3 = yRow3;
+		HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 4, text("PLANETS_HELP_5C")); // Gives
+		sp3.setLine(a3, y3, a3, yTop);
+
+		int a2 = scaled(745);
+		int w2 = boxWidth;
+		int x2 = a3 + sep1;
+		int y2 = yRow2;
+		HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 4, text("PLANETS_HELP_5B")); // Taxed
+		sp2.setLine(a2, y2, a2, yTop);
+
+		int a1 = scaled(785);
+		int w1 = boxWidth;
+		int x1 = a2 + sep1;
+		int y1 = yRow1;
+		HelpUI.HelpSpec sp1 = helpUI.addBrownHelpText(x1, y1, w1, 3, text("PLANETS_HELP_5A")); // Mandate
+		sp1.setLine(a1, y1, a1, yTop);
+		HelpUI.HelpSpec sp1a = helpUI.addBrownHelpText(x1, y1, w1, 4, text("PLANETS_HELP_5A")); // Mandate
+		sp1a.setLine(sp1a.xe()-s20, sp1a.ye(), getWidth() - scaled(125), scaled(290));
+
+		int a5 = scaled(580);
+		int w5 = boxWidth;
+		int x5 = x4 - w5 - sep2;
+		int y5 = yRow4;
+		HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w5, 4, text("PLANETS_HELP_5E")); // Budget
+		sp5.setLine(a5, y5, a5, yTop);
+
+		int a6 = scaled(525);
+		int w6 = boxWidth;
+		int x6 = a5 - w6 - sep1;
+		int y6 = yRow3;
+		HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 4, text("PLANETS_HELP_5F")); // Optimal
+		sp6.setLine(a6, y6, a6, yTop);
+
+		int a7 = scaled(470);
+		int w7 = boxWidth;
+		int x7 = a6 - w7 - sep1;
+		int y7 = yRow2;
+		HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7, y7, w7, 3, text("PLANETS_HELP_3F")); // Reserves
+		sp7.setLine(a7, y7, a7, yTop);
+
+		int a8 = scaled(415);
+		int w8 = boxWidth;
+		int x8 = a7 - w8 - sep1;
+		int y8 = yRow1;
+		HelpUI.HelpSpec sp8 = helpUI.addBrownHelpText(x8, y8, w8, 3, text("PLANETS_HELP_3H")); // Capacity
+		sp8.setLine(a8, y8, a8, yTop);
+
+		int tx9 = getWidth() - scaled(125);
+		int ty9 = scaled(308);
+		int x9 = x4;
+		int w9 = scaled(500);
+		int y9 = yRow4 + dyRow;
+		HelpUI.HelpSpec sp9 = helpUI.addBrownHelpText(x9, y9, w9, 12, text("PLANETS_HELP_5G")); // Capacity
+		sp9.setLine(sp9.xce(), sp9.y(), tx9, ty9);
+	}
+
     @Override
     public void paintComponent(Graphics g0) {
+		if(player().budget().updateInProgress())
+			return;
         super.paintComponent(g0);
         Graphics2D g = (Graphics2D) g0;
         // draw the gradient background for the header row
@@ -798,6 +930,10 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             		multiSpendingPane.decreaseBase(e);
             	else
             		multiSpendingPane.increaseBase(e);
+			case KeyEvent.VK_O:
+				ParamSubUI subUI = AllSubUI.getHandle(ISubUiKeys.GOVERNOR_TAXES_UI_KEY).getUI();
+				subUI.start(instance);
+				return;
         }
         if (repaint)
             repaint();
@@ -970,6 +1106,10 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 
         return toggled;
     }
+	private void doubleClickSelectedSystem(StarSystem sys)	{
+		if(selectedMode == BUDGET_MODE)
+			showTransferReservePane();
+	}
     private synchronized void selectedSystem(StarSystem sys, boolean updateFieldValues) {
         sessionVar("MAINUI_SELECTED_SYSTEM", sys);
         sessionVar("MAINUI_CLICKED_SPRITE", sys);
@@ -999,23 +1139,32 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         return (sys == null) || !allSystems().contains(sys) ? null : sys;
     }
     private void initDataViews() {
-        Column rowNumCol =  listingUI.newRowNumColumn("PLANETS_LIST_NUM", 15, RIGHT);
-        Column flagCol = listingUI.newSystemFlagColumn("", "FLAG", 30, palette.black, StarSystem.VFLAG, LEFT);
-        Column nameCol = listingUI.newSystemNameColumn(nameField, "PLANETS_LIST_NAME", "NAME", 170, palette.black, StarSystem.NAME, LEFT);
-        Column populationCol = listingUI.newSystemDeltaDataColumn("PLANETS_LIST_POPULATION", "POPULATION", 90, palette.black, StarSystem.POPULATION, RIGHT);
-        Column sizeCol = listingUI.newSystemDataColumn("PLANETS_LIST_SIZE", "SIZE", 60, palette.black, StarSystem.CURRENT_SIZE, RIGHT);
-        Column pTypeCol = listingUI.newPlanetTypeColumn("PLANETS_LIST_TYPE", "PLANET_TYPE", 90, StarSystem.PLANET_TYPE);
-        Column wasteCol = listingUI.newSystemDataColumn("PLANETS_LIST_WASTE", "WASTE", 75, palette.black, StarSystem.WASTE, RIGHT);
-        Column notesCol = listingUI.newSystemNotesColumn(notesField, "PLANETS_LIST_NOTES", "NOTES", 999, palette.black);
-        Column factoriesCol = listingUI.newSystemDeltaDataColumn("PLANETS_LIST_FACTORIES", "FACTORIES", 90, palette.black, StarSystem.FACTORIES, RIGHT);
-        Column productionCol = listingUI.newSystemDataColumn("PLANETS_LIST_PRODUCTION", "INCOME", 60, palette.black, StarSystem.INCOME, RIGHT);
-        Column capacityCol = listingUI.newSystemDataColumn("PLANETS_LIST_CAPACITY", "CAPACITY", 60, palette.black, StarSystem.CAPACITY, RIGHT);
-        Column indRsvCol = listingUI.newSystemDataColumn("PLANETS_LIST_RESERVE", "RESERVE", 60, palette.black, StarSystem.INDUSTRY_RESERVE, RIGHT);
-        Column basesCol = listingUI.newSystemDeltaDataColumn("PLANETS_LIST_BASES", "BASES", 60, palette.black, StarSystem.BASES, RIGHT);
-        Column shieldCol = listingUI.newSystemDataColumn("PLANETS_LIST_SHIELD", "SHIELD", 60, palette.black, StarSystem.SHIELD, RIGHT);
-        Column shipCol = listingUI.newSystemDataColumn("PLANETS_LIST_SHIPYARD", "SHIPYARD", 140, palette.black, StarSystem.SHIPYARD, LEFT);
-        Column resourceCol = listingUI.newSystemDataColumn("PLANETS_LIST_RESOURCES", "RESOURCES", 90, palette.black, StarSystem.RESOURCES, LEFT);
-        Column stargateCol = listingUI.newSystemStargateColumn("", "STARGATE", 30, palette.black, StarSystem.STARGATE, RIGHT);
+		Column rowNumCol	= listingUI.newRowNumColumn("PLANETS_LIST_NUM", s15, RIGHT);
+		Column flagCol		= listingUI.newSystemFlagColumn("", "FLAG", 30, palette.black, StarSystem.FLAG, LEFT);
+		Column notesCol		= listingUI.newSystemNotesColumn(notesField, "PLANETS_LIST_NOTES", "NOTES", 999, palette.black);
+		Column pTypeCol		= listingUI.newPlanetTypeColumn("PLANETS_LIST_TYPE",	"PLANET_TYPE",	s85,	StarSystem.PLANET_TYPE);
+
+		Column nameCol		= listingUI.newSystemNameColumn(nameField, "PLANETS_LIST_NAME",	"NAME",		s160, palette.black,	StarSystem.NAME,			LEFT);
+		Column sizeCol		= listingUI.newSystemDataColumn("PLANETS_LIST_SIZE",		"SIZE",			s60, palette.black,	StarSystem.CURRENT_SIZE,	RIGHT);
+		Column wasteCol		= listingUI.newSystemDataColumn("PLANETS_LIST_WASTE",		"WASTE",		s70, palette.black,	StarSystem.WASTE,			RIGHT);
+		Column productionCol= listingUI.newSystemDataColumn("PLANETS_LIST_PRODUCTION",	"INCOME",		s55, palette.black,	StarSystem.INCOME,			RIGHT);
+		Column capacityCol	= listingUI.newSystemDataColumn("PLANETS_LIST_CAPACITY", 	"CAPACITY",		s55, palette.black,	StarSystem.CAPACITY,		RIGHT);
+		Column indRsvCol	= listingUI.newSystemDataColumn("PLANETS_LIST_RESERVE",		"RESERVE",		s55, palette.black,	StarSystem.COLONY_RESERVE,	RIGHT);
+		Column shieldCol	= listingUI.newSystemDataColumn("PLANETS_LIST_SHIELD",		"SHIELD",		s55, palette.black,	StarSystem.SHIELD,			RIGHT);
+		Column shipCol		= listingUI.newSystemDataColumn("PLANETS_LIST_SHIPYARD",	"SHIPYARD",		s130,palette.black,	StarSystem.SHIPYARD,		LEFT);
+		Column resourceCol	= listingUI.newSystemDataColumn("PLANETS_LIST_RESOURCES",	"RESOURCES",	s85, palette.black,	StarSystem.RESOURCES,		CENTER);
+		Column neededCol	= listingUI.newSystemDataColumn("PLANETS_LIST_NEEDED",		"NEEDED",		s55, palette.black,	StarSystem.COLONY_NEEDED,	RIGHT);
+		Column budgetCol	= listingUI.newSystemDataColumn("PLANETS_LIST_BUDGET",		"BUDGET",		s55, palette.black,	StarSystem.COLONY_BUDGET,	RIGHT);
+		Column subsidyCol	= listingUI.newSystemDataColumn("PLANETS_LIST_SUBSIDY",		"SUBSIDY",		s55, palette.black,	StarSystem.COLONY_SUBSIDIES,RIGHT);
+		Column allocateCol	= listingUI.newSystemDataColumn("PLANETS_LIST_CONTRIBUTE",	"CONTRIBUTE",	s55, palette.black,	StarSystem.COLONY_CONTRIBUTE,RIGHT);
+		Column taxedCol		= listingUI.newSystemDataColumn("PLANETS_LIST_TAXED",		"TAXED",		s55, palette.black,	StarSystem.COLONY_TAXED,	RIGHT);
+
+		Column populationCol= listingUI.newSystemDeltaDataColumn("PLANETS_LIST_POPULATION",	"POPULATION",	s85,	palette.black,	StarSystem.POPULATION,	RIGHT);
+		Column factoriesCol	= listingUI.newSystemDeltaDataColumn("PLANETS_LIST_FACTORIES",	"FACTORIES",	s85,	palette.black,	StarSystem.FACTORIES,	RIGHT);
+		Column basesCol		= listingUI.newSystemDeltaDataColumn("PLANETS_LIST_BASES",		"BASES",		s55,	palette.black,	StarSystem.BASES,		RIGHT);
+
+		Column stargateCol	= listingUI.newSystemStargateColumn("",	"STARGATE",	listingUI.rowHeight(),	palette.black,	StarSystem.STARGATE,	CENTER);
+		Column govPlanCol	= listingUI.newSystemGovPlanColumn("",	"GOVPLAN",	listingUI.rowHeight(),	palette.black,	StarSystem.GOV_PLAN,	CENTER);
 
         DataView ecoView = listingUI.newDataView();
         ecoView.addColumn(rowNumCol);
@@ -1042,6 +1191,24 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         indView.addColumn(notesCol);
         views.put(INDUSTRY_MODE, indView);
 
+		DataView taxView = listingUI.newDataView();
+		taxView.addColumn(rowNumCol);
+		taxView.addColumn(flagCol);
+		taxView.addColumn(nameCol);
+		taxView.addColumn(populationCol);
+		taxView.addColumn(resourceCol);
+		taxView.addColumn(capacityCol);
+		taxView.addColumn(indRsvCol);
+		taxView.addColumn(neededCol);
+		taxView.addColumn(budgetCol);
+		taxView.addColumn(subsidyCol);
+		taxView.addColumn(allocateCol);
+		taxView.addColumn(taxedCol);
+		taxView.addColumn(govPlanCol);
+		taxView.addColumn(notesCol);
+		views.put(BUDGET_MODE, taxView);
+
+
         DataView milView = listingUI.newDataView();
         milView.addColumn(rowNumCol);
         milView.addColumn(flagCol);
@@ -1062,9 +1229,15 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
     private void finish(boolean disableNextTurn) {
         displayedSystems = null;
         sessionVar("COLONYUI_ANCHOR_SYSTEM", null); 
+		transferReservePane.clear();
         buttonClick();
         RotPUI.instance().selectMainPanel(disableNextTurn);
     }
+	private void showTransferReservePane()	{
+		softClick();
+		transferReservePane.targetSystems(selectedSystems());
+		enableGlassPane(transferReservePane);
+	}
     private class PlanetListingUI extends BasePanel {
         private static final long serialVersionUID = 1L;
         private PlanetListingUI(PlanetsUI p) {
@@ -1116,14 +1289,15 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 
             int w = getWidth();
             int h = getHeight();
-            int gap = s20;
+            int gap = s15;
             int helpW = s30;
             int x0 = gap+helpW;
-            int tabW = (w-helpW-(6*gap))/4;
+            int tabW = (w-helpW-(6*gap))/5;
             String title = text("PLANETS_TITLE", player().raceName());
             title = player().replaceTokens(title, "player");
             String ecoLabel = text("PLANETS_VIEW_ECOLOGY");
             String indLabel =  text("PLANETS_VIEW_INDUSTRY");
+            String taxLabel =  text("PLANETS_VIEW_BUDGET");
             String milLabel =  text("PLANETS_VIEW_MILITARY");
 
             drawHelpButton(g);
@@ -1145,9 +1319,14 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             textureArea.add(tab2Area);
 
             x0 += (tabW+gap);
-            drawTab(g,x0,0,tabW,h,milLabel, militaryBox, selectedMode == MILITARY_MODE);
+            drawTab(g,x0,0,tabW,h,taxLabel, budgetBox, selectedMode == BUDGET_MODE);
             Area tab3Area = new Area(new RoundRectangle2D.Float(x0,s10,tabW,h-s10,h/4,h/4));
             textureArea.add(tab3Area);
+
+            x0 += (tabW+gap);
+            drawTab(g,x0,0,tabW,h,milLabel, militaryBox, selectedMode == MILITARY_MODE);
+            Area tab4Area = new Area(new RoundRectangle2D.Float(x0,s10,tabW,h-s10,h/4,h/4));
+            textureArea.add(tab4Area);
         }
         private void drawHelpButton(Graphics2D g) {
             helpBox.setBounds(s10,s10,s20,s25);
@@ -1192,16 +1371,18 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         }
         private void selectNextTab() {
             switch(selectedMode) {
-                case ECOLOGY_MODE: selectTab(INDUSTRY_MODE); break;
-                case INDUSTRY_MODE: selectTab(MILITARY_MODE); break;
-                case MILITARY_MODE: selectTab(ECOLOGY_MODE); break;
+				case ECOLOGY_MODE:	selectTab(INDUSTRY_MODE);	break;
+				case INDUSTRY_MODE:	selectTab(BUDGET_MODE);		break;
+				case BUDGET_MODE:	selectTab(MILITARY_MODE);	break;
+				case MILITARY_MODE:	selectTab(ECOLOGY_MODE);	break;
             }
         }
         private void selectPreviousTab() {
             switch(selectedMode) {
-                case ECOLOGY_MODE: selectTab(MILITARY_MODE); break;
-                case INDUSTRY_MODE: selectTab(ECOLOGY_MODE); break;
-                case MILITARY_MODE: selectTab(INDUSTRY_MODE); break;
+				case ECOLOGY_MODE:	selectTab(MILITARY_MODE);	break;
+				case INDUSTRY_MODE:	selectTab(ECOLOGY_MODE);	break;
+				case BUDGET_MODE:	selectTab(INDUSTRY_MODE);	break;
+				case MILITARY_MODE:	selectTab(BUDGET_MODE);		break;
             }
         }
         private void selectTab(int mode) {
@@ -1237,6 +1418,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                     selectTab(ECOLOGY_MODE);
                 else if (hoverBox == industryBox)
                     selectTab(INDUSTRY_MODE);
+				else if (hoverBox == budgetBox)
+					selectTab(BUDGET_MODE);
                 else if (hoverBox == militaryBox)
                     selectTab(MILITARY_MODE);
                 else if (hoverBox == helpBox)
@@ -1257,6 +1440,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                 hoverBox = ecologyBox;
             else if (industryBox.contains(x,y))
                 hoverBox = industryBox;
+			else if (budgetBox.contains(x,y))
+				hoverBox = budgetBox;
             else if (militaryBox.contains(x,y))
                 hoverBox = militaryBox;
            else if (helpBox.contains(x,y))
@@ -1516,7 +1701,6 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         private final int downButtonX[] = new int[3];
         private final int downButtonY[] = new int[3];
         private Rectangle limitBox = new Rectangle();
-
 
         private final Color textColor = newColor(204,204,204);
         private ColonyShipPane(SystemPanel p) {
@@ -2130,14 +2314,11 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             g.drawRect(x,y,w,h);
             g.setStroke(prev);
         }
-        public boolean isButtonEnabled() { return (int)player().totalReserve() > 0; }
+        public boolean isButtonEnabled() { return (int)player().totalReserve() > -1; } // TO DO BR: set to 0 or -1
         private void buttonClicked() {
-            if (isButtonEnabled() && !selectedSystems().isEmpty()) {
-                softClick();
-                transferReservePane.targetSystems(selectedSystems());
-                enableGlassPane(transferReservePane);
-            }
-            else
+			if (isButtonEnabled() && !selectedSystems().isEmpty())
+				showTransferReservePane();
+			else
                 misClick();
         }
         @Override
@@ -2187,6 +2368,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             super(p);
             setBorder(BorderFactory.createMatteBorder(scaled(3), 0,0,0, selectedC));
         }
+		@Override protected int rowHeight()		{ return s27; }
+		@Override protected int dataFontSize()	{ return 18; }
         @Override
         public String textureName()    { return instance.subPanelTextureName(); }
         @Override
@@ -2207,6 +2390,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         protected void controlSelectedSystem(StarSystem sys, boolean updateFieldValues) {
             instance.controlSelectedSystem(sys, updateFieldValues);
         }
+		@Override protected void doubleClickSelectedSystem(StarSystem sys)	{ instance.doubleClickSelectedSystem(sys); }
         @Override
         protected boolean isSelected(StarSystem sys) { 
             return instance.selectedSystems().contains(sys);
@@ -2225,7 +2409,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             initModel();
         }
         private void initModel() {
-            setPreferredSize(new Dimension(getWidth(),scaled(160)));
+            setPreferredSize(new Dimension(getWidth(), scaled(177)));
             setOpaque(false);
             setLayout(new BorderLayout());
             add(new ReserveUI(), BorderLayout.EAST);
@@ -2249,6 +2433,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
+			Empire player = player();
 
             int w = getWidth();
             int h = getHeight();
@@ -2266,8 +2451,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 
             textureClip = new Rectangle(x1,y1,w1,h1);
 
-            // DESC
-            g.setFont(narrowFont(15));
+			// DESC
+			g.setFont(narrowFont(16));
             String desc = text("PLANETS_COSTS_DESC");
             List<String> descLines = wrappedLines(g, desc, w-s40);
             g.setColor(palette.black);
@@ -2279,7 +2464,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 
             g.setFont(narrowFont(18));
 
-            // calculate column widthss
+            // calculate column widths
             String lbl1 = text("PLANETS_COSTS_SHIPS");
             int sw1 = g.getFontMetrics().stringWidth(lbl1);
             String lbl2 = text("PLANETS_COSTS_BASES");
@@ -2301,26 +2486,26 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             // LEFT COLUMN
             x1 = spacing;
             w1 = col1W+s50;
-            y1 = h-s60;
+            y1 = h-s70;
             int midX = x1+col1W;
             drawShadowedString(g, lbl1, 2, midX-sw1, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
 
-            String val = text("PLANETS_AMT_PCT", fmt(100*player().shipMaintCostPerBC(),1));
+            String val = text("PLANETS_AMT_PCT", fmt(100*player.shipMaintCostPerBC(),1));
             sw = g.getFontMetrics().stringWidth(val);
             g.setColor(palette.black);
             drawString(g,val, x1+w1-sw, y1);
 
-            y1 = h-s40;
+            y1 = h-s47;
             drawShadowedString(g, lbl2, 2, midX-sw2, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
-            val = text("PLANETS_AMT_PCT", fmt(100*player().missileBaseCostPerBC(),1));
+            val = text("PLANETS_AMT_PCT", fmt(100*player.missileBaseCostPerBC(),1));
             sw = g.getFontMetrics().stringWidth(val);
             g.setColor(palette.black);
             drawString(g,val, x1+w1-sw, y1);
 
 
-            y1 = h-s20;
+            y1 = h-s23;
             drawShadowedString(g, lbl3, 2, midX-sw3, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
-            val = text("PLANETS_AMT_PCT", fmt(100*player().stargateCostPerBC(),1));
+            val = text("PLANETS_AMT_PCT", fmt(100*player.stargateCostPerBC(),1));
             sw = g.getFontMetrics().stringWidth(val);
             g.setColor(palette.black);
             drawString(g,val, x1+w1-sw, y1);
@@ -2328,17 +2513,17 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             // RIGHT COLUMN
             int x2 = x1+w1+spacing;
             int w2 = col2W+s50;
-            y1 = h-s60;
+            y1 = h-s70;
             midX = x2+col2W;
             drawShadowedString(g, lbl4, 2, midX-sw4, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
-            val = text("PLANETS_AMT_PCT", fmt(100*player().totalSpyCostPct(),1));
+            val = text("PLANETS_AMT_PCT", fmt(100*player.totalSpyCostPct(),1));
             sw = g.getFontMetrics().stringWidth(val);
             g.setColor(palette.black);
             drawString(g,val, x2+w2-sw, y1);
 
-            y1 = h-s40;
+            y1 = h-s47;
             drawShadowedString(g, lbl5, 2, midX-sw5, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
-            val = text("PLANETS_AMT_PCT", fmt(100*player().internalSecurityCostPct(),1));
+            val = text("PLANETS_AMT_PCT", fmt(100*player.internalSecurityCostPct(),1));
             sw = g.getFontMetrics().stringWidth(val);
             g.setColor(palette.black);
             drawString(g,val, x2+w2-sw, y1);
@@ -2361,6 +2546,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
+			Empire player = player();
 
             int w = getWidth();
             int h = getHeight();
@@ -2384,12 +2570,12 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             x1 += margin;
             w1 = w1 - (2*margin);
             y1 += s25;
-            g.setFont(narrowFont(20));
+            g.setFont(narrowFont(18));
             String label = text("PLANETS_INCOME_TRADE");
             sw = g.getFontMetrics().stringWidth(label);
             drawShadowedString(g, label, 2, midP-sw, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
 
-            String val = text("PLANETS_AMT_BC", df1.format(player().netTradeIncome()));
+            String val = text("PLANETS_AMT_BC", df1.format(player.netTradeIncome()));
             sw = g.getFontMetrics().stringWidth(val);
             g.setColor(palette.black);
             drawString(g,val, amtP-sw, y1);
@@ -2398,13 +2584,22 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             label = text("PLANETS_INCOME_PLANETS");
             sw = g.getFontMetrics().stringWidth(label);
             drawShadowedString(g, label, 2, midP-sw, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
-            val = text("PLANETS_AMT_BC", df1.format(player().totalPlanetaryIncome()));
+            val = text("PLANETS_AMT_BC", df1.format(player.totalPlanetaryIncome()));
             sw = g.getFontMetrics().stringWidth(val);
             g.setColor(palette.black);
             drawString(g,val, amtP-sw, y1);
 
-            // draw divider line
-            y1 += s15;
+			y1 += s25;
+			label = text("PLANETS_INCOME_SPECIES");
+			sw = g.getFontMetrics().stringWidth(label);
+			drawShadowedString(g, label, 2, midP-sw, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
+			val = text("PLANETS_AMT_BC", df1.format(player.populationBonusIncome()));
+			sw = g.getFontMetrics().stringWidth(val);
+			g.setColor(palette.black);
+			drawString(g,val, amtP-sw, y1);
+
+			// draw divider line
+			y1 += s12;
             g.setColor(Color.black);
             g.fillRect(x1,y1,w1,s3/2);
 
@@ -2412,7 +2607,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             label = text("PLANETS_INCOME_TOTAL");
             sw = g.getFontMetrics().stringWidth(label);
             drawShadowedString(g, label, 2, midP-sw, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
-            val = text("PLANETS_AMT_BC", df1.format(player().totalIncome()));
+            val = text("PLANETS_AMT_BC", df1.format(player.totalIncome()));
             sw = g.getFontMetrics().stringWidth(val);
             g.setColor(palette.black);
             drawString(g,val, amtP-sw, y1);
@@ -2436,12 +2631,17 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         private final int rightButtonX[] = new int[3];
         private final int rightButtonY[] = new int[3];
         private Shape textureClip;
+
+		private final int minFontSize = 12;
+		private final int border = s10;
+		private int w, h, lineH, lineSep, lineStep, x1, y1, w1;
+
         public ReserveUI() {
             initModel();
         }
         private void initModel() {
             setOpaque(false);
-            setPreferredSize(new Dimension(scaled(300),getHeight()));
+            setPreferredSize(new Dimension(scaled(320), getHeight()));
             addMouseListener(this);
             addMouseMotionListener(this);
             addMouseWheelListener(this);
@@ -2450,200 +2650,203 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         public String textureName()   { return instance.subPanelTextureName(); }
         @Override
         public Shape textureClip()    { return textureClip; }
-        @Override
-        public void paintComponent(Graphics g0) {
-            super.paintComponent(g0);
-            Graphics2D g = (Graphics2D) g0;
-            int w = getWidth();
-            int h = getHeight();
+		@Override public void paintComponent(Graphics g0)	{
+			super.paintComponent(g0);
+			Graphics2D g = (Graphics2D) g0;
+			// Description line preparation to determine line spacing
+			lineH = s15;
+			w = getWidth();
+			h = getHeight();
 
-            boolean extra = true;
-            // Description line preparation to determine line spacing
-            int lineH = s15;
-            int minFontSize = 12;
-            int xd = s20;
-            String desc = text("PLANETS_TAX_DESC");
-            //int fontSize = scaledFont(g, desc, w-xd-xd, 15, minFontSize);
-            //System.out.println("description font Size: " + fontSize); // TO DO BR: Comment
+			// Draw header and definition
+			drawHeader(g);
 
-            List<String> lines = scaledNarrowWrappedLines(g, desc, w-xd-xd, 1, 15, minFontSize);
-            int lineSep = extra? s6 : s10;
-            if (extra && lines.size() > 1) { // try to reduce margin
-            	int x2 = s10;
-            	lineSep = s4;
-            	List<String> lines2 = scaledNarrowWrappedLines(g, desc, w-x2-x2, 1, 15, minFontSize);
-                if (lines.size() == 1) {
-                	xd = x2;
-                	lines = lines2;
-                	lineSep = s6;
-                }
-            }
-            int stepY = lineH + lineSep;
+			// Slider box and text
+			drawSliderAndText(g);
 
-            // Header "Empire Treasury"
-            g.setFont(narrowFont(24));
-            String title = text("PLANETS_TREASURY");
-            int sw = g.getFontMetrics().stringWidth(title);
-            int x0 = (w-sw)/2;
-            drawShadowedString(g, title, 2, x0, s35, palette.black, SystemPanel.orangeText);
+			// draw check box
+			drawDevelopCheckBox(g);
+		}
+		private void drawHeader(Graphics2D g)	{
+			int xd = s20;
+			int wd = w - xd - xd;
+			String desc = text("PLANETS_TAX_DESC");
 
-            int border = s10;
-            int x1 = border; int w1 = w-x1-border;
-            int y1 = s45; int h1 = h-y1-s10;
-            g.setColor(palette.medBack);
-            g.fillRect(x1, y1, w1, h1);
+			List<String> lines = scaledNarrowWrappedLines(g, desc, wd, 1, 15, minFontSize);
+			lineSep = s5;
+			lineStep = lineH + lineSep;
 
-            textureClip = new Rectangle(x1,y1,w1,h1);
+			// Header "Empire Treasury"
+			g.setFont(narrowFont(24));
+			String title = text("PLANETS_TREASURY");
+			int sw = g.getFontMetrics().stringWidth(title);
+			x1 = (w-sw)/2;
+			y1 = s35;
+			drawShadowedString(g, title, 2, x1, y1, palette.black, SystemPanel.orangeText);
 
-            // Top line "Treasury Funds XXXX BC"
-            int w2 = w1*3/5;
-            int midP = x1 + w2;
-            y1 += s20;
-            String label = text("PLANETS_TREASURY_FUNDS");
-            scaledFont(g, label, w2, 20, 15);
-            //g.setFont(narrowFont(20));
-            sw = g.getFontMetrics().stringWidth(label);
-            drawShadowedString(g, label, 2, midP-sw, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
+			x1 = border;
+			w1 = w-x1-border;
+			y1 = s45;
+			int h1 = h-y1-s10;
+			g.setColor(palette.medBack);
+			g.fillRect(x1, y1, w1, h1);
 
-            g.setColor(palette.black);
-            String text = text("PLANETS_AMT_BC", shortFmt(player().totalReserve()));
-            drawString(g,text, midP+s10, y1);
+			textureClip = new Rectangle(x1,y1,w1,h1);
 
-            // Description line
-            y1 += lineSep;
-            int dy2 = s2;
-            if (lines.size() > 1) {
-            	g.setFont(narrowFont(minFontSize));
-            	lineH = scaled(minFontSize);
-                if (extra)
-                    y1 -= s2;
-                else
-                	y1 -= s5;
-            }
-            else {
-            	g.setFont(narrowFont(15));
-                if (extra) {
-                	y1 -= s3;
-                	dy2 = s3;
-                }
-            }
-            for (String line: lines) {
-            	sw = g.getFontMetrics().stringWidth(line);
-            	x1 = (w-sw)/2;
-                y1 += lineH;
-                drawString(g, line, x1, y1);
-            }
+			// Top line "Treasury Funds XXXX BC"
+			int w2 = w1 * 3/5;
+			int midP = x1 + w2;
+			y1 += s20;
+			String label = text("PLANETS_TREASURY_FUNDS");
+			scaledFont(g, label, w2, 20, 15);
+			sw = g.getFontMetrics().stringWidth(label);
+			drawShadowedString(g, label, 2, midP-sw, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
 
-            // Slider box and text
-            int boxW=s100;
-            y1 += stepY + dy2;
-            x1 = s20;
-            String lbl = text("PLANETS_RESERVE_TAX");
-            scaledFont(g, lbl, ((w-boxW)/2)-s15, 16, 13);
-            sw = g.getFontMetrics().stringWidth(lbl);
-            drawString(g,lbl, x1, y1);
+			g.setColor(palette.black);
+			String text = text("PLANETS_AMT_BC", shortFmt(player().totalReserve()));
+			drawString(g,text, midP+s10, y1);
 
-            x1 = x1+sw+s5;
-            drawSliderBox(g, x1, y1-s15, boxW, s18);
+			// Description line
+			y1 += lineSep;
+			int dy2 = s2;
+			if (lines.size() > 1) {
+				g.setFont(narrowFont(minFontSize));
+				lineH = scaled(minFontSize);
+				y1 -= s5;
+			}
+			else {
+				g.setFont(narrowFont(15));
+				y1 -= s1;
+			}
+
+			for (String line: lines) {
+				sw = g.getFontMetrics().stringWidth(line);
+				x1 = (w-sw)/2;
+				y1 += lineH;
+				drawString(g, line, x1, y1);
+			}
+			y1 += lineStep + dy2;
+		}
+		private void drawSliderAndText(Graphics2D g)	{
+			Empire player = player();
+			int boxW = s100;
+			x1 = s20;
+			String lbl = text("PLANETS_RESERVE_TAX");
+			scaledFont(g, lbl, ((w-boxW)/2)-s15, 15, 13);
+			int sw = g.getFontMetrics().stringWidth(lbl);
+			drawString(g, lbl, x1, y1);
+
+			x1 = x1 + sw + s5;
+			drawSliderBox(g, x1, y1-s15, boxW, s18);
 
 			String result;
 			boolean shieldWithoutBases = options().shieldAlones();
-			float revenue = player().empireTaxRevenue(shieldWithoutBases);
-			if (revenue > 0) {
-				String revStr = revenue<100? fmt(player().empireTaxRevenue(shieldWithoutBases), 1) : shortFmt(revenue);
+			float taxOnlyIncome = player.empireTaxOnlyIncome(shieldWithoutBases);
+			float excessSpendingIncome = player.empireExcessSpendingIncome();
+			float totalIncome = taxOnlyIncome + excessSpendingIncome;
+			if (taxOnlyIncome > 0) {
+				String revStr = taxOnlyIncome<100? fmt(taxOnlyIncome, 1) : shortFmt(taxOnlyIncome);
 				result = text("PLANETS_RESERVE_INCREASE", revStr);
 			}
-            else
-                result = text("PLANETS_RESERVE_NO_TAX");
+			else
+				result = text("PLANETS_RESERVE_NO_TAX");
 
-            x1 = x1+boxW+s5;
-            scaledFont(g, result, w-x1-border-s5, 16, 13);
-            g.setColor(palette.black);
-            drawString(g,result, x1, y1);
+			x1 = x1 + boxW + s5;
+			scaledFont(g, result, w-x1-border-s5, 16, 13);
+			g.setColor(palette.black);
+			drawString(g, result, x1, y1);
 
+			// Details
+			int maxFontSize = 15;
+			// Subsidies
+			y1 += lineStep;
+			x1 = border + s10;
+			int wd = (w - border) / 2 -border;
+			int wd1 = wd * 80/100;
+			int wd2 = wd + wd - wd1;
+			float subsidizies = player.budget().subsidized();
+			if (subsidizies > 0) {
+				String revStr = subsidizies<100? fmt(subsidizies, 1) : shortFmt(subsidizies);
+				result = text("PLANETS_BUDGET_SUBSIDIES", revStr);
+			}
+			else
+				result = text("PLANETS_BUDGET_NO_SUBSIDIES");
+			scaledFont(g, result, wd1, maxFontSize, minFontSize);
+			g.setColor(palette.black);
+			drawString(g, result, x1, y1);
 
-            // draw check box
-            g.setFont(narrowFont(14));
-            String opt = text("PLANETS_RESERVE_ONLY_DEVELOPED");
-            int optSW = g.getFontMetrics().stringWidth(opt);
-            int checkW = s12;
-            int totalW = checkW+s6+optSW;
-            int checkX=(w-totalW)/2;
-            y1 += stepY;
+			// Total income
+			// Requested by player
+			float requestedBC = player.budget().requestedReserves();
+			String requestedStr = "";
+			if (requestedBC>0) {
+				String reqStr = requestedBC<100? fmt(requestedBC, 1) : shortFmt(requestedBC);
+				requestedStr = " / " + text("PLANETS_AMT_BC", reqStr); 
+			}
+			int x2 = x1 + wd1 + border;
+			if (totalIncome > 0) {
+				String revStr = totalIncome<100? fmt(totalIncome, 1) : shortFmt(totalIncome);
+				result = text("PLANETS_BUDGET_TOTAL_INCOME", revStr) + requestedStr;
+			}
+			else
+				result = text("PLANETS_BUDGET_NO_INCOME") + requestedStr;
+			scaledFont(g, result, wd2, maxFontSize, minFontSize);
+			g.setColor(palette.black);
+			drawString(g, result, x2, y1);
 
-            reserveBox.setBounds(checkX, y1-checkW, checkW, checkW);
-            int labelX = checkX+checkW+s6;
-            Stroke prev = g.getStroke();
-            g.setStroke(stroke2);
-            g.setColor(FleetUI.backHiC);
-            g.fill(reserveBox);
-            if (hoverBox == reserveBox) {
-                g.setColor(Color.yellow);
-                g.draw(reserveBox);
-            }
-            if (player().empireTaxOnlyDeveloped()) {
-                g.setColor(SystemPanel.whiteText);
-                g.drawLine(checkX-s1, y1-s6, checkX+s3, y1-s3);
-                g.drawLine(checkX+s3, y1-s3, checkX+checkW, y1-s12);
-            }
-            g.setStroke(prev);
-            g.setColor(palette.black);
-            drawString(g,opt,labelX,y1);
+			// Unused Player Reserves
+			y1 += lineStep-s4;
+			float unusedReserve = player.budget().unusedReserves();
+			if (unusedReserve > 0) {
+				String revStr = unusedReserve<100? fmt(unusedReserve, 1) : shortFmt(unusedReserve);
+				result = text("PLANETS_BUDGET_UNUSED", revStr);
+			}
+			else
+				result = text("PLANETS_BUDGET_UNUSED_NONE");
+			scaledFont(g, result, wd1, maxFontSize, minFontSize);
+			g.setColor(palette.black);
+			drawString(g, result, x1, y1);
 
-            if (!extra)
-            	return;
+			// Unused Reserve
+			float unusedPlayer = player.budget().unusedPlayerReserves();
+			if (unusedPlayer > 0) {
+				String revStr = unusedPlayer<100? fmt(unusedPlayer, 1) : shortFmt(unusedPlayer);
+				result = text("PLANETS_BUDGET_UNUSED_PLAYER", revStr);
+			}
+			else
+				result = text("PLANETS_BUDGET_ALL_USED_PLAYER");
+			scaledFont(g, result, wd2, maxFontSize, minFontSize);
+			g.setColor(palette.black);
+			drawString(g, result, x2, y1);
+		}
+		private void drawDevelopCheckBox(Graphics2D g)	{
+			g.setFont(narrowFont(14));
+			String opt = text("PLANETS_RESERVE_ONLY_DEVELOPED");
+			int optSW = g.getFontMetrics().stringWidth(opt);
+			int checkW = s12;
+			int totalW = checkW+s6+optSW;
+			int checkX=(w-totalW)/2;
+			y1 += lineStep -s2;
 
-            // Fully developed definition
-            IGameOptions opts = options();
-            int boxDY = s2;
-            int boxDX = s5;
-            lineH = s15;
-            int boxH = lineH + boxDY + boxDY;
-            y1 += s18;
-            x1 = s20;
-
-            // label
-            label = text("PLANETS_RES_FULL_DEF_LABEL");
-            g.setFont(narrowFont(15));
-            g.setColor(palette.black);
-            drawString(g, label, x1, y1);
-            sw = g.getFontMetrics().stringWidth(label);
-            int left  = x1 + sw + s20;
-            int infoW = w1-left;
-            int halfW = infoW/2;
-
-            // Population
-            int maxPop = opts.maxMissingPopulation();
-            String pop = text("PLANETS_RES_FULL_DEF_POP", maxPop);
-            sw = g.getFontMetrics().stringWidth(pop);
-            x1 = left + (halfW - sw)/2;
-            maxPopBox.setBounds(x1-boxDX, y1-lineH, sw+boxDX+boxDX, boxH);
-            if (hoverBox == maxPopBox) {
-            	prev = g.getStroke();
-            	g.setStroke(stroke2);
-                g.setColor(Color.yellow);
-                g.draw(maxPopBox);
-                g.setStroke(prev);
-            }
-            g.setColor(palette.black);
-            drawString(g, pop, x1, y1);
-
-            // Factories
-            int maxFact = opts.maxMissingFactories();
-            String fact = text("PLANETS_RES_FULL_DEF_FACT", maxFact);
-            sw = g.getFontMetrics().stringWidth(fact);
-            x1 = left + halfW + (halfW - sw)/2;
-            maxFactBox.setBounds(x1-boxDX, y1-lineH, sw+boxDX+boxDX, boxH);
-            if (hoverBox == maxFactBox) {
-            	prev = g.getStroke();
-            	g.setStroke(stroke2);
-                g.setColor(Color.yellow);
-                g.draw(maxFactBox);
-                g.setStroke(prev);
-            }
-            g.setColor(palette.black);
-            drawString(g, fact, x1, y1);
-        }
+			reserveBox.setBounds(checkX, y1-checkW, checkW, checkW);
+			int labelX = checkX+checkW+s6;
+			Stroke prev = g.getStroke();
+			g.setStroke(stroke2);
+			g.setColor(FleetUI.backHiC);
+			g.fill(reserveBox);
+			if (hoverBox == reserveBox) {
+				g.setColor(Color.yellow);
+				g.draw(reserveBox);
+			}
+			if (player().empireTaxOnlyDeveloped()) {
+				g.setColor(SystemPanel.whiteText);
+				g.drawLine(checkX-s1, y1-s6, checkX+s3, y1-s3);
+				g.drawLine(checkX+s3, y1-s3, checkX+checkW, y1-s12);
+			}
+			g.setStroke(prev);
+			g.setColor(palette.black);
+			drawString(g,opt,labelX,y1);
+		}
         private void drawSliderBox(Graphics2D g, int x, int y, int w, int h) {
             int leftMargin = x;
             int rightMargin = x+w;
@@ -2794,14 +2997,12 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                     player().empireTaxLevel(newLevel);
                     repaint();
                     planetDisplayPane.repaint();
-                } else if(!selectedSystems().isEmpty() && player().totalReserve() > 0) {
-                    softClick();
-                    transferReservePane.targetSystems(selectedSystems());
-                    enableGlassPane(transferReservePane);
-                } else {
+                }
+				else if(!selectedSystems().isEmpty() && player().totalReserve() > 0)
+					showTransferReservePane();
+				else {
                     misClick();
                 }
-                    
             }
         }
         @Override

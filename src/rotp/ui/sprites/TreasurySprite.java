@@ -65,9 +65,9 @@ public class TreasurySprite extends MapControlSprite {
                 detail = text("MAIN_TECH_RESERVE_TAX_ALL", str(tax));
 
 			boolean shieldWithoutBases = options().shieldAlones();
-			float revenue = player().empireTaxRevenue(shieldWithoutBases);
+			float revenue = player().empireTaxIncome(shieldWithoutBases);
 			if (revenue > 0) {
-				String revStr = revenue<100? fmt(player().empireTaxRevenue(shieldWithoutBases), 1) : shortFmt(revenue);
+				String revStr = revenue<100? fmt(player().empireTaxIncome(shieldWithoutBases), 1) : shortFmt(revenue);
 				detail += "  (" + text("PLANETS_RESERVE_INCREASE", revStr) + ")";
 			}
 

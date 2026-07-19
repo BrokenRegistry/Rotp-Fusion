@@ -27,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,6 +51,7 @@ import rotp.model.ai.interfaces.ShipCaptain;
 import rotp.model.ai.interfaces.ShipDesigner;
 import rotp.model.ai.interfaces.SpyMaster;
 import rotp.model.colony.Colony;
+import rotp.model.colony.Colony.ColonyBudget;
 import rotp.model.colony.ColonyShipyard;
 import rotp.model.colony.MissileBase;
 import rotp.model.empires.Leader.Objective;
@@ -224,19 +226,149 @@ public final class Empire extends Species implements NamedObject {
     private transient UfoTracker ufoTracker;
     private transient boolean spendingNotYetMade;
     private Point.Float playerMapCenter;
+    private EmpireBudget budget;
+
+	public class EmpireBudget implements Serializable {
+		private static final long serialVersionUID = 1L;
+		private float requestedReservesBC;
+		private float expectedRevenueBC;
+		private float totalReservesBC;
+		private float unusedPlayerBC;
+		private float unusedReserves;
+		private float unusedGovernor;
+		private int minReserve;
+		private float developedProd;
+		private float undevelopedProd;
+		private float totalProd;
+		private float allocatedBC;
+		private float taxedBC;
+		private boolean isObsolete = true;
+		private boolean obsoleteAgain = false; // some values changed while "updateInProgress"
+		private boolean updateInProgress = false;
+
+		public void computeIfNeeded(boolean makeObsolete)	{
+			isObsolete |= makeObsolete;
+			if (updateInProgress || !isObsolete)
+				return;
+			updateInProgress = true;
+			resetEmpireBudget();
+			ai().treasurer().planTheBudget();
+
+			if (obsoleteAgain) {
+				obsoleteAgain = false;
+				computeIfNeeded(true);
+			}
+			else {
+				isObsolete = false;
+				updateInProgress = false;
+			}
+		}
+		public void resetEmpireBudget()	{
+			GovernorOptions govOptions = session().getGovernorOptions();
+			boolean shieldWithoutBases = govOptions.getShieldWithoutBases();
+			minReserve = govOptions.getReserve();
+			isObsolete = true;
+			totalReservesBC = totalReserve();
+			unusedReserves = totalReservesBC;
+			unusedPlayerBC = totalReservesBC;
+			unusedGovernor = totalReservesBC;
+
+			for (StarSystem sys: allColonizedSystems()) {
+				if (sys == null)
+					continue;
+				Colony col = sys.colony();
+				if (col != null)
+					col.budget().budgetReset(shieldWithoutBases);
+			}
+		}
+		public void budgetizeReserve(ColonyBudget budget, boolean fromPlayer)	{
+			if (fromPlayer) {
+				int request = budget.budgetPlayerBC();
+				float subsidies = unusedReserves >= request ? request : unusedReserves;
+				subsidies = max(0, subsidies);
+				unusedReserves -= subsidies;
+				budget.finalBudgetBC(request);
+				budget.budgetSubsidiesBC(subsidies);
+				//System.out.println("budgetizeReserve fromPlayer" + budget.toString());
+				return;
+			}
+
+			// Governor alone
+			int request = budget.reserveNeededBC();
+			boolean noLimit = budget.noMinumumReserve();
+			float available = noLimit? unusedGovernor : unusedGovernor - minReserve;
+			float subsidies = available >= request ? request : available;
+			subsidies = max(0, subsidies);
+			unusedGovernor -= subsidies;
+			budget.governorBudgetBC(ceil(subsidies));
+			//System.out.println("budgetizeReserve Governor Alone " + budget.toString());
+
+			// in the case the player set a value: no changes
+			if (budget.isPlayerBudget())
+				return;
+
+			// final subsidies
+			available = noLimit? unusedReserves : unusedReserves - minReserve;
+			subsidies = available >= request ? request : available;
+			subsidies = max(0, subsidies);
+			unusedReserves -= subsidies;
+			budget.finalBudgetBC(request);
+			budget.budgetSubsidiesBC(subsidies);
+			//System.out.println("budgetizeReserve Governor Player " + budget.toString());
+		}
+		public void setUnusedPlayerReserves()	{ unusedPlayerBC = unusedReserves; }
+		public float subsidized()				{ return totalReserve() - unusedReserves; }
+		public float unusedReserves()			{ return unusedReserves; }
+		public float unusedPlayerReserves()		{ return unusedPlayerBC; }
+		public float unusedGovernorReserves()	{ return unusedGovernor; }
+		public void requestedReserves(float bc)	{ requestedReservesBC = bc; }
+		public float requestedReserves()		{ return requestedReservesBC; }
+		public void developedProd(float p)		{ developedProd = p; }
+		public float developedProd()			{ return developedProd; }
+		public void undevelopedProd(float p)	{ undevelopedProd = p; }
+		public float undevelopedProd()			{ return undevelopedProd; }
+		public void totalProd(float p)			{ totalProd = p; }
+		public float totalProd()				{ return totalProd; }
+		public void allocatedBC(float bc)		{ allocatedBC = bc; }
+		public float allocatedBC()				{ return allocatedBC; }
+		public void taxedBC(float bc)			{ taxedBC = bc; }
+		public float taxedBC()					{ return taxedBC; }
+		public void expectedRevenueBC(float bc)	{ expectedRevenueBC = bc; }
+		public float expectedRevenueBC()		{ return expectedRevenueBC; }
+		public boolean updateInProgress()		{ return updateInProgress; }
+		public boolean isObsolete()				{ return isObsolete; }
+		public void makeObsolete()				{
+			if (updateInProgress)
+				obsoleteAgain = true;
+			else
+				isObsolete = true;
+		}
+		private void transferBudget()	{
+			boolean carryUnfunded = govOptions().autospendCarryUnfunded();
+			for (StarSystem sys: allColonizedSystems()) {
+				if (sys == null)
+					continue;
+				Colony col = sys.colony();
+				if (col == null || col.inRebellion())
+					continue;
+				col.budget().transfertBudget(carryUnfunded);
+			}
+		}
+	}
+	public EmpireBudget budget()	{	// player only
+		if (budget == null)
+			budget = new EmpireBudget();
+		return budget;
+	}
 
 	public static void resetPlayerId()			{ PLAYER_ID = DEFAULT_PLAYER_ID; }
 	public static void updatePlayerId(int id)	{ PLAYER_ID = id; }
-//	public static boolean isPlayer(int id)		{ return id == PLAYER_ID; };	// BR: Never Used
 
-	public void startingNextTurnProcess()		{ spendingNotYetMade = true; }
+	public void startingNextTurnProcess()		{
+		budget().transferBudget();
+		spendingNotYetMade = true;
+	}
 	public boolean spendingNotYetMade()			{ return spendingNotYetMade; }
-//	public Integer defaultDesignId()			{ return shipLab.defaultDesignId(); }	// BR: Never Used
-//	public void defaultDesignId(Integer id)		{ shipLab.defaultDesignId(id); }	// BR: Never Used
-//	public void clearColoniesDefaultDesignId()	{	// BR: Never Used
-//		for (StarSystem sys : allColonizedSystems())
-//			sys.colony().shipyard().defaultDesignId(null);
-//	}
 	public void clearShipImages()	{
 		shipImage		= null;
 		shipImageLarge	= null;
@@ -288,6 +420,7 @@ public final class Empire extends Species implements NamedObject {
                 ai = new AI(this, options().selectedAI(this));
             else
                 ai = new AI(this, selectedAI);
+            resetDivertColonyExcessToResearch();
         }
         return ai;
     }
@@ -389,26 +522,33 @@ public final class Empire extends Species implements NamedObject {
     public float minY()                           { return minY; }
     public float maxY()                           { return maxY; }
 	public boolean divertColonyExcessToResearch() {
-		if (isPlayer())
-			return options().divertColonyExcessToResearch();
-		else
+		if (isAIControlled())
 			return divertColonyExcessToResearch;
+		else
+			return options().divertColonyExcessToResearch();
+	}
+	public void divertColonyExcessToResearch(boolean b) {
+		if (isAIControlled())
+			divertColonyExcessToResearch = b;
+		else
+			options().divertColonyExcessToResearch(b);
 	}
 	public void toggleColonyExcessToResearch()    {
-		if (isPlayer()) {
-			divertColonyExcessToResearch = options().toggleDivertColonyExcessToResearch();
+		if (isAIControlled())
+			divertColonyExcessToResearch = !divertColonyExcessToResearch;
+		else {
+			options().toggleDivertColonyExcessToResearch();
 			redoGovTurnDecisionsRich();
 		}
-		else
-			divertColonyExcessToResearch = !divertColonyExcessToResearch;
 	}
+	public void resetDivertColonyExcessToResearch()	{ divertColonyExcessToResearch = false; }
     public void changeColorId(int newColor) {
         int oldColor = colorId();
-        
+
         Empire emp = galaxy().empireMatching(newColor, shape());
         if (emp != null)
             emp.colorId(oldColor);
-        
+
         colorId(newColor);
     }
     public int defaultShipTint() {
@@ -529,9 +669,6 @@ public final class Empire extends Species implements NamedObject {
 		if (playerMapCenter == null)
 			updatePlayerMapCenter();
 		return playerMapCenter;
-	}
-	public void resetDivertColonyExcessToResearch()	{
-		divertColonyExcessToResearch = options().divertColonyExcessToResearch();
 	}
 	// modnar: add option to start game with additional colonies
 	// modnar: compId is the System ID array for these additional colonies
@@ -1303,16 +1440,16 @@ public final class Empire extends Species implements NamedObject {
         for (StarSystem s: allColonies) {
         	if (s != null) {
 	            Colony col = s.planet().colony();
-	            addReserve(col.production() * col.colonyTaxPct());
+	            addReserve(col.colonyTaxes(empireTaxLevel));
 	            col.nextTurn();
         	}
         }
         // modnar: newRace GearHead gets 0.25 BC directly from 1.0 POP
-        // BR: direct call to Race
-        addToTreasury(bCBonus() * totalPlanetaryPopulation());
+		addToTreasury(populationBonusIncome());
         recalcPlanetaryProduction();
         spendingNotYetMade = false;
     }
+	public float populationBonusIncome()	{ return bCBonus() * totalPlanetaryPopulation(); }
     public void postNextTurn() {
         log(this + ": postNextTurn");
         float civProd = totalPlanetaryProduction();
@@ -1547,7 +1684,7 @@ public final class Empire extends Species implements NamedObject {
         if (isAIControlled()) {
             scientistAI().setTechTreeAllocations();
             securityAllocation = spyMasterAI().suggestedInternalSecurityLevel();
-            empireTaxLevel = governorAI().suggestedEmpireTaxLevel();
+            empireTaxLevel = governorAI().suggestedEmpireTaxLevel(); // BR: direct access to not trigger player related updates
             //ail: calling this before fleetCommanderAI avoids a possible case where a fleet is slower than it could be due to scraping ships after the fleet was launched
             NoticeMessage.setSubstatus(text("TURN_DESIGN_SHIPS"));
             shipDesignerAI().nextTurn();
@@ -1562,7 +1699,7 @@ public final class Empire extends Species implements NamedObject {
         }
 
         if (isAIControlled()) {
-            ai().treasurer().allocateReserve();
+            ai().treasurer().allocateReserve(this);
             // diplomatic activities
             for (EmpireView ev : empireViews()) {
                 if ((ev != null) && ev.embassy().contact())
@@ -1570,7 +1707,8 @@ public final class Empire extends Species implements NamedObject {
             }
         }
         else {
-            autospend();
+//			ai().treasurer().allocateReserve(this);
+			ai().treasurer().planTheBudget();
             autotransport();
             // colonize first, then attack, then scout
 			// BR: moved to Governor AI
@@ -1598,152 +1736,18 @@ public final class Empire extends Species implements NamedObject {
         }
     }
     public void redoGovTurnDecisions() { // Only for player
+		budget().makeObsolete();
     	for (int i = 0; i < sv.count(); ++i)
             if (sv.empire(i) == this && sv.isColonized(i))
                 sv.colony(i).governIfNeeded();
 //                sv.colony(i).governIfPlayerHasRequest();
     }
 	public void redoGovTurnDecisionsRich() { // Only for player
+		budget().makeObsolete();
 		for (int i = 0; i < sv.count(); ++i)
 			if (sv.empire(i) == this && sv.isColonized(i))
 				if (sv.isRich(i) || sv.isUltraRich(i))
 					sv.colony(i).governIfNeeded();
-	}
-	private void autospend()	{
-		if (isAIControlled())
-			return;
-		GovernorOptions govOptions = session().getGovernorOptions();
-		boolean log = false;	// TO DO BR: set to false;
-
-		boolean newColoniesFirst = govOptions.isAutospendOnNewColoniesFirst();
-		boolean shieldWithoutBases = govOptions.getShieldWithoutBases();
-		boolean spendOnNewColonies = govOptions.isAutospendOnNewColonies();
-		boolean spendToBoostArtefact = govOptions.isAutospendOnArtefacts();
-		float autospendMaxIndustryPct = govOptions.autospendMaxIndustryPct();
-		int minReserve = govOptions.getReserve();
-		if ((int)totalReserve() <= minReserve)
-			return;
-
-		if (newColoniesFirst) {
-			if (spendOnNewColonies && autospendOnNewColony(minReserve, autospendMaxIndustryPct, log))
-				return;
-			if (spendToBoostArtefact && autoSpendOnArtefact(minReserve, shieldWithoutBases, log))
-				return;
-		}
-		else {
-			if (spendToBoostArtefact && autoSpendOnArtefact(minReserve, shieldWithoutBases, log))
-				return;
-			if (spendOnNewColonies && autospendOnNewColony(minReserve, autospendMaxIndustryPct, log))
-				return;
-		}
-	}
-    /**
-     * Spend reserve automatically (if enabled).
-     *
-     * Spend only on planets with production &lt; 30% average
-     * Spend only the amount planet can consume this turn
-     * Start with planet with lowest production, and end when money runs out
-     * or no suitable planets are available.
-     * Spend only on planets with governor on.
-     * Spend only if industry and ecology are not complete.
-     *
-     */
-	private boolean autospendOnNewColony(int minReserve, float maxIndustryPct, boolean log)	{
-		// if reserve is low, don't even attempt to spend money
-		if ((int)totalReserve() <= minReserve)
-			return true;
-
-		List<Colony> colonies = new LinkedList<>();
-
-		for (StarSystem sys: colonizedSystems)
-			if (sys != null) {
-				Colony c = sys.colony();
-				if (c != null && !c.inRebellion() && c.isGovernor() && c.industry().completedPct()<=maxIndustryPct && c.maxReserveNeeded() >= 1)
-					colonies.add(c);
-			}
-
-		Collections.sort(colonies, (Colony o1, Colony o2) -> (int)Math.signum(o1.production() - o2.production()));
-		return spendMoney(colonies, minReserve, log, "new Colony");
-	}
-	private boolean autoSpendOnArtefact(int minReserve, boolean shieldWithoutBases, boolean log)	{
-		// if reserve is low, don't even attempt to spend money
-		if ((int)totalReserve() <= minReserve)
-			return true;
-
-		// Boost fully developed Artefact Colonies First
-
-		// Boost fully developed Orion Artefact colonies
-		List<Colony> colonies = new LinkedList<>();
-		for (StarSystem sys: colonizedSystems)
-			if (sys != null && sys.planet().isOrionArtifact()) {
-				Colony c = sys.colony();
-				if (c != null && !c.inRebellion() && c.isGovernor() && c.isDeveloped(shieldWithoutBases) && c.maxReserveNeeded() >= 1)
-					colonies.add(c);
-			}
-		Collections.sort(colonies, (Colony o1, Colony o2) -> (int)Math.signum(o2.production() - o1.production()));
-		if (spendMoney(colonies, minReserve, log, "developped Orion Artefact colony"))
-			return true; // Reserve is low, don't even attempt to spend more money
-
-		// Boost fully developed Antaran Artefact colonies
-		colonies.clear();
-		for (StarSystem sys: colonizedSystems)
-			if (sys != null && sys.planet().isAntaran()) {
-				Colony c = sys.colony();
-				if (c != null && !c.inRebellion() && c.isGovernor() && c.isDeveloped(shieldWithoutBases) && c.maxReserveNeeded() >= 1)
-					colonies.add(c);
-			}
-		Collections.sort(colonies, (Colony o1, Colony o2) -> (int)Math.signum(o2.production() - o1.production()));
-		if (spendMoney(colonies, minReserve, log, "developped Antaran Artefact colony"))
-			return true; // Reserve is low, don't even attempt to spend more money
-
-		// Boost undeveloped Orion Artefact colonies
-		colonies.clear();
-		for (StarSystem sys: colonizedSystems)
-			if (sys != null && sys.planet().isOrionArtifact()) {
-				Colony c = sys.colony();
-				if (c != null && !c.inRebellion() && c.isGovernor() && !c.isDeveloped(shieldWithoutBases) && c.maxReserveNeeded() >= 1)
-					colonies.add(c);
-			}
-		Collections.sort(colonies, (Colony o1, Colony o2) -> (int)Math.signum(o2.production() - o1.production()));
-		if (spendMoney(colonies, minReserve, log, "New Orion Artefact colony"))
-			return true; // Reserve is low, don't even attempt to spend more money
-
-		// Boost undeveloped Antaran Artefact colonies
-		colonies.clear();
-		for (StarSystem sys: colonizedSystems)
-			if (sys != null && sys.planet().isAntaran()) {
-				Colony c = sys.colony();
-				if (c != null && !c.inRebellion() && c.isGovernor() && !c.isDeveloped(shieldWithoutBases) && c.maxReserveNeeded() >= 1)
-					colonies.add(c);
-			}
-		Collections.sort(colonies, (Colony o1, Colony o2) -> (int)Math.signum(o2.production() - o1.production()));
-		return spendMoney(colonies, minReserve, log, "new Antaran Artefact colony");
-	}
-	private boolean spendMoney(List<Colony> colonies, int minReserve, boolean log, String txt)	{
-		if (log) {
-			String header = "Autospend request on "+ txt + " ";
-			for (Colony c: colonies)
-				System.out.println(header + c.production() + " " + c.name());
-		}
-
-		for (Colony c: colonies) {
-			if (c != null) {
-				float maxReserveNeeded = c.maxReserveNeeded();
-				if (maxReserveNeeded <= 0)
-					continue;
-
-				float available = totalReserve() - minReserve;
-				if (available <= 1)
-					return true;
-
-				// over-allocate by 1 BC to speed up fractional spending
-				int bcToSpend = (int)Math.ceil(Math.min(available, maxReserveNeeded));
-				allocateReserve(c, bcToSpend);
-				if (log)
-					System.out.format("Autospend allocated %d BC to %s%n", bcToSpend, c.name());
-			}
-		}
-		return false;
 	}
 	private final class ColonyTransporter {
 		private final Colony colony;
@@ -3459,18 +3463,21 @@ public final class Empire extends Species implements NamedObject {
         float bookFormula = ((tech.planetology().techLevel() * 3) + 50) / 100;
         return bookFormula * workerProductivityMod();
     }
-    public float totalIncome()                { return netTradeIncome() + totalPlanetaryIncome(); }
-    public float netIncome()                  { return totalIncome() - totalShipMaintenanceCost() - totalStargateCost() - totalMissileBaseCost(); }
-	public float empireTaxRevenue(boolean shieldWithoutBases)	{	// Player only; includes excess spending
-		float totalBC;
+	public float totalIncome()	{ return netTradeIncome() + totalPlanetaryIncome() + populationBonusIncome(); }
+	public float netIncome()	{ return totalIncome() - totalShipMaintenanceCost() - totalStargateCost() - totalMissileBaseCost(); }
+	public float empireTaxOnlyIncome(boolean shieldWithoutBases)	{	// Player only; includes excess spending
 		if (empireTaxOnlyDeveloped())
-			totalBC = totalTaxableDevelopedPlanetaryProduction(shieldWithoutBases) * empireTaxPct() / 2;
+			return totalTaxableDevelopedPlanetaryProduction(shieldWithoutBases) * empireTaxRate() / 2;
 		else
-			totalBC = totalTaxablePlanetaryProduction() * empireTaxPct() / 2;
+			return totalTaxablePlanetaryProduction() * empireTaxRate() / 2;
+	}
+	public float empireExcessSpendingIncome()	{	// Player only; includes excess spending
 		if (divertColonyExcessToResearch())
-			return totalBC;
-		totalBC += (totalPlanetaryExcessSpending() / 2);
-		return totalBC;
+			return 0;
+		return totalPlanetaryExcessSpending() / 2;
+	}
+	public float empireTaxIncome(boolean shieldWithoutBases)	{	// Player only; includes excess spending
+			return empireTaxOnlyIncome(shieldWithoutBases) + empireExcessSpendingIncome();
 	}
 	private float totalPlanetaryExcessSpending()	{	// To estimate tax revenue; Player only
 		if (divertColonyExcessToResearch())
@@ -3488,15 +3495,14 @@ public final class Empire extends Species implements NamedObject {
     }
     public float empireExternalSpyingCost()   { return totalTaxablePlanetaryProduction() * totalSpyCostPct(); }
 
-    public boolean incrementEmpireTaxLevel()  { return empireTaxLevel(empireTaxLevel+1); }
-    public boolean decrementEmpireTaxLevel()  { return empireTaxLevel(empireTaxLevel-1); }
-    public float empireTaxPct()               { return (float) empireTaxLevel / 100; }
-//    public float maxEmpireTaxPct()            { return (float) maxEmpireTaxLevel()/100; }	// BR: Never used
-    public int empireTaxLevel()               { return empireTaxLevel; }
+    public boolean incrementEmpireTaxLevel()  { return empireTaxLevel(empireTaxLevel()+1); }
+    public boolean decrementEmpireTaxLevel()  { return empireTaxLevel(empireTaxLevel()-1); }
+	public float empireTaxRate()				{ return 0.01f * empireTaxLevel(); }
+	public int empireTaxLevel()					{ return empireTaxLevel; } // in %
     public boolean empireTaxOnlyDeveloped()   { return empireTaxOnlyDeveloped; }
     public void toggleEmpireTaxOnlyDeveloped(){ // Player only
         empireTaxOnlyDeveloped = !empireTaxOnlyDeveloped;
-        if (empireTaxLevel > 0)
+        if (empireTaxLevel() > 0)
             flagColoniesToRecalcSpending();
     }
     public int maxEmpireTaxLevel()            { return 20; }
@@ -3520,6 +3526,7 @@ public final class Empire extends Species implements NamedObject {
 	            sys.colony().toggleRecalcSpending();
         	}
         }
+		budget().makeObsolete();
     }
     public boolean hasTrade() {
         for (EmpireView v : empireViews()) {
@@ -3838,7 +3845,9 @@ public final class Empire extends Species implements NamedObject {
         		factories += sys.colony().industry().factories();
         return factories;
     }
-    public float allocateReserve(Colony col, int amount) {
+    public float allocateReserve(Colony col, float amount) {
+    	if (amount == 0)
+    		return 0;
         float amt = min(totalReserve, amount);
         totalReserve -= amt;
         col.adjustReserveIncome(amt);

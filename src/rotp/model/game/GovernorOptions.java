@@ -313,6 +313,11 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public boolean	isAutospendOnNewColoniesFirst()	{ return autoSpendOnNewColoniesFirst.get(); }
 	public float	autospendMaxIndustryPct()		{ return autospendMaxIndustryPct.getFloat(); }
 	public boolean	excludeTransportToBesieged()	{ return transportExcludeBesieged.get(); }
+	public float	autospendReserveRatio()			{ return reservePlayerPerMille.getFloat(); }
+	public float	autospendReserveNextTurn()		{ return reserveNextTurn.get(); }
+	public float	autospendReserveNextTurnRatio()	{ return reserveNextTurnPct.getFloat(); }
+	public boolean	autospendPlanReserveNextTurn()	{ return planReserveNextTurn.get(); }
+	public boolean	autospendCarryUnfunded()		{ return carryUnfunded.get(); }
 
 }
 

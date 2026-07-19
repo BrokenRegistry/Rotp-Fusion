@@ -136,6 +136,8 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     private transient boolean hovering;
     private transient int twinkleCycle, twinkleOffset, drawRadius;
     private transient boolean displayed = false;
+	public transient float sortingValueFloat;
+	public transient int sortingValueInt;
 
     public boolean transportAutoEco()			{ return colony().transportAutoEco(); }
     public void	   transportAutoEco(boolean b)	{ colony().transportAutoEco(b); }
@@ -586,7 +588,12 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
             case "WASTE":            return str((int)colony().ecology().waste());
             case "INCOME":           return str((int)colony().totalIncome());
             case "CAPACITY":         return concat(str((int)(colony().currentProductionCapacity()*100)),"%");
-            case "RESERVE":          return str((int)colony().reserveIncome());
+			case "RESERVE":			return Integer.toString((int)colony().rawReserveIncome());
+			case "NEEDED":			return Integer.toString(colony().budget().reserveNeededBC());
+			case "BUDGET":			return colony().budget().finalBudgetBCStr();
+			case "SUBSIDY":			return colony().budget().budgetSubsidiesStr();
+			case "CONTRIBUTE":		return Integer.toString((int)colony().budget().budgetContributeBC());
+			case "TAXED":			return Integer.toString((int)colony().budget().budgetTaxedBC());
             case "BASES":            return str(empire().sv.bases(id));
             case "SHIPYARD":         return colony().shipyardProject();
             case "DELTA_BASES":      return str(empire().sv.deltaBases(id));
@@ -601,55 +608,57 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         }
         return "";
     }
-    public static Comparator<StarSystem> NAME               = (StarSystem o1,   StarSystem o2)   -> o1.name().compareTo(o2.name());
-    public static Comparator<StarSystem> PLANET_TYPE        = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.planet().type().hostility(),sys2.planet().type().hostility());
-    public static Comparator<StarSystem> NOTES              = (StarSystem sys1, StarSystem sys2) -> sys1.notes().compareTo(sys2.notes());
-    public static Comparator<StarSystem> SHIPYARD           = (StarSystem sys1, StarSystem sys2) -> sys1.colony().shipyardProject().compareTo(sys2.colony().shipyardProject());
-    public static Comparator<StarSystem> RESOURCES          = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.planet().resourcesSort(),sys2.planet().resourcesSort());
-    public static Comparator<StarSystem> INDUSTRY_RESERVE   = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().reserveIncome(),sys2.colony().reserveIncome());
-    public static Comparator<StarSystem> FACTORIES          = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().industry().factories(),sys2.colony().industry().factories());
-    public static Comparator<StarSystem> BASE_PRODUCTION    = (StarSystem o1,   StarSystem o2)   -> Base.compare(o1.colony().production(),o2.colony().production());
-    public static Comparator<StarSystem> WASTE              = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().ecology().waste(),sys2.colony().ecology().waste());
-    public static Comparator<StarSystem> INCOME             = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().totalIncome(),sys2.colony().totalIncome());
-    public static Comparator<StarSystem> CAPACITY           = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().currentProductionCapacity(),sys2.colony().currentProductionCapacity());
-    public static Comparator<StarSystem> BASES              = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().defense().bases(),sys2.colony().defense().bases());
-    public static Comparator<StarSystem> SHIELD             = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().defense().shieldLevelComp(),sys2.colony().defense().shieldLevelComp());
-    public static Comparator<StarSystem> INVASION_PRIORITY  = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.empire().generalAI().invasionPriority(sys1),sys2.empire().generalAI().invasionPriority(sys2));
-//    public static Comparator<StarSystem> TRANSPORT_PRIORITY = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.empire().fleetCommanderAI().transportPriority(sys1),sys2.empire().fleetCommanderAI().transportPriority(sys2));
-	public static Comparator<StarSystem> STARGATE = (StarSystem sys1, StarSystem sys2) -> {
-		return Integer.compare(sys1.colony().starGateTimeToComplete(), sys2.colony().starGateTimeToComplete());
+	public static final Comparator<StarSystem> INCREASING_FLOAT	= (StarSystem s1, StarSystem s2) -> (int)Math.signum(s1.sortingValueFloat - s2.sortingValueFloat);
+	public static final Comparator<StarSystem> DECREASING_FLOAT	= (StarSystem s1, StarSystem s2) -> (int)Math.signum(s2.sortingValueFloat - s1.sortingValueFloat);
+	public static final Comparator<StarSystem> INCREASING_INT	= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.sortingValueInt,	s2.sortingValueInt);
+	public static final Comparator<StarSystem> DECREASING_INT	= (StarSystem s1, StarSystem s2) -> Integer.compare(s2.sortingValueInt,	s1.sortingValueInt);
+    public static final Comparator<StarSystem> NAME				= (StarSystem s1, StarSystem s2) -> s1.name().compareTo(s2.name());
+    public static final Comparator<StarSystem> PLANET_TYPE		= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.planet().type().hostility(),	s2.planet().type().hostility());
+    public static final Comparator<StarSystem> NOTES			= (StarSystem s1, StarSystem s2) -> s1.notes().compareTo(s2.notes());
+    public static final Comparator<StarSystem> SHIPYARD			= (StarSystem s1, StarSystem s2) -> s1.colony().shipyardProject().compareTo(s2.colony().shipyardProject());
+	public static final Comparator<StarSystem> RESOURCES		= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.planet().resourcesSort(),	s2.planet().resourcesSort());
+	public static final Comparator<StarSystem> COLONY_RESERVE	= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().rawReserveIncome(),	s2.colony().rawReserveIncome());
+	public static final Comparator<StarSystem> COLONY_SUBSIDIES	= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().budget().budgetSubsidiesBC(),	s2.colony().budget().budgetSubsidiesBC());
+	public static final Comparator<StarSystem> COLONY_NEEDED	= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().budget().reserveNeededBC(),	s2.colony().budget().reserveNeededBC());
+	public static final Comparator<StarSystem> COLONY_BUDGET	= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().budget().budgetNoNullFinalBC(),	s2.colony().budget().budgetNoNullFinalBC());
+	public static final Comparator<StarSystem> COLONY_CONTRIBUTE= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().budget().budgetContributeBC(),	s2.colony().budget().budgetContributeBC());
+	public static final Comparator<StarSystem> COLONY_TAXED		= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().budget().budgetTaxedBC(),	s2.colony().budget().budgetTaxedBC());
+	public static final Comparator<StarSystem> FACTORIES		= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().industry().factories(),	s2.colony().industry().factories());
+	public static final Comparator<StarSystem> BASE_PRODUCTION	= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().production(),			s2.colony().production());
+	public static final Comparator<StarSystem> WASTE			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().ecology().waste(),	s2.colony().ecology().waste());
+	public static final Comparator<StarSystem> INCOME			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().totalIncome(),		s2.colony().totalIncome());
+	public static final Comparator<StarSystem> CAPACITY			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().currentProductionCapacity(),	s2.colony().currentProductionCapacity());
+	public static final Comparator<StarSystem> BASES			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().defense().bases(),			s2.colony().defense().bases());
+	public static final Comparator<StarSystem> SHIELD			= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().defense().shieldLevelComp(),s2.colony().defense().shieldLevelComp());
+	public static final Comparator<StarSystem> INVASION_PRIORITY= (StarSystem s1, StarSystem s2) -> Float.compare(s1.empire().generalAI().invasionPriority(s1),	s2.empire().generalAI().invasionPriority(s2));
+//    public static Comparator<StarSystem> TRANSPORT_PRIORITY = (StarSystem s1, StarSystem s2) -> Base.compare(s1.empire().fleetCommanderAI().transportPriority(s1),s2.empire().fleetCommanderAI().transportPriority(s2));
+	public static final Comparator<StarSystem> STARGATE			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().starGateTimeToComplete(),	s2.colony().starGateTimeToComplete());
+	public static final Comparator<StarSystem> GOV_PLAN			= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().getFundingMandate(),	s2.colony().getFundingMandate());
+	public static final Comparator<StarSystem> FLAG				= (StarSystem s1, StarSystem s2) -> {
+		Empire pl = Empire.thePlayer();
+		return Integer.compare(pl.sv.flagColorId(s1.id),pl.sv.flagColorId(s2.id));
 	};
-    public static Comparator<StarSystem> VFLAG = (StarSystem sys1, StarSystem sys2) -> {
-        Empire pl = Empire.thePlayer();
-        return Base.compare(pl.sv.flagColorId(sys1.id),pl.sv.flagColorId(sys2.id));
+	public static Empire VIEWING_EMPIRE;
+	public static final Comparator<StarSystem> VDISTANCE		= (StarSystem s1, StarSystem s2) -> Float.compare(VIEWING_EMPIRE.sv.distance(s1.id),	VIEWING_EMPIRE.sv.distance(s2.id));
+	public static final Comparator<StarSystem> VPOPULATION		= (StarSystem s1, StarSystem s2) -> Integer.compare(VIEWING_EMPIRE.sv.population(s1.id),VIEWING_EMPIRE.sv.population(s2.id));
+    public static final Comparator<StarSystem> POPULATION		= (StarSystem s1, StarSystem s2) -> Float.compare(s1.population(),	s2.population());
+    public static final Comparator<StarSystem> CURRENT_SIZE		= (StarSystem s1, StarSystem s2) -> {
+        Empire emp = s1.empire();
+        return Base.compare(emp.sv.currentSize(s1.id),emp.sv.currentSize(s2.id));
     };
-    public static Empire VIEWING_EMPIRE;
-    public static Comparator<StarSystem> VDISTANCE = (StarSystem sys1, StarSystem sys2) -> {
-        return Base.compare(VIEWING_EMPIRE.sv.distance(sys1.id),VIEWING_EMPIRE.sv.distance(sys2.id));
+    public static final Comparator<StarSystem> TRANS_TO_FILL	= (StarSystem s1, StarSystem s2) -> {
+        Empire emp = s1.empire();
+        return Base.compare(emp.sv.maxTransToFill(s1.id),emp.sv.maxTransToFill(s2.id));
     };
-    public static Comparator<StarSystem> VPOPULATION = (StarSystem sys1, StarSystem sys2) -> {
-        return Base.compare(VIEWING_EMPIRE.sv.population(sys1.id),VIEWING_EMPIRE.sv.population(sys2.id));
-    };
-    public static Comparator<StarSystem> POPULATION = (StarSystem sys1, StarSystem sys2) -> {
-        return Base.compare(sys1.population(),sys2.population());
-    };
-    public static Comparator<StarSystem> CURRENT_SIZE = (StarSystem sys1, StarSystem sys2) -> {
-        Empire emp = sys1.empire();
-        return Base.compare(emp.sv.currentSize(sys1.id),emp.sv.currentSize(sys2.id));
-    };
-    public static Comparator<StarSystem> TRANS_TO_FILL = (StarSystem sys1, StarSystem sys2) -> {
-        Empire emp = sys1.empire();
-        return Base.compare(emp.sv.maxTransToFill(sys1.id),emp.sv.maxTransToFill(sys2.id));
-    };
-    public static Comparator<StarSystem> TRANS_NO_LOSS = (StarSystem sys1, StarSystem sys2) -> {
-        Empire emp = sys1.empire();
-        return Base.compare(emp.sv.maxTransNoLoss(sys1.id),emp.sv.maxTransNoLoss(sys2.id));
+    public static final Comparator<StarSystem> TRANS_NO_LOSS	= (StarSystem s1, StarSystem s2) -> {
+        Empire emp = s1.empire();
+        return Base.compare(emp.sv.maxTransNoLoss(s1.id),emp.sv.maxTransNoLoss(s2.id));
     };
     public static StarSystem TARGET_SYSTEM;
-    public static Comparator<StarSystem> DISTANCE_TO_TARGET_SYSTEM = new DistanceToTargetSystemComparator();
-    public static Comparator<StarSystem> TRANSPORT_TIME_TO_TARGET_SYSTEM = new TransportTimeToTargetSystemComparator();
+    public static final Comparator<StarSystem> DISTANCE_TO_TARGET_SYSTEM = new DistanceToTargetSystemComparator();
+    public static final Comparator<StarSystem> TRANSPORT_TIME_TO_TARGET_SYSTEM = new TransportTimeToTargetSystemComparator();
     public static Empire TARGET_EMPIRE;
-    public static Comparator<StarSystem> DISTANCE_TO_TARGET_EMPIRE = new DistanceToTargetEmpireComparator();
+    public static final Comparator<StarSystem> DISTANCE_TO_TARGET_EMPIRE = new DistanceToTargetEmpireComparator();
     //
     // SUPPORTING BEHAVIOR FOR SPRITES
     //
@@ -1127,27 +1136,21 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         int minFont = 4;
         return bounds(minFont, (int)(maxFont * 10 / map.scaleX()), maxFont);
     }
-    private static class DistanceToTargetSystemComparator implements Comparator<StarSystem> {
-    	@Override public int compare(StarSystem sys1, StarSystem sys2) {
-            float pr1 = sys1.squareDistanceTo(TARGET_SYSTEM);
-            float pr2 = sys2.squareDistanceTo(TARGET_SYSTEM);
-            return Base.compare(pr1, pr2);
-        }
-    }
-    private static class TransportTimeToTargetSystemComparator implements Comparator<StarSystem> {
-    	@Override public int compare(StarSystem sys1, StarSystem sys2) {
-            float pr1 = sys1.transportTimeTo(TARGET_SYSTEM);
-            float pr2 = sys2.transportTimeTo(TARGET_SYSTEM);
-            return Base.compare(pr1, pr2);
-        }
-    }
-    private static class DistanceToTargetEmpireComparator implements Comparator<StarSystem> {
-    	@Override public int compare(StarSystem sys1, StarSystem sys2) {
-            float pr1 = TARGET_EMPIRE.sv.distance(sys1.id);
-            float pr2 = TARGET_EMPIRE.sv.distance(sys2.id);
-            return Base.compare(pr1, pr2);
-        }
-    }
+	private static final class DistanceToTargetSystemComparator implements Comparator<StarSystem> {
+		@Override public int compare(StarSystem sys1, StarSystem sys2) {
+			return Float.compare(sys1.squareDistanceTo(TARGET_SYSTEM), sys2.squareDistanceTo(TARGET_SYSTEM));
+		}
+	}
+	private static final class TransportTimeToTargetSystemComparator implements Comparator<StarSystem> {
+		@Override public int compare(StarSystem sys1, StarSystem sys2) {
+			return Float.compare(sys1.transportTimeTo(TARGET_SYSTEM), sys2.transportTimeTo(TARGET_SYSTEM));
+		}
+	}
+	private static final class DistanceToTargetEmpireComparator implements Comparator<StarSystem> {
+		@Override public int compare(StarSystem sys1, StarSystem sys2) {
+			return Float.compare(TARGET_EMPIRE.sv.distance(sys1.id), TARGET_EMPIRE.sv.distance(sys2.id));
+		}
+	}
 	void addMonster()	{
 		float[] prob = planet.guardianMonstersProbability();
 		if (prob[4] == 0f)
@@ -1179,7 +1182,146 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 //			System.out.println("	==> No Monster");
 		}
 	}
+//	public interface ISortStarSystem<S, B>	{ void sort(List<StarSystem> list, Boolean decreasing); }
+//	public static void sortFloat(List<StarSystem> list, Boolean decreasing)	{
+//		if (decreasing)
+//			list.sort(DECREASING_FLOAT);
+//		else
+//			list.sort(INCREASING_FLOAT);
+//	}
+//	public static void sortInt(List<StarSystem> list, Boolean decreasing)	{ 
+//		if (decreasing)
+//			list.sort(DECREASING_INT);
+//		else
+//			list.sort(INCREASING_INT);
+//	}
+//	public static void sortbyName(List<StarSystem> list, Boolean decreasing)			{
+//		list.sort((StarSystem s1, StarSystem s2) -> s1.name().compareTo(s2.name()));
+//	}
+//	public static void sortbyPlanetType(List<StarSystem> list, Boolean decreasing)		{
+//		list.sort((StarSystem s1, StarSystem s2) -> Integer.compare(s1.planet().type().hostility(), s2.planet().type().hostility()));
+//	}
+//	public static void sortbyNotes(List<StarSystem> list, Boolean decreasing)			{
+//		list.sort((StarSystem s1, StarSystem s2) -> s1.notes().compareTo(s2.notes()));
+//	}
+//	public static void sortbyShipYard(List<StarSystem> list, Boolean decreasing)		{
+//		list.sort((StarSystem s1, StarSystem s2) -> s1.colony().shipyardProject().compareTo(s2.colony().shipyardProject()));
+//	}
+//	public static void sortbyResources(List<StarSystem> list, Boolean decreasing)		{
+//		for (StarSystem sys : list)
+//			sys.sortingValueInt = sys.planet().resourcesSort();
+//		if (decreasing)
+//			Collections.sort(list, DECREASING_INT);
+//		else
+//			Collections.sort(list, INCREASING_INT);
+//		if (decreasing)
+//			Collections.sort(list, RESOURCES);
+//		else
+//			Collections.sort(list, RESOURCES);
+//		if (decreasing)
+//			Collections.sort(list, (StarSystem s1, StarSystem s2) -> Integer.compare(s2.planet().resourcesSort(), s1.planet().resourcesSort()));
+//		else
+//			Collections.sort(list, (StarSystem s1, StarSystem s2) -> Integer.compare(s1.planet().resourcesSort(), s2.planet().resourcesSort()));
 
+		//		sortInt(list, decreasing);
+//		list.sort((StarSystem s1, StarSystem s2) -> Integer.compare(s1.planet().resourcesSort(), s2.planet().resourcesSort()));
+//	}
+//	public static void sortbyIndustryReserve(List<StarSystem> list, Boolean decreasing)	{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = sys.colony().reserveIncome();
+//		sortFloat(list, decreasing);
+//	}
+//	public static void sortbyFactories(List<StarSystem> list, Boolean decreasing)		{
+//		list.sort((StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().industry().factories(), s2.colony().industry().factories()));
+//	}
+//	public static void sortbyBaseProduction(List<StarSystem> list, Boolean decreasing)	{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = sys.colony().production();
+//		sortFloat(list, decreasing);
+//	}
+//	public static void sortbyWaste(List<StarSystem> list, Boolean decreasing)			{
+//		list.sort((StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().ecology().waste(), s2.colony().ecology().waste()));
+//	}
+//	public static void sortbyIncome(List<StarSystem> list, Boolean decreasing)			{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = sys.colony().totalIncome();
+//		sortFloat(list, decreasing);
+//	}
+//	public static void sortbyCapacity(List<StarSystem> list, Boolean decreasing)		{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = sys.colony().currentProductionCapacity();
+//		sortFloat(list, decreasing);
+//	}
+//	public static void sortbyBases(List<StarSystem> list, Boolean decreasing)			{
+//		list.sort((StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().defense().bases(), s2.colony().defense().bases()));
+//	}
+//	public static void sortbyShield(List<StarSystem> list, Boolean decreasing)			{
+//		list.sort((StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().defense().shieldLevelComp(), s2.colony().defense().shieldLevelComp()));
+//	}
+//	public void sortbyInvasionPriority(List<StarSystem> list, Boolean decreasing)		{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = sys.empire().generalAI().invasionPriority(sys);
+//		sortFloat(list, decreasing);
+//	}
+//	public void sortbyStargate(List<StarSystem> list, Boolean decreasing)				{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = sys.colony().starGateTimeToComplete();
+//		sortFloat(list, decreasing);
+//	}
+//	public static void sortbyFlag(List<StarSystem> list, Boolean decreasing)			{
+//		SystemInfo sv = Empire.thePlayer().sv;
+//		for (StarSystem sys : list)
+//			sys.sortingValueInt = sv.flagColorId(sys.id);
+//		sortInt(list, decreasing);
+//	}
+//	public static void sortbyVDistance(List<StarSystem> list, Boolean decreasing)		{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = VIEWING_EMPIRE.sv.distance(sys.id);
+//		sortFloat(list, decreasing);
+//	}
+//	public void sortbyVPopulation(List<StarSystem> list, Boolean decreasing)			{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = VIEWING_EMPIRE.sv.population(sys.id);
+//		sortFloat(list, decreasing);
+//	}
+//	public static void sortbyPopulation(List<StarSystem> list, Boolean decreasing)		{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = sys.population();
+//		sortFloat(list, decreasing);
+//	}
+//	public static void sortbyCurrentSize(List<StarSystem> list, Boolean decreasing)		{
+//		SystemInfo sv = Empire.thePlayer().sv;
+//		for (StarSystem sys : list)
+//			sys.sortingValueInt = sv.currentSize(sys.id);
+//		sortInt(list, decreasing);
+//	}
+//	public static void sortbyTransportToFill(List<StarSystem> list, Boolean decreasing)	{
+//		SystemInfo sv = Empire.thePlayer().sv;
+//		for (StarSystem sys : list)
+//			sys.sortingValueInt = sv.maxTransToFill(sys.id);
+//		sortInt(list, decreasing);
+//	}
+//	public static void sortbyTransportNoLoss(List<StarSystem> list, Boolean decreasing)	{
+//		SystemInfo sv = Empire.thePlayer().sv;
+//		for (StarSystem sys : list)
+//			sys.sortingValueInt = sv.maxTransNoLoss(sys.id);
+//		sortInt(list, decreasing);
+//	}
+//	public static void sortbyDistanceToTargetSystem(List<StarSystem> list, Boolean decreasing)	{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = sys.squareDistanceTo(TARGET_SYSTEM);
+//		sortFloat(list, decreasing);
+//	}
+//	public static void sortbyDistanceToTargetEmpire(List<StarSystem> list, Boolean decreasing)	{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = TARGET_EMPIRE.sv.distance(sys.id);;
+//		sortFloat(list, decreasing);
+//	}
+//	public static void sortbyTransportTimeToTargetSystem(List<StarSystem> list, Boolean decreasing)	{
+//		for (StarSystem sys : list)
+//			sys.sortingValueFloat = sys.transportTimeTo(TARGET_SYSTEM);
+//		sortFloat(list, decreasing);
+//	}
 	// ==================== SystemBaseData ====================
 	//
 	public static class SystemBaseData {

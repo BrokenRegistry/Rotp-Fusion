@@ -17,8 +17,16 @@ package rotp.model.colony;
 
 import static rotp.model.colony.ColonySpendingCategory.MAX_TICKS;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -35,6 +43,7 @@ import rotp.model.galaxy.IMappedObject;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.galaxy.Transport;
+import rotp.model.game.GameSession;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.incidents.ColonyCapturedIncident;
@@ -47,6 +56,7 @@ import rotp.model.tech.Tech;
 import rotp.model.tech.TechMissileWeapon;
 import rotp.model.tech.TechTree;
 import rotp.ui.RotPUI;
+import rotp.ui.ScaledInteger;
 import rotp.ui.notifications.GNNNotification;
 import rotp.ui.notifications.InvadersKilledAlert;
 import rotp.ui.notifications.TransportsKilledAlert;
@@ -115,15 +125,17 @@ public final class Colony implements Base, IMappedObject, Serializable {
     private float previousPopulation = 0;
     private int rebels = 0;
     private float captives = 0;
-    private float reserveIncomeBC = 0;
+    private float reserveIncomeBC	= 0;
     private boolean rebellion = false;
     private boolean quarantined = false;
     private int fortressNum = 0;
     private final int[] allocation = new int[NUM_CATS];
     private final boolean[] locked = new boolean[NUM_CATS];
     private final EnumMap<Colony.Orders, Float> orders = new EnumMap<>(Orders.class);
-    public ColonySpendingCategory[] spending = new ColonySpendingCategory[] { new ColonyShipyard(), new ColonyDefense(),
+    public ColonySpendingCategory[] spending = new ColonySpendingCategory[] {
+    		new ColonyShipyard(), new ColonyDefense(),
             new ColonyIndustry(), new ColonyEcology(), new ColonyResearch() };
+    private ColonyBudget budget;	// player only
 
     private boolean underSiege = false;
     public  boolean keepEcoLockedToClean;
@@ -139,6 +151,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     private boolean prioritizeShips		= false;
     private boolean prioritizeResearch	= false;
     private boolean governor = govOptions().isGovernorOnByDefault();
+    private GovAutoFundTag govAutoFundTag;
     // TODO: For future use, flag allowing this colony to autobuild ships
     private boolean autoShips	= govOptions().isAutoShipsByDefault();
     int govShipBuildSparePct	= 100 - govOptions().defaultShipTakePct();
@@ -147,7 +160,184 @@ public final class Colony implements Base, IMappedObject, Serializable {
     private transient int cleanupAllocation = 0;
     private transient boolean recalcSpendingForNewTaxRate;
     public  transient boolean reallocationRequired = false;
+    public  transient float sortingValueFloat;
+ 
+	private Colony colony()	{ return this; }
+	public class ColonyBudget implements Serializable {
+		private static final long serialVersionUID = 1L;
+		private float nextProduction	= 0;
+		private int reserveNeededBC		= 0;
+		private Integer governorBudgetBC= null;
+		private Integer playerBudgetBC	= null;
+		private Integer finalBudgetBC	= null;
+		private float budgetSubsidiesBC	= 0;
+		private float budgetContributeBC= 0; // Contributions to Empire reserves
+		private float budgetTaxedBC		= 0;
+		private boolean colonyIsDeveloped;
+		
+		public int resourcesSort() { return planet().resourcesSort(); }
+		
+		public void turnReset(boolean shieldWithoutBases)	{
+			playerBudgetBC	= null;
+			budgetReset(shieldWithoutBases);
+		}
+		public void budgetReset(boolean shieldWithoutBases)	{
+			finalBudgetBC	= null;
+			budgetSubsidiesBC	= 0;
+			budgetContributeBC	= 0;
+			budgetTaxedBC		= 0;
 
+			governorBudgetBC	= null;
+			nextProduction		= production();
+			reserveNeededBC		= max (0, ceil(nextProduction - rawReserveIncome()));
+			colonyIsDeveloped	= isDeveloped(shieldWithoutBases);
+			budgetContributeBC	= totalPlanetaryExcessSpending(0)/2; // 0 is for reserve, 1 is for research 
+			
+		}
+		@Override public String toString()	{
+			String str = name();
+			str += " finalBudget: "	+ finalBudgetBC;
+			str += " Subsidies: "	+ budgetSubsidiesBC;
+			str += " Contribute: "	+ budgetContributeBC;
+			str += " Taxed: "		+ budgetTaxedBC;
+			str += " PlayerBudget: "	+ playerBudgetBC;
+			str += " GovernorBudget: "	+ governorBudgetBC;
+			str += " NextProduction: "	+ nextProduction;
+			str += " ReserveNeeded: "	+ reserveNeededBC;
+			str += " IsDeveloped: "		+ colonyIsDeveloped;
+			str += " budgetAllocate: "	+ budgetContributeBC;
+			return str;
+		}
+
+		public boolean hasProject()				{ return research().hasProject(); }
+		public boolean isPlayerBudget()			{ return playerBudgetBC != null; }
+		public boolean noMinumumReserve()		{ return getFundFromReserve(); }
+		public boolean isGovernorBudget()		{ return isGovernor() && govFundColony(); }
+		public boolean isNewColony(float ratio)	{ return industry().completedPct() <= ratio; }
+		public boolean isArtifact()				{ return planet().isArtifact(); }
+		public boolean isOrionArtifact()		{ return planet().isOrionArtifact(); }
+		public boolean isAntaran()				{ return planet().isAntaran(); }
+		public boolean colonyIsDeveloped()		{ return colonyIsDeveloped; }
+		public float nextProduction()			{ return nextProduction; }
+		public void budgetTaxeRate(float rate)	{ budgetTaxedBC = nextProduction * rate /2; }
+		public float budgetContributeBC()		{ return budgetContributeBC; }
+
+		public void transfertBudget(boolean carryUnfunded)	{
+			//System.out.println("transfertBudget " + toString());
+			float transfered = empire.allocateReserve(colony(), budgetSubsidiesBC());
+			if (budgetSubsidiesBC - transfered > 1) {
+				float mismatch = budgetSubsidiesBC - transfered;
+				System.out.println("Budget Transfert Mismatch: " + mismatch + " " + toString());
+			}
+			budgetSubsidiesBC(0);
+			finalBudgetBC(null);
+			governorBudgetBC(null);
+			reserveNeededBC	= max (0, ceil(nextProduction - rawReserveIncome()));
+			if (carryUnfunded) {
+				if (playerBudgetBC != null) {
+					playerBudgetBC -= ceil(transfered);
+					if (playerBudgetBC < 1)
+						budgetPlayerBC(null);
+					return;
+				}
+			}
+			else
+				budgetPlayerBC(null);
+		}
+		public float tryToContribute(float goalProd, boolean toEco)	{
+			int tick = research().allocation();
+			if (tick == 0)
+				return 0;
+			float maxAlloc = nextProduction * tick / MAX_TICKS;
+			float ratio = min(1, goalProd / maxAlloc);
+			int adjust = ceil(ratio * tick);
+			research().adjustValue(-adjust);
+			if (toEco) {
+				ecology().adjustValue(adjust); 
+				return adjust * nextProduction / MAX_TICKS /2;
+			}
+			else {
+				industry().adjustValue(adjust); 
+				return adjust * nextProduction / MAX_TICKS /2;
+			}
+		}
+		public float resetExess(float goalProd, boolean fromEco, boolean fromInd)	{
+			int tickNeeded = ceil(MAX_TICKS * goalProd / nextProduction);
+			int tickAdjust = 0;
+			if (fromEco) {
+				int ticks = ecology().allocation();
+				int minTick = ceil(ecology().maxSpendingNeeded() / MAX_TICKS);
+				int adj = ticks - minTick;
+				if (adj > 0) {
+					adj = min(adj, tickNeeded);
+					ecology().adjustValue(-adj);
+					research().adjustValue(adj);
+					tickAdjust = adj;
+					tickNeeded -= adj;
+				}
+			}
+			if (fromInd) {
+				int ticks = industry().allocation();
+				int minTick = ceil(industry().maxSpendingNeeded() / MAX_TICKS);
+				int adj = ticks - minTick;
+				if (adj > 0) {
+					adj = min(adj, tickNeeded);
+					industry().adjustValue(-adj);
+					research().adjustValue(adj);
+					tickAdjust += adj;
+				}
+			}
+			return tickAdjust * nextProduction / MAX_TICKS /2;
+		}
+
+		public int requestedSubsidiesBC(int playerBC, int governorBC)	{
+			governorBudgetBC = governorBC >= reserveNeededBC ? reserveNeededBC : governorBC;
+			int subs = playerBC >= reserveNeededBC ? reserveNeededBC : ceil(playerBC) ;
+			if (!isPlayerBudget())
+				budgetSubsidiesBC = subs;
+			return subs;
+		}
+		public int requestedSubsidiesBC()		{
+			if (isPlayerBudget())
+				return ceil(playerBudgetBC);
+			else if (governorBudgetBC != null)
+				return ceil(governorBudgetBC);
+			else
+				return -1; // to be sorted away
+		}
+		public String finalBudgetBCStr()		{
+			if (isPlayerBudget())
+				return "*" + ceil(playerBudgetBC);
+			else if (finalBudgetBC != null)
+				return Integer.toString(finalBudgetBC);
+			else
+				return "";
+		}
+		public String budgetSubsidiesStr()		{ return budgetSubsidiesBC == 0? "" : str((int)budgetSubsidiesBC); }
+		public Integer budgetGovernorBC()		{ return governorBudgetBC; }
+		public int budgetNoNullGovernorBC()		{ return governorBudgetBC == null ? -1 : governorBudgetBC; }
+		public void governorBudgetBC(Integer bc){ governorBudgetBC = bc; }
+		public Integer budgetFinalBC()			{ return finalBudgetBC; }
+		public int budgetNoNullFinalBC()		{ return finalBudgetBC == null ? -1 : finalBudgetBC; }
+		public void finalBudgetBC(Integer bc)	{ finalBudgetBC = bc; }
+		public Integer finalBudgetBC()			{ return finalBudgetBC; }
+		public float budgetTaxedBC()			{ return budgetTaxedBC; }
+//		public void budgetTaxedBC(float bc)		{ budgetTaxedBC = bc; }
+		public float budgetSubsidiesBC()		{ return budgetSubsidiesBC; }
+		public void budgetSubsidiesBC(float bc)	{ budgetSubsidiesBC = bc; }
+		public Integer budgetPlayerBC()			{ return playerBudgetBC; }
+		public int budgetNoNullPlayerBC()		{ return playerBudgetBC == null ? -1 : playerBudgetBC; }
+		public void budgetPlayerBC(Integer bc)	{ playerBudgetBC = bc; }
+		public int reserveNeededBC()			{ return reserveNeededBC; }
+		public void reserveNeededBC(int bc)		{ reserveNeededBC = bc; }
+		public void budgetizeRatio(float ratio)	{ budgetPlayerBC(ceil(reserveNeededBC*ratio)); }
+		public void budgetizeNeeded()			{ budgetPlayerBC(reserveNeededBC); }
+	}
+	public ColonyBudget budget()	{	// player only
+		if (budget == null)
+			budget = new ColonyBudget();
+		return budget;
+	}
 	public int     govShipBuildSparePct()		{ return govShipBuildSparePct; }
 	public void    govShipBuildSparePct(int i)	{ govShipBuildSparePct = i; }
 	public void    resetShipBuildSparePct()		{ govShipBuildSparePct = 100 - govOptions().defaultShipTakePct(); }
@@ -173,6 +363,17 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public void    govUrgeBuildUp(boolean b)	{ govUrgeBuildUp = b; }
     private boolean govUrgeResearch()			{ return govUrgeResearch; }
     private void    govUrgeResearch(boolean b)	{ govUrgeResearch = b; }
+	public GovAutoFundTag govAutoFundTag()		{
+		if (govAutoFundTag == null)
+			govAutoFundTag = new GovAutoFundTag();
+		return govAutoFundTag;
+	}
+	public boolean govFundColony()				{ return govAutoFundTag().isFunded(); }
+	public boolean govFundColonyUpdated()		{ return govAutoFundTag().updateIsFunded(); }
+	public boolean getFundFromReserve()			{ return govAutoFundTag().useReserve() && isGovernor(); }
+	public int getFundingMandate()				{ return govAutoFundTag().fundingMandate(); }
+	public BufferedImage getCoinImage(int w)	{ return govAutoFundTag().getCoinImage(w); }
+	public void govFundColony(boolean reserve)	{ govAutoFundTag().toggle(reserve); }
 
     private boolean governorGotPlayerRequest()	{ return govOptions().isManageableGovernor(); }
     public boolean isObedientGovernor()			{ return govOptions().isManageableGovernor(); }
@@ -185,10 +386,28 @@ public final class Colony implements Base, IMappedObject, Serializable {
     	return !governor;
     }
     public void    toggleRecalcSpending()		{ recalcSpendingForNewTaxRate = true; }
-	public boolean underSiege()					{ return underSiege; }
-    public float reserveIncome()               { return reserveIncomeBC; }
-    private void clearReserveIncome()          { reserveIncomeBC = 0; }
-    public void adjustReserveIncome(float bc)  { reserveIncomeBC += bc; }
+	public boolean underSiege()					{ return underSiege; }		// Enemy fleet in orbit
+	public float rawReserveIncome()				{ return reserveIncomeBC; }
+	public float reserveIncome()				{
+		if (empire.isAIControlled())
+			return reserveIncomeBC;
+		return reserveIncomeBC + budget().budgetSubsidiesBC;
+	}
+	private void clearReserveIncome()			{	// abandoned, captured, destroyed
+		reserveIncomeBC = 0;
+		budget = null;
+	}
+	public void adjustReserveIncome(float bc)	{ reserveIncomeBC += bc; }	// (+) Make next turn decision / (-) next Turn.
+//	public float budgetTaxedBC()				{ return budget().budgetTaxedBC(); }	// player only
+//	public void budgetTaxedBC(float bc)			{ budget().budgetTaxedBC(bc); }			// player only
+//	public float budgetSubsidiesBC()			{ return budget().budgetSubsidiesBC(); }	// player only
+//	public void budgetSubsidiesBC(float bc)		{ budget().budgetSubsidiesBC(bc); }			// player only
+//	public Float budgetPlayerBC()				{ return budget().budgetPlayerBC(); }	// player only
+//	public void budgetPlayerBC(Float bc)		{ budget().budgetPlayerBC(bc); }		// player only
+////	public Float budgetGovernorBC()				{ return budget().budgetGovernorBC(); }	// player only
+////	public void budgetGovernorBC(float bc)		{ budget().governorBudgetBC(bc); }		// player only
+//	public float reserveNeededBC()				{ return budget().reserveNeededBC(); }	// player only
+//	public void reserveNeededBC(float bc)		{ budget().reserveNeededBC(bc); }		// player only
     public boolean quarantined()               { return quarantined; }
     public void becomeQuarantined()            { quarantined = true; }
     public void clearQuarantine()              { quarantined = false; }
@@ -257,7 +476,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             cleanupAllocation = ecology().cleanupAllocationNeeded();
         return cleanupAllocation;
     }
-    @Override public String toString() { return "Colony: " + name() + printString();  }
+    @Override public String toString() { return "Colony: " + printString();  }
 
     public Colony(Empire c, Planet p)  {
         empire = c;
@@ -313,7 +532,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public boolean hasStargate()         { return shipyard().hasStargate(); }
     public boolean hasStargate(Empire e) { return (empire == e) && hasStargate(); }
     public void removeStargate()         { shipyard().removeStargate(); }
-	public int starGateTimeToComplete()	 { return shipyard().starGateTimeToComplete(); }
+	public float starGateTimeToComplete()	 { return shipyard().starGateTimeToComplete(); }
     public int totalAmountAllocated()     {
         int amt = 0;
         for (ColonySpendingCategory cat : spending)
@@ -1165,18 +1384,25 @@ public final class Colony implements Base, IMappedObject, Serializable {
             return production() * empire.tradeIncomePerBC();
     }
     public float totalIncome()	{ return max(0.1f, totalProductionIncome() + maxReserveIncome()); }
-    public float colonyTaxPct() {
+    public float colonyTaxPct() { // not in %
         if (embargoed())
             return 0f;
         // we are taxed at the empire rate if the empire is taxing all colonies, or we are finished developing
-        float empireTaxPct = empire.empireTaxPct();
-        float colonyTaxPct = 0.0f;
-        if (empireTaxPct > 0) { // let's avoid unnecessary calls to isDeveloped()
-            if (!empire.empireTaxOnlyDeveloped() || isDeveloped())
-                colonyTaxPct = empireTaxPct;
-        }
-        return colonyTaxPct;
+        int empireTaxPct = empire.empireTaxLevel();
+        // let's avoid unnecessary calls to isDeveloped()
+        if (empireTaxPct > 0 && (!empire.empireTaxOnlyDeveloped() || isDeveloped()))
+            return empireTaxPct * 0.01f;
+        return 0f;
     }
+	public float colonyTaxes(int empireTaxPct)	{
+		// let's avoid unnecessary calls to isDeveloped() and production()
+		if (empireTaxPct == 0 || embargoed())
+			return 0f;
+		// we are taxed at the empire rate if the empire is taxing all colonies, or we are finished developing
+		if (!empire.empireTaxOnlyDeveloped() || isDeveloped())
+			return 0.01f * production() * empireTaxPct;
+		return 0f;
+	}
     private void ensureProperSpendingRates() {
         if (recalcSpendingForNewTaxRate) 
         {
@@ -2697,5 +2923,204 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		float workerToFactoryROI = empire.workerProductivity() / tech().populationCost() / factoryNetROI;
 		float workerToFactoryROILimit = gov.workerToFactoryROILimit();
 		return workerToFactoryROI > workerToFactoryROILimit;
+	}
+	public static BufferedImage getBaseCoinImage(int width) {
+		int w = width + width;
+
+		BufferedImage buffer = new BufferedImage (w, w, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = buffer.createGraphics();
+
+		g.setColor(new Color(255, 215, 0));
+		g.fillOval(0, 0, w, w);
+
+		int margin = ScaledInteger.s6;
+		int coinTL = margin;
+		int coinW = w - margin - margin;
+		int coinBR = coinTL + coinW;
+
+		Image img = GameSession.instance().session().galaxy().player().flagNorm();
+		int imgH = img.getHeight(null);
+		int imgW = img.getWidth(null);
+		Composite prevComp = g.getComposite();
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.XOR, 0.4f));
+		g.drawImage(img, coinTL, coinTL, coinBR, coinBR, 0, 0, imgW, imgH, null);
+		margin = ScaledInteger.s4;
+		coinTL = margin;
+		coinW = w - margin - margin;
+		coinBR = coinTL + coinW;
+		g.setStroke(ScaledInteger.stroke3);
+		g.drawOval(coinTL, coinTL, coinW, coinW);
+		g.setComposite(prevComp);
+		g.setStroke(ScaledInteger.stroke3);
+		g.dispose();
+		return buffer;
+	}
+	public final class GovAutoFundTag implements ScaledInteger, Serializable	{
+		private static final long serialVersionUID = 1L;
+		private static final Color COIN_GOLD_COLOR = new Color(255, 215, 0);
+		private static final int UNFUNDED	= 0;
+		private static final int GROWING	= 10;
+		private static final int ORDERS		= 20;
+		private static final int URGENCY	= 30;
+		private static final int SHIP_WORK	= 40;
+		private static final int UNLIMITED	= 50;
+
+		private int fundingMandate = 0;
+		private boolean useReserve = false;
+
+		@Override public String toString()	{
+			String str = name();
+			str += " Use reserves: " + useReserve;
+			str += " Mandate: " + fundingMandate;
+			return str;
+		}
+		public void toggle(boolean reserve)	{
+			if (reserve)
+				toggleReserve();
+			else
+				fundingMandate = toggleMandate();
+			empire.budget().makeObsolete();
+		}
+		public int toggleMandate()	{
+			int mandate = UNFUNDED;
+			switch (fundingMandate) {
+				case UNFUNDED:	if (isGrowing())	return GROWING;
+				case GROWING:	if (hasOrders())	return ORDERS;
+				case ORDERS:	if (hasUrgency())	return URGENCY;
+				case URGENCY:	if (hasShipWork())	return SHIP_WORK;
+				case SHIP_WORK:	return UNLIMITED;
+				case UNLIMITED:	return UNFUNDED;
+			}
+			return mandate;
+		}
+
+		private boolean isGrowing()		{
+			return industry().completedPct() <= session().getGovernorOptions().autospendMaxIndustryPct();
+		}
+		private boolean hasOrders()		{ return !orders.isEmpty(); }
+		private boolean hasUrgency()	{
+			return govUrgeBases || govUrgePop || govUrgeFactories || govUrgeShips || govUrgeBuildUp || govUrgeResearch;
+		}
+		private boolean hasShipWork()	{ return shipyard().buildLimit() > 0; }
+
+		public int fundingMandate()		{ return fundingMandate; }
+		public void toggleReserve()		{ useReserve = !useReserve; empire.budget().makeObsolete(); }
+		public boolean useReserve()		{ return useReserve && isFunded(); }
+		public boolean updateIsFunded()	{
+			switch (fundingMandate) {
+				case UNFUNDED:	return false;
+				case UNLIMITED:	return true;
+				case GROWING:	if (isGrowing())	return true;	break;
+				case ORDERS:	if (hasOrders())	return true;	break;
+				case URGENCY:	if (hasUrgency())	return true;	break;
+				case SHIP_WORK:	if (hasShipWork())	return true;	break;
+			}
+			fundingMandate = UNFUNDED;
+			return false;
+		}
+		public boolean isFunded()		{ return fundingMandate != UNFUNDED; }
+		public boolean whileGrowing()	{ return fundingMandate == GROWING; }
+		public boolean whileOrders()	{ return fundingMandate == ORDERS; }
+		public boolean whileUrgency()	{ return fundingMandate == URGENCY; }
+		public boolean whileShipWork()	{ return fundingMandate == SHIP_WORK; }
+		public boolean isUnlimited()	{ return fundingMandate == UNLIMITED; }
+		public BufferedImage getCoinImage(int width) {
+			int w = width + width;
+
+			BufferedImage buffer = new BufferedImage (w, w, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = buffer.createGraphics();
+
+			if (isFunded()) {
+				g.setColor(COIN_GOLD_COLOR);
+				g.fillOval(0, 0, w, w);
+
+				int margin = s6;
+				int coinTL = margin;
+				int coinW = w - margin - margin;
+				int coinBR = coinTL + coinW;
+
+				Image img = empire().flagNorm();
+				int imgH = img.getHeight(null);
+				int imgW = img.getWidth(null);
+				Composite prevComp = g.getComposite();
+				g.setComposite(AlphaComposite.getInstance(AlphaComposite.XOR, 0.4f));
+				g.drawImage(img, coinTL, coinTL, coinBR, coinBR, 0, 0, imgW, imgH, null);
+				margin = s4;
+				coinTL = margin;
+				coinW = w - margin - margin;
+				coinBR = coinTL + coinW;
+				g.setStroke(stroke3);
+				g.drawOval(coinTL, coinTL, coinW, coinW);
+				g.setComposite(prevComp);
+				g.setStroke(stroke3);
+				if (whileGrowing()) {
+					g.setColor(new Color(95, 255, 48));
+					g.drawOval(coinTL, coinTL, coinW, coinW);
+				}
+				else if(whileOrders()) {
+					g.setColor(new Color(31, 63, 255));
+					g.drawOval(coinTL, coinTL, coinW, coinW);
+				}
+				else if(whileUrgency()) {
+					g.setColor(new Color(160, 0, 160));
+					g.drawOval(coinTL, coinTL, coinW, coinW);
+				}
+				else if(whileShipWork()) {
+					int grey = 15;
+					g.setColor(new Color(grey, grey, grey));
+					g.drawOval(coinTL, coinTL, coinW, coinW);
+				}
+				if (useReserve()) {
+					g.setStroke(stroke3);
+					g.setColor(new Color(255, 0, 0));
+					g.drawArc(coinTL, coinTL, coinW, coinW, 30, 120);
+				}
+			}
+			else {
+				int grey = 160;
+				g.setColor(new Color(grey, grey, grey));
+				g.fillOval(0, 0, w, w);
+				int margin = s6;
+				int coinTL = margin;
+				int coinW = w - margin - margin;
+				int coinBR = coinTL + coinW;
+	
+				Image img =  empire().flagNorm();
+				int imgH = img.getHeight(null);
+				int imgW = img.getWidth(null);
+				g.drawImage(img, coinTL, coinTL, coinBR, coinBR, 0, 0, imgW, imgH, null);
+			}
+			g.dispose();
+			return buffer;
+		}
+	}
+	public static final Comparator<ColonyBudget> INCREASING_BUDGET = (ColonyBudget c1, ColonyBudget c2) -> {
+        return Float.compare(c1.reserveNeededBC(), c2.reserveNeededBC());
+    };
+	public static final Comparator<ColonyBudget> DECREASING_BUDGET = (ColonyBudget c1, ColonyBudget c2) -> {
+        return Float.compare(c2.reserveNeededBC(), c1.reserveNeededBC());
+    };
+	
+	public static final class ColonyList extends ArrayList<Colony> {
+		private static final long serialVersionUID = 1L;
+		private void sortFloatIncreasing()	{ sort((Colony c1, Colony c2) -> (int)Math.signum(c1.sortingValueFloat - c2.sortingValueFloat)); }
+		private void sortFloatDecreasing()	{ sort((Colony c1, Colony c2) -> (int)Math.signum(c2.sortingValueFloat - c1.sortingValueFloat)); }
+
+		public void sortbyIncreasingProduction()	{
+			for (Colony c : this)
+				c.sortingValueFloat = c.production();
+			sortFloatIncreasing();
+		}
+		public void sortbyDecreasingProduction()	{
+			for (Colony c : this)
+				c.sortingValueFloat = c.production();
+			sortFloatDecreasing();
+		}
+		public void sortbyBudget(Boolean decreasing)	{	// decreasing = Reverse
+			for (Colony c : this)
+				c.sortingValueFloat = c.production();
+			
+		}
+
 	}
 }

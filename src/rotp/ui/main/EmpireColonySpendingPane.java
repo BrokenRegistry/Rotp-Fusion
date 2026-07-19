@@ -74,6 +74,8 @@ public class EmpireColonySpendingPane extends BasePanel {
     static final Color sliderTextHasOrderD	= new Color(65,65,142);
     static final Color sliderTextUrged		= new Color(142,0,142);
     static final Color sliderTextUrgedD		= new Color(96,65,128);
+	static final Color COIN_GOLD_COLOR		= new Color(255, 215, 0);
+	static final Color COIN_OFF_COLOR		= new Color(152, 102, 52);
 
     private static BufferedImage governorImage;
     private static BufferedImage noGovernorImage;
@@ -84,6 +86,7 @@ public class EmpireColonySpendingPane extends BasePanel {
     private static int maxButtonFontSize = 17;
     private static int minButtonFontSize = 12;
     private static int govFontSize;
+	private static int coinWidth	= s25;
     private static int iconWidth    = s25;
     private static int buttonH      = s25;
     private static int buttonY;
@@ -94,6 +97,7 @@ public class EmpireColonySpendingPane extends BasePanel {
 
     private final Rectangle governorBox	= new Rectangle();
     private final Rectangle optionsBox	= new Rectangle();
+	private final Rectangle coinBox		= new Rectangle();
     private GradientPaint govPaint, optPaint;
     private final SystemViewer parent;
     private final boolean isRound;
@@ -227,7 +231,7 @@ public class EmpireColonySpendingPane extends BasePanel {
     }
     private int initGovernorButton(Graphics2D g, int maxWidth, int maxFont)	{
 		int margin = iconWidth + buttonMargin/2;
-		int maxTitleWidth = maxWidth - margin;
+		int maxTitleWidth = maxWidth - margin - coinWidth - buttonMargin/2;
 		String title1 = text("GOVERNOR_IS_ON_BUTTON");
 		int fontSize1 = scaledFont(g, title1, maxTitleWidth, maxFont, minButtonFontSize);
 		int titleW1   = g.getFontMetrics().stringWidth(title1);
@@ -258,7 +262,7 @@ public class EmpireColonySpendingPane extends BasePanel {
         int titleDx = iconWidth/2;
         g.setFont(narrowFont(govFontSize));
         Rectangle2D bound = g.getFontMetrics().getStringBounds(title, g);
-        
+
         int titleW     = (int) Math.ceil(bound.getWidth());
         double titleH  = bound.getHeight();
         double descent = g.getFontMetrics().getDescent();
@@ -301,6 +305,32 @@ public class EmpireColonySpendingPane extends BasePanel {
         else
         	g.drawImage(noGovernorImage, govButtonX+govButtonW-iconWidth, buttonY+s2, null);
     }
+	private void drawCoinButton(Graphics2D g, boolean hovered, Colony colony)	{
+		if (!colony.isGovernor()) {
+			coinBox.setBounds(0, 0, 0, 0);
+			return;
+		}
+		coinWidth	= s25;
+		int fundX = (govButtonX + govButtonW + optButtonX - coinWidth)/2;
+		int fundY = buttonY + (buttonH - coinWidth)/2;
+		coinBox.setBounds(fundX, fundY, coinWidth, coinWidth);
+
+		BufferedImage img = colony.getCoinImage(coinWidth);
+		int imgH = img.getHeight();
+		int imgW = img.getWidth();
+		g.setColor(Color.BLACK);
+		g.fillOval(fundX, fundY, iconWidth, iconWidth);
+		g.drawImage(img, fundX, fundY, fundX + coinWidth, fundY + coinWidth, 0, 0, imgW, imgH, null);
+
+		if (hovered) {
+			g.setColor(SystemPanel.yellowText);
+			Stroke prevStroke = g.getStroke();
+			g.setStroke(stroke2);
+			g.drawOval(fundX, fundY, coinWidth, coinWidth);
+			g.setStroke(prevStroke);
+		}
+	}
+
     private void drawOptionsButton(Graphics2D g, boolean hovered) {
         Color borderC, titleC;
         String title = text("GOVERNOR_OPTIONS");
@@ -436,6 +466,21 @@ public class EmpireColonySpendingPane extends BasePanel {
             addMouseWheelListener(this);
         }
 
+		@Override public void paint(Graphics g0)	{
+			super.paint(g0);
+			// BR: So the coin is above the textures.
+			if (category < 0) {
+				Graphics2D g = (Graphics2D) g0;
+				StarSystem sys = parent.systemViewToDisplay();
+				if (sys == null)
+					return;
+				Colony colony = sys.colony();
+				if (colony == null)
+					return;
+				drawCoinButton(g, hoverBox == coinBox, colony);
+			}
+		}
+
         @Override public void paintComponent(Graphics g0) {
         	Graphics2D g = (Graphics2D) g0;
             super.paintComponent(g);
@@ -446,7 +491,7 @@ public class EmpireColonySpendingPane extends BasePanel {
             if (sys == null)
                 return;
             Colony colony = sys.colony();
-            if  (colony == null)
+            if (colony == null)
                 return;
 
             int w = getWidth();
@@ -455,33 +500,7 @@ public class EmpireColonySpendingPane extends BasePanel {
             	buttonY = getHeight() - buttonH - s1;
             	drawGovernorButton(g, hoverBox == governorBox, colony.isGovernor());
             	drawOptionsButton(g, hoverBox == optionsBox);
-
-            	//paintGovernor(g, colony);
-//                Color color;
-//                if (colony.isGovernor()) {
-//                    color = Color.green;
-//                } else {
-//                    color = MainUI.shadeBorderC();
-//                }
-//
-//                g.setFont(narrowFont(20));
-//                String titleText = text("MAIN_COLONY_ALLOCATE_SPENDING");
-//                int titleY = getHeight() - s6;
-//                drawShadowedString(g, titleText, 2, s5, titleY, color, textC);
-//
-//                // crappy ASCII art. Should be something else.
-//                // TODO: for future use
-////                if (1 == 0) {
-////                    if (colony.isAutoShips()) {
-////                        color = Color.green;
-////                    } else {
-////                        color = MainUI.shadeBorderC();
-////                    }
-////                    String shipAutomateText = "]=>";
-////                    drawShadowedString(g, shipAutomateText, 2, w - s95, titleY, color, textC);
-////                }
-//                String governorOptionsText = text("GOVERNOR_OPTIONS");
-//                drawShadowedString(g, governorOptionsText, 2, w-s60, titleY, MainUI.shadeBorderC(), textC);
+				//drawCoinButton(g, hoverBox == coinBox, colony.isGovernor(), colony.govFundColony());
                 return;
             }
             String text = text(Colony.categoryName(category));
@@ -503,7 +522,7 @@ public class EmpireColonySpendingPane extends BasePanel {
         		textC = sliderTextHasOrderD;
         	else
                 textC = sliderTextDisabled;
-            
+
             String labelText = text(text);
             g.setColor(textC);
             g.setFont(narrowFont(18));
@@ -555,14 +574,14 @@ public class EmpireColonySpendingPane extends BasePanel {
            		g.setColor(c1a);
             else
                 g.setColor(c1);
-            
+
             Rectangle fillRect;
-            
-            if (pct == 1)           
+
+            if (pct == 1)
                 fillRect = new Rectangle(boxL+boxBorderW(), boxTopY+s2, boxW-(2*boxBorderW()), boxH-s3);
             else
                 fillRect = new Rectangle(boxL+boxBorderW(), boxTopY+s2, (int) (pct*(boxW-(2*boxBorderW()))), boxH-s3);
-                
+
             g.fill(fillRect);
 
             if (category == Colony.INDUSTRY)  {
@@ -594,7 +613,7 @@ public class EmpireColonySpendingPane extends BasePanel {
 	            	drawString(g, indStr, boxL+x1, boxTopY+boxH-yOff);
             	}
             }
-            
+
             if (category == Colony.ECOLOGY)  {
                 float popGrowth = colony.ecology().upcomingPopGrowthFloat();
                 String valStr = String.format("%+3.1f", popGrowth);
@@ -660,7 +679,7 @@ public class EmpireColonySpendingPane extends BasePanel {
             Colony colony = sys.colony();
             if (colony == null)
                 return;
-            
+
             float prevTech = mapListener == null ? 0 : colony.totalPlanetaryResearch();
             if (colony.increment(category, -1)) {
                 if (mapListener == null)
@@ -702,7 +721,7 @@ public class EmpireColonySpendingPane extends BasePanel {
                 RotPUI.instance().techUI().adjustPlanetaryResearch(techAdj);
                 mapListener.repaintTechStatus();
             }
-            	
+
             if (click)
                 softClick();
             parent.repaint();
@@ -721,7 +740,7 @@ public class EmpireColonySpendingPane extends BasePanel {
             }
             float prevTech = mapListener == null ? 0 : colony.totalPlanetaryResearch();
            	boolean hadsShipSpending = colony.allocation(Colony.SHIP) > 0;
-        	
+
             // Specific optimizations
            	if (e.isShiftDown() && e.isControlDown()) { // Smooth Max Under test
             	boolean v2 = !options().useSmartRefit();
@@ -773,7 +792,7 @@ public class EmpireColonySpendingPane extends BasePanel {
                 RotPUI.instance().techUI().adjustPlanetaryResearch(techAdj);
                 mapListener.repaintTechStatus();
             }
-            	
+
             if (click)
                 softClick();
             parent.repaint();
@@ -824,15 +843,6 @@ public class EmpireColonySpendingPane extends BasePanel {
     		colony.toggleOrder(category);
     		colony.governIfNeeded(category == SHIP);
             parent.repaint();
-//	        switch (category) {
-//		    	case DEFENSE:
-//		    	case INDUSTRY:
-//		    	case ECOLOGY:
-//		    	case SHIP:
-//		    		colony.toggleOrder(category);
-//		            repaint();
-//		    		return;
-//	        }
         }
         @Override public void mouseClicked(MouseEvent e) {}
 		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.mapHandler()); }
@@ -866,30 +876,21 @@ public class EmpireColonySpendingPane extends BasePanel {
             else if (this.category < 0) {
                 if (governorBox.contains(x,y))
                 	toggleGovernor();
-                else if (optionsBox.contains(x,y))
+				else if (coinBox.contains(x,y))
+					toggleFunding(SwingUtilities.isRightMouseButton(e));
+				else if (optionsBox.contains(x,y))
 					if (SwingUtilities.isRightMouseButton(e)) {
 						ParamSubUI optionsUI = AllSubUI.getHandle(ISubUiKeys.GOVERNOR_SPECIAL_UI_KEY).getUI();
 						optionsUI.start(null);
 					}
 					else if (e.isShiftDown()) {
-                		ParamSubUI optionsUI = AllSubUI.governorSubUI();
-                		optionsUI.start(null);
-                	}
-                	else
-                		governorOptions();
-            } else {
-//                if (this.category < 0) {
-//// TODO: for future use
-////                    if (x < EmpireColonySpendingPane.this.getWidth() - s95) {
-////                        toggleGovernor();
-////                    } else if (x < EmpireColonySpendingPane.this.getWidth() - s60) {
-////                        toggleAutoShips();
-//                    if (x < EmpireColonySpendingPane.this.getWidth() - s60) {
-//                        toggleGovernor();
-//                    } else {
-//                        governorOptions();
-//                    }
-//                }
+						ParamSubUI optionsUI = AllSubUI.governorSubUI();
+						optionsUI.start(null);
+					}
+					else
+						governorOptions();
+            }
+            else {
                 float pct = pctBoxSelected(x,y);
                 if (pct >= 0) {
                     Colony colony = parent.systemViewToDisplay().colony();
@@ -938,6 +939,8 @@ public class EmpireColonySpendingPane extends BasePanel {
                 newHover = resultBox;
             else if (governorBox.contains(x,y))
                 newHover = governorBox;
+			else if (coinBox.contains(x,y))
+				newHover = coinBox;
             else if (optionsBox.contains(x,y))
                 newHover = optionsBox;
 
@@ -974,9 +977,15 @@ public class EmpireColonySpendingPane extends BasePanel {
     }
     // BR: made static because there is two instances of EmpireColonySpendingPane
     static GovernorFrame governorOptionsFrame = null;
-    static void openGovernorOptions() {
-    	
-    }
+	private void toggleFunding(boolean isRightClick) { // TODO BR: Validate
+		if (parent.systemViewToDisplay() != null && parent.systemViewToDisplay().colony() != null) {
+			Colony colony = parent.systemViewToDisplay().colony();
+			colony.govFundColony(isRightClick);
+//			if (colony.isGovernor())
+//				colony.govern();
+			parent.repaint();
+		}
+	}
     private void toggleGovernor() {
         if (parent.systemViewToDisplay() != null && parent.systemViewToDisplay().colony() != null) {
             Colony colony = parent.systemViewToDisplay().colony();
@@ -1000,11 +1009,6 @@ public class EmpireColonySpendingPane extends BasePanel {
 			public void run() {
                 if (governorOptionsFrame == null) {
                     governorOptionsFrame = new GovernorFrame("GovernorOptions");
-//                    {
-//                    	{
-//                    		addComponentListener(new GovernorComponentAdapter());
-//                    	}
-//                    };
                     governorOptionsFrame.addComponentListener(governorOptionsFrame.new GovernorComponentAdapter());
                     // make this window have an icon, same as main window
                     // modnar: change to cleaner icon set

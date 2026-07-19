@@ -220,28 +220,28 @@ public class ColonyShipyard extends ColonySpendingCategory {
 	}
     public boolean hasStargate()              { return hasStargate; }
     public boolean stargateCompleted()        { return stargateCompleted; }
-	public int starGateTimeToComplete()	{
+	public float starGateTimeToComplete()	{
 		if (hasStargate)
 			return 0;
 		if (!buildingStargate)
-			return Integer.MAX_VALUE;
+			return Float.MAX_VALUE;
 
 		Colony c = colony();
 		if (c.allocation(categoryType()) == 0)
-			return Integer.MAX_VALUE;
+			return Float.MAX_VALUE;
 
 		float newBC = pct() * (c.totalProductionIncome() * planet().productionAdj() + c.maxReserveIncome());
 		float totalBC = newBC + stargateBC;
 		if (totalBC <= 0)
-			return Integer.MAX_VALUE;
+			return Float.MAX_VALUE;
 
 		float missingBC = design.cost() - totalBC;
 		if (missingBC > 0)
 			if (newBC == 0)
-				return Integer.MAX_VALUE;
+				return Float.MAX_VALUE;
 			else
-				return 1 + ceil(missingBC / newBC);
-		return 1;
+				return 1f + missingBC / newBC;
+		return 1f;
 	}
     void removeStargate()  { hasStargate = stargateCompleted = false; }
     public boolean shipLimitReached()         { return shipLimitReached; }

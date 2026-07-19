@@ -51,7 +51,7 @@ public class EmpireColonyInfoPane extends BasePanel {
 //    static final Color sliderHighlightColor = new Color(255,255,255);
 //    static final Color productionGreenColor = new Color(89, 240, 46);
 //    static final Color dataBorders	= new Color(160, 160, 160);
-    private static final Color urgedColor	= new Color(0, 0, 142);
+	private static final Color urgedColor	= new Color(142, 0, 142);
     private static final Color mixedColor	= new Color(64, 64, 64);
 
 //    Color borderC;
@@ -418,10 +418,6 @@ public class EmpireColonyInfoPane extends BasePanel {
 				maxBasesValue += inc;
 				// BR: don't loop anymore
 				maxBasesValue = bounds(0, maxBasesValue, MAX_BASES);
-//				if (maxBasesValue > MAX_BASES)
-//					maxBasesValue = 0;
-//				else if (maxBasesValue < 0) 
-//					maxBasesValue = MAX_BASES;
 			}
 
             for (Colony c: colonies) {
@@ -429,7 +425,7 @@ public class EmpireColonyInfoPane extends BasePanel {
             	c.governIfNeeded();
             }
             softClick();
-            repaint();            
+            repaint();
         }
         @Override public String textureName()		{ return parentUI.subPanelTextureName(); }
         @Override protected int rightMargin()		{ return allowAdjust ? s20 : s5; }

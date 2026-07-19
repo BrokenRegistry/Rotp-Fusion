@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -230,7 +231,11 @@ public class GovernorOptionsPanel extends BasePanel{
 			iconSize	 	= (int) scaledSize(baseIconSize);
 			buttonCorner 	= (int) scaledSize(buttonFontSize * buttonCornerFactor);
 			arrowHeight 	= (int) scaledSize((valueFontSize+buttonTopInset) * arrowWidthFactor);
-			valueFont		= FontManager.getNarrowFont(scaledSize(valueFontSize));
+//			valueFont		= FontManager.getNarrowFont(scaledSize(valueFontSize));
+			AffineTransform tx = new AffineTransform();
+			tx.translate(0,-s3);
+			valueFont = (new Font("SansSerif", Font.BOLD | Font.ITALIC, (int)scaledSize(12))).deriveFont(tx);
+
 			baseFont		= FontManager.getNarrowFont(scaledSize(baseFontSize));
 			labelFont		= FontManager.getNarrowFont(scaledSize(labelFontSize));
 			buttonFont		= FontManager.getNarrowFont(scaledSize(buttonFontSize));
@@ -2195,7 +2200,7 @@ public class GovernorOptionsPanel extends BasePanel{
 	private class GovButtonIcon implements Icon {
 
 		private GovButtonIcon () {  }
-		
+
 		@Override public int getIconHeight() { return 2; }
 		@Override public int getIconWidth()	 { return 2; }
 		@Override public void paintIcon(Component component, Graphics g0, int xi, int yi) {
@@ -2210,7 +2215,7 @@ public class GovernorOptionsPanel extends BasePanel{
 			int y = 0;
 			int w = button.getWidth();
 			int h = button.getHeight();
-			
+
 			if (!buttonModel.isEnabled()) {
 				borderC = disabledColor;
 				centerC = hiddenColor;
@@ -2222,11 +2227,11 @@ public class GovernorOptionsPanel extends BasePanel{
 			// Fill background to go over OS choices... 
 			g.setColor(frameBgColor);
 			g.fillRect(x, y, w, h);
-			
+
 			// Fill the buttons
 			g.setColor(centerC);
 			g.fillRoundRect(x, y, w, h, corner, corner);
-			
+
 			// Draw borders
 			Stroke prev = g.getStroke();
 			g.setStroke(new BasicStroke(border, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));

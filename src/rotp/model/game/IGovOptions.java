@@ -57,6 +57,11 @@ public interface IGovOptions {
 		list.put(STARGATES_ALL,			GOV_UI + "STARGATES_ALL");
 		return list;
 	}
+	static boolean isGameMode()		{ return GameSession.instance().isReady() && RulesetManager.current().isGameMode(); }
+	static void makesBudgetObsolete(String id) {
+		if(isGameMode())
+			GameSession.instance().galaxy().player().budget().makeObsolete();
+	}
 
 	// Colony Options
 	ParamInteger missileBasesMin	= new ParamInteger(GOV_UI, "MIN_MISSILE_BASES", 0)
@@ -64,16 +69,50 @@ public interface IGovOptions {
 			.setIncrements(1, 5, 20);
 	ParamBoolean shieldAlones		= new ParamBoolean(GOV_UI, "SHIELD_WITHOUT_BASES", false);
 	default boolean shieldAlones()	{ return shieldAlones.get(); }
-	ParamBoolean autoSpendOnNewColonies			= new ParamBoolean(GOV_UI, "AUTOSPEND", false);
-	ParamBoolean autoSpendOnNewColoniesFirst	= new ParamBoolean(GOV_UI, "AUTOSPEND_NEW_FIRST", false);
-	ParamBoolean autoSpendOnArtefacts			= new ParamBoolean(GOV_UI, "AUTOSPEND_ARTEFACTS", false);
+	ParamBoolean autoSpendOnNewColonies			= new ParamBoolean(GOV_UI, "AUTOSPEND", false)
+			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+	ParamBoolean autoSpendOnNewColoniesFirst	= new ParamBoolean(GOV_UI, "AUTOSPEND_NEW_FIRST", false)
+			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+	ParamBoolean autoSpendOnArtefacts			= new ParamBoolean(GOV_UI, "AUTOSPEND_ARTEFACTS", false)
+			.isValueInit(false)
+			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
 	ParamInteger autospendMaxIndustryPct		= new ParamInteger(GOV_UI, "AUTOSPEND_MAX_IND", 100)
 			.setLimits(10, 100)
 			.setIncrements(1, 5, 20)
-			.pctValue(true);
+			.pctValue(true)
+			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
 	ParamInteger reserveForPlayer		= new ParamInteger(GOV_UI, "RESERVE", 0)
 			.setLimits(0, 100000)
-			.setIncrements(10, 50, 200);
+			.setIncrements(10, 50, 200)
+			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+	ParamInteger reservePlayerPerMille	= new ParamInteger(GOV_UI, "RESERVE_PER_MILLE", 0)
+			.setLimits(0, 100)
+			.setIncrements(1, 5, 20)
+			.perMilleValue(true)
+			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+	private static void tagReserveNextTurn(String id)	{
+		reserveNextTurn.updated(true);
+		reserveNextTurnPct.updated(true);
+		makesBudgetObsolete(id);
+	}
+	private static boolean notPlanReserveNextTurn()	{ return !planReserveNextTurn.get(); }
+	ParamBoolean planReserveNextTurn	= new ParamBoolean(GOV_UI, "PLAN_RESERVE_TURN", false)
+			.isValueInit(false)
+			.setUpdateParameters(IGovOptions::tagReserveNextTurn, "");
+	ParamInteger reserveNextTurn		= new ParamInteger(GOV_UI, "RESERVE_NEXT_TURN", 0)
+			.setLimits(0, 100000)
+			.setIncrements(10, 50, 200)
+			.setIsGhostMethod(IGovOptions::notPlanReserveNextTurn)
+			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+	ParamInteger reserveNextTurnPct	= new ParamInteger(GOV_UI, "RESERVE_NEXT_TURN_PCT", 10)
+			.setLimits(0, 50)
+			.setIncrements(1, 5, 20)
+			.pctValue(true)
+			.setIsGhostMethod(IGovOptions::notPlanReserveNextTurn)
+			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+
+	ParamBoolean carryUnfunded	= new ParamBoolean(GOV_UI, "CARRY_UNFUNDED", false);
+
 	ParamBoolean shipBuilding		= new ParamBoolean(GOV_UI, "SHIP_BUILDING", true);
 
 	private static void tagGrowthMode(String id)	{
@@ -89,7 +128,7 @@ public interface IGovOptions {
 			.setIncrements(1, 5, 20)
 			.pctValue(true);
 
-	private static void tagManageableGovernor(String id)	{ // TODO BR: tagManageableGovernor
+	private static void tagManageableGovernor(String id)	{
 		terraformFactoryPct.updated(true);
 		terraformPopulationPct.updated(true);
 		terraformPopulation.updated(true);
@@ -103,6 +142,7 @@ public interface IGovOptions {
 		earlyBaseBuilding.updated(true);
 		workerToFactoryROI.updated(true);
 		maxColoniesForROI.updated(true);
+		makesBudgetObsolete(id);
 	}
 	ParamBoolean isManageableGovernor	= new ParamBoolean(GOV_UI, "FOLLOW_COLONY_REQUESTS", false)
 			.setUpdateParameters(IGovOptions::tagManageableGovernor, "");
@@ -114,14 +154,14 @@ public interface IGovOptions {
 		@Override public Boolean set(Boolean b)	{
 			Boolean val = super.set(b);
 			Galaxy galaxy = GameSession.instance().galaxy();
-			if (GameSession.instance().isReady())
+			if (isGameMode())
 				galaxy.player().redoGovTurnDecisionsRich();
 			return val;
 		}
 		@Override public Boolean silentSet(Boolean b)	{
 			Boolean val = super.silentSet(b);
 			Galaxy galaxy = GameSession.instance().galaxy();
-			if (GameSession.instance().isReady())
+			if (isGameMode())
 				galaxy.player().redoGovTurnDecisionsRich();
 			return val;
 		}

@@ -112,7 +112,7 @@ public class SystemInfo implements Serializable, Base {
 //    public Image flagHover(int i)              { return ImageManager.current().image("Flag_Hover"); } // BR: Old call
     public Image flagHover(int i)              { return view(i).flagBackGround("Flag_Hover"); }
 //    public void toggleFlagColor(int i)          { toggleFlagColor(i, false); } // BR: No longer used
-    public int toggleFlagColor(int i, boolean b) { return view(i).toggleFlagColor(b); }
+	public int toggleFlagColor(int i, boolean reverse)	{ return view(i).toggleFlagColor(reverse); }
     public void setFlagColor(int i, int color)	 { view(i).setFlagColor(color); }
     public void forceAutoFlagColor(int i, boolean all) {
     	if (all) {

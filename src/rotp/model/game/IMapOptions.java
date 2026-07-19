@@ -77,12 +77,16 @@ public interface IMapOptions extends IBaseOptsTools {
 
 	ParamBoolean divertExcessToResearch	= new DivertExcessToResearch();
 	default boolean	divertColonyExcessToResearch()				{ return divertExcessToResearch.get(); }
+	default void	divertColonyExcessToResearch(boolean b)		{ divertExcessToResearch.set(b); }
 	default boolean	toggleDivertColonyExcessToResearch()		{
 		divertExcessToResearch.next();
 		return divertExcessToResearch.get();
 	}
 	final class DivertExcessToResearch extends ParamBoolean {
-		DivertExcessToResearch() { super(GAME_UI, "DIVERT_EXCESS_TO_RESEARCH", true); }
+		DivertExcessToResearch() {
+			super(GAME_UI, "DIVERT_EXCESS_TO_RESEARCH", true);
+			isValueInit(false);
+		}
 		@Override public Boolean set(Boolean b)	{
 			Boolean val = super.set(b);
 			if (GameSession.instance().isReady())

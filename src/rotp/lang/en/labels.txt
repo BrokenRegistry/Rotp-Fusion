@@ -52,7 +52,7 @@
 //
 
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1K
+NUM_FORMAT_THOUSANDS              | %1k
 NUM_FORMAT_MILLIONS               | %1M
 NUM_FORMAT_BILLIONS               | %1B
 
@@ -1020,8 +1020,8 @@ MAIN_COLONY_INDUSTRY              | Ind
 MAIN_COLONY_ECOLOGY               | Eco
 MAIN_COLONY_TECHNOLOGY            | Tech
 MAIN_COLONY_ALLOCATE_SPENDING     | Allocate Spending
-GOVERNOR_IS_ON_BUTTON             | Governor Active
-GOVERNOR_IS_OFF_BUTTON            | Governor Inactive
+GOVERNOR_IS_ON_BUTTON             | Governed
+GOVERNOR_IS_OFF_BUTTON            | Ungoverned
 GOVERNOR_IS_ON_AND_OFF_BUTTON     | Governor
 GOVERNOR_OPTIONS                  | Mandate
 
@@ -1180,6 +1180,7 @@ MAIN_ALERT_ALLIANCE_BREAKING      | Our alliance with the [ally_empire] is on th
 PLANETS_TITLE                     | [player_race] Colonies
 PLANETS_VIEW_ECOLOGY              | Ecology View
 PLANETS_VIEW_INDUSTRY             | Industry View
+PLANETS_VIEW_BUDGET				| Budget View
 PLANETS_VIEW_MILITARY             | Military View
 PLANETS_SPENDING_COSTS            | Empire Spending
 PLANETS_COSTS_DESC                | Each colony pays a percent of its production to support empire spending.
@@ -1190,11 +1191,21 @@ PLANETS_COSTS_SPYING              | Spying
 PLANETS_COSTS_SECURITY            | Security
 PLANETS_TOTAL_INCOME              | Annual Income
 PLANETS_INCOME_TRADE              | Trade Income
+PLANETS_INCOME_SPECIES			| Species Bonus Income
 PLANETS_INCOME_PLANETS            | Colony Production
 PLANETS_INCOME_TOTAL              | Total
 PLANETS_TREASURY                  | Empire Treasury
 PLANETS_TREASURY_FUNDS            | Treasury Funds
 PLANETS_TAX_DESC                  | Tax your colonies to add to the empire's treasury.
+PLANETS_BUDGET_SUBSIDIES		| Subsidies: %1 BC
+PLANETS_BUDGET_TAX_INCOME		| Taxed
+PLANETS_BUDGET_TOTAL_INCOME		| Income: %1 BC
+PLANETS_BUDGET_NO_INCOME		| No Income
+PLANETS_BUDGET_NO_SUBSIDIES		| No Subsidies
+PLANETS_BUDGET_UNUSED_PLAYER	| Unused Player: %1 BC
+PLANETS_BUDGET_UNUSED			| Unused: %1 BC
+PLANETS_BUDGET_ALL_USED_PLAYER	| All Used by Player
+PLANETS_BUDGET_UNUSED_NONE		| Unused: None
 PLANETS_RESERVE_TAX               | Reserve Tax
 PLANETS_RESERVE_INCREASE          | +%1 BC/Year
 PLANETS_RESERVE_NO_TAX            | No Taxes
@@ -1204,6 +1215,19 @@ PLANETS_RES_FULL_DEF_POP          | Population: %1
 PLANETS_RES_FULL_DEF_FACT         | Factories: %1
 PLANETS_BUTTON_TRANSFER           | TRANSFER
 PLANETS_BUTTON_EXIT               | EXIT
+PLANETS_BUTTON_BUDGET			| Budgetize
+PLANETS_BUTTON_REMOVE			| Remove player budget
+PLANETS_BUTTON_CONVERT			| Transfer Budget
+PLANETS_BUTTON_BUDGET_WISH		| Budgetize Optimal amounts
+PLANETS_BUTTON_SHARE_WISH		| Share Optimal amounts
+PLANETS_RESERVE_PLAYER			| Budget remaining to player: 
+PLANETS_RESERVE_CURRENT			| Budget remaining available: %1 BC
+PLANETS_BUDGET_CURRENT_NONE		| No budget has been established for this colony.
+PLANETS_BUDGET_GOVERNOR_ALONE	| Governor's initial budget: %1 BC
+PLANETS_BUDGET_CURRENT_PLAYER	| Budget established by the player: %1 BC
+PLANETS_BUDGET_GOVERNOR_SUGGEST	| (Governor's initial budgets: %1 BC)
+PLANETS_BUDGET_NO_GOVERNOR		| The governor is not involved in this budget.
+
 PLANETS_AMT_PCT                   | %1%
 PLANETS_AMT_BC                    | %1 BC
 PLANETS_TRANSFER_DESC             | Transfer Empire Funds to %1
@@ -1227,6 +1251,11 @@ PLANETS_LIST_SHIELD               | Shield
 PLANETS_LIST_PRODUCTION           | Prod
 PLANETS_LIST_CAPACITY             | Capacity
 PLANETS_LIST_RESERVE              | Reserve
+PLANETS_LIST_NEEDED				| Optimal
+PLANETS_LIST_BUDGET				| Budget
+PLANETS_LIST_SUBSIDY			| Gets
+PLANETS_LIST_CONTRIBUTE			| Gives
+PLANETS_LIST_TAXED				| Taxed
 PLANETS_LIST_SHIPYARD             | Shipyard
 PLANETS_LIST_NOTES                | Notes
 PLANETS_LIST_TURNS                | Turns
@@ -1241,9 +1270,10 @@ PLANETS_SPENDING_50               | 50% %1 Spending
 PLANETS_SPENDING_75               | 75% %1 Spending
 PLANETS_SPENDING_MAX              | Maximum %1 Spending
 PLANETS_HELP_ALL                  | OVERVIEW - This screen shows your empire's economic data along with a listing of your colonies sortable by various data.
-PLANETS_HELP_1A                   | Ecology - Click this tab to show ecological data for colonies.
-PLANETS_HELP_1B                   | Industry - Click this tab to show industrial data for colonies.
-PLANETS_HELP_1C                   | Military - Click this tab to show military data for colonies.
+PLANETS_HELP_1A					| Ecology <br> Click this tab to show ecological data for colonies.
+PLANETS_HELP_1B					| Industry <br> Click this tab to show industrial data for colonies.
+PLANETS_HELP_1BUD				| Budget <br> Click this tab to show budgeted data for colonies.
+PLANETS_HELP_1C					| Military <br>Click this tab to show military data for colonies.
 PLANETS_HELP_1D                   | Colony spending can be adjusted as on main screen.
 PLANETS_HELP_1E                   | Increase colony production by up to 50% by transferring funds from the empire treasury.
 PLANETS_HELP_1F                   | Total Income for your empire.<br>Trade income are redistributed to the colonies proportionally to their production.
@@ -1273,6 +1303,21 @@ PLANETS_HELP_4F                   | Bases - missile bases on planet. Red if outd
 PLANETS_HELP_4G                   | Shipyard - ship design being constructed.
 PLANETS_HELP_4H                   | Notes - Player system notes. Editable.
 PLANETS_HELP_4I                   | Flag - user-selected system flag.
+PLANETS_HELP_5A					| Mandate<br> Spending instructions for the governor.
+PLANETS_HELP_5B					| Taxed<br> Taxes owed to the empire.
+PLANETS_HELP_5C					| Gives<br> Voluntary contributions through unused expenses.
+PLANETS_HELP_5D					| Gets<br> Subsidies that can be granted after prioritization.
+PLANETS_HELP_5E					| Budget<br> Amount requested by the Governor or by the *Player.
+PLANETS_HELP_5F					| Optimal<br> Amount required to maximize the functioning of the colony.
+PLANETS_HELP_5G					| Instructions to the governor for allocating subsidies:<br>Metal color: Follow global instructions.<br>Gold color: Allocate subsidies.<br>Red arc (right click): Can draw from the player's reserve.<br>Uncircled: active until the player deactivates it.<br>Magenta circle: Active while an emergency is activated.<br>Uncircled: active until the player deactivates it.<br>Green circle: Active as long as the colony has not reached the development limit.<br>Blue circle: Active as long as a blue priority is present. (With the exception of research and shipsyard, as they do not deactivate automatically)
+
+PLANETS_HELP_T_BUDGET			| Budget the selected amount.<br>This value can be revised if desired.
+PLANETS_HELP_T_TRANSFERT		| Transfer the selected amount to the colony reserve.<br>This transfer is final.
+PLANETS_HELP_T_CONVERT			| Transfer the already budgeted value to the colony reserve.<br>This transfer is final.
+PLANETS_HELP_T_CANCEL			| Exit without changing anything.
+PLANETS_HELP_T_BUDGET_OPTIMAL	| Budget the optimal amounts.<br>These values can be revised if desired.
+PLANETS_HELP_T_SHARE_OPTIMAL	| Share optimal needs proportionally and budget the amounts.<br>These values can be revised if desired.
+PLANETS_HELP_T_REMOVE_PLAYER	| Return the hand to the governor by erasing the amount currently selected by the player.
 
 // Bombardment prompt
 MAIN_BOMBARDED_TITLE             | %1 has been bombarded by [alien_race] forces.
@@ -5820,9 +5865,33 @@ GOVERNOR_AUTOSPEND_ARTEFACTS_DESC	| Automatically spend reserve to boost rechear
 GOVERNOR_AUTOSPEND_ARTEFACTS		| Autospend on Artefacts: %1
 GOVERNOR_AUTOSPEND_ARTEFACTS_LABEL	| Autospend on Artefacts
 
+HEADERS_GOVERNOR_FUNDRAISING_DESC	| Extent and collection of reserves and emergency funds.
+HEADERS_GOVERNOR_FUNDRAISING		| ~~~ EMPIRE FUNDRAISING ~~~
+
+HEADERS_GOVERNOR_SPENDING_DESC		| How to use reserve and emergency funds.
+HEADERS_GOVERNOR_SPENDING			| ~~~ EMPIRE SPENDING ~~~
+
 GOVERNOR_RESERVE_DESC				| Emergency fund to be kept in reserve for the exclusive use of the player.<br>(Not spent by governors)
-GOVERNOR_RESERVE					| Keep in reserve: %1
+GOVERNOR_RESERVE					| Player Emergency Fund: %1
 GOVERNOR_RESERVE_LABEL				| Keep in reserve
+
+GOVERNOR_RESERVE_PER_MILLE_HELP		| Emergency fund to be kept in reserve for the exclusive use of the player, in percentage of the total production.<br>(Not spent by governors)<br>The minimum of the absolute and percentage value will be reserved.
+GOVERNOR_RESERVE_PER_MILLE_DESC		| Emergency fund, as a percentage of total production, to be kept in reserve for the exclusive use of the player.<br>(Not spent by governors)
+GOVERNOR_RESERVE_PER_MILLE			| Player Emergency Fund pct: %1‰
+
+GOVERNOR_RESERVE_NEXT_TURN_HELP		| Working capital to be collected for current expenses.<br>LThe minimum of the absolute and relative value will be collected.
+GOVERNOR_RESERVE_NEXT_TURN_DESC		| Working capital to be collected for current expenses.
+GOVERNOR_RESERVE_NEXT_TURN			| Working capital: %1
+
+GOVERNOR_RESERVE_NEXT_TURN_PCT_HELP	| Working capital, as a percentage of total production, to be collected for current expenditure.<br>The minimum of the absolute and relative value will be collected.
+GOVERNOR_RESERVE_NEXT_TURN_PCT_DESC	| Working capital, as a percentage of total production, to be collected for current expenditure.
+GOVERNOR_RESERVE_NEXT_TURN_PCT		| Working capital pct: %1%
+
+GOVERNOR_PLAN_RESERVE_TURN_DESC		| The governor is responsible for collecting the specified working capital.
+GOVERNOR_PLAN_RESERVE_TURN			| The governor raise the funds: %1
+
+GOVERNOR_CARRY_UNFUNDED_DESC		| The unfunded part of the amounts budgeted by the player will be carried over to the next round.
+GOVERNOR_CARRY_UNFUNDED				| Carry player's unfunded amounts: %1
 
 GOVERNOR_SHIP_BUILDING_DESC          | Continue shipbuilding with Governor enabled. Divert resources into shipbuilding and not research if planet is already building ships.
 GOVERNOR_SHIP_BUILDING               | Continue Shipbuilding: %1

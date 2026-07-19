@@ -47,6 +47,7 @@ import rotp.ui.SystemViewer;
 import rotp.ui.main.EmpireColonySpendingPane;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.options.AllSubUI;
+import rotp.ui.options.ISubUiKeys;
 import rotp.ui.util.ParamSubUI;
 
 public class MultiColonySpendingPane extends BasePanel implements MouseListener, MouseMotionListener {
@@ -668,7 +669,11 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
 		else if (hoverBox == governorBox)
 			toggleGovernor();
 		else if (hoverBox == optionsBox)
-			if (e.isShiftDown()) {
+			if (SwingUtilities.isRightMouseButton(e)) {
+				ParamSubUI optionsUI = AllSubUI.getHandle(ISubUiKeys.GOVERNOR_SPECIAL_UI_KEY).getUI();
+				optionsUI.start(null);
+			}
+			else if (e.isShiftDown()) {
 				ParamSubUI optionsUI = AllSubUI.governorSubUI();
 				optionsUI.start(null);
 			}

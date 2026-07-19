@@ -214,6 +214,8 @@ public abstract class AbstractParam<T> implements IParam<T> {
 				return guideValue() + strArr[1];
 			else if (strArr.length == 3)
 				return strArr[1] + guideValue() + strArr[2];
+			else if (strArr.length == 4)
+				return strArr[1] + guideValue();
 			else
 				return guideValue();
 		default:
@@ -358,7 +360,7 @@ public abstract class AbstractParam<T> implements IParam<T> {
 		updateOption(dynOpts());
 	}
 	public T silentSet(T newValue) 			{ // Reserved call from governor class
-		updated(true);;
+		updated(true);
 		value(newValue);
 		setOption(newValue); // For overrider
 		return newValue;
@@ -378,7 +380,7 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	}
 	public void maxValue (T newValue)		{ maxValue = newValue;}
 	public void minValue (T newValue)		{ minValue = newValue;}
-	public void isGovernor(int val)			{ isGovernor  = val ; }
+	public void isGovernor(int val)			{ isGovernor = val; }
 	public void defaultValue(T commonValue)	{
 		defaultValue.put(FUSION_DEFAULT, commonValue);
 		defaultValue.put(MOO1_DEFAULT, commonValue);

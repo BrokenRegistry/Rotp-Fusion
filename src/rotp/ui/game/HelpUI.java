@@ -114,15 +114,18 @@ public class HelpUI extends BasePanel implements MouseListener {
 		List<String> lines = wrappedLines(narrowFont(FONT_SIZE), str, maxWidth - margin);
 		return lines.size();
 	}
-
 	@Override public void paintComponent(Graphics g0)	{
-        super.paintComponent(g0);
+		super.paintComponent(g0);
 		Graphics2D g = (Graphics2D) g0;
+		paintComponent(g, true);
+	}
+	public void paintComponent(Graphics2D g, boolean withHaze)	{
         int w = getWidth();
         int h = getHeight();
-        g.setColor(backgroundHaze);
-        g.fillRect(0, 0, w, h);
-
+		if (withHaze) {
+			g.setColor(backgroundHaze);
+			g.fillRect(0, 0, w, h);
+		}
         for (HelpSpec spec: specs) {
             int maxHeight = spec.hMax();
 

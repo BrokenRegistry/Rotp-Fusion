@@ -44,30 +44,23 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-26-07-11 (BR)
-- New fix for unresponsive Linux.
-  - Custom species folders won't be scanned deeper than 8 levels. This is to avoid infinite loops due to symbolic links.
-  - If custom species folders are set to jar or exe folder, subfolders will not be scanned. This is in case the jar file has not been placed in its own folder.
-  - The default for the custom species folder will be set to "CustomSpecies". If another folder has already been selected, the choice will be kept.
-
-26-07-10 (BR)
-- Possible Fix for Linux infinite loop.
-  - Could be a directory link looping back to itself.
-  - Added directory loop detection when parsing the custom species folder.
-- New debug tools to track Linux Mint and Arch crash.
-
-26-07-09 (BR)
-- New debug tools to track Linux Mint crash.
-
-26-07-05 (BR)
-- Removed unused methods from AI governors and consolidated redundant methods.
-- New option to prevent governors to send transports to besieged colonies, even if the troops are able to sneak in. As sometime it is preferable to conserve its population to strengthen the defenses of the colonies close to the front.
-- Improved some distance sorting by removing the square root.
-- Improved some sorting by computing the sorted value only once.
-- Empire Status panel:
-  - Fixed display of lists not scrolling all the way to the bottom when there were a high number of empires.
-  - Fixed the empire names of the top boxes dripping onto those of the bottom boxes when scrolling through the bottom boxes.
-- Fixed misplaced scrollbar in the Manage Diplomats subpanel.
+26-07-19 (BR)
+- In parallel with the permanent fund transfer, it is now possible to establish a budget and modify it. New tasks may be assigned to the governor to collect funds and distribute them.
+- New Governor option for ho to allocate subsidies: (Gold coin on the side of the Governor button)
+  - Metal color: Follow global instructions.
+  - Gold color: Allocate subsidies.
+  - Red arc (right click): Can draw from the player's reserve.
+  - Uncircled: active until the player deactivates it.
+  - Magenta circle: Active while an emergency is activated.
+  - Uncircled: active until the player deactivates it.
+  - Green circle: Active as long as the colony has not reached the development limit.
+  - Blue circle: Active as long as a blue priority is present. (With the exception of research and shipsyard, as they do not deactivate automatically)
+- New Budget tab in the Colony panel, to review the governor's choices and refine the budget for yourself.
+- Right-clicking the Mandate button will open the Governor's Advanced Panel, providing access to the new funding options:
+  - Activation and deactivation of the collection of funds
+  - Amounts to be collected (absolute or relative)
+  - Reserve for the player (absolute or relative)
+  - Development limit of a colony for receiving subsidies.
 
 
 ### [Features Historic](FeaturesChanges.md)

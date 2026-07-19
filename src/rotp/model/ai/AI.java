@@ -101,7 +101,7 @@ public final class AI implements Base {
 	            scientist =      new rotp.model.ai.xilmi.AIScientist(empire);
 	            fleetCommander = new rotp.model.ai.governor.AIFleetCommander(empire);
 	            spyMaster =      new rotp.model.ai.governor.AISpyMaster(empire);
-	            treasurer =      new rotp.model.ai.xilmi.AITreasurer(empire);
+	            treasurer =      new rotp.model.ai.governor.AITreasurer(empire);
 	            break;
             case BASE:
                 general =        new rotp.model.ai.base.AIGeneral(empire);

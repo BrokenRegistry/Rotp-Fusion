@@ -30,6 +30,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,11 +39,13 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import rotp.model.colony.Colony;
 import rotp.model.empires.SystemView;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseTextField;
+import rotp.ui.RotPUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.SystemTransportSprite;
 import rotp.util.Base;
@@ -62,7 +65,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 	private static final Color scrollBarC = new Color(211,166,125);
 
     public static final int LEFT = -1;
-	private static final int CENTER = 0;
+    public static final int CENTER = 0;
     public static final int RIGHT = 1;
 
     // unique ids for various button types that may be on a row
@@ -111,15 +114,16 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
     protected abstract void selectedSystem(StarSystem sv, boolean updateFieldValues);
     protected abstract void shiftSelectedSystem(StarSystem sv, boolean updateFieldValues);
     protected abstract void controlSelectedSystem(StarSystem sv, boolean updateFieldValues);
+	protected void doubleClickSelectedSystem(StarSystem sv)	{}
     protected boolean isSelected(StarSystem sys) {  return lastSelectedSystem() == sys; }
     protected abstract DataView dataView();
     protected boolean selectRows()  { return true; }
-	int rowHeight()					{ return s30; }
+	protected int rowHeight()		{ return s30; }
     protected Color selectedC()     { return selectedC; }
 	private Color unselectedC()		{ return unselectedC; }
 	private Color selectedRedC()	{ return selectedRedC; }
 	private Color unselectedRedC()	{ return unselectedRedC; }
-	private int dataFontSize()		{ return 20; }
+	protected int dataFontSize()	{ return 20; }
     @Override
     public void open() { 
         int rowH = rowHeight();
@@ -161,7 +165,10 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 	public SystemStargateColumn newSystemStargateColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
 		return new SystemStargateColumn(s1, s2, i, clr, c, align);
 	}
-    public SystemNameColumn newSystemNameColumn(BaseTextField field, String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
+ 	public SystemGovPlanColumn newSystemGovPlanColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
+		return new SystemGovPlanColumn(s1, s2, i, clr, c, align);
+	}
+   public SystemNameColumn newSystemNameColumn(BaseTextField field, String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
         return new SystemNameColumn(field, s1, s2, i, clr, c, align);
     }
     public SystemNotesColumn newSystemNotesColumn(BaseTextField field, String s1, String s2, int i, Color clr) {
@@ -297,13 +304,13 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
     }
     public boolean scrollUp()    { 
         int prevY = startY;
-        startY = max(0, startY-s10);
+        startY = max(0, startY-s9);
         boolean changed = startY != prevY;
         return changed;
     }
     public boolean scrollDown()  { 
         int prevY = startY;
-        startY = min(maxY, startY+s10);
+        startY = min(maxY, startY+s9);
 
         boolean changed = startY != prevY;
         return changed;
@@ -534,6 +541,12 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             sprite.controlClick();
         else
             sprite.click();
+
+		int count = e.getClickCount();
+		boolean isMiddleButton = SwingUtilities.isMiddleMouseButton(e);
+		if (count == 2 || isMiddleButton)
+			sprite.doubleClick();
+
         topParent.repaint();
     }
 	public final class DataView {
@@ -582,7 +595,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             int sw = Integer.MAX_VALUE;
             int fontSize = dataFontSize();
 
-            int minFont = 16;
+            int minFont = 14;
             while ((sw > displayW) && (fontSize > minFont)) {
                 g.setFont(narrowFont(fontSize));
                 sw = g.getFontMetrics().stringWidth(title);
@@ -597,13 +610,13 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             Color c0 = hoveringHeader == this ? palette.yellow : palette.white;
 
             // always draw header centered
-            drawShadowedString(g, title, 3, x+((displayW-sw)/2), y-s10, SystemPanel.textShadowC, c0);
+            drawShadowedString(g, title, 3, x+((displayW-sw)/2), y-s8, SystemPanel.textShadowC, c0);
         }
     }
 	private final class RowNumColumn extends Column {
-		private RowNumColumn(String s, int i, int a) {
+		private RowNumColumn(String s, int w, int a) {
             headerKey = s;
-            width = scaled(i);
+            width = w;
             align = a;
         }
         @Override
@@ -625,10 +638,11 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
                 g.setColor(palette.black);
             else
                 g.setColor(palette.maroon);
+            int yb = y-s7;
             switch(align) {
-                case LEFT:    drawString(g,val, x+s5, y-s5); break;
-                case RIGHT:   drawString(g,val, x+w-s10-sw, y-s5); break;
-                case CENTER:  drawString(g,val, x+((w-sw)/2), y-s5); break;
+                case LEFT:    drawString(g,val, x+s5, yb); break;
+                case RIGHT:   drawString(g,val, x+w-s10-sw, yb); break;
+                case CENTER:  drawString(g,val, x+((w-sw)/2), yb); break;
             }
         }
     }
@@ -828,10 +842,10 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 		private String attributeKey;
 		private Color color;
 		private Comparator<StarSystem> comp;
-		private SystemDataColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int a) {
+		private SystemDataColumn(String s1, String s2, int w, Color clr, Comparator<StarSystem> c, int a) {
             headerKey = s1;
             attributeKey = s2;
-            width = scaled(i);
+            width = w;
             color = clr;
             comp = c;
             align = a;
@@ -858,10 +872,11 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             if (sw > w0)
                 scaledFont(g, val, w0, dataFontSize()-1, 8);
             g.setColor(color(sys));
+            int yb = y-s7;
             switch(align) {
-                case LEFT:    drawString(g,val, x+s5, y-s5); break;
-                case RIGHT:   drawString(g,val, x+w-s5-sw, y-s5); break;
-                case CENTER:  drawString(g,val, x+((w-sw)/2), y-s5); break;
+                case LEFT:    drawString(g,val, x+s5, yb); break;
+                case RIGHT:   drawString(g,val, x+w-s5-sw, yb); break;
+                case CENTER:  drawString(g,val, x+((w-sw)/2), yb); break;
             }
         }
     }
@@ -893,17 +908,19 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 		}
 		@Override public void draw(Graphics g, RowSprite row, StarSystem sys, int x, int y, int w) {
 			super.draw(g, row, sys, x, y, w);
-			int time = sys.colony().starGateTimeToComplete();
-			if (time == Integer.MAX_VALUE)
+			float rawTime = sys.colony().starGateTimeToComplete();
+			if (rawTime == Float.MAX_VALUE)
 				return;
 
+			int iconWidth = s14;
+			int time = ceil(rawTime);
 			if (time == 0) {
 				Image img = ShipLibrary.current().stargate.getImage();
-				int w2 = img.getWidth(null);
-				int h2 = img.getHeight(null);
-				int x2 = x + ((w-s14)/2);
-				int y2 = y - s22;
-				g.drawImage(img, x2, y2, x2+s14, y2+s14, 0, 0, w2, h2, null);
+				int imgW = img.getWidth(null);
+				int imgH = img.getHeight(null);
+				int imgX = x + (w-iconWidth)/2 + s1;
+				int imgY = y - (rowHeight() + iconWidth)/2;
+				g.drawImage(img, imgX, imgY, imgX+iconWidth, imgY+iconWidth, 0, 0, imgW, imgH, null);
 				return;
 			}
 
@@ -920,21 +937,63 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 		@Override public void drawHeader(Graphics g, int x0, int y0, int w) {
 			x = x0;
 			y = y0;
-			if (s14 > w)
-				width = s14;
+			int iconWidth = s14;
+			int dotWidth = s6;
+			if (iconWidth > w)
+				width = iconWidth;
 
 			Image img = ShipLibrary.current().stargate.getImage();
-			int w2 = img.getWidth(null);
-			int h2 = img.getHeight(null);
-			int x2 = x + ((w-s14)/2);
-			int y2 = y - s22;
-			g.drawImage(img, x2, y2, x2+s14, y2+s14, 0, 0, w2, h2, null);
+			int imgW = img.getWidth(null);
+			int imgH = img.getHeight(null);
+			int imgX = x + (w-iconWidth)/2;
+			int imgY = y - (rowHeight() + iconWidth)/2 + s1;
+			g.drawImage(img, imgX, imgY, imgX+iconWidth, imgY+iconWidth, 0, 0, imgW, imgH, null);
 			if (hoveringHeader == this) {
-				x2 = x + ((w-s6)/2);
-				y2 = y - s18;
+				imgX = x + (w-dotWidth)/2;
+				imgY = y - iconWidth -s2;
 				g.setColor(palette.yellow);
-				g.fillRoundRect(x2, y2, s6, s6, s6, s6);
+				g.fillRoundRect(imgX, imgY, dotWidth, dotWidth, dotWidth, dotWidth);
 			}
+		}
+	}
+	private final class SystemGovPlanColumn extends SystemDataColumn	{
+		private SystemGovPlanColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int a) {
+			super(s1, s2, i, clr, c, a);
+		}
+		@Override public void draw(Graphics g, RowSprite row, StarSystem sys, int x, int y, int w) {
+			super.draw(g, row, sys, x, y, w);
+			Colony col = sys.colony();
+			if (!col.govFundColony() || !col.isGovernor())
+				return;
+
+			int iconWidth = s18;
+			BufferedImage img = col.getCoinImage(s25);
+			int imgH = img.getHeight();
+			int imgW = img.getWidth();
+			int imgX = x + (w-iconWidth)/2;
+			int imgY = y - (rowHeight() + iconWidth)/2;
+			g.setColor(Color.BLACK);
+			g.fillOval(imgX, imgY, iconWidth, iconWidth);
+			g.drawImage(img, imgX, imgY, imgX + iconWidth, imgY + iconWidth, 0, 0, imgW, imgH, null);
+		}
+		@Override public void drawHeader(Graphics g, int x0, int y0, int w) {
+			x = x0;
+			y = y0;
+			int iconWidth = s18;
+			if (iconWidth > w)
+				width = iconWidth;
+
+			Image img = Colony.getBaseCoinImage(s25);
+			int imgH = img.getHeight(null);
+			int imgW = img.getWidth(null);
+			int imgX = x + (w-iconWidth)/2;
+			int imgY = y - (rowHeight() + iconWidth - s3)/2;
+			if (hoveringHeader == this)
+				g.setColor(Color.WHITE);
+			else
+				g.setColor(Color.BLACK);
+			g.fillOval(imgX, imgY, iconWidth, iconWidth);
+			g.drawImage(img, imgX, imgY, imgX + iconWidth, imgY + iconWidth, 0, 0, imgW, imgH, null);
 		}
 	}
 	private final class SystemNameColumn extends SystemDataColumn {
@@ -950,6 +1009,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             boolean displayed = isDisplayed(sys);
             boolean editable = lastSelected && displayed && selected;
             boolean editableIfDisplayed = lastSelected && selected;
+            int rowHeight = rowHeight();
 
             if (!editable) {
                 if (editableIfDisplayed)
@@ -960,8 +1020,8 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 
            if (nameField.isVisible()) {
                nameField.setForeground(color(sys));
-                if (nameField.getY() != (y-s30)) {
-                    nameField.setBounds(x, y-s30, w, s30);
+                if (nameField.getY() != (y-rowHeight)) {
+                    nameField.setBounds(x, y-rowHeight, w, rowHeight);
                     nameField.repaint();
                 }
                 return;
@@ -973,7 +1033,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             else
                 nameField.setBackground(selectedC());
 
-            nameField.setBounds(x, y-s30, w, s30);
+            nameField.setBounds(x, y-rowHeight, w, rowHeight);
             nameField.setForeground(color(sys));
             nameField.setVisible(true);
             nameField.repaint();
@@ -991,7 +1051,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 	private final class SystemNotesColumn extends SystemDataColumn {
         private final BaseTextField notesField;
 		private SystemNotesColumn(BaseTextField fld, String s1, String s2, int i, Color clr) {
-            super(s1,s2,i,clr,StarSystem.NOTES, LEFT);
+            super(s1,s2, RotPUI.scaledSize(i),clr,StarSystem.NOTES, LEFT);
             notesField = fld;
         }
         @Override
@@ -1001,6 +1061,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             boolean displayed = isDisplayed(sys);
             boolean editable = lastSelected && displayed && selected;
             boolean editableIfDisplayed = lastSelected && selected;
+            int rowHeight = rowHeight();
 
             if (!editable) {
                 if (editableIfDisplayed)
@@ -1010,8 +1071,8 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             }
 
             if (notesField.isVisible()) {
-                if (notesField.getY() != (y-s30)) {
-                    notesField.setBounds(x, y-s30, w, s30);
+                if (notesField.getY() != (y-rowHeight)) {
+                    notesField.setBounds(x, y-rowHeight, w, rowHeight);
                     notesField.repaint();
                 }
                 return;
@@ -1022,7 +1083,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
                 notesField.setBackground(selectedRedC());
             else
                 notesField.setBackground(selectedC());
-            notesField.setBounds(x, y-s30, w, s30);
+            notesField.setBounds(x, y-rowHeight, w, rowHeight);
             notesField.setVisible(true);
             notesField.repaint();
         }
@@ -1030,10 +1091,10 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 	private final class PlanetTypeColumn extends Column {
 		private String attributeKey;
 		private Comparator<StarSystem> comp;
-		private PlanetTypeColumn(String s1, String s2, int i, Comparator<StarSystem> c) {
+		private PlanetTypeColumn(String s1, String s2, int w, Comparator<StarSystem> c) {
             headerKey = s1;
             attributeKey = s2;
-            width = scaled(i);
+            width = w;
             comp = c;
             align = CENTER;
         }
@@ -1062,10 +1123,11 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
                 g.setColor(palette.maroon);
             else
                 g.setColor(palette.black);
+            int yb = y-s7;
             switch(align) {
-                case LEFT:    drawString(g,val, x+s5, y-s5); break;
-                case RIGHT:   drawString(g,val, x+w-s10-sw, y-s5); break;
-                case CENTER:  drawString(g,val, x+((w-sw)/2), y-s5); break;
+                case LEFT:    drawString(g,val, x+s5, yb); break;
+                case RIGHT:   drawString(g,val, x+w-s10-sw, yb); break;
+                case CENTER:  drawString(g,val, x+((w-sw)/2), yb); break;
             }
         }
     }
@@ -1076,10 +1138,10 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 		private Comparator<StarSystem> comp;
 		private int px[] = new int[3];
 		private int py[] = new int[3];
-		private SystemDeltaDataColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int a) {
+		private SystemDeltaDataColumn(String s1, String s2, int w, Color clr, Comparator<StarSystem> c, int a) {
             headerKey = s1;
             attributeKey = s2;
-            width = scaled(i);
+            width = w;
             color = clr;
             comp = c;
             align = a;
@@ -1109,7 +1171,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             int w1 = w*2/3;
             int w2 = w - w1;
             int x0 = x+w1;
-            int yb = y-s5;
+            int yb = y-s7;
             switch(align) {
                 case LEFT:    drawString(g,val1, x+s5, yb); break;
                 case RIGHT:   drawString(g,val1, x+w1-s10-sw1, yb); break;
@@ -1165,6 +1227,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         public void click()  { }
         public void shiftClick()  { }
         public void controlClick()  { }
+		public void doubleClick()	{ }
         public abstract boolean isSelectableAt(int x, int y);
         public boolean equalsSprite(Sprite s)  { return this == s; }
         public StarSystem system()             { return null; }
@@ -1242,6 +1305,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         public void shiftClick() { shiftSelectedSystem(system, true); }
         @Override
         public void controlClick() { controlSelectedSystem(system, true); }
+		@Override public void doubleClick()	{ doubleClickSelectedSystem(system); }
     }
 	private interface SystemButton {
         void reset();

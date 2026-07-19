@@ -104,7 +104,15 @@ public interface ScaledInteger {
 	int s98	= RotPUI.scaledSize(98);
 	int s99	= RotPUI.scaledSize(99);
 	int s100 = RotPUI.scaledSize(100);
+	int s110 = RotPUI.scaledSize(110);
+	int s120 = RotPUI.scaledSize(120);
+	int s130 = RotPUI.scaledSize(130);
+	int s140 = RotPUI.scaledSize(140);
 	int s150 = RotPUI.scaledSize(150);
+	int s160 = RotPUI.scaledSize(160);
+	int s170 = RotPUI.scaledSize(170);
+	int s180 = RotPUI.scaledSize(180);
+	int s190 = RotPUI.scaledSize(190);
 	int s200 = RotPUI.scaledSize(200);
 	int s300 = RotPUI.scaledSize(300);
 	int s400 = RotPUI.scaledSize(400);

@@ -25,26 +25,25 @@ import rotp.util.Base;
 
 public abstract class ColonySpendingCategory implements Base, Serializable {
     private static final long serialVersionUID = 1L;
-    public static String noneText = "MAIN_COLONY_SPENDING_NONE";
-    public static String reserveText = "MAIN_COLONY_SPENDING_RESERVE";
-    public static String techText = "MAIN_COLONY_SPENDING_TECH";
-    public static String convertAlienFactoriesText = "MAIN_COLONY_SPENDING_CONVERT";
-    public static String refitFactoriesText = "MAIN_COLONY_SPENDING_REFIT";
-    public static String maximumFactoriesText = "MAIN_COLONY_SPENDING_MAX_FACT";
-    public static String wasteText = "MAIN_COLONY_SPENDING_WASTE";
-    public static String atmosphereText = "MAIN_COLONY_SPENDING_ATMOSPHERE";
-    public static String enrichSoilText = "MAIN_COLONY_SPENDING_ENRICH_SOIL";
-    public static String terraformText = "MAIN_COLONY_SPENDING_TERRAFORM";
-    public static String cleanupText = "MAIN_COLONY_SPENDING_CLEANUP";
-    public static String growthText = "MAIN_COLONY_SPENDING_GROWTH";
-    public static String shieldText = "MAIN_COLONY_SPENDING_SHIELD";
-    public static String upgradeBasesText = "MAIN_COLONY_SPENDING_UPG_BASES";
-    public static String researchPointsText = "MAIN_COLONY_SPENDING_RP";
-    public static String yearsLongText = "MAIN_COLONY_COMPLETION_CENTURY";
-    public static String yearsText = "MAIN_COLONY_COMPLETION_YEARS";
-    public static String yearText = "MAIN_COLONY_COMPLETION_YEAR";
-    public static String perYearText = "MAIN_COLONY_COMPLETION_PER_YEAR";
-
+	public static final String noneText = "MAIN_COLONY_SPENDING_NONE";
+	public static final String reserveText = "MAIN_COLONY_SPENDING_RESERVE";
+	public static final String techText = "MAIN_COLONY_SPENDING_TECH";
+	public static final String convertAlienFactoriesText = "MAIN_COLONY_SPENDING_CONVERT";
+	public static final String refitFactoriesText = "MAIN_COLONY_SPENDING_REFIT";
+	public static final String maximumFactoriesText = "MAIN_COLONY_SPENDING_MAX_FACT";
+	public static final String wasteText = "MAIN_COLONY_SPENDING_WASTE";
+	public static final String atmosphereText = "MAIN_COLONY_SPENDING_ATMOSPHERE";
+	public static final String enrichSoilText = "MAIN_COLONY_SPENDING_ENRICH_SOIL";
+	public static final String terraformText = "MAIN_COLONY_SPENDING_TERRAFORM";
+	public static final String cleanupText = "MAIN_COLONY_SPENDING_CLEANUP";
+	public static final String growthText = "MAIN_COLONY_SPENDING_GROWTH";
+	public static final String shieldText = "MAIN_COLONY_SPENDING_SHIELD";
+	public static final String upgradeBasesText = "MAIN_COLONY_SPENDING_UPG_BASES";
+	public static final String researchPointsText = "MAIN_COLONY_SPENDING_RP";
+	public static final String yearsLongText = "MAIN_COLONY_COMPLETION_CENTURY";
+	public static final String yearsText = "MAIN_COLONY_COMPLETION_YEARS";
+	public static final String yearText = "MAIN_COLONY_COMPLETION_YEAR";
+	public static final String perYearText = "MAIN_COLONY_COMPLETION_PER_YEAR";
     public static final int MAX_TICKS = 50;
 
     private Colony colony;

@@ -256,16 +256,16 @@ public class MassTransportsDialog extends BasePanel {
         }
         @Override
         protected void postInit() {
-            Column rowNumCol =  newRowNumColumn("PLANETS_LIST_NUM", 15, RIGHT);
-            Column flagCol = newSystemFlagColumn("", "FLAG", 30, palette.black, StarSystem.VFLAG, LEFT);
-            Column nameCol = newSystemDataColumn("PLANETS_LIST_NAME", "NAME", 140, palette.black, StarSystem.NAME, LEFT);
-            Column populationCol = newSystemDataColumn("PLANETS_LIST_POP", "POPULATION", 60, palette.black, StarSystem.POPULATION, RIGHT);
-            Column sizeCol = newSystemDataColumn("PLANETS_LIST_SIZE", "SIZE", 60, palette.black, StarSystem.CURRENT_SIZE, RIGHT);
-            Column pTypeCol = newPlanetTypeColumn("PLANETS_LIST_TYPE", "PLANET_TYPE", 90, StarSystem.PLANET_TYPE);
-            Column maxNoLossCol = newSystemDataColumn("PLANETS_LIST_MAX_TRANS_NO_LOSS", "NO_LOSS", 60, palette.black, StarSystem.TRANS_NO_LOSS, RIGHT);
-            Column maxToFillCol = newSystemDataColumn("PLANETS_LIST_MAX_TRANS_TO_FILL", "TO_FILL", 60, palette.black, StarSystem.TRANS_TO_FILL, RIGHT);
-            Column distCol = newSystemDataColumn(Column.YEARS_OR_TURNS, "TRANSPORT_TURNS", 60, palette.black, StarSystem.TRANSPORT_TIME_TO_TARGET_SYSTEM, RIGHT);
-            transportsCol = newSystemSetTransportsColumn("PLANETS_LIST_TRANSPORTS", this, 999);
+			Column rowNumCol	= newRowNumColumn("PLANETS_LIST_NUM", s15, RIGHT);
+			Column flagCol		= newSystemFlagColumn("", "FLAG", s30, palette.black, StarSystem.FLAG, LEFT);
+			Column nameCol		= newSystemDataColumn("PLANETS_LIST_NAME","NAME", s140, palette.black, StarSystem.NAME, LEFT);
+			Column populationCol= newSystemDataColumn("PLANETS_LIST_POP", "POPULATION", s60, palette.black, StarSystem.POPULATION, RIGHT);
+			Column sizeCol		= newSystemDataColumn("PLANETS_LIST_SIZE", "SIZE", s60, palette.black, StarSystem.CURRENT_SIZE, RIGHT);
+			Column pTypeCol		= newPlanetTypeColumn("PLANETS_LIST_TYPE", "PLANET_TYPE", s90, StarSystem.PLANET_TYPE);
+			Column maxNoLossCol	= newSystemDataColumn("PLANETS_LIST_MAX_TRANS_NO_LOSS", "NO_LOSS", s60, palette.black, StarSystem.TRANS_NO_LOSS, RIGHT);
+			Column maxToFillCol	= newSystemDataColumn("PLANETS_LIST_MAX_TRANS_TO_FILL", "TO_FILL", s60, palette.black, StarSystem.TRANS_TO_FILL, RIGHT);
+			Column distCol		= newSystemDataColumn(Column.YEARS_OR_TURNS, "TRANSPORT_TURNS", s60, palette.black, StarSystem.TRANSPORT_TIME_TO_TARGET_SYSTEM, RIGHT);
+			transportsCol		= newSystemSetTransportsColumn("PLANETS_LIST_TRANSPORTS", this, 999);
 
             view = new DataView();
             view.addColumn(rowNumCol);

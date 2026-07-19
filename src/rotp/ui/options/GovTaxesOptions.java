@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
+import rotp.ui.util.ParamTitle;
 
 final class GovTaxesOptions extends AbstractOptionsSubUI {
 	static final String OPTION_ID = GOVERNOR_TAXES_UI_KEY;
@@ -15,28 +16,43 @@ final class GovTaxesOptions extends AbstractOptionsSubUI {
 	@Override public SafeListPanel optionsMap()	{
 		SafeListPanel map = new SafeListPanel(OPTION_ID);
 		map.add(new SafeListParam(Arrays.asList(
-				GOVERNOR_BASE_OPTIONS_TITLE,
+				new ParamTitle("GOVERNOR_FUNDRAISING"),
 				reserveForPlayer,
-				autoSpendOnArtefacts,
-				autoSpendOnNewColonies,
+				reservePlayerPerMille,
+
+				HEADER_SPACER_50,
+				reserveNextTurn,
+				reserveNextTurnPct,
+				planReserveNextTurn,
+
+				HEADER_SPACER_50,
 				reserveFromRich
 				)));
 		map.add(new SafeListParam(Arrays.asList(
-				GOVERNOR_ADVANCED_OPTIONS_TITLE,
+				new ParamTitle("GOVERNOR_SPENDING"),
+				carryUnfunded,
+
+				HEADER_SPACER_50,
+				autoSpendOnArtefacts,
+				autoSpendOnNewColonies,
+
+				HEADER_SPACER_50,
 				autoSpendOnNewColoniesFirst,
 				autospendMaxIndustryPct,
 
-				LINE_SPACER_25,
+				HEADER_SPACER_50,
 				subsidyTerraformUse,
 				subsidyNormalUse
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				RELEVANT_TITLE,
 				divertExcessToResearch,
+
+				HEADER_SPACER_50,
 				maxMissingPopulation,
 				maxMissingFactories,
 
-				LINE_SPACER_25,
+				HEADER_SPACER_50,
 				isManageableGovernor
 				)));
 		return map;
@@ -57,6 +73,9 @@ final class GovTaxesOptions extends AbstractOptionsSubUI {
 	@Override public SafeListParam majorList()	{
 		SafeListParam majorList = new SafeListParam(uiMajorKey(),
 				Arrays.asList(
+						planReserveNextTurn,
+
+						LINE_SPACER_25,
 						reserveForPlayer,
 						autoSpendOnArtefacts,
 						autoSpendOnNewColonies,

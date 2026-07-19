@@ -15,19 +15,20 @@
  */
 package rotp.model.ai.xilmi;
 
+import static rotp.model.game.IGameOptions.RANDOM_EVENTS_OFF;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import rotp.model.ai.interfaces.Treasurer;
 import rotp.model.colony.Colony;
 import rotp.model.colony.ColonySpendingCategory;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
-import static rotp.model.game.IGameOptions.RANDOM_EVENTS_OFF;
 import rotp.model.planet.Planet;
-import rotp.util.Base;
 
-public class AITreasurer implements Base, Treasurer {
+public final class AITreasurer implements Treasurer {
     private final Empire empire;
     private float maxReserveNeeded = 0;
     @Override
@@ -40,7 +41,7 @@ public class AITreasurer implements Base, Treasurer {
     @Override
     public String toString()   { return concat("Treasurer: ", empire.raceName()); }
     @Override
-    public void allocateReserve() {
+    public void allocateReserve(Empire empire) {
         List<StarSystem> allSystems = empire.allColonizedSystems();
         List<StarSystem> poorSystems = new ArrayList<>();
         List<StarSystem> richSystems = new ArrayList<>(); // modnar: make richSystem list
