@@ -113,6 +113,8 @@ public interface IGovOptions {
 
 	ParamBoolean carryUnfunded	= new ParamBoolean(GOV_UI, "CARRY_UNFUNDED", false);
 
+	ParamBoolean fundHelpRandomEvent	= new ParamBoolean(GOV_UI, "FUND_HELP_EVENTS", true);
+
 	ParamBoolean shipBuilding		= new ParamBoolean(GOV_UI, "SHIP_BUILDING", true);
 
 	private static void tagGrowthMode(String id)	{

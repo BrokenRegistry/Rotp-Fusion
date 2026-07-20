@@ -151,7 +151,7 @@ public final class AITreasurer implements Treasurer {
 	private void requestSubsidies(List<ColonyBudget> budgets, boolean fromPlayer)	{
 		GovernorOptions govOptions = session().getGovernorOptions();
 		// first, help systems that are fighting plague or supernova research events
-		boolean helpRandomEvent = false; // TODO BR: helpRandomEvent
+		boolean helpRandomEvent = govOptions.autospendFundHelpRandomEvent();
 		boolean newColoniesFirst = govOptions.isAutospendOnNewColoniesFirst();
 		boolean spendOnNewColonies = govOptions.isAutospendOnNewColonies();
 		boolean spendToBoostArtefact = govOptions.isAutospendOnArtefacts();

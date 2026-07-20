@@ -318,6 +318,6 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public float	autospendReserveNextTurnRatio()	{ return reserveNextTurnPct.getFloat(); }
 	public boolean	autospendPlanReserveNextTurn()	{ return planReserveNextTurn.get(); }
 	public boolean	autospendCarryUnfunded()		{ return carryUnfunded.get(); }
-
+	public boolean	autospendFundHelpRandomEvent()	{ return fundHelpRandomEvent.get(); }
 }
 

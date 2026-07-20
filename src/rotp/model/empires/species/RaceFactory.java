@@ -484,6 +484,8 @@ public enum RaceFactory implements Base {
 		if (key.equalsIgnoreCase("shipdesign"))		{ parseShipDesignMods(r, substrings(value,',')); return; }
 		if (key.equalsIgnoreCase("available"))		{ parseRaceAvailableFlags(r, value); return; }
 
+		if (key.equalsIgnoreCase("coinalpha"))		{ parseCoinAlpha(r, value); return; }
+
 	err("unknown key->", input);
 	}
 
@@ -539,6 +541,10 @@ public enum RaceFactory implements Base {
 			r.maintenanceFactor(0.5f);
 			return;
 		}
+	}
+	private void parseCoinAlpha(Race r, String input)	{
+		String coinAlpha = input.trim();
+		r.coinAlpha(parseInt(coinAlpha)*0.01f);
 	}
 	private void parseDialogTextMargins(Race r, List<String> vals) {
 		if (vals.size() < 2)

@@ -93,6 +93,7 @@ class Race extends SpeciesSkills {
 	private float diploScale, diploOpacity;
 	private int diploXOffset, diploYOffset;
 	private int flagW, flagH;
+	private float coinAlpha = 0.4f;
 
 	private transient BufferedImage transportClosedImg;
 	private transient Image transportImg;
@@ -106,6 +107,8 @@ class Race extends SpeciesSkills {
 	int colonistStartY()				{ return colonistY1; }
 	int colonistStopX()					{ return colonistX2; }
 	int colonistStopY()					{ return colonistY2; }
+	float coinAlpha()					{ return coinAlpha; }
+	void coinAlpha(float alpha)			{ coinAlpha = alpha; }
 	int dialogLeftMargin()				{ return dialogLeftMargin; }
 	void dialogLeftMargin(int i)		{ dialogLeftMargin = i; }
 	int dialogRightMargin()				{ return dialogRightMargin; }

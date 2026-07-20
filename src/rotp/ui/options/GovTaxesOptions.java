@@ -33,6 +33,7 @@ final class GovTaxesOptions extends AbstractOptionsSubUI {
 				carryUnfunded,
 
 				HEADER_SPACER_50,
+				fundHelpRandomEvent,
 				autoSpendOnArtefacts,
 				autoSpendOnNewColonies,
 

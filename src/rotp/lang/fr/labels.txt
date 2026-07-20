@@ -5893,6 +5893,9 @@ GOVERNOR_PLAN_RESERVE_TURN			| Le gouverneur collecte les fonds : %1
 GOVERNOR_CARRY_UNFUNDED_DESC		| La partie non financée des montants budgétés par le joueur sera reportée au tour suivant.
 GOVERNOR_CARRY_UNFUNDED				| Reporter le budget du joueur : %1
 
+GOVERNOR_FUND_HELP_EVENTS_DESC		| Le gouverneur aide les systèmes qui combattent les événements aléatoires, en finançant la recherche sur la peste ou les supernovas.
+GOVERNOR_FUND_HELP_EVENTS			| Financer les événements aléatoires : %1
+
 GOVERNOR_SHIP_BUILDING_DESC 		| Continuer la construction navale avec gouverneur activé. Détournez les ressources vers la construction navale et ne faites pas de recherches si la planète construit déjà des vaisseaux.
 GOVERNOR_SHIP_BUILDING				| Financer les chantiers navals : %1
 GOVERNOR_SHIP_BUILDING_LABEL		| Continuer la construction navale avec gouverneur activé.

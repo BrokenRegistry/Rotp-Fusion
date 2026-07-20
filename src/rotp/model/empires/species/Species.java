@@ -406,6 +406,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public float diploOpacity()		{ return anim.diploOpacity(); }
 	public float diploScale()		{ return anim.diploScale(); }
 	public float labFlagX()			{ return anim.labFlagX(); }
+	public 	float coinAlpha()		{ return anim.coinAlpha(); }
 
 	public List<Image> sabotageMissileFrames()		{ return anim.sabotageMissileFrames(); }
 	public List<Image> sabotageFactoryFrames()		{ return anim.sabotageFactoryFrames(); }

@@ -1309,7 +1309,7 @@ PLANETS_HELP_5C					| Gives<br> Voluntary contributions through unused expenses.
 PLANETS_HELP_5D					| Gets<br> Subsidies that can be granted after prioritization.
 PLANETS_HELP_5E					| Budget<br> Amount requested by the Governor or by the *Player.
 PLANETS_HELP_5F					| Optimal<br> Amount required to maximize the functioning of the colony.
-PLANETS_HELP_5G					| Instructions to the governor for allocating subsidies:<br>Metal color: Follow global instructions.<br>Gold color: Allocate subsidies.<br>Red arc (right click): Can draw from the player's reserve.<br>Uncircled: active until the player deactivates it.<br>Magenta circle: Active while an emergency is activated.<br>Uncircled: active until the player deactivates it.<br>Green circle: Active as long as the colony has not reached the development limit.<br>Blue circle: Active as long as a blue priority is present. (With the exception of research and shipsyard, as they do not deactivate automatically)
+PLANETS_HELP_5G					| Instructions to the governor for allocating subsidies:<br>Metal color: Follow global instructions.<br>Gold color: Allocate subsidies.<br>Red arc (right click): Can draw from the player's reserve.<br>Uncircled: active until the player deactivates it.<br>Magenta circle: Active while an emergency is activated.<br>Green circle: Active as long as the colony has not reached the development limit.<br>Blue circle: Active as long as a blue priority is present. (With the exception of research and shipsyard, as they do not deactivate automatically)
 
 PLANETS_HELP_T_BUDGET			| Budget the selected amount.<br>This value can be revised if desired.
 PLANETS_HELP_T_TRANSFERT		| Transfer the selected amount to the colony reserve.<br>This transfer is final.
@@ -5892,6 +5892,9 @@ GOVERNOR_PLAN_RESERVE_TURN			| The governor raise the funds: %1
 
 GOVERNOR_CARRY_UNFUNDED_DESC		| The unfunded part of the amounts budgeted by the player will be carried over to the next round.
 GOVERNOR_CARRY_UNFUNDED				| Carry player's unfunded amounts: %1
+
+GOVERNOR_FUND_HELP_EVENTS_DESC		| The governor helps systems that combat random events, by funding research into plague or supernovas.
+GOVERNOR_FUND_HELP_EVENTS			| Funds help with random events: %1
 
 GOVERNOR_SHIP_BUILDING_DESC          | Continue shipbuilding with Governor enabled. Divert resources into shipbuilding and not research if planet is already building ships.
 GOVERNOR_SHIP_BUILDING               | Continue Shipbuilding: %1

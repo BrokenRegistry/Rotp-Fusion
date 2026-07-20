@@ -11,6 +11,9 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+- Governor's Funding: New option to prioritize research funding into plague and supernova random events.
+- Coin icon: added a separate level of transparency for each species.
+
 26-07-19 (BR)
 - In parallel with the permanent fund transfer, it is now possible to establish a budget and modify it. New tasks may be assigned to the governor to collect funds and distribute them.
 - New Governor option for ho to allocate subsidies: (Gold coin on the side of the Governor button)

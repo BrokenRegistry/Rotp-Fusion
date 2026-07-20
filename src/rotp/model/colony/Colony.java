@@ -398,16 +398,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		budget = null;
 	}
 	public void adjustReserveIncome(float bc)	{ reserveIncomeBC += bc; }	// (+) Make next turn decision / (-) next Turn.
-//	public float budgetTaxedBC()				{ return budget().budgetTaxedBC(); }	// player only
-//	public void budgetTaxedBC(float bc)			{ budget().budgetTaxedBC(bc); }			// player only
-//	public float budgetSubsidiesBC()			{ return budget().budgetSubsidiesBC(); }	// player only
-//	public void budgetSubsidiesBC(float bc)		{ budget().budgetSubsidiesBC(bc); }			// player only
-//	public Float budgetPlayerBC()				{ return budget().budgetPlayerBC(); }	// player only
-//	public void budgetPlayerBC(Float bc)		{ budget().budgetPlayerBC(bc); }		// player only
-////	public Float budgetGovernorBC()				{ return budget().budgetGovernorBC(); }	// player only
-////	public void budgetGovernorBC(float bc)		{ budget().governorBudgetBC(bc); }		// player only
-//	public float reserveNeededBC()				{ return budget().reserveNeededBC(); }	// player only
-//	public void reserveNeededBC(float bc)		{ budget().reserveNeededBC(bc); }		// player only
     public boolean quarantined()               { return quarantined; }
     public void becomeQuarantined()            { quarantined = true; }
     public void clearQuarantine()              { quarantined = false; }
@@ -3040,11 +3030,14 @@ public final class Colony implements Base, IMappedObject, Serializable {
 				int coinBR = coinTL + coinW;
 
 				Image img = empire().flagNorm();
+				float circleAlpha = 0.4f;
+				float flagAlpha = empire().coinAlpha();
 				int imgH = img.getHeight(null);
 				int imgW = img.getWidth(null);
 				Composite prevComp = g.getComposite();
-				g.setComposite(AlphaComposite.getInstance(AlphaComposite.XOR, 0.4f));
+				g.setComposite(AlphaComposite.getInstance(AlphaComposite.XOR, flagAlpha));
 				g.drawImage(img, coinTL, coinTL, coinBR, coinBR, 0, 0, imgW, imgH, null);
+				g.setComposite(AlphaComposite.getInstance(AlphaComposite.XOR, circleAlpha));
 				margin = s4;
 				coinTL = margin;
 				coinW = w - margin - margin;
