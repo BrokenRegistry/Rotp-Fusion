@@ -160,7 +160,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     private transient int cleanupAllocation = 0;
     private transient boolean recalcSpendingForNewTaxRate;
     public  transient boolean reallocationRequired = false;
-    public  transient float sortingValueFloat;
+    private  transient float sortingValueFloat;
  
 	private Colony colony()	{ return this; }
 	public class ColonyBudget implements Serializable {
@@ -177,10 +177,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		
 		public int resourcesSort() { return planet().resourcesSort(); }
 		
-		public void turnReset(boolean shieldWithoutBases)	{
-			playerBudgetBC	= null;
-			budgetReset(shieldWithoutBases);
-		}
 		public void budgetReset(boolean shieldWithoutBases)	{
 			finalBudgetBC	= null;
 			budgetSubsidiesBC	= 0;
@@ -290,21 +286,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			return tickAdjust * nextProduction / MAX_TICKS /2;
 		}
 
-		public int requestedSubsidiesBC(int playerBC, int governorBC)	{
-			governorBudgetBC = governorBC >= reserveNeededBC ? reserveNeededBC : governorBC;
-			int subs = playerBC >= reserveNeededBC ? reserveNeededBC : ceil(playerBC) ;
-			if (!isPlayerBudget())
-				budgetSubsidiesBC = subs;
-			return subs;
-		}
-		public int requestedSubsidiesBC()		{
-			if (isPlayerBudget())
-				return ceil(playerBudgetBC);
-			else if (governorBudgetBC != null)
-				return ceil(governorBudgetBC);
-			else
-				return -1; // to be sorted away
-		}
 		public String finalBudgetBCStr()		{
 			if (isPlayerBudget())
 				return "*" + ceil(playerBudgetBC);
@@ -315,21 +296,16 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		}
 		public String budgetSubsidiesStr()		{ return budgetSubsidiesBC == 0? "" : str((int)budgetSubsidiesBC); }
 		public Integer budgetGovernorBC()		{ return governorBudgetBC; }
-		public int budgetNoNullGovernorBC()		{ return governorBudgetBC == null ? -1 : governorBudgetBC; }
 		public void governorBudgetBC(Integer bc){ governorBudgetBC = bc; }
-		public Integer budgetFinalBC()			{ return finalBudgetBC; }
 		public int budgetNoNullFinalBC()		{ return finalBudgetBC == null ? -1 : finalBudgetBC; }
 		public void finalBudgetBC(Integer bc)	{ finalBudgetBC = bc; }
-		public Integer finalBudgetBC()			{ return finalBudgetBC; }
 		public float budgetTaxedBC()			{ return budgetTaxedBC; }
 //		public void budgetTaxedBC(float bc)		{ budgetTaxedBC = bc; }
 		public float budgetSubsidiesBC()		{ return budgetSubsidiesBC; }
 		public void budgetSubsidiesBC(float bc)	{ budgetSubsidiesBC = bc; }
 		public Integer budgetPlayerBC()			{ return playerBudgetBC; }
-		public int budgetNoNullPlayerBC()		{ return playerBudgetBC == null ? -1 : playerBudgetBC; }
 		public void budgetPlayerBC(Integer bc)	{ playerBudgetBC = bc; }
 		public int reserveNeededBC()			{ return reserveNeededBC; }
-		public void reserveNeededBC(int bc)		{ reserveNeededBC = bc; }
 		public void budgetizeRatio(float ratio)	{ budgetPlayerBC(ceil(reserveNeededBC*ratio)); }
 		public void budgetizeNeeded()			{ budgetPlayerBC(reserveNeededBC); }
 	}
@@ -357,13 +333,12 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public void    govUrgePop(boolean b)		{ govUrgePop = b; }
     public boolean govUrgeFactories()			{ return govUrgeFactories; }
     public void    govUrgeFactories(boolean b)	{ govUrgeFactories = b; }
-    public boolean govUrgeShips()				{ return govUrgeShips; }
     private void   govUrgeShips(boolean b)		{ govUrgeShips = b; }
     public boolean govUrgeBuildUp()				{ return govUrgeBuildUp; }
     public void    govUrgeBuildUp(boolean b)	{ govUrgeBuildUp = b; }
     private boolean govUrgeResearch()			{ return govUrgeResearch; }
     private void    govUrgeResearch(boolean b)	{ govUrgeResearch = b; }
-	public GovAutoFundTag govAutoFundTag()		{
+    private GovAutoFundTag govAutoFundTag()		{
 		if (govAutoFundTag == null)
 			govAutoFundTag = new GovAutoFundTag();
 		return govAutoFundTag;
@@ -1374,7 +1349,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             return production() * empire.tradeIncomePerBC();
     }
     public float totalIncome()	{ return max(0.1f, totalProductionIncome() + maxReserveIncome()); }
-    public float colonyTaxPct() { // not in %
+    private float colonyTaxPct() { // not in %
         if (embargoed())
             return 0f;
         // we are taxed at the empire rate if the empire is taxing all colonies, or we are finished developing
@@ -1431,7 +1406,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     }
     private int incomingTransports()	{ return galaxy().friendlyPopApproachingSystem(starSystem()); }
     public float populationPct()	{ return (population() / planet.currentSize()); }
-    public float expectedPopPct()	{ return (expectedPopulationLongTerm() / planet.currentSize()); }
+    private float expectedPopPct()	{ return (expectedPopulationLongTerm() / planet.currentSize()); }
 	public int calcPopNeeded(float desiredPct, boolean excludeUnderSiege)	{ // TODO BR: Add option for local exclusion
 		if (excludeUnderSiege && underSiege())
 			return 0;
@@ -2945,7 +2920,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		g.dispose();
 		return buffer;
 	}
-	public final class GovAutoFundTag implements ScaledInteger, Serializable	{
+	private final class GovAutoFundTag implements ScaledInteger, Serializable	{
 		private static final long serialVersionUID = 1L;
 		private static final Color COIN_GOLD_COLOR = new Color(255, 215, 0);
 		private static final int UNFUNDED	= 0;
@@ -2964,14 +2939,14 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			str += " Mandate: " + fundingMandate;
 			return str;
 		}
-		public void toggle(boolean reserve)	{
+		private void toggle(boolean reserve)	{
 			if (reserve)
 				toggleReserve();
 			else
 				fundingMandate = toggleMandate();
 			empire.budget().makeObsolete();
 		}
-		public int toggleMandate()	{
+		private int toggleMandate()	{
 			int mandate = UNFUNDED;
 			switch (fundingMandate) {
 				case UNFUNDED:	if (isGrowing())	return GROWING;
@@ -2993,10 +2968,10 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		}
 		private boolean hasShipWork()	{ return shipyard().buildLimit() > 0; }
 
-		public int fundingMandate()		{ return fundingMandate; }
-		public void toggleReserve()		{ useReserve = !useReserve; empire.budget().makeObsolete(); }
-		public boolean useReserve()		{ return useReserve && isFunded(); }
-		public boolean updateIsFunded()	{
+		private int fundingMandate()	{ return fundingMandate; }
+		private void toggleReserve()	{ useReserve = !useReserve; empire.budget().makeObsolete(); }
+		private boolean useReserve()	{ return useReserve && isFunded(); }
+		private boolean updateIsFunded(){
 			switch (fundingMandate) {
 				case UNFUNDED:	return false;
 				case UNLIMITED:	return true;
@@ -3009,11 +2984,10 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			return false;
 		}
 		public boolean isFunded()		{ return fundingMandate != UNFUNDED; }
-		public boolean whileGrowing()	{ return fundingMandate == GROWING; }
-		public boolean whileOrders()	{ return fundingMandate == ORDERS; }
-		public boolean whileUrgency()	{ return fundingMandate == URGENCY; }
-		public boolean whileShipWork()	{ return fundingMandate == SHIP_WORK; }
-		public boolean isUnlimited()	{ return fundingMandate == UNLIMITED; }
+		private boolean whileGrowing()	{ return fundingMandate == GROWING; }
+		private boolean whileOrders()	{ return fundingMandate == ORDERS; }
+		private boolean whileUrgency()	{ return fundingMandate == URGENCY; }
+		private boolean whileShipWork()	{ return fundingMandate == SHIP_WORK; }
 		public BufferedImage getCoinImage(int width) {
 			int w = width + width;
 
@@ -3088,12 +3062,12 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		}
 	}
 	public static final Comparator<ColonyBudget> INCREASING_BUDGET = (ColonyBudget c1, ColonyBudget c2) -> {
-        return Float.compare(c1.reserveNeededBC(), c2.reserveNeededBC());
-    };
+		return Float.compare(c1.reserveNeededBC(), c2.reserveNeededBC());
+	};
 	public static final Comparator<ColonyBudget> DECREASING_BUDGET = (ColonyBudget c1, ColonyBudget c2) -> {
-        return Float.compare(c2.reserveNeededBC(), c1.reserveNeededBC());
-    };
-	
+		return Float.compare(c2.reserveNeededBC(), c1.reserveNeededBC());
+	};
+
 	public static final class ColonyList extends ArrayList<Colony> {
 		private static final long serialVersionUID = 1L;
 		private void sortFloatIncreasing()	{ sort((Colony c1, Colony c2) -> (int)Math.signum(c1.sortingValueFloat - c2.sortingValueFloat)); }
@@ -3109,11 +3083,5 @@ public final class Colony implements Base, IMappedObject, Serializable {
 				c.sortingValueFloat = c.production();
 			sortFloatDecreasing();
 		}
-		public void sortbyBudget(Boolean decreasing)	{	// decreasing = Reverse
-			for (Colony c : this)
-				c.sortingValueFloat = c.production();
-			
-		}
-
 	}
 }

@@ -356,6 +356,7 @@
 
 ### User Interfaces:
 
+- Colony spending sliders: Press Alt to view expenses in BC.
 - More informative empire reserves display:
   - The amount now includes excess spending, when redirected to the reserve.
   - The sprite to the left of the galaxy also displays the amount that will be added to the reserve.

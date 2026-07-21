@@ -500,12 +500,12 @@ public class EmpireColonySpendingPane extends BasePanel {
             	buttonY = getHeight() - buttonH - s1;
             	drawGovernorButton(g, hoverBox == governorBox, colony.isGovernor());
             	drawOptionsButton(g, hoverBox == optionsBox);
-				//drawCoinButton(g, hoverBox == coinBox, colony.isGovernor(), colony.govFundColony());
                 return;
             }
             String text = text(Colony.categoryName(category));
 
-            // label
+			// --------------------------------------------------------
+			// Left side: label
             Color textC;
             if (hoverBox == labelBox)
                 textC = SystemPanel.yellowText;
@@ -535,7 +535,8 @@ public class EmpireColonySpendingPane extends BasePanel {
             int boxBottomY = boxBottomY();
             int boxH = boxBottomY - boxTopY;
 
-            // slider
+			// --------------------------------------------------------
+			// Middle: slider
             float pct = colony.pct(category);
             leftButtonX[0] = leftMargin(); leftButtonX[1] = leftMargin()+buttonWidth(); leftButtonX[2] = leftMargin()+buttonWidth();
             leftButtonY[0] = buttonMidY(); leftButtonY[1] = buttonTopY(); leftButtonY[2] = buttonBottomY();
@@ -647,11 +648,16 @@ public class EmpireColonySpendingPane extends BasePanel {
                 g.setStroke(prev);
             }
 
-            // result
+			// --------------------------------------------------------
+			//  Right: result
             textC = SystemPanel.blackText;
             if (hoverBox == resultBox)
                 textC = SystemPanel.yellowText;
-            String resultText = text(colony.category(category).upcomingResult());
+			String resultText;
+			if (isAltDown())
+				resultText = text("PLANETS_AMT_BC", (int)colony.category(category).totalBC());
+			else
+				resultText = text(colony.category(category).upcomingResult());
 
             g.setColor(textC);
             scaledFont(g, resultText, rightMargin()-s10, 18, 14);

@@ -203,6 +203,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		lastAltIsDown = !lastAltIsDown;
 		if (currentPane != null)
 			currentPane.repaint();
+		else
+			repaint();
 	}
     private void showSinglePlanetPanel() { planetCardLayout.show(rightPlanetPanel, SINGLE_PLANET_PANEL); }
     private void showMultiPlanetPanel() { planetCardLayout.show(rightPlanetPanel, MULTI_PLANET_PANEL); }
@@ -2101,13 +2103,10 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 				repaint();
 			}
 		}
-		@Override public void mousePressed(MouseEvent arg0)	{
-			enterCurrentPane(this);
-			repaintOnAltChange();
-		}
+		@Override public void mousePressed(MouseEvent arg0)	{ enterCurrentPane(this); }
 		@Override public void mouseReleased(MouseEvent e)	{
 			enterCurrentPane(this);
-			repaintOnAltChange();
+			//repaintOnAltChange();
             if (e.getButton() > 3)
                 return;
             int x = e.getX();
@@ -2168,7 +2167,6 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		@Override public void mouseDragged(MouseEvent arg0)	{ enterCurrentPane(this); }
 		@Override public void mouseMoved(MouseEvent e)		{
 			enterCurrentPane(this);
-			repaintOnAltChange();
             int x = e.getX();
             int y = e.getY();
             Shape prevHover = hoverBox;
@@ -2195,7 +2193,6 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         }
 		@Override public void mouseWheelMoved(MouseWheelEvent e) {
 			enterCurrentPane(this);
-			repaintOnAltChange();
             int x = e.getX();
             int y = e.getY();
 

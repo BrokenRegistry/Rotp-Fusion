@@ -98,7 +98,11 @@ final class RandomEventsOptions extends AbstractOptionsSubUI {
 				cometReturnTurn,
 				relicReturnTurn,
 				sizeBoostReturnTurn,
-				gauntletReturnTurn
+				gauntletReturnTurn,
+
+				HEADER_SPACER_50,
+				RELEVANT_TITLE,
+				fundHelpRandomEvent
 				)));
 		return map;
 	}

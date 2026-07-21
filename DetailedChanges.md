@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-07-21 (BR)
+- Colony spending sliders: Press Alt to view expenses in BC.
+
+26-07-20 (BR)
 - Governor's Funding: New option to prioritize research funding into plague and supernova random events.
 - Coin icon: added a separate level of transparency for each species.
 
