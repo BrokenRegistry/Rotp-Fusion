@@ -256,6 +256,7 @@ public final class Empire extends Species implements NamedObject {
 
 			if (obsoleteAgain) {
 				obsoleteAgain = false;
+				updateInProgress = false;
 				computeIfNeeded(true);
 			}
 			else {
@@ -354,6 +355,7 @@ public final class Empire extends Species implements NamedObject {
 				col.budget().transfertBudget(carryUnfunded);
 			}
 		}
+		private void validateOnLoad()	{ updateInProgress = false; }
 	}
 	public EmpireBudget budget()	{	// player only
 		if (budget == null)
@@ -1163,6 +1165,8 @@ public final class Empire extends Species implements NamedObject {
         for(EmpireView view : empireViews)
             if(view != null)
                 view.validateOnLoad();
+		if (isPlayer())
+			budget().validateOnLoad();
     }
 	private void updatePlayerMapCenter()	{
 		int size = colonizedSystems.size();

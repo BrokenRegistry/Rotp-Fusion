@@ -74,7 +74,7 @@ public interface IGovOptions {
 	ParamBoolean autoSpendOnNewColoniesFirst	= new ParamBoolean(GOV_UI, "AUTOSPEND_NEW_FIRST", false)
 			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
 	ParamBoolean autoSpendOnArtefacts			= new ParamBoolean(GOV_UI, "AUTOSPEND_ARTEFACTS", false)
-			.isValueInit(false)
+			.isUpdateDef(true)
 			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
 	ParamInteger autospendMaxIndustryPct		= new ParamInteger(GOV_UI, "AUTOSPEND_MAX_IND", 100)
 			.setLimits(10, 100)
@@ -93,11 +93,13 @@ public interface IGovOptions {
 	private static void tagReserveNextTurn(String id)	{
 		reserveNextTurn.updated(true);
 		reserveNextTurnPct.updated(true);
+		reserveMax.updated(true);
+		reserveMaxPct.updated(true);
 		makesBudgetObsolete(id);
 	}
 	private static boolean notPlanReserveNextTurn()	{ return !planReserveNextTurn.get(); }
 	ParamBoolean planReserveNextTurn	= new ParamBoolean(GOV_UI, "PLAN_RESERVE_TURN", false)
-			.isValueInit(false)
+			.isUpdateDef(true)
 			.setUpdateParameters(IGovOptions::tagReserveNextTurn, "");
 	ParamInteger reserveNextTurn		= new ParamInteger(GOV_UI, "RESERVE_NEXT_TURN", 0)
 			.setLimits(0, 100000)
@@ -105,6 +107,18 @@ public interface IGovOptions {
 			.setIsGhostMethod(IGovOptions::notPlanReserveNextTurn)
 			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
 	ParamInteger reserveNextTurnPct	= new ParamInteger(GOV_UI, "RESERVE_NEXT_TURN_PCT", 10)
+			.setLimits(0, 50)
+			.setIncrements(1, 5, 20)
+			.pctValue(true)
+			.setIsGhostMethod(IGovOptions::notPlanReserveNextTurn)
+			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+
+	ParamInteger reserveMax		= new ParamInteger(GOV_UI, "RESERVE_MAX", 100000)
+			.setLimits(0, 10000000)
+			.setIncrements(100, 500, 2000)
+			.setIsGhostMethod(IGovOptions::notPlanReserveNextTurn)
+			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+	ParamInteger reserveMaxPct	= new ParamInteger(GOV_UI, "RESERVE_MAX_PCT", 100)
 			.setLimits(0, 50)
 			.setIncrements(1, 5, 20)
 			.pctValue(true)

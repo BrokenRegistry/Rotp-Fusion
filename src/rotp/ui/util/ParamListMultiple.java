@@ -58,6 +58,7 @@ public class ParamListMultiple extends ParamList {
 	@Override public ParamListMultiple refreshLevel(int level)	{ super.refreshLevel(level); return this; }
 	@Override public ParamListMultiple forcedRefresh(boolean b)	{ super.forcedRefresh(b); return this; }
 	@Override public ParamListMultiple isValueInit(boolean is)	{ super.isValueInit(is)	; return this; }
+	@Override public ParamListMultiple isUpdateDef(boolean is)	{ super.isUpdateDef(is)	; return this; }
 	@Override public ParamListMultiple isDuplicate(boolean is)	{ super.isDuplicate(is)	; return this; }
 	@Override public ParamListMultiple isCfgFile(boolean is)	{ super.isCfgFile(is)	; return this; }
 	@Override public void reInit(List<String> list)	{

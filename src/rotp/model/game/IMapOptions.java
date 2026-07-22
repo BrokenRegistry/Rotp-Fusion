@@ -85,7 +85,7 @@ public interface IMapOptions extends IBaseOptsTools {
 	final class DivertExcessToResearch extends ParamBoolean {
 		DivertExcessToResearch() {
 			super(GAME_UI, "DIVERT_EXCESS_TO_RESEARCH", true);
-			isValueInit(false);
+			isUpdateDef(true);
 		}
 		@Override public Boolean set(Boolean b)	{
 			Boolean val = super.set(b);

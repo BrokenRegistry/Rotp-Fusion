@@ -100,6 +100,7 @@ public class ParamList extends AbstractParam<String> {
 	//
 	@Override public ParamList forcedRefresh(boolean b)	{ super.forcedRefresh(b); return this; }
 	@Override public ParamList isValueInit(boolean is)	{ super.isValueInit(is)	; return this; }
+	@Override public ParamList isUpdateDef(boolean is)	{ super.isUpdateDef(is)	; return this; }
 	@Override public ParamList isDuplicate(boolean is)	{ super.isDuplicate(is)	; return this; }
 	@Override public ParamList isCfgFile(boolean is)	{ super.isCfgFile(is)	; return this; }
 	@Override public ParamList setDefaultValue(String key, String value) {

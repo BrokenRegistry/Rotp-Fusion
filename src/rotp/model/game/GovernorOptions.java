@@ -314,6 +314,8 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public float	autospendMaxIndustryPct()		{ return autospendMaxIndustryPct.getFloat(); }
 	public boolean	excludeTransportToBesieged()	{ return transportExcludeBesieged.get(); }
 	public float	autospendReserveRatio()			{ return reservePlayerPerMille.getFloat(); }
+	public float	autospendReserveMax()			{ return reserveMax.get(); }
+	public float	autospendReserveMaxRatio()		{ return reserveMaxPct.getFloat(); }
 	public float	autospendReserveNextTurn()		{ return reserveNextTurn.get(); }
 	public float	autospendReserveNextTurnRatio()	{ return reserveNextTurnPct.getFloat(); }
 	public boolean	autospendPlanReserveNextTurn()	{ return planReserveNextTurn.get(); }

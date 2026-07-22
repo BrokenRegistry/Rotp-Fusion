@@ -44,6 +44,15 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-07-22 (BR)
+- Fixed an issue where the governor spending analysis could be started concurently by a screen refresh and a mouse click... Resulting in colony display glitch.
+- Added options to set the limit of fund accumulation. (Absolute and relative)
+  - When funds collected exceed funds spent, at what point does the governor stop collecting?.
+  -The maximum of the absolute and relative value will be collected.
+- Fixed the description of fund limits: it is always the maximum of the absolute and relative value.
+  - Then you may choose your favorite method, and set the other to 0...
+- Shipyard: If there is a building limit and the amount of BC is already enough to build them (due to new technology), you no longer need to spend a tick to get your ships.
+
 26-07-21 (BR)
 - Colony spending sliders: Press Alt to view expenses in BC.
 

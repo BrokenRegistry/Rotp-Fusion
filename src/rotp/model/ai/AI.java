@@ -103,7 +103,7 @@ public final class AI implements Base {
 	            spyMaster =      new rotp.model.ai.governor.AISpyMaster(empire);
 	            treasurer =      new rotp.model.ai.governor.AITreasurer(empire);
 	            break;
-            case BASE:
+            case BASE:		// Base
                 general =        new rotp.model.ai.base.AIGeneral(empire);
                 captain =        new rotp.model.ai.base.AIShipCaptain(empire);
                 governor =       new rotp.model.ai.base.AIGovernor(empire);
@@ -114,7 +114,7 @@ public final class AI implements Base {
                 spyMaster =      new rotp.model.ai.base.AISpyMaster(empire);
                 treasurer =      new rotp.model.ai.base.AITreasurer(empire);
                 break;
-            case MODNAR:
+            case MODNAR:	// Modnar
                 general =        new rotp.model.ai.modnar.AIGeneral(empire);
                 captain =        new rotp.model.ai.modnar.AIShipCaptain(empire);
                 governor =       new rotp.model.ai.modnar.AIGovernor(empire);
@@ -125,7 +125,7 @@ public final class AI implements Base {
                 spyMaster =      new rotp.model.ai.modnar.AISpyMaster(empire);
                 treasurer =      new rotp.model.ai.modnar.AITreasurer(empire);
                 break;
-            case ROOKIE:
+            case ROOKIE:	// Rookie
                 general =        new rotp.model.ai.rookie.AIGeneral(empire);
                 captain =        new rotp.model.ai.rookie.AIShipCaptain(empire);
                 governor =       new rotp.model.ai.rookie.AIGovernor(empire);
@@ -136,7 +136,7 @@ public final class AI implements Base {
                 spyMaster =      new rotp.model.ai.rookie.AISpyMaster(empire);
                 treasurer =      new rotp.model.ai.rookie.AITreasurer(empire);
                 break;
-            case XILMI:
+            case XILMI:		// Roleplay
                 general =        new rotp.model.ai.xilmi.AIGeneral(empire);
                 captain =        new rotp.model.ai.xilmi.AIShipCaptain(empire);
                 governor =       new rotp.model.ai.xilmi.AIGovernor(empire);
@@ -147,7 +147,7 @@ public final class AI implements Base {
                 spyMaster =      new rotp.model.ai.xilmi.AISpyMaster(empire);
                 treasurer =      new rotp.model.ai.xilmi.AITreasurer(empire);
                 break;
-            case HYBRID:
+            case HYBRID:	// Hybrid
                 general =        new rotp.model.ai.xilmi.AIGeneral(empire);
                 captain =        new rotp.model.ai.xilmi.AIShipCaptain(empire);
                 governor =       new rotp.model.ai.xilmi.AIGovernor(empire);
@@ -158,7 +158,7 @@ public final class AI implements Base {
                 spyMaster =      new rotp.model.ai.rookie.AISpyMaster(empire);
                 treasurer =      new rotp.model.ai.xilmi.AITreasurer(empire);
                 break;
-            case FUN:
+            case FUN:		// Fun
                 general =        new rotp.model.ai.xilmi.AIGeneral(empire);
                 captain =        new rotp.model.ai.xilmi.AIShipCaptain(empire);
                 governor =       new rotp.model.ai.xilmi.AIGovernor(empire);
@@ -169,7 +169,7 @@ public final class AI implements Base {
                 spyMaster =      new rotp.model.ai.xilmi.AISpyMaster(empire);
                 treasurer =      new rotp.model.ai.xilmi.AITreasurer(empire);
                 break;
-            case PERSONALITY:
+            case PERSONALITY:	// Character
                 general =        new rotp.model.ai.xilmi.AIGeneral(empire);
                 captain =        new rotp.model.ai.xilmi.AIShipCaptain(empire);
                 governor =       new rotp.model.ai.xilmi.AIGovernor(empire);
@@ -180,7 +180,7 @@ public final class AI implements Base {
                 spyMaster =      new rotp.model.ai.xilmi.AISpyMaster(empire);
                 treasurer =      new rotp.model.ai.xilmi.AITreasurer(empire);
                 break;
-            case FUSION:
+            case FUSION:	// Fusion
             default:
                 general =        new rotp.model.ai.xilmi.AIGeneral(empire);
                 captain =        new rotp.model.ai.xilmi.AIShipCaptain(empire);

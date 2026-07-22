@@ -228,6 +228,9 @@
 
 ### Governor:
 
+- Added options to set the limit of fund accumulation. (Absolute and relative)
+  - When funds collected exceed funds spent, at what point does the governor stop collecting?.
+  -The maximum of the absolute and relative value will be collected.
 - Governor's Funding: New option to prioritize research funding into plague and supernova random events.
 - Coin icon: added a separate level of transparency for each species.
 - In parallel with the permanent fund transfer, it is now possible to establish a budget and modify it. New tasks may be assigned to the governor to collect funds and distribute them.
@@ -469,6 +472,10 @@
 
 ### Fixes:
 
+- Fixed an issue where the governor spending analysis could be started concurently by a screen refresh and a mouse click... Resulting in colony display glitch.
+- Fixed the description of fund limits: it is always the maximum of the absolute and relative value.
+  - Then you may choose your favorite method, and set the other to 0...
+- Shipyard: If there is a building limit and the amount of BC is already enough to build them (due to new technology), you no longer need to spend a tick to get your ships.
 - New fix for unresponsive Linux.
   - Custom species folders won't be scanned deeper than 8 levels. This is to avoid infinite loops due to symbolic links.
   - If custom species folders are set to jar or exe folder, subfolders will not be scanned. This is in case the jar file has not been placed in its own folder.

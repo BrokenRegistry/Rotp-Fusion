@@ -23,6 +23,12 @@ final class GovTaxesOptions extends AbstractOptionsSubUI {
 				HEADER_SPACER_50,
 				reserveNextTurn,
 				reserveNextTurnPct,
+
+				HEADER_SPACER_50,
+				reserveMax,
+				reserveMaxPct,
+
+				HEADER_SPACER_50,
 				planReserveNextTurn,
 
 				HEADER_SPACER_50,

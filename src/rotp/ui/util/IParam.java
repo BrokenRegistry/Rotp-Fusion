@@ -57,6 +57,7 @@ public interface IParam<T> extends InterfaceOptions{
 	// For ICRSetting compatibility
 	default void selectedValue(int item, T val)	{ selectedValue(val); }
 	void selectedValue(T val);
+	default boolean validateInitialValue()		{ return false; } // Return value is changed
 
 	// user input
 	default boolean next()						{ return false; } // Return forceUpdate

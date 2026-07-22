@@ -628,27 +628,6 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         drawTechCategory(g, emp, tree.propulsion(),  4, x2, y2, w1, h1);
         drawTechCategory(g, emp, tree.weapon(),      5, x3, y2, w1, h1);   
     }
-	private void drawSingleTechCategory(Graphics2D g, int num, Empire emp, boolean isPlayer) {
-		int w = getWidth()-s40;
-		int h = getHeight();
-		int x = s20+s10;
-		int y = scaled(310);
-		int w1 = (w-s20)/3;
-		int h1 = (h - y - s10)/2;
-		int x1 = x + w1 * (num % 3);
-		int y1 = y + h1 * (num / 3);
-		Empire pl = player();
-		if (isPlayer) {
-			TechTree tree = pl.tech();
-			drawUnknownTechCategory(g, emp, tree.category(num), num, x1, y1, w1, h1);
-		}
-		else {
-			TechTree tree = pl.viewForEmpire(emp).spies().tech();
-			drawTechCategory(g, emp, tree.category(num), num, x1, y1, w1, h1);
-		}
-		if (UserPreferences.texturesInterface()) 
-			drawTexture(g, x1+s10, y1+s25+s10, w1-s20, h1-s25-s20);
-	}
     private void drawTechCategory(Graphics2D g, Empire emp, TechCategory cat, int num, int x, int y, int w, int h) {
         g.setColor(SystemPanel.whiteText);
         g.setFont(narrowFont(24));

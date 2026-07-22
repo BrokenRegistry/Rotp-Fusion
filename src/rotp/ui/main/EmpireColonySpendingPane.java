@@ -654,8 +654,8 @@ public class EmpireColonySpendingPane extends BasePanel {
             if (hoverBox == resultBox)
                 textC = SystemPanel.yellowText;
 			String resultText;
-			if (isAltDown())
-				resultText = text("PLANETS_AMT_BC", (int)colony.category(category).totalBC());
+			if (isAltDown() && isCtrlDown())
+				resultText = text("PLANETS_AMT_BC", fmt(colony.category(category).totalBC(), 1));
 			else
 				resultText = text(colony.category(category).upcomingResult());
 

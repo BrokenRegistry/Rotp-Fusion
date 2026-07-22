@@ -5875,15 +5875,23 @@ GOVERNOR_RESERVE_DESC				| Fonds d’urgence à garder en réserve à l’usage 
 GOVERNOR_RESERVE					| Fonds d’urgence du joueur : %1
 GOVERNOR_RESERVE_LABEL				| Fonds d’urgence
 
-GOVERNOR_RESERVE_PER_MILLE_HELP		| Fonds d’urgence, en pourcentage de la production totale, à garder en réserve à l’usage exclusif tu joueur.<br>(Non dépensée par les gouverneurs)<br>Le minimum de la valeur absolue et relative sera réservé.
-GOVERNOR_RESERVE_PER_MILLE_DESC		| Fonds d’urgence, en pourcentage de la production totale, à garder en réserve à l’usage exclusif tu joueur.<br>(Non dépensée par les gouverneurs)
+GOVERNOR_RESERVE_PER_MILLE_HELP		| Fonds d’urgence, en pour mille de la production totale, à garder en réserve à l’usage exclusif tu joueur.<br>(Non dépensée par les gouverneurs)<br>Le maximum de la valeur absolue et relative sera réservé.
+GOVERNOR_RESERVE_PER_MILLE_DESC		| Fonds d’urgence, en pour mille de la production totale, à garder en réserve à l’usage exclusif tu joueur.<br>(Non dépensée par les gouverneurs)
 GOVERNOR_RESERVE_PER_MILLE			| Fonds d’urgence du joueur : %1 ‰
 
-GOVERNOR_RESERVE_NEXT_TURN_HELP		| Fonds de roulement à collecter pour les dépense courantes.<br>Le minimum de la valeur absolue et relative sera collecté.
+GOVERNOR_RESERVE_MAX_HELP			| Lorsque les fonds collecté dépassent les fonds dépensés, à quel moment le gouverneur arrête-t-il de collecter ?<br>Le maximum de la valeur absolue et relative sera collecté.
+GOVERNOR_RESERVE_MAX_DESC			| Lorsque les fonds collecté dépassent les fonds dépensés, à quel moment le gouverneur arrête-t-il de collecter ?
+GOVERNOR_RESERVE_MAX				| Trésor Maximal : %1
+
+GOVERNOR_RESERVE_MAX_PCT_HELP		| Lorsque les fonds collecté dépassent les fonds dépensés, à quel moment le gouverneur arrête-t-il de collecter ? en pourcentage de la production totale.<br>Le maximum de la valeur absolue et relative sera collecté.
+GOVERNOR_RESERVE_MAX_PCT_DESC		| Lorsque les fonds collecté dépassent les fonds dépensés, à quel moment le gouverneur arrête-t-il de collecter ? en pourcentage de la production totale.
+GOVERNOR_RESERVE_MAX_PCT			| Capital Maximal : %1 %
+
+GOVERNOR_RESERVE_NEXT_TURN_HELP		| Fonds de roulement à collecter pour les dépense courantes.<br>Le maximum de la valeur absolue et relative sera collecté.
 GOVERNOR_RESERVE_NEXT_TURN_DESC		| Fonds de roulement à collecter pour les dépense courantes.
 GOVERNOR_RESERVE_NEXT_TURN			| Fonds de roulement : %1
 
-GOVERNOR_RESERVE_NEXT_TURN_PCT_HELP	| Fonds de roulement, en pourcentage de la production totale, à collecter pour les dépense courantes.<br>Le minimum de la valeur absolue et relative sera collecté.
+GOVERNOR_RESERVE_NEXT_TURN_PCT_HELP	| Fonds de roulement, en pourcentage de la production totale, à collecter pour les dépense courantes.<br>Le maximum de la valeur absolue et relative sera collecté.
 GOVERNOR_RESERVE_NEXT_TURN_PCT_DESC	| Fonds de roulement, en pourcentage de la production totale, à collecter pour les dépense courantes.
 GOVERNOR_RESERVE_NEXT_TURN_PCT		| Pourcentage de roulement : %1 %
 

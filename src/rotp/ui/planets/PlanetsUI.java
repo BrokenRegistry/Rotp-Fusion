@@ -748,8 +748,10 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 
     @Override
     public void paintComponent(Graphics g0) {
-		if(player().budget().updateInProgress())
+		if(player().budget().updateInProgress()) {
+			System.out.println("player().budget().updateInProgress()");
 			return;
+		}
         super.paintComponent(g0);
         Graphics2D g = (Graphics2D) g0;
         // draw the gradient background for the header row

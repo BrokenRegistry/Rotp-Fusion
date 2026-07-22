@@ -64,7 +64,8 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	private int	isGovernor	= NOT_GOVERNOR;
 	private boolean isDuplicate	= false;
 	private boolean isCfgFile	= false;
-	private boolean isValueInit	= true; // default values are initialized with current value.	
+	private boolean isValueInit	= true; // for new options: default values are initialized with current value.	
+	private boolean isUpdateDef	= false; // When updating Option from game, reset these to their default value.	
 	private boolean	updated		= true;
 	private boolean	trueChange	= true;
 	private String	formerName;	// Link to another option for initialization (when upgrading)
@@ -163,6 +164,15 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	//	public abstract void prev();
 	//	public abstract void toggle(MouseWheelEvent e);
 	//	public abstract void toggle(MouseEvent e);
+	@Override public boolean validateInitialValue()	{
+		if (isUpdateDef) {
+			// Prepare new options with default value
+			// The value at the end of a game is generally different than at the beginning
+			set(defaultValue());
+			return true;	
+		}
+		return false; // Keep current value
+	}
 	@Override public void selectedValue(T val)			{ set(val); }
 	@Override public void prepareToSave(IGameOptions o)	{ setOptionValue(o, get()); }
 	@Override public String toString() {
@@ -418,6 +428,7 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	 * <br>Should be set to false if this parameter change a previously constant value.
 	 */
 	public AbstractParam<T> isValueInit(boolean is)	{ isValueInit = is ; return this; }
+	public AbstractParam<T> isUpdateDef(boolean is)	{ isUpdateDef = is ; return this; }
 	public AbstractParam<T> isDuplicate(boolean is)	{ isDuplicate = is ; return this; }
 	public AbstractParam<T> isCfgFile(boolean is)	{ isCfgFile   = is ; return this; }
 	

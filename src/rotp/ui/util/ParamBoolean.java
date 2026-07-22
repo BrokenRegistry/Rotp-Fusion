@@ -68,6 +68,7 @@ public class ParamBoolean extends AbstractParam<Boolean> {
 	// ===== Overriders =====
 	//
 	@Override public ParamBoolean isValueInit(boolean is) { super.isValueInit(is) ; return this; }
+	@Override public ParamBoolean isUpdateDef(boolean is) { super.isUpdateDef(is) ; return this; }
 	@Override public ParamBoolean isDuplicate(boolean is) { super.isDuplicate(is) ; return this; }
 	@Override public ParamBoolean isCfgFile(boolean is)	  { super.isCfgFile(is)   ; return this; }
 	@Override public ParamBoolean formerName(String link) { super.formerName(link); return this; }

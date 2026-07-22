@@ -5875,15 +5875,23 @@ GOVERNOR_RESERVE_DESC				| Emergency fund to be kept in reserve for the exclusiv
 GOVERNOR_RESERVE					| Player Emergency Fund: %1
 GOVERNOR_RESERVE_LABEL				| Keep in reserve
 
-GOVERNOR_RESERVE_PER_MILLE_HELP		| Emergency fund to be kept in reserve for the exclusive use of the player, in percentage of the total production.<br>(Not spent by governors)<br>The minimum of the absolute and percentage value will be reserved.
-GOVERNOR_RESERVE_PER_MILLE_DESC		| Emergency fund, as a percentage of total production, to be kept in reserve for the exclusive use of the player.<br>(Not spent by governors)
+GOVERNOR_RESERVE_PER_MILLE_HELP		| Emergency fund to be kept in reserve for the exclusive use of the player, in per thousand of the total production.<br>(Not spent by governors)<br>The maximum of the absolute and per thousand value will be reserved.
+GOVERNOR_RESERVE_PER_MILLE_DESC		| Emergency fund, as a per thousand of total production, to be kept in reserve for the exclusive use of the player.<br>(Not spent by governors)
 GOVERNOR_RESERVE_PER_MILLE			| Player Emergency Fund pct: %1‰
 
-GOVERNOR_RESERVE_NEXT_TURN_HELP		| Working capital to be collected for current expenses.<br>LThe minimum of the absolute and relative value will be collected.
+GOVERNOR_RESERVE_MAX_HELP			| When funds collected exceed funds spent, at what point does the governor stop collecting?.<br>The maximum of the absolute and relative value will be collected.
+GOVERNOR_RESERVE_MAX_DESC			| When funds collected exceed funds spent, at what point does the governor stop collecting?
+GOVERNOR_RESERVE_MAX				| Capital Max: %1
+
+GOVERNOR_RESERVE_MAX_PCT_HELP		| When funds collected exceed funds spent, at what point does the governor stop collecting? as a percentage of total production.<br>The maximum of the absolute and relative value will be collected.
+GOVERNOR_RESERVE_MAX_PCT_DESC		| When funds collected exceed funds spent, at what point does the governor stop collecting, as a percentage of total production.
+GOVERNOR_RESERVE_MAX_PCT			| Capital Max pct: %1%
+
+GOVERNOR_RESERVE_NEXT_TURN_HELP		| Working capital to be collected for current expenses.<br>The maximum of the absolute and relative value will be collected.
 GOVERNOR_RESERVE_NEXT_TURN_DESC		| Working capital to be collected for current expenses.
 GOVERNOR_RESERVE_NEXT_TURN			| Working capital: %1
 
-GOVERNOR_RESERVE_NEXT_TURN_PCT_HELP	| Working capital, as a percentage of total production, to be collected for current expenditure.<br>The minimum of the absolute and relative value will be collected.
+GOVERNOR_RESERVE_NEXT_TURN_PCT_HELP	| Working capital, as a percentage of total production, to be collected for current expenditure.<br>The maximum of the absolute and relative value will be collected.
 GOVERNOR_RESERVE_NEXT_TURN_PCT_DESC	| Working capital, as a percentage of total production, to be collected for current expenditure.
 GOVERNOR_RESERVE_NEXT_TURN_PCT		| Working capital pct: %1%
 

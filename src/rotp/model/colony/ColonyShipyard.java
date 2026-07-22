@@ -105,7 +105,9 @@ public class ColonyShipyard extends ColonySpendingCategory {
 		float cost = design.cost();
 		newShips = 0;
 
-		if (colony().allocation(categoryType()) == 0)
+		if (colony().allocation(categoryType()) == 0 && buildLimit() == 0)
+			// BR: if ship are requested, check if current BC can build the ship
+			// A new tech may have lowered the ship cost, so no additional spending is required.
 			return;
 		// should never happen anymore, but hey
 		if (buildingObsoleteDesign()) {
@@ -482,7 +484,8 @@ public class ColonyShipyard extends ColonySpendingCategory {
     }
     @Override
     public String upcomingResult() {
-        if (colony().allocation(categoryType()) == 0)
+    	// If no allocation but buildLimit > 0 the accumulated reserves could be enough to build the ship.
+        if (colony().allocation(categoryType()) == 0 && buildLimit() == 0)
             return noneText;
 
         float tmpShipReserveBC = shipReserveBC;
@@ -560,19 +563,20 @@ public class ColonyShipyard extends ColonySpendingCategory {
                 return text(perYearText, ships);            
         }
 
-        float totalCost = buildLimit() * cost;
+		// BR: Build limit is > 0 -> show number of ship are built first.
+        //float totalCost = buildLimit() * cost;
 
         // not spending enough to hit the build limit, specify how many ships
-        if (totalBC <= totalCost) {
+//        if (totalBC <= totalCost) {
             int  ships = (int) (totalBC / cost);
             if (ships == 1)
                 return text(yearText, "1");
             else
                 return text(perYearText, ships);
-        }
+//        }
 
         // we are exceeding limit, so result is overflow
-        return overflowText();
+//        return overflowText();
     }
     public float maxSpendingNeeded() {
         float totalCost = 0;

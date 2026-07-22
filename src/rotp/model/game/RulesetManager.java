@@ -19,6 +19,7 @@ import rotp.Rotp;
 import rotp.ui.ErrorUI;
 import rotp.ui.UserPreferences;
 import rotp.ui.options.AllSubUI;
+import rotp.ui.util.IParam;
 
 // BR: converted enum !? to class
 // Extended its purpose to manage all IGameOptions instances
@@ -64,6 +65,9 @@ public final class RulesetManager {
 		newGameOptions = GameSession.instance().options().copyAllOptions();
 		newGameOptions.setAsSetup();
 		setAsSetupMode();
+		for (IParam<?> option : AllSubUI.allModOptions(false))
+			option.validateInitialValue();
+
 	}
 	public boolean isSetupMode()			{ return currentOptions == IGameOptions.SETUP_ID; }
 	public boolean isGameMode()				{ return currentOptions == IGameOptions.GAME_ID; }

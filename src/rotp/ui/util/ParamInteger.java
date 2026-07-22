@@ -130,6 +130,7 @@ public class ParamInteger extends AbstractParam<Integer> {
 	// ===== Overriders =====
 	//
 	@Override public ParamInteger isValueInit(boolean is) { super.isValueInit(is)  ; return this; }
+	@Override public ParamInteger isUpdateDef(boolean is) { super.isUpdateDef(is)  ; return this; }
 	@Override public ParamInteger isDuplicate(boolean is) { super.isDuplicate(is)  ; return this; }
 	@Override public ParamInteger isCfgFile(boolean is)	  { super.isCfgFile(is)    ; return this; }
 	@Override public ParamInteger formerName(String link) { super.formerName(link) ; return this; }

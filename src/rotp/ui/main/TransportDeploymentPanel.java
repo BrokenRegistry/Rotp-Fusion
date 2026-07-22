@@ -724,6 +724,10 @@ public class TransportDeploymentPanel extends SystemPanel {
                 drawString(g,baseLbl, x1, y1);
 
                 String str1 = spied ? str(pl.sv.population(id)) : unknown;
+				if (isAltDown() && sys.colony().empire().isPlayer()) {
+					float pop = sys.colony().population();
+					str1 = fmt(pop,1);
+				}
                 int sw1 = g.getFontMetrics().stringWidth(str1);
                 drawString(g,str1, x1-sw1-s10, y0);
                 String str2 = spied ? str(pl.sv.factories(id)) : unknown;

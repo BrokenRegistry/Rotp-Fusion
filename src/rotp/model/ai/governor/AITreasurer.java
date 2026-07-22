@@ -42,6 +42,7 @@ public final class AITreasurer implements Treasurer {
 	@Override public void planTheBudget()	{
 		GovernorOptions govOptions = session().getGovernorOptions();
 		empireBudget.resetEmpireBudget();
+		//System.out.println("planTheBudget()");
 
 		List<ColonyBudget> playerBudgets	= new ArrayList<>();
 		List<ColonyBudget> governorBudgets	= new ArrayList<>();
@@ -69,15 +70,28 @@ public final class AITreasurer implements Treasurer {
 
 
 		// Update Empire reserve status
-		float allocatedBC = empire.empireExcessSpendingIncome();
-		empireBudget.allocatedBC(allocatedBC);
-
-		float ReserveNextTurn		= govOptions.autospendReserveNextTurn();
-		float ReserveNextTurnRatio	= govOptions.autospendReserveNextTurnRatio();
 		float totalProd = empire.totalPlanetaryProduction();
 		empireBudget.totalProd(totalProd);
-		float requestedReservesBC = max(ReserveNextTurn, totalProd * ReserveNextTurnRatio);
-		empireBudget.requestedReserves(requestedReservesBC);
+
+		// already in reserves
+		float unusedReserves	= empireBudget.unusedReserves();
+		float reserveMax		= govOptions.autospendReserveMax();
+		float reserveMaxRatio	= govOptions.autospendReserveMaxRatio();
+		float reserveMaxBC		= max(reserveMax, totalProd * reserveMaxRatio);
+		float maxToCollect		= reserveMaxBC - unusedReserves;
+
+		// turn by turn
+		float reserveNextTurn	= govOptions.autospendReserveNextTurn();
+		float reserveNextTurnR	= govOptions.autospendReserveNextTurnRatio();
+		float reserveNextTurnBC	= max(reserveNextTurn, totalProd * reserveNextTurnR);
+
+		// finally
+		float requestedReserves	= min(maxToCollect, reserveNextTurnBC);
+		empireBudget.requestedReserves(requestedReserves);
+
+		// Check if budget update is needed
+		float allocatedBC	= empire.empireExcessSpendingIncome();
+		empireBudget.allocatedBC(allocatedBC);
 
 		List<ColonyBudget> remainingBudgets	= new ArrayList<>();
 		remainingBudgets.addAll(playerBudgets);
@@ -109,14 +123,13 @@ public final class AITreasurer implements Treasurer {
 		empireBudget.undevelopedProd(undevelopedProd);
 		empireBudget.allocatedBC(allocatedBC);
 
-
 		// Plan Reserves
 		boolean planReserveNextTurn	= govOptions.autospendPlanReserveNextTurn();
 		boolean excessToResearch	= empire.divertColonyExcessToResearch();
 		if (excessToResearch || !planReserveNextTurn)
 			return;
 
-		float excessRevenueBC = expectedRevenueBC - requestedReservesBC;
+		float excessRevenueBC = expectedRevenueBC - requestedReserves;
 		float allowedExcessRevenue = 10;
 		if (excessRevenueBC > allowedExcessRevenue) {
 			Collections.sort(remainingBudgets, INC_RESOURCES);
@@ -143,7 +156,7 @@ public final class AITreasurer implements Treasurer {
 						break;
 				}
 		}
-		expectedRevenueBC = excessRevenueBC + requestedReservesBC;
+		expectedRevenueBC = excessRevenueBC + requestedReserves;
 		empireBudget.expectedRevenueBC(expectedRevenueBC);
 	}
 	private final Comparator<ColonyBudget> INC_RESOURCES = (ColonyBudget b1, ColonyBudget b2) -> Integer.compare(b1.resourcesSort(), b2.resourcesSort());

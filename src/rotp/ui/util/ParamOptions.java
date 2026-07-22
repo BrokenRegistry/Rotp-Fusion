@@ -62,6 +62,7 @@ public class ParamOptions extends ParamList {
 		this(MOD_UI, name, LAST);
 	}
 	@Override public ParamOptions isValueInit(boolean is) { super.isValueInit(is) ; return this; }
+	@Override public ParamOptions isUpdateDef(boolean is) { super.isUpdateDef(is) ; return this; }
 	@Override public ParamOptions isDuplicate(boolean is) { super.isDuplicate(is) ; return this; }
 	@Override public ParamOptions isCfgFile(boolean is)	  { super.isCfgFile(is)   ; return this; }
 	@Override public ParamOptions setUpdateParameters(IUpdated<String> method, String id)	{
