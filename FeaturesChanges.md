@@ -472,6 +472,8 @@
 
 ### Fixes:
 
+- Options for adjusting ship space size are now dynamic, to help AI early in the game. The space never drops below 90% of the original space. Thus, the impact will mainly affect the middle and end of games.
+- Fixed Restart with option to Swap with GUI species still keeping the old abilities.
 - Fixed an issue where the governor spending analysis could be started concurently by a screen refresh and a mouse click... Resulting in colony display glitch.
 - Fixed the description of fund limits: it is always the maximum of the absolute and relative value.
   - Then you may choose your favorite method, and set the other to 0...

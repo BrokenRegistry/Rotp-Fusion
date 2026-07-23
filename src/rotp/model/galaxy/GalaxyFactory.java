@@ -53,6 +53,7 @@ public final class GalaxyFactory implements Base {
 		GalaxyBaseData gc = src.galSrc;
 		Species.loadAllList();
 		IGameOptions opts = GameSession.instance().options();
+		opts.selectedRestartChangesPlayerRace(src.selectedRestartChangesPlayerRace());
 		if (!opts.selectedRestartAppliesSettings())
 			opts = src.options();
 
@@ -623,6 +624,7 @@ public final class GalaxyFactory implements Base {
 		private LinkedList<String> alienRaces;
 		private int nearbyStarSystemNumber;
 		private boolean swappedPositions = false;
+		private String selectedRestartChangesPlayerRace;
 
 		public GalaxyCopy (IGameOptions newOpts) { newOptions = newOpts; }
 		public void copy (GameSession oldS) { // Copy from the old session
@@ -637,6 +639,7 @@ public final class GalaxyFactory implements Base {
 			swappedPositions = index>0;
 			galSrc.swapPlayer(index);
 			IGameOptions opts = GameSession.instance().options();
+			selectedRestartChangesPlayerRace = opts.selectedRestartChangesPlayerRace();
 
 			// Change player if required and
 			// Set the Options
@@ -644,7 +647,7 @@ public final class GalaxyFactory implements Base {
 				String oldRace = empires(0).raceKey;
 				// Old options replace new options
 				// Copy what's needed from new options
-				switch (opts.selectedRestartChangesPlayerRace()) {
+				switch (selectedRestartChangesPlayerRace) {
 					case "GuiLast":
 					case "GuiSwap":
 						// set Gui Player
@@ -690,5 +693,6 @@ public final class GalaxyFactory implements Base {
 		private	boolean swappedPositions()		{ return swappedPositions; }
 		public	EmpireBaseData[] empires()		{ return galSrc.empires; }
 		private	EmpireBaseData empires(int id)	{ return galSrc.empires[id]; }
+		private	String selectedRestartChangesPlayerRace()	{ return selectedRestartChangesPlayerRace; }
 	}
 }

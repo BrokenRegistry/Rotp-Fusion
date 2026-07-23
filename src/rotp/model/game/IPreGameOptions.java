@@ -191,6 +191,7 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 		.put(RCPR_SWAP,		MOD_UI + "RESTART_PLAYER_RACE_SWAP")
 		.put(RCPR_GUI_SWAP,	MOD_UI + "RESTART_PLAYER_RACE_GUI_SWAP")
 		.put(RCPR_GUI_LAST,	MOD_UI + "RESTART_PLAYER_RACE_GUI_LAST");
+	default void selectedRestartChangesPlayerRace(String s)	{ restartChangesPlayerRace.set(s); }
 	default String selectedRestartChangesPlayerRace()	{ return restartChangesPlayerRace.get(); }
 	default boolean restartKeepPlayerSpecies()			{
 		if (selectedRestartAppliesSettings())

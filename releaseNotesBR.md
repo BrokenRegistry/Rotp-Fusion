@@ -11,6 +11,10 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-07-23 (BR)
+- Options for adjusting ship space size are now dynamic, to help AI early in the game. The space never drops below 90% of the original space. Thus, the impact will mainly affect the middle and end of games.
+- Fixed Restart with option to Swap with GUI species still keeping the old abilities.
+
 26-07-22 (BR)
 - Fixed an issue where the governor spending analysis could be started concurently by a screen refresh and a mouse click... Resulting in colony display glitch.
 - Added options to set the limit of fund accumulation. (Absolute and relative)

@@ -389,7 +389,8 @@ public final class ShipDesign extends Design {
 	        default     : baseSpace = 0; break;
         }
         // modnar: change total ship space for new races
-        float finalSpace = baseSpace * techBonus * raceSpaceBonus * optionSpaceBonus;
+        float bonus = max(0.9f, techBonus * raceSpaceBonus * optionSpaceBonus);
+        float finalSpace = baseSpace * bonus;
 		if (opts.prefShipSizeImpacts())
 			finalSpace /= opts.prefShipSizeSpaceFactor(empire().preferredShipSize(), s);
 		return finalSpace;
