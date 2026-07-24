@@ -11,6 +11,8 @@
 NUM_FORMAT_THOUSANDS              | %1 тыс.
 NUM_FORMAT_MILLIONS               | %1 мил.
 NUM_FORMAT_BILLIONS               | %1 млрд.
+NUM_FORMAT_BC				| %1 %2MK
+NUM_FORMAT_RP				| %1 %2ЕИ
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | Красные звезды - старые и тусклые. Часто имеют планеты бедные ресурсами.
@@ -740,7 +742,7 @@ PLANETS_TREASURY                  | Имперская Казна
 PLANETS_TREASURY_FUNDS            | Казначейские Средства
 PLANETS_TAX_DESC                  | Облагайте колонии налогами, чтобы увеличить поступления в казну.
 PLANETS_RESERVE_TAX               | Налог
-PLANETS_RESERVE_INCREASE          | +%1 МК/Год
+PLANETS_RESERVE_INCREASE          | +%1 %2МК/Год
 PLANETS_RESERVE_NO_TAX            | Нет Налога
 PLANETS_RESERVE_ONLY_DEVELOPED    | Налоги платят только полностью развитые колонии
 PLANETS_BUTTON_TRANSFER           | ПЕРЕДАТЬ
@@ -1252,8 +1254,8 @@ TECH_EMPIRE_SPENDING              | Расходы Империи на Наук�
 TECH_EMPIRE_SPENDING_DESC         | Сумма расходов всех колоний на исследования.
 TECH_EMPIRE_TECH_RESERVE_OPT      | Перенаправление лишних колониальных расходов из резерва на исследования
 TECH_EMPIRE_BALANCED_DESC         | Балансированое распределение увеличивает всеобщие единицы исследования.
-TECH_EMPIRE_DETAIL_1              | %1 МК дают 
-TECH_EMPIRE_DETAIL_2              | %2 ЕИ / Год
+TECH_EMPIRE_DETAIL_1              | %1 %2МК дают 
+TECH_EMPIRE_DETAIL_2              | %1 %2ЕИ / Год
 TECH_TOTAL_RP                     | %1 ЕИ
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Нажмите, чтобы исследовать эту технологию

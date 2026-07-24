@@ -66,10 +66,8 @@ public class TreasurySprite extends MapControlSprite {
 
 			boolean shieldWithoutBases = options().shieldAlones();
 			float revenue = player().empireTaxIncome(shieldWithoutBases);
-			if (revenue > 0) {
-				String revStr = revenue<100? fmt(player().empireTaxIncome(shieldWithoutBases), 1) : shortFmt(revenue);
-				detail += "  (" + text("PLANETS_RESERVE_INCREASE", revStr) + ")";
-			}
+			if (revenue > 0)
+				detail += "  (" + compactFmt(revenue, 1, "PLANETS_RESERVE_INCREASE") + ")";
 
             g2.setFont(narrowFont(fontSize));
             labelW = g2.getFontMetrics().stringWidth(label);

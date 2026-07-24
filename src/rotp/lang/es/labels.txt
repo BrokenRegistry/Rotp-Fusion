@@ -7,9 +7,11 @@
 //    You can only use keys that the game is looking for.
 //
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1K
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1B
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2BC
+NUM_FORMAT_RP				| %1 %2RP
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | Las estrellas rojas son estrellas viejas y opacas que comúnmente tienen planetas pobres.
@@ -738,7 +740,7 @@ PLANETS_TREASURY                  | Tesoro del Imperio
 PLANETS_TREASURY_FUNDS            | Fondos del Tesoro
 PLANETS_TAX_DESC                  | Tasar sus colonias para aumentar la tesorería del imperio.
 PLANETS_RESERVE_TAX               | Impuesto de Reserva
-PLANETS_RESERVE_INCREASE          | +%1 BC/Año
+PLANETS_RESERVE_INCREASE          | +%1 %2BC/Año
 PLANETS_RESERVE_NO_TAX            | Sin impuestos
 PLANETS_RESERVE_ONLY_DEVELOPED    | Tasar solo colonias completamente desarrolladas
 PLANETS_BUTTON_TRANSFER           | TRANSFERIR
@@ -1250,8 +1252,8 @@ TECH_EMPIRE_SPENDING              | Gasto tecnológico del imperio
 TECH_EMPIRE_SPENDING_DESC         | Suma del gasto en tecnología de todas las colonias. 
 TECH_EMPIRE_TECH_RESERVE_OPT      | Desviar el exceso de gasto de la colonia de la reserva del tesoro a la investigación.
 TECH_EMPIRE_BALANCED_DESC         | El gasto equilibrado aumenta los puntos generales de investigación.
-TECH_EMPIRE_DETAIL_1              | %1 BC por 
-TECH_EMPIRE_DETAIL_2              | %2 RP / Año
+TECH_EMPIRE_DETAIL_1              | %1 %2BC por 
+TECH_EMPIRE_DETAIL_2              | %1 %2RP / Año
 TECH_TOTAL_RP                     | %1 RP
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Haga clic para investigar esta tecnología

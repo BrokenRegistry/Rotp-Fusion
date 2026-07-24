@@ -98,6 +98,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
     private static int selectedMode = ECOLOGY_MODE;
     private static final String SINGLE_PLANET_PANEL = "SinglePlanet";
     private static final String MULTI_PLANET_PANEL = "MultiPlanet";
+	private static final String BC_LABEL = "NUM_FORMAT_BC";
 
     private static final Color selectedC = new Color(178,124,87);
     private static final Color unselectedC = new Color(112,85,68);
@@ -112,6 +113,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
     private final static int DOWN_ACTION = 2;
     private final static String CANCEL_ACTION = "cancel-input";
 
+	private int bcSize = 0;
     private int pad = 10;
     private int helpFrame = 0;
     private List<StarSystem> displayedSystems;
@@ -1144,7 +1146,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
     }
     private void initDataViews() {
 		Column rowNumCol	= listingUI.newRowNumColumn("PLANETS_LIST_NUM", s15, RIGHT);
-		Column flagCol		= listingUI.newSystemFlagColumn("", "FLAG", 30, palette.black, StarSystem.FLAG, LEFT);
+		Column flagCol		= listingUI.newSystemFlagColumn("", "FLAG", s30, palette.black, StarSystem.FLAG, LEFT);
 		Column notesCol		= listingUI.newSystemNotesColumn(notesField, "PLANETS_LIST_NOTES", "NOTES", 999, palette.black);
 		Column pTypeCol		= listingUI.newPlanetTypeColumn("PLANETS_LIST_TYPE",	"PLANET_TYPE",	s85,	StarSystem.PLANET_TYPE);
 
@@ -2574,7 +2576,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             sw = g.getFontMetrics().stringWidth(label);
             drawShadowedString(g, label, 2, midP-sw, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
 
-            String val = text("PLANETS_AMT_BC", df1.format(player.netTradeIncome()));
+			bcSize = 1;
+			String val = compactFmt(player.netTradeIncome(), bcSize, BC_LABEL);
             sw = g.getFontMetrics().stringWidth(val);
             g.setColor(palette.black);
             drawString(g,val, amtP-sw, y1);
@@ -2583,7 +2586,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             label = text("PLANETS_INCOME_PLANETS");
             sw = g.getFontMetrics().stringWidth(label);
             drawShadowedString(g, label, 2, midP-sw, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
-            val = text("PLANETS_AMT_BC", df1.format(player.totalPlanetaryIncome()));
+			val = compactFmt(player.totalPlanetaryIncome(), bcSize, BC_LABEL);
             sw = g.getFontMetrics().stringWidth(val);
             g.setColor(palette.black);
             drawString(g,val, amtP-sw, y1);
@@ -2592,7 +2595,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 			label = text("PLANETS_INCOME_SPECIES");
 			sw = g.getFontMetrics().stringWidth(label);
 			drawShadowedString(g, label, 2, midP-sw, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
-			val = text("PLANETS_AMT_BC", df1.format(player.populationBonusIncome()));
+			val = compactFmt(player.populationBonusIncome(), bcSize, BC_LABEL);
 			sw = g.getFontMetrics().stringWidth(val);
 			g.setColor(palette.black);
 			drawString(g,val, amtP-sw, y1);
@@ -2606,7 +2609,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             label = text("PLANETS_INCOME_TOTAL");
             sw = g.getFontMetrics().stringWidth(label);
             drawShadowedString(g, label, 2, midP-sw, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
-            val = text("PLANETS_AMT_BC", df1.format(player.totalIncome()));
+			val = compactFmt(player.totalIncome(), bcSize, BC_LABEL);
             sw = g.getFontMetrics().stringWidth(val);
             g.setColor(palette.black);
             drawString(g,val, amtP-sw, y1);
@@ -2702,7 +2705,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 			drawShadowedString(g, label, 2, midP-sw, y1, SystemPanel.textShadowC, SystemPanel.whiteText);
 
 			g.setColor(palette.black);
-			String text = text("PLANETS_AMT_BC", shortFmt(player().totalReserve()));
+			String text = compactFmt(player().totalReserve(), bcSize, BC_LABEL);
 			drawString(g,text, midP+s10, y1);
 
 			// Description line
@@ -2744,8 +2747,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 			float excessSpendingIncome = player.empireExcessSpendingIncome();
 			float totalIncome = taxOnlyIncome + excessSpendingIncome;
 			if (taxOnlyIncome > 0) {
-				String revStr = taxOnlyIncome<100? fmt(taxOnlyIncome, 1) : shortFmt(taxOnlyIncome);
-				result = text("PLANETS_RESERVE_INCREASE", revStr);
+				result = compactFmt(taxOnlyIncome, 0, "PLANETS_RESERVE_INCREASE");
 			}
 			else
 				result = text("PLANETS_RESERVE_NO_TAX");
@@ -2764,10 +2766,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 			int wd1 = wd * 80/100;
 			int wd2 = wd + wd - wd1;
 			float subsidizies = player.budget().subsidized();
-			if (subsidizies > 0) {
-				String revStr = subsidizies<100? fmt(subsidizies, 1) : shortFmt(subsidizies);
-				result = text("PLANETS_BUDGET_SUBSIDIES", revStr);
-			}
+			if (subsidizies > 0)
+				result = compactFmt(subsidizies, 0, "PLANETS_BUDGET_SUBSIDIES");
 			else
 				result = text("PLANETS_BUDGET_NO_SUBSIDIES");
 			scaledFont(g, result, wd1, maxFontSize, minFontSize);
@@ -2778,15 +2778,11 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 			// Requested by player
 			float requestedBC = player.budget().requestedReserves();
 			String requestedStr = "";
-			if (requestedBC>0) {
-				String reqStr = requestedBC<100? fmt(requestedBC, 1) : shortFmt(requestedBC);
-				requestedStr = " / " + text("PLANETS_AMT_BC", reqStr); 
-			}
+			if (requestedBC>0)
+				requestedStr = " / " + compactFmt(requestedBC, 0, BC_LABEL);
 			int x2 = x1 + wd1 + border;
-			if (totalIncome > 0) {
-				String revStr = totalIncome<100? fmt(totalIncome, 1) : shortFmt(totalIncome);
-				result = text("PLANETS_BUDGET_TOTAL_INCOME", revStr) + requestedStr;
-			}
+			if (totalIncome > 0)
+				result = compactFmt(totalIncome, 0, "PLANETS_BUDGET_TOTAL_INCOME") + requestedStr;
 			else
 				result = text("PLANETS_BUDGET_NO_INCOME") + requestedStr;
 			scaledFont(g, result, wd2, maxFontSize, minFontSize);
@@ -2796,10 +2792,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 			// Unused Player Reserves
 			y1 += lineStep-s4;
 			float unusedReserve = player.budget().unusedReserves();
-			if (unusedReserve > 0) {
-				String revStr = unusedReserve<100? fmt(unusedReserve, 1) : shortFmt(unusedReserve);
-				result = text("PLANETS_BUDGET_UNUSED", revStr);
-			}
+			if (unusedReserve > 0)
+				result = compactFmt(unusedReserve, 0, "PLANETS_BUDGET_UNUSED");
 			else
 				result = text("PLANETS_BUDGET_UNUSED_NONE");
 			scaledFont(g, result, wd1, maxFontSize, minFontSize);
@@ -2808,10 +2802,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 
 			// Unused Reserve
 			float unusedPlayer = player.budget().unusedPlayerReserves();
-			if (unusedPlayer > 0) {
-				String revStr = unusedPlayer<100? fmt(unusedPlayer, 1) : shortFmt(unusedPlayer);
-				result = text("PLANETS_BUDGET_UNUSED_PLAYER", revStr);
-			}
+			if (unusedPlayer > 0)
+				result = compactFmt(unusedPlayer, 0, "PLANETS_BUDGET_UNUSED_PLAYER");
 			else
 				result = text("PLANETS_BUDGET_ALL_USED_PLAYER");
 			scaledFont(g, result, wd2, maxFontSize, minFontSize);

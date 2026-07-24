@@ -7,9 +7,11 @@
 //    You can only use keys that the game is looking for.
 //
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1 Mil
-NUM_FORMAT_MILLIONS               | %1 Milhões
-NUM_FORMAT_BILLIONS               | %1 Mil Milhões
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2BM
+NUM_FORMAT_RP				| %1 %2PP
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | As estrelas vermelhas são astros antigos e tristonhos que tendem a albergar planetas pobres.
@@ -739,7 +741,7 @@ PLANETS_TREASURY                  | tesouro público do Império
 PLANETS_TREASURY_FUNDS            | Fundos do tesouro público
 PLANETS_TAX_DESC                  | Cobra impostos nas tuas colónias para acrescentar ao tesouro público do império.
 PLANETS_RESERVE_TAX               | Taxa a Cobrar
-PLANETS_RESERVE_INCREASE          | +%1 BM/ano
+PLANETS_RESERVE_INCREASE          | +%1 %2BM/ano
 PLANETS_RESERVE_NO_TAX            | Sem Impostos
 PLANETS_RESERVE_ONLY_DEVELOPED    | Aplicar apenas a colónias completamente desenvolvidas
 PLANETS_BUTTON_TRANSFER           | TRANSFERIR
@@ -1251,8 +1253,8 @@ TECH_EMPIRE_SPENDING              | Gastos do Império
 TECH_EMPIRE_SPENDING_DESC         | A soma dos gastos em Tecnologia de todas as nossas colónias.
 TECH_EMPIRE_TECH_RESERVE_OPT      | Canalizar os excessos da reserva do tesouro público para pesquisa.
 TECH_EMPIRE_BALANCED_DESC         | Um investimento perfeitamente equilibrado aumenta os Pontos de Pesquisa em geral.
-TECH_EMPIRE_DETAIL_1              | %1 BM por
-TECH_EMPIRE_DETAIL_2              | %2 PP / ano
+TECH_EMPIRE_DETAIL_1              | %1 %2BM por
+TECH_EMPIRE_DETAIL_2              | %1 %2PP / ano
 TECH_TOTAL_RP                     | %1 PP
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Carrega para Pesquisar Avanços nesta Tecnologia

@@ -7,9 +7,11 @@
 //    You can only use keys that the game is looking for.
 //
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1K
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1B
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2BC
+NUM_FORMAT_RP				| %1 %2TP
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | Rote Sterne sind alte und schwache Sterne die normalerweise arme Planeten haben.
@@ -405,7 +407,7 @@ MAIN_TURN_DISPLAY                 | Runde  %1
 MAIN_SPY_REPORT                   | Spionage
 MAIN_TECH_NONE                    | Keine Forschung
 MAIN_TECH_COMPLETED               | Forschung abgeschlossen
-MAIN_TECH_RP_REMAINING            | %1 RP verbleibenden
+MAIN_TECH_RP_REMAINING            | %1 TP verbleibenden
 MAIN_TECH_RP_DISCOVERY            | Entforschung bevorstehend
 MAIN_TECH_RESERVE_BC              | %1 BC
 MAIN_TECH_RESERVE_TAX_ALL         | Besteuert %1% der Produktion aller Kolonien
@@ -738,7 +740,7 @@ PLANETS_TREASURY                  | Staatskasse
 PLANETS_TREASURY_FUNDS            | Bestand
 PLANETS_TAX_DESC                  | Besteuerung der Kolonien für Staatskasse.
 PLANETS_RESERVE_TAX               | Steuer
-PLANETS_RESERVE_INCREASE          | +%1 BC/Jahr
+PLANETS_RESERVE_INCREASE          | +%1 %2BC/Jahr
 PLANETS_RESERVE_NO_TAX            | Keine Steuern
 PLANETS_RESERVE_ONLY_DEVELOPED    | Steuern nur aus vollentwickelten Kolonien
 PLANETS_BUTTON_TRANSFER           | TRANSFER
@@ -1250,8 +1252,8 @@ TECH_EMPIRE_SPENDING              | Forschungsausgaben
 TECH_EMPIRE_SPENDING_DESC         | Summe der Forschungsausgaben aller Kolonien.
 TECH_EMPIRE_TECH_RESERVE_OPT      | Leite überschüssige Ausgaben für Kolonien von der Reserve des Staatskasse in die Forschung um
 TECH_EMPIRE_BALANCED_DESC         | Ausgabenverteilung über alle Technologiepunkte.
-TECH_EMPIRE_DETAIL_1              | %1 BC für
-TECH_EMPIRE_DETAIL_2              | %2 TP / Jahr
+TECH_EMPIRE_DETAIL_1              | %1 %2BC für
+TECH_EMPIRE_DETAIL_2              | %1 %2TP / Jahr
 TECH_TOTAL_RP                     | %1 TP
 TECH_DISCOVERY_PCT                | %1%
 TECH_NEXT_TIER_TITLE              | Bisher nicht verfügbar.

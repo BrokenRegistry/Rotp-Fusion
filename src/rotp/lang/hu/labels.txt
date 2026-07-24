@@ -7,9 +7,11 @@
 //    You can only use keys that the game is looking for.
 //
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1K
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1E
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2EK
+NUM_FORMAT_RP				| %1 %2KÉ
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | A piros csillagok régi és homályos csillagok, amelyek általában rossz bolygókkal rendelkeznek.
@@ -740,7 +742,7 @@ PLANETS_TREASURY                  | Birodalmi kincstár
 PLANETS_TREASURY_FUNDS            | Kincstári pénzeszközök
 PLANETS_TAX_DESC                  | Gyarmatok megadóztatása, hogy hozzájáruljanak a birodalom kincstárához.
 PLANETS_RESERVE_TAX               | Tartalékadó
-PLANETS_RESERVE_INCREASE          | +%1 EK/évente
+PLANETS_RESERVE_INCREASE          | +%1 %2EK/évente
 PLANETS_RESERVE_NO_TAX            | Adómentesség
 PLANETS_RESERVE_ONLY_DEVELOPED    | Csak a teljesen kifejlesztett gyarmatok megadóztatása
 PLANETS_BUTTON_TRANSFER           | ÁTUTALÁS
@@ -1252,8 +1254,8 @@ TECH_EMPIRE_SPENDING              | Technológiára szánt birodalmi kiadások.
 TECH_EMPIRE_SPENDING_DESC         | Az összes gyarmat kiadásainak összege.
 TECH_EMPIRE_TECH_RESERVE_OPT      | A gyarmati kiadások feleslegének átirányítása a birodalmi kincstárból kutatásra.
 TECH_EMPIRE_BALANCED_DESC         | A kiegyensúlyozott kiadáskezelés növeli a kutatási értékpontok általános mértékét.
-TECH_EMPIRE_DETAIL_1              | %1 EK ezért: 
-TECH_EMPIRE_DETAIL_2              | %2 KÉ / évente
+TECH_EMPIRE_DETAIL_1              | %1 %2EK ezért: 
+TECH_EMPIRE_DETAIL_2              | %1 %2KÉ / évente
 TECH_TOTAL_RP                     | %1 KÉ
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Kattintással e technológia kutatásra kerül

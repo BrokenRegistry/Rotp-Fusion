@@ -52,9 +52,11 @@
 //
 
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1k
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1B
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1B
+NUM_FORMAT_BC				| %1 %2BC
+NUM_FORMAT_RP				| %1 %2RP
 
 // Basic Boolean Display
 BOOLEAN_YES                       | Yes
@@ -1197,17 +1199,17 @@ PLANETS_INCOME_TOTAL              | Total
 PLANETS_TREASURY                  | Empire Treasury
 PLANETS_TREASURY_FUNDS            | Treasury Funds
 PLANETS_TAX_DESC                  | Tax your colonies to add to the empire's treasury.
-PLANETS_BUDGET_SUBSIDIES		| Subsidies: %1 BC
+PLANETS_BUDGET_SUBSIDIES		| Subsidies: %1 %2BC
 PLANETS_BUDGET_TAX_INCOME		| Taxed
-PLANETS_BUDGET_TOTAL_INCOME		| Income: %1 BC
+PLANETS_BUDGET_TOTAL_INCOME		| Income: %1 %2BC
 PLANETS_BUDGET_NO_INCOME		| No Income
 PLANETS_BUDGET_NO_SUBSIDIES		| No Subsidies
-PLANETS_BUDGET_UNUSED_PLAYER	| Unused Player: %1 BC
-PLANETS_BUDGET_UNUSED			| Unused: %1 BC
+PLANETS_BUDGET_UNUSED_PLAYER	| Unused Player: %1 %2BC
+PLANETS_BUDGET_UNUSED			| Unused: %1 %2BC
 PLANETS_BUDGET_ALL_USED_PLAYER	| All Used by Player
 PLANETS_BUDGET_UNUSED_NONE		| Unused: None
-PLANETS_RESERVE_TAX               | Reserve Tax
-PLANETS_RESERVE_INCREASE          | +%1 BC/Year
+PLANETS_RESERVE_TAX				| Reserve Tax
+PLANETS_RESERVE_INCREASE		| +%1 %2BC/Year
 PLANETS_RESERVE_NO_TAX            | No Taxes
 PLANETS_RESERVE_ONLY_DEVELOPED    | Tax only fully developed colonies
 PLANETS_RES_FULL_DEF_LABEL        | Max Missing:
@@ -1221,11 +1223,11 @@ PLANETS_BUTTON_CONVERT			| Transfer Budget
 PLANETS_BUTTON_BUDGET_WISH		| Budgetize Optimal amounts
 PLANETS_BUTTON_SHARE_WISH		| Share Optimal amounts
 PLANETS_RESERVE_PLAYER			| Budget remaining to player: 
-PLANETS_RESERVE_CURRENT			| Budget remaining available: %1 BC
+PLANETS_RESERVE_CURRENT			| Budget remaining available: %1 %2BC
 PLANETS_BUDGET_CURRENT_NONE		| No budget has been established for this colony.
-PLANETS_BUDGET_GOVERNOR_ALONE	| Governor's initial budget: %1 BC
-PLANETS_BUDGET_CURRENT_PLAYER	| Budget established by the player: %1 BC
-PLANETS_BUDGET_GOVERNOR_SUGGEST	| (Governor's initial budgets: %1 BC)
+PLANETS_BUDGET_GOVERNOR_ALONE	| Governor's initial budget: %1 %2BC
+PLANETS_BUDGET_CURRENT_PLAYER	| Budget established by the player: %1 %2BC
+PLANETS_BUDGET_GOVERNOR_SUGGEST	| (Governor's initial budgets: %1 %2BC)
 PLANETS_BUDGET_NO_GOVERNOR		| The governor is not involved in this budget.
 
 PLANETS_AMT_PCT                   | %1%
@@ -4708,8 +4710,8 @@ TECH_EMPIRE_SPENDING              | Empire Tech Spending
 TECH_EMPIRE_SPENDING_DESC         | Sum of all colonies' tech spending.
 TECH_EMPIRE_TECH_RESERVE_OPT      | Divert excess colony spending from treasury reserve to research
 TECH_EMPIRE_BALANCED_DESC         | Balanced spending increases overall research points.
-TECH_EMPIRE_DETAIL_1              | %1 BC for
-TECH_EMPIRE_DETAIL_2              | %2 RP / Year
+TECH_EMPIRE_DETAIL_1              | %1 %2BC for
+TECH_EMPIRE_DETAIL_2              | %1 %2RP / Year
 TECH_TOTAL_RP                     | %1 RP
 TECH_LEVEL                        | Level %1
 TECH_DISCOVERY_PCT                | %1%

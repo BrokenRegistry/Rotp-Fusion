@@ -7,9 +7,11 @@
 //    You can only use keys that the game is looking for.
 //
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1t
-NUM_FORMAT_MILLIONS               | %1mn
-NUM_FORMAT_BILLIONS               | %1md
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2BC
+NUM_FORMAT_RP				| %1 %2FP
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | Röda dvärgstjärnor är gamla stjärnor, som brinner med lägre intensitet, och ofta har mineralfattiga planeter.
@@ -740,7 +742,7 @@ PLANETS_TREASURY                  | Statskassa
 PLANETS_TREASURY_FUNDS            | Tillgångar
 PLANETS_TAX_DESC                  | Beskatta dina kolonier för att föra över medel till statskassan.
 PLANETS_RESERVE_TAX               | Skatt för Reserver
-PLANETS_RESERVE_INCREASE          | +%1 BC/År
+PLANETS_RESERVE_INCREASE          | +%1 %2BC/År
 PLANETS_RESERVE_NO_TAX            | Ingen Beskattning
 PLANETS_RESERVE_ONLY_DEVELOPED    | Beskatta endast färdigutbyggda kolonier.
 PLANETS_BUTTON_TRANSFER           | ÖVERFÖR
@@ -1253,8 +1255,8 @@ TECH_EMPIRE_SPENDING              | Total Forskningsbudget
 TECH_EMPIRE_SPENDING_DESC         | Summan av alla koloniers forskningsbudget.
 TECH_EMPIRE_TECH_RESERVE_OPT      | Tilldela överflödiga koloniresurser från statskassan till forskning
 TECH_EMPIRE_BALANCED_DESC         | Jämlika nivåer av forskningsinsatser ökar effektiviteten av forskningspoäng.
-TECH_EMPIRE_DETAIL_1              | %1 BC för
-TECH_EMPIRE_DETAIL_2              | %2 FP / År
+TECH_EMPIRE_DETAIL_1              | %1 %2BC för
+TECH_EMPIRE_DETAIL_2              | %1 %2FP / År
 TECH_TOTAL_RP                     | %1 FP
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Klicka för att börja Efterforska denna Teknologi

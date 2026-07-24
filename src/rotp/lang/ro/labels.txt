@@ -7,9 +7,11 @@
 //    You can only use keys that the game is looking for.
 //
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1K
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1B
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2BC
+NUM_FORMAT_RP				| %1 %2RP
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | Stelele roșii sunt stele bătrâne și plictisitoare. În orbita acestora se găsesc, în general, planete sărace.
@@ -739,7 +741,7 @@ PLANETS_TREASURY                  | Trezoreria Imperiului
 PLANETS_TREASURY_FUNDS            | Fondurile Trezoreriei
 PLANETS_TAX_DESC                  | Impozitează coloniile pentru a adăuga fonduri trezoreriei imperiului.
 PLANETS_RESERVE_TAX               | Impozit pe Rezerve
-PLANETS_RESERVE_INCREASE          | +%1 BC/An
+PLANETS_RESERVE_INCREASE          | +%1 %2BC/An
 PLANETS_RESERVE_NO_TAX            | Fără Taxe
 PLANETS_RESERVE_ONLY_DEVELOPED    | Impozitează doar coloniile complet dezvoltate
 PLANETS_BUTTON_TRANSFER           | TRANSFER
@@ -1252,8 +1254,8 @@ TECH_EMPIRE_SPENDING              | Cheltuieli pt. Tehnologie
 TECH_EMPIRE_SPENDING_DESC         | Suma cheltuielilor tehnologice ale tuturor coloniilor. 
 TECH_EMPIRE_TECH_RESERVE_OPT      | Transferă fondurile în excess din trezorerie în cercetare
 TECH_EMPIRE_BALANCED_DESC         | Cheltuielile echilibrate măresc punctele generale de cercetare.
-TECH_EMPIRE_DETAIL_1              | %1 BC pentru 
-TECH_EMPIRE_DETAIL_2              | %2 RP / An
+TECH_EMPIRE_DETAIL_1              | %1 %2BC pentru 
+TECH_EMPIRE_DETAIL_2              | %1 %2RP / An
 TECH_TOTAL_RP                     | %1 RP
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Click Pentru a Cerceta Această Tehnologie

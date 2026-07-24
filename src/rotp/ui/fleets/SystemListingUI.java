@@ -625,9 +625,9 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             if (n < 100)
                 return width * 2;
             else if (n < 1000)
-                return width * 3;
+                return width * 3 - s5;
             else
-                return width * 4;
+                return width * 4 - s10;
         }
         @Override
         public void draw(Graphics g, RowSprite row, StarSystem sys, int x, int y, int w) {

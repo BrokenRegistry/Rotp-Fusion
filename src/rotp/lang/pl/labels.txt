@@ -7,9 +7,11 @@
 //    You can only use keys that the game is looking for.
 //
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1K
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1B
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2BC
+NUM_FORMAT_RP				| %1 %2RP
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | Czerwone gwiazdy są starszymi, nieciekawymi gwiazdami posiadającymi z reguły ubogie planety.
@@ -740,7 +742,7 @@ PLANETS_TREASURY                  | Skarbiec imperialny
 PLANETS_TREASURY_FUNDS            | Fundusze skarbca
 PLANETS_TAX_DESC                  | Opodatkuj swoje kolonie aby powiększyć skarbiec imperialny.
 PLANETS_RESERVE_TAX               | Podatek rezerwowy
-PLANETS_RESERVE_INCREASE          | +%1 BC/rok
+PLANETS_RESERVE_INCREASE          | +%1 %2BC/rok
 PLANETS_RESERVE_NO_TAX            | Brak
 PLANETS_RESERVE_ONLY_DEVELOPED    | Opodatkowanie tylko w pełni rozwiniętych kolonii
 PLANETS_BUTTON_TRANSFER           | TRANSFER
@@ -1253,8 +1255,8 @@ TECH_EMPIRE_SPENDING              | Wydatki badawcze imperium
 TECH_EMPIRE_SPENDING_DESC         | Suma wydatków badawczych wszystkich kolonii.
 TECH_EMPIRE_TECH_RESERVE_OPT      | Przekieruj nadmierne wydatki kolonii z rezerwy skarbowej na badania
 TECH_EMPIRE_BALANCED_DESC         | Zrównoważone wydatki zwiększają ogólną liczbę punktów badawczych.
-TECH_EMPIRE_DETAIL_1              | %1 BC na 
-TECH_EMPIRE_DETAIL_2              | %2 RP / Rok
+TECH_EMPIRE_DETAIL_1              | %1 %2BC na 
+TECH_EMPIRE_DETAIL_2              | %1 %2RP / Rok
 TECH_TOTAL_RP                     | %1 RP
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Kliknij aby zbadać tę technologię

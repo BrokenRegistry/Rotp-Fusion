@@ -9,9 +9,11 @@
 // Large number formatting
 // 第1次校對：2021.12.06
 
-NUM_FORMAT_THOUSANDS              | %1K
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1B
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2BC
+NUM_FORMAT_RP				| %1 %2RP
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | 紅色恆星是暮氣沉沉的恆星，它的行星一般資源匱乏。
@@ -742,7 +744,7 @@ PLANETS_TREASURY                  | 帝國國庫
 PLANETS_TREASURY_FUNDS            | 國庫儲備
 PLANETS_TAX_DESC                  | 對殖民地徵稅以增加國庫收入
 PLANETS_RESERVE_TAX               | 稅收
-PLANETS_RESERVE_INCREASE          | +%1 BC/年
+PLANETS_RESERVE_INCREASE          | +%1 %2BC/年
 PLANETS_RESERVE_NO_TAX            | 無稅收
 PLANETS_RESERVE_ONLY_DEVELOPED    | 只對完全發展殖民地徵稅
 PLANETS_BUTTON_TRANSFER           | 轉賬
@@ -1254,8 +1256,8 @@ TECH_EMPIRE_SPENDING              | 帝國科技投入
 TECH_EMPIRE_SPENDING_DESC         | 所有殖民地的科技投入之和
 TECH_EMPIRE_TECH_RESERVE_OPT      | 把每年的國庫儲備投入科技
 TECH_EMPIRE_BALANCED_DESC         | 平均分配投入可以增加總的RP
-TECH_EMPIRE_DETAIL_1              | 投入%1BC獲得
-TECH_EMPIRE_DETAIL_2              | %2 RP/年
+TECH_EMPIRE_DETAIL_1              | 投入%1%2BC獲得
+TECH_EMPIRE_DETAIL_2              | %1 %2RP/年
 TECH_TOTAL_RP                     | %1 RP
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | 單擊以研究這個技術

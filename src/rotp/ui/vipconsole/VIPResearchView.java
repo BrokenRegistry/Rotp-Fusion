@@ -133,7 +133,7 @@ public class VIPResearchView implements IVIPConsole {
 		TechCategory cat = player().tech().category(catNum);
 		String out = getLabelFromCatNum(catNum);
 		out += EQUAL_SEP + cat.allocation() + " / " + MAX_ALLOCATION_TICKS;
-		out += EQUAL_SEP + text("TECH_TOTAL_RP",shortFmt(cat.currentResearch(techUI().totalPlanetaryResearch())));
+		out += EQUAL_SEP + compactFmt(cat.currentResearch(techUI().totalPlanetaryResearch()), 0, "NUM_FORMAT_RP");
 		if (cat.locked())
 			out += SPACER + "Locked";
 		return out;
@@ -185,10 +185,8 @@ public class VIPResearchView implements IVIPConsole {
 		for (int catNum=0; catNum<NUM_CATEGORIES; catNum++)
 			totalResearch += tree.category(catNum).currentResearch(totalPlanetaryResearch);
 
-		String spending = shortFmt(totalSpending);
-		String research = shortFmt(totalResearch);
-		out += " " + text("TECH_EMPIRE_DETAIL_1", spending, research);
-		out += " " + text("TECH_EMPIRE_DETAIL_2", spending, research);
+		out += " " + compactFmt(totalSpending, 0, "TECH_EMPIRE_DETAIL_1");
+		out += " " + compactFmt(totalResearch, 0, "TECH_EMPIRE_DETAIL_2");
 		out += NEWLINE + text("TECH_EMPIRE_TECH_RESERVE_OPT");
 		out += EQUAL_SEP + player().divertColonyExcessToResearch();
 		//out += NEWLINE + text("TECH_ALLOCATE_POINTS");
@@ -330,10 +328,7 @@ public class VIPResearchView implements IVIPConsole {
 			int pct = (int) (100* (chance -1));
 			return text("TECH_DISCOVERY_PCT",pct);
 		}
-		else if (cost > 10000)
-			return text("TECH_TOTAL_RP",shortFmt(cost));
-		else 
-			return text("TECH_TOTAL_RP",cost);
+		return compactFmt(cost, 0, "NUM_FORMAT_RP");
 	}
 	private String getLabelFromCatNum(int catNum)	{
 		String out = getTagFromNum(catNum);

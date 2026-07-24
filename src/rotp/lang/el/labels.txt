@@ -10,6 +10,8 @@
 NUM_FORMAT_THOUSANDS              | %1ΧΙΛ
 NUM_FORMAT_MILLIONS               | %1ΕΚΤ
 NUM_FORMAT_BILLIONS               | %1ΔΙΣ
+NUM_FORMAT_BC				| %1 %2ΔΙΣ
+NUM_FORMAT_RP				| %1 %2ΠΕ
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | Οι Κόκκινοι ΄Ηλιοι είναι γηραιά και θαμπά άστρα που συνήθως έχουν φτωχούς πλανήτες.
@@ -741,7 +743,7 @@ PLANETS_TREASURY                  | Αυτοκρατορικό Θησαυροφ�
 PLANETS_TREASURY_FUNDS            | Αποθεματικά Διαθέσιμα
 PLANETS_TAX_DESC                  | Φορολόγησε τις αποικίες σου για να αυξήσεις τα εισοδήματα της αυτοκρατορίας.
 PLANETS_RESERVE_TAX               | Απόθεμα Φόρων
-PLANETS_RESERVE_INCREASE          | +%1 ΔΙΣ/Έτος
+PLANETS_RESERVE_INCREASE          | +%1 %2ΔΙΣ/Έτος
 PLANETS_RESERVE_NO_TAX            | Καθόλου Φόροι
 PLANETS_RESERVE_ONLY_DEVELOPED    | Φορολογία μόνο αναπτυγμένων αποικιών
 PLANETS_BUTTON_TRANSFER           | Μεταφορά
@@ -1253,8 +1255,8 @@ TECH_EMPIRE_SPENDING              | Τεχνολογική Δαπάνη
 TECH_EMPIRE_SPENDING_DESC         | Το συνολικό κόστος έρευνας όλων των αποικιών.
 TECH_EMPIRE_TECH_RESERVE_OPT      | Ανακατανείμετε πλεόνασμα δαπανών αποικιών από τα διαθέσιμα του Θησαυροφυλακίου για να ερευνήσετε.
 TECH_EMPIRE_BALANCED_DESC         | Η ισοκατανεμημένη δαπάνη αυξάνει το σύνολο πόντων έρευνας.
-TECH_EMPIRE_DETAIL_1              | %1 ΔΙΣ για
-TECH_EMPIRE_DETAIL_2              | %2 ΠΕ / Έτος
+TECH_EMPIRE_DETAIL_1              | %1 %2ΔΙΣ για
+TECH_EMPIRE_DETAIL_2              | %1 %2ΠΕ / Έτος
 TECH_TOTAL_RP                     | %1 ΠΕ
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Πατήστε για να ερευνηθεί η Τεχνολογία

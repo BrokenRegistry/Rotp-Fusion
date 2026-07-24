@@ -44,6 +44,13 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-07-24 (BR)
+- Fixed the prefix display: the English definition of Billions (10^9) do not apply to other languages (10^12), replaced by the SI prefix G.
+- Fixed the missing space between the value and its unit (not everywhere)
+- Improved French translation:
+  - RP -> PR (Point de Recherche)
+  - BC -> CG (Crédit Galactique)
+
 26-07-23 (BR)
 - Options for adjusting ship space size are now dynamic, to help AI early in the game. The space never drops below 90% of the original space. Thus, the impact will mainly affect the middle and end of games.
 - Fixed Restart with option to Swap with GUI species still keeping the old abilities.

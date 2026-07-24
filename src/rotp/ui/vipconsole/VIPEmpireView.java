@@ -361,7 +361,7 @@ public class VIPEmpireView implements IVIPConsole {
             else
                 revStr = shortFmt(revenue);
             int pct = player.empireTaxLevel();
-            amount = pct+"%" + EQUAL_SEP + text("PLANETS_RESERVE_INCREASE", revStr);
+            amount = pct+"%" + EQUAL_SEP + text("PLANETS_RESERVE_INCREASE", revStr, "");
         }
         else
         	amount = text("PLANETS_RESERVE_NO_TAX");

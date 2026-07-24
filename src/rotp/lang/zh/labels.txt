@@ -9,9 +9,11 @@
 // Large number formatting
 // 第1次校对：2021.12.06
 
-NUM_FORMAT_THOUSANDS              | %1K
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1B
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2BC
+NUM_FORMAT_RP				| %1 %2RP
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | 红色恒星是暮气沉沉的恒星，它的行星一般资源匮乏。
@@ -742,7 +744,7 @@ PLANETS_TREASURY                  | 帝国国库
 PLANETS_TREASURY_FUNDS            | 国库储备
 PLANETS_TAX_DESC                  | 对殖民地征税以增加国库收入
 PLANETS_RESERVE_TAX               | 税收
-PLANETS_RESERVE_INCREASE          | +%1 BC/年
+PLANETS_RESERVE_INCREASE          | +%1 %2BC/年
 PLANETS_RESERVE_NO_TAX            | 无税收
 PLANETS_RESERVE_ONLY_DEVELOPED    | 只对完全发展殖民地征税
 PLANETS_BUTTON_TRANSFER           | 转账
@@ -1254,8 +1256,8 @@ TECH_EMPIRE_SPENDING              | 帝国科技投入
 TECH_EMPIRE_SPENDING_DESC         | 所有殖民地的科技投入之和
 TECH_EMPIRE_TECH_RESERVE_OPT      | 把每年的国库储备投入科技
 TECH_EMPIRE_BALANCED_DESC         | 平均分配投入可以增加总的RP
-TECH_EMPIRE_DETAIL_1              | 投入%1BC获得
-TECH_EMPIRE_DETAIL_2              | %2 RP/年
+TECH_EMPIRE_DETAIL_1              | 投入%1%2BC获得
+TECH_EMPIRE_DETAIL_2              | %1 %2RP/年
 TECH_TOTAL_RP                     | %1 RP
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | 单击以研究这个技术

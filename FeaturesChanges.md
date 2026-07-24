@@ -464,6 +464,9 @@
 
 ### Other Language:
 
+- Improved French translation:
+  - RP -> PR (Point de Recherche)
+  - BC -> CG (Crédit Galactique)
 - Moved "French" selection to second position, as English and French are the only fully supported language of RotP-Fusion.
 - French translation fixes and improvement.
 - Galaxy size text is now loaded from language labels.
@@ -472,6 +475,8 @@
 
 ### Fixes:
 
+- Fixed the prefix display: the English definition of Billions (10^9) do not apply to other languages (10^12), replaced by the SI prefix G.
+- Fixed the missing space between the value and its unit (not everywhere)
 - Options for adjusting ship space size are now dynamic, to help AI early in the game. The space never drops below 90% of the original space. Thus, the impact will mainly affect the middle and end of games.
 - Fixed Restart with option to Swap with GUI species still keeping the old abilities.
 - Fixed an issue where the governor spending analysis could be started concurently by a screen refresh and a mouse click... Resulting in colony display glitch.

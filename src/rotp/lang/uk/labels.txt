@@ -7,9 +7,11 @@
 //    You can only use keys that the game is looking for.
 //
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1K
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1Б
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2Б.К.
+NUM_FORMAT_RP				| %1 %2О.Д.
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | Червоні зірки – старі й неяскраві, зазвичай до орбіти яких входять бідні на мінерали планети.
@@ -739,7 +741,7 @@ PLANETS_TREASURY                  | Скарбниця Імперії
 PLANETS_TREASURY_FUNDS            | Баланс Скарбниці
 PLANETS_TAX_DESC                  | Оподатковуйте свої колонії, щоб поповнити скарбницю імперії.
 PLANETS_RESERVE_TAX               | Резервний Податок
-PLANETS_RESERVE_INCREASE          | +%1 Б.К./Рік
+PLANETS_RESERVE_INCREASE          | +%1 %2Б.К./Рік
 PLANETS_RESERVE_NO_TAX            | Без Податків
 PLANETS_RESERVE_ONLY_DEVELOPED    | Оподатковувати лише повністю розвинені колонії
 PLANETS_BUTTON_TRANSFER           | ПЕРЕВЕСТИ
@@ -1251,8 +1253,8 @@ TECH_EMPIRE_SPENDING              | Витрати на Дослідження
 TECH_EMPIRE_SPENDING_DESC         | Сума усіх витрат колоній на дослідження
 TECH_EMPIRE_TECH_RESERVE_OPT      | Перенаправити зайві витрати колоній зі скарбниці на дослідження
 TECH_EMPIRE_BALANCED_DESC         | Збалансовані витрати збільшують загальні Очки Дослідження.
-TECH_EMPIRE_DETAIL_1              | %1 Б.К. за 
-TECH_EMPIRE_DETAIL_2              | %2 О.Д. / Рік
+TECH_EMPIRE_DETAIL_1              | %1 %2Б.К. за 
+TECH_EMPIRE_DETAIL_2              | %1 %2О.Д. / Рік
 TECH_TOTAL_RP                     | %1 О.Д.
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Натисніть, щоб дослідити цю технологію

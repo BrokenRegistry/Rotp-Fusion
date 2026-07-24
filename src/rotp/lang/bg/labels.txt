@@ -7,9 +7,11 @@
 //    You can only use keys that the game is looking for.
 //
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1K
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1B
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2BC
+NUM_FORMAT_RP				| %1 %2РП
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | Червените звезди са стари и по-малко ефективни звезди, които обикновено имат бедни планети.
@@ -740,7 +742,7 @@ PLANETS_TREASURY                  | Съкровищница на империя
 PLANETS_TREASURY_FUNDS            | Съкровищницата
 PLANETS_TAX_DESC                  | Облагайте с данъци колониите си, за да ги добавите към съкровищницата на империята.
 PLANETS_RESERVE_TAX               | Данък върху резервите
-PLANETS_RESERVE_INCREASE          | +%1 BC/година
+PLANETS_RESERVE_INCREASE          | +%1 %2BC/година
 PLANETS_RESERVE_NO_TAX            | Без Данък
 PLANETS_RESERVE_ONLY_DEVELOPED    | Данъчни са само напълно развити колонии
 PLANETS_BUTTON_TRANSFER           | Прехвърляне
@@ -1251,8 +1253,8 @@ TECH_EMPIRE_SPENDING              | Разходи на Империята
 TECH_EMPIRE_SPENDING_DESC         | Сума от техническите разходи на всички колонии. 
 TECH_EMPIRE_TECH_RESERVE_OPT      | Излишните разходи на колонии от съкровищни резерви към изследвания
 TECH_EMPIRE_BALANCED_DESC         | Балансираните разходи увеличават общите изследователски точки.
-TECH_EMPIRE_DETAIL_1              | %1 BC за
-TECH_EMPIRE_DETAIL_2              | %2 РП / Година
+TECH_EMPIRE_DETAIL_1              | %1 %2BC за
+TECH_EMPIRE_DETAIL_2              | %1 %2РП / Година
 TECH_TOTAL_RP                     | %1 РП
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Щракнете, за да изследвате тази технология

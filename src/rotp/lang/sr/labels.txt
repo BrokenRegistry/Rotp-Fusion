@@ -7,9 +7,11 @@
 //    You can only use keys that the game is looking for.
 //
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1H
-NUM_FORMAT_MILLIONS               | %1Mil
-NUM_FORMAT_BILLIONS               | %1M
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2MK
+NUM_FORMAT_RP				| %1 %2NP
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | Crvene zvezde su stare i tamne zvezde oko kojih se često nalaze siromašne planete.
@@ -740,7 +742,7 @@ PLANETS_TREASURY                  | Riznica Imperije
 PLANETS_TREASURY_FUNDS            | Fondovi Blagajne
 PLANETS_TAX_DESC                  | Oporezuj svoje kolonije da doprineseš imperijalnoj blagajni.
 PLANETS_RESERVE_TAX               | Porez na Rezerve
-PLANETS_RESERVE_INCREASE          | +%1 MK/God.
+PLANETS_RESERVE_INCREASE          | +%1 %2MK/God.
 PLANETS_RESERVE_NO_TAX            | Bez Poreza
 PLANETS_RESERVE_ONLY_DEVELOPED    | Oporezuj samo potpuno razvijene kolonije
 PLANETS_BUTTON_TRANSFER           | PRENESI
@@ -1252,8 +1254,8 @@ TECH_EMPIRE_SPENDING              | Tehnološka Potrošnja
 TECH_EMPIRE_SPENDING_DESC         | Zbir potrošnje svih kolonija na tehnologiju. 
 TECH_EMPIRE_TECH_RESERVE_OPT      | Preusmerite prekomernu potrošnju kolonija sa rezervi blagajne na istraživanje
 TECH_EMPIRE_BALANCED_DESC         | Uravnotežena potrošnja povećava ukupne tehnološke poene.
-TECH_EMPIRE_DETAIL_1              | %1 MK za 
-TECH_EMPIRE_DETAIL_2              | %2 NP / Godini
+TECH_EMPIRE_DETAIL_1              | %1 %2MK za 
+TECH_EMPIRE_DETAIL_2              | %1 %2NP / Godini
 TECH_TOTAL_RP                     | %1 NP
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Kliknite da Istražite ovu Tehnologiju

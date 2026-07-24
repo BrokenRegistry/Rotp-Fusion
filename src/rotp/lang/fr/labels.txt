@@ -52,9 +52,11 @@
 //
 
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1k
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1G
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2CG
+NUM_FORMAT_RP				| %1 %2PR
 
 // Basic Boolean Display
 BOOLEAN_YES                       | Oui
@@ -228,7 +230,7 @@ TECH_COMPUTERS_LEVEL_DESC         | Lors des missions d’espionnage, la différ
 TECH_CONSTRUCTION_LEVEL_DESC      | Chaque niveau de construction augmente l’espace disponible, pour toutes les tailles de coques, de 2%.
 TECH_FORCE_FIELDS_LEVEL_DESC      |
 
-TECH_PLANETOLOGY_LEVEL_DESC       | En début de partie, chaque colon produit 0,5BC. À mesure que votre niveau de technologie de Planétologie augmente, leur productivité suit. L’augmentation est progressive, et atteint une valeur double au niveau 17, triple au niveau 33 et quadruple au niveau 50.
+TECH_PLANETOLOGY_LEVEL_DESC       | En début de partie, chaque colon produit 0,5 CG. À mesure que votre niveau de technologie de Planétologie augmente, leur productivité suit. L’augmentation est progressive, et atteint une valeur double au niveau 17, triple au niveau 33 et quadruple au niveau 50.
 TECH_PROPULSION_LEVEL_DESC        |
 TECH_WEAPONS_LEVEL_DESC           | Les dommages que vos espions infligent lors les missions de sabotage augmentent avec votre niveau technologique d’armement. Davantage d’usines et de bases de missiles seront détruites.
 
@@ -239,7 +241,7 @@ EVENT_COMET                       | Une gigantesque comète approchant le systè
 EVENT_COMET_2                     | Une gigantesque comète devrait anéantir toute vie sur le monde [target_raceadjec] dans le système [system] dans seulement [years] ans. Davantage de vaisseaux armés sont nécessaires pour éviter cette catastrophe.
 EVENT_COMET_3                     | La comète menaçant le système [system] a été détruite, grâce aux efforts de la flotte [target_raceadjecF].
 EVENT_COMET_4                     | La comète fatale a détruit le monde [target_raceadjec] dans le système [system].
-EVENT_DONATION                    | Un riche marchand, désireux de soutenir la cause [target_raceadjecF], fait un don substantiel de [amt] BC. Ce montant est ajouté à la réserve planétaire.
+EVENT_DONATION                    | Un riche marchand, désireux de soutenir la cause [target_raceadjecF], fait un don substantiel de [amt] CG. Ce montant est ajouté à la réserve planétaire.
 EVENT_DEPLETED                    | La colonie [target_raceadjecF] du [system] a épuisé ses gisements de métaux lourds, rendant la planète pauvre en minéraux.
 EVENT_DERELICT                    | La flotte [target_empireof] a découvert un ancien vaisseau abandonné. Les scientifiques [target_race_pluralnounof] ont pu extraire de l’épave plusieurs technologies de champ de force et d’armement.
 EVENT_EARTHQUAKE                  | Un tremblement de terre dévastateur a frappé la colonie [target_raceadjecF] dans le système [system], tuant [amt] millions de colons, et endommageant de vastes zones d’activités industrielle.
@@ -249,11 +251,11 @@ EVENT_PIRACY                      | Des pirates ont commencé à perturber le co
 EVENT_PIRACY_2                    | Les pirates basés dans le système [system] continuent de perturber l’activité commerciale [target_race_pluralnounof], réduisant les niveaux commerciaux globaux d’environ [amt]%.
 EVENT_PIRACY_3                    | La flotte [target_raceadjecF] a détruit une opération de piratage majeure basée dans le système [system]. Dans l’ensemble, les échanges commerciaux sont revenus à leurs niveaux normaux.
 EVENT_PLAGUE                      | Une pandémie mortelle frappe la colonie [target_raceadjecF] dans le système [system]. La colonie a été mise en quarantaine, et on s’attend à des millions de morts par année, jusqu’à ce que les scientifiques réussissent à trouver un remède.
-EVENT_PLAGUE_2                    | La pandémie mortelle dans le système [system] persiste. Les scientifiques estiment avoir besoin d’encore [amt] RP pour trouver un remède.
+EVENT_PLAGUE_2                    | La pandémie mortelle dans le système [system] persiste. Les scientifiques estiment avoir besoin d’encore [amt] PR pour trouver un remède.
 EVENT_PLAGUE_3                    | Les scientifiques [target_race_pluraladjec] ont réussi à trouver un remède contre la pandémie mortelle qui affligeait le système [system]. La quarantaine du système a été levée.
 EVENT_REBELLION                   | La colonie [target_raceadjecF] dans le système [system] s’est révoltée, cessant toute production planétaire. La révolte se poursuivra jusqu’à ce que la rébellion soit vaincue militairement.
 EVENT_SUPERNOVA                   | Les scientifiques [target_race_pluraladjec] prédisent que l’étoile du système [system] deviendra une supernova d’ici [years] ans. Ils recommandent de rediriger toutes les recherches du système vers la recherche d’une solution.
-EVENT_SUPERNOVA_2                 | La menace d’une supernova dans le système [system] d’ici [years] ans demeure. Les scientifiques estiment qu’il faudra encore [amt] RP pour prévenir cette catastrophe.
+EVENT_SUPERNOVA_2                 | La menace d’une supernova dans le système [system] d’ici [years] ans demeure. Les scientifiques estiment qu’il faudra encore [amt] PR pour prévenir cette catastrophe.
 EVENT_SUPERNOVA_3                 | En travaillant fébrilement, les physiciens [target_race_pluraladjec] dans le système [system] ont trouvé un moyen de retarder la supernova de leur étoile proche dans un avenir prévisible.
 EVENT_SUPERNOVA_4                 | L’étoile du système [system] est devenue une supernova, irradiant le monde [target_raceadjec], dévastant son environnement et tuant des millions de personnes.
 EVENT_VIRUS                       | Un virus informatique hautement destructeur frappe les centres de recherche [target_race_pluraladjec], détruisant des années de recherche en [technology].
@@ -264,7 +266,7 @@ EVENT_SPACE_AMOEBA_2              | L’Amibe Spatiale a complètement détruit 
 EVENT_SPACE_AMOEBA_3              | L’Amibe Spatiale a été détruite par les défenseurs [victim_race_pluraladjec] dans le système [system].
 EVENT_SPACE_AMOEBA_4              | Les scanners qui ont suivi les progrès d’une Amibe spatiale indiquent que la créature a disparu de notre galaxie.
 EVENT_SPACE_AMOEBA_TRIG           | La SCT (Société qui Clone Tout) a incarné avec succès une horreur transdimensionnelle. Lorsqu’on leur a demandé des commentaires, les porte-parole ont dit : AAAAAAAAHHHHHHHHH !! ÇA BRÛLE !
-EVENT_SPACE_AMOEBA_PLUNDER        | →EVENT_SPACE_AMOEBA_3←. L’étude de la monstruosité visqueuse a permis aux scientifiques de faire avancer leurs recherches en planétologie, et la vente de sa chair très prisée apporte [amt] BC aux coffres de l’empire.
+EVENT_SPACE_AMOEBA_PLUNDER        | →EVENT_SPACE_AMOEBA_3←. L’étude de la monstruosité visqueuse a permis aux scientifiques de faire avancer leurs recherches en planétologie, et la vente de sa chair très prisée apporte [amt] CG aux coffres de l’empire.
 
 EVENT_SPACE_CRYSTAL               | Une gigantesque entité cristalline appelée «le Cristal Spatial» a été repérée s’approchant du système [system]. Les colons et les flottes [victim_race_pluraladjecF] se préparent au pire.
 EVENT_SPACE_CRYSTAL_1             | Une gigantesque entité cristalline appelée «le Cristal Spatial» a été repérée s’approchant du système non colonisé [system].
@@ -272,13 +274,13 @@ EVENT_SPACE_CRYSTAL_2             | Le Cristal Spatial a complètement détruit 
 EVENT_SPACE_CRYSTAL_3             | Le Cristal Spatial a été détruit par les défenseurs [victim_race_pluraladjec] dans le système [system].
 EVENT_SPACE_CRYSTAL_4             | Le hideux Cristal Spatial a quitté notre galaxie. Pourquoi ? Pourquoi est-ce parti ? La galaxie ne le saura peut-être jamais.
 EVENT_SPACE_CRYSTAL_TRIG          | Les scientifiques responsables de la nouvelle technologie de la Porte des Étoiles ont déclaré : Nous regardions l’abîme, et l’abîme gronde Miam Miam Miam !
-EVENT_SPACE_CRYSTAL_PLUNDER       | →EVENT_SPACE_CRYSTAL_3←.<br> La recherche actuelle en matière de propulsion pourrait être complétée par l’analyse des restes cristallins, et la vente des cristaux secondaires rapporte [amt] BC à la réserve de l’empire.
+EVENT_SPACE_CRYSTAL_PLUNDER       | →EVENT_SPACE_CRYSTAL_3←.<br> La recherche actuelle en matière de propulsion pourrait être complétée par l’analyse des restes cristallins, et la vente des cristaux secondaires rapporte [amt] CG à la réserve de l’empire.
 
 // modnar: add space pirate random event
 EVENT_SPACE_PIRATES               | Une flotte de pirates maraudeurs a été repérée près du système [system]. Les colons [victim_race_pluraladjec] et les flottes de défense se préparent au pire.
 EVENT_SPACE_PIRATES_1             | Une flotte de pirates maraudeurs a été repérée près du système non colonisé [system].
 EVENT_SPACE_PIRATES_2             | Les redoutables pirates spatiaux ont ravagé la population et pillé toute l’industrie de la colonie [victim_raceadjecF] dans le système [system], dévastant également l’écologie locale.
-EVENT_SPACE_PIRATES_3             | La flotte de pirates a été détruite par les défenseurs [race] dans le système [system]. Des richesses importantes trouvées dans les épaves ont été saisies par l’armée [race] pour renforcer la réserve planétaire par [amt] BC.
+EVENT_SPACE_PIRATES_3             | La flotte de pirates a été détruite par les défenseurs [race] dans le système [system]. Des richesses importantes trouvées dans les épaves ont été saisies par l’armée [race] pour renforcer la réserve planétaire par [amt] CG.
 EVENT_SPACE_PIRATES_4             | Les pirates spatiaux ont quittés notre insignifiante galaxie ! Où sont-ils passé ? On s’en fiche, bon débarras !
 EVENT_SPACE_PIRATES_TRIG          | La récente découverte de la Propulsion Hyperspatiale va tout changer. Par exemple, les criminels se réjouissent de leur nouvelle mobilité.
 EVENT_SPACE_PIRATES_PLUNDER       | →EVENT_SPACE_PIRATES_3←.<br> L’étude des vaisseaux pirates endommagés aide à faire avancer certains projets de recherche en cours.
@@ -372,13 +374,13 @@ INC_TECH_FRAMED_DESC              | Des espions inconnus ont volé des secrets t
 INC_TECH_EXCHANGE_TITLE           | Technologie échangée
 INC_TECH_EXCHANGE_DESC            | [my_empire] a enseigné les secrets de [techGiven] à [your_empire] en échange des secrets de [techReceived].
 INC_FINANCIAL_AID_TITLE           | Aide financière
-INC_FINANCIAL_AID_DESC            | [your_empire] a donné gratuitement [amt] BC à [my_empire].
+INC_FINANCIAL_AID_DESC            | [your_empire] a donné gratuitement [amt] CG à [my_empire].
 INC_TECHNOLOGY_AID_TITLE          | De l’aide technologique
 INC_TECHNOLOGY_AID_DESC           | [your_empire] a librement partagé les secrets de [tech] avec [my_empire].
 INC_TECHNOLOGY_AID_DESC_MULT      | [your_empire] a librement partagé avec [my_empire] les secrets des technologies suivantes : [techs]
 INC_TECHNOLOGY_TECH_LIST_COMMA    | ,
 INC_ENEMY_AID_TITLE               | Aide à l’ennemi
-INC_ENEMY_AID_MONEY_DESC          | [your_empire] a donné [amt] BC en aide à [enemy_empire], un ennemi [my_empireof].
+INC_ENEMY_AID_MONEY_DESC          | [your_empire] a donné [amt] CG en aide à [enemy_empire], un ennemi [my_empireof].
 INC_ENEMY_AID_TECH_DESC           | [your_empire] a donné les secrets de [tech] à [enemy_empire], un ennemi [my_empireof].
 INC_PARANOIA_TITLE                | Paranoïa
 INC_PARANOIA_DESC1                | Une frange radicale de théoriciens du complot dans [my_empire] croient ridiculement que [your_race_pluralnoun] représentent une menace existentielle pour leur espèce. [your_empire] occupe désormais [num] systèmes fondés à l’origine par [my_empire].
@@ -438,7 +440,7 @@ INC_SIGNED_ARMISTICE_DESC         | [my_empire] et [your_empire] ont signé un a
 INC_SIGNED_PEACE_TITLE            | Traité de Paix
 INC_SIGNED_PEACE_DESC             | [my_empire] et [your_empire] ont signé un traité de paix, mettant fin à toutes les hostilités jusqu’en [endYear].
 INC_SIGNED_TRADE_TITLE            | Traité Commercial
-INC_SIGNED_TRADE_DESC             | [my_empire] et [your_empire] ont convenu d’un traité commercial jusqu’à un montant annuel maximum de [amt] BC.
+INC_SIGNED_TRADE_DESC             | [my_empire] et [your_empire] ont convenu d’un traité commercial jusqu’à un montant annuel maximum de [amt] CG.
 INC_SKIRMISH_TITLE                | Escarmouche
 INC_SKIRMISH_DESC                 | Les flottes [my_raceadjecF] et [your_raceadjecF] engagées dans le combat dans le système [system].
 INC_SPY_CONFESSION_TITLE          | Confession d’Espion
@@ -446,7 +448,7 @@ INC_SPY_CONFESS_ESPIONAGE_DESC    | Un espion [spy_empireof] a été capturé et
 INC_SPY_CONFESS_SABOTAGE_DESC     | Un espion [spy_empireof] a été capturé et a avoué ses activités de sabotage en cours prévues contre [victim_empire].
 INC_SPY_CAPTURED_DESC             | Un espion [spy_empireof] a été capturé et a avoué sous la contrainte, des activités de sabotage en cours prévues contre [victim_empire].
 INC_TRADE_INCOME_TITLE            | Bénéfice Commercial
-INC_TRADE_INCOME_DESC             | Le commerce entre [your_empire] et [my_empire] a généré un profit de [amt] BC.
+INC_TRADE_INCOME_DESC             | Le commerce entre [your_empire] et [my_empire] a généré un profit de [amt] CG.
 INC_TRESPASSING_TITLE             | Intrusion
 INC_TRESPASSING_DESC              | Les flottes [your_race_pluraladjecF] s’introduisent dans le système [system], qui fait partie [my_empireof].
 
@@ -783,9 +785,9 @@ MAIN_TURN_DISPLAY                 | Tour  %1
 MAIN_SPY_REPORT                   | Espion
 MAIN_TECH_NONE                    | Aucune Recherche
 MAIN_TECH_COMPLETED               | Recherche Terminée
-MAIN_TECH_RP_REMAINING            | %1 RP Restant(s)
+MAIN_TECH_RP_REMAINING            | %1 PR Restant(s)
 MAIN_TECH_RP_DISCOVERY            | Découverte Imminente
-MAIN_TECH_RESERVE_BC              | %1 BC
+MAIN_TECH_RESERVE_BC              | %1 CG
 MAIN_TECH_RESERVE_TAX_ALL         | Taxer %1 % de la production sur toutes les colonies
 MAIN_TECH_RESERVE_TAX             | Taxer %1 % de la production sur les colonies développées
 MAIN_TECH_RESERVE_TAX_NONE        | Aucune taxe prélevée sur la production des colonies
@@ -839,7 +841,7 @@ MAIN_HELP_3H                      | Année Suivante - Fait avancer le jeu à l�
 MAIN_HELP_3I                      | Tour actuel - Affiche le tour actuel du jeu ou l’année en cours de votre empire. Cliquez pour basculer.
 MAIN_HELP_3J                      | Commandes de la carte - Cliquez pour parcourir les différents paramètres d’affichage de la carte de la galaxie.
 // Smart-Max Help
-MAIN_HELP_4A                      | Les assistants Min/Max garderont toujours ÉCO propre.<br>- Smooth Min/Max : est équivalent à cliquer sur la flèche Haut/Bas jusqu’à atteindre la cible. Les BC libérés seront redistribués intelligemment. (Suivant la méthode de "Rafraîchir")<br>- Smart Min/Max : (Maj + Clic) effacera les dépenses débloquées, définira l’allocation Min/Max, nettoiera ÉCO, puis redistribuera intelligemment les BC restants.<br>- Rafraîchir : (Ctrl + Clic) effacera les dépenses débloquées puis redistribuera intelligemment les BC disponibles selon votre priorisation, dans la séquence : {ÉCOLOGIE, INDUSTRIE, FLOTTE, DÉFENSES, RECHERCHE}
+MAIN_HELP_4A                      | Les assistants Min/Max garderont toujours ÉCO propre.<br>- Smooth Min/Max : est équivalent à cliquer sur la flèche Haut/Bas jusqu’à atteindre la cible. Les CG libérés seront redistribués intelligemment. (Suivant la méthode de "Rafraîchir")<br>- Smart Min/Max : (Maj + Clic) effacera les dépenses débloquées, définira l’allocation Min/Max, nettoiera ÉCO, puis redistribuera intelligemment les CG restants.<br>- Rafraîchir : (Ctrl + Clic) effacera les dépenses débloquées puis redistribuera intelligemment les CG disponibles selon votre priorisation, dans la séquence : {ÉCOLOGIE, INDUSTRIE, FLOTTE, DÉFENSES, RECHERCHE}
 MAIN_HELP_4B                      | Chantier naval : <br> Clic-gauche : Allocation minimale nécessaire pour construire jusqu’à la limite.<br> Clic-droit : Allocation maximale disponible.
 MAIN_HELP_4C                      | Défenses : <br> Clic-gauche : Allocation minimale nécessaire pour construire les bases demandées.<br> Clic-droit : Allocation maximale disponible. <br>Clic-milieu : Allocation minimale pour construire le bouclier.
 MAIN_HELP_4D                      | Industrie : <br> Clic-gauche : Allocation minimale nécessaire pour finaliser les usines.<br> Clic-droit : Allocation maximale disponible. <br>Clic-milieu : Allocation minimale nécessaire pour suivre la croissance de la population.
@@ -854,8 +856,8 @@ MAIN_HELP_5D					| Il est urgent de produire des usines.<br>(Je prévois de vous
 MAIN_HELP_5E                      | Il est urgent de mettre à jour nos boucliers protecteurs...<br>(Nos voisins sont un peu agressif)
 MAIN_HELP_5F					| Il est urgent de finaliser nos bases de missiles.<br> (Des flottes ennemies approchent)
 MAIN_HELP_5G					| Ne vous laissez pas ditraire par autre chose que de bâtir et de populer cette colonie.
-MAIN_HELP_5H                      | Une fois vos tâches principales exécutées (bâtir et peuplement), utilisez les BC restants pour construire des vaisseaux. (En bleu lorsque activé)
-MAIN_HELP_5I                      | Favoriser la recherche (en bleu lorsque activé). Une fois vos tâches principales exécutées (bâtir et peuplement), attribuez les BC restants à la science.<br>Il est Prioritaire de poursuivre nos recherches (en pourpre lorsque activé). Gardez la colonie propre et donnez le pourcentage prioritaire du reste à nos scientifiques.
+MAIN_HELP_5H                      | Une fois vos tâches principales exécutées (bâtir et peuplement), utilisez les CG restants pour construire des vaisseaux. (En bleu lorsque activé)
+MAIN_HELP_5I                      | Favoriser la recherche (en bleu lorsque activé). Une fois vos tâches principales exécutées (bâtir et peuplement), attribuez les CG restants à la science.<br>Il est Prioritaire de poursuivre nos recherches (en pourpre lorsque activé). Gardez la colonie propre et donnez le pourcentage prioritaire du reste à nos scientifiques.
 MAIN_HELP_5J                      | Il est prioritaire de finaliser ce nombre de vaisseaux. Gardez la colonie propre et donnez le pourcentage spécifié du reste à nos chantiers.<br>Lorsque la touche Alt est pressée: Pourcentage à accorder au tâches prioritaires. (100 % par défaut)
 MAIN_HELP_5K                      | « Ctrl-clic » : Pour autoriser / interdire l’envoi de transports. On manque de main d’oeuvre. Ne prennez pas l’initiative d’envoyer nos travailleurs sur d’autre planètes.
 
@@ -1044,7 +1046,7 @@ MAIN_COLONY_SPENDING_SHIELD       | Boucliers
 MAIN_COLONY_SPENDING_UPG_BASES    | Rénove
 MAIN_COLONY_SPENDING_PLAGUE       | Pandémies
 MAIN_COLONY_SPENDING_SUPERNOVA    | Supernova
-MAIN_COLONY_SPENDING_RP           | %1 RP
+MAIN_COLONY_SPENDING_RP           | %1 PR
 MAIN_COLONY_COMPLETION_YEAR       | 1 An
 MAIN_COLONY_COMPLETION_YEARS      | %1 Ans
 MAIN_COLONY_COMPLETION_CENTURY    | %1 Ans
@@ -1172,7 +1174,7 @@ MAIN_ALERT_INVADERS_CAPTURED      | %2 transports [alien_race_pluraladjec] arriv
 MAIN_ALERT_INVADERS_KILLED        | %2 transports [alien_race_pluraladjec] tentant d’envahir %1 ont été complètement détruits par nos forces défensives.
 MAIN_ALERT_TRESPASSING1           | Des vaisseaux [alien_race_pluraladjec] ont été repérés en train de s’introduire près de notre colonie dans le système %1.
 MAIN_ALERT_TRESPASSING2           | L’ambassadeur [alien_raceadjec] proteste contre l’intrusion de nos vaisseaux dans le système %1.
-MAIN_ALERT_TRADE_MATURED          | Notre traité commercial avec [alien_empire] a atteint sa valeur maximale de %2 BC.
+MAIN_ALERT_TRADE_MATURED          | Notre traité commercial avec [alien_empire] a atteint sa valeur maximale de %2 CG.
 MAIN_ALERT_ALLIANCE_WEAKENING     | Notre alliance avec [ally_empire] s’affaiblit.
 MAIN_ALERT_ALLIANCE_BREAKING      | Notre alliance avec [ally_empire] est sur le point de s’effondrer !
 
@@ -1197,17 +1199,17 @@ PLANETS_INCOME_TOTAL              | Total
 PLANETS_TREASURY                  | Trésor de l’Empire
 PLANETS_TREASURY_FUNDS            | Fonds du Trésor
 PLANETS_TAX_DESC                  | Imposez vos colonies pour financer votre empire.
-PLANETS_BUDGET_SUBSIDIES		| Subsides : %1 BC
+PLANETS_BUDGET_SUBSIDIES		| Subsides : %1 %2CG
 PLANETS_BUDGET_TAX_INCOME		| Impôts
-PLANETS_BUDGET_TOTAL_INCOME		| Revenus : %1 BC
+PLANETS_BUDGET_TOTAL_INCOME		| Revenus : %1 %2CG
 PLANETS_BUDGET_NO_INCOME		| Pas de Revenus
 PLANETS_BUDGET_NO_SUBSIDIES		| Pas de Subsides
-PLANETS_BUDGET_UNUSED_PLAYER	| Marge du Joueur : %1 BC
-PLANETS_BUDGET_UNUSED			| Inutilisé : %1 BC
+PLANETS_BUDGET_UNUSED_PLAYER	| Marge du Joueur : %1 %2CG
+PLANETS_BUDGET_UNUSED			| Inutilisé : %1 %2CG
 PLANETS_BUDGET_ALL_USED_PLAYER	| Consommé par le joueur
 PLANETS_BUDGET_UNUSED_NONE		| Inutilisé : Rien
-PLANETS_RESERVE_TAX               | Taux
-PLANETS_RESERVE_INCREASE          | +%1 BC/Année
+PLANETS_RESERVE_TAX				| Taux
+PLANETS_RESERVE_INCREASE		| +%1 %2CG/Année
 PLANETS_RESERVE_NO_TAX            | Aucun Impôts
 PLANETS_RESERVE_ONLY_DEVELOPED    | N’imposer que les colonies totalement développées.
 PLANETS_RES_FULL_DEF_LABEL        | Manquant max :
@@ -1220,16 +1222,16 @@ PLANETS_BUTTON_REMOVE			| Supprimer le budget du joueur
 PLANETS_BUTTON_CONVERT			| Transferer le budget
 PLANETS_BUTTON_BUDGET_WISH		| Budgeter les montant optimaux
 PLANETS_BUTTON_SHARE_WISH		| Répartir les montant optimaux
-PLANETS_RESERVE_PLAYER			| Budget restant du joueur : %1 BC
-PLANETS_RESERVE_CURRENT			| Budget restant disponible : %1 BC
+PLANETS_RESERVE_PLAYER			| Budget restant du joueur : %1 %2CG
+PLANETS_RESERVE_CURRENT			| Budget restant disponible : %1 %2CG
 PLANETS_BUDGET_CURRENT_NONE		| Aucun budget n’a été établi pour cette colonie.
-PLANETS_BUDGET_GOVERNOR_ALONE	| Budget initial du gouverneur : %1 BC
-PLANETS_BUDGET_CURRENT_PLAYER	| Budget établi par le joueur : %1 BC
-PLANETS_BUDGET_GOVERNOR_SUGGEST	| (Budget initial du gouverneur : %1 BC)
+PLANETS_BUDGET_GOVERNOR_ALONE	| Budget initial du gouverneur : %1 %2CG
+PLANETS_BUDGET_CURRENT_PLAYER	| Budget établi par le joueur : %1 %2CG
+PLANETS_BUDGET_GOVERNOR_SUGGEST	| (Budget initial du gouverneur : %1 %2CG)
 PLANETS_BUDGET_NO_GOVERNOR		| Le gouverneur n’est pas impliqué dans ce budget.
 
 PLANETS_AMT_PCT                   | %1 %
-PLANETS_AMT_BC                    | %1 BC
+PLANETS_AMT_BC                    | %1 CG
 PLANETS_TRANSFER_DESC             | Transférer des fonds de l’Empire vers %1
 PLANETS_TRANSFER_CANCEL           | Annuler
 PLANETS_TRANSFER_ACCEPT           | Transférer
@@ -1444,9 +1446,9 @@ TECH_RESEARCH_WEAPON              | Sélectionnez la prochaine technologie d’a
 TECH_TOP_TIER_DETAIL              | La réalisation de ces recherches rendra disponibles des technologies plus avancées.
 TECH_OBSOLETE_DETAIL              | Cette technologie est obsolète.
 TECH_CAN_CHANGE                   | Ce choix peut être modifié sur l’écran Technologie avant de passer au tour suivant.
-TECH_CHOOSE_RESEARCH_COST         | %1 RP
+TECH_CHOOSE_RESEARCH_COST         | %1 PR
 TECH_CHOOSE_RESEARCH_TIER         | Niveau %1
-TECH_TRADE_TIER_COST_INFO         | (Niveau %1 - %2 RP)
+TECH_TRADE_TIER_COST_INFO         | (Niveau %1 - %2 PR)
 TECH_CONFIRM_CHOICE               | Sélectionner
 TECH_DISCOVERY_TITLE              | Les scientifiques [player_race_pluraladjec] réalisent une percée %1
 TECH_SCOUTED_TITLE                | Les éclaireurs explorant les ruines de %1 découvrent
@@ -4283,7 +4285,7 @@ SETTINGS_MOD_MONSTERS_GIVE_LOOTS_DESC     | Un butin sera donné lorsque vous tu
 SETTINGS_MOD_MONSTERS_GIVE_LOOTS          | Monstres -> Butins : %1
 SETTINGS_MOD_MONSTERS_GIVE_LOOTS_YES      | →BOOLEAN_YES←
 SETTINGS_MOD_MONSTERS_GIVE_LOOTS_NO       | →BOOLEAN_NO←
-SETTINGS_MOD_MONSTERS_GIVE_LOOTS_YES_DESC | BC, Tech, or Ship
+SETTINGS_MOD_MONSTERS_GIVE_LOOTS_YES_DESC | CG, Tech, or Ship
 SETTINGS_MOD_MONSTERS_GIVE_LOOTS_NO_DESC  | Default value (Vanilla)
 
 SETTINGS_MOD_MONSTERS_LEVEL_HELP         | Les monstres par défaut de RotP sont assez redoutables. Cette option réduira la difficulté de moitié.<br>Ou doublera la difficulté pour ceux qui aiment les défis.
@@ -4708,9 +4710,9 @@ TECH_EMPIRE_SPENDING              | Budget de Recherche
 TECH_EMPIRE_SPENDING_DESC         | Somme des dépenses technologiques de toutes les colonies.
 TECH_EMPIRE_TECH_RESERVE_OPT      | Transférer les dépenses excédentaires de la colonie de la réserve du Trésor vers la recherche
 TECH_EMPIRE_BALANCED_DESC         | Des dépenses équilibrées augmentent les points de recherche globaux.
-TECH_EMPIRE_DETAIL_1              | %1 BC pour
-TECH_EMPIRE_DETAIL_2              | %2 RP / Année
-TECH_TOTAL_RP                     | %1 RP
+TECH_EMPIRE_DETAIL_1              | %1 %2CG pour
+TECH_EMPIRE_DETAIL_2              | %1 %2PR / Année
+TECH_TOTAL_RP                     | %1 PR
 TECH_LEVEL                        | Niveau %1
 TECH_DISCOVERY_PCT                | %1 %
 TECH_CHANGE_RESEARCH              | Cliquez pour rechercher cette technologie
@@ -4741,7 +4743,7 @@ TECH_WASTE_REDUCTION              | Réduction des déchets
 TECH_WASTE_REDUCTION_NONE         | Aucune
 TECH_WASTE_REDUCTION_AMT          | -%1 %
 TECH_WASTE_CLEANUP                | Décontamination
-TECH_WASTE_CLEANUP_BONUS          | %1 Déchets/BC
+TECH_WASTE_CLEANUP_BONUS          | %1 Déchets/CG
 TECH_SHIP_RANGE                   | Portée de vaisseaux
 TECH_SHIP_RANGE_AMT               | %1 A.L.
 TECH_SHIP_SPEED                   | Vitesse de pointe
@@ -4752,10 +4754,10 @@ TECH_FREE_TECH                    | Gratis
 // Tech UI help
 TECH_HELP_1A                      | APERÇU - Cet écran vous permet d’ajuster les dépenses dans les six domaines technologiques que vous pouvez étudier. Vous pouvez passer en revue les technologies déjà apprises (vert), en cours de recherche (jaune) ou disponibles pour de futures recherches (marron).
 TECH_HELP_1B                      | Cliquez ou faites défiler avec la molette de la souris pour afficher les technologies d’un domaine de recherche.
-TECH_HELP_1C                      | Se remplit lorsque des points de recherche (RP) sont dépensés dans une zone. Une fois rempli, il y a une chance croissante à chaque tour d’apprendre la technologie.
+TECH_HELP_1C                      | Se remplit lorsque des points de recherche (PR) sont dépensés dans une zone. Une fois rempli, il y a une chance croissante à chaque tour d’apprendre la technologie.
 TECH_HELP_1D                      | Technologie actuellement à l’étude. Voyez sa description pour les avantages.
 TECH_HELP_1E                      | Avantages généraux fournis par les technologies déjà apprises dans ce domaine.
-TECH_HELP_1F                      | La production totale (BC) appliquée à la recherche et les points de recherche totaux (RP) qui en découlent.
+TECH_HELP_1F                      | La production totale (CG) appliquée à la recherche et les points de recherche totaux (PR) qui en découlent.
 TECH_HELP_1G                      | Les dépenses excessives dans une colonie peuvent être dirigées vers la recherche au lieu du trésor de l’empire.
 TECH_HELP_1H                      | Chaque domaine technologique a une barre de dépenses. Cliquez sur le nom pour verrouiller une barre. Les dépenses du premier 1/6ème de chaque barre gagnent un bonus de recherche de 25 %.
 TECH_HELP_1I                      | Égalisez les allocations de dépenses pour les barres déverrouillées.
@@ -4796,7 +4798,7 @@ SHIP_DESIGN_DESCRIPTION_LABEL     | Description
 SHIP_DESIGN_RANGE_VALUE           | %1 a.l.
 SHIP_DESIGN_RANGE_UNLIMITED       | Illimité
 SHIP_DESIGN_SPEED_VALUE           | Distorsion %1
-SHIP_DESIGN_COST_VALUE            | %1 BC
+SHIP_DESIGN_COST_VALUE            | %1 CG
 SHIP_DESIGN_TOTAL_SPACE_LABEL     | Espace utilisé
 SHIP_DESIGN_AVAIL_SPACE_LABEL     | Espace disponible
 SHIP_DESIGN_COLORS                | Teinte
@@ -4825,7 +4827,7 @@ SHIP_DESIGN_DEPLOY_BUTTON         | Déployer
 SHIP_DESIGN_DEPLOY_DESC           | Une fois déployé, vos colonies pourront construire ce vaisseau. Ce vaisseau ne pourra qu’être renommé ou mis au rebut.
 SHIP_DESIGN_SCRAP_BUTTON          | Supprimer ce modèle
 SHIP_DESIGN_SCRAP_CONFIRM1        | Êtes-vous sûr de vouloir supprimer le modèle %1 ?
-SHIP_DESIGN_SCRAP_CONFIRM2        | Cela détruira %1 vaisseaux de votre flotte et placera %2 BC dans la réserve planétaire.
+SHIP_DESIGN_SCRAP_CONFIRM2        | Cela détruira %1 vaisseaux de votre flotte et placera %2 CG dans la réserve planétaire.
 SHIP_DESIGN_SCRAP_CONFIRM3        | Vous n’avez actuellement aucun vaisseau construit de ce modèle.
 SHIP_DESIGN_SCRAP_CANCEL          | Annuler
 SHIP_DESIGN_SCRAP_OK              | Supprimer
@@ -5190,7 +5192,7 @@ RACES_PACT                        | Pacte de non-agression
 RACES_ALLY                        | Alliance
 RACES_UNITY                       | Unité
 RACES_OUT_OF_RANGE                | Hors de portée de nos vaisseaux
-RACES_TRADE_LEVEL                 | Traité commercial de %1 BC
+RACES_TRADE_LEVEL                 | Traité commercial de %1 CG
 RACES_TRADE_NONE                  | Pas de traité commercial
 RACES_DIPLOMAT_RECALLED           | Diplomate [alien_raceadjec] rappelé
 RACES_DIPLOMATS_RECALLED          | Diplomates rappelés
@@ -5203,7 +5205,7 @@ RACES_DIPLOMACY_HOMEWORLD         | Planète
 RACES_DIPLOMACY_LEADER            | Chef
 RACES_DIPLOMACY_CURRENT_TRADE     | Revenu commercial courant
 RACES_DIPLOMACY_TOTAL_TRADE       | Total des traités commerciaux
-RACES_DIPLOMACY_TRADE_AMT         | %1 BC
+RACES_DIPLOMACY_TRADE_AMT         | %1 CG
 RACES_DIPLOMACY_CHARACTER         | Personnage
 RACES_DIPLOMACY_STATUS            | Statut
 RACES_DIPLOMACY_LAST_VOTE         | Dernier vote
@@ -5276,7 +5278,7 @@ RACES_INTEL_NO_SPIES              | Pas d’espions
 RACES_INTEL_1_SPY                 | 1 espion
 RACES_INTEL_N_SPIES               | %1 espions
 RACES_INTEL_SPIES                 | %1 / %2
-RACES_INTEL_SPENDING_ANNUAL       | %1 BC/année
+RACES_INTEL_SPENDING_ANNUAL       | %1 CG/année
 RACES_INTEL_CURRENT               | Courant
 RACES_INTEL_NO_DATA               | Pas de données
 RACES_INTEL_SPENDING_NONE         | Aucune
@@ -5531,8 +5533,8 @@ SYSTEMS_HELP_1H                   | Historique du Système - une liste chronolog
 
 SYSTEMS_STATUS_REBELLION          | La colonie est en rébellion.
 SYSTEMS_STATUS_COMET              | Une comète frappera cette planète dans %1 ans.
-SYSTEMS_STATUS_SUPERNOVA          | L’étoile du système deviendra une supernova dans %1 ans. Les physiciens ont besoin de %2 RP pour éviter cette catastrophe.
-SYSTEMS_STATUS_PLAGUE             | La colonie connaît un fléau planétaire nécessitant %1 RP pour y remédier.
+SYSTEMS_STATUS_SUPERNOVA          | L’étoile du système deviendra une supernova dans %1 ans. Les physiciens ont besoin de %2 PR pour éviter cette catastrophe.
+SYSTEMS_STATUS_PLAGUE             | La colonie connaît un fléau planétaire nécessitant %1 PR pour y remédier.
 SYSTEMS_STATUS_PIRACY             | Les pirates affectent les routes commerciales dans ce système.
 SYSTEMS_STATUS_SPACE_AMOEBA       | Une Amibe Spatiale géante se dirige vers ce système.
 SYSTEMS_STATUS_SPACE_CRYSTAL      | Un gigantesque Cristal Spatial se dirige vers ce système.
@@ -5551,12 +5553,12 @@ DIPLOMACY_MENU_ACKNOWLEDGE        | Reconnaître
 DIPLOMACY_MENU_ACCEPT             | Accepter
 DIPLOMACY_MENU_ACCEPT_NEED_BC     | Accepter (Pas assez de fonds)
 DIPLOMACY_MENU_FORGET_IT          | N’y pensez pas
-DIPLOMACY_TRADE_LEVEL             | %1 BC / Année
+DIPLOMACY_TRADE_LEVEL             | %1 CG/Année
 DIPLOMACY_MENU_TREATIES           | Proposer un traité
 DIPLOMACY_MENU_TRADE              | Accord commercial
 DIPLOMACY_MENU_TECHNOLOGY         | Échanger des technologies
 DIPLOMACY_MENU_OFFER_AID          | Offrir de l’aide
-DIPLOMACY_MENU_AMT                | %1 BC
+DIPLOMACY_MENU_AMT                | %1 CG
 DIPLOMACY_MENU_OFFER_TECHS        | Offrir une technologie
 DIPLOMACY_MENU_THREATEN           | Menacer
 DIPLOMACY_MENU_DECLARE_WAR        | Déclarer la guerre

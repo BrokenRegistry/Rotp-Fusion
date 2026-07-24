@@ -523,13 +523,11 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
 
         int y6 = subPanelY+s93;
         g.setFont(plainFont(25));
-        String spending = shortFmt(totalSpending);
-        String research = shortFmt(totalResearch);
-        String detailLine1 = text("TECH_EMPIRE_DETAIL_1", spending, research);
+		String detailLine1 = compactFmt(totalSpending, 0, "TECH_EMPIRE_DETAIL_1");
         int detSW = g.getFontMetrics().stringWidth(detailLine1);
         int x6 = subPanelX+((subPanelW-detSW)/2);
         drawString(g,detailLine1, x6, y6);
-        String detailLine2 = text("TECH_EMPIRE_DETAIL_2", spending, research);
+		String detailLine2 = compactFmt(totalResearch, 0, "TECH_EMPIRE_DETAIL_2");
         detSW = g.getFontMetrics().stringWidth(detailLine2);
         y6 += s28;
         x6 = subPanelX+((subPanelW-detSW)/2);
@@ -659,10 +657,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
             int pct = (int) (100* (chance -1));
             return text("TECH_DISCOVERY_PCT",pct);
         }
-        else if (cost > 10000)
-            return text("TECH_TOTAL_RP",shortFmt(cost));
-        else 
-            return text("TECH_TOTAL_RP",cost);
+		return compactFmt(cost, 0, "NUM_FORMAT_RP");
     }
     private void drawCategorySlider(Graphics2D g, int catNum, int x, int y, int w, int h) {
         TechCategory cat = player().tech().category(catNum);
@@ -732,7 +727,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
         g.setColor(c3);
         g.fillPolygon(rightArrow[catNum]);
 
-        String rpText = text("TECH_TOTAL_RP",shortFmt(cat.currentResearch(totalPlanetaryResearch())));
+		String rpText = compactFmt(cat.currentResearch(totalPlanetaryResearch()), 0, "NUM_FORMAT_RP");
         g.setColor(Color.lightGray);
         g.setFont(plainFont(17));
         int rpSW = g.getFontMetrics().stringWidth(rpText);

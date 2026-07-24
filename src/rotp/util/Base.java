@@ -568,19 +568,19 @@ public interface Base extends InputEventUtil {
         if (amt < 1e4)
             return str(amt);
         else if (amt < 1e5) 
-            return text("NUM_FORMAT_THOUSANDS", df1.format(amt/1000f));       
+            return text("NUM_FORMAT_THOUSANDS", df1.format(amt/1000f));
         else if (amt < 1e6) {
             amt = amt/1000;
-            return text("NUM_FORMAT_THOUSANDS", amt);            
+            return text("NUM_FORMAT_THOUSANDS", amt);
         }
         else if (amt < 1e7) {
             String amtStr =df2.format(amt/1000000f);
             return text("NUM_FORMAT_MILLIONS", amtStr);
-        }   
+        }
         else if (amt < 1e8) {
             String amtStr =df1.format(amt/1000000f);
             return text("NUM_FORMAT_MILLIONS", amtStr);
-        }   
+        }
         else if (amt < 1e9) {
             amt = amt / 1000000;
             return text("NUM_FORMAT_MILLIONS", amt);
@@ -597,7 +597,42 @@ public interface Base extends InputEventUtil {
             amt = amt/1000000000;
             return text("NUM_FORMAT_BILLIONS", amt);
         }
-    } 
+    }
+	public default String compactFmt(float amt, int size, String label) {
+		// using K/M/B for thousands, millions and billions
+		String prefix = "";
+		if (amt > 1e9) {
+			prefix = text("NUM_FORMAT_BILLIONS", "");
+			amt /= 1000000000f;
+		}
+		else if (amt > 1e6) {
+			prefix = text("NUM_FORMAT_MILLIONS", "");
+			amt /= 1000000f;
+		}
+		else if (amt > 1e4) {
+			prefix = text("NUM_FORMAT_THOUSANDS", "");
+			amt /= 1000f;
+		}
+		String val;
+		if (Math.abs(amt) < .0005)
+			val = "0";
+		else if (amt < .1)
+			val = fmt(amt, 3) ;
+		else if (amt < 1)
+			val = fmt(amt, 2 + min(1, size));
+		else if (amt < 10)
+			val = fmt(amt, 2 + min(2, size));
+		else if (amt < 100)
+			val = fmt(amt, 1 + min(2, size));
+		else if (amt < 1000)
+			val = fmt(amt, 0 + min(2, size));
+		else if (amt < 10000)
+			val = fmt(amt, 0 + min(1, size));
+		else
+			val = fmt(amt, 0);
+
+		return text(label, val, prefix);
+	} 
     public default float round(float val, float precision) {
         return ((int)((val+(precision/2.0))/precision)) * precision;
     }

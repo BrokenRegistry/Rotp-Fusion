@@ -7,9 +7,11 @@
 //    You can only use keys that the game is looking for.
 //
 // Large number formatting
-NUM_FORMAT_THOUSANDS              | %1K
-NUM_FORMAT_MILLIONS               | %1M
-NUM_FORMAT_BILLIONS               | %1B
+NUM_FORMAT_THOUSANDS		| %1k
+NUM_FORMAT_MILLIONS			| %1M
+NUM_FORMAT_BILLIONS			| %1G
+NUM_FORMAT_BC				| %1 %2BC
+NUM_FORMAT_RP				| %1 %2RP
 
 // Star descriptions
 RED_STAR_DESCRIPTION              | Bintang merah adalah bintang tua dan pudar yang umumnya memiliki planet-planet menyedihkan.
@@ -745,7 +747,7 @@ PLANETS_TREASURY                  | Harta Kekaisaran
 PLANETS_TREASURY_FUNDS            | Dana Harta 
 PLANETS_TAX_DESC                  | Pajak yang harus disetorkan koloni kepada harta kekaisaran.
 PLANETS_RESERVE_TAX               | Pajak Cadangan
-PLANETS_RESERVE_INCREASE          | +%1 BC/Tahun
+PLANETS_RESERVE_INCREASE          | +%1 %2BC/Tahun
 PLANETS_RESERVE_NO_TAX            | Tanpa Pajak
 PLANETS_RESERVE_ONLY_DEVELOPED    | Pajak hanya pada koloni yang benar-benar maju
 PLANETS_BUTTON_TRANSFER           | TRANSFER
@@ -1257,8 +1259,8 @@ TECH_EMPIRE_SPENDING              | Pengeluaran Teknologi Kekaisaran
 TECH_EMPIRE_SPENDING_DESC         | Jumlah seluruh pengeluaran semua koloni.
 TECH_EMPIRE_TECH_RESERVE_OPT      | Alihkan kelebihan pengeluaran koloni dari penyimpanan harta ke riset.
 TECH_EMPIRE_BALANCED_DESC         | Pengeluaran yang seimbang meningkatkan poin riset secara keseluruhan.
-TECH_EMPIRE_DETAIL_1              | %1 BC untuk 
-TECH_EMPIRE_DETAIL_2              | %2 RP / Tahun
+TECH_EMPIRE_DETAIL_1              | %1 %2BC untuk 
+TECH_EMPIRE_DETAIL_2              | %1 %2RP / Tahun
 TECH_TOTAL_RP                     | %1 RP
 TECH_DISCOVERY_PCT                | %1%
 TECH_CHANGE_RESEARCH              | Klik untuk Meneliti Teknologi Ini
