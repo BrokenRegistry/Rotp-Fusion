@@ -44,6 +44,12 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-07-31 (BR)
+- Fixed a crash due to no more system names available.
+  - Upon reaching the final war, with giant galaxies and several dozen united empires, when a new system is discovered, the information will be immediately shared, and each empire will then try to name it, without giving the same name as the other empire to avoid duplication. Before March 27, 2026, this validation was faulty and it regularly happened that two systems had the same name. By correcting this the need for new names has increased to the point where there is a shortage of them...
+  - New name extensions have been added to avoid any future issues.
+- Some improvements to the French translations.
+
 26-07-24 (BR)
 - Fixed the prefix display: the English definition of Billions (10^9) do not apply to other languages (10^12), replaced by the SI prefix G.
 - Fixed the missing space between the value and its unit (not everywhere)

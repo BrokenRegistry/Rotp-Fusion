@@ -793,9 +793,17 @@ public final class Galaxy implements Base, Serializable {
 
         String nextName = remainingNames.remove(0);
         int seq = raceSystemCtr().get(rId);
-        if (seq > 1)
-            nextName = nextName + " " + Base.letter[seq];
-
+		if (seq > 1)
+			if (seq < Base.letter.length)
+				nextName = nextName + " " + Base.letter[seq]; // as before; miss the "A"
+			else {
+				String ext = Base.letter[seq % Base.letter.length];
+				while (seq >= Base.letter.length) {
+					seq = seq/Base.letter.length - 1;
+					ext = Base.letter[seq % Base.letter.length] + ext;
+				}
+				nextName = nextName + " " + ext;
+			}
         return nextName;
     }
     private void loadRaceNames(String rId, int i) {

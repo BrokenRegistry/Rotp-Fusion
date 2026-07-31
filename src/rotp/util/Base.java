@@ -104,7 +104,7 @@ import rotp.util.sound.SoundManager;
 
 public interface Base extends InputEventUtil {
     public static String[] monthName = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-    public static String[] letter = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N" };
+    public static String[] letter = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
     //public static Random random = new Random(); // Moved to Rotp for reset purpose
     public default Rand rng() { return Rotp.rand(); }
     public static DecimalFormat df1 = new DecimalFormat("0.0");
