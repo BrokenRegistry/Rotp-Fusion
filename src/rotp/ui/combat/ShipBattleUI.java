@@ -1620,11 +1620,11 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         planetX = x;
         planetY = y;
         planetR = r;
-        int imgW = renderedPlanetImage.getWidth();
-        int imgH = renderedPlanetImage.getHeight();
+		final int imgW = renderedPlanetImage.getWidth();
+		final int imgH = renderedPlanetImage.getHeight();
         g.drawImage(renderedPlanetImage, planetX, planetY, planetX+planetR, planetY+planetR, 0, 0, imgW, imgH, null);
 
-        int dataW = s75;
+		final int dataW = s75;
         int popX, factX, baseX;
         if (reverse) {
             popX = x-dataW;
@@ -1637,19 +1637,19 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
             baseX = factX+dataW;
         }
 
-        int dataY = y+r-s20;
-        int headerY = dataY-s16;
+		final int dataY = y+r-s20;
+		final int headerY = dataY-s16;
 
         g.setFont(narrowFont(15));
         g.setColor(SystemPanel.whiteText);
 
         Colony col = mgr.system().colony();
-        int popLost  = res.popDestroyed();
-        int factLost = res.factoriesDestroyed();
-        int baseLost = res.basesDestroyed();
-        int currPop  = col == null ? 0 : (int) Math.ceil(col.population());
+		final int popLost  = res.popDestroyed();
+		final int factLost = res.factoriesDestroyed();
+		final int baseLost = res.basesDestroyed();
+		final int currPop  = col == null ? 0 : (int) Math.ceil(col.population());
         int currFact = (col == null) || (currPop == 0) ? 0 : (int) col.industry().factories();
-        int currBase = (col == null) || (currPop == 0) ? 0 : (int) col.defense().bases();
+		final int currBase = (col == null) || (currPop == 0) ? 0 : col.defense().activeBases();
         int startFact = currFact + factLost;
         if (res.bioDestroyed()) {
          	startFact = res.startingFactories().intValue();
@@ -2667,13 +2667,13 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
     }
     private String drawPlanetResult() {
     	ShipCombatResults res = mgr.results();
-        Colony col = mgr.system().colony();
-        int popLost  = res.popDestroyed();
-        int factLost = res.factoriesDestroyed();
-        int baseLost = res.basesDestroyed();
+		final Colony col = mgr.system().colony();
+		final int popLost  = res.popDestroyed();
+		final int factLost = res.factoriesDestroyed();
+		final int baseLost = res.basesDestroyed();
         int currPop  = col == null ? 0 : (int) Math.ceil(col.population());
         int currFact = (col == null) || (currPop == 0) ? 0 : (int) col.industry().factories();
-        int currBase = (col == null) || (currPop == 0) ? 0 : (int) col.defense().bases();
+		final int currBase = (col == null) || (currPop == 0) ? 0 : col.defense().activeBases();
         int startFact = currFact + factLost;
         if (res.bioDestroyed()) {
          	startFact = res.startingFactories().intValue();

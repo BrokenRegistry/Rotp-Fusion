@@ -12,6 +12,7 @@ When updating, you can reuse the same folder.
 <b><ins>Very last changes:</ins></b>
 
 26-08-13 (BR)
+- Fixed missile base rounding error.
 - Finalization of the budget tools
   - New buttons to clear and redo budgets.
   - New options to enable / disable budget features.

@@ -31,7 +31,7 @@ public final class AIGovernor implements Base, Governor {
 		final StarSystem sys = col.starSystem();
 		final String name = empire.sv.name(sys.id);
 		final boolean cleanupOK = ensureMinimumCleanup(col);
-		final int bases = (int) col.defense().bases();
+		final int bases = col.defense().activeBases();
 		final int maxBases = col.defense().maxBases();
 		if (col.shipyard().design().scrapped()) {
 			if (col.shipyard().building() || (col.shipyard().allocation() > 0))

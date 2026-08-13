@@ -54,7 +54,7 @@ public class CombatStackColony extends CombatStack {
         usingAI = (empire() == null) || empire().isAIControlled();
         captain = empire().ai().shipCaptain();
         MissileBase mBase = missileBase();
-        origNum = num = (int) colony.defense().bases();
+        origNum = num = colony.defense().activeBases();
         missile = mBase.missile().warhead();
         scatterPack = mBase.scatterPack() == null ?  null : mBase.scatterPack().warhead();
         maxShield = colony.defense().missileShieldLevel();

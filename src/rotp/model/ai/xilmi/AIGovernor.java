@@ -59,11 +59,11 @@ public final class AIGovernor implements Base, Governor {
             return;
         }
         //System.out.println(galaxy().currentTurn()+" "+empire.name()+" "+col.name()+" called setColonyAllocations.");
-        StarSystem sys = col.starSystem();
-        String name = empire.sv.name(sys.id);
-        boolean cleanupOK = ensureMinimumCleanup(col);
-        int bases = (int) col.defense().bases();
-        int maxBases = col.defense().maxBases();
+        final StarSystem sys = col.starSystem();
+        final String name = empire.sv.name(sys.id);
+        final boolean cleanupOK = ensureMinimumCleanup(col);
+        final int bases = col.defense().activeBases();
+        final int maxBases = col.defense().maxBases();
         if (col.shipyard().design().scrapped()) {
             if (col.shipyard().building() || (col.shipyard().allocation() > 0))
                 session().addSystemToAllocate(sys, text("MAIN_ALLOCATE_DESIGN_SCRAPPED", name));
@@ -369,7 +369,7 @@ public final class AIGovernor implements Base, Governor {
             //System.out.println("\n"+empire.name()+" "+col.name()+" shipPct: "+shipPct+" col.pct(SHIP): "+col.pct(SHIP)+" col.pct(ECOLOGY): "+col.pct(ECOLOGY)+" shipCost-B: "+shipCost+" maxShipBC: "+maxShipBC+" totalProd: "+totalProd);
         }
         
-        if(wantShield(col) || col.defense().maxBases() > col.defense().bases())
+        if(wantShield(col) || col.defense().maxBases() > col.defense().rawBases())
         {
             float defCost = col.defense().maxSpendingNeeded();
             col.pct(DEFENSE, defCost/totalProd);
@@ -489,7 +489,7 @@ public final class AIGovernor implements Base, Governor {
     }
     public void suggestMissileBaseCount(Colony col, float prod) {
         StarSystem sys = col.starSystem();
-        int currBases = col.defense().missileBases();
+        int currBases = col.defense().activeBases();
         if (empire.contacts().isEmpty()
                 || empire.shipLab().needColonyShips)  {
             col.defense().maxBases(max(currBases, 0));

@@ -389,7 +389,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
                 + (float) Math.round(rebels * 100) / 100 + " fac:"
                 + (float) Math.round(industry().factories() * 100) / 100 + " was:"
                 + (float) Math.round(ecology().waste() * 100) / 100 + " bas:"
-                + (float) Math.round(defense().bases() * 100) / 100 + " shd:"
+                + (float) Math.round(defense().rawBases() * 100) / 100 + " shd:"
                 + (float) Math.round(defense().shield() * 100) / 100;
     }
 
@@ -1590,7 +1590,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         int lost = 0;
 
         // start with base missile damage
-        float defenderDmg = defense().missileBases() * missileDmg;
+        float defenderDmg = defense().activeBases() * missileDmg;
 
         // add firepower for each allied ship in orbit
             // modnar: use firepowerAntiShip to only count ship weapons that can hit ships
@@ -1760,7 +1760,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         if (destroyed())
             return;
 
-        if (defense().bases() < 1)
+        if (defense().rawBases() < 1)
             takeUntargetedCollateralDamage(damage);
         else
             takeTargetedCollateralDamage(damage);
@@ -2262,7 +2262,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         // add maximum defense
         // don't allocate just for "upgrades" if there are no bases or if there are more bases than we want
         if (!defense().isCompleted()
-        		&& (defense().maxBases() > 0 && defense().maxBases() >= defense().bases())
+        		&& (defense().maxBases() > 0 && defense().maxBases() >= defense().rawBases())
         		|| gov.getShieldWithoutBases()) {
             int allocationAvailableForDefense = allocation(RESEARCH) + allocationRemaining();
             if(allocation(SHIP) > 1)

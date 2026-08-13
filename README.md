@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-08-13 (BR)
+- Fixed missile base rounding error.
 - Finalization of the budget tools
   - New buttons to clear and redo budgets.
   - New options to enable / disable budget features.

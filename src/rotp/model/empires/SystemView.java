@@ -728,7 +728,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
         vShieldLevel = 0;
         if (isColonized()) {
             float actualPop = col.population();
-            vBases = col.defense().missileBases();
+            vBases = col.defense().activeBases();
             vFactories = (int) col.industry().factories();
             vPopulation = actualPop < 1 ? (int) Math.ceil(actualPop) : (int) actualPop;
             vShieldLevel = col.defense().shieldLevel();

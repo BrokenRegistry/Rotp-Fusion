@@ -25,8 +25,8 @@ import rotp.model.empires.Empire;
 public final class ColonyDefense extends ColonySpendingCategory {
     private static final long serialVersionUID = 1L;
     public static final int MAX_BASES = 9999; // BR: != Default Max bases
-    private MissileBase missileBase;
-    private float bases = 0;
+    private MissileBase missileBase;	// Missiles characteristics
+    private float bases = 0;			// number of bases and partially completed bases
     private float previousBases = 0;
     private int maxBases = 1;
     private float shield = 0;
@@ -38,24 +38,30 @@ public final class ColonyDefense extends ColonySpendingCategory {
     private boolean shieldCompleted = false;
     private boolean missileBasesUpgraded = false;
 
-    public MissileBase missileBase()       { return missileBase; }
-    public float bases()                   { return bases; }
-    public void bases(float d)             { bases = d; }
+	public MissileBase missileBase()		{ return missileBase; }	// Missiles bases characteristics
+	public int activeBases()				{ return (int) bases; }	// Number of working bases
+	public float rawBases()					{ return bases; }	// Raw number of bases
+	public void bases(float d)				{ bases = d; }
+	public void destroyBases(int i)			{ bases(rawBases() - i); }
+	public int maxBases()					{ return maxBases; }
+	public void maxBases(int i)				{ maxBases = i; }
+	public float missingBases()				{ return maxBases - bases; }
+	public int deltaBases()					{ return (int) bases - (int) previousBases; }
 	float shield()							{ return shield; }
+
     public boolean shieldCompleted()       { return shieldCompleted && shieldAtMaxLevel(); }
     public boolean missileBasesUpgraded()  { return missileBasesUpgraded && (missileBase == tech().bestMissileBase()); }
 	void updateMissileBase()				{ missileBase = colony().tech().bestMissileBase(); }
-    public void destroyBases(int i)        { bases -= i; }
     @Override public boolean isCompleted() {
-        boolean missilesDone = (maxBases == 0)
-        		|| ((missileBase == colony().tech().bestMissileBase()) &&  missileBasesCompleted());
+		final boolean missilesDone = (maxBases() == 0)
+				|| ((missileBase == colony().tech().bestMissileBase()) &&  missileBasesCompleted());
         return missilesDone && shieldAtMaxLevel();
     }
 	public float completedPct(boolean shieldWithoutBases)	{
 		float totcalCost;
 		float currentValue;
 		// Shield
-		if (maxBases == 0 && !shieldWithoutBases) {
+		if (maxBases() == 0 && !shieldWithoutBases) {
 			totcalCost = 0;
 			currentValue = 0;
 		}
@@ -71,25 +77,25 @@ public final class ColonyDefense extends ColonySpendingCategory {
 		// New Missile
 		float newMissileBaseCost = tech().newMissileBaseCost();
 		totcalCost += maxBases() * newMissileBaseCost;
-		currentValue += bases * newMissileBaseCost;
+		currentValue += rawBases() * newMissileBaseCost;
 
 		if (totcalCost == 0)
 			return 1;
 		return bounds(0, currentValue/totcalCost, 1);
 	}
 	public boolean isCompleted(int maxMissingBase, boolean shieldWithoutBases)	{
-		if (maxBases == 0 && !shieldWithoutBases)
+		if (maxBases() == 0 && !shieldWithoutBases)
 			return true;
 		if (!shieldAtMaxLevel())
 			return false;
-		return (maxBases() - bases) <= maxMissingBase;
+		return missingBases() <= maxMissingBase;
 	}
 	@Override public boolean isCompleted(int maxMissingBase) { return isCompleted(maxMissingBase, govOptions().getShieldWithoutBases()); }
     public boolean shieldAtMaxLevel()      {
         return colony().starSystem().inNebula() || (shield >= maxShieldLevel());
     }
 	boolean missileBasesCompleted()	{
-        return (bases >= maxBases())
+        return (rawBases() >= maxBases())
             && (missileBase == empire().tech().bestMissileBase());
     }
     public boolean missileBasesCompletedThisTurn() {
@@ -99,9 +105,6 @@ public final class ColonyDefense extends ColonySpendingCategory {
     public int categoryType()          { return Colony.DEFENSE; }
     @Override
     public float totalBC()             { return super.totalBC() * planet().productionAdj(); }
-    public int maxBases()              { return maxBases; }
-    public void maxBases(int i)        { maxBases = i; }
-    public int deltaBases()            { return (int) bases - (int) previousBases; }
     public void incrMaxBases(int inc, boolean shiftDown, boolean ctrlDown)  {
        	if (shiftDown)
        		inc *= 5;
@@ -140,13 +143,13 @@ public final class ColonyDefense extends ColonySpendingCategory {
 	void capturedBy(Empire newCiv)	{
         if (newCiv == empire())
             return;
-        bases = 0;
+        bases(0);
         shield = 0;
         newBases = 0;
         newShield = 0;
         baseUpgradeBC = 0;
         unallocatedBC = 0;
-        maxBases = 1;
+        maxBases(1);
         missileBase = newCiv.tech().bestMissileBase();
         shieldCompleted = false;
         missileBasesUpgraded = false;
@@ -157,11 +160,11 @@ public final class ColonyDefense extends ColonySpendingCategory {
         newBases = 0;
         newShield = 0;
         // prod gets planetary bonus, but not reserve
-        float prodBC = pct()* totalProd * planet().productionAdj();
-        float rsvBC = pct() * totalReserve;
+		final float prodBC = pct()* totalProd * planet().productionAdj();
+		final float rsvBC = pct() * totalReserve;
         float newBC = prodBC+rsvBC;
 
-        float baseCost = missileBase.cost(empire());
+		final float baseCost = missileBase.cost(empire());
         shieldCompleted = false;
 
         // build shield strength (100 BC per level)
@@ -172,7 +175,7 @@ public final class ColonyDefense extends ColonySpendingCategory {
         }
 
         newBaseUpgradeCost = 0;
-        float newBaseCost = tech().newMissileBaseCost();
+		final float newBaseCost = tech().newMissileBaseCost();
 
         if (bases > 0 && missileBase != tech().bestMissileBase()) {
             newBaseUpgradeCost = (bases * max(0,newBaseCost-baseCost)) - baseUpgradeBC;
@@ -197,7 +200,7 @@ public final class ColonyDefense extends ColonySpendingCategory {
     }
     @Override
     public void assessTurn() {
-        Colony c = colony();
+        final Colony c = colony();
         if (shieldAtMaxLevel()) {
             float orderAmt = c.orderAmount(Colony.Orders.SHIELD);
             if (orderAmt > 0) {
@@ -226,7 +229,7 @@ public final class ColonyDefense extends ColonySpendingCategory {
 
         // add new missile bases to limit
         if (newBases > 0) {
-            bases += newBases;
+            bases(rawBases() + newBases);
             baseUpgradeBC = 0;
         }
 
@@ -244,24 +247,21 @@ public final class ColonyDefense extends ColonySpendingCategory {
             baseCost = missileBase.cost(player());
             knownBaseCosts.put(missileBase, baseCost);
         }
-        return ((int) bases * baseCost * .02f); 
+        return (activeBases() * baseCost * .02f); 
     }
     private float missileUpgradeCost()  { 
         //for some unknown reason sometimes there's a slight discrepancy between cost of what should be the same thing already
         if(tech().bestMissileBase() == missileBase)
             return 0;
-        return bases * (tech().newMissileBaseCost() - missileBase.cost(empire())); 
+        return rawBases() * (tech().newMissileBaseCost() - missileBase.cost(empire())); 
     }
-    public boolean isArmed()             { return missileBases() >= 1; }
+    public boolean isArmed()             { return activeBases() >= 1; }
     public int shieldLevel()             { return (int) (shield / 5) * 5; }
     public int shieldLevelComp()         { return planet().starSystem().inNebula()? -1 : shieldLevel(); }
-    public int missileBases()            { return (int) bases; }
-    @Override
-    public boolean canLowerMaintenance() { return bases > 0; }
-    @Override
-    public void lowerMaintenance()       { bases = Math.max(0, bases-1); }
+    @Override  public boolean canLowerMaintenance()	{ return rawBases() > 0; }
+    @Override public void lowerMaintenance()		{ bases (Math.max(0, rawBases()-1)); }
     public float firepower(float shield) {
-        return missileBases() * missileBase.firepower(shield);
+        return activeBases() * missileBase.firepower(shield);
     }
     public int missileShieldLevel() {
         return (colony().starSystem().inNebula() || empire() == null) ? 0 : shieldLevel() + (int) tech().maxDeflectorShieldLevel();
@@ -270,28 +270,28 @@ public final class ColonyDefense extends ColonySpendingCategory {
         if (colony().allocation(categoryType()) == 0)
             return new float[] {0, 0};
 
-        float rawProdBC = pct() * colony().totalProductionIncome();
+		final float rawProdBC = pct() * colony().totalProductionIncome();
         float prodBC = rawProdBC * planet().productionAdj();
-        float rsvBC = pct() * colony().maxReserveIncome();
-        float totalBC = prodBC+rsvBC;
-        float researchFactor = (rawProdBC+rsvBC) / totalBC;
+		final float rsvBC = pct() * colony().maxReserveIncome();
+		float totalBC = prodBC+rsvBC;
+		final float researchFactor = (rawProdBC+rsvBC) / totalBC;
 
         // deduct cost to finish shield
-        float shieldCost = (maxShieldLevel() - shield) * 100;
+		final float shieldCost = (maxShieldLevel() - shield) * 100;
         if (shieldCost >= totalBC)
             return new float[] {0, 0};
 
         totalBC -= shieldCost;
-        if (maxBases == 0)
+        if (maxBases() == 0)
             return new float[] {totalBC, researchFactor * totalBC};
 
         // deduct cost to upgrade existing bases
         float bestBaseCost = 0;
-        if ((bases > 0) && (missileBase != tech().bestMissileBase())) {
-            float baseCost = missileBase.cost(empire());
+        if ((rawBases() > 0) && (missileBase != tech().bestMissileBase())) {
+            final float baseCost = missileBase.cost(empire());
             bestBaseCost = tech().bestMissileBase().cost(empire());
             if (bestBaseCost > baseCost) {
-                float upgradeCost = (bases*(bestBaseCost-baseCost))-baseUpgradeBC;
+                float upgradeCost = (rawBases() * (bestBaseCost-baseCost))-baseUpgradeBC;
                 if (upgradeCost > totalBC)
                     return new float[] {0, 0};
                 totalBC -= upgradeCost;
@@ -299,17 +299,17 @@ public final class ColonyDefense extends ColonySpendingCategory {
         }
 
         // deduct cost to build remaining bases
-        if (bases < maxBases) {
+        if (rawBases() < maxBases()) {
             if (bestBaseCost == 0)
                 bestBaseCost = tech().bestMissileBase().cost(empire());
-            float buildCost = (maxBases - bases) * bestBaseCost;
+            float buildCost = missingBases() * bestBaseCost;
             if (buildCost > totalBC)
                 return new float[] {0, 0};
             totalBC -= buildCost;
         }
 
-        float reserveBC  = max(0,totalBC);
-        float researchBC = reserveBC * researchFactor;
+		final float reserveBC  = max(0,totalBC);
+		final float researchBC = reserveBC * researchFactor;
         return new float[] {reserveBC, researchBC};
     }
     @Override
@@ -317,9 +317,8 @@ public final class ColonyDefense extends ColonySpendingCategory {
         if (colony().allocation(categoryType()) == 0)
             return text(noneText);
 
-        float maxBases = maxBases();
-        float prodBC = pct()* colony().totalProductionIncome() * planet().productionAdj();
-        float rsvBC = pct() * colony().maxReserveIncome();
+		final float prodBC = pct()* colony().totalProductionIncome() * planet().productionAdj();
+		final float rsvBC = pct() * colony().maxReserveIncome();
         float newBC = max(0, prodBC+rsvBC);
         float shieldCost = 0;
 
@@ -332,28 +331,28 @@ public final class ColonyDefense extends ColonySpendingCategory {
         newBC -= shieldCost;
 
         float upgradeCost = 0;
-        float baseCost = missileBase.cost(empire());
-        float newBaseCost = tech().bestMissileBase().cost(empire());
+		final float baseCost = missileBase.cost(empire());
+		final float newBaseCost = tech().bestMissileBase().cost(empire());
 
         if (missileBase != tech().bestMissileBase()) {
             newBC += baseUpgradeBC;
-            upgradeCost = bases * Math.max(0,newBaseCost-baseCost);
+            upgradeCost = rawBases() * Math.max(0,newBaseCost-baseCost);
             if (newBC < upgradeCost)
                 return text(upgradeBasesText);
         }
 
         newBC -= upgradeCost;
 
-        float maxCost = (maxBases - bases) * newBaseCost;
-        float newBases = bases + (newBC/newBaseCost);
-        int delta = (int) newBases - (int) bases;
+		final float maxCost = (maxBases() - rawBases()) * newBaseCost;
+		final float newBases = rawBases() + (newBC/newBaseCost);
+		final int delta = (int) newBases - activeBases();
 
         if (newBC <= maxCost) {
             if (delta < 1) {
                 if (newBC == 0)
                     return text(noneText);
                 else {
-                    int turns = (int) Math.ceil( (1- (bases - (int)bases))*newBaseCost/newBC);
+                    int turns = (int) Math.ceil( (1- (rawBases() % 1)) * newBaseCost/newBC);
                     if (turns > 99)
                         return text(yearsLongText, turns);
                     else
@@ -368,12 +367,9 @@ public final class ColonyDefense extends ColonySpendingCategory {
         return overflowText();
     }
     public float maxSpendingNeeded() {
-        float buildShieldCost = (maxShieldLevel() - shield) * 100;
-        buildShieldCost = Math.max(0, buildShieldCost);
-        float upgradeMissileBasesCost = missileUpgradeCost() - baseUpgradeBC;
-        upgradeMissileBasesCost = Math.max(0, upgradeMissileBasesCost);
-        float newMissileBasesCost =  (maxBases() - bases) * tech().newMissileBaseCost();
-        newMissileBasesCost = Math.max(0, newMissileBasesCost);
+		final float buildShieldCost = Math.max(0, (maxShieldLevel() - shield) * 100);
+		final float upgradeMissileBasesCost = Math.max(0,  missileUpgradeCost() - baseUpgradeBC);
+		final float newMissileBasesCost = Math.max(0, missingBases() * tech().newMissileBaseCost());
         float totalCost = buildShieldCost + upgradeMissileBasesCost + newMissileBasesCost;
 
         // adjust cost for planetary production
@@ -388,21 +384,19 @@ public final class ColonyDefense extends ColonySpendingCategory {
     }
     public int maxAllocationNeeded() { return maxAllocationNeeded(colony().totalIncome()); }
 	int maxAllocationNeeded(float totalIncome)		{
-        float needed = maxSpendingNeeded();
+		final float needed = maxSpendingNeeded();
         if (needed <= 0)
             return 0;
-        float pctNeeded = min(1, needed / totalIncome);
-        int ticks = ceil(pctNeeded * MAX_TICKS);
-        return ticks;
+		final float pctNeeded = min(1, needed / totalIncome);
+		return ceil(pctNeeded * MAX_TICKS);
     }
 	private int shieldAllocationNeeded()			{ return shieldAllocationNeeded(colony().totalIncome()); }
 	int shieldAllocationNeeded(float totalIncome)	{
-        float needed = (maxShieldLevel() - shield) * 100;
+        final float needed = (maxShieldLevel() - shield) * 100;
         if (needed <= 0)
             return 0;
         float pctNeeded = min(1, needed / totalIncome);
-        int ticks = ceil(pctNeeded * MAX_TICKS);
-        return ticks;
+		return ceil(pctNeeded * MAX_TICKS);
     }
     @Override public int smoothAllocationNeeded(boolean prioritized) { return maxAllocationNeeded(); }
     @Override public int smartAllocationNeeded(MouseEvent e) {

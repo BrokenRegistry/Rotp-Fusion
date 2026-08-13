@@ -640,7 +640,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 	public static final Comparator<StarSystem> WASTE			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().ecology().waste(),	s2.colony().ecology().waste());
 	public static final Comparator<StarSystem> INCOME			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().totalIncome(),		s2.colony().totalIncome());
 	public static final Comparator<StarSystem> CAPACITY			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().currentProductionCapacity(),	s2.colony().currentProductionCapacity());
-	public static final Comparator<StarSystem> BASES			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().defense().bases(),			s2.colony().defense().bases());
+	public static final Comparator<StarSystem> BASES			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().defense().rawBases(),	s2.colony().defense().rawBases());
 	public static final Comparator<StarSystem> SHIELD			= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().defense().shieldLevelComp(),s2.colony().defense().shieldLevelComp());
 	public static final Comparator<StarSystem> INVASION_PRIORITY= (StarSystem s1, StarSystem s2) -> Float.compare(s1.empire().generalAI().invasionPriority(s1),	s2.empire().generalAI().invasionPriority(s2));
 //    public static Comparator<StarSystem> TRANSPORT_PRIORITY = (StarSystem s1, StarSystem s2) -> Base.compare(s1.empire().fleetCommanderAI().transportPriority(s1),s2.empire().fleetCommanderAI().transportPriority(s2));

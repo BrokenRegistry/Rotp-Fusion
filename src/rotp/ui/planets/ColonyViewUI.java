@@ -78,9 +78,9 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		exited			= false;
 		Empire empire	= sys.empire();
 		ambienceKey		= empire.ambienceKey();
-		float pop		= colony.population();
-		float bases		= colony.defense().bases();
-		float factories	= colony.industry().factories();
+		final float pop	= colony.population();
+		final float bases		= colony.defense().rawBases();
+		final float factories	= colony.industry().factories();
 		factoryRows		= colony.industry().effectiveRobotControls();
 		maxColumns		= 10;
 		iconWidth		= s80;

@@ -119,10 +119,10 @@ public final class AIGovernor implements Base, Governor {
 		// or 30% research overhead for non-inner colonies >90% full production (not just border colonies)
 		// not applicable to rich/ultra-rich
 		// no need to allocate anything here, should be added in automatically to research at the end
-		int bases = (int) col.defense().bases();
-        int maxBases = col.defense().maxBases();
-		float resOverhead = 0.1f*netProd;
-		StarSystem sys = col.starSystem();
+		final int bases = col.defense().activeBases();
+		final int maxBases = col.defense().maxBases();
+		final float resOverhead = 0.1f*netProd;
+		final StarSystem sys = col.starSystem();
 		float prodPct = col.currentProductionCapacity();
 		if (bases >= maxBases) { // only if missile bases are in place
 			if ((prodPct > 0.9) && empire.sv.isInnerSystem(sys.id) && !col.planet().isHighResource()) { 
@@ -202,7 +202,7 @@ public final class AIGovernor implements Base, Governor {
             return;
         }
         StarSystem sys = col.starSystem();
-        int currBases = col.defense().missileBases();
+        int currBases = col.defense().activeBases();
         
         // modnar: scale desired base count based on difficulty, richness, and artifact level
         // (no decrease with poor-ness, since they will become easy tech capture targets)

@@ -108,7 +108,7 @@ public class SabotageMission implements Base, Serializable {
                 missileBasesDestroyed++;
         }
 
-        missileBasesDestroyed = bounds(1, missileBasesDestroyed, (int) sys.colony().defense().bases());
+        missileBasesDestroyed = bounds(1, missileBasesDestroyed, sys.colony().defense().activeBases());
 
         if (missileBasesDestroyed > 0) {
             spies.report().recordSabotage(missionType, system.id, missileBasesDestroyed);

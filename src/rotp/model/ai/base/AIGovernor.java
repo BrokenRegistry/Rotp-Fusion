@@ -37,8 +37,8 @@ public final class AIGovernor implements Base, Governor {
         baseSetColonyAllocations(col);
         col.validate();
     }
-    private void baseSetColonyAllocations(Colony col) {                
-        int maxAllocation = ColonySpendingCategory.MAX_TICKS;
+    private void baseSetColonyAllocations(Colony col) {
+		final int maxAllocation = ColonySpendingCategory.MAX_TICKS;
 
         // for systems that have a research project, focus research and forget
         // everything else until the project is done
@@ -63,7 +63,7 @@ public final class AIGovernor implements Base, Governor {
                 return;
             }
         }
-        
+
         // for systems that are flagged as rush ship, do that and forget
         // everything else until the project is done
         if (empire.generalAI().rushShipSystems().contains(col.starSystem())) {
@@ -76,22 +76,22 @@ public final class AIGovernor implements Base, Governor {
         }
 
         // calc this now before spending amts are  reset
-        float maxShipBCNeeded = col.shipyard().maxSpendingNeeded();
-        float maxShipBC = maxShipBCPermitted(col);
-        float shipPctSpending = shipPctForColony(col);
-        float currentNet = col.totalIncome() - col.minimumCleanupCost();
+		final float maxShipBCNeeded = col.shipyard().maxSpendingNeeded();
+		final float maxShipBC = maxShipBCPermitted(col);
+		final float shipPctSpending = shipPctForColony(col);
+		final float currentNet = col.totalIncome() - col.minimumCleanupCost();
         // # of turns we could make ship with 100% ship
-        float shipTurns = maxShipBCNeeded/(currentNet*shipPctSpending);
+		final float shipTurns = maxShipBCNeeded/(currentNet*shipPctSpending);
         // pct increase of factories we could make with 100% industry
-        float maxNewFactories = min(col.industry().maxUseableFactories()-col.industry().factories(), currentNet/col.industry().newFactoryCost());
-        float factoryIncreasePct = maxNewFactories/col.industry().factories();
+		final float maxNewFactories = min(col.industry().maxUseableFactories()-col.industry().factories(), currentNet/col.industry().newFactoryCost());
+		final float factoryIncreasePct = maxNewFactories/col.industry().factories();
 
         suggestMissileBaseCount(col);
         col.clearSpending();
 
         lowerExpenses(col);
-        float totalProd = col.totalIncome();
-        float cleanCost = col.minimumCleanupCost();
+		final float totalProd = col.totalIncome();
+		final float cleanCost = col.minimumCleanupCost();
         float netProd = totalProd - cleanCost;
         float shipCost = 0;
         // calculate minimum eco cleanup pct
@@ -119,10 +119,10 @@ public final class AIGovernor implements Base, Governor {
 		// or 20% research overhead for non-inner colonies >90% full production (not just border colonies)
 		// not applicable to rich/ultra-rich
 		// no need to allocate anything here, should be added in automatically to research at the end
-		int bases = (int) col.defense().bases();
-        int maxBases = col.defense().maxBases();
-		float resOverhead = 0.1f*netProd;
-		StarSystem sys = col.starSystem();
+		final int bases = col.defense().activeBases();
+		final int maxBases = col.defense().maxBases();
+		final float resOverhead = 0.1f*netProd;
+		final StarSystem sys = col.starSystem();
 		float prodPct = col.currentProductionCapacity();
 		if (bases >= maxBases) { // only if missile bases are in place
 			if ((prodPct > 0.85) && empire.sv.isInnerSystem(sys.id) && !col.planet().isHighResource()) { 
@@ -135,10 +135,10 @@ public final class AIGovernor implements Base, Governor {
 		
         // ship spending, if requested
         if (!col.shipyard().buildingObsoleteDesign()
-        && (col.shipyard().desiredShips() > 0)
-        && ((1.0/shipTurns) > factoryIncreasePct)){
+				&& (col.shipyard().desiredShips() > 0)
+				&& ((1.0/shipTurns) > factoryIncreasePct)){
             shipCost = min(maxShipBC, col.shipyard().maxSpendingNeeded());
-            float shipPct = shipCost/totalProd;
+			final float shipPct = shipCost/totalProd;
             col.pct(SHIP, shipPct);
             shipCost = col.pct(SHIP) * totalProd;
         }
@@ -157,7 +157,7 @@ public final class AIGovernor implements Base, Governor {
             return;
 
         // eco spending gets up to 40% of planet's remaining net prod
-        float nonCleanEcoCost = col.ecology().maxSpendingNeeded() - cleanCost;
+		final float nonCleanEcoCost = col.ecology().maxSpendingNeeded() - cleanCost;
         float ecoCost = min((netProd * .4f), nonCleanEcoCost);
         col.pct(ECOLOGY, (ecoCost + cleanCost)/totalProd);
 
@@ -181,13 +181,13 @@ public final class AIGovernor implements Base, Governor {
             return;
 
         // research gets the rest
-        int totalAlloc = col.allocation(SHIP)+col.allocation(DEFENSE)+col.allocation(INDUSTRY)+col.allocation(ECOLOGY);
+		final int totalAlloc = col.allocation(SHIP)+col.allocation(DEFENSE)+col.allocation(INDUSTRY)+col.allocation(ECOLOGY);
         col.allocation(RESEARCH, maxAllocation - totalAlloc);
 
         // check to allocate reserve
         // modnar: reduce to 0%, since it's taken care of by the AICTreasurer (?)
         if (col.planet().noArtifacts() && (col.pct(RESEARCH) > 0.5) ) {
-            int rsvAmt = (int) Math.min(0.0, col.pct(RESEARCH) - 0.5);
+			final int rsvAmt = (int) Math.min(0.0, col.pct(RESEARCH) - 0.5);
             col.addPct(RESEARCH, -rsvAmt);
             col.addPct(INDUSTRY, rsvAmt);
         }
@@ -202,7 +202,7 @@ public final class AIGovernor implements Base, Governor {
             return;
         }
         StarSystem sys = col.starSystem();
-        int currBases = col.defense().missileBases();
+        int currBases = col.defense().activeBases();
         if (sys == null)  // this can happen at startup
             col.defense().maxBases(0);
         else if (empire.sv.isAttackTarget(sys.id))

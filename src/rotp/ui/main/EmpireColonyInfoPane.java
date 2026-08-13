@@ -44,7 +44,7 @@ import rotp.model.planet.Planet;
 import rotp.ui.BasePanel;
 import rotp.ui.SystemViewer;
 
-public class EmpireColonyInfoPane extends BasePanel {
+public final class EmpireColonyInfoPane extends BasePanel {
     private static final long serialVersionUID = 1L;
     private static final Color enabledArrowColor = Color.black;
 //    static final Color disabledArrowColor = new Color(65,65,65);
@@ -54,7 +54,6 @@ public class EmpireColonyInfoPane extends BasePanel {
 	private static final Color urgedColor	= new Color(142, 0, 142);
     private static final Color mixedColor	= new Color(64, 64, 64);
 
-//    Color borderC;
     private Color darkC;
     private Color textC;
     private Color backC;
@@ -305,7 +304,7 @@ public class EmpireColonyInfoPane extends BasePanel {
             }
         }
     }
-    private class EmpirePopPane extends EmpireDataPane {
+    private final class EmpirePopPane extends EmpireDataPane {
         private static final long serialVersionUID = 1L;
         @Override public String textureName()		{ return parentUI.subPanelTextureName(); }
         @Override protected String titleString()	{
@@ -333,7 +332,7 @@ public class EmpireColonyInfoPane extends BasePanel {
             return (int) (val + 0.01f);
         }
     }
-    private class EmpireFactoriesPane extends EmpireDataPane {
+    private final class EmpireFactoriesPane extends EmpireDataPane {
         private static final long serialVersionUID = 1L;
         @Override public String textureName()		{ return parentUI.subPanelTextureName(); }
         @Override protected String titleString()	{ return text("MAIN_COLONY_FACTORIES"); }
@@ -361,7 +360,7 @@ public class EmpireColonyInfoPane extends BasePanel {
                 return str(maxValue(c));
         }
     }
-    private class EmpireShieldPane extends EmpireDataPane {
+    private final class EmpireShieldPane extends EmpireDataPane {
         private static final long serialVersionUID = 1L;
         @Override public String textureName()		{ return parentUI.subPanelTextureName(); }
         @Override protected String titleString()	{ return text("MAIN_COLONY_SHIELD"); }
@@ -387,7 +386,7 @@ public class EmpireColonyInfoPane extends BasePanel {
             return text("MAIN_COLONY_NO_SHIELD");
         }
     }
-    class EmpireBasesPane extends EmpireDataPane {
+    final class EmpireBasesPane extends EmpireDataPane { // NO_UCD
         private static final long serialVersionUID = 1L;
         private final Polygon upArrow = new Polygon();
         private final Polygon downArrow = new Polygon();
@@ -400,15 +399,15 @@ public class EmpireColonyInfoPane extends BasePanel {
         private int maxBasesValue = 0;
         public EmpireBasesPane() { super(); }
         void incrBases(int inc, boolean shiftDown, boolean ctrlDown)  {
-            StarSystem sys = parentUI.systemViewToDisplay();
+            final StarSystem sys = parentUI.systemViewToDisplay();
             if (sys == null)
                 return;
             Colony colony = sys.colony();
-            if  (colony == null)
+            if (colony == null)
                 return;
 
 			if (inc == 0) {
-				maxBasesValue = (int) colony.defense().bases();
+				maxBasesValue = colony.defense().activeBases();
 			}
 			else {
 				if (shiftDown)
@@ -432,12 +431,12 @@ public class EmpireColonyInfoPane extends BasePanel {
         @Override protected String titleString()	{ return text("MAIN_COLONY_BASES"); }
         @Override protected boolean urged(Colony c)	{ return c.govUrgeBases(); }
         @Override protected void urge(Colony c, boolean b)		{ c.govUrgeBases(b); }
-        @Override protected int value(List<Colony> colonies)	{ 
-            float val = 0;
-            for (Colony c: colonies)
-                val += c.defense().bases(); 
-            return (int) (val + 0.01f);
-        }
+		@Override protected int value(List<Colony> colonies)	{ 
+			int val = 0;
+			for (Colony c: colonies)
+				val += c.defense().activeBases();	// BR: no reason to include uncompleted bases!
+			return val;
+		}
         @Override protected int maxValue(List<Colony> colonies)	{ 
             int val = 0;
             for (Colony c: colonies)
@@ -465,11 +464,6 @@ public class EmpireColonyInfoPane extends BasePanel {
 
             g.setColor(enabledArrowColor);
             g.fillPolygon(upButtonX, upButtonY, 3);
-
-//            if (maxBasesValue == 0)
-//                g.setColor(disabledArrowColor);
-//            else
-//                g.setColor(enabledArrowColor);
             g.fillPolygon(downButtonX, downButtonY, 3);
 
             upArrow.reset();
@@ -544,7 +538,7 @@ public class EmpireColonyInfoPane extends BasePanel {
                 decrementBases(e);
         }
     }
-    private class EmpireProductionPane extends EmpireDataPane {
+    private final class EmpireProductionPane extends EmpireDataPane {
         private static final long serialVersionUID = 1L;
         EmpireProductionPane()	{ init(); }
         private void init()		{
@@ -567,12 +561,10 @@ public class EmpireColonyInfoPane extends BasePanel {
 				Empire e =col.empire();
 				String workerProd = fmt(e.workerProductivity(), 2);
 				String factoryProd = fmt(col.factoryNetProductivity(), 1);
-				//return str(value(c));
 				return concat(workerProd, "  (", factoryProd, ")");
 			}
 			String income = str(value(c));
 			String prod   = str(maxValue(c));
-			//return str(value(c));
 			return concat(income, "  (", prod, ")");
 		}
 		@Override protected String resultString(List<Colony> c)	{ return ""; }

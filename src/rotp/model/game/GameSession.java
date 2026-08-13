@@ -507,7 +507,7 @@ public final class GameSession implements Base, Serializable {
 				+ String.format("%8.2f", sys1.colony().reserveIncome())
 				+ String.format("%8.2f", sys1.colony().totalIncome())
 				+ String.format("%8.2f", sys1.colony().production())
-				+ String.format("%8.2f", sys1.colony().defense().bases())
+				+ String.format("%8.2f", sys1.colony().defense().rawBases())
 				
 				);
 			}
