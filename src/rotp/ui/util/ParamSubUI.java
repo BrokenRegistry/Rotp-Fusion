@@ -150,7 +150,7 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	@Override public void updateOptionTool() {
 		super.updateOptionTool();
 		for (IParam<?> param : optionsList)
-			if (param != null)
+			if (param != null && !param.isCfgFile() && !param.isDuplicate()) // cfg file if updated live!
 				param.updateOptionTool();
 	}
 	@Override public void setFromDefault(boolean excludeCfg, boolean excludeSubMenu) {

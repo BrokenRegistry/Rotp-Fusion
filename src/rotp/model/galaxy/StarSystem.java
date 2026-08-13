@@ -59,6 +59,7 @@ import rotp.ui.sprites.SystemTransportSprite;
 import rotp.ui.util.ParamFloat;
 import rotp.ui.util.ParamInteger;
 import rotp.util.Base;
+import rotp.util.Palette;
 
 public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     private static final long serialVersionUID = 1L;
@@ -121,12 +122,12 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     private SpaceMonster monster;
     private final List<StarSystemEvent> events = new ArrayList<>();
     private Long seed;
-    
+
     public int transportDestId;
-    public int transportAmt;
+	private int transportAmt;
     public float transportTravelTime;
     private final Integer hashCode;
-    
+
     // public so we can access without lazy inits from accessors
     public transient SystemTransportSprite transportSprite;
     private transient ShipRelocationSprite rallySprite;
@@ -139,6 +140,8 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 	public transient float sortingValueFloat;
 	public transient int sortingValueInt;
 
+	public int transportAmt()					{ return transportAmt; }
+	public void transportAmt(int amt)			{ transportAmt = amt; }
     public boolean transportAutoEco()			{ return colony().transportAutoEco(); }
     public void	   transportAutoEco(boolean b)	{ colony().transportAutoEco(b); }
     public boolean toggleTransportAutoEco()		{ return colony().toggleTransportAutoEco(); }
@@ -184,12 +187,12 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     public SystemTransportSprite transportSprite() {
         if ((transportSprite == null) && isColonized()) {
             transportSprite = new SystemTransportSprite(this);
-            if (transportAmt > 0 && transportDestId >= 0) {
+			if (transportAmt() > 0 && transportDestId >= 0) {
                 transportSprite.clickedDest(galaxy().system(transportDestId));
-                if (transportTravelTime == 0)
-                    transportSprite.accept();
-                else
-                    transportSprite.accept(transportTravelTime);
+				if (transportTravelTime == 0)
+					transportSprite.accept(false);
+				else
+					transportSprite.accept(transportTravelTime, false);
             }
         }
         return transportSprite;
@@ -305,16 +308,16 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
             galaxy().abandonedSystems().add(this);
         else if (abandoned && !b) 
             galaxy().abandonedSystems().remove(this);
-           
+
         clearTransportSprite();
         abandoned = b; 
     }
     public void clearTransportSprite()          { 
         transportSprite = null; 
         transportDestId = StarSystem.NULL_ID;
-        transportAmt = 0;
+		transportAmt(0);
     }
-    
+
     public StarType starType()                  {
         if (starType == null)
             starType = StarType.keyed(starTypeKey);
@@ -442,7 +445,6 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
                 }
             }
         }
-        
     }
     public boolean canShowIncomingTransports() {
         if (planet().isColonized())
@@ -569,6 +571,14 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         orbitingTransports.add(tr);
         return tr;
     }
+	public Color getAttributeColor(String key, Palette palette) {
+		switch (key) {
+			case "IND_RATIO":
+				return colony().budget().factoryRatioColor(palette);
+			default:
+				return palette.black;
+		}
+	}
     public String getAttribute(String key) {
         switch (key) {
             case "NAME":             return empire().sv.name(id);
@@ -588,9 +598,10 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
             case "WASTE":            return str((int)colony().ecology().waste());
             case "INCOME":           return str((int)colony().totalIncome());
             case "CAPACITY":         return concat(str((int)(colony().currentProductionCapacity()*100)),"%");
+			case "IND_RATIO":		 return concat(str((int)(colony().budget().factoryToMaxRatio()*100)),"%");
 			case "RESERVE":			return Integer.toString((int)colony().rawReserveIncome());
 			case "NEEDED":			return Integer.toString(colony().budget().reserveNeededBC());
-			case "BUDGET":			return colony().budget().finalBudgetBCStr();
+			case "BUDGET":			return colony().budget().displayBudgetBCStr();
 			case "SUBSIDY":			return colony().budget().budgetSubsidiesStr();
 			case "CONTRIBUTE":		return Integer.toString((int)colony().budget().budgetContributeBC());
 			case "TAXED":			return Integer.toString((int)colony().budget().budgetTaxedBC());
@@ -620,9 +631,10 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 	public static final Comparator<StarSystem> COLONY_RESERVE	= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().rawReserveIncome(),	s2.colony().rawReserveIncome());
 	public static final Comparator<StarSystem> COLONY_SUBSIDIES	= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().budget().budgetSubsidiesBC(),	s2.colony().budget().budgetSubsidiesBC());
 	public static final Comparator<StarSystem> COLONY_NEEDED	= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().budget().reserveNeededBC(),	s2.colony().budget().reserveNeededBC());
-	public static final Comparator<StarSystem> COLONY_BUDGET	= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().budget().budgetNoNullFinalBC(),	s2.colony().budget().budgetNoNullFinalBC());
+	public static final Comparator<StarSystem> COLONY_BUDGET	= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().budget().noNullDisplayBudgetBC(),	s2.colony().budget().noNullDisplayBudgetBC());
 	public static final Comparator<StarSystem> COLONY_CONTRIBUTE= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().budget().budgetContributeBC(),	s2.colony().budget().budgetContributeBC());
 	public static final Comparator<StarSystem> COLONY_TAXED		= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().budget().budgetTaxedBC(),	s2.colony().budget().budgetTaxedBC());
+	public static final Comparator<StarSystem> IND_RATIO		= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().budget().factoryToMaxRatio(),	s2.colony().budget().factoryToMaxRatio());
 	public static final Comparator<StarSystem> FACTORIES		= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().industry().factories(),	s2.colony().industry().factories());
 	public static final Comparator<StarSystem> BASE_PRODUCTION	= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().production(),			s2.colony().production());
 	public static final Comparator<StarSystem> WASTE			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().ecology().waste(),	s2.colony().ecology().waste());
@@ -731,9 +743,11 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
             }
             drawStar(map, g2, x0, y0);
         }
-        
-        if (map.parent().isClicked(this)
-        || map.parent().isClicked(transportSprite())) 
+
+        // if transportSprite is null it's not clicked
+        // using the function call will uselessly call govern if needed! 
+		if (map.parent().isClicked(this)
+				|| (transportSprite != null && map.parent().isClicked(transportSprite)))
             drawSelection(g2, map, emp, x0, y0);
         else if (map.parent().isHovering(this)) 
             drawHovering(g2, map, x0, y0);
@@ -777,13 +791,11 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         int realFontSize = unscaled(fontSize);
         if (map.parent().showSystemData(this))
             fontSize = fontSize * 7 / 10;
-        
- //       if (realFontSize < 8) // BR:
-            if (realFontSize < minFont) // BR:
+
+		if (realFontSize < minFont)
             return;
-        
-//        if (map.parent().showSystemName(this) || !colonized || (realFontSize < 12)) { // BR:
-        if (map.parent().showSystemName(this) || !colonized || (realFontSize < minFont2)) { // BR: was 12
+
+		if (map.parent().showSystemName(this) || !colonized || (realFontSize < minFont2)) {
             String s1 = map.parent().systemLabel(this);
             String s2 = map.parent().systemLabel2(this);
             if (s2.isEmpty())
@@ -962,7 +974,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
             a.add(new Area(new RoundRectangle2D.Float(x-(r/6), y-r, r/3, r+r, r1/3, r1/3)));
             a.subtract(new Area(new Ellipse2D.Float(x-r1,y-r1,r1+r1,r1+r1)));
             g2.fill(a);
-        }      
+        }
     }
     public void drawStar(GalaxyMapPanel map, Graphics2D g2, int x, int y) {
         int r0 = drawRadius(map);
@@ -992,7 +1004,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
             g.setColor(selectionC);
         else
             g.setColor(emp.color());
-        
+
         int r0 = map.scale(1.0f);
         int r1 = map.scale(0.8f);
 
@@ -1158,170 +1170,17 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 		// String str = IntStream.range(0, prob.length) .mapToObj(i -> String.format("%3.2f",prob[i])).collect(Collectors.joining(","));
 		// System.out.print("addMonster() prob = " + str);
 		float rnd = rng().nextFloat();
-		if (rnd < prob[0]) {
-//			System.out.println("	==> Space Jellyfish");
+		if (rnd < prob[0])
 			monster(new SpaceJellyfish(null, null));
-		}
-		else if (rnd < prob[1]) {
-//			System.out.println("	==> Space Cuttlefish");
+		else if (rnd < prob[1]) 
 			monster(new SpaceCuttlefish(null, null));
-		}
-		else if (rnd < prob[2]) {
-//			System.out.println("	==> Space Crystal");
+		else if (rnd < prob[2])
 			monster(new GuardianCrystal(null, null));
-		}
-		else if (rnd < prob[3]) {
-//			System.out.println("	==> Space Pirates");
+		else if (rnd < prob[3])
 			monster(new GuardianPirates(null, null));
-		}
-		else if (rnd < prob[4]) {
-//			System.out.println("	==> Space Amoeba");
+		else if (rnd < prob[4])
 			monster(new GuardianAmoeba(null, null));
-		}
-		else {
-//			System.out.println("	==> No Monster");
-		}
 	}
-//	public interface ISortStarSystem<S, B>	{ void sort(List<StarSystem> list, Boolean decreasing); }
-//	public static void sortFloat(List<StarSystem> list, Boolean decreasing)	{
-//		if (decreasing)
-//			list.sort(DECREASING_FLOAT);
-//		else
-//			list.sort(INCREASING_FLOAT);
-//	}
-//	public static void sortInt(List<StarSystem> list, Boolean decreasing)	{ 
-//		if (decreasing)
-//			list.sort(DECREASING_INT);
-//		else
-//			list.sort(INCREASING_INT);
-//	}
-//	public static void sortbyName(List<StarSystem> list, Boolean decreasing)			{
-//		list.sort((StarSystem s1, StarSystem s2) -> s1.name().compareTo(s2.name()));
-//	}
-//	public static void sortbyPlanetType(List<StarSystem> list, Boolean decreasing)		{
-//		list.sort((StarSystem s1, StarSystem s2) -> Integer.compare(s1.planet().type().hostility(), s2.planet().type().hostility()));
-//	}
-//	public static void sortbyNotes(List<StarSystem> list, Boolean decreasing)			{
-//		list.sort((StarSystem s1, StarSystem s2) -> s1.notes().compareTo(s2.notes()));
-//	}
-//	public static void sortbyShipYard(List<StarSystem> list, Boolean decreasing)		{
-//		list.sort((StarSystem s1, StarSystem s2) -> s1.colony().shipyardProject().compareTo(s2.colony().shipyardProject()));
-//	}
-//	public static void sortbyResources(List<StarSystem> list, Boolean decreasing)		{
-//		for (StarSystem sys : list)
-//			sys.sortingValueInt = sys.planet().resourcesSort();
-//		if (decreasing)
-//			Collections.sort(list, DECREASING_INT);
-//		else
-//			Collections.sort(list, INCREASING_INT);
-//		if (decreasing)
-//			Collections.sort(list, RESOURCES);
-//		else
-//			Collections.sort(list, RESOURCES);
-//		if (decreasing)
-//			Collections.sort(list, (StarSystem s1, StarSystem s2) -> Integer.compare(s2.planet().resourcesSort(), s1.planet().resourcesSort()));
-//		else
-//			Collections.sort(list, (StarSystem s1, StarSystem s2) -> Integer.compare(s1.planet().resourcesSort(), s2.planet().resourcesSort()));
-
-		//		sortInt(list, decreasing);
-//		list.sort((StarSystem s1, StarSystem s2) -> Integer.compare(s1.planet().resourcesSort(), s2.planet().resourcesSort()));
-//	}
-//	public static void sortbyIndustryReserve(List<StarSystem> list, Boolean decreasing)	{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = sys.colony().reserveIncome();
-//		sortFloat(list, decreasing);
-//	}
-//	public static void sortbyFactories(List<StarSystem> list, Boolean decreasing)		{
-//		list.sort((StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().industry().factories(), s2.colony().industry().factories()));
-//	}
-//	public static void sortbyBaseProduction(List<StarSystem> list, Boolean decreasing)	{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = sys.colony().production();
-//		sortFloat(list, decreasing);
-//	}
-//	public static void sortbyWaste(List<StarSystem> list, Boolean decreasing)			{
-//		list.sort((StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().ecology().waste(), s2.colony().ecology().waste()));
-//	}
-//	public static void sortbyIncome(List<StarSystem> list, Boolean decreasing)			{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = sys.colony().totalIncome();
-//		sortFloat(list, decreasing);
-//	}
-//	public static void sortbyCapacity(List<StarSystem> list, Boolean decreasing)		{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = sys.colony().currentProductionCapacity();
-//		sortFloat(list, decreasing);
-//	}
-//	public static void sortbyBases(List<StarSystem> list, Boolean decreasing)			{
-//		list.sort((StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().defense().bases(), s2.colony().defense().bases()));
-//	}
-//	public static void sortbyShield(List<StarSystem> list, Boolean decreasing)			{
-//		list.sort((StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().defense().shieldLevelComp(), s2.colony().defense().shieldLevelComp()));
-//	}
-//	public void sortbyInvasionPriority(List<StarSystem> list, Boolean decreasing)		{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = sys.empire().generalAI().invasionPriority(sys);
-//		sortFloat(list, decreasing);
-//	}
-//	public void sortbyStargate(List<StarSystem> list, Boolean decreasing)				{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = sys.colony().starGateTimeToComplete();
-//		sortFloat(list, decreasing);
-//	}
-//	public static void sortbyFlag(List<StarSystem> list, Boolean decreasing)			{
-//		SystemInfo sv = Empire.thePlayer().sv;
-//		for (StarSystem sys : list)
-//			sys.sortingValueInt = sv.flagColorId(sys.id);
-//		sortInt(list, decreasing);
-//	}
-//	public static void sortbyVDistance(List<StarSystem> list, Boolean decreasing)		{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = VIEWING_EMPIRE.sv.distance(sys.id);
-//		sortFloat(list, decreasing);
-//	}
-//	public void sortbyVPopulation(List<StarSystem> list, Boolean decreasing)			{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = VIEWING_EMPIRE.sv.population(sys.id);
-//		sortFloat(list, decreasing);
-//	}
-//	public static void sortbyPopulation(List<StarSystem> list, Boolean decreasing)		{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = sys.population();
-//		sortFloat(list, decreasing);
-//	}
-//	public static void sortbyCurrentSize(List<StarSystem> list, Boolean decreasing)		{
-//		SystemInfo sv = Empire.thePlayer().sv;
-//		for (StarSystem sys : list)
-//			sys.sortingValueInt = sv.currentSize(sys.id);
-//		sortInt(list, decreasing);
-//	}
-//	public static void sortbyTransportToFill(List<StarSystem> list, Boolean decreasing)	{
-//		SystemInfo sv = Empire.thePlayer().sv;
-//		for (StarSystem sys : list)
-//			sys.sortingValueInt = sv.maxTransToFill(sys.id);
-//		sortInt(list, decreasing);
-//	}
-//	public static void sortbyTransportNoLoss(List<StarSystem> list, Boolean decreasing)	{
-//		SystemInfo sv = Empire.thePlayer().sv;
-//		for (StarSystem sys : list)
-//			sys.sortingValueInt = sv.maxTransNoLoss(sys.id);
-//		sortInt(list, decreasing);
-//	}
-//	public static void sortbyDistanceToTargetSystem(List<StarSystem> list, Boolean decreasing)	{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = sys.squareDistanceTo(TARGET_SYSTEM);
-//		sortFloat(list, decreasing);
-//	}
-//	public static void sortbyDistanceToTargetEmpire(List<StarSystem> list, Boolean decreasing)	{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = TARGET_EMPIRE.sv.distance(sys.id);;
-//		sortFloat(list, decreasing);
-//	}
-//	public static void sortbyTransportTimeToTargetSystem(List<StarSystem> list, Boolean decreasing)	{
-//		for (StarSystem sys : list)
-//			sys.sortingValueFloat = sys.transportTimeTo(TARGET_SYSTEM);
-//		sortFloat(list, decreasing);
-//	}
 	// ==================== SystemBaseData ====================
 	//
 	public static class SystemBaseData {

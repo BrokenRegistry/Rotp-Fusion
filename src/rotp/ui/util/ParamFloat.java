@@ -127,6 +127,10 @@ public class ParamFloat extends AbstractParam<Float> {
 		super.setNewValueMethod(method);
 		return this;
 	}
+	@Override public ParamFloat setGetValueMethod(IGetValue<Float> method)	{
+		super.setGetValueMethod(method);
+		return this;
+	}
 	@Override public ParamFloat setIsGhostMethod(BooleanSupplier method)	{
 		super.setIsGhostMethod(method);
 		return this;

@@ -1,4 +1,4 @@
-package rotp.model.ai.governor;
+package rotp.model.ai.player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,9 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import rotp.model.ai.governor.ParamFleetAuto.SubFleet;
-import rotp.model.ai.governor.ParamFleetAuto.SubFleetList;
 import rotp.model.ai.interfaces.FleetCommander;
+import rotp.model.ai.player.ParamFleetAuto.SubFleet;
+import rotp.model.ai.player.ParamFleetAuto.SubFleetList;
 import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
 import rotp.model.empires.SystemInfo;

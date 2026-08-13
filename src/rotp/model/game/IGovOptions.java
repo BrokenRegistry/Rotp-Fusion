@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-import rotp.model.ai.governor.ParamFleetAuto;
+import rotp.model.ai.player.ParamFleetAuto;
 import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
 import rotp.model.galaxy.Galaxy;
@@ -58,9 +58,9 @@ public interface IGovOptions {
 		return list;
 	}
 	static boolean isGameMode()		{ return GameSession.instance().isReady() && RulesetManager.current().isGameMode(); }
-	static void makesBudgetObsolete(String id) {
+	static void makesBudgetObsolete(Object id) {
 		if(isGameMode())
-			GameSession.instance().galaxy().player().budget().makeObsolete();
+			GameSession.instance().galaxy().player().budget().makeBudgetOptionsObsolete();
 	}
 
 	// Colony Options
@@ -69,65 +69,118 @@ public interface IGovOptions {
 			.setIncrements(1, 5, 20);
 	ParamBoolean shieldAlones		= new ParamBoolean(GOV_UI, "SHIELD_WITHOUT_BASES", false);
 	default boolean shieldAlones()	{ return shieldAlones.get(); }
+
+	ParamBoolean autospendImmediateTransfer		= new ParamBoolean(GOV_UI, "AUTOSPEND_IMMEDIATE", false);
+
 	ParamBoolean autoSpendOnNewColonies			= new ParamBoolean(GOV_UI, "AUTOSPEND", false)
-			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+			.setIsGhostMethod(IGovOptions::notGrantingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
 	ParamBoolean autoSpendOnNewColoniesFirst	= new ParamBoolean(GOV_UI, "AUTOSPEND_NEW_FIRST", false)
-			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+			.setIsGhostMethod(IGovOptions::notGrantingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
 	ParamBoolean autoSpendOnArtefacts			= new ParamBoolean(GOV_UI, "AUTOSPEND_ARTEFACTS", false)
 			.isUpdateDef(true)
-			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+			.setIsGhostMethod(IGovOptions::notGrantingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
 	ParamInteger autospendMaxIndustryPct		= new ParamInteger(GOV_UI, "AUTOSPEND_MAX_IND", 100)
 			.setLimits(10, 100)
 			.setIncrements(1, 5, 20)
 			.pctValue(true)
-			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+			.setIsGhostMethod(IGovOptions::notGrantingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
 	ParamInteger reserveForPlayer		= new ParamInteger(GOV_UI, "RESERVE", 0)
 			.setLimits(0, 100000)
 			.setIncrements(10, 50, 200)
-			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+			.setIsGhostMethod(IGovOptions::notRaisingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
 	ParamInteger reservePlayerPerMille	= new ParamInteger(GOV_UI, "RESERVE_PER_MILLE", 0)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20)
 			.perMilleValue(true)
-			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+			.setIsGhostMethod(IGovOptions::notRaisingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
 	private static void tagReserveNextTurn(String id)	{
 		reserveNextTurn.updated(true);
 		reserveNextTurnPct.updated(true);
 		reserveMax.updated(true);
 		reserveMaxPct.updated(true);
-		makesBudgetObsolete(id);
+		redoBudgetRaiseAllowed.updated(true);
 	}
-	private static boolean notPlanReserveNextTurn()	{ return !planReserveNextTurn.get(); }
-	ParamBoolean planReserveNextTurn	= new ParamBoolean(GOV_UI, "PLAN_RESERVE_TURN", false)
+	private static void tagRedoBudget(String id)	{
+		redoBudgetOnOptionChange.updated(true);
+		redoBudgetOnTransport.updated(true);
+		redoBudgetOnTaxChange.updated(true);
+		redoBudgetOnColony.updated(true);
+		redoBudgetOnSpendings.updated(true);
+	}
+	private static void tagGrantFunds(String id)	{
+		fundHelpRandomEvent.updated(true);
+		redoBudgetGrantAllowed.updated(true);
+		autoSpendOnArtefacts.updated(true);
+		autoSpendOnNewColonies.updated(true);
+		autoSpendOnNewColoniesFirst.updated(true);
+		autospendMaxIndustryPct.updated(true);
+	}
+	private static boolean redoBudgetNotAllowed()	{
+		return !( redoBudgetRaiseAllowed.get() && governorRaiseFunds.get()
+				|| redoBudgetGrantAllowed.get() && governorGrantFunds.get());
+	}
+
+	ParamBoolean redoBudgetRaiseAllowed		= new ParamBoolean(GOV_UI, "REDO_RAISE_ALLOWED", false)
+			.setIsGhostMethod(IGovOptions::notRaisingFunds)
+			.setUpdateParameters(IGovOptions::tagRedoBudget, "");
+	ParamBoolean redoBudgetGrantAllowed		= new ParamBoolean(GOV_UI, "REDO_GRANT_ALLOWED", false)
+			.setIsGhostMethod(IGovOptions::notGrantingFunds)
+			.setUpdateParameters(IGovOptions::tagRedoBudget, "");
+
+	ParamBoolean redoBudgetOnOptionChange	= new ParamBoolean(GOV_UI, "REDO_BUDGET_OPTION", false)
+			.setIsGhostMethod(IGovOptions::redoBudgetNotAllowed);
+	ParamBoolean redoBudgetOnTransport		= new ParamBoolean(GOV_UI, "REDO_BUDGET_TRANSPORT", false)
+			.setIsGhostMethod(IGovOptions::redoBudgetNotAllowed);
+	ParamBoolean redoBudgetOnTaxChange		= new ParamBoolean(GOV_UI, "REDO_BUDGET_TAX", false)
+			.setIsGhostMethod(IGovOptions::redoBudgetNotAllowed);
+	ParamBoolean redoBudgetOnColony			= new ParamBoolean(GOV_UI, "REDO_BUDGET_COLONY", false)
+			.setIsGhostMethod(IGovOptions::redoBudgetNotAllowed);
+	ParamBoolean redoBudgetOnSpendings		= new ParamBoolean(GOV_UI, "REDO_BUDGET_SPENDINGS", false)
+			.setIsGhostMethod(IGovOptions::redoBudgetNotAllowed);
+
+	private static boolean notGrantingFunds()	{ return !governorGrantFunds.get(); }
+	private static boolean notRaisingFunds()	{ return !governorRaiseFunds.get(); }
+	ParamBoolean governorGrantFunds	= new ParamBoolean(GOV_UI, "GRANT_FUNDS", true)
 			.isUpdateDef(true)
+			.setUpdateParameters(IGovOptions::tagGrantFunds, "");
+	ParamBoolean governorRaiseFunds	= new ParamBoolean(GOV_UI, "RAISE_FUNDS", true)
+			.isUpdateDef(true)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete)
 			.setUpdateParameters(IGovOptions::tagReserveNextTurn, "");
-	ParamInteger reserveNextTurn		= new ParamInteger(GOV_UI, "RESERVE_NEXT_TURN", 0)
+	ParamInteger reserveNextTurn	= new ParamInteger(GOV_UI, "RESERVE_NEXT_TURN", 0)
 			.setLimits(0, 100000)
 			.setIncrements(10, 50, 200)
-			.setIsGhostMethod(IGovOptions::notPlanReserveNextTurn)
-			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+			.setIsGhostMethod(IGovOptions::notRaisingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
 	ParamInteger reserveNextTurnPct	= new ParamInteger(GOV_UI, "RESERVE_NEXT_TURN_PCT", 10)
 			.setLimits(0, 50)
 			.setIncrements(1, 5, 20)
 			.pctValue(true)
-			.setIsGhostMethod(IGovOptions::notPlanReserveNextTurn)
-			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+			.setIsGhostMethod(IGovOptions::notRaisingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
 
 	ParamInteger reserveMax		= new ParamInteger(GOV_UI, "RESERVE_MAX", 100000)
 			.setLimits(0, 10000000)
 			.setIncrements(100, 500, 2000)
-			.setIsGhostMethod(IGovOptions::notPlanReserveNextTurn)
-			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+			.setIsGhostMethod(IGovOptions::notRaisingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
 	ParamInteger reserveMaxPct	= new ParamInteger(GOV_UI, "RESERVE_MAX_PCT", 100)
 			.setLimits(0, 50)
 			.setIncrements(1, 5, 20)
 			.pctValue(true)
-			.setIsGhostMethod(IGovOptions::notPlanReserveNextTurn)
-			.setUpdateParameters(IGovOptions::makesBudgetObsolete, "");
+			.setIsGhostMethod(IGovOptions::notRaisingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
 
 	ParamBoolean carryUnfunded	= new ParamBoolean(GOV_UI, "CARRY_UNFUNDED", false);
 
-	ParamBoolean fundHelpRandomEvent	= new ParamBoolean(GOV_UI, "FUND_HELP_EVENTS", true);
+	ParamBoolean fundHelpRandomEvent	= new ParamBoolean(GOV_UI, "FUND_HELP_EVENTS", true)
+			.setIsGhostMethod(IGovOptions::notGrantingFunds);
 
 	ParamBoolean shipBuilding		= new ParamBoolean(GOV_UI, "SHIP_BUILDING", true);
 
@@ -158,9 +211,9 @@ public interface IGovOptions {
 		earlyBaseBuilding.updated(true);
 		workerToFactoryROI.updated(true);
 		maxColoniesForROI.updated(true);
-		makesBudgetObsolete(id);
 	}
 	ParamBoolean isManageableGovernor	= new ParamBoolean(GOV_UI, "FOLLOW_COLONY_REQUESTS", false)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete)
 			.setUpdateParameters(IGovOptions::tagManageableGovernor, "");
 	static boolean isOriginalGovernor()	{ return !isManageableGovernor.get(); }
 
@@ -386,14 +439,14 @@ public interface IGovOptions {
 	ParamBoolean contactUpdateSpending	= new ParamBoolean(GOV_UI, "CONTACT_UPDATE_SPENDING", false);
 
 	AutoAttackEmpire autoAttackEmpire	= new AutoAttackEmpire();
-	class AutoAttackEmpire extends ParamList	{
-		static final String AUTO_ATTACK_EMPIRE		= "AUTO_ATTACK_EMPIRE";
-		static final String AUTO_ATTACK_NONE		= "AUTO_ATTACK_NONE";
-		static final String AUTO_ATTACK_WAR			= "AUTO_ATTACK_WAR";
-		static final String AUTO_ATTACK_MENACING	= "AUTO_ATTACK_MENACING";
-		static final String AUTO_ATTACK_HOSTILE		= "AUTO_ATTACK_HOSTILE";
-		static final String AUTO_ATTACK_NO_ENTENTE	= "AUTO_ATTACK_NO_ENTENTE";
-		static final String AUTO_ATTACK_ALL			= "AUTO_ATTACK_ALL";
+	final class AutoAttackEmpire extends ParamList	{
+		private static final String AUTO_ATTACK_EMPIRE		= "AUTO_ATTACK_EMPIRE";
+		private static final String AUTO_ATTACK_NONE		= "AUTO_ATTACK_NONE";
+		private static final String AUTO_ATTACK_WAR			= "AUTO_ATTACK_WAR";
+		private static final String AUTO_ATTACK_MENACING	= "AUTO_ATTACK_MENACING";
+		private static final String AUTO_ATTACK_HOSTILE		= "AUTO_ATTACK_HOSTILE";
+		private static final String AUTO_ATTACK_NO_ENTENTE	= "AUTO_ATTACK_NO_ENTENTE";
+		private static final String AUTO_ATTACK_ALL			= "AUTO_ATTACK_ALL";
 
 		public AutoAttackEmpire()	{
 			super(GOV_UI, AUTO_ATTACK_EMPIRE, AUTO_ATTACK_MENACING);
@@ -452,7 +505,7 @@ public interface IGovOptions {
 	ParamFleetAutoAttack   fleetAutoAttackMode	 = new ParamFleetAutoAttack();
 
 	final class ParamFleetAutoScout extends ParamFleetAuto	{
-		static final String FLEET_AUTO_SCOUT = "FLEET_AUTO_SCOUT";
+		private static final String FLEET_AUTO_SCOUT = "FLEET_AUTO_SCOUT";
 		public ParamFleetAutoScout()	{
 			super(FLEET_AUTO_SCOUT, FLEET_AUTO_ALONE);
 		}
@@ -470,7 +523,7 @@ public interface IGovOptions {
 		}
 	}
 	final class ParamFleetAutoColonize extends ParamFleetAuto	{
-		static final String FLEET_AUTO_COLONIZE = "FLEET_AUTO_COLONIZE";
+		private static final String FLEET_AUTO_COLONIZE = "FLEET_AUTO_COLONIZE";
 		public ParamFleetAutoColonize()	{
 			super(FLEET_AUTO_COLONIZE, FLEET_AUTO_ALONE);
 		}
@@ -499,7 +552,7 @@ public interface IGovOptions {
 		}
 	}
 	final class ParamFleetAutoAttack extends ParamFleetAuto	{
-		static final String FLEET_AUTO_ATTACK = "FLEET_AUTO_ATTACK";
+		private static final String FLEET_AUTO_ATTACK = "FLEET_AUTO_ATTACK";
 		public ParamFleetAutoAttack()	{
 			super(FLEET_AUTO_ATTACK, FLEET_AUTO_ALONE);
 		}

@@ -187,7 +187,7 @@ class WarViewPanel extends SystemPanel {
 			}
 			// Process Ready to launch transports
 			for (StarSystem sys: pl.allColonizedSystems()) {
-				if (sys != null && sys.transportAmt > 0) {
+				if (sys != null && sys.transportAmt() > 0) {
 					StarSystem dest = gal.system(sys.transportDestId);
 					if (dest != null && dest.id == sysId) {
 						Integer turn = ceil(sys.colony().transport().travelTimeAdjusted(dest));
@@ -196,7 +196,7 @@ class WarViewPanel extends SystemPanel {
 							incomingRecord = new FleetRecord();
 							fleetsMap.put(turn, incomingRecord);
 						}
-						incomingRecord.add(incomingRecord.playerYearMap, text("WAR_VIEW_TRANSPORT"), sys.transportAmt);
+						incomingRecord.add(incomingRecord.playerYearMap, text("WAR_VIEW_TRANSPORT"), sys.transportAmt());
 					}
 				}
 			} 

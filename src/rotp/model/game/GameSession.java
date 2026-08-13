@@ -141,7 +141,7 @@ public final class GameSession implements Base, Serializable {
 	private boolean lastAlwaysAlly  = false;
 	private transient boolean loading = false;
 
-	boolean loading()							{ return loading; }
+	public boolean loading()					{ return loading; }
 	boolean isReady()							{ return galaxy()!=null && !loading(); }
     public GameStatus status()                   { return status; }
     public long id()                             { return id; }
@@ -535,10 +535,6 @@ public final class GameSession implements Base, Serializable {
         return () -> {
 			try {
 				ErrorUI.inTurnMode();
-				TradeTechNotification.resetSkipButton();
-				validateAlwaysAtWar();
-				validateAlwaysAlly();
-				player().startingNextTurnProcess();
                 performingTurn = true;
                 Galaxy gal = galaxy();
                 String turnTitle = nextTurnTitle();
@@ -552,6 +548,10 @@ public final class GameSession implements Base, Serializable {
 				// ModnarPrivateLogging();
 
                 long startMs = timeMs();
+				TradeTechNotification.resetSkipButton();
+				validateAlwaysAtWar();
+				validateAlwaysAlly();
+				player().startingNextTurnProcess();
                 systemsToAllocate().clear();
                 clearScoutedSystems();
                 shipsConstructed().clear();
@@ -1374,6 +1374,7 @@ public final class GameSession implements Base, Serializable {
 
 			GameSession.instance(newSession);
 			instance().loading = true;
+			int oldChanges = newSession.galaxy().player().budget().getChanges();
 
 			if (Rotp.isIDE()) {
 				if (newSession.governorOptions == null)
@@ -1397,7 +1398,7 @@ public final class GameSession implements Base, Serializable {
 			instance().options().setAsGame();
 			resolveOptionsDiscrepansies(newSession);
 			rulesetManager().setAsGameMode();
-			instance().loading = false;
+//			instance().loading = false;
 
 			if (instance().galaxy.playerSwapRequest())
 				instance().galaxy.swapPlayerEmpire();
@@ -1405,7 +1406,10 @@ public final class GameSession implements Base, Serializable {
             newSession.validate();
 
             loadPreviousSession(newSession, startUp);
+			newSession.galaxy().player().budget().setChanges(oldChanges);
             newSession.ironmanValidation();
+			instance().loading = false;
+
         	if (!IDebugOptions.debugNoAutoSave()) {
                 // do not autosave the current session if that is the file we are trying to reload            
                 if (!filename.equalsIgnoreCase(RECENT_SAVEFILE))

@@ -368,11 +368,11 @@ public final class FlightPathSprite extends MapSprite {
 			else
 				return Color.GREEN;
 		else if (dest.empId() != from.empId())
-			if (from.transportAmt >= minInvasionDisp)
+			if (from.transportAmt() >= minInvasionDisp)
 				return systemTroopColor;
 			else
 				return null;
-		else if (from.transportAmt >= minTransportDisp)
+		else if (from.transportAmt() >= minTransportDisp)
 			return systemTransportColor;
 		else
 			return null;

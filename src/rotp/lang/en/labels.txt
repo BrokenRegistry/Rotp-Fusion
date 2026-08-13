@@ -417,7 +417,7 @@ INC_COEXIST_DESC4                 | The [your_empire] is a great ally.
 INC_EXPANSION_TITLE               | Expansion
 INC_EXPANSION_DESC                | With control of [num] systems, the [your_empire] has grown too large.
 INC_GENOCIDE_TITLE                | Genocide
-INC_GENOCIDE_DESC                 | The [attacker_empire] has completely destroyed the [victim_race] race.
+INC_GENOCIDE_DESC                 | The [attacker_empire] has completely destroyed the [victim_race] species.
 INC_FINAL_WAR_TITLE               | Final War!
 INC_FINAL_WAR_DESC                | The [rebel_empire] has rebelled against the ruling of the Galactic Council, resulting in a call for its complete eradication by the remaining allied forces of the galaxy.
 INC_MILITARY_BUILDUP_TITLE        | Military Buildup
@@ -666,6 +666,7 @@ GAME_SETTINGS_SPECIES_DIR_DESC2		| The species directory is currently set to: %1
 GAME_SETTINGS_DISPLAY_YEAR        | Display Year: %1
 GAME_SETTINGS_DISPLAY_YEAR_DESC   | On the Galaxy map: Displays either the game's current turn or your empire's current year
 
+GAME_SETTINGS_DIVERT_EXCESS_TO_RESEARCH_LABEL	| Excess to Research
 GAME_SETTINGS_DIVERT_EXCESS_TO_RESEARCH          | Excess to Research: %1
 GAME_SETTINGS_DIVERT_EXCESS_TO_RESEARCH_YES_DESC | Excess colony spending is diverted to research.
 GAME_SETTINGS_DIVERT_EXCESS_TO_RESEARCH_NO_DESC  | Excess colony spending is sent to treasury.
@@ -1217,6 +1218,28 @@ PLANETS_RES_FULL_DEF_POP          | Population: %1
 PLANETS_RES_FULL_DEF_FACT         | Factories: %1
 PLANETS_BUTTON_TRANSFER           | TRANSFER
 PLANETS_BUTTON_EXIT               | EXIT
+
+PLANETS_BUTTON_DO_CLEAR_DESC	| You can ask the governor to cancel or redo all or part of the budget,<br>for all or selected colonies.
+PLANETS_BUTTON_ALL_DESC			| For all colonies:
+PLANETS_BUTTON_LIST_DESC		| For the selected colonies:
+PLANETS_BUTTON_ONE_DESC			| For the selected colony:
+PLANETS_BUTTON_ALL_CLEAR_DESC	| You can ask the governor to cancel all or part of the budget of all colonies.
+PLANETS_BUTTON_ALL_CLEAR_GRANT	| Clear Grant
+PLANETS_BUTTON_ALL_CLEAR_BOTH	| Clear Both
+PLANETS_BUTTON_ALL_CLEAR_RAISE	| Clear Raising
+PLANETS_BUTTON_ALL_DO_DESC		| You can ask the governor to rebuild all or part of the budget.
+PLANETS_BUTTON_ALL_DO_GRANT		| Redo Grant
+PLANETS_BUTTON_ALL_DO_BOTH		| Redo Both
+PLANETS_BUTTON_ALL_DO_RAISE		| Redo Raising
+PLANETS_BUTTON_LIST_CLEAR_DESC	| You can ask the governor to cancel all or part of the budget of these colonies.
+PLANETS_BUTTON_LIST_CLEAR_GRANT	| Clear Grant
+PLANETS_BUTTON_LIST_CLEAR_BOTH	| Clear Both
+PLANETS_BUTTON_LIST_CLEAR_RAISE	| Clear Raising
+PLANETS_BUTTON_LIST_DO_DESC		| You can ask the governor to rebuild all or part of the budget, using these colonies.
+PLANETS_BUTTON_LIST_DO_GRANT	| Grant Funds
+PLANETS_BUTTON_LIST_DO_BOTH		| Grant & Raise
+PLANETS_BUTTON_LIST_DO_RAISE	| Raise Funds
+
 PLANETS_BUTTON_BUDGET			| Budgetize
 PLANETS_BUTTON_REMOVE			| Remove player budget
 PLANETS_BUTTON_CONVERT			| Transfer Budget
@@ -1233,7 +1256,7 @@ PLANETS_BUDGET_NO_GOVERNOR		| The governor is not involved in this budget.
 PLANETS_AMT_PCT                   | %1%
 PLANETS_AMT_BC                    | %1 BC
 PLANETS_TRANSFER_DESC             | Transfer Empire Funds to %1
-PLANETS_TRANSFER_CANCEL           | Cancel
+PLANETS_TRANSFER_CANCEL           | Close
 PLANETS_TRANSFER_ACCEPT           | Transfer
 PLANETS_COLONY_TRANSFER_TITLE     | Transfer Funds
 PLANETS_COLONY_TRANSFER_DETAIL    | Transfer funds from the empire's treasury to increase this colony's production.
@@ -1253,6 +1276,7 @@ PLANETS_LIST_SHIELD               | Shield
 PLANETS_LIST_PRODUCTION           | Prod
 PLANETS_LIST_CAPACITY             | Capacity
 PLANETS_LIST_RESERVE              | Reserve
+PLANETS_LIST_IND_RATIO			| Industry
 PLANETS_LIST_NEEDED				| Optimal
 PLANETS_LIST_BUDGET				| Budget
 PLANETS_LIST_SUBSIDY			| Gets
@@ -1313,12 +1337,12 @@ PLANETS_HELP_5E					| Budget<br> Amount requested by the Governor or by the *Pla
 PLANETS_HELP_5F					| Optimal<br> Amount required to maximize the functioning of the colony.
 PLANETS_HELP_5G					| Instructions to the governor for allocating subsidies:<br>Metal color: Follow global instructions.<br>Gold color: Allocate subsidies.<br>Red arc (right click): Can draw from the player's reserve.<br>Uncircled: active until the player deactivates it.<br>Magenta circle: Active while an emergency is activated.<br>Green circle: Active as long as the colony has not reached the development limit.<br>Blue circle: Active as long as a blue priority is present. (With the exception of research and shipsyard, as they do not deactivate automatically)
 
-PLANETS_HELP_T_BUDGET			| Budget the selected amount.<br>This value can be revised if desired.
+PLANETS_HELP_T_BUDGET			| Budget the selected amount.<br>This value can be revised later.
 PLANETS_HELP_T_TRANSFERT		| Transfer the selected amount to the colony reserve.<br>This transfer is final.
 PLANETS_HELP_T_CONVERT			| Transfer the already budgeted value to the colony reserve.<br>This transfer is final.
 PLANETS_HELP_T_CANCEL			| Exit without changing anything.
-PLANETS_HELP_T_BUDGET_OPTIMAL	| Budget the optimal amounts.<br>These values can be revised if desired.
-PLANETS_HELP_T_SHARE_OPTIMAL	| Share optimal needs proportionally and budget the amounts.<br>These values can be revised if desired.
+PLANETS_HELP_T_BUDGET_OPTIMAL	| Budget the optimal amounts.<br>These values can be revised later.
+PLANETS_HELP_T_SHARE_OPTIMAL	| Allocate the available reserves in proportion to the optimal needs, and budget the amounts.<br>These values can be revised later.
 PLANETS_HELP_T_REMOVE_PLAYER	| Return the hand to the governor by erasing the amount currently selected by the player.
 
 // Bombardment prompt
@@ -2067,10 +2091,10 @@ SETUP_PLAYER_LEADER               | Player Leader
 SETUP_NO_FOG_ON_ICONS             | Remove diplomat fog: %1
 SETUP_NO_FOG_ON_ICONS_DESC        | Remove the fog hiding the diplomat icons in the Character settings panel and in the Galaxy settings panel.
 
-// BR: config Player Race
+// BR: config Player Species
 SETUP_BUTTON_CUSTOM_PLAYER_RACE	| DNA Workshop
 
-// BR: Customize Player Race New GUI addition
+// BR: Customize Player Species New GUI addition
 CUSTOM_RACE_BUTTON_EXIT			| Exit
 CUSTOM_RACE_BUTTON_EXIT_DESC	| Exit the Panel. (Without saving the last modification)
 CUSTOM_RACE_BUTTON_CANCEL		| Cancel
@@ -2084,7 +2108,7 @@ CUSTOM_RACE_EMPTY_DESCRIPTION	| "Shift" and "Ctrl" can be used to modify the fun
 CUSTOM_RACE_FLEET_DESC			| Example of a fleet composed of vessels based on the model chosen for this species.
 CUSTOM_RACE_FLEET_HELP			| Example of a fleet composed of vessels based on the model chosen for this species.<br> If the animation bothers you, you can disable or enable it by clicking on the image.
 
-// BR: Customize Player Race
+// BR: Customize Player Species
 CUSTOM_RACE_DESCRIPTION			| Randomized DNA
 CUSTOM_RACE_RACE_AI_DESC		| Change the empire AI
 CUSTOM_RACE_GUI_TITLE			| DNA Workshop
@@ -2488,7 +2512,7 @@ CUSTOM_RACE_IGNORES_ECO_NO_DESC      | Normal behavior, Hostile planet types req
 CUSTOM_RACE_IGNORES_ECO_LIMITED_DESC | Ignores Waste and Hostile environments like All, Barren, Tundra, and Dead can immediately be colonized.
 CUSTOM_RACE_IGNORES_ECO_ALL_DESC     | All planet types can immediately be colonized.
 
-// Custom Race Naming Sub Panel
+// Custom Species Naming Sub Panel
 CUSTOM_RACE_UI_NAMES_TITLE			| Avatar New Terminology
 CUSTOM_RACE_UI_BUTTON_EXIT			| Exit
 CUSTOM_RACE_UI_BUTTON_EXIT_DESC		| Keep the current Settings then Exit the Panel.
@@ -3557,6 +3581,9 @@ SETTINGS_MOD_DEVELOPED_NO_BASE           | {→MAIN_COLONY_INDUSTRY←, →MAIN_
 SETTINGS_MOD_DEVELOPED_INDUSTRY_DESC     | Planet is full of factories.
 SETTINGS_MOD_DEVELOPED_INDUSTRY          | {→MAIN_COLONY_INDUSTRY←}
 
+GAME_SETTINGS_PLAYER_TAX_LEVEL_PCT_DESC	| Player tax rate
+GAME_SETTINGS_PLAYER_TAX_LEVEL_PCT		| Tax Rate: %1%
+
 SETTINGS_MOD_DEV_MAX_MISSING_POP_DESC    | What should be the maximum missing population before the taxation start to apply as "Developed colony"?<br>The governor may send some population from the already developed colonies to help populate the new ones. Thus regularly avoiding the colony from being taxed...
 SETTINGS_MOD_DEV_MAX_MISSING_POP         | Max missing Pop: %1
 
@@ -3683,7 +3710,7 @@ SETTINGS_MOD_DARK_GALAXY_SHRINK_DESC     | Shows only Systems in range, No Spyin
 SETTINGS_MOD_DARK_GALAXY_SHRINK          | Dark
 SETTINGS_MOD_DARK_GALAXY_DESC            | Yes: only Star systems in scout range or in scanner range are shown.
 SETTINGS_MOD_DARK_GALAXY                 | Dark Galaxy: %1
-SETTINGS_MOD_DARK_GALAXY_HELP            |<br><b>Why? by u/dweller_below</b><br><br><b>Boring:</b> We are all within a particularly thick nebula. The supernova that created this nebula spewed heavy elements EVERYWHERE. The particular combination of elements in our local nebula block EVERYTHING.<br><br><b>Funnier/self referential:</b> We are participants in a vast simulation created by the Orion's/Antaran. Naturally, the simulation must be good enough that we all express sentience/sapience. In iteration 42 of the simulation our Gods/Masters decided to isolate each race until we encounter each other.<br><br><b>Funniest:</b> The Antarans won the Orion/Antaran war and moved to exterminate Exterminate EXTERMINATE EVERYTHING. Our races have all been recently rescued/moved/copied to our ARC (Antaran Rescue Craft) by the Orions. The ARC just looks like a small galaxy. The ARC is actually a pocket dimension/rescue craft. This explains several things:<br>- The high density of intelligent races within our ARC.<br>- Why the Orions don't dominate our ARC. The Orions oppose the Antarans. One of the differences is the Orions don't dominate/exterminate other races. This matches prior backstory.<br>- Why we haven't sensed radio emissions from each other. Or light from each other's star. Game starts at the creation of the ARC. We USED to see other stars. But, now everything is different. Now, when we start to move outside of our small light bubbles, we find that everything is different. In fact, every star is radiating a decaying light bubble full of obsolete/meaningless information. But, as you get close to the adjacent stars, you can see what is really there NOW.<br>- Why physical law changes. The Orions manufactured different physical law within each game/ARC for "reasons". Every time we play, the ARC can be slightly different. The Orions had enough resources to copy our races multiple times and create multiple ARCs. Each Game/ARC is an attempt to create a different combination of survivors.
+SETTINGS_MOD_DARK_GALAXY_HELP            |<br><b>Why? by u/dweller_below</b><br><br><b>Boring:</b> We are all within a particularly thick nebula. The supernova that created this nebula spewed heavy elements EVERYWHERE. The particular combination of elements in our local nebula block EVERYTHING.<br><br><b>Funnier/self referential:</b> We are participants in a vast simulation created by the Orion's/Antaran. Naturally, the simulation must be good enough that we all express sentience/sapience. In iteration 42 of the simulation our Gods/Masters decided to isolate each species until we encounter each other.<br><br><b>Funniest:</b> The Antarans won the Orion/Antaran war and moved to exterminate Exterminate EXTERMINATE EVERYTHING. Our races have all been recently rescued/moved/copied to our ARC (Antaran Rescue Craft) by the Orions. The ARC just looks like a small galaxy. The ARC is actually a pocket dimension/rescue craft. This explains several things:<br>- The high density of intelligent races within our ARC.<br>- Why the Orions don't dominate our ARC. The Orions oppose the Antarans. One of the differences is the Orions don't dominate/exterminate other races. This matches prior backstory.<br>- Why we haven't sensed radio emissions from each other. Or light from each other's star. Game starts at the creation of the ARC. We USED to see other stars. But, now everything is different. Now, when we start to move outside of our small light bubbles, we find that everything is different. In fact, every star is radiating a decaying light bubble full of obsolete/meaningless information. But, as you get close to the adjacent stars, you can see what is really there NOW.<br>- Why physical law changes. The Orions manufactured different physical law within each game/ARC for "reasons". Every time we play, the ARC can be slightly different. The Orions had enough resources to copy our races multiple times and create multiple ARCs. Each Game/ARC is an attempt to create a different combination of survivors.
 
 SETTINGS_MOD_MAX_SECURITY_PCT_DESC       | To boost the maximal security tax percentage. (Spying bonus = 2 x tax)
 SETTINGS_MOD_MAX_SECURITY_PCT            | Max Security: %1%
@@ -5718,8 +5745,8 @@ GAME_OVER_EXIT                    | Exit
 GAME_OVER_REPLAY                  | Replay
 GAME_OVER_CONTINUE                | A few more turns...
 
-// text for race-generic endings
-// %1 Game year, %2 player name, %3 player race, %4 player empire, %5 leader name, %6 leader race, %7 leader empire, %8 special text
+// text for Species-generic endings
+// %1 Game year, %2 player name, %3 player Species, %4 player empire, %5 leader name, %6 leader Species, %7 leader empire, %8 special text
 GAME_OVER_NO_COLONIES_LOSS2       | The rule of %2 has ended, undone by imperial incompetence. #With no civilized worlds on which to land safely, any surviving [player_race] transports are unable to sustain the technological progress made by your society. #Barbarism is the natural state of society. Civilization is unnatural. It is a whim of circumstance. And barbarism must ultimately triumph.
 
 //
@@ -5854,13 +5881,17 @@ GOVERNOR_AUTOSPEND_DESC				| Spend reserve automatically to help building new co
 GOVERNOR_AUTOSPEND					| Autospend on new colonie: %1
 GOVERNOR_AUTOSPEND_LABEL			| Autospend on new colonies
 
+GOVERNOR_AUTOSPEND_IMMEDIATE_DESC	| To restore the old way: Governors do not use the budget, they immediately transfer subsidies to the colonies.
+GOVERNOR_AUTOSPEND_IMMEDIATE		| Immediate Transfer: %1
+GOVERNOR_AUTOSPEND_IMMEDIATE_LABEL	| Restore the old way
+
 GOVERNOR_AUTOSPEND_NEW_FIRST_HELP	| When the governor needs to help both new colonies and colonies with artifacts, he will need to prioritize new settlements.
 GOVERNOR_AUTOSPEND_NEW_FIRST_DESC	| The Governor prioritizes new colonies, those with artifacts come second.
-GOVERNOR_AUTOSPEND_NEW_FIRST		| Priority to new colonies : %1
+GOVERNOR_AUTOSPEND_NEW_FIRST		| Priority to new colonies: %1
 
 GOVERNOR_AUTOSPEND_MAX_IND_HELP		| When the governor needs to help both new colonies and colonies with artifacts, and needs to prioritize new colonies, it can be useful to set a limit at which a colony is no longer considered new.
 GOVERNOR_AUTOSPEND_MAX_IND_DESC		| Maximum development level defining a colony as new.
-GOVERNOR_AUTOSPEND_MAX_IND			| Development limit : %1
+GOVERNOR_AUTOSPEND_MAX_IND			| Development limit: %1%
 
 GOVERNOR_AUTOSPEND_ARTEFACTS_HELP	| The Governor automatically spends reserves to maximize research on colonies with artifacts:<br>&emsp - Spends only the amount the planet can consume this turn. <br>&emsp - Starts with fully built Orion Artefacts planets, then Antaran Artefacts planets.<br>&emsp - If funds remain, helps build new Orion Artefacts colonies, then Antaran Artifact colonies. <br>&emsp - Starts with the planet with the highest production and stops when funds run out or there are no more eligible planets.<br>&emsp - Spends only on planets where a Governor is in office.
 GOVERNOR_AUTOSPEND_ARTEFACTS_DESC	| Automatically spend reserve to boost rechearch on Artefact colonies.
@@ -5897,8 +5928,36 @@ GOVERNOR_RESERVE_NEXT_TURN_PCT_HELP	| Working capital, as a percentage of total 
 GOVERNOR_RESERVE_NEXT_TURN_PCT_DESC	| Working capital, as a percentage of total production, to be collected for current expenditure.
 GOVERNOR_RESERVE_NEXT_TURN_PCT		| Working capital pct: %1%
 
-GOVERNOR_PLAN_RESERVE_TURN_DESC		| The governor is responsible for collecting the specified working capital.
-GOVERNOR_PLAN_RESERVE_TURN			| The governor raise the funds: %1
+GOVERNOR_RAISE_FUNDS_HELP			| The governor is responsible for collecting the specified working capital.<br>If taxes are insufficient to reach the specified amount, the governor will redirect funds previously allocated to research toward ecology, this in order to generate a surplus that will then be sent to the imperial treasury.<br> The Governor will begin with ultra-rich planets, then move on to rich planets, and finally to normal planets.<br>This collection process therefore depends on the option "→GAME_SETTINGS_DIVERT_EXCESS_TO_RESEARCH_LABEL←".<br>The following colonies are excluded: thoses with artifacts, those that are resource-poor, those with insufficient populations, or those receiving subsidies (to avoid wasting funds).
+GOVERNOR_RAISE_FUNDS_DESC			| The governor is responsible for collecting the specified working capital.
+GOVERNOR_RAISE_FUNDS				| The governor raises the funds: %1
+GOVERNOR_RAISE_FUNDS_LABEL			| The governor raises the funds
+GOVERNOR_GRANT_FUNDS_HELP			| The governor is responsible for allocating the available funds.<br>The governor will follow your instructions, in this order:<br>- Help victims of random events,<br>- Colonies that can draw from reserved funds,<br>- Colonies with specific instructions,<br>- Colonies with artifacts,<br>- New colonies.<br>The last two priorities depend on another setting.
+GOVERNOR_GRANT_FUNDS_DESC			| The governor is responsible for allocating the available funds.
+GOVERNOR_GRANT_FUNDS				| The governor grants the funds: %1
+GOVERNOR_GRANT_FUNDS_LABEL			| The governor grants the funds
+
+GOVERNOR_REDO_RAISE_ALLOWED_DESC	| The governor will update the fundraising whenever the conditions are met.<br>Only valid if the governor is authorized to raise funds.
+GOVERNOR_REDO_RAISE_ALLOWED			| Fundraising is updatable: %1
+GOVERNOR_REDO_RAISE_ALLOWED_LABEL	| Fundraising is updatable
+GOVERNOR_REDO_GRANT_ALLOWED_DESC	| The governor will update the fund allocation whenever the conditions are met.<br>Only valid if the governor is authorized to grant funds.
+GOVERNOR_REDO_GRANT_ALLOWED			| Allocations are updatable: %1
+GOVERNOR_REDO_GRANT_ALLOWED_LABEL	| Grants are updatable
+
+// GOVERNOR_REDO_BUDGET_ALLOWED_HELP	| The governor will update the budget whenever the conditions are met.<br>Blocks all other conditions.<br>The purpose of this option is to temporarily block all other options without having to undo your configuration.
+// GOVERNOR_REDO_BUDGET_ALLOWED_DESC	| The governor will update the budget whenever the conditions are met.<br>Blocks all other conditions.
+// GOVERNOR_REDO_BUDGET_ALLOWED		| The budget is updatable: %1
+GOVERNOR_REDO_BUDGET_OPTION_DESC	| The governor will update the budget whenever a budget option is changed.
+GOVERNOR_REDO_BUDGET_OPTION			| Update on Options: %1
+GOVERNOR_REDO_BUDGET_TRANSPORT_DESC	| The governor will update the budget whenever populations are transported.
+GOVERNOR_REDO_BUDGET_TRANSPORT		| Update on Transport: %1
+GOVERNOR_REDO_BUDGET_TAX_DESC		| The governor will update the budget whenever the tax rate is changed.
+GOVERNOR_REDO_BUDGET_TAX			| Update on Tax change: %1
+GOVERNOR_REDO_BUDGET_COLONY_DESC	| The governor will update the budget whenever a directive regarding the subsidy granted to a colony is amended.
+GOVERNOR_REDO_BUDGET_COLONY			| Update on Colony change: %1
+GOVERNOR_REDO_BUDGET_SPENDINGS_HELP	| The governor will update the budget whenever an expenditure is modified.<br>This modification may result from intelligence-related expenditures, security-related costs, trade agreements, taxation, or adjustments to allocations made by the governors.
+GOVERNOR_REDO_BUDGET_SPENDINGS_DESC	| The governor will update the budget whenever a directive regarding the subsidy granted to a colony is amended.
+GOVERNOR_REDO_BUDGET_SPENDINGS		| Update on Colony change: %1
 
 GOVERNOR_CARRY_UNFUNDED_DESC		| The unfunded part of the amounts budgeted by the player will be carried over to the next round.
 GOVERNOR_CARRY_UNFUNDED				| Carry player's unfunded amounts: %1
@@ -6285,7 +6344,7 @@ SETTINGS_GLOBAL_USER_SAVE_DESC    | Save options for all GUIs to User's preferre
 SETTINGS_SEARCH_ICON_DESC		| A fuzzy search will give you a list of up to 10 results, with the most relevant one at the bottom of the list.<br>Click on a [Panel] or [Sub-panel] to open it. Click on an option to change its value. Scroll anywhere on a line to change the value of the option.
 SETTINGS_SEARCH_ICON_HELP		| A fuzzy search will give you a list of up to 10 results, with the most relevant one at the bottom of the list.<br>The results are shown either:<br>[Panel] |-> Option<br>or<br>[Panel] |-> [Sub-panel]<br><br>Click on a [Panel] or [Sub-panel] to open it.<br>Click on an option to change its value.<br>Scroll anywhere on a line to change the value of the option.<br><br>The search is performed from the current panel and its subpanels.<br>The search takes into account the selected language.
 
-// Race Menu Guides and Help
+// Species Menu Guides and Help
 SETUP_RACE_MAIN_DESC              | OVERVIEW<br> This screen allows you to adjust Base Player Empire parameters.<br> Use "Ctrl" and "Shift" to change the buttons functions.<br> Global = All options. Local = Options from this panel.<br>"R" will select a new species randomly.
 SETUP_RACE_NEXT_DESC              | Save options and go to the Galaxy setup menu.
 SETUP_RACE_CANCEL_DESC            | Cancel options and go back to the Main menu.

@@ -31,12 +31,8 @@ public class SystemTransportSprite extends MapSprite {
     private void init(StarSystem s) {
         source(s);
     }
-    public int amt() {
-        return homeSystem().transportAmt;
-    }
-    public void amt(int i) {
-        homeSystem().transportAmt = i;
-    }
+	public int amt()		{ return homeSystem().transportAmt(); }
+	public void amt(int i)	{ homeSystem().transportAmt(i); }
     public FlightPathSprite pathSpriteTo(StarSystem sys) {
         // no system transports for uncolonized systems
         if (!player().sv.isColonized(homeSystem().id))
@@ -66,16 +62,17 @@ public class SystemTransportSprite extends MapSprite {
         clickedDest = null;
         hoveringDest = null;
         homeSystem().colony().clearTransport();
+		player().budget().makeTransortObsolete();
     }
-    public void accept() {
+    public void accept(boolean govern) {
         homeSystem().transportDestId = id(clickedDest);
         homeSystem().transportTravelTime = 0;
-        homeSystem().colony().scheduleTransportsToSystem(clickedDest, amt(), false);
+        homeSystem().colony().scheduleTransportsToSystem(clickedDest, amt(), false, govern);
     }
-    public void accept(float travelTime) {
+    public void accept(float travelTime, boolean govern) {
         homeSystem().transportDestId = id(clickedDest);
         homeSystem().transportTravelTime = travelTime;
-        homeSystem().colony().scheduleTransportsToSystem(clickedDest, amt(), travelTime);
+        homeSystem().colony().scheduleTransportsToSystem(clickedDest, amt(), travelTime, govern);
     }
     public boolean canClear() {
         Transport tr = homeSystem().colony().transport();
@@ -92,7 +89,7 @@ public class SystemTransportSprite extends MapSprite {
         if (prevAmt == newAmt)
             return false;
 
-        homeSystem().transportAmt = newAmt;
+		homeSystem().transportAmt(newAmt);
         return true;
     }
     public boolean decrement(int n) {
@@ -101,7 +98,7 @@ public class SystemTransportSprite extends MapSprite {
         if (prevAmt == newAmt)
             return false;
 
-        homeSystem().transportAmt = newAmt;
+		homeSystem().transportAmt(newAmt);
         return true;
     }
     public StarSystem hoveringDest()          { return hoveringDest; }

@@ -1,4 +1,4 @@
-package rotp.model.ai.governor;
+package rotp.model.ai.player;
 
 import static rotp.model.ships.ShipDesignLab.MAX_DESIGNS;
 

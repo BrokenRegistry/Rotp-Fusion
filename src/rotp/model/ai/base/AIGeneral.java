@@ -366,7 +366,7 @@ public class AIGeneral implements Base, General {
                     maxTravelTime = max(maxTravelTime, travelTime);
                     // modnar: keep planets at least 60% full
                     // to prevent complete draining of planets
-                    // TODO: modify with leader personality and source planet fertility
+                    // TO DO: modify with leader personality and source planet fertility
                     //troopsAvailable += sys.colony().maxTransportsAllowed();
                     troopsAvailable += Math.max(0.0f, sys.colony().population() - 0.6f*sys.colony().planet().currentSize());
                 }
@@ -384,10 +384,10 @@ public class AIGeneral implements Base, General {
         for (StarSystem sys : launchPoints) {
             // modnar: keep planets at least 60% full
             // to prevent complete draining of planets
-            // TODO: modify with leader personality and source planet fertility
+            // TO DO: modify with leader personality and source planet fertility
             // int troops = sys.colony().maxTransportsAllowed();
             int troops = (int) Math.floor(Math.max(0.0f, sys.colony().population() - 0.6f*sys.colony().planet().currentSize()));
-            sys.colony().scheduleTransportsToSystem(target, troops, maxTravelTime);
+            sys.colony().scheduleTransportsToSystem(target, troops, maxTravelTime, false);
         }
     }
     private void launchRebellionTroops(StarSystem target) {

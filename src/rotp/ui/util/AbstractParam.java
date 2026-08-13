@@ -64,14 +64,15 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	private int	isGovernor	= NOT_GOVERNOR;
 	private boolean isDuplicate	= false;
 	private boolean isCfgFile	= false;
-	private boolean isValueInit	= true; // for new options: default values are initialized with current value.	
-	private boolean isUpdateDef	= false; // When updating Option from game, reset these to their default value.	
+	private boolean isValueInit	= true; // for new options: default values are initialized with current value.
+	private boolean isUpdateDef	= false; // When updating Option from game, reset these to their default value. So new game start with default values
 	private boolean	updated		= true;
 	private boolean	trueChange	= true;
 	private String	formerName;	// Link to another option for initialization (when upgrading)
 	private List<LinkData> linkList;
 	private boolean processingToggle = false;
 	private boolean	forcedRefresh	 = false;
+	private IGetValue<T> getValueMethod;	// Mainly to set static values
 	private INewValue<T> newValueMethod;	// Mainly to set static values
 	private IUpdated<T> valueUpdatedMethod;	// Mainly for UI: Request redraw
 	private String valueUpdatedMethodId;
@@ -84,6 +85,7 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	public IUpdated<T> getUpdatedMethod()		{ return valueUpdatedMethod; }
 	public String getUpdatedId()				{ return valueUpdatedMethodId; }
 	public INewValue<T> getNewValueMethod()		{ return newValueMethod; }
+	public IGetValue<T> getGetValueMethod()		{ return getValueMethod; }
 	public BooleanSupplier getIsGhostMethod()	{ return isGhostMethod; }
 	@Override public boolean isGhost()			{ return isGhostMethod == null ? false : isGhostMethod.getAsBoolean(); } // TODO BR: Upgrade overridden Methods
 	@Override public void updated(boolean val)	{
@@ -145,7 +147,10 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	// For internal use only! Do not call from outside AbstracParam
 	protected T getOption() {
 		if (isDuplicate()) { // Just in case!
-			System.err.println("getOption() Not set " + getCfgLabel());
+			if (getValueMethod != null)
+				return getValueMethod.getValue();
+			else
+				System.err.println("getOption() Not set " + getCfgLabel());
 		}		
 		return value(); // for cfg non duplicate
 	}
@@ -153,7 +158,10 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	protected abstract T getOptionValue(IGameOptions options);
 	protected void setOptionValue(IGameOptions options, T value) {
 		if (isDuplicate()) { // Just in case!
-			System.err.println("getFromOption() not updated to getOptionValue: " + name);
+			if (newValueMethod != null)
+				newValueMethod.newValue(value);
+			else
+				System.err.println("getFromOption() not updated to getOptionValue: " + name);
 		}		
 	}
 	// public void transfer (IGameOptions opts, boolean set) {}
@@ -333,7 +341,9 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	public void resetToDefaultValue()	{ set(defaultValue()); }
 	public T defaultValue()				{ return defaultValue.get(DEF_VAL.defVal()); }
 	public T get()						{
-		if (isCfgFile) {
+		if (getValueMethod != null)
+			value = getValueMethod.getValue();
+		else if (isCfgFile) {
 			value = getOption();
 		}
 		else if (isDuplicate) {
@@ -412,6 +422,10 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	}
 	public AbstractParam<T> setNewValueMethod(INewValue<T> method)	{
 		newValueMethod = method;
+		return this;
+	}
+	public AbstractParam<T> setGetValueMethod(IGetValue<T> method)	{
+		getValueMethod = method;
 		return this;
 	}
 	public AbstractParam<T> setIsGhostMethod(BooleanSupplier method)	{

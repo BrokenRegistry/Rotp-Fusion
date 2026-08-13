@@ -1327,16 +1327,14 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     		dynOpts().setString(bitmapGalaxyLastFolder.getLangLabel(), "");
     	}
     }
-    @Override public void UpdateOptionsTools() {
-    	// probably overkill, but no needs to be picky
-    	//System.out.println("UpdateOptionsTools() " + optionName());
-    	for (IParam<?> param : AllSubUI.allModOptions(false)) {
-    		if (param != null && !param.isCfgFile()) { // cfg file if updated live!
-    			param.updateOptionTool();
-    		}
-    	}
-    	UserPreferences.reload();
-    }
+	 @Override public void UpdateOptionsTools() {
+		// probably overkill, but no needs to be picky
+		//System.out.println("UpdateOptionsTools() " + optionName());
+		for (IParam<?> param : AllSubUI.allModOptions(false))
+			if (param != null && !param.isCfgFile() && !param.isDuplicate()) // cfg file if updated live!
+				param.updateOptionTool();
+		UserPreferences.reload();
+	}
     @Override public MOO1GameOptions copyAllOptions() {
 		try {
 			MOO1GameOptions opts = copyObjectData();

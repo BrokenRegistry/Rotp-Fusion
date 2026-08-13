@@ -33,11 +33,6 @@ import rotp.model.ships.ShipDesignLab;
 import rotp.util.Base;
 
 public final class AIGovernor implements Base, Governor {
-    public static final int SHIP = Colony.SHIP;
-    public static final int DEFENSE = Colony.DEFENSE;
-    public static final int INDUSTRY = Colony.INDUSTRY;
-    public static final int ECOLOGY = Colony.ECOLOGY;
-    public static final int RESEARCH = Colony.RESEARCH;
     private final Empire empire;
 
     public AIGovernor (Empire c) {
@@ -457,7 +452,7 @@ public final class AIGovernor implements Base, Governor {
 
         //ail: Rich and Ultra-Rich that are doing research which is not a project should put their stuff into reserve instead of conducting research
         boolean shiftResearchToIndustry = false;
-        if(prodScore > 1 && (col.planet().isResourceRich() || col.planet().isResourceUltraRich()) && !col.research().hasProject() && col.pct(RESEARCH) > 0)
+        if(prodScore > 1 && (col.planet().isHighResource()) && !col.research().hasProject() && col.pct(RESEARCH) > 0)
         {
             shiftResearchToIndustry = true;
             if(empire.divertColonyExcessToResearch())

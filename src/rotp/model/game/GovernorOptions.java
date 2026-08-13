@@ -7,7 +7,6 @@ import java.awt.event.MouseWheelEvent;
 import java.io.Serializable;
 
 import rotp.model.colony.Colony;
-import rotp.model.planet.Planet;
 import rotp.ui.options.AllSubUI;
 import rotp.ui.util.AbstractParam;
 import rotp.ui.util.IParam;
@@ -79,10 +78,9 @@ public class GovernorOptions implements Serializable, IGovOptions {
 		sizeFactorPct.isGovernor(GOV_RESET);
 		verticalPosition.isGovernor(GOV_RESET);
 		horizontalPosition.isGovernor(GOV_RESET);
-		
 	}
-	public void gameStarted() { autoShipsByDefault = false; }
-	public void gameLoaded()  {
+	void gameStarted() { autoShipsByDefault = false; }
+	void gameLoaded()  {
 		// System.out.println("autoShipsByDefault = " + autoShipsByDefault);
 		if (autoShipsByDefault) {
 			autoTransportAI.silentSet(autotransportXilmi);
@@ -198,9 +196,7 @@ public class GovernorOptions implements Serializable, IGovOptions {
 			case IGovOptions.STARGATES_ALL:			return true;
 			case IGovOptions.STARGATES_NONE:		return false;
 			case IGovOptions.STARGATES_ULTRA_RICH:	return col.planet().isResourceUltraRich();
-			case IGovOptions.STARGATES_RICH:
-				Planet p = col.planet();
-				return p.isResourceRich() || p.isResourceUltraRich();
+			case IGovOptions.STARGATES_RICH:		return col.planet().isHighResource();
 		}
 		return false;
 	}
@@ -256,8 +252,6 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public boolean	isAutoColonize()				{ return govAutoColonize.get(); }
 	public void		setAutoColonize(boolean b)		{ govAutoColonize.silentSet(b); }
 	public void		toggleAutoColonize()			{ govAutoColonize.toggle(); }
-	public String	autoColonizeTT()				{ return govAutoColonize.htmlTooltips(); }
-	public String	autoColonizeText()				{ return govAutoColonize.govLabelTxt(); }
 
 	public boolean	isAutoAttack()					{ return auto_Attack.get(); }
 	public void		setAutoAttack(boolean b)		{ auto_Attack.silentSet(b); }
@@ -311,15 +305,31 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public boolean	trainSpiesASAP()				{ return trainSpiesASAP.get(); }
 	public boolean	contactUpdateSpending()			{ return contactUpdateSpending.get(); }
 	public boolean	isAutospendOnNewColoniesFirst()	{ return autoSpendOnNewColoniesFirst.get(); }
-	public float	autospendMaxIndustryPct()		{ return autospendMaxIndustryPct.getFloat(); }
+	public float	autospendMaxIndustryRatio()		{ return autospendMaxIndustryPct.getFloat(); }
 	public boolean	excludeTransportToBesieged()	{ return transportExcludeBesieged.get(); }
-	public float	autospendReserveRatio()			{ return reservePlayerPerMille.getFloat(); }
+	private float	autospendReserveRatio()			{ return reservePlayerPerMille.getFloat(); }
+	public int		autospendMinReserve(float prod)	{ return Math.max(getReserve(), (int)(autospendReserveRatio()*prod)); }
 	public float	autospendReserveMax()			{ return reserveMax.get(); }
 	public float	autospendReserveMaxRatio()		{ return reserveMaxPct.getFloat(); }
 	public float	autospendReserveNextTurn()		{ return reserveNextTurn.get(); }
 	public float	autospendReserveNextTurnRatio()	{ return reserveNextTurnPct.getFloat(); }
-	public boolean	autospendPlanReserveNextTurn()	{ return planReserveNextTurn.get(); }
+	public boolean	autospendRaiseFunds()			{ return governorRaiseFunds.get(); }	// global lock
+	public void		toggleAutospendRaiseFunds()		{ governorRaiseFunds.toggle(); }
+	public boolean	autospendGrantFunds()			{ return governorGrantFunds.get(); }	// global lock
+	public void		toggleAutospendGrantFunds()		{ governorGrantFunds.toggle(); }
 	public boolean	autospendCarryUnfunded()		{ return carryUnfunded.get(); }
 	public boolean	autospendFundHelpRandomEvent()	{ return fundHelpRandomEvent.get(); }
+	public boolean	redoBudgetOnOptionChange()		{ return redoBudgetOnOptionChange.get(); }
+	public boolean	redoBudgetOnTaxChange()			{ return redoBudgetOnTaxChange.get(); }
+	public boolean	redoBudgetOnTransport()			{ return redoBudgetOnTransport.get(); }
+	public boolean	redoBudgetOnColony()			{ return redoBudgetOnColony.get(); }
+	public boolean	redoBudgetOnSpendings()			{ return redoBudgetOnSpendings.get(); }
+	public boolean	redoBudgetRaiseAllowed()		{ return redoBudgetRaiseAllowed.get() && autospendRaiseFunds(); }
+	public void		toggleRedoBudgetRaiseAllowed()	{ redoBudgetRaiseAllowed.toggle(); }
+	public boolean	redoBudgetGrantAllowed()		{ return redoBudgetGrantAllowed.get() && autospendGrantFunds(); }
+	public void		toggleRedoBudgetGrantAllowed()	{ redoBudgetGrantAllowed.toggle(); }
+	public boolean	redoBudgetAllowed()				{ return redoBudgetRaiseAllowed() || redoBudgetRaiseAllowed(); }
+	public boolean	autospendImmediateTransfer()	{ return autospendImmediateTransfer.get(); }
+	public void		toggleAutospendOldWay()			{ autospendImmediateTransfer.toggle(); }
 }
 

@@ -52,7 +52,9 @@ public interface IParam<T> extends InterfaceOptions{
 	// remote call
 	interface IUpdated<T>	{ public void valueUpdated(String id); }	// Mainly for UI: Request redraw
 	interface INewValue<T>	{ public void newValue(T value); }			// To convert to and update local values
+	interface IGetValue<T>	{ public T getValue(); }	// To get local values (easier than overriding class
 
+	default T get()								{ return null; }
 	default List<T> getListForUI()				{ return null; }
 	// For ICRSetting compatibility
 	default void selectedValue(int item, T val)	{ selectedValue(val); }

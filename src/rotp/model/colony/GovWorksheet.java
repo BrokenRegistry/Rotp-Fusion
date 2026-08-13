@@ -56,7 +56,7 @@ public final class GovWorksheet {
 
 		maxSize		= c.ultimateMaxSize();
 		initialPop	= c.population();
-		targetPopPercent	= 1.0f;
+		targetPopPercent	= gov.isAutotransportFull()? (1 - Math.max(c.normalPopGrowth(), 3)/c.maxSize()) : 1f;
 		float neutralGrowth	= p.normalPopGrowth(initialPop, null);
 		boolean hasRequest	= c.prioritizeShips() || c.prioritizeResearch();
 		if (gov.legacyGrowthMode() || !hasRequest) { // Force boost
@@ -99,7 +99,7 @@ public final class GovWorksheet {
 		int maxBase = defense.maxBases();
 		if (minBase > 0 && maxBase < minBase)
 			defense.maxBases(minBase);
-		promoteBases = !defense.isCompleted() && gov.earlyBaseBuilding() && c.industry().completedPct() >= gov.earlyBaseBoostPct();
+		promoteBases = !defense.isCompleted() && gov.earlyBaseBuilding() && c.industry().factoryToMaxRatio() >= gov.earlyBaseBoostPct();
 
 		// Ships management
 		boolean isDirectShipAlloc	= !loweredShipPriority && wasBuildingShips && !wasShipRequest;
@@ -132,11 +132,11 @@ public final class GovWorksheet {
 					promoteWorkers = true;
 					return promoteWorkers;
 				case IGovOptions.PLANET_BASED:
-					if (p.isResourceRich() || p.isResourceUltraRich()) {
+					if (p.isHighResource()) {
 						promoteWorkers = true;
 						return promoteWorkers;
 					}
-					else if (p.isResourcePoor() || p.isResourceUltraPoor()) {
+					else if (p.isLowResource()) {
 						promoteWorkers = false;
 						return promoteWorkers;
 					}
@@ -170,12 +170,10 @@ public final class GovWorksheet {
 				case IGovOptions.ECOLOGY:
 					return true;
 				case IGovOptions.PLANET_BASED:
-					if (p.isResourceRich() || p.isResourceUltraRich()) {
+					if (p.isHighResource())
 						return true;
-					}
-					else if (p.isResourcePoor() || p.isResourceUltraPoor()) {
+					else if (p.isLowResource())
 						return false;
-					}
 					break;
 				case IGovOptions.GOV_CHOICE:
 				default:

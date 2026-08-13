@@ -209,11 +209,11 @@ public interface IGameOptions extends IModOptions {
     public static final int RANDOM_BASIC	= 9;
     public static final int RANDOM_ADVANCED	= 10;
     public static final int RANDOM_NO_RELATIONBAR = 11;
-    public static final int GOVERNOR	= 12;	// Not a selectable AI
+    public static final int PLAYER		= 12;	// Not a selectable AI
     // Base AI Entries
     AIEntry selectableAI  = new AIEntry(-1,						OPPONENT_AI_SELECTABLE,		OPPONENT_AI_SELECTABLE);
 //    AIEntry offAI		  = new AIEntry(FUSION,					AUTOPLAY_OFF,				AUTOPLAY_OFF);
-    AIEntry offAI		  = new AIEntry(GOVERNOR,				AUTOPLAY_OFF,				AUTOPLAY_OFF);
+    AIEntry offAI		  = new AIEntry(PLAYER,					AUTOPLAY_OFF,				AUTOPLAY_OFF);
     AIEntry baseAI		  = new AIEntry(BASE,					AUTOPLAY_AI_BASE,			OPPONENT_AI_BASE);		// Base
     AIEntry modnarAI	  = new AIEntry(MODNAR,					AUTOPLAY_AI_MODNAR,			OPPONENT_AI_MODNAR);	// Modnar
     AIEntry rookieAI	  = new AIEntry(ROOKIE,					AUTOPLAY_AI_ROOKIE,			OPPONENT_AI_ROOKIE);	// Rookie

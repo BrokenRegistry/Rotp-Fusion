@@ -213,6 +213,7 @@ public class TransportDeploymentPanel extends SystemPanel {
     public void cancel() {
         if(transportSprite() != null)
         {
+			player().budget().makeTransortObsolete();
             transportSprite().cancel();
             mapHandler().clickedSprite(transportSprite().homeSystem());
             mapHandler().repaint();
@@ -227,6 +228,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         if (!canSendTransports())
             return;
 
+		player().budget().makeTransortObsolete();
         player().deployTransport(transportSprite().homeSystem());
         mapHandler().clickedSprite(transportSprite().homeSystem());
         mapHandler().repaint();

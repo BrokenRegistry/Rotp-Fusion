@@ -188,7 +188,7 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
 	    		return 0;
     	}
     }
-    
+
     public int iceLevel()                  { return iceLevel; }
 //  public int cloudThickness()			{ return cloudThickness; }
     int terrainSeed()					{ return terrainSeed; }
@@ -196,10 +196,8 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     private float terrainVal()			{ return (float) terrainSeed / PlanetType.TERRAIN_MAX; }
     public int environment()               { return environment; }
 	private float oceanPct() 			{ return oceanPct; }
-//  public void degradeEnvironment()	{ environment = min(environment(), ENVIRONMENT_NORMAL); }
     public void makeEnvironmentNone()      { environment = ENVIRONMENT_NONE; }
     public void makeEnvironmentHostile()   { environment = ENVIRONMENT_HOSTILE; }
-//  public void makeEnvironmentNormal()	{ environment = ENVIRONMENT_NORMAL; }
 	void makeEnvironmentFertile()		{ environment = ENVIRONMENT_FERTILE; }
 	private void makeEnvironmentGaia()	{ environment = ENVIRONMENT_GAIA; }
 
@@ -208,13 +206,12 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
     public boolean isResourceNormal()      { return resources == NORMAL; }
     public boolean isResourceRich()        { return resources == RICH; }
     public boolean isResourceUltraRich()   { return resources == ULTRA_RICH; }
+	public boolean isLowResource()			{ return resources == POOR || resources == ULTRA_POOR; }
+	public boolean isHighResource()			{ return resources == RICH || resources == ULTRA_RICH; }
 
     private int resources()                { return resources; }
-	//public void depleteResources()	{ resources = max(ULTRA_POOR, resources-1); }
-	//public void enrichResources()		{ resources = min(ULTRA_RICH, resources+1); }
     public void setResourceUltraPoor()     { resources = ULTRA_POOR; }
     public void setResourcePoor()          { resources = POOR; }
-	//public void setResourceNormal()	{ resources = NORMAL; }
     public void setResourceRich()          { resources = RICH; }
     public void setResourceUltraRich()     { resources = ULTRA_RICH; }
 

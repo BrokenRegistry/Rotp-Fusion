@@ -971,10 +971,8 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
             StarSystem sys = gal.system(id);
             if (debugShowAll) {
                 sys.draw(this, g);
-                if (sys.transportSprite()!=null)
-                    sys.transportSprite().draw(this, g);
-                if (sys.rallySprite()!=null)
-                    sys.rallySprite().draw(this, g);
+                sys.transportSprite().draw(this, g);
+                sys.rallySprite().draw(this, g);
             }
             else {
                 if (parent.shouldDrawSprite(sys))

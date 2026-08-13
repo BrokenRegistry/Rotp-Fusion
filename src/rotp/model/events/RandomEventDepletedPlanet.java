@@ -48,7 +48,7 @@ public class RandomEventDepletedPlanet extends AbstractRandomEvent {
         List<StarSystem> systems = new ArrayList<>();
         for (StarSystem sys : emp.allColonizedSystems()) {
             Planet pl = sys.planet();
-            if (!pl.isResourcePoor() && !pl.isResourceUltraPoor() && !pl.isArtifact())
+            if (!pl.isLowResource() && !pl.isArtifact())
                 systems.add(sys);
         }
         if (systems.isEmpty())

@@ -159,7 +159,7 @@ PLANET_HOSTILE_HELP               | La croissance démographique est réduite de
 PLANET_FERTILE_HELP               | La croissance démographique est augmentée de moitié.
 PLANET_GAIA_HELP                  | La croissance démographique est doublée.
 
-// Planet Descriptors for Race
+// Planet Descriptors for Species
 PLANET_HOMEWORLD                  | Monde [alien_race_pluralnounof]
 PLANET_WORLD                      | Planète [alien_race_pluralnounof]
 PLANET_COLONY                     | Colonie [alien_race_pluralnounof]
@@ -417,7 +417,7 @@ INC_COEXIST_DESC4                 | [your_empire] est un grand allié.
 INC_EXPANSION_TITLE               | Expansion
 INC_EXPANSION_DESC                | Avec le contrôle de [num] systèmes, [your_empire] est devenu trop grand.
 INC_GENOCIDE_TITLE                | Génocide
-INC_GENOCIDE_DESC                 | [attacker_empire] a complètement détruit la race [victim_raceadjecF].
+INC_GENOCIDE_DESC                 | [attacker_empire] a complètement détruit l’empire [victim_raceadjecF].
 INC_FINAL_WAR_TITLE               | Guerre Finale !
 INC_FINAL_WAR_DESC                | [rebel_empire] s’est rebellé contre la décision du Conseil Galactique, ce qui a entraîné un appel à son éradication complète par les forces alliées restantes de la galaxie.
 INC_MILITARY_BUILDUP_TITLE        | Réarmement
@@ -666,6 +666,7 @@ GAME_SETTINGS_SPECIES_DIR_DESC2		| Le répertoire de sauvegarde est actuellement
 GAME_SETTINGS_DISPLAY_YEAR        | Afficher l’Année : %1
 GAME_SETTINGS_DISPLAY_YEAR_DESC   | Sur l’écran Galaxie : Affiche soit le tour actuel du jeu ou l’année en cours de votre empire
 
+GAME_SETTINGS_DIVERT_EXCESS_TO_RESEARCH_LABEL	| Les excédents vont à la recherche
 GAME_SETTINGS_DIVERT_EXCESS_TO_RESEARCH          | Les excédents vont à la recherche : %1
 GAME_SETTINGS_DIVERT_EXCESS_TO_RESEARCH_YES_DESC | Les dépenses excédentaires des colonies sont détournées vers la recherche.
 GAME_SETTINGS_DIVERT_EXCESS_TO_RESEARCH_NO_DESC  | Les dépenses excédentaires des colonies sont versées au Trésor.
@@ -925,7 +926,7 @@ COLONY_VIEW_HELP_1                | Rien de fantaisiste là-bas...<br><br>Profit
 HISTORY_HELP_MAIN                 | HISTORIQUE : <br>Pour voir comment la galaxie s’est développée depuis le premier tour.<br>Cela vous permet de voir tout ça ! À condition, bien sûr, que vous ayez les informations nécessaires.
 HISTORY_HELP_HK                   | →HK_HEADER← →HK_F1←<br>1-0 : Pour régler le rythme.→HK_MAP_ZOOM←→HK_MAP_ARROWS←<br>B / F : tour Précédent / Suivant<br>P : Pause <br>R : Réinitialiser<br>→HK_ESCAPE←
 // Fleet labels
-MAIN_FLEET_SWARM				| « L » pour parcourir la nuée de flottes.
+MAIN_FLEET_SWARM				| « L » pour parcourir la nuée de flottes.
 MAIN_FLEET_TITLE                  | Flotte [fleet_raceadjecF]
 MAIN_FLEET_TITLE_UNKNOWN          | Flotte Inconnue
 MAIN_FLEET_IN_ORBIT               | En orbite
@@ -1217,6 +1218,28 @@ PLANETS_RES_FULL_DEF_POP          | Peuple : %1
 PLANETS_RES_FULL_DEF_FACT         | Usines : %1
 PLANETS_BUTTON_TRANSFER           | TRANSFÉRER
 PLANETS_BUTTON_EXIT               | QUITTER
+
+PLANETS_BUTTON_DO_CLEAR_DESC	| Vous pouvez demander au gouverneur d'annuler ou recommencer tout ou partie du budget, de toutes les colonies ou de celles sélectionnées.
+PLANETS_BUTTON_ALL_DESC			| Appliqué à toutes les colonies.
+PLANETS_BUTTON_LIST_DESC		| Appliqué aux colonies sélectionnées.
+PLANETS_BUTTON_ONE_DESC			| Appliqué à la colonie sélectionnée.
+PLANETS_BUTTON_ALL_CLEAR_DESC	| Vous pouvez demander au gouverneur d'annuler tout ou partie du budget de toutes les colonies.
+PLANETS_BUTTON_ALL_CLEAR_GRANT	| Pas de Subsides
+PLANETS_BUTTON_ALL_CLEAR_BOTH	| Tout annuler
+PLANETS_BUTTON_ALL_CLEAR_RAISE	| Pas de Dons
+PLANETS_BUTTON_ALL_DO_DESC		| Vous pouvez demander au gouverneur de recommencer tout ou partie du budget.
+PLANETS_BUTTON_ALL_DO_GRANT		| Subsides
+PLANETS_BUTTON_ALL_DO_BOTH		| Dons & Subsides
+PLANETS_BUTTON_ALL_DO_RAISE		| Dons
+PLANETS_BUTTON_LIST_CLEAR_DESC	| Vous pouvez demander au gouverneur d'annuler tout ou partie du budget de ces colonies.
+PLANETS_BUTTON_LIST_CLEAR_GRANT	| Pas de Subsides
+PLANETS_BUTTON_LIST_CLEAR_BOTH	| Annuler la liste
+PLANETS_BUTTON_LIST_CLEAR_RAISE	| Pas de Dons
+PLANETS_BUTTON_LIST_DO_DESC		| Vous pouvez demander au gouverneur de complèter tout ou partie du budget, en utilisant ces colonies.
+PLANETS_BUTTON_LIST_DO_GRANT	| Subsides
+PLANETS_BUTTON_LIST_DO_BOTH		| Dons & Subsides
+PLANETS_BUTTON_LIST_DO_RAISE	| Dons
+
 PLANETS_BUTTON_BUDGET			| Budgeter
 PLANETS_BUTTON_REMOVE			| Supprimer le budget du joueur
 PLANETS_BUTTON_CONVERT			| Transferer le budget
@@ -1233,7 +1256,7 @@ PLANETS_BUDGET_NO_GOVERNOR		| Le gouverneur n’est pas impliqué dans ce budget
 PLANETS_AMT_PCT                   | %1 %
 PLANETS_AMT_BC                    | %1 CG
 PLANETS_TRANSFER_DESC             | Transférer des fonds de l’Empire vers %1
-PLANETS_TRANSFER_CANCEL           | Annuler
+PLANETS_TRANSFER_CANCEL           | Fermer
 PLANETS_TRANSFER_ACCEPT           | Transférer
 PLANETS_COLONY_TRANSFER_TITLE     | Transférer des Fonds
 PLANETS_COLONY_TRANSFER_DETAIL    | Transférer des fonds du trésor de l’empire pour augmenter la production de cette colonie.
@@ -1253,6 +1276,7 @@ PLANETS_LIST_SHIELD               | Bouclier
 PLANETS_LIST_PRODUCTION           | Prod
 PLANETS_LIST_CAPACITY             | Capacité
 PLANETS_LIST_RESERVE              | Réserve
+PLANETS_LIST_IND_RATIO			| Usines
 PLANETS_LIST_NEEDED				| Optimal
 PLANETS_LIST_BUDGET				| Budget
 PLANETS_LIST_SUBSIDY			| Reçoit
@@ -1313,12 +1337,12 @@ PLANETS_HELP_5E					| « Budget »<br> Montant demandé par le Gouverneur ou p
 PLANETS_HELP_5F					| « Optimal »<br> Montant requis pour maximiser le fonctionnement de la colonie.
 PLANETS_HELP_5G					| Instructions au gouverneur pour l’attribution des subventions :<br>Couleur métal : suivre les instructions globales.<br>Couleur or : allouer les subventions.<br>Arc rouge (clic droit) : peut piocher dans la réserve du joueur.<br>« Non cerclé » actif jusqu’à ce que le joueur le désactive.<br>« Cercle magenta » actif tant qu’une urgence est présente.<br>« Cercle vert » actif tant que la colonie n’a pas atteint la limite de développement.<br>« Cercle bleu » actif tant qu’une priorité bleue est présente (à l’exception de la recherche et de la construction des navires, car ils ne se désactivent pas automatiquement).
 
-PLANETS_HELP_T_BUDGET			| Budgeter le montant sélectionné.<br>Cette valeur peut être révisée si vous le souhaitez.
+PLANETS_HELP_T_BUDGET			| Budgeter le montant sélectionné.<br>Cette valeur pourra être révisée si vous le souhaitez.
 PLANETS_HELP_T_TRANSFERT		| Transférer le montant sélectionné dans la réserve de la colonie.<br>Ce transfert est définitif.
 PLANETS_HELP_T_CONVERT			| Transférer la valeur déjà budgetée dans la réserve de la colonie.<br>Ce transfert est définitif.
 PLANETS_HELP_T_CANCEL			| Quitter sans rien changer.
-PLANETS_HELP_T_BUDGET_OPTIMAL	| Budgeter les montants optimaux.<br>Ces valeurs peuvent être révisées si vous le souhaitez.
-PLANETS_HELP_T_SHARE_OPTIMAL	| Partager proportionnellement les besoins optimaux et budgéter les montants.<br>Ces valeurs peuvent être révisées si vous le souhaitez.
+PLANETS_HELP_T_BUDGET_OPTIMAL	| Budgeter les montants optimaux.<br>Ces valeurs pourront être révisées si vous le souhaitez.
+PLANETS_HELP_T_SHARE_OPTIMAL	| Partager les reserves disponibles proportionnellement aux besoins optimaux, et budgéter les montants.<br>Ces valeurs pourront être révisées si vous le souhaitez.
 PLANETS_HELP_T_REMOVE_PLAYER	| Renvoyer la main au gouverneur en effaçant le montant actuellement sélectionné par le joueur.
 
 // Bombardment prompt
@@ -1482,8 +1506,8 @@ NOTICE_ESPIONAGE_SUBTITLE         | Sélectionnez un type de technologie à vole
 NOTICE_ESPIONAGE_NO_TECH          | Aucune technologie disponible
 NOTICE_ESPIONAGE_MANY_TECHS       | %1 technologies disponibles
 NOTICE_ESPIONAGE_FOOTER           | Si cela est remarqué, cela peut provoquer un incident diplomatique.
-NOTICE_ESPIONAGE_FRAME_TITLE      | Nos espions ont réussi à blâmer une autre race pour le vol.
-NOTICE_ESPIONAGE_FRAME_SUBTITLE   | Choisissez la race de la victime :
+NOTICE_ESPIONAGE_FRAME_TITLE      | Nos espions ont réussi à blâmer un autre empire pour le vol.
+NOTICE_ESPIONAGE_FRAME_SUBTITLE   | Choisissez l’empire de la victime :
 
 // Spy Capture display (during next turn)
 NOTICE_SPIES_TITLE                | Rapport d’espionnage actuel
@@ -2067,10 +2091,10 @@ SETUP_PLAYER_LEADER               | Dirigeant du joueur
 SETUP_NO_FOG_ON_ICONS             | Retirer la brume : %1
 SETUP_NO_FOG_ON_ICONS_DESC        | Retire le brouillard qui masque partiellement les icônes des diplomates dans les panneaux de configuration de l’espèce et de la configuration de la galaxie.
 
-// BR : config Player Race
+// BR : config Player Species
 SETUP_BUTTON_CUSTOM_PLAYER_RACE	| Atelier ADN
 
-// BR: Customize Player Race New GUI addition
+// BR: Customize Player Species New GUI addition
 CUSTOM_RACE_BUTTON_EXIT			| Quitter
 CUSTOM_RACE_BUTTON_EXIT_DESC	| Quitter l’interface sans sauvegarder les changements.
 CUSTOM_RACE_BUTTON_CANCEL		| Annuler
@@ -2084,7 +2108,7 @@ CUSTOM_RACE_EMPTY_DESCRIPTION	| « Maj » et « Ctrl » peuvent être utilis
 CUSTOM_RACE_FLEET_DESC			| Exemple d’une flottille composée de navires issus du modèle choisi pour cette espèce.
 CUSTOM_RACE_FLEET_HELP			| Exemple d’une flottille composée de navires issus du modèle choisi pour cette espèce.<br>Si l’animation vous dérange, vous pouvez la désactiver ou l’activer en cliquant sur l’image.
 
-// BR : Customize Player Race
+// BR : Customize Player Species
 CUSTOM_RACE_DESCRIPTION			| ADN Aléatoire
 CUSTOM_RACE_RACE_AI_DESC		| Changer l’IA de l’empire
 CUSTOM_RACE_GUI_TITLE			| Atelier ADN
@@ -2314,9 +2338,9 @@ CUSTOM_RACE__race_pluraladjecF		| **Féminin pluriel
 CUSTOM_RACE__race_pluraladjecF_DESC	| Féminin pluriel de l’adjectif relatif à →CUSTOM_RACE_CIVILIZATION←<br>La contrepartie du paramètre « _raceadjec »<br>dans les fichiers Species.labels.txt
 
 CUSTOM_RACE_FILL_FROM_ANIM_BUTTON		| = Animations
-CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Rempli les champs vides en utilisant les valeurs de votre Avatar préféré.<br>Appuyez sur « Maj » pour remplacer également les champs déjà remplis.
+CUSTOM_RACE_FILL_FROM_ANIM_BUTTON_DESC	| Rempli les champs vides en utilisant les valeurs de votre Avatar préféré.<br>Appuyez sur « Maj » pour remplacer également les champs déjà remplis.
 CUSTOM_RACE_FILL_FROM_NAME_BUTTON		| Compléter
-CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Essaye de remplir les champs vides en utilisant le nom de la civilisation et le titre.<br>Appuyez sur « Maj » pour remplacer également les champs déjà remplis.
+CUSTOM_RACE_FILL_FROM_NAME_BUTTON_DESC	| Essaye de remplir les champs vides en utilisant le nom de la civilisation et le titre.<br>Appuyez sur « Maj » pour remplacer également les champs déjà remplis.
 CUSTOM_RACE_COPY_FROM_LEFT_BUTTON		| -> Copier
 CUSTOM_RACE_COPY_FROM_LEFT_BUTTON_DESC	| Copie les valeurs de la page de gauche.
 CUSTOM_RACE_COPY_FROM_RIGHT_BUTTON		| Copier <-
@@ -2440,10 +2464,10 @@ CUSTOM_RACE_DIPLOMAT              | Diplomate
 CUSTOM_RACE_INDUSTRIALIST         | Industriel
 CUSTOM_RACE_EXPANSIONIST          | Expansioniste
 CUSTOM_RACE_TECHNOLOGIST          | Technologue
-FR_RAND_PERSO_1                   | Probabilité relative qu’une « personnalité » aléatoire soit «
-FR_RAND_PERSO_2                   | ». (La personnalité maximale est utilisée pour les cas non aléatoires)
-FR_RAND_OBJ_1                     | Probabilité relative que l’« objectif » aléatoire soit «
-FR_RAND_OBJ_2                     | ». (L’objectif maximal est utilisé pour les cas non aléatoires)
+FR_RAND_PERSO_1                   | Probabilité relative qu’une « personnalité » aléatoire soit « 
+FR_RAND_PERSO_2                   |  ». (La personnalité maximale est utilisée pour les cas non aléatoires)
+FR_RAND_OBJ_1                     | Probabilité relative que l’« objectif » aléatoire soit « 
+FR_RAND_OBJ_2                     |  ». (L’objectif maximal est utilisé pour les cas non aléatoires)
 CUSTOM_RACE_ERRATIC_DESC          | →FR_RAND_PERSO_1← →CUSTOM_RACE_ERRATIC← →FR_RAND_PERSO_2←
 CUSTOM_RACE_PACIFIST_DESC         | →FR_RAND_PERSO_1← →CUSTOM_RACE_PACIFIST← →FR_RAND_PERSO_2←
 CUSTOM_RACE_HONORABLE_DESC        | →FR_RAND_PERSO_1← →CUSTOM_RACE_HONORABLE← →FR_RAND_PERSO_2←
@@ -2488,7 +2512,7 @@ CUSTOM_RACE_IGNORES_ECO_NO_DESC      | Comportement normal, les types de planèt
 CUSTOM_RACE_IGNORES_ECO_LIMITED_DESC | Ignore les environnements dévastés et hostiles tel que : Aride, Toundra et Morts et peuvent immédiatement être colonisés.
 CUSTOM_RACE_IGNORES_ECO_ALL_DESC     | Tous les types de planètes peuvent immédiatement être colonisés.
 
-// Custom Race Naming Sub Panel
+// Custom Species Naming Sub Panel
 CUSTOM_RACE_UI_NAMES_TITLE			| Nouvelle Terminologie de l’Avatar
 CUSTOM_RACE_UI_BUTTON_EXIT			| Quitter
 CUSTOM_RACE_UI_BUTTON_EXIT_DESC		| Conservez les paramètres actuels, puis quittez l’interface.
@@ -3008,7 +3032,7 @@ SETTINGS_MOD_MOO1_SHIELD_RULES			| Règles des boucliers de MoO1 : %1
 SETTINGS_MOD_MOO1_RETREAT_HELP			| Retraite différée de MoO1 ou retraite immédiate de RotP ? Dans les deux cas, si vous remportez la victoire, les vaisseaux rejoindront votre flotte immédiatement après le combat.<br>Pour se conformer pleinement au mode de retraite MoO1 :<br>- Retraite restreinte pour : Tous.<br>- Retraite restreinte pendant 0 tours.
 SETTINGS_MOD_MOO1_RETREAT_DESC			| Retraite différée de MoO1 ou retraite immédiate de RotP ? Dans les deux cas, si vous remportez la victoire, les vaisseaux rejoindront votre flotte immédiatement après le combat.
 SETTINGS_MOD_MOO1_RETREAT_YES_DESC		| Le bouton « Retraite » permet de retirer le vaisseau actuel du combat. L’ennemi aura un tour pour tirer sur votre vaisseau pendant qu’il se retire de l’écran.
-SETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Le bouton « Retraite » retire instantanément le vaisseau actuel du combat. L’ennemi ne pourra pas tirer sur votre vaisseau pendant qu’il se retire de l’écran.
+SETTINGS_MOD_MOO1_RETREAT_NO_DESC		| Le bouton « Retraite » retire instantanément le vaisseau actuel du combat. L’ennemi ne pourra pas tirer sur votre vaisseau pendant qu’il se retire de l’écran.
 SETTINGS_MOD_MOO1_RETREAT				| Règles de retraite de MoO1 : %1
 
 SETTINGS_MOD_REPULSOR_MODE_HELP			| →SETTINGS_MOD_REPULSOR_MODE_DESC← Contrairement à MoO1, RotP ne repousse pas automatiquement les vaisseaux qui s’approchent de ceux équipés de répulseurs ; il se contente simplement de leur bloquer l’accès aux cases adjacentes.
@@ -3557,6 +3581,9 @@ SETTINGS_MOD_DEVELOPED_NO_BASE           | {→MAIN_COLONY_INDUSTRY←, →MAIN_
 SETTINGS_MOD_DEVELOPED_INDUSTRY_DESC     | →FR_USINES_DESC_HK←.
 SETTINGS_MOD_DEVELOPED_INDUSTRY          | {→MAIN_COLONY_INDUSTRY←}
 
+GAME_SETTINGS_PLAYER_TAX_LEVEL_PCT_DESC	| Taux d’imposition du joueur
+GAME_SETTINGS_PLAYER_TAX_LEVEL_PCT		| Taux d’imposition : %1 %
+
 SETTINGS_MOD_DEV_MAX_MISSING_POP_DESC	| Quel peut-être le nombre maximum d’habitants manquants pour obtenir le statut de « colonie développée » et que le fisc fasse son office.<br>Le gouverneur peut envoyer une partie de la population des colonies déjà développées pour aider à peupler les nouvelles. Cela ne dispense pas le paiement des impôts.
 SETTINGS_MOD_DEV_MAX_MISSING_POP		| Population manquante : %1<= %1 %1 %1
 
@@ -3648,7 +3675,7 @@ SETTINGS_MOD_AGGRESSIV_ALWAYS_WAR		| Guerre totale
 SETTINGS_MOD_AGGRESSIV_ALLIANCE_DESC	| Tous les empires vivent en symbiose et deviennent alliés dès le premier contact, sans possibilité de rompre le pacte.
 SETTINGS_MOD_AGGRESSIV_ALLIANCE			| Symbiose
 
-SETTINGS_MOD_SKIRMISHES_ALLOWED_HELP	| Des escarmouches peuvent-elles se produire lorsque les guerres sont interdites ?<br>Des combats peuvent survenir pour défendre une planète non colonisée, et certaines bombes peuvent être larguées « accidentellement » sur des colonies.<br>Si le joueur est le seul à pouvoir déclarer la guerre, ce paramètre s’applique également à lui ; il ne pourra pas déclencher unilatéralement des escarmouches, il doit déclarer formellement la guerre avant de commencer les hostilités.
+SETTINGS_MOD_SKIRMISHES_ALLOWED_HELP	| Des escarmouches peuvent-elles se produire lorsque les guerres sont interdites ?<br>Des combats peuvent survenir pour défendre une planète non colonisée, et certaines bombes peuvent être larguées « accidentellement » sur des colonies.<br>Si le joueur est le seul à pouvoir déclarer la guerre, ce paramètre s’applique également à lui ; il ne pourra pas déclencher unilatéralement des escarmouches, il doit déclarer formellement la guerre avant de commencer les hostilités.
 SETTINGS_MOD_SKIRMISHES_ALLOWED_DESC	| Des escarmouches peuvent-elles se produire lorsque les guerres sont interdites ?
 SETTINGS_MOD_SKIRMISHES_ALLOWED			| Escarmouches permises : %1
 
@@ -3683,7 +3710,7 @@ SETTINGS_MOD_DARK_GALAXY_SHRINK_DESC     | Ne montre que les systèmes à porté
 SETTINGS_MOD_DARK_GALAXY_SHRINK          | Vue Brouillée
 SETTINGS_MOD_DARK_GALAXY_DESC			| Seuls les systèmes aux alentours sont affichés.
 SETTINGS_MOD_DARK_GALAXY                 | Brouillard de Guerre : %1
-SETTINGS_MOD_DARK_GALAXY_HELP            |<br><b>Pourquoi ? par u/dweller_below</b><br><br><b>Ennuyeux :</b> Nous sommes tous dans une nébuleuse particulièrement épaisse. La supernova qui a créé cette nébuleuse a craché des éléments lourds PARTOUT. La combinaison particulière d’éléments dans notre nébuleuse locale bloque TOUT.<br><br><b>Plus drôle/autoréférentiel :</b> Nous participons à une vaste simulation créée par les Orions/Antarans. Naturellement, la simulation doit être suffisamment bonne pour que nous exprimions tous notre sensibilité/sapience. Dans l’itération 42 de la simulation, nos Dieux/Maîtres ont décidé d’isoler chaque race jusqu’à ce que nous nous rencontrions.<br><br><b>Le plus drôle :</b> Les Antarans ont gagné la guerre Orion/Antaran et ont décidé d’exterminer TOUT. Nos races ont toutes été récemment secourues/déplacées/copiées dans notre ARC (Antaran Rescue Craft) par les Orions. L’ARC ressemble juste à une petite galaxie. L’ARC est en fait une dimension de poche/un vaisseau de sauvetage. Cela explique plusieurs choses :<br>- La forte densité de races intelligentes au sein de notre ARC.<br>- Pourquoi les Orions ne dominent pas notre ARC. Les Orions s’opposent aux Antarans. L’une des différences est que les Orions ne dominent pas/exterminent pas les autres races. Cela correspond à l’histoire précédente.<br>- Pourquoi nous n’avons pas ressenti d’émissions radio les uns des autres. Ou de lumière provenant de l’étoile de l’autre. Le jeu commence à la création de l’ARC. Nous avions l’habitude de voir d’autres étoiles. Mais, maintenant, tout est différent. Maintenant, lorsque nous commençons à sortir de nos petites bulles de lumière, nous constatons que tout est différent. En fait, chaque étoile émet une bulle de lumière décroissante pleine d’informations obsolètes/sans signification. Mais, lorsque vous vous rapprochez des étoiles adjacentes, vous pouvez voir ce qui est vraiment là MAINTENANT.<br>- Pourquoi la loi physique change. Les Orions ont fabriqué différentes lois physiques dans chaque jeu/ARC pour des « raisons ». À chaque fois que nous jouons, l’ARC peut être légèrement différent. Les Orions avaient suffisamment de ressources pour copier nos races plusieurs fois et créer plusieurs ARC. Chaque partie/ARC est une tentative de créer une combinaison différente de survivants.
+SETTINGS_MOD_DARK_GALAXY_HELP            |<br><b>Pourquoi ? par u/dweller_below</b><br><br><b>Ennuyeux :</b> Nous sommes tous dans une nébuleuse particulièrement épaisse. La supernova qui a créé cette nébuleuse a craché des éléments lourds PARTOUT. La combinaison particulière d’éléments dans notre nébuleuse locale bloque TOUT.<br><br><b>Plus drôle/autoréférentiel :</b> Nous participons à une vaste simulation créée par les Orions/Antarans. Naturellement, la simulation doit être suffisamment bonne pour que nous exprimions tous notre sensibilité/sapience. Dans l’itération 42 de la simulation, nos Dieux/Maîtres ont décidé d’isoler chaque espèces jusqu’à ce que nous nous rencontrions.<br><br><b>Le plus drôle :</b> Les Antarans ont gagné la guerre Orion/Antaran et ont décidé d’exterminer TOUT. Nos races ont toutes été récemment secourues/déplacées/copiées dans notre ARC (Antaran Rescue Craft) par les Orions. L’ARC ressemble juste à une petite galaxie. L’ARC est en fait une dimension de poche/un vaisseau de sauvetage. Cela explique plusieurs choses :<br>- La forte densité de races intelligentes au sein de notre ARC.<br>- Pourquoi les Orions ne dominent pas notre ARC. Les Orions s’opposent aux Antarans. L’une des différences est que les Orions ne dominent pas/exterminent pas les autres races. Cela correspond à l’histoire précédente.<br>- Pourquoi nous n’avons pas ressenti d’émissions radio les uns des autres. Ou de lumière provenant de l’étoile de l’autre. Le jeu commence à la création de l’ARC. Nous avions l’habitude de voir d’autres étoiles. Mais, maintenant, tout est différent. Maintenant, lorsque nous commençons à sortir de nos petites bulles de lumière, nous constatons que tout est différent. En fait, chaque étoile émet une bulle de lumière décroissante pleine d’informations obsolètes/sans signification. Mais, lorsque vous vous rapprochez des étoiles adjacentes, vous pouvez voir ce qui est vraiment là MAINTENANT.<br>- Pourquoi la loi physique change. Les Orions ont fabriqué différentes lois physiques dans chaque jeu/ARC pour des « raisons ». À chaque fois que nous jouons, l’ARC peut être légèrement différent. Les Orions avaient suffisamment de ressources pour copier nos races plusieurs fois et créer plusieurs ARC. Chaque partie/ARC est une tentative de créer une combinaison différente de survivants.
 
 SETTINGS_MOD_MAX_SECURITY_PCT_DESC       | Pour augmenter le pourcentage maximal d’impôt sur la sécurité. (Prime d’espionnage = 2 × taxe)
 SETTINGS_MOD_MAX_SECURITY_PCT            | Sécurité Max. : %1 %
@@ -4708,7 +4735,7 @@ TECH_RESEARCH                     | Technologies Recherchées
 TECH_RESEARCH_POINTS              | Points de recherche
 TECH_EMPIRE_SPENDING              | Budget de Recherche
 TECH_EMPIRE_SPENDING_DESC         | Somme des dépenses technologiques de toutes les colonies.
-TECH_EMPIRE_TECH_RESERVE_OPT      | Transférer les dépenses excédentaires de la colonie de la réserve du Trésor vers la recherche
+TECH_EMPIRE_TECH_RESERVE_OPT      | Transférer les dépenses excédentaires des colonies vers la recherche.
 TECH_EMPIRE_BALANCED_DESC         | Des dépenses équilibrées augmentent les points de recherche globaux.
 TECH_EMPIRE_DETAIL_1              | %1 %2CG pour
 TECH_EMPIRE_DETAIL_2              | %1 %2PR / Année
@@ -4779,7 +4806,7 @@ SHIP_DESIGN_PROTOTYPE_DESC        | Aucun emplacement de prototypage n’est dis
 SHIP_DESIGN_SLOT_DESC             | Dans notre flotte :
 SHIP_DESIGN_SLOT_DESC2            | En orbite :
 SHIP_DESIGN_SLOT_DESC3            | En transit :
-SHIP_DESIGN_SLOT_DESC4            | En construction :
+SHIP_DESIGN_SLOT_DESC4            | Colonies assignées :
 SHIP_DESIGN_NEW                   | Nouvelle maquette de vaisseau
 SHIP_DESIGN_PROTOTYPE_TITLE       | Prototype de vaisseau
 SHIP_DESIGN_SIZE_SMALL            | Petite
@@ -5236,7 +5263,7 @@ RACES_DIPLOMACY_COUNTER_DESC      | Les dépenses de sécurité augmentent vos d
 RACES_DIPLOMACY_COUNTER_DESC2     | Taxez vos colonies pour augmenter les dépenses de sécurité.
 RACES_DIPLOMACY_EVENT_YEAR        | Année
 RACES_DIPLOMACY_EVENT_TURN        | Tour
-RACES_DIPLOMACY_EVENT_RACE        | Race
+RACES_DIPLOMACY_EVENT_RACE        | Espèce
 RACES_DIPLOMACY_EVENT_TITLE       | Incident diplomatique
 RACES_DIPLOMACY_EVENT_EFFECT      | Effet
 RACES_DIPLOMACY_ABILITY           | Aptitudes de l’espèce
@@ -5363,7 +5390,7 @@ RACES_HELP_0C                     | Intelligence - Affichez la technologie extra
 RACES_HELP_0D                     | Armée - Affichez les conceptions de la flotte et des vaisseaux.
 RACES_HELP_0E                     | Statut - Comparaison entre plusieurs catégories.
 RACES_HELP_0F                     | La sélection de votre empire vous permet de gérer les informations de toutes les races contactées sur chaque onglet.
-RACES_HELP_0G                     | La sélection d’un empire extraterrestre affiche des informations plus détaillées pour cette race sur chaque onglet.
+RACES_HELP_0G                     | La sélection d’un empire extraterrestre affiche des informations plus détaillées pour cette espèce sur chaque onglet.
 RACES_HELP_0H                     | S’il n’est pas à jour, âge du dernier rapport d’espionnage.<br> (« - » S’il n’y en a jamais eu)<br><br>« Ctrl-Maj-Clic droit » pour définir cet empire comme empire du joueur. (BETA)
 RACES_HELP_1A                     | Informations générales pour l’empire sélectionné.
 RACES_HELP_1B                     | Fournit un accès direct aux diplomates de tous les empires contactés.
@@ -5384,7 +5411,7 @@ RACES_HELP_4A                     | Définissez le nombre de réseaux d’espion
 RACES_HELP_4B                     | Définissez les ordres pour les espions infiltrant l’empire sélectionné. Masquer - collecter des données. Espionnage - tentative de vol de technologie. Sabotage - incitez à des rébellions ou détruisez des usines et des bases de missiles.
 RACES_HELP_4C                     | Toutes les technologies connues par l’empire sélectionné. Les technologies que vous ne connaissez pas sont indiquées en jaune.
 RACES_HELP_4D                     | Primes d’espionnage les plus récentes pour les missions connexes.<br>(Probabilité / Impact).<br> Basé sur les derniers niveaux de technologie et de sécurité signalés.
-RACES_HELP_5A                     | Le nombre connu de vaisseaux dans la flotte de la race sélectionnée, par taille de coque. Ces informations resteront à jour tant que vous aurez un réseau d’espionnage actif dans l’empire sélectionné.
+RACES_HELP_5A                     | Le nombre connu de vaisseaux dans la flotte de l’empire sélectionné, par taille de coque. Ces informations resteront à jour tant que vous aurez un réseau d’espionnage actif dans l’empire sélectionné.
 RACES_HELP_5B                     | Les capacités connues des conceptions de vaisseaux. Les conceptions plus anciennes peuvent être hors service. Ces informations sont principalement recueillies lors des combats navals.
 RACES_HELP_5C                     | Les capacités défensives connues de l’empire sélectionné.
 RACES_HELP_6A                     | Cet écran fournit le classement actuel, dans diverses catégories, de notre empire par rapport aux autres empires connus. Ces données sont recueillies à partir de nos réseaux d’espionnage au sein de ces empires..
@@ -5571,8 +5598,8 @@ DIPLOMACY_MENU_ALLIANCE           | Proposer une alliance
 DIPLOMACY_MENU_ARMISTICE          | Proposer un armistice
 DIPLOMACY_MENU_PEACE              | Proposer un traité de paix
 DIPLOMACY_MENU_TRADE              | Proposer un traité commercial
-DIPLOMACY_MENU_JOINT_WAR          | Déclaration conjointe de guerre contre une autre race
-DIPLOMACY_MENU_PROPOSE_BREAK_ALLY | Rompre une alliance avec une autre race
+DIPLOMACY_MENU_JOINT_WAR          | Déclaration conjointe de guerre contre un autre empire
+DIPLOMACY_MENU_PROPOSE_BREAK_ALLY | Rompre une alliance avec un autre empire
 DIPLOMACY_MENU_BREAK_TRADE        | Rompre le traité commercial
 DIPLOMACY_MENU_BREAK_PACT         | Rompre le pacte de non-agression
 DIPLOMACY_MENU_BREAK_ALLIANCE     | Rompre l’alliance
@@ -5718,8 +5745,8 @@ GAME_OVER_EXIT                    | Quitter
 GAME_OVER_REPLAY                  | Historique
 GAME_OVER_CONTINUE                | Encore quelques tours...
 
-// text for race-generic endings
-// %1 Game year, %2 player name, %3 player race, %4 player empire, %5 leader name, %6 leader race, %7 leader empire, %8 special text
+// text for espèce-generic endings
+// %1 Game year, %2 player name, %3 player espèce, %4 player empire, %5 leader name, %6 leader espèce, %7 leader empire, %8 special text
 GAME_OVER_NO_COLONIES_LOSS2       | Le règne de %2 a pris fin, ruiné par l’incompétence impériale.#En l’absence de mondes civilisés sur lesquels atterrir en toute sécurité, les transports [player_race_pluraladjec] survivants sont incapables de soutenir les progrès technologiques réalisés par votre société.#La barbarie étant l’état naturel des sociétés, la civilisation n’est pas naturelle. C’est un caprice des circonstances. Et la barbarie doit finalement triompher.
 
 //
@@ -5854,13 +5881,17 @@ GOVERNOR_AUTOSPEND_DESC				| Le Gouverneur dépense automatiquement les réserve
 GOVERNOR_AUTOSPEND					| Aider les nouvelles colonies : %1
 GOVERNOR_AUTOSPEND_LABEL			| Aider les nouvelles colonies.
 
+GOVERNOR_AUTOSPEND_IMMEDIATE_DESC	| Les gouverneurs n’utilisent pas le budget, ils transfèrent immédiatement les subventions aux colonies, comme cela se faisait auparavant.
+GOVERNOR_AUTOSPEND_IMMEDIATE		| Transfert immédiat : %1
+GOVERNOR_AUTOSPEND_IMMEDIATE_LABEL	| Restaurer l'ancienne méthode
+
 GOVERNOR_AUTOSPEND_NEW_FIRST_HELP	| Lorsque le gouverneur doit aider à la fois les nouvelles colonies et les colonies avec des artéfacts, il devra donner la priorité aux nouvelles colonies.
 GOVERNOR_AUTOSPEND_NEW_FIRST_DESC	| Le Gouverneur priorise les nouvelles colonies, celles avec des artefacts passent après.
 GOVERNOR_AUTOSPEND_NEW_FIRST		| Priorité aux nouvelles colonies : %1
 
-GOVERNOR_AUTOSPEND_MAX_IND_HELP		| Lorsque le gouverneur doit aider à la fois les nouvelles colonies et les colonies avec des artefacts, et doit donner la priorité aux nouvelles colonies, il peut être utile de fixer une limite à partir de laquelle une colonie n'est plus considérée comme nouvelle.
+GOVERNOR_AUTOSPEND_MAX_IND_HELP		| Lorsque le gouverneur doit aider à la fois les nouvelles colonies et les colonies avec des artefacts, et doit donner la priorité aux nouvelles colonies, il peut être utile de fixer une limite à partir de laquelle une colonie n’est plus considérée comme nouvelle.
 GOVERNOR_AUTOSPEND_MAX_IND_DESC		| Niveau de développement maximal définissant une colonie comme étant nouvelle.
-GOVERNOR_AUTOSPEND_MAX_IND			| Limite de développement : %1
+GOVERNOR_AUTOSPEND_MAX_IND			| Limite de développement : %1 %
 
 GOVERNOR_AUTOSPEND_ARTEFACTS_HELP	| Le Gouverneur dépense automatiquement les réserves pour maximiser la recherche sur les colonies avec artéfacts:<br>&emsp - Ne dépense que le montant que la planète peut consommer ce tour-ci.<br>&emsp - Commence par les planètes pleinement construites, Vestiges puis Artefact.<br>&emsp - S’il reste des fonds, aide à construire les nouvelles colonies Vestiges, puis Artéfacts.<br>&emsp - Commence par la planète dont la production est la plus forte, et s’arrête lorsque l’argent vient à manquer ou qu’il n’y a plus de planètes éligibles.<br>&emsp - Ne dépense que sur les planètes où un gouverneur est en poste.
 GOVERNOR_AUTOSPEND_ARTEFACTS_DESC	| Le Gouverneur dépense automatiquement les réserves pour maximiser la recherche sur les colonies avec artéfacts.
@@ -5870,7 +5901,7 @@ GOVERNOR_AUTOSPEND_ARTEFACTS_LABEL	| Maximise Artéfacts
 HEADERS_GOVERNOR_FUNDRAISING_DESC	| Étendue et collecte des réserves et des fonds d’urgence.
 HEADERS_GOVERNOR_FUNDRAISING		| ~~~ COLLECTE DES FONDS D’URGENCE ~~~
 
-HEADERS_GOVERNOR_SPENDING_DESC		| Comment utiliser la réserve et les fonds d'urgence.
+HEADERS_GOVERNOR_SPENDING_DESC		| Comment utiliser la réserve et les fonds d’urgence.
 HEADERS_GOVERNOR_SPENDING			| ~~~ UTILISATION DES FONDS ~~~
 
 GOVERNOR_RESERVE_DESC				| Fonds d’urgence à garder en réserve à l’usage exclusif tu joueur.<br>(Non dépensée par les gouverneurs)
@@ -5897,8 +5928,36 @@ GOVERNOR_RESERVE_NEXT_TURN_PCT_HELP	| Fonds de roulement, en pourcentage de la p
 GOVERNOR_RESERVE_NEXT_TURN_PCT_DESC	| Fonds de roulement, en pourcentage de la production totale, à collecter pour les dépense courantes.
 GOVERNOR_RESERVE_NEXT_TURN_PCT		| Pourcentage de roulement : %1 %
 
-GOVERNOR_PLAN_RESERVE_TURN_DESC		| Le gouverneur se charge de collecter le fond de roulement spécifié.
-GOVERNOR_PLAN_RESERVE_TURN			| Le gouverneur collecte les fonds : %1
+GOVERNOR_RAISE_FUNDS_HELP			| Le gouverneur est chargé de collecter le fonds de roulement spécifié.<br>Si les impôts ne suffisent pas à atteindre le montant spécifié, le gouverneur réaffectera les fonds précédemment alloués à la recherche vers l’écologie, afin de générer un excédent qui sera ensuite versé au Trésor impérial.<br> Le gouverneur commencera par les planètes ultra-riches, puis passera aux planètes riches, et enfin aux planètes normales.<br>Ce processus de collecte dépend donc de l’option « →GAME_SETTINGS_DIVERT_EXCESS_TO_RESEARCH_LABEL← ».<br>Les colonies suivantes sont exclues : celles qui possèdent des artefacts, celles qui sont pauvres en ressources, celles dont la population est insuffisante ou celles qui reçoivent des subventions (afin d’éviter tout gaspillage de fonds).
+GOVERNOR_RAISE_FUNDS_DESC			| Le gouverneur se charge de collecter le fond de roulement spécifié.
+GOVERNOR_RAISE_FUNDS				| Le gouverneur collecte les fonds : %1
+GOVERNOR_RAISE_FUNDS_LABEL			| Le gouverneur collecte les fonds
+GOVERNOR_GRANT_FUNDS_HELP			| Le gouverneur est chargé d’attribuer les fonds disponibles. <br>Il suivra vos consignes, dans l’ordre suivant :<br>- Aider les victimes d’événements aléatoires,<br>- Les colonies pouvant puiser dans les fonds réservés,<br>- Les colonies ayant reçu des consignes spécifiques,<br>- Les colonies possédant des artefacts,<br>- Les nouvelles colonies.<br>Les deux dernières priorités dépendent d’un autre paramètre.
+GOVERNOR_GRANT_FUNDS_DESC			| Le gouverneur se charge d’attribuer les fonds disponibles.
+GOVERNOR_GRANT_FUNDS				| Le gouverneur attribue les fonds : %1
+GOVERNOR_GRANT_FUNDS_LABEL			| Le gouverneur attribue les fonds
+
+GOVERNOR_REDO_RAISE_ALLOWED_DESC	| Le gouverneur mettra à jour la collecte de fonds lorsque les conditions sont remplies.<br>N’est valide que si le gouverneur est autorisé à collecter des fonds.
+GOVERNOR_REDO_RAISE_ALLOWED			| La collecte est actualisable : %1
+GOVERNOR_REDO_RAISE_ALLOWED_LABEL	| La collecte est actualisable
+GOVERNOR_REDO_GRANT_ALLOWED_DESC	| Le gouverneur mettra à jour l’attribution des fonds lorsque les conditions sont remplies.<br>N’est valide que si le gouverneur est autorisé à attribuer les fonds.
+GOVERNOR_REDO_GRANT_ALLOWED			| Les subsides sont actualisables : %1
+GOVERNOR_REDO_GRANT_ALLOWED_LABEL	| Les subsides sont actualisables
+
+// GOVERNOR_REDO_BUDGET_ALLOWED_HELP	| Le gouverneur mettra le budget à jour, lorsque les conditions sont remplies.<br>Bloque toutes les autres conditions.<br>Le but de cette option est de bloquer temporairement toutes les autres sans avoir à défaire votre configuration.
+// GOVERNOR_REDO_BUDGET_ALLOWED_DESC	| Le gouverneur mettra le budget à jour, lorsque les conditions sont remplies.<br>Bloque toutes les autres conditions.
+// GOVERNOR_REDO_BUDGET_ALLOWED		| Le budget est actualisable : %1
+GOVERNOR_REDO_BUDGET_OPTION_DESC	| Le gouverneur mettra le budget à jour, lorsqu’une option budgétaire est changée.
+GOVERNOR_REDO_BUDGET_OPTION			| Options -> Réactualiser : %1
+GOVERNOR_REDO_BUDGET_TRANSPORT_DESC	| Le gouverneur mettra le budget à jour, lorsque des populations seront transportées.
+GOVERNOR_REDO_BUDGET_TRANSPORT		| Transports -> Réactualiser : %1
+GOVERNOR_REDO_BUDGET_TAX_DESC		| Le gouverneur mettra le budget à jour, lorsque le taux d’imposition est changé.
+GOVERNOR_REDO_BUDGET_TAX			| Taux -> Réactualiser : %1
+GOVERNOR_REDO_BUDGET_COLONY_DESC	| Le gouverneur actualisera le budget chaque fois qu’une directive relative à la subvention accordée à une colonie sera modifiée.
+GOVERNOR_REDO_BUDGET_COLONY			| Colonie -> Réactualiser : %1
+GOVERNOR_REDO_BUDGET_SPENDINGS_HELP	| Le gouverneur mettra à jour le budget chaque fois qu’une dépense sera modifiée.<br>Cette modification peut résulter de dépenses liées à l’espionnage, de coûts liés à la sécurité, d’accords commerciaux, de la fiscalité ou de réajustements des allocations effectués par les gouverneurs.
+GOVERNOR_REDO_BUDGET_SPENDINGS_DESC	| Le gouverneur actualisera le budget chaque fois qu’une dépense serra modifiée.
+GOVERNOR_REDO_BUDGET_SPENDINGS		| Dépenses -> Réactualiser : %1
 
 GOVERNOR_CARRY_UNFUNDED_DESC		| La partie non financée des montants budgétés par le joueur sera reportée au tour suivant.
 GOVERNOR_CARRY_UNFUNDED				| Reporter le budget du joueur : %1
@@ -6110,7 +6169,7 @@ GOVERNOR_TERRAFORM_POPULATION        | Espace restant pour : %1 habitants
 GOVERNOR_TERRAFORM_COST_DESC         | La terraformation de la planète sera déclenchée si le rapport coût/revenu (~ Nombre d’années de construction) est inférieur à ce pourcentage.
 GOVERNOR_TERRAFORM_COST              | Le rapport coût/revenu : %1< %1 %
 
-GOVERNOR_DEFAULT_SHIP_TAKE_HELP		| Pourcentage par défaut à attribuer à la construction des flottes prioritaires, et à la recherche prioritaire.<br>Cette valeur est attribuée lors de la fondation de nouvelles colonies, mais peut être mise à jour par la suite en Alt-Clicquant sur la valeur « Utiliser ». (à droite de l'image de la « Flotte en Construction »)
+GOVERNOR_DEFAULT_SHIP_TAKE_HELP		| Pourcentage par défaut à attribuer à la construction des flottes prioritaires, et à la recherche prioritaire.<br>Cette valeur est attribuée lors de la fondation de nouvelles colonies, mais peut être mise à jour par la suite en Alt-Clicquant sur la valeur « Utiliser ». (à droite de l’image de la « Flotte en Construction »)
 GOVERNOR_DEFAULT_SHIP_TAKE_DESC		| Pourcentage par défaut à attribuer à la construction des flottes prioritaires, et à la recherche prioritaire.
 GOVERNOR_DEFAULT_SHIP_TAKE           | Allocation prioritaire par défaut : %1 %
 
@@ -6121,7 +6180,7 @@ GOVERNOR_COLONY_DISTANCE_WEIGHT      | Pondération de la distance : %1 %
 GOVERNOR_COMPENSATE_GROWTH_HELP		| Lorsque la croissance démographique est en mode naturel, le gouverneur investira encore un peu dans la croissance des colonies sur les planètes hostiles, ainsi que des espèces à croissance réduite, afin qu’elle devienne équivalente à celle des planètes non hostiles et des espèces standards.
 GOVERNOR_COMPENSATE_GROWTH_DESC		| Compenser la croissance réduite des espèces ou des planètes.
 GOVERNOR_COMPENSATE_GROWTH			| Compenser la croissance réduite : %1
-GOVERNOR_COLONY_MIN_GROWTH_DESC		| Croissance minimale (par année) des colonies lorsque le mode « Développer les colonies rapidement » n'est pas actif.
+GOVERNOR_COLONY_MIN_GROWTH_DESC		| Croissance minimale (par année) des colonies lorsque le mode « Développer les colonies rapidement » n’est pas actif.
 GOVERNOR_COLONY_MIN_GROWTH			| Croissance minimale des colonies : %1 Hab.
 GOVERNOR_COLONY_EARLY_BOOST_DESC	| Activer le mode « Développer les colonies rapidement » pour les colonies n’ayant pas atteint le niveau de peuplement spécifié.
 GOVERNOR_COLONY_EARLY_BOOST			| Requis de population : %1 %
@@ -6181,7 +6240,7 @@ GOVERNOR_ARMED_COLONIZER_GUARD_DESC	| Les vaisseaux armés ayant des modules de 
 GOVERNOR_ARMED_COLONIZER_GUARD		| Les colonisateurs armés gardent : %1
 GOVERNOR_ARMED_COLONIZER_FIGHT_DESC	| Les vaisseaux de colonisation armés seront envoyés vers les planètes gardées par des vaisseaux armés.
 GOVERNOR_ARMED_COLONIZER_FIGHT		| Audacieux colonisateurs : %1
-GOVERNOR_AUTO_COLONY_TUNED_DESC		| Pour activer davantage d’options de colonisation : permettant l’envoi de vaisseaux de colonisation supplémentaires, et limitant la durée des vols.
+GOVERNOR_AUTO_COLONY_TUNED_DESC		| Pour activer davantage d’options de colonisation : permettant l’envoi de vaisseaux de colonisation supplémentaires, et limitant la durée des vols.
 GOVERNOR_AUTO_COLONY_TUNED			| Colonisation avancée : %1
 GOVERNOR_AUTO_COLONY_MULTIPLE_DESC	| Pour autoriser l’envoi d’un vaisseau de colonisation supplémentaire vers une planète qui a déjà été ciblée, s’il peut l’atteindre plus rapidement. (Seulement avec l’option : Colonisation avancée)
 GOVERNOR_AUTO_COLONY_MULTIPLE		| Envois Multiples : %1
@@ -6285,7 +6344,7 @@ SETTINGS_GLOBAL_USER_SAVE_DESC    | Enregistrer les options de toutes les interf
 SETTINGS_SEARCH_ICON_DESC		| Une recherche floue vous donnera une liste de 10 résultats maximum, le plus pertinent apparaissant en bas de la liste.<br>Cliquez sur un [Panneau] ou un [Sous-panneau] pour l’ouvrir. Cliquez sur une option pour modifier sa valeur. Utilisez la roulette n’importe où sur une ligne pour modifier la valeur de l’option.
 SETTINGS_SEARCH_ICON_HELP		| Une recherche floue vous donnera une liste de 10 résultats maximum, le plus pertinent apparaissant en bas de la liste.<br>Les résultats sont affichés soit :<br>[Panneau] |-> Option<br>ou<br>[Panneau] |-> [Sous-panneau]<br><br>Cliquez sur un [Panneau] ou un [Sous-panneau] pour l’ouvrir.<br>Cliquez sur une option pour modifier sa valeur.<br>Utilisez la roulette n’importe où sur une ligne pour modifier la valeur de l’option.<br><br>La recherche est effectuée à partir du panneau actuel et de ses sous-panneaux.<br>La recherche est effectuée dans la langue sélectionnée.
 
-// Race Menu Guides and Help
+// Espèce Menu Guides and Help
 SETUP_RACE_MAIN_DESC              | VUE D’ENSEMBLE<br> Cet écran vous permet de régler les paramètres de l’Empire du joueur de base.<br> Utilisez « Ctrl » et « Maj » pour modifier la fonctionnalité des boutons.<br> Global = Toutes les options. Local = Options de ce panneau.<br>« R » sélectionnera une nouvelle espèce au hasard.
 SETUP_RACE_NEXT_DESC              | Enregistrer les options et accéder au menu de configuration de la galaxie.
 SETUP_RACE_CANCEL_DESC            | Annuler les options et revenir au menu principal.
@@ -6551,7 +6610,7 @@ HK_SET_DEFAULT | <br>Alt-F : Définir les valeurs par défaut à →FUSION_HK�
 // Shortcuts Full lists*
 MAIN_HELP_SHIPFLEET_H	| Raccourcis clavier QUAND LA FLOTTE EST SÉLECTIONNÉE :<br><br>H : Afficher plus d’informations détaillées (si elles sont connues)<br><br> MODE DE REDIRECTION DES FLOTTES :<br><br>Appuyez sur «Alt» pour montrer des informations sur l’étoile ou la flotte survolée par la souris.
 
-MAIN_HELP_HK			| →HK_HEADER← →HK_F1←<br>H : Afficher les caractéristiques connues de la flotte sous le curseur<br><br>F2/F3 Votre colonie Suivante/Précédente<br>F5/F6 : Votre colonie Suivante/Précédente ayant construit un vaisseau<br>F7/F8 : Votre colonie Suivante/Précédente ciblée par un ennemi<br>Maj + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des troupes.<br>Ctrl + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des vaisseaux de guerre ou des troupes.<br>Maj + Ctrl + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des troupes ou des vaisseaux armés (incluant les éclaireurs)<br>W : Basculer la vue de guerre, n’affichant que les vaisseaux ciblant la planète en danger<br>F9/F10 : Votre flotte Suivante/Précédente<br>F11/F12 : flotte IA Suivante/Précédente<br>Espace/Page Down/Page Up : Votre flotte inactive Suivante/Précédente<br>«Maj-» Espace/Page Down/Page Up : Votre flotte Auto. mais inactive Suivante/Précédente→HK_FLAG_LOOP←<br><br>G : --> Menu (Game)<br>S : --> Systèmes<br>F : --> Flottes<br>D : --> Conception (Design)<br>R, E : --> Empires<br>C : --> Colonies<br>T : --> Tech        /        Ctrl+T Envoyer des Transports<br>N : Tour Suivant (Next)<br>O : --> Panneau d’Option →HK_YEAR←<br>Maj-S : Rapport d’espionnage (Spy)<br>→HK_HOME← →HK_ALT_HOME← →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← <br>ALT-W : Afficher/Cacher la grille carrée <br> →HK_MAP_ARROWS← →HK_MAP_ZOOM← <br>Molette de la souris : Incrémenter les quantités/ajuster la coulisse<br>→HK_ESCAPE←
+MAIN_HELP_HK			| →HK_HEADER← →HK_F1←<br>H : Afficher les caractéristiques connues de la flotte sous le curseur<br><br>F2/F3 Votre colonie Suivante/Précédente<br>F5/F6 : Votre colonie Suivante/Précédente ayant construit un vaisseau<br>F7/F8 : Votre colonie Suivante/Précédente ciblée par un ennemi<br>Maj + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des troupes.<br>Ctrl + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des vaisseaux de guerre ou des troupes.<br>Maj + Ctrl + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des troupes ou des vaisseaux armés (incluant les éclaireurs)<br>W : Basculer la vue de guerre, n’affichant que les vaisseaux ciblant la planète en danger<br>F9/F10 : Votre flotte Suivante/Précédente<br>F11/F12 : flotte IA Suivante/Précédente<br>Espace/Page Down/Page Up : Votre flotte inactive Suivante/Précédente<br>«Maj-» Espace/Page Down/Page Up : Votre flotte Auto. mais inactive Suivante/Précédente→HK_FLAG_LOOP←<br><br>G : --> Menu (Game)<br>S : --> Systèmes<br>F : --> Flottes<br>D : --> Conception (Design)<br>R, E : --> Empires<br>C : --> Colonies<br>T : --> Tech        /        Ctrl+T Envoyer des Transports<br>N : Tour Suivant (Next)<br>O : --> Panneau d’Option →HK_YEAR←<br>Maj-S : Rapport d’espionnage (Spy)<br>→HK_HOME← →HK_ALT_HOME← →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← <br>ALT-W : Afficher/Cacher la grille carrée <br> →HK_MAP_ARROWS← →HK_MAP_ZOOM← <br>Molette de la souris : Incrémenter les quantités/ajuster la coulisse<br>→HK_ESCAPE←
 
 PLANETS_HELP_HK			| →HK_HEADER← →HK_F1←<br><br>Flèches Haut / Bas : Bouge barre de défilement<br>Flèches Droite / Gauche : Colonie suivante / précédente. →HK_TAB← →HK_FLAG← →HK_HOME←<br> →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← (Aussi pour Sélection multiple)<br><br>Ctrl+A : Sélectionner tous les systèmes<br>Q/+Ctrl : Sélectionner normales et riches en pleine économie / + Définissez les dépenses des vaisseaux à 100%<br>Y,Z/+Ctrl : Planète en manque de population / + Dépenses ÉCO à 100%<br><br>S→HK_SEL_B← Vaisseaux →HK_SEL_E←<br>D→HK_SEL_B← Défense →HK_SEL_E←<br> W→HK_SEL_B← Industrie →HK_SEL_E←<br>E→HK_SEL_B← Écologie →HK_SEL_E←<br>R→HK_SEL_B← Recherche →HK_SEL_E←<br>G / +Ctrl /+Maj : Basculer activation du gouverneur / Activé / Désactivé <br>→HK_ESCAPE←
 
@@ -6564,9 +6623,9 @@ TECH_HELP_HK			| →HK_HEADER← →HK_F1← <br><br>1-6/+SHIFT : augmente / di
 
 SHIP_DESIGN_HELP_HK		| →HK_HEADER← →HK_F1← <br><br>Flèches Haut / Bas : Flotte Suivante / Précédente<br>S : Supprimer le Modèle<br>R : Renommer le Modèle<br>D : Créer le Modèle<br>C / (+Ctrl) : Purger le modèle / (Juste l’armement)<br>O : Ouvrir le panneau d’options de conception des vaisseaux<br><br>(Shift) Alt-A : Conception automatique<br>(Shift) Alt-B : Conception automatique Bombardier<br>(Shift) Alt-E : Conception automatique Éclaireur<br>(Shift) Alt-F : Conception automatique Chasseur<br>(Shift) Alt-G : Conception automatique Faisceaux<br>(Shift) Alt-H : Conception automatique Hybride<br>(Shift) Alt-I : Conception automatique Intercepteur<br>(Shift) Alt-M : Conception automatique Missiles.<br>(Shift) Alt-P : Conception automatique Colonisateur.<br>Shift-Alt : Autorise le changement de la taille de la coque<br>→HK_ESCAPE←
 
-RACES_HELP_HK			| →HK_HEADER← →HK_F1← <br><br>Flèches Down/Up : Empire Suivant/Précédent. →HK_TAB←<br><br>A : →RACES_DIPLOMACY_AUDIENCE← avec l’empire sélectionné.<br><br>M : Pour Activer/Désactiver les avertissements donnés par l’empire sous le curseur.<br>R : Rappeler/Réintégrer le diplomate de l’Empire sous le curseur.<br><br>Lorsque l’empire du joueur est sélectionné:<br>D : →RACES_DIPLOMACY_MANAGE_DIPLOMATS←.<br>S : →RACES_INTEL_BUREAU_MANAGE←. <br>→HK_ESCAPE←
+RACES_HELP_HK			| →HK_HEADER← →HK_F1← <br><br>Flèches Down/Up : Empire Suivant/Précédent. →HK_TAB←<br><br>A : →RACES_DIPLOMACY_AUDIENCE← avec l’empire sélectionné.<br><br>M : Pour Activer/Désactiver les avertissements donnés par l’empire sous le curseur.<br>R : Rappeler/Réintégrer le diplomate de l’Empire sous le curseur.<br><br>Lorsque l’empire du joueur est sélectionné:<br>D : →RACES_DIPLOMACY_MANAGE_DIPLOMATS←.<br>S : →RACES_INTEL_BUREAU_MANAGE←. <br>→HK_ESCAPE←
 
-INTELLIGENCE_HELP_HK	| →HK_HEADER← →HK_F1← <br><br>H : Pour Afficher/Cacher la description des technologies<br><br>Flèches Down/Up : Empire Suivant/Précédent. →HK_TAB←<br><br>A : →RACES_DIPLOMACY_AUDIENCE← avec l’empire sélectionné.<br><br>M : Pour Activer/Désactiver les avertissements donnés par l’empire sous le curseur.<br>R : Rappeler/Réintégrer le diplomate de l’Empire sous le curseur.<br><br>Lorsque l’empire du joueur est sélectionné:<br>D : →RACES_DIPLOMACY_MANAGE_DIPLOMATS←.<br>S : →RACES_INTEL_BUREAU_MANAGE←. <br>→HK_ESCAPE←
+INTELLIGENCE_HELP_HK	| →HK_HEADER← →HK_F1← <br><br>H : Pour Afficher/Cacher la description des technologies<br><br>Flèches Down/Up : Empire Suivant/Précédent. →HK_TAB←<br><br>A : →RACES_DIPLOMACY_AUDIENCE← avec l’empire sélectionné.<br><br>M : Pour Activer/Désactiver les avertissements donnés par l’empire sous le curseur.<br>R : Rappeler/Réintégrer le diplomate de l’Empire sous le curseur.<br><br>Lorsque l’empire du joueur est sélectionné:<br>D : →RACES_DIPLOMACY_MANAGE_DIPLOMATS←.<br>S : →RACES_INTEL_BUREAU_MANAGE←. <br>→HK_ESCAPE←
 
 SYSTEMS_HELP_HK			| →HK_HEADER← →HK_F1← <br>→HK_MAP_ARROWS← →HK_MAP_ZOOM← <br> →HK_YEAR← →HK_FLAG← →HK_HOME← →HK_ALT_HOME← <br>→HK_ESCAPE←
 

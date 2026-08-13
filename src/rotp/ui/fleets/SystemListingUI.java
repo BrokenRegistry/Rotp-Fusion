@@ -156,6 +156,9 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
     public SystemDataColumn newSystemDataColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
         return new SystemDataColumn(s1, s2, i, clr, c, align);
     }
+	public SystemColorDataColumn newSystemColorDataColumn(String s1, String s2, int i, Palette palette, Comparator<StarSystem> c, int align) {
+		return new SystemColorDataColumn(s1, s2, i, palette, c, align);
+	}
     public SystemDeltaDataColumn newSystemDeltaDataColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
         return new SystemDeltaDataColumn(s1, s2, i, clr, c, align);
     }
@@ -168,7 +171,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
  	public SystemGovPlanColumn newSystemGovPlanColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
 		return new SystemGovPlanColumn(s1, s2, i, clr, c, align);
 	}
-   public SystemNameColumn newSystemNameColumn(BaseTextField field, String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
+    public SystemNameColumn newSystemNameColumn(BaseTextField field, String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
         return new SystemNameColumn(field, s1, s2, i, clr, c, align);
     }
     public SystemNotesColumn newSystemNotesColumn(BaseTextField field, String s1, String s2, int i, Color clr) {
@@ -839,7 +842,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         }
     }
 	private class SystemDataColumn extends Column {
-		private String attributeKey;
+		protected String attributeKey;
 		private Color color;
 		private Comparator<StarSystem> comp;
 		private SystemDataColumn(String s1, String s2, int w, Color clr, Comparator<StarSystem> c, int a) {
@@ -1131,6 +1134,14 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             }
         }
     }
+	private final class SystemColorDataColumn extends SystemDataColumn {
+		private Palette palette;
+		private SystemColorDataColumn(String s1, String s2, int w, Palette palette, Comparator<StarSystem> c, int a) {
+			super(s1, s2, w, palette.black, c, a);
+			this.palette = palette;
+		}
+		@Override protected Color color(StarSystem sys)	{ return sys.getAttributeColor(attributeKey, palette); }
+	}
 	private final class SystemDeltaDataColumn extends Column {
 		private String attributeKey;
 		private String deltaKey;

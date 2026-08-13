@@ -24,6 +24,12 @@ import rotp.model.galaxy.StarSystem;
 import rotp.model.planet.Planet;
 
 public interface Governor {
+	int SHIP	= Colony.SHIP;
+	int DEFENSE	= Colony.DEFENSE;
+	int INDUSTRY= Colony.INDUSTRY;
+	int ECOLOGY	= Colony.ECOLOGY;
+	int RESEARCH= Colony.RESEARCH;
+
 	void setInitialAllocations(Colony c);
 	void setColonyAllocations(Colony c);
 

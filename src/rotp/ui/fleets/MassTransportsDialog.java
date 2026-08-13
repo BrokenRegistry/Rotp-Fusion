@@ -94,6 +94,7 @@ public class MassTransportsDialog extends BasePanel {
         return (int) Math.ceil(time);
     }
     void cancelChanges() {
+		player().budget().makeTransortObsolete();
         for (StarSystem sys : sourceSystems)
             sys.transportSprite().cancel();
     }

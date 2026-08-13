@@ -48,7 +48,7 @@ public class RandomEventEnrichedPlanet extends AbstractRandomEvent {
         List<StarSystem> systems = new ArrayList<>();
         for (StarSystem sys : emp.allColonizedSystems()) {
             Planet planet = sys.planet();
-            if (!planet.isResourceRich() && !planet.isResourceUltraRich() && !planet.isArtifact()) 
+            if (!planet.isHighResource() && !planet.isArtifact()) 
                 systems.add(sys);
         }
         if (systems.isEmpty())

@@ -44,10 +44,10 @@ public interface Treasurer extends Base {
                 systems.remove(sys);
             else {
                 Planet pl = sys.planet();
-                if (pl.isResourcePoor() || pl.isResourceUltraPoor()) {
+                if (pl.isLowResource()) {
                     poorSystems.add(sys); // modnar: still make poorSystems list
                 }
-                if (pl.isResourceRich() || pl.isResourceUltraRich()) {
+                if (pl.isHighResource()) {
                     systems.remove(sys);
                     richSystems.add(sys); // modnar: make richSystems list
                 }
@@ -131,7 +131,7 @@ public interface Treasurer extends Base {
                 int res = col.research().allocation();
                 if (res > 0) {
                     Planet pl = sys.planet();
-                    if (pl.isResourceRich() || pl.isResourceUltraRich()) {
+                    if (pl.isHighResource()) {
                         if (col.population() >= pl.maxSize()) {
                             int eco = col.ecology().allocation();
                             int ecoAdj = min(res, maxAlloc - eco); // modnar: collect all we can from rich/ultra-rich
@@ -152,6 +152,4 @@ public interface Treasurer extends Base {
     }
     //Xilmi-AI
     default float maxReserveNeeded() { return 0; }
-	//Player-AI
-	default void planTheBudget()	{}
 }

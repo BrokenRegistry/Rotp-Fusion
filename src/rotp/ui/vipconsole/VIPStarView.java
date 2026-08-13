@@ -198,7 +198,7 @@ public class VIPStarView implements IVIPConsole {
 		int trId = sys.transportDestId;
 		if (trId != StarSystem.NULL_ID) {
 			StarSystem destination = galaxy().system(trId);
-			int amount = sys.transportAmt;
+			int amount = sys.transportAmt();
 			String dest = bracketed(SYSTEM_KEY, destination.altId);
 			if (amount == 1)
 				out += NEWLINE + "Planned "+ amount + " transport to " + dest;
@@ -554,7 +554,8 @@ public class VIPStarView implements IVIPConsole {
 		SystemTransportSprite transportSprite = sys.transportSprite();
 		transportSprite.clickedDest(dest);
 		transportSprite.amt(amount);
-		
+
+		player().budget().makeTransortObsolete();
 		player().deployTransport(sys);
 		RotPUI.instance().mainUI().clickedSprite(sys);
 
@@ -575,7 +576,8 @@ public class VIPStarView implements IVIPConsole {
 		SystemTransportSprite transportSprite = sys.transportSprite();
 		transportSprite.clickedDest(dest);
 		transportSprite.amt(amount);
-		
+
+		player().budget().makeTransortObsolete();
 		player().deployTransport(sys);
 		RotPUI.instance().mainUI().clickedSprite(sys);
 
@@ -584,8 +586,10 @@ public class VIPStarView implements IVIPConsole {
 	String cancelSend(Entries param, String out)	{
 		System.out.println("Cancel Transport" + param);
 
+		player().budget().makeTransortObsolete();
 		SystemTransportSprite transportSprite = sys.transportSprite();
 		transportSprite.clear();
+		player().budget().makeTransortObsolete();
 		player().deployTransport(sys);
 		RotPUI.instance().mainUI().clickedSprite(sys);
 

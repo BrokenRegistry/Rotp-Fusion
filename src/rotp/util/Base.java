@@ -1923,26 +1923,27 @@ public interface Base extends InputEventUtil {
 		GlyphVector gv = g2.getFont().createGlyphVector(frc, str);
 		return gv.getPixelBounds(null, x, y);
 	}
-    class Rect extends Rectangle {
-    	private static final long serialVersionUID = 1L;
-    	public Rect()				{ super(); }
-    	public Rect(Point p)		{ super(p); }
-    	public Rect(Dimension d)	{ super(d); }
-    	public Rect(Rectangle r)	{ super(r); }
-       	public Rect(Point p, Dimension d)	{ super(p, d); }
-      	public Rect(int width, int height)	{ super(width, height); }
-       	public Rect(int x, int y, int width, int height)	{ super(x, y, width, height); }
+	class Rect extends Rectangle {
+		private static final long serialVersionUID = 1L;
+		private int te;
+		public Rect()				{ super(); }
+		public Rect(Point p)		{ super(p); }
+		public Rect(Dimension d)	{ super(d); }
+		public Rect(Rectangle r)	{ super(r); }
+		public Rect(Point p, Dimension d)	{ super(p, d); }
+		public Rect(int width, int height)	{ super(width, height); }
+		public Rect(int x, int y, int width, int height)	{ super(x, y, width, height); }
 
-       	public Rect intersection(Rect r)	{ return new Rect(super.intersection(r)); }
-       	public Rect union(Rect r)			{ return new Rect(super.union(r)); }
-	
-       	public int xc() 	{ return (int) getCenterX(); }
-       	public int yc() 	{ return (int) getCenterY(); }
-       	public int xe() 	{ return x + width; }
-       	public int ye() 	{ return y + height; }
+		public Rect intersection(Rect r)	{ return new Rect(super.intersection(r)); }
+		public Rect union(Rect r)			{ return new Rect(super.union(r)); }
 
-       	public Rectangle rectangle()	{ return new Rectangle(x, y, width, height); }
-    }
+		public int xc()	{ return (int) getCenterX(); }
+		public int yc()	{ return (int) getCenterY(); }
+		public int xe()	{ return x + width; }
+		public int ye()	{ return y + height; }
+		public int te()			{ return te; }
+		public void te(int i)	{ te = i; }
+	}
 	static File newFile (String first, String... more) {
 		Path path = Paths.get(first, more);
 		Path parent = path.getParent();

@@ -68,10 +68,10 @@ public final class AITreasurer implements Treasurer {
                     maxReserveNeeded += sys.colony().maxReserveUseable();
                 if(!galaxy().options().selectedRandomEventOption().equals(RANDOM_EVENTS_OFF) && sys.colony().maxReserveUseable() > reserveGoal)
                     reserveGoal = sys.colony().maxReserveUseable();
-                if (pl.isResourcePoor() || pl.isResourceUltraPoor()) {
+                if (pl.isLowResource()) {
                     poorSystems.add(sys); // modnar: still make poorSystems list
                 }
-                if (pl.isResourceRich() || pl.isResourceUltraRich()) {
+                if (pl.isHighResource()) {
                     //ail: If the system with the event is rich, we mustn't remove it from the list of receivers!
                     if(!sys.colony().research().hasProject() && sys.colony().currentProductionCapacity() >= 1.0f)
                     {
@@ -152,7 +152,7 @@ public final class AITreasurer implements Treasurer {
                     int res = col.research().allocation();
                     if (res > 0) {
                         Planet pl = sys.planet();
-                        if (pl.isResourceRich() || pl.isResourceUltraRich()) {
+                        if (pl.isHighResource()) {
                             if (col.population() >= pl.maxSize()) {
                                 int eco = col.ecology().allocation();
                                 int ecoAdj = min(res, maxAlloc - eco); // modnar: collect all we can from rich/ultra-rich

@@ -267,10 +267,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
     public boolean hasStarBackground()     { return true; }
     @Override
     public void animate() {
-		if(player().budget().isObsolete()) {
-			player().budget().computeIfNeeded(false);
+		if(player().budget().budgetIfNeeded())
 			repaint();
-		}
         if (!playAnimations())
             return;
         planetListing.animate();
@@ -1165,6 +1163,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		Column allocateCol	= listingUI.newSystemDataColumn("PLANETS_LIST_CONTRIBUTE",	"CONTRIBUTE",	s55, palette.black,	StarSystem.COLONY_CONTRIBUTE,RIGHT);
 		Column taxedCol		= listingUI.newSystemDataColumn("PLANETS_LIST_TAXED",		"TAXED",		s55, palette.black,	StarSystem.COLONY_TAXED,	RIGHT);
 
+		Column industryCol	= listingUI.newSystemColorDataColumn("PLANETS_LIST_IND_RATIO", 	"IND_RATIO",	s55,	palette,		StarSystem.IND_RATIO,	RIGHT);
 		Column populationCol= listingUI.newSystemDeltaDataColumn("PLANETS_LIST_POPULATION",	"POPULATION",	s85,	palette.black,	StarSystem.POPULATION,	RIGHT);
 		Column factoriesCol	= listingUI.newSystemDeltaDataColumn("PLANETS_LIST_FACTORIES",	"FACTORIES",	s85,	palette.black,	StarSystem.FACTORIES,	RIGHT);
 		Column basesCol		= listingUI.newSystemDeltaDataColumn("PLANETS_LIST_BASES",		"BASES",		s55,	palette.black,	StarSystem.BASES,		RIGHT);
@@ -1203,7 +1202,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		taxView.addColumn(nameCol);
 		taxView.addColumn(populationCol);
 		taxView.addColumn(resourceCol);
-		taxView.addColumn(capacityCol);
+		taxView.addColumn(industryCol);
 		taxView.addColumn(indRsvCol);
 		taxView.addColumn(neededCol);
 		taxView.addColumn(budgetCol);
@@ -1244,7 +1243,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		transferReservePane.targetSystems(selectedSystems());
 		enableGlassPane(transferReservePane);
 	}
-    private class PlanetListingUI extends BasePanel {
+    private final class PlanetListingUI extends BasePanel {
         private static final long serialVersionUID = 1L;
         private PlanetListingUI(PlanetsUI p) {
             init(p);
@@ -1268,7 +1267,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             planetDisplayPane.animate();
         }
     }
-    private class PlanetViewSelectionPanel extends BasePanel implements MouseMotionListener, MouseListener {
+    private final class PlanetViewSelectionPanel extends BasePanel implements MouseMotionListener, MouseListener {
         private static final long serialVersionUID = 1L;
         private PlanetsUI parent;
         private Rectangle hoverBox;
@@ -1457,7 +1456,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                 repaint();
         }
     }
-    private class PlanetDisplayPanel extends SystemPanel {
+    private final class PlanetDisplayPanel extends SystemPanel {
         private static final long serialVersionUID = 1L;
         private EmpireInfoGraphicPane graphicPane;
         private PlanetsUI parent;
@@ -1529,7 +1528,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             return empireDetailPane;
         }
     }
-    private class MultiPlanetDisplayPanel extends SystemPanel {
+    private final class MultiPlanetDisplayPanel extends SystemPanel {
         private static final long serialVersionUID = 1L;
         private EmpireInfoGraphicPane graphicPane;
         // private PlanetsUI parent;
@@ -1602,7 +1601,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             return empireDetailPane;
         }
     }
-    private class EmpireInfoGraphicPane extends BasePanel implements ActionListener {
+    private final class EmpireInfoGraphicPane extends BasePanel implements ActionListener {
         private static final long serialVersionUID = 1L;
         private SystemPanel parent;
         private Ellipse2D starCircle = new Ellipse2D.Float();
@@ -1682,7 +1681,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             }
         }
     }
-    private class ColonyShipPane extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
+    private final class ColonyShipPane extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
         private static final long serialVersionUID = 1L;
         private SystemPanel parent;
         private Design currDesign;
@@ -2237,7 +2236,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             }
         }
     }
-    private class ColonyTransferFunds extends BasePanel implements MouseListener, MouseMotionListener {
+    private final class ColonyTransferFunds extends BasePanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;
         private SystemPanel parent;
         private final Rectangle transferBox = new Rectangle();
@@ -2404,7 +2403,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             add(notesField);
         }
     }
-    private class EmpireRevenueUI extends BasePanel {
+    private final class EmpireRevenueUI extends BasePanel {
         private static final long serialVersionUID = 1L;
         public EmpireRevenueUI() {
             initModel();
@@ -2418,7 +2417,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             add(new TotalIncomeUI(), BorderLayout.WEST);
         }
     }
-    private class SpendingCostsUI extends BasePanel {
+    private final class SpendingCostsUI extends BasePanel {
         private static final long serialVersionUID = 1L;
         private Shape textureClip;
         public SpendingCostsUI() {
@@ -2530,7 +2529,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             drawString(g,val, x2+w2-sw, y1);
         }
     }
-    private class TotalIncomeUI extends BasePanel {
+    private final class TotalIncomeUI extends BasePanel {
         private static final long serialVersionUID = 1L;
         private Shape textureClip;
         public TotalIncomeUI() {
@@ -2615,7 +2614,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             drawString(g,val, amtP-sw, y1);
         }
     }
-    private class ReserveUI extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
+    private final class ReserveUI extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
         private static final long serialVersionUID = 1L;
         // private final Color sliderHighlightColor = new Color(255,255,255);
         private final Color sliderBoxEnabled = new Color(34,140,142);
@@ -2989,7 +2988,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                     repaint();
                     planetDisplayPane.repaint();
                 }
-				else if(!selectedSystems().isEmpty() && player().totalReserve() > 0)
+				else if(!selectedSystems().isEmpty())
 					showTransferReservePane();
 				else {
                     misClick();
@@ -3051,7 +3050,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             }
         }
     }
-    private class ExitPlanetsButton extends ExitButton {
+    private final class ExitPlanetsButton extends ExitButton {
         private static final long serialVersionUID = 1L;
         private ExitPlanetsButton(int w, int h, int vMargin, int hMargin) {
             super(w, h, vMargin, hMargin);
@@ -3062,7 +3061,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             finish(true);
         }
     }
-    private class UpAction extends AbstractAction {
+    private final class UpAction extends AbstractAction {
         private static final long serialVersionUID = 1L;
         @Override
         public void actionPerformed(ActionEvent ev) {
@@ -3070,7 +3069,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                 instance.repaint();
         }
     }
-    private class DownAction extends AbstractAction {
+    private final class DownAction extends AbstractAction {
         private static final long serialVersionUID = 1L;
         @Override
         public void actionPerformed(ActionEvent ev) {
@@ -3078,7 +3077,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                 instance.repaint();
         }
     }
-    private class CancelAction extends AbstractAction {
+    private final class CancelAction extends AbstractAction {
         private static final long serialVersionUID = 1L;
         @Override
         public void actionPerformed(ActionEvent ev) {
@@ -3087,7 +3086,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             finish(false);
         }
     }
-	private class LastKeyAdapter extends KeyAdapter {
+	private final class LastKeyAdapter extends KeyAdapter {
 		@Override public void keyReleased(KeyEvent e) {
 			setModifierKeysState(e);
 			setFieldValues(lastSelectedSystem());

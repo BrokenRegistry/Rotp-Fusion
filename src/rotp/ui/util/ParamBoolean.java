@@ -84,6 +84,10 @@ public class ParamBoolean extends AbstractParam<Boolean> {
 		super.setNewValueMethod(method);
 		return this;
 	}
+	@Override public ParamBoolean setGetValueMethod(IGetValue<Boolean> method)	{
+		super.setGetValueMethod(method);
+		return this;
+	}
 	@Override public ParamBoolean setIsGhostMethod(BooleanSupplier method)	{
 		super.setIsGhostMethod(method);
 		return this;

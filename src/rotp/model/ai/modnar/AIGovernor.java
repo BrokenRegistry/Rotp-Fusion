@@ -23,11 +23,6 @@ import rotp.model.galaxy.StarSystem;
 import rotp.util.Base;
 
 public final class AIGovernor implements Base, Governor {
-    public static final int SHIP = Colony.SHIP;
-    public static final int DEFENSE = Colony.DEFENSE;
-    public static final int INDUSTRY = Colony.INDUSTRY;
-    public static final int ECOLOGY = Colony.ECOLOGY;
-    public static final int RESEARCH = Colony.RESEARCH;
     private final Empire empire;
 
     public AIGovernor (Empire c) {
@@ -130,10 +125,10 @@ public final class AIGovernor implements Base, Governor {
 		StarSystem sys = col.starSystem();
 		float prodPct = col.currentProductionCapacity();
 		if (bases >= maxBases) { // only if missile bases are in place
-			if ((prodPct > 0.9) && empire.sv.isInnerSystem(sys.id) && !col.planet().isResourceRich() && !col.planet().isResourceUltraRich()) { 
+			if ((prodPct > 0.9) && empire.sv.isInnerSystem(sys.id) && !col.planet().isHighResource()) { 
 				netProd -= 9*resOverhead;
 			}
-			if ((prodPct > 0.9) && !empire.sv.isInnerSystem(sys.id) && !col.planet().isResourceRich() && !col.planet().isResourceUltraRich()) { 
+			if ((prodPct > 0.9) && !empire.sv.isInnerSystem(sys.id) && !col.planet().isHighResource()) { 
 				netProd -= 3*resOverhead;
 			}
 		}

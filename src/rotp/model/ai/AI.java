@@ -18,10 +18,10 @@ package rotp.model.ai;
 import static rotp.model.game.IGameOptions.BASE;
 import static rotp.model.game.IGameOptions.FUN;
 import static rotp.model.game.IGameOptions.FUSION;
-import static rotp.model.game.IGameOptions.GOVERNOR;
 import static rotp.model.game.IGameOptions.HYBRID;
 import static rotp.model.game.IGameOptions.MODNAR;
 import static rotp.model.game.IGameOptions.PERSONALITY;
+import static rotp.model.game.IGameOptions.PLAYER;
 import static rotp.model.game.IGameOptions.RANDOM;
 import static rotp.model.game.IGameOptions.RANDOM_ADVANCED;
 import static rotp.model.game.IGameOptions.RANDOM_BASIC;
@@ -89,20 +89,20 @@ public final class AI implements Base {
             default:
                 break;
         }
-        if(empire.selectedAI < 0 && aiType != GOVERNOR)
+        if(empire.selectedAI < 0 && aiType != PLAYER)
             empire.selectedAI = aiType;
         switch(aiType) {
-	        case GOVERNOR:	// TODO BR: progressively move to governor
-	            general =        new rotp.model.ai.xilmi.AIGeneral(empire);
-	            captain =        new rotp.model.ai.xilmi.AIShipCaptain(empire);
-	            governor =       new rotp.model.ai.xilmi.AIGovernor(empire);
-	            diplomat =       new rotp.model.ai.fusion.AIDiplomat(empire);
-	            shipDesigner =   new rotp.model.ai.xilmi.AIShipDesigner(empire);
-	            scientist =      new rotp.model.ai.xilmi.AIScientist(empire);
-	            fleetCommander = new rotp.model.ai.governor.AIFleetCommander(empire);
-	            spyMaster =      new rotp.model.ai.governor.AISpyMaster(empire);
-	            treasurer =      new rotp.model.ai.governor.AITreasurer(empire);
-	            break;
+        	case PLAYER:	// TODO BR: progressively move to player "AI"
+				general =        new rotp.model.ai.xilmi.AIGeneral(empire);
+				captain =        new rotp.model.ai.xilmi.AIShipCaptain(empire);
+				governor =       new rotp.model.ai.player.AIGovernor(empire);
+				diplomat =       new rotp.model.ai.fusion.AIDiplomat(empire);
+				shipDesigner =   new rotp.model.ai.xilmi.AIShipDesigner(empire);
+				scientist =      new rotp.model.ai.xilmi.AIScientist(empire);
+				fleetCommander = new rotp.model.ai.player.AIFleetCommander(empire);
+				spyMaster =      new rotp.model.ai.player.AISpyMaster(empire);
+				treasurer =      new rotp.model.ai.player.AITreasurer(empire);
+				break;
             case BASE:		// Base
                 general =        new rotp.model.ai.base.AIGeneral(empire);
                 captain =        new rotp.model.ai.base.AIShipCaptain(empire);

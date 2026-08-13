@@ -1243,7 +1243,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         HelpSpec sp7s = helpUI.addBlueHelpText(x0, y1, w0, 0, text("MAIN_HELP_4G"));
         sp7s.setLine(x1+w1, y1+(sp7s.height()/3), xBox, yBox + s20);
         sp7s.setLineArr(sp7s.rect(xBox, yBox, wBox, hBox));
-        
+
         // Global Help
         y1 = sp7s.ye() + sep;
         xBox = w-scaled(78);
@@ -1251,7 +1251,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         HelpSpec sp8s = helpUI.addBlueHelpText(x0, y1, w0, 0, text("MAIN_HELP_4A"));
         sp8s.setLine(x1+w1, y1+(sp8s.height()*4/5), xBox, yBox + (hBox + dye)/2);
         sp8s.setLineArr(sp7s.rect(xBox, yBox, wBox, hBox));
-     
+
         // Bottom of the window
         y1 = sp8s.ye() + sep;
         ye += dye;

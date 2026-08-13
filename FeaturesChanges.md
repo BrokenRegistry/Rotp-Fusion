@@ -228,6 +228,11 @@
 
 ### Governor:
 
+- Finalization of the budget tools
+  - New buttons to clear and redo budgets.
+  - New options to enable / disable budget features.
+- Minor display glitches fixes.
+
 - Added options to set the limit of fund accumulation. (Absolute and relative)
   - When funds collected exceed funds spent, at what point does the governor stop collecting?.
   -The maximum of the absolute and relative value will be collected.

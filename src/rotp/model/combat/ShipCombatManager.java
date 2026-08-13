@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import rotp.model.ai.governor.ShipCaptainAdvisor;
+import rotp.model.ai.player.ShipCaptainAdvisor;
 import rotp.model.empires.DiplomaticEmbassy;
 import rotp.model.empires.DiplomaticTreaty;
 import rotp.model.empires.Empire;

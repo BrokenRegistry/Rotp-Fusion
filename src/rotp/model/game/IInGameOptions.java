@@ -602,9 +602,9 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	default float completionRatio(Colony col, boolean shieldWithoutBases)	{
 		switch (developedDefinition.get()) {
 		case DEVELOPED_NO_BASE:
-			return (col.industry().completedPct() + col.ecology().completedPct())/2;
+			return (col.industry().factoryToMaxRatio() + col.ecology().completedPct())/2;
 		case DEVELOPED_INDUSTRY:
-			return col.industry().completedPct();
+			return col.industry().factoryToMaxRatio();
 		case DEVELOPED_ALL:
 		default:
 //			String log = col.name();
@@ -613,7 +613,7 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 //			log += " eco: " + col.ecology().completedPct();
 //			log += " avg: " + (col.defense().completedPct(shieldWithoutBases) + col.industry().completedPct() + col.ecology().completedPct())/3;
 //			System.out.println(log);
-			return (col.defense().completedPct(shieldWithoutBases) + col.industry().completedPct() + col.ecology().completedPct())/3;
+			return (col.defense().completedPct(shieldWithoutBases) + col.industry().factoryToMaxRatio() + col.ecology().completedPct())/3;
 		}
 	}
 	ParamInteger maxMissingPopulation	= new ParamInteger(MOD_UI, "DEV_MAX_MISSING_POP", 3)

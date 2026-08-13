@@ -74,6 +74,10 @@ public class HelpUI extends BasePanel implements MouseListener {
     }
     public HelpSpec addBlueHelpText(int x, int y, int w, int num, String text, int x1, int y1, int x2, int y2, int x3, int y3) {
         HelpSpec sp = new HelpSpec();
+		text = text.replace("<u>", "");
+		text = text.replace("</u>", "");
+		text = text.replace("<b>", "");
+		text = text.replace("</b>", "");
         sp.text = text;
         sp.x = x;
         sp.w = w;
@@ -93,7 +97,6 @@ public class HelpUI extends BasePanel implements MouseListener {
         	sp.lines = -num;
         	sp.hMax  = sp.height();
         	sp.init();
-        	//sp.lines = getLineNumber(text, w, sp.hMax);
         }
         else {
         	sp.lines = num;
@@ -102,7 +105,7 @@ public class HelpUI extends BasePanel implements MouseListener {
         }
         sp.hMax = sp.height();
 
-        if (y<0)
+        if (y<0) // position of the bottom of the box
         	sp.y = -y - sp.height();
         else
         	sp.y = y;
@@ -157,28 +160,40 @@ public class HelpUI extends BasePanel implements MouseListener {
                 drawString(g,line, x0, y0);
                 y0 += lineH;
             }
-            // draw line to target
-            if (spec.x2 >= 0) {
-                Stroke prev = g.getStroke();
-                g.setStroke(stroke2);
-                g.setColor(spec.lineC);
-                g.drawLine(spec.x1, spec.y1, spec.x2, spec.y2);
-                if (spec.x3 >=0) 
-                    g.drawLine(spec.x2, spec.y2, spec.x3, spec.y3);
-                g.setStroke(prev);
-            }
+			int xe = spec.x2;
+			int ye = spec.y2;
             // BR: draw lines of target Array
             if (spec.lineArr != null) {
                 Stroke prev = g.getStroke();
                 g.setStroke(stroke2);
                 g.setColor(spec.lineC);
             	int size = spec.lineArr.length/2 - 1;
-            	for (int i=0; i<size; i++) {
-            		int k = 2*i;
-            		g.drawLine(spec.lineArr[k], spec.lineArr[k+1], spec.lineArr[k+2], spec.lineArr[k+3]);
-            	}
+				for (int i=0; i<size; i++) {
+					int k = 2*i;
+					xe = spec.lineArr[k+2];
+					ye = spec.lineArr[k+3];
+					g.drawLine(spec.lineArr[k], spec.lineArr[k+1], xe, ye);
+				}
                 g.setStroke(prev);
             }
+            // draw line to target
+            if (spec.x2 >= 0) {
+				xe = spec.x2;
+				ye = spec.y2;
+                Stroke prev = g.getStroke();
+                g.setStroke(stroke2);
+                g.setColor(spec.lineC);
+                g.drawLine(spec.x1, spec.y1, spec.x2, spec.y2);
+				if (spec.x3 >=0) {
+					g.drawLine(spec.x2, spec.y2, spec.x3, spec.y3);
+					xe = spec.x3;
+					ye = spec.y3;
+				}
+                g.setStroke(prev);
+            }
+
+            int r = s3;
+            g.fillOval(xe-r, ye-r, r+r, r+r);
        }
     }
     @Override public void keyPressed(KeyEvent e)		{

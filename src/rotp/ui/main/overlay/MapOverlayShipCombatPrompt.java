@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import rotp.model.Sprite;
-import rotp.model.ai.governor.ShipCaptainAdvisor;
+import rotp.model.ai.player.ShipCaptainAdvisor;
 import rotp.model.combat.CombatStack;
 import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.DiplomaticEmbassy;

@@ -1537,7 +1537,7 @@ public class DesignUI extends BasePanel {
 		}
 		private ShipDesign rawAutoDesign(int keyEvent, boolean autoSize)	{
 			ShipDesign auto;
-			ShipTemplate nst = new rotp.model.ai.governor.NewShipTemplate();
+			ShipTemplate nst = new rotp.model.ai.player.NewShipTemplate();
 			ShipDesigner shipDesigner = player().shipDesignerAI();
 			int size = shipDesign().size();
 			switch (keyEvent) {

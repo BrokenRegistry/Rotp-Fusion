@@ -146,6 +146,10 @@ public class ParamInteger extends AbstractParam<Integer> {
 		super.setNewValueMethod(method);
 		return this;
 	}
+	@Override public ParamInteger setGetValueMethod(IGetValue<Integer> method)	{
+		super.setGetValueMethod(method);
+		return this;
+	}
 	@Override public ParamInteger setIsGhostMethod(BooleanSupplier method)	{
 		super.setIsGhostMethod(method);
 		return this;

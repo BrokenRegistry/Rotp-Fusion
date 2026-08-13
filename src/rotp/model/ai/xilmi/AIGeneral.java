@@ -459,11 +459,11 @@ public class AIGeneral implements Base, General {
         for (StarSystem sys : launchPoints) {
             // modnar: keep planets at least 60% full
             // to prevent complete draining of planets
-            // TODO: modify with leader personality and source planet fertility
+            // TO DO: modify with leader personality and source planet fertility
             // int troops = sys.colony().maxTransportsAllowed();
             int troops = (int) Math.min(Math.floor(sys.colony().population()) * 0.5f, Math.max(0.0f, sys.colony().population() - 1.0f / 3.0f * sys.colony().planet().currentSize()));
             troops = min((int)Math.ceil((double)troopsDesired), troops);
-            sys.colony().scheduleTransportsToSystem(target, troops, maxTravelTime);
+            sys.colony().scheduleTransportsToSystem(target, troops, maxTravelTime, false);
             troopsDesired -= troops;
         }
     }

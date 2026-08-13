@@ -672,9 +672,9 @@ public final class SystemsUI extends BasePanel implements IMapHandler, ActionLis
                 return MainUI.purpleAlertC;
             else if (sv.planet().isArtifact())
                 return MainUI.blueAlertC;
-            else if (sv.planet().isResourceUltraPoor() || sv.planet().isResourcePoor())
+            else if (sv.planet().isLowResource())
                 return MainUI.redAlertC;
-            else if (sv.planet().isResourceRich() || sv.planet().isResourceUltraRich())
+            else if (sv.planet().isHighResource())
                 return MainUI.greenAlertC;
             else if (sv.planet().isResourceNormal())
                 return MainUI.yellowAlertC;

@@ -425,7 +425,7 @@ public class AIGeneral implements Base, General {
             // TO DO: modify with leader personality and source planet fertility
             // int troops = sys.colony().maxTransportsAllowed();
             int troops = (int) Math.floor(Math.max(0.0f, sys.colony().population() - 0.6f*sys.colony().planet().currentSize()));
-            sys.colony().scheduleTransportsToSystem(target, troops, maxTravelTime);
+            sys.colony().scheduleTransportsToSystem(target, troops, maxTravelTime, false);
         }
     }
     private void launchRebellionTroops(StarSystem target) {

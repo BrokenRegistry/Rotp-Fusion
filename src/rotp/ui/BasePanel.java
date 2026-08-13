@@ -306,6 +306,7 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
         g.setFont(narrowFont(14));
         String s = Rotp.getMemoryInfo(true);
         int sw = g.getFontMetrics().stringWidth(s);
+        setRenderingHints(g);
         drawString(g, s, getWidth()-sw-s5, getHeight()-s5);
     }
     public void drawTexture(Graphics g0) {

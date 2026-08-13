@@ -58,7 +58,6 @@ import rotp.util.sound.SoundManager;
 public final class Rotp {
     private static final int MB = 1048576;
     public static final String version   = RotpGovernor.governorVersion();
-    public static final String modId     = RotpGovernor.governorModId();
     public static final String buildTime = RotpGovernor.governorBuildTime();
     public static final String repName   = RotpGovernor.governorRepName();
     public static final int IMG_W = 1229;
@@ -70,7 +69,7 @@ public final class Rotp {
     public static void rand(Rand r)	{ random = r; }
 
     public static String jarFileName = "rotp-" + version + RotpGovernor.miniSuffix() + ".jar";
-    public static String exeFileName = "rotp-" + version + ".exe";
+    private static String exeFileName = "rotp-" + version + ".exe";
     public static boolean countWords = false;
     private static String startupDir;
     private static boolean underTest = false; // TO DO BR: set to false
@@ -85,15 +84,15 @@ public final class Rotp {
      	BR: Small memory seems to consumes less memory!
      	BR: tested: 8GB => 75 stars/MB; 3.5GB => 100 stars/MB */
     public static int maximumSystems = (maxHeapMemory > 4096 ?  75 : 100) * (int)(maxHeapMemory-600);
-    public static long maxUsedMemory;
+    //public static long maxUsedMemory;
     //public static long maxAllocatedMemory;
-    public static long memoryReserve = -1;
-    public static boolean isMemoryMonitored = false;
+    //public static long memoryReserve = -1;
+    //public static boolean isMemoryMonitored = false;
     public static boolean logging;
     private static float resizeAmt =  -1.0f;
-    public static int actualAlloc = -1;
-    public static boolean reloadRecentSave = false;
-    public static MemoryTracker memoryTracker;
+    private static int actualAlloc = -1;
+    private static boolean reloadRecentSave = false;
+    private static MemoryTracker memoryTracker;
 
     private static GraphicsDevice device;
 
@@ -101,7 +100,7 @@ public final class Rotp {
 	public static JFrame getFrame()		{ return frame; }
 	public static boolean memoryLow()	{ return memoryTracker().memoryLow(); }
 	public static String getMemoryInfo(boolean screen)	{ return(memoryTracker().getMemoryInfo(screen)); }
-	public static boolean noOptions(String id)	{ // Keep for debug
+	public static boolean noOptions(String id)	{ // NO_UCD // Keep for debug
 		if (noOptions)
 			ifIDE("### noOptions() usefully called from " + id + " ###");
 		return noOptions;
