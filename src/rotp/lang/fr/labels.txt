@@ -841,7 +841,7 @@ MAIN_HELP_3G                      | Tech - Affiche les technologies disponibles.
 MAIN_HELP_3H                      | Année Suivante - Fait avancer le jeu à l’année suivante.
 MAIN_HELP_3I                      | Tour actuel - Affiche le tour actuel du jeu ou l’année en cours de votre empire. Cliquez pour basculer.
 MAIN_HELP_3J                      | Commandes de la carte - Cliquez pour parcourir les différents paramètres d’affichage de la carte de la galaxie.
-MAIN_HELP_3K                      | →PLANETS_HELP_5G←<br><br>Voir aussi l'onglet « →PLANETS_LIST_BUDGET← » du panneau « →MAIN_NAVIGATION_COLONIES← ».
+MAIN_HELP_3K                      | →PLANETS_HELP_5G←<br><br>Voir aussi l'onglet « →PLANETS_VIEW_BUDGET← » du panneau « →MAIN_NAVIGATION_COLONIES← ».
 // Smart-Max Help
 MAIN_HELP_4A                      | Les assistants Min/Max garderont toujours ÉCO propre.<br>- Smooth Min/Max : est équivalent à cliquer sur la flèche Haut/Bas jusqu’à atteindre la cible. Les CG libérés seront redistribués intelligemment. (Suivant la méthode de "Rafraîchir")<br>- Smart Min/Max : (Maj + Clic) effacera les dépenses débloquées, définira l’allocation Min/Max, nettoiera ÉCO, puis redistribuera intelligemment les CG restants.<br>- Rafraîchir : (Ctrl + Clic) effacera les dépenses débloquées puis redistribuera intelligemment les CG disponibles selon votre priorisation, dans la séquence : {ÉCOLOGIE, INDUSTRIE, FLOTTE, DÉFENSES, RECHERCHE}
 MAIN_HELP_4B                      | Chantier naval : <br> Clic-gauche : Allocation minimale nécessaire pour construire jusqu’à la limite.<br> Clic-droit : Allocation maximale disponible.

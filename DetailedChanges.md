@@ -3,6 +3,7 @@
 ## What's New
 
 26-08-16 (BR)
+- Fixed Budget Tab header English text.
 - Fixed some Human dialogue.
 - Added the tooltip related to the coin.
 - Fixed "my" and "your" being inverted in "Accept join war" offers!

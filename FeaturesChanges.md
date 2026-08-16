@@ -480,6 +480,7 @@
 
 ### Fixes:
 
+- Fixed Budget Tab header English text.
 - Fixed some Human dialogue.
 - Fixed "my" and "your" being inverted in "Accept join war" offers!
   - These dialogues are decoded by the player empire for the requesting empire.

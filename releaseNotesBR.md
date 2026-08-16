@@ -12,6 +12,7 @@ When updating, you can reuse the same folder.
 <b><ins>Very last changes:</ins></b>
 
 26-08-16 (BR)
+- Fixed Budget Tab header English text.
 - Fixed some Human dialogue.
 - Added the tooltip related to the coin.
 - Fixed "my" and "your" being inverted in "Accept join war" offers!
