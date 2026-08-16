@@ -841,6 +841,7 @@ MAIN_HELP_3G                      | Tech - shows available technologies. Allows 
 MAIN_HELP_3H                      | Next Year - advances the game to the next year.
 MAIN_HELP_3I                      | Current Turn - displays the game's current turn or your empire's current year. Click to toggle.
 MAIN_HELP_3J                      | Map controls - click to cycle through various display settings for the galaxy map.
+MAIN_HELP_3K                      | →PLANETS_HELP_5G←<br><br>Related to the “→PLANETS_LIST_BUDGET←” tab of the “→MAIN_NAVIGATION_COLONIES←” panel.
 // Smart-Max Help
 MAIN_HELP_4A                      | Min/Max assistants will always keeps ECO clean.<br>- Smooth Min/Max: is equivalent to clicking Up/Down arrow till reaching the target. Liberated BC will be smartly redistributed. (Following the "Refresh" method)<br>- Smart Min/Max: (Shift-Click) will clear the unlocked spending, set the Min/Max allocation, clean ECO, then smartly redistribute the remaining BC.<br>- Refresh: (Ctrl-Click) will clear the unlocked spending then smartly redistribute the available BC in accordance with your prioritization, in the sequence: {ECOLOGY, INDUSTRY, SHIP, DEFENSE, RESEARCH}
 MAIN_HELP_4B                      | Shipyard:<br> Left-Click: Min Allocation Needed up to build limit.<br> Right-Click: Max Allocation Available.
@@ -1186,7 +1187,7 @@ MAIN_ALERT_ALLIANCE_BREAKING      | Our alliance with the [ally_empire] is on th
 PLANETS_TITLE                     | [player_race] Colonies
 PLANETS_VIEW_ECOLOGY              | Ecology View
 PLANETS_VIEW_INDUSTRY             | Industry View
-PLANETS_VIEW_BUDGET				| Budget View
+PLANETS_LIST_BUDGET				| Budget View
 PLANETS_VIEW_MILITARY             | Military View
 PLANETS_SPENDING_COSTS            | Empire Spending
 PLANETS_COSTS_DESC                | Each colony pays a percent of its production to support empire spending.

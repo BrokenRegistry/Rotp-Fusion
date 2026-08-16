@@ -742,7 +742,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		int x9 = x4;
 		int w9 = scaled(500);
 		int y9 = yRow4 + dyRow;
-		HelpUI.HelpSpec sp9 = helpUI.addBrownHelpText(x9, y9, w9, 12, text("PLANETS_HELP_5G")); // Capacity
+		HelpUI.HelpSpec sp9 = helpUI.addBrownHelpText(x9, y9, w9, 12, text("PLANETS_HELP_5G")); // Instructions to the governor
 		sp9.setLine(sp9.xce(), sp9.y(), tx9, ty9);
 	}
 

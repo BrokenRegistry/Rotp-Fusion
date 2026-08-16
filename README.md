@@ -45,6 +45,8 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-08-16 (BR)
+- Fixed some Human dialogue.
+- Added the tooltip related to the coin.
 - Fixed "my" and "your" being inverted in "Accept join war" offers!
   - These dialogues are decoded by the player empire for the requesting empire.
   - Shared dialogues were already adjusted, but those specific to Klackons were not.
