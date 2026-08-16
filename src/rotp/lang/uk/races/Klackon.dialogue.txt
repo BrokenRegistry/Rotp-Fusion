@@ -199,9 +199,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name] більш не мій союзник.
 ACCEPT_BREAK_ALLIANCE_01   | Мій альянс з тим, хто називає себе "[other_name]", більш не актуальний і тому я розірвав його.
 ACCEPT_BREAK_ALLIANCE_01   | Як ти хочеш, я більше не буду вважати того, хто називає себе "[other_name]", своїм союзником.
 
+// "my" and "your" are inverted in these dialogue!
 ACCEPT_JOINT_WAR_01        | [other_name] впаде від нашої об'єднаної могутності.
 ACCEPT_JOINT_WAR_01        | Об'єднана міць наших флотів дуже швидко знищить сили того, хто називає себе "[other_name]".
-ACCEPT_JOINT_WAR_01        | У [year] році, Я й [your_name] об’єднали зусилля, щоб позбутися від галактичної загрози - від того, хто називає себе "[other_name]".
+ACCEPT_JOINT_WAR_01        | У [year] році, Я й [my_name] об’єднали зусилля, щоб позбутися від галактичної загрози - від того, хто називає себе "[other_name]".
 
 RESPOND_CLOSE_EMBASSY_01   | Нехай буде так. Подальших дискусій між мною та тим, хто називає себе "[your_name]", не буде.
 

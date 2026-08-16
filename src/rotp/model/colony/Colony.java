@@ -2181,8 +2181,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			if(govOptions().isReserveFromRich()
 					&& !options().divertColonyExcessToResearch()) {
 				int research = allocation(RESEARCH);
-				addAllocation(INDUSTRY, research);
 				allocation(RESEARCH, 0);
+				addAllocation(INDUSTRY, research);
 			}
 		}
 	}
@@ -2854,6 +2854,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		public boolean isOrionArtifact()		{ return planet().isOrionArtifact(); }
 		public boolean isAntaran()				{ return planet().isAntaran(); }
 		public boolean colonyIsDeveloped()		{ return colonyIsDeveloped; }
+		public boolean isHighResource()			{ return planet().isHighResource(); }
 		public float budgetContributeBC()		{ return empire.divertColonyExcessToResearch()? 0 : totalPlanetaryExcessSpending(0)/2;
 		}
 		public void transfertBudget(boolean carryUnfunded)	{

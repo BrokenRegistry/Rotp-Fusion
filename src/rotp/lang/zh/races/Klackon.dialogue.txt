@@ -209,9 +209,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name]不再是我的盟友了。
 ACCEPT_BREAK_ALLIANCE_01   | 我和[other_name]的联盟现在在我们脚下化为灰烬。
 ACCEPT_BREAK_ALLIANCE_01   | 如你所愿，我不再称[other_name]为我的盟友。
 
-ACCEPT_JOINT_WAR_01        | [other_name]必将倒在[your_name]和我的联合力量下。
-ACCEPT_JOINT_WAR_01        | 有[your_name]和我结盟，[other_name]不会坚持太久的。
-ACCEPT_JOINT_WAR_01        | 在[year]年，我和[your_name]将联手消除[other_name]的威胁。
+// "my" and "your" are inverted in these dialogue!
+ACCEPT_JOINT_WAR_01        | [other_name]必将倒在[my_name]和我的联合力量下。
+ACCEPT_JOINT_WAR_01        | 有[my_name]和我结盟，[other_name]不会坚持太久的。
+ACCEPT_JOINT_WAR_01        | 在[year]年，我和[my_name]将联手消除[other_name]的威胁。
 
 RESPOND_CLOSE_EMBASSY_01   | 就这样吧。我和[your_name]之间不会有进一步的讨论了。
 

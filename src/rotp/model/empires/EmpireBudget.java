@@ -407,12 +407,13 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 			return;
 		float excessRevenueBC = excessRevenueBC();
 		float allowedExcessRevenue = 10;
+		boolean isReserveFromRich = govOptions().isReserveFromRich();
 
 		if (excessRevenueBC > allowedExcessRevenue) {
 			Collections.sort(remainingBudgets, INC_RESOURCES);
 			// reset excess spending
 			for (ColonyBudget cBudget : remainingBudgets)
-				if (cBudget.colonyIsDeveloped()) {
+				if (cBudget.colonyIsDeveloped() && !(isReserveFromRich && cBudget.isHighResource())) {
 					excessRevenueBC -= cBudget.resetExess(2*excessRevenueBC, true, true);
 					if (excessRevenueBC == 0)
 						break;

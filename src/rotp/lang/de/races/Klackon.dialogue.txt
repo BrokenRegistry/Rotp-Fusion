@@ -201,9 +201,10 @@ ACCEPT_BREAK_ALLIANCE_01   | Das [other_empire] ist nicht länger mein Verbünde
 ACCEPT_BREAK_ALLIANCE_01   | Die Allianz von mir und dem [other_empire] liegt nun in Fetzen unter unseren Füßen.
 ACCEPT_BREAK_ALLIANCE_01   | Wie Sie wünschen, werde ich das [other_empire] nicht länger meinen Verbündeten nennen.
 
+// "my" and "your" are inverted in these dialogue!
 ACCEPT_JOINT_WAR_01        | Das [other_empire] muss vor der vereinten Macht von [my_race] und [your_race] fallen.
 ACCEPT_JOINT_WAR_01        | Mit [my_race] und [your_race] verbündet, wird die [other_race] nicht lange überleben.
-ACCEPT_JOINT_WAR_01        | Im Jahr [year] verbünden sich [your_empire] und ich, um die Galaxie von der Bedrohung durch [other_race] zu befreien.
+ACCEPT_JOINT_WAR_01        | Im Jahr [year] verbünden sich [my_empire] und ich, um die Galaxie von der Bedrohung durch [other_race] zu befreien.
 
 RESPOND_CLOSE_EMBASSY_01   | So sei es. Es wird keine weiteren Diskussionen zwischen mir und dem [your_empire] geben.
 

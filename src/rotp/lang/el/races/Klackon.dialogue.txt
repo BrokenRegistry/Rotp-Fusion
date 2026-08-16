@@ -203,9 +203,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name] δεν είναι πλέον σύμμ�
 ACCEPT_BREAK_ALLIANCE_01   | Η Συμμαχία του Εγώ και του [other_name] βρίσκεται τώρα σε κομμάτια κάτω από τα πόδια μας.
 ACCEPT_BREAK_ALLIANCE_01   | Όπως επιθυμείτε, δεν θα αποκαλώ πλέον το [other_name] σύμμαχό μου.
 
-ACCEPT_JOINT_WAR_01        | [other_name] πρέπει να πέσει πριν από τη συνδυασμένη δύναμη των [your_name] και εμού.
-ACCEPT_JOINT_WAR_01        | Με το [your_name] και εμένα σύμμαχους, το [other_name] δεν θα διαρκέσει πολύ.
-ACCEPT_JOINT_WAR_01        | Κατά το έτος [year], εγώ και το [your_name]  ενώνονται δυνάμεις για να απαλλαγούμε από τον γαλαξία από την απειλή [other_name].
+// "my" and "your" are inverted in these dialogue!
+ACCEPT_JOINT_WAR_01        | [other_name] πρέπει να πέσει πριν από τη συνδυασμένη δύναμη των [my_name] και εμού.
+ACCEPT_JOINT_WAR_01        | Με το [my_name] και εμένα σύμμαχους, το [other_name] δεν θα διαρκέσει πολύ.
+ACCEPT_JOINT_WAR_01        | Κατά το έτος [year], εγώ και το [my_name]  ενώνονται δυνάμεις για να απαλλαγούμε από τον γαλαξία από την απειλή [other_name].
 
 RESPOND_CLOSE_EMBASSY_01   | Ας είναι. Δεν θα υπάρξουν περαιτέρω συζητήσεις μεταξύ εμένα και του [your_name].
 

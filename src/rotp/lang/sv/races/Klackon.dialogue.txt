@@ -203,9 +203,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name] är inte längre min allierade.
 ACCEPT_BREAK_ALLIANCE_01   | Alliansen mellan mig och [other_name] ligger nu i slamsor vid våra fötter.
 ACCEPT_BREAK_ALLIANCE_01   | Som du vill, jag ska inte längre vända mig till [other_name] som en allierad.
 
-ACCEPT_JOINT_WAR_01        | [other_name] måste besegras av [your_name] och jag, då vi kombinerar våra styrkor.
-ACCEPT_JOINT_WAR_01        | Med [your_name] och jag som allierade, så kommer [other_name] inte vara länge.
-ACCEPT_JOINT_WAR_01        | År [year], sluter jag och [your_name] oss samman för att tillsammans befria galaxen från det hot som kallar sig [other_name].
+// "my" and "your" are inverted in these dialogue!
+ACCEPT_JOINT_WAR_01        | [other_name] måste besegras av [my_name] och jag, då vi kombinerar våra styrkor.
+ACCEPT_JOINT_WAR_01        | Med [my_name] och jag som allierade, så kommer [other_name] inte vara länge.
+ACCEPT_JOINT_WAR_01        | År [year], sluter jag och [my_name] oss samman för att tillsammans befria galaxen från det hot som kallar sig [other_name].
 
 RESPOND_CLOSE_EMBASSY_01   | Låt gå. Det kommer inte hållas några mer samtal mellan mig och [your_name].
 

@@ -201,9 +201,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name] non è più mio alleato
 ACCEPT_BREAK_ALLIANCE_01   | L'Alleanza tra me e [other_name] ora giace a brandelli sotto i nostri piedi.
 ACCEPT_BREAK_ALLIANCE_01   | Come desidera, non chiamerò più [other_name] mio alleato.
 
-ACCEPT_JOINT_WAR_01        | [other_name] deve cadere davanti alla potenza combinata di [your_name] e io.
-ACCEPT_JOINT_WAR_01        | Con [your_name] e io alleati, [other_name] non durerà a lungo.
-ACCEPT_JOINT_WAR_01        | Nell'anno [year], io e [your_name] uniamo le forze per liberare la galassia dalla minaccia di [other_name].
+// "my" and "your" are inverted in these dialogue!
+ACCEPT_JOINT_WAR_01        | [other_name] deve cadere davanti alla potenza combinata di [my_name] e io.
+ACCEPT_JOINT_WAR_01        | Con [my_name] e io alleati, [other_name] non durerà a lungo.
+ACCEPT_JOINT_WAR_01        | Nell'anno [year], io e [my_name] uniamo le forze per liberare la galassia dalla minaccia di [other_name].
 
 RESPOND_CLOSE_EMBASSY_01   | Così sia. Non ci saranno più discussioni tra me e [your_name].
 

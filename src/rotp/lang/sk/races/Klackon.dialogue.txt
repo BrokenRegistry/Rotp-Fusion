@@ -204,9 +204,10 @@ ACCEPT_BREAK_ALLIANCE_01 | [other_name] už nie je mojím spojencom
 ACCEPT_BREAK_ALLIANCE_01 | Aliancia, ktorú som podpísal ja a [other_name] je v troskách.
 ACCEPT_BREAK_ALLIANCE_01 | Ako si želáš, [other_name] už nie je môj spojenec.
 
-ACCEPT_JOINT_WAR_01 | [other_name] musí padnúť pred našimi spoločnými silami [your_name].
-ACCEPT_JOINT_WAR_01 | [your_name], pred nami ako spojencami nemá [other_name] šancu dlho vydržať.
-ACCEPT_JOINT_WAR_01 | V roku [year] sme sa ja a [your_name] rozhodli spojiť sily, aby sme galaxiu zbavili hrozby. Hrozby, ktorá sa volá [other_name].
+// "my" and "your" are inverted in these dialogue!
+ACCEPT_JOINT_WAR_01 | [other_name] musí padnúť pred našimi spoločnými silami [my_name].
+ACCEPT_JOINT_WAR_01 | [my_name], pred nami ako spojencami nemá [other_name] šancu dlho vydržať.
+ACCEPT_JOINT_WAR_01 | V roku [year] sme sa ja a [my_name] rozhodli spojiť sily, aby sme galaxiu zbavili hrozby. Hrozby, ktorá sa volá [other_name].
 
 RESPOND_CLOSE_EMBASSY_01 | Nech sa páči. [your_name] a ja sa už viac nebudeme rozprávať.
 

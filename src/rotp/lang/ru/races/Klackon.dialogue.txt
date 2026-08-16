@@ -195,9 +195,11 @@ ACCEPT_ALLIANCE_01          | Сегодня я и [your_name] заключил�
 ACCEPT_ALLIANCE_01          | Я вижу мудрость в заключении Союза с тобой. Быть по сему!
 
 OFFER_JOINT_WAR_01          | [other_name] стал большой угрозой. Нам пришло время объединиться в войне против него.
+
+// "my" and "your" are inverted in these dialogue!
 ACCEPT_JOINT_WAR_01         | [other_name] должен пасть перед нашей объединенной мощью.
 ACCEPT_JOINT_WAR_01         | Теперь, когда мы стали союзниками, [other_name] уже покойник.
-ACCEPT_JOINT_WAR_01         | В году [year], я и [your_name] объединили усилия, чтобы избавить Галактику от угрозы, которую представляет [other_name].
+ACCEPT_JOINT_WAR_01         | В году [year], я и [my_name] объединили усилия, чтобы избавить Галактику от угрозы, которую представляет [other_name].
 
 RESPOND_BREAK_TRADE_01      | Я запомню это.
 RESPOND_BREAK_TRADE_01      | Я вижу, [your_name], что ты не держишь своё слово. Я этого не забуду.

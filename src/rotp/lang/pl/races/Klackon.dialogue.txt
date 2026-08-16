@@ -204,9 +204,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name] nie jest już moim sprzymierzeńcem.
 ACCEPT_BREAK_ALLIANCE_01   | Sojusz międy mną a osobnikiem znanym jako [other_name] leży teraz w gruzach.
 ACCEPT_BREAK_ALLIANCE_01   | Jak sobie życzysz, nie będę już nazywał osobnika znanego jako [other_name] moim sojusznikiem.
 
+// "my" and "your" are inverted in these dialogue!
 ACCEPT_JOINT_WAR_01        | [other_name] musi upaść przed naszymi połączonymi siłami.
-ACCEPT_JOINT_WAR_01        | [your_name] i ja sprzymierzeni - [other_name] nie przetrwa długo.
-ACCEPT_JOINT_WAR_01        | W roku [year] ja i [your_name] łączymy siły by uwolnić galaktykę od zagrożenia ze strony osobnika znanego jako [other_name].
+ACCEPT_JOINT_WAR_01        | [my_name] i ja sprzymierzeni - [other_name] nie przetrwa długo.
+ACCEPT_JOINT_WAR_01        | W roku [year] ja i [my_name] łączymy siły by uwolnić galaktykę od zagrożenia ze strony osobnika znanego jako [other_name].
 
 RESPOND_CLOSE_EMBASSY_01   | Niech tak będzie. Nie będzie dalszych dyskusji między mną a liderem określanym imieniem [your_name].
 

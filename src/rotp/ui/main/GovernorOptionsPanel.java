@@ -54,6 +54,7 @@ import javax.swing.plaf.metal.MetalButtonUI;
 
 import rotp.Rotp;
 import rotp.model.empires.Empire;
+import rotp.model.galaxy.Galaxy;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.GameSession;
 import rotp.model.game.GovernorOptions;
@@ -815,15 +816,17 @@ public class GovernorOptionsPanel extends BasePanel{
 		if (GameSession.instance().galaxy() == null) {
 			return false;
 		}
-		float colonized = GameSession.instance().galaxy().numColonizedSystems() / (float)GameSession.instance().galaxy().numStarSystems();
-		float controlled = GameSession.instance().galaxy().player().numColonies() / GameSession.instance().galaxy().numColonizedSystems();
-		boolean completed = GameSession.instance().galaxy().player().tech().researchCompleted();
-		// System.out.format("Colonized %.2f galaxy, controlled %.2f galaxy, completed research %s%n", colonized, controlled, completed);
-		if (colonized >= 0.3 && controlled >= 0.5 && completed) {
-			return true;
-		} else {
+		Galaxy gal = GameSession.instance().galaxy();
+		if (gal.currentTurn() < 2)
 			return false;
-		}
+		float colonized = gal.numColonizedSystems() / (float)gal.numStarSystems();
+		float controlled = gal.player().numColonies() / gal.numColonizedSystems();
+		boolean completed = gal.player().tech().researchCompleted();
+		// System.out.format("Colonized %.2f galaxy, controlled %.2f galaxy, completed research %s%n", colonized, controlled, completed);
+		if (colonized >= 0.3 && controlled >= 0.5 && completed)
+			return true;
+		else
+			return false;
 	}
 	private void performCompletionist() {
 		// game not in session

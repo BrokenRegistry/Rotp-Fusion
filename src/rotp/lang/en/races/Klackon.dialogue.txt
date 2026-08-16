@@ -203,9 +203,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name] is no longer my ally
 ACCEPT_BREAK_ALLIANCE_01   | The Alliance of I and [other_name] now lies in shreds under our feet.
 ACCEPT_BREAK_ALLIANCE_01   | As you wish, I no longer shall call [other_name] my ally.
 
-ACCEPT_JOINT_WAR_01        | [other_name] must fall before the combined might of [your_name] and I.
-ACCEPT_JOINT_WAR_01        | With [your_name] and I allied, [other_name] will not last long.
-ACCEPT_JOINT_WAR_01        | In the year [year], I and [your_name] join forces to rid the galaxy of the [other_name] menace.
+// "my" and "your" are inverted in these dialogue!
+ACCEPT_JOINT_WAR_01        | [other_name] must fall before the combined might of [my_name] and I.
+ACCEPT_JOINT_WAR_01        | With [my_name] and I allied, [other_name] will not last long.
+ACCEPT_JOINT_WAR_01        | In the year [year], I and [my_name] join forces to rid the galaxy of the [other_name] menace.
 
 RESPOND_CLOSE_EMBASSY_01   | So be it. There will be no further discussions between myself and [your_name].
 

@@ -203,9 +203,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name] вече не ми е съюзник
 ACCEPT_BREAK_ALLIANCE_01   | Съюзът между мен и [other_name] сега лежи на парченца под краката ни..
 ACCEPT_BREAK_ALLIANCE_01   | Както желаете, вече няма да наричам [other_name] мой съюзник.
 
-ACCEPT_JOINT_WAR_01        | [other_name] трябва да падне пред комбинираната мощ на [your_name] и мен.
-ACCEPT_JOINT_WAR_01        | С [your_name] и аз в съюз, [other_name] няма да издържи дълго.
-ACCEPT_JOINT_WAR_01        | В годината [year], аз и [your_name] обединихме силите си, за да освободим галактиката от заплахата [other_name].
+// "my" and "your" are inverted in these dialogue!
+ACCEPT_JOINT_WAR_01        | [other_name] трябва да падне пред комбинираната мощ на [my_name] и мен.
+ACCEPT_JOINT_WAR_01        | С [my_name] и аз в съюз, [other_name] няма да издържи дълго.
+ACCEPT_JOINT_WAR_01        | В годината [year], аз и [my_name] обединихме силите си, за да освободим галактиката от заплахата [other_name].
 
 RESPOND_CLOSE_EMBASSY_01   | Така да бъде. Няма да има допълнителни дискусии между мен и [your_name].
 

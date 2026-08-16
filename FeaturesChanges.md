@@ -480,6 +480,9 @@
 
 ### Fixes:
 
+- Fixed "my" and "your" being inverted in "Accept join war" offers!
+  - These dialogues are decoded by the player empire for the requesting empire.
+  - Shared dialogues were already adjusted, but those specific to Klackons were not.
 - Fixed missile base rounding error.
 - Fixed a crash due to no more system names available.
   - Upon reaching the final war, with giant galaxies and several dozen united empires, when a new system is discovered, the information will be immediately shared, and each empire will then try to name it, without giving the same name as the other empire to avoid duplication. Before March 27, 2026, this validation was faulty and it regularly happened that two systems had the same name. By correcting this the need for new names has increased to the point where there is a shortage of them...

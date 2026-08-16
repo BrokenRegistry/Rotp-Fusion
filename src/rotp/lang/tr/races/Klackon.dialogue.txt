@@ -203,9 +203,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name] artık benim müttefikim değil
 ACCEPT_BREAK_ALLIANCE_01   | Benimle [other_name] İttifakı şimdi ayaklarımızın altında paramparça yatıyor.
 ACCEPT_BREAK_ALLIANCE_01   | İstediğin gibi olsun, artık [other_name] şahsını müttefiklerimden saymayacağım.
 
-ACCEPT_JOINT_WAR_01        | [other_name], [your_name] ve benim birleşik gücümüzle ezilecektir.
-ACCEPT_JOINT_WAR_01        | [other_name], [your_name] ve benim ittifakımız karşısında uzun süre duramayacak.
-ACCEPT_JOINT_WAR_01        | [year] yılında, ben ve [your_name] galaksideki [other_race] tehdidine son vermek için güçlerimizi birleştiriyoruz.
+// "my" and "your" are inverted in these dialogue!
+ACCEPT_JOINT_WAR_01        | [other_name], [my_name] ve benim birleşik gücümüzle ezilecektir.
+ACCEPT_JOINT_WAR_01        | [other_name], [my_name] ve benim ittifakımız karşısında uzun süre duramayacak.
+ACCEPT_JOINT_WAR_01        | [year] yılında, ben ve [my_name] galaksideki [other_race] tehdidine son vermek için güçlerimizi birleştiriyoruz.
 
 RESPOND_CLOSE_EMBASSY_01   | Öyle olsun. Ben ve [your_name] arasında daha fazla görüşme olmayacak.
 

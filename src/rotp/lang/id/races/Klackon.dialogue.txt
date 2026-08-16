@@ -203,9 +203,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name] bukan lagi sekutuku.
 ACCEPT_BREAK_ALLIANCE_01   | Aliansi antara aku dan [other_name] sekarang terpecah bagaikan serpihan di bawah kaki kami. now lies in shreds under our feet.
 ACCEPT_BREAK_ALLIANCE_01   | Terserah kau, aku tidak lagi akan menyebut [other_name] sebagai sekutuku.
 
-ACCEPT_JOINT_WAR_01        | [other_name] harus jatuh di hadapan kekuatan gabungan dari [your_name] dan aku.
-ACCEPT_JOINT_WAR_01        | Dengan [your_name] dan aku bersatu, [other_name] tidak akan bertahan lama.
-ACCEPT_JOINT_WAR_01        | Pada tahun [year], aku dan [your_name] menyatukan kekuatan untuk menyingkirkan galaksi [other_name] yang keji.
+// "my" and "your" are inverted in these dialogue!
+ACCEPT_JOINT_WAR_01        | [other_name] harus jatuh di hadapan kekuatan gabungan dari [my_name] dan aku.
+ACCEPT_JOINT_WAR_01        | Dengan [my_name] dan aku bersatu, [other_name] tidak akan bertahan lama.
+ACCEPT_JOINT_WAR_01        | Pada tahun [year], aku dan [my_name] menyatukan kekuatan untuk menyingkirkan galaksi [other_name] yang keji.
 
 RESPOND_CLOSE_EMBASSY_01   | Biarkan saja begitu. Tidak akan ada lagi diskusi di antara diriku dan [your_name].
 

@@ -1064,6 +1064,9 @@ MAIN_COLONY_ABANDON_LABEL         | Abandonner
 MAIN_COLONY_SHIP_SCRAPPED         | Supprimé
 MAIN_COLONY_NO_SHIELD             | Nébuleuse
 
+ON_DEMAND_ADVISOR_DEFAULT_HELP		| Survolez avec la souris l'élément pour lequel vous sollicitez de l'aide.
+ON_DEMAND_ADVISOR_BUTTON_OK			| Fermer
+
 // modnar: keep generic advisor text for new Races
 // Advisor text
 MAIN_ADVISOR_TITLE                | %1 Conseiller

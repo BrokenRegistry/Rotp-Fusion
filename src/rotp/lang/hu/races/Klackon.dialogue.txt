@@ -208,9 +208,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name] többé nem a szövetségesem.
 ACCEPT_BREAK_ALLIANCE_01   | A Szövetségünk [other_name], mostanra darabokban fekszik a lábaink alatt. 
 ACCEPT_BREAK_ALLIANCE_01   | Ahogy kívánod: [other_name] többé nem tekintendő a szövetségesemnek.
 
-ACCEPT_JOINT_WAR_01        | [other_name] el kell hulljon a te, [your_name] és az én egyesített erőnk előtt.
-ACCEPT_JOINT_WAR_01        | Kettőnk szövetségében, [your_name], [other_name] nem tart majd ki sokáig.
-ACCEPT_JOINT_WAR_01        | [year] évben, te [your_name] és én egyesítjük erőinket, hogy megszabadítsuk a galaxist [other_name] fenyegetésétől.
+// "my" and "your" are inverted in these dialogue!
+ACCEPT_JOINT_WAR_01        | [other_name] el kell hulljon a te, [my_name] és az én egyesített erőnk előtt.
+ACCEPT_JOINT_WAR_01        | Kettőnk szövetségében, [my_name], [other_name] nem tart majd ki sokáig.
+ACCEPT_JOINT_WAR_01        | [year] évben, te [my_name] és én egyesítjük erőinket, hogy megszabadítsuk a galaxist [other_name] fenyegetésétől.
 
 RESPOND_CLOSE_EMBASSY_01   | Hát legyen. Nem lesz több megbeszélés közted [your_name] és köztem.
 

@@ -203,9 +203,10 @@ ACCEPT_BREAK_ALLIANCE_01   | [other_name] više nije moj saveznik
 ACCEPT_BREAK_ALLIANCE_01   | Savez između mene i [other_name] je sada u ruševinama.
 ACCEPT_BREAK_ALLIANCE_01   | Kao što želiš, ja više neću nazivati [other_name] mojim saveznikom.
 
-ACCEPT_JOINT_WAR_01        | [other_name] mora pasti pred kombinovanim moći [your_name] i mene.
-ACCEPT_JOINT_WAR_01        | Kada smo [your_name] i ja u savezu, [other_name] neće dugo trajati.
-ACCEPT_JOINT_WAR_01        | Godine [year], ja i [your_name] udružujemo snage da bi otarasili galaksiju [other_name] pretnje.
+// "my" and "your" are inverted in these dialogue!
+ACCEPT_JOINT_WAR_01        | [other_name] mora pasti pred kombinovanim moći [my_name] i mene.
+ACCEPT_JOINT_WAR_01        | Kada smo [my_name] i ja u savezu, [other_name] neće dugo trajati.
+ACCEPT_JOINT_WAR_01        | Godine [year], ja i [my_name] udružujemo snage da bi otarasili galaksiju [other_name] pretnje.
 
 RESPOND_CLOSE_EMBASSY_01   | Neka tako bude. Neće biti daljih pregovora između mene i [your_name].
 
