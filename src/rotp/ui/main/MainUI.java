@@ -1377,10 +1377,10 @@ public class MainUI extends BasePanel implements IMapHandler {
         
         int buttonW = buttonPanel.buttonW();
         
-        int x1 = scaled(25);
+        int x1 = s25;
         int y1 = scaled(470);
         int w1 = scaled(210);
-        int y1a = h - scaled(65);
+        int y1a = h - s65;
         int x1a = x1+(w1/4);
         HelpSpec sp1 = helpUI.addBlueHelpText(x1, y1, w1, 4, text("MAIN_HELP_3A"));
         sp1.setLine(x1a, y1+sp1.height(), x1a, y1a);
@@ -1417,15 +1417,23 @@ public class MainUI extends BasePanel implements IMapHandler {
         sp8.setLine(x8+(w8/2), y2+sp8.height(), x8+(w8/2), y1a);
 
         int x9 = w-scaled(220);
-        int w9 = scaled(200);
+        int w9 = s200;
         HelpSpec sp9 = helpUI.addBlueHelpText(x9, y1, w9, 4, text("MAIN_HELP_3I"));
-        sp9.setLine(w-scaled(79), y1+sp9.height(), w-scaled(79), h-scaled(100));
+        sp9.setLine(w-s79, y1+sp9.height(), w-s79, h-s100);
 
         int x10 = scaled(115);
         int y10 = scaled(125);
         int w10 = scaled(250);
         HelpSpec sp10 = helpUI.addBlueHelpText(x10, y10, w10, 3, text("MAIN_HELP_3J"));
         sp10.setLine(x10, y10+(sp10.height()/2), s45, y10+(sp10.height()/2));
+
+		int tx11 = w - scaled(125);
+		int ty11 = scaled(275);
+		int x11 = scaled(475);
+		int w11 = s500;
+		int y11 = scaled(175);
+		HelpUI.HelpSpec sp11 = helpUI.addBrownHelpText(x11, y11, w11, 0, text("MAIN_HELP_3K")); // Instructions to the governor
+		sp11.setLine(sp11.xe(), sp11.ycb(), (sp11.xe() + tx11)/2, sp11.ycb(), tx11, ty11);
     }
     @Override public void keyPressed(KeyEvent e)  {
     	setModifierKeysState(e); // BR: For the Flag color selection
