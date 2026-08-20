@@ -1342,8 +1342,8 @@ PLANETS_HELP_5F					| Optimal<br> Amount required to maximize the functioning of
 PLANETS_HELP_5G					| Instructions to the governor for allocating subsidies:<br>Metal color: Follow global instructions.<br>Gold color: Allocate subsidies.<br>Red arc (right click): Can draw from the player's reserve.<br>Uncircled: active until the player deactivates it.<br>Magenta circle: Active while an emergency is activated.<br>Green circle: Active as long as the colony has not reached the development limit.<br>Blue circle: Active as long as a blue priority is present. (With the exception of research and shipsyard, as they do not deactivate automatically)
 
 PLANETS_HELP_T_BUDGET			| Budget the selected amount.<br>This value can be revised later.
-PLANETS_HELP_T_TRANSFERT		| Transfer the selected amount to the colony reserve.<br>This transfer is final.
-PLANETS_HELP_T_CONVERT			| Transfer the already budgeted value to the colony reserve.<br>This transfer is final.
+PLANETS_HELP_T_TRANSFERT		| Transfer the selected amount to the colony reserve.<br><u>This transfer is final</u>.
+PLANETS_HELP_T_CONVERT			| Transfer the already budgeted value to the colony reserve.<br><u>This transfer is final</u>.
 PLANETS_HELP_T_CANCEL			| Exit without changing anything.
 PLANETS_HELP_T_BUDGET_OPTIMAL	| Budget the optimal amounts.<br>These values can be revised later.
 PLANETS_HELP_T_SHARE_OPTIMAL	| Allocate the available reserves in proportion to the optimal needs, and budget the amounts.<br>These values can be revised later.
@@ -5893,7 +5893,7 @@ GOVERNOR_AUTOSPEND_NEW_FIRST_HELP	| When the governor needs to help both new col
 GOVERNOR_AUTOSPEND_NEW_FIRST_DESC	| The Governor prioritizes new colonies, those with artifacts come second.
 GOVERNOR_AUTOSPEND_NEW_FIRST		| Priority to new colonies: %1
 
-GOVERNOR_AUTOSPEND_MAX_IND_HELP		| When the governor needs to help both new colonies and colonies with artifacts, and needs to prioritize new colonies, it can be useful to set a limit at which a colony is no longer considered new.
+GOVERNOR_AUTOSPEND_MAX_IND_HELP		| When the governor needs to help both new colonies and colonies with artifacts, and needs to prioritize new colonies, it can be useful to set a limit at which a colony is no longer considered new.<br>Colonies above this limit will not receive funding as "new Colonies".<br>Colonies below this limit will not be taxed as they could receive funds as “new colonies”. (Which would result in wasted funds as taxation involves 50% losses)
 GOVERNOR_AUTOSPEND_MAX_IND_DESC		| Maximum development level defining a colony as new.
 GOVERNOR_AUTOSPEND_MAX_IND			| Development limit: %1%
 

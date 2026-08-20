@@ -11,6 +11,12 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-08-20 (BR)
+- Fixed Development limit default and limit value: from 100% & 100% to 50% & 80%
+  - Development limit: Maximum development level defining a colony as new.
+  - Colonies above this limit will not receive funding as "new Colonies"
+  - Colonies below this limit will not be taxed as they could receive funds as “new colonies”. (Which would result in wasted funds as taxation involves 50% losses)
+
 26-08-16 (BR)
 - Fixed Budget Tab header English text.
 - Fixed some Human dialogue.

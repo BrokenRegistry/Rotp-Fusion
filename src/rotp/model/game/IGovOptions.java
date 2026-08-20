@@ -82,8 +82,8 @@ public interface IGovOptions {
 			.isUpdateDef(true)
 			.setIsGhostMethod(IGovOptions::notGrantingFunds)
 			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
-	ParamInteger autospendMaxIndustryPct		= new ParamInteger(GOV_UI, "AUTOSPEND_MAX_IND", 100)
-			.setLimits(10, 100)
+	ParamInteger autospendMaxIndustryPct		= new ParamInteger(GOV_UI, "AUTOSPEND_MAX_IND", 50)
+			.setLimits(10, 80)
 			.setIncrements(1, 5, 20)
 			.pctValue(true)
 			.setIsGhostMethod(IGovOptions::notGrantingFunds)

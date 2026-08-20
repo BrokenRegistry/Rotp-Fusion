@@ -480,6 +480,10 @@
 
 ### Fixes:
 
+- Fixed Development limit default and limit value: from 100% & 100% to 50% & 80%
+  - Development limit: Maximum development level defining a colony as new.
+  - Colonies above this limit will not receive funding as "new Colonies"
+  - Colonies below this limit will not be taxed as they could receive funds as “new colonies”. (Which would result in wasted funds as taxation involves 50% losses)
 - Fixed Budget Tab header English text.
 - Fixed some Human dialogue.
 - Fixed "my" and "your" being inverted in "Accept join war" offers!
