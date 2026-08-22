@@ -146,10 +146,9 @@ public class CombatStackShip extends CombatStack {
 	@Override protected void decAttackLevel(float val)	{
 		attackLevel(max(empire().shipAttackBonus(), attackLevel()-val));
 		// Forward to missiles
-		List<CombatStackMissile> missiles = new ArrayList<>(missiles());
-		for (CombatStackMissile miss: missiles) {
-			miss.attackLevel(attackLevel());;
-		}
+		List<CombatStackMissile> missiles = mgr.missilesStacks(this);
+		for (CombatStackMissile miss: missiles)
+			miss.attackLevel(attackLevel());
 	};
     @Override
     public boolean usingAI()          { return usingAI; }

@@ -61,7 +61,7 @@ public class CombatStackMonster extends CombatStackShip {
 	@Override public void endTurn()						{
 		if (!destroyed())
 			finishMissileRemainingMoves();
-		List<CombatStackMissile> missiles = new ArrayList<>(targetingMissiles);
+		List<CombatStackMissile> missiles = new ArrayList<>(incomingMissiles);
 		for (CombatStackMissile miss : missiles)
 			miss.endTurn();
 	}

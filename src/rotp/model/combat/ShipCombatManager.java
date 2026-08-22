@@ -129,6 +129,14 @@ public final class ShipCombatManager implements Base {
     public boolean showAnimations()            { return showAnimations && (ui != null) && playerInBattle; }
     public List<CombatStack> allStacks()       { return allStacks; }
     public void setInitialPause()              { initialPause = true; }
+	public List<CombatStackMissile> missilesStacks(CombatStack owner)	{
+		List<CombatStackMissile> missiles = new ArrayList<>();
+		List<CombatStack> activeStacks = new ArrayList<>(results.activeStacks());
+		for (CombatStack st: activeStacks)
+			if (st.isMissile() && ((CombatStackMissile)st).owner == owner)
+				missiles.add((CombatStackMissile)st);
+		return missiles;
+	}
 
     /* public boolean involves(Empire emp) {
         return (results.attacker() == emp) || (results.defender() == emp);
@@ -612,6 +620,15 @@ public final class ShipCombatManager implements Base {
 
 		combatAlreadyEnded = true;
     }
+	private void maxTurnRetreatEmpire(Empire e) {
+		List<CombatStack> activeStacks = new ArrayList<>(results.activeStacks());
+		for (CombatStack stack : activeStacks) {
+			if ((stack.empire() == e) && stack.isShip()) {
+				StarSystem dest = e.ai().shipCaptain().retreatSystem(system());
+				retreatStack((CombatStackShip)stack, dest);
+			}
+		}
+	}
 	public void retreatStack(CombatStackShip stack, StarSystem s) {
 		if (options().selectedMoo1RetreatRules() && !stack.markedMoO1Retreat())	{
 			stack.markForRetreat(s);
@@ -1077,9 +1094,9 @@ public final class ShipCombatManager implements Base {
             else if (!st.inStasis)
                 combatableStacks.add(st);
             //ail: when there's still missiles flying around don't end the combat (the stack that fired it doesn't count as armed anymore)
-            if(!st.missiles().isEmpty())
+            if(!st.incomingMissiles().isEmpty())
             {
-                for(CombatStackMissile missile : st.missiles())
+                for(CombatStackMissile missile : st.incomingMissiles())
                 {
                     //ail: the missile also needs to have a target that still is there as otherwise this can lead to combat going on after target with incoming missile was destroyed
                     if(missile.target.num > 0)
@@ -1103,7 +1120,7 @@ public final class ShipCombatManager implements Base {
 
         if (st.isMissile()) {
             CombatStackMissile miss =(CombatStackMissile) st;
-            miss.target.addMissile(miss);
+            miss.target.addIncomingMissile(miss);
             return;
         }
         results.activeStacks().add(st);
@@ -1168,7 +1185,8 @@ public final class ShipCombatManager implements Base {
             return true;
         // stop after max turns to avoid infinite looping
         if (turnCounter > MAX_TURNS()) {
-            retreatEmpire(results.attacker());
+			allowRetreat = true; // It's not optional anymore
+			maxTurnRetreatEmpire(results.attacker());
             log("combat finished-- max turns exceeded. Retreating: "+results.attacker());
             finished = true;
             if (showAnimations())
@@ -1235,42 +1253,6 @@ public final class ShipCombatManager implements Base {
 			currentStack = currentTurnList.get(0);
 		currentStack.beginTurn();
 	}
-
-//        int currIndex = currentTurnList.indexOf(st);
-//        int nextIndex = -1;
-//        int lastIndex =currentTurnList.size()-1;
-//
-//        // we need to find the next available stack to take a turn 
-//        // from the currentTurnList. Skip any stacks that are:
-//        // -- destroyed (by any earlier stack in the list)
-//        // -- unarmed colonies (they can't shoot or move, so skip)
-//        // when we find one, set nextIndex and break out of the loop
-//        for (int i=currIndex+1;i<=lastIndex;i++) {
-//            CombatStack stack = currentTurnList.get(i);
-//            if (stack.destroyed())
-//                continue;
-//            if (stack.isColony() && !stack.isArmed()) {
-//                stack.beginTurn();
-//                stack.endTurn();
-//                continue;
-//            }
-//            nextIndex = i;
-//            break;
-//        }
-//
-//        // if no valid stack found in the current turn list
-//        // then reset the turn list and start a new combat round
-//        if (nextIndex < 0) {
-//            setupCurrentTurnList();
-//            currentStack = currentTurnList.get(0);
-//            turnCounter++;
-//            trimAsteroids();
-//        }
-//        else
-//            currentStack = currentTurnList.get(nextIndex);
-//
-//        currentStack.beginTurn();
-//    }
     private void performNextStackTurn() {
         generateRiskMap(currentStack);
         currentStack.performTurn();
@@ -1294,7 +1276,7 @@ public final class ShipCombatManager implements Base {
     private void removeMissilesLaunchedFromStack(CombatStack st) {
         List<CombatStack> stacks = new ArrayList<>(allStacks());
         for (CombatStack stack: stacks) {
-            List<CombatStackMissile> missiles = new ArrayList<>(stack.missiles());
+            List<CombatStackMissile> missiles = new ArrayList<>(stack.incomingMissiles());
             for (CombatStackMissile miss: missiles) {
                 if (miss.owner == st)
                     removeMissileFromCombat(miss);
@@ -1302,13 +1284,13 @@ public final class ShipCombatManager implements Base {
         }
     }
     private void removeMissilesTargetingStack(CombatStack st) {
-        List<CombatStackMissile> missiles = new ArrayList<>(st.missiles());
+        List<CombatStackMissile> missiles = new ArrayList<>(st.incomingMissiles());
         for (CombatStackMissile miss: missiles) {
             removeMissileFromCombat(miss);
         }
     }
     private void removeMissileFromCombat(CombatStackMissile miss) {
-        List<CombatStackMissile> missList = miss.target.missiles();
+        List<CombatStackMissile> missList = miss.target.incomingMissiles();
         synchronized(missList) {
             missList.remove(miss);
         }

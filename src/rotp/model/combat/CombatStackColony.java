@@ -18,7 +18,6 @@ package rotp.model.combat;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
-import java.util.ArrayList;
 import java.util.List;
 
 import rotp.model.colony.Colony;
@@ -80,10 +79,9 @@ public class CombatStackColony extends CombatStack {
 	@Override protected void decAttackLevel(float val)	{
 		attackLevel(max(0, attackLevel()-val));
 		// Forward to missiles
-		List<CombatStackMissile> missiles = new ArrayList<>(missiles());
-		for (CombatStackMissile miss: missiles) {
-			miss.attackLevel(attackLevel());;
-		}
+		List<CombatStackMissile> missiles = mgr.missilesStacks(this);
+		for (CombatStackMissile miss: missiles)
+			miss.attackLevel(attackLevel());
 	};
     @Override
     public boolean usingAI()          { return usingAI; }

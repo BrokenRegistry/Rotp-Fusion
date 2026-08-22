@@ -519,6 +519,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                         if(stack.shotsRemaining(i) > 0)
                         {
                             canStillFireShipWeapon = true;
+                            break;
                         }
                     }
                     if(!canStillFireShipWeapon)
@@ -690,7 +691,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                         blocked = true;
                         continue;
                     }
-                    if(other.canPotentiallyAttack(st) || !st.missiles().isEmpty())
+                    if(other.canPotentiallyAttack(st) || !st.incomingMissiles().isEmpty())
                     {
                         currentScore += other.distanceTo(x, y);
                     }
@@ -909,7 +910,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                     if(cst.isArmed())
                         atLeastOneStackStillArmed = true;
                 }
-                else if(!cst.missiles().isEmpty())
+                else if(!cst.incomingMissiles().isEmpty())
                     atLeastOneStackStillArmed = true;
             }
             return inPact || !atLeastOneStackStillArmed;
@@ -934,8 +935,8 @@ public class AIShipCaptain implements Base, ShipCaptain {
         List<CombatStack> activeStacks = new ArrayList<>(mgr.activeStacks());
         for (CombatStack st: activeStacks) {
             float ourOwnMissileHit = 0;
-            for (CombatStackMissile miss: st.missiles()) {
-                if (miss.target == currStack && (st.isShip() || st.isMonster()))
+            for (CombatStackMissile miss: st.incomingMissiles()) {
+                if (miss.target == currStack && (miss.owner.isShip() || miss.owner.isMonster()))
                 {
                     float hitPct;
                     hitPct = (5 + miss.attackLevel() - miss.target.missileDefense()) / 10;
@@ -943,14 +944,14 @@ public class AIShipCaptain implements Base, ShipCaptain {
                     hitPct = min(hitPct, 1.0f);
                     killPct += ((miss.maxDamage()-miss.target.shieldLevel())*miss.num*hitPct)/(miss.target.maxStackHits()*(miss.target.num - 1) + currStack.hits());
                     maxHit += (miss.maxDamage() - currStack.shieldLevel()) * miss.num; //don't use hitPct for max-hit as we have to expect the worst in this case
-                    //System.out.println(currStack.fullName()+" will be hit by missiles for approx "+killPct+" dmg: "+maxHit+" hp: "+currStack.hits()+" threshold: "+(1.0f / miss.missile.shots()));
+                    // System.out.println(currStack.fullName()+" will be hit by missiles for approx "+killPct+" dmg: "+maxHit+" hp: "+currStack.hits()+" threshold: "+(1.0f / miss.missile.shots()));
                     if(maxHit >= currStack.hits())
                     {
                         Point safestPoint = findSafestPoint(currStack);
                         if(miss.maxMove() * Math.max(1.0, miss.moveRate) + 0.7 < miss.distanceTo((float)safestPoint.x, (float)safestPoint.y))
                         {
                             kiteMissiles = true;
-                            //System.out.println(currStack.fullName()+" should kite missiles because "+(miss.maxMove*miss.moveRate+0.7)+" at x:"+miss.x()+" y:"+miss.y()+" < "+miss.distanceTo((float)safestPoint.x, (float)safestPoint.y)+" to x:"+safestPoint.x+" y: "+safestPoint.y+" Moverate: "+miss.moveRate );
+                            // System.out.println(currStack.fullName()+" should kite missiles because "+(miss.maxMove() * Math.max(1.0, miss.moveRate) + 0.7)+" at x:"+miss.x()+" y:"+miss.y()+" < "+miss.distanceTo((float)safestPoint.x, (float)safestPoint.y)+" to x:"+safestPoint.x+" y: "+safestPoint.y+" Moverate: "+miss.moveRate );
                         }
                         else if(killPct > 1.0f / miss.missile.shots() || currStack.num == 1)
                         {
@@ -1446,10 +1447,10 @@ public class AIShipCaptain implements Base, ShipCaptain {
 
     public float missileKillPct(CombatStack target)
     {
-        if(target.missiles().isEmpty())
+        if(target.incomingMissiles().isEmpty())
             return 0;
         float killPct = 0;
-        for (CombatStackMissile miss: target.missiles()) {
+        for (CombatStackMissile miss: target.incomingMissiles()) {
             float hitPct;
             hitPct = (5 + miss.attackLevel() - miss.target.missileDefense()) / 10;
             hitPct = max(.05f, hitPct);

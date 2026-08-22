@@ -480,6 +480,7 @@
 
 ### Fixes:
 
+- Fixed an incorrect identification of the missiles' source; the AI did not realize they were coming from the planet and was trying to dodge them instead of approaching the planet to bomb it.
 - Fixed Development limit default and limit value: from 100% & 100% to 50% & 80%
   - Development limit: Maximum development level defining a colony as new.
   - Colonies above this limit will not receive funding as "new Colonies"

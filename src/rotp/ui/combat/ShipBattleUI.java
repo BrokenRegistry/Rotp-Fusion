@@ -586,7 +586,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         // draw ship missiles
         List<CombatStack> stacks = new ArrayList<>(mgr.activeStacks());
         for (CombatStack st: mgr.activeStacks())
-            stacks.addAll(st.missiles());
+            stacks.addAll(st.incomingMissiles());
 
         // draw ship stacks
         showPlanet = false;
@@ -901,7 +901,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
 	private void drawMissileWarning(Graphics2D g, CombatStack target, int x, int y, int w, int h, Color borderCol)	{
 		if (mgr.performingStackTurn)
 			return;
-		targetingMissiles = target.targetingMissiles();
+		targetingMissiles = target.incomingMissiles();
 		if (!targetingMissiles.isEmpty()) {
 			borderCol = new Color(192,96,0);
 			int mrg = s1;

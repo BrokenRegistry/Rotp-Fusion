@@ -59,7 +59,7 @@ public final class ShipSpecialStasisField extends ShipSpecial {
             target = (CombatStackShip) tgt;
             tech().drawSpecialAttack(source, target, 1, 0);
             target.inStasis = true;
-            target.missiles().clear();
+            target.incomingMissiles().clear();
             if (source.mgr.ui != null)
                 source.mgr.ui.repaint();
         }

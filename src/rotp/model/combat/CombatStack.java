@@ -68,7 +68,7 @@ public class CombatStack implements Base {
     private Empire empire;
     public ShipCombatManager mgr;
     protected ShipCaptain captain;
-    protected final List<CombatStackMissile> targetingMissiles = new ArrayList<>();
+	protected final List<CombatStackMissile> incomingMissiles = new ArrayList<>();
 	private final List<Integer> repulsorsActions = new ArrayList<>();
     public int num = 0;
     protected int origNum = 0;
@@ -294,8 +294,8 @@ public class CombatStack implements Base {
 
     public void usedBioweapons() { mgr.results().addBioweaponUse(empire); }
     protected void reverse()                         { reversed = !reversed; }
-    public List<CombatStackMissile> missiles()       { return targetingMissiles; }
-    protected void addMissile(CombatStackMissile miss)	{ targetingMissiles.add(miss); }
+	public List<CombatStackMissile> incomingMissiles()			{ return incomingMissiles; }
+	protected void addIncomingMissile(CombatStackMissile miss)	{ incomingMissiles.add(miss); }
     //public float scale()                             { return scale; }
     protected int weaponRange(ShipComponent c)	{
         if (!c.isBeamWeapon())
@@ -321,7 +321,7 @@ public class CombatStack implements Base {
 
         reloadWeapons();
         attemptToHeal();
-        List<CombatStackMissile> missiles = new ArrayList<>(targetingMissiles);
+        List<CombatStackMissile> missiles = new ArrayList<>(incomingMissiles);
         for (CombatStackMissile miss : missiles)
             miss.beginTurn();
     }
@@ -338,7 +338,7 @@ public class CombatStack implements Base {
     public void endTurn() {
         if (!destroyed())
             finishMissileRemainingMoves();
-        List<CombatStackMissile> missiles = new ArrayList<>(targetingMissiles);
+        List<CombatStackMissile> missiles = new ArrayList<>(incomingMissiles);
         for (CombatStackMissile miss : missiles)
             miss.endTurn();
     }
@@ -406,7 +406,7 @@ public class CombatStack implements Base {
         return !destroyed();
     }
     private boolean submoveTo(float x1, float y1) {
-        boolean b = submoveTo(x1,y1, targetingMissiles);
+        boolean b = submoveTo(x1,y1, incomingMissiles);
         if (mgr.showAnimations()) 
             mgr.ui.paintAllImmediately(20);
 
@@ -463,7 +463,7 @@ public class CombatStack implements Base {
     }
     private boolean performMissileSubmove() {
         boolean missilesFinished = true;
-        List<CombatStackMissile> targetCopy = new ArrayList<>(targetingMissiles);
+        List<CombatStackMissile> targetCopy = new ArrayList<>(incomingMissiles);
         for (CombatStackMissile miss : targetCopy)
             missilesFinished = miss.pursue(MOVE_STEP) && missilesFinished;
         
@@ -1022,12 +1022,4 @@ public class CombatStack implements Base {
 
         return shieldArr;
     }
-	public List<CombatStackMissile> targetingMissiles()	{
-		List<CombatStackMissile> list = new ArrayList<>();
-		for (CombatStack st: mgr.activeStacks())
-			for (CombatStackMissile miss: st.missiles())
-				if (miss.target == this)
-					list.add(miss);
-		return list;
-	}
 }

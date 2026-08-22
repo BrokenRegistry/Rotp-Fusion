@@ -354,7 +354,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
         // don't retreat if we still have missiles in flight
         List<CombatStack> activeStacks = new ArrayList<>(currStack.mgr.activeStacks());
         for (CombatStack st: activeStacks) {
-            for (CombatStackMissile miss: st.missiles()) {
+            for (CombatStackMissile miss: st.incomingMissiles()) {
                 if (miss.owner == currStack) 
                     return false;
             }
