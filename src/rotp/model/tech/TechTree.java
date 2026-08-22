@@ -18,6 +18,7 @@ package rotp.model.tech;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import rotp.model.colony.MissileBase;
 import rotp.model.empires.Empire;
@@ -673,10 +674,23 @@ public final class TechTree implements Base, Serializable {
 //    public Tech randomUnknownTech(int minLevel, int levelDiff, boolean isPlayer) {
 //        return random(category).randomUnknownTech(minLevel, levelDiff, isPlayer);
 //    }
-    // BR: modified for the "Never" tech and repeatable tech
-    public Tech randomUnknownTech(int minLevel, int levelDiff, boolean isPlayer, Long seed1, Long seed2) {
-    	return random(category, seed1).randomUnknownTech(minLevel, levelDiff, isPlayer, seed2);
-    }
+	// BR: modified for the "Never" tech and repeatable tech, if possible not currently searched
+	public Tech randomUnknownTech(int minLevel, int levelDiff, boolean isPlayer, Long seed1, Long seed2) {
+		int cat = new Random(seed1).nextInt(category.length);
+		// try to get a tech that is not currently searched
+		for (int i=cat; i<cat+category.length; i++) {
+			Tech tech = category[i % category.length].randomUnknownTech(minLevel, levelDiff, isPlayer, seed2, true);
+			if (tech != null)
+				return tech;
+		}
+		// No tech available, try to include the searched ones
+		for (int i=cat; i<cat+category.length; i++) {
+			Tech tech = category[i % category.length].randomUnknownTech(minLevel, levelDiff, isPlayer, seed2, false);
+			if (tech != null)
+				return tech;
+		}
+		return null;
+	}
     public void knowAll() { knowAll(99, 1); }
     public void knowAll(int maxLevel, float pct) {
         for (TechCategory cat: category)

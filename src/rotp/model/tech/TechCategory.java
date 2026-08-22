@@ -219,7 +219,7 @@ public final class TechCategory implements Base, Serializable {
     }
     String randomKnownTech() { return random(knownTechs()); }
     // BR: modified for the "Never" tech
-    Tech randomUnknownTech(int minLevel, int levelDiff, boolean isPlayer, Long seed) {
+    Tech randomUnknownTech(int minLevel, int levelDiff, boolean isPlayer, Long seed, boolean notCurRech) {
         // find level of highest known tech
         int highestLevel = 0;
         for (String id: knownTechs()) {
@@ -232,15 +232,19 @@ public final class TechCategory implements Base, Serializable {
 
         // from ALL techs unknown and <= level, pick one at random
         List<Tech> techList = new ArrayList<>();
-        for (String id: allTechs()) {
-            Tech t = tech(id);
-            if (!knownTechs().contains(id) 
-            		&& !t.restricted
-            		&& (t.level() >= minLevel)
-            		&& (t.level() <= maxLevel)
-            		&& isAllowed(id, isPlayer))
-                techList.add(t);
-        }
+		List<String> empireTech = new ArrayList<>(knownTechs());
+		if (notCurRech)
+			empireTech.add(currentTech());
+
+		for (String id: allTechs())
+			if (!empireTech.contains(id)) {
+				Tech t = tech(id);
+				if (!t.restricted
+					&& (t.level() >= minLevel)
+					&& (t.level() <= maxLevel)
+					&& isAllowed(id, isPlayer))
+				techList.add(t);
+			}
         return random(techList, seed);
     }
 

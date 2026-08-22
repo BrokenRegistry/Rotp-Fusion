@@ -45,6 +45,8 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-08-22 (BR)
+- When a planet with an artifact is discovered, and the technology found is an ongoing research, the new choice become final, as the current allocation is given to it. To avoid this inconvenience, the current search will only be returned if no other tech is available.
+- Fixed the attacker not always retreating when the fight reached the maximum number of turns.
 - Fixed an incorrect identification of the missiles' source; the AI did not realize they were coming from the planet and was trying to dodge them instead of approaching the planet to bomb it.
 
 26-08-20 (BR)
