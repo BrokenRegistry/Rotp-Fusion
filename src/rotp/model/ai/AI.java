@@ -96,7 +96,7 @@ public final class AI implements Base {
 				general =        new rotp.model.ai.xilmi.AIGeneral(empire);
 				captain =        new rotp.model.ai.xilmi.AIShipCaptain(empire);
 				governor =       new rotp.model.ai.player.AIGovernor(empire);
-				diplomat =       new rotp.model.ai.fusion.AIDiplomat(empire);
+				diplomat =       new rotp.model.ai.modnar.AIDiplomat(empire);
 				shipDesigner =   new rotp.model.ai.xilmi.AIShipDesigner(empire);
 				scientist =      new rotp.model.ai.xilmi.AIScientist(empire);
 				fleetCommander = new rotp.model.ai.player.AIFleetCommander(empire);
