@@ -435,6 +435,11 @@ public final class TransportPanel extends BasePanel {
             clearButtons();
 
             Transport tr = parent.transport();
+			if (tr.travelTurnsRemainingAdjusted() <= 0) {
+				StarSystem sys = tr.destination();
+				parent.parent.parent.clickedSprite(sys);
+				return;
+			}
             if (player().knowETA(tr)) {
                 StarSystem sys = tr.destination();
                 drawShowDestButton(g, tr, sys);

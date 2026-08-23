@@ -480,6 +480,7 @@
 
 ### Fixes:
 
+- Fixed a display bug in the transport panel, which could display, with a negative time, a transport previously arrived at its destination.
 - Fixed the issue where the player could not threaten other empires.
   - This was due to the player's diplomat AI selection. In fact, some AI does not bother the player with incessant threats and deactivates this functionality. The new selected AI will not hesitate to offer this option again.
 - When a planet with an artifact is discovered, and the technology found is an ongoing research, the new choice become final, as the current allocation is given to it. To avoid this inconvenience, the current search will only be returned if no other tech is available.

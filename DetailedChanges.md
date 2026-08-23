@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-08-23 (BR)
+- Fixed a display bug in the transport panel, which could display, with a negative time, a transport previously arrived at its destination.
+
 26-08-22 (BR)
 - Fixed the issue where the player could not threaten other empires.
   - This was due to the player's diplomat AI selection. In fact, some AI does not bother the player with incessant threats and deactivates this functionality. The new selected AI will not hesitate to offer this option again.
