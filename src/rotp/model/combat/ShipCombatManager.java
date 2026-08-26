@@ -487,6 +487,7 @@ public final class ShipCombatManager implements Base {
         scanShips();
         addEmpiresToCombat();
         results().defender(system.empire());
+		combatAlreadyEnded = false;
     }
     private void checkDeclareWar(Empire emp1, Empire emp2) {
         // decide if we should declare war

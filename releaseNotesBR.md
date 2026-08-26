@@ -11,6 +11,9 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-08-26 (BR)
+- Fixed Planets Bombardments not always being added on the diplomatic list.
+
 26-08-23 (BR)
 - Fixed a display bug in the transport panel, which could display, with a negative time, a transport previously arrived at its destination.
 

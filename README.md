@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-08-26 (BR)
+- Fixed Planets Bombardments not always being added on the diplomatic list.
+
 26-08-23 (BR)
 - Fixed a display bug in the transport panel, which could display, with a negative time, a transport previously arrived at its destination.
 
