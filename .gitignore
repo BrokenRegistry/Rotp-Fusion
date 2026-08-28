@@ -6,13 +6,13 @@ manifest.mf
 **/rotp-version.properties
 launch4j/Remnants/
 target/
-.idea/
 bin/
 *.iml
 *.log
 rotp_log.txt
 nbactions.xml
 .project
-.settings/
+\.settings/*
+.settings/*
 **/*.bak
 **/*.prefs
