@@ -104,7 +104,7 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
 
 	protected void spritePanel(SpriteDisplayPanel p)	{ parentSpritePanel = p; }
 	protected SpriteDisplayPanel parentSpritePanel()	{ return parentSpritePanel; }
-	public abstract IMapHandler mapHandler();
+	@Override public abstract IMapHandler mapHandler();
 
     protected void showDefaultDetail() { }
     protected void showStarDetail()    { }
@@ -219,8 +219,8 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
         topPanel.map().recenterMapOn(systems.get(index));
         topPanel.repaint();
     }
-    public void drawPlanetInfo(Graphics2D g, StarSystem sys, boolean showSpyData,
-    		boolean showPopulation, boolean showTransports, int startY, int w, int h) {
+	public void drawPlanetInfo(Graphics2D g, StarSystem sys, boolean showSpyData,
+			boolean showPopulation, boolean showTransports, int startY, int w, int h) {
         int y = startY;
 
         int lines = showSpyData ? 5 : 4;
@@ -519,8 +519,8 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
             g2.setFont(textF);
             String popStr;
             //boolean ignoreWaste = planet.isColonized() && planet.empire().ignoresPlanetEnvironment();
-            int planetSize = (int) pl.sv.currentSize(sys.id);
-            int population = (int) pl.sv.population(sys.id);
+            int planetSize = pl.sv.currentSize(sys.id);
+            int population = pl.sv.population(sys.id);
             g2.setColor(greenText);
             if (pl.sv.isColonized(id) && pl.sv.colony(id).inRebellion()) {
                 popStr = text("MAIN_PLANET_REBELLION");
@@ -559,7 +559,7 @@ public abstract class SystemPanel extends BasePanel implements SystemViewer, Map
             else
                 g2.setColor(redText);
 			if (this instanceof SystemMassTransportPanel) {
-				int population = (int) pl.sv.population(sys.id);
+				int population = pl.sv.population(sys.id);
 				popStr = text("MAIN_PLANET_SIZE_POP", planetSize, population);
 			}
 			else if (pl.sv.isColonized(id) && pl.sv.colony(id).inRebellion()) {

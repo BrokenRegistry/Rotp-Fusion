@@ -18,30 +18,30 @@ package rotp.ui.sprites;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import rotp.model.game.IGameOptions;
-import rotp.ui.BasePanel;
+import rotp.model.game.IMapOptions;
 import rotp.ui.main.GalaxyMapPanel;
 
-public class RangeDisplaySprite extends MapControlSprite  {
-	public RangeDisplaySprite(int xOff, int yOff, int w, int h) {
-		xOffset = scaled(xOff);
-		yOffset = scaled(yOff);
-		width = scaled(w);
-		height = scaled(h);
+public final class RangeDisplaySprite extends MapControlSprite  {
+	public RangeDisplaySprite(int xOff, int yOff, int w, int h)	{
+		super(xOff, yOff, w, h, "RANGE_DISPLAY_SPRITE");
+		box.setParam(IMapOptions.showShipRanges);
 	}
 	@Override
 	public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-		map.toggleShipRangesDisplay(rightClick);
+		IMapOptions.showShipRanges.toggle(e, null);
+		//map.toggleShipRangesDisplay(rightClick);
 	}
 	@Override
 	public void draw(GalaxyMapPanel map, Graphics2D g2) {
 		int w = width;
 		String detail ="";
 		int fontSize = 13;
-		int lineH	 = BasePanel.s14;
-		List<String> detailLines = null;
+		int lineH	 = s14;
+		List<String> detailLines = new ArrayList<>();
 
 		if (hovering) {
 			g2.setFont(narrowFont(fontSize));
@@ -53,11 +53,11 @@ public class RangeDisplaySprite extends MapControlSprite  {
 				w0 += detailW/10;
 				detailLines = wrappedLines(g2, detail, w0);
 			}
-			w = width + BasePanel.s15 + w0;
+			w = width + s15 + w0;
 		}
 		drawBackground(map, g2, w);
 
-		int cnr = BasePanel.s12;
+		int cnr = s12;
 		g2.setColor(background);
 		g2.fillRoundRect(startX, startY, width, height, cnr, cnr);
 
@@ -70,10 +70,10 @@ public class RangeDisplaySprite extends MapControlSprite  {
 		if (hovering) {
 			g2.setColor(Color.lightGray);
 			g2.setFont(narrowFont(fontSize));
-			int y1 = startY + height - BasePanel.s17;
-			int x1 = startX + width + BasePanel.s10;
+			int y1 = startY + height - s17;
+			int x1 = startX + width + s10;
 			if (detailLines.size() == 1)
-				y1 += BasePanel.s8;
+				y1 += s8;
 			for (String line: detailLines) {
 				drawString(g2, line, x1, y1);
 				y1 += lineH;

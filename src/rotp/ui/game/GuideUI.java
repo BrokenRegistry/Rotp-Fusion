@@ -210,6 +210,8 @@ public class GuideUI extends BasePanel {
 	// === Panel Global Tools
 	//
 	public static String cleanHtmlText(String text)	{
+		if (text == null)
+			return "null";
 		text = text.replace("<=", "&lt;=");
 		text = text.replace(">=", "&gt;=");
 		text = text.replace("<>", "&lt;&gt;");
@@ -459,7 +461,7 @@ public class GuideUI extends BasePanel {
 			autoSizeBox(s400);
 			// relative position
 			// find X location
-			if (2*sourceBox.x + sourceBox.width  > iW) { // put box to the left
+			if (2*sourceBox.x + sourceBox.width > iW) { // put box to the left
 				left = sourceBox.x - width - xBoxShift;
 				if (left < xBoxMargin)
 					left = xBoxMargin;
@@ -480,7 +482,7 @@ public class GuideUI extends BasePanel {
 					xd = xb - xLineCover;
 			}
 			// find Y location
-			if (2*sourceBox.y + sourceBox.width  > iH) { // put box to the top
+			if (2*sourceBox.y + sourceBox.height > iH) { // put box to the top
 				top = sourceBox.y - height - yBoxShift;
 				if (top < yBoxMargin)
 					top = yBoxMargin;

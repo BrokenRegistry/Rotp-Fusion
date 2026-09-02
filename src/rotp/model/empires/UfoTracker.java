@@ -25,7 +25,7 @@ public final class UfoTracker {
 		// But the point is to find out whether *the empire* can do that using only the information available.
 		// The Map<Ship, Ship> will be a bit funny-looking because for any Ship in the keySet, the value will always be itself.
 		// To save an allocation, the set of *last* turn's ships is destroyed as we go.
-		Map<Ship, Ship> ret = new HashMap<Ship, Ship>();
+		Map<Ship, Ship> ret = new HashMap<>();
 		for (Ship ufo : visibleShips) {
 			if (ufo == null)
 				continue;
@@ -53,7 +53,7 @@ public final class UfoTracker {
 		return ret;
 	}
 	Map<Ship, StarSystem> suspectedDestinationsOfShipsSeenLastTurn(Set<Ship> shipsKnowLastTurnLocationOf) {
-		Map<Ship, StarSystem> suspectedDestinations = new HashMap<Ship, StarSystem>();
+		Map<Ship, StarSystem> suspectedDestinations = new HashMap<>();
 		for (Ship sh : shipsKnowLastTurnLocationOf) {
 			if (sh != null) {
 				StarSystem suspectedDestination = starSystemInLineIfAny(sh.transitXlastTurn(), sh.transitYlastTurn(), sh.transitX(), sh.transitY());
@@ -153,7 +153,7 @@ public final class UfoTracker {
 			ret.put(null, ret.get(null) + numberOfShipsWithMissingDesign);
 		return ret;
 	}
-	private boolean knowsShipNotBuiltThisTurn(Ship ufo) {
+	private static boolean knowsShipNotBuiltThisTurn(Ship ufo) {
 		// If the ship does not have the same coordinates as any star --- that is,
 		// if it's in deep space, not deploying from a star system,
 		// then it could not have been built this turn.
@@ -297,7 +297,7 @@ public final class UfoTracker {
 //					return sys;
 //		return null;
 	}
-	private boolean knowsShipIsLeavingSystemThisTurn(Ship sh, StarSystem sys) {
+	private static boolean knowsShipIsLeavingSystemThisTurn(Ship sh, StarSystem sys) {
 		// The fact of whether a ship is retreating or not is always visible to the player if the ship itself is visible.
 		// Similarly, the player can always see that a ship has been deployed (that is, is no longer in orbit).
 		return sh.x() == sys.x() && sh.y() == sys.y() && (sh.retreating() || sh.isDeployed());

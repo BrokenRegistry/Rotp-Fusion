@@ -202,14 +202,16 @@ public class DynOptions implements DynamicOptions, Serializable {
             out.write(data, 0, data.length);
         }
         finally {
-            try {
-            bos.close();
-            out.close();
-            }
-            catch(IOException ex) {
-    			ex.printStackTrace();
-            	System.err.println("Options.save -- IOException: "+ ex.toString());
-            }
+			try { bos.close(); }
+			catch(IOException ex) {
+				ex.printStackTrace();
+				System.err.println("Options.save -- IOException: "+ ex.toString());
+			}
+			try { out.close(); }
+			catch(IOException ex) {
+				ex.printStackTrace();
+				System.err.println("Options.save -- IOException: "+ ex.toString());
+			}
         }
     }
     // Options files initialization
@@ -232,6 +234,7 @@ public class DynOptions implements DynamicOptions, Serializable {
             ZipEntry ze = zipFile.entries().nextElement();
             InputStream zis = zipFile.getInputStream(ze);
             newOptions = loadObjectData(zis);
+			zis.close();
         }
         catch(IOException e) {
         	System.err.println("Bad option version " + saveFile.getAbsolutePath());

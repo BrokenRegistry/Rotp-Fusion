@@ -37,7 +37,7 @@ final class GalaxyClusterShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 			BASE_NAME, 1,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_CLUSTER_0",
 				"SETUP_CLUSTER_1",
 				"SETUP_CLUSTER_2",
@@ -84,64 +84,64 @@ final class GalaxyClusterShape extends GalaxyShape {
 		switch(option1) {
             case 0: {
                 // 4 distinct clusters
-                cc1.x = (float) 0.25f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc1.y = (float) 0.75f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc2.x = (float) 0.38f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc2.y = (float) 0.44f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc3.x = (float) 0.75f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc3.y = (float) 0.25f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc4.x = (float) 0.62f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc4.y = (float) 0.56f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc1.x = 0.25f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc1.y = 0.75f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc2.x = 0.38f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc2.y = 0.44f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc3.x = 0.75f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc3.y = 0.25f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc4.x = 0.62f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc4.y = 0.56f*galaxyHeightLY() + galaxyEdgeBuffer();
                 
-                cc5.x = (float) 0.25f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
-                cc5.y = (float) 0.75f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
-                cc6.x = (float) 0.25f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
-                cc6.y = (float) 0.75f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
-                cc7.x = (float) 0.25f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
-                cc7.y = (float) 0.75f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
-                cc8.x = (float) 0.25f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
-                cc8.y = (float) 0.75f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
+                cc5.x = 0.25f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
+                cc5.y = 0.75f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
+                cc6.x = 0.25f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
+                cc6.y = 0.75f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
+                cc7.x = 0.25f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
+                cc7.y = 0.75f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
+                cc8.x = 0.25f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
+                cc8.y = 0.75f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
                 break;
             }
             case 1: {
                 // 6 distinct clusters
-                cc1.x = (float) 0.16f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc1.y = (float) 0.52f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc2.x = (float) 0.5f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc2.y = (float) 0.67f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc3.x = (float) 0.5f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc3.y = (float) 0.33f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc4.x = (float) 0.84f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc4.y = (float) 0.48f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc5.x = (float) 0.3f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc5.y = (float) 0.78f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc6.x = (float) 0.7f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc6.y = (float) 0.22f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc1.x = 0.16f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc1.y = 0.52f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc2.x = 0.5f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc2.y = 0.67f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc3.x = 0.5f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc3.y = 0.33f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc4.x = 0.84f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc4.y = 0.48f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc5.x = 0.3f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc5.y = 0.78f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc6.x = 0.7f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc6.y = 0.22f*galaxyHeightLY() + galaxyEdgeBuffer();
                 
-                cc7.x = (float) 0.18f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
-                cc7.y = (float) 0.5f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
-                cc8.x = (float) 0.18f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
-                cc8.y = (float) 0.5f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
+                cc7.x = 0.18f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
+                cc7.y = 0.5f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
+                cc8.x = 0.18f*galaxyWidthLY() + galaxyEdgeBuffer(); // same as cc1
+                cc8.y = 0.5f*galaxyHeightLY() + galaxyEdgeBuffer(); // same as cc1
                 break;
             }
             case 2: {
                 // 8 distinct clusters
-                cc1.x = (float) 0.15f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc1.y = (float) 0.5f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc2.x = (float) 0.3f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc2.y = (float) 0.22f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc3.x = (float) 0.85f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc3.y = (float) 0.5f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc4.x = (float) 0.7f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc4.y = (float) 0.78f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc5.x = (float) 0.45f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc5.y = (float) 0.42f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc6.x = (float) 0.42f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc6.y = (float) 0.74f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc7.x = (float) 0.55f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc7.y = (float) 0.58f*galaxyHeightLY() + galaxyEdgeBuffer();
-                cc8.x = (float) 0.58f*galaxyWidthLY() + galaxyEdgeBuffer();
-                cc8.y = (float) 0.26f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc1.x = 0.15f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc1.y = 0.5f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc2.x = 0.3f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc2.y = 0.22f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc3.x = 0.85f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc3.y = 0.5f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc4.x = 0.7f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc4.y = 0.78f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc5.x = 0.45f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc5.y = 0.42f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc6.x = 0.42f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc6.y = 0.74f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc7.x = 0.55f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc7.y = 0.58f*galaxyHeightLY() + galaxyEdgeBuffer();
+                cc8.x = 0.58f*galaxyWidthLY() + galaxyEdgeBuffer();
+                cc8.y = 0.26f*galaxyHeightLY() + galaxyEdgeBuffer();
                 break;
             }
         }

@@ -58,7 +58,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 	String SENSITIVITY_MEDIUM	= "GAME_SETTINGS_SENSITIVITY_MEDIUM";
 	String SENSITIVITY_LOW		= "GAME_SETTINGS_SENSITIVITY_LOW";
 	int	   MAX_BACKUP_TURNS		= 20; // modnar: change max turns between backups to 20
-	
+
 	// ==================== Duplicates for Base Main Settings Options ====================
 	//
 	ParamList displayMode = new DisplayMode();
@@ -79,7 +79,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		@Override public String getOption()			{ return displayMode(); }
 		@Override public void setOption(String s)	{ displayMode(s); }
 	}
-	
+
 	ParamList graphicsMode = new GraphicsMode();
 	final class GraphicsMode extends ParamList {
 		GraphicsMode() {
@@ -171,7 +171,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			SoundManager.current().resetSoundVolumes();
 		}
 	}
-	
+
 	// Do no use alone, Go through musicVolume
 	ParamBoolean playMusic = new PlayMusic();
 	final class PlayMusic extends ParamBoolean {

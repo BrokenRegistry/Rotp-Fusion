@@ -453,10 +453,11 @@ INC_TRESPASSING_TITLE             | Intrusion
 INC_TRESPASSING_DESC              | Les flottes [your_race_pluraladjecF] s’introduisent dans le système [system], qui fait partie [my_empireof].
 
 // generic click to skip or continue messages
-CLICK_SKIP                        | Échappez ou Cliquez pour ignorer l’animation
-CLICK_CONTINUE                    | Cliquez ou Échappez pour Continuer ...
-CLICK_EXIT                        | Cliquez ou Échappez pour Quitter ...
-BUTTON_EXIT                       | Quitter
+CLICK_SKIP						| « Échap » ou Cliquez pour ignorer l’animation
+CLICK_CONTINUE					| Cliquez ou « Échap » pour Continuer ...
+CLICK_EXIT						| Cliquez ou « Échap » pour Quitter ...
+BUTTON_EXIT						| Quitter
+BUTTON_EXIT_HELP				| Cliquez ou « <b>Échap</b> » pour Quitter ce panneau<br>et retourner à la carte de la galaxie.
 
 // GAME/SETUP UI
 GAME_TITLE_FRAME				| Vestiges des Précurseurs
@@ -765,15 +766,24 @@ MOD_MAIN_COL_DIRTY_GOV_UNLOCK_C_1 | <br> Une est gouvernée et déverrouillée -
 MOD_MAIN_COL_DIRTY_GOV_UNLOCK_C   | <br> %1 sont gouvernées et déverrouillées --> Ctrl clic pour nettoyer toutes les colonies.
 
 // MAIN UI - Bottom Navigation options
-MAIN_NAVIGATION_GAME              | Menu
-MAIN_NAVIGATION_DESIGN            | Conceptions
-MAIN_NAVIGATION_FLEETS            | Flottes
-MAIN_NAVIGATION_SYSTEMS           | Systèmes
-MAIN_NAVIGATION_RACES             | Empires
-MAIN_NAVIGATION_COLONIES          | Colonies
-MAIN_NAVIGATION_TECH              | Tech
-MAIN_NAVIGATION_NEXT_TURN         | Tour Suivant
-MAIN_NAVIGATION_NEXT_YEAR         | Année Suivante
+MAIN_NAVIGATION_GAME			| Menu
+MAIN_NAVIGATION_GAME_HELP		| →MAIN_HELP_3A←<p><center>Raccourci clavier : « G » (<b>G</b>ame)</center></p>
+MAIN_NAVIGATION_DESIGN			| Conceptions
+MAIN_NAVIGATION_DESIGN_HELP		| →MAIN_HELP_3D←<p><center>Raccourci clavier : « D » (<b>D</b>esign)</center></p>
+MAIN_NAVIGATION_FLEETS			| Flottes
+MAIN_NAVIGATION_FLEETS_HELP		| →MAIN_HELP_3C←<p><center>Raccourci clavier : « F »</center></p>
+MAIN_NAVIGATION_SYSTEMS			| Systèmes
+MAIN_NAVIGATION_SYSTEMS_HELP	| →MAIN_HELP_3B←<p><center>Raccourci clavier : « S »</center></p>
+MAIN_NAVIGATION_RACES			| Empires
+MAIN_NAVIGATION_RACES_HELP		| →MAIN_HELP_3E←<p><center>Raccourci clavier : « E »</center></p>
+MAIN_NAVIGATION_COLONIES		| Colonies
+MAIN_NAVIGATION_COLONIES_HELP	| →MAIN_HELP_3F←<p><center>Raccourci clavier : « C »</center></p>
+MAIN_NAVIGATION_TECH			| Tech
+MAIN_NAVIGATION_TECH_HELP		| →MAIN_HELP_3G←<p><center>Raccourci clavier : « T »</center></p>
+MAIN_NAVIGATION_NEXT_TURN		| Tour Suivant
+MAIN_NAVIGATION_NEXT_TURN_HELP	| →MAIN_HELP_3H←<p><center>Raccourci clavier : « N » (<b>N</b>ext)</center></p>
+MAIN_NAVIGATION_NEXT_YEAR		| Année Suivante
+MAIN_NAVIGATION_NEXT_YEAR_HELP	| →MAIN_HELP_3H←<p><center>Raccourci clavier : « N » (<b>N</b>ext)</center></p>
 MAIN_NAVIGATION_AUTO_RUN          | !!! Lancer automatiquement !!!
 MAIN_NAVIGATION_AUTO_RUN_PAUSE    | Suspendre exécution auto.
 MAIN_NAVIGATION_AUTO_RUN_AI       | Utiliser l’IA pour l’exécution automatique
@@ -781,8 +791,10 @@ MAIN_NAVIGATION_AUTO_RUN_LOCKED   | !!! Exécution automatique (L%1 T) !!!
 MAIN_NAVIGATION_NEXT_TURN_LOCKED  | Tour suivant (L%1 T)
 MAIN_NAVIGATION_NEXT_YEAR_LOCKED  | Année suivante (L%1 T)
 MAIN_NAVIGATION_LOCKED            | Verrouillage (L%1 T)
-MAIN_YEAR_DISPLAY                 | Année  %1
-MAIN_TURN_DISPLAY                 | Tour  %1
+MAIN_YEAR_DISPLAY				| Année  %1
+MAIN_YEAR_DISPLAY_HELP			| Affiche l’année en cours.<br>Le cas échéant, et si le joueur en a fait la demande, le nombre d’années restant avant la prochaine élection.
+MAIN_TURN_DISPLAY				| Tour  %1
+MAIN_TURN_DISPLAY_HELP			| Affiche le numéro du tour de jeu.<br>Le cas échéant, et si le joueur en a fait la demande, le nombre de tours restants avant la prochaine élection.
 MAIN_SPY_REPORT                   | Espion
 MAIN_TECH_NONE                    | Aucune Recherche
 MAIN_TECH_COMPLETED               | Recherche Terminée
@@ -797,20 +809,19 @@ MAIN_HELP_MOD                     | Aide Mod - « O » pour accéder au menu d
 MAIN_HELP_MOD_1A                  | Pour activer ou désactiver le Gouverneur de cette colonie.
 MAIN_HELP_MOD_1B                  | Pour accéder au menu Options du gouverneur.
 MAIN_HELP_MOD_1F                  | Des alertes du tour peuvent y apparaître : Faites un clic droit sur elles pour centrer la carte sur le système. Cliquez à gauche pour afficher la prochaine alerte.
-// MAIN_HELP_MOD_1I                  | Pour accéder au panneau «Options».<br>Utile pour se souvenir de nos choix de configuration.<br>Peut être modifié... Mais certaines options ne devraient pas l’être !
 MAIN_HELP_MOD_1I                  | →SETTINGS_MOD_SETTINGS_OPTIONS_UI_DESC←
 MAIN_HELP_MOD_1J                  | →SETTINGS_MOD_RULES_OPTIONS_UI_DESC←
-MAIN_HELP_MOD_1K                  | Rapport d’écologie de la colonie.<br>Cliquez avec le bouton gauche pour nettoyer toutes les colonies déverrouillées.<br>Cliquez avec le bouton droit pour nettoyer également les colonies verrouillées.
+MAIN_HELP_MOD_1K                  | <h3>Rapport de propreté des colonies</h3>L'icone devient <font color="#FF0000">rouge</font> lorsque qu'une ou plusieures de vos colonies n'alloue(nt) pas suffisement de crédit à leurs nettoyage.<br>Possibles Actions :<ul><li>« Clic Gauche » Pour nettoyer uniquement les colonies déverrouillées.</li> <li>« Clic Droit » ou « Ctrl + Clic » Pour inclure également les colonies verrouillées.</li></ul>
 MAIN_HELP_MOD_1L                  | Vous continuez une partie terminée. Cliquez pour arrêter, et voir à nouveau le panneau Fin de partie.<br>(Après avoir activé « Tour Suivant »)
 
-MAIN_HELP_1A                      | Chaque colonie divise sa production en cinq zones. Les barres grisées indiquent que la barre de production a été verrouillée et ne changera pas. Cliquez sur le nom pour verrouiller/déverrouiller.
-MAIN_HELP_1B                      | Chantier naval - construit le modèle de vaisseau sélectionné. Les gros vaisseaux peuvent prendre plusieurs tours.
-MAIN_HELP_1C                      | Défenses - construit et améliore les bases de missiles jusqu’à la limite spécifiée et les boucliers planétaires lorsqu’ils sont disponibles.
-MAIN_HELP_1D                      | Industrie - construit des usines qui augmentent la production globale de la colonie.
-MAIN_HELP_1E                      | Écologie - nettoie les déchets industriels, terraforme la planète et peut augmenter la croissance démographique.
-MAIN_HELP_1F                      | Technologie - ajoute à la recherche globale de l’empire.
-MAIN_HELP_1G                      | Les barres de ratio montrent la répartition de la production d’une planète. Les dépenses pour chaque barre peuvent être ajustées à l’aide de la molette de la souris, en cliquant dans la barre ou en cliquant sur les flèches gauche/droite de chaque barre.
-MAIN_HELP_1H                      | Le résultat attendu des dépenses pour une zone est affiché à droite de chaque barre. Les dépenses excédentaires seront envoyées à la réserve du trésor de l’empire.
+MAIN_HELP_1A			| Chaque colonie divise sa production en cinq zones. Les barres grisées indiquent que la barre de production a été verrouillée et ne changera pas. Cliquez sur le nom pour verrouiller/déverrouiller.
+MAIN_HELP_1B			| <b><u>Chantier naval</u></b> - Construit le modèle de vaisseau sélectionné. Les gros vaisseaux peuvent prendre plusieurs tours.
+MAIN_HELP_1C			| <b><u>Défenses</u></b> - Construit et améliore les bases de missiles jusqu’à la limite spécifiée et les boucliers planétaires lorsqu’ils sont disponibles.
+MAIN_HELP_1D			| <b><u>Industrie</u></b> - Construit des usines qui augmentent la production globale de la colonie.
+MAIN_HELP_1E			| <b><u>Écologie</u></b> - Nettoie les déchets industriels, terraforme la planète et peut augmenter la croissance démographique.
+MAIN_HELP_1F			| <b><u>Technologie</u></b> - Ajoute à la recherche globale de l’empire.
+MAIN_HELP_1G 			| Les barres de ratio montrent la répartition de la production d’une planète. Les dépenses pour chaque barre peuvent être ajustées à l’aide de la molette de la souris, en cliquant dans la barre ou en cliquant sur les flèches gauche/droite de chaque barre.
+MAIN_HELP_1H			| Le résultat attendu des dépenses pour une zone est affiché à droite de chaque barre. Les dépenses excédentaires seront envoyées à la réserve du trésor de l’empire.
 MAIN_HELP_1I                      | Pour accéder aux rapports d’espionnage. (Le cas échéant)
 
 MAIN_HELP_2A                      | Niveau du bouclier planétaire de la colonie. Les boucliers ne peuvent pas être construits sur les planètes dans une nébuleuse.
@@ -831,33 +842,33 @@ MAIN_HELP_2K_M3                   | Clic-gauche = Suivant / Clic-droit = Précé
 MAIN_HELP_2K_2F_HOLD              | (« Ctrl » pour les drapeaux de droite, « Maj » pour les drapeaux du bas)
 MAIN_HELP_2L                      | Le montant de la réserve stockée dans le trésor de l’empire.
 MAIN_HELP_2M                      | L’état actuel de la recherche pour chacun des six domaines technologiques.
-MAIN_HELP_3A                      | Jeu - revient au menu d’ouverture. Vous permet d’ajuster les paramètres ou d’enregistrer, de charger et de démarrer des jeux.
-MAIN_HELP_3B                      | Systèmes - Cartographie des galaxies incluant des informations pertinentes sur les systèmes selon différents critères.
-MAIN_HELP_3C                      | Flottes - permet un contrôle à grande échelle de vos flottes et de la construction navale au sein de votre empire.
-MAIN_HELP_3D                      | Conceptions - Créez des modèles de vaisseaux pour votre flotte en utilisant vos dernières technologies. Les vaisseaux obsolètes peuvent être supprimés.
-MAIN_HELP_3E                      | Empires - Des informations détaillées et des options diplomatiques pour toutes les espèces extraterrestres que vous avez rencontrées.
-MAIN_HELP_3F                      | Colonies - Liste détaillée et triable de vos colonies. Fournit également des revenus et des coûts d’empire.
-MAIN_HELP_3G                      | Tech - Affiche les technologies disponibles. Vous permet d’ajuster la recherche pour chacune des six technologies.
-MAIN_HELP_3H                      | Année Suivante - Fait avancer le jeu à l’année suivante.
-MAIN_HELP_3I                      | Tour actuel - Affiche le tour actuel du jeu ou l’année en cours de votre empire. Cliquez pour basculer.
-MAIN_HELP_3J                      | Commandes de la carte - Cliquez pour parcourir les différents paramètres d’affichage de la carte de la galaxie.
-MAIN_HELP_3K                      | →PLANETS_HELP_5G←<br><br>Voir aussi l'onglet « →PLANETS_VIEW_BUDGET← » du panneau « →MAIN_NAVIGATION_COLONIES← ».
+MAIN_HELP_3A			| <b><u>Menu</u></b> - revient au menu d’ouverture. Vous permet d’ajuster les paramètres ou d’enregistrer, de charger et de démarrer des jeux.
+MAIN_HELP_3B			| <b><u>Systèmes</u></b> - Cartographie des galaxies incluant des informations pertinentes sur les systèmes selon différents critères.
+MAIN_HELP_3C			| <b><u>Flottes</u></b> - permet un contrôle à grande échelle de vos flottes et de la construction navale au sein de votre empire.
+MAIN_HELP_3D			| <b><u>Conceptions</u></b> - Créez des modèles de vaisseaux pour votre flotte en utilisant vos dernières technologies. Les vaisseaux obsolètes peuvent être supprimés.
+MAIN_HELP_3E			| <b><u>Empires</u></b> - Des informations détaillées et des options diplomatiques pour toutes les espèces extraterrestres que vous avez rencontrées.
+MAIN_HELP_3F			| <b><u>Colonies</u></b> - Liste détaillée et triable de vos colonies. Fournit également des revenus et des coûts d’empire.
+MAIN_HELP_3G			| <b><u>Tech</u></b> - Affiche les technologies disponibles. Vous permet d’ajuster la recherche pour chacune des six technologies.
+MAIN_HELP_3H			| <b><u>Année Suivante</u></b> - Fait avancer le jeu à l’année suivante.
+MAIN_HELP_3I			| <b><u>Tour actuel</u></b> - Affiche le tour actuel du jeu ou l’année en cours de votre empire. Cliquez pour basculer.
+MAIN_HELP_3J			| <b><u>Commandes de la carte</u></b> - Cliquez pour parcourir les différents paramètres d’affichage de la carte de la galaxie.
+MAIN_HELP_3K			| →PLANETS_HELP_5G←<br><br>Voir aussi l’onglet « →PLANETS_VIEW_BUDGET← » du panneau « →MAIN_NAVIGATION_COLONIES← ».
 // Smart-Max Help
-MAIN_HELP_4A                      | Les assistants Min/Max garderont toujours ÉCO propre.<br>- Smooth Min/Max : est équivalent à cliquer sur la flèche Haut/Bas jusqu’à atteindre la cible. Les CG libérés seront redistribués intelligemment. (Suivant la méthode de "Rafraîchir")<br>- Smart Min/Max : (Maj + Clic) effacera les dépenses débloquées, définira l’allocation Min/Max, nettoiera ÉCO, puis redistribuera intelligemment les CG restants.<br>- Rafraîchir : (Ctrl + Clic) effacera les dépenses débloquées puis redistribuera intelligemment les CG disponibles selon votre priorisation, dans la séquence : {ÉCOLOGIE, INDUSTRIE, FLOTTE, DÉFENSES, RECHERCHE}
-MAIN_HELP_4B                      | Chantier naval : <br> Clic-gauche : Allocation minimale nécessaire pour construire jusqu’à la limite.<br> Clic-droit : Allocation maximale disponible.
-MAIN_HELP_4C                      | Défenses : <br> Clic-gauche : Allocation minimale nécessaire pour construire les bases demandées.<br> Clic-droit : Allocation maximale disponible. <br>Clic-milieu : Allocation minimale pour construire le bouclier.
-MAIN_HELP_4D                      | Industrie : <br> Clic-gauche : Allocation minimale nécessaire pour finaliser les usines.<br> Clic-droit : Allocation maximale disponible. <br>Clic-milieu : Allocation minimale nécessaire pour suivre la croissance de la population.
-MAIN_HELP_4E                      | Écologie : <br> Clic-gauche : Allocation minimale nécessaire pour finaliser la croissance.<br> Clic-droit : Allocation minimale nécessaire pour finaliser la terraformation. <br>Clic-milieu : Allocation minimale nécessaire pour rester propre.
-MAIN_HELP_4F                      | Technologie : <br>Clic-gauche : Allocation maximale disponible.<br> Clic-droit : 0 Allocation --> réallocation complète.
-MAIN_HELP_4G                      | Cliquez ici pour verrouiller / déverrouiller les dépenses. (en gris lorsque verrouillé)<br>Clique + Ctrl pour annuler ou restaurer les ordres des colonies. (Que vous pouvez fixer après une mise à jour technologique)<br> Ces champs sont classés par ordre de priorité lors du processus de «Tour suivant».<br> Une option est disponible pour les afficher en bleu... ou pas.
+MAIN_HELP_4A 			| Les assistants Min/Max garderont toujours ÉCO propre.<br>- Smooth Min/Max : est équivalent à cliquer sur la flèche Haut/Bas jusqu’à atteindre la cible. Les CG libérés seront redistribués intelligemment. (Suivant la méthode de "Rafraîchir")<br>- Smart Min/Max : (Maj + Clic) effacera les dépenses débloquées, définira l’allocation Min/Max, nettoiera ÉCO, puis redistribuera intelligemment les CG restants.<br>- Rafraîchir : (Ctrl + Clic) effacera les dépenses débloquées puis redistribuera intelligemment les CG disponibles selon votre priorisation, dans la séquence : {ÉCOLOGIE, INDUSTRIE, FLOTTE, DÉFENSES, RECHERCHE}
+MAIN_HELP_4B			| <b><u>Chantier naval :</u></b> <br> Clic-gauche : Allocation minimale nécessaire pour construire jusqu’à la limite.<br> Clic-droit : Allocation maximale disponible.
+MAIN_HELP_4C			| <b><u>Défenses :</u></b> <br> Clic-gauche : Allocation minimale nécessaire pour construire les bases demandées.<br> Clic-droit : Allocation maximale disponible. <br>Clic-milieu : Allocation minimale pour construire le bouclier.
+MAIN_HELP_4D			| <b><u>Industrie :</u></b> <br> Clic-gauche : Allocation minimale nécessaire pour finaliser les usines.<br> Clic-droit : Allocation maximale disponible. <br>Clic-milieu : Allocation minimale nécessaire pour suivre la croissance de la population.
+MAIN_HELP_4E			| <b><u>Écologie :</u></b> <br> Clic-gauche : Allocation minimale nécessaire pour finaliser la croissance.<br> Clic-droit : Allocation minimale nécessaire pour finaliser la terraformation. <br>Clic-milieu : Allocation minimale nécessaire pour rester propre.
+MAIN_HELP_4F			| <b><u>Technologie :</u></b> <br>Clic-gauche : Allocation maximale disponible.<br> Clic-droit : 0 Allocation --> réallocation complète.
+MAIN_HELP_4G			| Cliquez ici pour verrouiller / déverrouiller les dépenses. (en gris lorsque verrouillé)<br>Clique + Ctrl pour annuler ou restaurer les ordres des colonies. (Que vous pouvez fixer après une mise à jour technologique)<br> Ces champs sont priorisés lors du processus de «Tour suivant».<br> Une option est disponible pour les afficher en bleu... ou pas.
 
-MAIN_HELP_5A                      | Options pour orienter les tâches du gouverneur.<br>Lorsque activées, le gouverneur changera les priorités de cette colonie, et fera de son mieux pour exécuter vos ordres.
-MAIN_HELP_5B                      | Sélectionner ces champs, en bleu lorsque activés, pour définir une urgence.<br>Une fois l’urgence résolue, le gouverneur désactivera la sélection.
-MAIN_HELP_5C					| Il est urgent de faire croître notre population.<br>Pour contrer une invasion, ou pour augmenter le nombre de voix lors du vote qui s’en vient.
-MAIN_HELP_5D					| Il est urgent de produire des usines.<br>(Je prévois de vous envoyer du renfort.)
-MAIN_HELP_5E                      | Il est urgent de mettre à jour nos boucliers protecteurs...<br>(Nos voisins sont un peu agressif)
-MAIN_HELP_5F					| Il est urgent de finaliser nos bases de missiles.<br> (Des flottes ennemies approchent)
-MAIN_HELP_5G					| Ne vous laissez pas ditraire par autre chose que de bâtir et de populer cette colonie.
+MAIN_HELP_5A			| Options pour orienter les tâches du gouverneur.<br>Lorsque activées, le gouverneur changera les priorités de cette colonie, et fera de son mieux pour exécuter vos ordres.
+MAIN_HELP_5B			| Sélectionner ces champs, en magenta lorsque activés, pour définir une urgence.<br>Une fois l’urgence résolue, le gouverneur désactivera la sélection.
+MAIN_HELP_5C			| Il est urgent de faire croître notre population.<br>Pour contrer une invasion, ou pour augmenter le nombre de voix lors du vote qui s’en vient.
+MAIN_HELP_5D			| Il est urgent de produire des usines.<br>(Je prévois de vous envoyer du renfort.)
+MAIN_HELP_5E			| Il est urgent de mettre à jour nos boucliers protecteurs...<br>(Nos voisins sont un peu agressif)
+MAIN_HELP_5F			| Il est urgent de finaliser nos bases de missiles.<br> (Des flottes ennemies approchent)
+MAIN_HELP_5G			| Ne vous laissez pas distraire par autre chose que de bâtir et de populer cette colonie.
 MAIN_HELP_5H                      | Une fois vos tâches principales exécutées (bâtir et peuplement), utilisez les CG restants pour construire des vaisseaux. (En bleu lorsque activé)
 MAIN_HELP_5I                      | Favoriser la recherche (en bleu lorsque activé). Une fois vos tâches principales exécutées (bâtir et peuplement), attribuez les CG restants à la science.<br>Il est Prioritaire de poursuivre nos recherches (en pourpre lorsque activé). Gardez la colonie propre et donnez le pourcentage prioritaire du reste à nos scientifiques.
 MAIN_HELP_5J                      | Il est prioritaire de finaliser ce nombre de vaisseaux. Gardez la colonie propre et donnez le pourcentage spécifié du reste à nos chantiers.<br>Lorsque la touche Alt est pressée: Pourcentage à accorder au tâches prioritaires. (100 % par défaut)
@@ -1065,8 +1076,104 @@ MAIN_COLONY_ABANDON_LABEL         | Abandonner
 MAIN_COLONY_SHIP_SCRAPPED         | Supprimé
 MAIN_COLONY_NO_SHIELD             | Nébuleuse
 
-ON_DEMAND_ADVISOR_DEFAULT_HELP		| Survolez avec la souris l'élément pour lequel vous sollicitez de l'aide.
-ON_DEMAND_ADVISOR_BUTTON_OK			| Fermer
+// On Demand Advisor
+//
+SETUP_HELP_SHOW_ADVISOR_DESC	| Appuyer sur « F1 » activera le Conseiller au lieu d’afficher toutes les petites bulles d’aide.
+SETUP_HELP_SHOW_ADVISOR			| « F1 » Active le conseiller : %1
+SETUP_ADVISOR_FONT_SIZE_DESC	| Taille maximale de la police de caractère du conseiller.
+SETUP_ADVISOR_FONT_SIZE			| Fonte du conseiller : %1
+SETUP_ADVISOR_ICON_SIZE_DESC	| Taille relative de l’avatar du conseiller
+SETUP_ADVISOR_ICON_SIZE			| Taille de l’avatar du conseiller : %1 %
+
+ON_DEMAND_ADVISOR_DEFAULT_HELP	| Bonjour, je vais essayer de vous aider au mieux de mes connaissances, cependant ma base de données est encore loin d’être complète.<br>Survolez avec la souris l’élément pour lequel vous sollicitez de l’aide.<br>Appuyez sur « Ctrl - Alt » pour me masquer temporairement.
+ON_DEMAND_ADVISOR_NO_HELP_NOKEY	| Désolé, aucune aide n’est actuellement disponible pour cet élément.
+ON_DEMAND_ADVISOR_NO_HELP		| →ON_DEMAND_ADVISOR_NO_HELP_NO_KEY←<br>Cependant, une clé lui a déjà été attribuée : %1
+ON_DEMAND_ADVISOR_KNOWN_NO_HELP	| →ON_DEMAND_ADVISOR_NO_HELP_NO_KEY←<br>Cependant, l’objet est identifié : %1
+ON_DEMAND_ADVISOR_BUTTON_OK		| X
+
+MAIN_TOP_LEFT_STAR_HELP			| <h3>Systèmes stellaires</h3>Les systèmes stellaires sont identifiés par la couleur de leur étoile. Un arc coloré au-dessus d’une étoile indique une colonie protégée. À des niveaux de zoom plus élevés, la carte affiche l’espèce de chaque faction ainsi que les noms des nébuleuses (celles-ci sont initialement désignées par des numéros, mais dès qu’une colonie s’installe à l’intérieur de la nébuleuse, celle-ci prend le nom de la colonie). Le nom d’un système est codé par couleur en fonction du joueur qui le contrôle. Un système dont le nom est blanc n’est pas colonisé. Dans la vue par défaut de la carte, une colonie est représentée par un rayon ombré d’une année-lumière dans la couleur du joueur qui la contrôle ; cette zone est également cliquable pour sélectionner ce système. Un rayon ombré légèrement plus clair, bordé d’une ligne de couleur vive, indique la portée de vos vaisseaux en fonction du niveau le plus élevé de piles à combustible que vous avez recherché dans la technologie de propulsion. La ligne colorée à l’extérieur du rayon ombré indique la portée des vaisseaux équipés de réservoirs de carburant de réserve.
+MAIN_TOP_LEFT_FLEET_HELP		| <h3>Flottes spatiales</h3>Les flottes militaires sont représentées par des triangles suivis de trois petites traînées d’échappement. La taille du triangle varie en fonction de la taille de coque la plus grande de la flotte.<br>Les flottes non armées, telles que les éclaireurs et les vaisseaux coloniaux, sont représentées par des triangles plus petits sans traînées d’échappement.<br>Les flottes de transport sont représentées par des rectangles.<br>La destination d’une flotte amie est indiquée par une ligne pointillée.<br>La destination d’une flotte ennemie, qui sera visible une fois que vous aurez recherché les « Scanners spatiaux améliorés », est indiquée par une ligne rouge ou jaune.
+MAIN_TOP_LEFT_HELP				| →MAIN_TOP_LEFT_STAR_HELP←<hr>→MAIN_TOP_LEFT_FLEET_HELP←
+
+MAIN_ZOOM_IN_SPRITE_HELP		| Zoom avant sur la carte.<br>Également associé à la touche « + »,<br> et à la la molette de la souris.
+MAIN_ZOOM_OUT_SPRITE_HELP		| Zoom arrière sur la carte.<br>Également associé à la touche « - »,<br> et à la la molette de la souris.<br>« Alt » + « - » affichera toute la carte.
+MAIN_ALERT_NOTIF_SPRITE_HELP	| <h3>Notification d’alertes</h3><hr>Vous trouverez ici la liste des événements notables sont survenus durant le tour précédent.<br>Possibles actions :<dl><dt>« Click - Droit »</dt><dd>Pour centrer la carte sur le système mentionné.</dd> <dt>« Click - Gauche »</dt><dd>Pour afficher la prochaine alerte.</dd></dl>
+
+ALLOCATION_HEADER_HELP			| <h2>Panneau d’allocation des ressources</h2> Chaque colonie divise sa production en cinq zones.<br>Les barres grisées indiquent que la barre de production a été verrouillée et ne changera pas.<br>Cliquez sur le nom pour verrouiller/déverrouiller.
+
+ALLOCATION_SHIPYARD_HELP		| <h3>Chantier naval</h3>Construit le modèle de vaisseau sélectionné.<br>Les gros vaisseaux peuvent prendre plusieurs tours.
+ALLOCATION_DEFENSES_HELP		| <h3>Défenses</h3>Construit et améliore les bases de missiles jusqu’à la limite spécifiée et les boucliers planétaires lorsqu’ils sont disponibles.<br>Les boucliers seront toujours construits et mis à jour avant les bases de missiles.
+ALLOCATION_INDUSTRY_HELP		| <h3>Industrie</h3>Construit des usines qui augmenteront la production globale de la colonie.
+ALLOCATION_ECOLOGY_HELP			| <h3>>Écologie</h3>Nettoie les déchets industriels, terraforme la planète et peut augmenter la croissance démographique.
+ALLOCATION_RESEARCH_HELP		| <h3>Technologie</h3>Ajoute à la recherche globale de l’empire.
+
+ALLOCATION_LABEL_HELP			| <h3>Nom de la catégorie</h3>Cliquez ici pour verrouiller / déverrouiller les dépenses. <small><i>(En gris lorsque verrouillé)</i></small><br>Clique + Ctrl pour annuler ou restaurer les ordres des colonies.<small><i>(Que vous pouvez fixer après une mise à jour technologique)</i></small><br> Ces champs sont priorisés lors du processus de « <b>Tour suivant</b> ».<br> Une option est disponible pour les afficher en bleu... ou pas.
+ALLOCATION_LABEL_0_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
+ALLOCATION_LABEL_1_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
+ALLOCATION_LABEL_2_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_INDUSTRY_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
+ALLOCATION_LABEL_3_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_ECOLOGY_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
+ALLOCATION_LABEL_4_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
+
+ALLOCATION_SLIDER_HELP			| <h3>Barres de ratio:</h3> Elles montrent la répartition de la production d’une planète.<br>Les dépenses pour chaque barre peuvent être ajustées:<ul><li>À l’aide de la molette de la souris.</li><li>En cliquant dans la barre.</li><li>En cliquant sur les flèches gauche/droite de chaque barre.</li></ul>
+ALLOCATION_SLIDER_0_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_1_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_2_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_INDUSTRY_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_3_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_ECOLOGY_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_4_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+
+ALLOCATION_RESULT_MIN_MAX_HELP	| <hr><h3>Touches de modification des assistants:</h3><dl><dt><i>Pas de touches de modification</i>  ⇒  <b>Smooth Min/Max</b></dt><dd>C’est équivalent à cliquer sur la flèche Haut/Bas jusqu’à atteindre la cible. Les CG libérés seront redistribués intelligemment. (Suivant la méthode de « Rafraîchir »)</dd> <dt><i>Maj + Clic</i>  ⇒  <b>Smart Min/Max</b></dt><dd>Mettra à zéro les dépenses débloquées, définira l’allocation Min/Max, nettoiera <b>ÉCO</b>, puis redistribuera intelligemment les CG restants.</dd><dt><i>Ctrl + Clic</i>  ⇒  <b>Rafraîchir</b></dt> <dd>Mettra à zéro les dépenses débloquées puis redistribuera intelligemment les CG disponibles selon votre priorisation, dans la séquence : { Écologie, Industrie, Flotte, Défenses, Recherche }</dd>
+
+ALLOCATION_RESULT_HELP			| <h3>Résultat attendu</h3> Les dépenses excédentaires seront envoyées à la réserve du trésor de l’empire, ou à la recherche, selon votre choix.<hr><h3>Les assistants d’allocation</h3>Min/Max garderont toujours <b>ÉCO</b> propre.
+
+ALLOCATION_RESULT_0_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_RESULT_HELP←<ul> <li>Clic-gauche : Allocation minimale nécessaire pour construire jusqu’à la limite.</li> <li>Clic-droit : Allocation maximale disponible.</li> </ul>→ALLOCATION_RESULT_MIN_MAX_HELP←
+
+ALLOCATION_RESULT_1_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_RESULT_HELP←<ul> <li>Clic-gauche : Allocation minimale nécessaire pour construire les bases demandées</li> <li>Clic-droit : Allocation maximale disponible.</li> <li>Clic-milieu : Allocation minimale pour construire le bouclier.</li> </ul>→ALLOCATION_RESULT_MIN_MAX_HELP←
+
+ALLOCATION_RESULT_2_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_RESULT_HELP←<ul> <li>Clic-gauche : Allocation minimale nécessaire pour finaliser les usines.</li> <li>Clic-droit : Allocation maximale disponible.</li> <li>Clic-milieu : Allocation minimale nécessaire pour suivre la croissance de la population.</li> </ul>→ALLOCATION_RESULT_MIN_MAX_HELP←
+
+ALLOCATION_RESULT_3_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_RESULT_HELP←<ul> <li>Clic-gauche : Allocation minimale nécessaire pour finaliser la croissance.</li> <li>Clic-droit : Allocation minimale nécessaire pour finaliser la terraformation.</li> <li>Clic-milieu : Allocation minimale nécessaire pour rester propre.</li> </ul>→ALLOCATION_RESULT_MIN_MAX_HELP←
+
+ALLOCATION_RESULT_4_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_RESULT_HELP←<ul> <li>Clic-gauche : Allocation maximale disponible.</li> <li>Clic-droit : 0 Allocation --> réallocation complète.</li> </ul>→ALLOCATION_RESULT_MIN_MAX_HELP←
+
+INFO_PANEL_URGENCY_HELP			| <h3>Consignes pour le « Gouverneur Flexible »</h3>Un clic droit indiquera au « Gouverneur Flexible » de prioriser des tâches urgentes pour cette colonie.<br>Les tâches urgentes apparaîtront alors en magenta.<br>Une fois l’urgence résolue, le gouverneur désactivera la sélection.
+
+INFO_PANEL_POPULATION_HELP		| Population actuelle et maximale de la planète, pressez « Maj » pour afficher la population active. (Hors transports en partance) <hr>→INFO_PANEL_URGENCY_HELP←<hr>Il est urgent de faire croître notre population.<br>Pour contrer une invasion, ou pour augmenter le nombre de voix lors du vote qui s’en vient.
+
+INFO_PANEL_FACTORIES_HELP		| Usines actuelles et maximales autorisées.<br>Nombre maximal d’usines en fonction de la population et la technologie de contrôle robotique. <hr>→INFO_PANEL_URGENCY_HELP←<hr>Il est urgent de produire des usines.<br>(Ne vous occupez pas de la croîssance, je prévois de vous envoyer du renfort.)
+
+INFO_PANEL_SHIELD_HELP			| Niveau du bouclier planétaire de la colonie.<br>Les boucliers ne peuvent pas être construits sur les planètes dans une nébuleuse.<hr>→INFO_PANEL_URGENCY_HELP←<hr>Il est urgent de mettre à jour nos boucliers protecteurs...<br>(Nos voisins sont un peu agressif)
+
+INFO_PANEL_BASES_HELP			| Nombre de bases de missiles et le maximum souhaité pour cette planète.<br>Cliquez ou utilisez la molette de la souris pour modifier le maximum.<br>Note: La construction des bases ne peut commencer que si les boucliers sont terminés et à jour.<hr>→INFO_PANEL_URGENCY_HELP←<hr>Il est urgent de finaliser nos bases de missiles.<br>(Des flottes ennemies approchent)
+
+INFO_PANEL_PRODUCTION_HELP		| Production réelle ajustée en fonction des revenus commerciaux à l’échelle de l’empire, des coûts d’espionnage et de sécurité, ainsi que de la maintenance des bases de missiles et des vaisseaux, suivie de (Production planétaire totale de l’industrie et de la population.)<br>Pressez « Maj » pour afficher la production par travailleur, sans usine, suivie de (La production par usine, après nettoyage de la pollution)<hr>→INFO_PANEL_URGENCY_HELP←<hr>Ne vous laissez pas distraire par autre chose que de bâtir et de populer cette colonie.
+
+DETAIL_PANEL_FLAGS_HELP			| Attribuez jusqu’à 4 drapeaux au système pour le démarquer sur la carte de la galaxie.<br>Clic-gauche = Suivant<br>Clic-droit = Précédent<br> Clic-milieu = Réinitialiser<br>« Home » = Auto-Drapeau.<br>« Ctrl » pour les drapeaux de droite<br>« Maj » pour les drapeaux du bas.
+
+DETAIL_PANEL_NAME_EMPIRE_HELP	| Empire possédant la colonie.<br>Cliquez pour accéder au panneau diplomatique.
+
+MAIN_PANEL_HELP_ICON_HELP		| →MAIN_HELP_ALL←<hr>→MAIN_HELP_HK←
+
+MAIN_AUTO_PILOT_HELP			| <h3>Par défaut, un pilote automatique veillera à ce que vos colonies restent propres, et à ce que les consignes données lors des découvertes technologiques soient appliquées.
+MAIN_GOVERNOR_HELP				| <h3>Gouverneur Planétaire</h3>Ce gouverneur gère les dépenses de la planète pour :<ul> <li>Équilibrer les dépenses entre l’industrie et l’écologie de façon à maximiser la croissance.</li> <li>Construire toutes les améliorations de terraformation et d’usine lorsqu’elles deviennent disponibles.</li> <li>Construire et améliorer les défenses si nécessaire.</li><li>Construire une porte des étoiles si la technologie est disponible.</li> <li>Si tout ce qui précède a été construit, effectuez des recherches.</li></ul>Il peut être activé ou désactivé pour chacune des planètes. Vous pouvez essentiellement l’activer sur n’importe quelle planète sans construire de vaisseaux et le laisser tel quel pendant la majeure partie du jeu. Avec les nouvelles découvertes technologiques, les curseurs seront automatiquement réajustés. Cela réduit considérablement la quantité de microgestion nécessaire.<br>De plus, le gouverneur peut de manière autonome:<ul> <li>Transporter  la population.</li> <li>Partir en reconnaissance et coloniser.</li> <li>Attaquer automatiquement vos ennemis.</li> </ul>
+MAIN_GOVERNOR_ADVANCED_HELP		| <h3>Instructions Spéciales</h3>Les gouverneurs, bien que très talentueux, ne prennent aucune décision stratégique, car cette tâche incombe au joueur.<br>Lors de situations exceptionnelles, vous pouvez les désactiver et reprendre le contrôle des colonies ayant des besoins particuliers.<br> Vous pouvez également sélectionner les gouverneurs flexibles. Vous pourrez alors leurs fixer des objectifs très précis. Une fois les objectifs atteints, ils retourneront à la routine habituelle.
+
+MAIN_GOVERNOR_TOP_LEFT_HELP		| →MAIN_AUTO_PILOT_HELP←<hr>→MAIN_GOVERNOR_HELP←<hr>→MAIN_GOVERNOR_ADVANCED_HELP←
+MAIN_GOVERNOR_TOGGLE_HELP		| Pour activer ou désactiver le gouverneur de cette colonie.<br>Un pilote automatique de base veillera à toujours garder cette colonie propre.
+
+ALLOCATE_SUBSIDIES_HEAD			| <h2>Instructions pour l’attribution des subventions</h2>
+ALLOCATE_SUBSIDIES_DEFAULT		| <b>Couleur Métal</b><br>Suivre les instructions générales.
+ALLOCATE_SUBSIDIES_ALLOCATE		| <b>Couleur Or</b><br>Demande d’allocation de subventions.
+ALLOCATE_SUBSIDIES_UNLIMITED	| <b>Non Cerclé</b><br>Actif jusqu’à ce que le joueur le désactive.
+ALLOCATE_SUBSIDIES_DRAW			| <b>Arc Rouge (clic droit)</b><br>Peut piocher dans la réserve du joueur.
+ALLOCATE_SUBSIDIES_GRANTED		| <b>Point Vert</b><br>Des subsides ont été alloués à cette colonie.
+ALLOCATE_SUBSIDIES_URGENCY		| <b>Cercle Magenta</b><br>Actif tant qu’une urgence sera présente.
+ALLOCATE_SUBSIDIES_GROWING		| <b>Cercle Vert</b><br>Actif tant que la colonie n’aura pas atteint la limite de développement.
+ALLOCATE_SUBSIDIES_SHIPYARD		| <b>Cercle Gris</b><br>Actif tant que le nombre de vaisseaux demandé ne sera pas construit.
+ALLOCATE_SUBSIDIES_ORDER		| <b>Cercle Bleu</b><br>Actif tant qu’une priorité bleue est présente (à l’exception de la recherche et de la construction des navires, car ils ne se désactivent pas automatiquement).
+
+PLANET_RESERVE_UI_HELP			| →PLANETS_HELP_1H←
+PLANET_SPENDING_COST_UI_HELP	| →PLANETS_HELP_1G←
+PLANET_TOTALINCOME_UI_HELP		| →PLANETS_HELP_1F←
 
 // modnar: keep generic advisor text for new Races
 // Advisor text
@@ -1223,32 +1330,65 @@ PLANETS_RES_FULL_DEF_FACT         | Usines : %1
 PLANETS_BUTTON_TRANSFER           | TRANSFÉRER
 PLANETS_BUTTON_EXIT               | QUITTER
 
-PLANETS_BUTTON_DO_CLEAR_DESC	| Vous pouvez demander au gouverneur d'annuler ou recommencer tout ou partie du budget, de toutes les colonies ou de celles sélectionnées.
-PLANETS_BUTTON_ALL_DESC			| Appliqué à toutes les colonies.
-PLANETS_BUTTON_LIST_DESC		| Appliqué aux colonies sélectionnées.
-PLANETS_BUTTON_ONE_DESC			| Appliqué à la colonie sélectionnée.
-PLANETS_BUTTON_ALL_CLEAR_DESC	| Vous pouvez demander au gouverneur d'annuler tout ou partie du budget de toutes les colonies.
-PLANETS_BUTTON_ALL_CLEAR_GRANT	| Pas de Subsides
-PLANETS_BUTTON_ALL_CLEAR_BOTH	| Tout annuler
-PLANETS_BUTTON_ALL_CLEAR_RAISE	| Pas de Dons
-PLANETS_BUTTON_ALL_DO_DESC		| Vous pouvez demander au gouverneur de recommencer tout ou partie du budget.
-PLANETS_BUTTON_ALL_DO_GRANT		| Subsides
-PLANETS_BUTTON_ALL_DO_BOTH		| Dons & Subsides
-PLANETS_BUTTON_ALL_DO_RAISE		| Dons
-PLANETS_BUTTON_LIST_CLEAR_DESC	| Vous pouvez demander au gouverneur d'annuler tout ou partie du budget de ces colonies.
-PLANETS_BUTTON_LIST_CLEAR_GRANT	| Pas de Subsides
-PLANETS_BUTTON_LIST_CLEAR_BOTH	| Annuler la liste
-PLANETS_BUTTON_LIST_CLEAR_RAISE	| Pas de Dons
-PLANETS_BUTTON_LIST_DO_DESC		| Vous pouvez demander au gouverneur de complèter tout ou partie du budget, en utilisant ces colonies.
-PLANETS_BUTTON_LIST_DO_GRANT	| Subsides
-PLANETS_BUTTON_LIST_DO_BOTH		| Dons & Subsides
-PLANETS_BUTTON_LIST_DO_RAISE	| Dons
+PLANETS_BUTTON_DO_CLEAR_DESC		| Vous pouvez demander aux gouverneurs actifs d’annuler ou recommencer tout ou partie du budget, de toutes les colonies ou de celles sélectionnées.
+PLANETS_BUTTON_ALL_DESC				| Appliquer à toutes les colonies.
+PLANETS_BUTTON_ALL_HELP				| D’importants changement peuvent survenir durant un tour de jeu, et les dernières consignes suivies par les gouverneurs peuvent ne plus être optimales...<br>Cette interface permet réinitialiser tout ou partie du budget.<br><small><i><b><center>Toutes les colonies ayant un gouverneur en poste seront affectées.</center><br></b></i></small>
+PLANETS_BUTTON_LIST_DESC			| Appliquer aux colonies sélectionnées.
+PLANETS_BUTTON_ONE_DESC				| Appliquer à la colonie sélectionnée.
+PLANETS_BUTTON_LIST_HELP			| D’importants changement peuvent survenir durant un tour de jeu, et les dernières consignes suivies par les gouverneurs peuvent ne plus être optimales...<br>Cette série de boutons permet de réinitialiser tout ou partie du budget des colonies sélectionnées<br><small><i><b><center>Seulement les colonies sélectionnées ayant un gouverneur en poste seront affectées.</center><br></b></i></small>
+
+PLANETS_BUTTON_ALL_CLEAR_DESC		| Vous pouvez demander au gouverneur d’annuler tout ou partie du budget de toutes les colonies.
+PLANETS_BUTTON_ALL_CLEAR_GRANT		| Pas de Subsides
+PLANETS_BUTTON_ALL_CLEAR_GRANT_HELP	| →PLANETS_BUTTON_ALL_HELP←<hr><center>Cliquez sur ce bouton pour supprimer tous les subsides.</center>
+PLANETS_BUTTON_ALL_CLEAR_BOTH		| Tout annuler
+PLANETS_BUTTON_ALL_CLEAR_BOTH_HELP	| →PLANETS_BUTTON_ALL_HELP←<hr><center>Cliquez sur ce bouton pour supprimer tous les subsides et toutes les contibutions.</center>
+PLANETS_BUTTON_ALL_CLEAR_RAISE		| Pas de Dons
+PLANETS_BUTTON_ALL_CLEAR_RAISE_HELP	| →PLANETS_BUTTON_ALL_HELP←<hr><center>Cliquez sur ce bouton pour supprimer toutes les contributions envoyées à l’empire.</center>
+
+PLANETS_BUTTON_ALL_DO_DESC			| Vous pouvez demander au gouverneur de recommencer tout ou partie du budget.
+PLANETS_BUTTON_ALL_DO_GRANT			| Subsides
+PLANETS_BUTTON_ALL_DO_GRANT_HELP	| →PLANETS_BUTTON_ALL_HELP←<hr><center>Cliquez sur ce bouton pour réallouer les subsides.</center>
+PLANETS_BUTTON_ALL_DO_BOTH			| Dons & Subsides
+PLANETS_BUTTON_ALL_DO_BOTH_HELP		| →PLANETS_BUTTON_ALL_HELP←<hr><center>Cliquez sur ce bouton pour lever des fonds pour l’empire et réallouer les subsides.</center>
+PLANETS_BUTTON_ALL_DO_RAISE			| Dons
+PLANETS_BUTTON_ALL_DO_RAISE_HELP	| →PLANETS_BUTTON_ALL_HELP←<hr><center>Cliquez sur ce bouton pour lever des fonds pour l’empire.</center>
+
+PLANETS_BUTTON_LIST_CLEAR_DESC			| Vous pouvez demander au gouverneur d’annuler tout ou partie du budget de ces colonies.
+PLANETS_BUTTON_LIST_CLEAR_GRANT			| Pas de Subsides
+PLANETS_BUTTON_LISTL_CLEAR_GRANT_HELP	| →PLANETS_BUTTON_LIST_HELP←<hr><center>Cliquez sur ce bouton pour supprimer tous les subsides.</center>
+PLANETS_BUTTON_LIST_CLEAR_BOTH			| Annuler la liste
+PLANETS_BUTTON_LIST_CLEAR_BOTH_HELP		| →PLANETS_BUTTON_LIST_HELP←<hr><center>Cliquez sur ce bouton pour supprimer tous les subsides et toutes les contibutions.</center>
+PLANETS_BUTTON_LIST_CLEAR_RAISE			| Pas de Dons
+PLANETS_BUTTON_LIST_CLEAR_RAISE_HELP	| →PLANETS_BUTTON_LIST_HELP←<hr><center>Cliquez sur ce bouton pour supprimer toutes les contributions envoyées à l’empire.</center>
+
+PLANETS_BUTTON_LIST_DO_DESC			| Vous pouvez demander au gouverneur de complèter tout ou partie du budget, en utilisant ces colonies.
+PLANETS_BUTTON_LISTL_DO_GRANT_HELP	| →PLANETS_BUTTON_LIST_HELP←<hr><center>Cliquez sur ce bouton pour réallouer les subsides.</center>
+PLANETS_BUTTON_LIST_DO_GRANT		| Subsides
+PLANETS_BUTTON_LIST_DO_BOTH			| Dons & Subsides
+PLANETS_BUTTON_LIST_DO_BOTH_HELP	| →PLANETS_BUTTON_LIST_HELP←<hr><center>Cliquez sur ce bouton pour lever des fonds pour l’empire et réallouer les subsides.</center>
+PLANETS_BUTTON_LIST_DO_RAISE		| Dons
+PLANETS_BUTTON_LIST_DO_RAISE_HELP	| →PLANETS_BUTTON_LIST_HELP←<hr><center>Cliquez sur ce bouton pour lever des fonds pour l’empire.</center>
 
 PLANETS_BUTTON_BUDGET			| Budgeter
+PLANETS_BUTTON_BUDGET_DESC		| Budgeter le montant sélectionné.<br>Cette valeur pourra être révisée si vous le souhaitez.
+PLANETS_BUTTON_BUDGET_HELP		| Budgeter le montant sélectionné.<br>Cette valeur pourra être révisée si vous le souhaitez.
+
 PLANETS_BUTTON_REMOVE			| Supprimer le budget du joueur
+PLANETS_BUTTON_REMOVE_DESC		| Repasser la main au gouverneur en effaçant le montant actuellement sélectionné par le joueur.
+PLANETS_BUTTON_REMOVE_HELP		| Repasser la main au gouverneur en effaçant le montant actuellement sélectionné par le joueur.
+
 PLANETS_BUTTON_CONVERT			| Transferer le budget
+PLANETS_BUTTON_CONVERT_DESC		| Transférer la valeur déjà budgetée dans la réserve de la colonie.<br></u><b>Ce transfert est définitif</b></u>.
+PLANETS_BUTTON_CONVERT_HELP		| Transférer la valeur déjà budgetée dans la réserve de la colonie.<br></u><b>Ce transfert est définitif</b></u>.
+
 PLANETS_BUTTON_BUDGET_WISH		| Budgeter les montant optimaux
+PLANETS_BUTTON_BUDGET_WISH_DESC	| Budgeter le montant sélectionné.<br>Cette valeur pourra être révisée si vous le souhaitez.
+PLANETS_BUTTON_BUDGET_WISH_HELP	| Budgeter le montant sélectionné.<br>Cette valeur pourra être révisée si vous le souhaitez.
+
 PLANETS_BUTTON_SHARE_WISH		| Répartir les montant optimaux
+PLANETS_BUTTON_SHARE_WISH_DESC	| Partager les reserves disponibles proportionnellement aux besoins optimaux, et budgéter les montants.<br>Ces valeurs pourront être révisées si vous le souhaitez.
+PLANETS_BUTTON_SHARE_WISH_HELP	| Partager les reserves disponibles proportionnellement aux besoins optimaux, et budgéter les montants.<br>Ces valeurs pourront être révisées si vous le souhaitez.
+
 PLANETS_RESERVE_PLAYER			| Budget restant du joueur : %1 %2CG
 PLANETS_RESERVE_CURRENT			| Budget restant disponible : %1 %2CG
 PLANETS_BUDGET_CURRENT_NONE		| Aucun budget n’a été établi pour cette colonie.
@@ -1257,41 +1397,78 @@ PLANETS_BUDGET_CURRENT_PLAYER	| Budget établi par le joueur : %1 %2CG
 PLANETS_BUDGET_GOVERNOR_SUGGEST	| (Budget initial du gouverneur : %1 %2CG)
 PLANETS_BUDGET_NO_GOVERNOR		| Le gouverneur n’est pas impliqué dans ce budget.
 
-PLANETS_AMT_PCT                   | %1 %
-PLANETS_AMT_BC                    | %1 CG
-PLANETS_TRANSFER_DESC             | Transférer des fonds de l’Empire vers %1
-PLANETS_TRANSFER_CANCEL           | Fermer
-PLANETS_TRANSFER_ACCEPT           | Transférer
-PLANETS_COLONY_TRANSFER_TITLE     | Transférer des Fonds
-PLANETS_COLONY_TRANSFER_DETAIL    | Transférer des fonds du trésor de l’empire pour augmenter la production de cette colonie.
-PLANETS_COLONY_TRANSFER_BUTTON    | Transférer des Fonds du Trésor
-PLANETS_LIST_NUM                  |
-PLANETS_LIST_NAME                 | Nom
-PLANETS_LIST_POPULATION           | Population
-PLANETS_LIST_POP                  | Pop.
-PLANETS_LIST_SIZE                 | Taille
-PLANETS_LIST_MAX_TRANS_TO_FILL    | Remplir
-PLANETS_LIST_MAX_TRANS_NO_LOSS    | Stable
-PLANETS_LIST_TYPE                 | Type
-PLANETS_LIST_FACTORIES            | Usines
-PLANETS_LIST_WASTE                | Déchets
-PLANETS_LIST_BASES                | Bases
-PLANETS_LIST_SHIELD               | Bouclier
-PLANETS_LIST_PRODUCTION           | Prod
-PLANETS_LIST_CAPACITY             | Capacité
-PLANETS_LIST_RESERVE              | Réserve
+PLANETS_AMT_PCT					| %1 %
+PLANETS_AMT_BC					| %1 CG
+PLANETS_TRANSFER_DESC			| Transférer des fonds de l’Empire vers %1
+PLANETS_TRANSFER_DESC_HELP		| Barre d’ajustement du nombre de Crédits Galactiques à envoyer à la ou aux colonies sélectionnées.
+
+PLANETS_TRANSFER_CANCEL			| Fermer
+PLANETS_TRANSFER_CANCEL_DESC	| Quitter sans rien changer.
+PLANETS_TRANSFER_CANCEL_HELP	| Quitter sans rien changer.
+
+PLANETS_TRANSFER_ACCEPT			| Transférer
+PLANETS_TRANSFER_ACCEPT_DESC	| Transférer le montant sélectionné dans la réserve de la colonie.<br><u><b>Ce transfert est définitif</b></u>.
+PLANETS_TRANSFER_ACCEPT_HELP	| Transférer le montant sélectionné dans la réserve de la colonie.<br><u><b>Ce transfert est définitif</b></u>.
+
+PLANETS_COLONY_TRANSFER_TITLE	| Transférer des Fonds
+PLANETS_COLONY_TRANSFER_DETAIL	| Transférer des fonds du trésor de l’empire pour augmenter la production de cette colonie.
+PLANETS_COLONY_TRANSFER_BUTTON	| Transférer des Fonds du Trésor
+
+PLANETS_LIST_MAX_TRANS_TO_FILL		| Remplir
+PLANETS_LIST_MAX_TRANS_NO_LOSS		| Stable
+PLANETS_LIST_NUM				|
+PLANETS_LIST_NUM_HELP			| Juste le numéro de la ligne.
+PLANETS_LIST_FLAG				|
+PLANETS_LIST_FLAG_HELP			| →PLANETS_HELP_4I←
+PLANETS_LIST_STARGATES			|
+PLANETS_LIST_STARGATES_HELP		| <h3>Portes des Étoiles</h3>Construites ou en construction.
+PLANETS_LIST_MANDATE			|
+PLANETS_LIST_MANDATE_HELP		| →PLANETS_HELP_5A←
+PLANETS_LIST_NAME				| Nom
+PLANETS_LIST_NAME_HELP			| →PLANETS_HELP_2A←
+PLANETS_LIST_POPULATION			| Population
+PLANETS_LIST_POPULATION_HELP	| →PLANETS_HELP_2B←
+PLANETS_LIST_POP				| Pop.
+PLANETS_LIST_POP_HELP			| →PLANETS_HELP_2B←
+PLANETS_LIST_SIZE				| Taille
+PLANETS_LIST_SIZE_HELP			| →PLANETS_HELP_2E←
+PLANETS_LIST_TYPE				| Type
+PLANETS_LIST_TYPE_HELP			| →PLANETS_HELP_2C←
+PLANETS_LIST_FACTORIES			| Usines
+PLANETS_LIST_FACTORIES_HELP		| →PLANETS_HELP_3D←
+PLANETS_LIST_WASTE				| Déchets
+PLANETS_LIST_WASTE_HELP			| →PLANETS_HELP_2F←
+PLANETS_LIST_BASES				| Bases
+PLANETS_LIST_BASES_HELP			| →PLANETS_HELP_4F←
+PLANETS_LIST_SHIELD				| Bouclier
+PLANETS_LIST_SHIELD_HELP		| →PLANETS_HELP_4E←
+PLANETS_LIST_PRODUCTION			| Prod
+PLANETS_LIST_PRODUCTION_HELP	| →PLANETS_HELP_3E←
+PLANETS_LIST_CAPACITY			| Capacité
+PLANETS_LIST_CAPACITY_HELP		| →PLANETS_HELP_3H←
+PLANETS_LIST_RESERVE			| Réserve
+PLANETS_LIST_RESERVE_HELP		| →PLANETS_HELP_3F←
 PLANETS_LIST_IND_RATIO			| Usines
+PLANETS_LIST_IND_RATIO_HELP		| →PLANETS_HELP_3H←
 PLANETS_LIST_NEEDED				| Optimal
+PLANETS_LIST_NEEDED_HELP		| →PLANETS_HELP_5F←
 PLANETS_LIST_BUDGET				| Budget
+PLANETS_LIST_BUDGET_HELP		| →PLANETS_HELP_5E←
 PLANETS_LIST_SUBSIDY			| Reçoit
+PLANETS_LIST_SUBSIDY_HELP		| →PLANETS_HELP_5D←
 PLANETS_LIST_CONTRIBUTE			| Envoie
+PLANETS_LIST_CONTRIBUTE_HELP	| →PLANETS_HELP_5C←
 PLANETS_LIST_TAXED				| Imposé
-PLANETS_LIST_SHIPYARD             | En chantier
-PLANETS_LIST_NOTES                | Notes
+PLANETS_LIST_TAXED_HELP			| →PLANETS_HELP_5B←
+PLANETS_LIST_SHIPYARD			| En chantier
+PLANETS_LIST_SHIPYARD_HELP		| →PLANETS_HELP_4G←
+PLANETS_LIST_NOTES				| Notes
+PLANETS_LIST_NOTES_HELP			| →PLANETS_HELP_2G←
 PLANETS_LIST_TURNS                | Tours
 PLANETS_LIST_YEARS                | Ans
 PLANETS_LIST_TRANSPORTS           | Transports
-PLANETS_LIST_RESOURCES            | Ressources
+PLANETS_LIST_RESOURCES			| Ressources
+PLANETS_LIST_RESOURCES_HELP		| →PLANETS_HELP_2D←
 PLANETS_MULTI_SYSTEMS             | %1 Systèmes
 PLANETS_AGGREGATE_VALUES          | Valeurs Agrégées
 PLANETS_SPENDING_0                | Aucune Dépense %1
@@ -1299,7 +1476,7 @@ PLANETS_SPENDING_25               | Dépenses %1 25%
 PLANETS_SPENDING_50               | Dépenses %1 50%
 PLANETS_SPENDING_75               | Dépenses %1 75%
 PLANETS_SPENDING_MAX              | Dépenses %1 maximales
-PLANETS_HELP_ALL                  | APERÇU - Cet écran affiche les données économiques de votre empire ainsi qu’une liste de vos colonies triables selon diverses données.
+PLANETS_HELP_ALL				| <h3>APERÇU</h3>Cet écran affiche les données économiques de votre empire ainsi qu’une liste de vos colonies triables selon diverses données.
 PLANETS_HELP_1A					| « Écologie »<br> Cliquez sur cet onglet pour afficher les données écologiques des colonies.
 PLANETS_HELP_1B					| « Industrie »<br> Cliquez sur cet onglet pour afficher les données industrielles des colonies.
 PLANETS_HELP_1BUD				| « Budget »<br> Cliquez sur cet onglet pour afficher les informations budgétaires des colonies.
@@ -1340,14 +1517,6 @@ PLANETS_HELP_5D					| « Reçoit »<br> Subventions pouvant être accordées a
 PLANETS_HELP_5E					| « Budget »<br> Montant demandé par le Gouverneur ou par le *Joueur.
 PLANETS_HELP_5F					| « Optimal »<br> Montant requis pour maximiser le fonctionnement de la colonie.
 PLANETS_HELP_5G					| Instructions au gouverneur pour l’attribution des subventions :<br>Couleur métal : suivre les instructions globales.<br>Couleur or : allouer les subventions.<br>Arc rouge (clic droit) : peut piocher dans la réserve du joueur.<br>« Non cerclé » actif jusqu’à ce que le joueur le désactive.<br>« Cercle magenta » actif tant qu’une urgence est présente.<br>« Cercle vert » actif tant que la colonie n’a pas atteint la limite de développement.<br>« Cercle bleu » actif tant qu’une priorité bleue est présente (à l’exception de la recherche et de la construction des navires, car ils ne se désactivent pas automatiquement).
-
-PLANETS_HELP_T_BUDGET			| Budgeter le montant sélectionné.<br>Cette valeur pourra être révisée si vous le souhaitez.
-PLANETS_HELP_T_TRANSFERT		| Transférer le montant sélectionné dans la réserve de la colonie.<br><u>Ce transfert est définitif</u>.
-PLANETS_HELP_T_CONVERT			| Transférer la valeur déjà budgetée dans la réserve de la colonie.<br></u>Ce transfert est définitif</u>.
-PLANETS_HELP_T_CANCEL			| Quitter sans rien changer.
-PLANETS_HELP_T_BUDGET_OPTIMAL	| Budgeter les montants optimaux.<br>Ces valeurs pourront être révisées si vous le souhaitez.
-PLANETS_HELP_T_SHARE_OPTIMAL	| Partager les reserves disponibles proportionnellement aux besoins optimaux, et budgéter les montants.<br>Ces valeurs pourront être révisées si vous le souhaitez.
-PLANETS_HELP_T_REMOVE_PLAYER	| Renvoyer la main au gouverneur en effaçant le montant actuellement sélectionné par le joueur.
 
 // Bombardment prompt
 MAIN_BOMBARDED_TITLE             | %1 a été bombardé par des forces [alien_race_pluraladjecF].
@@ -3587,6 +3756,10 @@ SETTINGS_MOD_DEVELOPED_INDUSTRY          | {→MAIN_COLONY_INDUSTRY←}
 
 GAME_SETTINGS_PLAYER_TAX_LEVEL_PCT_DESC	| Taux d’imposition du joueur
 GAME_SETTINGS_PLAYER_TAX_LEVEL_PCT		| Taux d’imposition : %1 %
+SETTINGS_MOD_TAX_ONLY_DEVELOPED_HELP	| Il est généralement plus judicieux de ne pas impôser les colonies en développement...<br>Mais en cas de crise, cela pourrait s’avérer nécessaire.<br>La définition d’une colonie mature peut être changée dans le panneau d’option. « Alt - O »
+SETTINGS_MOD_TAX_ONLY_DEVELOPED_DESC	| N’imposer que les colonies totalement développées.
+SETTINGS_MOD_TAX_ONLY_DEVELOPED			| N’imposer que les colonies matures: %1
+SETTINGS_MOD_TAX_ONLY_DEVELOPED_LABEL	| →PLANETS_RESERVE_ONLY_DEVELOPED←
 
 SETTINGS_MOD_DEV_MAX_MISSING_POP_DESC	| Quel peut-être le nombre maximum d’habitants manquants pour obtenir le statut de « colonie développée » et que le fisc fasse son office.<br>Le gouverneur peut envoyer une partie de la population des colonies déjà développées pour aider à peupler les nouvelles. Cela ne dispense pas le paiement des impôts.
 SETTINGS_MOD_DEV_MAX_MISSING_POP		| Population manquante : %1<= %1 %1 %1
@@ -5887,7 +6060,7 @@ GOVERNOR_AUTOSPEND_LABEL			| Aider les nouvelles colonies.
 
 GOVERNOR_AUTOSPEND_IMMEDIATE_DESC	| Les gouverneurs n’utilisent pas le budget, ils transfèrent immédiatement les subventions aux colonies, comme cela se faisait auparavant.
 GOVERNOR_AUTOSPEND_IMMEDIATE		| Transfert immédiat : %1
-GOVERNOR_AUTOSPEND_IMMEDIATE_LABEL	| Restaurer l'ancienne méthode
+GOVERNOR_AUTOSPEND_IMMEDIATE_LABEL	| Restaurer l’ancienne méthode
 
 GOVERNOR_AUTOSPEND_NEW_FIRST_HELP	| Lorsque le gouverneur doit aider à la fois les nouvelles colonies et les colonies avec des artéfacts, il devra donner la priorité aux nouvelles colonies.
 GOVERNOR_AUTOSPEND_NEW_FIRST_DESC	| Le Gouverneur priorise les nouvelles colonies, celles avec des artefacts passent après.

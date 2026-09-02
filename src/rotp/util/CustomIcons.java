@@ -21,7 +21,7 @@ public class CustomIcons implements Base {
 	@Override public BufferedImage rulesIcon(int width, int height, int cnr) {
 		// Create image and fill background color
 		BufferedImage rulesIcon = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(rulesIcon);
+		Graphics2D g = Base.getGraphicsRH(rulesIcon);
 		g.setColor(multColor(GameUI.raceCenterColor(), 0.8f));
 		g.fillRoundRect(0, 0, width, height, cnr, cnr);
 
@@ -52,7 +52,7 @@ public class CustomIcons implements Base {
 	@Override public BufferedImage settingsIcon(int width, int height, int cnr) {
 		// Create image and fill background color
 		BufferedImage settingsIcon = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(settingsIcon);
+		Graphics2D g = Base.getGraphicsRH(settingsIcon);
 		g.setColor(multColor(GameUI.raceCenterColor(), 0.8f));
 		g.fillRoundRect(0, 0, width, height, cnr, cnr);
 
@@ -143,7 +143,7 @@ public class CustomIcons implements Base {
 		int h = w;
 
 		BufferedImage img = new BufferedImage(w, h, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(img);
+		Graphics2D g = Base.getGraphicsRH(img);
 		
 		// button row
 		g.setColor(GameUI.buttonBackgroundColor());
@@ -194,7 +194,7 @@ public class CustomIcons implements Base {
 		int h = rectThick*3 + rectGap*2;
 		int w = h;
 		BufferedImage img = new BufferedImage(w, h, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(img);
+		Graphics2D g = Base.getGraphicsRH(img);
 
 		// top bar
 		int rectW = w;
@@ -278,7 +278,7 @@ public class CustomIcons implements Base {
 		int armHeight = armH + 2 * armShiftCeil;
 		int armWidth  = armW + armGap;
 		BufferedImage arm = new BufferedImage(armWidth, armHeight, TYPE_INT_ARGB);
-		g = getGraphicsRH(arm);
+		g = Base.getGraphicsRH(arm);
 		g.setColor(color);
 		AffineTransform at = new AffineTransform();
 		at.rotate(armRot, 0, armShiftRnd);
@@ -292,7 +292,7 @@ public class CustomIcons implements Base {
 		int malletH = bodyH + 2*(sideGap+sideH);
 		int malletW = armW + armGap + bodyW + sideDX;
 		BufferedImage mallet = new BufferedImage(malletW, malletH, TYPE_INT_ARGB);
-		g = getGraphicsRH(mallet);
+		g = Base.getGraphicsRH(mallet);
 		g.setColor(color);
 		// add arm
 		int x = 0;
@@ -321,7 +321,7 @@ public class CustomIcons implements Base {
 		int w  = malletW + anvilW2 - 2*malletDX;
 		int h  = malletH + 3*malletDY;
 		BufferedImage rulesImage = new BufferedImage(w, h, TYPE_INT_ARGB);
-		g = getGraphicsRH(rulesImage);
+		g = Base.getGraphicsRH(rulesImage);
 		g.setColor(color);
 		// add mallet
 		at = new AffineTransform();
@@ -356,7 +356,7 @@ public class CustomIcons implements Base {
 		int lineY	= circY + dy;
 
 		BufferedImage settingsImage = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(settingsImage);
+		Graphics2D g = Base.getGraphicsRH(settingsImage);
 		g.setColor(color);
 		g.setStroke(new BasicStroke(lineH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		for (int i=0; i<lineNum; i++) {
@@ -383,7 +383,7 @@ public class CustomIcons implements Base {
 		int xFolder	= 0;
 		int yFolder	= 0;
 		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(img);
+		Graphics2D g = Base.getGraphicsRH(img);
 		g.drawImage(folderImg, xFolder, yFolder, null);
 
 		int dotNum  = 3;
@@ -432,7 +432,7 @@ public class CustomIcons implements Base {
 		int diaPup	= rayPup+rayPup;
 
 		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(img);
+		Graphics2D g = Base.getGraphicsRH(img);
 		g.setColor(lineCol);
 		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g.drawOval(xCtr-rayExt+2, yCtrUp-rayExt, diaExt, diaExt);
@@ -462,7 +462,7 @@ public class CustomIcons implements Base {
 		int stop  = width - 1;
 
 		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(img);
+		Graphics2D g = Base.getGraphicsRH(img);
 		g.setColor(lineCol);
 		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
@@ -497,7 +497,7 @@ public class CustomIcons implements Base {
 		int tlDot	= ctr - rayDot;
 
 		BufferedImage img = new BufferedImage(side, side, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(img);
+		Graphics2D g = Base.getGraphicsRH(img);
 		g.setColor(lineCol);
 		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g.drawArc(tlArrow, tlArrow, dArrow, dArrow, start, length);
@@ -526,7 +526,7 @@ public class CustomIcons implements Base {
 		int diaPup	= rayPup+rayPup;
 
 		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(img);
+		Graphics2D g = Base.getGraphicsRH(img);
 		g.setColor(lineCol);
 		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g.drawOval(xCtr-rayExt, yCtrUp-rayExt, diaExt, diaExt);
@@ -550,7 +550,7 @@ public class CustomIcons implements Base {
 		int junction = ctr + stroke_ + round(ray / Math.sqrt(2))+1;
 
 		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(img);
+		Graphics2D g = Base.getGraphicsRH(img);
 		g.setColor(lineCol);
 		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g.drawOval(width-ctr-ray, ctr-ray, dia, dia);
@@ -574,7 +574,7 @@ public class CustomIcons implements Base {
 		int glassT	= top - glassH/2;
 
 		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(img);
+		Graphics2D g = Base.getGraphicsRH(img);
 		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g.drawLine(start, top, stop, top);
 		g.drawArc(start, glassT, glassW, glassH, 0, -180);
@@ -593,7 +593,7 @@ public class CustomIcons implements Base {
 		int stepH	= rectW/8;
 
 		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(img);
+		Graphics2D g = Base.getGraphicsRH(img);
 		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		int hh = smallH;
 		int h = hh + hh;
@@ -616,7 +616,7 @@ public class CustomIcons implements Base {
 			return img;
 
 		BufferedImage rotImg = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D gr = getGraphicsRH(rotImg);
+		Graphics2D gr = Base.getGraphicsRH(rotImg);
 		AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, ctr, ctr);
 		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BICUBIC);
 		gr.drawImage(op.filter(img, null), 0, 0, null);
@@ -633,7 +633,7 @@ public class CustomIcons implements Base {
 		int stop	= width - border;
 
 		BufferedImage img = new BufferedImage(width, height, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(img);
+		Graphics2D g = Base.getGraphicsRH(img);
 		g.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g.drawLine(start, ctr, stop, ctr);
 		g.drawLine(ctr, start, ctr, stop);

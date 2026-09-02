@@ -50,7 +50,7 @@ class ShapeOptionFile extends ShapeOptionString {
 			return str;
 		}
 	}
-	private String getNameFromPath(String path) {
+	private static String getNameFromPath(String path)	{
 		File file = new File(path);
 		if (file.exists())
 			return file.getName();
@@ -87,7 +87,7 @@ final class GalaxyBitmapShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 			BASE_NAME, 1,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				SETUP_BITMAP_GREY_SUM,
 				SETUP_BITMAP_GREY_MAX,
 				SETUP_BITMAP_GREY_INVERSE,
@@ -104,7 +104,7 @@ final class GalaxyBitmapShape extends GalaxyShape {
 		if (param2 == null) {
 			param2 = new ShapeOptionList(
 			BASE_NAME, 2,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				SETUP_BITMAP_NORMAL,
 				SETUP_BITMAP_SHARP1,
 				SETUP_BITMAP_SHARP2,
@@ -159,7 +159,7 @@ final class GalaxyBitmapShape extends GalaxyShape {
 
 	@Override public float maxScaleAdj()			{ return 1.1f; }
 
-	private float sqr(float x) { return x*x;}
+	private static float sqr(float x) { return x*x;}
 	private void genGaussian(int sx, int sy, float sigma) {
 		// Bad file, Generate a working grey Map
 		xBM = sx;
@@ -205,19 +205,19 @@ final class GalaxyBitmapShape extends GalaxyShape {
 				pD[y][x] /= max;
 	}
 	private float cumulativeDensity(float[][] pD, float[][] cD) {
-		float volume = 0f;
+		float vol = 0f;
 		for (int y=0; y<yBM; y++) {
 			for (int x=0; x<xBM; x++) {
-				volume  += pD[y][x];
-				cD[y][x] = volume;
+				vol  += pD[y][x];
+				cD[y][x] = vol;
 			}
 		}
-		return volume;		
+		return vol;		
 	}
-	private void normalizeCDToOne(float[][] cD, float volume) {
+	private void normalizeCDToOne(float[][] cD, float vol) {
 		for (int y=0; y<yBM; y++)
 			for (int x=0; x<xBM; x++)
-				cD[y][x] /= volume;
+				cD[y][x] /= vol;
 	}
 	private int getGrey(int red, int green, int blue) {
 		if (isSum) 
@@ -521,11 +521,11 @@ final class GalaxyBitmapShape extends GalaxyShape {
 
 		// Get bitmap (Normalized to One)
 //		String option3 = shapeOption3.get();
-		String option3 = param3.get();
-		if(option3==null || option3.equals(""))
+		String opt3 = param3.get();
+		if(opt3==null || opt3.equals(""))
 			genGaussian(GX, GY, GS);
 		else
-			openFileAndNormalize(option3);
+			openFileAndNormalize(opt3);
 
 		if (isAdvanced) {
 			if (initMultiple()) {

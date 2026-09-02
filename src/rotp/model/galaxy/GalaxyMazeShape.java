@@ -41,7 +41,7 @@ final class GalaxyMazeShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 			BASE_NAME, 1,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_MAZE_0",
 				"SETUP_MAZE_1",
 				"SETUP_MAZE_2",
@@ -69,9 +69,9 @@ final class GalaxyMazeShape extends GalaxyShape {
 	@Override public void init(int n)	{
 		super.init(n);
 
-		float gE = (float) galaxyEdgeBuffer();
-		float gW = (float) galaxyWidthLY();
-		float gH = (float) galaxyHeightLY();
+		float gE = galaxyEdgeBuffer();
+		float gW = galaxyWidthLY();
+		float gH = galaxyHeightLY();
 		int adjust_seed = 1;
 
 		// modnar: choose different mazes (different random initial conditions) with option1
@@ -95,8 +95,8 @@ final class GalaxyMazeShape extends GalaxyShape {
 		// determine maze size with numberStarSystems
 		int width = (int) Math.max(1, 4*Math.ceil(1.5*Math.log(finalNumberStarSystems)-5));
 		int height = (int) Math.max(1, 3*Math.ceil(1.5*Math.log(finalNumberStarSystems)-5));
-		float deltaW = (float) gW/width;
-		float deltaH = (float) gH/height;
+		float deltaW = gW/width;
+		float deltaH = gH/height;
 		boolean WALL = false;
 		boolean PASSAGE = !WALL;
 		boolean[][] map = new boolean[width][height];

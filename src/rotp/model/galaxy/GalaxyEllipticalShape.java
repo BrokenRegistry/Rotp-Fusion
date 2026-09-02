@@ -42,7 +42,7 @@ final class GalaxyEllipticalShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 			BASE_NAME, 1,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_ELLIPSE_0",
 				"SETUP_ELLIPSE_1",
 				"SETUP_ELLIPSE_2",
@@ -59,7 +59,7 @@ final class GalaxyEllipticalShape extends GalaxyShape {
 		if (param2 == null) {
 			param2 = new ShapeOptionList(
 			BASE_NAME, 2,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_VOID_0",
 				"SETUP_VOID_1",
 				"SETUP_VOID_2",

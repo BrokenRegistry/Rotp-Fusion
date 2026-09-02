@@ -616,6 +616,22 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 			return (col.defense().completedPct(shieldWithoutBases) + col.industry().factoryToMaxRatio() + col.ecology().completedPct())/3;
 		}
 	}
+
+	static Boolean getTaxOnlyDeveloped()	{
+		if (GameSession.isGameMode())
+			return GameSession.instance().galaxy().player().empireTaxOnlyDeveloped();
+		else
+			return taxOnlyDeveloped.last();
+	}
+	static void setTaxOnlyDeveloped(Boolean b)	{
+		if (GameSession.isGameMode())
+			GameSession.instance().galaxy().player().setTaxOnlyDeveloped(b);
+	}
+	ParamBoolean taxOnlyDeveloped	= new ParamBoolean(MOD_UI, "TAX_ONLY_DEVELOPED", true)
+			.isDuplicate(true)
+			.setNewValueMethod(IInGameOptions::setTaxOnlyDeveloped)
+			.setGetValueMethod(IInGameOptions::getTaxOnlyDeveloped);
+
 	ParamInteger maxMissingPopulation	= new ParamInteger(MOD_UI, "DEV_MAX_MISSING_POP", 3)
 			.setDefaultValue(MOO1_DEFAULT, 0)
 			.setDefaultValue(ROTP_DEFAULT, 0)

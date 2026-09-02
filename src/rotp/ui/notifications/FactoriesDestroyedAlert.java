@@ -25,7 +25,7 @@ public class FactoriesDestroyedAlert extends GameAlert {
     private final int count;
     private final StarSystem system;
     public static void create(Empire e, int num, StarSystem sv) {
-        GameSession.instance().addAlert(new FactoriesDestroyedAlert(e,num,sv));
+        GameSession.addAlert(new FactoriesDestroyedAlert(e,num,sv));
     }
     @Override
     public String description() {

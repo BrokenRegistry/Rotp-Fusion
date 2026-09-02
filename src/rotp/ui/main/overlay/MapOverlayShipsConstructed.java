@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rotp.model.Sprite;
+import rotp.model.game.GameSession;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
 import rotp.ui.main.GalaxyMapPanel;
@@ -34,7 +35,7 @@ import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.ClickToContinueSprite;
 
-public class MapOverlayShipsConstructed extends MapOverlay {
+public final class MapOverlayShipsConstructed implements IMapOverlay {
     Color maskC  = new Color(40,40,40,160);
     Area mask;
     BufferedImage planetImg;
@@ -53,7 +54,7 @@ public class MapOverlayShipsConstructed extends MapOverlay {
         designs.clear();
         for (ShipDesign d: player().shipLab().designs()) {
             if (d != null) {
-                if (session().shipsConstructed().containsKey(d))
+                if (GameSession.shipsConstructed().containsKey(d))
                     designs.add(d);
             }
         }
@@ -70,15 +71,9 @@ public class MapOverlayShipsConstructed extends MapOverlay {
         parent.resumeTurn();
     }
     @Override
-    public void paintOverMap(MainUI parent, GalaxyMapPanel ui, Graphics2D g) {
+    public void paintOverMap(MainUI p, GalaxyMapPanel ui, Graphics2D g) {
         int w = ui.getWidth();
         int h = ui.getHeight();
-
-        int s7 = scaled(7);
-        int s20 = scaled(20);
-        int s30 = scaled(30);
-        int s40 = scaled(40);
-        int s68 = scaled(68);
 
         int bdrW = s7;
         int boxW = scaled(540);
@@ -139,10 +134,10 @@ public class MapOverlayShipsConstructed extends MapOverlay {
         int vSpacing= (boxH-boxH1-shipH)/2;
         int shipX = hSpacing;
         for (ShipDesign d: designs) {
-            drawShip(parent, parent.map(), g, d, boxX+shipX, boxY+boxH1+vSpacing, shipW, shipH);
+            drawShip(p, p.map(), g, d, boxX+shipX, boxY+boxH1+vSpacing, shipW, shipH);
             shipX = shipX+shipW+hSpacing;
         }
-        parent.addNextTurnControl(clickSprite);
+        p.addNextTurnControl(clickSprite);
     }
     @Override
     public boolean handleKeyPress(KeyEvent e) {
@@ -162,7 +157,7 @@ public class MapOverlayShipsConstructed extends MapOverlay {
         }
         return true;
     }
-    private void drawShip(MainUI parent, GalaxyMapPanel ui, Graphics2D g, ShipDesign d, int x, int y, int w, int h) {
+    private void drawShip(MainUI p, GalaxyMapPanel ui, Graphics2D g, ShipDesign d, int x, int y, int w, int h) {
         g.setFont(narrowFont(18));
         int sw = g.getFontMetrics().stringWidth(d.name());
         int x0 = x+((w-sw)/2);
@@ -170,7 +165,7 @@ public class MapOverlayShipsConstructed extends MapOverlay {
         drawString(g,d.name(), x0, y);
 
         Image img = d.image();
-        
+
         if (img != null) {
             int imgW = img.getWidth(null);
             int imgH = img.getHeight(null);
@@ -181,14 +176,14 @@ public class MapOverlayShipsConstructed extends MapOverlay {
 
             int x1 = x+((w-w1)/2);
             int y1 = y+((h-h1)/2);
-            g.drawImage(img, x1, y1, x1+w1, y1+h1, 0, 0, imgW, imgH, parent);
+            g.drawImage(img, x1, y1, x1+w1, y1+h1, 0, 0, imgW, imgH, p);
         }
 
-        int count = session().shipsConstructed().containsKey(d) ? session().shipsConstructed().get(d) : 0;
+        int count = GameSession.shipsConstructed().containsKey(d) ? GameSession.shipsConstructed().get(d) : 0;
         String s = str(count);
         int sw2 = g.getFontMetrics().stringWidth(s);
         int x2 = x+((w-sw2)/2);
         g.setColor(SystemPanel.yellowText);
-        drawString(g,s, x2, y+h+scaled(15));
+		drawString(g,s, x2, y+h+s15);
     }
 }

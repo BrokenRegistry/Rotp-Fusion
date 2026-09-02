@@ -363,21 +363,17 @@ public enum RaceFactory implements Base {
 		if (key.equalsIgnoreCase("key"))				{ r.id(value); return; }
 		if (key.equalsIgnoreCase("langKey"))			{ r.langKey(value); return; }
 		if (key.equalsIgnoreCase("year"))				{ r.startingYear(parseInt(value)); return; }
-		// if (key.equalsIgnoreCase("homestarType"))	{ r.homeworldStarType(value); return; }
-		if (key.equalsIgnoreCase("homestarType"))		{ return; }
+		if (key.equalsIgnoreCase("homestarType"))		{ r.homeworldStarType(value); return; }
 		if (key.equalsIgnoreCase("homeworldType"))		{ r.homeworldPlanetType(value); return; }
 		if (key.equalsIgnoreCase("homeworldKey"))		{ parseHomeWorlKey(r, value); return; }
 		if (key.equalsIgnoreCase("homeworldSize"))		{ r.homeworldSize(parseInt(value)); return; }
 		if (key.equalsIgnoreCase("mugshot"))			{ r.mugshotKey(value); return; }
-		// if (key.equalsIgnoreCase("diploProfile"))	{ r.wideMugshotKey(value); return; }
-		if (key.equalsIgnoreCase("diploProfile"))		{ return; }
+		if (key.equalsIgnoreCase("diploProfile"))		{ r.wideMugshotKey(value); return; }
 		if (key.equalsIgnoreCase("setupImage"))			{ r.setupImageKey(value); return; }
-		// if (key.equalsIgnoreCase("spyMug"))			{ r.spyFaceKey(value); return; }
-		if (key.equalsIgnoreCase("spyMug"))				{ return; }
-		// if (key.equalsIgnoreCase("soldierMug"))		{ r.soldierFaceKey(value); return; }
-		if (key.equalsIgnoreCase("soldierMug"))			{ return; }
+		if (key.equalsIgnoreCase("spyMug"))				{ r.spyFaceKey(value); return; }
+		if (key.equalsIgnoreCase("soldierMug"))			{ r.soldierFaceKey(value); return; }
 		// if (key.equalsIgnoreCase("advisorMug"))		{ r.advisorFaceKey(value); return; }
-		if (key.equalsIgnoreCase("advisorMug"))			{ return; }
+		if (key.equalsIgnoreCase("advisorMug"))			{ return; }	// BR:  Never used, only Bulrathi declare this.
 		if (key.equalsIgnoreCase("advisorScout"))		{ r.advisorScoutKey(value); return; }
 		if (key.equalsIgnoreCase("advisorTransport"))	{ r.advisorTransportKey(value); return; }
 		if (key.equalsIgnoreCase("advisorDiplomacy"))	{ r.advisorDiplomacyKey(value); return; }
@@ -404,7 +400,7 @@ public enum RaceFactory implements Base {
 		if (key.equalsIgnoreCase("gnnColor"))		{ r.gnnColor(value); return; }
 		if (key.equalsIgnoreCase("gnnTextColor"))	{ r.gnnTextColor(parseColor(value)); return; }
 		// if (key.equalsIgnoreCase("diplomatXform"))	{ r.diplomacyTransformer(PixelShifter.createFrom(value)); return; }
-		if (key.equalsIgnoreCase("diplomatXform"))	{ return; }
+		if (key.equalsIgnoreCase("diplomatXform"))	{ return; }	// BR: no species have this key
 		if (key.equalsIgnoreCase("winSplash"))		{ r.parseWinSplash(value); return; }
 		if (key.equalsIgnoreCase("lossSplash"))		{ r.parseLossSplash(value); return; }
 		if (key.equalsIgnoreCase("flagSize"))		{ r.flagSize(value); return; }

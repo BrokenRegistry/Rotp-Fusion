@@ -351,7 +351,9 @@ public abstract class SpeciesSettings implements Base{
 				set(srcOptions.getString(dynOptionIndex(), DEFAULT_VALUE));
 		}
 		@Override public void copyOption(IGameOptions src, IGameOptions dest, boolean updateTool, int cascadeSubMenu)	{
-			if (!isSpacer() && src != null && dest != null)
+			if (src == null || dest == null)
+				return;
+			if (!isSpacer())
 				dest.dynOpts().setString(dynOptionIndex(), settingValue());
 			dest.dynOpts().setString(dynOptionIndex(), src.dynOpts().getString(dynOptionIndex(), DEFAULT_VALUE));
 		}

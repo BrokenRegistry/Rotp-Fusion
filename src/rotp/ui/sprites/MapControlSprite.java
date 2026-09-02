@@ -18,7 +18,7 @@ package rotp.ui.sprites;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
-import rotp.ui.BasePanel;
+
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.SystemPanel;
 
@@ -27,57 +27,57 @@ public abstract class MapControlSprite extends MapSprite {
     protected int xOffset, yOffset, width, height;
     protected int startX, startY;
 
-    @Override
-    public boolean isSelectableAt(GalaxyMapPanel map, int mapX, int mapY) {
-        int s5 = scaled(3);
-        hovering = mapX >= startX-s5
-            && mapX <= startX+width+s5+s5
-            && mapY >= startY-s5
-            && mapY <= startY+height+s5+s5;
-
-        return hovering;
-    }
-    public void drawBackground(GalaxyMapPanel map, Graphics2D g2) {
+	protected MapControlSprite(int xOff, int yOff, int w, int h, String adviceKey) {
+		xOffset	= scaled(xOff);
+		yOffset	= scaled(yOff);
+		width	= scaled(w);
+		height	= scaled(h);
+		box.setSize(width, height);
+		box.setLocation(xOffset, yOffset);
+		box.setSelectionBounds(startX-s3, startY-s3, width+s3+s3, height+s3+s3);
+		box.setAdviceHelpKey(adviceKey);
+	}
+	protected void drawBackground(GalaxyMapPanel map, Graphics2D g2) {
         startX = xOffset >= 0 ? xOffset : map.getWidth()+xOffset;
         startY = yOffset >= 0 ? yOffset : map.getHeight()+yOffset;
-        int s5 = scaled(5);
+		box.setLocation(startX, startY);
+		box.setSelectionBounds(startX-s3, startY-s3, width+s3+s3, height+s3+s3);
         g2.setColor(map.parent().shadeC());
         g2.fillRect(startX-s5, startY-s5, width+s5+s5, height+s5+s5);
     }
-    public void drawBorder(GalaxyMapPanel map, Graphics2D g2) {
+    protected void drawBorder(GalaxyMapPanel map, Graphics2D g2) {
         Stroke str0 = g2.getStroke();
 
         if (hovering) {
-            g2.setStroke(BasePanel.stroke2);
+            g2.setStroke(stroke2);
             g2.setColor(SystemPanel.yellowText);
         }
         else {
-            g2.setStroke(BasePanel.stroke1);
+            g2.setStroke(stroke1);
             g2.setColor(map.parent().backC());
         }
-        int cnr = BasePanel.s12;
+		int cnr = s12;
         g2.drawRoundRect(startX, startY, width, height, cnr, cnr);
         g2.setStroke(str0);
     }
     public void drawBackground(GalaxyMapPanel map, Graphics2D g2, int w) {
         startX = xOffset >= 0 ? xOffset : map.getWidth()+xOffset;
         startY = yOffset >= 0 ? yOffset : map.getHeight()+yOffset;
-        int s5 = scaled(5);
+		box.setLocation(startX, startY);
+		box.setSelectionBounds(startX-s3, startY-s3, width+s3+s3, height+s3+s3);
         g2.setColor(map.parent().shadeC());
         g2.fillRect(startX-s5, startY-s5, w+s5+s5, height+s5+s5);
     }
-    public void drawBorder(GalaxyMapPanel map, Graphics2D g2, int w, Color c, boolean show) {
+    protected void drawBorder(GalaxyMapPanel map, Graphics2D g2, int w, Color c, boolean show) {
         Stroke str0 = g2.getStroke();
+		int cnr = s12;
 
-        int cnr = BasePanel.s12;
-        
-        g2.setStroke(BasePanel.stroke1);
+        g2.setStroke(stroke1);
         g2.setColor(c);
         g2.drawRoundRect(startX, startY, width, height, cnr, cnr);
-        
-        
+
         if (hovering || show) {
-            g2.setStroke(BasePanel.stroke2);
+			g2.setStroke(stroke2);
             g2.setColor(SystemPanel.yellowText);
             g2.drawRoundRect(startX, startY, w, height, cnr, cnr);
             g2.setStroke(str0);

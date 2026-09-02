@@ -15,6 +15,8 @@
  */
 package rotp.ui;
 
+import static rotp.ui.game.AdvisorPanel.ADVISOR;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -39,13 +41,16 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import rotp.Rotp;
+import rotp.model.IAdvice;
 import rotp.model.Sprite;
+import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarType;
 import rotp.model.game.IDebugOptions;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.map.IMapHandler;
 import rotp.ui.util.InterfacePreview;
+import rotp.util.AdviceBox;
 import rotp.util.Base;
 import rotp.util.ThickBevelBorder;
 
@@ -93,6 +98,18 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
     public void advanceHelp()              { }
 	public void toggleTips()			{ }
 	public void showTips(boolean show)	{ }
+	public void closeOnDemandAdvisor()	{ }
+	public void toggleOnDemandAdvisor(BasePanel p, String key, Empire emp1)	{ }
+	protected Shape hoverBox(Shape newShape, Shape prevHover)	{
+		if (prevHover == newShape)
+			return prevHover;
+		if (newShape instanceof AdviceBox)
+			ADVISOR.hoveringOverElement((IAdvice) newShape);
+		if (prevHover instanceof AdviceBox)
+			((AdviceBox) prevHover).hovering(false);
+		repaint();
+		return newShape;
+	}
 
     public boolean hasStarBackground()     { return false; }
     public final boolean hasTexture()      { return textureName() != null; }
@@ -149,9 +166,13 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
         super.paint(g);
         if (hasTexture())
             drawTexture(g);
+
+		drawOverTextures(g);
+
         if (drawMemory())
             drawMemory(g);
     }
+	protected void drawOverTextures(Graphics g)		{ }
     protected void jPanelPaintComponent(Graphics g) {
         setRenderingHints(g);
         super.paintComponent(g);
@@ -365,8 +386,8 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
 	}
 
     // used for keyEvents sent from RotPUI
-	public void keyPressed(KeyEvent e) { }
-	public void keyReleased(KeyEvent e) { }
+	public void keyPressed(KeyEvent e)	{ setModifierKeysState(e); }
+	public void keyReleased(KeyEvent e)	{ setModifierKeysState(e); }
     public void keyTyped(KeyEvent e) { }
     public void playAmbience() {
             playAmbience(ambienceSoundKey());
@@ -413,4 +434,5 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
 		g.dispose();
 		return gc;
 	}
+	public Shape getHoverBox()	{ return null; }
 }

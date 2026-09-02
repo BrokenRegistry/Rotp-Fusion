@@ -19,6 +19,7 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static rotp.model.colony.Colony.ECOLOGY;
 import static rotp.model.colony.Colony.RESEARCH;
 import static rotp.model.colony.Colony.SHIP;
+import static rotp.ui.game.IAdvisor.HELP_KEY;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -57,6 +58,7 @@ import rotp.ui.UserPreferences;
 import rotp.ui.options.AllSubUI;
 import rotp.ui.options.ISubUiKeys;
 import rotp.ui.util.ParamSubUI;
+import rotp.util.AdviceBox;
 import rotp.util.ImageManager;
 
 public class EmpireColonySpendingPane extends BasePanel {
@@ -95,15 +97,15 @@ public class EmpireColonySpendingPane extends BasePanel {
     private static boolean needInitializationRound = true;
     private static boolean needInitializationSquare = true;
 
-    private final Rectangle governorBox	= new Rectangle();
-    private final Rectangle optionsBox	= new Rectangle();
-	private final Rectangle coinBox		= new Rectangle();
+	private final AdviceBox governorBox;
+	private final AdviceBox optionsBox;
+	private final AdviceBox coinBox;
     private GradientPaint govPaint, optPaint;
     private final SystemViewer parent;
     private final boolean isRound;
     private final Color textColorOn, textColorOff;
     private final Color paintColorExt, paintColorInt;
-    private final Color buttonColor;
+    private final Color buttonCol;
     final Color borderHi, borderLo, textC, backC;
 
     private EmpireSliderPane shipSlider, defSlider, indSlider, ecoSlider, researchSlider;
@@ -126,7 +128,14 @@ public class EmpireColonySpendingPane extends BasePanel {
         textColorOff = tOff;
         paintColorExt = pExt;
         paintColorInt = pInt;
-        buttonColor   = bC;
+		buttonCol	= bC;
+		governorBox	= new AdviceBox(this);
+		optionsBox	= new AdviceBox(this);
+		coinBox		= new AdviceBox(this);
+		governorBox.setAdviceHelpKey("MAIN_GOVERNOR_TOGGLE_HELP");
+		governorBox.setTopLeftHelpKey("MAIN_GOVERNOR_TOP_LEFT_HELP");
+		optionsBox.setAdviceHelpKey("MAIN_HELP_MOD_1B");
+		coinBox.setGetHelpImg(Colony.CoinAdvisor::getSubsidiesInstruction);
 
         isRound  = round;
         init();
@@ -281,7 +290,7 @@ public class EmpireColonySpendingPane extends BasePanel {
         	titleC  = SystemPanel.yellowText;
         }
         else {
-        	borderC = buttonColor;
+        	borderC = buttonCol;
         	if (isGovernor)
         		titleC  = textColorOn;
         	else
@@ -354,7 +363,7 @@ public class EmpireColonySpendingPane extends BasePanel {
         	titleC  = SystemPanel.yellowText;
         }
         else {
-        	borderC = buttonColor;
+        	borderC = buttonCol;
            	titleC  = textColorOn;
         }
     	optionsBox.setBounds(optButtonX, buttonY, optButtonW, buttonH);
@@ -444,10 +453,10 @@ public class EmpireColonySpendingPane extends BasePanel {
         //EmpireColonySpendingPane mgmtPane;
         private final Polygon leftArrow = new Polygon();
         private final Polygon rightArrow = new Polygon();
-        private final Rectangle labelBox = new Rectangle();
-        private final Rectangle sliderBox = new Rectangle();
-        private final Rectangle resultBox = new Rectangle();
-        private Shape hoverBox;
+		private final AdviceBox labelBox;
+		private final AdviceBox sliderBox;
+		private final AdviceBox resultBox;
+		private Shape hoverBox;
         // polygon coordinates for left & right increment buttons
         private final int leftButtonX[] = new int[3];
         private final int leftButtonY[] = new int[3];
@@ -457,6 +466,12 @@ public class EmpireColonySpendingPane extends BasePanel {
         private EmpireSliderPane(EmpireColonySpendingPane ui, int cat) {
             //mgmtPane = ui;
             category = cat;
+			labelBox = new AdviceBox(this);
+			sliderBox = new AdviceBox(this);
+			resultBox = new AdviceBox(this);
+			labelBox.setAdviceHelpKey("ALLOCATION_LABEL_" + cat + HELP_KEY);
+			sliderBox.setAdviceHelpKey("ALLOCATION_SLIDER_" + cat + HELP_KEY);
+			resultBox.setAdviceHelpKey("ALLOCATION_RESULT_" + cat + HELP_KEY);
             init();
         }
         private void init() {
@@ -506,25 +521,25 @@ public class EmpireColonySpendingPane extends BasePanel {
 
 			// --------------------------------------------------------
 			// Left side: label
-            Color textC;
+            Color textCol;
             if (hoverBox == labelBox)
-                textC = SystemPanel.yellowText;
+                textCol = SystemPanel.yellowText;
             else if (colony.canAdjust(category))
             	if (colony.isUrged(category))
-            		textC = sliderTextUrged;
+            		textCol = sliderTextUrged;
             	else if (colony.hasOrder(category) && options().showPendingOrders())
-            		textC = sliderTextHasOrder;
+            		textCol = sliderTextHasOrder;
             	else
-            		textC = sliderTextEnabled;
+            		textCol = sliderTextEnabled;
             else if (colony.isUrged(category))
-        		textC = sliderTextUrgedD;
+        		textCol = sliderTextUrgedD;
         	else if (colony.hasOrder(category) && options().showPendingOrders())
-        		textC = sliderTextHasOrderD;
+        		textCol = sliderTextHasOrderD;
         	else
-                textC = sliderTextDisabled;
+                textCol = sliderTextDisabled;
 
             String labelText = text(text);
-            g.setColor(textC);
+            g.setColor(textCol);
             g.setFont(narrowFont(18));
             drawString(g,labelText, s10, getHeight()-s10);
             labelBox.setBounds(s5, 0, leftMargin()-s15, getHeight());
@@ -563,10 +578,7 @@ public class EmpireColonySpendingPane extends BasePanel {
                 rightArrow.addPoint(rightButtonX[i], rightButtonY[i]);
             }
 
-            sliderBox.x = boxL;
-            sliderBox.y = boxTopY;
-            sliderBox.width = boxW;
-            sliderBox.height = boxH;
+			sliderBox.setBounds(boxL, boxTopY, boxW, boxH);
 
             g.setColor(c2);
             g.fillRect(boxL+boxBorderW(), boxTopY, boxW-(2*boxBorderW()), boxH);
@@ -650,16 +662,16 @@ public class EmpireColonySpendingPane extends BasePanel {
 
 			// --------------------------------------------------------
 			//  Right: result
-            textC = SystemPanel.blackText;
-            if (hoverBox == resultBox)
-                textC = SystemPanel.yellowText;
+			textCol = SystemPanel.blackText;
+			if (hoverBox == resultBox)
+				textCol = SystemPanel.yellowText;
 			String resultText;
 			if (isAltDown() && isCtrlDown())
 				resultText = text("PLANETS_AMT_BC", fmt(colony.category(category).totalBC(), 1));
 			else
 				resultText = text(colony.category(category).upcomingResult());
 
-            g.setColor(textC);
+			g.setColor(textCol);
             scaledFont(g, resultText, rightMargin()-s10, 18, 14);
             g.setFont(narrowFont(18));
             int sw = g.getFontMetrics().stringWidth(resultText);
@@ -856,6 +868,8 @@ public class EmpireColonySpendingPane extends BasePanel {
 			setModifierKeysState(e);
             if (hoverBox != null) {
                 hoverBox = null;
+				if (hoverBox instanceof AdviceBox)
+					((AdviceBox) hoverBox).hovering(false);
                 repaint();
             }
             if (!getVisibleRect().contains(e.getPoint()) ) {
@@ -868,20 +882,10 @@ public class EmpireColonySpendingPane extends BasePanel {
                 return;
             int x = e.getX();
             int y = e.getY();
-            if (labelBox.contains(x,y))
-            	if (e.isControlDown() || SwingUtilities.isRightMouseButton(e))
-           		 	toggleOrder();
-            	else
-            		toggleLock();
-            else if (leftArrow.contains(x,y))
-                decrement(true);
-            else if (rightArrow.contains(x,y))
-                increment(true);
-            else if (resultBox.contains(x,y))
-            	commonResultBox(true, e);
-            else if (this.category < 0) {
-                if (governorBox.contains(x,y))
-                	toggleGovernor();
+
+			if (category < 0) {
+				if (governorBox.contains(x,y))
+					toggleGovernor();
 				else if (coinBox.contains(x,y))
 					toggleFunding(SwingUtilities.isRightMouseButton(e));
 				else if (optionsBox.contains(x,y))
@@ -895,8 +899,19 @@ public class EmpireColonySpendingPane extends BasePanel {
 					}
 					else
 						governorOptions();
-            }
-            else {
+			}
+			else if (labelBox.isSelectableAt(x,y))
+				if (e.isControlDown() || SwingUtilities.isRightMouseButton(e))
+				 	toggleOrder();
+				else
+					toggleLock();
+			else if (leftArrow.contains(x,y))
+				decrement(true);
+			else if (rightArrow.contains(x,y))
+				increment(true);
+			else if (resultBox.isSelectableAt(x,y))
+				commonResultBox(true, e);
+			else {
                 float pct = pctBoxSelected(x,y);
                 if (pct >= 0) {
                     Colony colony = parent.systemViewToDisplay().colony();
@@ -927,34 +942,32 @@ public class EmpireColonySpendingPane extends BasePanel {
             }
         }
         @Override public void mouseDragged(MouseEvent e) { }
-        @Override public void mouseMoved(MouseEvent e) {
+		@Override public void mouseMoved(MouseEvent e) {
 			setModifierKeysState(e);
-            int x = e.getX();
-            int y = e.getY();
+			int x = e.getX();
+			int y = e.getY();
 
-            Shape newHover = null;
-            if (labelBox.contains(x,y))
-                newHover = labelBox;
-            else if (sliderBox.contains(x,y))
-                newHover = sliderBox;
-            else if (leftArrow.contains(x,y))
-                newHover = leftArrow;
-            else if (rightArrow.contains(x,y))
-                newHover = rightArrow;
-            else if (resultBox.contains(x,y))
-                newHover = resultBox;
-            else if (governorBox.contains(x,y))
-                newHover = governorBox;
-			else if (coinBox.contains(x,y))
-				newHover = coinBox;
-            else if (optionsBox.contains(x,y))
-                newHover = optionsBox;
-
-            if (newHover != hoverBox) {
-                hoverBox = newHover;
-                repaint();
-            }
-        }
+			if (category >= 0) {
+				if (labelBox.isSelectableAt(x,y))
+					hoverBox = hoverBox(labelBox, hoverBox);
+				else if (sliderBox.isSelectableAt(x,y))
+					hoverBox = hoverBox(sliderBox, hoverBox);
+				else if (leftArrow.contains(x,y))
+					hoverBox = hoverBox(leftArrow, hoverBox);
+				else if (rightArrow.contains(x,y))
+					hoverBox = hoverBox(rightArrow, hoverBox);
+				else if (resultBox.isSelectableAt(x,y))
+					hoverBox = hoverBox(resultBox, hoverBox);
+			}
+			else if (governorBox.isSelectableAt(x,y))
+				hoverBox = hoverBox(governorBox, hoverBox);
+			else if (coinBox.isSelectableAt(x,y))
+				hoverBox = hoverBox(coinBox, hoverBox);
+			else if (optionsBox.isSelectableAt(x,y))
+				hoverBox = hoverBox(optionsBox, hoverBox);
+			else
+				hoverBox = hoverBox(null, hoverBox);
+		}
         @Override public void mouseWheelMoved(MouseWheelEvent e) {
 			setModifierKeysState(e);
             int rot = e.getWheelRotation();
@@ -1018,7 +1031,7 @@ public class EmpireColonySpendingPane extends BasePanel {
                     governorOptionsFrame.addComponentListener(governorOptionsFrame.new GovernorComponentAdapter());
                     // make this window have an icon, same as main window
                     // modnar: change to cleaner icon set
-                    List<Image> iconImages = new ArrayList<Image>();
+                    List<Image> iconImages = new ArrayList<>();
                     iconImages.add(ImageManager.current().image("ROTP_MOD_ICON3"));
                     iconImages.add(ImageManager.current().image("ROTP_MOD_ICON2"));
                     iconImages.add(ImageManager.current().image("ROTP_MOD_ICON1"));

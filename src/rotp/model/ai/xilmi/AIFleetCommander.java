@@ -40,6 +40,7 @@ import rotp.model.galaxy.Ship;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.galaxy.Transport;
+import rotp.model.game.GameSession;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
 import rotp.ui.NoticeMessage;
@@ -654,7 +655,7 @@ public class AIFleetCommander implements Base, FleetCommander {
                             else {
                 	            log("Withdrawing fleet: ", fleet.toString(), " from: ", str(fp.destId), "  to: No valid retreat => deleted");
                                 galaxy().ships.deleteFleet(fleet);
-                                session().removeVarValue(fleet);
+                                GameSession.removeVarValue(fleet);
                                 continue;
                             }
                         }

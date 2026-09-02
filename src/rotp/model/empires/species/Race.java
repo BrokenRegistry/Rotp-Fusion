@@ -37,13 +37,13 @@ class Race extends SpeciesSkills {
 	private String diplomatKey;
 	private String scientistKey;
 	private String soldierKey;
-//	private String spyFaceKey;
+	private String spyFaceKey;
 	private String leaderKey;
-//	private String soldierFaceKey;
+	private String soldierFaceKey;
 	private String mugshotKey;
-//	private String wideMugshotKey;
+	private String wideMugshotKey;
 	private String setupImageKey;
-//	private String advisorFaceKey;
+	private String advisorFaceKey;
 	private String advisorScoutKey;
 	private String advisorTransportKey;
 	private String advisorDiplomacyKey;
@@ -156,10 +156,10 @@ class Race extends SpeciesSkills {
 	String transportOpenKey()			{ return transportOpenKey; }
 	private void transportOpenKey(String s)	{ transportOpenKey = s; }
 	void mugshotKey(String s)			{ mugshotKey = s; }
-//	void wideMugshotKey(String s)		{ wideMugshotKey = s; }
+	void wideMugshotKey(String s)		{ wideMugshotKey = s; }
 	void setupImageKey(String s)		{ setupImageKey = s; }
-//	void spyFaceKey(String s)			{ spyFaceKey = s; }
-//	void soldierFaceKey(String s)		{ soldierFaceKey = s; }
+	void spyFaceKey(String s)			{ spyFaceKey = s; }
+	void soldierFaceKey(String s)		{ soldierFaceKey = s; }
 //	void advisorFaceKey(String s)		{ advisorFaceKey = s; }
 	void advisorScoutKey(String s)		{ advisorScoutKey = s; }
 	void advisorTransportKey(String s)	{ advisorTransportKey = s; }
@@ -235,19 +235,19 @@ class Race extends SpeciesSkills {
 	Image dialogWar()			{ return image(dlgWarKey); }
 	Image dialogNorm()			{ return image(dlgNormKey); }
 	Image dialogPact()			{ return image(dlgPactKey); }
-	Image council()				{ return image(councilKey);  }
+	Image council()				{ return image(councilKey); }
 	Image gnnEvent(String id)	{ return image(gnnEventKey(id)); }
 	private String gnnEventKey(String id)	{ return concat(gnnColor,"_",id); }
 	BufferedImage gnn()					{ return currentFrame(gnnKey); }
 	BufferedImage gnnHost()				{ return currentFrame(gnnHostKey); }
-	BufferedImage laboratory()			{ return currentFrame(laboratoryKey);  }
-	BufferedImage embassy()				{ return currentFrame(embassyKey);  }
-	BufferedImage holograph()			{ return currentFrame(holographKey);  }
-//	BufferedImage mugshot()				{ return currentFrame(mugshotKey);  }
-	BufferedImage setupImage()			{ return currentFrame(setupImageKey);  }
-//	BufferedImage spyMugshotQuiet()		{ return currentFrame(spyFaceKey, notTalking);  }
-//	BufferedImage soldierMugshot()		{ return currentFrame(soldierFaceKey, notTalking);  }
-//	BufferedImage advisorMugshot()		{ return currentFrame(advisorFaceKey, notTalking); }
+	BufferedImage laboratory()			{ return currentFrame(laboratoryKey); }
+	BufferedImage embassy()				{ return currentFrame(embassyKey); }
+	BufferedImage holograph()			{ return currentFrame(holographKey); }
+//	BufferedImage mugshot()				{ return currentFrame(mugshotKey); }
+	BufferedImage setupImage()			{ return currentFrame(setupImageKey); }
+	BufferedImage spyMugshotQuiet()		{ return currentFrame(spyFaceKey, notTalking); }
+	BufferedImage soldierMugshot()		{ return currentFrame(soldierFaceKey, notTalking); }
+	BufferedImage advisorMugshot()		{ return currentFrame(advisorFaceKey, notTalking); }
 	BufferedImage advisorScout()		{ return currentFrame(advisorScoutKey, notTalking); }
 	BufferedImage advisorTransport()	{ return currentFrame(advisorTransportKey, notTalking); }
 	BufferedImage advisorDiplomacy()	{ return currentFrame(advisorDiplomacyKey, notTalking); }
@@ -259,17 +259,17 @@ class Race extends SpeciesSkills {
 	BufferedImage advisorRebellion()	{ return currentFrame(advisorRebellionKey, notTalking); }
 	BufferedImage advisorResistCouncil()	{ return currentFrame(advisorResistCouncilKey, notTalking); }
 	BufferedImage advisorCouncilResisted()	{ return currentFrame(advisorCouncilResistedKey, notTalking); }
-	BufferedImage diplomatTalking()		{ return currentFrame(diplomatKey);  }
-	BufferedImage scientistTalking()	{ return currentFrame(scientistKey);  }
-	BufferedImage soldierTalking()		{ return currentFrame(soldierKey);  }
-	BufferedImage spyTalking()			{ return currentFrame(spyKey);  }
-	BufferedImage diploMugshotQuiet()	{ return currentFrame(mugshotKey, notTalking);  }
-//	private BufferedImage diploWideMugshot()	{ return currentFrame(wideMugshotKey, notTalking);  }
-	BufferedImage diplomatQuiet()		{ return currentFrame(diplomatKey, notTalking);  }
-	BufferedImage scientistQuiet()		{ return currentFrame(scientistKey, notTalking);  }
-	BufferedImage soldierQuiet()		{ return currentFrame(soldierKey, notTalking);  }
-	BufferedImage spyQuiet()			{ return currentFrame(spyKey, notTalking);  }
-	BufferedImage councilLeader()		{ return asBufferedImage(image(leaderKey));  }
+	BufferedImage diplomatTalking()		{ return currentFrame(diplomatKey); }
+	BufferedImage scientistTalking()	{ return currentFrame(scientistKey); }
+	BufferedImage soldierTalking()		{ return currentFrame(soldierKey); }
+	BufferedImage spyTalking()			{ return currentFrame(spyKey); }
+	BufferedImage diploMugshotQuiet()	{ return currentFrame(mugshotKey, notTalking); }
+	BufferedImage diploWideMugshot()	{ return currentFrame(wideMugshotKey, notTalking); }
+	BufferedImage diplomatQuiet()		{ return currentFrame(diplomatKey, notTalking); }
+	BufferedImage scientistQuiet()		{ return currentFrame(scientistKey, notTalking); }
+	BufferedImage soldierQuiet()		{ return currentFrame(soldierKey, notTalking); }
+	BufferedImage spyQuiet()			{ return currentFrame(spyKey, notTalking); }
+	BufferedImage councilLeader()		{ return asBufferedImage(image(leaderKey)); }
 	BufferedImage diploMug()	{
 		if (diploMug == null)
 			diploMug = newBufferedImage(diploMugshotQuiet());

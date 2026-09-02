@@ -20,79 +20,40 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
-
-import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 
 import rotp.model.galaxy.StarSystem;
 import rotp.model.planet.PlanetType;
 import rotp.ui.BasePanel;
 import rotp.ui.map.IMapHandler;
 
-public class ExploredSystemPanel extends SystemPanel {
+final class ExploredSystemPanel extends SystemPanel {
     private static final long serialVersionUID = 1L;
-    static Border topPaneBorder;
-    static Border detailPaneBorder;
 
-    static final Color paneBackground = new Color(123,123,123);
 
-    @Override
-    protected void showDefaultDetail() { }
-    @Override
-    protected void showStarDetail()   { }
-    @Override
-    protected void showPlanetDetail()   { }
-
-    public ExploredSystemPanel(SpriteDisplayPanel p) {
+	ExploredSystemPanel(SpriteDisplayPanel p)	{
 		spritePanel(p);
-        initModel();
-    }
-    public void releaseObjects() { }
+		initModel();
+	}
+	void releaseObjects() { }
 
+	@Override protected void showDefaultDetail(){ }
+	@Override protected void showStarDetail()	{ }
+	@Override protected void showPlanetDetail()	{ }
 	@Override public IMapHandler mapHandler()	{ return parentSpritePanel().parent; }
-    @Override
-    public void animate()            { overviewPane.animate(); }
-    @Override
-    protected BasePanel topPane()    { return new SystemViewInfoPane(this); }
-    @Override
-    protected BasePanel bottomPane() { return new SystemRangePane(this); }
-    @Override
-    protected BasePanel detailPane() {
-        return new ExploredDetailPane(this);
-    }
-    private class ExploredDetailPane extends BasePanel implements MouseMotionListener, MouseListener, MouseWheelListener {
-        private static final long serialVersionUID = 1L;
-        SystemPanel parent;
-        private Shape textureClip;
-        Rectangle flagBox = new Rectangle();
-        Shape hoverBox;
+	@Override public void animate()				{ overviewPane.animate(); }
+	@Override protected BasePanel topPane()		{ return new SystemViewInfoPane(this); }
+	@Override protected BasePanel bottomPane()	{ return new SystemRangePane(this); }
+	@Override protected BasePanel detailPane()	{ return new ExploredDetailPane(this); }
 
-        ExploredDetailPane(SystemPanel p) {
-            parent = p;
-            init();
-        }
-        private void init() {
-            setOpaque(false);
-            addMouseWheelListener(this);
-            addMouseMotionListener(this);
-            addMouseListener(this);
-        }
-        @Override
-        public String textureName()            { return TEXTURE_GRAY; }
-        @Override
-        public Shape textureClip()    { return textureClip; }
-        @Override
-        public void paintComponent(Graphics g0) {
+	private final class ExploredDetailPane extends DetailBasePane {
+		private static final long serialVersionUID = 1L;
+
+		ExploredDetailPane(SystemPanel p)	{ super(p); }
+
+		@Override public void paintComponent(Graphics g0) {
             Graphics2D g = (Graphics2D) g0;
             StarSystem sys = parent.systemViewToDisplay();
             if (sys == null)
@@ -112,14 +73,12 @@ public class ExploredSystemPanel extends SystemPanel {
             textureClip = new Rectangle2D.Float(0,0,w,topH-s5);
 
             String label;
-
             if (sys.planet().isEnvironmentNone())
                 label = text("MAIN_NO_PLANETS");
             else if (sys.abandoned())
                 label = text("MAIN_ABANDONED");
             else
                 label = text("MAIN_NO_COLONIES");
-            //g.setFont(narrowFont(24));
             scaledFont(g, label, w-s60, 24, 12);
             drawShadowedString(g, label, 2, s10, topH-s15, MainUI.shadeBorderC(), SystemPanel.whiteLabelText);
 
@@ -152,68 +111,6 @@ public class ExploredSystemPanel extends SystemPanel {
                     drawBorderedString(g, line, s8, y0, Color.black, whiteText);
                     y0 += ydelta;
                 }
-            }
-        }
-        @Override
-        public void mouseDragged(MouseEvent e) { }
-        @Override
-        public void mouseMoved(MouseEvent e) {
-			setModifierKeysState(e);
-            int x = e.getX();
-            int y = e.getY();
-            Shape prevHover = hoverBox;
-            hoverBox = null;
-            if (flagBox.contains(x,y))
-                hoverBox = flagBox;
-
-            if (prevHover != hoverBox)
-                repaint();
-        }
-        @Override
-        public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mousePressed(MouseEvent e) { }
-        @Override
-        public void mouseReleased(MouseEvent e) {
-        	setModifierKeysState(e); // BR: For the Flag color selection
-            boolean rightClick = SwingUtilities.isRightMouseButton(e);
-            boolean middleClick = SwingUtilities.isMiddleMouseButton(e);
-            if (hoverBox == flagBox) {
-                StarSystem sys = parentSpritePanel().systemViewToDisplay();
-            	// BR: if 3 buttons:
-            	//   - Middle click = Reset
-            	//   - Right click = Reverse
-                if (middleClick)
-                    player().sv.resetFlagColor(sys.id);
-                else if (rightClick)
-                	if (has3Buttons())
-                        player().sv.toggleFlagColor(sys.id, true);
-                	else
-                		player().sv.resetFlagColor(sys.id);
-                else
-                    player().sv.toggleFlagColor(sys.id, false);
-                parentSpritePanel().repaint();
-            }
-        }
-		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
-        @Override
-        public void mouseExited(MouseEvent e) { 
-			setModifierKeysState(e);
-            if (hoverBox != null) {
-                hoverBox = null;
-                repaint();
-            }
-        }
-        @Override
-        public void mouseWheelMoved(MouseWheelEvent e) {
-        	setModifierKeysState(e); // BR: For the Flag color selection
-            if (hoverBox == flagBox) {
-                StarSystem sys = parentSpritePanel().systemViewToDisplay();
-                if (e.getWheelRotation() < 0)
-                    player().sv.toggleFlagColor(sys.id, true);
-                else
-                    player().sv.toggleFlagColor(sys.id, false);
-                parentSpritePanel().repaint();
             }
         }
     }

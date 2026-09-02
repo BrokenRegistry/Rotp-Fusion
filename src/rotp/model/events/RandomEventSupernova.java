@@ -22,6 +22,7 @@ import rotp.model.colony.Colony;
 import rotp.model.colony.ColonyResearchProject;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 import rotp.ui.notifications.GNNNotification;
 import rotp.ui.util.ParamInteger;
@@ -148,7 +149,7 @@ public class RandomEventSupernova extends AbstractRandomEvent implements ColonyR
         targetSystem.clearEvent();
         Colony col = targetSystem.colony();
 
-        session().removePendingNotification("GNN_Event_Supernova");
+        GameSession.removePendingNotification("GNN_Event_Supernova");
         // possible colony is destroyed before supernova
         if (col != null) {
             col.research().endProject();

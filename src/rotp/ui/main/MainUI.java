@@ -15,6 +15,9 @@
  */
 package rotp.ui.main;
 
+import static rotp.ui.game.AdvisorPanel.isAdvising;
+import static rotp.ui.game.IAdvisor.ADVISOR;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -46,6 +49,7 @@ import rotp.model.galaxy.Location;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.model.game.IConvenienceOptions;
 import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
@@ -53,9 +57,11 @@ import rotp.model.ships.ShipDesign;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
+import rotp.ui.game.AdvisorPanel;
 import rotp.ui.game.HelpUI;
 import rotp.ui.game.HelpUI.HelpSpec;
-import rotp.ui.main.overlay.MapOverlay;
+import rotp.ui.game.IAdvisor;
+import rotp.ui.main.overlay.IMapOverlay;
 import rotp.ui.main.overlay.MapOverlayAdvice;
 import rotp.ui.main.overlay.MapOverlayAllocateSystems;
 import rotp.ui.main.overlay.MapOverlayAutosaveFailed;
@@ -81,7 +87,7 @@ import rotp.ui.sprites.SystemTransportSprite;
 import rotp.ui.sprites.YearDisplaySprite;
 import rotp.ui.vipconsole.VIPConsole;
 
-public class MainUI extends BasePanel implements IMapHandler {
+public final class MainUI extends BasePanel implements IMapHandler {
     private static final long serialVersionUID = 1L;
     public static Color paneBackground = new Color(123,123,123);
     public static Color paneBackgroundDk = new Color(100,100,100);
@@ -130,7 +136,7 @@ public class MainUI extends BasePanel implements IMapHandler {
     MapOverlayAdvice overlayAdvice;
     AlertDismissSprite alertDismissSprite;
     HelpSprite helpSprite;
-    MapOverlay overlay;
+    IMapOverlay overlay;
 
     private final List<Sprite> nextTurnControls = new ArrayList<>();
     private final List<Sprite> baseControls = new ArrayList<>();
@@ -138,6 +144,7 @@ public class MainUI extends BasePanel implements IMapHandler {
     protected SpriteDisplayPanel displayPanel;
     protected GalaxyMapPanel map;
     protected MainButtonPanel buttonPanel;
+	private AdvisorPanel onDemandAdvisorPanel;
 
     // pre-post next turn state
     private float saveScale;
@@ -148,7 +155,7 @@ public class MainUI extends BasePanel implements IMapHandler {
     private int numHelpFrames = 0;
     private boolean showFleetInfo = false;
     private boolean lastHoverAltDown = false;
-    
+
     @Override public boolean showFleetInfo()          { return showFleetInfo; }
     @Override public void showFleetInfo(boolean show) { showFleetInfo = show; }
 
@@ -159,12 +166,9 @@ public class MainUI extends BasePanel implements IMapHandler {
     public static Color namePaneHighlight()  { return namePaneBackgroundHighlight; }
 
     public SpriteDisplayPanel displayPanel() { return displayPanel; }
-    public void hideDisplayPanel()           {
-        displayPanel.setVisible(false); 
-    }
+    public void hideDisplayPanel()           { displayPanel.setVisible(false); }
     public void showDisplayPanel()           { displayPanel.setVisible(true); }
     public void clearOverlay()               { overlay = showAdvice ? overlayAdvice : overlayNone; }
-
     private boolean displayPanelMasks(int x, int y) {
         if (!displayPanel.isVisible())
             return false;
@@ -176,7 +180,7 @@ public class MainUI extends BasePanel implements IMapHandler {
     public GalaxyMapPanel map()              { return map; }
 
     public MainUI() {
-        panelWidth = scaled(250);
+        panelWidth = s250;
         panelHeight = scaled(590);
         initModel();
         addMapControls();
@@ -198,14 +202,15 @@ public class MainUI extends BasePanel implements IMapHandler {
     }
     public void init(boolean pauseNextTurn) {
         map.init();
+		initOnDemandAdvisorPanel();
         if (pauseNextTurn)
             buttonPanel.init();
-        
+
         // if we are being opened not during the next turn process
         // but we have scouted systems (from forming an alliance)
         // bring up the overlay
-        if (!session().performingTurn() && session().haveScoutedSystems()) {
-            showSystemsScouted(session().systemsScouted());
+        if (!GameSession.performingTurn() && GameSession.haveScoutedSystems()) {
+            showSystemsScouted(GameSession.systemsScouted());
         }
     }
     @Override
@@ -227,6 +232,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         map.clearHoverSprite();
         clickedSprite((Sprite) sessionVar("MAINUI_SAVE_CLICKED"));
         showDisplayPanel();
+		initOnDemandAdvisorPanel();
     }
     public void repaintAllImmediately() {
         paintImmediately(0,0,getWidth(),getHeight());
@@ -241,7 +247,7 @@ public class MainUI extends BasePanel implements IMapHandler {
     }
     @Override
     public boolean showAlerts() {
-        return (session().currentAlert() != null) && displayPanel.isVisible();
+        return (GameSession.currentAlert() != null) && displayPanel.isVisible();
     }
     @Override
     public boolean showTreasuryResearchBar()       { return overlay != overlayAdvice; }
@@ -249,9 +255,9 @@ public class MainUI extends BasePanel implements IMapHandler {
     public boolean showSpyReportIcon()             { return (overlay != overlayAdvice) && session().spyActivity(); }
     @Override
     public boolean showAllCurrentResearch()        { return (overlay == overlayEspionageMission); }
-    
-    public void setOverlay(MapOverlay lay) { overlay = lay; }
-    public MapOverlay overlay()   { return overlay; }
+
+    public void setOverlay(IMapOverlay lay) { overlay = lay; }
+    public IMapOverlay overlay()   { return overlay; }
     public void clearAdvice() {
         if (overlay == overlayAdvice) {
             showAdvice = false;
@@ -264,6 +270,37 @@ public class MainUI extends BasePanel implements IMapHandler {
         showAdvice = true;
         repaint();
     }
+	private void initOnDemandAdvisorPanel()	{
+		ADVISOR.init(this, this, IAdvisor.MAP_ADVISOR, player());
+		ADVISOR.setMargins(s48, s68, scaled(260), s50, s10);
+		ADVISOR.setTopLeftAdvice("MAIN_TOP_LEFT_HELP");
+		addNextTurnControl(ADVISOR.getExitBox());
+		AdvisorPanel.ADVISOR.setVisible(true);
+	}
+	@Override public void toggleOnDemandAdvisor(BasePanel p, String key, Empire emp1)	{
+		ADVISOR.toggle();
+		if (!isAdvising()) {
+			closeOnDemandAdvisor();
+			return;
+		}
+		if (helpFrame > 0)
+			cancelHelp();
+		if (showAdvice)
+			clearAdvice();
+		overlay = onDemandAdvisorPanel;
+		initOnDemandAdvisorPanel();
+		repaint();
+	}
+	@Override public void closeOnDemandAdvisor()	{
+		if (isAdvising()) {
+			ADVISOR.onHold();
+			onDemandAdvisorPanel.setVisible(false);
+		}
+		if (overlay == onDemandAdvisorPanel)
+			overlay = overlayNone;
+		repaint();
+	}
+
     @Override
     public void cancelHelp() {
         helpFrame = 0;
@@ -271,15 +308,15 @@ public class MainUI extends BasePanel implements IMapHandler {
         RotPUI.helpUI().close();
     }
     @Override public void showHotKeys() {
-        helpFrame = 1;        
+        helpFrame = 1;
         numHelpFrames = 1;
         loadHotKeysUI();
-        repaint();   
+        repaint();
     }
     @Override
     public void showHelp() {
         helpFrame = 1;
-        
+
         numHelpFrames = 1;
         Sprite spr = clickedSprite();
         if (spr instanceof StarSystem) {
@@ -287,9 +324,9 @@ public class MainUI extends BasePanel implements IMapHandler {
             if (sys.empire() == player())
                 numHelpFrames = 5;
         }
-        
+
         loadHelpUI();
-        repaint();   
+        repaint();
     }
     @Override 
     public void advanceHelp() {
@@ -391,6 +428,9 @@ public class MainUI extends BasePanel implements IMapHandler {
         map = new GalaxyMapPanel(this);
         map.setBounds(0,0,w,h);
 
+		onDemandAdvisorPanel = AdvisorPanel.ADVISOR;
+		onDemandAdvisorPanel.setBounds(0, 0, w, h);
+
         int displayW = panelWidth;
         int displayH = panelHeight;
         displayPanel = new SpriteDisplayPanel(this);
@@ -404,12 +444,13 @@ public class MainUI extends BasePanel implements IMapHandler {
         setLayout(new BorderLayout());
         add(layers, BorderLayout.CENTER);
 
+        layers.add(onDemandAdvisorPanel, JLayeredPane.DRAG_LAYER);
         layers.add(buttonPanel, JLayeredPane.PALETTE_LAYER);
         layers.add(displayPanel, JLayeredPane.PALETTE_LAYER);
         layers.add(map, JLayeredPane.DEFAULT_LAYER);
         setOpaque(false);
     }
-    public boolean enableButtons()   { return !session().performingTurn(); }
+    public boolean enableButtons()   { return !GameSession.performingTurn(); }
     public void selectSprite(Sprite o, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
         // if not in normal mode, then NextTurnControls are
         // the only sprites clickable
@@ -464,7 +505,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         if (helpFrame == 0)
             return;
     	helpFrame = numHelpFrames+2;
-        
+
         Sprite spr = this.clickedSprite();
         if (spr instanceof SystemTransportSprite) {
         	helpFrame = numHelpFrames+2;
@@ -487,14 +528,14 @@ public class MainUI extends BasePanel implements IMapHandler {
             return;
         }
     	loadHotKeysFrame();
-    	RotPUI.helpUI().open(this);        
+    	RotPUI.helpUI().open(this);
     }
     private void loadHelpUI() {
         HelpUI helpUI = RotPUI.helpUI();
         if (helpFrame == 0)
             return;
-        
-        Sprite spr = this.clickedSprite();
+
+        Sprite spr = clickedSprite();
         if (spr instanceof SystemTransportSprite) {
         	helpFrame = numHelpFrames+2;
         	loadHelpFrameTP();
@@ -517,7 +558,7 @@ public class MainUI extends BasePanel implements IMapHandler {
             }
         }
         else {
-            loadButtonBarHelpFrame();          
+            loadButtonBarHelpFrame();
         }
         helpUI.open(this);
     }
@@ -536,7 +577,7 @@ public class MainUI extends BasePanel implements IMapHandler {
     @Override
     public boolean masksMouseOver(int x, int y)    { return displayPanelMasks(x, y) || overlay.masksMouseOver(x,y); }
     @Override
-    public Color alertColor(SystemView sv)         { 
+    public Color alertColor(SystemView sv)         {
         if (sv.isAlert())
             return redAlertC;
         return null; 
@@ -544,7 +585,7 @@ public class MainUI extends BasePanel implements IMapHandler {
     @Override
     public boolean displayNextTurnNotice() {
         // don't display notice when updating things
-        return (session().performingTurn()
+        return (GameSession.performingTurn()
                 && !overlay.hideNextTurnNotice());
     }
     @Override
@@ -640,7 +681,7 @@ public class MainUI extends BasePanel implements IMapHandler {
             return false;
         if (s instanceof FlightPathSprite) {
             FlightPathSprite fp = (FlightPathSprite) s;
-            Sprite fpShip = (Sprite) fp.ship();
+            Sprite fpShip = fp.ship();
             if (isClicked(fpShip) || isHovering(fpShip))
                 return true;
 			StarSystem dest = fp.destination();
@@ -690,8 +731,8 @@ public class MainUI extends BasePanel implements IMapHandler {
     @Override
     public Sprite clickedSprite()            { return (Sprite) sessionVar("MAINUI_CLICKED_SPRITE"); }
     @Override
-    public void clickedSprite(Sprite s)      { 
-        sessionVar("MAINUI_CLICKED_SPRITE", s); 
+    public void clickedSprite(Sprite s)      {
+        sessionVar("MAINUI_CLICKED_SPRITE", s);
         if (s instanceof StarSystem)
             lastSystemSelected(s);
     }
@@ -701,7 +742,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         sessionVar("MAINUI_HOVERING_SPRITE", s); 
         if (s == null)
            return; 
-        if (s.hasDisplayPanel() && !session().performingTurn()) 
+		if (s.hasDisplayPanel() && !GameSession.performingTurn()) 
             showDisplayPanel(); 
     }
     public Sprite lastHoveringSprite()       { return (Sprite) sessionVar("MAINUI_LAST_HOVERING_SPRITE"); }
@@ -726,7 +767,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         Sprite spr = clickedSprite();
         if (spr instanceof IMappedObject) 
             return (IMappedObject) spr;
-        return null;        
+        return null;
     }
     @Override
     public void animate() {
@@ -737,9 +778,9 @@ public class MainUI extends BasePanel implements IMapHandler {
         }
     }
     @Override
-    public void paintOverMap(GalaxyMapPanel ui, Graphics2D g) {
+    public void paintOverMap(GalaxyMapPanel mapUI, Graphics2D g) {
         nextTurnControls.clear();
-        overlay.paintOverMap(this, ui, g);
+        overlay.paintOverMap(this, mapUI, g);
         if (showFleetInfo)
         	drawFleetsInfo(g);
     }
@@ -818,7 +859,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         repaint();
     }
     public void resumeOutsideTurn() {
-        clearOverlay();        
+        clearOverlay();
         showDisplayPanel();
         repaint();
     }
@@ -826,14 +867,14 @@ public class MainUI extends BasePanel implements IMapHandler {
     public void drawAlerts(Graphics2D g) {
         if (!showAlerts())
             return;
-        GameAlert alert = session().currentAlert();
+        GameAlert alert = GameSession.currentAlert();
         if (alert == null)
         	return;
 
         int x = getWidth() - scaled(255);
         int y = getHeight() - scaled(168);
-        int w = scaled(250);
-        int h = s100;
+		int w = s250;
+		int h = s100;
 
         if (alertBack == null) {
             float[] dist = {0.0f, 1.0f};
@@ -856,22 +897,22 @@ public class MainUI extends BasePanel implements IMapHandler {
             g.setStroke(prev);
         }
 
-        int num = session().numAlerts();
-        int count = session().viewedAlerts()+1;
+        int num = GameSession.numAlerts();
+        int count = GameSession.viewedAlerts()+1;
         String title = num == 1 ? text("MAIN_ALERT_TITLE") : text("MAIN_ALERT_TITLE_COUNT", count, num);
-        int x1 = x+scaled(10);
-        int y1 = y+scaled(20);
+		int x1 = x+s10;
+		int y1 = y+s20;
 
         g.setColor(Color.black);
         g.setFont(narrowFont(18));
         drawString(g,title, x1, y1);
-        
+
         String yearStr = displayYearOrTurn();
 		if (IConvenienceOptions.showNextCouncil.get() 
 				&& !options().selectedCouncilWinOption().equals(IGameOptions.COUNCIL_NONE)) {
-        	int nextC = galaxy().council().nextCouncil();
-        	 if (nextC > 0)
-        		 yearStr += " (" + nextC + ")";
+			int nextC = galaxy().council().nextCouncil();
+			 if (nextC > 0)
+				 yearStr += " (" + nextC + ")";
         }
         g.setFont(narrowFont(16));
         int yearW = g.getFontMetrics().stringWidth(yearStr);
@@ -879,24 +920,24 @@ public class MainUI extends BasePanel implements IMapHandler {
 
         g.setFont(narrowFont(16));
         List<String> descLines = wrappedLines(g, alert.description(), scaled(230));
-        y1 += scaled(17);
+		y1 += s17;
         for (String line: descLines) {
             drawString(g,line, x1, y1);
-            y1 += scaled(16);
+			y1 += s16;
         }
     }
     private void addHotKeysFrame() {
         HelpUI helpUI = RotPUI.helpUI();
-        int xHK = scaled(25);
-        int yHK = scaled(15);
-        int wHK = scaled(500);
+        int xHK = s25;
+        int yHK = s15;
+        int wHK = s500;
         helpUI.addBrownHelpText(xHK, yHK, wHK, -41, text("MAIN_HELP_HK"));
     }
     private void addHotKeysShipFleet() {
         HelpUI helpUI = RotPUI.helpUI();
         int xHK = scaled(540);
-        int yHK = scaled(15);
-        int wHK = scaled(400);
+		int yHK = s15;
+		int wHK = s400;
         helpUI.addBrownHelpText(xHK, yHK, wHK, 0, text("MAIN_HELP_SHIPFLEET_HK"));
     }
     private void loadHotKeysFrame() {
@@ -907,30 +948,20 @@ public class MainUI extends BasePanel implements IMapHandler {
     private void loadHelpFrameTP() {
         HelpUI helpUI = RotPUI.helpUI();
         int w = getWidth();
-        
+
         helpUI.clear();
-        int x0 = scaled(75);
-        int w0 = scaled(400);
-        int y0 = scaled(300);
+		int x0 = s75;
+		int w0 = s400;
+		int y0 = s300;
         helpUI.addBrownHelpText(x0, y0, w0, 5, text("FLEETS_HELP_3MAIN"));
 
         int w3 = scaled(350);
         int x3 = w-w3-scaled(280);
-//        int y3 = y0- scaled(120);
-//        int x3a = w-scaled(50);
-//        int y3a = scaled(185);
-
-//        HelpUI.HelpSpec sp3d = helpUI.addBrownHelpText(x3, y3, w3, 4, text("FLEETS_HELP_3D"));
-//        sp3d.setLine(x3+w3, y3+sp3d.height()/2, x3a, y3a);
-
-//        y3 += (sp3d.height()+s30);
         int y3	= y0;
-        int x3a = w-scaled(120);
-        int y3a = scaled(250);
+		int x3a = w-s120;
+		int y3a = s250;
         HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 7, text("FLEETS_HELP_3C"));
-        sp3.setLine(x3+w3, y3+sp3.height()/2, x3a, y3a);
-
-        
+		sp3.setLine(x3+w3, sp3.yc(), x3a, y3a);
     }
     private void loadEmpireColonyHelpFrame1() {
         HelpUI helpUI = RotPUI.helpUI();
@@ -943,72 +974,64 @@ public class MainUI extends BasePanel implements IMapHandler {
         s0.setLine(s100, s25, s30, s20);
         // BR: Main Mod Help
         helpUI.addBrownHelpText(w-scaled(334), s10, scaled(330), 0, text("MAIN_HELP_MOD"));
-        
+
         int x1 = w-scaled(779);
         int w1 = scaled(430);
-        int y1 = scaled(100);
-        
-        HelpSpec sp1 = helpUI.addBlueHelpText(x1, y1, w1, 3, text("MAIN_HELP_1A"));
-        y1 += (sp1.height()+s10);
-        // BR: Moved this to make place for governor help
-        HelpSpec sp7 = helpUI.addBlueHelpText(x1, y1, w1, 4, text("MAIN_HELP_1G"));
-        sp7.setLine(x1+w1, y1+(sp7.height()/2), w-scaled(154), scaled(310));
-        y1 += (sp7.height()+s10);
+        int y1 = s100;
 
-        HelpSpec sp2 = helpUI.addBlueHelpText(x1, y1, w1, 2, text("MAIN_HELP_1B"));
-        sp2.setLine(x1+w1, y1+(sp2.height()/2), w-scaled(244), scaled(312));
-        y1 += (sp2.height()+s5);
-        HelpSpec sp3 = helpUI.addBlueHelpText(x1, y1, w1, 2, text("MAIN_HELP_1C"));
-        sp3.setLine(x1+w1, y1+(sp3.height()/2), w-scaled(244), scaled(342));
-        y1 += (sp3.height()+s5);
-        HelpSpec sp4 = helpUI.addBlueHelpText(x1, y1, w1, 2, text("MAIN_HELP_1D"));
-        sp4.setLine(x1+w1, y1+(sp4.height()/2), w-scaled(244), scaled(372));
-        y1 += (sp4.height()+s5);
-        HelpSpec sp5 = helpUI.addBlueHelpText(x1, y1, w1, 2, text("MAIN_HELP_1E"));
-        sp5.setLine(x1+w1, y1+(sp5.height()/2), w-scaled(244), scaled(402));
-        y1 += (sp5.height()+s5);
-        HelpSpec sp6 = helpUI.addBlueHelpText(x1, y1, w1, 2, text("MAIN_HELP_1F"));
-        sp6.setLine(x1+w1, y1+(sp6.height()/2), w-scaled(244), scaled(432));
-        y1 += (sp6.height()+s5);
-        HelpSpec spM6 = helpUI.addBrownHelpText(x1, y1, w1, 2, text("MAIN_HELP_MOD_1F"));
-        spM6.setLine(x1+w1, y1+(spM6.height()/2), w-scaled(244), scaled(662));
+		HelpSpec sp1 = helpUI.addBlueHelpText(x1, y1, w1, 3, text("MAIN_HELP_1A"));
+		y1 = sp1.ye() + s10;
+		// BR: Moved this to make place for governor help
+		HelpSpec sp7 = helpUI.addBlueHelpText(x1, y1, w1, 4, text("MAIN_HELP_1G")); // Ratio Bar
+		sp7.setLine(x1+w1, sp7.yc(), w-scaled(154), scaled(310));
+		y1 = sp7.ye() + s10;
 
-        // BR: Moved this to make place for governor help
-		// int x2 = w-scaled(299);
-		// int y2 = scaled(150);
-		// int w2 = scaled(280);
-		// HelpSpec sp7 = helpUI.addBlueHelpText(x2,y2,w2, 6, text("MAIN_HELP_1G"));
-		// sp7.setLine(x2+(w2/2), y2+sp7.height(), w-scaled(154), scaled(310));
-        
-        // BR:
+		HelpSpec sp2 = helpUI.addBlueHelpText(x1, y1, w1, 2, text("MAIN_HELP_1B")); // Shipyard
+		sp2.setLine(x1+w1, sp2.yc(), w-scaled(244), scaled(312));
+		y1 = sp2.ye() + s5;
+		HelpSpec sp3 = helpUI.addBlueHelpText(x1, y1, w1, 2, text("MAIN_HELP_1C")); // Defenses
+		sp3.setLine(x1+w1, sp3.yc(), w-scaled(244), scaled(342));
+		y1 = sp3.ye() + s5;
+		HelpSpec sp4 = helpUI.addBlueHelpText(x1, y1, w1, 2, text("MAIN_HELP_1D")); // Industry
+		sp4.setLine(x1+w1, sp4.yc(), w-scaled(244), scaled(372));
+		y1 = sp4.ye() + s5;
+		HelpSpec sp5 = helpUI.addBlueHelpText(x1, y1, w1, 2, text("MAIN_HELP_1E")); // Ecology
+		sp5.setLine(x1+w1, sp5.yc(), w-scaled(244), scaled(402));
+		y1 = sp5.ye() + s5;
+		HelpSpec sp6 = helpUI.addBlueHelpText(x1, y1, w1, 2, text("MAIN_HELP_1F")); // Tech
+		sp6.setLine(x1+w1, sp6.yc(), w-scaled(244), scaled(432));
+		y1 = sp6.ye() + s5;
+		HelpSpec spM6 = helpUI.addBrownHelpText(x1, y1, w1, 2, text("MAIN_HELP_MOD_1F")); // Turn Alert
+		spM6.setLine(x1+w1, spM6.yc(), w-scaled(244), scaled(662));
+
 		int x2 = w-scaled(325);
-		int y2 = scaled(120);
-		int w2 = scaled(160);
-        HelpSpec spM1 = helpUI.addBrownHelpText(x2,y2,w2, 0, text("MAIN_HELP_MOD_1A"));
-        spM1.setLine(x2+(w2*3/4), y2+spM1.height(), w-scaled(180), scaled(275));
+		int y2 = s120;
+		int w2 = s160;
+		HelpSpec spM1 = helpUI.addBrownHelpText(x2,y2,w2, 0, text("MAIN_HELP_MOD_1A")); // Governor Toggle
+		spM1.setLine(spM1.xce(), spM1.ye(), w-scaled(180), scaled(275));
 		x2 += w2 +s10;
-		w2 = scaled(150);
-        HelpSpec spM2 = helpUI.addBrownHelpText(x2,y2,w2, 0, text("MAIN_HELP_MOD_1B"));
-        spM2.setLine(x2+(w2*2/3), y2+spM2.height(), w-s40, scaled(275));
+		w2 = s150;
+		HelpSpec spM2 = helpUI.addBrownHelpText(x2,y2,w2, 0, text("MAIN_HELP_MOD_1B")); // Governor options
+		spM2.setLine(x2+(w2*2/3), spM2.ye(), w-s40, scaled(275));
 
         int x3 = w-scaled(254); // BR: was 304
-        int y3 = scaled(470); // BR: was 490
-        int w3 = scaled(250); // BR: was 300
-        HelpSpec sp8 = helpUI.addBlueHelpText(x3,y3,w3, 0, text("MAIN_HELP_1H"));
-        sp8.setLine(x3+(w3*3/4), y3, w-scaled(54), scaled(430));        
+        int y3 = scaled(450); // BR: was 490
+		int w3 = s250; // BR: was 300
+        HelpSpec sp8 = helpUI.addBlueHelpText(x3,y3,w3, 0, text("MAIN_HELP_1H")); // Expected Results
+		sp8.setLine(sp8.xce(), y3, w-scaled(54), scaled(430));
 
         // BR: Added options panel
         // Setting panel
-        boolean moreIcon = session().aFewMoreTurns();
-        int yArrowOffset = moreIcon? 0 : s17;
-        int yArrowSep = s35;
-        int xBoxSep = moreIcon? s10 : s20;
-        int xAL = s40;
-        // Settings panel
-        int x10 = scaled(115);
-        int y10 = moreIcon? scaled(180) : scaled(200);
-        int w10 = scaled(250);
-        int y10a = scaled(300);
+		boolean moreIcon = session().aFewMoreTurns();
+		int yArrowOffset = moreIcon? 0 : s17;
+		int yArrowSep = s35;
+		int xBoxSep = s5;
+		int xAL = s40;
+		// Settings panel
+		int x10 = scaled(115);
+		int y10 = moreIcon? s120 : s150;
+		int w10 = scaled(310);
+		int y10a = s300;
         HelpSpec sp10 = helpUI.addBrownHelpText(x10, y10, w10, 0, text("MAIN_HELP_MOD_1I")); // Settings panel
         sp10.setLine(x10, sp10.yce(), xAL, y10a);
 
@@ -1036,7 +1059,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         HelpSpec sp15 = sp14;
         if (moreIcon) {
             sp15 = helpUI.addBrownHelpText(x15, y15, w15, 0, text("MAIN_HELP_MOD_1L")); // a Few More Turns
-            sp15.setLine(x15, sp15.yc(), xAL, y15a);        	
+            sp15.setLine(x15, sp15.yc(), xAL, y15a);
         }
 
         // BR: Added Spy reports
@@ -1046,7 +1069,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         int y9a = y15a + yArrowSep;
         HelpSpec sp9 = helpUI.addBlueHelpText(x9, y9, w9, 0, text("MAIN_HELP_1I")); // Spy reports
         sp9.setLine(x9, sp9.ycb(), xAL, y9a-yArrowOffset);
-        
+
         if (showTreasuryResearchBar()) {
             int x12 = x10;
             int y12 = sp9.ye() + xBoxSep;
@@ -1063,7 +1086,7 @@ public class MainUI extends BasePanel implements IMapHandler {
     }
     private void loadEmpireColonyHelpFrame2() {
         HelpUI helpUI = RotPUI.helpUI();
-        
+
         int w = getWidth();
 
         helpUI.clear();
@@ -1085,48 +1108,48 @@ public class MainUI extends BasePanel implements IMapHandler {
 		int w10 = wBox;
 		int x10 = xBox;
 		int y10 = s15;
-		HelpSpec sp10 = helpUI.addBlueHelpText(x10, y10, w10, 0, text("MAIN_HELP_2J"));
-		sp10.setLine(sp10.xe(), sp10.ye()-s5, xTar-s5, scaled(155), w-scaled(49), scaled(205));
+		HelpSpec sp10 = helpUI.addBlueHelpText(x10, y10, w10, 0, text("MAIN_HELP_2J")); // MaxFactory allowed
+		sp10.setLine(sp10.xe(), sp10.ye()-s5, xTar-s5, scaled(155), w-s49, scaled(205));
 
 		// Population
 		int x9 = xBox;
 		int y9 = sp10.ye() + sep;
 		int w9 = wBox;
-		HelpSpec sp9 = helpUI.addBlueHelpText(x9, y9, w9, 0, text("MAIN_HELP_2I"));
+		HelpSpec sp9 = helpUI.addBlueHelpText(x9, y9, w9, 0, text("MAIN_HELP_2I")); // Max Pop
 		sp9.setLine(sp9.xe(), sp9.ye()-s5, xTar-s10, scaled(175), xTar+s80, scaled(205));
 
 		// Shields
 		int w1 = wBox;
 		int x1 = xBox;
 		int y1 = sp9.ye() + sep;
-		HelpSpec sp1 = helpUI.addBlueHelpText(x1, y1, w1, 0, text("MAIN_HELP_2A"));
+		HelpSpec sp1 = helpUI.addBlueHelpText(x1, y1, w1, 0, text("MAIN_HELP_2A")); // Shield Level
 		sp1.setLine(sp1.xe(), sp1.ye()-s5, xTar+s95, scaled(230));
 
         // Bases
         int x2 = xBox;
         int y2 = sp1.ye() + sep;
         int w2 = w10;
-        HelpSpec sp2 = helpUI.addBlueHelpText(x2, y2, w2, 0, text("MAIN_HELP_2B"));
-        sp2.setLine(sp2.xe(), sp2.ye()-s5, w-scaled(49), scaled(240));
+		HelpSpec sp2 = helpUI.addBlueHelpText(x2, y2, w2, 0, text("MAIN_HELP_2B")); // Number Bases
+		sp2.setLine(sp2.xe(), sp2.ye()-s5, w-s49, scaled(240));
 
         // Production
         int x4 = xBox;
         int y4 = sp2.ye() + sep;
         int w4 = w10;
-        HelpSpec sp4 = helpUI.addBlueHelpText(x4, y4, w4, 0, text("MAIN_HELP_2D"));
-        sp4.setLine(sp4.xe(), sp4.ycb(), w-scaled(69), scaled(265));
+        HelpSpec sp4 = helpUI.addBlueHelpText(x4, y4, w4, 0, text("MAIN_HELP_2D")); // Actual Prod
+		sp4.setLine(sp4.xe(), sp4.ycb(), w-s69, scaled(265));
 
         int x3 = xBox;
         int y3 = sp4.ye() + sep;
         int w3 = w10;
-        HelpSpec sp3 = helpUI.addBlueHelpText(x3, y3, w3, 0, text("MAIN_HELP_2C"));
-        sp3.setLine(sp3.xe(), sp3.ycb(), w-scaled(44), scaled(265));
+        HelpSpec sp3 = helpUI.addBlueHelpText(x3, y3, w3, 0, text("MAIN_HELP_2C")); // Total Prod
+		sp3.setLine(sp3.xe(), sp3.ycb(), w-s44, scaled(265));
 
         // Fleet
         int x5 = xBox;
         int y5 = sp3.ye() + sep;
         int w5 = w10;
-        HelpSpec sp5 = helpUI.addBlueHelpText(x5, y5, w5, 0, text("MAIN_HELP_2E"));
+        HelpSpec sp5 = helpUI.addBlueHelpText(x5, y5, w5, 0, text("MAIN_HELP_2E")); // Ship design
         sp5.setLine(sp5.xe(), sp5.yce(), w-scaled(144), scaled(502));
 
         // Rally
@@ -1134,29 +1157,29 @@ public class MainUI extends BasePanel implements IMapHandler {
         int y6 = sp5.ye() + sep;
         //int y6a = scaled(555);
         int w6 = w5;
-        HelpSpec sp6 = helpUI.addBlueHelpText(x6, y6, w6, 0, text("MAIN_HELP_2F"));
+        HelpSpec sp6 = helpUI.addBlueHelpText(x6, y6, w6, 0, text("MAIN_HELP_2F")); // Rally point
         sp6.setLine(sp6.xe(), sp6.yc(), w-scaled(144), scaled(535));
 
         // Rally Stargate
-        int w6sg = scaled(250);
+		int w6sg = s250;
         int x6sg = w-w6sg-s4;
         int y6sg = y5 - s30;
-        HelpSpec sp6sg = helpUI.addBrownHelpText(x6sg, y6sg, w6sg, 0, text("MAIN_HELP_2FSG"));
-        sp6sg.setLine(x6sg+w6sg*3/4, y6sg+sp6sg.height(), w-scaled(30), scaled(520));
+        HelpSpec sp6sg = helpUI.addBrownHelpText(x6sg, y6sg, w6sg, 0, text("MAIN_HELP_2FSG")); // Rally stargate
+		sp6sg.setLine(sp6sg.xce(), sp6sg.ye(), w-s30, scaled(520));
 
         // Transport
         int x7 = xBox;
         int y7 = sp6.ye() + sep;
         int w7 = w5;
-        HelpSpec sp7 = helpUI.addBlueHelpText(x7,y7,w7, 0, text("MAIN_HELP_2G"));
-        sp7.setLine(x7+w7, y7+s10, w-scaled(200), scaled(585));
+        HelpSpec sp7 = helpUI.addBlueHelpText(x7,y7,w7, 0, text("MAIN_HELP_2G")); // transport
+		sp7.setLine(x7+w7, y7+s10, w-s200, scaled(585));
 
         // Abandon
         int x8 = w-scaled(259);
         int y8 = scaled(630);
-        int w8 = scaled(250);
-        HelpSpec sp8 = helpUI.addBlueHelpText(x8,y8,w8, 0, text("MAIN_HELP_2H"));
-        sp8.setLine(w-scaled(64), y8, w-scaled(64), scaled(582));    
+		int w8 = s250;
+        HelpSpec sp8 = helpUI.addBlueHelpText(x8,y8,w8, 0, text("MAIN_HELP_2H")); // Abandon
+		sp8.setLine(w-s64, y8, w-s64, scaled(582));    
 
         int w11;
         int y11;
@@ -1166,31 +1189,31 @@ public class MainUI extends BasePanel implements IMapHandler {
         	txt   = text("MAIN_HELP_2K");
         	y11   = s14;
             if (has3Buttons()) {
-            	w11 = scaled(250);
-            	txt += " " + text("MAIN_HELP_2K_M3");
+				w11 = s250;
+				txt += " " + text("MAIN_HELP_2K_M3"); // Flag Mouse 3B
                 x11 = w-w11-s4;
             } else {
             	w11 = scaled(225);
-            	txt += " " + text("MAIN_HELP_2K_M2");
+				txt += " " + text("MAIN_HELP_2K_M2"); // Flag Mouse 2B
                 x11 = w-w11-s14;
             }
         } else {
         	txt   = text("MAIN_HELP_2K_2F");
         	y11   = s4;
             if (has3Buttons()) {
-            	txt += " " + text("MAIN_HELP_2K_M3");
-            	w11 = scaled(250);
+				txt += " " + text("MAIN_HELP_2K_M3"); // Flag Mouse 3B
+				w11 = s250;
                 x11 = w-w11-s4;
             } else {
-            	txt += " " + text("MAIN_HELP_2K_M2");
-            	w11 = scaled(225);
+				txt += " " + text("MAIN_HELP_2K_M2"); // Flag Mouse 2B
+				w11 = scaled(225);
                 x11 = w-w11-s14;
            }
-            txt += " " + text("MAIN_HELP_2K_2F_HOLD");
+			txt += " " + text("MAIN_HELP_2K_2F_HOLD"); // Flag selection
         }
 
         HelpSpec sp11 = helpUI.addBrownHelpText(x11, y11, w11, 0, txt);
-        sp11.setLine(w-scaled(40), y11+sp11.height(), w-scaled(25), scaled(170));
+		sp11.setLine(w-s40, sp11.ye(), w-s25, s170);
     }
     private void loadEmpireColonyHelpFrame3() { // BR: Smart max help
         HelpUI helpUI = RotPUI.helpUI();
@@ -1205,63 +1228,63 @@ public class MainUI extends BasePanel implements IMapHandler {
         	return;
 
         int w = getWidth();
-        
+
         int sep = s5;
         int border = s10;
 
         int w1 = scaled(450);
         int x1 = w - w1 - scaled(280);
         int y1 = border;
-        int xe = w-scaled(73);
+		int xe = w-s73;
         int ye = scaled(310);
         int dye = s29;
 
         // Top of the window
         HelpSpec sp2s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4B"));
-        sp2s.setLine(x1+w1, y1+(sp2s.height()*3/4), xe, ye);
+		sp2s.setLine(x1+w1, sp2s.yce(), xe, ye);
 
         y1 = sp2s.ye() + sep;
         ye += dye;
         HelpSpec sp3s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4C"));
-        sp3s.setLine(x1+w1, y1+(sp3s.height()*3/4), xe, ye);
+		sp3s.setLine(x1+w1, sp3s.yce(), xe, ye);
 
         y1 = sp3s.ye() + sep;
         ye += dye;
         HelpSpec sp4s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4D"));
-        sp4s.setLine(x1+w1, y1+(sp4s.height()/2), xe, ye);
+		sp4s.setLine(x1+w1, sp4s.yc(), xe, ye);
 
         // Intermediate boxes
-        int w0 = w1 + scaled(150);
-        int x0 = x1 - scaled(150);
+		int w0 = w1 + s150;
+		int x0 = x1 - s150;
         int xBox = w-scaled(247);
         int yBox = scaled(297);
-        int hBox = scaled(140);
+		int hBox = s140;
         int wBox = s42;
 
         // Colony Order Help
         y1 = sp4s.ye() + sep;
         HelpSpec sp7s = helpUI.addBlueHelpText(x0, y1, w0, 0, text("MAIN_HELP_4G"));
-        sp7s.setLine(x1+w1, y1+(sp7s.height()/3), xBox, yBox + s20);
+		sp7s.setLine(x1+w1, sp7s.ycb(), xBox, yBox + s20);
         sp7s.setLineArr(sp7s.rect(xBox, yBox, wBox, hBox));
 
         // Global Help
         y1 = sp7s.ye() + sep;
-        xBox = w-scaled(78);
+		xBox = w-s78;
         wBox = s65;
         HelpSpec sp8s = helpUI.addBlueHelpText(x0, y1, w0, 0, text("MAIN_HELP_4A"));
-        sp8s.setLine(x1+w1, y1+(sp8s.height()*4/5), xBox, yBox + (hBox + dye)/2);
+		sp8s.setLine(x1+w1, sp8s.yce(), xBox, yBox + (hBox + dye)/2);
         sp8s.setLineArr(sp7s.rect(xBox, yBox, wBox, hBox));
 
         // Bottom of the window
         y1 = sp8s.ye() + sep;
         ye += dye;
         HelpSpec sp5s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4E"));
-        sp5s.setLine(x1+w1, y1+(sp5s.height()/2), xe, ye);
+		sp5s.setLine(x1+w1, sp5s.yc(), xe, ye);
 
         y1 = sp5s.ye() + sep;
         ye += dye;
-        HelpSpec sp6s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4F"));
-        sp6s.setLine(x1+w1, y1+(sp6s.height()/2), xe, ye);
+		HelpSpec sp6s = helpUI.addBrownHelpText(x1, y1, w1, 0, text("MAIN_HELP_4F"));
+		sp6s.setLine(x1+w1, sp6s.yc(), xe, ye);
     }
     private void loadEmpireColonyHelpFrame4() { // BR: Obedient Governor max help
         HelpUI helpUI = RotPUI.helpUI();
@@ -1279,21 +1302,21 @@ public class MainUI extends BasePanel implements IMapHandler {
         	return;
 
         int w = getWidth();
-        
+
         int sep = s5;
         int border = s10;
 
-        int w1 = scaled(400);
+		int w1 = s400;
         int x1 = w - w1 - scaled(290);
         int y1 = border;
-        int xe = w-scaled(73);
+		int xe = w-s73;
         int ye = scaled(310);
 
         // Intermediate boxes
-        int wBox = scaled(240);
-        int hBox = scaled(70);
-        int xBox = w-wBox-s10;
-        int yBox = scaled(200);
+		int wBox = scaled(240);
+		int hBox = s70;
+		int xBox = w-wBox-s10;
+		int yBox = s200;
 
         // Top of the window
         y0 = s0.ye() + s100;
@@ -1316,7 +1339,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         ye = yBox + s35;
         HelpSpec spBases = helpUI.addBrownHelpText(x1, y1, w1-s25, 0, text("MAIN_HELP_5F"));
         spBases.setLine(spBases.xe(), spBases.yc(), xe, ye);
-     
+
         // Population
         y1 = spBases.ye() + sep;
         xe = xBox + s4;
@@ -1374,66 +1397,69 @@ public class MainUI extends BasePanel implements IMapHandler {
 
         int h = getHeight();
         int w = getWidth();
-        
+
         int buttonW = buttonPanel.buttonW();
-        
+
         int x1 = s25;
         int y1 = scaled(470);
         int w1 = scaled(210);
         int y1a = h - s65;
         int x1a = x1+(w1/4);
         HelpSpec sp1 = helpUI.addBlueHelpText(x1, y1, w1, 4, text("MAIN_HELP_3A"));
-        sp1.setLine(x1a, y1+sp1.height(), x1a, y1a);
+        sp1.setLine(x1a, sp1.ye(), x1a, y1a);
 
         int x2 = x1+(buttonW*2/3);
         int y2 = scaled(580);
         int x2a = x2+(w1/2);
         HelpSpec sp2 = helpUI.addBlueHelpText(x2, y2, w1, 4, text("MAIN_HELP_3B"));
-        sp2.setLine(x2a, y2+sp2.height(), x2a, y1a);
+		sp2.setLine(x2a, sp2.ye(), x2a, y1a);
 
         int x3 = x2+buttonW;
         HelpSpec sp3 = helpUI.addBlueHelpText(x3, y1, w1, 4, text("MAIN_HELP_3C"));
-        sp3.setLine(x3+(w1/2), y1+sp3.height(), x3+(w1/2), y1a);
+		sp3.setLine(x3+(w1/2), sp3.ye(), x3+(w1/2), y1a);
 
         int x4 = x3+buttonW;
-        HelpSpec sp4 = helpUI.addBlueHelpText(x4, y2, w1, 0, text("MAIN_HELP_3D"));
-        sp4.setLine(x4+(w1/2), y2+sp4.height(), x4+(w1/2), y1a);
+        HelpSpec sp4 = helpUI.addBlueHelpText(x4, y2, w1, 5, text("MAIN_HELP_3D"));
+		sp4.setLine(x4+(w1/2), sp4.ye(), x4+(w1/2), y1a);
 
         int x5 = x4+buttonW;
-        HelpSpec sp5 = helpUI.addBlueHelpText(x5, y1, w1, 4, text("MAIN_HELP_3E"));
-        sp5.setLine(x5+(w1/2), y1+sp5.height(), x5+(w1/2), y1a);
+        HelpSpec sp5 = helpUI.addBlueHelpText(x5, y1, w1, 5, text("MAIN_HELP_3E"));
+        sp5.setLine(x5+(w1/2), sp5.ye(), x5+(w1/2), y1a);
 
         int x6 = x5+buttonW;
         HelpSpec sp6 = helpUI.addBlueHelpText(x6, y2, w1, 4, text("MAIN_HELP_3F"));
-        sp6.setLine(x6+(w1/2), y2+sp6.height(), x6+(w1/2), y1a);
+		sp6.setLine(x6+(w1/2), sp6.ye(), x6+(w1/2), y1a);
 
         int x7 = x6+buttonW;
         HelpSpec sp7 = helpUI.addBlueHelpText(x7, y1, w1, 4, text("MAIN_HELP_3G"));
-        sp7.setLine(x7+(w1/2), y1+sp7.height(), x7+(w1/2), y1a);
+		sp7.setLine(x7+(w1/2), sp7.ye(), x7+(w1/2), y1a);
 
-        int x8 = w-scaled(264);
-        int w8 = scaled(150);
-        HelpSpec sp8 = helpUI.addBlueHelpText(x8, y2, w8, 3, text("MAIN_HELP_3H"));
-        sp8.setLine(x8+(w8/2), y2+sp8.height(), x8+(w8/2), y1a);
+		int x8 = w-scaled(264);
+		int w8 = s150;
+		HelpSpec sp8 = helpUI.addBlueHelpText(x8, y2, w8, 3, text("MAIN_HELP_3H"));
+		sp8.setLine(x8+(w8/2), sp8.ye(), x8+(w8/2), y1a);
 
         int x9 = w-scaled(220);
         int w9 = s200;
         HelpSpec sp9 = helpUI.addBlueHelpText(x9, y1, w9, 4, text("MAIN_HELP_3I"));
-        sp9.setLine(w-s79, y1+sp9.height(), w-s79, h-s100);
+		sp9.setLine(w-s79, sp9.ye(), w-s79, h-s100);
 
         int x10 = scaled(115);
         int y10 = scaled(125);
-        int w10 = scaled(250);
-        HelpSpec sp10 = helpUI.addBlueHelpText(x10, y10, w10, 3, text("MAIN_HELP_3J"));
-        sp10.setLine(x10, y10+(sp10.height()/2), s45, y10+(sp10.height()/2));
+		int w10 = s250;
+		HelpSpec sp10 = helpUI.addBlueHelpText(x10, y10, w10, 3, text("MAIN_HELP_3J"));
+		sp10.setLine(x10, sp10.yc(), s45, sp10.yc());
 
-		int tx11 = w - scaled(125);
-		int ty11 = scaled(275);
-		int x11 = scaled(475);
-		int w11 = s500;
-		int y11 = scaled(175);
-		HelpUI.HelpSpec sp11 = helpUI.addBrownHelpText(x11, y11, w11, 0, text("MAIN_HELP_3K")); // Instructions to the governor
-		sp11.setLine(sp11.xe(), sp11.ycb(), (sp11.xe() + tx11)/2, sp11.ycb(), tx11, ty11);
+		Sprite spr = clickedSprite();
+		if (spr instanceof StarSystem && isPlayer(((StarSystem)spr).empire())) {
+			int tx11 = w - scaled(125);
+			int ty11 = scaled(275);
+			int x11 = scaled(475);
+			int w11 = s500;
+			int y11 = scaled(175);
+			HelpUI.HelpSpec sp11 = helpUI.addBrownHelpText(x11, y11, w11, 0, text("MAIN_HELP_3K")); // Instructions to the governor
+			sp11.setLine(sp11.xe(), sp11.ycb(), (sp11.xe() + tx11)/2, sp11.ycb(), tx11, ty11);
+		}
     }
     @Override public void keyPressed(KeyEvent e)  {
     	setModifierKeysState(e); // BR: For the Flag color selection
@@ -1470,6 +1496,7 @@ public class MainUI extends BasePanel implements IMapHandler {
         overlayBombardedNotice.releaseObjects();
         overlayShipCombatPrompt.releaseObjects();
         overlayAdvice.releaseObjects();
+		closeOnDemandAdvisor();
 
     	RotPUI.instance().selectGamePanel();
     }

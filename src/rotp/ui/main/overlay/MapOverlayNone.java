@@ -24,9 +24,10 @@ import rotp.model.combat.ShipCombatManager;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.SpaceTestRepulsor;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.model.game.IBaseOptsTools;
-import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
+import rotp.ui.game.AdvisorPanel;
 import rotp.ui.game.BaseCompactOptionsUI;
 import rotp.ui.main.FleetPanel;
 import rotp.ui.main.GalaxyMapPanel;
@@ -37,7 +38,7 @@ import rotp.ui.sprites.ShipRelocationSprite;
 import rotp.ui.sprites.SystemTransportSprite;
 import rotp.ui.util.ParamBoolean;
 
-public final class MapOverlayNone extends MapOverlay {
+public final class MapOverlayNone implements IMapOverlay {
 	private static boolean allowTestBattle = false;
     MainUI parent;
     public MapOverlayNone(MainUI p) {
@@ -61,19 +62,19 @@ public final class MapOverlayNone extends MapOverlay {
     @Override public boolean consumesClicks(Sprite spr)   { return false; }
     @Override public boolean hoveringOverSprite(Sprite o) { return false; }
     @Override public void advanceMap()                    { parent.resumeTurn(); }
-    @Override public void paintOverMap(MainUI parent, GalaxyMapPanel ui, Graphics2D g2) { }
+    @Override public void paintOverMap(MainUI p, GalaxyMapPanel ui, Graphics2D g2) { }
 	@Override public boolean handleKeyReleased(KeyEvent e) {
 		parent.displayPanel().keyReleased(e);
 		return true;
 	}
     @Override public boolean handleKeyPress(KeyEvent e) {
-    	// BR: For the Flag color selection
+		// BR: For the Flag color selection
     	// setModifierKeysState(e); // Already done in MainUI
-    	if(session().autoRunning() && (e.getKeyCode() == KeyEvent.VK_ESCAPE)) {
-    		session().pauseAutoRun();
+    	if(GameSession.autoRunning() && (e.getKeyCode() == KeyEvent.VK_ESCAPE)) {
+			GameSession.pauseAutoRun();
     		return true;
     	}
-        if (session().performingTurn()) {
+		if (GameSession.performingTurn()) {
             // allocate systems overlay should pass keystrokes
             if (displayPanel().isVisible())
                 displayPanel().keyPressed(e);
@@ -81,7 +82,8 @@ public final class MapOverlayNone extends MapOverlay {
         }
         boolean shift = e.isShiftDown();
         boolean ctrl  = e.isControlDown();
-        int s40 = BasePanel.s40;
+
+		// System.out.println("handleKeyPressL: " + e.getKeyChar() + " / code: " + e.getKeyCode());
 
         if (e.getKeyChar() == '?') {
             parent.showHelp();
@@ -102,10 +104,10 @@ public final class MapOverlayNone extends MapOverlay {
 				}
 				player().fleetCommanderAI().nextTurn();
 				break;
-            case KeyEvent.VK_EQUALS:
-                if (e.isShiftDown())  
-                    parent.map().adjustZoom(-1);
-                break;
+			case KeyEvent.VK_EQUALS:
+			case KeyEvent.VK_PLUS:
+				parent.map().adjustZoom(-1);
+				break;
             case KeyEvent.VK_MINUS:
             	if (e.isAltDown())
             		parent.map().maxZoomOut(1f, 1f);
@@ -256,12 +258,20 @@ public final class MapOverlayNone extends MapOverlay {
 				else
 					toggleWarView();
                 break;
-            case KeyEvent.VK_F1:
-            	if (shift)
-            		parent.showHotKeys();
-            	else
-            		parent.showHelp();
-                break;
+			case KeyEvent.VK_F1:
+				if (shift)
+					parent.showHotKeys();
+				else if (AdvisorPanel.helpShowAdvisor.get()) {
+					if (ctrl)
+						parent.showHelp();
+					else
+						parent.toggleOnDemandAdvisor(parent, AdvisorPanel.MAP_ADVISOR, player());
+				}
+				else if (ctrl)
+					parent.toggleOnDemandAdvisor(parent, AdvisorPanel.MAP_ADVISOR, player());
+				else
+					parent.showHelp();
+				break;
             case KeyEvent.VK_F2:
             	nextSystem(player().orderedColonies());
                 break;

@@ -86,7 +86,7 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	// \BR:
 	private int startingYear;
 //	private int speciesType;
-//	private String homeworldStarType;
+	private String homeworldStarType;
 	private String homeworldPlanetType;
 	private int homeworldSize;
 	private int populationBonusPct	= 100;
@@ -183,8 +183,8 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 	String preferredShipSet()			{ return preferredShipSet; }
 	void preferredShipSet(String s)		{ preferredShipSet = s; }
 
-//	String homeworldStarType()			{ return homeworldStarType; }
-//	void homeworldStarType(String s)	{ homeworldStarType = s; }
+	String homeworldStarType()			{ return homeworldStarType; }
+	void homeworldStarType(String s)	{ homeworldStarType = s; }
 	int homeworldSize()					{ return homeworldSize; }
 	void homeworldSize(int i)			{ homeworldSize = i; }
 	private int populationBonusPct()	{ return populationBonusPct; }
@@ -819,7 +819,7 @@ class SpeciesSkills implements IShipDesignOption, Base, Serializable {
 		else
 			dest.resetFrom(substrings(names.trim(), ','));
 	}
-	
+
 	private class SpeciesUniqueIdentifiers	{
 		private final StringList civilizationNames	= new StringList();
 		private final StringList homeSystemNames	= new StringList();

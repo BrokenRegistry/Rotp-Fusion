@@ -17,6 +17,7 @@ package rotp.model.tech;
 
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
+import rotp.model.game.GameSession;
 import rotp.model.ships.ShipSpecialAmoebaEatShips;
 import rotp.ui.combat.ShipBattleUI;
 
@@ -80,6 +81,6 @@ public final class TechAmoebaEatShips extends Tech {
 		source.mgr.performingStackTurn = false;
 	}
 
-	public int damageLow()	{ return (int) (session().damageBonus() * damageLow); }
-	public int damageHigh()	{ return (int) (session().damageBonus() * damageHigh); }
+	public int damageLow()	{ return (int) (GameSession.damageBonus() * damageLow); }
+	public int damageHigh()	{ return (int) (GameSession.damageBonus() * damageHigh); }
 }

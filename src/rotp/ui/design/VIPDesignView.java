@@ -362,7 +362,7 @@ public class VIPDesignView implements IVIPConsole {
 		out += EQUAL_SEP + text("SHIP_DESIGN_SPEED_VALUE", (int)des.warpSpeed());
 		des.recalculateCost();
 		out += NEWLINE	 + text("SHIP_DESIGN_COST_LABEL");
-		out += EQUAL_SEP + text("SHIP_DESIGN_COST_VALUE", (int)des.cost());
+		out += EQUAL_SEP + text("SHIP_DESIGN_COST_VALUE", des.cost());
 		out += NEWLINE	 + text("SHIP_DESIGN_TOTAL_SPACE_LABEL");
 		out += EQUAL_SEP + (int)des.spaceUsed();
 		out += NEWLINE	 + text("SHIP_DESIGN_AVAIL_SPACE_LABEL");
@@ -411,7 +411,7 @@ public class VIPDesignView implements IVIPConsole {
 		ShipDesign des = shipDesign();
 		String out = "";
 		out += NEWLINE	 + text("SHIP_DESIGN_COST_LABEL");
-		out += EQUAL_SEP + text("SHIP_DESIGN_COST_VALUE", (int)des.cost());
+		out += EQUAL_SEP + text("SHIP_DESIGN_COST_VALUE", des.cost());
 		out += SPACER	 + text("SHIP_DESIGN_AVAIL_SPACE_LABEL");
 		out += EQUAL_SEP + (int)des.availableSpace();
 		return out;

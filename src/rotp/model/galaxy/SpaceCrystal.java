@@ -136,7 +136,7 @@ public final class SpaceCrystal extends SpaceMonster {
 	}
 	private ShipDesign designRotP()	{
 		ShipDesignLab lab = empire().shipLab();
-		int hp = (int) (stackLevel(7000));
+		int hp = (stackLevel(7000));
 		ShipDesign design = lab.newBlankDesign(5, hp);
 
 		design.mission	(ShipDesign.DESTROYER);

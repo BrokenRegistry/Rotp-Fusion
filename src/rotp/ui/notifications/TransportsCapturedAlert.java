@@ -26,7 +26,7 @@ public class TransportsCapturedAlert extends GameAlert {
     private final StarSystem system;
     private final int num;
     public static void create(Empire att, Empire def, StarSystem s, int n) {
-        GameSession.instance().addAlert(new TransportsCapturedAlert(att,def,s,n));
+        GameSession.addAlert(new TransportsCapturedAlert(att,def,s,n));
     }
     @Override
     public String description() {

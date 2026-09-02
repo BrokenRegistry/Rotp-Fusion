@@ -70,7 +70,7 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents, MouseL
 	public RComboBox(IParam<T> param)	{
 		this.param = param;
 		if (param != null) {
-			List<T> list = (List<T>) param.getListForUI();
+			List<T> list = param.getListForUI();
 			if (list != null)
 				updateList(list);
 		}

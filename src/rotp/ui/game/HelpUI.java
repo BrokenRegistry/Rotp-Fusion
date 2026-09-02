@@ -15,8 +15,10 @@
  */
 package rotp.ui.game;
 
+import static rotp.ui.game.GuideUI.cleanHtmlText;
+
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -26,15 +28,19 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JEditorPane;
+
+import rotp.Rotp;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
+import rotp.ui.main.SystemPanel;
 
 
 public class HelpUI extends BasePanel implements MouseListener {
     private static final long serialVersionUID = 1L;
     private static final Color backgroundHaze = new Color(0,0,0,40);
-    private static final int FONT_SIZE		= 16;
-    private static final int MIN_FONT_SIZE	= 10;
+	private static final int FONT_SIZE	= 16;
+	//private static final int MIN_FONT_SIZE	= 10;
     private static int margin = s30;
     private final Color blueBackC  = new Color(78,101,155);
     private final Color brownBackC = new Color(240,240,240);
@@ -66,56 +72,34 @@ public class HelpUI extends BasePanel implements MouseListener {
         sp.textC = brownTextC;
         return sp;
     }
-    public HelpSpec addBlueHelpText(int x, int y, int w, int num, String text) {
-        return addBlueHelpText(x,y,w,num,text,-1,-1,-1,-1,-1,-1);
-    }
-    public HelpSpec addBlueHelpText(int x, int y, int w, int num, String text, int x1, int y1, int x2, int y2) {
-        return addBlueHelpText(x,y,w,num,text,x1,y1,x2,y2,-1,-1);
-    }
-    public HelpSpec addBlueHelpText(int x, int y, int w, int num, String text, int x1, int y1, int x2, int y2, int x3, int y3) {
-        HelpSpec sp = new HelpSpec();
-		text = text.replace("<u>", "");
-		text = text.replace("</u>", "");
-		text = text.replace("<b>", "");
-		text = text.replace("</b>", "");
-        sp.text = text;
-        sp.x = x;
-        sp.w = w;
-        sp.x1 = x1;
-        sp.y1 = y1;
-        sp.x2 = x2;
-        sp.y2 = y2;
-        sp.x3 = x3;
-        sp.y3 = y3;
-        sp.backC = blueBackC;
+	public HelpSpec addBlueHelpText(int x, int y, int w, int num, String text)	{
+		if (text == null)
+			text = "null";
+		HelpSpec sp = new HelpSpec();
+		sp.guideBox.setText(cleanHtmlText(text));
+		sp.x = x;
+		sp.w = w;
 
-        if (num==0) {
-        	sp.lines = getLineNumber(text, w);
-        	sp.hMax  = sp.height();
-        }
-        else if (num<0) {
-        	sp.lines = -num;
-        	sp.hMax  = sp.height();
-        	sp.init();
-        }
-        else {
-        	sp.lines = num;
-        	sp.hMax  = sp.height();
-        	sp.init();
-        }
-        sp.hMax = sp.height();
+		if (num==0)
+			sp.hMax = sp.autoSizeBox(w-margin, 0);
+		else if (num<0) {
+			sp.lines = -num;
+			sp.hMax  = sp.hInit();
+			sp.hMax = sp.autoSizeBox(w-margin, sp.hMax);
+		}
+		else {
+			sp.lines = num;
+			sp.hMax  = sp.hInit();
+			sp.hMax = sp.autoSizeBox(w-margin, sp.hMax);
+		}
 
-        if (y<0) // position of the bottom of the box
-        	sp.y = -y - sp.height();
-        else
-        	sp.y = y;
-        	
-        specs.add(sp);
-        return sp;
-    }
-	public int getLineNumber(String str, int maxWidth)	{
-		List<String> lines = wrappedLines(narrowFont(FONT_SIZE), str, maxWidth - margin);
-		return lines.size();
+		if (y<0) // position of the bottom of the box
+			sp.y = -y - sp.hMax;
+		else
+			sp.y = y;
+
+		specs.add(sp);
+		return sp;
 	}
 	@Override public void paintComponent(Graphics g0)	{
 		super.paintComponent(g0);
@@ -123,80 +107,14 @@ public class HelpUI extends BasePanel implements MouseListener {
 		paintComponent(g, true);
 	}
 	public void paintComponent(Graphics2D g, boolean withHaze)	{
-        int w = getWidth();
-        int h = getHeight();
 		if (withHaze) {
 			g.setColor(backgroundHaze);
-			g.fillRect(0, 0, w, h);
+			g.fillRect(0, 0, getWidth(), getHeight());
 		}
-        for (HelpSpec spec: specs) {
-            int maxHeight = spec.hMax();
-
-            // Text formating
-            int fontSize = spec.fontSize;
-            g.setFont(narrowFont(fontSize));
-            List<String> lines = wrappedLines(g, spec.text, spec.w - margin);
-            int specH = height(lines.size(), fontSize);
-            while ((specH > maxHeight) && (fontSize > MIN_FONT_SIZE)) {
-                fontSize--;
-                g.setFont(narrowFont(fontSize));
-                lines = wrappedLines(g, spec.text, spec.w - margin);
-                specH = height(lines.size(), fontSize);
-            }
-            // draw background box
-            Color backC = spec.backC;
-            Color bdrC  = new Color(backC.getRed(), backC.getGreen(), backC.getBlue(), 160);
-            g.setColor(bdrC);
-            g.fillRect(spec.x, spec.y, spec.w, specH);
-            g.setColor(backC);
-            g.fillRect(spec.x+s5, spec.y+s5, spec.w-s10, specH-s10);
-
-            // draw box text
-            g.setColor(spec.textC);
-            int lineH = lineH(fontSize);
-            int x0 = spec.x + s15;
-            int y0 = spec.y + lineH + scaled(fontSize/2 - 1);
-            for (String line: lines) {
-                drawString(g,line, x0, y0);
-                y0 += lineH;
-            }
-			int xe = spec.x2;
-			int ye = spec.y2;
-            // BR: draw lines of target Array
-            if (spec.lineArr != null) {
-                Stroke prev = g.getStroke();
-                g.setStroke(stroke2);
-                g.setColor(spec.lineC);
-            	int size = spec.lineArr.length/2 - 1;
-				for (int i=0; i<size; i++) {
-					int k = 2*i;
-					xe = spec.lineArr[k+2];
-					ye = spec.lineArr[k+3];
-					g.drawLine(spec.lineArr[k], spec.lineArr[k+1], xe, ye);
-				}
-                g.setStroke(prev);
-            }
-            // draw line to target
-            if (spec.x2 >= 0) {
-				xe = spec.x2;
-				ye = spec.y2;
-                Stroke prev = g.getStroke();
-                g.setStroke(stroke2);
-                g.setColor(spec.lineC);
-                g.drawLine(spec.x1, spec.y1, spec.x2, spec.y2);
-				if (spec.x3 >=0) {
-					g.drawLine(spec.x2, spec.y2, spec.x3, spec.y3);
-					xe = spec.x3;
-					ye = spec.y3;
-				}
-                g.setStroke(prev);
-            }
-
-            int r = s3;
-            g.fillOval(xe-r, ye-r, r+r, r+r);
-       }
-    }
-    @Override public void keyPressed(KeyEvent e)		{
+		for (HelpSpec spec: specs)
+			spec.paintComponent(g);
+	}
+    @Override public void keyPressed(KeyEvent e)	{
         switch(e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
                 parent.cancelHelp();
@@ -238,7 +156,8 @@ public class HelpUI extends BasePanel implements MouseListener {
     static int height(int lines)						{ return height(lines, FONT_SIZE); }
 
     public class HelpSpec {
-        private int x, y, w;
+		private JEditorPane guideBox = new JEditorPane();
+		private int x, y, w, tw, th;
         private int lines, hMax;
         private int fontSize = FONT_SIZE;
         private int[] lineArr; // BR: to allow frames
@@ -248,15 +167,22 @@ public class HelpUI extends BasePanel implements MouseListener {
         private int y2 = -1;
         private int x3 = -1;
         private int y3 = -1;
-        private Color backC = Color.blue;
+        private Color backC = blueBackC;
         private Color textC = Color.white;
         private Color lineC = Color.white;
-        private String text;
-        public int lineH()	{ return scaled(fontSize + 2); }        
-        public int height()	{ return s2 + (lines+1) * lineH(); }
-        public int hMax()	{ return hMax; }
-        public int x()	    { return x; }
-        public int y()	    { return y; }
+		HelpSpec()	{
+			guideBox.setText("");
+			guideBox.setOpaque(false);
+			guideBox.setContentType("text/html");
+			guideBox.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+			guideBox.setBackground(new Color(0, 0, 0, 0));
+			guideBox.setForeground(SystemPanel.whiteText);
+		}
+		private int hInit()	{ return s2 + (lines+1) * lineH(); }
+		public int height()	{ return hMax; }
+		public int lineH()	{ return scaled(fontSize + 2); }
+        public int x()		{ return x; }
+        public int y()		{ return y; }
         public int xe()		{ return x + w; }
         public int ye()		{ return y + height(); }
         public int xc()		{ return x + w/2; }
@@ -269,11 +195,9 @@ public class HelpUI extends BasePanel implements MouseListener {
         public void setTextColor(Color c)	{ textC = c; }
         public void setBackColor(Color c)	{ backC = c; }
         public void setLineArr(int... arr)	{ lineArr = arr; }
-        public int[] rect(int x, int y, int w, int h)		{
-        	return new int[] {x, y, x+w, y, x+w, y+h, x, y+h, x, y};
-        }
-        public void setLine(int x1, int y1, int x2, int y2) { setLine(x1, y1, x2, y2, -1, -1); }
-        public void setLine(int x1a, int y1a, int x2a, int y2a, int x3a, int y3a) {
+		public int[] rect(int x, int y, int w, int h)		{ return new int[] {x, y, x+w, y, x+w, y+h, x, y+h, x, y}; }
+		public void setLine(int x1, int y1, int x2, int y2)	{ setLine(x1, y1, x2, y2, -1, -1); }
+		public void setLine(int x1a, int y1a, int x2a, int y2a, int x3a, int y3a)	{
             x1 = x1a;
             y1 = y1a;
             x2 = x2a;
@@ -281,20 +205,89 @@ public class HelpUI extends BasePanel implements MouseListener {
             x3 = x3a;
             y3 = y3a;
         }
-        private void init()	{
-            fontSize = FONT_SIZE;
-            Font font = narrowFont(fontSize);
-            List<String> linesList = wrappedLines(font, text, w - margin);
-            lines = linesList.size();
-            int specH = height();
-            while ((specH > hMax) && (fontSize > MIN_FONT_SIZE)) {
-                fontSize--;
-                font = narrowFont(fontSize);
-                linesList = wrappedLines(font, text, w - margin);
-                lines = linesList.size();
-                specH = height();
-            }
-        }
-    }
+		private void paintComponent(Graphics2D g)	{
+			// draw background box
+			Color bdrC  = new Color(backC.getRed(), backC.getGreen(), backC.getBlue(), 160);
+			g.setColor(bdrC);
+			g.fillRect(x, y, w, hMax);
+			g.setColor(backC);
+			int xx = x+s5;
+			int yy = y+s5;
+			g.fillRect(xx, yy, w-s10, hMax-s10);
+
+			// draw box text
+			guideBox.setForeground(textC);
+			xx += s10;
+			g.translate(xx, yy);
+			guideBox.paint(g);
+			g.translate(-xx, -yy);
+
+			int xe = x2;
+			int ye = y2;
+			// BR: draw lines of target Array
+			if (lineArr != null) {
+				Stroke prev = g.getStroke();
+				g.setStroke(stroke2);
+				g.setColor(lineC);
+				int size = lineArr.length/2 - 1;
+				for (int i=0; i<size; i++) {
+					int k = 2*i;
+					xe = lineArr[k+2];
+					ye = lineArr[k+3];
+					g.drawLine(lineArr[k], lineArr[k+1], xe, ye);
+				}
+				g.setStroke(prev);
+			}
+			// draw line to target
+			if (x2 >= 0) {
+				xe = x2;
+				ye = y2;
+				Stroke prev = g.getStroke();
+				g.setStroke(stroke2);
+				g.setColor(lineC);
+				g.drawLine(x1, y1, x2, y2);
+				if (x3 >=0) {
+					g.drawLine(x2, y2, x3, y3);
+					xe = x3;
+					ye = y3;
+				}
+				g.setStroke(prev);
+			}
+			int r = s3;
+			g.fillOval(xe-r, ye-r, r+r, r+r);
+		}
+		private int autoSizeBox(int maxW, int maxH)	{
+			int iW = maxW == 0? scaled(Rotp.IMG_W) : maxW;
+			int iH = maxH == 0? scaled(Rotp.IMG_H) : maxH;
+			int testW, preTest;
+			tw = Short.MAX_VALUE;
+			boolean go = true;
+			int guideFontSize = FONT_SIZE;
+
+			while (go) {
+				guideBox.setFont(narrowFont(guideFontSize));
+				th = Short.MAX_VALUE;
+				preTest = -1;
+				testW = maxW - 1; // to prevent rounding errors
+				while (th > iH && preTest != testW && testW < iW) {
+					preTest = testW;
+					guideBox.setSize(new Dimension(testW, Short.MAX_VALUE));
+					Dimension paneSize = guideBox.getPreferredSize();
+					tw = min(testW, paneSize.width);
+					th = paneSize.height;
+					testW *= (float) th /iH;
+				}
+				go = tw > iW || th > iH;
+				if (go) {
+					guideFontSize = max(1, min(guideFontSize-1, (int)(guideFontSize * (float)iH/th -1)));
+					go = guideFontSize > 1;
+				}
+			}
+			tw += 1;
+			Dimension autoSize = new Dimension(tw, th);
+			guideBox.setSize(autoSize);
+			return th+s12;
+		}
+	}
 }
 

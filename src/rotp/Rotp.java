@@ -152,7 +152,7 @@ public final class Rotp {
 		rotpUI.init();
 
         // modnar: change to cleaner icon set
-        List<Image> iconImages = new ArrayList<Image>();
+        List<Image> iconImages = new ArrayList<>();
         iconImages.add(ImageManager.current().image("ROTP_MOD_ICON3"));
         iconImages.add(ImageManager.current().image("ROTP_MOD_ICON2"));
         iconImages.add(ImageManager.current().image("ROTP_MOD_ICON1"));
@@ -258,7 +258,7 @@ public final class Rotp {
     }
     public static float resizeAmt() {
         int pct = UserPreferences.windowed() ? UserPreferences.screenSizePct() : 100;
-        float sizeAdj = (float) pct / 100.0f;
+        float sizeAdj = pct / 100f;
         if (resizeAmt < 0) {
             if (pct==-1)
             	resizeAmt = 1f;
@@ -313,15 +313,15 @@ public final class Rotp {
 		}
 		return false;
 	}
-    private static void stopIfInsufficientMemory(JFrame frame, int allocMb) {
+    private static void stopIfInsufficientMemory(JFrame frm, int allocMb) {
         if (allocMb < 260) {
-            JOptionPane.showMessageDialog(frame, "Error starting game: Not enough free memory to play");
+            JOptionPane.showMessageDialog(frm, "Error starting game: Not enough free memory to play");
             System.exit(0);
         }
     }
-    private static void stopIfNoFilePermissions(JFrame frame) {
+    private static void stopIfNoFilePermissions(JFrame frm) {
         if (UserPreferences.save() < 0) {
-            JOptionPane.showMessageDialog(frame, "Error starting game: Installed in directory with insufficient file permissions.");
+            JOptionPane.showMessageDialog(frm, "Error starting game: Installed in directory with insufficient file permissions.");
             System.exit(0);
         }
     }
@@ -341,7 +341,7 @@ public final class Rotp {
         restartWithMoreMemory(frame, true);
     }
 
-	private static boolean restartWithMoreMemory(JFrame frame, boolean reload) {
+	private static boolean restartWithMoreMemory(JFrame frm, boolean reload) {
         // MXBeans are not supported by GraalVM Native, so skip this part
         if (RotpGovernor.GRAALVM_NATIVE) {
             System.out.println("Running as GraalVM Native image");
@@ -364,7 +364,7 @@ public final class Rotp {
 //            return false;
 
         // desiredAlloc is 1G or 1/3rd of max memory, whichever is higher
-        int desiredAlloc = Math.max(1024, (int)maxMb/3);
+        int desiredAlloc = Math.max(1024, maxMb/3);
         // we'll alloc smallest of the desired Alloc or 75% of free memory (after 500mb overhead)
         actualAlloc = Math.min(desiredAlloc, (int)((freeMb+allocMb-500)*0.75));
         // if we're not a 64-bit JVM, limit requested heap to 1600Mb
@@ -376,7 +376,7 @@ public final class Rotp {
             return false;
 
         try {
-            stopIfInsufficientMemory(frame, actualAlloc*9/10);
+            stopIfInsufficientMemory(frm, actualAlloc*9/10);
             String argString = reload ? " reload" : " arg1";
             String execStr  = "java -Xmx"+actualAlloc+"m -jar "+jarFileName+argString;
             System.out.println("Only "+(int) allocMb+"Mb memory allocated by OS. Restarting game with command: "+execStr);

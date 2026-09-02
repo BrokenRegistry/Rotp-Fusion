@@ -34,6 +34,7 @@ import javax.swing.SwingUtilities;
 import rotp.model.empires.DiplomaticTreaty;
 import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
+import rotp.model.empires.species.Species;
 import rotp.model.events.SystemAbandonedEvent;
 import rotp.model.events.SystemCapturedEvent;
 import rotp.model.events.SystemDestroyedEvent;
@@ -56,6 +57,8 @@ import rotp.model.tech.TechMissileWeapon;
 import rotp.model.tech.TechTree;
 import rotp.ui.RotPUI;
 import rotp.ui.ScaledInteger;
+import rotp.ui.game.IAdvisor;
+import rotp.ui.main.SystemPanel;
 import rotp.ui.notifications.GNNNotification;
 import rotp.ui.notifications.InvadersKilledAlert;
 import rotp.ui.notifications.TransportsKilledAlert;
@@ -1241,7 +1244,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 
         ensureProperSpendingRates();
 
-        float prod = production();       
+        float prod = production();
         float reserveCost = prod * colonyTaxPct();
         float securityCost = prod * empire.totalSecurityCostPct();
         float shipCost = prod * empire.shipMaintCostPerBC();
@@ -2817,7 +2820,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			colonyIsDeveloped = isDeveloped(shieldWithoutBases);
 			factoryToMaxRatio = industry().factoryToMaxRatio();
 			colonyIsGrowing	= factoryToMaxRatio <= maxIndustryRatio;
-			nextProduction	= production();
+			nextProduction	= production(); // TODO BR: production vs totalProductionIncome
+			nextProduction	= totalProductionIncome();
 			boolean hasGrant = playerBudgetBC()!=null || governorBudgetBC()!=null || budgetSubsidiesBC()!=0;
 			if (grant) {
 				resetGrant(false);
@@ -2896,11 +2900,15 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			}
 		}
 		public float resetExess(float goalProd, boolean fromEco, boolean fromInd)	{
-			int tickNeeded = ceil(MAX_TICKS * goalProd / nextProduction);
+//			float totalProductionIncome = totalProductionIncome();
+//			int tickNeeded = ceil(MAX_TICKS * goalProd / totalProductionIncome);
+			int tickNeeded = ceil(MAX_TICKS * goalProd / totalIncome());
+			System.out.println(name() + " tickNeeded: " + tickNeeded);
 			int tickAdjust = 0;
 			if (fromEco) {
 				int ticks = ecology().allocation();
-				int minTick = ceil(MAX_TICKS * ecology().maxSpendingNeeded() / nextProduction);
+//				int minTick = ceil(MAX_TICKS * ecology().maxSpendingNeeded() / totalProductionIncome);
+				int minTick = ecology().maxAllocationNeeded();
 				int adj = ticks - minTick;
 				if (adj > 0) {
 					adj = min(adj, tickNeeded);
@@ -2909,6 +2917,14 @@ public final class Colony implements Base, IMappedObject, Serializable {
 					tickAdjust = adj;
 					tickNeeded -= adj;
 				}
+			System.out.println(name()
+					+ " ticks " + ticks
+					+ " minTick: " + minTick
+					+ " adj: " + adj
+					+ " tickNeeded: " + tickNeeded
+					+ " tickAdjust: " + tickAdjust
+					+ " newTick: " + ecology().allocation()
+					);
 			}
 			if (fromInd) {
 				int ticks = industry().allocation();
@@ -2921,6 +2937,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 					tickAdjust += adj;
 				}
 			}
+//			return tickAdjust * totalProductionIncome / MAX_TICKS /2;
 			return tickAdjust * nextProduction / MAX_TICKS /2;
 		}
 		public boolean isSubjectToTaxes()		{ return subjectToTaxes(); }
@@ -2977,15 +2994,15 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		}
 	}
 
-	private final class GovAutoFundTag implements ScaledInteger, Serializable	{
+	public final class GovAutoFundTag implements ScaledInteger, Serializable	{
 		private static final long serialVersionUID = 1L;
 		private static final Color COIN_GOLD_COLOR = new Color(255, 215, 0);
-		private static final int UNFUNDED	= 0;
-		private static final int GROWING	= 10;
-		private static final int ORDERS		= 20;
-		private static final int URGENCY	= 30;
-		private static final int SHIP_WORK	= 40;
-		private static final int UNLIMITED	= 50;
+		public static final int UNFUNDED	= 0;
+		public static final int GROWING		= 10;
+		public static final int ORDERS		= 20;
+		public static final int URGENCY		= 30;
+		public static final int SHIP_WORK	= 40;
+		public static final int UNLIMITED	= 50;
 
 		private int fundingMandate = 0;
 		private boolean useReserve = false;
@@ -3073,35 +3090,34 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			return false;
 		}
 		public boolean isFunded()		{ return fundingMandate != UNFUNDED; }
-		private boolean whileGrowing()	{ return fundingMandate == GROWING; }
-		private boolean whileOrders()	{ return fundingMandate == ORDERS; }
-		private boolean whileUrgency()	{ return fundingMandate == URGENCY; }
-		private boolean whileShipWork()	{ return fundingMandate == SHIP_WORK; }
 		public BufferedImage getCoinImage(int width) {
+			return getCoinImage(width, empire(), fundingMandate, useReserve(), budget.budgetSubsidiesBC() > 0);
+		}
+		public static BufferedImage getCoinImage(int width, Species empire, int fundingMandate, boolean useReserve, boolean granted) {
 			int w = width + width;
 
 			BufferedImage buffer = new BufferedImage (w, w, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = buffer.createGraphics();
 
-			if (isFunded()) {
+			if (fundingMandate != UNFUNDED) {
 				g.setColor(COIN_GOLD_COLOR);
 				g.fillOval(0, 0, w, w);
 
-				int margin = s6;
+				int margin = w/8;
 				int coinTL = margin;
 				int coinW = w - margin - margin;
 				int coinBR = coinTL + coinW;
 
-				Image img = empire().flagNorm();
+				Image img = empire.flagNorm();
 				float circleAlpha = 0.4f;
-				float flagAlpha = empire().coinAlpha();
+				float flagAlpha = empire.coinAlpha();
 				int imgH = img.getHeight(null);
 				int imgW = img.getWidth(null);
 				Composite prevComp = g.getComposite();
 				g.setComposite(AlphaComposite.getInstance(AlphaComposite.XOR, flagAlpha));
 				g.drawImage(img, coinTL, coinTL, coinBR, coinBR, 0, 0, imgW, imgH, null);
 				g.setComposite(AlphaComposite.getInstance(AlphaComposite.XOR, circleAlpha));
-				margin = s4;
+				margin = w/12;
 				coinTL = margin;
 				coinW = w - margin - margin;
 				coinBR = coinTL + coinW;
@@ -3109,45 +3125,47 @@ public final class Colony implements Base, IMappedObject, Serializable {
 				g.drawOval(coinTL, coinTL, coinW, coinW);
 				g.setComposite(prevComp);
 				g.setStroke(stroke3);
-				if (whileGrowing()) {
-					g.setColor(GROWING_COLOR);
-					g.drawOval(coinTL, coinTL, coinW, coinW);
+				switch (fundingMandate) {
+					case GROWING:
+						g.setColor(GROWING_COLOR);
+						g.drawOval(coinTL, coinTL, coinW, coinW);
+						break;
+					case ORDERS:
+						g.setColor(ORDER_COLOR);
+						g.drawOval(coinTL, coinTL, coinW, coinW);
+						break;
+					case URGENCY:
+						g.setColor(URGENCY_COLOR);
+						g.drawOval(coinTL, coinTL, coinW, coinW);
+						break;
+					case SHIP_WORK:
+						int grey = 15;
+						g.setColor(new Color(grey, grey, grey));
+						g.drawOval(coinTL, coinTL, coinW, coinW);
 				}
-				else if(whileOrders()) {
-					g.setColor(ORDER_COLOR);
-					g.drawOval(coinTL, coinTL, coinW, coinW);
-				}
-				else if(whileUrgency()) {
-					g.setColor(URGENCY_COLOR);
-					g.drawOval(coinTL, coinTL, coinW, coinW);
-				}
-				else if(whileShipWork()) {
-					int grey = 15;
-					g.setColor(new Color(grey, grey, grey));
-					g.drawOval(coinTL, coinTL, coinW, coinW);
-				}
-				if (useReserve()) {
+				if (useReserve) {
 					g.setStroke(stroke3);
 					g.setColor(new Color(255, 0, 0));
 					g.drawArc(coinTL, coinTL, coinW, coinW, 30, 120);
 				}
 			}
-			else {
+			else { // Unfunded
 				int grey = 160;
 				g.setColor(new Color(grey, grey, grey));
 				g.fillOval(0, 0, w, w);
-				int margin = s6;
+				int margin = w/8;
 				int coinTL = margin;
 				int coinW = w - margin - margin;
 				int coinBR = coinTL + coinW;
 	
-				Image img =  empire().flagNorm();
+				Image img =  empire.flagNorm();
 				int imgH = img.getHeight(null);
 				int imgW = img.getWidth(null);
 				g.drawImage(img, coinTL, coinTL, coinBR, coinBR, 0, 0, imgW, imgH, null);
 			}
-			if (budget.budgetSubsidiesBC() > 0) {
-				int dia = s4;
+
+			if (granted) {
+				int dia = w/6;
 				int tl = (w - dia)/2;
 				g.setColor(GRANTED_COLOR);
 				g.fillOval(tl, tl, dia, dia);
@@ -3163,4 +3181,89 @@ public final class Colony implements Base, IMappedObject, Serializable {
 	public static final Comparator<ColonyBudget> DECREASING_BUDGET = (ColonyBudget c1, ColonyBudget c2) -> {
 		return Float.compare(c2.reserveNeededBC(), c1.reserveNeededBC());
 	};
+	public static final class CoinAdvisor implements IAdvisor {
+		public static  BufferedImage getSubsidiesInstruction ()	{
+			int imgWidth	= s400;
+			int imgHeight	= s700;
+			int coinSide	= s25;
+			int coinStep	= coinSide + s3;
+
+			BufferedImage img = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D gi = (Graphics2D) img.getGraphics();
+			ADVISOR.setHiRenderingHints(gi);
+
+			String[] keys = {
+					"ALLOCATE_SUBSIDIES_ORDER",
+					"ALLOCATE_SUBSIDIES_SHIPYARD",
+					"ALLOCATE_SUBSIDIES_GROWING",
+					"ALLOCATE_SUBSIDIES_URGENCY",
+					"ALLOCATE_SUBSIDIES_GRANTED",
+					"ALLOCATE_SUBSIDIES_DRAW",
+					"ALLOCATE_SUBSIDIES_UNLIMITED",
+					"ALLOCATE_SUBSIDIES_ALLOCATE",
+					"ALLOCATE_SUBSIDIES_DEFAULT"
+					};
+			Species species = ADVISOR.getSpecies();
+			BufferedImage[] coins = {
+					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.ORDERS,	 false, false),
+					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.SHIP_WORK, false, false),
+					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.GROWING,	 false, false),
+					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.URGENCY,	 false, false),
+					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.UNLIMITED, false, true),
+					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.UNLIMITED, true,  false),
+					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.UNLIMITED, false, false),
+					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.UNLIMITED, false, false),
+					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.UNFUNDED,  false, false)
+					};
+			int[] yLines = new int[keys.length];
+			int y = imgHeight;
+			int xCoin = 0;
+			int xText = coinSide + TEXT_MARGIN;
+			int textWidth	= imgWidth - xText;
+			int maxTextW	= 0;
+			int coinDY = RotPUI.scaledSize(IAdvisor.advisorFontSize.get()) /4;
+
+			for (int i=0; i<keys.length ; i++) {
+				// Init text and get height
+				ADVISOR.initGuideBox(gi, ADVISOR.text(keys[i]), textWidth, 0);
+
+				// Get Location
+				y = Math.min(y - coinStep, y - GUIDE_BOX.getHeight());
+				yLines[i] = y;
+				maxTextW = Math.max(maxTextW, GUIDE_BOX.getWidth());
+
+				// Draw coin
+				int imgH = coins[i].getHeight();
+				int imgW = coins[i].getWidth();
+				gi.setColor(Color.BLACK);
+				int yCoin = y + coinDY;
+				gi.fillOval(xCoin, yCoin, coinSide, coinSide);
+				gi.drawImage(coins[i], xCoin, yCoin, xCoin + coinSide, yCoin + coinSide, 0, 0, imgW, imgH, null);
+
+				// draw text
+				gi.translate(xText, y);
+				GUIDE_BOX.paint(gi);
+				gi.translate(-xText, -y);
+			}
+
+			// head
+			maxTextW += xText;
+			ADVISOR.initGuideBox(gi, ADVISOR.text("ALLOCATE_SUBSIDIES_HEAD"), maxTextW, 0);
+			xText = (maxTextW - GUIDE_BOX.getWidth())/2;
+			y -= GUIDE_BOX.getHeight()+s5;
+			gi.translate(xText, y);
+			GUIDE_BOX.paint(gi);
+			gi.translate(-xText, -y);
+
+			// draw lines
+			int lineX1 = coinSide/2;
+			int lineX2 = maxTextW - lineX1;
+			gi.setColor(SystemPanel.whiteText);
+			for (int i=0; i<yLines.length ; i++) {
+				gi.drawLine(lineX1, yLines[i], lineX2, yLines[i]);
+			}
+			gi.dispose();
+			return img.getSubimage(0, y, maxTextW, imgHeight-y);
+		}
+	}
 }

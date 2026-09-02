@@ -70,6 +70,7 @@ final class GovTaxesOptions extends AbstractOptionsSubUI {
 				HEADER_SPACER_50,
 				maxMissingPopulation,
 				maxMissingFactories,
+				taxOnlyDeveloped,
 
 				HEADER_SPACER_50,
 				isManageableGovernor,
@@ -117,7 +118,8 @@ final class GovTaxesOptions extends AbstractOptionsSubUI {
 						LINE_SPACER_25,
 						divertExcessToResearch,
 						maxMissingPopulation,
-						maxMissingFactories
+						maxMissingFactories,
+						taxOnlyDeveloped
 						));
 		return majorList;
 	}

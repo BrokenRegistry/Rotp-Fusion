@@ -783,7 +783,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		yBox = sp2.ye() + s10;
 		sp   = helpUI.addBrownHelpText(xBox, yBox, wBox, -nL, txt);
 		xb   = xBox + wBox*6/7;
-		yb   = yBox + sp.height();
+		yb   = sp.ye();
 
 		switch (opts.compactOptionOnly().get().toUpperCase()) {
 			case "NO": {
@@ -936,7 +936,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			null, null,					// Font, Preview
 			returnList,					// Alternate return
 			specificAI);				// help parameter
-		String input = (String) dialog.showDialog(0);
+		String input = dialog.showDialog(0);
 		ModifierKeysState.reset();
 		repaint();
 		if (input == null)
@@ -965,7 +965,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			returnList,					// Alternate return
 			opponentAI);				// help parameter
 
-		String input = (String) dialog.showDialog(0);
+		String input = dialog.showDialog(0);
 		ModifierKeysState.reset();
 		repaint();
 		if (input == null)

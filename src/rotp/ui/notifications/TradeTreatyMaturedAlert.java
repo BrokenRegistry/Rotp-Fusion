@@ -22,7 +22,7 @@ public class TradeTreatyMaturedAlert extends GameAlert {
     private final int empId;
     private final int amt;
      public static void create(int id, int tradeAmt) {
-        GameSession.instance().addAlert(new TradeTreatyMaturedAlert(id, tradeAmt));
+        GameSession.addAlert(new TradeTreatyMaturedAlert(id, tradeAmt));
     }
     @Override
     public String description() {

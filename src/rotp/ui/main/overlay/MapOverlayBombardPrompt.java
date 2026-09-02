@@ -44,7 +44,7 @@ import rotp.ui.sprites.MapSprite;
 import rotp.ui.vipconsole.IVIPConsole;
 import rotp.ui.vipconsole.IVIPListener;
 
-public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener {
+public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener {
     static final Color destroyedTextC = new Color(255,32,32,192);
     static final Color destroyedMaskC = new Color(0,0,0,160);
     Color maskC  = new Color(40,40,40,160);
@@ -173,17 +173,6 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
         StarSystem sys = galaxy().system(sysId);
         Empire pl = player();
 
-        int s7 = BasePanel.s7;
-        int s10 = BasePanel.s10;
-        int s15 = BasePanel.s15;
-        int s20 = BasePanel.s20;
-        int s25 = BasePanel.s25;
-        int s30 = BasePanel.s30;
-        int s35 = BasePanel.s35;
-        int s40 = BasePanel.s40;
-        int s50 = BasePanel.s50;
-        int s60 = BasePanel.s60;
-
         int w = ui.getWidth();
         int h = ui.getHeight();
 
@@ -291,7 +280,7 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
                 g.setFont(narrowFont(subtitleFontSize));
                 drawString(g,subtitleStr, boxX+leftW, boxY+s25+transportH);         
             }
-            
+
             // calc width needed for yes/no buttons
             g.setFont(narrowFont(20));
             String yesStr;
@@ -564,46 +553,19 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
         }
         return true;
     }
-    class SystemFlagSprite extends MapSprite {
-        private int mapX, mapY, buttonW, buttonH;
-        private int selectX, selectY, selectW, selectH;
+    final class SystemFlagSprite extends MapSprite {
 
         private MapOverlayBombardPrompt parent;
-
-        protected int mapX()      { return mapX; }
-        protected int mapY()      { return mapY; }
-        public void mapX(int i)   { selectX = mapX = i; }
-        public void mapY(int i)   { selectY = mapY = i; }
-
-        public int width()        { return buttonW; }
-        public int height()       { return buttonH; }
         public void reset()       {  }
 
-        public void init(MapOverlayBombardPrompt p, Graphics2D g)  {
+        public void init(MapOverlayBombardPrompt p, Graphics2D g) {
             parent = p;
-            buttonW = BasePanel.s70;
-            buttonH = BasePanel.s70;
-            selectW = buttonW;
-            selectH = buttonH;
-        }
-        public void setSelectionBounds(int x, int y, int w, int h) {
-            selectX = x;
-            selectY = y;
-            selectW = w;
-            selectH = h;
+			box.setSize(s70, s70);
         }
         @Override
         public boolean acceptDoubleClicks()         { return true; }
         @Override
         public boolean acceptWheel()                { return true; }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-            hovering = x >= selectX
-                        && x <= selectX+selectW
-                        && y >= selectY
-                        && y <= selectY+selectH;
-            return hovering;
-        }
         @Override
         public void draw(GalaxyMapPanel map, Graphics2D g) {
             if (!parent.drawSprites())
@@ -611,12 +573,12 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
             StarSystem sys = parent.starSystem();
             Image flagImage = parent.parent.flagImage(sys);
             Image flagHaze = parent.parent.flagHaze(sys);
-            g.drawImage(flagHaze, mapX, mapY, buttonW, buttonH, null);
-            if (hovering) {
-                Image flagHover = parent.parent.flagHover(sys);
-                g.drawImage(flagHover, mapX, mapY, buttonW, buttonH, null);
-            }
-            g.drawImage(flagImage, mapX, mapY, buttonW, buttonH, null);
+			g.drawImage(flagHaze, box.x, box.y, box.width, box.height, null);
+			if (hovering) {
+				Image flagHover = parent.parent.flagHover(sys);
+				g.drawImage(flagHover, box.x, box.y, box.width, box.height, null);
+			}
+			g.drawImage(flagImage, box.x, box.y, box.width, box.height, null);
         }
         @Override
         public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {

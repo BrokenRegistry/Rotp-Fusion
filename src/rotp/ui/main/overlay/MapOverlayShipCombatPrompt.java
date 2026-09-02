@@ -20,15 +20,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.LinearGradientPaint;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,13 +50,14 @@ import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.races.RacesMilitaryUI;
 import rotp.ui.races.RacesUI;
+import rotp.ui.sprites.RoundButtonSprite;
 import rotp.ui.sprites.MapSprite;
 import rotp.ui.util.StringList;
 import rotp.ui.vipconsole.IVIPListener;
 import rotp.ui.vipconsole.VIPConsole;
 import rotp.util.LanguageManager;
 
-public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListener {
+public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListener {
 //    static final Color destroyedTextC = new Color(255,32,32,192);
 //    static final Color destroyedMaskC = new Color(0,0,0,160);
 	private Color maskC		= new Color(40,40,40,160);
@@ -222,9 +220,9 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
         boxW = scaled(540);
         int boxH1 = s68;
         int boxH2 = scaled(172);
-        int buttonPaneH = scaled(35);
+		int buttonPaneH = s35;
         boxH = boxH1 + boxH2 + buttonPaneH;
-        
+
         boxX = -s40+(w/2);
         boxY = -s40+(h-boxH)/2;
 
@@ -489,7 +487,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
         y1 -= scaled(5);
         g.setFont(narrowFont(40));
         drawBorderedString(g, sysName, 1, x1, y1, Color.darkGray, SystemPanel.orangeText);
-        
+
         // planet flag
         parent.addNextTurnControl(flagButton);
         flagButton.init(this, g);
@@ -589,163 +587,63 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
         }
         return true;
     }
-	private final class AutoResolveBattleSprite extends MapSprite {
-        private LinearGradientPaint background;
-        private final Color edgeC = new Color(59,59,59);
-        private final Color midC = new Color(93,93,93);
-        private int mapX, mapY, buttonW, buttonH;
-        private int selectX, selectY, selectW, selectH;
+	private final class AutoResolveBattleSprite extends RoundButtonSprite {
+		private final Color edgeC	= new Color(59,59,59);
+		private final Color midC	= new Color(93,93,93);
 
-        private MapOverlayShipCombatPrompt parent;
-
-		private int mapX()			{ return mapX; }
-		// private int mapY()			{ return mapY; }
-		private void mapX(int i)	{ selectX = mapX = i; }
-		private void mapY(int i)	{ selectY = mapY = i; }
-		private int width()			{ return buttonW; }
-		// private int height()		{ return buttonH; }
-		private String label()		{ return text("SHIP_COMBAT_AUTO_RESOLVE"); }
-		private Font font()			{
-        	String language = LanguageManager.current().selectedLanguageName();
-        	if (language.equals("Português")) {
-        		return narrowFont(16);
-        	}
-        	return narrowFont(18);
-        }
-
-        private void init(MapOverlayShipCombatPrompt p, Graphics2D g) {
-            parent = p;
-        	String language = LanguageManager.current().selectedLanguageName();
-        	if (language.equals("Português")) {
-                buttonW = s20 + g.getFontMetrics(font()).stringWidth(label());
-        	}
-        	else
-        		buttonW = s40 + g.getFontMetrics(font()).stringWidth(label());
-            buttonH = s30;
-            selectW = buttonW;
-            selectH = buttonH;
-        }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-            hovering = x >= selectX
-                        && x <= selectX+selectW
-                        && y >= selectY
-                        && y <= selectY+selectH;
-            return hovering;
-        }
-        @Override
-        public void draw(GalaxyMapPanel map, Graphics2D g) {
-            if (!parent.drawSprites())
-                return;
-            if (background == null) {
-                float[] dist = {0.0f, 0.5f, 1.0f};
-                Point2D start = new Point2D.Float(mapX, 0);
-                Point2D end = new Point2D.Float(mapX+buttonW, 0);
-                Color[] colors = {edgeC, midC, edgeC };
-                background = new LinearGradientPaint(start, end, dist, colors);
-            }
-            g.setColor(SystemPanel.blackText);
-            g.fillRoundRect(mapX+s3, mapY+s3, buttonW,buttonH,s10,s10);
-            g.setPaint(background);
-            g.fillRoundRect(mapX, mapY, buttonW,buttonH,s5,s5);
-            Color c0 = hovering ? SystemPanel.yellowText : SystemPanel.whiteText;
-            g.setColor(c0);
-            Stroke prevStr =g.getStroke();
-            g.setStroke(stroke2);
-            g.drawRoundRect(mapX, mapY, buttonW,buttonH,s5,s5);
-            g.setStroke(prevStr);
-            g.setFont(font());
-
-            String str = label();
-            int sw = g.getFontMetrics().stringWidth(str);
-            int x2a = mapX+((buttonW-sw)/2);
-            drawBorderedString(g, str, x2a, mapY+buttonH-s10, SystemPanel.textShadowC, c0);
-        }
-        @Override
-        public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+		@Override protected Font font()	{
+			String language = LanguageManager.current().selectedLanguageName();
+			if (language.equals("Português"))
+				return narrowFont(16);
+			return narrowFont(18);
+		}
+		private void init(MapOverlayShipCombatPrompt p, Graphics2D g) {
+			parent = p;
+			box.setLabelKey("SHIP_COMBAT_AUTO_RESOLVE");
+			String language = LanguageManager.current().selectedLanguageName();
+			if (language.equals("Português"))
+				box.setSize(s20 + g.getFontMetrics(font()).stringWidth(label()), s30);
+			else
+				box.setSize(s40 + g.getFontMetrics(font()).stringWidth(label()), s30);
+		}
+		@Override protected Color[] colors()	{ return new Color[] {edgeC, midC, edgeC}; }
+		@Override public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
 			Empire attacker = mgr.results().attacker();
 			if (attacker != null && attacker.isPlayer())
 				if (e.isShiftDown())
 					mgr.dontTargetHarmlessColony(true);
 				else if (e.isControlDown())
 					mgr.dontTargetHarmlessColony(false);
-            startCombat(ShipBattleUI.AUTO_RESOLVE);
-        };
-    }
-    private final class SmartResolveBattleSprite extends MapSprite {
-        private LinearGradientPaint background;
-        private final Color edgeC = new Color(59,59,59);
-        private final Color midC = new Color(93,93,93);
-        private int mapX, mapY, buttonW, buttonH;
-        private int selectX, selectY, selectW, selectH;
+			startCombat(ShipBattleUI.AUTO_RESOLVE);
+		};
+	}
+	private final class SmartResolveBattleSprite extends RoundButtonSprite {
+		private final Color edgeC	= new Color(59,59,59);
+		private final Color midC	= new Color(93,93,93);
 
-        private MapOverlayShipCombatPrompt parent;
-
-		private int mapX()			{ return mapX; }
-		// private int mapY()		{ return mapY; }
-		private void mapX(int i)	{ selectX = mapX = i; }
-		private void mapY(int i)	{ selectY = mapY = i; }
-		private int width()			{ return buttonW; }
-		// private int height()		{ return buttonH; }
-		private String label()		{ return text("SHIP_COMBAT_SMART_RESOLVE"); }
-		private Font font()			{
-        	String language = LanguageManager.current().selectedLanguageName();
-        	if (language.equals("Português")) {
-        		return narrowFont(16);
-        	}
-        	return narrowFont(18);
-        }
-
-        private void init(MapOverlayShipCombatPrompt p, Graphics2D g)  {
-            parent = p;
-        	String language = LanguageManager.current().selectedLanguageName();
-        	if (language.equals("Português")) {
-                buttonW = s20 + g.getFontMetrics(font()).stringWidth(label());
-        	}
-        	else
-        		buttonW = s40 + g.getFontMetrics(font()).stringWidth(label());
-            buttonH = s30;
-            selectW = buttonW;
-            selectH = buttonH;
-        }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-            hovering = x >= selectX
-                        && x <= selectX+selectW
-                        && y >= selectY
-                        && y <= selectY+selectH;
-            return hovering;
-        }
-        @Override
-        public void draw(GalaxyMapPanel map, Graphics2D g) {
-            if (!parent.drawSprites())
-                return;
-            if (background == null) {
-                float[] dist = {0.0f, 0.5f, 1.0f};
-                Point2D start = new Point2D.Float(mapX, 0);
-                Point2D end = new Point2D.Float(mapX+buttonW, 0);
-                Color[] colors = {edgeC, midC, edgeC };
-                background = new LinearGradientPaint(start, end, dist, colors);
-            }
-            g.setColor(SystemPanel.blackText);
-            g.fillRoundRect(mapX+s3, mapY+s3, buttonW,buttonH,s10,s10);
-            g.setPaint(background);
-            g.fillRoundRect(mapX, mapY, buttonW,buttonH,s5,s5);
-            Color c0 = hovering ? SystemPanel.yellowText : SystemPanel.whiteText;
-            g.setColor(c0);
-            Stroke prevStr =g.getStroke();
-            g.setStroke(stroke2);
-            g.drawRoundRect(mapX, mapY, buttonW,buttonH,s5,s5);
-            g.setStroke(prevStr);
-            g.setFont(font());
-
-            String str = label();
-            int sw = g.getFontMetrics().stringWidth(str);
-            int x2a = mapX+((buttonW-sw)/2);
-            drawBorderedString(g, str, x2a, mapY+buttonH-s10, SystemPanel.textShadowC, c0);
+		private void init(MapOverlayShipCombatPrompt p, Graphics2D g) {
+			parent = p;
+			box.setLabelKey("SHIP_COMBAT_SMART_RESOLVE");
+			String language = LanguageManager.current().selectedLanguageName();
+			if (language.equals("Português"))
+				box.setSize(s20 + g.getFontMetrics(font()).stringWidth(label()), s30);
+			else
+				box.setSize(s40 + g.getFontMetrics(font()).stringWidth(label()), s30);
+		}
+		@Override public void draw(GalaxyMapPanel map, Graphics2D g) {
+			if (!parent.drawSprites())
+				return;
+			directDraw(map, g);
 			if (hovering && advisor.playerShouldRetreat())
 				drawComments(map, g);
-        }
+		}
+		@Override protected Font font()			{
+			String language = LanguageManager.current().selectedLanguageName();
+			if (language.equals("Português"))
+				return narrowFont(16);
+			return narrowFont(18);
+		}
+		@Override protected Color[] colors()	{ return new Color[] {edgeC, midC, edgeC}; }
 		@Override public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
 			if (advisor.playerShouldRetreat())
 				startCombat(ShipBattleUI.RETREAT_ALL); // Immediate retreat
@@ -774,9 +672,9 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
 			}
 
 			int lineH = s20;
-			int boxX = mapX - s50;
-			int boxY = mapY + buttonH + s6;
-			int boxW = buttonW + s100;
+			int boxX = box.x - s50;
+			int boxY = box.ye() + s6;
+			int boxW = box.width + s100;
 			int boxH = (list.size() + 1) * lineH + s10;
 			g.setPaint(popupTxtC);
 			g.fillRoundRect(boxX-s3, boxY-s3, boxW+s3+s3, boxH+s3+s3, s10, s10);
@@ -800,117 +698,46 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
 			}
 		}
 	}
-    private final class RetreatAllBattleSprite extends MapSprite {
-        private LinearGradientPaint background;
-        private final Color edgeC = new Color(59,59,59);
-        private final Color midC = new Color(93,93,93);
-        private int mapX, mapY, buttonW, buttonH;
-        private int selectX, selectY, selectW, selectH;
+	private final class RetreatAllBattleSprite extends RoundButtonSprite {
+		private final Color edgeC	= new Color(59,59,59);
+		private final Color midC	= new Color(93,93,93);
 
-        private MapOverlayShipCombatPrompt parent;
+		public void init(MapOverlayShipCombatPrompt p, Graphics2D g) {
+			parent = p;
+			box.setLabelKey("SHIP_COMBAT_RETREAT_ALL");
+			String language = LanguageManager.current().selectedLanguageName();
+			if (language.equals("Português"))
+				box.setSize(s20 + g.getFontMetrics(font()).stringWidth(label()), s30);
+			else
+				box.setSize(s40 + g.getFontMetrics(font()).stringWidth(label()), s30);
+		}
+		@Override protected Font font()	{
+			String language = LanguageManager.current().selectedLanguageName();
+			if (language.equals("Português"))
+				return narrowFont(16);
+			return narrowFont(18);
+		}
+		@Override protected Color[] colors()	{ return new Color[] {edgeC, midC, edgeC}; }
+		@Override public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+			startCombat(ShipBattleUI.RETREAT_ALL);
+		};
+	}
+	private final class StartWarBattleSprite extends MapSprite {
+		private MapOverlayShipCombatPrompt parent;
 
-		// private int mapX()		{ return mapX; }
-		// private int mapY()		{ return mapY; }
-        private void mapX(int i)	{ selectX = mapX = i; }
-		private void mapY(int i)	{ selectY = mapY = i; }
-		// private int width()		{ return buttonW; }
-		// private int height()		{ return buttonH; }
-		private String label()		{ return text("SHIP_COMBAT_RETREAT_ALL"); }
-		private Font font()			{
-        	String language = LanguageManager.current().selectedLanguageName();
-        	if (language.equals("Português")) {
-        		return narrowFont(16);
-        	}
-        	return narrowFont(18);
-        }
-
-        public void init(MapOverlayShipCombatPrompt p, Graphics2D g)  {
-            parent = p;
-        	String language = LanguageManager.current().selectedLanguageName();
-        	if (language.equals("Português")) {
-                buttonW = s20 + g.getFontMetrics(font()).stringWidth(label());
-        	}
-        	else
-        		buttonW = s40 + g.getFontMetrics(font()).stringWidth(label());
-            buttonH = s30;
-            selectW = buttonW;
-            selectH = buttonH;
-        }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-            hovering = x >= selectX
-                        && x <= selectX+selectW
-                        && y >= selectY
-                        && y <= selectY+selectH;
-            return hovering;
-        }
-        @Override
-        public void draw(GalaxyMapPanel map, Graphics2D g) {
-            if (!parent.drawSprites())
-                return;
-            if (background == null) {
-                float[] dist = {0.0f, 0.5f, 1.0f};
-                Point2D start = new Point2D.Float(mapX, 0);
-                Point2D end = new Point2D.Float(mapX+buttonW, 0);
-                Color[] colors = {edgeC, midC, edgeC };
-                background = new LinearGradientPaint(start, end, dist, colors);
-            }
-            g.setColor(SystemPanel.blackText);
-            g.fillRoundRect(mapX+s3, mapY+s3, buttonW,buttonH,s10,s10);
-            g.setPaint(background);
-            g.fillRoundRect(mapX, mapY, buttonW,buttonH,s5,s5);
-            Color c0 = hovering ? SystemPanel.yellowText : SystemPanel.whiteText;
-            g.setColor(c0);
-            Stroke prevStr =g.getStroke();
-            g.setStroke(stroke2);
-            g.drawRoundRect(mapX, mapY, buttonW,buttonH,s5,s5);
-            g.setStroke(prevStr);
-            g.setFont(font());
-
-            String str = label();
-            int sw = g.getFontMetrics().stringWidth(str);
-            int x2a = mapX+((buttonW-sw)/2);
-            drawBorderedString(g, str, x2a, mapY+buttonH-s10, SystemPanel.textShadowC, c0);
-        }
-        @Override
-        public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-            startCombat(ShipBattleUI.RETREAT_ALL);
-        };
-    }
-    private final class StartWarBattleSprite extends MapSprite {
-        private int mapX, mapY, buttonW, buttonH;
-        private int selectX, selectY, selectW, selectH;
-        private MapOverlayShipCombatPrompt parent;
-
-		// private int mapX()		{ return mapX; }
-		// private int mapY()		{ return mapY; }
-		private void mapX(int i)	{ selectX = mapX = i; }
-		private void mapY(int i)	{ selectY = mapY = i; }
-		private int width()			{ return buttonW; }
-		// private int height()		{ return buttonH; }
 		private String label()		{ return text("SHIP_COMBAT_START_WAR"); }
 		private Font font()			{ return narrowFont(16); }
 
 		private void init(MapOverlayShipCombatPrompt p, Graphics2D g)  {
-            parent = p;
-            buttonH = s60;
-        	String language = LanguageManager.current().selectedLanguageName();
-        	if (language.equals("Português")) {
-                buttonW = s20 + g.getFontMetrics(font()).stringWidth(label());
-        	}
-        	else
-        		buttonW = s40 + g.getFontMetrics(font()).stringWidth(label());
-            selectW = buttonW;
-            selectH = buttonH;
-        }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-            hovering = x >= selectX
-                        && x <= selectX+selectW
-                        && y >= selectY
-                        && y <= selectY+selectH;
-            return hovering;
-        }
+			parent = p;
+			box.setLabelKey("SHIP_COMBAT_START_WAR");
+			String language = LanguageManager.current().selectedLanguageName();
+			if (language.equals("Português")) {
+				box.setSize(s20 + g.getFontMetrics(font()).stringWidth(label()), s60);
+			}
+			else
+				box.setSize(s40 + g.getFontMetrics(font()).stringWidth(label()), s60);
+		}
         @Override
         public void draw(GalaxyMapPanel map, Graphics2D g) {
             if (!parent.drawSprites())
@@ -930,10 +757,10 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
             boolean anyWar;
             EmpireView view = null;
             DiplomaticEmbassy embassy = null;
-            int flagH = buttonH;
-            int flagW = flagH;
-            int flagX = mapX + buttonW - flagW;
-            
+			int flagH = box.height;
+			int flagW = flagH;
+			int flagX = box.xe() - flagW;
+
             if (mgr.results().isMonsterAttack()) {
             	SpaceMonster monster = mgr.results().monster();
             	flagWar = monster.image();
@@ -942,8 +769,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
             	int sx2 = flagWar.getWidth(null);
             	int sy2 = flagWar.getHeight(null);
             	flagW = flagH * sx2 / sy2;
-            	int y = mapY + s15;
-        		//g.drawImage(flagWar, mapX, y, mapX+buttonW, y+buttonH, 0, 0, sx2, sy2, null);
+				int y = box.y + s15;
         		g.drawImage(flagWar, flagX, y, flagX+flagW, y+flagH, 0, 0, sx2, sy2, null);
         		return;
             }
@@ -963,8 +789,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
             	int sx2 = flagWar.getWidth(null);
             	int sy2 = flagWar.getHeight(null);
             	flagW = flagH * sx2 / sy2;
-            	//g.drawImage(flagWar, mapX, mapY, mapX+buttonW, mapY+buttonH, 0, 0, sx2, sy2, null);
-            	g.drawImage(flagWar, flagX, mapY, flagX+flagW, mapY+flagH, 0, 0, sx2, sy2, null);
+				g.drawImage(flagWar, flagX, box.y, flagX+flagW, box.y+flagH, 0, 0, sx2, sy2, null);
 
             	// draw pop-up
             	g.setFont(font());
@@ -974,7 +799,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
             	int w3 = s200;
             	int h3 = s30;
             	int x3 = boxX + boxW - w3;
-            	int y3 = mapY - h3 - s15;
+				int y3 = box.y - h3 - s15;
             	int ws = w3 - s20;
             	int xs = x3+((w3-ws)/2);
             	int ys = y3 + h3 - s9;
@@ -994,7 +819,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
             	else {
             		int xe = x3 + w3 - s10;
             		h3 = scaled(130);
-            		y3 = mapY - h3 - s15;
+					y3 = box.y - h3 - s15;
             		ys = y3 + lineH;
             		g.setColor(MainUI.paneShadeC);
             		g.fillRoundRect(x3-bd, y3-bd, w3+bd+bd, h3+bd+bd, cnr, cnr);
@@ -1066,7 +891,7 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
             	int sx2 = flag.getWidth(null);
             	int sy2 = flag.getHeight(null);
             	flagW = flagH * sx2 / sy2;
-            	g.drawImage(flag, flagX, mapY, flagX+flagW, mapY+flagH, 0, 0, sx2, sy2, null);
+				g.drawImage(flag, flagX, box.y, flagX+flagW, box.y+flagH, 0, 0, sx2, sy2, null);
             }
         }
         @Override
@@ -1074,116 +899,47 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
         	startWar();
         };
     }
-    private final class EnterBattleSprite extends MapSprite {
-        private LinearGradientPaint background;
-        private final Color edgeC = new Color(44,59,30);
-        private final Color midC = new Color(70,93,48);
-        private int mapX, mapY, buttonW, buttonH;
-        private int selectX, selectY, selectW, selectH;
+	private final class EnterBattleSprite extends RoundButtonSprite {
+		private final Color edgeC	= new Color(44,59,30);
+		private final Color midC	= new Color(70,93,48);
 
-		private MapOverlayShipCombatPrompt parent;
-		// private int mapX()		{ return mapX; }
-		private int mapY()			{ return mapY; }
-		private void mapX(int i)	{ selectX = mapX = i; }
-		private void mapY(int i)	{ selectY = mapY = i; }
-		private int width()			{ return buttonW; }
-		private int height()		{ return buttonH; }
-		private String label()		{ return text("SHIP_COMBAT_ENTER_BATTLE"); }
-		private Font font()	{
-        	String language = LanguageManager.current().selectedLanguageName();
-        	if (language.equals("Português")) {
-        		return narrowFont(16);
-        	}
-        	return narrowFont(18);
-        }
-
-        private void init(MapOverlayShipCombatPrompt p, Graphics2D g)  {
-            parent = p;
-        	String language = LanguageManager.current().selectedLanguageName();
-        	if (language.equals("Português")) {
-                buttonW = s20 + g.getFontMetrics(font()).stringWidth(label());
-        	}
-        	else
-        		buttonW = s40 + g.getFontMetrics(font()).stringWidth(label());
-            buttonH = s30;
-            selectW = buttonW;
-            selectH = buttonH;
-        }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-            hovering = x >= selectX
-                    && x <= selectX+selectW
-                    && y >= selectY
-                    && y <= selectY+selectH;
-            return hovering;
-        }
-        @Override
-        public void draw(GalaxyMapPanel map, Graphics2D g) {
-            if (!parent.drawSprites())
-                return;
-            if (background == null) {
-                float[] dist = {0.0f, 0.5f, 1.0f};
-                Point2D start = new Point2D.Float(mapX, 0);
-                Point2D end = new Point2D.Float(mapX+buttonW, 0);
-                Color[] colors = {edgeC, midC, edgeC };
-                background = new LinearGradientPaint(start, end, dist, colors);
-            }
-            g.setColor(SystemPanel.blackText);
-            g.fillRoundRect(mapX+s3, mapY+s3, buttonW,buttonH,s10,s10);
-            g.setPaint(background);
-            g.fillRoundRect(mapX, mapY, buttonW,buttonH,s5,s5);
-            Color c0 = hovering ? SystemPanel.yellowText : SystemPanel.whiteText;
-            g.setColor(c0);
-            Stroke prevStr =g.getStroke();
-            g.setStroke(stroke2);
-            g.drawRoundRect(mapX, mapY, buttonW,buttonH,s5,s5);
-            g.setStroke(prevStr);
-            g.setFont(font());
-
-            String str = label();
-            int sw = g.getFontMetrics().stringWidth(str);
-            int x2a = mapX+((buttonW-sw)/2);
-            drawBorderedString(g, str, x2a, mapY+buttonH-s10, SystemPanel.textShadowC, c0);
-        }
-        @Override
-        public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+		private void init(MapOverlayShipCombatPrompt p, Graphics2D g)  {
+			parent = p;
+			box.setLabelKey("SHIP_COMBAT_ENTER_BATTLE");
+			String language = LanguageManager.current().selectedLanguageName();
+			if (language.equals("Português")) {
+				box.setSize(s20 + g.getFontMetrics(font()).stringWidth(label()), s30);
+			}
+			else
+				box.setSize(s40 + g.getFontMetrics(font()).stringWidth(label()), s30);
+		}
+		@Override protected Font font()	{
+			String language = LanguageManager.current().selectedLanguageName();
+			if (language.equals("Português"))
+				return narrowFont(16);
+			return narrowFont(18);
+		}
+		@Override protected Color[] colors()	{ return new Color[] {edgeC, midC, edgeC}; }
+		@Override public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
 			Empire attacker = mgr.results().attacker();
 			if (attacker != null && attacker.isPlayer())
 				if (e.isShiftDown())
 					mgr.dontTargetHarmlessColony(true);
 				else if (e.isControlDown())
 					mgr.dontTargetHarmlessColony(false);
-            startCombat(ShipBattleUI.ENTER_COMBAT);
-        };
-    }
+			startCombat(ShipBattleUI.ENTER_COMBAT);
+		};
+	}
 	private final class SystemFlagSprite extends MapSprite {
-		private int mapX, mapY, buttonW, buttonH;
-		private int selectX, selectY, selectW, selectH;
-
 		private MapOverlayShipCombatPrompt parent;
-		private void mapX(int i)	{ selectX = mapX = i; }
-		private void mapY(int i)	{ selectY = mapY = i; }
-		private int width()			{ return buttonW; }
-		private int height()		{ return buttonH; }
-		private void reset()		{}
 
+		private void reset()	{}
         private void init(MapOverlayShipCombatPrompt p, Graphics2D g)  {
             parent = p;
-            buttonW = s70;
-            buttonH = s70;
-            selectW = buttonW;
-            selectH = buttonH;
-        }
+			box.setSize(s70, s70);
+		}
 		@Override public boolean acceptDoubleClicks()	{ return true; }
 		@Override public boolean acceptWheel()			{ return true; }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-            hovering = x >= selectX
-                    && x <= selectX+selectW
-                    && y >= selectY
-                    && y <= selectY+selectH;
-            return hovering;
-        }
         @Override
         public void draw(GalaxyMapPanel map, Graphics2D g) {
             if (!parent.drawSprites())
@@ -1191,12 +947,12 @@ public class MapOverlayShipCombatPrompt extends MapOverlay implements IVIPListen
             StarSystem sys = parent.starSystem();
             Image flagImage = parent.parent.flagImage(sys);
             Image flagHaze = parent.parent.flagHaze(sys);
-            g.drawImage(flagHaze, mapX, mapY, buttonW, buttonH, null);
-            if (hovering) {
-                Image flagHover = parent.parent.flagHover(sys);
-                g.drawImage(flagHover, mapX, mapY, buttonW, buttonH, null);
-            }
-            g.drawImage(flagImage, mapX, mapY, buttonW, buttonH, null);
+			g.drawImage(flagHaze,  box.x, box.y, box.width, box.height, null);
+			if (hovering) {
+				Image flagHover = parent.parent.flagHover(sys);
+				g.drawImage(flagHover,  box.x, box.y, box.width, box.height, null);
+			}
+			g.drawImage(flagImage, box.x, box.y, box.width, box.height, null);
         }
         @Override
         public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {

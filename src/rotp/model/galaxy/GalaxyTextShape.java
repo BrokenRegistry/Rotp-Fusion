@@ -78,7 +78,7 @@ final class GalaxyTextShape extends GalaxyShape {
 		if (param2 == null) {
 			param2 = new ShapeOptionList(
 			BASE_NAME, 2,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				SETUP_MULTI_LINE_COPY,
 				SETUP_MULTI_LINE_LEFT,
 				SETUP_MULTI_LINE_CENTER,
@@ -306,12 +306,12 @@ final class GalaxyTextShape extends GalaxyShape {
 	private int currentGalaxyTextIndex(String s)		{
 		String[] textList = getGalaxyTextList(false);
 		for (int i=0; i<textList.length; i++) {
-			if (s.equals((String) textList[i]))
+			if (s.equals(textList[i]))
 				return i;
 		}
 		// Second chance by ignoring case
 		for (int i=0; i<textList.length; i++) {
-			if (s.equalsIgnoreCase((String) textList[i]))
+			if (s.equalsIgnoreCase(textList[i]))
 				return i;
 		}
 		return -1;

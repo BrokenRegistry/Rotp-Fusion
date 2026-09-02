@@ -587,7 +587,7 @@ public class DiplomaticMessageUI extends FadeInPanel
 	            message.escape();
 				break;
 			case "1": case "2": case "3": case "4": case "5": case "6":
-				int response = (int)s.charAt(0) - (int)'1';
+				int response = s.charAt(0) - '1';
 				if (response < message.numReplies()) {
 					selectHover = response;
 					selectOption(selectHover);

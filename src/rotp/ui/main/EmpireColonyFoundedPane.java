@@ -20,7 +20,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -36,18 +35,18 @@ import rotp.model.empires.SystemInfo;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.SystemViewer;
 import rotp.ui.map.IMapHandler;
+import rotp.util.AdviceBox;
 
 public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionListener, MouseListener, MouseWheelListener {
     private static final long serialVersionUID = 1L;
-    SystemViewer parent;
-    Rectangle flagBox = new Rectangle();
-    Rectangle nameBox = new Rectangle();
+    SystemPanel parent;
+	AdviceBox flagBox = new AdviceBox();
+	AdviceBox nameBox = new AdviceBox();
     Shape hoverBox;
     IMapHandler topParent;
     public BasePanel repainter;
-    public EmpireColonyFoundedPane(SystemViewer p, IMapHandler top, Color c0) {
+    public EmpireColonyFoundedPane(SystemPanel p, IMapHandler top, Color c0) {
         parent = p;
         topParent = top;
         init(c0);
@@ -59,6 +58,8 @@ public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionLis
         addMouseMotionListener(this);
         addMouseWheelListener(this);
         addMouseListener(this);
+		flagBox.init(this, null, null, "DETAIL_PANEL_FLAGS_HELP");
+		nameBox.init(this, null, null, "DETAIL_PANEL_NAME_EMPIRE_HELP");
     }
     @Override
     public String textureName()            { return parent.subPanelTextureName(); }
@@ -120,7 +121,7 @@ public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionLis
             if (sys != null)
                 systems.add(sys);
         }
-        
+
         SystemInfo sv = player().sv;
         Integer flagColor = null;
         for (StarSystem sys1: systems)
@@ -157,21 +158,18 @@ public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionLis
     }
     @Override
     public void mouseDragged(MouseEvent e) { }
-    @Override
-    public void mouseMoved(MouseEvent e) {
+	@Override public void mouseMoved(MouseEvent e)	{
 		setModifierKeysState(e);
-        int x = e.getX();
-        int y = e.getY();
-        Shape prevHover = hoverBox;
-        hoverBox = null;
-        if (flagBox.contains(x,y))
-            hoverBox = flagBox;
-        else if (nameBox.contains(x,y))
-            hoverBox = nameBox;
-        
-        if (prevHover != hoverBox)
-            repaint();
-    }
+		int x = e.getX();
+		int y = e.getY();
+		hoverBox = null;
+		if (flagBox.contains(x,y))
+			hoverBox = hoverBox(flagBox, hoverBox);
+		else if (nameBox.contains(x,y))
+			hoverBox = hoverBox(nameBox, hoverBox);
+		else
+			hoverBox = hoverBox(null, hoverBox);
+	}
     @Override
     public void mouseClicked(MouseEvent e) { }
     @Override
@@ -182,23 +180,23 @@ public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionLis
         boolean rightClick = SwingUtilities.isRightMouseButton(e);
         boolean middleClick = SwingUtilities.isMiddleMouseButton(e);
         if (hoverBox == flagBox) {
-	     	// BR: if 3 buttons:
-	     	//   - Middle click = Reset
-	     	//   - Right click = Reverse
-	        if (middleClick)
-	        	resetFlagColor();
-	        else if (rightClick)
-	        	if (has3Buttons())
-	        		toggleFlagColor(true);
-	        	else
-	        		resetFlagColor();
-	        else
-	        	toggleFlagColor(false);
+			// BR: if 3 buttons:
+			//	- Middle click = Reset
+			//	- Right click = Reverse
+			if (middleClick)
+				resetFlagColor();
+			else if (rightClick)
+				if (has3Buttons())
+					toggleFlagColor(true);
+				else
+					resetFlagColor();
+			else
+				toggleFlagColor(false);
        }
         else if (hoverBox == nameBox) {
             RotPUI.instance().selectRacesPanel();
             RotPUI.instance().racesUI().selectDiplomacyTab();
-            RotPUI.instance().racesUI().selectedEmpire(player());              
+            RotPUI.instance().racesUI().selectedEmpire(player());
         }
     }
 	@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.mapHandler()); }

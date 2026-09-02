@@ -22,6 +22,7 @@ import rotp.model.colony.Colony;
 import rotp.model.colony.ColonyResearchProject;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 import rotp.ui.notifications.GNNNotification;
 import rotp.ui.util.ParamInteger;
@@ -145,7 +146,7 @@ public class RandomEventPlague extends AbstractRandomEvent implements ColonyRese
         Colony col = sys.colony();
         // possible colony is destroyed before plague ends
 
-        session().removePendingNotification("GNN_Event_Plague");
+        GameSession.removePendingNotification("GNN_Event_Plague");
         if (col != null) {
             col.research().endProject();
             col.clearQuarantine();

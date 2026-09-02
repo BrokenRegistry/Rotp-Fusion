@@ -182,7 +182,9 @@ public class SettingBase<T> implements ICRSettings<T> {
 	}
 	@Override public void copyOption(IGameOptions src, IGameOptions dest,
 									boolean updateTool, int cascadeSubMenu) {
-		if (!isSpacer && src != null && dest != null)
+		if (src == null || dest == null)
+			return;
+		if (!isSpacer)
 			dest.dynOpts().setString(dynOptionIndex(), getCfgValue());
 		dest.dynOpts().setString(dynOptionIndex(), src.dynOpts().getString(dynOptionIndex(), getDefaultCfgValue()));
 	}
@@ -394,7 +396,7 @@ public class SettingBase<T> implements ICRSettings<T> {
 	public	StringList getOptions()		{ return new StringList(cfgValueList); }
 	public	StringList getLabels()		{ return new StringList(labelList); }
 	public	LinkedList<T> getValues()	{
-		LinkedList<T> list = new LinkedList<T>();
+		LinkedList<T> list = new LinkedList<>();
 		list.addAll(valueList);
 		return list;
 	}
@@ -518,7 +520,7 @@ public class SettingBase<T> implements ICRSettings<T> {
 		if (gaussian)
 			rand = (maxi + mini + (maxi-mini) * (float) rand().nextGaussian())/2;
 		else
-			rand = mini + (maxi-mini) * (float) rand().nextFloat();
+			rand = mini + (maxi-mini) * rand().nextFloat();
 		lastRandomSource = rand;
 		return randomize(rand);
 	}
@@ -616,7 +618,7 @@ public class SettingBase<T> implements ICRSettings<T> {
 				altReturnList(),		// Alternate return
 				this);					// help parameter
 
-		String input = (String) dialog.showDialog(refreshLevel);
+		String input = dialog.showDialog(refreshLevel);
 		if (input != null && getValueIndexIgnoreCase(input) >= 0)
 			set((T) input);
 	}

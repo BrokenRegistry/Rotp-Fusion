@@ -253,11 +253,11 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
     }
 	@Override public void showHelp() {
 		loadHelpUI();
-		repaint();   
+		repaint();
 	}
 	@Override public void showHotKeys() {
 		loadHotKeysUI();
-		repaint();   
+		repaint();
 	}
 	@Override protected void loadHotKeysUI() {
     	HelpUI helpUI = RotPUI.helpUI();
@@ -297,7 +297,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         yBox = dest.y-hBox-yShift;
         sp   = helpUI.addBrownHelpText(xBox, yBox, wBox, nL, txt);
         xb   = xBox+wBox/2;
-        yb   = yBox+sp.height();
+		yb   = sp.ye();
         xe   = dest.x + dest.width/2;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
@@ -310,7 +310,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         yBox = dest.y-hBox-yShift;
         sp   = helpUI.addBrownHelpText(xBox, yBox, wBox, nL, txt);
         xb   = xBox+wBox/2;
-        yb   = yBox+sp.height();
+		yb   = sp.ye();
         xe   = dest.x + dest.width/2;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
@@ -323,7 +323,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         yBox -= hBox+yShift;
         sp   = helpUI.addBrownHelpText(xBox, yBox, wBox, nL, txt);
         xb   = xBox+xShift;
-        yb   = yBox+sp.height();
+		yb   = sp.ye();
         xe   = dest.x + dest.width - xShift;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
@@ -336,7 +336,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         yBox = dest.y-hBox-yShift;
         sp   = helpUI.addBrownHelpText(xBox, yBox, wBox, nL, txt);
         xb   = xBox+wBox/4;
-        yb   = yBox+sp.height();
+		yb   = sp.ye();
         xe   = dest.x + dest.width/2;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
@@ -349,7 +349,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         yBox -= hBox+yShift;
         sp   = helpUI.addBrownHelpText(xBox, yBox, wBox, nL, txt);
         xb   = xBox+xShift/2;
-        yb   = yBox+sp.height();
+		yb   = sp.ye();
         xe   = dest.x + dest.width*3/4;;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
@@ -362,7 +362,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         yBox -= hBox+yShift;
         sp   = helpUI.addBrownHelpText(xBox, yBox, scaled(170), nL, txt);
         xb   = xBox+xShift/2;
-        yb   = yBox+sp.height();
+		yb   = sp.ye();
         xe   = dest.x + dest.width/2;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
@@ -375,7 +375,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 		yBox = playerRaceSettingBox.y - hBox - yShift/2;
 		sp   = helpUI.addBrownHelpText(xBox, yBox, wBox, nL, txt);
 		xb   = xBox + wBox*1/4;
-		yb   = yBox + sp.height();
+		yb   = sp.ye();
 		xe   = dest.x + dest.width*1/2;
 		ye   = dest.y;
 		sp.setLine(xb, yb, xe, ye);
@@ -388,7 +388,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         yBox -= hBox+yShift;
         sp   = helpUI.addBrownHelpText(xBox, yBox, wBox, nL, txt);
         xb   = xBox+wBox*3/4;
-        yb   = yBox+sp.height();
+		yb   = sp.ye();
         xe   = dest.x + dest.width*3/4;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
@@ -402,7 +402,7 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         yBox = dest.y - hBox - s60;
         sp   = helpUI.addBrownHelpText(xBox, yBox, wBox, nL, txt);
         xb   = xBox+wBox/2;
-        yb   = yBox+sp.height();
+		yb   = sp.ye();
         xe   = dest.x + dest.width/2;
         ye   = dest.y;
         sp.setLine(xb, yb, xe, ye);
@@ -424,14 +424,14 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
 
 		txt  = text("SETUP_RACE_RACES_DESC");
 		Rectangle dst = new Rectangle(scaled(425), scaled(108), scaled(385), scaled(489));
-        nL   = 4;
-        wBox = scaled(300);
+		nL   = 4;
+		wBox = s300;
         hBox = nL*lH;
         xBox = dst.x - wBox - s25;
         yBox = dst.y + dst.height/4;
         sp   = helpUI.addBrownHelpText(xBox, yBox, wBox, nL, txt);
         xb   = xBox+wBox;
-        yb   = yBox+sp.height()/2;
+		yb   = sp.yc();
         xe   = dst.x + s20;
         ye   = dst.y + dest.height/2;
         sp.setLine(xb, yb, xe, ye);

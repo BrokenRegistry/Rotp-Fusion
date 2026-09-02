@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
+import rotp.ui.game.AdvisorPanel;
 import rotp.ui.util.ParamTitle;
 
 final class NewOptionsBeta extends AbstractOptionsSubUI {
@@ -25,7 +26,10 @@ final class NewOptionsBeta extends AbstractOptionsSubUI {
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("NEW_SAFE"),
-				optionPanelAlignment
+				optionPanelAlignment,
+				AdvisorPanel.helpShowAdvisor,
+				AdvisorPanel.advisorFontSize,
+				AdvisorPanel.advisorIconSize
 				)));
 		return map;
 	}
@@ -33,7 +37,10 @@ final class NewOptionsBeta extends AbstractOptionsSubUI {
 		SafeListParam majorList = new SafeListParam(uiMajorKey(),
 				Arrays.asList(
 						debugAutoRun,
-						optionPanelAlignment
+						optionPanelAlignment,
+						AdvisorPanel.helpShowAdvisor,
+						AdvisorPanel.advisorFontSize,
+						AdvisorPanel.advisorIconSize
 						));
 		return majorList;
 	}

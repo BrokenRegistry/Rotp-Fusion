@@ -34,7 +34,7 @@ import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.ClickToContinueSprite;
 
-public class MapOverlayBombardedNotice  extends MapOverlay {
+public final class MapOverlayBombardedNotice implements IMapOverlay {
     static final Color destroyedTextC = new Color(255,32,32,192);
     static final Color destroyedMaskC = new Color(0,0,0,160);
     Color maskC  = new Color(40,40,40,160);

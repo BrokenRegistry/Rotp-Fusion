@@ -150,8 +150,8 @@ public final class GameSession implements Base, Serializable {
     		achievementId = newAchievementId();
     	return achievementId;
     }
-    private long newAchievementId()              { return System.currentTimeMillis(); }
-    public ExecutorService smallSphereService()  { return smallSphereService; }
+	private static long newAchievementId()				{ return System.currentTimeMillis(); }
+	public static ExecutorService smallSphereService()	{ return smallSphereService; }
 
     public static boolean ironmanLocked() 		 { return ironmanLocked; }
     public static boolean isSuspended() 		 { return suspendNextTurn; }
@@ -159,6 +159,7 @@ public final class GameSession implements Base, Serializable {
     public static final String recentStartSaveFile() {
     	return LabelManager.current().label("LOAD_GAME_RECENT_START_SAVEFILE") + SAVEFILE_EXTENSION;
     }
+	public static boolean isGameMode()	{ return instance().isReady() && RulesetManager.current().isGameMode(); }
 
     public void pauseNextTurnProcessing(String s)   {
         if (performingTurn) {
@@ -170,17 +171,17 @@ public final class GameSession implements Base, Serializable {
         log("Resuming Next Turn");
         suspendNextTurn = false;
     }
-    public HashMap<ShipDesign, Integer> shipsConstructed() {
+	public static HashMap<ShipDesign, Integer> shipsConstructed()	{
         if (shipsConstructed == null)
             shipsConstructed = new HashMap<>();
         return shipsConstructed;
     }
-    public HashMap<StarSystem, List<String>> systemsToAllocate() {
+	public static HashMap<StarSystem, List<String>> systemsToAllocate()	{
         if (systemsToAllocate == null)
             systemsToAllocate = new HashMap<>();
         return systemsToAllocate;
     }
-    public HashMap<String, List<StarSystem>> systemsScouted() {
+	public static HashMap<String, List<StarSystem>> systemsScouted()	{
         if (systemsScouted == null) {
             systemsScouted = new HashMap<>();
             systemsScouted.put("Scouts", new ArrayList<>());
@@ -189,32 +190,30 @@ public final class GameSession implements Base, Serializable {
         }
         return systemsScouted;
     }
-    private List<TurnNotification> notifications() {
-        return notifications;
-    }
-    private HashMap<String,Object> vars() {
+	private static List<TurnNotification> notifications()	{ return notifications; }
+	private static HashMap<String,Object> vars() {
         if (vars == null)
             vars = new HashMap<>();
         return vars;
     }
-    public GameAlert currentAlert() {
+	public static GameAlert currentAlert()	{
         if (viewedAlerts >= alerts.size())
             return null;
         return alerts.get(viewedAlerts);
     }
-    public int viewedAlerts()    { return viewedAlerts; }
-    public int numAlerts()       { return alerts.size(); }
-    public void addAlert(GameAlert a)  { alerts.add(a); }
-    private void clearAlerts() {
+	public static int viewedAlerts()	{ return viewedAlerts; }
+	public static int numAlerts()		{ return alerts.size(); }
+	public static void addAlert(GameAlert a)	{ alerts.add(a); }
+	private static void clearAlerts()	{
         alerts.clear();
         viewedAlerts = 0;
     }
-    public void dismissAlert() { viewedAlerts++; }
+	public static void dismissAlert()	{ viewedAlerts++; }
 
     public void aFewMoreTurns(boolean b) { aFewMoreTurns = b; }
     public boolean aFewMoreTurns() 		 { return aFewMoreTurns; }
-    public boolean performingTurn()      { return performingTurn; }
-	public void performingTurn(boolean b)	{ performingTurn = b; }
+	public static boolean performingTurn()			{ return performingTurn; }
+	public static void performingTurn(boolean b)	{ performingTurn = b; }
     @Override
     public IGameOptions options()        { return options; }
     public void options(IGameOptions o)  { options = o; o.setAsGame(); }
@@ -223,15 +222,15 @@ public final class GameSession implements Base, Serializable {
     public void galaxy(Galaxy g)         { galaxy = g; }
 
 	public float populationBonus()		{ return options().planetSizeMultiplier(); }
-    public float damageBonus()          { return 1.0f; }
-    public float researchBonus()        { return 1.0f; }
+	public static float damageBonus()	{ return 1.0f; }
+	public static float researchBonus()	{ return 1.0f; }
     public float researchMapSizeAdjustment() {
         float stars = galaxy().numStarSystems();
         int races = galaxy().numOpponents()+2;
         float targetRatio = 12.0f;
         return sqrt(stars/races/targetRatio);
     }
-    public void addShipsConstructed(ShipDesign design, int newCount) {
+	public static void addShipsConstructed(ShipDesign design, int newCount)	{
         if (!design.active())
             throw new RuntimeException("Constructed an inactive ship design");
 
@@ -245,21 +244,15 @@ public final class GameSession implements Base, Serializable {
         spyActivity = true;
     }
     public boolean spyActivity()            { return spyActivity; }
-    public void addSystemScouted(StarSystem sys) {
-        systemsScouted().get("Scouts").add(sys);
-    }
-    public void addSystemScoutedByAllies(StarSystem sys) {
-        systemsScouted().get("Allies").add(sys);
-    }
-    public void addSystemScoutedByAstronomers(StarSystem sys) {
-        systemsScouted().get("Astronomers").add(sys);
-    }
-    private void clearScoutedSystems() {
+	public static void addSystemScouted(StarSystem sys)					{ systemsScouted().get("Scouts").add(sys); }
+	public static void addSystemScoutedByAllies(StarSystem sys)			{ systemsScouted().get("Allies").add(sys); }
+	public static void addSystemScoutedByAstronomers(StarSystem sys)	{ systemsScouted().get("Astronomers").add(sys); }
+	private static void clearScoutedSystems() {
         systemsScouted().get("Scouts").clear();
         systemsScouted().get("Allies").clear();
         systemsScouted().get("Astronomers").clear();
     }
-    public boolean haveScoutedSystems() {
+	public static boolean haveScoutedSystems()	{
         for (Collection<StarSystem> systems : systemsScouted().values()) {
             if (!systems.isEmpty())
                 return true;
@@ -278,13 +271,9 @@ public final class GameSession implements Base, Serializable {
         if (!systemsToAllocate().get(sys).contains(reason))
             systemsToAllocate().get(sys).add(reason);
     }
-    public boolean awaitingAllocation(StarSystem sys) {
-        return systemsToAllocate().containsKey(sys);
-    }
-    public void addTurnNotification(TurnNotification notif) {
-        notifications().add(notif);
-    }
-    public void removePendingNotification(String key) {
+	public static boolean awaitingAllocation(StarSystem sys)		{ return systemsToAllocate().containsKey(sys); }
+	public static void addTurnNotification(TurnNotification notif)	{ notifications().add(notif); }
+	public static void removePendingNotification(String key)	{
         List<TurnNotification> notifs = new ArrayList<>(notifications());
         for (TurnNotification notif: notifs) {
             if (notif.key().equals(key))
@@ -343,9 +332,7 @@ public final class GameSession implements Base, Serializable {
             saveBackupSession(1);
         }
     }
-    private void startExecutors() {
-        smallSphereService = Executors.newSingleThreadExecutor();
-    }
+	private static void startExecutors()	{ smallSphereService = Executors.newSingleThreadExecutor(); }
     private void resetStaticVars() {
     	vars.clear();
     	performingTurn	= false;
@@ -353,7 +340,7 @@ public final class GameSession implements Base, Serializable {
     		notifications.clear();
     	if (systemsToAllocate!=null)
     		systemsToAllocate.clear();
-    	this.clearScoutedSystems();
+    	clearScoutedSystems();
     	if (shipsConstructed!=null)
     		shipsConstructed.clear();
     	if (alerts!=null)
@@ -374,10 +361,10 @@ public final class GameSession implements Base, Serializable {
         // shut down any threads running from previous game
         smallSphereService().shutdownNow();
     }
-    public void exit()                        { System.exit(0); }
-    public Object var(String key)             { return vars().get(key); }
-    public void var(String key, Object value) { vars().put(key, value); }
-    public void removeVar(String key)         { vars().remove(key); }
+	public static void exit()		{ System.exit(0); }
+	public static Object var(String key)				{ return vars().get(key); }
+	public static void var(String key, Object value)	{ vars().put(key, value); }
+	public static void removeVar(String key)			{ vars().remove(key); }
     public void replaceVarValue(Object prevValue, Object newValue) {
         List<String> keys = new ArrayList<>();
         keys.addAll(vars().keySet());
@@ -388,7 +375,7 @@ public final class GameSession implements Base, Serializable {
             }
         }
     }
-    public void removeVarValue(Object value) {
+	public static void removeVarValue(Object value)	{
         List<String> keys = new ArrayList<>();
         keys.addAll(vars().keySet());
         for (String key: keys) {
@@ -401,8 +388,8 @@ public final class GameSession implements Base, Serializable {
     		autoRunning = true;
     	nextTurnLoop();
     }
-    public void pauseAutoRun() { autoRunning = false; }
-    public boolean autoRunning() { return autoRunning; }
+	public static void pauseAutoRun()	{ autoRunning = false; }
+	public static boolean autoRunning()	{ return autoRunning; }
     private void nextTurnLoop() {
         if (performingTurn())
             return;
@@ -415,7 +402,7 @@ public final class GameSession implements Base, Serializable {
         while(suspendNextTurn)
             sleep(200);
     }
-    public boolean sufficientHeapSpace(IGameOptions opts) {
+	public static boolean sufficientHeapSpace() {
         long maxHeap = Rotp.maxHeapMemory;
         long reqHeap = 200;
         return maxHeap > reqHeap;
@@ -478,40 +465,40 @@ public final class GameSession implements Base, Serializable {
 			PrintWriter out = null;
 			try {
 				out = new PrintWriter(new BufferedWriter(new FileWriter(TestLogFile, true)));
+				out.println("Turn: "+ str(galaxy.currentTurn()));
+				for (Empire e: galaxy().empires()) {
+					StarSystem sys1 = e.mostPopulousSystemForCiv(e);
+					// float relationToPlayer = 0.0f;
+					// if (!(e==player())) {
+					// 	EmpireView pl = e.viewForEmpire(player());
+					// 	relationToPlayer = pl.embassy().relations();
+					// }
+					out.println(String.format("%10s", e.raceName())
+					+ String.format("%6d", e.numColonizedSystems())
+					+ String.format("%12.2f", e.totalPlanetaryPopulation())
+					+ String.format("%12.2f", e.totalPlanetaryProduction())
+					+ String.format("%12.0f", e.totalFleetSize())
+					+ String.format("%10.2f", 100*e.shipMaintCostPerBC()) + "%"
+					+ String.format("%10.2f", 100*e.missileBaseCostPerBC()) + "%"
+					+ String.format("%10.2f", 100*e.totalSecurityCostPct()) + "%"
+					+ String.format("%12.2f", e.totalPlanetaryResearch())
+					+ String.format("%8.2f", e.tech().avgTechLevel())
+					+ String.format("%6d", e.numEnemies())
+					+ String.format("reserve %12.2f", e.totalReserve())
+					+ String.format("trade %12.2f", e.netTradeIncome())
+					+ String.format("%10s", sys1.name())
+					+ String.format("%8.2f", sys1.colony().industry().factories())
+					+ String.format("%8.2f", sys1.colony().reserveIncome())
+					+ String.format("%8.2f", sys1.colony().totalIncome())
+					+ String.format("%8.2f", sys1.colony().production())
+					+ String.format("%8.2f", sys1.colony().defense().rawBases())
+					
+					);
+				}
+				out.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			out.println("Turn: "+ str(galaxy.currentTurn()));
-			for (Empire e: galaxy().empires()) {
-				StarSystem sys1 = e.mostPopulousSystemForCiv(e);
-				// float relationToPlayer = 0.0f;
-				// if (!(e==player())) {
-				// 	EmpireView pl = e.viewForEmpire(player());
-				// 	relationToPlayer = pl.embassy().relations();
-				// }
-				out.println(String.format("%10s", e.raceName())
-				+ String.format("%6d", e.numColonizedSystems())
-				+ String.format("%12.2f", e.totalPlanetaryPopulation())
-				+ String.format("%12.2f", e.totalPlanetaryProduction())
-				+ String.format("%12.0f", e.totalFleetSize())
-				+ String.format("%10.2f", 100*e.shipMaintCostPerBC()) + "%"
-				+ String.format("%10.2f", 100*e.missileBaseCostPerBC()) + "%"
-				+ String.format("%10.2f", 100*e.totalSecurityCostPct()) + "%"
-				+ String.format("%12.2f", e.totalPlanetaryResearch())
-				+ String.format("%8.2f", e.tech().avgTechLevel())
-				+ String.format("%6d", e.numEnemies())
-				+ String.format("reserve %12.2f", e.totalReserve())
-				+ String.format("trade %12.2f", e.netTradeIncome())
-				+ String.format("%10s", sys1.name())
-				+ String.format("%8.2f", sys1.colony().industry().factories())
-				+ String.format("%8.2f", sys1.colony().reserveIncome())
-				+ String.format("%8.2f", sys1.colony().totalIncome())
-				+ String.format("%8.2f", sys1.colony().production())
-				+ String.format("%8.2f", sys1.colony().defense().rawBases())
-				
-				);
-			}
-			out.close();
 		}
 	}
 	private void validateAlwaysAtWar()	{
@@ -797,13 +784,11 @@ public final class GameSession implements Base, Serializable {
 		}
     	return false;
     }
-    private void clearNotificationLimits() {
-    	DiplomaticNotification.clearNotificationLimits();
-    }
+	private static void clearNotificationLimits()	{ DiplomaticNotification.clearNotificationLimits(); }
     public boolean processNotifications() {
         log("Processing player notifications: ", str(notifications().size()));
         if (!options().isAutoPlay() && haveScoutedSystems())
-            session().addTurnNotification(new SystemsScoutedNotification());
+            addTurnNotification(new SystemsScoutedNotification());
 
 
         if (notifications().isEmpty())
@@ -908,9 +893,7 @@ public final class GameSession implements Base, Serializable {
                 emp.makeFullContact();
         }
     }
-    public void startGNNNotification() {
-        (new GNNRankingNoticeCheck()).showRanking();
-    }
+	public static void startGNNNotification()	{ (new GNNRankingNoticeCheck()).showRanking(); }
     public void randomlyEndGame() {
         if (galaxy().numberTurns() < 2)
             return;
@@ -1135,11 +1118,8 @@ public final class GameSession implements Base, Serializable {
             out.write(data, 0, data.length);
         }
         finally {
-            try {
-            bos.close();
-            out.close();
-            }
-            catch(IOException ex) {}
+			try { bos.close(); } catch(IOException ex) {}
+			try { out.close(); } catch(IOException ex) {}
         }
 		return e.getSize();
     }
@@ -1162,20 +1142,17 @@ public final class GameSession implements Base, Serializable {
             out.write(data, 0, data.length);
         }
         finally {
-            try {
-            bos.close();
-            out.close();
-            }
-            catch(IOException ex) {}
+			try { bos.close(); } catch(IOException ex) {}
+			try { out.close(); } catch(IOException ex) {}
         }
 		return e.getSize();
     }
-    private void resolveOptionsDiscrepansies(GameSession gs) {
-    	// resolving AutoPlay potential issues
-    	String autoPlaySetting = gs.options().selectedAutoplayOption();
-    	if (!autoPlaySetting.equals(IGameOptions.AUTOPLAY_OFF))
-    		gs.galaxy.player().changePlayerAI(autoPlaySetting);
-    }
+	private static void resolveOptionsDiscrepansies(GameSession gs) {
+		// resolving AutoPlay potential issues
+		String autoPlaySetting = gs.options().selectedAutoplayOption();
+		if (!autoPlaySetting.equals(IGameOptions.AUTOPLAY_OFF))
+			gs.galaxy.player().changePlayerAI(autoPlaySetting);
+	}
     private void loadPreviousSession(GameSession gs, boolean startUp) {
         stopCurrentGame();
         instance(gs);
@@ -1198,7 +1175,7 @@ public final class GameSession implements Base, Serializable {
         if (IDebugOptions.selectedShowVIPPanel())
         	VIPConsole.updateConsole();
     }
-	private void showInfo(Galaxy g) { // BR: for debug
+	private static void showInfo(Galaxy g)	{ // BR: for debug
 		System.out.println("GameSession.showInfo = true ===========================================");
 		System.out.println();
 		for (Empire emp : g.empires()) {
@@ -1221,17 +1198,11 @@ public final class GameSession implements Base, Serializable {
 		}
 		System.out.println();
 	}
-	public String saveDir()		{ return IMainOptions.saveDirectoryPath(); }
-	public String backupDir()	{ return IMainOptions.backupDirectoryPath(); }
-    public File saveFileNamed(String fileName) {
-        return new File(saveDir(), fileName);
-    }
-    public File backupFileNamed(String fileName) {
-        return new File(backupDir(), fileName);
-    }
-    public File recentSaveFile() {
-        return new File(saveDir(), GameSession.RECENT_SAVEFILE);
-    }
+	public static String saveDir()		{ return IMainOptions.saveDirectoryPath(); }
+	public static String backupDir()	{ return IMainOptions.backupDirectoryPath(); }
+	public static File recentSaveFile()	{ return new File(saveDir(), GameSession.RECENT_SAVEFILE); }
+	public static File saveFileNamed(String fileName)	{ return new File(saveDir(), fileName); }
+	public static File backupFileNamed(String fileName)	{ return new File(backupDir(), fileName); }
     private String backupFileName(int num) {
         Empire pl = player();
         String leader = pl.leader().name().replaceAll("\\s", "");
@@ -1306,8 +1277,8 @@ public final class GameSession implements Base, Serializable {
             RotPUI.instance().mainUI().showAutosaveFailedPrompt(e.getMessage());
         }
     }
-    public boolean hasRecentSession() {
-    	File f = new File(saveDir(), RECENT_SAVEFILE); // BR: To work on debug too...
+	public static boolean hasRecentSession()	{
+		File f = new File(saveDir(), RECENT_SAVEFILE); // BR: To work on debug too...
         try {
             // InputStream file = new FileInputStream(RECENT_SAVEFILE);
             InputStream file = new FileInputStream(f);
@@ -1317,8 +1288,8 @@ public final class GameSession implements Base, Serializable {
         }
         return true;
     }
-    public boolean hasRecentStartSession() {
-    	File f = new File(saveDir(), recentStartSaveFile());
+	public static boolean hasRecentStartSession()	{
+		File f = new File(saveDir(), recentStartSaveFile());
         try {
             InputStream file = new FileInputStream(f);
             file.close();
@@ -1367,8 +1338,11 @@ public final class GameSession implements Base, Serializable {
                     ZipEntry ze = zipFile.entries().nextElement();
                     InputStream zis = zipFile.getInputStream(ze);
                     newSession = loadObjectData(zis);
-                    if (newSession == null)
-                        throw new RuntimeException(text("LOAD_GAME_BAD_VERSION", filename));
+					if (newSession == null) {
+						zis.close();
+						throw new RuntimeException(text("LOAD_GAME_BAD_VERSION", filename));
+					}
+					zis.close();
                 }
             }
 
@@ -1424,13 +1398,13 @@ public final class GameSession implements Base, Serializable {
 
     }
     // BR: For restarting with new options
-    public void loadSession(GameSession newSession) {
+	public static void loadSession(GameSession newSession)	{
         GameSession.instance(newSession);
         newSession.validate();
         newSession.validateOnLoadOnly();
     	return;
     }
-    private GameSession loadObjectData(InputStream is) {
+	private static GameSession loadObjectData(InputStream is)	{
         try {
             GameSession newSession;
             try (InputStream buffer = new BufferedInputStream(is)) {

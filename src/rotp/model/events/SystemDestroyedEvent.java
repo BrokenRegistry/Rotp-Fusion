@@ -16,6 +16,7 @@
 package rotp.model.events;
 
 import java.io.Serializable;
+
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.NamedObject;
 import rotp.util.Base;
@@ -36,15 +37,15 @@ public class SystemDestroyedEvent implements Base, Serializable, StarSystemEvent
     public int owner()                   { return Empire.NULL_ID; }
     @Override
     public String description() {
+		if (attacker == null)
+			return text("SYSEVENT_DESTROYED_UNKNOWN");
         if (attacker instanceof Empire) {
             Empire emp = (Empire) attacker;
             String s = text("SYSEVENT_DESTROYED");
             s = emp.replaceTokens(s, "alien");
             return s;
         }
-        else if (attacker instanceof NamedObject) 
-            return text("SYSEVENT_DESTROYED_MONSTER", attacker.name());
-        else
-            return text("SYSEVENT_DESTROYED_UNKNOWN");
-    } 
+		else
+			return text("SYSEVENT_DESTROYED_MONSTER", attacker.name());
+    }
 }

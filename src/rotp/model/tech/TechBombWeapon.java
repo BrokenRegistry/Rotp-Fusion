@@ -22,16 +22,16 @@ import java.awt.Stroke;
 
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
+import rotp.model.game.GameSession;
 import rotp.model.ships.ShipWeaponBomb;
-import rotp.ui.BasePanel;
 import rotp.ui.combat.ShipBattleUI;
 
 public final class TechBombWeapon extends Tech {
     private int damageLow = 0;
     private int damageHigh = 1;
 
-    public int damageLow()  { return (int) (session().damageBonus() * damageLow); }
-    public int damageHigh() { return (int) (session().damageBonus() * damageHigh); }
+    public int damageLow()  { return (int) (GameSession.damageBonus() * damageLow); }
+    public int damageHigh() { return (int) (GameSession.damageBonus() * damageHigh); }
 
     public TechBombWeapon(String typeId, int lv, int seq, boolean b, TechCategory c) {
         id(typeId, seq);
@@ -177,7 +177,7 @@ public final class TechBombWeapon extends Tech {
         g.setColor(Color.white);
 
         int FRAMES = source.mgr.autoComplete ? 1 : 4;
-        int lineSpacing = BasePanel.s3;
+        int lineSpacing = s3;
         int ySpacing = source.x == target.x ? 0: lineSpacing;
         int xSpacing = source.y == target.y ? 0: lineSpacing;
         if ((source.x < target.x) && (source.y < target.y))
@@ -185,10 +185,10 @@ public final class TechBombWeapon extends Tech {
         else if ((source.x > target.x) && (source.y > target.y))
             ySpacing = -lineSpacing;
 
-        float bombSpacing = (float) BasePanel.s10;
-        float bombSize = (float) BasePanel.s2;
-        float noBombSize = (float) BasePanel.s20;
-        int bombLinePhase = BasePanel.s2 + BasePanel.s20;
+        float bombSpacing = s10;
+        float bombSize = s2;
+        float noBombSize = s20;
+        int bombLinePhase = s2 + s20;
         // "bombing" is 5 parallel and randomly staggered dash lines
         // animation is doing this 4 times
         for (int n=0;n<FRAMES;n++) {
@@ -199,7 +199,7 @@ public final class TechBombWeapon extends Tech {
                 int xAdj = i * xSpacing;
                 int yAdj = i * ySpacing;
                 int phase = roll(0,bombLinePhase-1);
-                Stroke bombLine = new BasicStroke(BasePanel.s2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, bombSpacing, new float[]{bombSize, noBombSize}, phase);
+                Stroke bombLine = new BasicStroke(s2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, bombSpacing, new float[]{bombSize, noBombSize}, phase);
                 g.setStroke(bombLine);
                 g.drawLine(x0 + xAdj, y0 + yAdj, x1 + (xAdj*2), y1 + (yAdj*2));
             }

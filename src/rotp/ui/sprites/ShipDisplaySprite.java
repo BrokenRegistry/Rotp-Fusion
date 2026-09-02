@@ -19,13 +19,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 import rotp.model.game.IGameOptions;
-import rotp.ui.BasePanel;
+import rotp.model.game.IMapOptions;
 import rotp.ui.main.GalaxyMapPanel;
 
-public class ShipDisplaySprite extends MapControlSprite  {
+public final class ShipDisplaySprite extends MapControlSprite  {
 	static Color yellowC = Color.yellow;
 	static Color redC = Color.red;
 	static Color greenC = Color.green;
@@ -34,24 +35,22 @@ public class ShipDisplaySprite extends MapControlSprite  {
 	Color extColor, normColor;
 
 	public ShipDisplaySprite(int xOff, int yOff, int w, int h) {
-		xOffset = scaled(xOff);
-		yOffset = scaled(yOff);
-		width = scaled(w);
-		height = scaled(h);
+		super(xOff, yOff, w, h, "SHIP_DISPLAY_SPRITE");
+		box.setParam(IMapOptions.shipDisplay);
 		extColor =  newColor(0,0,192,64);
 		normColor = newColor(32,32,192,128);
 	}
 	@Override
 	public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-		map.toggleShipDisplay(rightClick);
+		IMapOptions.shipDisplay.toggle(e, null);
 	}
 	@Override
 	public void draw(GalaxyMapPanel map, Graphics2D g2) {
 		int w = width;
 		String detail ="";
 		int fontSize = 13;
-		int lineH	 = BasePanel.s14;
-		List<String> detailLines = null;
+		int lineH	 = s14;
+		List<String> detailLines = new ArrayList<>();
 
 		if (hovering) {
 			g2.setFont(narrowFont(fontSize));
@@ -63,11 +62,11 @@ public class ShipDisplaySprite extends MapControlSprite  {
 				w0 += detailW/10;
 				detailLines = wrappedLines(g2, detail, w0);
 			}
-			w = width + BasePanel.s15 + w0;
+			w = width + s15 + w0;
 		}
 		drawBackground(map, g2, w);
 
-		int cnr = BasePanel.s12;		
+		int cnr = s12;		
 		g2.setColor(player().scoutBorderColor());
 		g2.fillRoundRect(startX, startY, width, height, cnr, cnr);
 
@@ -75,15 +74,15 @@ public class ShipDisplaySprite extends MapControlSprite  {
 
 		if (map.showArmedShips()) {
 			BufferedImage img = player().shipImage();
-			g2.drawImage(img, startX+BasePanel.s4, startY+BasePanel.s10, map);
+			g2.drawImage(img, startX+s4, startY+s10, map);
 		}
 		if (map.showFriendlyTransports()) {
 			BufferedImage img = player().transportImage();
-			g2.drawImage(img, startX+BasePanel.s12, startY+BasePanel.s5, map);
+			g2.drawImage(img, startX+s12, startY+s5, map);
 		}
 		if (map.showUnarmedShips()) {
 			BufferedImage img = player().scoutImage();
-			g2.drawImage(img, startX+BasePanel.s12, startY+BasePanel.s18, map);
+			g2.drawImage(img, startX+s12, startY+s18, map);
 		}
 
 		g2.setClip(null);
@@ -91,10 +90,10 @@ public class ShipDisplaySprite extends MapControlSprite  {
 		if (hovering) {
 			g2.setColor(Color.lightGray);
 			g2.setFont(narrowFont(fontSize));
-			int y1 = startY + height - BasePanel.s17;
-			int x1 = startX + width + BasePanel.s10;
+			int y1 = startY + height - s17;
+			int x1 = startX + width + s10;
 			if (detailLines.size() == 1)
-				y1 += BasePanel.s8;
+				y1 += s8;
 			for (String line: detailLines) {
 				drawString(g2, line, x1, y1);
 				y1 += lineH;

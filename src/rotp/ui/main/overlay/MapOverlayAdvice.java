@@ -33,7 +33,7 @@ import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.AdvisorOKSprite;
 
-public class MapOverlayAdvice extends MapOverlay {
+public final class MapOverlayAdvice implements IMapOverlay {
 	public static final String MAIN_ADVISOR_SCOUT			= "MAIN_ADVISOR_SCOUT";
 	public static final String MAIN_ADVISOR_TRANSPORT		= "MAIN_ADVISOR_TRANSPORT";
 	public static final String MAIN_ADVISOR_DIPLOMACY		= "MAIN_ADVISOR_DIPLOMACY";
@@ -52,12 +52,13 @@ public class MapOverlayAdvice extends MapOverlay {
 	private Rectangle bounds = new Rectangle();
 	private MainUI parent;
 	private BufferedImage advisorImg;
-	private AdvisorOKSprite okButton = new AdvisorOKSprite();
+	private AdvisorOKSprite okButton;
 	private String textKey;
 	private Empire emp1;
 	private String var1, var2, var3;
     public MapOverlayAdvice(MainUI p) {
         parent = p;
+        okButton = new AdvisorOKSprite();
     }
     public void releaseObjects() {
     	emp1 = null;
@@ -110,17 +111,17 @@ public class MapOverlayAdvice extends MapOverlay {
     public void paintOverMap(MainUI parent, GalaxyMapPanel ui, Graphics2D g) {
         if (advisorImg == null)
             return;
-        
+
         int h = ui.getHeight();
 
-        int mgn = BasePanel.s3;
-        int buttonBarH = BasePanel.s68;
+        int mgn = s3;
+        int buttonBarH = s68;
 
-        int txtRightMargin  = scaled(10);
+        int txtRightMargin  = s10;
         int txtLeftMargin   = scaled(155);
         int txtNominalWidth = scaled(215);
         int maxLineNumber   = 6;
-        
+
         // BR: Increase with for long text
         // Title
         String title = text("MAIN_ADVISOR_TITLE", player().civilizationName(), player().leader().name());
@@ -138,21 +139,21 @@ public class MapOverlayAdvice extends MapOverlay {
             desc = text(textKey, var1, var2);
         else
             desc = text(textKey, var1, var2, var3);
-        
+
         desc = player().replaceTokens(desc, "player");
-        
+
         if (emp1 != null)
             desc = emp1.replaceTokens(desc, "alien");
-        
+
         List<String> lines = wrappedLines(g, desc, textWidth);
-        int stepW = scaled(10);
+        int stepW = s10;
         while (lines.size() > maxLineNumber) {
         	textWidth += stepW;
         	lines = wrappedLines(g, desc, textWidth);
         }
-        
+
         int boxW = txtRightMargin + textWidth + txtLeftMargin;
-        int boxH = scaled(200);
+        int boxH = s200;
 
         if (backPaint == null) {
             float[] dist = {0.0f, 1.0f};
@@ -184,7 +185,7 @@ public class MapOverlayAdvice extends MapOverlay {
 
         int imgW = advisorImg.getWidth();
         int imgH = advisorImg.getHeight();
-        int dispW = imgW*scaled(160)/440;
+        int dispW = imgW*s160/440;
         int dispH = imgH*dispW/imgW;
         int x1 = boxLeft;
         int y1 = boxBottom-dispH;
@@ -192,8 +193,8 @@ public class MapOverlayAdvice extends MapOverlay {
 
         // draw text
         g.setFont(narrowFont(18));
-        int lineH = scaled(19);
-        int y0 = boxTop+scaled(55);
+        int lineH = s19;
+        int y0 = boxTop + s55;
         for (String line: lines) {
             drawString(g,line, textMgn, y0);
             y0 += lineH;
@@ -202,10 +203,10 @@ public class MapOverlayAdvice extends MapOverlay {
         g.setFont(narrowFont(20));
         int okW = g.getFontMetrics().stringWidth(okStr);
         // draw button
-        int buttonW = Math.max(scaled(75), okW+scaled(30));
+        int buttonW = Math.max(s75, okW+s30);
         int buttonX = boxRight-buttonW-txtRightMargin;
-        int buttonY = boxBottom-scaled(40);
-        int buttonH = scaled(30);
+        int buttonY = boxBottom - s40;
+        int buttonH = s30;
         parent.addNextTurnControl(okButton);
         okButton.parent(this);
         okButton.setBounds(buttonX, buttonY, buttonW, buttonH);
@@ -219,10 +220,11 @@ public class MapOverlayAdvice extends MapOverlay {
                 advanceMap();
                 return true;
             case KeyEvent.VK_L:
-            	if (e.isAltDown()) {
-            		debugReloadLabels(parent);
-            	}
-            	return false;
+				if (e.isAltDown()) {
+					debugReloadLabels(parent);
+					return true;
+				}
+				return false;
             default:
                 return false;
         }

@@ -364,7 +364,7 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 
 	public void showShipConstruction()	{
 		String msg = text("MAIN_FLEET_PRODUCTION_TITLE");
-		HashMap<ShipDesign, Integer> ships = session().shipsConstructed();
+		HashMap<ShipDesign, Integer> ships = GameSession.shipsConstructed();
 		for (ShipDesign d: player().shipLab().designs())
 			if (d != null && ships.containsKey(d)) {
 				msg += NEWLINE + ships.get(d) + " "+ d.name();

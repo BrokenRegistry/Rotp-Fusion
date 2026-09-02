@@ -39,7 +39,7 @@ final class GalaxyLorenzShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 			BASE_NAME, 1,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_LORENZ_0",
 				"SETUP_LORENZ_1",
 				RANDOM_OPTION
@@ -52,7 +52,7 @@ final class GalaxyLorenzShape extends GalaxyShape {
 		if (param2 == null) {
 			param2 = new ShapeOptionList(
 			BASE_NAME, 2,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_VIEW_0",
 				"SETUP_VIEW_1",
 				"SETUP_VIEW_2",

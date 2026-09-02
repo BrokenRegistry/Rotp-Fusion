@@ -103,9 +103,9 @@ public final class AllShapes {
 	public static List<String> getNames()			{ return new ArrayList<>(shapesMap().keySet()); }
 	public static List<String> getNamesForRandom( boolean bigList)	{
 		if (bigList)
-			return getNamesForRandom(new ArrayList<String>(Arrays.asList(REAL_SHAPES, IMAGINARY_SHAPES)));
+			return getNamesForRandom(new ArrayList<>(Arrays.asList(REAL_SHAPES, IMAGINARY_SHAPES)));
 		else
-			return getNamesForRandom(new ArrayList<String>(Arrays.asList(REAL_SHAPES)));
+			return getNamesForRandom(new ArrayList<>(Arrays.asList(REAL_SHAPES)));
 	}
 	public static Map<String, String> getMapForRandom()	{
 		Map<String, String> map = new HashMap<>();
@@ -135,20 +135,20 @@ public final class AllShapes {
 	public static List<String> getNamesForRandom(String key)	{
 		switch (key) {
 			case REAL_SHAPES:
-				return getNamesForRandom(new ArrayList<String>(
+				return getNamesForRandom(new ArrayList<>(
 						Arrays.asList(REAL_SHAPES)));
 			case IMAGINARY_SHAPES:
-				return getNamesForRandom(new ArrayList<String>(
+				return getNamesForRandom(new ArrayList<>(
 						Arrays.asList(IMAGINARY_SHAPES)));
 			case EXTRA_SHAPES:
-				return getNamesForRandom(new ArrayList<String>(
+				return getNamesForRandom(new ArrayList<>(
 						Arrays.asList(EXTRA_SHAPES)));
 			case ALL_SHAPES:
-				return getNamesForRandom(new ArrayList<String>(
+				return getNamesForRandom(new ArrayList<>(
 						Arrays.asList(REAL_SHAPES, IMAGINARY_SHAPES, EXTRA_SHAPES)));
 			case COMPLEX_SHAPES:
 			default:
-				return getNamesForRandom(new ArrayList<String>(
+				return getNamesForRandom(new ArrayList<>(
 						Arrays.asList(REAL_SHAPES, IMAGINARY_SHAPES)));
 		}
 	}

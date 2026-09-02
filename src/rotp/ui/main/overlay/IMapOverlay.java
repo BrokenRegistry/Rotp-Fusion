@@ -24,16 +24,16 @@ import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.util.Base;
 
-public abstract class MapOverlay implements Base, ScaledInteger {
-    abstract public boolean hoveringOverSprite(Sprite o);
-    abstract public void advanceMap();
-    abstract public void paintOverMap(MainUI parent, GalaxyMapPanel ui, Graphics2D g2);
-    abstract public boolean handleKeyPress(KeyEvent e);
+public interface IMapOverlay extends Base, ScaledInteger {
+	boolean hoveringOverSprite(Sprite o);
+	void advanceMap();
+	void paintOverMap(MainUI parent, GalaxyMapPanel ui, Graphics2D g2);
+	boolean handleKeyPress(KeyEvent e); // return true if an action has been taken
 
-	public boolean handleKeyReleased(KeyEvent e)   { return false; }
-    public boolean consumesClicks(Sprite spr)      { return true; }
-    public boolean masksMouseOver(int x, int y)    { return false; }
-    public boolean canChangeMapScale()             { return false; }
-    public boolean hideNextTurnNotice()            { return true; }
-    public boolean drawSprites()                   { return true; }
+	default boolean handleKeyReleased(KeyEvent e)	{ return false; }
+	default boolean consumesClicks(Sprite spr)		{ return true; }
+	default boolean masksMouseOver(int x, int y)	{ return false; }
+	default boolean canChangeMapScale()				{ return false; }
+	default boolean hideNextTurnNotice()			{ return true; }
+	default boolean drawSprites()					{ return true; }
 }

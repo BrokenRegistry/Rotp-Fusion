@@ -356,23 +356,23 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
 
         int xRight = w - scaled(280);
         int yStep  = s10;
-        int w7 = scaled(300);
+		int w7 = s300;
         int x7 = xRight - w7;
         int y7 = scaled(220);
         HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 0, text("TECH_HELP_1G"));
-        sp7.setLine(x7+w7, y7+(sp7.height()/2), w-scaled(235), scaled(200));
+		sp7.setLine(x7+w7, sp7.yc(), w-scaled(235), s200);
 
         int w8 = w7;
         int x8 = xRight - w8;
         int y8 = sp7.ye() + yStep;
         HelpUI.HelpSpec sp8 = helpUI.addBrownHelpText(x8,y8,w8, 0, text("TECH_HELP_1H"));
-        sp8.setLine(w-scaled(235), scaled(280), x8+w8, y8+(sp8.height()/2), w-scaled(235), scaled(426));
+		sp8.setLine(w-scaled(235), scaled(280), x8+w8, sp8.yc(), w-scaled(235), scaled(426));
 
         int wk = w7;
         int xk = xRight - wk;
         int yk = sp8.ye() + yStep;
         HelpUI.HelpSpec spk = helpUI.addBrownHelpText(xk,yk,wk, 0, text("TECH_HELP_1K"));
-        spk.setLine(xk+wk, yk+(spk.height()/2), w-scaled(85), scaled(454));
+		spk.setLine(xk+wk, spk.yc(), w-s85, scaled(454));
 
         int w9 = scaled(210);
         int x9 = xRight - w9;
@@ -974,7 +974,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
         int w = max(treeBox.width, (tierW*(maxQDisp-minQDisp+2))+(tierGap*(maxQDisp-minQDisp+3)));
         int h = treeBox.height;
         visualTree = newOpaqueImage(w, h);
-        Graphics2D g = (Graphics2D) visualTree.createGraphics();
+        Graphics2D g = visualTree.createGraphics();
         setRenderingHints(g);
         Tech[] techs = new Tech[maxTechLvlDisp - minTechLvlDisp + 7];
         int freeId = 0;

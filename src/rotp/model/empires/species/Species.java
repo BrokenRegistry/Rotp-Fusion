@@ -162,7 +162,6 @@ public class Species implements ISpecies, Base, Serializable {
 		if (anim == null) { // Add custom race if missing
 			skills = DNAFactory.keyToCustomSpecies(null, key);
 			skills.isCustomSpecies(true);
-//			skills.setDescription4(skills.text(CUSTOM_RACE_DESCRIPTION));
 		}
 		else
 			skills = anim;
@@ -435,6 +434,9 @@ public class Species implements ISpecies, Base, Serializable {
 	public int colonistStopX()						{ return anim.colonistStopX(); }
 	public int colonistStopY()						{ return anim.colonistStopY(); }
 	public BufferedImage transportDescending()		{ return anim.transportDescending(); }
+	public BufferedImage spyMugshotQuiet()			{ return anim.spyMugshotQuiet(); }
+	public BufferedImage soldierMugshot()			{ return anim.soldierMugshot(); }
+	public BufferedImage advisorMugshot()			{ return anim.advisorMugshot(); }
 	public BufferedImage advisorScout()				{ return anim.advisorScout(); }
 	public BufferedImage advisorTransport()			{ return anim.advisorTransport(); }
 	public BufferedImage advisorDiplomacy()			{ return anim.advisorDiplomacy(); }
@@ -455,6 +457,7 @@ public class Species implements ISpecies, Base, Serializable {
 	public BufferedImage diplomatQuiet()			{ return anim.diplomatQuiet(); }
 	public BufferedImage diplomatTalking()			{ return anim.diplomatTalking(); }
 	public BufferedImage diploMugshotQuiet()		{ return anim.diploMugshotQuiet(); }
+	public BufferedImage diploWideMugshot()			{ return anim.diploWideMugshot(); }
 	public BufferedImage diploMug()			{ return anim.diploMug(); }
 	public BufferedImage councilLeader()	{ return anim.councilLeader(); }
 	public BufferedImage setupImage()		{ return anim.setupImage(); }
@@ -507,7 +510,8 @@ public class Species implements ISpecies, Base, Serializable {
 	public int randomLeaderAttitude()	{ return skills.randomLeaderAttitude(); }
 	public int randomLeaderObjective()	{ return skills.randomLeaderObjective(); }
 
-	public String speciesSkillsName()	{return skills.name(); } // For debug only
+	public String homeworldStarType()	{ return skills.homeworldStarType(); }	// TODO BR: homestarType is Never used, but may be...
+	public String speciesSkillsName()	{ return skills.name(); } // For debug only
 	public String skillKey()			{ return skills.id(); }
 	public String homeworldPlanetType()	{ return skills.homeworldPlanetType(); }
 	String worldsPrefix()				{ return skills.worldsPrefix(); }

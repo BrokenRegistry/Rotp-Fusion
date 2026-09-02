@@ -25,7 +25,7 @@ public class TransportsPerishedAlert extends GameAlert {
 	private final Empire empire;
     private final StarSystem system;
     public static void create(Empire e, StarSystem s) {
-        GameSession.instance().addAlert(new TransportsPerishedAlert(e,s));
+        GameSession.addAlert(new TransportsPerishedAlert(e,s));
     }
     @Override
     public String description() {

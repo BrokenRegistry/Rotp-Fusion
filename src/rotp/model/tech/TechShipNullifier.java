@@ -138,8 +138,8 @@ public final class TechShipNullifier extends Tech {
         int dH = 2*dY;
 
         // calculate proper image rotation for attack frames
-        int rX = (int) (ui.boxW*3/2);
-        int rY = (int) (ui.boxH*3/2);
+        int rX = ui.boxW*3/2;
+        int rY = ui.boxH*3/2;
         float radians = source.rotateRadians(target);
 
         // create attack frames
@@ -152,7 +152,7 @@ public final class TechShipNullifier extends Tech {
             frames[i] = newBufferedImage(ui.boxW*3, ui.boxH*3);
         for (int i=0;i<n;i++) {
             for (int j=i;j<n;j++) {
-                Graphics2D g1 = (Graphics2D) frames[j].createGraphics();
+                Graphics2D g1 = frames[j].createGraphics();
                 g1.setStroke(baseStroke(3));
                 g1.setColor(beamColor);
                 AffineTransform tx = g1.getTransform();

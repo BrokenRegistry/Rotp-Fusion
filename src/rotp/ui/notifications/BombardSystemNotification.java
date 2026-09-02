@@ -38,7 +38,7 @@ public class BombardSystemNotification implements TurnNotification, Base {
 
         // bomb immediately instead of queueing notification
         // this is at end-of-turn anyway so no point in waiting
-        //GameSession.instance().addTurnNotification(new BombardSystemNotification(sv, fl));
+        //GameSession.addTurnNotification(new BombardSystemNotification(sv, fl));
 
         // if player is bombing, show bombard panel
         // if player getting bombed, show other bombard panel

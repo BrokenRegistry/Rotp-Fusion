@@ -325,22 +325,22 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	}
 	// ========== Tools for overriders ==========
 	//
-	protected boolean updateNeeded(LinkValue value, boolean up) {
+	protected boolean updateNeeded(LinkValue val, boolean up) {
 		if (up)
-			return value.isPositiveDiff(linkValue(get()));
+			return val.isPositiveDiff(linkValue(get()));
 		else
-			return linkValue(get()).isPositiveDiff(value);
+			return linkValue(get()).isPositiveDiff(val);
 	}
 	protected IGameOptions   opts()		{ return RulesetManager.current().currentOptions(); }
 	private	  DynamicOptions dynOpts()	{ return opts().dynOpts(); }
-	protected T last()					{ return value(); }
+	public T last()						{ return value(); }
 	protected AbstractParam<T> formerName(String link)	{
 		formerName = link;
 		return this;
 	}
 	public void resetToDefaultValue()	{ set(defaultValue()); }
 	public T defaultValue()				{ return defaultValue.get(DEF_VAL.defVal()); }
-	public T get()						{
+	@Override public T get()			{
 		if (getValueMethod != null)
 			value = getValueMethod.getValue();
 		else if (isCfgFile) {
@@ -352,7 +352,7 @@ public abstract class AbstractParam<T> implements IParam<T> {
 		return value;
 	}	
 	public T setFromIndex(int i)		{ return null; }
-	public String getCfgValue(T value)	{ return String.valueOf(value); }
+	public String getCfgValue(T val)	{ return String.valueOf(val); }
 	// ========== Public Getters ==========
 	//
 	protected boolean processingToggle()	{ return processingToggle; }

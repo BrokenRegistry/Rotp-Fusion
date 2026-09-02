@@ -311,7 +311,7 @@ public final class TechTree implements Base, Serializable {
             for (TradeTechNotification notif: tradedTechNotifs()) {
                 boolean newTech = learnTech(notif.techId);
                 if (newTech)
-                    GameSession.instance().addTurnNotification(notif);
+                    GameSession.addTurnNotification(notif);
             }
         }
         else {

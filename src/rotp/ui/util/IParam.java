@@ -37,12 +37,12 @@ import rotp.ui.RotPUI;
 import rotp.util.LabelManager;
 
 public interface IParam<T> extends InterfaceOptions{
-	static final String LABEL_DESCRIPTION = "_DESC";
-	static final String LABEL_HELP		 = "_HELP";
-	static final String LABEL_GOV_LABEL	 = "_LABEL";
-	static final String END				 = "   ";
-	static final int INIT_DEPENDENCIES	 = 0;
-	static final int VALID_DEPENDENCIES	 = 1;
+	String LABEL_DESCRIPTION = "_DESC";
+	String LABEL_HELP		 = "_HELP";
+	String LABEL_GOV_LABEL	 = "_LABEL";
+	String END				 = "   ";
+	int INIT_DEPENDENCIES	 = 0;
+	int VALID_DEPENDENCIES	 = 1;
 
 	/**
 	 * To be used after starting RotP or loading options

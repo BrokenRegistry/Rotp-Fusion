@@ -48,6 +48,7 @@ import rotp.model.galaxy.IMappedObject;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.model.game.IFlagOptions;
 import rotp.model.planet.Planet;
 import rotp.model.planet.PlanetType;
@@ -536,10 +537,10 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     		return mapFlagImage(getFlagColor(1));
     	}
     }
-    private Image flagImage(int flagColor) { // BR: flagColorCount
-    	if (flagColor <= 0 || flagColor >= flagImageNameList.size())
+    private Image flagImage(int color) { // BR: flagColorCount
+    	if (color <= 0 || color >= flagImageNameList.size())
     		return null;
-    	return image(flagImageNameList.get(flagColor));
+    	return image(flagImageNameList.get(color));
     }
     private Image mapFlagImage(int flagColor) { // BR: flagColorCount
     	if (flagColor <= 0 || flagColor >= mapFlagImageNameList.size())
@@ -625,7 +626,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
             if (owner().isPlayer())
             	autoFlagPlanet(system().planet());
             if (owner().isPlayerControlled()) {
-                session().addSystemScouted(system());
+                GameSession.addSystemScouted(system());
                 if (system().empire() != player())
                     system().addEvent(new SystemScoutedEvent(player().id));
             }
@@ -647,7 +648,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
 	        	autoFlagPlanet(system().planet());
         if (owner().isPlayerControlled() && !scouted()) {
             log("Ally shares new system data: ", system().name());
-            session().addSystemScoutedByAllies(system());
+            GameSession.addSystemScoutedByAllies(system());
         }
 
         scoutTime = galaxy().currentYear();
@@ -662,7 +663,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
             if (owner().isPlayer())
             	autoFlagPlanet(system().planet());
             if (owner().isPlayerControlled())
-                session().addSystemScoutedByAstronomers(system());
+                GameSession.addSystemScoutedByAstronomers(system());
         }
 
         scoutTime = galaxy().currentYear();
@@ -678,7 +679,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
             if (owner().isPlayer())
             	autoFlagPlanet(system().planet());
             if (owner().isPlayer())
-                session().addSystemScouted(system());
+                GameSession.addSystemScouted(system());
         }
 
         scoutTime = galaxy().currentYear();
@@ -805,17 +806,17 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     	return newFlagColor;
     }
     public void setFlagColor(int newFlagColor)	{  setFlagColor(newFlagColor, getFlagId()); }
-    private int toggleFlagColor(boolean reverse, int flagColor) { // BR: flagColorCount
+    private int toggleFlagColor(boolean reverse, int color) { // BR: flagColorCount
 		if (reverse) {
-			flagColor--;
-			if (flagColor < 0)
+			color--;
+			if (color < 0)
 				return flagCount-1;
-			return flagColor;
+			return color;
 		} else {
-			flagColor++;
-			if (flagColor >= flagCount)
+			color++;
+			if (color >= flagCount)
 				return 0;
-			return flagColor;
+			return color;
 		}
     }
     public String resourceType()			{

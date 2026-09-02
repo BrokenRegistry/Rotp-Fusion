@@ -23,13 +23,8 @@ import java.awt.event.MouseEvent;
 import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 
-public class ZoomInWidgetSprite extends MapControlSprite {
-    public ZoomInWidgetSprite(int xOff, int yOff, int w, int h) {
-        xOffset = scaled(xOff);
-        yOffset = scaled(yOff);
-        width = scaled(w);
-        height = scaled(h);
-    }
+public final class ZoomInWidgetSprite extends MapControlSprite {
+	public ZoomInWidgetSprite(int xOff, int yOff, int w, int h)	{ super(xOff, yOff, w, h, "MAIN_ZOOM_IN_SPRITE_HELP"); }
     @Override
     public boolean acceptDoubleClicks()         { return true; }
     @Override
@@ -43,7 +38,7 @@ public class ZoomInWidgetSprite extends MapControlSprite {
         int cnr = BasePanel.s12;        
         g2.setColor(map.parent().backC());
         g2.fillRoundRect(startX, startY, width, height, cnr, cnr);
-        
+
         Stroke str0 = g2.getStroke();
         g2.setStroke(str0);
         g2.setColor(Color.lightGray);

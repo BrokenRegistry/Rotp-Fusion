@@ -37,7 +37,7 @@ final class GalaxyGridShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 			BASE_NAME, 1,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_GRID_0",
 				"SETUP_GRID_1",
 				"SETUP_GRID_2",
@@ -75,14 +75,14 @@ final class GalaxyGridShape extends GalaxyShape {
 		switch(option1) {
 	        case 2:
 	            // fine grid, no clusters
-	        	nGrid = (float) Math.max(1,(int)(1.8f*Math.sqrt(Math.sqrt(finalNumberStarSystems))-1));
+	        	nGrid = Math.max(1,(int)(1.8f*Math.sqrt(Math.sqrt(finalNumberStarSystems))-1));
 	        	maxClusters = (int) ((nGrid+1)*(nGrid+1));
 	            nClusters = 0;
 	            clusterR  = 0.1f;
 	            break;
 	        case 1:
 	            // rough grid, clusters at all intersections
-	        	nGrid = (float) Math.max(1,(int)(Math.sqrt(Math.sqrt(finalNumberStarSystems))-1));
+	        	nGrid = Math.max(1,(int)(Math.sqrt(Math.sqrt(finalNumberStarSystems))-1));
 	        	maxClusters = (int) ((nGrid+1)*(nGrid+1));
 	            nClusters = maxClusters;
 	            clusterR  = (nGrid + 5.0f) / 2.0f;
@@ -90,15 +90,15 @@ final class GalaxyGridShape extends GalaxyShape {
 	        case 0:
 	        default:
 	            // rough grid, some clusters at intersections
-	        	nGrid = (float) Math.max(1,(int)(Math.sqrt(Math.sqrt(finalNumberStarSystems))-1));
+	        	nGrid = Math.max(1,(int)(Math.sqrt(Math.sqrt(finalNumberStarSystems))-1));
 	        	maxClusters = (int) ((nGrid+1)*(nGrid+1));
-	            nClusters = (int) min(maxClusters-1, (int)(Math.sqrt(finalNumberStarSystems)/1.7));
-	            clusterR = (float) (nGrid + 5.0f) / 2.0f;
+	            nClusters = min(maxClusters-1, (int)(Math.sqrt(finalNumberStarSystems)/1.7));
+	            clusterR = (nGrid + 5.0f) / 2.0f;
 	            break;
 		}
 
-		gW = (float) galaxyWidthLY() - 2.0f*clusterR;
-		gH = (float) galaxyHeightLY() - 2.0f*clusterR;
+		gW = galaxyWidthLY() - 2.0f*clusterR;
+		gH = galaxyHeightLY() - 2.0f*clusterR;
 		gW = Math.max(5, gW); // BR: for very small galaxies
 		gH = Math.max(5, gH); // BR: for very small galaxies
 
@@ -109,12 +109,12 @@ final class GalaxyGridShape extends GalaxyShape {
 		// randomly assign clusters at intersections
 		// but use map size and number of opponents as seed to ensure same sequence
 		// use shuffle list to ensure unique draws
-		ArrayList<Integer> tempList = new ArrayList<Integer>();
+		ArrayList<Integer> tempList = new ArrayList<>();
 		for(int i = 0; i < maxClusters; i++){
 			tempList.add(i);
 		}
 		shuffle(tempList, rand);
-		clusterList = new ArrayList<Integer>(tempList.subList(0, (int)nClusters));
+		clusterList = new ArrayList<>(tempList.subList(0, nClusters));
 		// System.out.println("maxClusters = " + maxClusters + "  nClusters = " + nClusters);
     }
     @Override
@@ -133,14 +133,14 @@ final class GalaxyGridShape extends GalaxyShape {
 				// horizontal grids
 				if (stepSelect < horizontalSteps) { 
 					int gridRow = (int) Math.floor(stepSelect/(10*gW));
-					pt.x = (float) (clusterR + galaxyEdgeBuffer() + gW*(stepSelect-gridRow*(10*gW))/(10*gW));
-					pt.y = (float) (clusterR + galaxyEdgeBuffer() + gH*(gridRow/nGrid));
+					pt.x = clusterR + galaxyEdgeBuffer() + gW*(stepSelect-gridRow*(10*gW))/(10*gW);
+					pt.y = clusterR + galaxyEdgeBuffer() + gH*(gridRow/nGrid);
 				}
 				// vertical grids
 				else {
 					int gridColumn = (int) Math.floor((stepSelect - horizontalSteps)/(10*gH));
-					pt.x = (float) (clusterR + galaxyEdgeBuffer() + gW*(gridColumn/nGrid));
-					pt.y = (float) (clusterR + galaxyEdgeBuffer() + gH*(stepSelect-horizontalSteps-gridColumn*(10*gH))/(10*gH));
+					pt.x = clusterR + galaxyEdgeBuffer() + gW*(gridColumn/nGrid);
+					pt.y = clusterR + galaxyEdgeBuffer() + gH*(stepSelect-horizontalSteps-gridColumn*(10*gH))/(10*gH);
 				}
     	} else {
 				int clusterSelect = rand.nextInt(nClusters);
@@ -149,8 +149,8 @@ final class GalaxyGridShape extends GalaxyShape {
                 int clusterX = (int) (clusterPos % (nGrid+1));
 				int clusterY = (int) Math.floor(clusterPos / (nGrid+1));
 
-				float xCluster = (float) ((clusterX/nGrid)*gW + clusterR + galaxyEdgeBuffer());
-				float yCluster = (float) ((clusterY/nGrid)*gH + clusterR + galaxyEdgeBuffer());
+				float xCluster = (clusterX/nGrid)*gW + clusterR + galaxyEdgeBuffer();
+				float yCluster = (clusterY/nGrid)*gH + clusterR + galaxyEdgeBuffer();
 
 				double phiCluster = randY.nextDouble(2 * Math.PI);
 				double radiusSelect = Math.sqrt(randX.nextDouble()) * clusterR;

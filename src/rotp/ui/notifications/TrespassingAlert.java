@@ -23,7 +23,7 @@ public class TrespassingAlert extends GameAlert {
     private final int empShipId;
     private final int sysId;
     public static void create(int emp1, int emp2, int sys) {
-        GameSession.instance().addAlert(new TrespassingAlert(emp1, emp2, sys));
+        GameSession.addAlert(new TrespassingAlert(emp1, emp2, sys));
     }
     @Override
     public String description() {

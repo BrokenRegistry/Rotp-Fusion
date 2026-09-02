@@ -18,13 +18,14 @@ package rotp.ui.sprites;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import rotp.model.game.IGameOptions;
-import rotp.ui.BasePanel;
+import rotp.model.game.IMapOptions;
 import rotp.ui.main.GalaxyMapPanel;
 
-public class FlightPathDisplaySprite extends MapControlSprite  {
+public final class FlightPathDisplaySprite extends MapControlSprite  {
 	static Color yellowC = Color.yellow;
 	static Color redC = Color.red;
 	static Color greenC = Color.green;
@@ -33,24 +34,22 @@ public class FlightPathDisplaySprite extends MapControlSprite  {
 	Color extColor, normColor;
 
 	public FlightPathDisplaySprite(int xOff, int yOff, int w, int h) {
-		xOffset = scaled(xOff);
-		yOffset = scaled(yOff);
-		width = scaled(w);
-		height = scaled(h);
+		super(xOff, yOff, w, h, "FLIGHTPATH_SPRITE");
+		box.setParam(IMapOptions.flightPathDisplay);
 		extColor =  newColor(0,0,192,64);
 		normColor = newColor(32,32,192,128);
 	}
 	@Override
 	public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-		map.toggleFlightPathDisplay(rightClick);
+		IMapOptions.flightPathDisplay.toggle(e, null);
 	}
 	@Override
 	public void draw(GalaxyMapPanel map, Graphics2D g2) {
 		int w = width;
 		String detail ="";
 		int fontSize = 13;
-		int lineH	 = BasePanel.s14;
-		List<String> detailLines = null;
+		int lineH	 = s14;
+		List<String> detailLines = new ArrayList<>();
 
 		if (hovering) {
 			g2.setFont(narrowFont(fontSize));
@@ -62,17 +61,17 @@ public class FlightPathDisplaySprite extends MapControlSprite  {
 				w0 += detailW/10;
 				detailLines = wrappedLines(g2, detail, w0);
 			}
-			w = width + BasePanel.s15 + w0;
+			w = width + s15 + w0;
 		}
 		drawBackground(map, g2, w);
 
-		int x1a = startX+scaled(5);
-		int x1b = startX+width-scaled(5);
-		int y1 = startY+height-scaled(5);
-		int x2 = startX+scaled(15);
-		int y2 = startY+scaled(15);
+		int x1a = startX+s5;
+		int x1b = startX+width-s5;
+		int y1 = startY+height-s5;
+		int x2 = startX+s15;
+		int y2 = startY+s15;
 
-		int cnr = BasePanel.s12;
+		int cnr = s12;
 		g2.setColor(background);
 		g2.fillRoundRect(startX, startY, width, height, cnr, cnr);
 
@@ -89,10 +88,10 @@ public class FlightPathDisplaySprite extends MapControlSprite  {
 		if (hovering) {
 			g2.setColor(Color.lightGray);
 			g2.setFont(narrowFont(fontSize));
-			y1 = startY + height - BasePanel.s17;
-			int x1 = startX + width + BasePanel.s10;
+			y1 = startY + height - s17;
+			int x1 = startX + width + s10;
 			if (detailLines.size() == 1)
-				y1 += BasePanel.s8;
+				y1 += s8;
 			for (String line: detailLines) {
 				drawString(g2, line, x1, y1);
 				y1 += lineH;

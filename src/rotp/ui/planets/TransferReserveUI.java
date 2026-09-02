@@ -15,6 +15,9 @@
  */
 package rotp.ui.planets;
 
+import static rotp.ui.game.AdvisorPanel.isAdvising;
+import static rotp.ui.game.IAdvisor.ADVISOR;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -36,8 +39,6 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import javax.swing.JEditorPane;
-
 import rotp.model.colony.Colony;
 import rotp.model.colony.Colony.ColonyBudget;
 import rotp.model.empires.Empire;
@@ -47,9 +48,11 @@ import rotp.model.game.IGovOptions;
 import rotp.model.game.IMapOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
+import rotp.ui.game.AdvisorPanel;
 import rotp.ui.game.HelpUI;
+import rotp.ui.game.IAdvisor;
 import rotp.ui.main.SystemPanel;
-import rotp.ui.util.IParam;
+import rotp.util.AdviceBox;
 
 final class TransferReserveUI extends BasePanel implements MouseListener, MouseWheelListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
@@ -60,13 +63,11 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
     private static final Color okButtonBdrC = new Color(158,165,156);
     private static final Color cancelButtonBdrC = new Color(184,165,143);
     private static final Color sliderButtonColor = Color.black;
-	private static final Color sliderBoxBlue	= new Color(34,140,142);
-	private static final Color CHECK_BOX_COLOR	= new Color(178, 124, 87);
-	private static final int MAX_TICKS = 50;
-	private static final int LEFT	= 0;
-	private static final int CENTER	= 1;
-	private static final int RIGHT	= 2;
-
+	private static final Color sliderBoxBlueC	= new Color(34, 140, 142);
+	private static final int MAX_TICKS	= 50;
+	private static final int LEFT		= 0;
+	private static final int CENTER		= 1;
+	private static final int RIGHT		= 2;
 	private static final String ALL		= "PLANETS_BUTTON_ALL_";
 	private static final String LIST	= "PLANETS_BUTTON_LIST_";
 	private static final String CLEAR	= "CLEAR_";
@@ -82,39 +83,23 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 
 	private List<StarSystem> targetSystems;
 
-	private Shape hoverBox;
+	private Shape hoverBox, prevHover;
 	private boolean initted = false;
 
-	private final ActionButton optimalBudgetButton	= new ActionButton("PLANETS_BUTTON_BUDGET_WISH", widePaint, 0, okButtonBdrC, false);
-	private final ActionButton optimalShareButton	= new ActionButton("PLANETS_BUTTON_SHARE_WISH", widePaint, 1, okButtonBdrC, false);
-	private final ActionButton convertButton	= new ActionButton("PLANETS_BUTTON_CONVERT", widePaint, 0, okButtonBdrC, false);
-	private final ActionButton governorButton	= new ActionButton("PLANETS_BUTTON_REMOVE", widePaint, 1, okButtonBdrC, true);
+	private final ActionButton optimalBudgetButton, optimalShareButton, convertButton, governorButton;
+	private final ActionButton transfertButton, cancelButton, budgetButton;
+	private final ActionButton redoAllGrantButton, redoAllBudgetButton, redoAllRaiseButton;
+	private final ActionButton clearAllGrantButton, clearAllBudgetButton, clearAllRaiseButton;
+	private final ActionButton listGrantButton, listBudgetButton, listRaiseButton;
+	private final ActionButton listClearGrantButton, listClearBudgetButton, listClearRaiseButton;
 
-	private final ActionButton transfertButton	= new ActionButton("PLANETS_TRANSFER_ACCEPT", bottomPaint, LEFT, okButtonBdrC, false);
-	private final ActionButton cancelButton		= new ActionButton("PLANETS_TRANSFER_CANCEL", bottomPaint, CENTER, cancelButtonBdrC, false);
-	private final ActionButton budgetButton		= new ActionButton("PLANETS_BUTTON_BUDGET", bottomPaint, RIGHT, okButtonBdrC, false);
-
-	private final ActionButton redoAllGrantButton	= new ActionButton(ALL+DO+GRANT, doPaint, LEFT, okButtonBdrC, false);
-	private final ActionButton redoAllBudgetButton	= new ActionButton(ALL+DO+BOTH, doPaint, CENTER, okButtonBdrC, true);
-	private final ActionButton redoAllRaiseButton	= new ActionButton(ALL+DO+RAISE, doPaint, RIGHT, okButtonBdrC, true);
-	private final ActionButton clearAllGrantButton	= new ActionButton(ALL+CLEAR+GRANT, clearPaint, LEFT, okButtonBdrC, false);
-	private final ActionButton clearAllBudgetButton	= new ActionButton(ALL+CLEAR+BOTH, clearPaint, CENTER, okButtonBdrC, false);
-	private final ActionButton clearAllRaiseButton	= new ActionButton(ALL+CLEAR+RAISE, clearPaint, RIGHT, okButtonBdrC, false);
-
-	private final ActionButton listGrantButton		= new ActionButton(LIST+DO+GRANT, doPaint, LEFT, okButtonBdrC, false);
-	private final ActionButton listBudgetButton		= new ActionButton(LIST+DO+BOTH, doPaint, CENTER, okButtonBdrC, true);
-	private final ActionButton listRaiseButton		= new ActionButton(LIST+DO+RAISE, doPaint, RIGHT, okButtonBdrC, true);
-	private final ActionButton listClearGrantButton	= new ActionButton(LIST+CLEAR+GRANT, clearPaint, LEFT, okButtonBdrC, false);
-	private final ActionButton listClearBudgetButton= new ActionButton(LIST+CLEAR+BOTH, clearPaint, CENTER, okButtonBdrC, false);
-	private final ActionButton listClearRaiseButton	= new ActionButton(LIST+CLEAR+RAISE, clearPaint, RIGHT, okButtonBdrC, false);
-
-	private final Rect divertToResearchCheckBox	= new Rect();
-	private final Rect governorGrantCheckBox	= new Rect();
-	private final Rect governorRaiseCheckBox	= new Rect();
-	private final Rect canUpdateGrantCheckBox	= new Rect();
-	private final Rect canUpdateRaiseCheckBox	= new Rect();
-	private final Rect oldWayCheckBox	= new Rect();
-	private final Rect reserveSlider	= new Rect();
+	private final AdviceCheckbox toResearchCheckbox		= new AdviceCheckbox();
+	private final AdviceCheckbox governorGrantCheckbox	= new AdviceCheckbox();
+	private final AdviceCheckbox governorRaiseCheckbox	= new AdviceCheckbox();
+	private final AdviceCheckbox canUpdateGrantCheckbox	= new AdviceCheckbox();
+	private final AdviceCheckbox canUpdateRaiseCheckbox	= new AdviceCheckbox();
+	private final AdviceCheckbox oldWayCheckbox			= new AdviceCheckbox();
+	private final AdviceBox reserveSlider	= new AdviceBox();
 	private final Polygon leftArrow		= new Polygon();
 	private final Polygon rightArrow	= new Polygon();
 	private final int checkW = s12;
@@ -142,36 +127,40 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 	private int infoWidth, infoLeft, infoTop;	// Popup Box
 	private float neededRsv, playerRsv, subsidies;
 	private boolean showHelp = false;
-	private JEditorPane helpEditor;
 	private HelpUI helpUI;
+	private PlanetsUI parent;
 
-	private final class ActionButton extends Rect {
-		private static final long serialVersionUID = 1L;
-		private final Paint[] paint;
-		private final int posId;
-		private final Color borderColor;
-		private final String label;
-		private final boolean canBeDisabled;
-		private ActionButton(String label, Paint[] bg, int pos, Color border, boolean divert)	{
-			this.label = label;
-			this.paint = bg;
-			this.posId = pos;
-			borderColor = border;
-			canBeDisabled = divert;
-		}
+	public TransferReserveUI(PlanetsUI p) {
+		parent = p;
+		optimalBudgetButton	= new ActionButton(this, "PLANETS_BUTTON_BUDGET_WISH", widePaint, 0, okButtonBdrC, false);
+		optimalShareButton	= new ActionButton(this, "PLANETS_BUTTON_SHARE_WISH", widePaint, 1, okButtonBdrC, false);
+		convertButton		= new ActionButton(this, "PLANETS_BUTTON_CONVERT", widePaint, 0, okButtonBdrC, false);
+		governorButton		= new ActionButton(this, "PLANETS_BUTTON_REMOVE", widePaint, 1, okButtonBdrC, true);
+
+		transfertButton		= new ActionButton(this, "PLANETS_TRANSFER_ACCEPT", bottomPaint, LEFT, okButtonBdrC, false);
+		cancelButton		= new ActionButton(this, "PLANETS_TRANSFER_CANCEL", bottomPaint, CENTER, cancelButtonBdrC, false);
+		budgetButton		= new ActionButton(this, "PLANETS_BUTTON_BUDGET", bottomPaint, RIGHT, okButtonBdrC, false);
+
+		redoAllGrantButton	= new ActionButton(this, ALL+DO+GRANT, doPaint, LEFT, okButtonBdrC, false);
+		redoAllBudgetButton	= new ActionButton(this, ALL+DO+BOTH, doPaint, CENTER, okButtonBdrC, true);
+		redoAllRaiseButton	= new ActionButton(this, ALL+DO+RAISE, doPaint, RIGHT, okButtonBdrC, true);
+		clearAllGrantButton	= new ActionButton(this, ALL+CLEAR+GRANT, clearPaint, LEFT, okButtonBdrC, false);
+		clearAllBudgetButton= new ActionButton(this, ALL+CLEAR+BOTH, clearPaint, CENTER, okButtonBdrC, false);
+		clearAllRaiseButton	= new ActionButton(this, ALL+CLEAR+RAISE, clearPaint, RIGHT, okButtonBdrC, false);
+
+		listGrantButton		= new ActionButton(this, LIST+DO+GRANT, doPaint, LEFT, okButtonBdrC, false);
+		listBudgetButton	= new ActionButton(this, LIST+DO+BOTH, doPaint, CENTER, okButtonBdrC, true);
+		listRaiseButton		= new ActionButton(this, LIST+DO+RAISE, doPaint, RIGHT, okButtonBdrC, true);
+		listClearGrantButton= new ActionButton(this, LIST+CLEAR+GRANT, clearPaint, LEFT, okButtonBdrC, false);
+		listClearBudgetButton= new ActionButton(this, LIST+CLEAR+BOTH, clearPaint, CENTER, okButtonBdrC, false);
+		listClearRaiseButton= new ActionButton(this, LIST+CLEAR+RAISE, clearPaint, RIGHT, okButtonBdrC, false);
+		initModel();
 	}
-    public TransferReserveUI() {
-        initModel();
-    }
     private void initModel() {
         setOpaque(false);
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);
-		helpEditor = new JEditorPane();
-		helpEditor.setEditable(false);
-		helpEditor.setContentType("text/html");
-		add(helpEditor);
 	}
 	void targetSystems(List<StarSystem> syslist) {
 		initted = false;	// in case of language change
@@ -182,8 +171,18 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 			setDefaultAmt();
 			isMultiple = syslist.size() > 1;
 		}
+		ADVISOR.init(this, IAdvisor.BUDGET_ADVISOR, empire);
+		ADVISOR.setMargins(s3, s3, 0, s50, s50);
 	}
 	private Font descriptionFont()	{ return narrowFont(20); }
+	private void startAdvisor()		{
+		ADVISOR.toggle();
+		if (isAdvising()) {
+			ADVISOR.init(this, IAdvisor.BUDGET_ADVISOR, empire);
+			ADVISOR.setMargins(s3, s3, 0, s50, s50);
+		}
+		repaint();
+	}
 	private void init()	{
 		// Horizontal parameters
 		int w = getWidth();
@@ -253,6 +252,22 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		button2H = s27;
 		lineH	= s20;
 
+		toResearchCheckbox.init(checkW, button2W, vSep, IMapOptions.divertExcessToResearch);
+		governorGrantCheckbox.init(checkW, button2W, vSep, IGovOptions.governorGrantFunds);
+		governorRaiseCheckbox.init(checkW, button2W, vSep, IGovOptions.governorRaiseFunds);
+		canUpdateGrantCheckbox.init(checkW, button2W, vSep, IGovOptions.redoBudgetGrantAllowed);
+		canUpdateRaiseCheckbox.init(checkW, button2W, vSep, IGovOptions.redoBudgetRaiseAllowed);
+		oldWayCheckbox.init(checkW, button2W, vSep, IGovOptions.autospendImmediateTransfer);
+
+		toResearchCheckbox.setPane(this);
+		governorGrantCheckbox.setPane(this);
+		governorRaiseCheckbox.setPane(this);
+		canUpdateGrantCheckbox.setPane(this);
+		canUpdateRaiseCheckbox.setPane(this);
+		oldWayCheckbox.setPane(this);
+
+		reserveSlider.init(this, null, null, "PLANETS_TRANSFER_DESC_HELP");
+
 		// Draw in a fake image to get the real height.
 		BufferedImage img = new BufferedImage(h, w, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) img.getGraphics();
@@ -309,6 +324,10 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		else
 			helpUI = null; // Safe to clear there.
 	}
+	@Override protected void drawOverTextures(Graphics g)	{
+		if (isAdvising())
+			ADVISOR.paintOverMap((Graphics2D) g);
+	}
 	private Point drawBox(Graphics2D g, Point pos) {
 		String description = text("PLANETS_BUTTON_DO_CLEAR_DESC");
 		g.setFont(descriptionFont());
@@ -326,7 +345,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		pos = drawButtonLine(g, pos, LIST, disabled, listClearRaiseButton, listClearBudgetButton, listClearGrantButton);
 		pos = drawButtonLine(g, pos, null, disabled, listRaiseButton, listBudgetButton, listGrantButton);
 
-		pos = drawDivertToResearch(g, pos);	
+		pos = drawCheckboxes(g, pos);	
 
 		pos = drawTitle(g, pos);
 
@@ -406,7 +425,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 			g.setStroke(prev);
 			Color c2 = hoverBox == button ? Color.YELLOW : SystemPanel.whiteText;
 			c2 = disabled && button.canBeDisabled? Color.GRAY : c2;
-			String str = text(button.label);
+			String str = text(button.getLabelKey());
 			int sw = g.getFontMetrics().stringWidth(str);
 			int strX = buttonX + ((buttonW - sw) / 2);
 			drawShadowedString(g, str, 3, strX, pos.y+buttonH-dy, SystemPanel.textShadowC, c2);
@@ -414,35 +433,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		pos.y = pos.y + buttonH + vSep;
 		return pos;
 	}
-	private void drawCheckBox(Graphics2D g, Point pos, Rect box, IParam<Boolean> param)	{
-		int checkX = pos.x;
-		int descrX = checkX + checkW + s8;
-		int checkYTop = pos.y - checkW;
-
-		g.setColor(Color.black);
-		g.setFont(plainFont(18));
-		String description = param.govLabelTxt();
-		int sw = g.getFontMetrics().stringWidth(description);
-		box.te(descrX + sw);
-		drawString(g, description, descrX, pos.y);
-
-		box.setBounds(checkX, checkYTop, checkW, checkW);
-		Stroke prev = g.getStroke();
-		g.setStroke(stroke2);
-		g.setColor(CHECK_BOX_COLOR);
-		g.fill(box);
-		if (hoverBox == box) {
-			g.setColor(Color.yellow);
-			g.draw(box);
-		}
-		if (param.get()) {
-			g.setColor(SystemPanel.whiteText);
-			g.drawLine(checkX-s1, pos.y-s6, checkX+s3, pos.y-s3);
-			g.drawLine(checkX+s3, pos.y-s3, checkX+checkW, pos.y-s12);
-		}
-		g.setStroke(prev);
-	}
-	private Point drawDivertToResearch(Graphics2D g, Point pos)	{
+	private Point drawCheckboxes(Graphics2D g, Point pos)	{
 		// Draw line
 		g.setColor(SystemPanel.blackText);
 		g.drawLine(infoLeft, pos.y, infoLeft + infoWidth, pos.y);
@@ -450,23 +441,29 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		Point posRight = new Point(pos.x + infoWidth/2, pos.y);
 
 		// Divert excess to research
-		drawCheckBox(g, pos, divertToResearchCheckBox, IMapOptions.divertExcessToResearch);
+		toResearchCheckbox.setLocation(pos.x, pos.y-checkW);
+		toResearchCheckbox.drawCheckbox(g);
 		// Old way of immediate transfer
-		drawCheckBox(g, posRight, oldWayCheckBox, IGovOptions.autospendImmediateTransfer);
+		oldWayCheckbox.setLocation(posRight.x, posRight.y-checkW);
+		oldWayCheckbox.drawCheckbox(g);
 
 		pos.y += vSep;
 		posRight.y = pos.y;
 		// governor Grant Funds
-		drawCheckBox(g, pos, governorGrantCheckBox, IGovOptions.governorGrantFunds);
+		governorGrantCheckbox.setLocation(pos.x, pos.y-checkW);
+		governorGrantCheckbox.drawCheckbox(g);
 		// governor Raise Funds
-		drawCheckBox(g, posRight, governorRaiseCheckBox, IGovOptions.governorRaiseFunds);
+		governorRaiseCheckbox.setLocation(posRight.x, posRight.y-checkW);
+		governorRaiseCheckbox.drawCheckbox(g);
 
 		pos.y += vSep;
 		posRight.y = pos.y;
 		// redo Budget Grant Allowed
-		drawCheckBox(g, pos, canUpdateGrantCheckBox, IGovOptions.redoBudgetGrantAllowed);
+		canUpdateGrantCheckbox.setLocation(pos.x, pos.y-checkW);
+		canUpdateGrantCheckbox.drawCheckbox(g);
 		// redo Budget Raise Allowed
-		drawCheckBox(g, posRight, canUpdateRaiseCheckBox, IGovOptions.redoBudgetRaiseAllowed);
+		canUpdateRaiseCheckbox.setLocation(posRight.x, posRight.y-checkW);
+		canUpdateRaiseCheckbox.drawCheckbox(g);
 
 		// Draw line
 		pos.y += vSep/2;
@@ -541,7 +538,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 
 		g.setColor(Color.black);
 		g.fillRect(boxL, pos.y, boxW, boxH);
-		g.setColor(sliderBoxBlue);
+		g.setColor(sliderBoxBlueC);
 		g.fillRect(boxL, pos.y+s1, boxW * amt / MAX_TICKS, boxH-s2);
 
 		if (hoverBox == reserveSlider) {
@@ -628,7 +625,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		int w = bw;
 		int x = tx - bw/2;
 		int y = -bottom;
-		HelpUI.HelpSpec spC1 = helpUI.addBrownHelpText(x, y, w, 0, text("PLANETS_HELP_T_CANCEL"));
+		HelpUI.HelpSpec spC1 = helpUI.addBrownHelpText(x, y, w, 0, cancelButton.getDescriptionText());
 		spC1.setLine(spC1.xc(), spC1.y(), tx, ty);
 
 		// LEFT SIDE
@@ -638,44 +635,44 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		w = bw;
 		x = tx - bw - xSep;
 		y = -bottom;
-		HelpUI.HelpSpec spL1 = helpUI.addBrownHelpText(x, y, w, 0, text("PLANETS_HELP_T_TRANSFERT"));
+		HelpUI.HelpSpec spL1 = helpUI.addBrownHelpText(x, y, w, 0, transfertButton.getDescriptionText());
 		spL1.setLine(spL1.xe(), spL1.yc(), tx, ty);
 
 		ty = convertButton.yc();
 		w = bw;
 		y = ySep-spL1.y();
-		HelpUI.HelpSpec spL2 = helpUI.addBrownHelpText(x, y, w, 0, text("PLANETS_HELP_T_CONVERT"));
+		HelpUI.HelpSpec spL2 = helpUI.addBrownHelpText(x, y, w, 0, convertButton.getDescriptionText());
 		spL2.setLine(spL2.xe(), spL2.yc(), tx, ty);
 
 		ty = optimalBudgetButton.yc();
 		w = bw;
 		y = ySep-spL2.y();
-		HelpUI.HelpSpec spL3 = helpUI.addBrownHelpText(x, y, w, 0, text("PLANETS_HELP_T_BUDGET_OPTIMAL"));
+		HelpUI.HelpSpec spL3 = helpUI.addBrownHelpText(x, y, w, 0, optimalBudgetButton.getDescriptionText());
 		spL3.setLine(spL3.xe(), spL3.yc(), tx, ty);
 
-		tx = canUpdateGrantCheckBox.x - s5;
-		ty = canUpdateGrantCheckBox.yc() + s3;
+		tx = canUpdateGrantCheckbox.x - s5;
+		ty = canUpdateGrantCheckbox.yc() + s3;
 		w = bw;
 		y = ySep-spL3.y();
 		HelpUI.HelpSpec spL4 = helpUI.addBrownHelpText(x, y, w, 0, IGovOptions.redoBudgetGrantAllowed.getDescription());
 		spL4.setLine(spL4.xe(), spL4.yc(), tx, ty);
 
-		tx = governorGrantCheckBox.x - s5;
-		ty = governorGrantCheckBox.yc();
+		tx = governorGrantCheckbox.x - s5;
+		ty = governorGrantCheckbox.yc();
 		w = bw;
 		y = ySep-spL4.y();
 		HelpUI.HelpSpec spL5 = helpUI.addBrownHelpText(x, y, w, 0, IGovOptions.governorGrantFunds.getDescription());
 		spL5.setLine(spL5.xe(), spL5.yc(), tx, ty);
 
-		tx = divertToResearchCheckBox.x - s5;
-		ty = divertToResearchCheckBox.yc() - s3;
+		tx = toResearchCheckbox.x - s5;
+		ty = toResearchCheckbox.yc() - s3;
 		w = bw;
 		y = ySep-spL5.y();
 		HelpUI.HelpSpec spL6 = helpUI.addBrownHelpText(x, y, w, 0, IMapOptions.divertExcessToResearch.getDescription());
 		spL6.setLine(spL6.xe(), spL6.yc(), tx, ty);
 
-		tx = oldWayCheckBox.x - s5;
-		ty = oldWayCheckBox.yc() - s3;
+		tx = oldWayCheckbox.x - s5;
+		ty = oldWayCheckbox.yc() - s3;
 		y = ySep-spL6.y();
 		HelpUI.HelpSpec spL7 = helpUI.addBrownHelpText(x, y, w, 0, IGovOptions.autospendImmediateTransfer.getDescription());
 		spL7.setLine(spL7.xe(), spL7.yc(), tx, ty);
@@ -686,129 +683,106 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		ty = budgetButton.yc();
 		x = tx + xSep;
 		y = -bottom;
-		HelpUI.HelpSpec spR1 = helpUI.addBrownHelpText(x, y, w, 0, text("PLANETS_HELP_T_BUDGET"));
+		HelpUI.HelpSpec spR1 = helpUI.addBrownHelpText(x, y, w, 0, budgetButton.getDescriptionText());
 		spR1.setLine(spR1.x(), spR1.yc(), tx, ty);
 
 		ty = governorButton.yc();
 		y = ySep-spR1.y();
-		HelpUI.HelpSpec spR2 = helpUI.addBrownHelpText(x, y, w, 0, text("PLANETS_HELP_T_REMOVE_PLAYER"));
+		HelpUI.HelpSpec spR2 = helpUI.addBrownHelpText(x, y, w, 0, governorButton.getDescriptionText());
 		spR2.setLine(spR2.x(), spR2.yc(), tx, ty);
 
 		ty = optimalShareButton.yc();
 		y = ySep-spR2.y();
-		HelpUI.HelpSpec spR3 = helpUI.addBrownHelpText(x, y, w, 0, text("PLANETS_HELP_T_SHARE_OPTIMAL"));
+		HelpUI.HelpSpec spR3 = helpUI.addBrownHelpText(x, y, w, 0, optimalShareButton.getDescriptionText());
 		spR3.setLine(spR3.x(), spR3.yc(), tx, ty);
 
-		tx = canUpdateRaiseCheckBox.te() + s5;
-		ty = canUpdateRaiseCheckBox.yc() + s3;
+		tx = canUpdateRaiseCheckbox.getTextRightX() + s5;
+		ty = canUpdateRaiseCheckbox.yc() + s3;
 		y = ySep-spR3.y();
-		HelpUI.HelpSpec spR4 = helpUI.addBrownHelpText(x, y, w, 0, IGovOptions.redoBudgetRaiseAllowed.getDescription());
+		HelpUI.HelpSpec spR4 = helpUI.addBrownHelpText(x, y, w, 0, canUpdateRaiseCheckbox.getParam().getDescription());
 		spR4.setLine(spR4.x(), spR4.yc(), tx, ty);
 
-		tx = governorRaiseCheckBox.te() + s5;
-		ty = governorRaiseCheckBox.yc() - s2;
+		tx = governorRaiseCheckbox.getTextRightX() + s5;
+		ty = governorRaiseCheckbox.yc() - s2;
 		y = ySep-spR4.y();
-		HelpUI.HelpSpec spR5 = helpUI.addBrownHelpText(x, y, w, 0, IGovOptions.governorRaiseFunds.headerHelp(false));
+		HelpUI.HelpSpec spR5 = helpUI.addBrownHelpText(x, y, w, 0, governorRaiseCheckbox.getParam().headerHelp(false));
 		spR5.setLine(spR5.x(), spR5.yce(), tx, ty);
-}
+	}
     private void increment()   { setAmt(amt+1); }
     private void decrement()   { setAmt(amt-1); }
     private void setAmt(int i) { amt = bounds(0, i, MAX_TICKS); }
-    private void setHoverSprite(int x, int y) {
-        hoverBox = null;
-        if (cancelButton.contains(x, y))
-            hoverBox = cancelButton;
-        else if (transfertButton.contains(x, y))
-            hoverBox = transfertButton;
-        else if (leftArrow.contains(x,y))
-            hoverBox = leftArrow;
-        else if (rightArrow.contains(x,y))
-            hoverBox = rightArrow;
-        else if (reserveSlider.contains(x,y))
-            hoverBox = reserveSlider;
-		else if (budgetButton.contains(x,y))
-			hoverBox = budgetButton;
-		else if (governorButton.contains(x,y) && (isPlayer || isMultiple))
-			hoverBox = governorButton;
-		else if (optimalShareButton.contains(x,y))
-			hoverBox = optimalShareButton;
-		else if (optimalBudgetButton.contains(x,y))
-			hoverBox = optimalBudgetButton;
-		else if (convertButton.contains(x,y))
-			hoverBox = convertButton;
-		else if (divertToResearchCheckBox.contains(x,y))
-			hoverBox = divertToResearchCheckBox;
-		else if (oldWayCheckBox.contains(x,y))
-			hoverBox = oldWayCheckBox;
-		else if (governorGrantCheckBox.contains(x,y))
-			hoverBox = governorGrantCheckBox;
-		else if (governorRaiseCheckBox.contains(x,y))
-			hoverBox = governorRaiseCheckBox;
-		else if (canUpdateGrantCheckBox.contains(x,y))
-			hoverBox = canUpdateGrantCheckBox;
-		else if (canUpdateRaiseCheckBox.contains(x,y))
-			hoverBox = canUpdateRaiseCheckBox;
-		else if (redoAllGrantButton.contains(x,y))
-			hoverBox = redoAllGrantButton;
-		else if (redoAllBudgetButton.contains(x,y) && !options().divertColonyExcessToResearch())
-			hoverBox = redoAllBudgetButton;
-		else if (redoAllRaiseButton.contains(x,y) && !options().divertColonyExcessToResearch())
-			hoverBox = redoAllRaiseButton;
-		else if (clearAllGrantButton.contains(x,y))
-			hoverBox = clearAllGrantButton;
-		else if (clearAllBudgetButton.contains(x,y))
-			hoverBox = clearAllBudgetButton;
-		else if (clearAllRaiseButton.contains(x,y))
-			hoverBox = clearAllRaiseButton;
-		else if (listClearGrantButton.contains(x,y))
-			hoverBox = listClearGrantButton;
-		else if (listClearBudgetButton.contains(x,y))
-			hoverBox = listClearBudgetButton;
-		else if (listClearRaiseButton.contains(x,y))
-			hoverBox = listClearRaiseButton;
-		else if (listGrantButton.contains(x,y))
-			hoverBox = listGrantButton;
-		else if (listBudgetButton.contains(x,y) && !options().divertColonyExcessToResearch())
-			hoverBox = listBudgetButton;
-		else if (listRaiseButton.contains(x,y) && !options().divertColonyExcessToResearch())
-			hoverBox = listRaiseButton;
+	private void setHoverSprite(int x, int y) {
+		if (isAdvising() && ADVISOR.getExitBox().isSelectableAt(null, x, y))
+			hoverBox = hoverBox(AdvisorPanel.getButtonBox(), hoverBox);
+		else if (cancelButton.isSelectableAt(x, y))
+			hoverBox = hoverBox(cancelButton, hoverBox);
+		else if (transfertButton.isSelectableAt(x, y))
+			hoverBox = hoverBox(transfertButton, hoverBox);
+		else if (leftArrow.contains(x,y))
+			hoverBox = hoverBox(leftArrow, hoverBox);
+		else if (rightArrow.contains(x,y))
+			hoverBox = hoverBox(rightArrow, hoverBox);
+		else if (reserveSlider.isSelectableAt(x,y))
+			hoverBox = hoverBox(reserveSlider, hoverBox);
+		else if (budgetButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(budgetButton, hoverBox);
+		else if (governorButton.isSelectableAt(x,y) && (isPlayer || isMultiple))
+			hoverBox = hoverBox(governorButton, hoverBox);
+		else if (optimalShareButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(optimalShareButton, hoverBox);
+		else if (optimalBudgetButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(optimalBudgetButton, hoverBox);
+		else if (convertButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(convertButton, hoverBox);
+		else if (toResearchCheckbox.isSelectableAt(x,y))
+			hoverBox = hoverBox(toResearchCheckbox, hoverBox);
+		else if (oldWayCheckbox.isSelectableAt(x,y))
+			hoverBox = hoverBox(oldWayCheckbox, hoverBox);
+		else if (governorGrantCheckbox.isSelectableAt(x,y))
+			hoverBox = hoverBox(governorGrantCheckbox, hoverBox);
+		else if (governorRaiseCheckbox.isSelectableAt(x,y))
+			hoverBox = hoverBox(governorRaiseCheckbox, hoverBox);
+		else if (canUpdateGrantCheckbox.isSelectableAt(x,y))
+			hoverBox = hoverBox(canUpdateGrantCheckbox, hoverBox);
+		else if (canUpdateRaiseCheckbox.isSelectableAt(x,y))
+			hoverBox = hoverBox(canUpdateRaiseCheckbox, hoverBox);
+		else if (redoAllGrantButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(redoAllGrantButton, hoverBox);
+		else if (redoAllBudgetButton.isSelectableAt(x,y) && !options().divertColonyExcessToResearch())
+			hoverBox = hoverBox(redoAllBudgetButton, hoverBox);
+		else if (redoAllRaiseButton.isSelectableAt(x,y) && !options().divertColonyExcessToResearch())
+			hoverBox = hoverBox(redoAllRaiseButton, hoverBox);
+		else if (clearAllGrantButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(clearAllGrantButton, hoverBox);
+		else if (clearAllBudgetButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(clearAllBudgetButton, hoverBox);
+		else if (clearAllRaiseButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(clearAllRaiseButton, hoverBox);
+		else if (listClearGrantButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(listClearGrantButton, hoverBox);
+		else if (listClearBudgetButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(listClearBudgetButton, hoverBox);
+		else if (listClearRaiseButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(listClearRaiseButton, hoverBox);
+		else if (listGrantButton.isSelectableAt(x,y))
+			hoverBox = hoverBox(listGrantButton, hoverBox);
+		else if (listBudgetButton.isSelectableAt(x,y) && !options().divertColonyExcessToResearch())
+			hoverBox = hoverBox(listBudgetButton, hoverBox);
+		else if (listRaiseButton.isSelectableAt(x,y) && !options().divertColonyExcessToResearch())
+			hoverBox = hoverBox(listRaiseButton, hoverBox);
+		else
+			hoverBox = hoverBox(null, hoverBox);
 	}
-    private void exit() {
-        hoverBox = null;
+
+	private void exit() {
+		if (isAdvising())
+			ADVISOR.onHold();
+		parent.initAdvisor();
+		hoverBox = null;
 		showHelp = false;
-        amt = 0;
-        softClick();
-        disableGlassPane();
-    }
-	private void divertToResearchCheckBoxAction()	{
+		amt = 0;
 		softClick();
-		player().toggleColonyExcessToResearch();
-		repaint();
-	}
-	private void oldWayCheckBoxAction()	{
-		softClick();
-		govOptions().toggleAutospendOldWay();
-		repaint();
-	}
-	private void governorGrantCheckBoxAction()	{
-		softClick();
-		govOptions().toggleAutospendGrantFunds();
-		repaint();
-	}
-	private void governorRaiseCheckBoxAction()	{
-		softClick();
-		govOptions().toggleAutospendRaiseFunds();
-		repaint();
-	}
-	private void canUpdateGrantCheckBoxAction()	{
-		softClick();
-		govOptions().toggleRedoBudgetGrantAllowed();
-		repaint();
-	}
-	private void canUpdateRaiseCheckBoxAction()	{
-		softClick();
-		govOptions().toggleRedoBudgetRaiseAllowed();
-		repaint();
+		disableGlassPane();
 	}
 	private void redoGrantFundsButtonAction()	{
 		softClick();
@@ -964,7 +938,10 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		player().budget().redoBudget(targetSystems, true, false, EmpireBudget.LIST, true);
 		exit();
 	}
+	@Override public Shape getHoverBox()	{ return hoverBox; }
+	@Override public void cancelHelp()		{ if (isAdvising()) ADVISOR.advanceMap(); }
 	@Override public void keyPressed(KeyEvent e)	{
+		setModifierKeysState(e);
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_ESCAPE:
 				exit();
@@ -972,9 +949,13 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 			case KeyEvent.VK_SPACE:
 			case KeyEvent.VK_ENTER:
 			case KeyEvent.VK_F1:
-				showHelp = !showHelp;
-				helpUI = null;
-				repaint();
+				if (e.isControlDown()) {
+					showHelp = !showHelp;
+					helpUI = null;
+					repaint();
+					return;
+				}
+				startAdvisor();
 				return;
 			case KeyEvent.VK_E:
 				if (e.isAltDown() && e.isControlDown()) {
@@ -996,10 +977,13 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 				break;
 			}
 	}
+	@Override public void keyReleased(KeyEvent e)		{ setModifierKeysState(e); }
     @Override public void mouseClicked(MouseEvent arg0)	{ }
     @Override public void mouseEntered(MouseEvent arg0)	{ }
     @Override public void mouseExited(MouseEvent arg0)	{
         if (hoverBox != null) {
+			if (hoverBox instanceof AdviceBox)
+				((AdviceBox) hoverBox).hovering(false);
             hoverBox = null;
             repaint();
         }
@@ -1016,124 +1000,134 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		else if (hoverBox == transfertButton) {
 			transfertButtonAction();
 			return;
-		}
-        else if (hoverBox == leftArrow)
-            decrement();
-        else if (hoverBox == rightArrow)
-            increment();
-        else if (hoverBox == reserveSlider) 
-            setAmt(MAX_TICKS*(e.getX()-boxAreaL)/boxAreaW);
-		else if (hoverBox == budgetButton) {
-			budgetButtonAction();
-			return;
-		}
-		else if (hoverBox == governorButton) {
-			govButtonAction();
-			return;
-		}
-		else if (hoverBox == optimalShareButton) {
-			wishShareButtonAction();
-			return;
-		}
-		else if (hoverBox == optimalBudgetButton) {
-			wishBudgetButtonAction();
-			return;
-		}
-		else if (hoverBox == convertButton) {
-			transfertBudgetButtonAction();
-			return;
-		}
-		else if (hoverBox == divertToResearchCheckBox) {
-			divertToResearchCheckBoxAction();
-			return;
-		}
-		else if (hoverBox == oldWayCheckBox) {
-			oldWayCheckBoxAction();
-			return;
-		}
-		else if (hoverBox == governorGrantCheckBox) {
-			governorGrantCheckBoxAction();
-			return;
-		}
-		else if (hoverBox == governorRaiseCheckBox) {
-			governorRaiseCheckBoxAction();
-			return;
-		}
-		else if (hoverBox == canUpdateGrantCheckBox) {
-			canUpdateGrantCheckBoxAction();
-			return;
-		}
-		else if (hoverBox == canUpdateRaiseCheckBox) {
-			canUpdateRaiseCheckBoxAction();
-			return;
-		}
-		else if (hoverBox == redoAllGrantButton) {
-			redoGrantFundsButtonAction();
-			return;
-		}
-		else if (hoverBox == redoAllBudgetButton) {
-			redoAllBudgetButtonAction();
-			return;
-		}
-		else if (hoverBox == redoAllRaiseButton) {
-			redoRaiseFundsButtonAction();
-			return;
-		}
-		else if (hoverBox == clearAllGrantButton) {
-			clearGrantFundsButtonAction();
-			return;
-		}
-		else if (hoverBox == clearAllBudgetButton) {
-			clearAllBudgetButtonAction();
-			return;
-		}
-		else if (hoverBox == clearAllRaiseButton) {
-			clearRaiseFundsButtonAction();
-			return;
-		}
-		else if (hoverBox == listGrantButton) {
-			listGrantFundsButtonAction();
-			return;
-		}
-		else if (hoverBox == listBudgetButton) {
-			listAllBudgetButtonAction();
-			return;
-		}
-		else if (hoverBox == listRaiseButton) {
-			listRaiseFundsButtonAction();
-			return;
-		}
-		else if (hoverBox == listClearGrantButton) {
-			clearListGrantFundsButtonAction();
-			return;
-		}
-		else if (hoverBox == listClearBudgetButton) {
-			clearListAllBudgetButtonAction();
-			return;
-		}
-		else if (hoverBox == listClearRaiseButton) {
-			clearListRaiseFundsButtonAction();
-			return;
+		} else {
+			if (isAdvising() && hoverBox == AdvisorPanel.getButtonBox()) {
+				ADVISOR.advanceMap();
+				repaint();
+				return;
+			}
+			else if (hoverBox == leftArrow)
+				decrement();
+			else if (hoverBox == rightArrow)
+				increment();
+			else if (hoverBox == reserveSlider) 
+				setAmt(MAX_TICKS*(e.getX()-boxAreaL)/boxAreaW);
+			else if (hoverBox == budgetButton) {
+				budgetButtonAction();
+				return;
+			}
+			else if (hoverBox == governorButton) {
+				govButtonAction();
+				return;
+			}
+			else if (hoverBox == optimalShareButton) {
+				wishShareButtonAction();
+				return;
+			}
+			else if (hoverBox == optimalBudgetButton) {
+				wishBudgetButtonAction();
+				return;
+			}
+			else if (hoverBox == convertButton) {
+				transfertBudgetButtonAction();
+				return;
+			}
+			else if (hoverBox == toResearchCheckbox) {
+				toResearchCheckbox.mouseReleased(e, true, true);
+				return;
+			}
+			else if (hoverBox == oldWayCheckbox) {
+				oldWayCheckbox.mouseReleased(e, true, true);
+				return;
+			}
+			else if (hoverBox == governorGrantCheckbox) {
+				governorGrantCheckbox.mouseReleased(e, true, true);
+				return;
+			}
+			else if (hoverBox == governorRaiseCheckbox) {
+				governorRaiseCheckbox.mouseReleased(e, true, true);
+				return;
+			}
+			else if (hoverBox == canUpdateGrantCheckbox) {
+				canUpdateGrantCheckbox.mouseReleased(e, true, true);
+				return;
+			}
+			else if (hoverBox == canUpdateRaiseCheckbox) {
+				canUpdateRaiseCheckbox.mouseReleased(e, true, true);
+				return;
+			}
+			else if (hoverBox == redoAllGrantButton) {
+				redoGrantFundsButtonAction();
+				return;
+			}
+			else if (hoverBox == redoAllBudgetButton) {
+				redoAllBudgetButtonAction();
+				return;
+			}
+			else if (hoverBox == redoAllRaiseButton) {
+				redoRaiseFundsButtonAction();
+				return;
+			}
+			else if (hoverBox == clearAllGrantButton) {
+				clearGrantFundsButtonAction();
+				return;
+			}
+			else if (hoverBox == clearAllBudgetButton) {
+				clearAllBudgetButtonAction();
+				return;
+			}
+			else if (hoverBox == clearAllRaiseButton) {
+				clearRaiseFundsButtonAction();
+				return;
+			}
+			else if (hoverBox == listGrantButton) {
+				listGrantFundsButtonAction();
+				return;
+			}
+			else if (hoverBox == listBudgetButton) {
+				listAllBudgetButtonAction();
+				return;
+			}
+			else if (hoverBox == listRaiseButton) {
+				listRaiseFundsButtonAction();
+				return;
+			}
+			else if (hoverBox == listClearGrantButton) {
+				clearListGrantFundsButtonAction();
+				return;
+			}
+			else if (hoverBox == listClearBudgetButton) {
+				clearListAllBudgetButtonAction();
+				return;
+			}
+			else if (hoverBox == listClearRaiseButton) {
+				clearListRaiseFundsButtonAction();
+				return;
+			}
 		}
 
-        if (amt != prevAmt) {
-            softClick();
-            repaint();
-        }
-        else
-            misClick();
-    }
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        Shape prevHover = hoverBox;
+		if (amt != prevAmt) {
+			softClick();
+			repaint();
+		}
+		else if(showHelp) {
+			softClick();
+			showHelp = false;
+			helpUI = null;
+			repaint();
+		}
+		else
+			misClick();
+	}
+	@Override  public void mouseDragged(MouseEvent e)	{
+		prevHover = hoverBox;
         setHoverSprite(e.getX(),e.getY());
 
         if (prevHover != hoverBox)
             repaint();
     }
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        Shape prevHover = hoverBox;
+	@Override public void mouseMoved(MouseEvent e)	{
+		prevHover = hoverBox;
         setHoverSprite(e.getX(),e.getY());
 
         if (prevHover != hoverBox)
@@ -1151,5 +1145,31 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
             if (amt != prevAmt) 
                 repaint();   
         }
-    }
+		else if (hoverBox == toResearchCheckbox)
+			toResearchCheckbox.mouseWheelMoved(e, true, true);
+		else if (hoverBox == oldWayCheckbox)
+			oldWayCheckbox.mouseWheelMoved(e, true, true);
+		else if (hoverBox == governorGrantCheckbox)
+			governorGrantCheckbox.mouseWheelMoved(e, true, true);
+		else if (hoverBox == governorRaiseCheckbox)
+			governorRaiseCheckbox.mouseWheelMoved(e, true, true);
+		else if (hoverBox == canUpdateGrantCheckbox)
+			canUpdateGrantCheckbox.mouseWheelMoved(e, true, true);
+		else if (hoverBox == canUpdateRaiseCheckbox)
+			canUpdateRaiseCheckbox.mouseWheelMoved(e, true, true);
+	}
+	private final class ActionButton extends AdviceBox {
+		private static final long serialVersionUID = 1L;
+		private final Paint[] paint;
+		private final int posId;
+		private final Color borderColor;
+		private final boolean canBeDisabled;
+		private ActionButton(BasePanel p, String label, Paint[] bg, int pos, Color border, boolean divert)	{
+			super(p, label, true);
+			this.paint = bg;
+			this.posId = pos;
+			borderColor = border;
+			canBeDisabled = divert;
+		}
+	}
 }

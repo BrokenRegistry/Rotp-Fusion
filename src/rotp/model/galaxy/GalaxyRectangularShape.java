@@ -42,7 +42,7 @@ final class GalaxyRectangularShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 					BASE_NAME, 1,
-					new ArrayList<String>(Arrays.asList(
+					new ArrayList<>(Arrays.asList(
 						"SETUP_RECTANGLE_0",
 						"SETUP_RECTANGLE_1",
 						RANDOM_OPTION
@@ -55,7 +55,7 @@ final class GalaxyRectangularShape extends GalaxyShape {
 		if (param2 == null) {
 			param2 = new ShapeOptionList(
 					BASE_NAME, 2,
-					new ArrayList<String>(Arrays.asList(
+					new ArrayList<>(Arrays.asList(
 						"SETUP_VOID_0",
 						"SETUP_VOID_1",
 						"SETUP_VOID_2",
@@ -109,9 +109,9 @@ final class GalaxyRectangularShape extends GalaxyShape {
                 // reset w/h vars since aspect ratio may have changed
                 initWidthHeight();
 
-                float gE = (float) galaxyEdgeBuffer();
-                float gW = (float) galaxyWidthLY();
-                float gH = (float) galaxyHeightLY();
+                float gE = galaxyEdgeBuffer();
+                float gW = galaxyWidthLY();
+                float gH = galaxyHeightLY();
                 
                 block = new Rectangle2D.Float(gE, gE, gW, gH);
                 blockArea = new Area(block);
@@ -124,9 +124,9 @@ final class GalaxyRectangularShape extends GalaxyShape {
                 // reset w/h vars since aspect ratio may have changed
                 initWidthHeight();
 
-                float gE = (float) galaxyEdgeBuffer();
-                float gW = (float) galaxyWidthLY();
-                float gH = (float) galaxyHeightLY();
+                float gE = galaxyEdgeBuffer();
+                float gW = galaxyWidthLY();
+                float gH = galaxyHeightLY();
 
                 block = new Rectangle2D.Float(gE, gE, gW, gH);
                 blockArea = new Area(block);
@@ -143,9 +143,9 @@ final class GalaxyRectangularShape extends GalaxyShape {
                 // reset w/h vars since aspect ratio may have changed
                 initWidthHeight();
 
-                float gE = (float) galaxyEdgeBuffer();
-                float gW = (float) galaxyWidthLY();
-                float gH = (float) galaxyHeightLY();
+                float gE = galaxyEdgeBuffer();
+                float gW = galaxyWidthLY();
+                float gH = galaxyHeightLY();
 
                 block = new Rectangle2D.Float(gE, gE, gW, gH);
                 blockArea = new Area(block);
@@ -166,9 +166,9 @@ final class GalaxyRectangularShape extends GalaxyShape {
                 // reset w/h vars since aspect ratio may have changed
                 initWidthHeight();
 
-                float gE = (float) galaxyEdgeBuffer();
-                float gW = (float) galaxyWidthLY();
-                float gH = (float) galaxyHeightLY();
+                float gE = galaxyEdgeBuffer();
+                float gW = galaxyWidthLY();
+                float gH = galaxyHeightLY();
 
                 block = new Rectangle2D.Float(gE, gE, gW, gH);
                 blockArea = new Area(block);

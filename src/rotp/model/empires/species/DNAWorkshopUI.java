@@ -160,7 +160,7 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 		add(fleetPanel, newGbc(0,0, 0,2, 0,0, NORTHWEST, NONE, new Insets(s15, s25, 0, 0), 0,0));
 
 		if (allowEdit)
-			dnaFactory().setSettingTools((DynOptions) guiOptions().selectedPlayerCustomRace());
+			dnaFactory().setSettingTools(guiOptions().selectedPlayerCustomRace());
 		else
 			species().initCRToShow(dnaFactory());
 		emptyDescription = htmlText("CUSTOM_RACE_EMPTY_DESCRIPTION");
@@ -887,7 +887,7 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 		null, null,					// Font, Preview
 		returnList,					// Alternate return
 		param); 					// help parameter
-		String input = (String) dialog.showDialog(0);
+		String input = dialog.showDialog(0);
 		if (input == null)
 		return initialChoice;
 		return input;

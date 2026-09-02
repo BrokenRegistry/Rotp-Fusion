@@ -41,6 +41,7 @@ import rotp.model.combat.CombatStackColony;
 import rotp.model.combat.CombatStackMissile;
 import rotp.model.combat.CombatStackShip;
 import rotp.model.empires.Empire;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 import rotp.model.ships.ShipComponent;
 import rotp.model.ships.ShipWeaponBeam;
@@ -81,10 +82,10 @@ public final class TechShipWeapon extends Tech {
     private Stroke weaponStroke;
     private long lastSleep;
 
-    public int damageLow()       { return (int) (session().damageBonus() * damageLow); }
-    public int damageHigh()      { return (int) (session().damageBonus() * damageHigh); }
-    public int heavyDamageLow()  { return (int) (session().damageBonus() * heavyDamageLow); }
-    public int heavyDamageHigh() { return (int) (session().damageBonus() * heavyDamageHigh); }
+    public int damageLow()       { return (int) (GameSession.damageBonus() * damageLow); }
+    public int damageHigh()      { return (int) (GameSession.damageBonus() * damageHigh); }
+    public int heavyDamageLow()  { return (int) (GameSession.damageBonus() * heavyDamageLow); }
+    public int heavyDamageHigh() { return (int) (GameSession.damageBonus() * heavyDamageHigh); }
     
     public float comparableDamageValue() {
         return 7.0f* level * 0.5f*(damageLow() + damageHigh()) * attacksPerRound / enemyShieldMod / (size + power);

@@ -21,16 +21,7 @@ import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.List;
-
-import javax.swing.SwingUtilities;
 
 import rotp.model.empires.SystemInfo;
 import rotp.model.empires.SystemView;
@@ -38,119 +29,36 @@ import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
 import rotp.ui.map.IMapHandler;
 
-public class UnexploredSystemPanel extends SystemPanel implements MouseMotionListener, MouseListener, MouseWheelListener {
+final class UnexploredSystemPanel extends SystemPanel {
     private static final long serialVersionUID = 1L;
-    Rectangle flagBox = new Rectangle();
-    Shape hoverBox;
 
-    public UnexploredSystemPanel(SpriteDisplayPanel p) {
+	UnexploredSystemPanel(SpriteDisplayPanel p) {
 		spritePanel(p);
-        init();
-    }
-    private void init() {
-        initModel();
-        addMouseListener(this);
-        addMouseMotionListener(this);
-        addMouseWheelListener(this);
-    }
-    public void releaseObjects() { }
+		initModel();
+	}
+	void releaseObjects() { }
 
 	@Override public IMapHandler mapHandler()	{ return parentSpritePanel().parent; }
-    @Override
-    protected BasePanel topPane() { return null; }
-    @Override
-    protected BasePanel bottomPane() {
-        return new SystemRangePane(this);
-    }
-    @Override
-    protected BasePanel detailPane() {
-        return new UnexploredDetailPane(parentSpritePanel());
-    }
-    public void toggleFlagColor(boolean reverse) {
-        StarSystem sys = parentSpritePanel().systemViewToDisplay();
-        player().sv.toggleFlagColor(sys.id, reverse);
-        parentSpritePanel().repaint();
-    }
-    public void resetFlagColor() {
-        StarSystem sys = parentSpritePanel().systemViewToDisplay();
-        player().sv.resetFlagColor(sys.id);
-        IMapHandler topPanel = parentSpritePanel().parent;
-        topPanel.repaint();
-    }
-    @Override
-    public void mouseDragged(MouseEvent e) { }
-    @Override
-    public void mouseMoved(MouseEvent e) {
-		setModifierKeysState(e);
-        int x = e.getX();
-        int y = e.getY();
-        Shape prevHover = hoverBox;
-        hoverBox = null;
-        if (flagBox.contains(x,y))
-            hoverBox = flagBox;
+	@Override protected BasePanel topPane()		{ return null; }
+	@Override protected BasePanel bottomPane()	{ return new SystemRangePane(this); }
+	@Override protected BasePanel detailPane()	{ return new UnexploredDetailPane(this); }
 
-        if (prevHover != hoverBox)
-            repaint();
-    }
-    @Override
-    public void mouseClicked(MouseEvent e) { }
-    @Override
-    public void mousePressed(MouseEvent e) { }
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        boolean rightClick  = SwingUtilities.isRightMouseButton(e);
-        boolean middleClick = SwingUtilities.isMiddleMouseButton(e);
-       if (hoverBox == flagBox) {
-        	// BR: if 3 buttons:
-        	//   - Middle click = Reset
-        	//   - Right click = Reverse
-            if (middleClick)
-            	resetFlagColor();
-            else if (rightClick)
-            	if (has3Buttons())
-            		toggleFlagColor(true);
-            	else
-            		resetFlagColor();
-            else
-            	toggleFlagColor(false);
-       }
-    }
-	@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
-    @Override
-    public void mouseExited(MouseEvent e) { 
-		setModifierKeysState(e);
-        if (hoverBox != null) {
-            hoverBox = null;
-            repaint();
-        }
-    }
-    @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-		setModifierKeysState(e);
-        if (hoverBox == flagBox) {
-            if (e.getWheelRotation() < 0)
-                toggleFlagColor(true);
-            else
-                toggleFlagColor(false);
-        }
-    }
-    public class UnexploredDetailPane  extends BasePanel {
-        private static final long serialVersionUID = 1L;
-        SpriteDisplayPanel parent;
-        UnexploredDetailPane(SpriteDisplayPanel p) {
-            parent = p;
-            init();
-        }
-        private void init() {
-            setOpaque(true);
-            setBackground(Color.black);
-        }
-        @Override
-        public Color starBackgroundC()  { return SystemPanel.starBackgroundC; }
-        @Override
-        public boolean hasStarBackground()     { return true; }
-        @Override
-        public void paintComponent(Graphics g0) {
+	private final class UnexploredDetailPane extends DetailBasePane {
+		private static final long serialVersionUID = 1L;
+
+		private UnexploredDetailPane(SystemPanel p) {
+			super(p);
+			parent = p;
+			init();
+		}
+		private void init() {
+			setOpaque(true);
+			setBackground(Color.black);
+		}
+		@Override public String textureName()			{ return null; }
+		@Override public Color starBackgroundC()		{ return SystemPanel.starBackgroundC; }
+		@Override public boolean hasStarBackground()	{ return true; }
+		@Override public void paintComponent(Graphics g0) {
             StarSystem sys = parent.systemViewToDisplay();
             if (sys == null)
                 return;
@@ -165,8 +73,7 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
                 g.fillRect(0,0,w,h);
             }
 
-            Graphics2D g2 = (Graphics2D) g;
-            drawStar(g2, sys.starType(), s40, getWidth()/2, getHeight()/2);
+            drawStar(g, sys.starType(), s40, getWidth()/2, getHeight()/2);
 
             int sz = s60;
             int shX = (options().selectedFlagColorCount() == 1)? 0 : s4; // BR: flagColorCount
@@ -194,9 +101,6 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
             Image flagImage = sv.mapFlagImage(sys.id);
             g.drawImage(flagImage, w-sz+s5-shX, 0, sz, sz, null);
             flagBox.setBounds(w-sz+s5-shX,0,sz-s20,sz-s10);         
-
-            //g.setColor(Color.red);
-            //g.fillRect(w-sz+s25,15,sz-s20,sz-s10); 
 
             if (sys.inNebula()) {
                 g.setFont(narrowFont(16));
@@ -236,6 +140,6 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
 					g.drawImage(monsterImage, cx-s60, cy-s60, sz, sz, null);
 				}
 			}
-        }
-    }
+		}
+	}
 }

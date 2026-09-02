@@ -98,8 +98,8 @@ public final class TechStasisField extends Tech {
         int dH = 2*dY;
 
         // calculate proper image rotation for attack frames
-        int rX = (int) (ui.boxW*3/2);
-        int rY = (int) (ui.boxH*3/2);
+        int rX = ui.boxW*3/2;
+        int rY = ui.boxH*3/2;
         float radians = source.rotateRadians(target);
 
         // create attack frames

@@ -32,7 +32,7 @@ import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.MapSprite;
 
-public class MapOverlayJava32Bit extends MapOverlay {
+public final class MapOverlayJava32Bit implements IMapOverlay {
     final Color edgeC = new Color(44,59,30);
     final Color midC = new Color(70,93,48);
     boolean showSprite = true;
@@ -61,13 +61,6 @@ public class MapOverlayJava32Bit extends MapOverlay {
     public void paintOverMap(MainUI parent, GalaxyMapPanel ui, Graphics2D g) {
         if (!showSprite)
             return;
-        int s3 = BasePanel.s3;
-        int s7 = BasePanel.s7;
-        int s10 = BasePanel.s10;
-        int s20 = BasePanel.s20;
-        // int s25 = BasePanel.s25;
-        int s35 = BasePanel.s35;
-
         int x0 = scaled(330);
         int y0 = scaled(165);
         int w0 = scaled(420);
@@ -96,7 +89,7 @@ public class MapOverlayJava32Bit extends MapOverlay {
         int x1a = x1+(w1-sw1)/2;
         drawShadowedString(g, titleStr, 3, x1a, y1+h1-s35, SystemPanel.textShadowC, SystemPanel.whiteText);
 
-        int lineH = BasePanel.s18;
+        int lineH = s18;
         int x2a = x2+s10;
         int y2a = y2+s20;
 
@@ -157,26 +150,26 @@ public class MapOverlayJava32Bit extends MapOverlay {
         }
         return true;
     }
-    class OKButtonSprite extends MapSprite {
+    class OKButtonSprite extends MapSprite { // TODO BR: BUTTON SPRITE
         private LinearGradientPaint background;
         private int mapX, mapY, buttonW, buttonH;
         private MapOverlayJava32Bit parent;
 
-        public int mapX()         { return mapX; }
-        public int mapY()         { return mapY; }
-        public void mapX(int i)   { mapX = i; }
-        public void mapY(int i)   { mapY = i; }
+		@Override public int mapX()			{ return mapX; }
+		@Override public int mapY()			{ return mapY; }
+		@Override public void mapX(int i)	{ mapX = i; }
+		@Override public void mapY(int i)	{ mapY = i; }
 
-        public int width()        { return buttonW; }
-        public int height()       { return buttonH; }
+		@Override public int width()		{ return buttonW; }
+		@Override public int height()		{ return buttonH; }
         private String label()    { return text("MAIN_AUTOSAVE_FAILED_OK"); }
         private Font font()       { return narrowFont(18); }
         public void reset()       { background = null; }
 
         public void init(MapOverlayJava32Bit p, Graphics2D g)  {
             parent = p;
-            buttonW = BasePanel.s20 + g.getFontMetrics(font()).stringWidth(label());
-            buttonH = BasePanel.s30;
+            buttonW = s20 + g.getFontMetrics(font()).stringWidth(label());
+            buttonH = s30;
         }
         @Override
         public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
@@ -198,9 +191,6 @@ public class MapOverlayJava32Bit extends MapOverlay {
                 Color[] colors = {parent.edgeC, parent.midC, parent.edgeC };
                 background = new LinearGradientPaint(start, end, dist, colors);
             }
-            int s3 = BasePanel.s3;
-            int s5 = BasePanel.s5;
-            int s10 = BasePanel.s10;
             g.setColor(SystemPanel.blackText);
             g.fillRoundRect(mapX+s3, mapY+s3, buttonW,buttonH,s10,s10);
             g.setPaint(background);

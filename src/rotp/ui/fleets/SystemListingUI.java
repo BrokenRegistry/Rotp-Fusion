@@ -39,6 +39,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import rotp.model.IAdvice;
 import rotp.model.colony.Colony;
 import rotp.model.empires.SystemView;
 import rotp.model.galaxy.StarSystem;
@@ -46,8 +47,10 @@ import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseTextField;
 import rotp.ui.RotPUI;
+import rotp.ui.game.IAdvisor;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.SystemTransportSprite;
+import rotp.util.AdviceBox;
 import rotp.util.Base;
 import rotp.util.Palette;
 
@@ -1243,36 +1246,52 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         public boolean equalsSprite(Sprite s)  { return this == s; }
         public StarSystem system()             { return null; }
     }
-	private final class HeaderSprite extends Sprite {
+	private final class HeaderSprite extends Sprite implements IAdvice {
 		private Column column;
+		private AdviceBox adviceBox = new AdviceBox();
 		private HeaderSprite(Column col) {
-            column = col;
-        }
-        @Override
-        public boolean equalsSprite(Sprite s)  { return (s instanceof HeaderSprite) && (((HeaderSprite) s).column == column); }
-        @Override
-        public boolean isSelectableAt(int x, int y) {
-            return (x >= column.x)
-                && (x <= (column.x+column.width))
-                && (y <= column.y)
-                && (y >= column.y-rowHeight());
-        }
-        @Override
-        public void enter() {
+			column = col;
+			adviceBox.init(topParent, null, col.headerKey, col.headerKey + IAdvisor.HELP_KEY);
+//			adviceBox.setBounds(column.x-column.width/2-s5, column.y-rowHeight(), s10, rowHeight());
+			adviceBox.setBounds(column.x, column.y-rowHeight(), column.width, rowHeight());
+//			adviceBox.setSelectionBounds(column.x, column.y-rowHeight(), column.width, rowHeight());
+			adviceBox.setOffset(0, s50);
+		}
+		@Override public boolean hovering()	{ return adviceBox.hovering(); }
+		@Override public AdviceBox getBox()	{ return adviceBox; }
+		@Override public boolean equalsSprite(Sprite s)	{
+			return (s instanceof HeaderSprite) && (((HeaderSprite) s).column == column);
+		}
+		@Override public boolean isSelectableAt(int x, int y)	{
+//			boolean oldA = (x >= column.x)
+//				&& (x <= (column.x+column.width))
+//				&& (y <= column.y)
+//				&& (y >= column.y-rowHeight());
+//			boolean newA = adviceBox.isSelectableAt(x, y);
+//			System.out.println("isSelectableAt(int x, int y): " + oldA + " / " + newA);
+			return adviceBox.isSelectableAt(x, y);
+		}
+//        @Override
+//        public boolean isSelectableAt(int x, int y) {
+//            return (x >= column.x)
+//                && (x <= (column.x+column.width))
+//                && (y <= column.y)
+//                && (y >= column.y-rowHeight());
+//        }
+        @Override public void enter()	{
             super.enter();
             if (hoveringHeader != column) {
                 hoveringHeader = column;
                 redrawHeaders = true;
             }
         }
-        @Override
-        public void exit()  {
+        @Override public void exit()	{
             super.exit();
             hoveringHeader = null;
             redrawHeaders = true;
+			adviceBox.hovering(false);
         }
-        @Override
-        public void click() { column.click(); }
+        @Override public void click()	{ column.click(); }
     }
 	private final class RowSprite extends Sprite {
 		private StarSystem system;

@@ -24,30 +24,23 @@ import java.awt.LinearGradientPaint;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
-import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.main.GalaxyMapPanel;
 
 
-public class SpyReportSprite extends MapControlSprite {
+public final class SpyReportSprite extends MapControlSprite {
     static LinearGradientPaint alertBack;
     private int yOrigin, yShift;
     public SpyReportSprite(int xOff, int yOff, int w, int h, int shift) {
-        xOffset = scaled(xOff);
-        yOffset = scaled(yOff);
-        width   = scaled(w);
-        height  = scaled(h);
+		super(xOff, yOff, w, h, "MAIN_HELP_1I");
         yShift  = scaled(yOff-shift);
         yOrigin = yOffset;
     }
-    public void updateLocation() {
-    	if (session().aFewMoreTurns()) {
-    		yOffset = yOrigin;
-    	}
-    	else {
-    		yOffset = yShift;
-    	}
-    }
+	public void updateLocation()	{ yOffset = session().aFewMoreTurns() ? yOrigin : yShift; }
+	@Override public boolean isSelectableAt(GalaxyMapPanel map, int mapX, int mapY) {
+		hovering = map.parent().showSpyReportIcon() && super.isSelectableAt(map, mapX, mapY);
+		return hovering;
+	}
     @Override
     public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
         RotPUI.instance().showSpyReport();
@@ -57,9 +50,9 @@ public class SpyReportSprite extends MapControlSprite {
     public void draw(GalaxyMapPanel map, Graphics2D g2) {
         if (!map.parent().showSpyReportIcon())
             return;
-        
+
         Image img = image("SPY_REPORT");
-     
+
         drawBackground(map,g2,width);
         g2.drawImage(img, startX, startY, width, height,null);
 
@@ -69,6 +62,8 @@ public class SpyReportSprite extends MapControlSprite {
 	public void drawBackground(GalaxyMapPanel map, Graphics2D g2, int w) {
         startX = xOffset >= 0 ? xOffset : map.getWidth()+xOffset;
         startY = yOffset >= 0 ? yOffset : map.getHeight()+yOffset;
+		box.setLocation(startX, startY);
+		box.setSelectionBounds(startX-s3, startY-s3, width+s3+s3, height+s3+s3);
         if (alertBack == null) {
             float[] dist = {0.0f, 1.0f};
             Color topC = new Color(176,108,6);
@@ -78,7 +73,7 @@ public class SpyReportSprite extends MapControlSprite {
             Color[] colors = {topC, botC };
             alertBack = new LinearGradientPaint(start, end, dist, colors);
         }
-        int cnr = BasePanel.s12;
+        int cnr = s12;
         g2.setPaint(alertBack);
         g2.fillRoundRect(startX, startY, w, height, cnr, cnr);
     }

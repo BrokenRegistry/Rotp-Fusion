@@ -19,6 +19,7 @@ import rotp.model.ai.interfaces.Governor;
 import rotp.model.colony.Colony;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.util.Base;
 
 public final class AIGovernor implements Base, Governor {
@@ -67,7 +68,7 @@ public final class AIGovernor implements Base, Governor {
 			session().addSystemToAllocate(sys, text("MAIN_ALLOCATE_TERRAFORM_COMPLETE", name));
 		if (col.research().hasCompletedProject()) 
 			session().addSystemToAllocate(sys, text("MAIN_ALLOCATE_PROJECT_ENDED", name, col.research().completedProject().projectKey()));
-		if (col.hasNewOrders() || (col.allocationRemaining() != 0) || session().awaitingAllocation(sys)) {
+		if (col.hasNewOrders() || (col.allocationRemaining() != 0) || GameSession.awaitingAllocation(sys)) {
 			baseSetAutoPilotAllocations(col);
 			col.validate();
 		}

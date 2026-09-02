@@ -123,12 +123,14 @@ public class WavClip  implements SoundClip, Base {
                 ais = AudioSystem.getAudioInputStream(is);
                 info = new DataLine.Info(Clip.class, ais.getFormat());
                 ais = new FilteredSoundStream(ais, filter);
+				if (clip != null && clip.isOpen())
+					clip.close();
                 clip = (Clip)AudioSystem.getLine(info);
                 clip.open(ais);
                 if (vol < 1 && clip.isControlSupported(MASTER_GAIN)) {
                     log("setting gain for sound: "+filename+"  to "+(int)(gain*100));
-                    FloatControl gain = (FloatControl) clip.getControl(MASTER_GAIN);
-                    gain.setValue(20f * (float) Math.log10(vol));
+                    FloatControl masterGain = (FloatControl) clip.getControl(MASTER_GAIN);
+                    masterGain.setValue(20f * (float) Math.log10(vol));
                 }
                 loaded = true;
             }
@@ -238,7 +240,7 @@ public class WavClip  implements SoundClip, Base {
         position = clip.getFramePosition();
         clip.stop();
     }
-    public static InputStream wavFileStream(String n) {
+   public static InputStream wavFileStream(String n) {
         String fullString = "../rotp/" +n;
 
         try { return new FileInputStream(new File(Rotp.jarPath(), n)); } 

@@ -15,7 +15,6 @@ Disponibilite : Disponible a la librairie
 package rotp.util.sound;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.sound.sampled.AudioInputStream;
 
@@ -99,7 +98,7 @@ class FilteredSoundStream extends AudioInputStream {
 	 * and SoundFilter.
 	 */
 	public FilteredSoundStream(AudioInputStream in, SoundFilter soundFilter) {
-		super((InputStream)in, in.getFormat(), in.getFrameLength());
+		super(in, in.getFormat(), in.getFrameLength());
 		this.soundFilter = soundFilter;
 		remainingSize = REMAINING_SIZE_UNKNOWN;
 	}

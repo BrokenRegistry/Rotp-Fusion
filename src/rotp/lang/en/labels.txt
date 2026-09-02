@@ -457,6 +457,7 @@ CLICK_SKIP                        | Escape or Click to Skip Animation
 CLICK_CONTINUE                    | Click or Escape to Continue...
 CLICK_EXIT                        | Click or Escape to Exit...
 BUTTON_EXIT                       | Exit
+BUTTON_EXIT_HELP				| Click or “<b>Esc</b>” to Exit this panel<br>and return to the galaxy map.
 
 // GAME/SETUP UI
 GAME_TITLE_FRAME				| Remnants of the Precursors
@@ -765,15 +766,24 @@ MOD_MAIN_COL_DIRTY_GOV_UNLOCK_C_1 | <br> One is governed and unlocked --> Ctrl c
 MOD_MAIN_COL_DIRTY_GOV_UNLOCK_C   | <br> %1 are governed and unlocked --> Ctrl click to clean All.
 
 // MAIN UI - Bottom Navigation options
-MAIN_NAVIGATION_GAME              | Game
-MAIN_NAVIGATION_DESIGN            | Designs
-MAIN_NAVIGATION_FLEETS            | Fleets
-MAIN_NAVIGATION_SYSTEMS           | Systems
-MAIN_NAVIGATION_RACES             | Empires
-MAIN_NAVIGATION_COLONIES          | Colonies
-MAIN_NAVIGATION_TECH              | Tech
-MAIN_NAVIGATION_NEXT_TURN         | Next Turn
-MAIN_NAVIGATION_NEXT_YEAR         | Next Year
+MAIN_NAVIGATION_GAME			| Game
+MAIN_NAVIGATION_GAME_HELP		| →MAIN_HELP_3A←<p><center>Keyboard shortcut: "G"</center></p>
+MAIN_NAVIGATION_DESIGN			| Designs
+MAIN_NAVIGATION_DESIGN_HELP		| →MAIN_HELP_3D←<p><center>Keyboard shortcut: "D"</center></p>
+MAIN_NAVIGATION_FLEETS			| Fleets
+MAIN_NAVIGATION_FLEETS_HELP		| →MAIN_HELP_3C←<p><center>Keyboard shortcut: "F"</center></p>
+MAIN_NAVIGATION_SYSTEMS			| Systems
+MAIN_NAVIGATION_SYSTEMS_HELP	| →MAIN_HELP_3B←<p><center>Keyboard shortcut: "S"</center></p>
+MAIN_NAVIGATION_RACES			| Empires
+MAIN_NAVIGATION_RACES_HELP		| →MAIN_HELP_3E←<p><center>Keyboard shortcut: "E"</center></p>
+MAIN_NAVIGATION_COLONIES		| Colonies
+MAIN_NAVIGATION_COLONIES_HELP	| →MAIN_HELP_3F←<p><center>Keyboard shortcut: "C"</center></p>
+MAIN_NAVIGATION_TECH			| Tech
+MAIN_NAVIGATION_TECH_HELP		| →MAIN_HELP_3G←<p><center>Keyboard shortcut: "T"</center></p>
+MAIN_NAVIGATION_NEXT_TURN		| Next Turn
+MAIN_NAVIGATION_NEXT_TURN_HELP	| →MAIN_HELP_3H←<p><center>Keyboard shortcut: "N"</center></p>
+MAIN_NAVIGATION_NEXT_YEAR		| Next Year
+MAIN_NAVIGATION_NEXT_YEAR_HELP	| →MAIN_HELP_3H←<p><center>Keyboard shortcut: "N"</center></p>
 MAIN_NAVIGATION_AUTO_RUN          | !!! Auto Run !!!
 MAIN_NAVIGATION_AUTO_RUN_PAUSE    | Pause Auto Run
 MAIN_NAVIGATION_AUTO_RUN_AI       | Set AI for Auto Run
@@ -781,8 +791,10 @@ MAIN_NAVIGATION_AUTO_RUN_LOCKED   | !!! Auto Run (L%1 T) !!!
 MAIN_NAVIGATION_NEXT_TURN_LOCKED  | Next Turn (L%1 T)
 MAIN_NAVIGATION_NEXT_YEAR_LOCKED  | Next Year (L%1 T)
 MAIN_NAVIGATION_LOCKED            | Ironman Lock (L%1 T)
-MAIN_YEAR_DISPLAY                 | Year  %1
-MAIN_TURN_DISPLAY                 | Turn  %1
+MAIN_YEAR_DISPLAY				| Year  %1
+MAIN_YEAR_DISPLAY_HELP			| Displays the current year.<br>And if applicable, and if the player has requested it, the number of years remaining until the next election.
+MAIN_TURN_DISPLAY				| Turn  %1
+MAIN_TURN_DISPLAY_HELP			| Displays the current game round number.<br>If applicable, and if the player has requested it, the number of rounds remaining until the next election.
 MAIN_SPY_REPORT                   | Spy
 MAIN_TECH_NONE                    | No Research
 MAIN_TECH_COMPLETED               | Research Completed
@@ -797,18 +809,17 @@ MAIN_HELP_MOD                     | Mod Help - "O" to bring the Game options Men
 MAIN_HELP_MOD_1A                  | To enable or disable the Governor for this star system.
 MAIN_HELP_MOD_1B                  | To access Governor's Options Menu.
 MAIN_HELP_MOD_1F                  | Turn alerts may appear there: Right click on them to center the map on the system. Left click to show the next alert.
-//MAIN_HELP_MOD_1I                  | To access "→SETUP_BUTTON_MERGED_DYNAMIC_SETTINGS←" Panel.<br>Useful for remembering our configuration choices.<br>Can be edited... But some options maybe shouldn't be!
 MAIN_HELP_MOD_1I                  | →SETTINGS_MOD_SETTINGS_OPTIONS_UI_DESC←
 MAIN_HELP_MOD_1J                  | →SETTINGS_MOD_RULES_OPTIONS_UI_DESC←
-MAIN_HELP_MOD_1K                  | Colony Ecology Report.<br>No key modifier: Packages cleaning.<br>Shift: Minimal group cleaning.<br>Ctrl: Clean everything
+MAIN_HELP_MOD_1K		| <h3>Colony Cleanliness Report</h3>The icon turns <font color="#FF0000">red</font> when one or more of your colonies do not allocate enough credit to their cleaning.<br>Possible Actions: <ul><li>“Left Click” To clean only unlocked colonies.</li> <li>“Right Click” or “Ctrl + Click » To also include locked colonies.</li></ul>
 MAIN_HELP_MOD_1L                  | You are continuing a terminated game. Click to stop and see the Game-Over panel again.<br>(After triggering "Next-Turn")
 
 MAIN_HELP_1A                      | Each star system divides its production into five areas. Grayed bars indicate that the production bar has been locked and will not change. Click on the name to lock/unlock.
-MAIN_HELP_1B                      | Shipyard - constructs the selected ship design. Large ships may take multiple turns.
-MAIN_HELP_1C                      | Defenses - builds and upgrades missile bases up to the specified limit and planetary shields when available.
-MAIN_HELP_1D                      | Industry - builds factories which increase overall colony production.
-MAIN_HELP_1E                      | Ecology  - cleans industrial waste, terraforms the planet, and can increase population growth.
-MAIN_HELP_1F                      | Technology - adds to the empire's overall research.
+MAIN_HELP_1B			| <b><u>Shipyard</u></b> - constructs the selected ship design. Large ships may take multiple turns.
+MAIN_HELP_1C			| <b><u>Defenses</u></b> - builds and upgrades missile bases up to the specified limit and planetary shields when available.
+MAIN_HELP_1D 			| <b><u>Industry</u></b> - builds factories which increase overall colony production.
+MAIN_HELP_1E			| <b><u>Ecology</u></b>  - cleans industrial waste, terraforms the planet, and can increase population growth.
+MAIN_HELP_1F			| <b><u>Technology</u></b> - adds to the empire's overall research.
 MAIN_HELP_1G                      | Ratio bars show the breakdown of a planet's production.  The spending for each bar can be adjusted by mouse wheel, clicking within the bar, or clicking on the left/right arrows for each bar.
 MAIN_HELP_1H                      | The expected result of spending for an area is displayed to the right of each bar. Overflow spending will be sent to the empire's treasury reserve.<br>Click to spend enough to finish current task.
 MAIN_HELP_1I                      | To access spy Reports. (If any)
@@ -831,28 +842,28 @@ MAIN_HELP_2K_M3                   | Left Button = Forward / Right Button = Backw
 MAIN_HELP_2K_2F_HOLD              | ("Ctrl" for Right flags, "Shift" for bottom flags)
 MAIN_HELP_2L                      | The amount of reserve stored in the empire treasury.
 MAIN_HELP_2M                      | The current state of research for each of the six technology areas.
-MAIN_HELP_3A                      | Game - returns to the opening menu. Allows you to adjust settings or save, load, and start games.
-MAIN_HELP_3B                      | Systems - galaxy map showing the status of systems in the galaxy by different criteria.
-MAIN_HELP_3C                      | Fleets - allows large-scale control of your fleets and shipbuilding within your empire.
-MAIN_HELP_3D                      | Designs - create ship designs for your fleet using your latest technology. Unwanted designs can be scrapped.
-MAIN_HELP_3E                      | Empires - detailed information and diplomatic options for any alien empires you have encountered.
-MAIN_HELP_3F                      | Colonies - detailed and sortable listing of your colonies. Also provides empire income and costs.
-MAIN_HELP_3G                      | Tech - shows available technologies. Allows you to focus or balance research on up to six technologies.
-MAIN_HELP_3H                      | Next Year - advances the game to the next year.
-MAIN_HELP_3I                      | Current Turn - displays the game's current turn or your empire's current year. Click to toggle.
-MAIN_HELP_3J                      | Map controls - click to cycle through various display settings for the galaxy map.
-MAIN_HELP_3K                      | →PLANETS_HELP_5G←<br><br>Related to the “→PLANETS_VIEW_BUDGET←” tab of the “→MAIN_NAVIGATION_COLONIES←” panel.
+MAIN_HELP_3A			| <b><u>Game</u></b> - returns to the opening menu. Allows you to adjust settings or save, load, and start games.
+MAIN_HELP_3B			| <b><u>Systems</u></b> - galaxy map showing the status of systems in the galaxy by different criteria.
+MAIN_HELP_3C			| <b><u>Fleets</u></b> - allows large-scale control of your fleets and shipbuilding within your empire.
+MAIN_HELP_3D			| <b><u>Designs</u></b> - create ship designs for your fleet using your latest technology. Unwanted designs can be scrapped.
+MAIN_HELP_3E			| <b><u>Empires</u></b> - detailed information and diplomatic options for any alien empires you have encountered.
+MAIN_HELP_3F			| <b><u>Colonies</u></b> - detailed and sortable listing of your colonies. Also provides empire income and costs.
+MAIN_HELP_3G			| <b><u>Tech</u></b> - shows available technologies. Allows you to focus or balance research on up to six technologies.
+MAIN_HELP_3H			| <b><u>Next Year</u></b> - advances the game to the next year.
+MAIN_HELP_3I			| <b><u>Current Turn</u></b> - displays the game's current turn or your empire's current year. Click to toggle.
+MAIN_HELP_3J			| <b><u>Map controls</u></b> - click to cycle through various display settings for the galaxy map.
+MAIN_HELP_3K			| →PLANETS_HELP_5G←<br><br>Related to the “→PLANETS_VIEW_BUDGET←” tab of the “→MAIN_NAVIGATION_COLONIES←” panel.
 // Smart-Max Help
-MAIN_HELP_4A                      | Min/Max assistants will always keeps ECO clean.<br>- Smooth Min/Max: is equivalent to clicking Up/Down arrow till reaching the target. Liberated BC will be smartly redistributed. (Following the "Refresh" method)<br>- Smart Min/Max: (Shift-Click) will clear the unlocked spending, set the Min/Max allocation, clean ECO, then smartly redistribute the remaining BC.<br>- Refresh: (Ctrl-Click) will clear the unlocked spending then smartly redistribute the available BC in accordance with your prioritization, in the sequence: {ECOLOGY, INDUSTRY, SHIP, DEFENSE, RESEARCH}
-MAIN_HELP_4B                      | Shipyard:<br> Left-Click: Min Allocation Needed up to build limit.<br> Right-Click: Max Allocation Available.
-MAIN_HELP_4C                      | Defenses:<br> Left-Click: Min Allocation Needed up to get bases limit.<br> Right-Click: Max Allocation Available. <br>Mid-Click: Min Allocation Needed for the shield.
-MAIN_HELP_4D                      | Industry:<br> Left-Click: Min Allocation Needed to finalize factories.<br> Right-Click: Max Allocation Available. <br>Mid-Click: Min Allocation Needed to follow population growth.
-MAIN_HELP_4E                      | Ecology:<br> Left-Click: Min Allocation Needed to finalize Growth.<br> Right-Click: Min Allocation Needed to finalize terraform. <br>Mid-Click: Min Allocation Needed to stay clean.
-MAIN_HELP_4F                      | Technology:<br> Left-Click: Max Allocation Available.<br> Right-Click: 0 Allocation --> full reallocation.
-MAIN_HELP_4G                      | Click here to lock / Unlock the spending. (Greyed when locked)<br>Ctrl-Click to cancel or restore colony orders. (The ones you can gives after a Technology update)<br> These fields are prioritized during the "Next Turn" process.<br> An option is available to show them in blue... or not.
+MAIN_HELP_4A			| Min/Max assistants will always keeps ECO clean.<br>- Smooth Min/Max: is equivalent to clicking Up/Down arrow till reaching the target. Liberated BC will be smartly redistributed. (Following the "Refresh" method)<br>- Smart Min/Max: (Shift-Click) will clear the unlocked spending, set the Min/Max allocation, clean ECO, then smartly redistribute the remaining BC.<br>- Refresh: (Ctrl-Click) will clear the unlocked spending then smartly redistribute the available BC in accordance with your prioritization, in the sequence: {ECOLOGY, INDUSTRY, SHIP, DEFENSE, RESEARCH}
+MAIN_HELP_4B			| <b><u>Shipyard:</u></b><br> Left-Click: Min Allocation Needed up to build limit.<br> Right-Click: Max Allocation Available.
+MAIN_HELP_4C			| <b><u>Defenses:</u></b><br> Left-Click: Min Allocation Needed up to get bases limit.<br> Right-Click: Max Allocation Available. <br>Mid-Click: Min Allocation Needed for the shield.
+MAIN_HELP_4D			| <b><u>Industry:</u></b><br> Left-Click: Min Allocation Needed to finalize factories.<br> Right-Click: Max Allocation Available. <br>Mid-Click: Min Allocation Needed to follow population growth.
+MAIN_HELP_4E 			| <b><u>Ecology:</u></b><br> Left-Click: Min Allocation Needed to finalize Growth.<br> Right-Click: Min Allocation Needed to finalize terraform. <br>Mid-Click: Min Allocation Needed to stay clean.
+MAIN_HELP_4F			 | <b><u>Technology:</u></b><br> Left-Click: Max Allocation Available.<br> Right-Click: 0 Allocation --> full reallocation.
+MAIN_HELP_4G			| Click here to lock / Unlock the spending. (Greyed when locked)<br>Ctrl-Click to cancel or restore colony orders. (The ones you can gives after a Technology update)<br> These fields are prioritized during the "Next Turn" process.<br> An option is available to show them in blue... or not.
 
 MAIN_HELP_5A                      | Options to direct the governor's tasks.<br>When enabled, the governor will change the priorities of this colony, and will do his best to carry out your orders.
-MAIN_HELP_5B                      | Select these fields, blue when enabled, to define an emergency.<br>Once the emergency is resolved, the governor will deactivate the selection.
+MAIN_HELP_5B                      | Select these fields, magenta when enabled, to define an emergency.<br>Once the emergency is resolved, the governor will deactivate the selection.
 MAIN_HELP_5C                      | It is urgent to increase our population.<br>To counter an invasion, or to increase the number of votes in the upcoming council.
 MAIN_HELP_5D                      | It is urgent to produce factories.<br>(I plan to send you population as reinforcements.)
 MAIN_HELP_5E                      | It is urgent to update our protective shields...<br>(Our neighbors are a little aggressive)
@@ -1065,8 +1076,104 @@ MAIN_COLONY_ABANDON_LABEL         | Abandon
 MAIN_COLONY_SHIP_SCRAPPED         | Scrapped
 MAIN_COLONY_NO_SHIELD             | Nebula
 
-ON_DEMAND_ADVISOR_DEFAULT_HELP		| Hover the mouse over the item for which you are requesting help.
-ON_DEMAND_ADVISOR_BUTTON_OK			| Dismiss
+// On Demand Advisor
+//
+SETUP_HELP_SHOW_ADVISOR_DESC	| Pressing “F1” will activate the Advisor instead of displaying all the lille help bubles.
+SETUP_HELP_SHOW_ADVISOR			| “F1” show Advisor: %1
+SETUP_ADVISOR_FONT_SIZE_DESC	| Maximal Advisor font size.
+SETUP_ADVISOR_FONT_SIZE			| Advisor Font Size: %1
+SETUP_ADVISOR_ICON_SIZE_DESC	| Relative size of the advisor avatar
+SETUP_ADVISOR_ICON_SIZE			| Advisor Avatar Size: %1%
+
+ON_DEMAND_ADVISOR_DEFAULT_HELP	| Hello, I will try to help you to the best of my knowledge.<br>However, my database is still far from complete.<br>Hover the mouse over the item for which you are requesting help.<br>Press “Ctrl - Alt” to temporarily hide me.
+ON_DEMAND_ADVISOR_NO_HELP_NOKEY	| Sorry, no help is currently available for this item.
+ON_DEMAND_ADVISOR_NO_HELP		| →ON_DEMAND_ADVISOR_NO_HELP_NOKEY←<br>However, it has already been assigned a key: %1
+ON_DEMAND_ADVISOR_KNOWN_NO_HELP	| →ON_DEMAND_ADVISOR_NO_HELP_NOKEY←<br>However, the object is identified: %1
+ON_DEMAND_ADVISOR_BUTTON_OK		| X
+
+MAIN_TOP_LEFT_STAR_HELP			| <h3>Star systems</h3>Star systems are indicated by the color of their star. A colored arc over a star indicates a shielded colony. At higher zoom levels, the map will display each faction's species and the names of nebulae (these begin as numbers, but once a colony is settled inside the nebula, the nebula takes its name). A system's name is color-coded by the controlling player. A system with a white name is uncolonized. In the default map view, a colony has a shaded radius of one light year in the color of its controlling player, which is also the clickable area to select that system. A slightly lighter shaded radius with a bold colored line along the edge indicates the range of your ships based on the highest level of fuel cells you've researched in Propulsion technology. The colored line outside the shaded radius indicates the range of ships equipped with Reserve Fuel Tanks.
+MAIN_TOP_LEFT_FLEET_HELP		| <h3>Space Fleets</h3>Military fleets are represented by triangles with three little exhaust trails behind them. The size of the triangle varies based on the largest hull size in the fleet.<br>Unarmed fleets, such as scouts and colony ships, are represented by smaller triangles without exhaust trails. <br>Transport fleets are represented by rectangles.<br>A friendly fleet's destination is indicated by a dotted line.<br>An enemy fleet's destination, which will be visible once you've researched Improved Space Scanners, is indicated by a red or yellow line.
+MAIN_TOP_LEFT_HELP				| →MAIN_TOP_LEFT_STAR_HELP←<hr>→MAIN_TOP_LEFT_FLEET_HELP←
+
+MAIN_ZOOM_IN_SPRITE_HELP		| Zoom in on the map.<br>Also associated with the “+” key,<br>and the mouse wheel.
+MAIN_ZOOM_OUT_SPRITE_HELP		| Zoom out on the map.<br>Also combined with the “-” key,<br>and the mouse wheel.<br>“Alt -” will display the entire map.
+MAIN_ALERT_NOTIF_SPRITE_HELP	| <h3>Alert notification</h3><hr>Here you will find the list of notable events that occurred during the previous round.<br>Possible actions:<dl><dt>“Right Click”</dt><dd>To center the map on the mentioned system.</dd> <dt>“Left Click”</dt><dd>To display the next alert.</dd></dl>
+
+ALLOCATION_HEADER_HELP			| <h2><center>Resource Allocation Panel</center></h2> Each star system divides its production into five areas.<br> Grayed bars indicate that the production bar has been locked and will not change.<br> Click on the label to lock/unlock.
+
+ALLOCATION_SHIPYARD_HELP		| <h3>Shipyard</h3> Constructs the selected ship design.<br>Large ships may take multiple turns.
+ALLOCATION_DEFENSES_HELP		| <h3>Defenses</h3> Builds and upgrades missile bases up to the specified limit and planetary shields when available.<br>Shields will be built or upgraded before the missile bases.
+ALLOCATION_INDUSTRY_HELP		| <h3>Industry</h3> Builds factories, which increase overall colony production.
+ALLOCATION_ECOLOGY_HELP			| <h3>Ecology</h3>  Cleans industrial waste, terraforms the planet, and can increase population growth.
+ALLOCATION_RESEARCH_HELP		| <h3>Technology</h3> Adds to the empire's overall research.
+
+ALLOCATION_LABEL_HELP			| <h3>Category label:</h3>Click here to lock / Unlock the spending. <small><i>(Greyed when locked)</i></small><br>Ctrl-Click to cancel or restore colony orders. <small><i>(The ones you can gives after a Technology update)</i></small><br> These fields are prioritized during the "<b>Next Turn</b>" process.<br> An option is available to show them in blue... or not.
+ALLOCATION_LABEL_0_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
+ALLOCATION_LABEL_1_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
+ALLOCATION_LABEL_2_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_INDUSTRY_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
+ALLOCATION_LABEL_3_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_ECOLOGY_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
+ALLOCATION_LABEL_4_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
+
+ALLOCATION_SLIDER_HELP			| <h3>Ratio bars:</h3> They show the breakdown of a planet's production.<br>The spending for each bar can be adjusted:<ul><li>With the mouse wheel.</li><li>Clicking within the bar.</li><li>Clicking on the left/right arrows for each bar.</li></ul>
+ALLOCATION_SLIDER_0_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_1_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_2_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_INDUSTRY_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_3_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_ECOLOGY_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_4_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+
+ALLOCATION_RESULT_MIN_MAX_HELP	| <hr><h3>Assistant Key Modifiers:</h3><dl><dt><i>No key Modifiers</i>  ⇒  <b>Smooth Min/Max</b></dt><dd>This is equivalent to clicking Up/Down arrow till reaching the target. Liberated BC will be smartly redistributed. (Following the "Refresh" method)</dd> <dt><i>Shift-Click</i>  ⇒  <b>Smart Min/Max</b></dt><dd>This will clear the unlocked spending, set the Min/Max allocation, clean <b>ECO</b>, then smartly redistribute the remaining BC.</dd><dt><i>Ctrl-Click</i>  ⇒  <b>Refresh</b></dt> <dd>This will clear the unlocked spending then smartly redistribute the available BC in accordance with your prioritization, in the sequence: { Ecology, Industry, Ship, Defense, Research }</dd>
+
+ALLOCATION_RESULT_HELP			| <h3>Expected result:</h3> Overflow spending will be sent to the empire's treasury reserve or to the research, following your request.<br>Click to spend enough to finish current task.<hr><h3>Allocation Assistants</h3> Min/Max assistants will always keeps <b>ECO</b> clean.
+
+ALLOCATION_RESULT_0_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_RESULT_HELP← <ul><li>Left-Click: Min Allocation Needed up to build limit.</li><li>Right-Click: Max Allocation Available.</li></ul>→ALLOCATION_RESULT_MIN_MAX_HELP←
+
+ALLOCATION_RESULT_1_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←<br><hr> →ALLOCATION_RESULT_HELP←<br><ul><li>Left-Click: Min Allocation Needed up to get bases limit.</li><li>Right-Click: Max Allocation Available.</li><li>Mid-Click: Min Allocation Needed for the shield.</li></ul>→ALLOCATION_RESULT_MIN_MAX_HELP←
+
+ALLOCATION_RESULT_2_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_INDUSTRY_HELP←<br><hr> →ALLOCATION_RESULT_HELP←<br><ul><li>Left-Click: Min Allocation Needed to finalize Growth.</li><li>Right-Click: Max Allocation Available.</li><li>Mid-Click: Min Allocation Needed to follow population growth.</li></ul>→ALLOCATION_RESULT_MIN_MAX_HELP←
+
+ALLOCATION_RESULT_3_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_ECOLOGY_HELP←<br><hr> →ALLOCATION_RESULT_HELP←<br><ul><li>Left-Click: Min Allocation Needed to finalize Growth.</li><li>Right-Click: Min Allocation Needed to finalize terraform.</li><li>Mid-Click: Min Allocation Needed to stay clean.</li></ul>→ALLOCATION_RESULT_MIN_MAX_HELP←
+
+ALLOCATION_RESULT_4_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←<br><hr> →ALLOCATION_RESULT_HELP←<br><ul><li>Left-Click: Max Allocation Available.</li><li>Right-Click: 0 Allocation --> full reallocation.</li></ul>→ALLOCATION_RESULT_MIN_MAX_HELP←
+
+INFO_PANEL_URGENCY_HELP			| <h3>Instruction for the "Manageable Governor"</h3>A right-click will notify the "Manageable Governor" to prioritize urgent tasks for this colony.<br>Urgent tasks will then appear in magenta.<br>Once the emergency is resolved, the Governor will disable the selection.
+
+INFO_PANEL_POPULATION_HELP		| Current and maximum planet population, press "Shift" to display the active population. (Excluding outgoing transports) <hr>→INFO_PANEL_URGENCY_HELP←<hr>It is urgent to increase our population.<br>To counter an invasion, or to increase the number of votes in the upcoming council.
+
+INFO_PANEL_FACTORIES_HELP		| Current and maximum factories allowed. Maximum factories based on population and robotic controls technology. <hr>→INFO_PANEL_URGENCY_HELP←<hr>It is urgent to produce factories.<br>(Don't worry about growth,I plan to send you population as reinforcements.)
+
+INFO_PANEL_SHIELD_HELP			| Planetary shield level for the colony.<br>Shields cannot be constructed on planets within a nebula. <hr>→INFO_PANEL_URGENCY_HELP←<hr>It is urgent to update our protective shields...<br>(Our neighbors are a little aggressive)
+
+INFO_PANEL_BASES_HELP			| Number of missile bases and the maximum desired for this planet.<br>Click or use the mouse wheel to change the maximum.<br>Note: Base construction can only begin if the shields are completed and up to date.<hr>→INFO_PANEL_URGENCY_HELP←<hr>It is urgent to finalize our missile bases.<br>(Enemy ships are approaching)
+
+INFO_PANEL_PRODUCTION_HELP		| Actual production adjusted for empire-wide trade income, spy and security costs, as well as missile base and ship maintenance, followed by (Total planetary production from industry and population).<br>Press "Shift" to display production per worker, without factory. followed by (Production by factory, after cleaning pollution)<hr>→INFO_PANEL_URGENCY_HELP←<hr>Do not let yourself be distracted by anything other than building and populating this colony.
+
+DETAIL_PANEL_FLAGS_HELP			| Place up to 4 flags on the system to help it stand out on the galaxy map.<br>Left Button = Forward<br>Right Button = Backward<br>Middle Button = Reset<br>"Home" = Auto-Flag.<br>"Ctrl" for Right flags<br>"Shift" for bottom flags.
+
+DETAIL_PANEL_NAME_EMPIRE_HELP	| Empire owning the colony.<br>Click to access the diplomatic panel.
+
+MAIN_PANEL_HELP_ICON_HELP		| →MAIN_HELP_ALL←<hr>→MAIN_HELP_HK←
+
+MAIN_AUTO_PILOT_HELP			| <h3>Automatic Pilot</h3>By default, an automatic pilot will ensure that your colonies remain clean, and that the instructions given during technological discoveries are applied.
+MAIN_GOVERNOR_HELP				| <h3>Planetary Governor</h3>This governor manages planet spending to:<ul> <li>Balance spending between Industry and Ecology to maximize growth.</li> <li>Build all terraforming and factory upgrades when available.</li> <li>Build and upgrade defences when needed.</li><li>Build a stargate if technology is available.</li> <li>If all above have been built, research.</li></ul>It can be toggled on or off for each planet. You can basically enable it on any planet not building ships and leave it untouched for most of the game. With new tech discoveries it will readjust the sliders automatically. This cuts down the amount of micromanagement needed drastically.<br>In addition, Governor can:<ul> <li>Auto-transport population.</li> <li>Auto-scout and Auto-colonize.</li> <li>Very simple auto-attack.</li> </ul>
+MAIN_GOVERNOR_ADVANCED_HELP		| <h3>Special Instructions</h3>The governors, although very talented, do not make any strategic decisions, because this task falls to the player.<br>In exceptional situations, you can deactivate them and regain control of colonies with special needs.<br> You can also select flexible governors. You can then set very specific objectives for them. Once the goals are achieved, they will return to the usual routine.
+
+MAIN_GOVERNOR_TOP_LEFT_HELP		| →MAIN_AUTO_PILOT_HELP←<hr>→MAIN_GOVERNOR_HELP←<hr>→MAIN_GOVERNOR_ADVANCED_HELP←
+MAIN_GOVERNOR_TOGGLE_HELP		| To activate or deactivate the governor of this colony.<br>A basic autopilot will always keep this colony clean.
+
+ALLOCATE_SUBSIDIES_HEAD			| <h2>Instructions for allocating subsidies</h2>
+ALLOCATE_SUBSIDIES_DEFAULT		| <b>Metal color</b><br>Follow global instructions.
+ALLOCATE_SUBSIDIES_ALLOCATE		| <b>Gold color</b><br>Allocate subsidies.
+ALLOCATE_SUBSIDIES_UNLIMITED	| <b>Uncircled</b><br>Active until the player deactivates it.
+ALLOCATE_SUBSIDIES_DRAW			| <b>Red arc (right click)</b><br>Can draw from the player's reserve.
+ALLOCATE_SUBSIDIES_GRANTED		| <b>Green Dot</b><br>The subsidies have been granted.
+ALLOCATE_SUBSIDIES_URGENCY		| <b>Magenta circle</b><br>Active while an urgency is activated.
+ALLOCATE_SUBSIDIES_GROWING		| <b>Green circle</b><br>Active as long as the colony has not reached the development limit.
+ALLOCATE_SUBSIDIES_SHIPYARD		| <b>Gray circle</b><br>Active as long as the required number of ships is not reached.
+ALLOCATE_SUBSIDIES_ORDER		| <b>Blue circle</b><br>Active as long as a blue priority is present. (With the exception of research and shipyard, as they do not deactivate automatically)
+
+PLANET_RESERVE_UI_HELP			| →PLANETS_HELP_1H←
+PLANET_SPENDING_COST_UI_HELP	| →PLANETS_HELP_1G←
+PLANET_TOTALINCOME_UI_HELP		| →PLANETS_HELP_1F←
 
 // modnar: keep generic advisor text for new Races
 // Advisor text
@@ -1223,32 +1330,65 @@ PLANETS_RES_FULL_DEF_FACT         | Factories: %1
 PLANETS_BUTTON_TRANSFER           | TRANSFER
 PLANETS_BUTTON_EXIT               | EXIT
 
-PLANETS_BUTTON_DO_CLEAR_DESC	| You can ask the governor to cancel or redo all or part of the budget,<br>for all or selected colonies.
-PLANETS_BUTTON_ALL_DESC			| For all colonies:
-PLANETS_BUTTON_LIST_DESC		| For the selected colonies:
-PLANETS_BUTTON_ONE_DESC			| For the selected colony:
-PLANETS_BUTTON_ALL_CLEAR_DESC	| You can ask the governor to cancel all or part of the budget of all colonies.
-PLANETS_BUTTON_ALL_CLEAR_GRANT	| Clear Grant
-PLANETS_BUTTON_ALL_CLEAR_BOTH	| Clear Both
-PLANETS_BUTTON_ALL_CLEAR_RAISE	| Clear Raising
-PLANETS_BUTTON_ALL_DO_DESC		| You can ask the governor to rebuild all or part of the budget.
-PLANETS_BUTTON_ALL_DO_GRANT		| Redo Grant
-PLANETS_BUTTON_ALL_DO_BOTH		| Redo Both
-PLANETS_BUTTON_ALL_DO_RAISE		| Redo Raising
-PLANETS_BUTTON_LIST_CLEAR_DESC	| You can ask the governor to cancel all or part of the budget of these colonies.
-PLANETS_BUTTON_LIST_CLEAR_GRANT	| Clear Grant
-PLANETS_BUTTON_LIST_CLEAR_BOTH	| Clear Both
-PLANETS_BUTTON_LIST_CLEAR_RAISE	| Clear Raising
-PLANETS_BUTTON_LIST_DO_DESC		| You can ask the governor to rebuild all or part of the budget, using these colonies.
-PLANETS_BUTTON_LIST_DO_GRANT	| Grant Funds
-PLANETS_BUTTON_LIST_DO_BOTH		| Grant & Raise
-PLANETS_BUTTON_LIST_DO_RAISE	| Raise Funds
+PLANETS_BUTTON_DO_CLEAR_DESC		| You can ask the in office governors to cancel or redo<br>all or part of the budget, for all or selected colonies.
+PLANETS_BUTTON_ALL_DESC				| For all colonies:
+PLANETS_BUTTON_ALL_HELP				| Important changes may occur during a game turn, and the latest instructions followed by the governors may no longer be optimal...<br>This interface allows you to reset all or part of the budget.<br><small><i><b><center>(All colonies with a governor in office will be affected)</center><br></b></i></small>
+PLANETS_BUTTON_LIST_DESC			| For the selected colonies:
+PLANETS_BUTTON_ONE_DESC				| For the selected colony:
+PLANETS_BUTTON_LIST_HELP			| Important changes may occur during a game turn, and the latest instructions followed by the governors may no longer be optimal...<br>This series of buttons allows you to reset all or part of the budget of the selected colonies<br><small><i><b><center>(Only selected colonies with a governor in office will be affected.)</center><br></b></i></small>
+
+PLANETS_BUTTON_ALL_CLEAR_DESC		| You can ask the governor to cancel all or part of the budget of all colonies.
+PLANETS_BUTTON_ALL_CLEAR_GRANT		| Clear Grant
+PLANETS_BUTTON_ALL_CLEAR_GRANT_HELP	| →PLANETS_BUTTON_ALL_HELP←<hr><center>Click on this button to remove all subsidies.</center>
+PLANETS_BUTTON_ALL_CLEAR_BOTH		| Clear Both
+PLANETS_BUTTON_ALL_CLEAR_BOTH_HELP	| →PLANETS_BUTTON_ALL_HELP←<hr><center>Click on this button to remove all subsidies and contributions.</center>
+PLANETS_BUTTON_ALL_CLEAR_RAISE		| Clear Raising
+PLANETS_BUTTON_ALL_CLEAR_RAISE_HELP	| →PLANETS_BUTTON_ALL_HELP←<hr><center>Click on this button to delete all contributions sent to the empire.</center>
+
+PLANETS_BUTTON_ALL_DO_DESC			| You can ask the governor to rebuild all or part of the budget.
+PLANETS_BUTTON_ALL_DO_GRANT			| Redo Grant
+PLANETS_BUTTON_ALL_DO_GRANT_HELP	| →PLANETS_BUTTON_ALL_HELP←<hr><center>Click this button to reallocate subsidies.</center>
+PLANETS_BUTTON_ALL_DO_BOTH			| Redo Both
+PLANETS_BUTTON_ALL_DO_BOTH_HELP		| →PLANETS_BUTTON_ALL_HELP←<hr><center>Click this button to raise funds for the empire and reallocate subsidies.</center>
+PLANETS_BUTTON_ALL_DO_RAISE			| Redo Raising
+PLANETS_BUTTON_ALL_DO_RAISE_HELP	| →PLANETS_BUTTON_ALL_HELP←<hr><center>Click this button to raise funds for the empire.</center>
+
+PLANETS_BUTTON_LIST_CLEAR_DESC			| You can ask the governor to cancel all or part of the budget of these colonies.
+PLANETS_BUTTON_LIST_CLEAR_GRANT			| Clear Grant
+PLANETS_BUTTON_LIST_CLEAR_GRANT_HELP	| →PLANETS_BUTTON_LIST_HELP←<hr><center>Click on this button to remove all subsidies.</center>
+PLANETS_BUTTON_LIST_CLEAR_BOTH			| Clear Both
+PLANETS_BUTTON_LIST_CLEAR_BOTH_HELP		| →PLANETS_BUTTON_LIST_HELP←<hr><center>Click on this button to remove all subsidies and contributions.</center>
+PLANETS_BUTTON_LIST_CLEAR_RAISE			| Clear Raising
+PLANETS_BUTTON_LIST_CLEAR_RAISE_HELP	| →PLANETS_BUTTON_LIST_HELP←<hr><center>Click on this button to delete all contributions sent to the empire.</center>
+
+PLANETS_BUTTON_LIST_DO_DESC			| You can ask the governor to rebuild all or part of the budget, using these colonies.
+PLANETS_BUTTON_LIST_DO_GRANT		| Grant Funds
+PLANETS_BUTTON_LIST_DO_GRANT_HELP	| →PLANETS_BUTTON_LIST_HELP←<hr><center>Click this button to reallocate subsidies.</center>
+PLANETS_BUTTON_LIST_DO_BOTH			| Grant & Raise
+PLANETS_BUTTON_LIST_DO_BOTH_HELP	| →PLANETS_BUTTON_LIST_HELP←<hr><center>Click this button to raise funds for the empire and reallocate subsidies.</center>
+PLANETS_BUTTON_LIST_DO_RAISE		| Raise Funds
+PLANETS_BUTTON_LIST_DO_RAISE_HELP	| →PLANETS_BUTTON_LIST_HELP←<hr><center>Click this button to raise funds for the empire.</center>
 
 PLANETS_BUTTON_BUDGET			| Budgetize
+PLANETS_BUTTON_BUDGET_DESC		| Budget the selected amount.<br>This value can be revised later.
+PLANETS_BUTTON_BUDGET_HELP		| Budget the selected amount.<br>This value can be revised later.
+
 PLANETS_BUTTON_REMOVE			| Remove player budget
+PLANETS_BUTTON_REMOVE_DESC		| Hand back to the governor by erasing the amount currently selected by the player.
+PLANETS_BUTTON_REMOVE_HELP		| Hand back to the governor by erasing the amount currently selected by the player.
+
 PLANETS_BUTTON_CONVERT			| Transfer Budget
+PLANETS_BUTTON_CONVERT_DESC		| Transfer the already budgeted value to the colony reserve.<br><u><b>This transfer is final</b></u>.
+PLANETS_BUTTON_CONVERT_HELP		| Transfer the already budgeted value to the colony reserve.<br><u><b>This transfer is final</b></u>.
+
 PLANETS_BUTTON_BUDGET_WISH		| Budgetize Optimal amounts
+PLANETS_BUTTON_BUDGET_WISH_DESC	| Budget the optimal amounts.<br>These values can be revised later.
+PLANETS_BUTTON_BUDGET_WISH_HELP	| Budget the optimal amounts.<br>These values can be revised later.
+
 PLANETS_BUTTON_SHARE_WISH		| Share Optimal amounts
+PLANETS_BUTTON_SHARE_WISH_DESC	| Allocate the available reserves in proportion to the optimal needs, and budget the amounts.<br>These values can be revised later.
+PLANETS_BUTTON_SHARE_WISH_HELP	| Allocate the available reserves in proportion to the optimal needs, and budget the amounts.<br>These values can be revised later.
+
 PLANETS_RESERVE_PLAYER			| Budget remaining to player: 
 PLANETS_RESERVE_CURRENT			| Budget remaining available: %1 %2BC
 PLANETS_BUDGET_CURRENT_NONE		| No budget has been established for this colony.
@@ -1257,41 +1397,78 @@ PLANETS_BUDGET_CURRENT_PLAYER	| Budget established by the player: %1 %2BC
 PLANETS_BUDGET_GOVERNOR_SUGGEST	| (Governor's initial budgets: %1 %2BC)
 PLANETS_BUDGET_NO_GOVERNOR		| The governor is not involved in this budget.
 
-PLANETS_AMT_PCT                   | %1%
-PLANETS_AMT_BC                    | %1 BC
-PLANETS_TRANSFER_DESC             | Transfer Empire Funds to %1
-PLANETS_TRANSFER_CANCEL           | Close
-PLANETS_TRANSFER_ACCEPT           | Transfer
-PLANETS_COLONY_TRANSFER_TITLE     | Transfer Funds
-PLANETS_COLONY_TRANSFER_DETAIL    | Transfer funds from the empire's treasury to increase this colony's production.
-PLANETS_COLONY_TRANSFER_BUTTON    | Transfer Funds From Treasury
-PLANETS_LIST_NUM                  |
-PLANETS_LIST_NAME                 | Name
-PLANETS_LIST_POPULATION           | Population
-PLANETS_LIST_POP                  | Pop.
-PLANETS_LIST_SIZE                 | Size
-PLANETS_LIST_MAX_TRANS_TO_FILL    | Fill
-PLANETS_LIST_MAX_TRANS_NO_LOSS    | Stable
-PLANETS_LIST_TYPE                 | Type
-PLANETS_LIST_FACTORIES            | Factories
-PLANETS_LIST_WASTE                | Waste
-PLANETS_LIST_BASES                | Bases
-PLANETS_LIST_SHIELD               | Shield
-PLANETS_LIST_PRODUCTION           | Prod
-PLANETS_LIST_CAPACITY             | Capacity
-PLANETS_LIST_RESERVE              | Reserve
+PLANETS_AMT_PCT					| %1%
+PLANETS_AMT_BC					| %1 BC
+PLANETS_TRANSFER_DESC			| Transfer Empire Funds to %1
+PLANETS_TRANSFER_DESC_HELP		| Bar for adjusting the number of Billions of Credits to send to the selected colony(s).
+
+PLANETS_TRANSFER_CANCEL			| Close
+PLANETS_TRANSFER_CANCEL_DESC	| Exit without changing anything.
+PLANETS_TRANSFER_CANCEL_HELP	| Exit without changing anything.
+
+PLANETS_TRANSFER_ACCEPT			| Transfer
+PLANETS_TRANSFER_ACCEPT_DESC	| Transfer the selected amount to the colony reserve.<br><u><b>This transfer is final</b></u>.
+PLANETS_TRANSFER_ACCEPT_HELP	| Transfer the selected amount to the colony reserve.<br><u><b>This transfer is final</b></u>.
+
+PLANETS_COLONY_TRANSFER_TITLE	| Transfer Funds
+PLANETS_COLONY_TRANSFER_DETAIL	| Transfer funds from the empire's treasury to increase this colony's production.
+PLANETS_COLONY_TRANSFER_BUTTON	| Transfer Funds From Treasury
+
+PLANETS_LIST_MAX_TRANS_TO_FILL		| Fill
+PLANETS_LIST_MAX_TRANS_NO_LOSS		| Stable
+PLANETS_LIST_NUM				|
+PLANETS_LIST_NUM_HELP			| Line number
+PLANETS_LIST_FLAG				|
+PLANETS_LIST_FLAG_HELP			| →PLANETS_HELP_4I←
+PLANETS_LIST_STARGATES			|
+PLANETS_LIST_STARGATES_HELP		| <h3>Stargates</h3>Built or under construction.
+PLANETS_LIST_MANDATE			|
+PLANETS_LIST_MANDATE_HELP		| →PLANETS_HELP_5A←
+PLANETS_LIST_NAME				| Name
+PLANETS_LIST_NAME_HELP			| →PLANETS_HELP_2A←
+PLANETS_LIST_POPULATION			| Population
+PLANETS_LIST_POPULATION_HELP	| →PLANETS_HELP_2B←
+PLANETS_LIST_POP				| Pop.
+PLANETS_LIST_POP_HELP			| →PLANETS_HELP_2B←
+PLANETS_LIST_SIZE				| Size
+PLANETS_LIST_SIZE_HELP			| →PLANETS_HELP_2E←
+PLANETS_LIST_TYPE				| Type
+PLANETS_LIST_TYPE_HELP			| →PLANETS_HELP_2C←
+PLANETS_LIST_FACTORIES			| Factories
+PLANETS_LIST_FACTORIES_HELP		| →PLANETS_HELP_3D←
+PLANETS_LIST_WASTE				| Waste
+PLANETS_LIST_WASTE_HELP			| →PLANETS_HELP_2F←
+PLANETS_LIST_BASES				| Bases
+PLANETS_LIST_BASES_HELP			| →PLANETS_HELP_4F←
+PLANETS_LIST_SHIELD				| Shield
+PLANETS_LIST_SHIELD_HELP		| →PLANETS_HELP_4E←
+PLANETS_LIST_PRODUCTION			| Prod
+PLANETS_LIST_PRODUCTION_HELP	| →PLANETS_HELP_3E←
+PLANETS_LIST_CAPACITY			| Capacity
+PLANETS_LIST_CAPACITY_HELP		| →PLANETS_HELP_3H←
+PLANETS_LIST_RESERVE			| Reserve
+PLANETS_LIST_RESERVE_HELP		| →PLANETS_HELP_3F←
 PLANETS_LIST_IND_RATIO			| Industry
+PLANETS_LIST_IND_RATIO_HELP		| →PLANETS_HELP_3H←
 PLANETS_LIST_NEEDED				| Optimal
+PLANETS_LIST_NEEDED_HELP		| →PLANETS_HELP_5F←
 PLANETS_LIST_BUDGET				| Budget
+PLANETS_LIST_BUDGET_HELP		| →PLANETS_HELP_5E←
 PLANETS_LIST_SUBSIDY			| Gets
+PLANETS_LIST_SUBSIDY_HELP		| →PLANETS_HELP_5D←
 PLANETS_LIST_CONTRIBUTE			| Gives
+PLANETS_LIST_CONTRIBUTE_HELP	| →PLANETS_HELP_5C←
 PLANETS_LIST_TAXED				| Taxed
-PLANETS_LIST_SHIPYARD             | Shipyard
-PLANETS_LIST_NOTES                | Notes
+PLANETS_LIST_TAXED_HELP			| →PLANETS_HELP_5B←
+PLANETS_LIST_SHIPYARD			| Shipyard
+PLANETS_LIST_SHIPYARD_HELP		| →PLANETS_HELP_4G←
+PLANETS_LIST_NOTES				| Notes
+PLANETS_LIST_NOTES_HELP			| →PLANETS_HELP_2G←
 PLANETS_LIST_TURNS                | Turns
 PLANETS_LIST_YEARS                | Years
 PLANETS_LIST_TRANSPORTS           | Transports
-PLANETS_LIST_RESOURCES            | Resources
+PLANETS_LIST_RESOURCES			| Resources
+PLANETS_LIST_RESOURCES_HELP		| →PLANETS_HELP_2D←
 PLANETS_MULTI_SYSTEMS             | %1 Systems
 PLANETS_AGGREGATE_VALUES          | Aggregate Values
 PLANETS_SPENDING_0                | No %1 Spending
@@ -1299,7 +1476,7 @@ PLANETS_SPENDING_25               | 25% %1 Spending
 PLANETS_SPENDING_50               | 50% %1 Spending
 PLANETS_SPENDING_75               | 75% %1 Spending
 PLANETS_SPENDING_MAX              | Maximum %1 Spending
-PLANETS_HELP_ALL                  | OVERVIEW - This screen shows your empire's economic data along with a listing of your colonies sortable by various data.
+PLANETS_HELP_ALL				| <h3>OVERVIEW</h3>This screen shows your empire's economic data along with a listing of your colonies sortable by various data.
 PLANETS_HELP_1A					| Ecology <br> Click this tab to show ecological data for colonies.
 PLANETS_HELP_1B					| Industry <br> Click this tab to show industrial data for colonies.
 PLANETS_HELP_1BUD				| Budget <br> Click this tab to show budgeted data for colonies.
@@ -1340,14 +1517,6 @@ PLANETS_HELP_5D					| Gets<br> Subsidies that can be granted after prioritizatio
 PLANETS_HELP_5E					| Budget<br> Amount requested by the Governor or by the *Player.
 PLANETS_HELP_5F					| Optimal<br> Amount required to maximize the functioning of the colony.
 PLANETS_HELP_5G					| Instructions to the governor for allocating subsidies:<br>Metal color: Follow global instructions.<br>Gold color: Allocate subsidies.<br>Red arc (right click): Can draw from the player's reserve.<br>Uncircled: active until the player deactivates it.<br>Magenta circle: Active while an emergency is activated.<br>Green circle: Active as long as the colony has not reached the development limit.<br>Blue circle: Active as long as a blue priority is present. (With the exception of research and shipsyard, as they do not deactivate automatically)
-
-PLANETS_HELP_T_BUDGET			| Budget the selected amount.<br>This value can be revised later.
-PLANETS_HELP_T_TRANSFERT		| Transfer the selected amount to the colony reserve.<br><u>This transfer is final</u>.
-PLANETS_HELP_T_CONVERT			| Transfer the already budgeted value to the colony reserve.<br><u>This transfer is final</u>.
-PLANETS_HELP_T_CANCEL			| Exit without changing anything.
-PLANETS_HELP_T_BUDGET_OPTIMAL	| Budget the optimal amounts.<br>These values can be revised later.
-PLANETS_HELP_T_SHARE_OPTIMAL	| Allocate the available reserves in proportion to the optimal needs, and budget the amounts.<br>These values can be revised later.
-PLANETS_HELP_T_REMOVE_PLAYER	| Return the hand to the governor by erasing the amount currently selected by the player.
 
 // Bombardment prompt
 MAIN_BOMBARDED_TITLE             | %1 has been bombarded by [alien_race] forces.
@@ -3434,8 +3603,8 @@ SETTINGS_MOD_PANEL_ALIGN_JUSTIFY      | Justify
 SETTINGS_MOD_COMPACT_OPTION_ONLY_HELP    | To switch between Classic configuration menus (six menus) and Compact configuration menus (2 menus). Both provide a distinction between:<br><b>Setup Settings:</b>&nbsp which are only read once, when a game starts (or restarts).<br><b>Rules and gameplay settings:</b>&nbsp which can be changed while playing a game. (Ctrl-o) to call the rules and gameplay configuration menu.
 SETTINGS_MOD_COMPACT_OPTION_ONLY_DESC     | Show multiple configuration Menus at standard size, or only one compacted configuration menu?
 SETTINGS_MOD_COMPACT_OPTION_ONLY          | Settings Buttons: %1
-SETTINGS_MOD_COMPACT_OPTION_ONLY_YES_DESC | Display the two buttons for accessing the compact configuration menus (which share a description space), allowing more settings per menu.<br>One for the Galaxy building parameters, the other for the rules and gameplay parameters.
-SETTINGS_MOD_COMPACT_OPTION_ONLY_NO_DESC  | Display the vanilla Advanced Options Button which includes both vanilla and mod options.
+SETTINGS_MOD_COMPACT_OPTION_ONLY_YES_DESC	| Displays the two buttons for accessing the compact configuration menus (which share a description space), allowing more settings per menu.<br>One for the Galaxy building parameters, the other for the rules and gameplay parameters.
+SETTINGS_MOD_COMPACT_OPTION_ONLY_NO_DESC	| Displays the vanilla Advanced Options Button which includes both vanilla and mod options.
 SETTINGS_MOD_COMPACT_OPTION_ONLY_YES      | Compact
 SETTINGS_MOD_COMPACT_OPTION_ONLY_NO       | Vanilla
 
@@ -3587,6 +3756,10 @@ SETTINGS_MOD_DEVELOPED_INDUSTRY          | {→MAIN_COLONY_INDUSTRY←}
 
 GAME_SETTINGS_PLAYER_TAX_LEVEL_PCT_DESC	| Player tax rate
 GAME_SETTINGS_PLAYER_TAX_LEVEL_PCT		| Tax Rate: %1%
+SETTINGS_MOD_TAX_ONLY_DEVELOPED_HELP	| It is generally wiser not to tax developing colonies...<br>But in a crisis, it might be necessary.<br>The definition of a mature colony can be changed in the options panel. “Alt-O.”
+SETTINGS_MOD_TAX_ONLY_DEVELOPED_DESC	| 
+SETTINGS_MOD_TAX_ONLY_DEVELOPED			| →PLANETS_RESERVE_ONLY_DEVELOPED←: %1
+SETTINGS_MOD_TAX_ONLY_DEVELOPED_LABEL	| →PLANETS_RESERVE_ONLY_DEVELOPED←
 
 SETTINGS_MOD_DEV_MAX_MISSING_POP_DESC    | What should be the maximum missing population before the taxation start to apply as "Developed colony"?<br>The governor may send some population from the already developed colonies to help populate the new ones. Thus regularly avoiding the colony from being taxed...
 SETTINGS_MOD_DEV_MAX_MISSING_POP         | Max missing Pop: %1

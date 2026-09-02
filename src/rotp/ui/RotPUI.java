@@ -54,6 +54,7 @@ import rotp.model.empires.species.SpeciesSettings.AllSpeciesAttributes;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.Transport;
+import rotp.model.game.GameSession;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGalaxyOptions.ListShapeParam;
@@ -342,7 +343,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        if (drawNextTurnNotice && session().performingTurn()) {
+        if (drawNextTurnNotice && GameSession.performingTurn()) {
             drawNotice(g, 28, -s100);
         }
         requestFocusInWindow();
@@ -826,7 +827,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
             drawNextTurnNotice = false;
             session().pauseNextTurnProcessing("Show Allocate Systems");
             log("==MAIN UI==   allocate systems");
-            mainUI().allocateSystems(session().systemsToAllocate());
+            mainUI().allocateSystems(GameSession.systemsToAllocate());
             selectMainPanel();
             session().waitUntilNextTurnCanProceed();
         } finally {
@@ -836,7 +837,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     public void showSystemsScouted() {
         session().pauseNextTurnProcessing("Show Systems Scouted");
         log("==MAIN UI==   show systems scouted");
-   		mainUI().showSystemsScouted(session().systemsScouted());
+   		mainUI().showSystemsScouted(GameSession.systemsScouted());
         selectMainPanel();
         session().waitUntilNextTurnCanProceed();
     }
@@ -850,7 +851,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     public void showShipConstruction() {
         session().pauseNextTurnProcessing("Show Ship Construction");
         log("==MAIN UI==   show ship construction");
-        mainUI().showShipsConstructed(session().shipsConstructed());
+        mainUI().showShipsConstructed(GameSession.shipsConstructed());
         selectMainPanel();
         session().waitUntilNextTurnCanProceed();
     }

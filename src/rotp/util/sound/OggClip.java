@@ -115,14 +115,17 @@ public class OggClip implements SoundClip, Base {
                 AudioFormat format = new AudioFormat(PCM_SIGNED, rate, 16, ch, ch * 2, rate, false);
                 decoded = getAudioInputStream(format, ais);
 
+				if (clip != null && clip.isOpen())
+					clip.close();
                 clip = AudioSystem.getClip();
                 clip.open(decoded);
                 if (vol < 1 && clip.isControlSupported(MASTER_GAIN)) {
                     log("setting gain for sound: " + fn + "  to " + (int) (gain * 100));
-                    FloatControl gain = (FloatControl) clip.getControl(MASTER_GAIN);
-                    gain.setValue(20f * (float) Math.log10(vol));
+					FloatControl masteGain = (FloatControl) clip.getControl(MASTER_GAIN);
+					masteGain.setValue(20f * (float) Math.log10(vol));
                 }
                 loaded = true;
+                is.close();
             }
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
             e.printStackTrace();

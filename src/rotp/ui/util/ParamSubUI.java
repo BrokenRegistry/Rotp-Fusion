@@ -84,6 +84,8 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 			return ((ParamSubUI)p).GUI_TITLE_ID.equals(GUI_TITLE_ID);
 		return false;
 	}
+	@Override public int hashCode() { return GUI_TITLE_ID.hashCode(); }
+
 	@Override public IParam<?> getSearchResult()	{ return bestSearchResult; }
 	@Override public ParamSearchResult processSearch(ParamSearchList paramSet, IParam<?> ui, String flt, int min, boolean stripAccents)	{
 		// Process the container

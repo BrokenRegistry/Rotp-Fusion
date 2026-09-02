@@ -22,9 +22,9 @@ import rotp.model.galaxy.IMappedObject;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.main.GalaxyMapPanel;
 
-public interface Sprite {
+public interface Sprite extends IAdvice {
     IMappedObject source();
-    boolean hovering();
+	@Override boolean hovering();
     void hovering(boolean b);
     void draw(GalaxyMapPanel map, Graphics2D g2);
     boolean isSelectableAt(GalaxyMapPanel map, int mapX, int mapY);

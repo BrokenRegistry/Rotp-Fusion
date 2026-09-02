@@ -20,6 +20,7 @@ import java.util.List;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 import rotp.model.ships.ShipDesignLab;
 import rotp.ui.notifications.GNNNotification;
@@ -141,7 +142,7 @@ public class RandomEventPiracy extends AbstractRandomEvent {
         sys.piracy(false);
         emp.tradePiracyRate(0.0f);
 
-        session().removePendingNotification("GNN_Event_Piracy");
+        GameSession.removePendingNotification("GNN_Event_Piracy");
         if (player().knowsOf(empId) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(endText(), "GNN_Event_Piracy");
     }

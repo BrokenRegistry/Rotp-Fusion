@@ -42,7 +42,7 @@ final class GalaxyBullseyeShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 			BASE_NAME, 1,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_BULLSEYE_0",
 				"SETUP_BULLSEYE_1",
 				"SETUP_BULLSEYE_2",
@@ -78,9 +78,9 @@ final class GalaxyBullseyeShape extends GalaxyShape {
                 // reset w/h vars since aspect ratio may have changed
                 initWidthHeight();
 
-                float gE = (float) galaxyEdgeBuffer();
+                float gE = galaxyEdgeBuffer();
                 //float gW = (float) galaxyWidthLY();
-                float gH = (float) galaxyHeightLY();
+                float gH = galaxyHeightLY();
 
                 // number of arc sections in the dart board
                 int nArcs = (int) Math.min(20, Math.ceil(Math.sqrt(finalNumberStarSystems)/4.0f));
@@ -103,8 +103,8 @@ final class GalaxyBullseyeShape extends GalaxyShape {
 
                 // arc segments/sections
                 for ( int i = 0; i < nArcs; i++ ){
-                    float arcStart = (float) (i*360.0f/nArcs + 90.0f/nArcs);
-                    float arcExtent = (float) (180.0f/nArcs);
+                    float arcStart = i*360.0f/nArcs + 90.0f/nArcs;
+                    float arcExtent = 180.0f/nArcs;
                     arc = new Arc2D.Float(gE, gE, gH, gH, arcStart, arcExtent, Arc2D.PIE);
                     arcArea = new Area(arc);
                     totalArea.exclusiveOr(arcArea);
@@ -124,9 +124,9 @@ final class GalaxyBullseyeShape extends GalaxyShape {
                 // reset w/h vars since aspect ratio may have changed
                 initWidthHeight();
 
-                float gE = (float) galaxyEdgeBuffer();
+                float gE = galaxyEdgeBuffer();
                 //float gW = (float) galaxyWidthLY();
-                float gH = (float) galaxyHeightLY();
+                float gH = galaxyHeightLY();
 
                 // number of rings/halos
                 int nRings = (int) Math.min(200, Math.floor(Math.sqrt(finalNumberStarSystems)/2.5f));
@@ -143,8 +143,8 @@ final class GalaxyBullseyeShape extends GalaxyShape {
                 totalArea.subtract(circleArea);
 
                 for ( int i = 1; i < nRings; i++ ){
-                    float ringD = (float) (1.0f-1.0f*i/nRings);
-                    float ringPos = (float) 0.5f*(1.0f-ringD);
+                    float ringD = 1.0f-1.0f*i/nRings;
+                    float ringPos = 0.5f*(1.0f-ringD);
 
                     circle = new Ellipse2D.Float(gE+ringPos*gH, gE+ringPos*gH, ringD*gH, ringD*gH);
                     circleArea = new Area(circle);
@@ -165,9 +165,9 @@ final class GalaxyBullseyeShape extends GalaxyShape {
                 // reset w/h vars since aspect ratio may have changed
                 initWidthHeight();
 
-                float gE = (float) galaxyEdgeBuffer();
+                float gE = galaxyEdgeBuffer();
                 //float gW = (float) galaxyWidthLY();
-                float gH = (float) galaxyHeightLY();
+                float gH = galaxyHeightLY();
 
                 // number of rings/halos
                 int nRings = (int) Math.min(200, Math.floor(Math.sqrt(finalNumberStarSystems)/3));
@@ -184,8 +184,8 @@ final class GalaxyBullseyeShape extends GalaxyShape {
                 totalArea.subtract(squareArea);
 
                 for ( int i = 1; i < nRings; i++ ){
-                    float ringD = (float) (1.0f-1.0f*i/nRings);
-                    float ringPos = (float) 0.5f*(1.0f-ringD);
+                    float ringD = 1.0f-1.0f*i/nRings;
+                    float ringPos = 0.5f*(1.0f-ringD);
 
                     square = new Rectangle2D.Float(gE+ringPos*gH, gE+ringPos*gH, ringD*gH, ringD*gH);
                     squareArea = new Area(square);

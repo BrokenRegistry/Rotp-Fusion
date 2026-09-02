@@ -36,13 +36,12 @@ import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.Empire;
 import rotp.model.empires.ShipView;
 import rotp.model.ships.ShipDesign;
-import rotp.ui.ScaledInteger;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.map.IMapHandler;
 import rotp.ui.sprites.FlightPathSprite;
 import rotp.util.Base;
 
-public class ShipFleet extends FleetBase implements ScaledInteger {
+public class ShipFleet extends FleetBase {
 	private static final long serialVersionUID = 1L;
 	private enum Status { ORBITING, DEPLOYED, IN_TRANSIT, RETREAT_ON_ARRIVAL };
 	private final int empId;
@@ -369,7 +368,7 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
         return visible;
     }
     public Map<ShipDesign, Integer> visibleShipDesigns(int emp) {
-        Map<ShipDesign, Integer> ret = new HashMap<ShipDesign, Integer>();
+        Map<ShipDesign, Integer> ret = new HashMap<>();
         int[] visible = visibleShips(emp);
         for (int i=0; i<visible.length; i++) {
             int cnt = visible[i];

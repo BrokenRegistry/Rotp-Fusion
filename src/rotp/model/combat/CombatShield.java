@@ -498,8 +498,8 @@ public final class CombatShield {
 		}
 		private int shieldOffsetX() { return (int)(ctrCol-b); }
 		private int shieldOffsetY() { return (int)(ctrRow-a); }
-		private int centerOffsetX() { return (int)(ctrCol-imgW/2); }
-		private int centerOffsetY() { return (int)(ctrRow-imgH/2); }
+		private int centerOffsetX() { return ctrCol-imgW/2; }
+		private int centerOffsetY() { return ctrRow-imgH/2; }
 	}
 	private final class Tint {
 		//private final int[] tint;
@@ -646,15 +646,15 @@ public final class CombatShield {
 			yI_aa = new double[attacksPerRound];
 			zI_aa = new double[attacksPerRound];
 			betaI = new double[attacksPerRound];
-			f		= (a-b)/(double)a;
+			f		= (a-b)/a;
 			half_f	= f/2;
-			b_a		= b/(double)a;
+			b_a		= b/a;
 			aa_bb	= 1/(b_a*b_a);
 			aa	= a*a;
 			bb	= b*b;
 			aabb = (long)aa*bb;
-			iaa = 1/(double)aa;
-			ibb = 1/(double)bb;
+			iaa = 1/aa;
+			ibb = 1/bb;
 			sqSinPcosQx2 = new double[attacksPerRound][shieldColumns];
 			sqCosPsinQx2 = new double[attacksPerRound][shieldColumns];
 			// Fill the spheric correction

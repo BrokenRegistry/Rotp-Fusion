@@ -24,7 +24,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Paint;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -43,11 +42,13 @@ import rotp.model.colony.Colony;
 import rotp.model.colony.ColonyShipyard;
 import rotp.model.empires.SystemView;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.model.ships.Design;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.map.IMapHandler;
+import rotp.util.AdviceBox;
 
 public class EmpireSystemPanel extends SystemPanel {
     private static final long serialVersionUID = 1L;
@@ -247,12 +248,12 @@ public class EmpireSystemPanel extends SystemPanel {
         private final int rightButtonX[] = new int[3];
         private final int rightButtonY[] = new int[3];
 
-        private final Rectangle shipDesignBox = new Rectangle();
-        private final Rectangle rallyPointBox = new Rectangle();
-        private final Rectangle rallyToSGBox  = new Rectangle();
-        private final Rectangle transportBox  = new Rectangle();
-        private final Rectangle abandonBox  = new Rectangle();
-        private final Rectangle shipNameBox = new Rectangle();
+		private final AdviceBox shipDesignBox = new AdviceBox();
+		private final AdviceBox rallyPointBox = new AdviceBox();
+		private final AdviceBox rallyToSGBox  = new AdviceBox();
+		private final AdviceBox transportBox  = new AdviceBox();
+		private final AdviceBox abandonBox  = new AdviceBox();
+		private final AdviceBox shipNameBox = new AdviceBox();
         private final Polygon prevDesign = new Polygon();
         private final Polygon nextDesign = new Polygon();
         private Shape hoverBox;
@@ -264,7 +265,7 @@ public class EmpireSystemPanel extends SystemPanel {
         private final int downButtonX[] = new int[3];
         private final int downButtonY[] = new int[3];
         private boolean inGovLimitBox = false;
-        private Rectangle limitBox = new Rectangle();
+		private AdviceBox limitBox = new AdviceBox();
         private boolean hasPreview = false;
 
         Color textColor = newColor(204,204,204);
@@ -279,6 +280,13 @@ public class EmpireSystemPanel extends SystemPanel {
             addMouseListener(this);
             addMouseMotionListener(this);
             addMouseWheelListener(this);
+			shipDesignBox.init(this, null, null, "MAIN_HELP_2E");
+			shipNameBox.init(this, null, null, "MAIN_HELP_2E");
+			limitBox.init(this, null, null, "MAIN_HELP_5J");
+			rallyPointBox.init(this, null, null, "MAIN_HELP_2F");
+			rallyToSGBox.init(this, null, null, "MAIN_HELP_2FSG");
+			transportBox.init(this, null, null, "MAIN_HELP_2G");
+			abandonBox.init(this, null, null, "MAIN_HELP_2H");
         }
         @Override
         public String textureName()            { return TEXTURE_GRAY; }
@@ -458,8 +466,9 @@ public class EmpireSystemPanel extends SystemPanel {
             drawString(g,label, x1, y1);
             g.setColor(Color.black);
             drawString(g,amt, x2, y1);  
-            
-            limitBox.setBounds(x2-s3,y1-s15,x3-x2,s18);
+
+			limitBox.setBounds(x2-s3, y1-s15 ,x3-x2, s18);
+			limitBox.setSelectionBounds(x1, y1-s15 ,x3-x1, s18);
             if (hoverBox == limitBox) {
                 Stroke prevStroke = g.getStroke();
                 g.setStroke(stroke2);
@@ -830,8 +839,8 @@ public class EmpireSystemPanel extends SystemPanel {
         private boolean rallyToSGEnabled()	{
         	StarSystem sys = parentSpritePanel().systemViewToDisplay();
         	return !sys.hasStargate(player()) && rallyPointEnabled() && hasStargate(); }
-        private boolean rallyPointEnabled() { return !session().performingTurn() && player().canRallyFleetsFrom(id(parentSpritePanel().systemViewToDisplay())); }
-        private boolean transportEnabled() { return !session().performingTurn() && player().canSendTransportsFrom(parentSpritePanel().systemViewToDisplay()); }
+		private boolean rallyPointEnabled() { return !GameSession.performingTurn() && player().canRallyFleetsFrom(id(parentSpritePanel().systemViewToDisplay())); }
+		private boolean transportEnabled() { return !GameSession.performingTurn() && player().canSendTransportsFrom(parentSpritePanel().systemViewToDisplay()); }
 		@Override public void mouseClicked(MouseEvent e)	{ enterCurrentPane(this); }
 		@Override public void mouseEntered(MouseEvent e)	{
 			enterCurrentPane(this);
@@ -839,11 +848,13 @@ public class EmpireSystemPanel extends SystemPanel {
 			inGovLimitBox = true;
 			repaint();
 		}
-		@Override  public void mouseExited(MouseEvent e)	{
+		@Override public void mouseExited(MouseEvent e)		{
 			setModifierKeysState(e);
 			exitCurrentPane(this);
 			inGovLimitBox = false;
 			if (hoverBox != null) {
+				if (hoverBox instanceof AdviceBox)
+					((AdviceBox) hoverBox).hovering(false);
 				hoverBox = null;
 				repaint();
 			}
@@ -949,44 +960,40 @@ public class EmpireSystemPanel extends SystemPanel {
 		@Override public void mouseMoved(MouseEvent e)		{
 			setModifierKeysState(e);
 			enterCurrentPane(this);
-            int x = e.getX();
-            int y = e.getY();
-            Shape prevHover = hoverBox;
-            hoverBox = null;
-
-            if (upArrow.contains(x,y))
-                hoverBox = upArrow;
-            else if (downArrow.contains(x,y))
-                hoverBox = downArrow;
-            else if (limitBox.contains(x,y))
-                hoverBox = limitBox;
-            else if (shipDesignBox.contains(x,y))
-                hoverBox = shipDesignBox;
-            else if (shipNameBox.contains(x,y))
-                hoverBox = shipNameBox;
-            else if (nextDesign.contains(x,y))
-                hoverBox = nextDesign;
-            else if (prevDesign.contains(x,y))
-                hoverBox = prevDesign;
-            else if (rallyPointBox.contains(x,y))
-                hoverBox = rallyPointBox;
-            else if (rallyToSGBox.contains(x,y))
-                hoverBox = rallyToSGBox;
-            else if (transportBox.contains(x,y))
-                hoverBox = transportBox;
-            else if (abandonBox.contains(x,y))
-                hoverBox = abandonBox;
-
-            if (prevHover != hoverBox)
-                repaint();
-        }
+			int x = e.getX();
+			int y = e.getY();
+			if (upArrow.contains(x,y))
+				hoverBox = hoverBox(upArrow, hoverBox);
+			else if (downArrow.contains(x,y))
+				hoverBox = hoverBox(downArrow, hoverBox);
+			else if (limitBox.isSelectableAt(x,y))
+				hoverBox = hoverBox(limitBox, hoverBox);
+			else if (shipDesignBox.isSelectableAt(x,y))
+				hoverBox = hoverBox(shipDesignBox, hoverBox);
+			else if (shipNameBox.isSelectableAt(x,y))
+				hoverBox = hoverBox(shipNameBox, hoverBox);
+			else if (nextDesign.contains(x,y))
+				hoverBox = hoverBox(nextDesign, hoverBox);
+			else if (prevDesign.contains(x,y))
+				hoverBox = hoverBox(prevDesign, hoverBox);
+			else if (rallyPointBox.isSelectableAt(x,y))
+				hoverBox = hoverBox(rallyPointBox, hoverBox);
+			else if (rallyToSGBox.isSelectableAt(x,y))
+				hoverBox = hoverBox(rallyToSGBox, hoverBox);
+			else if (transportBox.isSelectableAt(x,y))
+				hoverBox = hoverBox(transportBox, hoverBox);
+			else if (abandonBox.isSelectableAt(x,y))
+				hoverBox = hoverBox(abandonBox, hoverBox);
+			else
+				hoverBox = hoverBox(null, hoverBox);
+		}
 		@Override public void mouseWheelMoved(MouseWheelEvent e) {
 			setModifierKeysState(e);
 			enterCurrentPane(this);
             int x = e.getX();
             int y = e.getY();
 
-            if (limitBox.contains(x,y)) {
+			if (limitBox.isSelectableAt(x,y)) {
                 boolean shiftPressed = e.isShiftDown();
                 boolean ctrlPressed = e.isControlDown();
                 boolean altPressed = e.isAltDown();
@@ -1013,8 +1020,7 @@ public class EmpireSystemPanel extends SystemPanel {
                     decrementBuildLimit(adjAmt);
                 return;
             }
-            if (shipDesignBox.contains(x,y) 
-            || shipNameBox.contains(x,y)) {
+			if (shipDesignBox.isSelectableAt(x,y) || shipNameBox.isSelectableAt(x,y)) {
                 if (e.getWheelRotation() < 0)
                     nextShipDesign();
                 else
