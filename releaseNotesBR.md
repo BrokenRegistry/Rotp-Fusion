@@ -11,6 +11,10 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-09-02 (BR)
+- Combat panel: Added a level of security in the final ship retreat display, to prevent crash.
+- Fixed fund raising acting on ungoverned colony. (May be an option to allow it will follow)
+
 26-08-26 (BR)
 - Fixed Planets Bombardments not always being added on the diplomatic list.
 

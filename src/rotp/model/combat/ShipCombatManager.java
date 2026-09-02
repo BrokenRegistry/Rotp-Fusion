@@ -649,7 +649,8 @@ public final class ShipCombatManager implements Base {
 		StarSystem s = stack.retreatTarget();
         log("Retreating: ", stack.fullName());
         performingStackTurn = true;
-        stack.drawRetreat();
+		try { stack.drawRetreat(); }
+		catch(Exception e) {}
         results.addShipsPostRetreated(stack.design(), stack.num);
         stack.retreatToSystem(s);
 		removeFromCombat(stack);

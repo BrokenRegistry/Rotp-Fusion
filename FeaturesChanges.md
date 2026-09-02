@@ -480,6 +480,8 @@
 
 ### Fixes:
 
+- Combat panel: Added a level of security in the final ship retreat display, to prevent crash.
+- Fixed fund raising acting on ungoverned colony. (May be an option to allow it will follow)
 - Fixed Planets Bombardments not always being added on the diplomatic list.
 - Fixed a display bug in the transport panel, which could display, with a negative time, a transport previously arrived at its destination.
 - Fixed the issue where the player could not threaten other empires.

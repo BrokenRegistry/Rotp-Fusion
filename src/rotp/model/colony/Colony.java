@@ -2896,7 +2896,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			}
 		}
 		public float resetExess(float goalProd, boolean fromEco, boolean fromInd)	{
-			int tickNeeded = ceil(MAX_TICKS * goalProd / nextProduction);
+			int tickNeeded = ceil(MAX_TICKS * goalProd / totalIncome());
 			int tickAdjust = 0;
 			if (fromEco) {
 				int ticks = ecology().allocation();
@@ -2912,7 +2912,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			}
 			if (fromInd) {
 				int ticks = industry().allocation();
-				int minTick = ceil(industry().maxSpendingNeeded() / MAX_TICKS);
+				int minTick = ecology().maxAllocationNeeded();
 				int adj = ticks - minTick;
 				if (adj > 0) {
 					adj = min(adj, tickNeeded);
