@@ -33,6 +33,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 	private float unusedGovernor;
 	// common
 	private BudgetStatus status = new BudgetStatus();
+	private boolean checkClean = false;
 
 	private final Empire empire;
 	EmpireBudget(Empire emp)		{ empire = emp; }
@@ -180,12 +181,30 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 			col.budget().transfertBudget(carryUnfunded);
 		}
 	}
+	private boolean checkForClean(String str)	{
+		if (!checkClean)
+			return true;
+		int[] needCleaning	= player().needCleaning();
+		int govLockCount	= needCleaning[Colony.GOV_LOCKED_DIRTY];
+		int govUnlockCount	= needCleaning[Colony.GOV_UNLOCKED_DIRTY];
+		int lockedCount		= needCleaning[Colony.LOCKED_DIRTY];
+		int unlockedCount	= needCleaning[Colony.UNLOCKED_DIRTY];
+		int dirtyCount		= govLockCount + govUnlockCount + lockedCount + unlockedCount;
+		boolean clean = dirtyCount == 0;
+		if (!clean)
+			System.out.println(str + dirtyCount);
+		return clean;
+	}
 	public synchronized void planTheBudget(List<StarSystem> systems, boolean grant, boolean raise, int type, boolean forceGovern)	{
+		checkClean = false; // TO DO BR: set checkClean = false;
 		GovernorOptions govOptions = session().getGovernorOptions();
 		boolean shieldWithoutBases = govOptions.getShieldWithoutBases();
 		float maxIndustryRatio = govOptions.autospendMaxIndustryRatio();
 
+		checkForClean("planTheBudget start unclean: ");
+
 		resetEmpireBudget(systems, grant, raise, forceGovern);
+		checkForClean("planTheBudget resetEmpireBudget unclean: ");
 
 		boolean clearGrant = grant;
 		boolean clearRaise = raise;
@@ -211,9 +230,12 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 			if (col != null)
 				col.budget().budgetReset(shieldWithoutBases, maxIndustryRatio, clearGrant, clearRaise, forceGovern);
 		}
+		checkForClean("planTheBudget col.budget().budgetReset loop unclean: ");
+
 		// go with the list
 		splitList(systems);
 		requestSubsidies(doGrant); // only filter the list if not grant.
+		checkForClean("planTheBudget requestSubsidies(doGrant) unclean: ");
 
 		// Update Empire reserve status
 		mergeLists();
@@ -222,6 +244,8 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 		// Plan Reserves
 		if (doRaise)
 			raiseFunds();
+		checkForClean("planTheBudget requestSubsidies(raiseFunds) unclean: ");
+
 		clearLists();
 	}
 	private void clearLists()	{
@@ -408,7 +432,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 		float excessRevenueBC = excessRevenueBC();
 		float allowedExcessRevenue = 10;
 		boolean isReserveFromRich = govOptions().isReserveFromRich();
-		
+
 		List<ColonyBudget> funders = governorBudgets; // TODO BR: Selction option to allow ungoverned
 
 		if (excessRevenueBC > allowedExcessRevenue) {
@@ -426,6 +450,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 					}
 				}
 		}
+		checkForClean("planTheBudget requestSubsidies(raiseFunds) excessRevenueBC > allowedExcessRevenue unclean: ");
 
 		if (excessRevenueBC < 0) {
 			Collections.sort(funders, DEC_RESOURCES);
@@ -436,6 +461,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 						break;
 				}
 		}
+		checkForClean("planTheBudget requestSubsidies(raiseFunds) excessRevenueBC < 0 unclean: ");
 		float expectedRevenueBC = excessRevenueBC + requestedReserves();
 		setExpectedRevenueBC(expectedRevenueBC);
 	}

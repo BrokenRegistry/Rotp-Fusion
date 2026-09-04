@@ -16,13 +16,9 @@
 package rotp.ui.main.overlay;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.LinearGradientPaint;
-import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
 import java.util.List;
 
 import rotp.model.Sprite;
@@ -30,9 +26,9 @@ import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
-import rotp.ui.sprites.MapSprite;
+import rotp.ui.sprites.RoundButtonSprite;
 
-public class MapOverlayAutosaveFailed extends MapOverlay {
+public final class MapOverlayAutosaveFailed implements IMapOverlay {
     final Color edgeC = new Color(44,59,30);
     final Color midC = new Color(70,93,48);
     MainUI parent;
@@ -133,6 +129,8 @@ public class MapOverlayAutosaveFailed extends MapOverlay {
     }
     @Override
     public boolean handleKeyPress(KeyEvent e) {
+		if (baseHandleKeyPress(e))
+			return true;
         switch(e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
                 //softClick();
@@ -152,69 +150,16 @@ public class MapOverlayAutosaveFailed extends MapOverlay {
         return true;
     }
 }
-class OKButtonSprite extends MapSprite {
-    private LinearGradientPaint background;
-    private int mapX, mapY, buttonW, buttonH;
-    private MapOverlayAutosaveFailed parent;
+final class OKButtonSprite extends RoundButtonSprite {
+	private MapOverlayAutosaveFailed parent;
 
-    public int mapX()         { return mapX; }
-    public int mapY()         { return mapY; }
-    public void mapX(int i)   { mapX = i; }
-    public void mapY(int i)   { mapY = i; }
-
-    public int width()        { return buttonW; }
-    public int height()       { return buttonH; }
-    private String label()    { return text("MAIN_AUTOSAVE_FAILED_OK"); }
-    private Font font()       { return narrowFont(18); }
-    public void reset()       { background = null; }
-
-    public void init(MapOverlayAutosaveFailed p, Graphics2D g)  {
-        parent = p;
-        buttonW = BasePanel.s20 + g.getFontMetrics(font()).stringWidth(label());
-        buttonH = BasePanel.s30;
-    }
-    @Override
-    public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-        hovering = x >= mapX
-                    && x <= mapX+buttonW
-                    && y >= mapY()
-                    && y <= mapY()+buttonH;
-
-        return hovering;
-    }
-    @Override
-    public void draw(GalaxyMapPanel map, Graphics2D g) {
-        if (background == null) {
-            float[] dist = {0.0f, 0.5f, 1.0f};
-            Point2D start = new Point2D.Float(mapX, 0);
-            Point2D end = new Point2D.Float(mapX+buttonW, 0);
-            Color[] colors = {parent.edgeC, parent.midC, parent.edgeC };
-            background = new LinearGradientPaint(start, end, dist, colors);
-        }
-        int s3 = BasePanel.s3;
-        int s5 = BasePanel.s5;
-        int s10 = BasePanel.s10;
-        g.setColor(SystemPanel.blackText);
-        g.fillRoundRect(mapX+s3, mapY+s3, buttonW,buttonH,s10,s10);
-        g.setPaint(background);
-        g.fillRoundRect(mapX, mapY, buttonW,buttonH,s5,s5);
-        Color c0 = hovering ? SystemPanel.yellowText : SystemPanel.whiteText;
-        g.setColor(c0);
-        Stroke prevStr =g.getStroke();
-        g.setStroke(BasePanel.stroke2);
-        g.drawRoundRect(mapX, mapY, buttonW,buttonH,s5,s5);
-        g.setStroke(prevStr);
-        g.setFont(font());
-
-        String str = label();
-        int sw = g.getFontMetrics().stringWidth(str);
-        int x2a = mapX+((buttonW-sw)/2);
-        drawBorderedString(g, str, x2a, mapY+buttonH-s10, SystemPanel.textShadowC, c0);
-    }
-    @Override
-    public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-        //if (click)
-        //    softClick();
-        parent.ok();
-    };
+	public void init(MapOverlayAutosaveFailed p, Graphics2D g)	{
+		parent = p;
+		init(p, g, s20, s30, "MAIN_AUTOSAVE_FAILED_OK", 2);
+	}
+	@Override public void draw(GalaxyMapPanel map, Graphics2D g)	{ directDraw(map, g); }
+	@Override protected Color[] colors()	{ return new Color[] {parent.edgeC, parent.midC, parent.edgeC}; }
+	@Override public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+		parent.ok();
+	};
 }

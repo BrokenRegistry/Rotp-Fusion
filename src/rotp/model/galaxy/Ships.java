@@ -24,6 +24,7 @@ import java.util.List;
 import rotp.Rotp;
 import rotp.model.colony.ColonyShipyard;
 import rotp.model.empires.Empire;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
@@ -312,7 +313,7 @@ public class Ships implements Base, Serializable {
     public ShipFleet retreatFleet(ShipFleet sourceFleet, int destSysId) {
 		if (destSysId == StarSystem.NULL_ID) {
 			deleteFleet(sourceFleet);
-			session().removeVarValue(sourceFleet);
+			GameSession.removeVarValue(sourceFleet);
 			return null;
 		}
         ShipFleet retreatingFleet = retreatingFleet(sourceFleet.empId(), id(sourceFleet.system()), destSysId);
@@ -348,7 +349,7 @@ public class Ships implements Base, Serializable {
 			sourceFleet.num(designId, 0);
 			if (sourceFleet.isEmpty()) {
 				deleteFleet(sourceFleet);
-				session().removeVarValue(sourceFleet);
+				GameSession.removeVarValue(sourceFleet);
 			}
 			return null;
 		}

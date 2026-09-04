@@ -19,7 +19,7 @@ import rotp.model.game.GameSession;
 
 public class SpyReportAlert extends GameAlert {
     public static void create() {
-        GameSession.instance().addAlert(new SpyReportAlert());
+        GameSession.addAlert(new SpyReportAlert());
     }
     @Override
     public String description() {

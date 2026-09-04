@@ -28,23 +28,23 @@ import rotp.model.Sprite;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
-import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.ClickToContinueSprite;
 
-public class MapOverlayBombardedNotice  extends MapOverlay {
-    static final Color destroyedTextC = new Color(255,32,32,192);
-    static final Color destroyedMaskC = new Color(0,0,0,160);
-    Color maskC  = new Color(40,40,40,160);
-    Area mask;
-    BufferedImage planetImg;
-    MainUI parent;
-    int sysId;
-    ShipFleet fleet;
-    int pop, endPop, bases, endBases, fact, endFact, shield;
-    ClickToContinueSprite clickSprite;
+public final class MapOverlayBombardedNotice implements IMapOverlay {
+	private static final Color destroyedTextC = new Color(255,32,32,192);
+	private static final Color destroyedMaskC = new Color(0,0,0,160);
+	private Color maskC  = new Color(40,40,40,160);
+	private Area mask;
+	private BufferedImage planetImg;
+	private MainUI parent;
+	private int sysId;
+	private ShipFleet fleet;
+	private int pop, endPop, bases, endBases, fact, endFact, shield;
+	private ClickToContinueSprite clickSprite;
+
     public MapOverlayBombardedNotice(MainUI p) {
         parent = p;
         clickSprite = new ClickToContinueSprite(parent);
@@ -98,22 +98,13 @@ public class MapOverlayBombardedNotice  extends MapOverlay {
         StarSystem sys = galaxy().system(sysId);
         Empire pl = player();
 
-        int s7 = BasePanel.s7;
-        int s10 = BasePanel.s10;
-        int s15 = BasePanel.s15;
-        int s20 = BasePanel.s20;
-        int s30 = BasePanel.s30;
-        int s40 = BasePanel.s40;
-        int s50 = BasePanel.s50;
-        int s60 = BasePanel.s60;
-
         int w = ui.getWidth();
         int h = ui.getHeight();
 
         int bdrW = s7;
         int boxW = scaled(540);
         int boxH = scaled(240);
-        int boxH1 = BasePanel.s68;
+        int boxH1 = s68;
 
         int boxX = -s40+(w/2);
         int boxY = s40+(h-boxH)/2;
@@ -200,7 +191,7 @@ public class MapOverlayBombardedNotice  extends MapOverlay {
         int x0a = boxX+s10;
 
         int pad = s30;
-        int p1 = BasePanel.s5;
+        int p1 = s5;
         String dmgStr = text("MAIN_BOMBARD_DMG", "-99");
         String popStr = text("MAIN_BOMBARD_POPULATION", endPop);
         String factStr = text("MAIN_BOMBARD_FACTORIES", endFact);
@@ -358,6 +349,8 @@ public class MapOverlayBombardedNotice  extends MapOverlay {
     }
     @Override
     public boolean handleKeyPress(KeyEvent e) {
+		if (baseHandleKeyPress(e))
+			return true;
         switch(e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
                // softClick();

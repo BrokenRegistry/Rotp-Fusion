@@ -25,7 +25,7 @@ public class TransportsKilledAlert extends GameAlert {
     private final StarSystem system;
     private final int num;
     public static void create(Empire e, StarSystem s, int n) {
-        GameSession.instance().addAlert(new TransportsKilledAlert(e,s,n));
+        GameSession.addAlert(new TransportsKilledAlert(e,s,n));
     }
     private String systemName() { return player().sv.knownName(system.id); }
     @Override

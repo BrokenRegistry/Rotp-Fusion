@@ -26,6 +26,7 @@ public class ClickToContinueSprite extends MapSprite {
     public void parent(MainUI p)  { parent = p; }
     public ClickToContinueSprite(MainUI p) {
         parent = p;
+		box.setForcedLocation(8);
     }
     @Override
     public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) { return true; }

@@ -78,10 +78,10 @@ public final class FlightPathSprite extends MapSprite {
     }
     public static List<FlightPathSprite> workingPaths() {
         @SuppressWarnings("unchecked")
-		List<FlightPathSprite> paths = (List<FlightPathSprite>) GameSession.instance().var("WORKING_PATHS");
+		List<FlightPathSprite> paths = (List<FlightPathSprite>) GameSession.var("WORKING_PATHS");
         if (paths == null) {
             paths = new ArrayList<>();
-            GameSession.instance().var("WORKING_PATHS", paths);
+            GameSession.var("WORKING_PATHS", paths);
         }
         return paths;
     }
@@ -143,7 +143,7 @@ public final class FlightPathSprite extends MapSprite {
         }
         return c0;
     }
-    private Sprite from()                      { return (Sprite) ship; }
+    private Sprite from()                      { return ship; }
     public Ship ship()                         { return ship; }
 
     @Override
@@ -230,7 +230,7 @@ public final class FlightPathSprite extends MapSprite {
 		draw(g2, map.animationCount(), map.scaleX(), isHovering, x1, y1, x2, y2, systemTransportLineColor(map, isHovering, dest));
     };
     private void drawShipPath(GalaxyMapPanel map, Graphics2D g2, StarSystem dest) {
-        Sprite spr = (Sprite) ship;
+        Sprite spr = ship;
         int x1 = spr.centerMapX(map);
         int y1 = spr.centerMapY(map);
         int x2 = dest.centerMapX(map);
@@ -281,8 +281,6 @@ public final class FlightPathSprite extends MapSprite {
         g2.setColor(c0);
         g2.drawLine(x2, y2, x1, y1);
 
-        int s9 = BasePanel.s9;
-        int s18 = BasePanel.s18;
         g2.drawOval(x2-s9, y2-s9, s18, s18);
 
         g2.setStroke(prevStroke);
@@ -311,21 +309,21 @@ public final class FlightPathSprite extends MapSprite {
     private void initStrokes() {
         lines = new BasicStroke[6][6];
         rallyStroke = new BasicStroke[2][9];
-        float f10 = BasePanel.s10;
-        float f12 = BasePanel.s12; // modnar: line dash change
-        float f6 = BasePanel.s6; // modnar: line dash change
+        float f10 = s10;
+        float f12 = s12; // modnar: line dash change
+        float f6 = s6; // modnar: line dash change
 
         for (int i=0;i<9;i++) {
-            rallyStroke[0][i] = new BasicStroke(BasePanel.s2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,    // Join style
-                            f10, new float[] {f12, f6}, i * BasePanel.s3); // modnar: line phase change, mod%6 animation
-            rallyStroke[1][i] = new BasicStroke(BasePanel.s3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,    // Join style
-                            f10, new float[] {f12, f6}, i * BasePanel.s3); // modnar: line phase change, mod%6 animation
+            rallyStroke[0][i] = new BasicStroke(s2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,    // Join style
+                            f10, new float[] {f12, f6}, i * s3); // modnar: line phase change, mod%6 animation
+            rallyStroke[1][i] = new BasicStroke(s3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,    // Join style
+                            f10, new float[] {f12, f6}, i * s3); // modnar: line phase change, mod%6 animation
         }
 
         for (int i=0;i<6;i++) {
             for (int j=0;j<6;j++) {
                 int w = scaled(i+1); // modnar: line width change
-                float dashPhase = j * BasePanel.s3;
+                float dashPhase = j * s3;
                 lines[i][j] = new BasicStroke(w, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,    // Join style
                                 f10, new float[] {f12, f6}, dashPhase);
             }

@@ -20,23 +20,23 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 
+import rotp.model.game.IMapOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 
-public class GridCircularDisplaySprite extends MapControlSprite  {
+public final class GridCircularDisplaySprite extends MapControlSprite  {
     Color extColor, normColor;
 
     public GridCircularDisplaySprite(int xOff, int yOff, int w, int h) {
-        xOffset = scaled(xOff);
-        yOffset = scaled(yOff);
-        width = scaled(w);
-        height = scaled(h);
+		super(xOff, yOff, w, h, "MAIN_HELP_3J");
+		box.setParam(IMapOptions.showGridCircular);
         extColor =  newColor(0,0,192,64);
         normColor = newColor(32,32,192,128);
     }
     @Override
     public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-        map.toggleGridCircularDisplay();
+		IMapOptions.showGridCircular.toggle(e, null);
+		//map.toggleGridCircularDisplay();
     }
     @Override
     public void draw(GalaxyMapPanel map, Graphics2D g2) {

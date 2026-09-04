@@ -24,19 +24,19 @@ public class AdviceNotification implements TurnNotification {
     private Empire emp1;
     private String var1, var2, var3;
     public static void create(String message) {
-        GameSession.instance().addTurnNotification(new AdviceNotification(message));
+        GameSession.addTurnNotification(new AdviceNotification(message));
     }
     public static void create(String message, Empire e1, String s1) {
-        GameSession.instance().addTurnNotification(new AdviceNotification(message, e1, s1));
+        GameSession.addTurnNotification(new AdviceNotification(message, e1, s1));
     }
     public static void create(String message, String s1) {
-        GameSession.instance().addTurnNotification(new AdviceNotification(message, s1));
+        GameSession.addTurnNotification(new AdviceNotification(message, s1));
     }
     public static void create(String message, String s1, String s2) {
-        GameSession.instance().addTurnNotification(new AdviceNotification(message, s1, s2));
+        GameSession.addTurnNotification(new AdviceNotification(message, s1, s2));
     }
     public static void create(String message, String s1, String s2, String s3) {
-        GameSession.instance().addTurnNotification(new AdviceNotification(message, s1, s2, s3));
+        GameSession.addTurnNotification(new AdviceNotification(message, s1, s2, s3));
     }
     private AdviceNotification(String msg) {
         message = msg;

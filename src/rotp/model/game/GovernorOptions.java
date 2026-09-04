@@ -331,5 +331,7 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public boolean	redoBudgetAllowed()				{ return redoBudgetRaiseAllowed() || redoBudgetRaiseAllowed(); }
 	public boolean	autospendImmediateTransfer()	{ return autospendImmediateTransfer.get(); }
 	public void		toggleAutospendOldWay()			{ autospendImmediateTransfer.toggle(); }
+	public boolean	raiseFundFromUngoverned()		{ return grantFundToUngoverned.get(); }
+	public boolean	grantFundToUngoverned()			{ return grantFundToUngoverned.get(); }
 }
 

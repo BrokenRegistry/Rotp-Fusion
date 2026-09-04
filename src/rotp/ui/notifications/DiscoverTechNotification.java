@@ -22,7 +22,7 @@ public class DiscoverTechNotification implements TurnNotification {
     String techId;
 
     public static void create(String id) {
-        GameSession.instance().addTurnNotification(new DiscoverTechNotification(id));
+        GameSession.addTurnNotification(new DiscoverTechNotification(id));
     }
     private DiscoverTechNotification(String id) {
         techId = id;

@@ -24,6 +24,7 @@ import javax.swing.ImageIcon;
 
 import rotp.model.combat.CombatStack;
 import rotp.model.empires.Empire;
+import rotp.model.game.GameSession;
 import rotp.model.ships.ShipWeaponTorpedo;
 import rotp.ui.combat.ShipBattleUI;
 
@@ -46,7 +47,7 @@ public final class TechTorpedoWeapon extends Tech {
     public int shots = 1;
     public int range = 0;
 
-    public int damage()  { return (int) (session().damageBonus() * damage); }
+    public int damage()  { return (int) (GameSession.damageBonus() * damage); }
 
     @Override
     public String imageKey()   { return imageKey; }

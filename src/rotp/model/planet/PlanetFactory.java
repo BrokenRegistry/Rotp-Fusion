@@ -75,9 +75,9 @@ public class PlanetFactory implements Base {
         // also change bound range (size_min, size_max) with bonus value
 		// give all sizes in multiples of inc (default = 5)
 		int inc = creationSizeInc();
-		float size_min = (float) (Math.round((creationSizeMin()*bonus)/inc) * inc);
-		float size_max = (float) (Math.round((creationSizeMax()*bonus)/inc) * inc);
-		size = (float) (Math.round((size*bonus)/inc) * inc);
+		float size_min = Math.round((creationSizeMin()*bonus)/inc) * inc;
+		float size_max = Math.round((creationSizeMax()*bonus)/inc) * inc;
+		size = Math.round((size*bonus)/inc) * inc;
 		size = Math.max(size_min, Math.min(size, size_max));
 
         p.baseSize(size);

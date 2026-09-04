@@ -436,13 +436,6 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         int h = abs(ptY[y0a]-ptY[y1a])+boxH;
         paintImmediately(x,y,w,h);
     }
-    /* public void repaintButtonArea() {
-        int x = pad;
-        int y = pad;
-        int w = getWidth()-pad-pad;
-        int h = getHeight()-pad-pad;
-        repaint(x,y+h-barH,w,barH);
-    } */
     @Override public void paintComponent(Graphics g0) {
         int x = pad;
         int y = pad;
@@ -481,14 +474,14 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         }
 
         // draw any overlying messages
-// BR:        if (mode == Display.RESULT)
         if (readyToShowResult())
             drawResults(g, 0, 0, getWidth(),getHeight());
         else
             paintShipsToImage(g,x,y,w,h-barH, hoveringX, hoveringY);
-        paintMenuBarToImage(g,x,y+h-barH,w,barH);
 
-// BR:        if (mode != Display.RESULT)
+		try { paintMenuBarToImage(g,x,y+h-barH,w,barH); }
+		catch (Exception e) {}
+
         if (!readyToShowResult())
             paintStackActions(g, hoveringX, hoveringY);
 
@@ -932,7 +925,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
 					iX -= iW;
 				}
 				else {
-					String warningTxt = "***"; // TODO BR: add to labels.txt
+					String warningTxt = text("SHIP_COMBAT_MISSILE_WARNING");
 					g.setColor(Color.RED);
 					g.setFont(narrowFont(20));
 					int sw = g.getFontMetrics().stringWidth(warningTxt);
@@ -1180,12 +1173,6 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
 		drawString(g,lbl2, x1b,y2+s12);
 		drawString(g,val2, x1+w1-sw2-s5, y2+s12);
 
-//		if (showTacticalInfo()) {
-//			int lblW = g.getFontMetrics().stringWidth(lbl1);
-//			g.setColor(CombatStack.shipBeamDefenseC);
-//			g.fillOval(x1a+lblW+s5, y2+s2, s12, s12);
-//		}
-
         y2 += s15;
         g.setColor(lineColor);
         g.fillRect(x1,y2,w1,s1);
@@ -1252,8 +1239,6 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
             return;
 
 		shipTravelPath = getPlayerPath(stack, hoveringX, hoveringY);
-//		shipTravelPath = stack.pathTo(hoveringX, hoveringY);
-//		shipTravelPath = FlightPath.pathTo(stack, hoveringX, hoveringY);
         if (shipTravelPath == null)
             return;
 
@@ -1287,13 +1272,6 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
     }
     public int stackW()                 { return boxW; }
     public int stackH()                 { return boxH; }
-    /* public Rectangle stackBox(CombatStack st) {
-    	Rectangle rect = combatGrids[st.x][st.y];
-    	return new Rectangle(
-    			(int) (rect.x+ (st.offsetX*rect.width)),
-    			(int) (rect.y+ (st.offsetY*rect.height)),
-    			boxW, boxH);
-    } */
 
     private void paintMenuBarToImage(Graphics2D g, int x, int y, int w, int h) {
         if (menuBackC == null) {

@@ -66,7 +66,7 @@ public final class SpacePirates extends SpaceMonster {
 			sys.planet().removeExcessWaste();
 		}		
 	}
-	protected BufferedImage getMapImage()		{
+	@Override protected BufferedImage getMapImage()	{
 		if (monsterImage == null)
 			monsterImage = super.getMapImage();
 		return monsterImage;
@@ -359,5 +359,5 @@ public final class SpacePirates extends SpaceMonster {
 		stackScale *= options().aiProductionModifier();
 		return stackScale;
 	}
-	private int pirateLevel(float maxTechLvl)	{ return (int) ((maxTechLvl-1)/5); }
+	private static int pirateLevel(float maxTechLvl)	{ return (int) ((maxTechLvl-1)/5); }
 }

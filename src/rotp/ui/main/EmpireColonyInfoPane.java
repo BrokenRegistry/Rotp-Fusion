@@ -22,7 +22,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.InputEvent;
@@ -43,6 +42,7 @@ import rotp.model.galaxy.StarSystem;
 import rotp.model.planet.Planet;
 import rotp.ui.BasePanel;
 import rotp.ui.SystemViewer;
+import rotp.util.AdviceBox;
 
 public final class EmpireColonyInfoPane extends BasePanel {
     private static final long serialVersionUID = 1L;
@@ -106,8 +106,8 @@ public final class EmpireColonyInfoPane extends BasePanel {
     private abstract class EmpireDataPane extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
         private static final long serialVersionUID = 1L;
         protected Shape hoverBox;
-        protected Rectangle basesBox = new Rectangle();
-        protected Rectangle titleBox = new Rectangle();
+		protected AdviceBox basesBox = new AdviceBox();
+		protected AdviceBox titleBox = new AdviceBox();
         EmpireDataPane()	{ init(); }
         private void init()	{
             setOpaque(true);
@@ -215,18 +215,14 @@ public final class EmpireColonyInfoPane extends BasePanel {
         }
 		@Override public void mouseDragged(MouseEvent e)	{ parentUI.enterCurrentPane(this); }
 		@Override public void mouseMoved(MouseEvent e)		{
-			setModifierKeysState(e);
 			parentUI.enterCurrentPane(this);
-            int x = e.getX();
-            int y = e.getY();
-            Shape newHover = null;
-            if (titleBox.contains(x,y))
-                newHover = titleBox;
-            if (newHover != hoverBox) {
-                hoverBox = newHover;
-                repaint();
-            }
-        }
+			int x = e.getX();
+			int y = e.getY();
+			if (titleBox.contains(x,y))
+				hoverBox = hoverBox(titleBox, hoverBox);
+			else
+				hoverBox = hoverBox(null, hoverBox);
+		}
 		@Override public void mouseWheelMoved(MouseWheelEvent e)	{ parentUI.enterCurrentPane(this); }
         @Override public void paintComponent(Graphics g0)	{
             Graphics2D g = (Graphics2D) g0;
@@ -246,8 +242,9 @@ public final class EmpireColonyInfoPane extends BasePanel {
 
             int x0 = s5;
             int y0 = getHeight()-s6;
+            int w = getWidth();
 
-            // calc max width for label and try to get largest font (from 13-16) in it            
+            // calc max width for label and try to get largest font (from 13-16) in it
             int x1 = 0;
             int x2 = 0;
             int sw1 = 0;
@@ -260,17 +257,19 @@ public final class EmpireColonyInfoPane extends BasePanel {
                 g.setFont(narrowFont(fontSize));
                 int sw0 = strDataLabel == null ? 0 : g.getFontMetrics().stringWidth(strDataLabel);
                 if (sw0 > 0)
-                    x1 = getWidth()-rightMargin()-sw0;
+                    x1 = w-rightMargin()-sw0;
                 else {
                     sw1 = g.getFontMetrics().stringWidth(strData1)+s1;
                     sw2 = g.getFontMetrics().stringWidth(strData2);
-                    x2 = getWidth()-rightMargin()-sw2;
+                    x2 = w-rightMargin()-sw2;
                     x1 = x2-sw1;
                 }
                 titleMaxW = x1-x0-s2;
                 textFits = g.getFontMetrics().stringWidth(strTitle) <= titleMaxW;
             }
             titleBox.setBounds(x0, y0-s17, titleMaxW, s20);
+            if (!(this instanceof EmpireBasesPane))
+            	titleBox.setSelectionBounds(x0, y0-s17, w, s20);
 
             if (governed) {
 	            if (hoverBox == titleBox)
@@ -306,6 +305,11 @@ public final class EmpireColonyInfoPane extends BasePanel {
     }
     private final class EmpirePopPane extends EmpireDataPane {
         private static final long serialVersionUID = 1L;
+		EmpirePopPane()	{
+			basesBox.init(this, null, null, "INFO_PANEL_POPULATION_HELP");
+			titleBox.init(this, null, null, "INFO_PANEL_POPULATION_HELP");
+		}
+
         @Override public String textureName()		{ return parentUI.subPanelTextureName(); }
         @Override protected String titleString()	{
             if (isShiftDown() || isAltDown())
@@ -334,6 +338,10 @@ public final class EmpireColonyInfoPane extends BasePanel {
     }
     private final class EmpireFactoriesPane extends EmpireDataPane {
         private static final long serialVersionUID = 1L;
+		EmpireFactoriesPane()	{
+			basesBox.init(this, null, null, "INFO_PANEL_FACTORIES_HELP");
+			titleBox.init(this, null, null, "INFO_PANEL_FACTORIES_HELP");
+		}
         @Override public String textureName()		{ return parentUI.subPanelTextureName(); }
         @Override protected String titleString()	{ return text("MAIN_COLONY_FACTORIES"); }
         @Override protected boolean urged(Colony c)	{ return c.govUrgeFactories(); }
@@ -362,6 +370,11 @@ public final class EmpireColonyInfoPane extends BasePanel {
     }
     private final class EmpireShieldPane extends EmpireDataPane {
         private static final long serialVersionUID = 1L;
+		EmpireShieldPane()	{
+			basesBox.init(this, null, null, "INFO_PANEL_SHIELD_HELP");
+			titleBox.init(this, null, null, "INFO_PANEL_SHIELD_HELP");
+		}
+
         @Override public String textureName()		{ return parentUI.subPanelTextureName(); }
         @Override protected String titleString()	{ return text("MAIN_COLONY_SHIELD"); }
         @Override protected boolean urged(Colony c)	{ return c.govUrgeShield(); }
@@ -369,7 +382,7 @@ public final class EmpireColonyInfoPane extends BasePanel {
         @Override protected int value(List<Colony> colonies)	{ 
             int val = 0;
             for (Colony c: colonies)
-                val += (int) c.defense().shieldLevel(); 
+                val += c.defense().shieldLevel(); 
             return val;
         }
         @Override protected int maxValue(List<Colony> colonies)	{ 
@@ -397,7 +410,10 @@ public final class EmpireColonyInfoPane extends BasePanel {
         private boolean allowAdjust = true;
         private List<Colony> colonies = new ArrayList<>();
         private int maxBasesValue = 0;
-        public EmpireBasesPane() { super(); }
+		public EmpireBasesPane() {
+			basesBox.init(this, null, null, "INFO_PANEL_BASES_HELP");
+			titleBox.init(this, null, null, "INFO_PANEL_BASES_HELP");
+		}
         void incrBases(int inc, boolean shiftDown, boolean ctrlDown)  {
             final StarSystem sys = parentUI.systemViewToDisplay();
             if (sys == null)
@@ -510,26 +526,22 @@ public final class EmpireColonyInfoPane extends BasePanel {
             	return;
             parentUI.repaint();
         }
-        @Override public void mouseMoved(MouseEvent e)		{
-        	parentUI.enterCurrentPane(this);
-            int x = e.getX();
-            int y = e.getY();
+		@Override public void mouseMoved(MouseEvent e)		{
+			parentUI.enterCurrentPane(this);
+			int x = e.getX();
+			int y = e.getY();
 
-            Shape newHover = null;
-            if (titleBox.contains(x,y))
-                newHover = titleBox;
-            else if (upArrow.contains(x,y))
-                newHover = upArrow;
-            else if (downArrow.contains(x,y))
-                newHover = downArrow;
-            else if (basesBox.contains(x,y))
-                newHover = basesBox;
-
-            if (newHover != hoverBox) {
-                hoverBox = newHover;
-                repaint();
-            }
-        }
+			if (titleBox.contains(x,y))
+				hoverBox = hoverBox(titleBox, hoverBox);
+			else if (upArrow.contains(x,y))
+				hoverBox = hoverBox(upArrow, hoverBox);
+			else if (downArrow.contains(x,y))
+				hoverBox = hoverBox(downArrow, hoverBox);
+			else if (basesBox.contains(x,y))
+				hoverBox = hoverBox(basesBox, hoverBox);
+			else
+				hoverBox = hoverBox(null, hoverBox);
+		}
         @Override public void mouseWheelMoved(MouseWheelEvent e)	{
         	parentUI.enterCurrentPane(this);
             if (e.getWheelRotation() < 0)
@@ -544,6 +556,8 @@ public final class EmpireColonyInfoPane extends BasePanel {
         private void init()		{
             setBackground(backC);
             setOpaque(true);
+			basesBox.init(this, null, null, "INFO_PANEL_PRODUCTION_HELP");
+			titleBox.init(this, null, null, "INFO_PANEL_PRODUCTION_HELP");
         }
         @Override public String textureName()		{ return parentUI.subPanelTextureName(); }
 		@Override protected String titleString()	{

@@ -85,8 +85,8 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
 
     @Override public Rand rng()		{ return randNeb==null? super.rng(): randNeb;}
     private boolean	isRealNebula()	{ return currentQuality > 0;}
-    private float width()			{ return width; }
-    private float height()			{ return height; }
+	private int baseWidth()			{ return (int) width; }
+	private int baseHeight()		{ return (int) height; }
     //public Rectangle.Float shape()	{ return shape; }
     private String name() {
         if (sysId < 1)
@@ -158,16 +158,16 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
         int imgW	= image.getWidth();
         int imgH	= image.getHeight();
         float scale	= sqrt(area / (imgW * imgH));
-        width		= (int) Math.round(wF);
-        height		= (int) Math.round(scale * imgH / hF);
+        width		= Math.round(wF);
+        height		= Math.round(scale * imgH / hF);
         if (buildImage) // BR: to allow a preview later...
         	buildNebulaImage(image);
     }
     private void buildNebulaImage(BufferedImage img) {
-        int w = (int) width()  * 19 * currentQuality;
-        int h = (int) height() * 12 * currentQuality;
+		int w = baseWidth()  * 19 * currentQuality;
+		int h = baseHeight() * 12 * currentQuality;
 		image = newBufferedImage(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
-		baseRNShape = FastImage.from((Image)image).getImageOutline(shapeQuality, adjWidth(), adjHeight(), currentQuality);
+		baseRNShape = FastImage.from(image).getImageOutline(shapeQuality, adjWidth(), adjHeight(), currentQuality);
     	AffineTransform at = new AffineTransform();
         at.translate(x, y);
         realNebulaArea = at.createTransformedShape(baseRNShape);
@@ -286,9 +286,9 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
     	currentQuality	 = requestedQuality;
     	if (requestedQuality > 0)
     		return buildNebulaImage();
-    	
-        int w = (int) width()*19;
-        int h = (int) height()*12;
+
+		int w = baseWidth() * 19;
+		int h = baseHeight() * 12;
 
         int nebR = roll(160,225);
         int nebG = 0;
@@ -348,8 +348,8 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
             //image();
             boolean showLimits = false; // TO DO BR: set to false
             if (showLimits && baseRNShape != null) {
-    			double scaleX = (double) mShape.width / baseRNShape.getBounds2D().getWidth();
-    			double scaleY = (double) mShape.height / baseRNShape.getBounds2D().getHeight();
+    			double scaleX = mShape.width / baseRNShape.getBounds2D().getWidth();
+    			double scaleY = mShape.height / baseRNShape.getBounds2D().getHeight();
     			AffineTransform at = new AffineTransform();
     			at.scale(scaleX, scaleY);
     			Shape scaled = at.createTransformedShape(baseRNShape);
@@ -394,12 +394,12 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
     		image = nextNebula();
     	else
     		image = newBufferedImage(icon(nebulaFile).getImage());
-    	
-        int w = (int) width()  *19 *currentQuality;
-        int h = (int) height() *12 *currentQuality;
-        
+
+		int w = baseWidth()  *19 *currentQuality;
+		int h = baseHeight() *12 *currentQuality;
+
 		image = newBufferedImage(image.getScaledInstance(w, h, Image.SCALE_SMOOTH));
-		baseRNShape = FastImage.from((Image)image).getImageOutline(shapeQuality, adjWidth(), adjHeight(), currentQuality);
+		baseRNShape = FastImage.from(image).getImageOutline(shapeQuality, adjWidth(), adjHeight(), currentQuality);
     	AffineTransform at=new AffineTransform();
         at.translate(x, y);
         realNebulaArea = at.createTransformedShape(baseRNShape);

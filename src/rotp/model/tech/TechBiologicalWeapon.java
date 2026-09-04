@@ -181,9 +181,9 @@ public final class TechBiologicalWeapon extends Tech {
         else if ((source.x > target.x) && (source.y > target.y))
             ySpacing = -lineSpacing;
 
-        float bombSpacing = (float) BasePanel.s10;
-        float bombSize = (float) BasePanel.s2;
-        float noBombSize = (float) BasePanel.s20;
+        float bombSpacing = BasePanel.s10;
+        float bombSize = BasePanel.s2;
+        float noBombSize = BasePanel.s20;
         int bombLinePhase = BasePanel.s2 + BasePanel.s20;
         // "bombing" is 5 parallel and randomly staggered dash lines
         // animation is doing this 4 times

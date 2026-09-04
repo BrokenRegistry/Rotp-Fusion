@@ -45,6 +45,7 @@ import rotp.model.empires.Empire;
 import rotp.model.empires.SystemView;
 import rotp.model.events.RandomEventPlague;
 import rotp.model.events.StarSystemEvent;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions; // modnar: use for shield display selection
 import rotp.model.planet.Planet;
 import rotp.model.planet.Planet.PlanetBaseData;
@@ -735,7 +736,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 
         boolean drawStar = map.parent().drawStar(this);
         if (drawStar) {
-            if (!session().performingTurn()) {
+            if (!GameSession.performingTurn()) {
                 // SystemView sv = pl.sv.view(id);
                 Color c0 = map.parent().alertColor(sv);
                 if (c0 != null) 

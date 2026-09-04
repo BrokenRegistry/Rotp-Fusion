@@ -15,10 +15,14 @@
  */
 package rotp.ui.tech;
 
+import static rotp.ui.game.IAdvisor.ADVISOR;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -34,12 +38,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import rotp.model.empires.Empire;
 import rotp.model.tech.Tech;
 import rotp.model.tech.TechCategory;
 import rotp.ui.BasePanel;
+import rotp.ui.game.AdvisorPanel;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.vipconsole.IVIPListener;
+import rotp.util.AdviceBox;
 
 public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMotionListener,
 												MouseWheelListener, ActionListener, IVIPListener {
@@ -56,8 +64,9 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
 
     private TechCategory category;
     private String hoverTech;
+    private boolean boundNotSet;
 
-    HashMap<String, Rectangle> techBoxes = new HashMap<>();
+    HashMap<String, AdviceBox> techBoxes = new HashMap<>();
     Rectangle techListBox = new Rectangle();
     List<String> availableTechs;
 
@@ -90,6 +99,18 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
         Image img = paintToImage();
         if (img != null)
             g.drawImage(img,0,0,null);
+
+		if (boundNotSet) {
+			boundNotSet = false;
+			try {
+				Point pt = MouseInfo.getPointerInfo().getLocation();
+				SwingUtilities.convertPointFromScreen(pt, this);
+				mouseAt(pt.x, pt.y);
+			}
+			catch (Exception e) {}
+
+			repaint();
+		}
     }
     @Override
     public void animate() {
@@ -111,11 +132,14 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
         dragY = 0;
         techsY = 0;
         finished = false;
-        repaint();
+		initAdvisor();
+		boundNotSet = true;
+
         initConsoleSelection("Select New Technology", false);
     }
     public TechCategory category()        { return category; }
 
+	private String getAdvice(Tech tech)	{ return AllocateTechUI.getTechInfo(tech); }
     private Image paintToImage() {
         if (finished)
             return null;
@@ -172,7 +196,7 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
         int boxHeight = min(h-s30, s20+titleH+s20+max(s100+s100, s40*min(15,techDisplaySize))+footerH);
         int boxTopY = min(scaled(200), (h-boxHeight)*2/3);
         int boxBottomY = boxHeight+boxTopY;
-        
+ 
         // draw main box with shaded borders
         g.setColor(darkBrownShade);
         g.fillRect(boxLeftX-bdr, boxTopY-bdr, boxWidth+bdr+bdr, boxHeight+bdr+bdr);
@@ -187,8 +211,8 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
             y0 += titleLineH;
             drawShadowedString(g, titleLine, 4, x0, y0, SystemPanel.textShadowC, dimWhite);
         }
-        
-        if (footerH > 0) {
+
+        if (footerLines != null) {
             g.setFont(narrowFont(14));
             int y1 = boxBottomY-footerH-s20;
             g.setColor(dimWhite);
@@ -235,7 +259,12 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
             
             int th = techHeight+((lines.size())*s15);
             g.fillRoundRect(x1-s5, y1, techWidth-s5, th, s10, s10);
-            techBoxes.put(id, new Rectangle(x1, y1, techWidth, th));
+
+			AdviceBox box = new AdviceBox(this);
+			box.setBounds(x1, y1, techWidth, th);
+			box.setAdviceHelpText(getAdvice(t));
+			techBoxes.put(id, box);
+
             if (obsolete)
                 g.setColor(grayBrown);
             else
@@ -259,7 +288,7 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
             fullListH = fullListH + th + s5;
         }
         g.setClip(null);
-        
+
         techsYMax = max(0, fullListH-listH);
         if (techsYMax == 0)
             contactsScroller.setBounds(0,0,0,0);
@@ -269,7 +298,7 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
             int scrollX = x1+w1;
             int scrollY =(int) (y0b+s5+(float)listH*techsY/(techsYMax+listH));
             g.setColor(AllocateTechUI.tierBackC);
-            
+
             g.fillRect(scrollX, y0b, scrollW+s3, listH);
             g.setClip(scrollX,y0b+s5,scrollW,h1-s8);
             g.setColor(scrollBarC);
@@ -303,7 +332,6 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
         else if (newHoverIndex > availableTechs.size()-1)
             newHoverIndex = availableTechs.size()-1;
 
-
         if ((newTechIndex != techIndex)
         || (newHoverIndex != hoverIndex)) {
             hoverTech = availableTechs.get(newHoverIndex);
@@ -326,32 +354,39 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
         Tech t = tech(id);
         if (!category().currentTech(t))
             return;
-        
+
         finished = true;
+		if (hoverShape != null) {
+			if (hoverShape instanceof AdviceBox)
+				((AdviceBox) hoverShape).hovering(false);
+			hoverShape = null;
+		}
         log("Tech: ", t.name(), " selected for research");
         repaint();
         session().resumeNextTurnProcessing();
     }
-    private void mouseAt(int x, int y) {
-        Shape prevHover = hoverShape;
-        hoverShape = null;
-        hoverTech = "";
+	private void mouseAt(int x, int y)	{
+		hoverTech = "";
 
-        if (techListBox.contains(x,y)) {
-            for (String t: techBoxes.keySet()) {
-                Rectangle r = techBoxes.get(t);
-                if (r.contains(x, y)) {
-                    hoverShape = r;
-                    hoverTech = t;
-                }
-            }
-        }
-        if (contactsScroller.contains(x,y)) 
-            hoverShape = contactsScroller;
- 
-        if (hoverShape != prevHover)
-            repaint();        
-    }
+		if (techListBox.contains(x,y)) {
+			for (String t: techBoxes.keySet()) {
+				AdviceBox r = techBoxes.get(t);
+				if (r.contains(x, y)) {
+					hoverTech = t;
+					hoverShape = hoverBox(r, hoverShape);
+					return;
+				}
+			}
+		}
+		if (contactsScroller.contains(x,y)) 
+			hoverShape = hoverBox(contactsScroller, hoverShape);
+	}
+	@Override protected boolean isAdvised()	{ return true; }
+	@Override protected void initAdvisor()	{
+		ADVISOR.init(this, AdvisorPanel.SCIENTIST_ADVISOR, player());
+		ADVISOR.setMargins(s3, s3, 0, s50, s50, s50, s25);
+		ADVISOR.setAvatarSize(s160, s200);
+	}
     @Override
     public void mouseClicked(MouseEvent e) { }
     @Override
@@ -398,7 +433,7 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
     public void mouseMoved(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        
+
         if (finished)
             return;
 
@@ -430,14 +465,32 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
             case KeyEvent.VK_PAGE_DOWN: techsY = min(techsYMax,techsY+s100); break;
             case KeyEvent.VK_S:
             case KeyEvent.VK_ENTER:
-                selectTech(hoverTech); return;
-            case KeyEvent.VK_L:
-            	if (e.isAltDown()) {
-            		debugReloadLabels(this);
-            		return;
-            	}
-            	misClick();
-            	return;
+				selectTech(hoverTech);
+				return;
+			case KeyEvent.VK_E:
+				if (e.isAltDown() && e.isControlDown()) {
+					debugReloadLabels("en");
+					return;
+				}
+				misClick();
+				return;
+			case KeyEvent.VK_F:
+				if (e.isAltDown() && e.isControlDown()) {
+					debugReloadLabels("fr");
+					return;
+				}
+				misClick();
+				return;
+			case KeyEvent.VK_L:
+				if (e.isAltDown()) {
+					debugReloadLabels(this);
+					return;
+				}
+				misClick();
+				return;
+			case KeyEvent.VK_F1:
+				toggleOnDemandAdvisor();
+				return;
         }
         if (techsY != prevY) 
             repaint(techListBox);
@@ -480,7 +533,7 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
 
             float techCost = category.costForTech(tech);
             String cost = text("TECH_CHOOSE_RESEARCH_COST", shortFmt(techCost));
-            message += " " + cost; 
+            message += " " + cost;
 
             boolean topTier = tech.quintile() == category.maxResearchableQuintile();
             boolean obsolete = tech.isObsolete(player);

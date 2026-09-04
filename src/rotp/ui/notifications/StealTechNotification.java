@@ -24,7 +24,7 @@ public class StealTechNotification implements TurnNotification {
     int empId;
 
     public static void create(EspionageMission t, int empId) {
-        GameSession.instance().addTurnNotification(new StealTechNotification(t, empId));
+        GameSession.addTurnNotification(new StealTechNotification(t, empId));
     }
     public StealTechNotification(EspionageMission t, int id) {
         mission = t;

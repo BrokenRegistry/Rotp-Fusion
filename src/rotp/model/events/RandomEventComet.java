@@ -21,6 +21,7 @@ import rotp.model.empires.Empire;
 import rotp.model.galaxy.ObjectNamedByKey;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 import rotp.model.ships.ShipDesignLab;
 import rotp.ui.notifications.GNNNotification;
@@ -48,7 +49,7 @@ public class RandomEventComet extends AbstractRandomEvent {
     }
     @Override
     public void trigger(Empire emp) {
-    	if (emp == null || emp.extinct()) {
+    	if (emp.extinct()) {
             empId = emp.id;
             sysId = emp.homeSysId(); // Former home of extinct empire
     	}
@@ -132,7 +133,7 @@ public class RandomEventComet extends AbstractRandomEvent {
         StarSystem sys = galaxy().system(sysId);
         sys.clearEvent();
 
-        session().removePendingNotification("GNN_Event_Comet");
+        GameSession.removePendingNotification("GNN_Event_Comet");
         if ((empId != Empire.NULL_ID) && player().sv.hasName(sysId))
             GNNNotification.notifyRandomEvent(goodEndText(), "GNN_Event_Comet");
     }

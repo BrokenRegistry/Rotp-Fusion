@@ -54,7 +54,7 @@ public final class SpaceTestRepulsor extends SpaceMonster {
 			else
 				addCombatStack(new CombatStackTestRepulsor(this, imageKey, stackLevel(), id, isFusion, shieldColor));
 	}
-	protected BufferedImage getMapImage()		{
+	@Override protected BufferedImage getMapImage()	{
 		if (monsterImage == null)
 			monsterImage = super.getMapImage();
 		return monsterImage;

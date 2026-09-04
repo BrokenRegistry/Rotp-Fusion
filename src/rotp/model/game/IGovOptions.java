@@ -57,9 +57,8 @@ public interface IGovOptions {
 		list.put(STARGATES_ALL,			GOV_UI + "STARGATES_ALL");
 		return list;
 	}
-	static boolean isGameMode()		{ return GameSession.instance().isReady() && RulesetManager.current().isGameMode(); }
 	static void makesBudgetObsolete(Object id) {
-		if(isGameMode())
+		if(GameSession.isGameMode())
 			GameSession.instance().galaxy().player().budget().makeBudgetOptionsObsolete();
 	}
 
@@ -69,6 +68,9 @@ public interface IGovOptions {
 			.setIncrements(1, 5, 20);
 	ParamBoolean shieldAlones		= new ParamBoolean(GOV_UI, "SHIELD_WITHOUT_BASES", false);
 	default boolean shieldAlones()	{ return shieldAlones.get(); }
+
+	ParamBoolean raiseFundFromUngoverned		= new ParamBoolean(GOV_UI, "RAISE_FUND_UNGOVERNED", false);
+	ParamBoolean grantFundToUngoverned			= new ParamBoolean(GOV_UI, "GRANT_FUND_UNGOVERNED", false);
 
 	ParamBoolean autospendImmediateTransfer		= new ParamBoolean(GOV_UI, "AUTOSPEND_IMMEDIATE", false);
 
@@ -82,8 +84,8 @@ public interface IGovOptions {
 			.isUpdateDef(true)
 			.setIsGhostMethod(IGovOptions::notGrantingFunds)
 			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
-	ParamInteger autospendMaxIndustryPct		= new ParamInteger(GOV_UI, "AUTOSPEND_MAX_IND", 50)
-			.setLimits(10, 80)
+	ParamInteger autospendMaxIndustryPct		= new ParamInteger(GOV_UI, "AUTOSPEND_MAX_IND_PCT", 35)
+			.setLimits(10, 75)
 			.setIncrements(1, 5, 20)
 			.pctValue(true)
 			.setIsGhostMethod(IGovOptions::notGrantingFunds)
@@ -223,14 +225,14 @@ public interface IGovOptions {
 		@Override public Boolean set(Boolean b)	{
 			Boolean val = super.set(b);
 			Galaxy galaxy = GameSession.instance().galaxy();
-			if (isGameMode())
+			if (GameSession.isGameMode())
 				galaxy.player().redoGovTurnDecisionsRich();
 			return val;
 		}
 		@Override public Boolean silentSet(Boolean b)	{
 			Boolean val = super.silentSet(b);
 			Galaxy galaxy = GameSession.instance().galaxy();
-			if (isGameMode())
+			if (GameSession.isGameMode())
 				galaxy.player().redoGovTurnDecisionsRich();
 			return val;
 		}

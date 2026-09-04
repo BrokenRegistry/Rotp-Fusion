@@ -20,6 +20,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 
 import rotp.model.empires.Empire;
+import rotp.model.game.GameSession;
 
 public final class ColonyResearch extends ColonySpendingCategory {
     private static final long serialVersionUID = 1L;
@@ -64,7 +65,7 @@ public final class ColonyResearch extends ColonySpendingCategory {
     	return  planet().researchAdj()
     			* empire().researchBonusPct()
     			* empire().researchNoSpyBonusPct()
-    			* session().researchBonus();
+    			* GameSession.researchBonus();
     }
     @Override
     public boolean warning()      {

@@ -1034,7 +1034,9 @@ public class AIShipCaptain implements Base, ShipCaptain {
         List<CombatStack> foes = new ArrayList<>();
         temp = new ArrayList<>(enemies());
         for (CombatStack enemy: temp) {
-            if (enemy!=null && enemy.isArmed())
+        	if(enemy == null)
+        		continue;
+            if (enemy.isArmed())
                 foes.add(enemy);
             if(enemy.isColony())
             {

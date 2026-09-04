@@ -27,7 +27,7 @@ public class ColonizeSystemNotification implements TurnNotification, Base {
     private final ShipDesign design;
 
     public static void create(int systemId, ShipFleet fl, ShipDesign d) {
-        GameSession.instance().addTurnNotification(new ColonizeSystemNotification(systemId, fl, d));
+        GameSession.addTurnNotification(new ColonizeSystemNotification(systemId, fl, d));
     }
     private ColonizeSystemNotification(int systemId, ShipFleet fl, ShipDesign d) {
         sysId = systemId;

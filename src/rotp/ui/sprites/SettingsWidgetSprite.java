@@ -19,26 +19,21 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
-import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.options.AllSubUI;
 import rotp.ui.util.ParamSubUI;
 
-public class SettingsWidgetSprite extends MapControlSprite {
+public final class SettingsWidgetSprite extends MapControlSprite {
 	private BufferedImage image;
 	private BufferedImage image() {
 		if (image == null)
-			image = settingsIcon(width, height, BasePanel.s12);
+			image = settingsIcon(width, height, s12);
 		return image;
 	}
-	public SettingsWidgetSprite(int xOff, int yOff, int w, int h) {
-		xOffset = scaled(xOff);
-		yOffset = scaled(yOff);
-		width = scaled(w);
-		height = scaled(h);
-	}
+	public SettingsWidgetSprite(int xOff, int yOff, int w, int h)	{ super(xOff, yOff, w, h, "SETTINGS_MOD_SETTINGS_OPTIONS_UI_DESC"); }
 	@Override
 	public boolean acceptDoubleClicks()		 { return false; }
 	@Override
@@ -54,7 +49,7 @@ public class SettingsWidgetSprite extends MapControlSprite {
 		int fontSize = 13;
 		int labelW;
 		String detail;
-		List<String> detailLines = null;
+		List<String> detailLines = new ArrayList<>();
 
 		if (hovering) {
 			g2.setFont(narrowFont(fontSize));
@@ -67,7 +62,7 @@ public class SettingsWidgetSprite extends MapControlSprite {
 				w0 += labelW/10;
 				detailLines = wrappedLines(g2, detail, w0);
 			}
-			w = width + BasePanel.s15 + w0;
+			w = width + s15 + w0;
 		}
 		drawBackground(map, g2, w);
 
@@ -76,14 +71,14 @@ public class SettingsWidgetSprite extends MapControlSprite {
 		if (hovering) {
 			g2.setColor(Color.lightGray);
 			g2.setFont(narrowFont(fontSize));
-			int y1 = startY + height - BasePanel.s17;
-			int x1 = startX + width + BasePanel.s10;
+			int y1 = startY + height - s17;
+			int x1 = startX + width + s10;
 			if (detailLines.size() == 1)
-				y1 += BasePanel.s8;
+				y1 += s8;
 			for (String line: detailLines) {
 				drawString(g2, line, x1, y1);
-				y1 += BasePanel.s14;
-			}			
+				y1 += s14;
+			}
 		}
 		drawBorder(map, g2, w, map.parent().shadeC(), false);
 	}

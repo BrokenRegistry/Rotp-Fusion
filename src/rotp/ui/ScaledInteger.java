@@ -114,9 +114,12 @@ public interface ScaledInteger {
 	int s180 = RotPUI.scaledSize(180);
 	int s190 = RotPUI.scaledSize(190);
 	int s200 = RotPUI.scaledSize(200);
+	int s250 = RotPUI.scaledSize(250);
 	int s300 = RotPUI.scaledSize(300);
 	int s400 = RotPUI.scaledSize(400);
 	int s500 = RotPUI.scaledSize(500);
+	int s600 = RotPUI.scaledSize(600);
+	int s700 = RotPUI.scaledSize(700);
 
 	Stroke stroke1 = new BasicStroke(s1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: round cap and join
 	Stroke stroke2 = new BasicStroke(s2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // modnar: round cap and join

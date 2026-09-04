@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 import rotp.model.ships.Design;
 import rotp.model.ships.DesignStargate;
@@ -166,7 +167,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 				placeNewShipsInOrbit(shipDesign, newShips);
 				if (emp.isPlayerControlled()) {
 					log(colony().name(), " has constructed: ", str(newShips), " ", design.name());
-					session().addShipsConstructed(shipDesign,  newShips);
+					GameSession.addShipsConstructed(shipDesign,  newShips);
 				}
 			}
 		}

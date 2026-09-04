@@ -37,7 +37,7 @@ final class GalaxySwirlClustersShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 			BASE_NAME, 1,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_SWIRLCLUSTERS_0",
 				"SETUP_SWIRLCLUSTERS_1",
 				"SETUP_SWIRLCLUSTERS_2",
@@ -73,7 +73,7 @@ final class GalaxySwirlClustersShape extends GalaxyShape {
     }
     @Override
     public void setRandom(Point.Float pt) {
-		float gW = (float) galaxyWidthLY();
+		float gW = galaxyWidthLY();
 
 		// modnar: choose swirl size, number of clusters, and cluster radii with options1
 		// scale up the swirl size with size of map
@@ -81,7 +81,7 @@ final class GalaxySwirlClustersShape extends GalaxyShape {
 		// scale cluster radius with ~numSwirls
 		float numSwirls = (float) Math.sqrt(Math.sqrt(finalNumberStarSystems)) - 1;
 		int numClusters = (int) Math.floor(Math.sqrt(finalNumberStarSystems)*Math.log(finalNumberStarSystems)/10);
-		float clusterR = (float) (numSwirls + 4.0f) / 1.5f;
+		float clusterR = (numSwirls + 4.0f) / 1.5f;
 		float swirlWidth = 0.05f;
 		float clusterDelta = 0.0f; // distance to displace cluster
 
@@ -90,7 +90,7 @@ final class GalaxySwirlClustersShape extends GalaxyShape {
                 // clusters distributed along spiral
                 numSwirls = (float) Math.sqrt(Math.sqrt(finalNumberStarSystems)) - 1;
                 numClusters = (int) Math.floor(Math.sqrt(finalNumberStarSystems)*Math.log(finalNumberStarSystems)/10);
-                clusterR = (float) (numSwirls + 4.0f) / 1.5f;
+                clusterR = (numSwirls + 4.0f) / 1.5f;
                 clusterDelta = 0.0f;
                 break;
             }
@@ -98,7 +98,7 @@ final class GalaxySwirlClustersShape extends GalaxyShape {
                 // clusters spanning across tighter spirals
                 numSwirls = (float) Math.sqrt(Math.sqrt(finalNumberStarSystems))*1.5f - 1;
                 numClusters = (int) Math.floor(Math.sqrt(finalNumberStarSystems)*Math.log(finalNumberStarSystems)/10);
-                clusterR = (float) (numSwirls + 4.0f) / 1.5f;
+                clusterR = (numSwirls + 4.0f) / 1.5f;
                 clusterDelta = clusterR;
                 break;
             }
@@ -138,15 +138,15 @@ final class GalaxySwirlClustersShape extends GalaxyShape {
                 float xDelta = (float) (0.225f*gW*clusterSelect*Math.cos(numSwirls*clusterSelect*Math.PI/numSteps)/numSteps);
 				float yDelta = (float) (0.225f*gW*clusterSelect*Math.sin(numSwirls*clusterSelect*Math.PI/numSteps)/numSteps);
 
-				float xCluster = (float) (0.5f*gW + galaxyEdgeBuffer() + xDelta);
-				float yCluster = (float) (0.5f*gW + galaxyEdgeBuffer() + yDelta);
+				float xCluster = 0.5f*gW + galaxyEdgeBuffer() + xDelta;
+				float yCluster = 0.5f*gW + galaxyEdgeBuffer() + yDelta;
 
 				float dCluster = (float) Math.sqrt(xDelta*xDelta + yDelta*yDelta);
 
 				// move cluster a distance clusterDelta closer to center, if they are sufficently far away
 				if ((dCluster > clusterR) && (clusterDelta > 0.1f)) {
-					xCluster = (float) ((clusterDelta/dCluster)*(0.5f*gW + galaxyEdgeBuffer()) + (1.0f - (clusterDelta/dCluster))*(0.5f*gW + galaxyEdgeBuffer() + xDelta));
-					yCluster = (float) ((clusterDelta/dCluster)*(0.5f*gW + galaxyEdgeBuffer()) + (1.0f - (clusterDelta/dCluster))*(0.5f*gW + galaxyEdgeBuffer() + yDelta));
+					xCluster = (clusterDelta/dCluster)*(0.5f*gW + galaxyEdgeBuffer()) + (1.0f - (clusterDelta/dCluster))*(0.5f*gW + galaxyEdgeBuffer() + xDelta);
+					yCluster = (clusterDelta/dCluster)*(0.5f*gW + galaxyEdgeBuffer()) + (1.0f - (clusterDelta/dCluster))*(0.5f*gW + galaxyEdgeBuffer() + yDelta);
 				}
 
 				double phiCluster = randY.nextDouble(2 * Math.PI);

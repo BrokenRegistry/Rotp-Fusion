@@ -8,9 +8,9 @@ import java.util.function.Consumer;
 public class Logger {
     public static Consumer<String> logListener = null;
 
-    public static Consumer<String> registerLogListener(Consumer<String> logListener) {
+    public static Consumer<String> registerLogListener(Consumer<String> listener) {
         Consumer<String> oldListener = Logger.logListener;
-        Logger.logListener = logListener;
+        Logger.logListener = listener;
         return oldListener;
     }
 

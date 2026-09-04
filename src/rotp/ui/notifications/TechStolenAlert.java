@@ -22,7 +22,7 @@ public class TechStolenAlert extends GameAlert {
     @SuppressWarnings("unused")
 	private final String techId;
     public static void create(int emp, String t) {
-        GameSession.instance().addAlert(new TechStolenAlert(emp,t));
+        GameSession.addAlert(new TechStolenAlert(emp,t));
     }
     @Override
     public String description() {

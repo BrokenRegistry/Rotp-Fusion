@@ -28,6 +28,7 @@ import rotp.model.empires.EmpireView;
 import rotp.model.empires.SystemView;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
 import rotp.util.Base;
@@ -99,7 +100,7 @@ public final class AIGovernor implements Base, Governor {
         if (col.research().hasCompletedProject()) 
             session().addSystemToAllocate(sys, text("MAIN_ALLOCATE_PROJECT_ENDED", name, col.research().completedProject().projectKey()));
             
-        if (col.hasNewOrders() || (col.allocationRemaining() != 0) || session().awaitingAllocation(sys)) {
+        if (col.hasNewOrders() || (col.allocationRemaining() != 0) || GameSession.awaitingAllocation(sys)) {
             baseSetPlayerAllocations(col);
             col.validate();
         }

@@ -29,6 +29,7 @@ import rotp.model.ai.interfaces.Scientist;
 import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.model.ships.ShipDesign;
 import rotp.model.tech.Tech;
 import rotp.model.tech.TechAmoebaEatShips;
@@ -522,7 +523,7 @@ public class AIScientist implements Base, Scientist {
             Tech firstTech = techs.get(0);
             // we stop asking for user selection once we finished Future Tech 1
             if (firstTech.futureTechLevel() < 2) {
-                session().addTurnNotification(new SelectTechNotification(cat));
+                GameSession.addTurnNotification(new SelectTechNotification(cat));
                 return;
             }
         }

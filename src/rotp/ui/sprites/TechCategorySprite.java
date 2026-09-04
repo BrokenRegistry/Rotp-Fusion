@@ -16,7 +16,6 @@
 package rotp.ui.sprites;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import rotp.model.empires.EspionageMission;
@@ -26,7 +25,6 @@ import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.overlay.MapOverlayEspionageMission;
 
 public class TechCategorySprite extends MapSprite {
-    private final Rectangle selectBox = new Rectangle();
     private final int categoryNum;
     private EspionageMission mission;
     private final MapOverlayEspionageMission parent;
@@ -37,18 +35,11 @@ public class TechCategorySprite extends MapSprite {
     }
     public int categoryNum()   { return categoryNum;  }
     public String categoryId() { return TechCategory.id(categoryNum); }
-    public Rectangle box()     { return selectBox; }
 
-    public void setBounds(int x, int y, int w, int h) {
-        selectBox.setBounds(x,y,w,h);
-    }
     public void espionage(EspionageMission ct) { mission = ct; }
     private Tech tech()   { return mission.techChoice(categoryId()); }
 
-    @Override
-    public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-        return (tech() != null) && selectBox.contains(x,y);
-    }
+	@Override public boolean isSelectableAt(GalaxyMapPanel map, int x, int y)	{ return (tech() != null) && super.isSelectableAt(map, x, y); }
     @Override
     public void draw(GalaxyMapPanel map, Graphics2D g2) { }
     @Override

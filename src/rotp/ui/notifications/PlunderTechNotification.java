@@ -24,7 +24,7 @@ public class PlunderTechNotification implements TurnNotification {
     int empId;
 
     public static void create(String t, int s, int e) {
-        GameSession.instance().addTurnNotification(new PlunderTechNotification(t,s,e));
+        GameSession.addTurnNotification(new PlunderTechNotification(t,s,e));
     }
     public PlunderTechNotification(String t, int s, int e) {
         techId = t;

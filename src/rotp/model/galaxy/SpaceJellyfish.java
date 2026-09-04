@@ -52,7 +52,7 @@ public final class SpaceJellyfish extends GuardianMonsters {
 		super.initCombat();
 		addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));
 	}
-	protected BufferedImage getMapImage()		{
+	@Override protected BufferedImage getMapImage()	{
 		if (monsterImage == null)
 			monsterImage = super.getMapImage();
 		return monsterImage;

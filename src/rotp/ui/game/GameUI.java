@@ -425,37 +425,37 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
             imageKey2 = random(backImgKeys);
         Color enabledC   = menuEnabled[0];
         Color disabledC  = menuDisabled[0];
-        Color hoverC     = logoFore[1];
-        Color depressedC = menuDepressed[1];
+        Color hovCol     = logoFore[1];
+        Color depressCol = menuDepressed[1];
         Color shadedC    = menuShade[1];
         // int w = getWidth();
-        shrinkText      = new BaseText(this, false,20,   10,24,  enabledC, disabledC, hoverC, depressedC, shadedC, 0, 0, 0);
-        enlargeText     = new BaseText(this, false,20,    0,24,  enabledC, disabledC, hoverC, depressedC, shadedC, 0, 0, 0);
+        shrinkText      = new BaseText(this, false,20,   10,24,  enabledC, disabledC, hovCol, depressCol, shadedC, 0, 0, 0);
+        enlargeText     = new BaseText(this, false,20,    0,24,  enabledC, disabledC, hovCol, depressCol, shadedC, 0, 0, 0);
         enlargeText.preceder(shrinkText);
-        winSizeText        = new BaseText(this, false,20,    0,24,  enabledC, disabledC, hoverC, depressedC, shadedC, 0, 0, 0);
+        winSizeText        = new BaseText(this, false,20,    0,24,  enabledC, disabledC, hovCol, depressCol, shadedC, 0, 0, 0);
         winSizeText.preceder(enlargeText);
-        continueText    = new BaseText(this, true, 45,   0, 340,  enabledC, disabledC, hoverC, depressedC, shadedC, 1, 1, 8);
-        newGameText     = new BaseText(this, true, 45,   0, 385,  enabledC, disabledC, hoverC, depressedC, shadedC, 1, 1, 8);
-        loadGameText    = new BaseText(this, true, 45,   0, 430,  enabledC, disabledC, hoverC, depressedC, shadedC, 1, 1, 8);
-        saveGameText    = new BaseText(this, true, 45,   0, 475,  enabledC, disabledC, hoverC, depressedC, shadedC, 1, 1, 8);
-        settingsText    = new BaseText(this, true, 45,   0, 520,  enabledC, disabledC, hoverC, depressedC, shadedC, 1, 1, 8);
-        manualText      = new BaseText(this, true, 45,   0, 565,  enabledC, disabledC, hoverC, depressedC, shadedC, 1, 1, 8);
-        exitText        = new BaseText(this, true, 45,   0, 610,  enabledC, disabledC, hoverC, depressedC, shadedC, 1, 1, 8);
-        restartText     = new BaseText(this, true, 45,   0, 430,  enabledC, disabledC, hoverC, depressedC, shadedC, 1, 1, 8);
-        versionText     = new BaseText(this, false,16,   5, -35,  enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 0, 1);
-        discussText     = new BaseText(this, false,22,   5, -10,  enabledC, disabledC, hoverC, depressedC, Color.black, 1, 1, 1);
-        developerText   = new BaseText(this, false,16, -210,-95,  enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 1, 1);
-        artistText      = new BaseText(this, false,16, -210,-78,  enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 1, 1);
-        graphicDsnrText = new BaseText(this, false,16, -210,-61,  enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 1, 1);
-        writerText      = new BaseText(this, false,16, -210,-44,  enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 1, 1);
-        soundText       = new BaseText(this, false,16, -210,-27,  enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 1, 1);
-        translatorText  = new BaseText(this, false,16, -210,-10,  enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 1, 1);
-        slideshowText   = new BaseText(this, false,16, -210,-10,  enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 1, 1);
-        lastVersionText = new BaseText(this, false,15,   5, -75,  enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 0, 1);
-        newVersionText  = new BaseText(this, false,15,   5, -55,  enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 0, 1);
-		lastVerJarText	= new BaseText(this, false,15,   5, -95,  enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 0, 1);
-		lastVerMiniText	= new BaseText(this, false,15,   5, -115, enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 0, 1);
-		lastVerExeText	= new BaseText(this, false,15,   5, -135, enabledC,  enabledC, hoverC, depressedC, Color.black, 1, 0, 1);
+        continueText    = new BaseText(this, true, 45,   0, 340,  enabledC, disabledC, hovCol, depressCol, shadedC, 1, 1, 8);
+        newGameText     = new BaseText(this, true, 45,   0, 385,  enabledC, disabledC, hovCol, depressCol, shadedC, 1, 1, 8);
+        loadGameText    = new BaseText(this, true, 45,   0, 430,  enabledC, disabledC, hovCol, depressCol, shadedC, 1, 1, 8);
+        saveGameText    = new BaseText(this, true, 45,   0, 475,  enabledC, disabledC, hovCol, depressCol, shadedC, 1, 1, 8);
+        settingsText    = new BaseText(this, true, 45,   0, 520,  enabledC, disabledC, hovCol, depressCol, shadedC, 1, 1, 8);
+        manualText      = new BaseText(this, true, 45,   0, 565,  enabledC, disabledC, hovCol, depressCol, shadedC, 1, 1, 8);
+        exitText        = new BaseText(this, true, 45,   0, 610,  enabledC, disabledC, hovCol, depressCol, shadedC, 1, 1, 8);
+        restartText     = new BaseText(this, true, 45,   0, 430,  enabledC, disabledC, hovCol, depressCol, shadedC, 1, 1, 8);
+        versionText     = new BaseText(this, false,16,   5, -35,  enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 0, 1);
+        discussText     = new BaseText(this, false,22,   5, -10,  enabledC, disabledC, hovCol, depressCol, Color.black, 1, 1, 1);
+        developerText   = new BaseText(this, false,16, -210,-95,  enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 1, 1);
+        artistText      = new BaseText(this, false,16, -210,-78,  enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 1, 1);
+        graphicDsnrText = new BaseText(this, false,16, -210,-61,  enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 1, 1);
+        writerText      = new BaseText(this, false,16, -210,-44,  enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 1, 1);
+        soundText       = new BaseText(this, false,16, -210,-27,  enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 1, 1);
+        translatorText  = new BaseText(this, false,16, -210,-10,  enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 1, 1);
+        slideshowText   = new BaseText(this, false,16, -210,-10,  enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 1, 1);
+        lastVersionText = new BaseText(this, false,15,   5, -75,  enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 0, 1);
+        newVersionText  = new BaseText(this, false,15,   5, -55,  enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 0, 1);
+		lastVerJarText	= new BaseText(this, false,15,   5, -95,  enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 0, 1);
+		lastVerMiniText	= new BaseText(this, false,15,   5, -115, enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 0, 1);
+		lastVerExeText	= new BaseText(this, false,15,   5, -135, enabledC,  enabledC, hovCol, depressCol, Color.black, 1, 0, 1);
 
         developerText.disabled(true);
         artistText.disabled(true);
@@ -828,8 +828,8 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         String filename = manualFilePath();
         return readerExists(filename);
     }
-    public	boolean canContinue()    { return session().status().inProgress() || session().hasRecentSession(); }
-    private	boolean canRecenStart()  { return session().hasRecentStartSession(); }
+    public	boolean canContinue()    { return session().status().inProgress() || GameSession.hasRecentSession(); }
+    private	boolean canRecenStart()  { return GameSession.hasRecentStartSession(); }
     private boolean canNewGame()     { return true; }
     private boolean canLoadGame()    { return true; }
     private boolean canSaveGame()    { return session().status().inProgress() || isCtrlDown(); }
@@ -958,7 +958,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 			}
 		}
 	}
-    private void versionAction(MouseEvent e) {
+    private void versionAction() {
     		buttonClick();
     		checkForUpdate();
     		checkedForUpdate = true;
@@ -1124,6 +1124,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
             File userManual = new File (tempOutput.toFile().getPath());
             if (userManual.exists()) 
                 Desktop.getDesktop().open(userManual);
+            manualAsStream.close();
         } catch (IOException e) {}
     }
     private void loadOptions()	{
@@ -1227,12 +1228,10 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     private void exitGame() {
         if (canExit()) {
             buttonClick();
-            GameSession.instance().exit();
+            GameSession.exit();
         }
     }
-    private void restartGame() {
-        Rotp.restart();
-    }
+	private static void restartGame()	{ Rotp.restart(); }
     private void selectLanguage(int i) {
         softClick();
 		boolean resetCRUI = LanguageManager.selectedLanguage() != i;
@@ -1309,7 +1308,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         else if (enlargeText.contains(x,y))
             expandFrame();
         else if (versionText.contains(x,y))
-        	versionAction(e);
+        	versionAction();
 		else if (lastVersionText.contains(x,y))
 			openUrlPage(gitInfoLast.githubLink());
 		else if (lastVerJarText.contains(x,y))
@@ -1415,7 +1414,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         private boolean fontsInitialized = false;
         private boolean fontsReady = false;
         private Rectangle[] lang;
-        private Rectangle hoverBox;
+        private Rectangle hovBox;
         private GameUI parent;
         private GameLanguagePane(GameUI ui) {
             parent = ui;
@@ -1464,24 +1463,24 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         public void paintComponent(Graphics g0) {
             Graphics2D g = (Graphics2D) g0;
             super.paintComponent(g);
-            int w = getWidth();
-            int h = getHeight();
+            int dw = getWidth();
+            int dh = getHeight();
             g.setColor(langShade());
             int topM = s35;
             int lineH = s17;
-            g.fillRoundRect(0,topM,w,h-topM,s10,s10);
+            g.fillRoundRect(0,topM,dw,dh-topM,s10,s10);
             int y0 = topM;
             for (int i=0; i<names.size(); i++) {
                 String code = codes.get(i);
                 String name = names.get(i);
                 Font f = FontManager.current().languageFont(code);
                 g.setFont(f);
-                Color c0 = hoverBox == lang[i] ? Color.yellow : Color.white;
+                Color c0 = hovBox == lang[i] ? Color.yellow : Color.white;
                 g.setColor(c0);
                 y0 += lineH;
                 int sw = g.getFontMetrics().stringWidth(name);
-                drawString(g,name, w-sw-s5, y0);
-                lang[i].setBounds(w-sw-s5, y0-lineH, sw+s5, lineH);
+                drawString(g,name, dw-sw-s5, y0);
+                lang[i].setBounds(dw-sw-s5, y0-lineH, sw+s5, lineH);
             }
         }
         @Override
@@ -1493,7 +1492,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         @Override
         public void mouseReleased(MouseEvent e) {
             for (int i=0;i<lang.length;i++) {
-                if (hoverBox == lang[i]) {
+                if (hovBox == lang[i]) {
                     selectLanguage(i);
                     break;
                 }
@@ -1503,7 +1502,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         public void mouseEntered(MouseEvent e) { }
         @Override
         public void mouseExited(MouseEvent e) {
-            hoverBox = null;
+            hovBox = null;
             setVisible(false);
         }
         @Override
@@ -1514,16 +1513,16 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
             int x = e.getX();
             int y = e.getY();
             resetSlideshowTimer();
-            Rectangle prevHover = hoverBox;
-            hoverBox = null;
+            Rectangle prevHover = hovBox;
+            hovBox = null;
             for (Rectangle box: lang) {
                 if (box.contains(x,y)) {
-                    hoverBox = box;
+                    hovBox = box;
                     break;
                 }
             }
 
-            if (hoverBox != prevHover)
+            if (hovBox != prevHover)
                 repaint();
         }
 

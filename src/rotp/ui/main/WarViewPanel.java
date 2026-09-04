@@ -304,12 +304,12 @@ class WarViewPanel extends SystemPanel {
 			addMouseListener(this);
 			addMouseMotionListener(this);
 		}
-		private void clickAction(int numClicks)	{ GalaxyMapPanel.warView(false); }
+		private void clickAction()	{ GalaxyMapPanel.warView(false); }
 		private void drawButton(Graphics2D g, LinearGradientPaint gradient, String label, Rectangle actionBox, int x1, int x2)	{
 			int y = s4;
 			int h = getHeight()-s7;
 			int w = x2 - x1;
-			//if (actionBox != null)
+			if (actionBox != null)
 				actionBox.setBounds(x1, y, w, h);
 			g.setColor(buttonShadowC);
 			Stroke prev = g.getStroke();
@@ -349,7 +349,7 @@ class WarViewPanel extends SystemPanel {
 			int x = e.getX();
 			int y = e.getY();
 			if (exitBox.contains(x,y)) {
-				clickAction(e.getClickCount());
+				clickAction();
 				return;
 			}
 		}

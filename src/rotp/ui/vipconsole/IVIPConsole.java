@@ -442,24 +442,17 @@ public interface IVIPConsole extends Base {
 			index --;
 			return super.add(s);
 		}
-	    @Override public Iterator<String> iterator()				{ return ucL().iterator(); }
-	    @Override public ListIterator<String> listIterator()		{ return ucL().listIterator(); }
-	    @Override public ListIterator<String> listIterator(int idx)	{ return ucL().listIterator(idx); }
+		@Override public Iterator<String> iterator()				{ return ucL().iterator(); }
+		@Override public ListIterator<String> listIterator()		{ return ucL().listIterator(); }
+		@Override public ListIterator<String> listIterator(int idx)	{ return ucL().listIterator(idx); }
 
-	    private ArrayList<String> ucL()	{
-	    	ArrayList<String> src = new ArrayList<>((ArrayList<String>) this);
-	    	ArrayList<String> ucL = new ArrayList<>();
-	    	for (String s : src)
-	    		ucL.add(s.toUpperCase());
-	    	return ucL;
-	    }
-//		public boolean contains(String s)		{
-//			for (String str : this) {
-//				if (str.equalsIgnoreCase(s))
-//					return true;
-//			}
-//			return false;
-//		}
+		private ArrayList<String> ucL()	{
+			ArrayList<String> src = new ArrayList<>(this);
+			ArrayList<String> ucL = new ArrayList<>();
+			for (String s : src)
+				ucL.add(s.toUpperCase());
+			return ucL;
+		}
 		public boolean rawContains(String s)	{ return super.contains(s); }
 		public String rawRemove(int idx)		{
 			if (idx >= size())

@@ -25,7 +25,7 @@ public class InvadersKilledAlert  extends GameAlert {
     private final StarSystem system;
     private final int num;
     public static void create(Empire e, StarSystem s, int n) {
-        GameSession.instance().addAlert(new InvadersKilledAlert(e,s,n));
+        GameSession.addAlert(new InvadersKilledAlert(e,s,n));
     }
     @Override
     public String description() {

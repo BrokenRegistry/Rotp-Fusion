@@ -239,7 +239,7 @@ public class ParamList extends AbstractParam<String> {
 	}
 	public String getLangLabel(String keyExt) { return langLabel(getLangLabelKey() + keyExt); }
 	public List<String> getOptions()	{
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		if (isDuplicate()) // Values and labels are swap because values may be redundant
 			list.addAll(valueLabelMap.langLabelList);
 		else
@@ -310,7 +310,7 @@ public class ParamList extends AbstractParam<String> {
 				valueLabelMap.cfgValueList,	// Alternate return
 				this); 						// Parameter
 
-		String input = (String) dialog.showDialog(refreshLevel);
+		String input = dialog.showDialog(refreshLevel);
 		if (input != null && valueLabelMap.getValueIndexIgnoreCase(input) >= 0)
 			set(input);
 	}

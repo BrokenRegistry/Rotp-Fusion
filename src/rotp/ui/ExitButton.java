@@ -20,7 +20,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
@@ -28,19 +27,21 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
+
 import rotp.ui.main.SystemPanel;
+import rotp.util.AdviceBox;
 
 public class ExitButton extends BasePanel implements MouseListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
     private LinearGradientPaint buttonBack;
-    private final Color buttonEdgeC = new Color(41,25,12);
-    private final Color buttonMidC = new Color(187,122,80);
-    private final Color buttonBorderC = new Color(194,181,155);
-    Rectangle hoverBox;
-    Rectangle buttonBox = new Rectangle();
-    int hPad = 0;
-    int vPad = 0;
-    Shape textureClip;
+	private final Color buttonEdgeC = new Color(41,25,12);
+	private final Color buttonMidC = new Color(187,122,80);
+	private final Color buttonBorderC = new Color(194,181,155);
+	private final int hPad;
+	private final int vPad;
+	private final AdviceBox buttonBox = new AdviceBox();
+	private Shape hoverBox;
+	private Shape textureClip;
 
     public ExitButton(int w, int h, int vMargin, int hMargin) {
         hPad = hMargin;
@@ -52,6 +53,7 @@ public class ExitButton extends BasePanel implements MouseListener, MouseMotionL
         setOpaque(false);
         addMouseListener(this);
         addMouseMotionListener(this);
+		buttonBox.init(this, null, "BUTTON_EXIT", "BUTTON_EXIT_HELP");
     }
     @Override
     public String textureName()            { return TEXTURE_BROWN; }
@@ -98,48 +100,37 @@ public class ExitButton extends BasePanel implements MouseListener, MouseMotionL
         Color c1 = hoverBox == buttonBox ? Color.yellow : SystemPanel.whiteText;
         drawShadowedString(g, s, 3, x0, y0, SystemPanel.textShadowC, c1);
     }
-    protected Stroke borderStroke()  { return stroke2; }
-    protected int hPad()             { return hPad; }
-    protected int vPad()             { return vPad; }
-    protected String label()         { return text("BUTTON_EXIT"); }
-    protected void clickAction(int numClicks) {
-    }
-    @Override
-    public void mouseClicked(MouseEvent e) { }
-    @Override
-    public void mousePressed(MouseEvent e) { }
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        if (e.getButton() > 3)
-            return;
-        int x = e.getX();
-        int y = e.getY();
-        if (buttonBox.contains(x,y)) {
-            clickAction(e.getClickCount());
-            return;
-        }
-    }
-    @Override
-    public void mouseEntered(MouseEvent e) { }
-    @Override
-    public void mouseExited(MouseEvent e) {
-        if (hoverBox != null) {
-            hoverBox = null;
-            repaint();
-        }
-    }
-    @Override
-    public void mouseDragged(MouseEvent e) { }
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
-        Rectangle prevHover = hoverBox;
-        hoverBox = null;
-        if (buttonBox.contains(x,y))
-            hoverBox = buttonBox;
-
-        if (hoverBox != prevHover)
-            repaint();
-    }
+	protected AdviceBox getBox()	{ return buttonBox; }
+	protected Stroke borderStroke()	{ return stroke2; }
+	protected int hPad()			{ return hPad; }
+	protected int vPad()			{ return vPad; }
+	protected String label()		{ return text(buttonBox.getLabelKey()); }
+	protected void clickAction(int numClicks)			{ }
+	@Override public void mouseClicked(MouseEvent e)	{ }
+	@Override public void mousePressed(MouseEvent e)	{ }
+	@Override public void mouseReleased(MouseEvent e)	{
+		if (e.getButton() > 3)
+			return;
+		int x = e.getX();
+		int y = e.getY();
+		if (buttonBox.contains(x,y)) {
+			clickAction(e.getClickCount());
+			return;
+		}
+	}
+	@Override public void mouseEntered(MouseEvent e)	{ }
+	@Override public void mouseExited(MouseEvent e)		{
+		if (hoverBox != null) {
+			buttonBox.hovering(false);
+			hoverBox = null;
+			repaint();
+		}
+	}
+	@Override public void mouseDragged(MouseEvent e)	{ }
+	@Override  public void mouseMoved(MouseEvent e)		{
+		if (buttonBox.isSelectableAt(e.getX() ,e.getY()))
+			hoverBox = hoverBox(buttonBox, hoverBox);
+		else
+			hoverBox = hoverBox(null, hoverBox);
+	}
 }

@@ -96,7 +96,7 @@ public class StringList extends ArrayList<String> {
 	@Override public String remove(int id)	{ return id<0 || id>=size()? "" : super.remove(id); }
 	@Override public String toString()	{ return super.toString() + System.lineSeparator() + selectedIndex + " -> " + getFromSelectedIndex(); }
 
-	public String asString(String sep)	{ return String.join(sep, (List<String>)this); }
+	public String asString(String sep)	{ return String.join(sep, this); }
 	public String asString()			{ return asString(SEP); }
 
 	public String getFirst()	{ return size()==0? "" : super.get(0); }

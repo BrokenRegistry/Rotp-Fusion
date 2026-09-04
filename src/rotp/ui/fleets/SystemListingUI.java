@@ -39,6 +39,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import rotp.model.IAdvice;
 import rotp.model.colony.Colony;
 import rotp.model.empires.SystemView;
 import rotp.model.galaxy.StarSystem;
@@ -46,8 +47,10 @@ import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseTextField;
 import rotp.ui.RotPUI;
+import rotp.ui.game.IAdvisor;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.SystemTransportSprite;
+import rotp.util.AdviceBox;
 import rotp.util.Base;
 import rotp.util.Palette;
 
@@ -232,7 +235,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             int colWidth = min(col.width(), w-rightM-x0);
             col.drawHeader(g, x0, y0, colWidth);
             x0 += (col.width() + cellSpacing);
-            sprites.add(new HeaderSprite(col));
+            sprites.add(new HeaderSprite(col, this, colWidth));
         }
         int row1Y = y0;
         //y0 += (rowHeight()+cellSpacing);
@@ -556,7 +559,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 		private final List<Column> columns = new ArrayList<>();
         public void addColumn(Column c)   { columns.add(c); }
     }
-    public abstract class Column implements Base {
+    public abstract class Column implements Base { // TODO
 		static final String YEARS_OR_TURNS = "YEARS_OR_TURNS";
         String headerKey;
         int width;
@@ -1243,36 +1246,35 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         public boolean equalsSprite(Sprite s)  { return this == s; }
         public StarSystem system()             { return null; }
     }
-	private final class HeaderSprite extends Sprite {
+	private final class HeaderSprite extends Sprite implements IAdvice { // TODO
 		private Column column;
-		private HeaderSprite(Column col) {
-            column = col;
-        }
-        @Override
-        public boolean equalsSprite(Sprite s)  { return (s instanceof HeaderSprite) && (((HeaderSprite) s).column == column); }
-        @Override
-        public boolean isSelectableAt(int x, int y) {
-            return (x >= column.x)
-                && (x <= (column.x+column.width))
-                && (y <= column.y)
-                && (y >= column.y-rowHeight());
-        }
-        @Override
-        public void enter() {
+		private AdviceBox adviceBox = new AdviceBox();
+		private HeaderSprite(Column col, BasePanel parent, int colWidth) {
+			column = col;
+			adviceBox.init(parent, null, col.headerKey, col.headerKey + IAdvisor.HELP_KEY);
+			adviceBox.setBounds(column.x+colWidth/2-s5, column.y-rowHeight()+s5, s10, rowHeight());
+			adviceBox.setSelectionBounds(column.x, column.y-rowHeight(), colWidth, rowHeight());
+		}
+		@Override public boolean hovering()	{ return adviceBox.hovering(); }
+		@Override public AdviceBox getBox()	{ return adviceBox; }
+		@Override public boolean equalsSprite(Sprite s)	{
+			return (s instanceof HeaderSprite) && (((HeaderSprite) s).column == column);
+		}
+		@Override public boolean isSelectableAt(int x, int y)	{ return adviceBox.isSelectableAt(x, y); }
+        @Override public void enter()	{
             super.enter();
             if (hoveringHeader != column) {
                 hoveringHeader = column;
                 redrawHeaders = true;
             }
         }
-        @Override
-        public void exit()  {
+        @Override public void exit()	{
             super.exit();
             hoveringHeader = null;
             redrawHeaders = true;
+			adviceBox.hovering(false);
         }
-        @Override
-        public void click() { column.click(); }
+        @Override public void click()	{ column.click(); }
     }
 	private final class RowSprite extends Sprite {
 		private StarSystem system;

@@ -112,11 +112,11 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
         initModel();
     }
     // BR: for restarting with new options
-    public void init(GalaxyCopy oldGalaxy) {
-     	this.oldGalaxy	= oldGalaxy;
-    	restart = true;
-    	init();
-    }
+	public void init(GalaxyCopy oldGal)	{
+	 	oldGalaxy	= oldGal;
+		restart = true;
+		init();
+	}
     public void init() {
         saveFiles.clear();
         saveDates.clear();
@@ -412,7 +412,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
         SwingUtilities.invokeLater(load);
     }
 
-    private GameSession loadObjectData(InputStream is) { // BR: copy from GameSession
+    private static GameSession loadObjectData(InputStream is) { // BR: copy from GameSession
         try {
             GameSession newSession;
             try (InputStream buffer = new BufferedInputStream(is)) {
@@ -442,8 +442,11 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
                     ZipEntry ze = zipFile.entries().nextElement();
                     InputStream zis = zipFile.getInputStream(ze);
                     newSession = loadObjectData(zis);
-                    if (newSession == null) 
-                        throw new RuntimeException(text("LOAD_GAME_BAD_VERSION", filename));
+                    if (newSession == null) {
+                    	zis.close();
+                    	throw new RuntimeException(text("LOAD_GAME_BAD_VERSION", filename));
+                    }
+                    zis.close();
                 }
             }
             session().options(newSession.options()); // Will be updated later
@@ -477,7 +480,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
         repaint();
         buttonClick();
         GameUI.gameName = fileBaseName(s);
-        String dirName = showingBackups ? session().backupDir() : session().saveDir();
+        String dirName = showingBackups ? GameSession.backupDir() : GameSession.saveDir();
 
         if (restart) {
         	restartGame(dirName, s);

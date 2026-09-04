@@ -391,7 +391,7 @@ public final class GameOverUI extends FadeInPanel
             resultText = text("GAME_OVER_COUNCIL_LOSS2", year, pName, pRace, pEmpire, rName, rRace, rEmpire, "", pPlural, pTitle);
         else if (session().status().lostNewRepublic())
             resultText = text("GAME_OVER_COUNCIL_MILITARY_LOSS2", year, pName, pRace, pEmpire, rName, rRace, rEmpire, "", pPlural, pTitle);
-        else if (session().status().lostRebellion()) {
+        else if (session().status().lostRebellion() && ruler != null) {
             String special = ruler.raceText("GAME_OVER_REBELLION_LOSS3", year, pName, pRace, pEmpire, rName, rRace, rEmpire, "", pPlural, pTitle);
             resultText = text("GAME_OVER_REBELLION_LOSS2", year, pName, pRace, pEmpire, rName, rRace, rEmpire, special, pPlural, pTitle);
         }
@@ -409,7 +409,7 @@ public final class GameOverUI extends FadeInPanel
             resultText = text("GAME_OVER_COUNCIL_MILITARY_WIN2", year, pName, pRace, pEmpire, rName, rRace, rEmpire, "", pPlural, pTitle);
         else if (session().status().wonRebellion())
             resultText = text("GAME_OVER_REBELLION_WIN2", year, pName, pRace, pEmpire, rName, rRace, rEmpire, "", pPlural, pTitle);
-        else if (session().status().wonCouncilAlliance()) {
+        else if (session().status().wonCouncilAlliance() && ruler != null) {
             String special = ruler.raceText("GAME_OVER_ALLIANCE_WIN3", year, pName, pRace, pEmpire, rName, rRace, rEmpire, "", pPlural, pTitle);
             resultText = text("GAME_OVER_COUNCIL_ALLIANCE_WIN2", year, pName, pRace, pEmpire, rName, rRace, rEmpire, special, pPlural, pTitle);
         }
@@ -419,7 +419,7 @@ public final class GameOverUI extends FadeInPanel
         resultText = pl.replaceTokens(resultText, "player");
         if (ruler != null)
             resultText = ruler.replaceTokens(resultText, "leader");
-        
+
         return resultText;
     }
     private void advanceMode() {

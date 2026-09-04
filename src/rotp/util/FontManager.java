@@ -15,7 +15,7 @@
  */
 package rotp.util;
 
-import static rotp.model.game.IGameOptions.useFusionFont;
+import static rotp.model.game.IMainOptions.useFusionFont;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -51,7 +51,7 @@ public enum FontManager implements Base {
     public void resetGalaxyFont() { galaxyFont = null; }
     @Override public Font galaxyFont(int size) { // BR: MonoSpaced font for Galaxy
     	if (galaxyFont == null) {
-    		Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>();
+    		Map<TextAttribute, Object> attributes = new HashMap<>();
     		attributes.put(TextAttribute.TRACKING, -0.15);
     		if (useFusionFont.get())
     			galaxyFont = loadFusionFont(15).deriveFont(attributes);
@@ -192,6 +192,7 @@ public enum FontManager implements Base {
         catch (FontFormatException | IOException e) {
             err("FontManager.loadFont -- Exception: " + e.getMessage());
         }
+		try { is.close(); } catch (IOException e) {}
     }
     public void loadLanguageFonts(String baseDir, String langDir) {
         String fontDir = baseDir+"fonts/";
@@ -249,6 +250,7 @@ public enum FontManager implements Base {
         catch (FontFormatException | IOException e) {
             err("FontManager.loadFont -- Exception: " + e.getMessage());
         }
+		try { is.close(); } catch (IOException e) {}
     }
     public Font loadFusionFont(int size) {
 		String filename = FUSION_FONT;
@@ -256,14 +258,14 @@ public enum FontManager implements Base {
         InputStream is = fileInputStream(fontDir+filename);
         if (is == null)
             return loadMonoFont(size);
-
         try {
-        	return Font.createFont(Font.TRUETYPE_FONT, is).deriveFont((float) size);
+        	Font font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont((float) size);
+        	is.close();
+        	return font;
         }
         catch (FontFormatException | IOException e) {}
+		try { is.close(); } catch (IOException e) {}
         return loadMonoFont(size);
     }
-    private Font loadMonoFont(int size) {
-        return new Font(Font.MONOSPACED, Font.PLAIN, size);
-    }
+	private static Font loadMonoFont(int size)	{ return new Font(Font.MONOSPACED, Font.PLAIN, size); }
 }

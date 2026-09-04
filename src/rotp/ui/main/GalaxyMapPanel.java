@@ -61,6 +61,7 @@ import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.galaxy.Transport;
+import rotp.model.game.GameSession;
 import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IMapOptions;
@@ -993,7 +994,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
             for (Ship sh: galaxy().ships.allFleets()) {
             	if (sh != null) {
                     sh.setDisplayed(this);
-                    Sprite spr = (Sprite) sh;
+                    Sprite spr = sh;
                     // if we are drawing the ship, then check if its flight path should be drawn first
                     if ((sh.isDeployed() || sh.retreating() || sh.inTransit() || sh.isRallied())
                     		&& (parent.shouldDrawSprite(sh.pathSprite()) || debugShowAll)) {
@@ -1006,7 +1007,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         	for (SpaceMonster sh: galaxy().spaceMonsters()) {
         		if (sh != null) {
             		sh.setDisplayed(this);
-            		Sprite spr = (Sprite) sh;
+            		Sprite spr = sh;
             		if (sh.pathSprite()!=null)
             			sh.pathSprite().draw(this, g);
             		spr.draw(this, g);
@@ -1052,7 +1053,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
 
         			sh.setDisplayed(this);
                     if (sh.displayed() || debugShowAll) {
-                        Sprite spr = (Sprite) sh;
+                        Sprite spr = sh;
                         // if we are drawing the ship, then check if its flight path should be drawn first
                         if ((sh.isDeployed() || sh.retreating() || sh.inTransit() || sh.isRallied())
                         && (parent.shouldDrawSprite(sh.pathSprite()) || debugShowAll)) {
@@ -1082,7 +1083,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
 
         			sh.setDisplayed(this);
                     if (sh.displayed()) {
-                        Sprite spr = (Sprite) sh;
+                        Sprite spr = sh;
                         if (sh.event!=null && sh.event.notified() && sh.pathSprite()!=null)
                             sh.pathSprite().draw(this, g);
                         spr.draw(this, g);
@@ -1098,7 +1099,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
             	if (sh != null) {
                     sh.setDisplayed(this);
                     if (sh.displayed() || debugShowAll) {
-                        Sprite spr = (Sprite) sh;
+                        Sprite spr = sh;
                         // if we are drawing the ship, then check if its flight path should be drawn first
                         if ((sh.isDeployed() || sh.retreating() || sh.inTransit() || sh.isRallied())
                         && (parent.shouldDrawSprite(sh.pathSprite()) || debugShowAll)) {
@@ -1123,7 +1124,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
             	if (sh != null) {
                     sh.setDisplayed(this);
                     if (sh.displayed()) {
-                        Sprite spr = (Sprite) sh;
+                        Sprite spr = sh;
                         if (sh.event!=null && sh.event.notified() && sh.pathSprite()!=null)
                             sh.pathSprite().draw(this, g);
                         spr.draw(this, g);
@@ -1215,7 +1216,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
                 Sprite closestShip = null;
                 for (Ship sh: ships) {
                     if (sh != null && sh.displayed()) {
-                        Sprite spr = (Sprite) sh;
+                        Sprite spr = sh;
                         if (parent.shouldDrawSprite(spr)
                         && spr.isSelectableAt(this, x1, y1)) {
                             float dist = spr.selectDistance(this, x1, y1);
@@ -1234,7 +1235,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
                 minDistance = Float.MAX_VALUE;
                 for (Ship sh: monsters) {
                     if (sh.displayed()) {
-                        Sprite spr = (Sprite) sh;
+                        Sprite spr = sh;
                         if (parent.shouldDrawSprite(spr)
                         && spr.isSelectableAt(this, x1, y1)) {
                             float dist = spr.selectDistance(this, x1, y1);
@@ -1334,7 +1335,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
     public void animate() {
 		if (pauseAnimations && paintTime > 100)
 			return;
-        if (session().performingTurn() && parent.suspendAnimationsDuringNextTurn())
+        if (GameSession.performingTurn() && parent.suspendAnimationsDuringNextTurn())
             return;
         if (zoomTimer.isRunning())
             return;

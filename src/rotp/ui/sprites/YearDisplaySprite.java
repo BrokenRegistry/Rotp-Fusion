@@ -19,42 +19,36 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
+import rotp.model.game.GameSession;
 import rotp.model.game.IConvenienceOptions;
 import rotp.model.game.IGameOptions;
+import rotp.ui.game.AdvisorPanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 
-public class YearDisplaySprite extends MapSprite {
-    private int mapX, mapY, buttonW, buttonH;
+public final class YearDisplaySprite extends MapSprite {
     private int minMapX, maxButtonW;
-    private int lastMouseX, lastMouseY;
     private final MainUI parent;
-
-    protected int mapX()      { return mapX; }
-    protected int mapY()      { return mapY; }
-    public void mapX(int i)   { mapX = i; }
-    public void mapY(int i)   { mapY = i; }
 
     public YearDisplaySprite(MainUI p)  { parent = p; }
 
-    @Override
-    public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-        if (session().currentAlert() != null)
-            return false;
-        lastMouseX = x;
-        lastMouseY = y;
-        hovering = x >= mapX
-                    && x <= mapX+buttonW
-                    && y >= mapY()-buttonH-scaled(5)
-                    && y <= mapY();
-        return hovering;
-    }
+	@Override public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
+		if (GameSession.currentAlert() != null)
+			return false;
+		super.isSelectableAt(map, x, y);
+		if (hovering)
+			if (options().displayYear())
+				box.setAdviceHelpKey("MAIN_YEAR_DISPLAY" + AdvisorPanel.HELP_KEY);
+			else
+				box.setAdviceHelpKey("MAIN_TURN_DISPLAY" + AdvisorPanel.HELP_KEY);
+		return hovering;
+	}
     @Override
     public void draw(GalaxyMapPanel map, Graphics2D g) {
         if (!parent.showYear())
             return;
-        if (session().currentAlert() != null)
+        if (GameSession.currentAlert() != null)
             return;
 
         String s = displayYearOrTurn();
@@ -66,35 +60,28 @@ public class YearDisplaySprite extends MapSprite {
         }
         g.setFont(narrowFont(24));
 
-        int s5 = scaled(5);
         int sw = g.getFontMetrics().stringWidth(s);
-        mapX = map.getWidth()-sw-scaled(35);
-        buttonW = sw+s5+s5;
-        buttonH = scaled(20);
-        mapY = map.getHeight()-scaled(75);
-        Color textC;
+		box.setSize(sw+s5+s5, s20);
+		box.setLocation(map.getWidth()-box.width-s25, map.getHeight()-box.height-s80);
 
-        if (isSelectableAt(map, lastMouseX, lastMouseY))
-            textC = SystemPanel.yellowText;
-        else
-            textC = Color.gray;
-
-        drawShadowedString(g, s, 2, mapX, mapY-s5, Color.black, textC);
+		Color textC = hovering ? SystemPanel.yellowText : Color.gray;
+		drawShadowedString(g, s, 2, box.x, box.ye(), Color.black, textC);
     }
     @Override
     public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-        if (session().currentAlert() != null)
+        if (GameSession.currentAlert() != null)
             return;
         if (click)
             softClick();
-        minMapX = min(mapX, minMapX);
-        maxButtonW = max(buttonW, maxButtonW);
+        minMapX = min(box.x, minMapX);
+        maxButtonW = max(box.width, maxButtonW);
         hovering = true;
 
         options().toggleYearDisplay();
+		if (options().displayYear())
+			box.setAdviceHelpKey("MAIN_YEAR_DISPLAY" + AdvisorPanel.HELP_KEY);
+		else
+			box.setAdviceHelpKey("MAIN_TURN_DISPLAY" + AdvisorPanel.HELP_KEY);
     }
-    @Override
-    public void repaint(GalaxyMapPanel map)     {
-        map.repaint(minMapX,mapY-buttonH,maxButtonW,buttonH);
-    }
+	@Override public void repaint(GalaxyMapPanel map)	{ map.repaint(minMapX, box.y, maxButtonW, box.height); }
 }

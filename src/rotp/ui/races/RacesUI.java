@@ -258,96 +258,96 @@ public class RacesUI extends BasePanel {
         int w = getWidth();
         HelpUI helpUI = RotPUI.helpUI();
 
-        int x2 = scaled(30);
-        int w2 = scaled(200);
-        int y2 = scaled(140);
-        HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("RACES_HELP_1A"));
-        sp2.setLine(x2+w2, y2+(sp2.height()/2), scaled(280), y2+(sp2.height()/2));
-        
+		int x2 = s30;
+		int w2 = s200;
+		int y2 = s140;
+		HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("RACES_HELP_1A"));
+		sp2.setLine(x2+w2, sp2.yc(), scaled(280), sp2.yc());
+
         int x3 = w-scaled(780);
-        int w3 = scaled(200);
-        int y3 = scaled(65);
+        int w3 = s200;
+        int y3 = s65;
         HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("RACES_HELP_1B"));
-        sp3.setLine(x3+w3-s30, y3+sp3.height(), w-scaled(525), scaled(225));
-        
+		sp3.setLine(x3+w3-s30, sp3.ye(), w-scaled(525), scaled(225));
+
         int y4 = scaled(450);
         HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x3, y4, w3, 3, text("RACES_HELP_1C"));
-        sp4.setLine(x3+w3, y4+(sp4.height()/2), w-scaled(470), scaled(470));
-        
+		sp4.setLine(x3+w3, sp4.yc(), w-scaled(470), scaled(470));
+
         int y5 = scaled(630);
         HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x3, y5, w3, 3, text("RACES_HELP_1D"));
-        sp5.setLine(x3+w3, y5+(sp5.height()/2), w-scaled(555),  y5+(sp5.height()/2));
-        
+		sp5.setLine(x3+w3, sp5.yc(), w-scaled(555),  sp5.yc());
+
         int x6 = w-scaled(470);
         int w6 = scaled(210);
-        int y6 = scaled(55);
-        int x6a = w-scaled(65);
+        int y6 = s55;
+        int x6a = w-s65;
         HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 3, text("RACES_HELP_1F"));
-        sp6.setLine(x6+w6, y6+(sp6.height()/2), x6a, scaled(85));
-        
-        int x7 = scaled(150);
-        int w7 = scaled(300);
+		sp6.setLine(x6+w6, sp6.yc(), x6a, s85);
+
+		int x7 = s150;
+		int w7 = s300;
         int y7 = scaled(460);
         HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7, y7, w7, 5, text("RACES_HELP_1E"));
-        sp7.setLine(x7+(w7/2), y7, x7+(w7/2), scaled(400));
+		sp7.setLine(x7+(w7/2), y7, x7+(w7/2), s400);
     }
     private void loadHelpDiplomacyAI()			{ // Diplomacy Panel AI
         int w = getWidth();
         HelpUI helpUI = RotPUI.helpUI();
 
-        int x2 = scaled(30);
-        int w2 = scaled(200);
-        int y2 = scaled(140);
-        HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("RACES_HELP_2A"));
-        sp2.setLine(x2+w2, y2+(sp2.height()/2), scaled(280), y2+(sp2.height()/2));
-        
-        int x3 = w-scaled(780);
-        int w3 = scaled(200);
-        int y3 = scaled(65);
-        HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("RACES_HELP_2B")); // Audience
-        sp3.setLine(x3+w3, y3+sp3.height(), w-scaled(525), scaled(165));
-        
+		int x2 = s30;
+		int w2 = s200;
+		int y2 = s140;
+		HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("RACES_HELP_2A"));
+		sp2.setLine(x2+w2, sp2.yc(), scaled(280), sp2.yc());
+
+		int x3 = w-scaled(780);
+		int w3 = s200;
+		int y3 = s65;
+		HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("RACES_HELP_2B")); // Audience
+		sp3.setLine(x3+w3, sp3.ye(), w-scaled(525), scaled(165));
+
         int x4 = w-scaled(830);
         int w4 = scaled(250);
         int y4 = scaled(350);
         HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w4, 0, text("RACES_HELP_2C")); // Trade
         sp4.setLine(x3+w3, sp4.yc(), w-scaled(480), scaled(370));
-        
+
         int x5 = x4;
         int y5 = sp4.ye() + s25;
         HelpUI.HelpSpec sp5 = helpUI.addBrownHelpText(x5, y5, w3, 3, text("RACES_HELP_2D")); // Foreign relation
         sp5.setLine(sp5.xe(), sp5.ycb(),  w-scaled(555),  scaled(470));
-        
-        int x6 = scaled(50);
-        int w6 = scaled(300);
-        int y6 = scaled(460);
-        HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 0, text("RACES_HELP_2E")); // Diplomatic incident
-        sp6.setLine(sp6.xc(), y6, scaled(300), scaled(350));
-        
+
+		int x6 = s50;
+		int w6 = s300;
+		int y6 = scaled(460);
+		HelpUI.HelpSpec sp6 = helpUI.addBrownHelpText(x6, y6, w6, 0, text("RACES_HELP_2E")); // Diplomatic incident
+		sp6.setLine(sp6.xc(), y6, s300, scaled(350));
+
         int x7 = scaled(340);
-        int w7 = scaled(300);
+		int w7 = s300;
         int y7 = scaled(250);
         HelpUI.HelpSpec sp7 = helpUI.addBrownHelpText(x7,y7,w7, 2, text("RACES_HELP_2F"));
-        sp7.setLine(x7+(w7/2), y7+sp7.height(), x7+(w7/2), scaled(315));
+		sp7.setLine(sp7.xc(), sp7.ye(), sp7.xc(), scaled(315));
     }
     private void loadHelpIntelligencePlayer()	{ // Intelligence Panel Player
         int w = getWidth();
         HelpUI helpUI = RotPUI.helpUI();
 
-        int x2 = scaled(50);
-        int w2 = scaled(200);
-        int y2 = scaled(165);
-        HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("RACES_HELP_3A"));
-        sp2.setLine(x2+w2, y2+(sp2.height()/2), scaled(430), y2+(sp2.height()/2), scaled(490), scaled(220));
-        
-        int x3 = w-scaled(760);
-        int w3 = scaled(190);
-        int y3 = scaled(65);
-        HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("RACES_HELP_3B"));
-        sp3.setLine(x3+(w3*2/3), y3+sp3.height(), w-scaled(525), scaled(255));
-        
+		int x2 = s50;
+		int w2 = s200;
+		int y2 = scaled(165);
+		HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 3, text("RACES_HELP_3A"));
+		sp2.setLine(x2+w2, sp2.yc(), scaled(430), sp2.yc(), scaled(490), scaled(220));
+
+		int x3 = w-scaled(760);
+		int w3 = s190;
+		int y3 = s65;
+		HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 3, text("RACES_HELP_3B"));
+		sp3.setLine(x3+(w3*2/3), sp3.ye(), w-scaled(525), scaled(255));
+
         int x4 = scaled(255);
-        int w4 = scaled(400);
+		int w4 = s400;
         int y4 = scaled(445);
         helpUI.addBrownHelpText(x4, y4, w4, 0, text("RACES_HELP_3C"));
     }
@@ -355,19 +355,19 @@ public class RacesUI extends BasePanel {
         int w = getWidth();
         HelpUI helpUI = RotPUI.helpUI();
 
-        int x2 = scaled(30);
-        int w2 = scaled(230);
-        int y2 = scaled(160);
-        HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 4, text("RACES_HELP_4A"));
-        sp2.setLine(x2+w2, y2+(sp2.height()/2), scaled(390), y2+(sp2.height()/2), scaled(450), scaled(220));
-        
+		int x2 = s30;
+		int w2 = scaled(230);
+		int y2 = s160;
+		HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 4, text("RACES_HELP_4A"));
+		sp2.setLine(x2+w2, sp2.yc(), scaled(390), sp2.yc(), scaled(450), scaled(220));
+
         int x3 = w-scaled(650);
         int w3 = scaled(220);
         int y3 = scaled(250);
         int x3a = x3+(w3/2);
         HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 7, text("RACES_HELP_4B"));
         sp3.setLine(x3a, y3, x3a+s80, scaled(145));
-        
+
         int x4 = scaled(255);
         int w4 = scaled(360);
         int y4 = scaled(445);
@@ -388,18 +388,18 @@ public class RacesUI extends BasePanel {
         int w2 = scaled(250);
         int y2 = s50;
         HelpUI.HelpSpec sp2 = helpUI.addBrownHelpText(x2, y2, w2, 6, text("RACES_HELP_5A"));
-        sp2.setLine(x2, y2+(sp2.height()*2/3), scaled(460), scaled(170));
-        
-        int x3 = scaled(30);
-        int w3 = scaled(240);
-        int y3 = scaled(190);
-        HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 5, text("RACES_HELP_5B"));
-        sp3.setLine(x3+(w3/2), y3+sp3.height(), scaled(180), scaled(350));
+        sp2.setLine(x2, sp2.yce(), scaled(460), scaled(170));
+
+		int x3 = s30;
+		int w3 = scaled(240);
+		int y3 = s190;
+		HelpUI.HelpSpec sp3 = helpUI.addBrownHelpText(x3, y3, w3, 5, text("RACES_HELP_5B"));
+		sp3.setLine(x3+(w3/2), sp3.ye(), s180, scaled(350));
 
         int x4 = w-scaled(470);
         int y4 = s60;
         HelpUI.HelpSpec sp4 = helpUI.addBrownHelpText(x4, y4, w2, 3, text("RACES_HELP_5C"));
-        sp4.setLine(x4+(w2/2), y4+sp4.height(), x4+(w2/3), y4+sp4.height()+s30);
+		sp4.setLine(x4+(w2/2), sp4.ye(), x4+(w2/3), sp4.ye()+s30);
     }
     private void loadHelpStatusPlayer()			{ // Status Panel Player
         int w = getWidth();
@@ -413,15 +413,15 @@ public class RacesUI extends BasePanel {
         int w2 = scaled(300);
         int y2 = scaled(80);
         helpUI.addBrownHelpText(x2, y2, w2, 0, text("RACES_HELP_6A"));	// Main Current ranking
-        
+
         int x3 = scaled(140);
         int w3 = scaled(190);
         int y3 = scaled(405);
         helpUI.addBrownHelpText(x3, y3, w3, 0, text("RACES_HELP_6B"));	// Fleet Strength
-        
+
         int x4 = x3+barW;
         helpUI.addBrownHelpText(x4, y3, w3, 0, text("RACES_HELP_6C"));	// Population
-        
+
         int x5 = x4+barW;
         int y5 = y3 - 3*s18;
         helpUI.addBrownHelpText(x5, y5, w3, 0, text("RACES_HELP_6D"));	// Technology
@@ -459,24 +459,24 @@ public class RacesUI extends BasePanel {
         int w2 = scaled(300);
         int y2 = scaled(80);
         helpUI.addBrownHelpText(x2, y2, w2, 0, text("RACES_HELP_6A2"));	// Main historical comparison
-        
+
         int x3 = scaled(115);
         int w3 = scaled(190);
         int y3 = scaled(405);
         helpUI.addBrownHelpText(x3, y3, w3, 0, text("RACES_HELP_6B"));	// Fleet Strength
-        
+
         int x4 = x3+barW;
         helpUI.addBrownHelpText(x4, y3, w3, 0, text("RACES_HELP_6C"));	// Population
-        
+
         int x5 = x4+barW;
         int y5 = y3 - 2*s18;
         helpUI.addBrownHelpText(x5, y5, scaled(250), 0, text("RACES_HELP_6DG"));	// Technology
-        
+
         int y6 = y3+barH;
         helpUI.addBrownHelpText(x3, y6, w3, 0, text("RACES_HELP_6E"));	// Planets
-        
+
         helpUI.addBrownHelpText(x4, y6, w3, 0, text("RACES_HELP_6F"));	// Production
-        
+
         helpUI.addBrownHelpText(x5, y6, w3, 0, text("RACES_HELP_6G"));	// Total Power
 
         int w7 = scaled(250);
@@ -505,7 +505,7 @@ public class RacesUI extends BasePanel {
         Collections.sort(contacts, EmpireView.PLAYER_LIST_ORDER);
         for (EmpireView v: contacts) 
             empires.add(v.empireUncut());
-        
+
         // auto-select the last selected empire
         // this will automatically weed out empires that have become extinct
         // since the last time this UI was displayed

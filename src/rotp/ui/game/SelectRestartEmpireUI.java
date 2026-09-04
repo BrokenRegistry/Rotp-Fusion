@@ -260,7 +260,7 @@ final class SelectRestartEmpireUI  extends BasePanel implements MouseListener, M
 	public void setOpponent(int idx) {
 		buttonClick();
 		oldGalaxy.selectEmpire(idx);
-		GameSession.instance().loadSession(newSession);
+		GameSession.loadSession(newSession);
 		loading = true;
 		repaint();
 

@@ -76,7 +76,7 @@ public class DesignWeaponSelectionUI extends DesignSelectionUI {
 	@Override void select(int compNum)	{
 		// BR: Clicking quickly on the field may lead to a too high component index
 		if (components().size() > compNum) {
-			ShipComponent newComp = (ShipWeapon)components().get(compNum);
+			ShipComponent newComp = components().get(compNum);
 			int minCount = newComp.isNone() ? 0 : 1;
 			String valStr = value(compNum, 1, bank);
 			int val = max(minCount,Integer.valueOf(valStr));

@@ -35,7 +35,6 @@ import rotp.model.empires.EmpireView;
 import rotp.model.empires.SabotageMission;
 import rotp.model.empires.SpyReport;
 import rotp.model.tech.Tech;
-import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.diplomacy.DialogueManager;
 import rotp.ui.diplomacy.DiplomaticMessage;
@@ -44,7 +43,7 @@ import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.MapSprite;
 
-public class MapOverlaySpies extends MapOverlay {
+public final class MapOverlaySpies implements IMapOverlay {
     Color maskC  = new Color(40,40,40,160);
     MainUI parent;
     BufferedImage labImg;
@@ -57,7 +56,7 @@ public class MapOverlaySpies extends MapOverlay {
     CloseButton closeButton = new CloseButton();
     IntelligenceButton intelButton = new IntelligenceButton();
     ThreatenButton threatenButton = new ThreatenButton();
-    
+
     public MapOverlaySpies(MainUI p) {
         parent = p;
     }
@@ -110,6 +109,8 @@ public class MapOverlaySpies extends MapOverlay {
     public boolean hoveringOverSprite(Sprite o) { return false; }
     @Override
     public boolean handleKeyPress(KeyEvent e) {
+		if (baseHandleKeyPress(e))
+			return true;
         switch(e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
             case KeyEvent.VK_C:
@@ -155,29 +156,28 @@ public class MapOverlaySpies extends MapOverlay {
     public void paintOverMap(MainUI parent, GalaxyMapPanel ui, Graphics2D g) {
         if (!drawSprites)
             return;
-        
+
         //int w = ui.getWidth()-scaled(150);
-        int h = ui.getHeight()-BasePanel.s30;
+		int h = ui.getHeight()-s30;
         Empire pl = player();
-        
-        int bdr = BasePanel.s7;
-        int s10 = BasePanel.s10;
+
+        int bdr = s7;
 
         parent.hideDisplayPanel();
         // draw map mask
         g.setColor(maskC);
         g.fillRect(0,0,ui.getWidth(),ui.getHeight());
-        
+
         int extraEmps = min(0, max(6,24-empires.size()));
-        int tabW = empires.isEmpty() ? 0 : scaled(100);
-        int h0 = scaled(450) +(extraEmps*BasePanel.s24);
-        int x0 = scaled(250)+(tabW/2);
+		int tabW = empires.isEmpty() ? 0 : 100;
+		int h0 = scaled(450) +(extraEmps*s24);
+		 int x0 = s250+(tabW/2);
         int y0 = (h-h0)/2;
         int w0 = scaled(580)+tabW;
         g.setColor(MainUI.paneShadeC2);
         g.fillRect(x0, y0, w0, h0);
 
-        int leftW = scaled(250);
+		int leftW = s250;
 
         int x1 = x0 + bdr;
         int y1 = y0 + bdr;
@@ -191,33 +191,33 @@ public class MapOverlaySpies extends MapOverlay {
         g.setColor(MainUI.paneBackground);
         g.fillRect(x1, y1, w1, h1);
 
-        int buttonH = BasePanel.s25;
-        int buttonY = y1+h1-buttonH-BasePanel.s5;
-        int closeW = closeButton.getWidth(g);
-        int closeX = x1+w1-closeW-BasePanel.s5;
-        closeButton.setBounds(closeX,buttonY,closeW,buttonH);
-        
+		int buttonH = s25;
+		int buttonY = y1+h1-buttonH-s5;
+		int closeW = closeButton.getWidth(g);
+		int closeX = x1+w1-closeW-s5;
+		closeButton.setBounds(closeX,buttonY,closeW,buttonH);
+
         int intelW = intelButton.getWidth(g);
-        int intelX = closeX-intelW-BasePanel.s5;
+        int intelX = closeX-intelW-s5;
         intelButton.setBounds(intelX,buttonY,intelW,buttonH);
-        
+
         int threatW = threatenButton.getWidth(g);
-        int threatX = intelX-threatW-BasePanel.s5;
+		int threatX = intelX-threatW-s5;
         threatenButton.setBounds(threatX,buttonY,threatW,buttonH);
-        
+
         // draw year/turn info
         String yearStr = displayYearOrTurn();
         g.setFont(narrowFont(40));
         int sw = g.getFontMetrics().stringWidth(yearStr);
         int x1a = x1+((leftW-sw)/2);
-        drawBorderedString(g, yearStr, 2, x1a, y1+BasePanel.s45, SystemPanel.textShadowC, SystemPanel.orangeText);
+		drawBorderedString(g, yearStr, 2, x1a, y1+s45, SystemPanel.textShadowC, SystemPanel.orangeText);
 
         // draw title
         String subtitle = text("NOTICE_SPIES_TITLE");
         g.setFont(narrowFont(26));
         sw = g.getFontMetrics().stringWidth(subtitle);
         x1a = x1+((leftW-sw)/2);
-        drawShadowedString(g, subtitle, 3, x1a, y1+BasePanel.s85, SystemPanel.textShadowC, Color.white);
+		drawShadowedString(g, subtitle, 3, x1a, y1+s85, SystemPanel.textShadowC, Color.white);
 
         if (labImg == null) {
             labImg = asBufferedImage(pl.laboratory());
@@ -229,22 +229,22 @@ public class MapOverlaySpies extends MapOverlay {
             imgG.dispose();
         }
 
-        int y1b = y1+BasePanel.s100;
-        int h1b = h1-BasePanel.s100;
+		int y1b = y1+s100;
+		int h1b = h1-s100;
         int imgH = h1b;
         int imgW = imgH*Rotp.IMG_W/Rotp.IMG_H;
-        g.setClip(x1+BasePanel.s5,y1b,leftW-BasePanel.s5,h1b-BasePanel.s5);
+		g.setClip(x1+s5,y1b,leftW-s5,h1b-s5);
         g.drawImage(labImg, x1+leftW-imgW, y1b, x1+leftW, y1b+h1b, 0, 0, labImg.getWidth(), labImg.getHeight(), null);
         g.setClip(null);
 
         closeButton.draw(ui, g);
         parent.addNextTurnControl(closeButton);
 
-        int descW = infoW-BasePanel.s20;
-        int lineH = BasePanel.s18;
+		int descW = infoW-s20;
+		int lineH = s18;
 
         if (selectedEmpire == null) {
-            int y1a = y1+BasePanel.s100;
+			int y1a = y1+s100;
             String none = text("NOTICE_SPIES_NO_ACTIVITY");
             g.setColor(SystemPanel.whiteText);
             g.setFont(narrowFont(20));
@@ -255,24 +255,24 @@ public class MapOverlaySpies extends MapOverlay {
             }
             return;
         }
-        
+
         intelButton.draw(ui, g);
         parent.addNextTurnControl(intelButton);
-        
+
         if (pl.diplomatAI().canThreaten(selectedEmpire)) {
             threatenButton.draw(ui, g);
             parent.addNextTurnControl(threatenButton);
         }
 
         EmpireView v = pl.viewForEmpire(selectedEmpire.id);
-        
+
         // draw selected empire name
-        int y2 = y1+BasePanel.s25;
+		int y2 = y1+s25;
         g.setFont(narrowFont(26));
         drawShadowedString(g, selectedEmpire.name(), 3, x2, y2, SystemPanel.textShadowC, Color.white);
-        
+
         // draw treaty status
-        y2 = y2 + BasePanel.s24;
+		y2 += s24;
         g.setFont(narrowFont(20));
         g.setColor(SystemPanel.blackText);
         drawString(g,v.embassy().treatyStatus(), x2, y2);
@@ -301,7 +301,7 @@ public class MapOverlaySpies extends MapOverlay {
                 drawString(g,line, x2, y2);
             }
         }
-        
+
         // show enemy spies that we caught
         int theirSpiesLost = rpt.spiesCaptured();
         if (theirSpiesLost > 0) {
@@ -365,7 +365,7 @@ public class MapOverlaySpies extends MapOverlay {
                 drawString(g,line, x2, y2);
             }
         }
-                
+
         // informs if we were framed
         if (rpt.wasFramed()) {
             y2 += lineH;
@@ -400,19 +400,16 @@ public class MapOverlaySpies extends MapOverlay {
                 drawString(g,line, x2, y2);
             }
         }
-        
-        
-        
+
         // draw tabs
         int y3 = y0+bdr;
-        int tabSp = BasePanel.s2;
+		int tabSp = s2;
         for (EmpireTabSprite tab: tabs) {
             tab.setPosition(x3,y3);
-            y3 = y3+tab.tabH+tabSp;
+			y3 = y3+tab.getBox().height+tabSp;
             tab.draw(ui, g);
         }
-            
-        
+
         for (EmpireTabSprite tab: tabs) 
             parent.addNextTurnControl(tab);
     }
@@ -421,26 +418,16 @@ public class MapOverlaySpies extends MapOverlay {
         drawSprites = false;
         parent.resumeOutsideTurn();
     }
-    class EmpireTabSprite extends MapSprite {
-        private int tabX, tabY, tabW, tabH;
+	final class EmpireTabSprite extends MapSprite {
         private int fontSize = 16;
-
         private final MapOverlaySpies parent;
         private final Empire empire;
 
-        protected int mapX()      { return tabX; }
-        protected int mapY()      { return tabY; }
-        public void mapX(int i)   { tabX = i; }
-        public void mapY(int i)   { tabY = i; }
-
-        public int width()        { return tabW; }
-        public int height()       { return tabH; }
         public void reset()       {  }
 
         public EmpireTabSprite(MapOverlaySpies p, Empire e)  {
             parent = p;
             empire = e;
-            tabW = BasePanel.s100;
             fontSize = 11;
             int n = p.empires.size();
             if (n > 40)
@@ -463,115 +450,85 @@ public class MapOverlaySpies extends MapOverlay {
                 fontSize = 19;
             else 
                 fontSize = 20;
-            tabH = scaled(fontSize+1);
+			box.setSize(s100, scaled(fontSize+1));
+			box.setAdviceHelpKey("NOTICE_SPIES_EMPIRE_HELP");
+			box.setForcedLocation(8);
         }
-        public void setPosition(int x, int y) {
-            tabX = x;
-            tabY = y;
-        }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-            hovering = x >= tabX
-                        && x <= tabX+tabW
-                        && y >= tabY
-                        && y <= tabY+tabH;
-            return hovering;
-        }
+		public void setPosition(int x, int y) { box.setLocation(x, y); }
         @Override
         public void draw(GalaxyMapPanel map, Graphics2D g) {
             if (!parent.drawSprites())
                 return;
 
-            //int s5 = BasePanel.s5;
             int cnr = scaled(fontSize/2);
-            
+
             g.setFont(narrowFont(fontSize));
             if (empire == parent.selectedEmpire)
                 g.setColor(MainUI.paneBackground);
             else
                 g.setColor(MainUI.paneBackgroundDk);
-            g.setClip(tabX,tabY,tabW,tabH);
-            g.fillRoundRect(tabX-cnr,tabY,tabW+cnr,tabH,cnr,cnr);
+			g.setClip(box);
+			g.fillRoundRect(box.x-cnr, box.y, box.width+cnr, box.height, cnr, cnr);
             g.setClip(null);
             if (hovering)
                 g.setColor(SystemPanel.yellowText);
             else
                 g.setColor(SystemPanel.blackText);
-            drawString(g,empire.raceName(), tabX+scaled(5), tabY+tabH-scaled(3));
+			drawString(g,empire.raceName(), box.x+s5, box.ye()-s3);
         }
         @Override
         public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-            //if (click)
-            //    softClick();
             parent.selectEmpire(empire);
         };
-    } 
-    public class CloseButton extends MapSprite {
+    }
+    public final class CloseButton extends MapSprite {
         private LinearGradientPaint background;
         private final Color edgeC = new Color(59,59,59);
         private final Color midC = new Color(93,93,93);
-        private int x, y, w, h;
         private MapOverlaySpies parent;
         private String label;
         Color buttonC = newColor(110,110,110);
         Color gray190C = newColor(190,190,190);
 
-        public void setBounds(int x0, int y0, int w0, int h0) {
-            x = x0;
-            y = y0;
-            w = w0;
-            h = h0;
-        }
         public int getWidth(Graphics2D g) {
             g.setFont(narrowFont(20));
-            return g.getFontMetrics().stringWidth(label)+BasePanel.s20;
+            return g.getFontMetrics().stringWidth(label)+s20;
         }
-        protected int mapX()      { return x; }
-        protected int mapY()      { return y; }
-        public void mapX(int i)   { x = i; }
-        public void mapY(int i)   { y = i; }
         public void reset()       { background = null; }
 
         public void parent(MapOverlaySpies p)  { 
             parent = p;
-            label = text("NOTICE_SPIES_CLOSE");
-             background = null;
+			box.setLabelKey("NOTICE_SPIES_CLOSE");
+			box.setForcedLocation(2);
+			label = text(box.getLabelKey());
+            background = null;
        }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x0, int y0) {
-            hovering = x0 >= x
-                        && x0 <= x+w
-                        && y0 >= y
-                        && y0 <= y+h;
-
-            return hovering;
-        }
         @Override
         public void draw(GalaxyMapPanel map, Graphics2D g) {
             if (!parent.drawSprites())
                 return;
             if (background == null) {
                 float[] dist = {0.0f, 0.5f, 1.0f};
-                Point2D yesStart = new Point2D.Float(x, 0);
-                Point2D yesEnd = new Point2D.Float(x+w, 0);
+				Point2D yesStart = new Point2D.Float(box.x, 0);
+				Point2D yesEnd = new Point2D.Float(box.xe(), 0);
                 Color[] yesColors = {edgeC, midC, edgeC };
                 background = new LinearGradientPaint(yesStart, yesEnd, dist, yesColors);
             }
-            g.setColor(buttonC);
-            g.fillRect(x,y, w, h);
-            g.setColor(gray190C);
-            g.drawRect(x,y, w, h);
+			g.setColor(buttonC);
+			g.fillRect(box.x, box.y, box.width, box.height);
+			g.setColor(gray190C);
+			g.drawRect(box.x, box.y, box.width, box.height);
 
             Color c0 = hovering ? SystemPanel.yellowText : SystemPanel.whiteText;
             g.setColor(c0);
             g.setFont(narrowFont(20));
             int sw = g.getFontMetrics().stringWidth(label);
-            drawString(g,label, x+((w-sw)/2),y+BasePanel.s19);
+			drawString(g, label, box.xText(sw), box.y+s19);
             if (hovering) {
                 Stroke prevStroke = g.getStroke();
                 g.setStroke(stroke2);
                 g.setColor(SystemPanel.yellowText);
-                g.drawRect(x,y, w, h);
+				g.drawRect(box.x, box.y, box.width, box.height);
                 g.setStroke(prevStroke);
             }
 
@@ -583,45 +540,27 @@ public class MapOverlaySpies extends MapOverlay {
             parent.advanceMap();
         }
     }
-    public class IntelligenceButton extends MapSprite {
+	public final class IntelligenceButton extends MapSprite {
         private LinearGradientPaint background;
         private final Color edgeC = new Color(59,59,59);
         private final Color midC = new Color(93,93,93);
-        private int x, y, w, h;
         private MapOverlaySpies parent;
         private String label;
         Color buttonC = newColor(110,110,110);
         Color gray190C = newColor(190,190,190);
 
-        public void setBounds(int x0, int y0, int w0, int h0) {
-            x = x0;
-            y = y0;
-            w = w0;
-            h = h0;
-        }
         public int getWidth(Graphics2D g) {
             g.setFont(narrowFont(20));
-            return g.getFontMetrics().stringWidth(label)+BasePanel.s20;
+            return g.getFontMetrics().stringWidth(label)+s20;
         }
-        protected int mapX()      { return x; }
-        protected int mapY()      { return y; }
-        public void mapX(int i)   { x = i; }
-        public void mapY(int i)   { y = i; }
         public void reset()       { background = null; }
 
         public void parent(MapOverlaySpies p)  { 
             parent = p;
-            label = text("NOTICE_SPIES_MANAGE");
+			box.setLabelKey("NOTICE_SPIES_MANAGE");
+			box.setForcedLocation(2);
+			label = text(box.getLabelKey());
             background = null;
-        }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x0, int y0) {
-            hovering = x0 >= x
-                        && x0 <= x+w
-                        && y0 >= y
-                        && y0 <= y+h;
-
-            return hovering;
         }
         @Override
         public void draw(GalaxyMapPanel map, Graphics2D g) {
@@ -629,29 +568,28 @@ public class MapOverlaySpies extends MapOverlay {
                 return;
             if (background == null) {
                 float[] dist = {0.0f, 0.5f, 1.0f};
-                Point2D yesStart = new Point2D.Float(x, 0);
-                Point2D yesEnd = new Point2D.Float(x+w, 0);
+				Point2D yesStart = new Point2D.Float(box.x, 0);
+				Point2D yesEnd = new Point2D.Float(box.xe(), 0);
                 Color[] yesColors = {edgeC, midC, edgeC };
                 background = new LinearGradientPaint(yesStart, yesEnd, dist, yesColors);
             }
-            g.setColor(buttonC);
-            g.fillRect(x,y, w, h);
-            g.setColor(gray190C);
-            g.drawRect(x,y, w, h);
+			g.setColor(buttonC);
+			g.fillRect(box.x, box.y, box.width, box.height);
+			g.setColor(gray190C);
+			g.drawRect(box.x, box.y, box.width, box.height);
 
             Color c0 = hovering ? SystemPanel.yellowText : SystemPanel.whiteText;
             g.setColor(c0);
             g.setFont(narrowFont(20));
             int sw = g.getFontMetrics().stringWidth(label);
-            drawString(g,label, x+((w-sw)/2),y+BasePanel.s19);
+			drawString(g, label, box.xText(sw), box.y+s19);
             if (hovering) {
                 Stroke prevStroke = g.getStroke();
                 g.setStroke(stroke2);
                 g.setColor(SystemPanel.yellowText);
-                g.drawRect(x,y, w, h);
+				g.drawRect(box.x, box.y, box.width, box.height);
                 g.setStroke(prevStroke);
             }
-
         }
         @Override
         public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
@@ -660,45 +598,27 @@ public class MapOverlaySpies extends MapOverlay {
             manageSpies();
         }
     }
-    public class ThreatenButton extends MapSprite {
+	public final class ThreatenButton extends MapSprite {
         private LinearGradientPaint background;
         private final Color edgeC = new Color(59,59,59);
         private final Color midC = new Color(93,93,93);
-        private int x, y, w, h;
         private MapOverlaySpies parent;
         private String label;
         Color buttonC = newColor(110,110,110);
         Color gray190C = newColor(190,190,190);
 
-        public void setBounds(int x0, int y0, int w0, int h0) {
-            x = x0;
-            y = y0;
-            w = w0;
-            h = h0;
-        }
         public int getWidth(Graphics2D g) {
             g.setFont(narrowFont(20));
-            return g.getFontMetrics().stringWidth(label)+BasePanel.s20;
+            return g.getFontMetrics().stringWidth(label)+s20;
         }
-        protected int mapX()      { return x; }
-        protected int mapY()      { return y; }
-        public void mapX(int i)   { x = i; }
-        public void mapY(int i)   { y = i; }
         public void reset()       { background = null; }
 
         public void parent(MapOverlaySpies p)  { 
             parent = p;
-            label = text("NOTICE_SPIES_THREATEN");
+			box.setLabelKey("NOTICE_SPIES_THREATEN");
+			box.setForcedLocation(2);
+			label = text(box.getLabelKey());
             background = null;
-        }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x0, int y0) {
-            hovering = x0 >= x
-                        && x0 <= x+w
-                        && y0 >= y
-                        && y0 <= y+h;
-
-            return hovering;
         }
         @Override
         public void draw(GalaxyMapPanel map, Graphics2D g) {
@@ -706,26 +626,26 @@ public class MapOverlaySpies extends MapOverlay {
                 return;
             if (background == null) {
                 float[] dist = {0.0f, 0.5f, 1.0f};
-                Point2D yesStart = new Point2D.Float(x, 0);
-                Point2D yesEnd = new Point2D.Float(x+w, 0);
+				Point2D yesStart = new Point2D.Float(box.x, 0);
+				Point2D yesEnd = new Point2D.Float(box.xe(), 0);
                 Color[] yesColors = {edgeC, midC, edgeC };
                 background = new LinearGradientPaint(yesStart, yesEnd, dist, yesColors);
             }
-            g.setColor(buttonC);
-            g.fillRect(x,y, w, h);
-            g.setColor(gray190C);
-            g.drawRect(x,y, w, h);
+			g.setColor(buttonC);
+			g.fillRect(box.x, box.y, box.width, box.height);
+			g.setColor(gray190C);
+			g.drawRect(box.x, box.y, box.width, box.height);
 
             Color c0 = hovering ? SystemPanel.yellowText : SystemPanel.whiteText;
             g.setColor(c0);
             g.setFont(narrowFont(20));
             int sw = g.getFontMetrics().stringWidth(label);
-            drawString(g,label, x+((w-sw)/2),y+BasePanel.s19);
+			drawString(g, label, box.xText(sw), box.y+s19);
             if (hovering) {
                 Stroke prevStroke = g.getStroke();
                 g.setStroke(stroke2);
                 g.setColor(SystemPanel.yellowText);
-                g.drawRect(x,y, w, h);
+				g.drawRect(box.x, box.y, box.width, box.height);
                 g.setStroke(prevStroke);
             }
         }

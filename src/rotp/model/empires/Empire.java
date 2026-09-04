@@ -74,6 +74,7 @@ import rotp.model.game.GameSession;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IBaseOptsTools;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.IInGameOptions;
 import rotp.model.game.RulesetManager;
 import rotp.model.incidents.DiplomaticIncident;
 import rotp.model.incidents.GenocideIncident;
@@ -763,9 +764,9 @@ public final class Empire extends Species implements NamedObject {
         if (!canSendTransportsTo(sys))
             return 0;
         else if (sys.empire() == this)
-            return (int)(sv.currentSize(sys.id) - (int) sv.population(sys.id))+sys.transportSprite().amt();
+            return sv.currentSize(sys.id) - sv.population(sys.id)+sys.transportSprite().amt();
         else
-            return (int) sv.currentSize(sys.id);
+            return sv.currentSize(sys.id);
     }
     public void changeAllExistingRallies(StarSystem dest) {
         if (canRallyFleetsTo(id(dest))) {
@@ -946,7 +947,7 @@ public final class Empire extends Species implements NamedObject {
     	float minSpeed = tech().topSpeed();
 		for (ShipDesign design : shipLab.designs()) {
 			if (design != null && design.active()) {
-				float designSpeed =  (float) design.warpSpeed();
+				float designSpeed =  design.warpSpeed();
 				if (designSpeed < minSpeed)
 					minSpeed = designSpeed;
 			}
@@ -1423,17 +1424,19 @@ public final class Empire extends Species implements NamedObject {
 		return false;
 	}
 	public boolean allowedToRetreatTo(StarSystem fromSys, StarSystem toSys)	{
+		if (toSys == null)
+			return false;
 		IGameOptions opts	= options();
 		boolean closestOnly	= opts.retreatClosestOnly();
 		if (closestOnly)
 			return allowedRetreatSystems(fromSys).contains(toSys);
 
-		int fromSysId	= fromSys == null? StarSystem.NULL_ID : fromSys.id;
-		int toSysId		= toSys == null? StarSystem.NULL_ID : toSys.id;
-		boolean hyperComExt	= opts.hyperComRetreatExtended() && tech().hyperspaceCommunications();
-		boolean anyColony	= hyperComExt || opts.retreatToAnyPlanet();
-		boolean allowAlly	= anyColony || opts.retreatOnlyToAlly();
-		boolean noEnemy		= opts.noEnemyOnRetreatDestination();
+		final int fromSysId	= fromSys == null? StarSystem.NULL_ID : fromSys.id;
+		final int toSysId	= toSys.id;
+		final boolean hyperComExt = opts.hyperComRetreatExtended() && tech().hyperspaceCommunications();
+		final boolean anyColony	= hyperComExt || opts.retreatToAnyPlanet();
+		final boolean allowAlly	= anyColony || opts.retreatOnlyToAlly();
+		final boolean noEnemy	= opts.noEnemyOnRetreatDestination();
 
 		if (noEnemy) {
 			List<Integer> enemies = enemiesId();
@@ -1608,16 +1611,33 @@ public final class Empire extends Species implements NamedObject {
         // colony development (sometimes done for player if auto-pilot)
         NoticeMessage.setSubstatus(text("TURN_COLONY_SPENDING"));
         for (int n=0; n<sv.count(); n++) {
-        	if (sv.empId(n) == id)
-                if(!sv.colony(n).isGovernor() || isAIControlled() || sv.colony(n).shipyard().shipLimitReached() || sv.colony(n).shipyard().stargateCompleted()) //do not overrule the governor if it is enabled, except it's for ship-limit-reached
-                    governorAI().setColonyAllocations(sv.colony(n));
+			if (sv.empId(n) == id) {
+				//do not overrule the governor if it is enabled, except it's for ship-limit-reached
+				Colony col = sv.colony(n);
+				if(!col.isGovernor() || isAIControlled() || col.shipyard().shipLimitReached() || col.shipyard().stargateCompleted())
+					governorAI().setColonyAllocations(col);
+			}
         }
     }
-    public void redoGovTurnDecisions() { // Only for player
+	public void redoGovTurnDecisions() { // Only for player
 		budget().makeEmpireChargesObsolete();
-		for (int i = 0; i < sv.count(); ++i)
-			if (sv.empire(i) == this && sv.isColonized(i))
-				sv.colony(i).governIfNeeded();
+		List<StarSystem> systems = new ArrayList<>(colonizedSystems);
+		for (StarSystem sys: systems)
+			if (sys != null && sys.isColonized()) {
+				Colony col = sys.colony();
+				if (col.isGovernor())
+					col.governIfNeeded();
+				else
+					col.checkEcoAtClean();
+			}
+//		for (int i = 0; i < sv.count(); ++i)
+//			if (sv.empire(i) == this && sv.isColonized(i)) {
+//				Colony col = sv.colony(i);
+//				if (col.isGovernor())
+//					col.governIfNeeded();
+//				else
+//					col.checkEcoAtClean();
+//			}
 		ai().treasurer().allocateReserve(this);
 	}
 	public void redoGovTurnDecisionsRich() { // Only for player
@@ -1888,10 +1908,11 @@ public final class Empire extends Species implements NamedObject {
         float rebellingPop = 0;
         float loyalPop = 0;
         for (StarSystem sys: allColonizedSystems()) {
-            if (sys != null && sys.colony().inRebellion())
-                rebellingPop += sys.colony().population();
-            else
-                loyalPop += sys.colony().population();
+            if (sys != null)
+            	if (sys.colony().inRebellion())
+	                rebellingPop += sys.colony().population();
+	            else
+	                loyalPop += sys.colony().population();
         }
         return rebellingPop > loyalPop;
     }
@@ -3084,7 +3105,7 @@ public final class Empire extends Species implements NamedObject {
         if (options().isPersistentArtifact())
         	seed = s.seed() + s.id;
         else
-        	seed = (long) rng().nextInt(); // To allow seed multiplication
+        	seed = rng().nextInt(); // To allow seed multiplication
         for (int i=0;i<numTechs;i++) {
         	long seed1 = seed * (i+1);
         	long seed2 = (seed+9) * (i+1);
@@ -3139,12 +3160,13 @@ public final class Empire extends Species implements NamedObject {
     public boolean incrementEmpireTaxLevel()  { return empireTaxLevel(empireTaxLevel()+1); }
     public boolean decrementEmpireTaxLevel()  { return empireTaxLevel(empireTaxLevel()-1); }
 	public int empireTaxLevel()					{ return empireTaxLevel; } // in %
-    public boolean empireTaxOnlyDeveloped()   { return empireTaxOnlyDeveloped; }
-    public void toggleEmpireTaxOnlyDeveloped(){ // Player only
-        empireTaxOnlyDeveloped = !empireTaxOnlyDeveloped;
-        if (empireTaxLevel() > 0)
-            flagColoniesToRecalcSpending();
-    }
+	public boolean empireTaxOnlyDeveloped()		{ return empireTaxOnlyDeveloped; }
+	public void toggleEmpireTaxOnlyDeveloped()	{ IInGameOptions.taxOnlyDeveloped.toggle();	} // Player only
+	public void setTaxOnlyDeveloped(boolean b)	{ // Player only, do not use... ==> BooleanParam
+		empireTaxOnlyDeveloped = b;
+		if (empireTaxLevel() > 0)
+			flagColoniesToRecalcSpending();
+	}
     public int maxEmpireTaxLevel()            { return 20; }
 	public boolean empireTaxLevel(int i)	{	// Player Only
         int prevLevel = empireTaxLevel;

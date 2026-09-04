@@ -24,11 +24,23 @@ import rotp.model.galaxy.StarSystem;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.map.IMapHandler;
 import rotp.util.Base;
+import rotp.util.AdviceBox;
 
 public abstract class MapSprite implements Base, Sprite {
     private IMappedObject source;
     protected boolean hovering;
+	protected AdviceBox box = new AdviceBox();
 
+	public void mapX(int i)	{ box.mapX(i); }
+	public void mapY(int i)	{ box.mapY(i); }
+	public int mapX()		{ return box.x; }
+	public int mapY()		{ return box.y; }
+	public int width()		{ return box.width; }
+	public int height()		{ return box.height; }
+	public void setBounds(int x, int y, int w, int h)	{ box.setBounds(x, y, w, h); }
+	public void setSelectionBounds(int x, int y, int w, int h)	{ box.setSelectionBounds(x, y, w, h); }
+
+	@Override public AdviceBox getBox()			{ return box; }
     @Override
     public boolean hovering()                   { return hovering; }
     @Override
@@ -54,8 +66,10 @@ public abstract class MapSprite implements Base, Sprite {
 
     @Override
     public StarSystem starSystem()   { return null; }
-    @Override
-    public abstract boolean isSelectableAt(GalaxyMapPanel map, int mapX, int mapY);
+	@Override public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
+		hovering = box.isSelectableAt(x, y);
+		return hovering;
+	}
     @Override
     public abstract void draw(GalaxyMapPanel map, Graphics2D g2);
     @Override

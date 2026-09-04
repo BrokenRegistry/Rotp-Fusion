@@ -139,14 +139,10 @@ public interface Base extends InputEventUtil {
 	default DynOptions   dynOptions()		{ return guiOptions().dynOpts(); }
 	default GovernorOptions govOptions()	{ return GameSession.instance().getGovernorOptions(); }
 
-    public default Object sessionVar(String key) {
-        return session().var(key);
-    }
-    public default void removeSessionVar(String key) {
-        session().removeVar(key);
-    }
+	public default Object sessionVar(String key)		{ return GameSession.var(key); }
+	public default void removeSessionVar(String key)	{ GameSession.removeVar(key); }
     public default void sessionVar(String key, Object value) {
-        session().var(key,  value);
+        GameSession.var(key, value);
     }
     public default int scaled(int i) {
         return RotPUI.scaledSize(i);
@@ -900,13 +896,17 @@ public interface Base extends InputEventUtil {
 
         boolean exists = (fis != null) || (zipStream != null);
 
-        try {
-            if (fis != null) 
-                fis.close();
-            else if (zipStream != null)
-                zipStream.close();
-        }
-        catch(IOException e) {};
+		try {
+			if (fis != null)
+				fis.close();
+		}
+		catch(IOException e) {};
+
+		try {
+			if (zipStream != null)
+				zipStream.close();
+		}
+		catch(IOException e) {};
 
         return exists;
     }
@@ -1656,7 +1656,8 @@ public interface Base extends InputEventUtil {
 		catch(IOException ex) {}
         finally {
             try {
-            	fw.close();
+				if (fw != null)
+					fw.close();
             }
             catch(IOException ex) {}
         }
@@ -1769,7 +1770,7 @@ public interface Base extends InputEventUtil {
 			return null;
 		}
 	}
-    default Graphics2D getGraphicsRH(BufferedImage image) {
+    static Graphics2D getGraphicsRH(BufferedImage image) {
 		Graphics2D g = image.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY); 
@@ -1817,7 +1818,7 @@ public interface Base extends InputEventUtil {
     default int afterDecay(int num, float survive, float distance) {
     	float ratio = liveToRatio(survive, distance);
     	if (num > 100)
-    		return (int) Math.round(num * ratio);
+    		return Math.round(num * ratio);
     	int remain = num;
     	for (int i=0; i<num; i++)
     		if (random()>ratio)
@@ -1925,7 +1926,6 @@ public interface Base extends InputEventUtil {
 	}
 	class Rect extends Rectangle {
 		private static final long serialVersionUID = 1L;
-		private int te;
 		public Rect()				{ super(); }
 		public Rect(Point p)		{ super(p); }
 		public Rect(Dimension d)	{ super(d); }
@@ -1941,8 +1941,9 @@ public interface Base extends InputEventUtil {
 		public int yc()	{ return (int) getCenterY(); }
 		public int xe()	{ return x + width; }
 		public int ye()	{ return y + height; }
-		public int te()			{ return te; }
-		public void te(int i)	{ te = i; }
+		public int xText(int sw)	{ return (int) (getCenterX() - sw/2); }
+		public Point2D getCenter()	{ return new Point2D.Double(getCenterX(), getCenterY()); }
+		public double getRadius()	{ return Math.sqrt(width*width + height*height)/2.0; }
 	}
 	static File newFile (String first, String... more) {
 		Path path = Paths.get(first, more);

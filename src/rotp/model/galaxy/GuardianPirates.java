@@ -54,7 +54,7 @@ public final class GuardianPirates extends GuardianMonsters {
 		super.initCombat();
 		addCombatStack(new CombatStackMonster(this, imageKey, stackLevel(), 0, isFusion, shieldColor));	   
 	}
-	protected BufferedImage getMapImage()	{
+	@Override protected BufferedImage getMapImage()	{
 		if (monsterImage == null)
 			monsterImage = super.getMapImage();
 		return monsterImage;
@@ -356,5 +356,5 @@ public final class GuardianPirates extends GuardianMonsters {
 		stackScale *= options().aiProductionModifier();
 		return stackScale;
 	}
-	private int pirateLevel(float maxTechLvl)	{ return (int) ((maxTechLvl-1)/10); }
+	private static int pirateLevel(float maxTechLvl)	{ return (int) ((maxTechLvl-1)/10); }
 }

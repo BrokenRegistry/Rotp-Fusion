@@ -43,7 +43,7 @@ final class GalaxyShurikenShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 			BASE_NAME, 1,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_SHURIKEN_A",
 				"SETUP_SHURIKEN_0",
 				"SETUP_SHURIKEN_1",
@@ -60,7 +60,7 @@ final class GalaxyShurikenShape extends GalaxyShape {
 		if (param2 == null) {
 			param2 = new ShapeOptionList(
 			BASE_NAME, 2,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_SHURIKEN_ORIGINAL",
 				"SETUP_SHURIKEN_ALTERNATIVE",
 				RANDOM_OPTION
@@ -91,9 +91,9 @@ final class GalaxyShurikenShape extends GalaxyShape {
 	public void init(int n) {
         super.init(n);
 
-		float gE = (float) galaxyEdgeBuffer();
-		float gW = (float) galaxyWidthLY();
-		float gH = (float) galaxyHeightLY();
+		float gE = galaxyEdgeBuffer();
+		float gW = galaxyWidthLY();
+		float gH = galaxyHeightLY();
 
 		// modnar: choose different number of points for the flake polygon with option1
 		switch(option1) {
@@ -153,7 +153,7 @@ final class GalaxyShurikenShape extends GalaxyShape {
 				// initial flake polygon start, ensure polygon extent
 				flake.moveTo(gE + 0.5f*gW, gE + 0.02f*gH);
 				
-				float step	= (float) 1.8f / numPoints;
+				float step	= 1.8f / numPoints;
 				int size	= numPoints/2;
 				float[] yA	= new float[size];
 				float[] xA	= new float[size];
@@ -167,7 +167,7 @@ final class GalaxyShurikenShape extends GalaxyShape {
 					// uniform random point within triangle slice
 					float rand1 = randX.nextFloat();
 					float rand2 = randY.nextFloat();
-					ray	  = (float) (ray - rand1*step);
+					ray	  = ray - rand1*step;
 					yA[i] = ray;
 					xA[i] = (maxX-minX)*rand2 + minX;
 		        }

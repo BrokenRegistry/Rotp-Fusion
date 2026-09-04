@@ -43,6 +43,7 @@ import rotp.model.tech.Tech;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.game.HelpUI;
+import rotp.util.Base;
 
 public class ColonyViewUI extends BasePanel implements MouseListener {
 	private static final long serialVersionUID = 1L;
@@ -137,7 +138,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 
 		BufferedImage[] mugHue = setHue(mugshot, iHue, 96);
 		BufferedImage speciesImg = newBufferedImage(speciesWidth, speciesHeight);
-		Graphics2D g = getGraphicsRH(speciesImg);
+		Graphics2D g = Base.getGraphicsRH(speciesImg);
 		int x = 0;
 		int y = 0;
 		g.drawImage(mugshot, x, y, x+spW2, y+spH, mX1, 0, mX2, mH, null);
@@ -199,7 +200,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		int hi = missile.getHeight(null);
 		int h = hi * length / wi;
 		BufferedImage image = new BufferedImage(length, h, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(image);
+		Graphics2D g = Base.getGraphicsRH(image);
 		g.drawImage(missile, 0, 0, length, h, 0, 0, wi, hi, null);
 		g.dispose();
 		return image;
@@ -210,7 +211,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		int w0	= 512;
 		int h0	= w0;
 		BufferedImage image = new BufferedImage(w0, h0, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(image);
+		Graphics2D g = Base.getGraphicsRH(image);
 
 		int wheelRadius = 40;
 		// Frame
@@ -314,7 +315,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		g.dispose();
 
 		BufferedImage missileImg = new BufferedImage(missileWidth, missileHeight, TYPE_INT_ARGB);
-		g = getGraphicsRH(missileImg);
+		g = Base.getGraphicsRH(missileImg);
 		g.drawImage(image, 0, 0, missileWidth, missileHeight, 0, 0, w0, h0, null);
 		g.dispose();
 		
@@ -430,7 +431,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		int winXc	= w0 - winX - winW;
 		int winXd	= w0 - winXb - winW;
 		BufferedImage image = new BufferedImage(w0, h0, TYPE_INT_ARGB);
-		Graphics2D g = getGraphicsRH(image);
+		Graphics2D g = Base.getGraphicsRH(image);
 		// Chimneys
 		BufferedImage img = chimney(chemW, h0);
 		g.drawImage(img, chemX,	0, chemX +chemW, h0, 0, 0, chemW, h0, null);
@@ -458,7 +459,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		g.dispose();
 
 		BufferedImage factoryImg = new BufferedImage(factoryWidth, factoryHeight, TYPE_INT_ARGB);
-		g = getGraphicsRH(factoryImg);
+		g = Base.getGraphicsRH(factoryImg);
 		g.setComposite(AlphaComposite.SrcOver);
 		g.drawImage(image, 0, 0, factoryWidth, factoryHeight, 0, 0, w0, h0, null);
 		g.dispose();
@@ -472,7 +473,7 @@ public class ColonyViewUI extends BasePanel implements MouseListener {
 		Empire empire  = sys.empire();
 		int empId	 = empire.id;
 		landscapeImg = newBufferedImage(w,h);
-		Graphics2D g = getGraphicsRH(landscapeImg);
+		Graphics2D g = Base.getGraphicsRH(landscapeImg);
 		g.setColor(Color.black);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.drawImage(colony.planet().type().atmosphereImage(), 0, 0, w, h, null);

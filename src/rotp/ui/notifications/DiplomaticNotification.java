@@ -44,14 +44,14 @@ public class DiplomaticNotification implements TurnNotification, Base {
 		if (!notificationIsAllowed(messageType))
 			return;
 		DiplomaticNotification notif = new DiplomaticNotification(v, messageType);
-		GameSession.instance().addTurnNotification(notif);
+		GameSession.addTurnNotification(notif);
 	}
 	public static void create(EmpireView v, String messageType, Empire otherEmp)	{
 		if (!notificationIsAllowed(messageType))
 			return;
 		DiplomaticNotification notif = new DiplomaticNotification(v, messageType);
 		notif.other = otherEmp;
-		GameSession.instance().addTurnNotification(notif);
+		GameSession.addTurnNotification(notif);
 	}
 	public static void createAndNotify(EmpireView v, String messageType)	{
 		if (!notificationIsAllowed(messageType))
@@ -62,16 +62,16 @@ public class DiplomaticNotification implements TurnNotification, Base {
 		if (!notificationIsAllowed(messageType))
 			return;
 		DiplomaticNotification notif = new DiplomaticNotification(v, inc, messageType);
-		GameSession.instance().addTurnNotification(notif);
+		GameSession.addTurnNotification(notif);
 	}
     public static DiplomaticNotification create(EmpireView v, DiplomaticIncident inc) {
         DiplomaticNotification notif = new DiplomaticNotification(v, inc);
-        GameSession.instance().addTurnNotification(notif);
+        GameSession.addTurnNotification(notif);
         return notif;
     }
     public static DiplomaticNotification create(Empire talk, DiplomaticIncident inc) {
         DiplomaticNotification notif = new DiplomaticNotification(talk, inc);
-        GameSession.instance().addTurnNotification(notif);
+        GameSession.addTurnNotification(notif);
         return notif;
     }
     public DiplomaticNotification() { }

@@ -49,7 +49,7 @@ final class GalaxyRandomShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 			BASE_NAME, 1,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				REAL_SHAPES,
 				IMAGINARY_SHAPES,
 				COMPLEX_SHAPES,
@@ -63,7 +63,7 @@ final class GalaxyRandomShape extends GalaxyShape {
 		if (param2 == null) {
 			param2 = new ShapeOptionList(
 			BASE_NAME, 2,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				KEEP_OPTIONS,
 				RANDOM_OPTIONS_1,
 				RANDOM_OPTIONS_2,

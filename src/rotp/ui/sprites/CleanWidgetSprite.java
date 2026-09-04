@@ -20,6 +20,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import rotp.model.colony.Colony;
@@ -27,22 +28,19 @@ import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.SystemPanel;
 
-public class CleanWidgetSprite extends MapControlSprite {
+public final class CleanWidgetSprite extends MapControlSprite {
 	private Image image;
 	private int yOrigin, yShift;
-	private boolean clean	 = true;
+	private boolean clean		= true;
 	private int dirtyCount		= 0;
 	private int lockedCount		= 0;
 	private int unlockedCount	= 0;
 	private int govLockCount	= 0;
 	private int govUnlockCount	= 0;
-	private int numLines	= 0;
+	private int numLines		= 0;
 	
 	public CleanWidgetSprite(int xOff, int yOff, int w, int h, int shift) {
-		xOffset = scaled(xOff);
-		yOffset = scaled(yOff);
-		width   = scaled(w);
-		height  = scaled(h);
+		super(xOff, yOff, w, h, "MAIN_HELP_MOD_1K");
 		yShift  = scaled(yOff+shift);
 		yOrigin = yOffset;
 	}
@@ -72,8 +70,6 @@ public class CleanWidgetSprite extends MapControlSprite {
 	public boolean acceptDoubleClicks()	 { return false; }
 	@Override public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
 		player().checkEcoAtClean(e);
-		//player().checkEcoAtClean(rightClick, middleClick, shiftDown);
-		//player().checkEcoAtClean(rightClick);
 	}
 	private String toLabel(int count, String key, boolean shiftDown, boolean ctrlDown) {
 		if (count > 0) {
@@ -103,7 +99,7 @@ public class CleanWidgetSprite extends MapControlSprite {
 		int displayH = height;
 		int labelW;
 		String label;
-		List<String> detailLines = null;
+		List<String> detailLines = new ArrayList<>();
 		boolean shiftDown = isShiftDown();
 		boolean ctrlDown  = isCtrlDown();
 		numLines = 1;
@@ -113,9 +109,9 @@ public class CleanWidgetSprite extends MapControlSprite {
 			g2.setFont(narrowFont(fontSize));
 			int textW;
 			if (clean) {
-				label	 = text("MOD_MAIN_COLONIES_ARE_CLEAN");
-				labelW	 = g2.getFontMetrics().stringWidth(label);
-				textW	 = labelW*3/5;
+				label	= text("MOD_MAIN_COLONIES_ARE_CLEAN");
+				labelW	= g2.getFontMetrics().stringWidth(label);
+				textW	= labelW*3/5;
 			}
 			else {
 				if (dirtyCount == 1)
@@ -166,6 +162,8 @@ public class CleanWidgetSprite extends MapControlSprite {
 		int cnr = BasePanel.s12;
 		startX = xOffset >= 0 ? xOffset : map.getWidth()+xOffset;
 		startY = yOffset >= 0 ? yOffset : map.getHeight()+yOffset;
+		box.setLocation(startX, startY);
+		box.setSelectionBounds(startX-s3, startY-s3, width+s3+s3, height+s3+s3);
 		g2.setColor(Color.RED);
 		g2.fillRoundRect(startX, startY, width, height, cnr, cnr);
 	}
@@ -174,6 +172,8 @@ public class CleanWidgetSprite extends MapControlSprite {
 		int brdr = BasePanel.s1;
 		startX = xOffset >= 0 ? xOffset : map.getWidth()+xOffset;
 		startY = yOffset >= 0 ? yOffset : map.getHeight()+yOffset;
+		box.setLocation(startX, startY);
+		box.setSelectionBounds(startX-s3, startY-s3, width+s3+s3, height+s3+s3);
 		g2.setColor(map.parent().shadeC());
 		g2.fillRoundRect(startX-brdr, startY-brdr, w+brdr+brdr, h+brdr+brdr, cnr, cnr);
 	}
@@ -181,7 +181,7 @@ public class CleanWidgetSprite extends MapControlSprite {
 		Stroke str0 = g2.getStroke();
 
 		int cnr = BasePanel.s12;
-		
+
 		g2.setStroke(BasePanel.stroke1);
 		g2.setColor(c);
 		g2.drawRoundRect(startX, startY, width, height, cnr, cnr);

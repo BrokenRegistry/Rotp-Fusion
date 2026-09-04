@@ -44,28 +44,17 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
-26-09-02 (BR)
-- Combat panel: Added a level of security in the final ship retreat display, to prevent crash.
-- Fixed fund raising acting on ungoverned colony. (May be an option to allow it will follow)
-
-26-08-26 (BR)
-- Fixed Planets Bombardments not always being added on the diplomatic list.
-
-26-08-23 (BR)
-- Fixed a display bug in the transport panel, which could display, with a negative time, a transport previously arrived at its destination.
-
-26-08-22 (BR)
-- Fixed the issue where the player could not threaten other empires.
-  - This was due to the player's diplomat AI selection. In fact, some AI does not bother the player with incessant threats and deactivates this functionality. The new selected AI will not hesitate to offer this option again.
-- When a planet with an artifact is discovered, and the technology found is an ongoing research, the new choice become final, as the current allocation is given to it. To avoid this inconvenience, the current search will only be returned if no other tech is available.
-- Fixed the attacker not always retreating when the fight reached the maximum number of turns.
-- Fixed an incorrect identification of the missiles' source; the AI did not realize they were coming from the planet and was trying to dodge them instead of approaching the planet to bomb it.
-
-26-08-20 (BR)
-- Fixed Development limit default and limit value: from 100% & 100% to 50% & 80%
-  - Development limit: Maximum development level defining a colony as new.
-  - Colonies above this limit will not receive funding as "new Colonies"
-  - Colonies below this limit will not be taxed as they could receive funds as “new colonies”. (Which would result in wasted funds as taxation involves 50% losses)
+26-09-04 (BR)
+- Extension of the advisor, to be able to call it on demand, this in order to display help on the element under the cursor.
+  - On the Galaxy map, including some overlay windows.
+  - On the colony panel.
+  - Press "F1" to toggle. (Former help panel still available with "Ctrl-F1")
+  - Options for Avatar size, text size, and to restore the former help panels.
+  - This is a work in progress.
+- Upgraded help panels to be able to display HTML text.
+- Fixed potential sources of memory leak.
+- Fixed potential null pointer exceptions.
+- Clicking on the Empire name in the system panel will now take you to the Diplomacy panel and select the related empire. (It was already supposed to do this, but it wasn't fully functional!)
 
 
 ### [Features Historic](FeaturesChanges.md)

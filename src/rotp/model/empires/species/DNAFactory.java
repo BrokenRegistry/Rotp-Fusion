@@ -51,7 +51,7 @@ import rotp.util.sound.SoundManager;
 public class DNAFactory extends SpeciesSettings {
 
 	private static DNAFactory reworkFactory, raceListFactory;
-	public void cleanFactories()	{
+	public static void cleanFactories()	{
 		reworkFactory	= null;
 		raceListFactory	= null;
 	}
@@ -207,12 +207,12 @@ public class DNAFactory extends SpeciesSettings {
 	private void saveSettings(String path, String fileName)	{ getAsOptions().save(path, fileName); }
 	public void saveRace()	{ saveSettings(speciesDirectoryPath(), fileName()); }
 	public void loadRace()	{
-		String raceKey = raceKey();
-		if (raceKey.isEmpty())
-			raceKey = defaultRaceKey;
+		String key = raceKey();
+		if (key.isEmpty())
+			key = defaultRaceKey;
 
-		if (Species.isValidKey(raceKey)) {
-			race(Species.getAnim(raceKey).copy(true));
+		if (Species.isValidKey(key)) {
+			race(Species.getAnim(key).copy(true));
 			for (ICRSettings<?> setting : settingMap.getAll())
 				setting.skillToSetting(race());
 		}
@@ -733,10 +733,10 @@ public class DNAFactory extends SpeciesSettings {
 	private void endOfColumn()	{ columnList.add(settingMap.getSettings().size()); }
 	private void spacer()		{ spacerList.add(settingMap.getSettings().size()); }
 
-	public boolean autoUpdate(KeyEvent e, RaceList raceList)	{ // For developers only
+	public boolean autoUpdate(KeyEvent e, RaceList list)	{ // For developers only
 		if(!(Rotp.isIDE() && e.isShiftDown() && e.isControlDown()))
 			return false;
-		LinkedList<String> values = raceList.getValues();
+		LinkedList<String> values = list.getValues();
 		values.removeFirst(); // custom Player
 		for (int i=0; i<16; i++)
 			values.removeLast(); // default species
@@ -745,8 +745,8 @@ public class DNAFactory extends SpeciesSettings {
 		List<String> dual_b	= new ArrayList<>();
 		List<String> after	= new ArrayList<>();
 		List<String> dual_a	= new ArrayList<>();
-		for (String raceKey : values) {
-			File file = new File(speciesDirectoryPath(), raceKey+EXT);
+		for (String key : values) {
+			File file = new File(speciesDirectoryPath(), key+EXT);
 			if (file.exists()) {
 				initSkillsForEditor(loadOptions(file));
 				RaceName raceName = (RaceName) settingMap.get(ROOT + RaceName.KEY);
@@ -757,7 +757,7 @@ public class DNAFactory extends SpeciesSettings {
 					dual_b.add(civ);
 				else
 					before.add(civ);
-				System.out.println("Load file: " + raceKey + " / Civ = " + civ);
+				System.out.println("Load file: " + key + " / Civ = " + civ);
 
 				autoUpdate(e);
 
@@ -767,7 +767,7 @@ public class DNAFactory extends SpeciesSettings {
 					dual_a.add(civ);
 				else
 					after.add(civ);
-				System.out.println("Save file: " + raceKey + " / Civ = " + civ);
+				System.out.println("Save file: " + key + " / Civ = " + civ);
 				saveRace();
 			}
 		}
@@ -779,7 +779,7 @@ public class DNAFactory extends SpeciesSettings {
 	// -#-
 	// #==================== RaceList ====================
 	//
-	private boolean isFilled(String value)	{ return value != null && !value.isEmpty() && !value.startsWith("_"); }
+	private static boolean isFilled(String value)	{ return value != null && !value.isEmpty() && !value.startsWith("_"); }
 	private File[] loadListing()	{
 		boolean isJarPath = IMainOptions.speciesDirectory.isJarPath();
 		log("DNAFactory.loadListing Species Directory is Jar Path = " + isJarPath);
@@ -813,10 +813,10 @@ public class DNAFactory extends SpeciesSettings {
 		}
 		return false;
 	}
-	private Boolean isUp(File dir, File parent) {
-		if (parent == null || dir == null)
+	private Boolean isUp(File dir, File p) {
+		if (p == null || dir == null)
 			return false;
-		File parentParent = parent.getParentFile();
+		File parentParent = p.getParentFile();
 		if (parentParent == null)
 			return false;
 		try {
@@ -824,7 +824,7 @@ public class DNAFactory extends SpeciesSettings {
 			if (dirCanon == null || dirCanon.isEmpty())
 				return false;
 			String ppCanon = parentParent.getCanonicalPath();
-			if (dirCanon == null || dirCanon.isEmpty())
+			if (ppCanon == null || ppCanon.isEmpty())
 				return false;
 			if (dirCanon.equals(ppCanon)) {
 				log("DNAFactory.RaceList " + "Going to parent folder detected and ignored");
@@ -835,13 +835,13 @@ public class DNAFactory extends SpeciesSettings {
 			return null; // access denied
 		}
 	}
-	private void scanSubDir(List<File> speciesList, List<File> dirList, File dir, File parent, int subDirCount, int max)	{
+	private void scanSubDir(List<File> speciesList, List<File> dirList, File dir, File p, int subDirCount, int max)	{
 		if (subDirCount > max || dir == null || !dir.exists() || !dir.isDirectory())
 			return;
 		Boolean alreadyScanned = contains(dirList, dir);
 		if (alreadyScanned == null || alreadyScanned)
 			return;
-		Boolean isUp = isUp(dir, parent); // to track ".." dir
+		Boolean isUp = isUp(dir, p); // to track ".." dir
 		if (isUp == null || isUp)
 			return;
 		String name = dir.getName();
@@ -856,10 +856,11 @@ public class DNAFactory extends SpeciesSettings {
 			speciesList.addAll(Arrays.asList(array));
 		// Sub Dir files
 		File[] subDirectories = dir.listFiles(File::isDirectory);
-		log("Loop through subDirectories: N = " + subDirectories.length);
-		if(subDirectories != null && subDirectories.length > 0)
+		if(subDirectories != null && subDirectories.length > 0) {
+			log("Loop through subDirectories: N = " + subDirectories.length);
 			for (File subDir : subDirectories)
 				scanSubDir(speciesList, dirList, subDir, dir, subDirCount + 1, max);
+		}
 	}
 	final class CivilizationRecord {
 		final String skillsKey;
@@ -871,7 +872,7 @@ public class DNAFactory extends SpeciesSettings {
 		final String homeWorld;
 		final boolean fullCivName;
 		private final boolean fullAnim;
-		private final boolean availableAI;
+		private final boolean allowedToAI;
 		final boolean isCustom;
 		final DynOptions speciesOptions;
 		final int civIndex;
@@ -899,7 +900,7 @@ public class DNAFactory extends SpeciesSettings {
 			this.homeWorld		= homeWorld;
 			this.fullCivName	= fullCivName;
 			this.fullAnim		= fullAnim;
-			this.availableAI	= availableAI;
+			this.allowedToAI	= availableAI;
 			this.civIndex		= civIndex;
 			this.isCustom		= isCustom;
 		}
@@ -921,7 +922,7 @@ public class DNAFactory extends SpeciesSettings {
 			return s;
 		}
 		private int useCount(boolean onlyIfAvailableAI, boolean onlyfullAnim)	{
-			if (availableAI || !onlyIfAvailableAI)
+			if (allowedToAI || !onlyIfAvailableAI)
 				if (onlyfullAnim && !isFullAnim())
 						return 1;
 				else
@@ -941,7 +942,7 @@ public class DNAFactory extends SpeciesSettings {
 		private final StringList fullLeader;
 		private final StringList fullHome;
 		private final StringList fullAnim;
-		private final boolean availableAI;
+		private final boolean allowedToAI;
 		private final boolean isCustom;
 		private final DynOptions speciesOptions;
 		SpeciesRecord(File file, DynOptions options)	{
@@ -979,7 +980,7 @@ public class DNAFactory extends SpeciesSettings {
 			fullAnim.addAll(fullCivName);
 			fullAnim.retainAll(fullLeader);
 			fullAnim.retainAll(fullHome);
-			availableAI = sf.race().availableAI();
+			allowedToAI = sf.race().availableAI();
 			isCustom	= true;
 		}
 		private SpeciesRecord(String key, Race race)	{
@@ -994,7 +995,7 @@ public class DNAFactory extends SpeciesSettings {
 			fullLeader	= namedCiv;
 			fullHome	= namedCiv;
 			fullAnim	= namedCiv;
-			availableAI = race.availableAI();
+			allowedToAI = race.availableAI();
 			isCustom	= false;
 		}
 		CivRecordList getList()	{
@@ -1005,7 +1006,7 @@ public class DNAFactory extends SpeciesSettings {
 						skillsKey, fileKey, prefAnimKey,
 						civName, namedCiv.get(0), namedLeader.get(i), namedHome.get(i),
 						fullCivName.contains(civName), fullAnim.contains(civName),
-						availableAI, isCustom));
+						allowedToAI, isCustom));
 			}
 //			if (list.isEmpty()) {
 //				System.out.println("Empty getList() for " + fileKey); // TO DO BR: REMOVE
@@ -1016,8 +1017,8 @@ public class DNAFactory extends SpeciesSettings {
 	final class AnimationListMap extends HashMap<String, CivRecordList> implements Base {
 		private static final long serialVersionUID = 1L;
 		public AnimationListMap()	{
-			for (String raceKey : IGameOptions.allRaceKeyList)
-				put(raceKey, new CivRecordList());
+			for (String key : IGameOptions.allRaceKeyList)
+				put(key, new CivRecordList());
 			put(AvatarKey.DEFAULT_VALUE, new CivRecordList());
 		}
 		AnimationListMap loadCustomSpecies()	{
@@ -1138,7 +1139,7 @@ public class DNAFactory extends SpeciesSettings {
 				return Integer.MAX_VALUE;
 			int usecount = 0;
 			for ( CivilizationRecord civRec : this)
-				if (civRec.availableAI || !onlyIfAvailableAI)
+				if (civRec.allowedToAI || !onlyIfAvailableAI)
 					usecount += civRec.useCount(onlyIfAvailableAI, forAnim);
 				else
 					return IGameOptions.MAX_OPPONENTS;
@@ -1169,8 +1170,8 @@ public class DNAFactory extends SpeciesSettings {
 			String currentValue = settingValue();
 			clearLists();
 			animationMap.clear();
-			for (String raceKey : IGameOptions.allRaceKeyList)
-				animationMap.put(raceKey, new StringList());
+			for (String key : IGameOptions.allRaceKeyList)
+				animationMap.put(key, new StringList());
 			animationMap.put(AvatarKey.DEFAULT_VALUE, new StringList());
 
 			// Add existing files
@@ -1193,8 +1194,8 @@ public class DNAFactory extends SpeciesSettings {
 					}
 				}
 			// Add Game races
-			for (String raceKey : IGameOptions.allRaceKeyList)
-				add(raceKey);
+			for (String key : IGameOptions.allRaceKeyList)
+				add(key);
 
 			defaultIndex(0);
 			reload = true;
@@ -1211,9 +1212,9 @@ public class DNAFactory extends SpeciesSettings {
 			float cost = cr.getTotalCost();
 			put(cfgValue, langLabel, cost, langLabel, tooltipKey);
 		}
-		private void add(String raceKey)	{
-			log("DNAFactory.RaceList.add started: species(raceKey) = " + raceKey );
-			Species species	  = new Species(raceKey);	    	
+		private void add(String key)	{
+			log("DNAFactory.RaceList.add started: species(raceKey) = " + key);
+			Species species	  = new Species(key);
 			String cfgValue	  = species.skillKey();
 			String langLabel  = BASE_RACE_MARKER + species.setupName();
 			String tooltipKey = species.getDescription(3);

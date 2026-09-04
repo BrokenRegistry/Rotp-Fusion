@@ -20,14 +20,16 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 import java.util.List;
 
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.IMapOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 
-public class SystemNameDisplaySprite  extends MapControlSprite  {
+public final class SystemNameDisplaySprite  extends MapControlSprite  {
 	static Color greenC = Color.green;
 	static Color darkGreenC = new Color(0,128,0);
 	static FlightPathSprite sprite = new FlightPathSprite();
@@ -35,24 +37,23 @@ public class SystemNameDisplaySprite  extends MapControlSprite  {
 	Color extColor, normColor;
 
 	public SystemNameDisplaySprite(int xOff, int yOff, int w, int h) {
-		xOffset = scaled(xOff);
-		yOffset = scaled(yOff);
-		width = scaled(w);
-		height = scaled(h);
+		super(xOff, yOff, w, h, "SYSTEM_NAME_SPRITE");
+		box.setParam(IMapOptions.systemNameDisplay);
 		extColor =  newColor(0,0,192,64);
 		normColor = newColor(32,32,192,128);
 	}
 	@Override
 	public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-		map.toggleSystemNameDisplay(rightClick);
+		IMapOptions.systemNameDisplay.toggle(e, null);
+//		map.toggleSystemNameDisplay(rightClick);
 	}
 	@Override
 	public void draw(GalaxyMapPanel map, Graphics2D g2) {
 		int w = width;
 		String detail ="";
 		int fontSize = 13;
-		int lineH	 = BasePanel.s14;
-		List<String> detailLines = null;
+		int lineH	 = s14;
+		List<String> detailLines = new ArrayList<>();
 
 		if (hovering) {
 			g2.setFont(narrowFont(fontSize));
@@ -64,7 +65,7 @@ public class SystemNameDisplaySprite  extends MapControlSprite  {
 				w0 += detailW/10;
 				detailLines = wrappedLines(g2, detail, w0);
 			}
-			w = width + BasePanel.s15 + w0;
+			w = width + s15 + w0;
 		}
 		drawBackground(map, g2, w);
 
@@ -73,15 +74,11 @@ public class SystemNameDisplaySprite  extends MapControlSprite  {
 		int y2 = startY+scaled(2);
 
 		Color c0 = g2.getColor();
-		int cnr = BasePanel.s12;		
+		int cnr = s12;		
 		g2.setColor(background);
 		
 		g2.fillRoundRect(startX, startY, width, height, cnr, cnr);
 
-		int s1 = scaled(1);
-		//int s2 = scaled(2);
-		//int s4 = scaled(4);
-		
 		Shape clipArea = new RoundRectangle2D.Float(startX, startY, width, height, cnr, cnr);
 		g2.setClip(clipArea);
 

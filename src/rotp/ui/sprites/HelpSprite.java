@@ -20,70 +20,41 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
 import rotp.ui.BasePanel;
+import rotp.ui.game.AdvisorPanel;
 import rotp.ui.main.GalaxyMapPanel;
 
 public class HelpSprite extends MapSprite {
-    private int mapX, mapY, buttonW, buttonH;
-    private int minMapX, maxButtonW;
     private final BasePanel parent;
-
-    protected int mapX()      { return mapX; }
-    protected int mapY()      { return mapY; }
-    public void mapX(int i)   { mapX = i; }
-    public void mapY(int i)   { mapY = i; }
-
-    private void setBounds(int x, int y, int w, int h) {
-        mapX = x;
-        mapY = y;
-        buttonW = w;
-        buttonH = h;
-    }
 
     public HelpSprite(BasePanel p)  { 
         parent = p; 
-        int x0 = BasePanel.s10;
-        int y0 = BasePanel.s8;
-        int w0 = BasePanel.s20;
-        int h0 = BasePanel.s20;
-
-        setBounds(x0,y0,w0,h0);
+		setBounds(s10, s8, s20, s20);
+		box.setAdviceHelpKey("MAIN_PANEL_HELP_ICON_HELP");
     }
 
-    @Override
-    public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-        hovering = x >= mapX
-                && x <= mapX+buttonW
-                && y >= mapY()
-                && y <= mapY()+buttonH;
-
-        return hovering;
-    }
-    @Override
-    public void draw(GalaxyMapPanel map, Graphics2D g) {
-        int x1 = BasePanel.s16;
-        int y1 = BasePanel.s26;
-        
-        g.setColor(new Color(100,100,255,100));
-        g.fillOval(mapX, mapY, buttonW, buttonH);
+	@Override public void draw(GalaxyMapPanel map, Graphics2D g) {
+		int x1 = s16;
+		int y1 = s26;
+		g.setColor(new Color(100, 100, 255, 100));
+		box.fillOval(g);
         g.setFont(narrowFont(20));
         if (hovering)
             g.setColor(Color.yellow);
         else
             g.setColor(Color.white);
-            
+
         drawString(g,"?", x1, y1);
     }
     @Override
     public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
         if (click)
             softClick();
-        minMapX = min(mapX, minMapX);
-        maxButtonW = max(buttonW, maxButtonW);
         hovering = true;
         if (rightClick)
         	parent.showHotKeys();
-        else
-        	parent.showHelp();
+		else if (AdvisorPanel.helpShowAdvisor.get())
+			parent.toggleOnDemandAdvisor(parent, AdvisorPanel.MAP_ADVISOR, player());
+		else
+			parent.showHelp();
     }
 }
-

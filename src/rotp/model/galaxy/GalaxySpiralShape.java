@@ -39,7 +39,7 @@ final class GalaxySpiralShape extends GalaxyShape {
 		if (param1 == null) {
 			param1 = new ShapeOptionList(
 			BASE_NAME, 1,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 					"SETUP_SPIRAL_2_ARMS",
 					"SETUP_SPIRAL_3_ARMS",
 					"SETUP_SPIRAL_4_ARMS",
@@ -58,7 +58,7 @@ final class GalaxySpiralShape extends GalaxyShape {
 		if (param2 == null) {
 			param2 = new ShapeOptionList(
 			BASE_NAME, 2,
-			new ArrayList<String>(Arrays.asList(
+			new ArrayList<>(Arrays.asList(
 				"SETUP_SPIRAL_ROTATION_0",
 				"SETUP_SPIRAL_ROTATION_1",
 				"SETUP_SPIRAL_ROTATION_2",

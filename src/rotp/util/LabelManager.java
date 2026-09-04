@@ -63,7 +63,7 @@ public class LabelManager implements Base {
     	for (Entry<String, byte[]> entry : src.labelMap.entrySet())
     		dest.labelMap.put(entry.getKey(), entry.getValue().clone());
     	for (Entry<String, List<String>> entry : src.dialogueMap.entrySet())
-    		dest.dialogueMap.put(entry.getKey(), new ArrayList<String>(entry.getValue()));
+    		dest.dialogueMap.put(entry.getKey(), new ArrayList<>(entry.getValue()));
     }
 
     public String label(String key) {

@@ -20,18 +20,19 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 
+import rotp.model.game.GameSession;
 import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
+import rotp.ui.game.AdvisorPanel;
+import rotp.util.AdviceBox;
 
 public final class MainButtonPanel extends BasePanel implements MouseListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
@@ -66,9 +67,9 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
                     "MAIN_NAVIGATION_COLONIES",
                     "MAIN_NAVIGATION_TECH" };
 
-    Rectangle[] buttonBox = new Rectangle[buttons.length];
-    Rectangle nextTurnBox = new Rectangle();
-    Shape hoverBox, depressedBox;
+	AdviceBox[] buttonBox = new AdviceBox[buttons.length];
+	AdviceBox nextTurnBox;
+	AdviceBox hoverBox, depressedBox;
 
     private final MainUI parent;
 
@@ -77,9 +78,13 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
         leftM = s1;
         botM = s2;
 
-        for (int i=0;i<buttonBox.length;i++)
-            buttonBox[i] = new Rectangle();
-
+		for (int i=0; i<buttonBox.length; i++) {
+			buttonBox[i] = new AdviceBox(this);
+			buttonBox[i].setAdviceHelpKey(buttons[i] + AdvisorPanel.HELP_KEY);
+		}
+		nextTurnBox = new AdviceBox(this);
+		nextTurnBox.setLabelKey("MAIN_NAVIGATION_NEXT_TURN");
+		nextTurnBox.setAdviceHelpKey("MAIN_NAVIGATION_NEXT_TURN" + AdvisorPanel.HELP_KEY);
         addMouseListener(this);
         addMouseMotionListener(this);
     }
@@ -116,9 +121,9 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
         super.paintComponent(g0);
         int w = getWidth();
         int h = getHeight();
-        
+
         Graphics2D g = (Graphics2D) g0;
-        
+
         if (buttonBackground == null) 
             initGradients(w);
         g.setColor(Color.black);
@@ -142,6 +147,7 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
             c0 = hoverC;
 
         buttonBox[i].setBounds(x, y, w, h);
+
         String label = text(buttons[i]);
         g.setFont(narrowFont(28));
         int sw = g.getFontMetrics().stringWidth(label);
@@ -181,21 +187,23 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
         	label = text("MAIN_NAVIGATION_LOCKED", opts.selectedIronmanLoadDelay());
         else if (opts.autoRunAILocked())
         	label = text("MAIN_NAVIGATION_AUTO_RUN_AI", opts.selectedIronmanLoadDelay());
-        else if (session().autoRunning() && session().performingTurn())
-    		label = text("MAIN_NAVIGATION_AUTO_RUN_PAUSE");
-        else {
-        	String key;
-        	if (IDebugOptions.debugAutoRun())
-	        	key = "MAIN_NAVIGATION_AUTO_RUN";
-	        else if (opts.displayYear())
-	        	key = "MAIN_NAVIGATION_NEXT_YEAR";
-	        else
-	        	key = "MAIN_NAVIGATION_NEXT_TURN";
-        	if (opts.selectedIronmanLoad())
-        		label = text(key + "_LOCKED", opts.selectedIronmanLoadDelay());
-        	else
-        		label = text(key);
-        }
+		else {
+			if (GameSession.autoRunning() && GameSession.performingTurn())
+				label = text("MAIN_NAVIGATION_AUTO_RUN_PAUSE");
+			else {
+				String key;
+				if (IDebugOptions.debugAutoRun())
+			    	key = "MAIN_NAVIGATION_AUTO_RUN";
+			    else if (opts.displayYear())
+			    	key = "MAIN_NAVIGATION_NEXT_YEAR";
+			    else
+			    	key = "MAIN_NAVIGATION_NEXT_TURN";
+				if (opts.selectedIronmanLoad())
+					label = text(key + "_LOCKED", opts.selectedIronmanLoadDelay());
+				else
+					label = text(key);
+			}
+		}
         g.setFont(narrowFont(28));
         int sw = g.getFontMetrics().stringWidth(label);
         int x0 = x+((w-sw)/2);
@@ -205,8 +213,7 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
     private void clickButton(int i) {
         RotPUI.instance().mainUI().cancel();
         switch(i) {
-//            case 0: RotPUI.instance().selectGamePanel();    break;
-            case 0: parent.selectGamePanel();    break;
+            case 0: parent.selectGamePanel();				break;
             case 1: RotPUI.instance().selectSystemsPanel(); break;
             case 2: RotPUI.instance().selectFleetPanel();   break;
             case 3: RotPUI.instance().selectDesignPanel();  break;
@@ -220,15 +227,19 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
     public void mouseClicked(MouseEvent arg0) { }
     @Override
     public void mouseEntered(MouseEvent e) { }
-    @Override
-    public void mouseExited(MouseEvent e) {
-        if ((hoverBox != null)
-        || (depressedBox != null)) {
-            depressedBox = null;
-            hoverBox = null;
-            repaint();
-        }
-    }
+	@Override public void mouseExited(MouseEvent e) {
+		if (hoverBox != null) {
+			hoverBox.hovering(false);
+			depressedBox = null;
+			hoverBox = null;
+			repaint();
+		}
+		else if (depressedBox != null) {
+			depressedBox = null;
+			hoverBox = null;
+			repaint();
+		}
+	}
     @Override
     public void mousePressed(MouseEvent e) {
         if (hoverBox != null) {
@@ -246,16 +257,16 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
         depressedBox = null;
 
         if (!parent.enableButtons()) {
-        	if (session().autoRunning() && nextTurnBox.contains(x,y))
-        		session().pauseAutoRun();
+			if (GameSession.autoRunning() && nextTurnBox.contains(x,y))
+				GameSession.pauseAutoRun();
         	return;
         }
 
-        if (session().performingTurn()) {
-        	if (session().autoRunning() && nextTurnBox.contains(x,y))
-        		session().pauseAutoRun();
-        	else
-        		misClick();
+		if (GameSession.performingTurn()) {
+			if (GameSession.autoRunning() && nextTurnBox.contains(x,y))
+				GameSession.pauseAutoRun();
+			else
+				misClick();
             return;
         }
 
@@ -289,14 +300,14 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
 
         if (!parent.enableButtons())
             return;
-        Shape prevHover = hoverBox;
+		AdviceBox prevHover = hoverBox;
         hoverBox = null;
 
-        if (nextTurnBox.contains(x,y))
+        if (nextTurnBox.isSelectableAt(x,y))
             hoverBox = nextTurnBox;
 
         for (int i=0;i<buttonBox.length;i++) {
-            if (buttonBox[i].contains(x, y))
+            if (buttonBox[i].isSelectableAt(x, y))
                 hoverBox = buttonBox[i];
         }
 

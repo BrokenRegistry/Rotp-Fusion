@@ -778,7 +778,7 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
             return;
         if (type().smallSphere(this) == null) {
             log("Generating sphere for: ", type().toString());
-            GameSession.instance().smallSphereService().submit(sphereGenerator(Sphere2D.SMALL_PLANET_R));
+            GameSession.smallSphereService().submit(sphereGenerator(Sphere2D.SMALL_PLANET_R));
             generate2DSphere(Sphere2D.FAST_PLANET_R);
         }
     }

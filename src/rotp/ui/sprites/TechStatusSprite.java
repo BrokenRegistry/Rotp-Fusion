@@ -22,22 +22,19 @@ import java.awt.event.MouseEvent;
 
 import rotp.model.tech.Tech;
 import rotp.model.tech.TechCategory;
-import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.main.GalaxyMapPanel;
 
-public class TechStatusSprite extends MapControlSprite {
+public final class TechStatusSprite extends MapControlSprite {
     private static final Color blueBucketBgC	= new Color(4, 4, 16);
     private static final Color lightBlueBucketC	= new Color(100,100,255);
     private static final Color darkBlueBucketC	= new Color(50, 50, 128);
     private final int category;
-    public TechStatusSprite(int catNum, int xOff, int yOff, int w, int h) {
-        category = catNum;
-        xOffset = scaled(xOff);
-        yOffset = scaled(yOff);
-        width = scaled(w);
-        height = scaled(h);
-    }
+	public TechStatusSprite(int catNum, int xOff, int yOff, int w, int h) {
+		super(xOff, yOff, w, h, "MAIN_HELP_2M");
+		category = catNum;
+		box.setSpriteToDraw(this);
+	}
     @Override
     public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
         RotPUI.instance().selectTechPanel();
@@ -48,9 +45,9 @@ public class TechStatusSprite extends MapControlSprite {
     public void draw(GalaxyMapPanel map, Graphics2D g2) {
         if (!map.parent().showTreasuryResearchBar())
             return;
-        
+
         boolean show = hovering || map.parent().showAllCurrentResearch();
-        
+
         TechCategory cat = player().tech().category(category);
         Tech tech = tech(cat.currentTech());
         String label = "";
@@ -59,7 +56,7 @@ public class TechStatusSprite extends MapControlSprite {
         int fontSize2 = 11;
         int labelW1 = 0;
         int labelW2 = 0;
-        
+
         int w = width;
         if (show) {
             if (tech == null)
@@ -77,12 +74,12 @@ public class TechStatusSprite extends MapControlSprite {
             g2.setFont(narrowFont(fontSize1));
             labelW1 = g2.getFontMetrics().stringWidth(label);
             g2.setFont(narrowFont(fontSize2));
-            labelW2 = g2.getFontMetrics().stringWidth(label2);            
-            w = width+BasePanel.s15+max(labelW1, labelW2);
+            labelW2 = g2.getFontMetrics().stringWidth(label2);
+            w = width+s15+max(labelW1, labelW2);
         }
         drawBackground(map,g2,w);
 
-        int cnr = BasePanel.s12;        
+        int cnr = s12;
         g2.setColor(background);
         g2.fillRoundRect(startX, startY, width, height, cnr, cnr);
 
@@ -90,22 +87,22 @@ public class TechStatusSprite extends MapControlSprite {
         	if (options().showTechProgress())
         		RotPUI.instance().techUI().drawResearchBubble(g2, cat, true, Color.lightGray, Color.black, Color.lightGray, 
         				blueBucketBgC, lightBlueBucketC, lightBlueBucketC, darkBlueBucketC,
-        				startX+BasePanel.s1+(width/2), startY+BasePanel.s7+(height/2));
+        				startX+s1+(width/2), startY+s7+(height/2));
         	else
         		RotPUI.instance().techUI().drawResearchBubble(g2, cat, true, Color.lightGray, Color.lightGray, Color.lightGray,
         				darkBlueBucketC, darkBlueBucketC, lightBlueBucketC, lightBlueBucketC,
-        				startX+BasePanel.s1+(width/2), startY+BasePanel.s7+(height/2));
+        				startX+s1+(width/2), startY+s7+(height/2));
 
         if (show) {
             g2.setColor(Color.lightGray);
-            int y1 = startY+height-BasePanel.s18;
-            int x1 = startX+width+BasePanel.s10;
+            int y1 = startY+height-s18;
+            int x1 = startX+width+s10;
             if (label2.isEmpty())
-                y1 += BasePanel.s7;
+                y1 += s7;
             g2.setFont(narrowFont(fontSize1));
             drawString(g2,label, x1, y1);
             if (!label2.isEmpty()) {
-                int y2 = startY+height-BasePanel.s5;
+                int y2 = startY+height-s5;
                 int x2 = labelW2 >= labelW1 ? x1 : x1 + ((labelW1-labelW2)/2);
                 g2.setFont(narrowFont(fontSize2));
                 drawString(g2,label2, x2, y2);

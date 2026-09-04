@@ -23,13 +23,8 @@ import java.awt.event.MouseEvent;
 import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 
-public class ZoomOutWidgetSprite extends MapControlSprite {
-    public ZoomOutWidgetSprite(int xOff, int yOff, int w, int h) {
-        xOffset = scaled(xOff);
-        yOffset = scaled(yOff);
-        width = scaled(w);
-        height = scaled(h);
-    }
+public final class ZoomOutWidgetSprite extends MapControlSprite {
+	public ZoomOutWidgetSprite(int xOff, int yOff, int w, int h)	{ super(xOff, yOff, w, h, "MAIN_ZOOM_OUT_SPRITE_HELP"); }
     @Override
     public boolean acceptDoubleClicks()         { return true; }
     @Override

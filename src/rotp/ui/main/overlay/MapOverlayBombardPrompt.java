@@ -15,13 +15,13 @@
  */
 package rotp.ui.main.overlay;
 
+import static rotp.ui.game.IAdvisor.ADVISOR;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
@@ -32,7 +32,6 @@ import rotp.model.Sprite;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
-import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
@@ -40,34 +39,32 @@ import rotp.ui.sprites.BombardNoSprite;
 import rotp.ui.sprites.BombardTargetSprite;
 import rotp.ui.sprites.BombardYesSprite;
 import rotp.ui.sprites.ClickToContinueSprite;
-import rotp.ui.sprites.MapSprite;
+import rotp.ui.sprites.SystemFlagSprite;
 import rotp.ui.vipconsole.IVIPConsole;
 import rotp.ui.vipconsole.IVIPListener;
 
-public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener {
-    static final Color destroyedTextC = new Color(255,32,32,192);
-    static final Color destroyedMaskC = new Color(0,0,0,160);
-    Color maskC  = new Color(40,40,40,160);
-    Area mask;
-    BufferedImage planetImg;
-    MainUI parent;
-    boolean bombarded = false;
-    int sysId;
-    ShipFleet fleet;
-    int pop, endPop, estKills, estFactoryKills, bases, endBases, fact, endFact, shield, transports;
-    boolean drawSprites = false;
-    ClickToContinueSprite clickSprite;
-    BombardNoSprite noButton = new BombardNoSprite();
-    BombardYesSprite yesButton = new BombardYesSprite();
-    BombardTargetSprite targetButton = new BombardTargetSprite();
-    SystemFlagSprite flagButton = new SystemFlagSprite();
+public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener {
+	private static final Color destroyedTextC = new Color(255,32,32,192);
+	private static final Color destroyedMaskC = new Color(0,0,0,160);
+	private Color maskC  = new Color(40,40,40,160);
+	private Area mask;
+	private BufferedImage planetImg;
+	private MainUI parent;
+	private boolean bombarded = false;
+	private int sysId;
+	private ShipFleet fleet;
+	private int pop, endPop, estKills, estFactoryKills, bases, endBases, fact, endFact, shield, transports;
+	private boolean drawSprites = false;
+	private ClickToContinueSprite clickSprite;
+	private BombardNoSprite noButton = new BombardNoSprite();
+	private BombardYesSprite yesButton = new BombardYesSprite();
+	private BombardTargetSprite targetButton = new BombardTargetSprite();
+	private SystemFlagSprite flagButton = new SystemFlagSprite();
     public MapOverlayBombardPrompt(MainUI p) {
         parent = p;
         clickSprite = new ClickToContinueSprite(parent);
     }
-    public void releaseObjects() {
-    	fleet = null;
-    }
+	public void releaseObjects()	{ fleet = null; }
     public void init(int systemId, ShipFleet fl) {
         drawSprites = true;
         planetImg = null;
@@ -96,15 +93,8 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
         estFactoryKills = Math.round(fl.expectedBombardDamage(true) / 50f);
         initConsoleSelection("Bombard Planet", false);
     }
-    private StarSystem starSystem() {
-        return galaxy().system(sysId);
-    }
     private void toggleFlagColor(boolean reverse) {
         player().sv.toggleFlagColor(sysId, reverse);
-        parent.repaint();
-    }
-    private void resetFlagColor() {
-        player().sv.resetFlagColor(sysId);
         parent.repaint();
     }
     public void bombardTarget() {
@@ -113,6 +103,7 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
             mask = null;
             targetBombard();
             bombard();
+			ADVISOR.onHold();
             parent.map().repaint();
         }
     }
@@ -122,6 +113,7 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
             mask = null;
             softClick();
             bombard();
+			ADVISOR.onHold();
             parent.map().repaint();
         }
     }
@@ -157,6 +149,7 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
             endFact = pl.sv.factories(sysId);
             initConsoleReport("Bombardement Report", true);
         }
+		ADVISOR.hoveringOverSprite(null);
     }
     @Override
     public boolean drawSprites()   { return drawSprites; }
@@ -173,17 +166,6 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
         StarSystem sys = galaxy().system(sysId);
         Empire pl = player();
 
-        int s7 = BasePanel.s7;
-        int s10 = BasePanel.s10;
-        int s15 = BasePanel.s15;
-        int s20 = BasePanel.s20;
-        int s25 = BasePanel.s25;
-        int s30 = BasePanel.s30;
-        int s35 = BasePanel.s35;
-        int s40 = BasePanel.s40;
-        int s50 = BasePanel.s50;
-        int s60 = BasePanel.s60;
-
         int w = ui.getWidth();
         int h = ui.getHeight();
 
@@ -193,7 +175,7 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
         int buttonOffset = targetOK? s35 : 0; // BR: adjusted for target
         int boxW = scaled(540);
         int boxH = scaled(245)+transportH+buttonOffset; // BR: adjusted for target
-        int boxH1 = BasePanel.s73+transportH+buttonOffset; // BR: adjusted for target
+        int boxH1 = s73+transportH+buttonOffset; // BR: adjusted for target
 
         int boxX = -s40+(w/2);
         int boxY = s40+(h-boxH)/2;
@@ -291,7 +273,7 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
                 g.setFont(narrowFont(subtitleFontSize));
                 drawString(g,subtitleStr, boxX+leftW, boxY+s25+transportH);         
             }
-            
+
             // calc width needed for yes/no buttons
             g.setFont(narrowFont(20));
             String yesStr;
@@ -360,7 +342,7 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
         int x0a = boxX+s10;
 
         int pad = s30;
-        int p1 = BasePanel.s5;
+        int p1 = s5;
         String dmgStr = text("MAIN_BOMBARD_DMG", "-99");
         String popStr = text("MAIN_BOMBARD_POPULATION", endPop);
         String factStr = text("MAIN_BOMBARD_FACTORIES", endFact);
@@ -513,7 +495,7 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
 
         // planet flag
         parent.addNextTurnControl(flagButton);
-        flagButton.init(this, g);
+        flagButton.init(this, g, sysId);
         flagButton.mapX(boxX+boxW-flagButton.width()+s10);
         flagButton.mapY(boxY+boxH-flagButton.height()+s10);
         flagButton.draw(parent.map(), g);
@@ -533,6 +515,8 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
     }
     @Override
     public boolean handleKeyPress(KeyEvent e) {
+		if (baseHandleKeyPress(e))
+			return true;
     	setModifierKeysState(e); // BR: For the Flag color selection
         boolean shift = e.isShiftDown();
         switch(e.getKeyCode()) {
@@ -544,13 +528,14 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
             case KeyEvent.VK_N:
                 bombardCancel();
                 break;
-            case KeyEvent.VK_L:
-            	if (e.isAltDown()) {
-            		debugReloadLabels(parent);
-            		break;
-            	}
-                bombardTarget();
-                break;
+			case KeyEvent.VK_L:
+				if (e.isAltDown()) {
+					debugReloadLabels(parent);
+					break;
+				}
+			case KeyEvent.VK_S:
+				bombardTarget();
+				break;
             case KeyEvent.VK_Y:
                 bombardYes();
                 break;
@@ -564,84 +549,6 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
         }
         return true;
     }
-    class SystemFlagSprite extends MapSprite {
-        private int mapX, mapY, buttonW, buttonH;
-        private int selectX, selectY, selectW, selectH;
-
-        private MapOverlayBombardPrompt parent;
-
-        protected int mapX()      { return mapX; }
-        protected int mapY()      { return mapY; }
-        public void mapX(int i)   { selectX = mapX = i; }
-        public void mapY(int i)   { selectY = mapY = i; }
-
-        public int width()        { return buttonW; }
-        public int height()       { return buttonH; }
-        public void reset()       {  }
-
-        public void init(MapOverlayBombardPrompt p, Graphics2D g)  {
-            parent = p;
-            buttonW = BasePanel.s70;
-            buttonH = BasePanel.s70;
-            selectW = buttonW;
-            selectH = buttonH;
-        }
-        public void setSelectionBounds(int x, int y, int w, int h) {
-            selectX = x;
-            selectY = y;
-            selectW = w;
-            selectH = h;
-        }
-        @Override
-        public boolean acceptDoubleClicks()         { return true; }
-        @Override
-        public boolean acceptWheel()                { return true; }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-            hovering = x >= selectX
-                        && x <= selectX+selectW
-                        && y >= selectY
-                        && y <= selectY+selectH;
-            return hovering;
-        }
-        @Override
-        public void draw(GalaxyMapPanel map, Graphics2D g) {
-            if (!parent.drawSprites())
-                return;
-            StarSystem sys = parent.starSystem();
-            Image flagImage = parent.parent.flagImage(sys);
-            Image flagHaze = parent.parent.flagHaze(sys);
-            g.drawImage(flagHaze, mapX, mapY, buttonW, buttonH, null);
-            if (hovering) {
-                Image flagHover = parent.parent.flagHover(sys);
-                g.drawImage(flagHover, mapX, mapY, buttonW, buttonH, null);
-            }
-            g.drawImage(flagImage, mapX, mapY, buttonW, buttonH, null);
-        }
-        @Override
-        public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-        	// BR: if 3 buttons:
-        	//   - Middle click = Reset
-        	//   - Right click = Reverse
-            if (middleClick)
-            	parent.resetFlagColor();
-            else if (rightClick)
-            	if (has3Buttons())
-            		parent.toggleFlagColor(true);
-            	else
-            		parent.resetFlagColor();
-            else
-            	parent.toggleFlagColor(false);
-        };
-        @Override
-        public void wheel(GalaxyMapPanel map, int rotation, boolean click) {
-            if (rotation < 0)
-                parent.toggleFlagColor(true);
-            else
-                parent.toggleFlagColor(false);
-        };
-    }
-
     // ##### Console Tools
     @Override public void consoleEntry()				{ advanceMap(); }
     @Override public List<ConsoleOptions> getOptions()	{

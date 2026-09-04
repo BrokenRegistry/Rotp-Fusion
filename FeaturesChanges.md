@@ -456,6 +456,13 @@
 
 ### Guide and Help:
 
+- Extension of the advisor, to be able to call it on demand, this in order to display help on the element under the cursor.
+  - On the Galaxy map, including some overlay windows.
+  - On the colony panel.
+  - Press "F1" to toggle. (Former help panel still available with "Ctrl-F1")
+  - Options for Avatar size, text size, and to restore the former help panels.
+  - This is a work in progress.
+- Upgraded help panels to be able to display HTML text.
 - New search feature in the options panels
 - Improved Empire intelligence help texts.
 - Completed help for new Alt-Scroll in Design UI
@@ -480,6 +487,9 @@
 
 ### Fixes:
 
+- Fixed potential sources of memory leak.
+- Fixed potential null pointer exceptions.
+- Clicking on the Empire name in the system panel will now take you to the Diplomacy panel and select the related empire. (It was already supposed to do this, but it wasn't fully functional!)
 - Combat panel: Added a level of security in the final ship retreat display, to prevent crash.
 - Fixed fund raising acting on ungoverned colony. (May be an option to allow it will follow)
 - Fixed Planets Bombardments not always being added on the diplomatic list.

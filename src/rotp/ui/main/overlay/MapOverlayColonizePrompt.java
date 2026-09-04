@@ -18,10 +18,8 @@ package rotp.ui.main.overlay;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
@@ -37,29 +35,24 @@ import rotp.ui.RotPUI;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
-import rotp.ui.sprites.ClickToContinueSprite;
 import rotp.ui.sprites.ColonizeNoSprite;
 import rotp.ui.sprites.ColonizeYesSprite;
-import rotp.ui.sprites.MapSprite;
+import rotp.ui.sprites.SystemFlagSprite;
 
-public class MapOverlayColonizePrompt extends MapOverlay {
-    Color maskC  = new Color(40,40,40,160);
-    Area mask;
-    BufferedImage planetImg;
-    MainUI parent;
-    float origMapScale;
-    int sysId;
-    ShipFleet fleet;
-    ShipDesign design;
-    ClickToContinueSprite clickSprite;
-    boolean drawSprites = false;
-    ColonizeNoSprite noButton = new ColonizeNoSprite();
-    ColonizeYesSprite yesButton = new ColonizeYesSprite();
-    SystemFlagSprite flagButton = new SystemFlagSprite();
-    public MapOverlayColonizePrompt(MainUI p) {
-        parent = p;
-        clickSprite = new ClickToContinueSprite(parent);
-    }
+public final class MapOverlayColonizePrompt implements IMapOverlay {
+	private Color maskC  = new Color(40,40,40,160);
+	private Area mask;
+	private BufferedImage planetImg;
+	private MainUI parent;
+	private int sysId;
+	private ShipFleet fleet;
+	private ShipDesign design;
+	private boolean drawSprites = false;
+	private ColonizeNoSprite noButton	= new ColonizeNoSprite();
+	private ColonizeYesSprite yesButton	= new ColonizeYesSprite();
+	private SystemFlagSprite flagButton	= new SystemFlagSprite();
+
+	public MapOverlayColonizePrompt(MainUI p)	{ parent = p; }
     public void releaseObjects() {
     	fleet = null;
     	design = null;
@@ -74,7 +67,6 @@ public class MapOverlayColonizePrompt extends MapOverlay {
         flagButton.reset();
         drawSprites = true;
         parent.hideDisplayPanel();
-        origMapScale = parent.map().scaleY();
         parent.map().setScale(20);
         parent.map().recenterMapOn(sys);
         parent.map().resetRangeAreas();
@@ -82,15 +74,8 @@ public class MapOverlayColonizePrompt extends MapOverlay {
         parent.clickedSprite(sys);
         parent.repaint();
     }
-    private StarSystem starSystem() {
-        return galaxy().system(sysId);
-    }
     private void toggleFlagColor(boolean reverse) {
         player().sv.toggleFlagColor(sysId, reverse);
-        parent.repaint();
-    }
-    private void resetFlagColor() {
-        player().sv.resetFlagColor(sysId);
         parent.repaint();
     }
     @Override
@@ -127,16 +112,6 @@ public class MapOverlayColonizePrompt extends MapOverlay {
         StarSystem sys = galaxy().system(sysId);
         boolean hasPlague = sys.hasPlague();
         Empire pl = player();
-
-        int s7 = BasePanel.s7;
-        int s10 = BasePanel.s10;
-        int s15 = BasePanel.s15;
-        int s20 = BasePanel.s20;
-        int s25 = BasePanel.s25;
-        int s30 = BasePanel.s30;
-        int s40 = BasePanel.s40;
-        int s50 = BasePanel.s50;
-        int s60 = BasePanel.s60;
 
         int w = ui.getWidth();
         int h = ui.getHeight();
@@ -349,13 +324,15 @@ public class MapOverlayColonizePrompt extends MapOverlay {
 
         // planet flag
         parent.addNextTurnControl(flagButton);
-        flagButton.init(this, g);
+        flagButton.init(this, g, sysId);
         flagButton.mapX(boxX+boxW-flagButton.width()+s10);
         flagButton.mapY(boxY+boxH-flagButton.height()+s10);
         flagButton.draw(parent.map(), g);
     }
     @Override
     public boolean handleKeyPress(KeyEvent e) {
+		if (baseHandleKeyPress(e))
+			return true;
         boolean shift = e.isShiftDown();
         switch(e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
@@ -368,94 +345,17 @@ public class MapOverlayColonizePrompt extends MapOverlay {
             case KeyEvent.VK_F:
                 toggleFlagColor(shift);
                 break;
-            case KeyEvent.VK_L:
-            	if (e.isAltDown()) {
-            		debugReloadLabels(parent);
-            		parent.repaint();
-            		break;
-            	}
+			case KeyEvent.VK_L:
+				if (e.isAltDown()) {
+					debugReloadLabels(parent);
+					parent.repaint();
+					break;
+				}
             default:
             	if (!shift) // BR to avoid noise when changing flag color
             		misClick();
                 break;
         }
         return true;
-    }
-    class SystemFlagSprite extends MapSprite {
-        private int mapX, mapY, buttonW, buttonH;
-        private int selectX, selectY, selectW, selectH;
-
-        private MapOverlayColonizePrompt parent;
-
-        protected int mapX()      { return mapX; }
-        protected int mapY()      { return mapY; }
-        public void mapX(int i)   { selectX = mapX = i; }
-        public void mapY(int i)   { selectY = mapY = i; }
-
-        public int width()        { return buttonW; }
-        public int height()       { return buttonH; }
-        public void reset()       { }
-
-        public void init(MapOverlayColonizePrompt p, Graphics2D g)  {
-            parent = p;
-            buttonW = BasePanel.s70;
-            buttonH = BasePanel.s70;
-            selectW = buttonW;
-            selectH = buttonH;
-        }
-        public void setSelectionBounds(int x, int y, int w, int h) {
-            selectX = x;
-            selectY = y;
-            selectW = w;
-            selectH = h;
-        }
-        @Override
-        public boolean acceptDoubleClicks()         { return true; }
-        @Override
-        public boolean acceptWheel()                { return true; }
-        @Override
-        public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
-            hovering = x >= selectX
-                        && x <= selectX+selectW
-                        && y >= selectY
-                        && y <= selectY+selectH;
-            return hovering;
-        }
-        @Override
-        public void draw(GalaxyMapPanel map, Graphics2D g) {
-            if (!parent.drawSprites())
-                return;
-            StarSystem sys = parent.starSystem();
-            Image flagImage = parent.parent.flagImage(sys);
-            Image flagHaze = parent.parent.flagHaze(sys);
-            g.drawImage(flagHaze, mapX, mapY, buttonW, buttonH, null);
-            if (hovering) {
-                Image flagHover = parent.parent.flagHover(sys);
-                g.drawImage(flagHover, mapX, mapY, buttonW, buttonH, null);
-            }
-            g.drawImage(flagImage, mapX, mapY, buttonW, buttonH, null);
-        }
-        @Override
-        public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
-	     	// BR: if 3 buttons:
-	     	//   - Middle click = Reset
-	     	//   - Right click = Reverse
-	        if (middleClick)
-	        	parent.resetFlagColor();
-	        else if (rightClick)
-	        	if (has3Buttons())
-	        		parent.toggleFlagColor(true);
-	        	else
-	        		parent.resetFlagColor();
-	        else
-	        	parent.toggleFlagColor(false);
-        };
-        @Override
-        public void wheel(GalaxyMapPanel map, int rotation, boolean click) {
-            if (rotation < 0)
-                parent.toggleFlagColor(true);
-            else
-                parent.toggleFlagColor(false);
-        };
     }
 }

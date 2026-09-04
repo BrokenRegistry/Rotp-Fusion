@@ -18,6 +18,7 @@ final class ColonySettings extends AbstractOptionsSubUI {
 				developedDefinition,
 				maxMissingPopulation,
 				maxMissingFactories,
+				taxOnlyDeveloped,
 				defaultMaxBases
 				)));
 		return map;
@@ -28,7 +29,8 @@ final class ColonySettings extends AbstractOptionsSubUI {
 						useSmartRefit,
 						developedDefinition,
 						maxMissingPopulation,
-						maxMissingFactories
+						maxMissingFactories,
+						taxOnlyDeveloped
 						));
 		return majorList;
 	}

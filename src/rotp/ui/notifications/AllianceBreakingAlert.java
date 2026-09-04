@@ -21,7 +21,7 @@ import rotp.model.game.GameSession;
 public class AllianceBreakingAlert  extends GameAlert {
     private final Empire empire;
     public static void create(Empire e) {
-        GameSession.instance().addAlert(new AllianceBreakingAlert(e));
+        GameSession.addAlert(new AllianceBreakingAlert(e));
     }
     @Override
     public String description() {

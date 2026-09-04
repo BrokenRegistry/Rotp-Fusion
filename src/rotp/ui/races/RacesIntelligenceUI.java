@@ -104,8 +104,8 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
         initModel();
     }
 	void init()	{ setValues(); }
-	public void toggleTips()			{ showTips(!showTips);}
-	public void showTips(boolean show)	{
+	@Override public void toggleTips()				{ showTips(!showTips);}
+	@Override public void showTips(boolean show)	{
 		showTips = show;
 		IMainOptions.showTechTips.set(showTips);
 		repaint();

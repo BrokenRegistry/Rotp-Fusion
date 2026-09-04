@@ -27,7 +27,7 @@ abstract class FleetBase implements Ship, Serializable {
     	if (this==ship)
     		return true;
     	if (ship instanceof Ship)
-    		return ((Ship) ship).hashCode() == this.hashCode();
+    		return ship.hashCode() == this.hashCode();
     	return false;
     }
     FleetBase () {

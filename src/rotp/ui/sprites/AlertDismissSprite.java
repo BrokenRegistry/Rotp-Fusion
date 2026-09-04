@@ -20,39 +20,27 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 
+import rotp.model.game.GameSession;
 import rotp.ui.BasePanel;
+import rotp.ui.RotPUI;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.ui.notifications.GameAlert;
+import rotp.ui.notifications.SpyReportAlert;
 
-public class AlertDismissSprite extends MapSprite {
-    private int mapX, mapY, buttonW, buttonH;
-    private int minMapX, maxButtonW;
+public final class AlertDismissSprite extends MapSprite {
     private final MainUI parent;
 
-    protected int mapX()      { return mapX; }
-    protected int mapY()      { return mapY; }
-    public void mapX(int i)   { mapX = i; }
-    public void mapY(int i)   { mapY = i; }
-
-    public void setBounds(int x, int y, int w, int h) {
-        mapX = x;
-        mapY = y;
-        buttonW = w;
-        buttonH = h;
-    }
-
-    public AlertDismissSprite(MainUI p)  { parent = p; }
+	public AlertDismissSprite(MainUI p)  {
+		parent = p;
+		box.setAdviceHelpKey("MAIN_ALERT_NOTIF_SPRITE_HELP");
+	}
 
     @Override
     public boolean isSelectableAt(GalaxyMapPanel map, int x, int y) {
         if (!parent.showAlerts())
             return false;
-        hovering = x >= mapX
-                && x <= mapX+buttonW
-                && y >= mapY()
-                && y <= mapY()+buttonH;
-
+		hovering = box.contains(x, y);
         return hovering;
     }
     @Override
@@ -60,7 +48,7 @@ public class AlertDismissSprite extends MapSprite {
         if (!parent.showAlerts())
             return;
 
-        int w1 = BasePanel.s10;
+        int w1 = s10;
 
         Stroke prev = g.getStroke();
         if (hovering)
@@ -68,7 +56,7 @@ public class AlertDismissSprite extends MapSprite {
         else
             g.setStroke(BasePanel.stroke2);
 
-        int x1 = parent.getWidth() - scaled(24);
+		int x1 = parent.getWidth() - s24;
         int y1 = parent.getHeight() - scaled(162);
 
         int x2 = x1+w1;
@@ -87,16 +75,20 @@ public class AlertDismissSprite extends MapSprite {
         if (click)
             softClick();
         if (rightClick) { // BR: Move to system
-        	GameAlert alert = session().currentAlert();
-        	map.recenterMapOn(alert.system());
-            map.repaint();
-        	return;
+			GameAlert alert = GameSession.currentAlert();
+			if (alert instanceof SpyReportAlert) {
+				RotPUI.instance().showSpyReport();
+				box.hovering(false);
+			}
+			else {
+				map.recenterMapOn(alert.system());
+				map.repaint();
+			}
+			return;
         }
-        minMapX = min(mapX, minMapX);
-        maxButtonW = max(buttonW, maxButtonW);
         hovering = true;
 
-        session().dismissAlert();
+        GameSession.dismissAlert();
         map.repaint();
     }
 }
