@@ -3078,7 +3078,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		}
 		public boolean isFunded()		{ return fundingMandate != UNFUNDED; }
 		public BufferedImage getCoinImage(int width) {
-			return getCoinImage(width, empire(), fundingMandate, useReserve(), budget.budgetSubsidiesBC() > 0);
+			return getCoinImage(width, empire(), fundingMandate, useReserve(), budget().budgetSubsidiesBC() > 0);
 		}
 		public static BufferedImage getCoinImage(int width, Species empire, int fundingMandate, boolean useReserve, boolean granted) {
 			int w = width + width;
