@@ -2440,7 +2440,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 			addMouseListener(this);
 			addMouseMotionListener(this);
 			panelBox.init(this, null, null, "PLANET_SPENDING_COST_UI_HELP");
-			panelBox.setOffset(-s5, s40);
+			panelBox.setArrowOffset(-s5, s40);
 		}
 		@Override public String textureName()	{ return instance.subPanelTextureName(); }
 		@Override public Shape textureClip()	{ return textureClip; }
@@ -2576,7 +2576,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 			addMouseListener(this);
 			addMouseMotionListener(this);
 			panelBox.init(this, null, null, "PLANET_TOTALINCOME_UI_HELP");
-			panelBox.setOffset(-s5, s40);
+			panelBox.setArrowOffset(-s5, s40);
         }
         @Override
         public String textureName()   { return instance.subPanelTextureName(); }
@@ -2735,7 +2735,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             addMouseWheelListener(this);
 			sliderBox.init(this, null, null, "PLANETS_TRANSFER_DESC_HELP");
 			panelBox.init(this, null, null, "PLANET_RESERVE_UI_HELP");
-			panelBox.setOffset(s5, s40);
+			panelBox.setArrowOffset(s5, s40);
 			reserveBox.init(s12, s200, s15, IInGameOptions.taxOnlyDeveloped);
 			reserveBox.setPane(this);
         }

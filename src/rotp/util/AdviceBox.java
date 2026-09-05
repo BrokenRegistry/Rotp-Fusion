@@ -24,16 +24,23 @@ import rotp.util.sound.SoundManager;
 
 public class AdviceBox extends Rect implements IAdvice {
 	private static final long serialVersionUID = 1L;
+	public static final int INTRO_HELP	= 0;
+	public static final int MINOR_HELP	= 25;
+	public static final int MEDIAN_HELP	= 50;
+	public static final int MAIN_HELP	= 75;
+	public static final int MAJOR_HELP	= 100;
 	private String labelKey, adviceHelpKey, topLeftHelpKey, advisorImageKey;
 	private String adviceHelpTxt;
 	private IParam<?> param;
-	private Point offset = new Point();		// to offset the arrow tip
-	private Point targetLoc = new Point();	// to offset the box
+	private Point arrowOffset = new Point();		// to offset the arrow tip
+	private Point boxOffset = new Point(s25, s25);	// to push the box away from the target
+	private Point targetLoc = new Point();			// to offset the box relative to parents locations
 	private Rectangle selectionBox = new Rectangle();
 	private JComponent panel;
 	private boolean hovering;
 	private int forcedLocation = 0;	// For box, following num-pad position
 	private Sprite spriteToDraw;	// to not be hidden by the avatar 
+	private int level = MAIN_HELP;	// For box, following num-pad position
 
 	private Supplier<BufferedImage> getHelpImg; // Either Draw, choosing a location or return an image to be resized and positioned 
 
@@ -54,9 +61,10 @@ public class AdviceBox extends Rect implements IAdvice {
 			adviceHelpKey = key + HELP_KEY;
 	}
 
-	public int xOffset()		{ return x + offset.x; }
-	public int yOffset()		{ return y + offset.y; }
-	public Point getTargetLoc()	{ return new Point(targetLoc.x + offset.x, targetLoc.y + offset.y); }
+	public int xOffset()		{ return x + arrowOffset.x; }
+	public int yOffset()		{ return y + arrowOffset.y; }
+	public Point getBoxOffset()	{ return boxOffset; }
+	public Point getTargetLoc()	{ return new Point(targetLoc.x + arrowOffset.x, targetLoc.y + arrowOffset.y); }
 	public IParam<?> getParam()	{ return param; }
 	public JComponent getPane()	{ return panel; }
 	public int getForcedLocation()	{ return forcedLocation; }
@@ -71,11 +79,14 @@ public class AdviceBox extends Rect implements IAdvice {
 		else
 			targetLoc = SwingUtilities.convertPoint(panel, getLocation(), dest);
 	}
-	public void setParam(IParam<?> p)	{ param = p; }
-	public void setPane(JComponent c)	{ panel = c; }
-	public void setOffset(Point pt)		{ offset = pt; }
-	public void setOffset(int x, int y)	{ offset = new Point(x, y); }
-	public void setLabelKey(String key)	{ labelKey = key; }
+	public void setLevel(int rank)				{ level = rank; }
+	public void setParam(IParam<?> p)			{ param = p; }
+	public void setPane(JComponent c)			{ panel = c; }
+	public void setArrowOffset(Point pt)		{ arrowOffset = pt; }
+	public void setArrowOffset(int x, int y)	{ arrowOffset = new Point(x, y); }
+	public void setBoxOffset(Point pt)			{ boxOffset = pt; }
+	public void setBoxOffset(int x, int y)		{ boxOffset = new Point(x, y); }
+	public void setLabelKey(String key)			{ labelKey = key; }
 	public void setForcedLocation(int loc)		{ forcedLocation = loc; }
 	public void setAdviceHelpKey(String key)	{ adviceHelpKey = key; }
 	public void setAdviceHelpText(String text)	{ adviceHelpTxt = text; }
@@ -97,6 +108,7 @@ public class AdviceBox extends Rect implements IAdvice {
 	public void drawRoundRect(Graphics2D g, int r)	{ g.drawRoundRect(x, y, width, height, r, r); }
 	public void fillOval(Graphics2D g)				{ g.fillOval(x, y, width, height); }
 	public void drawOval(Graphics2D g)				{ g.drawOval(x, y, width, height); }
+	public int getLevel()				{ return level; }
 	public Rectangle getSelectionBox()	{ return selectionBox; }
 	public String getLabelKey()			{ return labelKey; }
 	public String getAdviceHelpKey()	{ return adviceHelpKey; }

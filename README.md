@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-09-05 (BR)
+- Scouted System: Fixed Flag linked to the wrong System.
+- Minor Advice location adjustment. 
+
 26-09-04 (BR)
 - Extension of the advisor, to be able to call it on demand, this in order to display help on the element under the cursor.
   - On the Galaxy map, including some overlay windows.

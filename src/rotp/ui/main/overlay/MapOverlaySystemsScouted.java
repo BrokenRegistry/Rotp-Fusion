@@ -344,7 +344,7 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
 
         // planet flag
         p.addNextTurnControl(flagButton);
-        flagButton.init(this, g, systemIndex);
+		flagButton.init(this, g, sys.id);
         flagButton.mapX(boxX+boxW-flagButton.width()+s10);
         flagButton.mapY(boxY+boxH-flagButton.height()+s10);
         flagButton.draw(p.map(), g);

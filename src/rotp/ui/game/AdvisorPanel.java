@@ -64,17 +64,12 @@ public final class AdvisorPanel extends BasePanel implements IAdvisor, IMapOverl
 		A.avatarImg	= getAdvisorImage(sp, key);
 	}
 	public void setMargins(int left, int floor, int right, int tlx, int tly)	{
-		setMargins(left, floor, right, tlx, tly, s25, s25);
-	}
-	public void setMargins(int left, int floor, int right, int tlx, int tly, int lineX, int lineY)	{
 		A.leftMargin	= left;
 		A.rightMargin	= right;
 		A.floorMargin	= floor;
 		A.boxBottom	= ADVISOR.scaled(Rotp.IMG_H) - A.floorMargin;
 		A.topLeftBoxLocation.x = tlx;
 		A.topLeftBoxLocation.y = tly;
-		A.lineLengthX	= lineX;
-		A.lineLengthY	= lineY;
 
 		// initAvatar
 		setTopLeftAdvice(null);

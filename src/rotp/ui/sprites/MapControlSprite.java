@@ -34,14 +34,14 @@ public abstract class MapControlSprite extends MapSprite {
 		height	= scaled(h);
 		box.setSize(width, height);
 		box.setLocation(xOffset, yOffset);
-		box.setSelectionBounds(startX-s3, startY-s3, width+s3+s3, height+s3+s3);
+		box.setSelectionBounds(startX-s2, startY-s2, width+s2+s2, height+s2+s2);
 		box.setAdviceHelpKey(adviceKey);
 	}
 	protected void drawBackground(GalaxyMapPanel map, Graphics2D g2) {
         startX = xOffset >= 0 ? xOffset : map.getWidth()+xOffset;
         startY = yOffset >= 0 ? yOffset : map.getHeight()+yOffset;
 		box.setLocation(startX, startY);
-		box.setSelectionBounds(startX-s3, startY-s3, width+s3+s3, height+s3+s3);
+		box.setSelectionBounds(startX-s2, startY-s2, width+s2+s2, height+s2+s2);
         g2.setColor(map.parent().shadeC());
         g2.fillRect(startX-s5, startY-s5, width+s5+s5, height+s5+s5);
     }
@@ -64,7 +64,7 @@ public abstract class MapControlSprite extends MapSprite {
         startX = xOffset >= 0 ? xOffset : map.getWidth()+xOffset;
         startY = yOffset >= 0 ? yOffset : map.getHeight()+yOffset;
 		box.setLocation(startX, startY);
-		box.setSelectionBounds(startX-s3, startY-s3, width+s3+s3, height+s3+s3);
+		box.setSelectionBounds(startX-s2, startY-s2, width+s2+s2, height+s2+s2);
         g2.setColor(map.parent().shadeC());
         g2.fillRect(startX-s5, startY-s5, w+s5+s5, height+s5+s5);
     }

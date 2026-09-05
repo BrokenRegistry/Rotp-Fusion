@@ -730,7 +730,7 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
 				box.setSize(s20 + g.getFontMetrics(font()).stringWidth(label()), s60);
 			else
 				box.setSize(s40 + g.getFontMetrics(font()).stringWidth(label()), s60);
-			box.setOffset(box.width-s40, 0);
+			box.setArrowOffset(box.width-s40, 0);
 			box.setForcedLocation(6);
 		}
         @Override

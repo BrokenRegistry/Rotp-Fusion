@@ -487,6 +487,9 @@
 
 ### Fixes:
 
+26-09-05 (BR)
+
+- Scouted System: Fixed Flag linked to the wrong System.
 - Fixed potential sources of memory leak.
 - Fixed potential null pointer exceptions.
 - Clicking on the Empire name in the system panel will now take you to the Diplomacy panel and select the related empire. (It was already supposed to do this, but it wasn't fully functional!)

@@ -63,7 +63,7 @@ public final class SpyReportSprite extends MapControlSprite {
         startX = xOffset >= 0 ? xOffset : map.getWidth()+xOffset;
         startY = yOffset >= 0 ? yOffset : map.getHeight()+yOffset;
 		box.setLocation(startX, startY);
-		box.setSelectionBounds(startX-s3, startY-s3, width+s3+s3, height+s3+s3);
+		box.setSelectionBounds(startX-s2, startY-s2, width+s2+s2, height+s2+s2);
         if (alertBack == null) {
             float[] dist = {0.0f, 1.0f};
             Color topC = new Color(176,108,6);

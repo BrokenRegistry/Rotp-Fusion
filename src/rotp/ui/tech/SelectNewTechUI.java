@@ -263,6 +263,7 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
 			AdviceBox box = new AdviceBox(this);
 			box.setBounds(x1, y1, techWidth, th);
 			box.setAdviceHelpText(getAdvice(t));
+			box.setBoxOffset(s50, s25);
 			techBoxes.put(id, box);
 
             if (obsolete)
@@ -384,7 +385,7 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
 	@Override protected boolean isAdvised()	{ return true; }
 	@Override protected void initAdvisor()	{
 		ADVISOR.init(this, AdvisorPanel.SCIENTIST_ADVISOR, player());
-		ADVISOR.setMargins(s3, s3, 0, s50, s50, s50, s25);
+		ADVISOR.setMargins(s3, s3, 0, s50, s50);
 		ADVISOR.setAvatarSize(s160, s200);
 	}
     @Override

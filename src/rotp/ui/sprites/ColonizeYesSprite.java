@@ -38,6 +38,7 @@ public final class ColonizeYesSprite extends MapSprite {
 		parent = p;
 		box.setAdviceHelpKey("MAIN_COLONIZE_YES_HELP");
 		box.setForcedLocation(8);
+		box.setBoxOffset(s25, s50);
 	}
 
     @Override

@@ -38,6 +38,7 @@ public final class ColonizeNoSprite extends MapSprite {
 		parent = p;
 		box.setAdviceHelpKey("MAIN_COLONIZE_NO_HELP");
 		box.setForcedLocation(8);
+		box.setBoxOffset(s25, s50);
 	}
 
     @Override

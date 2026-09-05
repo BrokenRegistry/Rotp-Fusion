@@ -203,6 +203,8 @@ public interface IAdvisor extends ScaledInteger {
 		int yTarCover	= s10;
 		int xBoxMargin	= s10;
 		int yBoxMargin	= s10;
+		int lineLengthX	= targetBox.getBoxOffset().x;
+		int lineLengthY	= targetBox.getBoxOffset().y;
 		int xLineCover	= cover;
 		int yLineCover	= cover;
 		int xb, xd, yb, yd;
@@ -215,7 +217,7 @@ public interface IAdvisor extends ScaledInteger {
 		boolean forcedRight	= forcedRight(forcedLocation);
 		boolean atLeft = forcedLeft || !forcedRight && (2*x + targetBox.width > iW);
 		if (atLeft) { // put box to the left textBox.x
-			TEXT_BOX.x = Math.min(x - TEXT_BOX.width - A.lineLengthX, iW - TEXT_BOX.width);
+			TEXT_BOX.x = Math.min(x - TEXT_BOX.width - lineLengthX, iW - TEXT_BOX.width);
 			if (TEXT_BOX.x < xBoxMargin)
 				TEXT_BOX.x = xBoxMargin;
 			TEXT_BOX.x += A.dx;
@@ -225,7 +227,7 @@ public interface IAdvisor extends ScaledInteger {
 				xd = xb + xLineCover;
 		}
 		else { // put box to the right
-			TEXT_BOX.x = x + targetBox.width + A.lineLengthX;
+			TEXT_BOX.x = x + targetBox.width + lineLengthX;
 			if (TEXT_BOX.x+TEXT_BOX.width > iW-xBoxMargin)
 				TEXT_BOX.x = iW-xBoxMargin - TEXT_BOX.width;
 			TEXT_BOX.x += A.dx;
@@ -240,7 +242,7 @@ public interface IAdvisor extends ScaledInteger {
 		boolean forcedUnder	= forcedUnder(forcedLocation);
 		boolean atTop = forcedTop || !forcedUnder && (2*y + targetBox.height > iH);
 		if (atTop) { // put box to the top textBox.y
-			TEXT_BOX.y = y - TEXT_BOX.height - A.lineLengthY;
+			TEXT_BOX.y = y - TEXT_BOX.height - lineLengthY;
 			if (TEXT_BOX.y < yBoxMargin)
 				TEXT_BOX.y = yBoxMargin;
 			TEXT_BOX.y += A.dy;
@@ -250,7 +252,7 @@ public interface IAdvisor extends ScaledInteger {
 				yb = yd + yLineCover;
 		}
 		else { // put box to the bottom
-			TEXT_BOX.y = y + targetBox.height + A.lineLengthY;
+			TEXT_BOX.y = y + targetBox.height + lineLengthY;
 			if (TEXT_BOX.y+TEXT_BOX.height > iH-yBoxMargin)
 				TEXT_BOX.y = iH-yBoxMargin - TEXT_BOX.height;
 			TEXT_BOX.y += A.dy;
@@ -325,8 +327,6 @@ public interface IAdvisor extends ScaledInteger {
 		int nominalAvatarHeight	= defaultAvatarHeight;
 		int nominalAvatarWidth	= defaultAvatarWidth;
 		int boxBottom;
-		int lineLengthX	= s25;
-		int lineLengthY	= s25;
 		int[] lineArr;
 	}
 
