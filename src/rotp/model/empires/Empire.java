@@ -1620,6 +1620,7 @@ public final class Empire extends Species implements NamedObject {
         }
     }
 	public void redoGovTurnDecisions() { // Only for player
+		validate();
 		budget().makeEmpireChargesObsolete();
 		List<StarSystem> systems = new ArrayList<>(colonizedSystems);
 		for (StarSystem sys: systems)

@@ -25,7 +25,7 @@ import rotp.util.sound.SoundManager;
 public class AdviceBox extends Rect implements IAdvice {
 	private static final long serialVersionUID = 1L;
 	public static final int INTRO_HELP	= 0;
-	public static final int MINOR_HELP	= 25;
+	public static final int MINOR_HELP	= 25;	// button with shortcut Info
 	public static final int MEDIAN_HELP	= 50;
 	public static final int MAIN_HELP	= 75;
 	public static final int MAJOR_HELP	= 100;

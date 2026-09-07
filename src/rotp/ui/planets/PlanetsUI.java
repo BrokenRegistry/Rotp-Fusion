@@ -65,6 +65,7 @@ import javax.swing.SwingUtilities;
 
 import rotp.model.colony.Colony;
 import rotp.model.empires.Empire;
+import rotp.model.empires.EmpireBudget;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.IInGameOptions;
 import rotp.model.ships.Design;
@@ -264,16 +265,31 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         am.put(DOWN_ACTION, new DownAction());
         am.put(CANCEL_ACTION, new CancelAction());
     }
+	private void refreshBudget()	{
+		if(player().budget().budgetIfNeeded())
+			repaint();
+		else {
+			player().budget().redoBudget(player().allColonizedSystems(), false, false, EmpireBudget.REFRESH, false);
+			repaint();
+		}
+
+	}
     @Override
     public String subPanelTextureName()    { return TEXTURE_BROWN; }
     @Override
     public boolean drawMemory()            { return true; }
     @Override
     public boolean hasStarBackground()     { return true; }
+	@Override
+	public void animateForLowGraphic()	{
+		if (animationCount() % 4 == 0)
+			refreshBudget();
+	}
     @Override
     public void animate() {
-		if(player().budget().budgetIfNeeded())
-			repaint();
+		if (animationCount() % 2 == 0)
+			refreshBudget();
+
         if (!playAnimations())
             return;
         planetListing.animate();
@@ -860,7 +876,6 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             	else
             		spendingPane.keyPressed(e);
             	return;
-//                spendingPane.keyPressed(e); return;
             case KeyEvent.VK_F:
                 colonyFoundedPane.toggleFlagColor(shift); 
                 instance.repaint();

@@ -49,7 +49,6 @@ class DetailBasePane extends BasePanel implements MouseMotionListener, MouseList
 		addMouseListener(this);
 		addMouseWheelListener(this);
 		flagBox.init(this, null, null, "DETAIL_PANEL_FLAGS_HELP");
-//		nameBox.init(this, null, null, "DETAIL_PANEL_FLAGS_HELP");
 	}
 	@Override public String textureName()	{ return TEXTURE_GRAY; }
 	@Override public Shape textureClip()	{ return textureClip; }
@@ -98,6 +97,8 @@ class DetailBasePane extends BasePanel implements MouseMotionListener, MouseList
 	@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.mapHandler()); }
 	@Override public void mouseExited(MouseEvent e)		{ 
 		if (hoverBox != null) {
+			if (hoverBox instanceof AdviceBox)
+				((AdviceBox) hoverBox).hovering(false);
 			hoverBox = null;
 			repaint();
 		}

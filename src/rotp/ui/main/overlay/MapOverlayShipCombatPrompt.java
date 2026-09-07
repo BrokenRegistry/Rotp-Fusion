@@ -114,6 +114,10 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
         player().sv.toggleFlagColor(sysId, reverse);
         parent.repaint();
     }
+	private void autoFlagColor(boolean all)	{
+		player().sv.forceAutoFlagColor(sysId, all);
+		parent.repaint();
+	}
 	private boolean startWar()	{
 		Empire alien = mgr.results().aiEmpire();
 		if (alien == null)
@@ -480,8 +484,8 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
         // planet flag
         parent.addNextTurnControl(flagButton);
         flagButton.init(this, g, sysId);
-        flagButton.mapX(boxX+boxW-flagButton.width()+s10);
-        flagButton.mapY(boxY+boxH-buttonPaneH-flagButton.height()+s10);
+		flagButton.mapX(boxX+boxW-flagButton.width());
+		flagButton.mapY(boxY+boxH-buttonPaneH-flagButton.height());
         flagButton.draw(parent.map(), g);
 
         // Empire flag
@@ -498,7 +502,6 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
     public boolean handleKeyPress(KeyEvent e) {
 		if (baseHandleKeyPress(e))
 			return true;
-        boolean shift = e.isShiftDown();
         Empire aiEmpire = mgr.results().aiEmpire();
         switch(e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
@@ -543,9 +546,9 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
                 if (aiEmpire != null)
                     startCombat(ShipBattleUI.RETREAT_ALL);
                 break;
-            case KeyEvent.VK_F:
-                toggleFlagColor(shift);
-                break;
+			case KeyEvent.VK_F:
+				toggleFlagColor(e.isShiftDown());
+				break;
 			case KeyEvent.VK_W:
 				if (startWar()) {
 					buttonClick();
@@ -565,16 +568,22 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
             	parent.repaint();
                 break;
             case KeyEvent.VK_L:
-            	if (e.isAltDown()) {
-            		debugReloadLabels(parent);
-            		break;
-            	}
-            	misClick();
-            	break;
-            default:
-            	if (!shift) // BR: to avoid noise when changing flag color
-            		misClick();
-                break;
+				if (e.isAltDown()) {
+					debugReloadLabels(parent);
+					break;
+				}
+				misClick();
+				break;
+			case KeyEvent.VK_HOME:
+				autoFlagColor(e.isAltDown());
+				break;
+			case KeyEvent.VK_SHIFT:
+			case KeyEvent.VK_CONTROL:
+			case KeyEvent.VK_ALT:
+			case KeyEvent.VK_ALT_GRAPH:
+				break;	// BR to avoid noise when changing flag color
+			default:
+				misClick();
         }
         return true;
     }

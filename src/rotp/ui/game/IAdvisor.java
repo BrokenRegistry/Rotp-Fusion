@@ -178,6 +178,45 @@ public interface IAdvisor extends ScaledInteger {
 		}
 		g.drawImage(img, TEXT_BOX.x + TEXT_MARGIN, TEXT_BOX.y + TEXT_MARGIN/2, null);
 	}
+	default void checkForForcedLocation(Graphics2D g, String tipText, AdviceBox targetBox, int maxWidth, int maxHeight, boolean setBoxLocation)	{
+		int iW = A.parent.getWidth() - A.rightMargin;
+		int iH = A.parent.getHeight();
+		int maxW = maxWidth == 0? iW : maxWidth;
+		int maxH = maxHeight == 0? iH : maxHeight;
+
+		int forcedLocation = targetBox.getForcedLocation();
+		boolean forcedLeft	= forcedLeft(forcedLocation);
+		boolean forcedRight	= forcedRight(forcedLocation);
+		boolean forcedTop	= forcedTop(forcedLocation);
+		boolean forcedDown	= forcedUnder(forcedLocation);
+
+		if (forcedLeft)
+			maxW = Math.min(maxW, targetBox.x - targetBox.getBoxOffset().x);
+		else if (forcedRight) {
+			maxW = Math.min(maxW, iW - targetBox.xe() - targetBox.getBoxOffset().x);
+			if (maxW < s50) {
+				// To small try without the right margin
+				maxW = maxWidth == 0? iW : maxWidth;
+				maxW = Math.min(maxW, A.parent.getWidth() - targetBox.xe() - targetBox.getBoxOffset().x);
+				if (maxW < s50) {
+					// Still too small: remove the forced right
+					maxW = maxWidth == 0? iW : maxWidth;
+					forcedRight = false;
+					System.out.println("Error Wrong ForcedRight advice: " + targetBox.toString());
+				}
+			}
+		}
+
+		if (forcedTop)
+			maxH = Math.min(maxH, targetBox.y - targetBox.getBoxOffset().x);
+		else if (forcedDown)
+			maxH = Math.min(maxH, iH - targetBox.ye() - targetBox.getBoxOffset().y);
+
+		initGuideBox(g,tipText, maxW, maxH);
+
+		if (setBoxLocation)
+			setBoxLocation(targetBox, forcedLeft, forcedRight, forcedTop, forcedDown);
+	}
 	default void initGuideBox(Graphics2D g, String tipText, int w, int h)	{
 		GUIDE_BOX.setText(cleanHtmlText(tipText));
 
@@ -190,11 +229,19 @@ public interface IAdvisor extends ScaledInteger {
 	private static boolean forcedTop(int i)		{ return i>=7; }
 	private static boolean forcedUnder(int i)	{ return i==3 || i==2 || i==1; }
 	default void setBoxLocation(AdviceBox targetBox)	{
+		int forcedLocation	= targetBox.getForcedLocation();
+		boolean forcedLeft	= forcedLeft(forcedLocation);
+		boolean forcedRight	= forcedRight(forcedLocation);
+		boolean forcedTop	= forcedTop(forcedLocation);
+		boolean forcedDown	= forcedUnder(forcedLocation);
+		setBoxLocation(targetBox, forcedLeft, forcedRight, forcedTop, forcedDown);
+	}
+	default void setBoxLocation(AdviceBox targetBox, boolean forcedLeft, boolean forcedRight, boolean forcedTop, boolean forcedDown)	{
 		if (A.parent == null)
 			return;
-		int iW = A.parent.getWidth() - A.rightMargin;
+		int iW = forcedRight? A.parent.getWidth() : A.parent.getWidth() - A.rightMargin;
 		int iH = A.parent.getHeight();
-		int forcedLocation = targetBox.getForcedLocation();
+//		int forcedLocation = targetBox.getForcedLocation();
 		Point loc = targetBox.getTargetLoc();
 		int x = loc.x;
 		int y = loc.y;
@@ -213,8 +260,8 @@ public interface IAdvisor extends ScaledInteger {
 
 		// relative position
 		// find X location
-		boolean forcedLeft	= forcedLeft(forcedLocation);
-		boolean forcedRight	= forcedRight(forcedLocation);
+//		boolean forcedLeft	= forcedLeft(forcedLocation);
+//		boolean forcedRight	= forcedRight(forcedLocation);
 		boolean atLeft = forcedLeft || !forcedRight && (2*x + targetBox.width > iW);
 		if (atLeft) { // put box to the left textBox.x
 			TEXT_BOX.x = Math.min(x - TEXT_BOX.width - lineLengthX, iW - TEXT_BOX.width);
@@ -238,9 +285,9 @@ public interface IAdvisor extends ScaledInteger {
 		}
 
 		// find Y location
-		boolean forcedTop	= forcedTop(forcedLocation);
-		boolean forcedUnder	= forcedUnder(forcedLocation);
-		boolean atTop = forcedTop || !forcedUnder && (2*y + targetBox.height > iH);
+//		boolean forcedTop	= forcedTop(forcedLocation);
+//		boolean forcedDown	= forcedUnder(forcedLocation);
+		boolean atTop = forcedTop || !forcedDown && (2*y + targetBox.height > iH);
 		if (atTop) { // put box to the top textBox.y
 			TEXT_BOX.y = y - TEXT_BOX.height - lineLengthY;
 			if (TEXT_BOX.y < yBoxMargin)

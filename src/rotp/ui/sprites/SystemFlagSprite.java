@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 import rotp.model.empires.Empire;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.overlay.IMapOverlay;
+import rotp.util.AdviceBox;
 
 public final class SystemFlagSprite extends MapSprite {
 	private IMapOverlay parent;
@@ -32,6 +33,7 @@ public final class SystemFlagSprite extends MapSprite {
 		this.sysId = sysId;
 		box.setSize(s70, s70);
 		box.setAdviceHelpKey("DETAIL_PANEL_FLAGS_HELP");
+		box.setLevel(AdviceBox.MEDIAN_HELP);
 	}
 	public void reset()	{}
 	private Image flagImage()	{ return Empire.thePlayer().sv.flagImage(sysId); }

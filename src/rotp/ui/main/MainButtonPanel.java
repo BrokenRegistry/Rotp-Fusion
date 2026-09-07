@@ -81,10 +81,12 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
 		for (int i=0; i<buttonBox.length; i++) {
 			buttonBox[i] = new AdviceBox(this);
 			buttonBox[i].setAdviceHelpKey(buttons[i] + AdvisorPanel.HELP_KEY);
+			buttonBox[i].setLevel(AdviceBox.MINOR_HELP);
 		}
 		nextTurnBox = new AdviceBox(this);
 		nextTurnBox.setLabelKey("MAIN_NAVIGATION_NEXT_TURN");
 		nextTurnBox.setAdviceHelpKey("MAIN_NAVIGATION_NEXT_TURN" + AdvisorPanel.HELP_KEY);
+		nextTurnBox.setLevel(AdviceBox.MINOR_HELP);
         addMouseListener(this);
         addMouseMotionListener(this);
     }

@@ -22,6 +22,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 	public static final int LIST	= 2; // direct request
 	public static final int REDO	= 3; // direct request
 	public static final int COIN	= 4; // direct request
+	public static final int REFRESH	= 10; // Refresh the optimal, automatique
 	// fund raising
 	private float requestedReservesBC;
 	private float expectedRevenueBC;
@@ -221,8 +222,19 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 			case LIST:
 			case REDO:
 			case COIN:
-			default:
+				break;
+			case REFRESH:
+			default:	// refresh
+				for (StarSystem sys: systems) {
+					if (sys == null)
+						continue;
+					Colony col = sys.colony();
+					if (col != null)
+						col.budget().budgetReset(shieldWithoutBases, maxIndustryRatio);
+				}
+				return;
 		}
+
 		for (StarSystem sys: systems) {
 			if (sys == null)
 				continue;
@@ -231,6 +243,10 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 				col.budget().budgetReset(shieldWithoutBases, maxIndustryRatio, clearGrant, clearRaise, forceGovern);
 		}
 		checkForClean("planTheBudget col.budget().budgetReset loop unclean: ");
+
+//		System.out.println("type: " + type);
+//		if (type == 100)
+//			return;
 
 		// go with the list
 		splitList(systems);

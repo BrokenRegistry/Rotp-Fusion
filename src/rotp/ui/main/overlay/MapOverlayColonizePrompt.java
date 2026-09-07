@@ -78,6 +78,10 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
         player().sv.toggleFlagColor(sysId, reverse);
         parent.repaint();
     }
+	private void autoFlagColor(boolean all)	{
+		player().sv.forceAutoFlagColor(sysId, all);
+		parent.repaint();
+	}
     @Override
     public boolean drawSprites()   { return drawSprites; }
     public void colonizeYes() {
@@ -325,15 +329,14 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
         // planet flag
         parent.addNextTurnControl(flagButton);
         flagButton.init(this, g, sysId);
-        flagButton.mapX(boxX+boxW-flagButton.width()+s10);
-        flagButton.mapY(boxY+boxH-flagButton.height()+s10);
+		flagButton.mapX(boxX+boxW-flagButton.width());
+		flagButton.mapY(boxY+boxH-flagButton.height() + s5);
         flagButton.draw(parent.map(), g);
     }
     @Override
     public boolean handleKeyPress(KeyEvent e) {
 		if (baseHandleKeyPress(e))
 			return true;
-        boolean shift = e.isShiftDown();
         switch(e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
             case KeyEvent.VK_N:
@@ -343,7 +346,7 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
                 colonizeYes();
                 break;
             case KeyEvent.VK_F:
-                toggleFlagColor(shift);
+                toggleFlagColor(e.isShiftDown());
                 break;
 			case KeyEvent.VK_L:
 				if (e.isAltDown()) {
@@ -351,10 +354,16 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
 					parent.repaint();
 					break;
 				}
-            default:
-            	if (!shift) // BR to avoid noise when changing flag color
-            		misClick();
-                break;
+			case KeyEvent.VK_HOME:
+				autoFlagColor(e.isAltDown());
+				break;
+			case KeyEvent.VK_SHIFT:
+			case KeyEvent.VK_CONTROL:
+			case KeyEvent.VK_ALT:
+			case KeyEvent.VK_ALT_GRAPH:
+				break;	// BR to avoid noise when changing flag color
+			default:
+				misClick();
         }
         return true;
     }

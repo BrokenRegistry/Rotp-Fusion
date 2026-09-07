@@ -56,11 +56,12 @@ public final class GovWorksheet {
 
 		maxSize		= c.ultimateMaxSize();
 		initialPop	= c.population();
+		float workingPop	= c.workingPopulation();
 		targetPopPercent	= gov.isAutotransportFull()? (1 - Math.max(c.normalPopGrowth(), 3)/c.maxSize()) : 1f;
-		float neutralGrowth	= p.normalPopGrowth(initialPop, null);
+		float neutralGrowth	= p.normalPopGrowth(workingPop, null);
 		boolean hasRequest	= c.prioritizeShips() || c.prioritizeResearch();
 		if (gov.legacyGrowthMode() || !hasRequest) { // Force boost
-			minGrowth		= maxSize - initialPop;
+			minGrowth		= maxSize - workingPop;
 			targetPopMin	= maxSize;
 		}
 		else {
@@ -70,7 +71,7 @@ public final class GovWorksheet {
 				minGrowth	= Math.max(neutralGrowth, gov.minColonyGrowth());
 			else
 				minGrowth	= gov.minColonyGrowth();
-			targetPopMin	= Math.min(maxSize, initialPop + minGrowth);
+			targetPopMin	= Math.min(maxSize, workingPop + minGrowth);
 			targetPopMin	= Math.max(targetPopMin, boostLim);
 		}
 		targetPopPctToBuy	= targetPopMin/maxSize;

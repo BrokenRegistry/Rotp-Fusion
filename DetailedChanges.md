@@ -2,6 +2,15 @@
 
 ## What's New
 
+26-09-07 (BR)
+- Refresh budget for ungoverned colonies too.
+  - The optimal value and remaining funds will be up to date.
+- Scouted System interface: moved the flags a little away from the “Next” button.
+- All interfaces with flag:
+  - removed the sound while pressing a key modifier.
+  - added Auto-Flg function ("home")
+- Adjusted some advice bubble location.
+
 26-09-05 (BR)
 - Scouted System: Fixed Flag linked to the wrong System.
 - Minor Advice location adjustment. 

@@ -42,6 +42,7 @@ import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.MapSprite;
+import rotp.util.AdviceBox;
 
 public final class MapOverlaySpies implements IMapOverlay {
     Color maskC  = new Color(40,40,40,160);
@@ -452,7 +453,8 @@ public final class MapOverlaySpies implements IMapOverlay {
                 fontSize = 20;
 			box.setSize(s100, scaled(fontSize+1));
 			box.setAdviceHelpKey("NOTICE_SPIES_EMPIRE_HELP");
-			box.setForcedLocation(8);
+			box.setForcedLocation(6);
+			box.setLevel(AdviceBox.MINOR_HELP);
         }
 		public void setPosition(int x, int y) { box.setLocation(x, y); }
         @Override
@@ -500,6 +502,7 @@ public final class MapOverlaySpies implements IMapOverlay {
             parent = p;
 			box.setLabelKey("NOTICE_SPIES_CLOSE");
 			box.setForcedLocation(2);
+			box.setLevel(AdviceBox.MINOR_HELP);
 			label = text(box.getLabelKey());
             background = null;
        }
@@ -559,6 +562,7 @@ public final class MapOverlaySpies implements IMapOverlay {
             parent = p;
 			box.setLabelKey("NOTICE_SPIES_MANAGE");
 			box.setForcedLocation(2);
+			box.setLevel(AdviceBox.MEDIAN_HELP);
 			label = text(box.getLabelKey());
             background = null;
         }
@@ -617,6 +621,7 @@ public final class MapOverlaySpies implements IMapOverlay {
             parent = p;
 			box.setLabelKey("NOTICE_SPIES_THREATEN");
 			box.setForcedLocation(2);
+			box.setLevel(AdviceBox.MEDIAN_HELP);
 			label = text(box.getLabelKey());
             background = null;
         }

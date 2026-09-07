@@ -75,10 +75,13 @@ import rotp.ui.ErrorUI;
 import rotp.ui.NoticeMessage;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
+import rotp.ui.game.AdvisorPanel;
 import rotp.ui.game.GameOverUI;
 import rotp.ui.game.GameUI;
 import rotp.ui.game.LoadGameUI;
 import rotp.ui.main.EmpireColonySpendingPane;
+import rotp.ui.main.GalaxyMapPanel;
+import rotp.ui.main.MainUI;
 import rotp.ui.notifications.DiplomaticNotification;
 import rotp.ui.notifications.GNNExpansionEvent;
 import rotp.ui.notifications.GNNRankingNoticeCheck;
@@ -334,24 +337,39 @@ public final class GameSession implements Base, Serializable {
     }
 	private static void startExecutors()	{ smallSphereService = Executors.newSingleThreadExecutor(); }
     private void resetStaticVars() {
-    	vars.clear();
-    	performingTurn	= false;
-    	if (notifications!=null)
-    		notifications.clear();
-    	if (systemsToAllocate!=null)
-    		systemsToAllocate.clear();
-    	clearScoutedSystems();
-    	if (shipsConstructed!=null)
-    		shipsConstructed.clear();
-    	if (alerts!=null)
-    		alerts.clear();
-    	autoRunning		= false;
-    	ironmanLocked	= false;
-    	viewedAlerts	= 0;
-    	aFewMoreTurns	= false;
-    	RacesUI.instance.resetFinalVars();
-    	EmpireColonySpendingPane.resetPanel();
-    	MultiColonySpendingPane.resetPanel();
+		vars.clear();
+		performingTurn	= false;
+
+		if (notifications!=null)
+			notifications.clear();
+
+		if (systemsToAllocate!=null)
+			systemsToAllocate.clear();
+		clearScoutedSystems();
+
+		if (shipsConstructed!=null)
+			shipsConstructed.clear();
+
+		if (alerts!=null)
+			alerts.clear();
+		autoRunning		= false;
+		ironmanLocked	= false;
+		viewedAlerts	= 0;
+		aFewMoreTurns	= false;
+		RacesUI.instance.resetFinalVars();
+		EmpireColonySpendingPane.resetPanel();
+		MultiColonySpendingPane.resetPanel();
+		AdvisorPanel.ADVISOR.onHold();
+
+		MainUI mainUI = RotPUI.instance().mainUI();
+		if (mainUI != null) {
+			mainUI.nextTurnSprites().clear();
+			GalaxyMapPanel map = mainUI.map();
+			if (map != null) {
+				map.clearHoverSprite();
+				map.resetRangeAreas();
+			}
+		}
     }
     private void stopCurrentGame() {
         RotPUI.instance().mainUI().clearAdvice();

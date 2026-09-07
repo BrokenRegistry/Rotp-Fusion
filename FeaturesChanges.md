@@ -364,6 +364,8 @@
 
 ### User Interfaces:
 
+- Refresh budget for ungoverned colonies too.
+  - The optimal value and remaining funds will be up to date.
 - Colony spending sliders: Press Alt to view expenses in BC.
 - More informative empire reserves display:
   - The amount now includes excess spending, when redirected to the reserve.
@@ -487,8 +489,8 @@
 
 ### Fixes:
 
-26-09-05 (BR)
-
+- Scouted System interface: moved the flags a little away from the “Next” button.
+- All interfaces with flag: removed the sound while pressing a key modifier.
 - Scouted System: Fixed Flag linked to the wrong System.
 - Fixed potential sources of memory leak.
 - Fixed potential null pointer exceptions.

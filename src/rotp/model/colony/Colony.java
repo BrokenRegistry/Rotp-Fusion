@@ -2797,7 +2797,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		private static final long serialVersionUID = 1L;
 		private boolean colonyIsDeveloped, colonyIsGrowing;
 		private float factoryToMaxRatio;
-		private float nextProduction	= 0;
 		private int reserveNeededBC		= 0;
 		private Integer governorBudgetBC= null; // What the governor would do
 		private Integer playerBudgetBC	= null; // What the player want to force
@@ -2807,7 +2806,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		private void resetGrant(boolean govern)	{
 			budgetSubsidiesBC(0);
 			governorBudgetBC(null);
-			reserveNeededBC(max(0, ceil(nextProduction - rawReserveIncome())));
+			reserveNeededBC(max(0, ceil(production() - rawReserveIncome())));
 			if (govern)
 				governIfNeeded();
 		}
@@ -2815,13 +2814,19 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			if (govern)
 				governIfNeeded();
 		}
+		public void budgetReset(boolean shieldWithoutBases, float maxIndustryRatio)	{ // For Ungoverned
+//			if (isGovernor())
+//				return;
+			colonyIsDeveloped = isDeveloped(shieldWithoutBases);
+			factoryToMaxRatio = industry().factoryToMaxRatio();
+			colonyIsGrowing	= factoryToMaxRatio <= maxIndustryRatio;
+			reserveNeededBC(max(0, ceil(production() - rawReserveIncome())));
+		}
 		public void budgetReset(boolean shieldWithoutBases, float maxIndustryRatio, boolean grant, boolean raise, boolean govern)	{
 			govFundColonyUpdated();
 			colonyIsDeveloped = isDeveloped(shieldWithoutBases);
 			factoryToMaxRatio = industry().factoryToMaxRatio();
 			colonyIsGrowing	= factoryToMaxRatio <= maxIndustryRatio;
-			nextProduction	= production(); // TODO BR: production vs totalProductionIncome
-			nextProduction	= totalProductionIncome();
 			boolean hasGrant = playerBudgetBC()!=null || governorBudgetBC()!=null || budgetSubsidiesBC()!=0;
 			if (grant) {
 				resetGrant(false);
@@ -2844,7 +2849,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			str += " PlayerBudget: "	+ playerBudgetBC();
 			str += " GovernorBudget: "	+ governorBudgetBC();
 //			str += System.lineSeparator();
-			str += " NextProduction: "	+ nextProduction;
+			str += " NextProduction: "	+ production();
 			str += " ReserveNeeded: "	+ reserveNeededBC();
 			str += " IsDeveloped: "		+ colonyIsDeveloped();
 //			str += System.lineSeparator();
@@ -2870,7 +2875,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			}
 			budgetSubsidiesBC(0);
 			governorBudgetBC(null);
-			reserveNeededBC(max (0, ceil(nextProduction - rawReserveIncome())));
+			reserveNeededBC(max (0, ceil(production() - rawReserveIncome())));
 			if (carryUnfunded) {
 				if (isPlayerBudget()) {
 					playerBudgetBC(playerBudgetBC() - ceil(transfered));
@@ -2886,6 +2891,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			int tick = research().allocation();
 			if (tick == 0)
 				return 0;
+			float nextProduction = production();
 			float maxAlloc = nextProduction * tick / MAX_TICKS;
 			float ratio = min(1, goalProd / maxAlloc);
 			int adjust = ceil(ratio * tick);
@@ -2900,7 +2906,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			}
 		}
 		public float resetExess(float goalProd, boolean fromEco, boolean fromInd)	{
-			int tickNeeded = ceil(MAX_TICKS * goalProd / totalIncome());
+			float totalIncome = totalIncome();
+			int tickNeeded = ceil(MAX_TICKS * goalProd / totalIncome);
 			int tickAdjust = 0;
 			if (fromEco) {
 				int ticks = ecology().allocation();
@@ -2925,7 +2932,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 					tickAdjust += adj;
 				}
 			}
-			return tickAdjust * nextProduction / MAX_TICKS /2;
+			return tickAdjust * totalIncome / MAX_TICKS /2;
 		}
 		public boolean isSubjectToTaxes()		{ return subjectToTaxes(); }
 		public float budgetTaxedBC()			{ return colonyTaxes(empire.empireTaxLevel()) / 2; }

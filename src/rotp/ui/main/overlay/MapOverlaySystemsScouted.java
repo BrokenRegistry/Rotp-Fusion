@@ -114,6 +114,11 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
         player().sv.toggleFlagColor(sys.id, reverse);
         parent.repaint();
     }
+	private void autoFlagColor(boolean all) {
+		StarSystem sys = orderedSystems.get(systemIndex);
+		player().sv.forceAutoFlagColor(sys.id, all);
+		parent.repaint();
+	}
     @Override
     public void advanceMap() {
         if (drawSprites) {
@@ -345,8 +350,8 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
         // planet flag
         p.addNextTurnControl(flagButton);
 		flagButton.init(this, g, sys.id);
-        flagButton.mapX(boxX+boxW-flagButton.width()+s10);
-        flagButton.mapY(boxY+boxH-flagButton.height()+s10);
+		flagButton.mapX(boxX+boxW-flagButton.width());
+		flagButton.mapY(boxY+boxH-flagButton.height());
         flagButton.draw(p.map(), g);
 
         // init and draw continue button sprite
@@ -385,7 +390,6 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
     public boolean handleKeyPress(KeyEvent e) {
 		if (baseHandleKeyPress(e))
 			return true;
-        boolean shift = e.isShiftDown();
         switch(e.getKeyCode()) {
             case KeyEvent.VK_N:
                 nextSystem();
@@ -398,20 +402,26 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
             case KeyEvent.VK_ESCAPE:
                 advanceMap();
                 break;
-            case KeyEvent.VK_F:
-                toggleFlagColor(shift);
-                break;
-            case KeyEvent.VK_L:
-            	if (e.isAltDown()) {
-            		debugReloadLabels(parent);
-            		break;
-            	}
-            	misClick();
-            	break;
-            default:
-            	if (!shift) // BR to avoid noise when changing flag color
-            		misClick();
-                break;
+			case KeyEvent.VK_F:
+				toggleFlagColor(e.isShiftDown());
+				break;
+			case KeyEvent.VK_L:
+				if (e.isAltDown()) {
+					debugReloadLabels(parent);
+					break;
+				}
+				misClick();
+				break;
+			case KeyEvent.VK_HOME:
+				autoFlagColor(e.isAltDown());
+				break;
+			case KeyEvent.VK_SHIFT:
+			case KeyEvent.VK_CONTROL:
+			case KeyEvent.VK_ALT:
+			case KeyEvent.VK_ALT_GRAPH:
+				break;	// BR to avoid noise when changing flag color
+			default:
+				misClick();
         }
         return true;
     }

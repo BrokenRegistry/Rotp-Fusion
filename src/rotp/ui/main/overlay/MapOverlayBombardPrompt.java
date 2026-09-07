@@ -97,6 +97,10 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
         player().sv.toggleFlagColor(sysId, reverse);
         parent.repaint();
     }
+	private void autoFlagColor(boolean all)	{
+		player().sv.forceAutoFlagColor(sysId, all);
+		parent.repaint();
+	}
     public void bombardTarget() {
         if (drawSprites) {
             drawSprites = false;
@@ -496,8 +500,8 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
         // planet flag
         parent.addNextTurnControl(flagButton);
         flagButton.init(this, g, sysId);
-        flagButton.mapX(boxX+boxW-flagButton.width()+s10);
-        flagButton.mapY(boxY+boxH-flagButton.height()+s10);
+		flagButton.mapX(boxX+boxW-flagButton.width());
+		flagButton.mapY(boxY+boxH-flagButton.height());
         flagButton.draw(parent.map(), g);
 
         if (sys.empire() == null) {
@@ -518,7 +522,6 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
 		if (baseHandleKeyPress(e))
 			return true;
     	setModifierKeysState(e); // BR: For the Flag color selection
-        boolean shift = e.isShiftDown();
         switch(e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
                 if (bombarded)
@@ -539,13 +542,19 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
             case KeyEvent.VK_Y:
                 bombardYes();
                 break;
-            case KeyEvent.VK_F:
-                toggleFlagColor(shift);
-                break;
-            default:
-            	if (!shift) // BR to avoid noise when changing flag color
-            		misClick();
-                break;
+			case KeyEvent.VK_F:
+				toggleFlagColor(e.isShiftDown());
+				break;
+			case KeyEvent.VK_HOME:
+				autoFlagColor(e.isAltDown());
+				break;
+			case KeyEvent.VK_SHIFT:
+			case KeyEvent.VK_CONTROL:
+			case KeyEvent.VK_ALT:
+			case KeyEvent.VK_ALT_GRAPH:
+				break;	// BR to avoid noise when changing flag color
+			default:
+				misClick();
         }
         return true;
     }

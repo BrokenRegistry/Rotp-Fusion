@@ -59,8 +59,7 @@ import rotp.ui.util.ParamDefaultButtonHelp;
 import rotp.util.LabelManager;
 import rotp.util.ModifierKeysState;
 
-public abstract class BaseModPanel extends BasePanel
-		implements MouseListener, MouseMotionListener {
+public abstract class BaseModPanel extends BasePanel implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = 1L;
 	private static final String setGlobalDefaultKey	= "SETTINGS_GLOBAL_DEFAULT";
 	private static final String setLocalDefaultKey	= "SETTINGS_LOCAL_DEFAULT";
