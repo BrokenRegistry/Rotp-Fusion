@@ -1249,7 +1249,7 @@ MAIN_ALLOCATE_PREV_SYSTEM_HELP	| Retourner à la colonie précédente.<br>Raccou
 MAIN_ALLOCATE_NEXT_SYSTEM		| Suivant
 MAIN_ALLOCATE_NEXT_SYSTEM_HELP	| Passer à la colonie suivante.<br>Raccourci clavier : « <b>N</b> ».
 MAIN_ALLOCATE_CLOSE				| Fermer
-MAIN_ALLOCATE_CLOSE				| Fermer la fenêtre d'informations et activer les commandes de la carte de la galaxie.<br>Raccourci clavier : « <b>C</b> », ou « <b>Entrée</b> », ou « <b>Échap</b> ».
+MAIN_ALLOCATE_CLOSE_HELP		| Fermer la fenêtre d'informations et activer les commandes de la carte de la galaxie.<br>Raccourci clavier : « <b>C</b> », ou « <b>Entrée</b> », ou « <b>Échap</b> ».
 
 MAIN_SCOUT_PREV_SYSTEM			| →MAIN_ALLOCATE_PREV_SYSTEM←
 MAIN_SCOUT_PREV_SYSTEM_HELP		| Retourner au système précédent.<br>Raccourci clavier : « <b>P</b> ».

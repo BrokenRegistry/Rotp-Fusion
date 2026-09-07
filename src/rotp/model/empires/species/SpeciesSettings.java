@@ -372,6 +372,7 @@ public abstract class SpeciesSettings implements Base{
 				isReference(false);
 			}
 		}
+		public void initForReworked(String key)	{ super.selectedValue(key); }
 	}
 	// ==================== Animation ID ====================
 	//
@@ -1570,6 +1571,7 @@ public abstract class SpeciesSettings implements Base{
 				super(ROOT, "TECH_RESEARCH", 100, 60, 200, 1, 5, 20, DIFFERENCE, new float[]{0f, 0.7f, 0.004f}, new float[]{0f, 1.0f, 0.006f});
 				hasNoCost(false);
 			}
+			@Override public float settingCost()	{ return cost(); } // Still needed for randomize, will be excluded in total cost
 			@Override public void settingToSkill(SpeciesSkills skills) { skills.researchBonusPct(settingValue()/100f); }
 			@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.researchBonusPct() * 100)); }
 			@Override public String guiSettingDisplayStr() {
@@ -1664,7 +1666,7 @@ public abstract class SpeciesSettings implements Base{
 				private SettingResearch(String nameLangLabel) {
 					super(ROOT, nameLangLabel, 100, 50, 200, 1, 5, 20, NORMALIZED, new float[]{c0, c1, c2, c3, c4}, null);
 				}
-				@Override public float settingCost() { return settingCost(combinedValue()); }
+				@Override public float settingCost()	{ return settingCost(combinedValue()); }
 				@Override public float settingCost(Integer value) {
 					float baseCost = (value - baseCostDefault)/norm;
 					float cost = 0;
@@ -1712,6 +1714,7 @@ public abstract class SpeciesSettings implements Base{
 				super(ROOT, "TECH_DISCOVERY", 50, 0, 100, 1, 5, 20, DIFFERENCE, new float[]{0f, .5f}, new float[]{0f, 0.5f});
 				hasNoCost(false);
 			}
+			@Override public float settingCost()	{ return cost(); } // Still needed for randomize, will be excluded in total cost
 			@Override public void settingToSkill(SpeciesSkills skills) { skills.techDiscoveryPct(settingValue()/100f); }
 			@Override public void skillToSetting(SpeciesSkills skills) { set(Math.round(skills.techDiscoveryPct() * 100)); }
 			@Override public String guiSettingDisplayStr() {
@@ -1808,9 +1811,7 @@ public abstract class SpeciesSettings implements Base{
 					super(ROOT, nameLangLabel, 0, -100, 100, 1, 5, 20, NORMALIZED,
 							new float[]{c0, c1, c2, c3, c4, c5}, null);
 				}
-				@Override public float settingCost() {
-					return settingCost(combinedValue());
-				}
+				@Override public float settingCost()	{ return settingCost(combinedValue()); }
 				@Override public float settingCost(Integer value) {
 					float baseCost = (value - baseCostDefault)/norm;
 					float cost = 0;

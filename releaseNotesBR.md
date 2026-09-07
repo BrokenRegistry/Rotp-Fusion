@@ -12,6 +12,10 @@ When updating, you can reuse the same folder.
 <b><ins>Very last changes:</ins></b>
 
 26-09-07 (BR)
+- DNA Lab: 
+  - Fixed tech settings counted twice.
+  - Added avatar to original species
+- Fixed label typo
 - Refresh budget for ungoverned colonies too.
   - The optimal value and remaining funds will be up to date.
 - Scouted System interface: moved the flags a little away from the “Next” button.

@@ -113,6 +113,9 @@ public class DNAFactory extends SpeciesSettings {
 		for (ICRSettings<?> setting : settingMap.getSettings()) {
 			if (setting.isSpacer())
 				continue;
+			// TechDiscovery and TechResearch are already a sum, do not sum them twice.
+			if (setting instanceof TechDiscovery || setting instanceof TechResearch)
+				continue;
 			totalCost += setting.settingCost();
 		}
 		return totalCost;
@@ -317,7 +320,10 @@ public class DNAFactory extends SpeciesSettings {
 		// Fills with default settings (instead of default Species settings)
 		List<ICRSettings<?>> settings = settingMap.getAll();
 		for (ICRSettings<?> setting : settings)
-			setting.settingToSkill(race());
+			if (setting instanceof AvatarKey)
+				((AvatarKey)setting).initForReworked(defaultRaceKey);
+			else
+				setting.skillToSetting(race());
 	}
 	private void initWithAnimSkillsForGalaxy(SpeciesSkills anim, boolean fullCopy)	{
 		race(anim.copy(fullCopy));
@@ -326,7 +332,10 @@ public class DNAFactory extends SpeciesSettings {
 		// Fills the basic settings with skills
 		List<ICRSettings<?>> settings = settingMap.getSettings();
 		for (ICRSettings<?> setting : settings)
-			setting.skillToSetting(race());
+			if (setting instanceof AvatarKey)
+				((AvatarKey)setting).initForReworked(raceKey());
+			else
+				setting.skillToSetting(race());
 	}
 	// -#-
 	// #========== Constructors For Species ==========
@@ -449,7 +458,10 @@ public class DNAFactory extends SpeciesSettings {
 		// Fills the settings from the Master skills
 		List<ICRSettings<?>> settings = settingMap.getAll();
 		for (ICRSettings<?> setting : settings)
-			setting.skillToSetting(race());
+			if (setting instanceof AvatarKey)
+				((AvatarKey)setting).initForReworked(key);
+			else
+				setting.skillToSetting(race());
 
 		// Fills the skills options from the settings
 		DynOptions destOptions = race().speciesOptions();
@@ -1296,7 +1308,10 @@ public class DNAFactory extends SpeciesSettings {
 				DynOptions destOptions = race().speciesOptions();
 				List<ICRSettings<?>> settings = settingMap.getAll();
 				for (ICRSettings<?> setting : settings) {
-					setting.skillToSetting(race());
+					if (setting instanceof AvatarKey)
+						((AvatarKey)setting).initForReworked(key);
+					else
+						setting.skillToSetting(race());
 					setting.updateOption(destOptions);
 				}
 

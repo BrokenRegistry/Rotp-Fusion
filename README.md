@@ -45,6 +45,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-09-07 (BR)
+- DNA Lab: 
+  - Fixed tech settings counted twice.
+  - Added avatar to original species
+- Fixed label typo
 - Refresh budget for ungoverned colonies too.
   - The optimal value and remaining funds will be up to date.
 - Scouted System interface: moved the flags a little away from the “Next” button.

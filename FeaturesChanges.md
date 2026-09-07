@@ -317,6 +317,7 @@
 
 ### Miscellaneous:
 
+- DNA Lab: Added avatar to original species
 - New debug tools to track Linux Mint crash.
 - Removed unused methods from AI governors and consolidated redundant methods.
 - Improved some distance sorting by removing the square root.
@@ -489,6 +490,7 @@
 
 ### Fixes:
 
+- DNA Lab: Fixed tech settings counted twice.
 - Scouted System interface: moved the flags a little away from the “Next” button.
 - All interfaces with flag: removed the sound while pressing a key modifier.
 - Scouted System: Fixed Flag linked to the wrong System.
