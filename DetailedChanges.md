@@ -3,6 +3,7 @@
 ## What's New
 
 26-09-07 (BR)
+- Improved help for options "Retreat Destination", "Hyper Comm Retreat", and “Retreat toward enemy”.
 - DNA Lab: 
   - Fixed tech settings counted twice.
   - Added avatar to original species

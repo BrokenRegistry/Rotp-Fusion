@@ -3310,7 +3310,8 @@ SETTINGS_MOD_POP_GROWTH_REDUCED_DESC | Pop Growth 1/2, Pop purchase cost 2x, Pop
 HEADERS_RETREAT_RULES					| ~~~ RETREAT RULES ~~~
 HEADERS_RETREAT_RULES_DESC				| Galaxy map retreating fleets parameters.
 SETTINGS_MOD_RETREAT_DESTINATION		| Retreat Destination: %1
-SETTINGS_MOD_RETREAT_DESTINATION_DESC	| What are the possible destinations of the retiring fleets?
+SETTINGS_MOD_RETREAT_DESTINATION_DESC	| What are the possible destinations of the retreating fleets?
+SETTINGS_MOD_RETREAT_DESTINATION_HELP	| →SETTINGS_MOD_RETREAT_DESTINATION_DESC←<br>This option can be further limited by the “Retreat toward enemy” option. it can also be made obsolete by the “Hyper Comm Retreat” option.
 SETTINGS_MOD_CLOSEST_COLONY				| Nearest colony
 SETTINGS_MOD_CLOSEST_COLONY_DESC		| The nearest retreating empire's colony.
 SETTINGS_MOD_CLOSEST_ALLY				| Nearest Ally
@@ -3321,12 +3322,14 @@ SETTINGS_MOD_ANY_STAR_SYSTEM			| Any star system
 SETTINGS_MOD_ANY_STAR_SYSTEM_DESC		| Any star system within range.
 SETTINGS_MOD_HYPER_COM_RETREAT_EXT		| Hyper Comm Retreat: %1
 SETTINGS_MOD_HYPER_COM_RETREAT_EXT_DESC	| Does having hyperspace communication allow an empire to retreat anywhere? (Enemy limitation will still apply)
+SETTINGS_MOD_HYPER_COM_RETREAT_EXT_HELP	| Can knowledge of Hyperspace communications allow you to redirect a retreating fleet to any destination?<br> If so, the “Retreat toward enemy” option might still apply.
 SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING		| Retreat on Arrival: %1
 SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING_DESC	| Do the “Retreat on arrival” option mark fleets as “Retreated”? Or is it just an automation feature to simplify the player's life?
 SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING		| Diplomatic Retreat: %1
 SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING_DESC	| Do the “Diplomatic Retreat” option mark fleets as “Retreated”? Or is it just an automation feature to simplify the player's life?
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION			| Retreat toward enemy: %1
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_DESC		| Can a retreat destination be an enemy colony? Or have an enemy fleet in orbit?
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_HELP		| This option complements the "Retreat Destination" option, by authorizing or not destinations with enemy fleets in orbit.<br>It can also limit the scope of the "Hyper Comm Retreat" option, as hyperspatial communications may not give the right to redirect the fleet towards an enemy colony or with an enemy fleet in orbit.
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_YES		| Not allowed
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_YES_DESC	| Safe destination only.
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_NO		| Allowed

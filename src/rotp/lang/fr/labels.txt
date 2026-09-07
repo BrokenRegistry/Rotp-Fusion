@@ -3311,6 +3311,7 @@ HEADERS_RETREAT_RULES					| ~~~ RÈGLES DE RETRAITE ~~~
 HEADERS_RETREAT_RULES_DESC				| Paramètres des flottes en retraite sur la carte de la galaxie.
 SETTINGS_MOD_RETREAT_DESTINATION		| Destination de retraite : %1
 SETTINGS_MOD_RETREAT_DESTINATION_DESC	| Quelles sont les possibles destinations des flottes battant en retraite ?
+SETTINGS_MOD_RETREAT_DESTINATION_HELP	| →SETTINGS_MOD_RETREAT_DESTINATION_DESC←<br>Cette option peut être davantage limitée par l’option « Repli vers l’ennemi ». elle peut également être rendue caduque par l’option  « Repli Hi-Tech ».
 SETTINGS_MOD_CLOSEST_COLONY				| Colonie la plus proche
 SETTINGS_MOD_CLOSEST_COLONY_DESC		| La plus proche des colonies de l’empire battant en retraite.
 SETTINGS_MOD_CLOSEST_ALLY				| Allié le plus proche
@@ -3321,12 +3322,15 @@ SETTINGS_MOD_ANY_STAR_SYSTEM			| N’importe où
 SETTINGS_MOD_ANY_STAR_SYSTEM_DESC		| Tout système stellaire à portée.
 SETTINGS_MOD_HYPER_COM_RETREAT_EXT		| Repli Hi-Tech : %1
 SETTINGS_MOD_HYPER_COM_RETREAT_EXT_DESC	| Le fait d’avoir la communication hyperspatiale permet-il à un empire de se replier n’importe où ? (La limitation de repli vers l’ennemi continuera de s’appliquer)
+SETTINGS_MOD_HYPER_COM_RETREAT_EXT_HELP	| La connaissance des communications Hyperspatiales peut-elle vous permettre de de rediriger une flotte battant retrate ver n’importe quelle destination ?<br> Si oui, l’option  « Repli vers l’ennemi » pourrait s'appliquer.
 SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING		| Repli à l’arrivée : %1
 SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING_DESC	| L’option « Repli à l’arrivée » marque-t-elle les flottes comme « en retraite » ? Ou bien s’agit-il simplement d’une fonctionnalité automatisée visant à simplifier la vie du joueur ?
 SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING		| Repli Diplomatique : %1
 SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING_DESC	| L’option « Repli Diplomatique » marque-t-elle les flottes comme « en retraite » ? Ou bien s’agit-il simplement d’une fonctionnalité automatisée visant à simplifier la vie du joueur ?
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION		| Repli vers l’ennemi : %1
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_DESC	| Une destination de repli peut-elle être une colonie ennemie ? ou avoir une flotte ennemie en orbite.
+SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_HELP	| Cette option complète l’option « Destination de retraite », en autorisant ou pas les destinations ayant des flottes ennemies en orbite.<br>Elle peut également limiter la portée de l’option  « Repli Hi-Tech », Les communications hyperpatiales ne donnant pas le droit de rediriger la flotte vers une colonie ennemie ou ayant une flotte ennemie en orbite. 
+
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_YES		| Interdit
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_YES_DESC	| Destinations sécuritaires seulement.
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_NO		| Autorisé

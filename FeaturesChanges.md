@@ -459,6 +459,7 @@
 
 ### Guide and Help:
 
+- Improved help for options "Retreat Destination", "Hyper Comm Retreat", and “Retreat toward enemy”.
 - Extension of the advisor, to be able to call it on demand, this in order to display help on the element under the cursor.
   - On the Galaxy map, including some overlay windows.
   - On the colony panel.

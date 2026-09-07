@@ -12,6 +12,7 @@ When updating, you can reuse the same folder.
 <b><ins>Very last changes:</ins></b>
 
 26-09-07 (BR)
+- Improved help for options "Retreat Destination", "Hyper Comm Retreat", and “Retreat toward enemy”.
 - DNA Lab: 
   - Fixed tech settings counted twice.
   - Added avatar to original species
