@@ -491,6 +491,7 @@
 
 ### Fixes:
 
+- DNA Factory: Added some synchronization protection on save, set as Player, and exit to prevent file saving corruption.
 - Added a tools to detect duplicate labels...
   - Fixed a few duplicated labels!
 - DNA Lab: Fixed tech settings counted twice.

@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-09-08 (BR)
+- DNA Factory: Added some synchronization protection on save, set as Player, and exit to prevent file saving corruption.
 - Added a tools to detect duplicate labels...
 - Fixed a few duplicated labels!
 

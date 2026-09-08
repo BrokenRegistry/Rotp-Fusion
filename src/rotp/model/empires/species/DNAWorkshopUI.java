@@ -110,6 +110,8 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 	private static final int	ANIM_DIVISOR	= 3;
 	private static final int	BG_ALPHA		= 200;
 
+	private final Object lock = new Object();
+
 	private boolean allowEdit;
 	private DNAFactory dnaFactory;
 	private Image backImage;
@@ -660,11 +662,13 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 		}
 		private String selectFolderAction(MouseEvent e)	{
 			if (e.getID() == MouseEvent.MOUSE_RELEASED) {
-				if (e.isControlDown())
-					reloadRaceList(true);
-				else
-					reloadRaceList(false);
-				dnaFactory().loadRace();
+				synchronized (lock) {
+					if (e.isControlDown())
+						reloadRaceList(true);
+					else
+						reloadRaceList(false);
+					dnaFactory().loadRace();
+				}
 				repaint();
 			}
 			return null;
@@ -707,7 +711,11 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 			button.addActionListener(evt -> exitAction(evt));
 			return button;
 		}
-		private void exitAction(ActionEvent e)	{ close(); }
+		private void exitAction(ActionEvent e)	{
+			synchronized (lock) {
+				close();
+			}
+		}
 
 		private RButton newLoadPlayerButton()	{
 			RButton button = RotPButtons.newBigButton(ROOT + "LOAD_PLAYER", true);
@@ -717,10 +725,12 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 			return button;
 		}
 		private void loadPlayerAction(ActionEvent e)	{
-			buttonClick();
-			IGameOptions opts = guiOptions();
-			DynOptions player = opts.selectedPlayerCustomRace();
-			dnaFactory().initSkillsForEditor(player);
+			synchronized (lock) {
+				buttonClick();
+				IGameOptions opts = guiOptions();
+				DynOptions player = opts.selectedPlayerCustomRace();
+				dnaFactory().initSkillsForEditor(player);
+			}
 			refreshAll();
 		}
 
@@ -732,18 +742,20 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 			return button;
 		}
 		private void setPlayerAction(ActionEvent e)	{
+			synchronized (lock) {
 			buttonClick();
-			IGameOptions opts = guiOptions();
-			DynOptions player = dnaFactory().getAsOptions();
-			opts.selectedPlayerCustomRace(player);
-			opts.selectedPlayerIsCustom(true);
-			String anim = dnaFactory().getPlayerAnim();
-			if (anim != null)
-				opts.selectedPlayerRace(anim);
-			opts.saveOptionsToFile(LIVE_OPTIONS_FILE);
-			dnaFactory().saveRace();
-			reloadRaceList(false);
-			dnaFactory().initSkillsForEditor(player);
+				IGameOptions opts = guiOptions();
+				DynOptions player = dnaFactory().getAsOptions();
+				opts.selectedPlayerCustomRace(player);
+				opts.selectedPlayerIsCustom(true);
+				String anim = dnaFactory().getPlayerAnim();
+				if (anim != null)
+					opts.selectedPlayerRace(anim);
+				opts.saveOptionsToFile(LIVE_OPTIONS_FILE);
+				dnaFactory().saveRace();
+				reloadRaceList(false);
+				dnaFactory().initSkillsForEditor(player);
+			}
 			refreshAll();
 		}
 
@@ -755,10 +767,12 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 			return button;
 		}
 		private void saveAction(ActionEvent e)	{
-			String currentSpecies = raceKey.settingValue();
-			dnaFactory().saveRace();
-			reloadRaceList(false);
-			raceList.selectedValue(currentSpecies);
+			synchronized (lock) {
+				String currentSpecies = raceKey.settingValue();
+				dnaFactory().saveRace();
+				reloadRaceList(false);
+				raceList.selectedValue(currentSpecies);
+			}
 			refreshAll();
 		}
 
