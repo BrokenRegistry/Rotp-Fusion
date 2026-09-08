@@ -1187,8 +1187,9 @@ public final class ShipCombatManager implements Base {
             return true;
         // stop after max turns to avoid infinite looping
         if (turnCounter > MAX_TURNS()) {
-			allowRetreat = true; // It's not optional anymore
-			maxTurnRetreatEmpire(results.attacker());
+        	retreatEmpire(results.attacker());
+//			allowRetreat = true; // It's not optional anymore
+//			maxTurnRetreatEmpire(results.attacker());
             log("combat finished-- max turns exceeded. Retreating: "+results.attacker());
             finished = true;
             if (showAnimations())

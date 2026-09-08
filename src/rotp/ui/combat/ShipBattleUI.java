@@ -479,8 +479,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         else
             paintShipsToImage(g,x,y,w,h-barH, hoveringX, hoveringY);
 
-		try { paintMenuBarToImage(g,x,y+h-barH,w,barH); }
-		catch (Exception e) {}
+		paintMenuBarToImage(g,x,y+h-barH,w,barH);
 
         if (!readyToShowResult())
             paintStackActions(g, hoveringX, hoveringY);

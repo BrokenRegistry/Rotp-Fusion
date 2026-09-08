@@ -491,6 +491,7 @@
 
 ### Fixes:
 
+- Removed a minor fix from 26-08-22 who may crash the game...
 - DNA Factory: Added some synchronization protection on save, set as Player, and exit to prevent file saving corruption.
 - Added a tools to detect duplicate labels...
   - Fixed a few duplicated labels!
