@@ -3,6 +3,8 @@
 ## What's New
 
 26-09-08 (BR)
+- Added another security to try to prevent the crash when a combat end due to max turn limit.
+- Restored the minor fix as it was not the problem. (That I can't reproduce)
 - Removed a minor fix from 26-08-22 who may crash the game...
 - DNA Factory: Added some synchronization protection on save, set as Player, and exit to prevent file saving corruption.
 - Added a tools to detect duplicate labels...
