@@ -46,6 +46,7 @@ public class LabelManager implements Base {
     private final HashMap<String,byte[]> labelMap = new HashMap<>();
     private final HashMap<String,List<String>> dialogueMap = new HashMap<>();
     private final List<String> introLines = new ArrayList<>();
+	private final List<String> validationList = new ArrayList<>(); // to check for duplicate
 
     public boolean hasLabel(String key)    { return labelMap.containsKey(key); }
     public boolean hasDialogue(String key) { return dialogueMap.containsKey(key); }
@@ -137,9 +138,12 @@ public class LabelManager implements Base {
             log("WORDS - "+filename+": "+wc);
     }
     public void loadLabelFile(String dir) {
-    	lastDir = dir;
-        log("loading Labels: ", dir, labelFile);
-        String filename = dir+labelFile;
+		lastDir = dir;
+		log("loading Labels: ", dir, labelFile);
+		if (validate)
+			validationList.clear();
+
+		String filename = dir+labelFile;
         BufferedReader in = reader(filename);
         if (in == null) {
             err("can't find label file! ", dir, labelFile);
@@ -157,13 +161,15 @@ public class LabelManager implements Base {
         }
         finally {
         	try {
-                        in.close();
-                    } catch (IOException e) {
-                        err("LabelManager.loadLabelFile2 -- IOException: " + e); 
-                    }
+                in.close();
+            } catch (IOException e) {
+                err("LabelManager.loadLabelFile2 -- IOException: " + e); 
+            }
         }
         if (Rotp.countWords)
             log("WORDS - "+filename+": "+wc);
+		if (validate)
+			validationList.clear();
     }
     public void resetDialogue() {
         dialogueMap.clear();
@@ -200,6 +206,8 @@ public class LabelManager implements Base {
     }
     public void loadTechsFile(String dir) {
         log("loading Techs: ", dir, techsFile);
+		if (validate)
+			validationList.clear();
 
         String filename = dir+techsFile;
         BufferedReader in = reader(filename);
@@ -226,6 +234,8 @@ public class LabelManager implements Base {
         }
         if (Rotp.countWords)
             log("WORDS - "+filename+": "+wc);
+		if (validate)
+			validationList.clear();
     }
     private int loadLabelLine(String input) {
     	if (isComment(input))
@@ -247,16 +257,23 @@ public class LabelManager implements Base {
 
         int wc = 0;
         String val = vals.get(1).trim();
+        String key = vals.get(0).trim();
         if (validate) {
-            if (val.trim().isEmpty()) {
-            	validateError("Orphan label keyword: " + input + " / " + labelFile);
-            }
-            else {
-            	testForDialogueFont(val);
-            }
+			if (val.trim().isEmpty()
+					&& !"GOVERNOR_RACE_IMAGE_LABEL".equals(key) // must be empty
+					&& !"_nameTitle".equals(key) // some species don't have title
+					) {
+				validateError("Orphan label keyword: " + input + " / " + labelFile);
+			}
+			else
+				testForDialogueFont(val);
+			if (validationList.contains(key))
+				validateError("Duplicated Key: " + input + " / " + labelFile);
+			else
+				validationList.add(key);
         }
         try {
-            labelMap.put(vals.get(0).trim(), val.getBytes("UTF-8"));
+            labelMap.put(key, val.getBytes("UTF-8"));
             if (Rotp.countWords)
                 wc = substrings(val, ' ').size();
         }
@@ -296,7 +313,7 @@ public class LabelManager implements Base {
         
         String val = vals.get(1);
         if (validate) {
-            if (val.trim().isEmpty()) {
+            if (val.trim().isEmpty() && !"RESPOND_DECLARE_WAR_01".equals(key)) { // some species don't respond
             	validateError("Orphan dialogue keyword: " + input + " / " + dialogueFile);
             }
             else {
@@ -359,42 +376,51 @@ public class LabelManager implements Base {
     public Set<Entry<String, List<String>>> dialogueMapEntrySet() { return dialogueMap.entrySet(); } // BR: For Debug
 
     private void testForDialogueFont(String str) {
-    	if (FontManager.current() == null)
-    		return;
-    	Font dlg = FontManager.current().dlgFont(16);
-    	int loc = dlg.canDisplayUpTo(str);
-    	if (loc == -1)
-    		return;
-    	char badChar = str.charAt(loc);
-    	int badCode = badChar;
-    	switch(badCode) {
-    	case 123:	// {
-    	case 125:	// }
-    	case 160:	// non-breaking space
-    	case 167:	// § The section sign
-    	case 183:	// ·
-    	case 8203:	// Zero-Width Space
-    	case 8226:	// • bullet point 
-    	case 8582:	// ←
-    	case 8594:	// →
-    	case 9198:	// Reset ⏮
-    	case 9208:	// Pause ⏸
-    	case 9654:	// Play ▶
-    	case 9655:	// Forward ▷
-    	case 9665:	// ◁ Back
-    	case 11199:	// Exit (circled bold x)
-    		return;
-    	case 55358:	// ߡ
-    		return;
-    	default:
-    		System.err.println("("+ lastDir + ") dlgFont err: " + badChar + " / " + badCode + " / " + str);
-    	}
-    }
-    private void validateError(String msg) {
-    	if (LanguageManager.selectedLanguage() != 0
-//    			&& !lastDir.contains("lang/en/")
-    			) {
-    		System.err.println("("+ lastDir + ") " + msg);
-    	}
-    }
+		if (FontManager.current() == null)
+			return;
+		Font dlg = FontManager.current().dlgFont(16);
+		int loc = dlg.canDisplayUpTo(str);
+		if (loc == -1)
+			return;
+		char badChar = str.charAt(loc);
+		int badCode = badChar;
+		switch(badCode) {
+		case 123:	// {
+		case 125:	// }
+		case 160:	// non-breaking space
+		case 167:	// § The section sign
+		case 178:	// ² squared
+		case 183:	// · central dor
+		case 8203:	// Zero-Width Space
+		case 8226:	// • bullet point 
+		case 8239:	//   indivisible space
+		case 8240:	// ‰ per thousand
+		case 8582:	// ← left arrow
+		case 8594:	// → right arrow
+		case 8658:	// ⇒ right arrow
+		case 8734:	// ∞ infinite
+		case 8804:	// ≤ smaller or equal
+		case 8805:	// ≥ grater or equal
+		case 9145:	// ⎹ vertical bar
+		case 9198:	// Reset ⏮
+		case 9208:	// Pause ⏸
+		case 9654:	// Play ▶
+		case 9655:	// Forward ▷
+		case 9665:	// ◁ Back
+		case 11199:	// Exit (circled bold x)
+			return;
+		case 55358:	// ߡ
+			return;
+		default:
+			System.err.println("("+ lastDir + ") dlgFont err: " + badChar + " / " + badCode + " / " + str);
+		}
+	}
+	private void validateError(String msg) {
+		boolean allLanguages = true;
+		if (LanguageManager.selectedLanguage() != 0 && !allLanguages
+				// && !lastDir.contains("lang/en/")
+				) {
+			System.err.println("("+ lastDir + ") " + msg);
+		}
+	}
 }

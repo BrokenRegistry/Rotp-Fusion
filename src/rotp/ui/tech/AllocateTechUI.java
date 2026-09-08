@@ -299,9 +299,9 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
             helpUI.addBrownHelpText(xHov, yHov, wHov, 0, hovInfo);
         }
 
-        String levImpact = text(cat.id()+"_LEVEL_DESC");
-    	if (!levImpact.isEmpty())
-    		catInfo += NEWLINE + NEWLINE + text("TECH_LEVEL_HEADER") + NEWLINE + levImpact;
+		String levImpact = labels().realLabel(cat.id()+"_LEVEL_DESC");
+		if (levImpact != null && !levImpact.isEmpty())
+			catInfo += NEWLINE + NEWLINE + text("TECH_LEVEL_HEADER") + NEWLINE + levImpact;
         helpUI.addBrownHelpText(xCat, yCat, wCat, 0, catInfo);
 
         helpUI.open(this);    	

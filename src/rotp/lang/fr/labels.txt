@@ -229,12 +229,13 @@ TECH_LEVEL_OF_TECH                | Niveau %1
 TECH_IS_FREE					| (gratuite)
 TECH_IS_RESTRICTED				| (réservée)
 
-TECH_COMPUTERS_LEVEL_DESC         | Lors des missions d’espionnage, la différence entre votre niveau technologique informatique et celui de l’empire ciblé modifie la probabilité de réussite de la mission.
-TECH_CONSTRUCTION_LEVEL_DESC      | Chaque niveau de construction augmente l’espace disponible, pour toutes les tailles de coques, de 2%.
-TECH_FORCE_FIELDS_LEVEL_DESC      |
-TECH_PLANETOLOGY_LEVEL_DESC       | En début de partie, chaque colon produit 0,5 CG. À mesure que votre niveau de technologie de Planétologie augmente, leur productivité suit. L’augmentation est progressive, et atteint une valeur double au niveau 17, triple au niveau 33 et quadruple au niveau 50.
-TECH_PROPULSION_LEVEL_DESC        |
-TECH_WEAPONS_LEVEL_DESC           | Les dommages que vos espions infligent lors les missions de sabotage augmentent avec votre niveau technologique d’armement. Davantage d’usines et de bases de missiles seront détruites.
+// Technology level impact
+TECH_COMPUTERS_LEVEL_DESC		| Lors des missions d’espionnage, la différence entre votre niveau technologique informatique et celui de l’empire ciblé modifie la probabilité de réussite de la mission.
+TECH_CONSTRUCTION_LEVEL_DESC	| Chaque niveau de construction augmente l’espace disponible, pour toutes les tailles de coques, de 2%.
+// TECH_FORCE_FIELDS_LEVEL_DESC	|
+TECH_PLANETOLOGY_LEVEL_DESC		| En début de partie, chaque colon produit 0,5 CG. À mesure que votre niveau de technologie de Planétologie augmente, leur productivité suit. L’augmentation est progressive, et atteint une valeur double au niveau 17, triple au niveau 33 et quadruple au niveau 50.
+// TECH_PROPULSION_LEVEL_DESC	|
+TECH_WEAPONS_LEVEL_DESC			| Les dommages que vos espions infligent lors les missions de sabotage augmentent avec votre niveau technologique d’armement. Davantage d’usines et de bases de missiles seront détruites.
 
 // Random Events
 EVENT_ACCIDENT                    | Un accident industriel majeur dans le système [system] pollue la colonie [target_raceadjec], générant des déchets industriels, endommageant gravement son environement écologique et irradiant la planète de manière permanente.
@@ -957,7 +958,7 @@ MAIN_FLEET_DEPLOYMENT             | Déploiement de Flotte
 MAIN_FLEET_DISPLAY                | Affichage de la Flotte
 MAIN_FLEET_CHOOSE_DEST            | Choisissez la destination et le nombre de vaisseaux à envoyer.
 MAIN_FLEET_OUT_OF_RANGE_DESC      | La destination est hors de portée de la flotte, %1 a.l. de la colonie la plus proche.
-MAIN_FLEET_INVALID_RETREAT        | Les flottes en retraite ne peuvent être envoyées que dans des colonies amies
+MAIN_FLEET_INVALID_RETREAT_DESC	| Les flottes en retraite ne peuvent être envoyées que dans des colonies amies
 MAIN_FLEET_ETA_UNNAMED            | Durée du trajet : %1 Années
 MAIN_FLEET_ETA_NAMED              | Durée du trajet vers %1 : %2 Années
 MAIN_FLEET_SET_RALLY              | Ralliement
@@ -1430,13 +1431,13 @@ PLANETS_COLONY_TRANSFER_BUTTON	| Transférer des Fonds du Trésor
 
 PLANETS_LIST_MAX_TRANS_TO_FILL	| Remplir
 PLANETS_LIST_MAX_TRANS_NO_LOSS	| Stable
-PLANETS_LIST_NUM				|
+// PLANETS_LIST_NUM				|
 PLANETS_LIST_NUM_HELP			| Juste le numéro de la ligne.
-PLANETS_LIST_FLAG				|
+// PLANETS_LIST_FLAG			|
 PLANETS_LIST_FLAG_HELP			| →PLANETS_HELP_4I←
-PLANETS_LIST_STARGATES			|
+// PLANETS_LIST_STARGATES		|
 PLANETS_LIST_STARGATES_HELP		| <h3>Portes des Étoiles</h3>Construites ou en construction.
-PLANETS_LIST_MANDATE			|
+// PLANETS_LIST_MANDATE			|
 PLANETS_LIST_MANDATE_HELP		| →PLANETS_HELP_5A←
 PLANETS_LIST_NAME				| Nom
 PLANETS_LIST_NAME_HELP			| →PLANETS_HELP_2A←
@@ -1617,7 +1618,6 @@ FLEETS_UNDEPLOYING_FLEETS         | %1 flottes sélectionnées ont déjà des d�
 FLEETS_CANCEL_DEPLOYMENTS         | Annuler les déploiements
 FLEETS_DEPLOYING_FLEETS           | En train de déployer des flottes
 FLEETS_DEPLOYING_FLEETS_DESC      | Sélectionner un système à portée pour déployer toutes les flottes sélectionnées.
-FLEETS_DEPLOY_FLEETS              | Déployer les flottes
 FLEETS_TRANSPORTS_TITLE           | Envoyer des transports depuis :
 FLEETS_TRANSPORTS_SEND            | Envoyer %1 transports
 FLEETS_TRANSPORTS_SYNCH           | Synchroniser
@@ -2304,7 +2304,7 @@ CUSTOM_RACE_FLEET_DESC			| Exemple d’une flottille composée de navires issus 
 CUSTOM_RACE_FLEET_HELP			| Exemple d’une flottille composée de navires issus du modèle choisi pour cette espèce.<br>Si l’animation vous dérange, vous pouvez la désactiver ou l’activer en cliquant sur l’image.
 
 // BR : Customize Player Species
-CUSTOM_RACE_DESCRIPTION			| ADN Aléatoire
+CUSTOM_RACE_RANDOM_DESCRIPTION	| ADN Aléatoire
 CUSTOM_RACE_RACE_AI_DESC		| Changer l’IA de l’empire
 CUSTOM_RACE_GUI_TITLE			| Atelier ADN
 CUSTOM_RACE_SHOW_TITLE			| ADN de l’espèce
@@ -2925,8 +2925,6 @@ HEADERS_GALAXY_CONTENT               | ~~~ CARACTÉRISTIQUES GALAXIE ~~~
 HEADERS_GALAXY_SIZE_DESC             | Paramètres liés à la taille des galaxies.
 HEADERS_GALAXY_SIZE                  | ~~~ TAILLE GALAXIE ~~~
 
-HEADERS_RESTART_OPTIONS_DESC         | Options de redémarrage.
-HEADERS_RESTART_OPTIONS              | ~~~ OPTIONS DE REDÉMARRAGE ~~~
 HEADERS_RESTART_AI_DESC              | Conserver ou modifier les IA.
 HEADERS_RESTART_AI                   | ~~~ RESTART AI ~~~
 
@@ -2945,7 +2943,7 @@ HEADERS_AGGRESSIVENESS				| ~~~ BELLICISME ~~~
 
 HEADERS_UNCLASSIFIED_DESC            | Il reste encore à trouver la bonne position !
 HEADERS_UNCLASSIFIED                 | ~~~ NON-CLASSIFIÉ ~~~
-HEADERS_SPACER_DESC                  |
+HEADERS_SPACER_DESC                  |  
 HEADERS_SPACER                       |  %1
 
 SETTINGS_MOD_MONSTER_RULES_TITLE         | Gestion des Monstres
@@ -5110,7 +5108,7 @@ SHIP_DESIGN_ARMOR_TYPE            | Type
 SHIP_DESIGN_ARMOR_COST            | Coût
 SHIP_DESIGN_ARMOR_SIZE            | Taille
 SHIP_DESIGN_ENGINE_TITLE          | Moteurs
-SHIP_DESIGN_ENGINE_TYPE           | Type
+// SHIP_DESIGN_ENGINE_TYPE		| Type // Duplicate
 SHIP_DESIGN_ENGINE_NUM            | Moteurs Num
 SHIP_DESIGN_ENGINE_SPACE          | Espace
 SHIP_DESIGN_ENGINE_COST           | Coût
@@ -5695,7 +5693,6 @@ COUNCIL_CAST_PROMPT_TITLE         | Sélectionnez un candidat.
 COUNCIL_CHOICE_ABSTAIN            | Abstention
 COUNCIL_CAST_VOTE                 | [voter_empire] vote pour [candidate_name] (%1 voix)
 COUNCIL_CAST_ABSTAIN              | [voter_empire] s’abstient (%1 voix)
-COUNCIL_CHOICE_ABSTAIN            | S’abstenir
 COUNCIL_VOTE_COUNT                | %1 voix
 COUNCIL_VOTE_CAST                 | %1 voix - pour [alien_race_pluralnoun]
 COUNCIL_VOTE_ABSTAINED            | %1 voix - Abstention
@@ -5791,7 +5788,6 @@ DIPLOMACY_MENU_ACCEPT_NEED_BC     | Accepter (Pas assez de fonds)
 DIPLOMACY_MENU_FORGET_IT          | N’y pensez pas
 DIPLOMACY_TRADE_LEVEL             | %1 CG/Année
 DIPLOMACY_MENU_TREATIES           | Proposer un traité
-DIPLOMACY_MENU_TRADE              | Accord commercial
 DIPLOMACY_MENU_TECHNOLOGY         | Échanger des technologies
 DIPLOMACY_MENU_OFFER_AID          | Offrir de l’aide
 DIPLOMACY_MENU_AMT                | %1 CG
@@ -6636,9 +6632,9 @@ SETUP_ELLIPSE_2_HELP					| Galaxie elliptique avec un rapport de 2:1.
 SETUP_ELLIPSE_3_HELP					| Galaxie elliptique comprimée avec un rapport de 3:1.
 SETUP_ELLIPSE_4_HELP					| Galaxie elliptique aplatie avec un rapport de 5:1.
 SETUP_ELLIPSE_SYMMETRIC_HELP			| Galaxie à symétrie circulaire, chaque empire a le même type de monde d’origine et le même voisinage. Orion est au point central.
-SETUP_VOID_2_HELP						| Galaxie avec un vide central plus grand.
-SETUP_VOID_3_HELP						| Galaxie avec un vide central encore plus grand.
-SETUP_VOID_4_HELP						| Galaxie annulaire.
+ELLIPSE_SETUP_VOID_2_HELP				| Galaxie avec un vide central plus grand.
+ELLIPSE_SETUP_VOID_3_HELP				| Galaxie avec un vide central encore plus grand.
+ELLIPSE_SETUP_VOID_4_HELP				| Galaxie annulaire.
 SETUP_GALAXY_SHAPE_SPIRAL_HELP			| Galaxie originales en forme de spirale, jusqu’à 8 bras et 7 niveaux de courbure. Cette galaxie a une option symétrique pour que chaque empire ait le même monde d’origine et le même voisinage, il y a autant de bras que d’empires.
 SETUP_GALAXY_SHAPE_SPIRAL_O1_DESC		| Sélection du nombre de bras.
 SETUP_GALAXY_SHAPE_SPIRAL_O2_DESC		| Réglage de la courbure des bras.
@@ -6756,7 +6752,7 @@ SETUP_SPIRALARMS_SYMMETRIC_HELP			| Galaxie à symétrie circulaire, chaque empi
 SETUP_GALAXY_SHAPE_BITMAP_HELP    | Construisez votre propre forme de galaxie, basée sur un bitmap.<ul><li>Des prises de vue réelles de galaxies donnent de bons résultats.</li><li>Vous pouvez dessiner vos propres galaxies, en nuances de gris ou en couleurs.</li><li>Avec des galaxies colorées, vous pouvez définir des régions où les systèmes stellaires Orion, Player et Aliens devraient se trouver.</li><li>Un mode couleur avancé vous permet de définir les régions de chaque Aliens, ainsi que les régions de nébuleuses !</li><li>Quelques exemples peuvent être trouvés dans BitmapGalaxyExamples.zip</li></ul>Utilisez de préférence une petite image bitmap pour définir la galaxie ; la taille VGA est largement suffisante... Les galaxies sont toujours générées aléatoirement !
 SETUP_GALAXY_SHAPE_BITMAP_O1      | Conversion de l’image : %1
 SETUP_GALAXY_SHAPE_BITMAP_O2      | Réglages fins : %1
-SETUP_GALAXY_SHAPE_BITMAP_O2      | Fichier : %1
+SETUP_GALAXY_SHAPE_BITMAP_O3      | Fichier : %1
 SETUP_GALAXY_SHAPE_BITMAP_O1_DESC | Comment convertir le fichier image.
 SETUP_GALAXY_SHAPE_BITMAP_O2_DESC | Réglages fins de l’image.
 SETUP_GALAXY_SHAPE_BITMAP_O3_DESC | Nom du fichier contenant l’image.

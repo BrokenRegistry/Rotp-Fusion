@@ -158,7 +158,11 @@ public class LanguageManager implements Base {
     	else
     		System.out.println("Validation Failed");
     }
-    public void reloadLanguage()      { loadLanguage(selectedLanguage()); } // BR: to reload labels without having to restart
+	public void reloadLanguage()	{	// BR: to reload labels without having to restart
+		LabelManager.validate = true;
+		loadLanguage(selectedLanguage());
+		LabelManager.validate = false;
+	}
 	public void reloadRace(Species species)	{ // BR: to reload Selected species labels
 		Language newLang = languages().get(selectedLanguage);
 		Species.loadRaceLangFiles(species, newLang.directory);

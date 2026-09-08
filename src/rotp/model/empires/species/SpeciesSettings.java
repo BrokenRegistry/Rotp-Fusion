@@ -787,7 +787,7 @@ public abstract class SpeciesSettings implements Base{
 		static final String KEY = "RACE_NAME";
 		RaceName(String langDir) {
 			super(ROOT, KEY, "", langDir);
-			randomStr(langLabel("CUSTOM_RACE_DESCRIPTION"));
+			randomStr(langLabel("CUSTOM_RACE_RANDOM_DESCRIPTION"));
 		}
 		@Override public void pushToSkills(SpeciesSkills skills)	{
 			skills.parseCivilizationNames(settingValue());
@@ -803,7 +803,7 @@ public abstract class SpeciesSettings implements Base{
 		RaceDescription(int i, String langDir) {
 			super(ROOT, KEY(i), "Description "+i, i==3? 4:2, langDir);
 			id = i;
-			randomStr(langLabel("CUSTOM_RACE_DESCRIPTION"));
+			randomStr(langLabel("CUSTOM_RACE_RANDOM_DESCRIPTION"));
 		}
 		@Override public void pushToSkills(SpeciesSkills skills)	{ skills.setDescription(id, settingValue()); }
 		@Override public void pullFromSkills(SpeciesSkills skills)	{ set(skills.getDescription(id)); }

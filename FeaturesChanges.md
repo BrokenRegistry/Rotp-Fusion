@@ -491,6 +491,8 @@
 
 ### Fixes:
 
+- Added a tools to detect duplicate labels...
+  - Fixed a few duplicated labels!
 - DNA Lab: Fixed tech settings counted twice.
 - Scouted System interface: moved the flags a little away from the “Next” button.
 - All interfaces with flag: removed the sound while pressing a key modifier.

@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-09-08 (BR)
+- Added a tools to detect duplicate labels...
+- Fixed a few duplicated labels!
+
 26-09-07 (BR)
 - Improved help for options "Retreat Destination", "Hyper Comm Retreat", and “Retreat toward enemy”.
 - DNA Lab: 

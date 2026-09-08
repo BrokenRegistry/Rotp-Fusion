@@ -229,12 +229,13 @@ TECH_LEVEL_OF_TECH                | Level %1
 TECH_IS_FREE					| (free)
 TECH_IS_RESTRICTED				| (restricted)
 
-TECH_COMPUTERS_LEVEL_DESC         | During espionage missions, the difference between your computer technology level and that of the targeted empire changes the probability of mission success.
-TECH_CONSTRUCTION_LEVEL_DESC      | Each Construction level increases the available space for all hull types by 2%.
-TECH_FORCE_FIELDS_LEVEL_DESC      |
-TECH_PLANETOLOGY_LEVEL_DESC       | At the start of the game, each colonist produces 0.5BC. As your Planetology technology level increases, so does their productivity. The increase is gradual, reaching double the value at level 17, triple at level 33, and quadruple at level 50.
-TECH_PROPULSION_LEVEL_DESC        |
-TECH_WEAPONS_LEVEL_DESC           | The damage your spies inflict during sabotage missions increases with your weapons technology level. More factories and missile bases will be destroyed.
+// Technology level impact
+TECH_COMPUTERS_LEVEL_DESC		| During espionage missions, the difference between your computer technology level and that of the targeted empire changes the probability of mission success.
+TECH_CONSTRUCTION_LEVEL_DESC	| Each Construction level increases the available space for all hull types by 2%.
+// TECH_FORCE_FIELDS_LEVEL_DESC	| 
+TECH_PLANETOLOGY_LEVEL_DESC		| At the start of the game, each colonist produces 0.5BC. As your Planetology technology level increases, so does their productivity. The increase is gradual, reaching double the value at level 17, triple at level 33, and quadruple at level 50.
+// TECH_PROPULSION_LEVEL_DESC	|
+TECH_WEAPONS_LEVEL_DESC			| The damage your spies inflict during sabotage missions increases with your weapons technology level. More factories and missile bases will be destroyed.
 
 // Random Events
 EVENT_ACCIDENT                    | A major industrial accident pollutes the [target_race] world in the [system] system with industrial waste, damaging its ecology and permanently irradiating the planet.
@@ -957,7 +958,7 @@ MAIN_FLEET_DEPLOYMENT             | Fleet Deployment
 MAIN_FLEET_DISPLAY                | Fleet Display
 MAIN_FLEET_CHOOSE_DEST            | Choose destination and number of ships to send.
 MAIN_FLEET_OUT_OF_RANGE_DESC      | Destination is out of fleet range, %1 light-years from closest colony.
-MAIN_FLEET_INVALID_RETREAT        | Retreating fleets can only be sent to friendly colonies
+MAIN_FLEET_INVALID_RETREAT_DESC	| Retreating fleets can only be sent to friendly colonies
 MAIN_FLEET_ETA_UNNAMED            | ETA to destination: %1 Years
 MAIN_FLEET_ETA_NAMED              | ETA to %1: %2 Years
 MAIN_FLEET_SET_RALLY              | Rallying
@@ -1430,13 +1431,13 @@ PLANETS_COLONY_TRANSFER_BUTTON	| Transfer Funds From Treasury
 
 PLANETS_LIST_MAX_TRANS_TO_FILL	| Fill
 PLANETS_LIST_MAX_TRANS_NO_LOSS	| Stable
-PLANETS_LIST_NUM				|
+// PLANETS_LIST_NUM				|
 PLANETS_LIST_NUM_HELP			| Line number
-PLANETS_LIST_FLAG				|
+// PLANETS_LIST_FLAG			|
 PLANETS_LIST_FLAG_HELP			| →PLANETS_HELP_4I←
-PLANETS_LIST_STARGATES			|
+// PLANETS_LIST_STARGATES		|
 PLANETS_LIST_STARGATES_HELP		| <h3>Stargates</h3>Built or under construction.
-PLANETS_LIST_MANDATE			|
+// PLANETS_LIST_MANDATE			|
 PLANETS_LIST_MANDATE_HELP		| →PLANETS_HELP_5A←
 PLANETS_LIST_NAME				| Name
 PLANETS_LIST_NAME_HELP			| →PLANETS_HELP_2A←
@@ -1617,7 +1618,6 @@ FLEETS_UNDEPLOYING_FLEETS         | %1 selected fleets already have assigned dep
 FLEETS_CANCEL_DEPLOYMENTS         | Cancel Deployments
 FLEETS_DEPLOYING_FLEETS           | Deploying Fleets
 FLEETS_DEPLOYING_FLEETS_DESC      | Select a system in range to deploy all selected fleets.
-FLEETS_DEPLOY_FLEETS              | Deploy Fleets
 FLEETS_TRANSPORTS_TITLE           | Send Transports From:
 FLEETS_TRANSPORTS_SEND            | Send %1 Transports
 FLEETS_TRANSPORTS_SYNCH           | Synch
@@ -2304,7 +2304,7 @@ CUSTOM_RACE_FLEET_DESC			| Example of a fleet composed of vessels based on the m
 CUSTOM_RACE_FLEET_HELP			| Example of a fleet composed of vessels based on the model chosen for this species.<br> If the animation bothers you, you can disable or enable it by clicking on the image.
 
 // BR: Customize Player Species
-CUSTOM_RACE_DESCRIPTION			| Randomized DNA
+CUSTOM_RACE_RANDOM_DESCRIPTION	| Randomized DNA
 CUSTOM_RACE_RACE_AI_DESC		| Change the empire AI
 CUSTOM_RACE_GUI_TITLE			| DNA Workshop
 CUSTOM_RACE_SHOW_TITLE			| Species' DNA
@@ -2925,8 +2925,6 @@ HEADERS_GALAXY_CONTENT               | ~~~ GALAXY CONTENT ~~~
 HEADERS_GALAXY_SIZE_DESC             | Parameters related to the size of galaxies.
 HEADERS_GALAXY_SIZE                  | ~~~ GALAXY SIZE ~~~
 
-HEADERS_RESTART_OPTIONS_DESC         | Restart options
-HEADERS_RESTART_OPTIONS              | ~~~ RESTART OPTIONS ~~~
 HEADERS_RESTART_AI_DESC              | Keep or change AIs.
 HEADERS_RESTART_AI                   | ~~~ RESTART AI ~~~
 
@@ -2945,7 +2943,7 @@ HEADERS_AGGRESSIVENESS				| ~~~ WARMONGERING ~~~
 
 HEADERS_UNCLASSIFIED_DESC            | The right position has still to be found!
 HEADERS_UNCLASSIFIED                 | ~~~ UNCLASSIFIED MOD ~~~
-HEADERS_SPACER_DESC                  |
+HEADERS_SPACER_DESC                  |  
 HEADERS_SPACER                       |  %1
 
 SETTINGS_MOD_MONSTER_RULES_TITLE         | Rules for Space Monsters
@@ -3311,7 +3309,7 @@ HEADERS_RETREAT_RULES					| ~~~ RETREAT RULES ~~~
 HEADERS_RETREAT_RULES_DESC				| Galaxy map retreating fleets parameters.
 SETTINGS_MOD_RETREAT_DESTINATION		| Retreat Destination: %1
 SETTINGS_MOD_RETREAT_DESTINATION_DESC	| What are the possible destinations of the retreating fleets?
-SETTINGS_MOD_RETREAT_DESTINATION_HELP	| →SETTINGS_MOD_RETREAT_DESTINATION_DESC←<br>This option can be further limited by the “Retreat toward enemy” option. it can also be made obsolete by the “Hyper Comm Retreat” option.
+SETTINGS_MOD_RETREAT_DESTINATION_HELP	| →SETTINGS_MOD_RETREAT_DESTINATION_DESC←<br>This option can be further limited by the “Retreat toward enemy” option. <br>It can also be made obsolete by the “Hyper Comm Retreat” option.
 SETTINGS_MOD_CLOSEST_COLONY				| Nearest colony
 SETTINGS_MOD_CLOSEST_COLONY_DESC		| The nearest retreating empire's colony.
 SETTINGS_MOD_CLOSEST_ALLY				| Nearest Ally
@@ -5109,7 +5107,7 @@ SHIP_DESIGN_ARMOR_TYPE            | Type
 SHIP_DESIGN_ARMOR_COST            | Cost
 SHIP_DESIGN_ARMOR_SIZE            | Size
 SHIP_DESIGN_ENGINE_TITLE          | Engines
-SHIP_DESIGN_ENGINE_TYPE           | Type
+// SHIP_DESIGN_ENGINE_TYPE		| Type // Duplicate
 SHIP_DESIGN_ENGINE_NUM            | Num Engines
 SHIP_DESIGN_ENGINE_SPACE          | Space
 SHIP_DESIGN_ENGINE_COST           | Cost
@@ -5694,7 +5692,6 @@ COUNCIL_CAST_PROMPT_TITLE         | Select a candidate.
 COUNCIL_CHOICE_ABSTAIN            | Abstain
 COUNCIL_CAST_VOTE                 | The [voter_empire] cast %1 votes for [candidate_name]!
 COUNCIL_CAST_ABSTAIN              | The [voter_empire] abstains (%1 votes)
-COUNCIL_CHOICE_ABSTAIN            | Abstain
 COUNCIL_VOTE_COUNT                | %1 votes
 COUNCIL_VOTE_CAST                 | %1 votes - for [alien_race]
 COUNCIL_VOTE_ABSTAINED            | %1 votes - Abstained
@@ -5790,7 +5787,6 @@ DIPLOMACY_MENU_ACCEPT_NEED_BC     | Accept (not enough funds)
 DIPLOMACY_MENU_FORGET_IT          | Forget It
 DIPLOMACY_TRADE_LEVEL             | %1 BC / Year
 DIPLOMACY_MENU_TREATIES           | Propose Treaty
-DIPLOMACY_MENU_TRADE              | Trade Agreement
 DIPLOMACY_MENU_TECHNOLOGY         | Exchange Technology
 DIPLOMACY_MENU_OFFER_AID          | Offer Aid
 DIPLOMACY_MENU_AMT                | %1 BC
@@ -6635,9 +6631,9 @@ SETUP_ELLIPSE_2_HELP					| Elliptical galaxy with a ratio of 2:1.
 SETUP_ELLIPSE_3_HELP					| Squeezed elliptical galaxy with a ratio of 3:1.
 SETUP_ELLIPSE_4_HELP					| Flattened elliptical galaxy with a ratio of 5:1.
 SETUP_ELLIPSE_SYMMETRIC_HELP			| Galaxy with circular symmetry, each empire has the same home world and the same neighborhood. Orion is at the center point.
-SETUP_VOID_2_HELP						| Galaxy with a bigger central void.
-SETUP_VOID_3_HELP						| Galaxy with an even bigger central void.
-SETUP_VOID_4_HELP						| Ring galaxy.
+ELLIPSE_SETUP_VOID_2_HELP				| Galaxy with a bigger central void.
+ELLIPSE_SETUP_VOID_3_HELP				| Galaxy with an even bigger central void.
+ELLIPSE_SETUP_VOID_4_HELP				| Ring galaxy.
 SETUP_GALAXY_SHAPE_SPIRAL_HELP			| Original Spiral shaped Galaxies, up to 8 arms and 7 levels of curvature. This galaxy has a symmetric option to gives each empire has the same home world, and the same neighborhood, there are as many arms as empires.
 SETUP_GALAXY_SHAPE_SPIRAL_O1_DESC		| Arm number selection.
 SETUP_GALAXY_SHAPE_SPIRAL_O2_DESC		| Arm curvature adjustment.

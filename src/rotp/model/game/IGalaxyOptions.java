@@ -203,6 +203,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 		}
 	}
 	class ShapeOptionList extends ParamList implements IShapeOption<String>	{
+		private String helpExtendedKey;
 		private ShapeOptionList(String name)	{
 			super(BASE_UI, name + "_O" + 0, new ArrayList<>(), "");
 			isDuplicate(false);
@@ -212,6 +213,13 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 			super(BASE_UI, name + "_O" + option, list, list.get(defaultId));
 			isDuplicate(false);
 			showFullGuide(true);
+		}
+		// to solve Rectangle and ellipse having identical options key!
+		public ShapeOptionList(String name, int option, List<String> list, int defaultId, String helpExt)	{
+			super(BASE_UI, name + "_O" + option, list, list.get(defaultId));
+			isDuplicate(false);
+			showFullGuide(true);
+			helpExtendedKey = helpExt;
 		}
 		public ShapeOptionList(String name, int option, List<String> list, String defaultValue)	{
 			super(BASE_UI, name + "_O" + option, list, defaultValue);
@@ -231,6 +239,26 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 			if (Rotp.initialized())
 				RotPUI.setupGalaxyUI().postSelectionFull(false);
 			return str;
+		}
+		@Override public String getRowGuide(int id)		{
+			if (helpExtendedKey == null)
+				return super.getRowGuide(id);
+
+			if (id<0)
+				return "";
+
+			String key = getLangLabel(id);
+			if (key.isEmpty())
+				return "";
+
+			key = helpExtendedKey + key;
+
+			String help = IParam.langHelp(key);
+			if (help == null)
+				help = "";
+			if (help.isEmpty())
+				return help;
+			return IParam.rowFormat(IParam.labelFormat(name(id)), help);
 		}
 	}
 	class ShapeOptionListMult extends ParamListMultiple implements IShapeOption<String>	{

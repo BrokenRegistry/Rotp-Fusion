@@ -67,7 +67,8 @@ final class GalaxyEllipticalShape extends GalaxyShape {
 				"SETUP_VOID_4",
 				RANDOM_OPTION
 				) ),
-			DEFAULT_OPT_2);
+			DEFAULT_OPT_2,
+			"ELLIPSE_"); // Rectangle has the same keys
 		}
 		return param2;
 	}
