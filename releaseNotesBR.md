@@ -11,7 +11,10 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
-26-09-08 (BR)
+26-09-09 (BR)
+- Fixed label Key with empty contents.
+
+6-09-08 (BR)
 - Added another security to try to prevent the crash when a combat end due to max turn limit.
 - Restored the minor fix as it was not the problem. (That I can't reproduce)
 - Removed a minor fix from 26-08-22 who may crash the game...

@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-09-09 (BR)
+- Fixed label Key with empty contents.
+
 26-09-08 (BR)
 - Added another security to try to prevent the crash when a combat end due to max turn limit.
 - Restored the minor fix as it was not the problem. (That I can't reproduce)
