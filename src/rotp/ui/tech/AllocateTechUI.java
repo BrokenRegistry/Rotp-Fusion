@@ -685,6 +685,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
         int boxY = y+s19;
         int boxW = w-s100;
         int boxH = s16;
+		int ticX = boxX + boxW/6;
         Color c1 = locked ? sliderBoxDisabled : sliderBoxEnabled;
         Color c2 = locked ? sliderBackDisabled : sliderBackEnabled;
         Color c3;
@@ -692,6 +693,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
         g.setColor(c2);
         sliderBox[catNum].setBounds(boxX, boxY, boxW, boxH);
         g.fill(sliderBox[catNum]);
+		g.drawLine(ticX, boxY-s2, ticX, boxY+boxH+s2);
         g.setColor(c1);
         if (pct == 1)
             g.fillRect(boxX, boxY+s1, boxW, boxH-s2);

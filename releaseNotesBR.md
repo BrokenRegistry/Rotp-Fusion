@@ -12,6 +12,7 @@ When updating, you can reuse the same folder.
 <b><ins>Very last changes:</ins></b>
 
 26-09-10 (BR)
+- Added little marker for the the first 1/6th of each bar that applies a 25% bonus to the conversion from BCs to research points.
 - DNA Workshop:
   - Fixed tech settings counted twice in malus too.
   - removed annoying beep.
