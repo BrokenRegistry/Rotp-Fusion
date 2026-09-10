@@ -125,6 +125,9 @@ public class DNAFactory extends SpeciesSettings {
 		for (ICRSettings<?> setting : settingMap.getSettings()) {
 			if (setting.isSpacer())
 				continue;
+			// TechDiscovery and TechResearch are already a sum, do not sum them twice.
+			if (setting instanceof TechDiscovery || setting instanceof TechResearch)
+				continue;
 			float cost = setting.settingCost();
 			if (cost < 0)
 				malus += setting.settingCost();

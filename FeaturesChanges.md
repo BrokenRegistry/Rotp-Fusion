@@ -493,8 +493,10 @@
 
 ### Fixes:
 
-- DNA Workshop: removed annoying beep.
-  - (It was a false positive error detection, when updating the file list; as for a moment the selection was set to "null")
+- DNA Workshop:
+  - Fixed tech settings counted twice in malus too.
+  - removed annoying beep.
+    - (It was a false positive error detection, when updating the file list; as for a moment the selection was set to "null")
 - Fixed potentially suboptimal industry allocation when terraforming.
 - Fixed label Key with empty contents.
 - Added another security to try to prevent the crash when a combat end due to max turn limit.
