@@ -45,6 +45,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-09-10 (BR)
+- Budget Transfer Panel:
+  - Added "Max Capital" options.
+  - Replaced Yellow selection box with yellow text.
+  - Fixed the flickering planet.
 - Added little marker for the the first 1/6th of each bar that applies a 25% bonus to the conversion from BCs to research points.
 - DNA Workshop:
   - Fixed tech settings counted twice in malus too.

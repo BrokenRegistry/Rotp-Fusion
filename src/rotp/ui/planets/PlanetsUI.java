@@ -1301,7 +1301,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         }
         @Override
         public void animate() {
-            planetDisplayPane.animate();
+			if (!transferReservePane.isVisible())
+				planetDisplayPane.animate();
         }
     }
     private final class PlanetViewSelectionPanel extends BasePanel implements MouseMotionListener, MouseListener {

@@ -365,6 +365,10 @@
 
 ### User Interfaces:
 
+- Budget Transfer Panel:
+  - Added "Max Capital" options.
+  - Replaced Yellow selection box with yellow text.
+  - Fixed the flickering planet.
 - Added little marker for the the first 1/6th of each bar that applies a 25% bonus to the conversion from BCs to research points.
 - Tech Panel: Improved display of total research by removing rounding errors.
 - Improved display of "Production per factory". (Now, up to two decimal places.)

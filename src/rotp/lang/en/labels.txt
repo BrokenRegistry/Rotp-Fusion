@@ -6118,7 +6118,7 @@ GOVERNOR_RESERVE_PER_MILLE			| Player Emergency Fund pct: %1‰
 
 GOVERNOR_RESERVE_MAX_HELP			| When funds collected exceed funds spent, at what point does the governor stop collecting?.<br>The maximum of the absolute and relative value will be collected.
 GOVERNOR_RESERVE_MAX_DESC			| When funds collected exceed funds spent, at what point does the governor stop collecting?
-GOVERNOR_RESERVE_MAX				| Capital Max: %1
+GOVERNOR_RESERVE_MAX				| Capital Max: %1 BC
 
 GOVERNOR_RESERVE_MAX_PCT_HELP		| When funds collected exceed funds spent, at what point does the governor stop collecting? as a percentage of total production.<br>The maximum of the absolute and relative value will be collected.
 GOVERNOR_RESERVE_MAX_PCT_DESC		| When funds collected exceed funds spent, at what point does the governor stop collecting, as a percentage of total production.

@@ -52,7 +52,9 @@ import rotp.ui.game.AdvisorPanel;
 import rotp.ui.game.HelpUI;
 import rotp.ui.game.IAdvisor;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.util.IParam;
 import rotp.util.AdviceBox;
+import rotp.util.Base;
 
 final class TransferReserveUI extends BasePanel implements MouseListener, MouseWheelListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
@@ -99,6 +101,8 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 	private final AdviceCheckbox canUpdateGrantCheckbox	= new AdviceCheckbox();
 	private final AdviceCheckbox canUpdateRaiseCheckbox	= new AdviceCheckbox();
 	private final AdviceCheckbox oldWayCheckbox			= new AdviceCheckbox();
+	private final AdviceParamBox maxAbsCapitalParamBox	= new AdviceParamBox();
+	private final AdviceParamBox maxPctCapitalParamBox	= new AdviceParamBox();
 	private final AdviceBox reserveSlider	= new AdviceBox();
 	private final Polygon leftArrow		= new Polygon();
 	private final Polygon rightArrow	= new Polygon();
@@ -253,6 +257,9 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		canUpdateGrantCheckbox.init(checkW, button2W, vSep, IGovOptions.redoBudgetGrantAllowed);
 		canUpdateRaiseCheckbox.init(checkW, button2W, vSep, IGovOptions.redoBudgetRaiseAllowed);
 		oldWayCheckbox.init(checkW, button2W, vSep, IGovOptions.autospendImmediateTransfer);
+		int paramW = button2W - checkW*5/3 + s10;
+		maxAbsCapitalParamBox.init(paramW, vSep, IGovOptions.reserveMax);
+		maxPctCapitalParamBox.init(paramW, vSep, IGovOptions.reserveMaxPct);
 
 		toResearchCheckbox.setPane(this);
 		governorGrantCheckbox.setPane(this);
@@ -260,6 +267,8 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		canUpdateGrantCheckbox.setPane(this);
 		canUpdateRaiseCheckbox.setPane(this);
 		oldWayCheckbox.setPane(this);
+		maxAbsCapitalParamBox.setPane(this);
+		maxPctCapitalParamBox.setPane(this);
 
 		reserveSlider.init(this, null, null, "PLANETS_TRANSFER_DESC_HELP");
 
@@ -457,8 +466,17 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		canUpdateRaiseCheckbox.setLocation(posRight.x, posRight.y-checkW);
 		canUpdateRaiseCheckbox.drawCheckbox(g);
 
-		// Draw line
 		pos.y += vSep/2;
+		posRight.y = pos.y;
+		int xShift = checkW * 5/3 -s5;
+		maxAbsCapitalParamBox.setLocation(pos.x+xShift, pos.y);
+		maxAbsCapitalParamBox.drawParamBox(g);
+		maxPctCapitalParamBox.setLocation(posRight.x+xShift, posRight.y);
+		maxPctCapitalParamBox.drawParamBox(g);
+		pos.y += vSep;
+
+		// Draw line
+		pos.y += vSep/4;
 		g.setColor(SystemPanel.blackText);
 		g.drawLine(infoLeft, pos.y, infoLeft + infoWidth, pos.y);
 
@@ -730,6 +748,10 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 			hoverBox = hoverBox(toResearchCheckbox, hoverBox);
 		else if (oldWayCheckbox.isSelectableAt(x,y))
 			hoverBox = hoverBox(oldWayCheckbox, hoverBox);
+		else if (maxAbsCapitalParamBox.isSelectableAt(x,y))
+			hoverBox = hoverBox(maxAbsCapitalParamBox, hoverBox);
+		else if (maxPctCapitalParamBox.isSelectableAt(x,y))
+			hoverBox = hoverBox(maxPctCapitalParamBox, hoverBox);
 		else if (governorGrantCheckbox.isSelectableAt(x,y))
 			hoverBox = hoverBox(governorGrantCheckbox, hoverBox);
 		else if (governorRaiseCheckbox.isSelectableAt(x,y))
@@ -1048,6 +1070,14 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 				canUpdateRaiseCheckbox.mouseReleased(e, true, true);
 				return;
 			}
+			else if (hoverBox == maxAbsCapitalParamBox) {
+				maxAbsCapitalParamBox.mouseReleased(e, true, true);
+				return;
+			}
+			else if (hoverBox == maxPctCapitalParamBox) {
+				maxPctCapitalParamBox.mouseReleased(e, true, true);
+				return;
+			}
 			else if (hoverBox == redoAllGrantButton) {
 				redoGrantFundsButtonAction();
 				return;
@@ -1149,6 +1179,10 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 			canUpdateGrantCheckbox.mouseWheelMoved(e, true, true);
 		else if (hoverBox == canUpdateRaiseCheckbox)
 			canUpdateRaiseCheckbox.mouseWheelMoved(e, true, true);
+		else if (hoverBox == maxAbsCapitalParamBox)
+			maxAbsCapitalParamBox.mouseWheelMoved(e, true, true);
+		else if (hoverBox == maxPctCapitalParamBox)
+			maxPctCapitalParamBox.mouseWheelMoved(e, true, true);
 	}
 	private final class ActionButton extends AdviceBox {
 		private static final long serialVersionUID = 1L;
@@ -1165,3 +1199,24 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		}
 	}
 }
+
+class AdviceParamBox extends AdviceBox implements Base	{
+	private static final long serialVersionUID = 1L;
+
+	public void init(int width, int height, IParam<?> param)	{
+		setParam(param);
+		setSize(width, height);
+	}
+	public void drawParamBox(Graphics2D g)	{
+		final String label = getParam().getGuiDisplay();
+
+		scaledPlainFontSize(g, label, width-s10, 1, 18, 10);
+
+		if (hovering())
+			g.setColor(Color.yellow);
+		else
+			g.setColor(Color.black);
+		drawString(g, label, x+s5, ye()-s5);
+	}
+}
+

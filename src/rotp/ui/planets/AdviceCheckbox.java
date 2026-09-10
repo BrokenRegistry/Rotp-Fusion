@@ -32,14 +32,9 @@ class AdviceCheckbox extends AdviceBox implements Base	{
 	public int getTextRightX()				{ return textRightX; }
 	public void setTextRightX(int i)		{ textRightX = i; }
 	public void setCheckboxSide(int side)	{ width = side; height = side; }
-	public String setOptimalSize(Graphics2D g, Font font) {
-		final String description = getParam().govLabelTxt();
-		final int sw = g.getFontMetrics().stringWidth(description);
-		return description;
-	}
 
 	public void drawCheckbox(Graphics2D g)	{ drawCheckbox(g, 18, CHECKBOX_COLOR); }
-	public void drawCheckbox(Graphics2D g, int fontSize, Color checkboxC)	{
+	private void drawCheckbox(Graphics2D g, int fontSize, Color checkboxC)	{
 		drawCheckbox(g, plainFont(fontSize), CHECKBOX_COLOR, width * 2/3);
 	}
 	public void drawCheckbox(Graphics2D g, Font font, Color checkboxC, int sep)	{
@@ -47,24 +42,25 @@ class AdviceCheckbox extends AdviceBox implements Base	{
 		final int ye = ye();
 		final int descrX = x + width + sep;
 
+		final Stroke prev = g.getStroke();
+		g.setColor(CHECKBOX_COLOR);
+		g.fill(this);
+
 		g.setColor(Color.black);
 		g.setFont(font);
 		final String description = getParam().govLabelTxt();
 		final int sw = g.getFontMetrics().stringWidth(description);
 		setTextRightX(descrX + sw);
-		drawString(g, description, descrX, ye);
 
-		final Stroke prev = g.getStroke();
-		g.setColor(CHECKBOX_COLOR);
-		g.fill(this);
 
 		if (hovering()) {
 			g.setColor(Color.yellow);
 			g.setStroke(stroke1);
 			g.draw(this);
-			g.setStroke(stroke2);
-			g.draw(getSelectionBox());
+//			g.setStroke(stroke2);
+//			g.draw(getSelectionBox());
 		}
+		drawString(g, description, descrX, ye);
 		if (((ParamBoolean)getParam()).get()) {
 			final int hs = height/2;
 			final int qs = height/4;
