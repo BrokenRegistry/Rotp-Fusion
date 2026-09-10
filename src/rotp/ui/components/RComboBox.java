@@ -118,6 +118,7 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents, MouseL
 
 	public void updateList(List<T> newList)	{
 		removeAllItems();
+//		this.item
 		selectionList = newList;
 		for(T item : selectionList)
 			addItem(item);

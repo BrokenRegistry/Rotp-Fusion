@@ -574,7 +574,7 @@ public final class EmpireColonyInfoPane extends BasePanel {
 				Colony col = c.get(0);
 				Empire e =col.empire();
 				String workerProd = fmt(e.workerProductivity(), 2);
-				String factoryProd = fmt(col.factoryNetProductivity(), 1);
+				String factoryProd = fmt(col.factoryNetProductivity(), 2);
 				return concat(workerProd, "  (", factoryProd, ")");
 			}
 			String income = str(value(c));

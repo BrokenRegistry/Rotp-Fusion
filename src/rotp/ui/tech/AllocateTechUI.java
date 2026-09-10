@@ -517,8 +517,8 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
         }
 
         TechTree tree = player().tech();
-        int totalSpending = (int) totalPlanetaryResearchSpending;
-        int totalResearch = 0;       
+		float totalSpending = totalPlanetaryResearchSpending;
+		float totalResearch = 0;
         for (int i=0;i<cats;i++)
              totalResearch += tree.category(i).currentResearch(totalPlanetaryResearch());
 

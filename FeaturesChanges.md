@@ -365,6 +365,8 @@
 
 ### User Interfaces:
 
+- Tech Panel: Improved display of total research by removing rounding errors.
+- Improved display of "Production per factory". (Now, up to two decimal places.)
 - Refresh budget for ungoverned colonies too.
   - The optimal value and remaining funds will be up to date.
 - Colony spending sliders: Press Alt to view expenses in BC.
@@ -491,6 +493,9 @@
 
 ### Fixes:
 
+- DNA Workshop: removed annoying beep.
+  - (It was a false positive error detection, when updating the file list; as for a moment the selection was set to "null")
+- Fixed potentially suboptimal industry allocation when terraforming.
 - Fixed label Key with empty contents.
 - Added another security to try to prevent the crash when a combat end due to max turn limit.
 - Removed a minor fix from 26-08-22 who may crash the game...

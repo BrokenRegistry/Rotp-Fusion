@@ -449,7 +449,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 		float allowedExcessRevenue = 10;
 		boolean isReserveFromRich = govOptions().isReserveFromRich();
 
-		List<ColonyBudget> funders = governorBudgets; // TODO BR: Selction option to allow ungoverned
+		List<ColonyBudget> funders = governorBudgets; // TODO BR: Selection option to allow ungoverned
 
 		if (excessRevenueBC > allowedExcessRevenue) {
 			Collections.sort(funders, INC_RESOURCES);

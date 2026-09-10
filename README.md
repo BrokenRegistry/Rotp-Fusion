@@ -44,6 +44,13 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-09-10 (BR)
+- DNA Workshop: removed annoying beep.
+  - (It was a false positive error detection, when updating the file list; as for a moment the selection was set to "null")
+- Tech Panel: Improved display of total research by removing rounding errors.
+- Improved display of "Production per factory". (Now, up to two decimal places.)
+- Fixed potentially suboptimal industry allocation when terraforming.
+
 26-09-09 (BR)
 - Fixed label Key with empty contents.
 

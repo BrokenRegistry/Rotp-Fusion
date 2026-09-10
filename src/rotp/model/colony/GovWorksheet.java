@@ -23,7 +23,6 @@ public final class GovWorksheet {
 	final float totalIncome, cleanupCost;
 	final float targetPopPercent;
 
-	//
 	float maxSize;
 	float targetPopMin, initialPop, targetPopPctToBuy;
 	float minGrowth = 2.0f;
@@ -220,4 +219,44 @@ public final class GovWorksheet {
 		return false;
 	}
 	boolean shouldBuildGate()			{ return shouldBuildGate; }
+	@Override public String toString()	{
+		String cr = System.lineSeparator();
+		String str = c.name();
+		str += cr + "planetProdAdj: "	+ planetProdAdj;
+		str += cr + "factoryNetYield: "	+ factoryNetYield;
+		str += cr + "workerBaseROI: "	+ workerBaseROI;
+		str += cr + "maxReserveIncome: "	+ maxReserveIncome;
+		str += cr + "workerToFactoryROILimit: "	+ workerToFactoryROILimit;
+		str += cr + "wasShipRequest: "	+ wasShipRequest;
+		str += cr + "hasSubsidies: "	+ hasSubsidies;
+		str += cr + "useROILimit: "	+ useROILimit;
+		str += cr + "totalIncome: "	+ totalIncome;
+		str += cr + "cleanupCost: "	+ cleanupCost;
+		str += cr + "targetPopPercent: "	+ targetPopPercent;
+		str += cr + "maxSize: "	+ maxSize;
+		str += cr + "targetPopMin: "	+ targetPopMin;
+		str += cr + "initialPop: "	+ initialPop;
+		str += cr + "targetPopPctToBuy: "	+ targetPopPctToBuy;
+		str += cr + "minGrowth: "	+ minGrowth;
+		str += cr + "atmosphereCost: "	+ atmosphereCost;
+		str += cr + "nextEnrichSoilCost: "	+ nextEnrichSoilCost;
+		str += cr + "terraformCost: "	+ terraformCost;
+		str += cr + "promoteWorkers: "	+ promoteWorkers;
+		str += cr + "promoteTerraform: "	+ promoteTerraform;
+		str += cr + "canTerraformAtmosphere: "	+ canTerraformAtmosphere;
+		str += cr + "canEnrichSoil: "	+ canEnrichSoil;
+		str += cr + "canTerraform: "	+ canTerraform;
+		str += cr + "anyTerraform: "	+ anyTerraform;
+		str += cr + "atmosphereIncrease: "	+ atmosphereIncrease;
+		str += cr + "enrichIncrease: "	+ enrichIncrease;
+		str += cr + "terraformIncrease: "	+ terraformIncrease;
+		str += cr + "promoteShips: "	+ promoteShips;
+		str += cr + "keepDirectShipAlloc: "	+ keepDirectShipAlloc;
+		str += cr + "shouldBuildGate: "	+ shouldBuildGate;
+		str += cr + "promoteBases: "	+ promoteBases;
+		int maxAllocationNeeded = c.industry().maxAllocationNeeded();
+		str += cr + "maxAllocationNeeded: "	+ maxAllocationNeeded;
+		
+		return str;
+	}
 }

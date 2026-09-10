@@ -106,6 +106,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 	private static final Color ORDER_COLOR	 = new Color(31, 63, 255);
 	private static final Color URGENCY_COLOR = new Color(160, 0, 160);
 	private static final Color GRANTED_COLOR = GROWING_COLOR;
+	private static boolean debug = false; // TO DO BR: Set to false;
 
     public enum Orders {
         NONE(""),
@@ -1932,52 +1933,91 @@ public final class Colony implements Base, IMappedObject, Serializable {
     	else
     		return currCat.adjustValue(increment);
     }
-    private int urgeFactoriesSpending(int maxAlloc, GovWorksheet gws) {
-    	ColonyIndustry currCat = industry();
-    	int currentAllocation = currCat.allocation();
-    	int allocationNeeded  = currCat.maxAllocationNeeded(gws.totalIncome);
-    	allocationNeeded = min(allocationNeeded, maxAlloc);
-    	if (allocationNeeded == 0) {
-    		govUrgeFactories(false);
-    		return 0;
-    	}
-    	int increment = allocationNeeded - currentAllocation;
-    	increment = max(0, increment);
-    	if (increment == 0)
-    		return 0;
-    	else
-    		return currCat.adjustValue(increment);
-    }
-    private int urgeTerraformSpending(int maxAlloc, GovWorksheet gws) {
-    	ColonyEcology currCat = ecology();
-    	int currentAllocation = currCat.allocation();
-    	int allocationNeeded  = currCat.terraformAllocationNeeded();
-    	allocationNeeded = min(allocationNeeded, maxAlloc);
-    	if (allocationNeeded == 0) {
-    		govUrgeFactories(false);
-    		return 0;
-    	}
-    	int increment = allocationNeeded - currentAllocation;
-    	increment = max(0, increment);
-    	if (increment == 0)
-    		return 0;
-    	else
-    		return currCat.adjustValue(increment);
-    }
-    private int urgeBuildUpSpending(int maxAlloc, GovWorksheet gws) {
-    	int alloc = maxAlloc;
-    	if (gws.promoteTerraform) {
-    		alloc -= urgeTerraformSpending(alloc, gws);
-    		if (alloc==0)
-        		return maxAlloc;
-    	}
+	private int urgeFactoriesSpending(int maxAlloc, GovWorksheet gws) {
+		ColonyIndustry currCat = industry();
+		int currentAllocation = currCat.allocation();
+		int allocationNeeded  = currCat.maxAllocationNeeded(gws.totalIncome);
+		int increment = allocationNeeded - currentAllocation;
+		increment = min(increment, maxAlloc);
+		if (debug)
+			System.out.println("urgeFactoriesSpending maxAlloc: " + maxAlloc
+					+ " currentAllocation: " + currentAllocation
+					+ " allocationNeeded: " + allocationNeeded
+					+ " increment: " + increment);
+
+		if (allocationNeeded == 0) {
+			govUrgeFactories(false);
+			return 0;
+		}
+		if (increment == 0)
+			return 0;
+		else
+			return currCat.adjustValue(increment);
+	}
+	private int urgeTerraformSpending(int maxAlloc, GovWorksheet gws) {
+		ColonyEcology currCat = ecology();
+		int currentAllocation = currCat.allocation();
+		int allocationNeeded  = currCat.terraformAllocationNeeded();
+		int increment = allocationNeeded - currentAllocation;
+		increment = min(increment, maxAlloc);
+
+		if (debug)
+			System.out.println("urgeTerraformSpending maxAlloc: " + maxAlloc
+					+ " currentAllocation: " + currentAllocation
+					+ " allocationNeeded: " + allocationNeeded
+					+ " increment: " + increment);
+
+		if (allocationNeeded == currCat.cleanupAllocationNeeded()) {
+			if (debug)
+				System.out.println("Terraforming ended => now urge factories");
+			govUrgeFactories(true);
+		}
+
+		int unusedAlloc = maxAlloc;
+		if (increment > 0)
+			unusedAlloc -= currCat.adjustValue(increment);
+
+		// factory building may still be limited:
+		unusedAlloc -= urgeFactoriesSpending(unusedAlloc, gws);
+
+		// If remaining, uses it to grow people, to later allow factory building
+		if (unusedAlloc == 0)
+			return maxAlloc;
+
+		currentAllocation = currCat.allocation();
+		allocationNeeded  = currCat.maxAllocationNeeded();
+		increment = allocationNeeded - currentAllocation;
+		increment = min(increment, unusedAlloc);
+		if (debug)
+			System.out.println("Growth after terraforming unusedAlloc: " + unusedAlloc
+					+ " currentAllocation: " + currentAllocation
+					+ " allocationNeeded: " + allocationNeeded
+					+ " increment: " + increment);
+
+		if (increment > 0)
+			unusedAlloc -= currCat.adjustValue(increment);
+
+		return maxAlloc - unusedAlloc;
+	}
+	private int urgeBuildUpSpending(int maxAlloc, GovWorksheet gws) {
+		int alloc = maxAlloc;
+		if (gws.promoteTerraform) {
+			alloc -= urgeTerraformSpending(alloc, gws);
+			if (debug)
+				System.out.println("promoteTerraform maxAlloc: " + maxAlloc);
+			if (alloc==0)
+				return maxAlloc;
+		}
+
+		if (debug)
+			System.out.println("urgeBuildUpSpending ==> maxAlloc: " + alloc);
 		while (balanceCategories(gws.govBuildSeq(), gws)) {
 			alloc--;
 			if (alloc==0)
-        		return maxAlloc;
+				return maxAlloc;
 		}
-    	return maxAlloc - alloc;
-    }
+		return maxAlloc - alloc;
+	}
     private int urgeShipSpending(int maxAlloc, GovWorksheet gws) {
     	ColonyShipyard currCat = shipyard();
     	int currentAllocation = currCat.allocation();
@@ -2024,93 +2064,130 @@ public final class Colony implements Base, IMappedObject, Serializable {
 				return maxAlloc;
 		return urgeShipSpending(maxAlloc, gws);
 	}
-    private void handleGovSpending(GovWorksheet gws)	{
-        int maxAlloc = gws.getRemainingAllocation();
-        if (maxAlloc==0)
-    		return;
-        // First the Emergencies
-        if (govUrgeShield) {
-        	maxAlloc -= urgeShieldSpending(maxAlloc, gws);
-        	if (maxAlloc==0)
-        		return;
-        }
-        if (govUrgeBases) {
-        	maxAlloc -= urgeBasesSpending(maxAlloc, gws);
-        	if (maxAlloc==0)
-        		return;
-        }
-        if (govUrgePop) {
-        	maxAlloc -= urgePopSpending(maxAlloc, gws);
-        	if (maxAlloc==0)
-        		return;
-        }
-        if (govUrgeFactories) {
-        	maxAlloc -= urgeFactoriesSpending(maxAlloc, gws);
-        	if (maxAlloc==0)
-        		return;
-        }
-        if (govUrgeBuildUp) {
-        	maxAlloc -= urgeBuildUpSpending(maxAlloc, gws);
-        	if (maxAlloc==0)
-        		return;
-        }
-        // Then the prioritized, with limited allocation 
-        if (!locked(SHIP) && gws.promoteShips) {
-        	maxAlloc -= urgeShipSpending(gws.updateLimitedAllocation(maxAlloc), gws);
-        	if (maxAlloc==0)
-        		return;
-        }
-        if (govUrgeResearch) {
-        	maxAlloc -= urgeResearchSpending(gws.updateLimitedAllocation(maxAlloc), gws);
-        	if (maxAlloc==0)
-        		return;
-        }
-		if (gws.promoteBases) {
-			maxAlloc -= urgeBasesSpending(maxAlloc, gws);
+	private void handleGovSpending(GovWorksheet gws)	{
+		int maxAlloc = gws.getRemainingAllocation();
+		if (debug)
+			System.out.println(gws.toString() + System.lineSeparator() + "maxAlloc: " + maxAlloc);
+		if (maxAlloc==0)
+			return;
+		// First the Emergencies
+		if (govUrgeShield) {
+			maxAlloc -= urgeShieldSpending(maxAlloc, gws);
+			if (debug)
+				System.out.println("govUrgeShield ==> maxAlloc: " + maxAlloc);
 			if (maxAlloc==0)
 				return;
 		}
-        // Then the normal growth
-        maxAlloc -= urgeBuildUpSpending(maxAlloc, gws);
-    	if (maxAlloc==0)
-    		return;
-    	// then back to prioritized task, but without fund limits
-    	if (!locked(SHIP) && gws.promoteShips) {
-        	maxAlloc -= urgeShipSpending(maxAlloc, gws);
-        	if (maxAlloc==0)
-        		return;
-        }
-        if (govUrgeResearch) {
-        	maxAlloc -= urgeResearchSpending(maxAlloc, gws);
-        	if (maxAlloc==0)
-        		return;
-        }
+		if (govUrgeBases) {
+			maxAlloc -= urgeBasesSpending(maxAlloc, gws);
+			if (debug)
+				System.out.println("govUrgeBases ==> maxAlloc: " + maxAlloc);
+			if (maxAlloc==0)
+				return;
+		}
+		if (govUrgePop) {
+			maxAlloc -= urgePopSpending(maxAlloc, gws);
+			if (debug)
+				System.out.println("govUrgePop ==> maxAlloc: " + maxAlloc);
+			if (maxAlloc==0)
+				return;
+		}
+		if (govUrgeFactories) {
+			maxAlloc -= urgeFactoriesSpending(maxAlloc, gws);
+			if (debug)
+				System.out.println("govUrgeFactories ==> maxAlloc: " + maxAlloc);
+			if (maxAlloc==0)
+				return;
+		}
+		if (govUrgeBuildUp) {
+			maxAlloc -= urgeBuildUpSpending(maxAlloc, gws);
+			if (debug)
+				System.out.println("govUrgeBuildUp ==> maxAlloc: " + maxAlloc);
+			if (maxAlloc==0)
+				return;
+		}
+		// Then the prioritized, with limited allocation 
+		if (!locked(SHIP) && gws.promoteShips) {
+			maxAlloc -= urgeShipSpending(gws.updateLimitedAllocation(maxAlloc), gws);
+			if (debug)
+				System.out.println("promoteShips ==> maxAlloc: " + maxAlloc);
+			if (maxAlloc==0)
+				return;
+		}
+		if (govUrgeResearch) {
+			maxAlloc -= urgeResearchSpending(gws.updateLimitedAllocation(maxAlloc), gws);
+			if (debug)
+				System.out.println("govUrgeResearch ==> maxAlloc: " + maxAlloc);
+			if (maxAlloc==0)
+				return;
+		}
+		if (gws.promoteBases) {
+			maxAlloc -= urgeBasesSpending(maxAlloc, gws);
+			if (debug)
+				System.out.println("promoteBases ==> maxAlloc: " + maxAlloc);
+			if (maxAlloc==0)
+				return;
+		}
+		// Then the normal growth
+		if (debug)
+			System.out.println("Then the normal growth ==> maxAlloc: " + maxAlloc);
+		maxAlloc -= urgeBuildUpSpending(maxAlloc, gws);
+		if (debug)
+			System.out.println("urgeBuildUpSpending ==> maxAlloc: " + maxAlloc);
+		if (maxAlloc==0)
+			return;
+		// then back to prioritized task, but without fund limits
+		if (!locked(SHIP) && gws.promoteShips) {
+			maxAlloc -= urgeShipSpending(maxAlloc, gws);
+			if (debug)
+				System.out.println("promoteShips ==> maxAlloc: " + maxAlloc);
+			if (maxAlloc==0)
+				return;
+		}
+		if (govUrgeResearch) {
+			maxAlloc -= urgeResearchSpending(maxAlloc, gws);
+			if (debug)
+				System.out.println("govUrgeResearch ==> maxAlloc: " + maxAlloc);
+			if (maxAlloc==0)
+				return;
+		}
 		// Check for stargate auto-build
 		if (gws.shouldBuildGate) {
 			maxAlloc -= urgeStargate(gws.updateLimitedAllocation(maxAlloc), gws);
+			if (debug)
+				System.out.println("shouldBuildGate ==> maxAlloc: " + maxAlloc);
 			if (maxAlloc==0)
 				return;
 		}
-        // Then follow tag preferences: Defense / Ship / Research
-        for (int i : govTagSeq) {
-        	if (!locked(i) && hasOrder(i)) {
-        		maxAlloc -= adjustGovSpending(i, maxAlloc, MAX_TICKS, true, gws);
-            	if (maxAlloc==0)
-            		return;
-            }
-        }
-        // The remaining goes to defense then research
-        for (int i : govFinalSeq) {
-        	if (!locked(i)) {
-        		maxAlloc -= adjustGovSpending(i, maxAlloc, MAX_TICKS, false, gws);
-            	if (maxAlloc==0)
-            		return;
-            }
-        }
-        // This code should never be reached, but...
-        if (maxAlloc != 0)
-           	redistributeReducedEcoSpending();
-    }
+		// Then follow tag preferences: Defense / Ship / Research
+		for (int i : govTagSeq) {
+			if (debug)
+				System.out.println("Then follow tag preferences ==> " + i);
+			if (!locked(i) && hasOrder(i)) {
+				maxAlloc -= adjustGovSpending(i, maxAlloc, MAX_TICKS, true, gws);
+				if (debug)
+					System.out.println("adjustGovSpending ==> maxAlloc: " + maxAlloc);
+				if (maxAlloc==0)
+					return;
+			}
+		}
+		// The remaining goes to defense then research
+		for (int i : govFinalSeq) {
+			if (debug)
+				System.out.println("The remaining goes to defense then research ==> " + i);
+			if (!locked(i)) {
+				maxAlloc -= adjustGovSpending(i, maxAlloc, MAX_TICKS, false, gws);
+				if (debug)
+					System.out.println("adjustGovSpending ==> maxAlloc: " + maxAlloc);
+				if (maxAlloc==0)
+					return;
+			}
+		}
+		// This code should never be reached, but...
+		System.out.println("This code should never be reached, but... ==> maxAlloc: " + maxAlloc);
+		if (maxAlloc != 0)
+			redistributeReducedEcoSpending();
+	}
     public void governIfNeeded(boolean lowerShipPriority) {
         if (!this.isAutopilot() && this.isGovernor())
             govern(lowerShipPriority);

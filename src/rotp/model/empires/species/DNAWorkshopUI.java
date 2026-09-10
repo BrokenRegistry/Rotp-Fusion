@@ -31,7 +31,6 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -611,7 +610,8 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 			raceList.selectedValue(selection);
 			// Test validity
 			if (!raceList.settingValue().equals(selection)) {
-				Toolkit.getDefaultToolkit().beep();
+				// May happen when clearing the list to reload a new one.
+				// Toolkit.getDefaultToolkit().beep();
 				reloadRaceList(false);
 				raceList.selectedValue(prevValue);
 			}
