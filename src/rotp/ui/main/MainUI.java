@@ -778,6 +778,8 @@ public final class MainUI extends BasePanel implements IMapHandler {
     }
     @Override
     public void animate() {
+		if (disableMapAnim.get())
+			return;
         // stop animating while number-crunching during next turn
         if (!displayNextTurnNotice()) {
             map.animate();

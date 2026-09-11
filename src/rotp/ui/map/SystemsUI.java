@@ -430,6 +430,8 @@ public final class SystemsUI extends BasePanel implements IMapHandler, ActionLis
     }
     @Override
     public void animate() {
+		if (disableMapAnim.get())
+			return;
         if (animate)
             map.animate();
     }

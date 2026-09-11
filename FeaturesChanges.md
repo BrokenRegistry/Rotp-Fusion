@@ -365,6 +365,8 @@
 
 ### User Interfaces:
 
+- New option to disable Map animations (while keeping high graphic quality)
+  - Useful for huge maps.
 - Budget Transfer Panel:
   - Added "Max Capital" options.
   - Replaced Yellow selection box with yellow text.

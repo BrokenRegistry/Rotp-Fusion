@@ -32,7 +32,9 @@ import rotp.model.empires.SystemView;
 import rotp.model.galaxy.IMappedObject;
 import rotp.model.galaxy.Location;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.IBaseOptsTools;
 import rotp.ui.main.GalaxyMapPanel;
+import rotp.ui.util.ParamBoolean;
 
 public interface IMapHandler {
     public void repaint();
@@ -130,4 +132,6 @@ public interface IMapHandler {
     default boolean drawBackgroundStars()                { return true; }
     default Color alertColor(SystemView sv)              { return null; }
     default Empire knownEmpire(int sysId, Empire emp)    { return emp.sv.empire(sysId); }
+
+	ParamBoolean disableMapAnim	= new ParamBoolean(IBaseOptsTools.MOD_UI, "DISABLE_MAP_ANIM", false);
 }

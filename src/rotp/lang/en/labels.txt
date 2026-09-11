@@ -3562,6 +3562,13 @@ SETTINGS_MOD_ORIGINAL_SPECIES_ONLY       | 10 Species only: %1
 SETTINGS_MOD_SHOW_ALT_ANIMATION_DESC     | Select between vanilla animations (No) or Zestyclose Artwork (Yes).<br>(Younger Human diplomat)
 SETTINGS_MOD_SHOW_ALT_ANIMATION          | Alt Diplomat: %1
 
+SETTINGS_MOD_DISABLE_MAP_ANIM_DESC		| For huges Maps you may want to only remove the map animations.
+SETTINGS_MOD_DISABLE_MAP_ANIM			| Map Animations: %1
+SETTINGS_MOD_DISABLE_MAP_ANIM_YES		| Disabled
+SETTINGS_MOD_DISABLE_MAP_ANIM_NO		| Enabled
+SETTINGS_MOD_DISABLE_MAP_ANIM_YES_DESC	| To not overload the map display.
+SETTINGS_MOD_DISABLE_MAP_ANIM_NO_DESC	| Let's anim!
+
 SETTINGS_MOD_MIN_TRANSPORT_DISP_DESC	| Population transport of a size below this threshold will not be displayed.
 SETTINGS_MOD_MIN_TRANSPORT_DISP			| Transport display threshold: %1
 SETTINGS_MOD_MIN_INVASION_DISP_DESC		| Invasion Troops of a size below this threshold will not be displayed.

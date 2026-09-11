@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-09-11 (BR)
+- New option to disable Map animations (while keeping high graphic quality)
+  - Useful for huge maps.
+
 26-09-10 (BR)
 - Budget Transfer Panel:
   - Added "Max Capital" options.

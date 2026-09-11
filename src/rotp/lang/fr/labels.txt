@@ -3563,6 +3563,13 @@ SETTINGS_MOD_ORIGINAL_SPECIES_ONLY       | 10 Espèces seulement : %1
 SETTINGS_MOD_SHOW_ALT_ANIMATION_DESC     | Choisissez entre les animations vanilla (Non) ou les œuvres d’art Zestyclose (Oui).<br>(Jeune diplomate humain)
 SETTINGS_MOD_SHOW_ALT_ANIMATION          | Alt Diplomate : %1
 
+SETTINGS_MOD_DISABLE_MAP_ANIM_DESC		| Pour les cartes gigantesques, vous souhaiterez peut-être supprimer uniquement les animations de la carte.
+SETTINGS_MOD_DISABLE_MAP_ANIM			| Animations de carte: %1
+SETTINGS_MOD_DISABLE_MAP_ANIM_YES		| Désactivées
+SETTINGS_MOD_DISABLE_MAP_ANIM_NO		| Activées
+SETTINGS_MOD_DISABLE_MAP_ANIM_YES_DESC	| Pour ne pas surcharger l’affichage de la carte.
+SETTINGS_MOD_DISABLE_MAP_ANIM_NO_DESC	| Envoye les animations!
+
 SETTINGS_MOD_MIN_TRANSPORT_DISP_DESC	| Les flux de population inférieurs à ce seuil ne seront pas affichés.
 SETTINGS_MOD_MIN_TRANSPORT_DISP			| Seuil d’affichage des transports : %1
 SETTINGS_MOD_MIN_INVASION_DISP_DESC		| Les transports de troupes d’invasion inférieurs à ce seuil ne seront pas affichés.

@@ -225,6 +225,8 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
     public void selectResultPanel()  { cardLayout.show(cardPane, RESULT_PANEL); }
     @Override
     public void animate() {
+		if (IMapHandler.disableMapAnim.get())
+			return;
         repaintCount--;
         if ((currentState == REQUEST_MISSION)) {
             map.animate();
@@ -334,6 +336,8 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
         } 
         @Override
         public void animate() {
+			if (IMapHandler.disableMapAnim.get())
+				return;
             exploredPane.animate();
         }
         @Override
