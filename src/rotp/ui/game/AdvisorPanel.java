@@ -266,7 +266,7 @@ public final class AdvisorPanel extends BasePanel implements IAdvisor, IMapOverl
 			str = "null";
 		}
 
-		checkForForcedLocation(g, str, targetBox, s400, 0, true);
+		checkForPreset(g, str, targetBox, s400, 0, true);
 
 //		initGuideBox(g, str, s400, 0);
 //		setBoxLocation(targetBox);

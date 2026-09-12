@@ -178,11 +178,13 @@ public interface IAdvisor extends ScaledInteger {
 		}
 		g.drawImage(img, TEXT_BOX.x + TEXT_MARGIN, TEXT_BOX.y + TEXT_MARGIN/2, null);
 	}
-	default void checkForForcedLocation(Graphics2D g, String tipText, AdviceBox targetBox, int maxWidth, int maxHeight, boolean setBoxLocation)	{
+	default void checkForPreset(Graphics2D g, String tipText, AdviceBox targetBox, int maxWidth, int maxHeight, boolean setBoxLocation)	{
 		int iW = A.parent.getWidth() - A.rightMargin;
 		int iH = A.parent.getHeight();
 		int maxW = maxWidth == 0? iW : maxWidth;
 		int maxH = maxHeight == 0? iH : maxHeight;
+		if (targetBox.getForcedWidth() > 0)
+			maxW = targetBox.getForcedWidth();
 
 		int forcedLocation = targetBox.getForcedLocation();
 		boolean forcedLeft	= forcedLeft(forcedLocation);
@@ -241,7 +243,6 @@ public interface IAdvisor extends ScaledInteger {
 			return;
 		int iW = forcedRight? A.parent.getWidth() : A.parent.getWidth() - A.rightMargin;
 		int iH = A.parent.getHeight();
-//		int forcedLocation = targetBox.getForcedLocation();
 		Point loc = targetBox.getTargetLoc();
 		int x = loc.x;
 		int y = loc.y;
@@ -260,8 +261,6 @@ public interface IAdvisor extends ScaledInteger {
 
 		// relative position
 		// find X location
-//		boolean forcedLeft	= forcedLeft(forcedLocation);
-//		boolean forcedRight	= forcedRight(forcedLocation);
 		boolean atLeft = forcedLeft || !forcedRight && (2*x + targetBox.width > iW);
 		if (atLeft) { // put box to the left textBox.x
 			TEXT_BOX.x = Math.min(x - TEXT_BOX.width - lineLengthX, iW - TEXT_BOX.width);
@@ -285,8 +284,6 @@ public interface IAdvisor extends ScaledInteger {
 		}
 
 		// find Y location
-//		boolean forcedTop	= forcedTop(forcedLocation);
-//		boolean forcedDown	= forcedUnder(forcedLocation);
 		boolean atTop = forcedTop || !forcedDown && (2*y + targetBox.height > iH);
 		if (atTop) { // put box to the top textBox.y
 			TEXT_BOX.y = y - TEXT_BOX.height - lineLengthY;

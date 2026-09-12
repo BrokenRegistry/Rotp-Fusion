@@ -89,6 +89,7 @@ import rotp.ui.main.SystemPanel;
 import rotp.ui.map.IMapHandler;
 import rotp.ui.options.AllSubUI;
 import rotp.ui.options.ISubUiKeys;
+import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamSubUI;
 import rotp.util.AdviceBox;
 import rotp.util.Palette;
@@ -140,13 +141,20 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
     private BasePanel rightPlanetPanel;
     private final CardLayout planetCardLayout = new CardLayout();
 
-    private final PlanetsUI instance;
+    private static PlanetsUI instance;
     private final PlanetListingUI planetListing;
     private PlanetDataListingUI listingUI;
     private LinearGradientPaint backGradient;
 
 	private boolean lastAltIsDown = false;
 	private BasePanel currentPane = null;
+
+	public static final ParamBoolean showShipyardAccruedColumn = new ParamBoolean("PLANETS_", "SHOW_ACCRUED_COL", false)
+			.setNewValueMethod(PlanetsUI::setAccruedColumn);
+	private static final void setAccruedColumn(Boolean b)	{
+		if (instance != null)
+			instance.initDataViews();
+	}
 
     public PlanetsUI() {
         palette = Palette.named("Brown");
@@ -272,7 +280,6 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 			player().budget().redoBudget(player().allColonizedSystems(), false, false, EmpireBudget.REFRESH, false);
 			repaint();
 		}
-
 	}
     @Override
     public String subPanelTextureName()    { return TEXTURE_BROWN; }
@@ -816,6 +823,9 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 				else
 					showHelp();
 				return;
+			case KeyEvent.VK_F12:
+				showShipyardAccruedColumn.toggle();
+				return;
             case KeyEvent.VK_ESCAPE:
                 if (frame().getGlassPane().isVisible())
                     disableGlassPane();
@@ -1196,8 +1206,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		Column subsidyCol	= listingUI.newSystemDataColumn("PLANETS_LIST_SUBSIDY",		"SUBSIDY",		s55, palette.black,	StarSystem.COLONY_SUBSIDIES,RIGHT);
 		Column allocateCol	= listingUI.newSystemDataColumn("PLANETS_LIST_CONTRIBUTE",	"CONTRIBUTE",	s55, palette.black,	StarSystem.COLONY_CONTRIBUTE,RIGHT);
 		Column taxedCol		= listingUI.newSystemDataColumn("PLANETS_LIST_TAXED",		"TAXED",		s55, palette.black,	StarSystem.COLONY_TAXED,	RIGHT);
+		Column accruedCol	= listingUI.newSystemDataColumn("PLANETS_LIST_ACCRUED",		"ACCRUED",		s50, palette.black,	StarSystem.ACCRUED,			RIGHT);
 
-		Column industryCol	= listingUI.newSystemColorDataColumn("PLANETS_LIST_IND_RATIO", 	"IND_RATIO",s55, palette,		StarSystem.IND_RATIO,	RIGHT);
 		Column populationCol= listingUI.newSystemDeltaDataColumn("PLANETS_LIST_POPULATION",	"POPULATION",s85,palette.black,	StarSystem.POPULATION,	RIGHT);
 		Column factoriesCol	= listingUI.newSystemDeltaDataColumn("PLANETS_LIST_FACTORIES",	"FACTORIES",s85, palette.black,	StarSystem.FACTORIES,	RIGHT);
 		Column basesCol		= listingUI.newSystemDeltaDataColumn("PLANETS_LIST_BASES",		"BASES",	s55, palette.black,	StarSystem.BASES,		RIGHT);
@@ -1237,7 +1247,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		taxView.addColumn(nameCol);
 		taxView.addColumn(populationCol);
 		taxView.addColumn(resourceCol);
-		taxView.addColumn(industryCol);
+		taxView.addColumn(capacityCol);
 		taxView.addColumn(indRsvCol);
 		taxView.addColumn(neededCol);
 		taxView.addColumn(budgetCol);
@@ -1260,6 +1270,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         milView.addColumn(basesCol);
         milView.addColumn(stargateCol);
         milView.addColumn(shipCol);
+		if (showShipyardAccruedColumn.get())
+			milView.addColumn(accruedCol);
         milView.addColumn(notesCol);
         views.put(MILITARY_MODE, milView);
 
@@ -1320,7 +1332,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             setPreferredSize(new Dimension(getWidth(),s40));
             addMouseListener(this);
             addMouseMotionListener(this);
-			helpBox.init(this, null, null, "PLANETS_HELP_ALL");
+			helpBox.init(this, null, null, "PLANETS_HELP_ICON");
+			helpBox.setForcedWidth(s500);
 			ecologyBox.init(this, null, "PLANETS_VIEW_ECOLOGY", "PLANETS_HELP_1A");
 			industryBox.init(this, null, "PLANETS_VIEW_INDUSTRY", "PLANETS_HELP_1B");
 			budgetBox.init(this, null, "PLANETS_VIEW_BUDGET", "PLANETS_HELP_1BUD");
@@ -1640,7 +1653,6 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         private SystemPanel parent;
         private Ellipse2D starCircle = new Ellipse2D.Float();
         private Ellipse2D planetCircle = new Ellipse2D.Float();
-        // private int currentHover = 0;
         private EmpireInfoGraphicPane(SystemPanel p) {
             parent = p;
             init();

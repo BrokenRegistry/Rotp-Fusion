@@ -169,7 +169,7 @@ public interface IGovOptions {
 
 	ParamInteger reserveMax		= new ParamInteger(GOV_UI, "RESERVE_MAX", 100000)
 			.setLimits(0, 10000000)
-			.setIncrements(100, 500, 2000)
+			.setIncrements(10, 100, 1000)
 			.setIsGhostMethod(IGovOptions::notRaisingFunds)
 			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
 	ParamInteger reserveMaxPct	= new ParamInteger(GOV_UI, "RESERVE_MAX_PCT", 100)

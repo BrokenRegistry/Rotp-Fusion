@@ -55,6 +55,7 @@ public final class ColonyIndustry extends ColonySpendingCategory {
         return robotControls() + empire().robotControlsAdj(); 
     }
 	int maxRobotControls()				{ return tech().topRobotControls() + empire().robotControlsAdj(); }
+ 	public float accruedBC()			{ return industryReserveBC; }
     @Override
     public float totalBC()              { return super.totalBC() * planet().productionAdj(); }
     int currentBuildableFactories()     { return maxBuildableFactories(robotControls); }

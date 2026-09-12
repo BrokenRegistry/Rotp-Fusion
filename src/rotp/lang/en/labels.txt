@@ -1429,6 +1429,10 @@ PLANETS_COLONY_TRANSFER_TITLE	| Transfer Funds
 PLANETS_COLONY_TRANSFER_DETAIL	| Transfer funds from the empire's treasury to increase this colony's production.
 PLANETS_COLONY_TRANSFER_BUTTON	| Transfer Funds From Treasury
 
+PLANETS_SHOW_ACCRUED_COL		| Show →PLANETS_LIST_ACCRUED← Column: %1
+PLANETS_SHOW_ACCRUED_COL_DESC	| To display the “→PLANETS_LIST_ACCRUED←” column on the “Military” tab of the “Colonies” panel.
+PLANETS_SHOW_ACCRUED_COL_HELP	| To display the “→PLANETS_LIST_ACCRUED←” column on the “Military” tab of the “Colonies” panel.<br>→PLANETS_LIST_ACCRUED_DESC←
+
 PLANETS_LIST_MAX_TRANS_TO_FILL	| Fill
 PLANETS_LIST_MAX_TRANS_NO_LOSS	| Stable
 PLANETS_LIST_NUM				|
@@ -1475,6 +1479,8 @@ PLANETS_LIST_CONTRIBUTE			| Gives
 PLANETS_LIST_CONTRIBUTE_HELP	| →PLANETS_HELP_5C←
 PLANETS_LIST_TAXED				| Taxed
 PLANETS_LIST_TAXED_HELP			| →PLANETS_HELP_5B←
+PLANETS_LIST_ACCRUED			| Accrual
+PLANETS_LIST_ACCRUED_HELP		| <h3>→PLANETS_LIST_ACCRUED←</h3>Whenever you change ship design in the planet's shipyard, the accrued production on the old ship is stored.<br>This accrued production will be used to accelerate the production of new ships by up to 50% until all the accrued production is spent.<br>This field shows the amount of accrued production.
 PLANETS_LIST_SHIPYARD			| Shipyard
 PLANETS_LIST_SHIPYARD_HELP		| →PLANETS_HELP_4G←
 PLANETS_LIST_NOTES				| Notes
@@ -1492,6 +1498,7 @@ PLANETS_SPENDING_50               | 50% %1 Spending
 PLANETS_SPENDING_75               | 75% %1 Spending
 PLANETS_SPENDING_MAX              | Maximum %1 Spending
 PLANETS_HELP_ALL				| <h3>OVERVIEW</h3>This screen shows your empire's economic data along with a listing of your colonies sortable by various data.
+PLANETS_HELP_ICON				| →PLANETS_HELP_ALL←<hr>→PLANETS_HELP_HK←
 PLANETS_HELP_1A					| Ecology <br> Click this tab to show ecological data for colonies.
 PLANETS_HELP_1B					| Industry <br> Click this tab to show industrial data for colonies.
 PLANETS_HELP_1BUD				| Budget <br> Click this tab to show budgeted data for colonies.
@@ -3562,6 +3569,7 @@ SETTINGS_MOD_ORIGINAL_SPECIES_ONLY       | 10 Species only: %1
 SETTINGS_MOD_SHOW_ALT_ANIMATION_DESC     | Select between vanilla animations (No) or Zestyclose Artwork (Yes).<br>(Younger Human diplomat)
 SETTINGS_MOD_SHOW_ALT_ANIMATION          | Alt Diplomat: %1
 
+SETTINGS_MOD_DISABLE_MAP_ANIM_HELP		| Your computer's resources are most likely more than sufficient to enable the animations, however, if you select galaxies with several thousand star systems, the display of the galaxy map may have difficulty keeping up... This option therefore allows you to temporarily disable these animations.
 SETTINGS_MOD_DISABLE_MAP_ANIM_DESC		| For huges Maps you may want to only remove the map animations.
 SETTINGS_MOD_DISABLE_MAP_ANIM			| Map Animations: %1
 SETTINGS_MOD_DISABLE_MAP_ANIM_YES		| Disabled
@@ -3787,7 +3795,7 @@ SETTINGS_MOD_DEVELOPED_INDUSTRY          | {→MAIN_COLONY_INDUSTRY←}
 GAME_SETTINGS_PLAYER_TAX_LEVEL_PCT_DESC	| Player tax rate
 GAME_SETTINGS_PLAYER_TAX_LEVEL_PCT		| Tax Rate: %1%
 SETTINGS_MOD_TAX_ONLY_DEVELOPED_HELP	| It is generally wiser not to tax developing colonies...<br>But in a crisis, it might be necessary.<br>The definition of a mature colony can be changed in the options panel. “Alt-O.”
-SETTINGS_MOD_TAX_ONLY_DEVELOPED_DESC	| 
+SETTINGS_MOD_TAX_ONLY_DEVELOPED_DESC	| Tax only fully developed colonies (Definition can be changed in the option panel).
 SETTINGS_MOD_TAX_ONLY_DEVELOPED			| →PLANETS_RESERVE_ONLY_DEVELOPED←: %1
 SETTINGS_MOD_TAX_ONLY_DEVELOPED_LABEL	| →PLANETS_RESERVE_ONLY_DEVELOPED←
 
@@ -6823,7 +6831,7 @@ MAIN_HELP_SHIPFLEET_HK	| HOTKEY WHEN FLEET IS SELECTED:<br><br>H : Show more det
 
 MAIN_HELP_HK			| →HK_HEADER← →HK_F1←<br>H : Show known characteristics of fleet under the cursor<br><br>F2/F3 : Next/Previous player colony<br>F5/F6 : Next/Previous player colony that has constructed a ship this turn<br>F7/F8 : Next/Previous player colony with incoming armed enemy fleets or transports<br>Shift F7/F8 : Next/Previous alien colonies to which you are sending troops<br>Ctrl F7/F8 : Next/Previous war enemy colonies to which you are sending war ships or troops<br>Shift+Ctrl F7/F8 : Next/Previous war enemy colonies to which you are sending troop or armed ships (including scouts)<br>W : Toggle war view mode showing only the fleets targeting the planet in danger<br>F9/F10 : Next/Previous player fleet<br>F11/F12 : Next/Previous AI fleet<br>Space/Page Down/Page Up : Next/Previous player Idle fleet (Shift: Auto but Idle) →HK_FLAG_LOOP←<br><br>G : Select Game Panel<br>S : Select System Panel<br>F : Select Fleet Panel<br>D : Select Design Panel<br>R, E : Select Empire Panel<br>C : Select Colonies Panel<br>T : Select Tech Panel        /        Ctrl+T Send Transport<br>N : Next Turn<br>O : Select Option Panel →HK_YEAR←<br>SHIFT-S : Show spy report<br>→HK_HOME← →HK_ALT_HOME← →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← <br>ALT-W : Toggle square grid <br> →HK_MAP_ARROWS← →HK_MAP_ZOOM← <br>Mouse wheel : Increment quantities/moves slider<br>→HK_ESCAPE←
 
-PLANETS_HELP_HK			| →HK_HEADER← →HK_F1←<br><br>Arrows Up/Down : Scroll Up/Down<br>Arrows Right/Left : Next/Previous Colony. →HK_TAB← →HK_FLAG← →HK_HOME←<br> →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← (Multi selection too)<br><br>CTRL+A : Select All Systems<br>Q/+CTRL : Select Normal And Rich With Full Economy / + Set Ship spending to 100%<br>Y,Z/+CTRL : Select Lacking Population / + Set Eco spending to 100%<br><br>S→HK_SEL_B← Ship →HK_SEL_E←<br>D→HK_SEL_B← Defense →HK_SEL_E←<br>W→HK_SEL_B← Industry →HK_SEL_E←<br>E→HK_SEL_B← Ecology →HK_SEL_E←<br>R→HK_SEL_B← Research →HK_SEL_E←<br>G/+CTRL/+SHIFT : Current Selection Governor Toggle / On / Off <br>→HK_ESCAPE←
+PLANETS_HELP_HK			| →HK_HEADER← →HK_F1←<br><br>F12: Add / Remove the column "→PLANETS_LIST_ACCRUED←" in the "→PLANETS_VIEW_MILITARY←" tab.<br>Arrows Up/Down : Scroll Up/Down<br>Arrows Right/Left : Next/Previous Colony. →HK_TAB← →HK_FLAG← →HK_HOME←<br> →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← (Multi selection too)<br><br>CTRL+A : Select All Systems<br>Q/+CTRL : Select Normal And Rich With Full Economy / + Set Ship spending to 100%<br>Y,Z/+CTRL : Select Lacking Population / + Set Eco spending to 100%<br><br>S→HK_SEL_B← Ship →HK_SEL_E←<br>D→HK_SEL_B← Defense →HK_SEL_E←<br>W→HK_SEL_B← Industry →HK_SEL_E←<br>E→HK_SEL_B← Ecology →HK_SEL_E←<br>R→HK_SEL_B← Research →HK_SEL_E←<br>G/+CTRL/+SHIFT : Current Selection Governor Toggle / On / Off <br>→HK_ESCAPE←
 
 FLEETS_HELP_HK			| →HK_HEADER← →HK_F1← <br>→HK_MAP_ARROWS← →HK_MAP_ZOOM← <br>→HK_ESCAPE←
 

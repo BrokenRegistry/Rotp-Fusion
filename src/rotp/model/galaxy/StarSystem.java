@@ -599,13 +599,13 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
             case "WASTE":            return str((int)colony().ecology().waste());
             case "INCOME":           return str((int)colony().totalIncome());
             case "CAPACITY":         return concat(str((int)(colony().currentProductionCapacity()*100)),"%");
-			case "IND_RATIO":		 return concat(str((int)(colony().budget().factoryToMaxRatio()*100)),"%");
 			case "RESERVE":			return Integer.toString((int)colony().rawReserveIncome());
 			case "NEEDED":			return Integer.toString(colony().budget().reserveNeededBC());
 			case "BUDGET":			return colony().budget().displayBudgetBCStr();
 			case "SUBSIDY":			return colony().budget().budgetSubsidiesStr();
 			case "CONTRIBUTE":		return Integer.toString((int)colony().budget().budgetContributeBC());
 			case "TAXED":			return Integer.toString((int)colony().budget().budgetTaxedBC());
+			case "ACCRUED":			return str((int)colony().industry().accruedBC());
             case "BASES":            return str(empire().sv.bases(id));
             case "SHIPYARD":         return colony().shipyardProject();
             case "DELTA_BASES":      return str(empire().sv.deltaBases(id));
@@ -635,7 +635,6 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 	public static final Comparator<StarSystem> COLONY_BUDGET	= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().budget().noNullDisplayBudgetBC(),	s2.colony().budget().noNullDisplayBudgetBC());
 	public static final Comparator<StarSystem> COLONY_CONTRIBUTE= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().budget().budgetContributeBC(),	s2.colony().budget().budgetContributeBC());
 	public static final Comparator<StarSystem> COLONY_TAXED		= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().budget().budgetTaxedBC(),	s2.colony().budget().budgetTaxedBC());
-	public static final Comparator<StarSystem> IND_RATIO		= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().budget().factoryToMaxRatio(),	s2.colony().budget().factoryToMaxRatio());
 	public static final Comparator<StarSystem> FACTORIES		= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().industry().factories(),	s2.colony().industry().factories());
 	public static final Comparator<StarSystem> BASE_PRODUCTION	= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().production(),			s2.colony().production());
 	public static final Comparator<StarSystem> WASTE			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().ecology().waste(),	s2.colony().ecology().waste());
@@ -645,6 +644,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 	public static final Comparator<StarSystem> SHIELD			= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().defense().shieldLevelComp(),s2.colony().defense().shieldLevelComp());
 	public static final Comparator<StarSystem> INVASION_PRIORITY= (StarSystem s1, StarSystem s2) -> Float.compare(s1.empire().generalAI().invasionPriority(s1),	s2.empire().generalAI().invasionPriority(s2));
 //    public static Comparator<StarSystem> TRANSPORT_PRIORITY = (StarSystem s1, StarSystem s2) -> Base.compare(s1.empire().fleetCommanderAI().transportPriority(s1),s2.empire().fleetCommanderAI().transportPriority(s2));
+	public static final Comparator<StarSystem> ACCRUED			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().industry().accruedBC(),	s2.colony().industry().accruedBC());
 	public static final Comparator<StarSystem> STARGATE			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().starGateTimeToComplete(),	s2.colony().starGateTimeToComplete());
 	public static final Comparator<StarSystem> GOV_PLAN			= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().getFundingMandate(),	s2.colony().getFundingMandate());
 	public static final Comparator<StarSystem> FLAG				= (StarSystem s1, StarSystem s2) -> {

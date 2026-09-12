@@ -317,6 +317,9 @@
 
 ### Miscellaneous:
 
+- The colony development limit will now be based on the colony industry capacity.
+- Budget Max Absolute Capital can now be set to a smaller amount.
+- Improved labels files validation tool.
 - DNA Lab: Added avatar to original species
 - New debug tools to track Linux Mint crash.
 - Removed unused methods from AI governors and consolidated redundant methods.
@@ -365,6 +368,10 @@
 
 ### User Interfaces:
 
+- Budget Max Absolute Capital can now be set to a smaller amount.
+- The accrued production on the old ship can now bw displayed in the military tab of the colonies panel.
+  - "F12" to toggle.
+- Tech Panel: Holding "Shift" while equalizing allocations will only equalize unlocked fields that already have an allocation.
 - New option to disable Map animations (while keeping high graphic quality)
   - Useful for huge maps.
 - Budget Transfer Panel:
@@ -500,6 +507,9 @@
 
 ### Fixes:
 
+26-09-12 (BR)
+- Fixed a potential concurrent exception.
+- Fixed occasional crash issue when selecting a stolen tech.
 - DNA Workshop:
   - Fixed tech settings counted twice in malus too.
   - removed annoying beep.

@@ -38,6 +38,18 @@ public class LabelManager implements Base {
     public static LabelManager current()  { return instance; }
 	public static boolean validate = false; // BR: for debug purpose
 	private static String lastDir = "";
+	private static final List<String> validationList	= new ArrayList<>(); // to check for duplicate
+	private static final List<String> allowedOrphanList	= new ArrayList<>( // to check for duplicate
+			Arrays.asList(
+					"RESPOND_DECLARE_WAR_01",
+					"GOVERNOR_RACE_IMAGE_LABEL",
+					"_nameTitle",
+					"CREDITS_TRANSLATOR",
+					"PLANETS_LIST_NUM",
+					"PLANETS_LIST_FLAG",
+					"PLANETS_LIST_STARGATES",
+					"PLANETS_LIST_MANDATE"
+					));
 
     private String labelFile = "labels.txt";
     private String dialogueFile = "dialogue.txt";
@@ -46,7 +58,6 @@ public class LabelManager implements Base {
     private final HashMap<String,byte[]> labelMap = new HashMap<>();
     private final HashMap<String,List<String>> dialogueMap = new HashMap<>();
     private final List<String> introLines = new ArrayList<>();
-	private final List<String> validationList = new ArrayList<>(); // to check for duplicate
 
     public boolean hasLabel(String key)    { return labelMap.containsKey(key); }
     public boolean hasDialogue(String key) { return dialogueMap.containsKey(key); }
@@ -258,20 +269,18 @@ public class LabelManager implements Base {
         int wc = 0;
         String val = vals.get(1).trim();
         String key = vals.get(0).trim();
-        if (validate) {
-			if (val.trim().isEmpty()
-					&& !"GOVERNOR_RACE_IMAGE_LABEL".equals(key) // must be empty
-					&& !"_nameTitle".equals(key) // some species don't have title
-					) {
+
+		if (validate) {
+			if (val.isEmpty() && !allowedOrphanList.contains(key))
 				validateError("Orphan label keyword: " + input + " / " + labelFile);
-			}
 			else
 				testForDialogueFont(val);
+
 			if (validationList.contains(key))
 				validateError("Duplicated Key: " + input + " / " + labelFile);
 			else
 				validationList.add(key);
-        }
+		}
         try {
             labelMap.put(key, val.getBytes("UTF-8"));
             if (Rotp.countWords)
@@ -310,16 +319,15 @@ public class LabelManager implements Base {
         String key = vals.get(0);
         if (!map.containsKey(key))
             map.put(key, new ArrayList<>());
-        
+
         String val = vals.get(1);
-        if (validate) {
-            if (val.trim().isEmpty() && !"RESPOND_DECLARE_WAR_01".equals(key)) { // some species don't respond
-            	validateError("Orphan dialogue keyword: " + input + " / " + dialogueFile);
-            }
-            else {
-            	testForDialogueFont(val);
-            }
-        }
+
+		if (validate)
+			if (val.trim().isEmpty() && !allowedOrphanList.contains(key))
+				validateError("Orphan dialogue keyword: " + input + " / " + dialogueFile);
+			else
+				testForDialogueFont(val);
+
         map.get(key).add(val);
 
         if (Rotp.countWords)
@@ -417,10 +425,7 @@ public class LabelManager implements Base {
 	}
 	private void validateError(String msg) {
 		boolean allLanguages = true;
-		if (LanguageManager.selectedLanguage() != 0 && !allLanguages
-				// && !lastDir.contains("lang/en/")
-				) {
+		if (allLanguages || LanguageManager.selectedLanguage() != 0)
 			System.err.println("("+ lastDir + ") " + msg);
-		}
 	}
 }

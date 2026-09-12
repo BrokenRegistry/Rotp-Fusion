@@ -1180,10 +1180,11 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         // 2. Map Control Sprites
         // 3. Ships & Flight Paths
         // 4. Systems
-        for (Sprite sprite: parent.nextTurnSprites()) {
+		List<Sprite> sprites = new ArrayList<>(parent.nextTurnSprites());
+		for (Sprite sprite: sprites)
             if (sprite.isSelectableAt(this, x1, y1))
                 return sprite;
-        }
+
         for (Sprite sprite: parent.controlSprites()) {
             if (sprite.isSelectableAt(this, x1, y1))
                 return sprite;

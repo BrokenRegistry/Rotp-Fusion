@@ -5,6 +5,7 @@ import java.util.Arrays;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.ui.main.overlay.MapOverlayNone;
+import rotp.ui.planets.PlanetsUI;
 import rotp.ui.util.ParamTitle;
 
 final class GameMenuPreferences extends AbstractOptionsSubUI {
@@ -53,8 +54,11 @@ final class GameMenuPreferences extends AbstractOptionsSubUI {
 				squareGridSize,
 
 				LINE_SPACER_25,
-				MapOverlayNone.autoWarView
-				)));
+				MapOverlayNone.autoWarView,
+
+				LINE_SPACER_25,
+				PlanetsUI.showShipyardAccruedColumn
+			)));
 		return map;
 	}
 	@Override public SafeListParam minorList()	{

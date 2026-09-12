@@ -1429,6 +1429,10 @@ PLANETS_COLONY_TRANSFER_TITLE	| Transférer des Fonds
 PLANETS_COLONY_TRANSFER_DETAIL	| Transférer des fonds du trésor de l’empire pour augmenter la production de cette colonie.
 PLANETS_COLONY_TRANSFER_BUTTON	| Transférer des Fonds du Trésor
 
+PLANETS_SHOW_ACCRUED_COL		| Colonne →PLANETS_LIST_ACCRUED← : %1
+PLANETS_SHOW_ACCRUED_COL_DESC	| Pour afficher la colonne « →PLANETS_LIST_ACCRUED← » sur l’onglet « Militaire » du panneau « Colonies ».
+PLANETS_SHOW_ACCRUED_COL_HELP	| Pour afficher la colonne « →PLANETS_LIST_ACCRUED← » sur l’onglet « Militaire » du panneau « Colonies ».<br>→PLANETS_LIST_ACCRUED_DESC←
+
 PLANETS_LIST_MAX_TRANS_TO_FILL	| Remplir
 PLANETS_LIST_MAX_TRANS_NO_LOSS	| Stable
 PLANETS_LIST_NUM				|
@@ -1475,6 +1479,8 @@ PLANETS_LIST_CONTRIBUTE			| Envoie
 PLANETS_LIST_CONTRIBUTE_HELP	| →PLANETS_HELP_5C←
 PLANETS_LIST_TAXED				| Imposé
 PLANETS_LIST_TAXED_HELP			| →PLANETS_HELP_5B←
+PLANETS_LIST_ACCRUED			| En stock
+PLANETS_LIST_ACCRUED_HELP		| <h3>→PLANETS_LIST_ACCRUED←</h3>Chaque fois que vous modifiez la conception d'un vaisseau dans le chantier naval de la planète, la production accumulée sur l’ancien vaisseau est stockée.<br>Cette production accumulée sera utilisée pour accélérer la production de nouveaux navires jusqu’à 50 % jusqu’à ce que toute la production accumulée soit dépensée.<br>Ce champ affiche le montant de la production accumulée.
 PLANETS_LIST_SHIPYARD			| En chantier
 PLANETS_LIST_SHIPYARD_HELP		| →PLANETS_HELP_4G←
 PLANETS_LIST_NOTES				| Notes
@@ -1492,6 +1498,7 @@ PLANETS_SPENDING_50               | Dépenses %1 50%
 PLANETS_SPENDING_75               | Dépenses %1 75%
 PLANETS_SPENDING_MAX              | Dépenses %1 maximales
 PLANETS_HELP_ALL				| <h3>APERÇU</h3>Cet écran affiche les données économiques de votre empire ainsi qu’une liste de vos colonies triables selon diverses données.
+PLANETS_HELP_ICON				| →PLANETS_HELP_ALL←<hr>→PLANETS_HELP_HK←
 PLANETS_HELP_1A					| « Écologie »<br> Cliquez sur cet onglet pour afficher les données écologiques des colonies.
 PLANETS_HELP_1B					| « Industrie »<br> Cliquez sur cet onglet pour afficher les données industrielles des colonies.
 PLANETS_HELP_1BUD				| « Budget »<br> Cliquez sur cet onglet pour afficher les informations budgétaires des colonies.
@@ -3320,7 +3327,7 @@ SETTINGS_MOD_ANY_STAR_SYSTEM			| N’importe où
 SETTINGS_MOD_ANY_STAR_SYSTEM_DESC		| Tout système stellaire à portée.
 SETTINGS_MOD_HYPER_COM_RETREAT_EXT		| Repli Hi-Tech : %1
 SETTINGS_MOD_HYPER_COM_RETREAT_EXT_DESC	| Le fait d’avoir la communication hyperspatiale permet-il à un empire de se replier n’importe où ? (La limitation de repli vers l’ennemi continuera de s’appliquer)
-SETTINGS_MOD_HYPER_COM_RETREAT_EXT_HELP	| La connaissance des communications Hyperspatiales peut-elle vous permettre de de rediriger une flotte battant retrate ver n’importe quelle destination ?<br> Si oui, l’option  « Repli vers l’ennemi » pourrait s'appliquer.
+SETTINGS_MOD_HYPER_COM_RETREAT_EXT_HELP	| La connaissance des communications Hyperspatiales peut-elle vous permettre de de rediriger une flotte battant retrate ver n’importe quelle destination ?<br> Si oui, l’option  « Repli vers l’ennemi » pourrait s’appliquer.
 SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING		| Repli à l’arrivée : %1
 SETTINGS_MOD_RETREAT_ON_ARRIVAL_RETREATING_DESC	| L’option « Repli à l’arrivée » marque-t-elle les flottes comme « en retraite » ? Ou bien s’agit-il simplement d’une fonctionnalité automatisée visant à simplifier la vie du joueur ?
 SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING		| Repli Diplomatique : %1
@@ -3563,6 +3570,7 @@ SETTINGS_MOD_ORIGINAL_SPECIES_ONLY       | 10 Espèces seulement : %1
 SETTINGS_MOD_SHOW_ALT_ANIMATION_DESC     | Choisissez entre les animations vanilla (Non) ou les œuvres d’art Zestyclose (Oui).<br>(Jeune diplomate humain)
 SETTINGS_MOD_SHOW_ALT_ANIMATION          | Alt Diplomate : %1
 
+SETTINGS_MOD_DISABLE_MAP_ANIM_HELP		| Les ressources de votre ordinateur sont probablement largement suffisantes pour activer les animations, cependant, si vous sélectionnez des galaxies comportant plusieurs milliers de systèmes stellaires, l’affichage de la carte de la galaxie risque d’avoir du mal à suivre... Cette option permet donc de désactiver temporairement ces animations.
 SETTINGS_MOD_DISABLE_MAP_ANIM_DESC		| Pour les cartes gigantesques, vous souhaiterez peut-être supprimer uniquement les animations de la carte.
 SETTINGS_MOD_DISABLE_MAP_ANIM			| Animations de carte: %1
 SETTINGS_MOD_DISABLE_MAP_ANIM_YES		| Désactivées
@@ -6797,34 +6805,34 @@ SETUP_RANDOMIZED_RANDOM_OPTIONS_DESC	| Toutes les options seront sélectionnées
 // Shortcuts / Hotkeys list  (use cross-references →←) →HK_←
 // Shortcuts Cross referenced
 HK_HEADER      | Raccourcis clavier : (Disponible en cliquant Aide avec le bouton droit)→HK_SHIFT_F1←
-HK_SHIFT_F1    | <br>Maj+F1 : Afficher la liste des raccourcis clavier
-HK_F1          | <br>F1 : Afficher l’aide.
-HK_ESCAPE      | <br>Escape : Quitter ce panneau.
-HK_FLAG        | <br>F : Changer la couleur du drapeau.
-HK_HOME        | <br>Home : Définir automatiquement la couleur des drapeaux.
-HK_ALT_HOME    | <br>Alt-Home : Redéfinir automatiquement la couleur drapeau pour tous les systèmes explorés.
-HK_B_SHIFT_B   | <br>B/Maj-B : Incrémente / Décrémente Bases Max.
-HK_1_5         | <br>1-5/+Maj : Incrémente / Décrémente dépenses pour vaisseaux, transport, environnement, technologie
-HK_CTRL_1_5    | <br>Ctrl+1-5 : Verrouiller le curseur de dépenses.
-HK_ALT_1_5     | <br>Alt+1-5 : Max-Intel.
-HK_MAP_ARROWS  | <br>Flèches : Déplacer la carte.
-HK_MAP_ZOOM    | <br>+/- : Zoomer la carte. («Alt-» : Vue complète de la galaxie) <br>Molette de la souris : Zoomer sur la carte.
-HK_TAB         | <br>Tab/+Maj : Onglet suivant/précédent.
-HK_YEAR        | <br>Y : Alterner l’année / le tour.
-HK_FLAG_LOOP   | <br>(Num) * - 9 + : Drapeau suivant («Maj-» Précédent) («Ctrl-» Même couleur de drapeau)
+HK_SHIFT_F1    | <br>« Maj+F1 » Afficher la liste des raccourcis clavier
+HK_F1          | <br>« F1 » Afficher l’aide.
+HK_ESCAPE      | <br>« Escape » Quitter ce panneau.
+HK_FLAG        | <br>« F » Changer la couleur du drapeau.
+HK_HOME        | <br>« Home » Définir automatiquement la couleur des drapeaux.
+HK_ALT_HOME    | <br>« Alt+Home » Redéfinir automatiquement la couleur drapeau pour tous les systèmes explorés.
+HK_B_SHIFT_B   | <br>« B » / « Maj+B » Incrémente / Décrémente Bases Max.
+HK_1_5         | <br>« 1-5« » / « Maj+ » Incrémente / Décrémente dépenses pour vaisseaux, transport, environnement, technologie
+HK_CTRL_1_5    | <br>« Ctrl+1-5 » Verrouiller le curseur de dépenses.
+HK_ALT_1_5     | <br>« Alt+1-5 » Max-Intel.
+HK_MAP_ARROWS  | <br>« Flèches » Déplacer la carte.
+HK_MAP_ZOOM    | <br>« + » / « - » Zoomer la carte. (« Alt+ » : Vue complète de la galaxie) <br>Molette de la souris : Zoomer sur la carte.
+HK_TAB         | <br>« Tab » / « Maj+ » Onglet suivant / précédent.
+HK_YEAR        | <br>« Y » Alterner l’année / le tour.
+HK_FLAG_LOOP   | <br>(Num) * - 9 + : Drapeau suivant (« Maj+ » Précédent) (« Ctrl+ » Même couleur de drapeau)
 
-HK_FOG         | <br>F : Afficher / Cacher le brouillard sur les icônes diplomatiques.
-HK_GUIDE       | <br>G : Afficher / Cacher le Guide
-HK_SEL_B       | /+Alt/+Ctrl/+Maj : Sélection actuelle
+HK_FOG         | <br>« F » Afficher / Cacher le brouillard sur les icônes diplomatiques.
+HK_GUIDE       | <br>« G » Afficher / Cacher le Guide
+HK_SEL_B       | / « Alt+ » / « Ctrl+ » / « Maj+ » Sélection actuelle
 HK_SEL_E       | Dépenses à 100% / Max-Intel. / Verrouillage / Déverrouillage
-HK_SET_DEFAULT | <br>Alt-F : Définir les valeurs par défaut à →FUSION_HK←.<br>Alt-M : Définir les valeurs par défaut à →MOO1_HK←.<br>Alt-R : Définir les valeurs par défaut à →CLASSIC_HK←.
+HK_SET_DEFAULT | <br>« Alt+F » Définir les valeurs par défaut à →FUSION_HK←.<br>« Alt+M » Définir les valeurs par défaut à →MOO1_HK←.<br>« Alt+R » Définir les valeurs par défaut à →CLASSIC_HK←.
 
 // Shortcuts Full lists*
-MAIN_HELP_SHIPFLEET_H	| Raccourcis clavier QUAND LA FLOTTE EST SÉLECTIONNÉE :<br><br>H : Afficher plus d’informations détaillées (si elles sont connues)<br><br> MODE DE REDIRECTION DES FLOTTES :<br><br>Appuyez sur «Alt» pour montrer des informations sur l’étoile ou la flotte survolée par la souris.
+MAIN_HELP_SHIPFLEET_H	| Raccourcis clavier QUAND LA FLOTTE EST SÉLECTIONNÉE :<br><br>H : Afficher plus d’informations détaillées (si elles sont connues)<br><br> MODE DE REDIRECTION DES FLOTTES :<br><br>Appuyez sur « Alt » pour afficher des informations sur l’étoile ou la flotte survolée par la souris.
 
-MAIN_HELP_HK			| →HK_HEADER← →HK_F1←<br>H : Afficher les caractéristiques connues de la flotte sous le curseur<br><br>F2/F3 Votre colonie Suivante/Précédente<br>F5/F6 : Votre colonie Suivante/Précédente ayant construit un vaisseau<br>F7/F8 : Votre colonie Suivante/Précédente ciblée par un ennemi<br>Maj + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des troupes.<br>Ctrl + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des vaisseaux de guerre ou des troupes.<br>Maj + Ctrl + F7/F8 : colonie ennemie suivante/précédente vers laquelle vous envoyez des troupes ou des vaisseaux armés (incluant les éclaireurs)<br>W : Basculer la vue de guerre, n’affichant que les vaisseaux ciblant la planète en danger<br>F9/F10 : Votre flotte Suivante/Précédente<br>F11/F12 : flotte IA Suivante/Précédente<br>Espace/Page Down/Page Up : Votre flotte inactive Suivante/Précédente<br>«Maj-» Espace/Page Down/Page Up : Votre flotte Auto. mais inactive Suivante/Précédente→HK_FLAG_LOOP←<br><br>G : --> Menu (Game)<br>S : --> Systèmes<br>F : --> Flottes<br>D : --> Conception (Design)<br>R, E : --> Empires<br>C : --> Colonies<br>T : --> Tech        /        Ctrl+T Envoyer des Transports<br>N : Tour Suivant (Next)<br>O : --> Panneau d’Option →HK_YEAR←<br>Maj-S : Rapport d’espionnage (Spy)<br>→HK_HOME← →HK_ALT_HOME← →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← <br>ALT-W : Afficher/Cacher la grille carrée <br> →HK_MAP_ARROWS← →HK_MAP_ZOOM← <br>Molette de la souris : Incrémenter les quantités/ajuster la coulisse<br>→HK_ESCAPE←
+MAIN_HELP_HK			| →HK_HEADER← →HK_F1←<br>« H » Afficher les caractéristiques connues de la flotte sous le curseur<br><br>« F2 / F3 » Votre colonie Suivante/Précédente<br>« F5 / F6 » Votre colonie Suivante/Précédente ayant construit un vaisseau<br>« F7 / F8 » Votre colonie Suivante / Précédente ciblée par un ennemi<br>« Maj+F7/F8 » colonie ennemie suivante / précédente vers laquelle vous envoyez des troupes.<br>« Ctrl+F7/F8 » colonie ennemie suivante / précédente vers laquelle vous envoyez des vaisseaux de guerre ou des troupes.<br>« Maj+Ctrl+F7/F8 » Colonie ennemie suivante / précédente vers laquelle vous envoyez des troupes ou des vaisseaux armés (incluant les éclaireurs)<br>« W » Basculer la vue de guerre, n’affichant que les vaisseaux ciblant la planète en danger<br>« F9/F10 » Votre flotte Suivante / Précédente<br>« F11/F12 » flotte IA Suivante/Précédente<br>« Espace » / « Page Down » / « Page Up » Votre flotte inactive Suivante / Précédente<br>« Maj+ Espace/Page Down/Page Up » Votre flotte Auto. mais inactive Suivante / Précédente→HK_FLAG_LOOP←<br><br>« G » --> Menu (Game)<br>« S » --> Systèmes<br>« F » --> Flottes<br>« D » --> Conception (Design)<br>« R », « E » --> Empires<br>« C » --> Colonies<br>« T » --> Tech        /        « Ctrl+T » Envoyer des Transports<br>« N » Tour Suivant (Next)<br>« O » --> Panneau d’Option →HK_YEAR←<br>« Maj+S » Rapport d’espionnage (Spy)<br>→HK_HOME← →HK_ALT_HOME← →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← <br>« Alt+W » Afficher / Cacher la grille carrée<br>→HK_MAP_ARROWS← →HK_MAP_ZOOM← <br>Molette de la souris : Incrémenter les quantités / ajuster la coulisse<br>→HK_ESCAPE←
 
-PLANETS_HELP_HK			| →HK_HEADER← →HK_F1←<br><br>Flèches Haut / Bas : Bouge barre de défilement<br>Flèches Droite / Gauche : Colonie suivante / précédente. →HK_TAB← →HK_FLAG← →HK_HOME←<br> →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← (Aussi pour Sélection multiple)<br><br>Ctrl+A : Sélectionner tous les systèmes<br>Q/+Ctrl : Sélectionner normales et riches en pleine économie / + Définissez les dépenses des vaisseaux à 100%<br>Y,Z/+Ctrl : Planète en manque de population / + Dépenses ÉCO à 100%<br><br>S→HK_SEL_B← Vaisseaux →HK_SEL_E←<br>D→HK_SEL_B← Défense →HK_SEL_E←<br> W→HK_SEL_B← Industrie →HK_SEL_E←<br>E→HK_SEL_B← Écologie →HK_SEL_E←<br>R→HK_SEL_B← Recherche →HK_SEL_E←<br>G / +Ctrl /+Maj : Basculer activation du gouverneur / Activé / Désactivé <br>→HK_ESCAPE←
+PLANETS_HELP_HK			| →HK_HEADER← →HK_F1←<br><br>« F12 » Ajouter / supprimer la colonne « →PLANETS_LIST_ACCRUED← » dans l'onglet « →PLANETS_VIEW_MILITARY← »<br>Flèches Haut / Bas : Bouge barre de défilement<br>Flèches Droite / Gauche : Colonie suivante / précédente. →HK_TAB← →HK_FLAG← →HK_HOME←<br> →HK_B_SHIFT_B← →HK_1_5← →HK_CTRL_1_5← →HK_ALT_1_5← (Aussi pour Sélection multiple)<br><br>« Ctrl+A » Sélectionner tous les systèmes<br>« Q » / « Ctrl+Q » Sélectionner normales et riches en pleine économie / + Définissez les dépenses des vaisseaux à 100%<br>« Y,Z » / « Ctrl+ » Planète en manque de population / + Dépenses ÉCO à 100%<br><br>« S » →HK_SEL_B← Vaisseaux →HK_SEL_E←<br>« D » →HK_SEL_B← Défense →HK_SEL_E←<br>« W » →HK_SEL_B← Industrie →HK_SEL_E←<br>« E » →HK_SEL_B← Écologie →HK_SEL_E←<br>« R » →HK_SEL_B← Recherche →HK_SEL_E←<br>« G » / « Ctrl » /« Maj » : Basculer activation du gouverneur / Activé / Désactivé <br>→HK_ESCAPE←
 
 FLEETS_HELP_HK			| →HK_HEADER← →HK_F1← <br>→HK_MAP_ARROWS← →HK_MAP_ZOOM← <br>→HK_ESCAPE←
 

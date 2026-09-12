@@ -1316,17 +1316,18 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     @Override public void prepareToSave(boolean secure) {
 		// Required to initialize missing option files
 		// System.out.println("prepareToSave() " + optionName());
-    	for (IParam<?> param : AllSubUI.allModOptions(false)) {
-    		if (param != null) {
-    			param.prepareToSave(this);
-    		}
-    	}
-    	if (secure) {
-    		// No computer info in game files... Folder path may contains player name!
-    		dynOpts().setString(saveDirectory.getLangLabel(), "");
-    		dynOpts().setString(bitmapGalaxyLastFolder.getLangLabel(), "");
-    	}
-    }
+		for (IParam<?> param : AllSubUI.allModOptions(false)) {
+			if (param != null) {
+				param.prepareToSave(this);
+			}
+		}
+		if (secure) {
+			// No computer info in game files... Folder path may contains player name!
+			dynOpts().setString(saveDirectory.getLangLabel(), "");
+			dynOpts().setString(bitmapGalaxyLastFolder.getLangLabel(), "");
+			dynOpts().setString(speciesDirectory.getLangLabel(), "");
+		}
+	}
 	 @Override public void UpdateOptionsTools() {
 		// probably overkill, but no needs to be picky
 		//System.out.println("UpdateOptionsTools() " + optionName());

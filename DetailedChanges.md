@@ -2,6 +2,16 @@
 
 ## What's New
 
+26-09-12 (BR)
+- Fixed a potential concurrent exception.
+- Fixed occasional crash issue when selecting a stolen tech.
+- The colony development limit will now be based on the colony industry capacity.
+- Budget Max Absolute Capital can now be set to a smaller amount.
+- The accrued production on the old ship can now bw displayed in the military tab of the colonies panel.
+  - "F12" to toggle.
+- Tech Panel: Holding "Shift" while equalizing allocations will only equalize unlocked fields that already have an allocation.
+- Improved labels files validation tool.
+
 26-09-11 (BR)
 - New option to disable Map animations (while keeping high graphic quality)
   - Useful for huge maps.

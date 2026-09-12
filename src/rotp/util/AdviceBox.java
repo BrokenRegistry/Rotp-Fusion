@@ -38,6 +38,7 @@ public class AdviceBox extends Rect implements IAdvice {
 	private Rectangle selectionBox = new Rectangle();
 	private JComponent panel;
 	private boolean hovering;
+	private int forcedWidth = 0;
 	private int forcedLocation = 0;	// For box, following num-pad position
 	private Sprite spriteToDraw;	// to not be hidden by the avatar 
 	private int level = MAIN_HELP;	// For box, following num-pad position
@@ -67,6 +68,7 @@ public class AdviceBox extends Rect implements IAdvice {
 	public Point getTargetLoc()	{ return new Point(targetLoc.x + arrowOffset.x, targetLoc.y + arrowOffset.y); }
 	public IParam<?> getParam()	{ return param; }
 	public JComponent getPane()	{ return panel; }
+	public int getForcedWidth()		{ return forcedWidth; }
 	public int getForcedLocation()	{ return forcedLocation; }
 	public Sprite getSpriteToDraw()	{ return spriteToDraw; }
 	public Supplier<BufferedImage> getHelpImg()	{ return getHelpImg; }
@@ -87,6 +89,7 @@ public class AdviceBox extends Rect implements IAdvice {
 	public void setBoxOffset(Point pt)			{ boxOffset = pt; }
 	public void setBoxOffset(int x, int y)		{ boxOffset = new Point(x, y); }
 	public void setLabelKey(String key)			{ labelKey = key; }
+	public void setForcedWidth(int w)			{ forcedWidth = w; }
 	public void setForcedLocation(int loc)		{ forcedLocation = loc; }
 	public void setAdviceHelpKey(String key)	{ adviceHelpKey = key; }
 	public void setAdviceHelpText(String text)	{ adviceHelpTxt = text; }

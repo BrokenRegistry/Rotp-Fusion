@@ -9,6 +9,7 @@ import rotp.model.ships.ShipLibrary;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.overlay.MapOverlayNone;
 import rotp.ui.map.IMapHandler;
+import rotp.ui.planets.PlanetsUI;
 import rotp.ui.sprites.FlightPathSprite;
 import rotp.ui.util.ParamTitle;
 
@@ -58,7 +59,12 @@ final class ZoomOptions extends AbstractOptionsSubUI {
 				HEADER_SPACER_100,
 				RELEVANT_TITLE,
 				MapOverlayNone.autoWarView,
-				IMapHandler.disableMapAnim
+
+				LINE_SPACER_25,
+				IMapHandler.disableMapAnim,
+
+				LINE_SPACER_25,
+				PlanetsUI.showShipyardAccruedColumn
 				)));
 		return map;
 	}

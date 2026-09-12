@@ -44,9 +44,12 @@ public class TechCategorySprite extends MapSprite {
     public void draw(GalaxyMapPanel map, Graphics2D g2) { }
     @Override
     public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+		Tech t = tech();
+		if (t == null)	// Should not happen! but it happens.
+			return;
         if (click)
             softClick();
-        mission.stealTech(tech());
+        mission.stealTech(t);
         parent.espionageCategorySelected();
     }
 }
