@@ -784,7 +784,7 @@ PLANETS_HELP_1A                   | Ecología - Haga clic en esta pestaña para 
 PLANETS_HELP_1B                   | Industria - Haga clic en esta pestaña para mostrar los datos industriales de las colonias.
 PLANETS_HELP_1C                   | Militar - Haga clic en esta pestaña para mostrar los datos militares de las colonias.
 PLANETS_HELP_1D                   | El gasto de la colonia se puede ajustar como en la pantalla principal.
-PLANETS_HELP_1E                   | Aumente la producción de la colonia hasta en un 50 % transfiriendo fondos de la tesorería del imperio.
+PLANETS_HELP_1E                   | Aumente la producción de la colonia hasta en un 100 % transfiriendo fondos de la tesorería del imperio.
 PLANETS_HELP_1F                   | Ingresos total para su imperio.
 PLANETS_HELP_1G                   | Gasto total de su imperio expresado como un porcentaje de los ingresos.
 PLANETS_HELP_1H                   | Imponga un impuesto a sus colonias para aumentar el tesoro del imperio. Opcionalmente restrinja este impuesto solo a las colonias que hayan completado sus gastos de Ecología, Industria y Defensa.

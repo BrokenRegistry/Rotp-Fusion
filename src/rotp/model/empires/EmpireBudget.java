@@ -490,7 +490,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 		float reserveMax		= govOptions.autospendReserveMax();
 		float reserveMaxRatio	= govOptions.autospendReserveMaxRatio();
 		float reserveMaxBC		= max(reserveMax, totalProd * reserveMaxRatio);
-		float maxToCollect		= reserveMaxBC - unusedReserves;
+		float maxToCollect		= max(0, reserveMaxBC - unusedReserves);
 
 		// turn by turn
 		float reserveNextTurn	= govOptions.autospendReserveNextTurn();

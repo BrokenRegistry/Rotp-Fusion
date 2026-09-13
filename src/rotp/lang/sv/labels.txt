@@ -786,7 +786,7 @@ PLANETS_HELP_1A                   | Ekologi - Klicka på fliken för att visa ek
 PLANETS_HELP_1B                   | Industry - Klicka på fliken för att visa industriell översikt för kolonier.
 PLANETS_HELP_1C                   | Military - Klicka på fliken för att visa militär översikt för kolonier.
 PLANETS_HELP_1D                   | Allokering av en kolonis budget kan justeras på samma sätt som huvudpanelen.
-PLANETS_HELP_1E                   | Utöka en kolonis produktion med upp till 50% genom att överföra medel från statskassan.
+PLANETS_HELP_1E                   | Utöka en kolonis produktion med upp till 100% genom att överföra medel från statskassan.
 PLANETS_HELP_1F                   | Total Inkomst för hela imperiet.
 PLANETS_HELP_1G                   | Sammanlagda Utgifter för hela imperiet, uttryckt som en procent av inkomsten.
 PLANETS_HELP_1H                   | Samla in resurser från dina kolonier genom beskattning för att lägga till statskassan. Med alternativ till att begränsa beskattning till endast kolonier som färdigställt sina projekt inom Ekologi, Industri och Försvar.

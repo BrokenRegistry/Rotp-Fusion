@@ -1504,7 +1504,7 @@ PLANETS_HELP_1B					| Industry <br> Click this tab to show industrial data for c
 PLANETS_HELP_1BUD				| Budget <br> Click this tab to show budgeted data for colonies.
 PLANETS_HELP_1C					| Military <br>Click this tab to show military data for colonies.
 PLANETS_HELP_1D                   | Colony spending can be adjusted as on main screen.
-PLANETS_HELP_1E                   | Increase colony production by up to 50% by transferring funds from the empire treasury.
+PLANETS_HELP_1E                   | Increase colony production by up to 100% by transferring funds from the empire treasury.
 PLANETS_HELP_1F                   | Total Income for your empire.<br>Trade income are redistributed to the colonies proportionally to their production.
 PLANETS_HELP_1G                   | Total Spending for your empire expressed as a pct. of income.
 PLANETS_HELP_1H                   | Levy a tax on your colonies to add to the empire treasury. Optionally restrict this tax to only colonies that have completed their Ecology, Industry and Defense spending.

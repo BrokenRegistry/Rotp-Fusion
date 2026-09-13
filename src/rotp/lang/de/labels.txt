@@ -784,7 +784,7 @@ PLANETS_HELP_1A                   | Ökologie - Klicken, um sich die ökologisch
 PLANETS_HELP_1B                   | Industrie - Klicken, um sich die industriellen Daten der Kolonien anzugucken.
 PLANETS_HELP_1C                   | Militär - Klicken, um sich die militärischen Daten der Kolonien anzugucken.
 PLANETS_HELP_1D                   | Kolonieausgaben können wie auf dem Hauptschirm verändert werden.
-PLANETS_HELP_1E                   | Vergrößern der Kolonieproduktion mit Transfer mit bis zu 50% der Staatskasse.
+PLANETS_HELP_1E                   | Vergrößern der Kolonieproduktion mit Transfer mit bis zu 100% der Staatskasse.
 PLANETS_HELP_1F                   | Einkommen des Imperiums - Total.
 PLANETS_HELP_1G                   | Komplette Ausgaben des Imperiums in Prozent ausgedrückt.
 PLANETS_HELP_1H                   | Erheben Sie eine Steuer auf Ihre Kolonien, um die Staatskasse aufzustocken. Optional beschränken Sie diese Steuer nur auf Kolonien, die ihre Ökologie-, Industrie- und Verteidigungsausgaben abgeschlossen haben.

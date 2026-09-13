@@ -786,7 +786,7 @@ PLANETS_HELP_1A                   | Ekologija - Kliknite ovu karticu da biste pr
 PLANETS_HELP_1B                   | Industrija - Kliknite ovu karticu da biste prikazali industrijske podatke o kolonijama.
 PLANETS_HELP_1C                   | Vojska - Kliknite ovu karticu da biste prikazali vojne podatke za kolonije.
 PLANETS_HELP_1D                   | Potrošnja kolonija može se prilagoditi kao na glavnom ekranu.
-PLANETS_HELP_1E                   | Povećaj proizvodnju kolonije do 50% prenoseći sredstva iz imperijalne blagajne.
+PLANETS_HELP_1E                   | Povećaj proizvodnju kolonije do 100% prenoseći sredstva iz imperijalne blagajne.
 PLANETS_HELP_1F                   | Ukupan prihod vaše imperije.
 PLANETS_HELP_1G                   | Ukupna potrošnja vaše imperije prikazana kao procenat od prihoda.
 PLANETS_HELP_1H                   | Naplatite porez svojim kolonijama da biste doprineli imperijalnoj blagajni. Po želji ograničite ovaj porez samo na kolonije koje su ispunile potrošnju za ekologiju, industriju i odbranu.

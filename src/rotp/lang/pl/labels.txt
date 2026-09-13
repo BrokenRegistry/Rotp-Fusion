@@ -786,7 +786,7 @@ PLANETS_HELP_1A                   | Ekologia - kliknij tę zakładkę, aby wyśw
 PLANETS_HELP_1B                   | Przemysł - kliknij tę zakładkę, aby wyświetlić dane przemysłowe dla kolonii.
 PLANETS_HELP_1C                   | Wojsko - kliknij tę zakładkę, aby wyświetlić dane wojskowe dotyczące kolonii.
 PLANETS_HELP_1D                   | Wydatki kolonii można dostosować tak jak na ekranie głównym.
-PLANETS_HELP_1E                   | Zwiększ produkcję kolonii nawet do 50%, przenosząc fundusze ze skarbca imperialnego.
+PLANETS_HELP_1E                   | Zwiększ produkcję kolonii nawet do 100%, przenosząc fundusze ze skarbca imperialnego.
 PLANETS_HELP_1F                   | Dochód ogółem twojego imperium.
 PLANETS_HELP_1G                   | Wydatki ogółem twojego imperium wyrażone jako procent dochodu.
 PLANETS_HELP_1H                   | Nałóż podatek na swe kolonie aby zasilić skarbiec imperialny. Opcjonalnie ogranicz ten podatek tylko do kolonii, które zakończyły wydatki na Ekologię, Przemysł i Obronę.

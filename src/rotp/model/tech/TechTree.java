@@ -364,7 +364,6 @@ public final class TechTree implements Base, Serializable {
     public void equalizeAllocations() {
 		if (isShiftDown()) { // Equalize fields with allocations
 			int freeAlloc = TechCategory.MAX_ALLOCATION_TICKS;
-			int count = category.length;
 			List<TechCategory> toEqualize = new ArrayList<>();
 			for (TechCategory cat: category)
 				if (cat.locked())

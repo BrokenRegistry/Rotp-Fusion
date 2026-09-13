@@ -1504,7 +1504,7 @@ PLANETS_HELP_1B					| « Industrie »<br> Cliquez sur cet onglet pour afficher
 PLANETS_HELP_1BUD				| « Budget »<br> Cliquez sur cet onglet pour afficher les informations budgétaires des colonies.
 PLANETS_HELP_1C					| « Armée »<br> Cliquez sur cet onglet pour afficher les données militaires des colonies.
 PLANETS_HELP_1D                   | Les dépenses de la colonie peuvent être ajustées comme sur l’écran principal.
-PLANETS_HELP_1E                   | Augmentez la production de la colonie jusqu’à 50 % en transférant des fonds du trésor de l’empire.
+PLANETS_HELP_1E                   | Augmentez la production de la colonie jusqu’à 100 % en transférant des fonds du trésor de l’empire.
 PLANETS_HELP_1F                   | Revenu total de votre empire.<br>Les revenus commerciaux sont redistribués aux colonies proportionnellement à leur production.
 PLANETS_HELP_1G                   | Dépenses totales pour votre empire exprimées en pourcentage de revenu.
 PLANETS_HELP_1H                   | Prélevez une taxe sur vos colonies à ajouter au trésor de l’empire. En option, limitez cette taxe aux seules colonies qui ont terminé leurs dépenses d’écologie, d’industrie et de défense.

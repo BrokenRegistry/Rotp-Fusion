@@ -3000,7 +3000,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			}
 			if (fromInd) {
 				int ticks = industry().allocation();
-				int minTick = ceil(industry().maxSpendingNeeded() / MAX_TICKS);
+				int minTick = industry().maxAllocationNeeded();
 				int adj = ticks - minTick;
 				if (adj > 0) {
 					adj = min(adj, tickNeeded);

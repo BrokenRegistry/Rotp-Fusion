@@ -785,7 +785,7 @@ PLANETS_HELP_1A                   | Ecologia - Seleciona este separador para ver
 PLANETS_HELP_1B                   | Indústria - Seleciona este separador para ver os dados industriais das colónias.
 PLANETS_HELP_1C                   | Militar - Seleciona este separador para ver os dados militares das colónias.
 PLANETS_HELP_1D                   | As despesas da colónia podem ser ajustadas no ecrã/tela principal.
-PLANETS_HELP_1E                   | Aumenta a produção na colónia em até 50% transferindo fundos do tesouro público do império.
+PLANETS_HELP_1E                   | Aumenta a produção na colónia em até 100% transferindo fundos do tesouro público do império.
 PLANETS_HELP_1F                   | Rendimento total do império.
 PLANETS_HELP_1G                   | O total dos gastos do império expresso em tributação progressiva.
 PLANETS_HELP_1H                   | Coleta impostos nas tuas colónias para expandir o tesouro do império. Tens a opção de restringir esta tributação apenas às colónias que tenham completado os seus investimentos em Ecologia, Indústria e Defesa.

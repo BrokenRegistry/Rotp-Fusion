@@ -788,7 +788,7 @@ PLANETS_HELP_1A                   | 生态：单击以展示殖民地的生态�
 PLANETS_HELP_1B                   | 工业：单击以展示殖民地的工业数据。
 PLANETS_HELP_1C                   | 军事：单击以展示殖民地的军事数据。
 PLANETS_HELP_1D                   | 可以在右侧界面修改殖民地的支出分配。
-PLANETS_HELP_1E                   | 从国库转移资金到殖民地，至多增加殖民地50%的产出。
+PLANETS_HELP_1E                   | 从国库转移资金到殖民地，至多增加殖民地100%的产出。
 PLANETS_HELP_1F                   | 你帝国的总产出。
 PLANETS_HELP_1G                   | 你帝国的开支情况，以收入的百分比形式展现。
 PLANETS_HELP_1H                   | 对殖民地征税以增加国库收入。可以只对已经完成生态、工业和防御建设的殖民地征税。

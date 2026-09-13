@@ -785,7 +785,7 @@ PLANETS_HELP_1A                   | Ecologie - Faceți clic pe această filă pe
 PLANETS_HELP_1B                   | Industrie - Faceți clic pe această filă pentru a afișa datele industriale pentru colonii.
 PLANETS_HELP_1C                   | Forțe Militare - Faceți clic pe această filă pentru a afișa datele militare pentru colonii.
 PLANETS_HELP_1D                   | Cheltuielile coloniale pot fi ajustate ca pe ecranul principal.
-PLANETS_HELP_1E                   | Creșteți producția colonială cu până la 50% prin transferul de fonduri din trezoreria imperiului.
+PLANETS_HELP_1E                   | Creșteți producția colonială cu până la 100% prin transferul de fonduri din trezoreria imperiului.
 PLANETS_HELP_1F                   | Veniturile Totale ale Imperiului.
 PLANETS_HELP_1G                   | Cheltuieli Totale ale Imperiului exprimate ca un procent din venituri.
 PLANETS_HELP_1H                   | Colectați o taxă asupra coloniilor dvs. pentru a o adăuga la trezoreria imperiului. Opțional, limitați această taxă numai la coloniile care și-au finalizat cheltuielile de Ecologie, Industrie și Apărare.

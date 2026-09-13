@@ -791,7 +791,7 @@ PLANETS_HELP_1A                   | Ekologi - Klik tab ini untuk menampilkan dat
 PLANETS_HELP_1B                   | Industri - Klik tab ini untuk menampilkan data industri koloni.
 PLANETS_HELP_1C                   | Militer - Klik tab ini untuk menampilkan data militer koloni.
 PLANETS_HELP_1D                   | Pengeluaran koloni bisa disesuaikan sebagaimana yang ada di layar utama.
-PLANETS_HELP_1E                   | Tingkatkan produksi koloni sampai 50% dengan cara mentransfer dana dari harta kekaisaran.
+PLANETS_HELP_1E                   | Tingkatkan produksi koloni sampai 100% dengan cara mentransfer dana dari harta kekaisaran.
 PLANETS_HELP_1F                   | Pendapatan total bagi kekaisaranmu.
 PLANETS_HELP_1G                   | Pengeluaran total bagi kekaisaranmu ditampilkan sebagai pct dari pendapatan.
 PLANETS_HELP_1H                   | Angkat pajak dari kolonimu untuk menambah harta kekaisaran. Bisa memilih untuk membatasi pajak ini hanya untuk koloni yang telah memenuhi pengeluaran ekologi, industri, dan pertahanan militer.

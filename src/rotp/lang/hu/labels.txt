@@ -786,7 +786,7 @@ PLANETS_HELP_1A                   | Ökológia - erre a fülre kattintva megjele
 PLANETS_HELP_1B                   | Ipar - erre a fülre kattintva megjeleníthetők a gyarmatok ipari adati.
 PLANETS_HELP_1C                   | Hadsereg - erre a fülre kattintva megjeleníthetők a gyarmatok hadi adati.
 PLANETS_HELP_1D                   | A gyarmatok költései ugyanúgy állíthatók, mint a fő képernyőn.
-PLANETS_HELP_1E                   | Növelje a gyarmat termelését akár 50%-kal a birodalmi kincstár pénzeszközeinek átutalásával.
+PLANETS_HELP_1E                   | Növelje a gyarmat termelését akár 100%-kal a birodalmi kincstár pénzeszközeinek átutalásával.
 PLANETS_HELP_1F                   | A birodalom teljes jövedelme.
 PLANETS_HELP_1G                   | A birodalom teljes költése jövedelmi szálaékban kifejezve.
 PLANETS_HELP_1H                   | Gyarmatok megadóztatása a birodalmi kincstár gyarapítása érdekében. Opcionálisan, az adóztatás korlátozható csupán azokra a gyarmatokra, amelyek befejezték ökológiai, ipari és védelmi költéseiket.

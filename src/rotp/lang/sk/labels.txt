@@ -791,7 +791,7 @@ PLANETS_HELP_1A                   | Ekológia - kliknutím na túto kartu zobraz
 PLANETS_HELP_1B                   | Priemysel - kliknutím na túto kartu zobrazíte priemyselné údaje pre kolónie.
 PLANETS_HELP_1C                   | Vojenské údaje - kliknutím na túto kartu zobrazíte vojenské údaje pre kolónie.
 PLANETS_HELP_1D                   | Tu môžete upraviť výdavky danej kolónie.
-PLANETS_HELP_1E                   | Zvýšte produkciu kolónie až o 50% presunom prostriedkov z pokladnice ríše.
+PLANETS_HELP_1E                   | Zvýšte produkciu kolónie až o 100% presunom prostriedkov z pokladnice ríše.
 PLANETS_HELP_1F                   | Celkový príjem vášej ríše.
 PLANETS_HELP_1G                   | Celkové výdavky vašej ríši vyjadrené ako percento príjmov.
 PLANETS_HELP_1H                   | Vyberajte daň zo svojich kolónií, aby ste naplnili pokladnicu. Túto daň môžete uvaliť len na kolónie, ktoré už dokončili svoje výdavky na ekológiu, priemysel a obranu.

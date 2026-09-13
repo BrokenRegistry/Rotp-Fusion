@@ -507,7 +507,9 @@
 
 ### Fixes:
 
-26-09-12 (BR)
+- Fixed the budget algorithm which was going astray due to negative fundraising...
+- Fixed help tooltip for maximum production transfer from 50% to 100%.
+  - This in all languages, hoping that it won't produce too many grammatical errors...
 - Fixed a potential concurrent exception.
 - Fixed occasional crash issue when selecting a stolen tech.
 - DNA Workshop:

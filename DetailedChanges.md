@@ -2,6 +2,11 @@
 
 ## What's New
 
+26-09-13 (BR)
+- Fixed the budget algorithm which was going astray due to negative fundraising...
+- Fixed help tooltip for maximum production transfer from 50% to 100%.
+  - This in all languages, hoping that it won't produce too many grammatical errors...
+
 26-09-12 (BR)
 - Fixed a potential concurrent exception.
 - Fixed occasional crash issue when selecting a stolen tech.

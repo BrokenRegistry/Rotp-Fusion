@@ -787,7 +787,7 @@ PLANETS_HELP_1A                   | Ecologia - Clicca su questa scheda per visua
 PLANETS_HELP_1B                   | Industria - Clicca su questa scheda per visualizzare i dati industriali per le colonie.
 PLANETS_HELP_1C                   | Forze Armate - Clicca su questa scheda per visualizzare i dati militari per le colonie.	
 PLANETS_HELP_1D                   | La spesa della colonia può essere regolata come nella schermata principale.
-PLANETS_HELP_1E                   | Aumenta la produzione della colonia fino al 50% trasferendo fondi dalla tesoreria dell'impero.
+PLANETS_HELP_1E                   | Aumenta la produzione della colonia fino al 100% trasferendo fondi dalla tesoreria dell'impero.
 PLANETS_HELP_1F                   | Reddito Totali per il tuo impero.
 PLANETS_HELP_1G                   | Spesa Totale per il tuo impero espressa in percentuale del reddito.
 PLANETS_HELP_1H                   | Impostare una tassa sulle tue colonie da aggiungere al tesoro dell'impero. Limitare facoltativamente questa tassa alle sole colonie che hanno completato la spesa per l'ecologia, l'industria e la difesa.

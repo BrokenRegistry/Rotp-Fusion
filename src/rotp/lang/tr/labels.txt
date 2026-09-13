@@ -786,7 +786,7 @@ PLANETS_HELP_1A                   | Ekoloji - Kolonilerin ekolojik verilerini g�
 PLANETS_HELP_1B                   | Sanayi - Kolonilerin endüstriyel verilerini göstermek için bu sekmeyi tıkla.
 PLANETS_HELP_1C                   | Askeri - Kolonilerin askeri verilerini göstermek için bu sekmeyi tıkla.
 PLANETS_HELP_1D                   | Koloni harcamaları ana ekrandaki gibi ayarlanabilir.
-PLANETS_HELP_1E                   | İmparatorluk hazinesinden fon aktararak koloni üretimini yüzde 50'ye kadar artırın.
+PLANETS_HELP_1E                   | İmparatorluk hazinesinden fon aktararak koloni üretimini yüzde 100'ye kadar artırın.
 PLANETS_HELP_1F                   | İmparatorluğun Toplam Geliri.
 PLANETS_HELP_1G                   | İmparatorluğun için Toplam Harcama, gelirin yüzdesi olarak ifade edilir.
 PLANETS_HELP_1H                   | İmparatorluk hazinesini büyütmek için kolonilerinizden vergi alın. İstersen, bu vergiyi yalnızca Ekoloji, Sanayi ve Savunma harcamalarını tamamlamış kolonilerle sınırlandırabilirsin.
