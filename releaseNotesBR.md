@@ -12,6 +12,7 @@ When updating, you can reuse the same folder.
 <b><ins>Very last changes:</ins></b>
 
 26-09-13 (BR)
+- New option to Restore the original MoO1 ship combat maneuver power requirement.
 - Fixed the budget algorithm which was going astray due to negative fundraising...
 - Fixed help tooltip for maximum production transfer from 50% to 100%.
   - This in all languages, hoping that it won't produce too many grammatical errors...

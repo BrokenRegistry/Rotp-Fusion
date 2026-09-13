@@ -3254,6 +3254,11 @@ SETTINGS_MOD_MOO1_MINIATURIZE_YES_DESC	| Appliquer les règles de miniaturisatio
 SETTINGS_MOD_MOO1_MINIATURIZE_NO_DESC	| Conserver les règles de miniaturisation des composants de vaisseau de l’édition originale de RotP.
 SETTINGS_MOD_MOO1_MINIATURIZE			| Miniaturisation de MoO1 : %1
 
+SETTINGS_MOD_MOO1_MANEUVER_PWR_DESC		| Dans RotP, contrairement à MoO1, la puissance requise pour pour augmenter la vitesse de combat est divisée par le niveau des moteurs.
+SETTINGS_MOD_MOO1_MANEUVER_PWR_YES_DESC	| Restaurez les besoins d'origine en puissance de manœuvre de combat des vaisseaux de MoO1.
+SETTINGS_MOD_MOO1_MANEUVER_PWR_NO_DESC	| Conserver les valeurs de puissances de manœuvre de combat de l’édition originale de RotP.
+SETTINGS_MOD_MOO1_MANEUVER_PWR			| Manœuvres de MoO1 : %1
+
 SETTINGS_MOD_MONSTER_RETREAT_HELP		| →SETTINGS_MOD_MONSTER_RETREAT_DESC←<br>Comme les IA ne connaissent pas à l’avance le niveau des monstres, leur interdire de battre en retraite face à eux est particulièrement injuste.
 SETTINGS_MOD_MONSTER_RETREAT_DESC		| Lors d’un combat contre un monstre, toujours permettre à la flotte de battre en retraite.
 SETTINGS_MOD_MONSTER_RETREAT			| Retraite contre Monstres : %1

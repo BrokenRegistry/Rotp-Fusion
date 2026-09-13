@@ -9,6 +9,7 @@ import rotp.model.galaxy.SpaceCrystal;
 import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.model.tech.Tech;
+import rotp.model.tech.TechEngineWarp;
 import rotp.ui.util.ParamTitle;
 
 final class MoO1RulesOptions extends AbstractOptionsSubUI {
@@ -65,7 +66,8 @@ final class MoO1RulesOptions extends AbstractOptionsSubUI {
 				new ParamTitle("MOO1_SHIP_DESIGN"),
 				missileBaseModifier,
 				missileShipModifier,
-				Tech.moo1Miniaturization
+				Tech.moo1Miniaturization,
+				TechEngineWarp.moo1ManeuverPower
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("MOO1_RANDOMNESS"),

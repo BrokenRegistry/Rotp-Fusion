@@ -16,13 +16,17 @@
 package rotp.model.tech;
 
 import rotp.model.empires.Empire;
+import rotp.model.game.DefaultValues;
+import rotp.model.game.IBaseOptsTools;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipEngine;
 import rotp.model.ships.ShipManeuver;
 import rotp.ui.main.overlay.MapOverlayAdvice;
+import rotp.ui.util.ParamBoolean;
 
 public final class TechEngineWarp extends Tech {
 	public static final String KEY = "EngineWarp";
+	private static final int[] baseManeuverSize = {2, 15, 100, 700};
     private int baseWarp;
     //public String shName;
 
@@ -115,23 +119,12 @@ public final class TechEngineWarp extends Tech {
         }
         return (23 + (baseWarp * 3));
     }
-    /* public float baseManeuverSize(int size, int engineWarp) {
-        switch (size) {
-            case ShipDesign.SMALL:  return 2;
-            case ShipDesign.MEDIUM: return 15;
-            case ShipDesign.LARGE:  return 100;
-            case ShipDesign.HUGE:   return 700;
-        }
-        return 0;
-    } */
-    public float baseManeuverPower(int size, int engineWarp) {
-        switch (size) {
-            case ShipDesign.SMALL:  return 2 * baseWarp / engineWarp;
-            case ShipDesign.MEDIUM: return 15 * baseWarp / engineWarp;
-            case ShipDesign.LARGE:  return 100 * baseWarp / engineWarp;
-            case ShipDesign.HUGE:   return 700 * baseWarp / engineWarp;
-        }
-        return 0;
-    }
+	private float baseManeuverSize(int size)	{ return (size>=0 && size<=4) ? baseManeuverSize[size] * baseWarp : 0; }
+	public float baseManeuverPower(int size, int engineWarp) {
+		return moo1ManeuverPower.get() ? baseManeuverSize(size) : baseManeuverSize(size) / engineWarp;
+	}
 	@Override public boolean isEngineWarpTech()	{ return true; }
+
+	public static final ParamBoolean moo1ManeuverPower = new ParamBoolean(IBaseOptsTools.MOD_UI, "MOO1_MANEUVER_PWR", false)
+			.setDefaultValue(DefaultValues.MOO1_DEFAULT, true);
 }

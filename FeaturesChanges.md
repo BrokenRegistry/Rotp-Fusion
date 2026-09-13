@@ -22,6 +22,7 @@
 
 ### Features:
 
+- New option to Restore the original MoO1 ship combat maneuver power requirement.
 - New option to select how the ship repulsors works.
   - As in Moo1: You can access the cells adjacent to the repulsors, which are not highlighted.
   - As in Original RotP: Access to the cells adjacent to the repulsors is prohibited.
