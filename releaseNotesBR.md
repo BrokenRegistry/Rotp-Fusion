@@ -12,6 +12,9 @@ When updating, you can reuse the same folder.
 <b><ins>Very last changes:</ins></b>
 
 26-09-14 (BR)
+- Accrued ship production column:
+  - Will display the values before and (after) ship building when they are different.
+  - These values will be updated, even if not displayed on the right panel.
 - Fixed Governor investing in unbuildable factories.
 - The accrued ship production computed by the last time estimation will be memorized and displayed in place of the "Official" Next turn one.
 - The governor will be called after selecting a new ship in the colonies panel too.

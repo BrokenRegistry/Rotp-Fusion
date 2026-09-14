@@ -38,7 +38,8 @@ public class ColonyShipyard extends ColonySpendingCategory {
     private float stargateBC = 0;
     private float shipBC = 0;
     private float shipReserveBC = 0;
-    private float tmpShipReserveBC = 0;
+    private float shipAccruedBC = 0;
+    private float unusedAccruedBC = 0;
     private boolean stargateCompleted = false;
     private int buildLimit = 0;
     private boolean shipLimitReached = false;
@@ -53,10 +54,13 @@ public class ColonyShipyard extends ColonySpendingCategory {
     private float queuedBC = 0;
     private int desiredShips = 0;
 
-	public float shipAccruedBC()			{ return tmpShipReserveBC; }// for UI only
-	private void shipReserveBC(float bc)	{
-		shipReserveBC = bc;
-		tmpShipReserveBC = bc;
+	public float shipAccruedBC()			{ return shipAccruedBC; }	// for UI only
+	public float unusedShipAccruedBC()		{ return unusedAccruedBC; }	// for UI only
+	public String shipAccruedBCStr()		{
+		upcomingShipCount();	// To actualize the values
+		if (shipAccruedBC == unusedAccruedBC)
+			return str((int)shipAccruedBC);
+		return (int)shipAccruedBC + " (" + (int)unusedAccruedBC + ")";
 	}
 
 	private ShipFleet rallyFleetCopy()	{
@@ -102,7 +106,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 			if (prevDesign instanceof DesignStargate)
 				stargateBC += shipBC;
 			else
-				shipReserveBC(shipReserveBC + shipBC);
+				shipReserveBC += shipBC;
 			shipBC = 0;
 		}
 		// prod gets planetary bonus, but not reserve
@@ -112,11 +116,14 @@ public class ColonyShipyard extends ColonySpendingCategory {
 		float newBC = prodBC+rsvBC;
 		float cost = design.cost();
 		newShips = 0;
+		shipAccruedBC = shipReserveBC;
+		unusedAccruedBC = shipReserveBC;
 
-		if (colony().allocation(categoryType()) == 0 && buildLimit() == 0)
+		if (colony().allocation(categoryType()) == 0 && buildLimit() == 0) {
 			// BR: if ship are requested, check if current BC can build the ship
 			// A new tech may have lowered the ship cost, so no additional spending is required.
 			return;
+		}
 		// should never happen anymore, but hey
 		if (buildingObsoleteDesign()) {
 			empire().addReserve(newBC);
@@ -146,7 +153,8 @@ public class ColonyShipyard extends ColonySpendingCategory {
 			float shipRsvBC = min(prodBC, shipReserveBC);
 			shipBC += newBC;
 			shipBC += shipRsvBC;
-			shipReserveBC(shipReserveBC - shipRsvBC);
+			shipReserveBC -= shipRsvBC;
+			unusedAccruedBC = shipReserveBC;
 			if (buildLimit() == 0) {
 				while (shipBC >= cost) {
 					newShips++;
@@ -370,7 +378,9 @@ public class ColonyShipyard extends ColonySpendingCategory {
         stargateCompleted = false;
         stargateBC = 0;
         shipBC = 0;
-        shipReserveBC(0);
+        shipReserveBC = 0;
+		shipAccruedBC = 0;
+		unusedAccruedBC = 0;
         newShips = 0;
         buildLimit(0);
         resetQueueData();
@@ -422,8 +432,11 @@ public class ColonyShipyard extends ColonySpendingCategory {
     	return upcomingShipCount(pct());
     }
     private int upcomingShipCount(float pct) {
-		tmpShipReserveBC = shipReserveBC;
+		float tmpShipReserveBC = shipReserveBC;
         float tmpShipBC = shipBC;
+//		System.out.println("upcomingShipCount: tmpShipReserveBC = " + (int)tmpShipReserveBC
+//				+  " / shipAccruedBC = " + (int)shipAccruedBC
+//				+ " / unusedAccruedBC = " + (int)unusedAccruedBC);
 //        float tmpStargateBC = stargateBC;
         float accumBC = buildingStargate ? stargateBC : shipBC;
         // if we switched designs, send previous ship BC to shipyard reserve
@@ -436,19 +449,30 @@ public class ColonyShipyard extends ColonySpendingCategory {
 //                tmpShipReserveBC += tmpShipBC;
             accumBC = 0;
         }
+		shipAccruedBC = tmpShipReserveBC;
+		unusedAccruedBC = tmpShipReserveBC;
+//		System.out.println("upcomingShipCount: tmpShipReserveBC = " + (int)tmpShipReserveBC
+//				+  " / shipAccruedBC = " + (int)shipAccruedBC
+//				+ " / unusedAccruedBC = " + (int)unusedAccruedBC);
         float prodBC = pct * colony().totalProductionIncome() * planet().productionAdj();
         float rsvBC  = pct * colony().maxReserveIncome();
         float newBC  = prodBC + rsvBC;
         float totalBC = max(newBC + accumBC, 0);
         float cost = design.cost();
 
-        // add BC from shipyard reserve if buildings(ship rsv is capped by prod)
-        if (!buildingStargate) 
-            totalBC = totalBC+min(tmpShipReserveBC,prodBC);
+		// add BC from shipyard reserve if buildings(ship rsv is capped by prod)
+		if (!buildingStargate) {
+			float fromReserve = min(tmpShipReserveBC,prodBC);
+			unusedAccruedBC -= fromReserve;
+			totalBC += fromReserve;
+		}
+//		System.out.println("upcomingShipCount: tmpShipReserveBC = " + (int)tmpShipReserveBC
+//				+  " / shipAccruedBC = " + (int)shipAccruedBC
+//				+ " / unusedAccruedBC = " + (int)unusedAccruedBC);
 
         if (totalBC < cost)
             return 0;
-        
+
         if (buildingStargate)
             return 1;
         if (buildLimit() == 0) 
@@ -496,8 +520,11 @@ public class ColonyShipyard extends ColonySpendingCategory {
         if (colony().allocation(categoryType()) == 0 && buildLimit() == 0)
             return noneText;
 
-		tmpShipReserveBC = shipReserveBC;
+		float tmpShipReserveBC = shipReserveBC;
         float tmpShipBC = shipBC;
+//		System.out.println("upcomingResult: tmpShipReserveBC = " + (int)tmpShipReserveBC
+//				+  " / shipAccruedBC = " + (int)shipAccruedBC
+//				+ " / unusedAccruedBC = " + (int)unusedAccruedBC);
 //        float tmpStargateBC = stargateBC;
         float accumBC = buildingStargate ? stargateBC : shipBC;
         // if we switched designs, send previous ship BC to shipyard reserve
@@ -516,10 +543,16 @@ public class ColonyShipyard extends ColonySpendingCategory {
         float totalBC = max(newBC+accumBC, 0);
         float cost = design.cost();
         float fromReserve = 0;
+		shipAccruedBC = tmpShipReserveBC;
+		unusedAccruedBC = tmpShipReserveBC;
+//		System.out.println("upcomingResult: tmpShipReserveBC = " + (int)tmpShipReserveBC
+//				+  " / shipAccruedBC = " + (int)shipAccruedBC
+//				+ " / unusedAccruedBC = " + (int)unusedAccruedBC);
 
-        // add BC from shipyard reserve if buildling ship (ship rsv is capped by prod)
-        if (!buildingStargate) 
-        	fromReserve = min(tmpShipReserveBC,prodBC);
+		// add BC from shipyard reserve if buildings(ship rsv is capped by prod)
+		if (!buildingStargate)
+			fromReserve = min(tmpShipReserveBC,prodBC);
+		unusedAccruedBC -= fromReserve;
         totalBC += fromReserve;
 
         if (totalBC == 0)
@@ -557,6 +590,9 @@ public class ColonyShipyard extends ColonySpendingCategory {
                     return text(yearsText, turns);
             }
         }
+//		System.out.println("upcomingResult: tmpShipReserveBC = " + (int)tmpShipReserveBC
+//				+  " / shipAccruedBC = " + (int)shipAccruedBC
+//				+ " / unusedAccruedBC = " + (int)unusedAccruedBC);
 
         // if building stargate, anything after 1 is overflow
         if (buildingStargate)
@@ -568,7 +604,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
             if (ships == 1)
                 return text(yearText, "1");
             else
-                return text(perYearText, ships);            
+                return text(perYearText, ships);
         }
 
 		// BR: Build limit is > 0 -> show number of ship are built first.

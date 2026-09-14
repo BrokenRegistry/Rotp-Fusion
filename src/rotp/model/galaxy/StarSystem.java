@@ -605,7 +605,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 			case "SUBSIDY":			return colony().budget().budgetSubsidiesStr();
 			case "CONTRIBUTE":		return Integer.toString((int)colony().budget().budgetContributeBC());
 			case "TAXED":			return Integer.toString((int)colony().budget().budgetTaxedBC());
-			case "ACCRUED":			return str((int)colony().shipyard().shipAccruedBC());
+			case "ACCRUED":			return colony().shipyard().shipAccruedBCStr();
             case "BASES":            return str(empire().sv.bases(id));
             case "SHIPYARD":         return colony().shipyardProject();
             case "DELTA_BASES":      return str(empire().sv.deltaBases(id));

@@ -1206,7 +1206,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		Column subsidyCol	= listingUI.newSystemDataColumn("PLANETS_LIST_SUBSIDY",		"SUBSIDY",		s55, palette.black,	StarSystem.COLONY_SUBSIDIES,RIGHT);
 		Column allocateCol	= listingUI.newSystemDataColumn("PLANETS_LIST_CONTRIBUTE",	"CONTRIBUTE",	s55, palette.black,	StarSystem.COLONY_CONTRIBUTE,RIGHT);
 		Column taxedCol		= listingUI.newSystemDataColumn("PLANETS_LIST_TAXED",		"TAXED",		s55, palette.black,	StarSystem.COLONY_TAXED,	RIGHT);
-		Column accruedCol	= listingUI.newSystemDataColumn("PLANETS_LIST_ACCRUED",		"ACCRUED",		s50, palette.black,	StarSystem.ACCRUED,			RIGHT);
+		Column accruedCol	= listingUI.newSystemDataColumn("PLANETS_LIST_ACCRUED",		"ACCRUED",		s75, palette.black,	StarSystem.ACCRUED,			LEFT);
 
 		Column populationCol= listingUI.newSystemDeltaDataColumn("PLANETS_LIST_POPULATION",	"POPULATION",s85,palette.black,	StarSystem.POPULATION,	RIGHT);
 		Column factoriesCol	= listingUI.newSystemDeltaDataColumn("PLANETS_LIST_FACTORIES",	"FACTORIES",s85, palette.black,	StarSystem.FACTORIES,	RIGHT);
