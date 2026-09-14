@@ -38,6 +38,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
     private float stargateBC = 0;
     private float shipBC = 0;
     private float shipReserveBC = 0;
+    private float tmpShipReserveBC = 0;
     private boolean stargateCompleted = false;
     private int buildLimit = 0;
     private boolean shipLimitReached = false;
@@ -51,6 +52,12 @@ public class ColonyShipyard extends ColonySpendingCategory {
     // used by the AI when determining what to build
     private float queuedBC = 0;
     private int desiredShips = 0;
+
+	public float shipAccruedBC()			{ return tmpShipReserveBC; }// for UI only
+	private void shipReserveBC(float bc)	{
+		shipReserveBC = bc;
+		tmpShipReserveBC = bc;
+	}
 
 	private ShipFleet rallyFleetCopy()	{
 		if (rallyFleetCopy == null)
@@ -95,7 +102,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 			if (prevDesign instanceof DesignStargate)
 				stargateBC += shipBC;
 			else
-				shipReserveBC += shipBC;
+				shipReserveBC(shipReserveBC + shipBC);
 			shipBC = 0;
 		}
 		// prod gets planetary bonus, but not reserve
@@ -139,7 +146,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 			float shipRsvBC = min(prodBC, shipReserveBC);
 			shipBC += newBC;
 			shipBC += shipRsvBC;
-			shipReserveBC -= shipRsvBC;
+			shipReserveBC(shipReserveBC - shipRsvBC);
 			if (buildLimit() == 0) {
 				while (shipBC >= cost) {
 					newShips++;
@@ -363,7 +370,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
         stargateCompleted = false;
         stargateBC = 0;
         shipBC = 0;
-        shipReserveBC = 0;
+        shipReserveBC(0);
         newShips = 0;
         buildLimit(0);
         resetQueueData();
@@ -415,7 +422,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
     	return upcomingShipCount(pct());
     }
     private int upcomingShipCount(float pct) {
-        float tmpShipReserveBC = shipReserveBC;
+		tmpShipReserveBC = shipReserveBC;
         float tmpShipBC = shipBC;
 //        float tmpStargateBC = stargateBC;
         float accumBC = buildingStargate ? stargateBC : shipBC;
@@ -489,7 +496,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
         if (colony().allocation(categoryType()) == 0 && buildLimit() == 0)
             return noneText;
 
-        float tmpShipReserveBC = shipReserveBC;
+		tmpShipReserveBC = shipReserveBC;
         float tmpShipBC = shipBC;
 //        float tmpStargateBC = stargateBC;
         float accumBC = buildingStargate ? stargateBC : shipBC;

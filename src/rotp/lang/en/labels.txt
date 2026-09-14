@@ -3259,6 +3259,11 @@ SETTINGS_MOD_MOO1_MANEUVER_PWR_YES_DESC	| Restore the original MoO1 combat maneu
 SETTINGS_MOD_MOO1_MANEUVER_PWR_NO_DESC	| Keep the power values ​​from the original edition of RotP.
 SETTINGS_MOD_MOO1_MANEUVER_PWR			| MoO1 Maneuver Power: %1
 
+SETTINGS_MOD_MOO1_WEAPON_COST_DESC		| In RotP, the cost of weapons is a little higher than in the Original MoO1 game.
+SETTINGS_MOD_MOO1_WEAPON_COST_YES_DESC	| Restore the original MoO1 weapon cost.
+SETTINGS_MOD_MOO1_WEAPON_COST_NO_DESC	| Keep the weapon cost values ​​from the original edition of RotP.
+SETTINGS_MOD_MOO1_WEAPON_COST			| MoO1 Weapon Cost: %1
+
 SETTINGS_MOD_MONSTER_RETREAT_HELP		| →SETTINGS_MOD_MONSTER_RETREAT_DESC←<br>Since AIs don’t know the monsters’ levels in advance, preventing them from retreating against them is particularly unfair.
 SETTINGS_MOD_MONSTER_RETREAT_DESC		| Always allow the fleet to retreat when fighting a monster.
 SETTINGS_MOD_MONSTER_RETREAT			| Retreat Against Monsters: %1

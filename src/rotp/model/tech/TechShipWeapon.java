@@ -48,12 +48,10 @@ import rotp.model.ships.ShipWeaponBeam;
 import rotp.ui.combat.ShipBattleUI;
 import rotp.ui.main.overlay.MapOverlayAdvice;
 
-public final class TechShipWeapon extends Tech {
+public final class TechShipWeapon extends TechMoO1Cost {
 	private static int WIND_UP_FRAMES = 3;
 	private static int HOLD_FRAMES = 0;
 
-	private final int s10 = scaled(10);
-	
     private int damageLow = 0;
     private int damageHigh = 0;
     public int range = 1;
@@ -102,6 +100,7 @@ public final class TechShipWeapon extends Tech {
         free = b;
         init();
     }
+
     @Override
     public boolean canBeMiniaturized()      { return true; }
     @Override
@@ -117,7 +116,7 @@ public final class TechShipWeapon extends Tech {
                 heavyAllowed = true;
                 heavyDamageLow = 1;
                 heavyDamageHigh = 7;
-                cost = 8;
+				cost(8f, 3f);
                 size = 10;
                 power = 25;
                 beamColor = new Color(0x9f,0x33,0x35);
@@ -128,7 +127,7 @@ public final class TechShipWeapon extends Tech {
                 damageLow = 1;
                 damageHigh = 4;
                 attacksPerRound = 4;
-                cost = 20;
+				cost(20f, 9f);
                 size = 20;
                 power = 70;
                 beamColor = new Color(0xbd,0x23,0x3a);
@@ -140,7 +139,7 @@ public final class TechShipWeapon extends Tech {
                 damageLow = 2;
                 damageHigh = 5;
                 enemyShieldMod = .5f;
-                cost = 7.5f;
+				cost(7.5f, 3f);
                 size = 15;
                 power = 25;
                 beamColor = new Color(0xa8,0xb4,0x85);
@@ -154,7 +153,7 @@ public final class TechShipWeapon extends Tech {
                 heavyAllowed = true;
                 heavyDamageLow = 3;
                 heavyDamageHigh = 15;
-                cost = 10;
+				cost(10f, 4f);
                 size = 15;
                 power = 35;
                 beamColor = new Color(0xa4,0x7b,0x56);
@@ -166,7 +165,7 @@ public final class TechShipWeapon extends Tech {
                 damageLow = 5;
                 damageHigh = 8;
                 enemyShieldMod = .5f;
-                cost = 18;
+				cost(18f, 9f);
                 size = 55;
                 power = 50;
                 beamColor = new Color(0xac,0xac,0xac);
@@ -180,7 +179,7 @@ public final class TechShipWeapon extends Tech {
                 heavyAllowed = true;
                 heavyDamageLow = 3;
                 heavyDamageHigh = 24;
-                cost = 15;
+				cost(15f, 6f);
                 size = 20;
                 power = 60;
                 beamColor = new Color(0x3c,0x03,0x78);
@@ -194,7 +193,7 @@ public final class TechShipWeapon extends Tech {
                 streaming = true;
                 weaponSpread = 4;
                 holdFrames = 6;
-                cost = 12;
+				cost(12f, 6f);
                 size = 30;
                 power = 60;
                 beamColor = new Color(0x28,0x00,0x7e);
@@ -207,7 +206,7 @@ public final class TechShipWeapon extends Tech {
                 damageLow = 8;
                 damageHigh = 12;
                 enemyShieldMod = .5f;
-                cost = 25;
+				cost(25f, 12f);
                 size = 50;
                 power = 100;
                 beamColor = new Color(0xf0,0xb5,0x6e);
@@ -221,7 +220,7 @@ public final class TechShipWeapon extends Tech {
                 heavyAllowed = true;
                 heavyDamageLow = 4;
                 heavyDamageHigh = 30;
-                cost = 13;
+				cost(13f, 7f);
                 size = 20;
                 power = 75;
                 beamColor = new Color(0x0c,0x56,0x0c);
@@ -235,7 +234,7 @@ public final class TechShipWeapon extends Tech {
                 weaponSpread = 4;
                 holdFrames = 6;
                 computer = 3;
-                cost = 16;
+				cost(16f, 8f);
                 size = 30;
                 power = 65;
                 beamColor = new Color(0xe5,0xee,0xbe);
@@ -250,7 +249,7 @@ public final class TechShipWeapon extends Tech {
                 heavyAllowed = true;
                 heavyDamageLow = 5;
                 heavyDamageHigh = 40;
-                cost = 18;
+				cost(18f, 9f);
                 size = 20;
                 power = 90;
                 beamColor = new Color(0xb6,0x07,0x5a);
@@ -262,7 +261,7 @@ public final class TechShipWeapon extends Tech {
                 damageLow = 4;
                 damageHigh = 16;
                 attacksPerRound = 3;
-                cost = 24;
+				cost(24f, 14f);
                 size = 30;
                 power = 90;
                 beamColor = new Color(0x24,0xbe,0x93);
@@ -276,7 +275,7 @@ public final class TechShipWeapon extends Tech {
                 weaponSpread = 4;
                 holdFrames = 6;
                 streaming = true;
-                cost = 18;
+				cost(18f, 9f);
                 size = 30;
                 power = 80;
                 beamColor = new Color(0x36,0x06,0x00);
@@ -289,7 +288,7 @@ public final class TechShipWeapon extends Tech {
                 damageHigh = 10;
                 enemyShieldMod = .5f;
                 attacksPerRound = 4;
-                cost = 40;
+				cost(40f, 28f);
                 size = 105;
                 power = 105;
                 beamColor = new Color(0xac,0xac,0xac);
@@ -301,7 +300,7 @@ public final class TechShipWeapon extends Tech {
                 damageLow = 10;
                 damageHigh = 20;
                 enemyShieldMod = .5f;
-                cost = 26;
+				cost(26f, 15f);
                 size = 90;
                 power = 75;
                 beamColor = new Color(0x3b,0x39,0x48);
@@ -314,7 +313,7 @@ public final class TechShipWeapon extends Tech {
                 damageLow = 6;
                 damageHigh = 30;
                 weaponSpread = 4;
-                cost = 24;
+				cost(24f, 12f);
                 size = 30;
                 power = 110;
                 beamColor = new Color(0xfe,0x29,0x28);
@@ -329,7 +328,7 @@ public final class TechShipWeapon extends Tech {
                 weaponSpread = 7;
                 holdFrames = 6;
                 restricted = true;
-                cost = 120;
+				cost(120f, 55f); // TODO BR: Death ray moo1 cost
                 size = 2000;
                 power = 2000;
                 beamColor = new Color(0x56,0x02,0xc2);
@@ -341,7 +340,7 @@ public final class TechShipWeapon extends Tech {
                 damageLow = 10;
                 damageHigh = 40;
                 range = 2;
-                cost = 100;
+				cost(100f, 21f);
                 size = 70;
                 power = 160;
                 beamColor = new Color(0xa4,0x7b,0x56);
@@ -354,7 +353,7 @@ public final class TechShipWeapon extends Tech {
                 damageHigh = 20;
                 attacksPerRound = 3;
                 holdFrames = 4;
-                cost = 42;
+				cost(42f, 25f);
                 size = 40;
                 power = 120;
                 beamColor = new Color(0xb6,0x07,0x5a);
@@ -366,7 +365,7 @@ public final class TechShipWeapon extends Tech {
                 damageLow = 20;
                 damageHigh = 50;
                 weaponSpread = 2;
-                cost = 55;
+				cost(55f, 25f);
                 size = 65;
                 power = 180;
                 beamColor = new Color(0xfe,0x29,0x28);
@@ -381,7 +380,7 @@ public final class TechShipWeapon extends Tech {
                 weaponSpread = 4;
                 holdFrames = 4;
                 range = 3;
-                cost = 105;
+				cost(105f, 50f);
                 size = 200;
                 power = 300;
                 beamColor = new Color(0xff,0xff,0xb0);
@@ -394,7 +393,7 @@ public final class TechShipWeapon extends Tech {
                 damageHigh = 100;
                 weaponSpread = 7;
                 holdFrames = 4;
-                cost = 120;
+				cost(120f, 55f);
                 size = 150;
                 power = 300;
                 beamColor = new Color(0x00,0xaf,0x7d);
@@ -430,7 +429,7 @@ public final class TechShipWeapon extends Tech {
                 weaponSpread = 3;
                 holdFrames = 3;
                 restricted = true;
-                cost = 15;
+				cost(15f, 15f);
                 size = 20;
                 power = 25;
                 beamColor = Color.blue;
@@ -446,12 +445,6 @@ public final class TechShipWeapon extends Tech {
     public float warModeFactor()        { return 2; }
     @Override
     public boolean providesShipComponent()  { return true; }
-    @Override
-    public float baseCost()   { return cost; }
-    @Override
-    public float baseSize()   { return size; }
-    @Override
-    public float basePower()  { return power; }
     @Override
     public boolean isObsolete(Empire c) {
         return (c.tech().topShipWeaponTech() != null) && (level < c.tech().topShipWeaponTech().level);

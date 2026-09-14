@@ -26,7 +26,7 @@ import rotp.model.ships.ShipWeaponBiological;
 import rotp.ui.BasePanel;
 import rotp.ui.combat.ShipBattleUI;
 
-public final class TechBiologicalWeapon extends Tech {
+public final class TechBiologicalWeapon extends TechMoO1Cost {
     public int minDamage;
     public int maxDamage;
 
@@ -49,21 +49,21 @@ public final class TechBiologicalWeapon extends Tech {
             case 0:
                 minDamage = 1;
                 maxDamage = 1;
-                cost = 12;
+				cost(12f, 10f);
                 size = 100;
                 power = 10;
                 break;
             case 1:
                 minDamage = 1;
                 maxDamage = 2;
-                cost = 16;
+				cost(16f, 15f);
                 size = 200;
                 power = 10;
                 break;
             case 2:
                 minDamage = 1;
                 maxDamage = 3;
-                cost = 20;
+				cost(20f, 20f);
                 size = 300;
                 power = 10;
                 break;

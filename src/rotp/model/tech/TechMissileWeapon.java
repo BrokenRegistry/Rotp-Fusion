@@ -33,7 +33,7 @@ import rotp.model.ships.ShipWeaponMissile;
 import rotp.ui.RotPUI;
 import rotp.ui.combat.ShipBattleUI;
 
-public final class TechMissileWeapon extends Tech {
+public final class TechMissileWeapon extends TechMoO1Cost {
     public static List<String> missileTypes = new ArrayList<>();
     public static List<List<ImageIcon>> missileIcons = new ArrayList<>();
 
@@ -105,7 +105,7 @@ public final class TechMissileWeapon extends Tech {
             case 0: // NUCLEAR MISSILE
                 damage = 4;
                 speed = 3; speed2 = 2;
-                cost = 11;
+				cost(11f, 7f);
                 size = 50;
                 power = 20;
                 shots = 2;  shots2 = 5;
@@ -119,7 +119,7 @@ public final class TechMissileWeapon extends Tech {
                 speed = 3.5f; speed2 = 2.5f;
                 size = 70;
                 power = 20;
-                cost = 12;
+				cost(12f, 9f);
                 shots = 2;  shots2 = 5;
                 range = 7;  range2 = 5;
                 decay = pctToLive(82);
@@ -131,7 +131,7 @@ public final class TechMissileWeapon extends Tech {
                 speed = 3.5f; speed2 = 2.5f;
                 size = 100;
                 power = 20;
-                cost = 14;
+				cost(14f, 12f);
                 computer = 1;
                 shots = 2;  shots2 = 5;
                 range = 7;  range2 = 5;
@@ -144,7 +144,7 @@ public final class TechMissileWeapon extends Tech {
                 speed = 3.5f; speed2 = 2.5f;
                 size = 115;
                 power = 50;
-                cost = 28;
+				cost(28f, 18f);
                 attacks = 5;
                 shots = 2;  shots2 = 5;
                 range = 7;  range2 = 5;
@@ -157,7 +157,7 @@ public final class TechMissileWeapon extends Tech {
                 speed = 4; speed2 = 3;
                 size = 105;
                 power = 20;
-                cost = 15;
+				cost(15f, 13f);
                 computer = 2;
                 shots = 2;  shots2 = 5;
                 range = 8;  range2 = 6;
@@ -170,7 +170,7 @@ public final class TechMissileWeapon extends Tech {
                 speed = 4.5f; speed2 = 3.5f;
                 size = 155;
                 power = 30;
-                cost = 25;
+				cost(25f, 19f);
                 computer = 3;
                 shots = 2;  shots2 = 5;
                 range = 9;  range2 = 7;
@@ -181,7 +181,7 @@ public final class TechMissileWeapon extends Tech {
             case 6: // SCATTER PACK VII MISSILES
                 damage = 10;
                 speed = 4; speed2 = 3;
-                cost = 50;
+				cost(50f, 28f);
                 size = 230;
                 power = 50;
                 computer = 2;
@@ -195,7 +195,7 @@ public final class TechMissileWeapon extends Tech {
             case 7: // PULSON MISSILES
                 damage = 20;
                 speed = 5; speed2 = 4;
-                cost = 25;
+				cost(25f, 20f);
                 size = 160;
                 power = 40;
                 computer = 4;
@@ -210,7 +210,7 @@ public final class TechMissileWeapon extends Tech {
                 speed = 5.5f; speed2 = 4.5f;
                 size = 220;
                 power = 40;
-                cost = 30;
+				cost(30f, 26f);
                 computer = 5;
                 shots = 2;  shots2 = 5;
                 range = 10;  range2 = 9;
@@ -223,7 +223,7 @@ public final class TechMissileWeapon extends Tech {
                 speed = 6; speed2 = 5;
                 size = 250;
                 power = 50;
-                cost = 36;
+				cost(36f, 30f);
                 computer = 6;
                 shots = 2;  shots2 = 5;
                 range = 10;  range2 = 10; // modnar: correct missile range
@@ -236,7 +236,7 @@ public final class TechMissileWeapon extends Tech {
                 speed = 4.5f; speed2 = 3.5f;
                 size = 250;
                 power = 50;
-                cost = 36;
+				cost(36f, 30);
                 computer = 3;
                 attacks = 10;
                 shots = 2;  shots2 = 5;

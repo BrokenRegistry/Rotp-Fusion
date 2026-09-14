@@ -10,6 +10,7 @@ import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.model.tech.Tech;
 import rotp.model.tech.TechEngineWarp;
+import rotp.model.tech.TechLibrary;
 import rotp.ui.util.ParamTitle;
 
 final class MoO1RulesOptions extends AbstractOptionsSubUI {
@@ -67,7 +68,8 @@ final class MoO1RulesOptions extends AbstractOptionsSubUI {
 				missileBaseModifier,
 				missileShipModifier,
 				Tech.moo1Miniaturization,
-				TechEngineWarp.moo1ManeuverPower
+				TechEngineWarp.moo1ManeuverPower,
+				TechLibrary.moo1WeaponCost
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("MOO1_RANDOMNESS"),

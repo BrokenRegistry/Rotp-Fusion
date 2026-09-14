@@ -11,6 +11,11 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-09-14 (BR)
+- The accrued ship production computed by the last time estimation will be memorized and displayed in place of the "Official" Next turn one.
+- The governor will be called after selecting a new ship in the colonies panel too.
+- New option to restore the cost of weapons from MoO1.
+
 26-09-13 (BR)
 - New option to Restore the original MoO1 ship combat maneuver power requirement.
 - Fixed the budget algorithm which was going astray due to negative fundraising...

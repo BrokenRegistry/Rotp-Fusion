@@ -2082,8 +2082,10 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         }
         private void setAllShipDesigns() {
             List<Colony> colonies = colonies();
-            for (Colony c: colonies) 
-                c.shipyard().switchToDesign(currDesign);
+			for (Colony c: colonies) {
+				c.shipyard().switchToDesign(currDesign);
+				c.governIfNeeded();
+			}
         }
 		private void incrementGovBuildPct(int amt) {
 			currentBuildSparePct -= amt; // negative because Use is displayed

@@ -22,6 +22,7 @@
 
 ### Features:
 
+- New option to restore the cost of weapons from MoO1.
 - New option to Restore the original MoO1 ship combat maneuver power requirement.
 - New option to select how the ship repulsors works.
   - As in Moo1: You can access the cells adjacent to the repulsors, which are not highlighted.
@@ -508,6 +509,8 @@
 
 ### Fixes:
 
+- The accrued ship production computed by the last time estimation will be memorized and displayed in place of the "Official" Next turn one.
+- The governor will be called after selecting a new ship in the colonies panel too.
 - Fixed the budget algorithm which was going astray due to negative fundraising...
 - Fixed help tooltip for maximum production transfer from 50% to 100%.
   - This in all languages, hoping that it won't produce too many grammatical errors...

@@ -206,6 +206,7 @@ public class Tech implements Base, ScaledInteger {
     void setItem2(String s)		{ item2		= s; }
     void setShDesc2(String s)	{ shDesc2	= s; }
     private String detailKey()	{ return options().techRandomEvents() ? trigger: detail; }
+	void setCost(boolean moO1)	{ }
 
     public	  float	  discoveryPct()		{ return cat.discoveryPct(); }
     public	  String  name()				{ return text(name); }

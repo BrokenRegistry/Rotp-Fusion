@@ -605,7 +605,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 			case "SUBSIDY":			return colony().budget().budgetSubsidiesStr();
 			case "CONTRIBUTE":		return Integer.toString((int)colony().budget().budgetContributeBC());
 			case "TAXED":			return Integer.toString((int)colony().budget().budgetTaxedBC());
-			case "ACCRUED":			return str((int)colony().industry().accruedBC());
+			case "ACCRUED":			return str((int)colony().shipyard().shipAccruedBC());
             case "BASES":            return str(empire().sv.bases(id));
             case "SHIPYARD":         return colony().shipyardProject();
             case "DELTA_BASES":      return str(empire().sv.deltaBases(id));
@@ -644,7 +644,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 	public static final Comparator<StarSystem> SHIELD			= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().defense().shieldLevelComp(),s2.colony().defense().shieldLevelComp());
 	public static final Comparator<StarSystem> INVASION_PRIORITY= (StarSystem s1, StarSystem s2) -> Float.compare(s1.empire().generalAI().invasionPriority(s1),	s2.empire().generalAI().invasionPriority(s2));
 //    public static Comparator<StarSystem> TRANSPORT_PRIORITY = (StarSystem s1, StarSystem s2) -> Base.compare(s1.empire().fleetCommanderAI().transportPriority(s1),s2.empire().fleetCommanderAI().transportPriority(s2));
-	public static final Comparator<StarSystem> ACCRUED			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().industry().accruedBC(),	s2.colony().industry().accruedBC());
+	public static final Comparator<StarSystem> ACCRUED			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().shipyard().shipAccruedBC(),	s2.colony().shipyard().shipAccruedBC());
 	public static final Comparator<StarSystem> STARGATE			= (StarSystem s1, StarSystem s2) -> Float.compare(s1.colony().starGateTimeToComplete(),	s2.colony().starGateTimeToComplete());
 	public static final Comparator<StarSystem> GOV_PLAN			= (StarSystem s1, StarSystem s2) -> Integer.compare(s1.colony().getFundingMandate(),	s2.colony().getFundingMandate());
 	public static final Comparator<StarSystem> FLAG				= (StarSystem s1, StarSystem s2) -> {

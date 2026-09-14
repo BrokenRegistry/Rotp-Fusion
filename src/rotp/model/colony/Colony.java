@@ -2021,7 +2021,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     private int urgeShipSpending(int maxAlloc, GovWorksheet gws) {
     	ColonyShipyard currCat = shipyard();
     	int currentAllocation = currCat.allocation();
-    	int allocationNeeded  = currCat.maxAllocationNeeded(gws.totalIncome);
+		int allocationNeeded  = currCat.smoothAllocationNeeded(gws.promoteShips);
     	allocationNeeded = min(allocationNeeded, maxAlloc);
     	if (allocationNeeded == 0) {
     		govUrgeShips(false);

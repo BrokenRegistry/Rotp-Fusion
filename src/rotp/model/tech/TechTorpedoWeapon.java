@@ -28,7 +28,7 @@ import rotp.model.game.GameSession;
 import rotp.model.ships.ShipWeaponTorpedo;
 import rotp.ui.combat.ShipBattleUI;
 
-public final class TechTorpedoWeapon extends Tech {
+public final class TechTorpedoWeapon extends TechMoO1Cost {
     public static List<String> missileTypes = new ArrayList<>();
     public static List<ImageIcon> missileIcons = new ArrayList<>();
 
@@ -85,7 +85,7 @@ public final class TechTorpedoWeapon extends Tech {
                 speed = 3;
                 size = 75;
                 power = 300;
-                cost = 56;
+				cost(56f, 30f);
                 computer = 4;
                 range = 8;
                 decay = pctToLive(56);
@@ -96,7 +96,7 @@ public final class TechTorpedoWeapon extends Tech {
                 speed = 5;
                 size = 150;
                 power = 350;
-                cost = 110;
+				cost(110f, 50f);
                 computer = 6;
                 attacks = 4;
                 range = 10;
@@ -105,7 +105,7 @@ public final class TechTorpedoWeapon extends Tech {
             case 2: // PROTON TORPEDOS
                 damage = 75;
                 speed = 5;
-                cost = 120;
+				cost(120f, 50f);
                 size = 100;
                 power = 400;
                 computer = 6;
@@ -116,7 +116,7 @@ public final class TechTorpedoWeapon extends Tech {
             case 3: // PLASMA TORPEDOS
                 damage = 150;
                 speed = 6;
-                cost = 150;
+				cost(150f, 150f);
                 size = 150;
                 power = 450;
                 computer = 7;

@@ -7,6 +7,7 @@ import rotp.model.game.SafeListPanel;
 import rotp.model.game.SafeListParam;
 import rotp.model.tech.Tech;
 import rotp.model.tech.TechEngineWarp;
+import rotp.model.tech.TechLibrary;
 import rotp.ui.util.ParamTitle;
 
 final class AutoSendFleetOption extends AbstractOptionsSubUI {
@@ -52,8 +53,10 @@ final class AutoSendFleetOption extends AbstractOptionsSubUI {
 				LINE_SPACER_25,
 				scoutAndColonyOnly,
 				LINE_SPACER_25,
+				missileShipModifier,
 				Tech.moo1Miniaturization,
-				TechEngineWarp.moo1ManeuverPower
+				TechEngineWarp.moo1ManeuverPower,
+				TechLibrary.moo1WeaponCost
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("GOVERNOR_AUTO_COLONIZE"),

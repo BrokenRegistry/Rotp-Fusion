@@ -26,7 +26,7 @@ import rotp.model.game.GameSession;
 import rotp.model.ships.ShipWeaponBomb;
 import rotp.ui.combat.ShipBattleUI;
 
-public final class TechBombWeapon extends Tech {
+public final class TechBombWeapon extends TechMoO1Cost {
     private int damageLow = 0;
     private int damageHigh = 1;
 
@@ -52,35 +52,35 @@ public final class TechBombWeapon extends Tech {
             case 0:	// Nuclear Bomb
                 damageLow = 3;
                 damageHigh = 12;
-                cost = 5;
+				cost(5f, 3f);
                 size = 40;
                 power = 10;
                 break;
             case 1:	// Fusion Bomb
                 damageLow = 5;
                 damageHigh = 20;
-                cost = 5;
+				cost(5f, 4f);
                 size = 50;
                 power = 10;
                 break;
             case 2:	// Anti-Matter Bomb
                 damageLow = 10;
                 damageHigh = 40;
-                cost = 6;
+				cost(6f, 5f);
                 size = 75;
                 power = 10;
                 break;
             case 3:	// Omega-V Bomb
                 damageLow = 20;
                 damageHigh = 50;
-                cost = 9;
+				cost(9f, 8f);
                 size = 140;
                 power = 10;
                 break;
             case 4:	// Neutronium Bomb
                 damageLow = 40;
                 damageHigh = 70;
-                cost = 10;
+				cost(10f, 10f);
                 size = 200;
                 power = 10;
                 break;

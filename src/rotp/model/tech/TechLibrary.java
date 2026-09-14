@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import rotp.model.game.DefaultValues;
+import rotp.model.game.IBaseOptsTools;
+import rotp.ui.util.ParamBoolean;
 import rotp.util.Base;
 
 public final class TechLibrary implements Base {
@@ -284,4 +287,14 @@ public final class TechLibrary implements Base {
             default        : log("unknown key->", input);	return;
         }
     }
+	public static final ParamBoolean moo1WeaponCost = new ParamBoolean(IBaseOptsTools.MOD_UI, "MOO1_WEAPON_COST", false)
+			.setDefaultValue(DefaultValues.MOO1_DEFAULT, true)
+			.setNewValueMethod(TechLibrary::setNewWeaponCost);
+	private static void setNewWeaponCost(Boolean b) {
+		if (instance == null || b == null)
+			return;
+		for (Tech t : instance.techMap.values())
+			t.setCost(b);
+	}
+
 }
