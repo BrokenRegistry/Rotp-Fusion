@@ -509,6 +509,7 @@
 
 ### Fixes:
 
+- Fixed Governor investing in unbuildable factories.
 - The accrued ship production computed by the last time estimation will be memorized and displayed in place of the "Official" Next turn one.
 - The governor will be called after selecting a new ship in the colonies panel too.
 - Fixed the budget algorithm which was going astray due to negative fundraising...

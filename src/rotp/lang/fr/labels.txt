@@ -1480,7 +1480,7 @@ PLANETS_LIST_CONTRIBUTE_HELP	| →PLANETS_HELP_5C←
 PLANETS_LIST_TAXED				| Imposé
 PLANETS_LIST_TAXED_HELP			| →PLANETS_HELP_5B←
 PLANETS_LIST_ACCRUED			| En stock
-PLANETS_LIST_ACCRUED_HELP		| <h3>→PLANETS_LIST_ACCRUED←</h3>Chaque fois que vous modifiez la conception d'un vaisseau dans le chantier naval de la planète, la production accumulée sur l’ancien vaisseau est stockée.<br>Cette production accumulée sera utilisée pour accélérer la production de nouveaux navires jusqu’à 50 % jusqu’à ce que toute la production accumulée soit dépensée.<br>Ce champ affiche le montant de la production accumulée.
+PLANETS_LIST_ACCRUED_HELP		| <h3>→PLANETS_LIST_ACCRUED←</h3>Chaque fois que vous modifiez la conception d'un vaisseau dans le chantier naval de la planète, la production accumulée sur l’ancien vaisseau est stockée.<br>Cette production accumulée sera utilisée pour accélérer la production de nouveaux navires jusqu’à 100 % jusqu’à ce que toute la production accumulée soit dépensée.<br>Ce champ affiche le montant de la production accumulée.
 PLANETS_LIST_SHIPYARD			| En chantier
 PLANETS_LIST_SHIPYARD_HELP		| →PLANETS_HELP_4G←
 PLANETS_LIST_NOTES				| Notes

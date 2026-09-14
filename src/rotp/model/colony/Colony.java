@@ -2004,7 +2004,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		if (gws.promoteTerraform) {
 			alloc -= urgeTerraformSpending(alloc, gws);
 			if (debug)
-				System.out.println("promoteTerraform maxAlloc: " + maxAlloc);
+				System.out.println("promoteTerraform maxAlloc: " + alloc);
 			if (alloc==0)
 				return maxAlloc;
 		}

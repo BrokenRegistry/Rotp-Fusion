@@ -1480,7 +1480,7 @@ PLANETS_LIST_CONTRIBUTE_HELP	| →PLANETS_HELP_5C←
 PLANETS_LIST_TAXED				| Taxed
 PLANETS_LIST_TAXED_HELP			| →PLANETS_HELP_5B←
 PLANETS_LIST_ACCRUED			| Accrual
-PLANETS_LIST_ACCRUED_HELP		| <h3>→PLANETS_LIST_ACCRUED←</h3>Whenever you change ship design in the planet's shipyard, the accrued production on the old ship is stored.<br>This accrued production will be used to accelerate the production of new ships by up to 50% until all the accrued production is spent.<br>This field shows the amount of accrued production.
+PLANETS_LIST_ACCRUED_HELP		| <h3>→PLANETS_LIST_ACCRUED←</h3>Whenever you change ship design in the planet's shipyard, the accrued production on the old ship is stored.<br>This accrued production will be used to accelerate the production of new ships by up to 100% until all the accrued production is spent.<br>This field shows the amount of accrued production.
 PLANETS_LIST_SHIPYARD			| Shipyard
 PLANETS_LIST_SHIPYARD_HELP		| →PLANETS_HELP_4G←
 PLANETS_LIST_NOTES				| Notes
