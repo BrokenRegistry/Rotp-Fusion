@@ -502,8 +502,10 @@ public class ColonyShipyard extends ColonySpendingCategory {
             totalBC += stargateBC;
             numBuild = 1;
         }
-        else
-            totalBC += shipBC;
+		else if (design != prevDesign)
+			totalBC += min(totalBC, shipBC);
+		else
+			totalBC += shipBC;
 
         float buildCost = numBuild * design.cost();
 

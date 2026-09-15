@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-09-15 (BR)
+- Fixed excess spending estimate of shipyards when a new ship is selected.
+
 26-09-14 (BR)
 - Accrued ship production column:
   - Will display the values before and (after) ship building when they are different.

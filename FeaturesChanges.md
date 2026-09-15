@@ -509,6 +509,7 @@
 
 ### Fixes:
 
+- Fixed excess spending estimate of shipyards when a new ship is selected.
 - Accrued ship production column:
   - Will display the values before and (after) ship building when they are different.
   - These values will be updated, even if not displayed on the right panel.
