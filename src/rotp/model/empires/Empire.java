@@ -242,6 +242,7 @@ public final class Empire extends Species implements NamedObject {
     private transient float totalEmpireShipMaintenanceCost;
     private transient float totalEmpireStargateCost;
     private transient float totalEmpireMissileBaseCost;
+	private transient float lastNetIncome; // To check for changes after diplomatic contact.
     private transient float benchmark;
     private transient int inRange;
     public  transient int numColoniesHistory;
@@ -261,6 +262,7 @@ public final class Empire extends Species implements NamedObject {
 	public static void updatePlayerId(int id)	{ PLAYER_ID = id; }
 
 	public void startingNextTurnProcess()		{
+		lastNetIncome = netIncome(); // To check for changes after diplomatic contact.
 		budget().transferBudget();
 		spendingNotYetMade = true;
 	}
@@ -1299,7 +1301,7 @@ public final class Empire extends Species implements NamedObject {
             if (d != null)
                 d.preNextTurn();
         }
-        
+
         // assign funds/costs for diplomatic activities
         for (EmpireView v : empireViews()) {
           if ((v!= null) && v.embassy().contact())
@@ -1315,6 +1317,9 @@ public final class Empire extends Species implements NamedObject {
                 return;
             }
         }
+
+		if (isPlayer() && (netIncome() < lastNetIncome) && govOptions().contactUpdateSpending())
+				redoGovTurnDecisions();
 
         // assign planetary funds/costs & enact development
         for (StarSystem s: allColonies) {
@@ -1340,7 +1345,7 @@ public final class Empire extends Species implements NamedObject {
           if ((v!= null) && v.embassy().contact())
                 v.nextTurn(civProd, spyMod);
         }
-		if (id == PLAYER_ID)
+		if (isPlayer())
 			updatePlayerMapCenter();
     }
     public void assessTurn() {

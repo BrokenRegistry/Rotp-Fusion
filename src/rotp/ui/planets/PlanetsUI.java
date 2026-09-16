@@ -2943,28 +2943,6 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 			reserveBox.setSelectionSize(totalW+s6, lineStep);
 			reserveBox.setLocation(checkX, y1+s2);
 			reserveBox.drawCheckbox(g, narrowFont(14), Color.yellow, s6);
-
-//			y1 += lineStep -s2;
-
-//			reserveBox.setBounds(checkX, y1-checkW, checkW, checkW);
-
-//			int labelX = checkX+checkW+s6;
-//			Stroke prev = g.getStroke();
-//			g.setStroke(stroke2);
-//			g.setColor(FleetUI.backHiC);
-//			g.fill(reserveBox);
-//			if (hoverBox == reserveBox) {
-//				g.setColor(Color.yellow);
-//				g.draw(reserveBox);
-//			}
-//			if (player().empireTaxOnlyDeveloped()) {
-//				g.setColor(SystemPanel.whiteText);
-//				g.drawLine(checkX-s1, y1-s6, checkX+s3, y1-s3);
-//				g.drawLine(checkX+s3, y1-s3, checkX+checkW, y1-s12);
-//			}
-//			g.setStroke(prev);
-//			g.setColor(palette.black);
-//			drawString(g,opt,labelX,y1);
 		}
         private void drawSliderBox(Graphics2D g, int x, int y, int w, int h) {
             int leftMargin = x;

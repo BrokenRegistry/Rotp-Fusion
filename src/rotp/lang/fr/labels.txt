@@ -6253,9 +6253,10 @@ GOVERNOR_TRAIN_SPIES_ASAP_DESC			| Entraînez les espions dès que possible lors
 GOVERNOR_TRAIN_SPIES_ASAP				| Entraînez les espions immédiatement : %1
 GOVERNOR_TRAIN_SPIES_ASAP_LABEL			| Entraînez les espions immédiatemen
 
-GOVERNOR_CONTACT_UPDATE_SPENDING_DESC	| Après avoir modifié les dépenses d’espionnage suite à un contact avec un nouvel empire, le gouverneur réexaminera les autres dépenses pour les équilibrer. !!! Cela pourrait perturber les réglages du joueur !!!.
-GOVERNOR_CONTACT_UPDATE_SPENDING		| Réajuster les dépenses après contact : %1
-GOVERNOR_CONTACT_UPDATE_SPENDING_LABEL	| Réajuster les dépenses après contact
+GOVERNOR_CONTACT_UPDATE_SPENDING_HELP	| Lors d’un premier contact, des dépenses pour entraîner des espions peuvent avoir été demandées par le joueur.<br>Lors d’un nouveau traité commercial, de nouvelles charges de démarage s’en suivront.<br>Lors d’une cessation de traité commercial, des revenus planifiés ne seront plus au rendez-vous.<br>Une déclaration de guerre pourrait à la fois supprimer des revenus attendus et nécéssiter l’engagement de nouveaux espions.<br>Dans tous ces cas, si le revenu net qui en résulte est inférieur aux prévisions, le gouverneur réexaminera les autres dépenses pour les équilibrer.<br><font color="#FF0000">!!! Cela pourrait perturber les ajustements fins du joueur !!!.</font>
+GOVERNOR_CONTACT_UPDATE_SPENDING_DESC	| Lors d’une interaction avec un empire, les dépenses et revenus peuvent changer, et le revenu net peut diminuer. Si tel est le cas, le gouverneur réexaminera les autres dépenses pour les équilibrer. !!! Cela pourrait perturber les réglages du joueur !!!.
+GOVERNOR_CONTACT_UPDATE_SPENDING		| Ajuster les dépenses après contact : %1
+GOVERNOR_CONTACT_UPDATE_SPENDING_LABEL	| Ajuster les dépenses après contact
 
 HEADERS_GOVERNOR_FLEET_OPTIONS_DESC	| Comment les gouverneurs doivent-ils gérer les activités des flottes.
 HEADERS_GOVERNOR_FLEET_OPTIONS		| ~~~ OPTIONS DES FLOTTES ~~~

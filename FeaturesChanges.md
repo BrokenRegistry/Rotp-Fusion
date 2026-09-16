@@ -230,6 +230,7 @@
 
 ### Governor:
 
+- The "Update Post Contact Spending" setting has been expanded to include all interactions with other empires (first contact, trade treaties, and declaration of war). Then, a revision of allocations will only take place if net revenues are lower than forecast revenues (the latter always being a little conservative).
 - Finalization of the budget tools
   - New buttons to clear and redo budgets.
   - New options to enable / disable budget features.

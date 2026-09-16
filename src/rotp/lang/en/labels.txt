@@ -6252,9 +6252,10 @@ GOVERNOR_TRAIN_SPIES_ASAP_DESC			| Train spies as soon as possible when a new co
 GOVERNOR_TRAIN_SPIES_ASAP				| Train Spies ASAP: %1
 GOVERNOR_TRAIN_SPIES_ASAP_LABEL			| Train Spies ASAP
 
-GOVERNOR_CONTACT_UPDATE_SPENDING_DESC	| After changing espionage expenses due to contact with a new empire, the governor will re-examine other expenses to balance them. !!! This may disrupt the player's fine-tuning !!!
-GOVERNOR_CONTACT_UPDATE_SPENDING		| Update spending after contact: %1
-GOVERNOR_CONTACT_UPDATE_SPENDING_LABEL	| Update spending after contact
+GOVERNOR_CONTACT_UPDATE_SPENDING_HELP	| During a first contact, expenses to train spies may have been requested by the player.<br>During a new commercial treaty, new start-up charges will follow.<br>During a cessation of a commercial treaty, some of the planned income will not be there.<br>A declaration of war could both eliminate expected income and require the engagement of new spies.<br>In all these cases, if the resulting net income is lower than forecast, the governor will review other expenses to balance them.<br><font color="#FF0000">!!! This could disrupt the player's fine adjustments!!!.</font>
+GOVERNOR_CONTACT_UPDATE_SPENDING_DESC	| When interacting with another empire, expenses and income may change, and net income may decrease. If so, the governor will review other spending to bring it into balance. !!! This may disrupt the player's fine-tuning !!!
+GOVERNOR_CONTACT_UPDATE_SPENDING		| Update Post Contact Spending: %1
+GOVERNOR_CONTACT_UPDATE_SPENDING_LABEL	| Update Post Contact Spending
 
 HEADERS_GOVERNOR_FLEET_OPTIONS_DESC  | Fleet Options.
 HEADERS_GOVERNOR_FLEET_OPTIONS       | ~~~ FLEET OPTIONS ~~~

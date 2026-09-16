@@ -25,6 +25,7 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
@@ -234,6 +235,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public void becomeQuarantined()            { quarantined = true; }
     public void clearQuarantine()              { quarantined = false; }
     public int fortressNum()                   { return fortressNum; }
+	public String allocations()					{ return Arrays.toString(allocation); }
     public int allocation(int i)               { return allocation[i]; }
     public void allocation(int i, int val)     { allocation[i] = val; }
     public void addAllocation(int i, int val)  { allocation[i]+= val; }

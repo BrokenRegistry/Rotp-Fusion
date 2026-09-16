@@ -165,11 +165,12 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 	public boolean updateInProgress()		{ return updateInProgress; }
 	public boolean isTaxLevelChanged()		{ return status.newTaxLevel(); }
 
-	void makeTaxLevelObsolete()				{ status.taxLevelChanged();}	// Only direct call from mouse action
-	public void makeTransortObsolete()		{ status.transportChanged();}
-	public void makeBudgetOptionsObsolete()	{ status.optionsChanged();}		// Only direct call from UI
-	public void makeBudgetColonyObsolete()	{ status.colonyChanged();}		// Only direct call from mouse action
-	void makeEmpireChargesObsolete()		{ status.chargesChanged();}		// Dangerous! originate from everywhere
+	void makeTaxLevelObsolete()				{ status.taxLevelChanged(); }	// Only direct call from mouse action
+	public void makeTransortObsolete()		{ status.transportChanged(); }
+	public void makeBudgetOptionsObsolete()	{ status.optionsChanged(); }	// Only direct call from UI
+	public void makeBudgetColonyObsolete()	{ status.colonyChanged(); }		// Only direct call from mouse action
+	void makeEmpireChargesObsolete()		{ status.chargesChanged(); }	// Dangerous! originate from everywhere
+	public boolean hasNewCharge()			{ return status.newCharges(); }
 
 	public void transferBudget()	{
 		boolean carryUnfunded = govOptions().autospendCarryUnfunded();
