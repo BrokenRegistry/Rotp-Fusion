@@ -189,7 +189,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                     }
                 }
             }
-            boolean moved = false;
+            boolean moved = stack.move <= 0; // BR: I've seen case with remaining moves < 0
             if (currentTarget != null && !kiteMissiles) {
                 boolean repulsorDefender = stack.repulsorRange() >= 1 && currentTarget.maxFiringRange(stack) <= stack.repulsorRange() && stack.hasWard() && !currentTarget.canCloak && !currentTarget.canTeleport();
                 if(repulsorDefender)
@@ -256,7 +256,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
                 chooseTarget(stack, false, true);
                 if (stack.canAttack(currentTarget)) 
                     performSmartAttackTarget(stack, currentTarget);
-                //now chhose our previous target again
+                //now choose our previous target again
                 chooseTarget(stack, false, false);
             }
             if (stack.canAttack(currentTarget)) 

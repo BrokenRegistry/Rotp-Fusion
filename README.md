@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-09-16 (BR)
+- Fixed issue in ShipCombat with repulsors going in never ending loop.
 - The "Update Post Contact Spending" setting has been expanded to include all interactions with other empires (first contact, trade treaties, and declaration of war). Then, a revision of allocations will only take place if net revenues are lower than forecast revenues (the latter always being a little conservative).
 
 26-09-15 (BR)

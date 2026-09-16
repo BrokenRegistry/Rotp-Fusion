@@ -510,6 +510,7 @@
 
 ### Fixes:
 
+- Fixed issue in ShipCombat with repulsors going in never ending loop.
 - Fixed excess spending estimate of shipyards when a new ship is selected.
 - Accrued ship production column:
   - Will display the values before and (after) ship building when they are different.

@@ -379,7 +379,7 @@ public final class TechTree implements Base, Serializable {
 
 			while(freeAlloc > 0)
 				for (TechCategory cat: toEqualize)
-					if (--freeAlloc > 0)
+					if (--freeAlloc >= 0)
 						cat.adjustAllocation(1);
 					else
 						return;
