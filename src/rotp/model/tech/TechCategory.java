@@ -77,6 +77,7 @@ public final class TechCategory implements Base, Serializable {
     private float totalBC = 0;
     private boolean researchCompleted = false;
     private boolean researchStarted = false;
+	private int selectionTime = 0;
 
     public int index()                     { return index; }
     void index(int i)                      { index = i; }
@@ -86,7 +87,8 @@ public final class TechCategory implements Base, Serializable {
         if (!id().equals(t.cat.id()))
             return false;
         researchStarted = true;
-        currentTech = t.id(); 
+        currentTech = t.id();
+		selectionTime = galaxy().numberTurns();
         return true;
     }
     public boolean locked()                { return researchCompleted || locked; }
@@ -147,7 +149,7 @@ public final class TechCategory implements Base, Serializable {
     		GNNNotification.notifyRandomEvent(text(gnnKey), gnnEvent);
     }
     public boolean researchCompleted()  { return researchCompleted; }
-    public boolean researchStarted()    { return researchStarted; }
+	public boolean researchStarted()	{ return researchStarted || selectionTime == galaxy().numberTurns(); }
     public int allocation()             { return allocation; }
     public void allocation(int i)       { allocation = bounds(0,i,MAX_ALLOCATION_TICKS); }
     public float allocationPct()        { return (float) allocation/MAX_ALLOCATION_TICKS; }

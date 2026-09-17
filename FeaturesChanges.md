@@ -320,6 +320,7 @@
 
 ### Miscellaneous:
 
+- You now have the ability to modify the research after selecting a new one, following a technological discovery on an Artifact planet, a technology theft or a technology exchange.
 - The colony development limit will now be based on the colony industry capacity.
 - Budget Max Absolute Capital can now be set to a smaller amount.
 - Improved labels files validation tool.
@@ -510,6 +511,8 @@
 
 ### Fixes:
 
+- Fixed an issue with "Auto-flag" being set one too many times after the discovery window was displayed, possibly canceling a player's selection.
+- You now have the ability to modify the research after selecting a new one, following a technological discovery on an Artifact planet, a 
 - Fixed issue in ShipCombat with repulsors going in never ending loop.
 - Fixed excess spending estimate of shipyards when a new ship is selected.
 - Accrued ship production column:
