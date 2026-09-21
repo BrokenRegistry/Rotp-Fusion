@@ -202,51 +202,6 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
 		loadInfo(null);
     	repaint();
     }
-	public static String getTechInfo(Tech tech)	{ return INSTANCE.techInfo(tech); }
-	private String techInfo(Tech tech)			{
-		String info = "";
-		if (tech == null)
-			return info;
-
-		// Tech Name
-		String txt	= tech.name();
-		if (!txt.isEmpty())
-			info = txt;
-
-		// Tech Type Info
-		String techTypeName	= tech.techTypeName();
-		if (techTypeName != null)
-			info += " (" + techTypeName + ")";
-
-		// Tech info
-		txt = text("TECH_LEVEL_OF_TECH", tech.level);
-		info += NEWLINE + txt;
-		if (tech.free)
-			info += " " + text("TECH_IS_FREE");
-		if (tech.restricted)
-			info += " " + text("TECH_IS_RESTRICTED");
-
-		txt = tech.brief();
-		if (!txt.isEmpty())
-			info += NEWLINE + txt;
-		txt = tech.brief2();
-		if (!txt.isEmpty())
-			info += NEWLINE + txt;
-		txt = tech.detail();
-		if (!txt.isEmpty())
-			info += NEWLINE + txt;
-		txt = tech.info();
-		if (txt != null && !txt.isEmpty())
-			info += NEWLINE + NEWLINE + txt;
-
-		// Tech Type Info
-		txt	= tech.techTypeDesc();
-		if (txt != null) {
-			info += NEWLINE + NEWLINE + techTypeName;
-			info += NEWLINE + txt;
-		}
-		return info;
-	}
     private void loadInfo(String techId)		{
     	HelpUI helpUI = RotPUI.helpUI();
         helpUI.clear();
@@ -277,7 +232,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
     	String currentTech = cat.currentTech();
     	if (currentTech != null) {
             Tech tech	= player().tech().tech(currentTech);
-            String curInfo	= techInfo(tech);
+            String curInfo	= tech.getTechInfo();
             int levelInc	= 1 + max(0, tech.level() - maxLevel);
             float nextLevel	= catLevel + levelInc;
             String txt	= text("TECH_NEXT_LEVEL", shortFmt(nextLevel), shortFmt(levelInc));
@@ -291,7 +246,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
         int wHov = boxW;
         if (techId != null && !techId.equals(currentTech)) {
             Tech tech	= player().tech().tech(techId);
-            String hovInfo	= techInfo(tech);
+            String hovInfo	= tech.getTechInfo();
             int levelInc	= 1 + max(0, tech.level() - maxLevel);
             float hovLevel	= catLevel + levelInc;
             String txt	= text("TECH_HOVER_LEVEL", shortFmt(hovLevel), shortFmt(levelInc));

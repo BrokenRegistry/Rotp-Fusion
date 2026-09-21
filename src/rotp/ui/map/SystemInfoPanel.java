@@ -81,7 +81,7 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
         setLayout(layout);
         add(topPane(), BorderLayout.NORTH);
         add(detailPane, BorderLayout.CENTER);
-        
+
         addMouseMotionListener(this);
     }
     public void forceAutoFlagColor(boolean all) {
@@ -112,7 +112,7 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
 
         BasePanel systemEventsPanel = new SystemHistoryPane();
         systemEventsPanel.setPreferredSize(new Dimension(getWidth(), scaled(250)));
-        
+
         BasePanel empireDetailPane = new BasePanel();
         empireDetailPane.setOpaque(false);
         empireDetailPane.setLayout(new BorderLayout(0,s5));
@@ -124,10 +124,8 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
     StarSystem selectedSystem() {
         return parent.systemToDisplay();
     }
-    @Override
-    public void mouseDragged(MouseEvent e) { }
-    @Override
-    public void mouseMoved(MouseEvent e) {}
+	@Override public void mouseDragged(MouseEvent e){}
+	@Override public void mouseMoved(MouseEvent e)	{}
     class EmpireInfoGraphicPane extends BasePanel implements ActionListener {
         private static final long serialVersionUID = 1L;
         SystemPanel parent;
@@ -234,26 +232,16 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
                 player().sv.toggleFlagColor(sys.id, false);
             parent.repaint();
         }
-        @Override
-        public void mouseDragged(MouseEvent e) { }
-        @Override
-        public void mouseMoved(MouseEvent e) {
-            int x = e.getX();
-            int y = e.getY();
-            Shape prevHover = hoverBox;
-            hoverBox = null;
-            if (flagBox.contains(x,y))
-                hoverBox = flagBox;
-
-            if (prevHover != hoverBox)
-                repaint();
-        }
-        @Override
-        public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mousePressed(MouseEvent e) { }
-        @Override
-        public void mouseReleased(MouseEvent e) {
+		@Override public void mouseDragged(MouseEvent e)	{}
+		@Override public void mouseMoved(MouseEvent e)		{
+			if (flagBox.contains(e.getX(), e.getY()))
+				hoverBox = hoverBox(flagBox, hoverBox);
+			else
+				hoverBox = hoverBox(null, hoverBox);
+		}
+		@Override public void mouseClicked(MouseEvent e)	{}
+		@Override public void mousePressed(MouseEvent e)	{}
+		@Override public void mouseReleased(MouseEvent e)	{
             boolean rightClick = SwingUtilities.isRightMouseButton(e);
             boolean middleClick = SwingUtilities.isMiddleMouseButton(e);
             if (hoverBox == flagBox) {
@@ -272,15 +260,8 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
                     player().sv.toggleFlagColor(sys.id, false);
            }
         }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
-        @Override
-        public void mouseExited(MouseEvent e) { 
-            if (hoverBox != null) {
-                hoverBox = null;
-                repaint();
-            }
-        }
+		@Override public void mouseEntered(MouseEvent e)	{}
+		@Override public void mouseExited(MouseEvent e)		{ hoverBox = hoverBox(null, hoverBox); }
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
         	setModifierKeysState(e); // BR: For the Flag color selection
@@ -369,22 +350,17 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
             
             comments.setBounds(s5, getHeight()-s100, getWidth()-s10, s95);
         }
-        @Override
-        public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mousePressed(MouseEvent e) { }
-        @Override
-        public void mouseReleased(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) {
+		@Override public void mouseClicked(MouseEvent e)	{}
+		@Override public void mousePressed(MouseEvent e)	{}
+		@Override public void mouseReleased(MouseEvent e)	{}
+		@Override public void mouseEntered(MouseEvent e)	{
             parent.animate = false;
             comments.setCaretPosition(comments.getText().length());
             comments.setBounds(s5, getHeight()-s100, getWidth()-s10, s95);
             comments.requestFocus();
             comments.repaint();
         }
-        @Override
-        public void mouseExited(MouseEvent e) {
+        @Override public void mouseExited(MouseEvent e)		{
             parent.animate = true;
             // ensure we update the system's notes when we leave the field
             String notes = comments.getText().trim();
@@ -401,7 +377,7 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
         private final int scrollH = 3 * lineH;
         StarSystem sys, lastSys;
         int offsetY = 0;
-        
+
         Rectangle eventsBox = new Rectangle();
         SystemHistoryPane() {
             setBackground(unselectedC);

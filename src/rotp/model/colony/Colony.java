@@ -2867,15 +2867,36 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		g.dispose();
 		return buffer;
 	}
-	private boolean isGrowing()		{ // Player Only
-		return currentProductionCapacity() <= session().getGovernorOptions().autospendMaxIndustryRatio();
+	public boolean isGrowing()	{ // Player Only
+		if (planet.isResourceNormal()) {
+			if (planet.isAntaran())
+				return currentProductionCapacity() <= govOptions().autospendMaxIndRatioAntaran();
+			if (planet.isOrionArtifact())
+				return currentProductionCapacity() <= govOptions().autospendMaxIndRatioOrion();
+			return currentProductionCapacity() <= govOptions().autospendMaxIndRatioNormal();
+		}
+
+		if (planet.isResourceRich())
+			return currentProductionCapacity() <= govOptions().autospendMaxIndRatioRich();
+		if (planet.isResourcePoor())
+			return currentProductionCapacity() <= govOptions().autospendMaxIndRatioPoor();
+		if (planet.isResourceUltraRich())
+			return currentProductionCapacity() <= govOptions().autospendMaxIndRatioURich();
+		if (planet.isResourceUltraPoor())
+			return currentProductionCapacity() <= govOptions().autospendMaxIndRatioUPoor();
+
+		if (planet.isAntaran())
+			return currentProductionCapacity() <= govOptions().autospendMaxIndRatioAntaran();
+		if (planet.isOrionArtifact())
+			return currentProductionCapacity() <= govOptions().autospendMaxIndRatioOrion();
+
+		return currentProductionCapacity() <= govOptions().autospendMaxIndRatioNormal();
 	}
 	private Colony colony()	{ return this; }
 
 	public class ColonyBudget implements Serializable {
 		private static final long serialVersionUID = 1L;
 		private boolean colonyIsDeveloped, colonyIsGrowing;
-		private float currentProductionCapacity;
 		private int reserveNeededBC		= 0;
 		private Integer governorBudgetBC= null; // What the governor would do
 		private Integer playerBudgetBC	= null; // What the player want to force
@@ -2886,6 +2907,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			budgetSubsidiesBC(0);
 			governorBudgetBC(null);
 			reserveNeededBC(max(0, ceil(production() - rawReserveIncome())));
+			if(isGovernor() && govAutoFundTag().isCrossed())
+				reserveNeededBC(0);
 			if (govern)
 				governIfNeeded();
 		}
@@ -2893,19 +2916,17 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			if (govern)
 				governIfNeeded();
 		}
-		public void budgetReset(boolean shieldWithoutBases, float maxIndustryRatio)	{ // For Ungoverned
-//			if (isGovernor())
-//				return;
+		public void budgetReset(boolean shieldWithoutBases)	{ // For Ungoverned
 			colonyIsDeveloped = isDeveloped(shieldWithoutBases);
-			currentProductionCapacity = currentProductionCapacity();
-			colonyIsGrowing	= currentProductionCapacity <= maxIndustryRatio;
+			colonyIsGrowing	= isGrowing();
 			reserveNeededBC(max(0, ceil(production() - rawReserveIncome())));
+			if(isGovernor() && govAutoFundTag().isCrossed())
+				reserveNeededBC(0);
 		}
-		public void budgetReset(boolean shieldWithoutBases, float maxIndustryRatio, boolean grant, boolean raise, boolean govern)	{
+		public void budgetReset(boolean shieldWithoutBases, boolean grant, boolean raise, boolean govern)	{
 			govFundColonyUpdated();
 			colonyIsDeveloped = isDeveloped(shieldWithoutBases);
-			currentProductionCapacity = currentProductionCapacity();
-			colonyIsGrowing	= currentProductionCapacity <= maxIndustryRatio;
+			colonyIsGrowing	= isGrowing();
 			boolean hasGrant = playerBudgetBC()!=null || governorBudgetBC()!=null || budgetSubsidiesBC()!=0;
 			if (grant) {
 				resetGrant(false);
@@ -2937,7 +2958,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		public boolean hasProject()				{ return research().hasProject(); }
 		public boolean noMinumumReserve()		{ return getFundFromReserve(); }
 		public boolean isGovernorBudget()		{ return isGovernor() && govFundColony(); }
-		public boolean isNewColony(float ratio)	{ return currentProductionCapacity() <= ratio; }
+		public boolean isNewColony()			{ return isGrowing(); }
 		public boolean isArtifact()				{ return planet().isArtifact(); }
 		public boolean isOrionArtifact()		{ return planet().isOrionArtifact(); }
 		public boolean isAntaran()				{ return planet().isAntaran(); }
@@ -3069,6 +3090,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 	private final class GovAutoFundTag implements ScaledInteger, Serializable	{
 		private static final long serialVersionUID = 1L;
 		private static final Color COIN_GOLD_COLOR = new Color(255, 215, 0);
+		private static final int CROSSED	= -10;
 		private static final int UNFUNDED	= 0;
 		private static final int GROWING	= 10;
 		private static final int ORDERS		= 20;
@@ -3101,7 +3123,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 				case ORDERS:	if (hasUrgency())	return URGENCY;
 				case URGENCY:	if (hasShipWork())	return SHIP_WORK;
 				case SHIP_WORK:	return UNLIMITED;
-				case UNLIMITED:	return UNFUNDED;
+				case UNLIMITED:	return CROSSED;
+				case CROSSED:	return UNFUNDED;
 			}
 			return mandate;
 		}
@@ -3119,6 +3142,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			// check if there are changes and return the new state
 			boolean debug = true;
 			switch (fundingMandate) {
+				case CROSSED:	return false;
 				case UNFUNDED:	return false;
 				case UNLIMITED:	return true;
 				case GROWING:
@@ -3161,7 +3185,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			fundingMandate = UNFUNDED;
 			return false;
 		}
-		public boolean isFunded()		{ return fundingMandate != UNFUNDED; }
+		public boolean isCrossed()		{ return fundingMandate == CROSSED; }
+		public boolean isFunded()		{ return fundingMandate > UNFUNDED; }
 		public BufferedImage getCoinImage(int width) {
 			return getCoinImage(width, empire(), fundingMandate, useReserve(), budget().budgetSubsidiesBC() > 0);
 		}
@@ -3214,6 +3239,18 @@ public final class Colony implements Base, IMappedObject, Serializable {
 						int grey = 15;
 						g.setColor(new Color(grey, grey, grey));
 						g.drawOval(coinTL, coinTL, coinW, coinW);
+						break;
+					case CROSSED:
+						g.setStroke(stroke4);
+						g.setColor(Color.RED);
+						int tl = s3;
+						int w1 = w - tl - tl;
+						g.drawOval(tl, tl, w1, w1);
+						tl = w/4;
+						w1 = w - tl;
+						g.drawLine(tl, tl, w1, w1);
+						g.dispose();
+						return buffer;
 				}
 				if (useReserve) {
 					g.setStroke(stroke3);
@@ -3273,7 +3310,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 					"ALLOCATE_SUBSIDIES_DRAW",
 					"ALLOCATE_SUBSIDIES_UNLIMITED",
 					"ALLOCATE_SUBSIDIES_ALLOCATE",
-					"ALLOCATE_SUBSIDIES_DEFAULT"
+					"ALLOCATE_SUBSIDIES_DEFAULT",
+					"ALLOCATE_SUBSIDIES_NONE"
 					};
 			Species species = ADVISOR.getSpecies();
 			BufferedImage[] coins = {
@@ -3285,7 +3323,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.UNLIMITED, true,  false),
 					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.UNLIMITED, false, false),
 					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.UNLIMITED, false, false),
-					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.UNFUNDED,  false, false)
+					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.UNFUNDED,  false, false),
+					GovAutoFundTag.getCoinImage(coinSide, species, GovAutoFundTag.CROSSED,	 false, false)
 					};
 			int[] yLines = new int[keys.length];
 			int y = imgHeight;

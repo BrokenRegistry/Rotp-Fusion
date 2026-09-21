@@ -2,6 +2,11 @@
 
 ## What's New
 
+26-09-21 (BR)
+- New settings: development limits for each planet type.
+- The Advisor has entered the Design panel.
+- Fixed some advisor display issues (pop-up remaining too long)
+
 26-09-17 (BR)
 - Fixed an issue with "Auto-flag" being set one too many times after the discovery window was displayed, possibly canceling a player's selection.
 - You now have the ability to modify the research after selecting a new one, following a technological discovery on an Artifact planet, a technology theft or a technology exchange.

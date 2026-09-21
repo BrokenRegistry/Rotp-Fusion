@@ -18,6 +18,7 @@ package rotp.ui.game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RadialGradientPaint;
 import java.awt.Stroke;
 import java.awt.event.KeyEvent;
@@ -50,6 +51,7 @@ public final class AdvisorPanel extends BasePanel implements IAdvisor, IMapOverl
 		initguideBox();
 	}
 	public static boolean isAdvising()				{ return A.isAdvising; }
+	public void setWelcomeBoxLocation(int x, int y)	{ A.welcomeBoxLocation = new Point(x, y); }
 	private static void isAdvising(boolean is)		{ A.isAdvising = is; }
 
 	public void init(IMapHandler handler, BasePanel p, String key, Species sp)	{
@@ -61,7 +63,8 @@ public final class AdvisorPanel extends BasePanel implements IAdvisor, IMapOverl
 		A.isOnHold		= false;
 		A.advisorKey	= key;
 		A.species		= sp;
-		A.avatarImg	= getAdvisorImage(sp, key);
+		A.avatarImg		= getAdvisorImage(sp, key);
+		A.welcomeBoxLocation = null;
 	}
 	public void setMargins(int left, int floor, int right, int tlx, int tly)	{
 		A.leftMargin	= left;
@@ -85,7 +88,6 @@ public final class AdvisorPanel extends BasePanel implements IAdvisor, IMapOverl
 		A.isOnHold = true;
 		A.target = null;
 		GUIDE_BOX.setText(null);
-//		releaseObjects();
 	}
 	public boolean toggle()	{
 		isAdvising(!A.isAdvising);
@@ -278,7 +280,10 @@ public final class AdvisorPanel extends BasePanel implements IAdvisor, IMapOverl
 	private void drawWelcome(Graphics2D g, IAdvice target, AdviceBox targetBox)	{
 		String str = helpText(target, targetBox);
 		initGuideBox(g, str, s400, 0);
-		drawGuideBox(g, AVATAR_BOX.xe() + s2, AVATAR_BOX.ye() - TEXT_BOX.height, 0, null);
+		if (A.welcomeBoxLocation == null)
+			drawGuideBox(g, AVATAR_BOX.xe() + s2, AVATAR_BOX.ye() - TEXT_BOX.height, 0, null);
+		else
+			drawGuideBox(g, A.welcomeBoxLocation.x, A.welcomeBoxLocation.y, 0, null);
 	}
 	private void drawTopLeftAdvice(Graphics2D g, IAdvice target, AdviceBox targetBox)	{
 		String str = topLeftText(target, targetBox);

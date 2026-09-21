@@ -226,8 +226,8 @@ TECH_LEVEL_HEADER                 | Technology level impact:
 TECH_LEVEL_VALUE                  | Technology level %1
 TECH_CATEGORY_HEADER              | CATEGORY %1
 TECH_LEVEL_OF_TECH                | Level %1
-TECH_IS_FREE					| (free)
-TECH_IS_RESTRICTED				| (restricted)
+TECH_IS_FREE					| (research free)
+TECH_IS_RESTRICTED				| (restricted technology)
 
 // Technology level impact
 TECH_COMPUTERS_LEVEL_DESC		| During espionage missions, the difference between your computer technology level and that of the targeted empire changes the probability of mission success.
@@ -1164,6 +1164,7 @@ MAIN_GOVERNOR_TOP_LEFT_HELP		| →MAIN_AUTO_PILOT_HELP←<hr>→MAIN_GOVERNOR_HE
 MAIN_GOVERNOR_TOGGLE_HELP		| To activate or deactivate the governor of this colony.<br>A basic autopilot will always keep this colony clean.
 
 ALLOCATE_SUBSIDIES_HEAD			| <h2>Instructions for allocating subsidies</h2>
+ALLOCATE_SUBSIDIES_NONE			| <b>Crossed</b><br>No subsidy for this one.
 ALLOCATE_SUBSIDIES_DEFAULT		| <b>Metal color</b><br>Follow global instructions.
 ALLOCATE_SUBSIDIES_ALLOCATE		| <b>Gold color</b><br>Allocate subsidies.
 ALLOCATE_SUBSIDIES_UNLIMITED	| <b>Uncircled</b><br>Active until the player deactivates it.
@@ -1306,6 +1307,7 @@ MAIN_ALERT_ALLIANCE_WEAKENING     | Our alliance with the [ally_empire] is weake
 MAIN_ALERT_ALLIANCE_BREAKING      | Our alliance with the [ally_empire] is on the verge of collapse!
 
 // Colony Listing UI
+PLANETS_LIST_HELP				| Your Colonies
 PLANETS_TITLE                     | [player_race] Colonies
 PLANETS_VIEW_ECOLOGY              | Ecology View
 PLANETS_VIEW_INDUSTRY             | Industry View
@@ -5271,6 +5273,26 @@ HEADERS_AUTO_SD_PREF_DESC		| Preferences for general ship functionality.
 HEADERS_AUTO_SD_MODE			| ~~~ AUTO DESIGN MODE ~~~
 HEADERS_AUTO_SD_MODE_DESC		| Which design tool to use?
 
+// Ship Design Advisor
+SHIP_DESIGN_HELP_ICON			| <h3>Concept</h3>Perhaps the most important ship design concept is also the most esoteric: you will only ever have six types of ships in play. If you ever want to design and build a new kind of ship, you'll have to replace one of your six designs, which necessarily involves scrapping all ships of that design. It's maddening, I know. But you know what's even more maddening? Playing a 4X with twenty variations of the same unit running around and you have to keep track of them all.<br>Whether you love it or hate it, the six-ship limit is a fundamental part of Remnants of the Precursors, just like it was a fundamental part of Master of Orion. Fortunately, Remnants of the Precursors gives you a seventh "prototype" slot where you can experiment with different designs before committing them to one of your six slots.<br>Another important concept distinct from other games is scaling size and cost: ship components have no fixed cost or size. Instead, cost and size decrease as you research new technologies in that component's technology category. For every ten levels you have in excess of a component's level, its cost is reduced by 50% and its size is reduced by 25% (components from the Weapon technology category shrink more quickly; their size is reduced by 50% for every ten levels). You don't need to track all this, but you should be aware that "older" components will get increasingly less expensive and smaller. This keeps them relevant even after they're "obsolete".<br><hr><br>→SHIP_DESIGN_HELP_HK←
+
+SHIP_DESIGN_AUTO_HELP			| <h3>Auto Design</h3>The best AI will upgrade the current design to what it considers to be the most effective design:<br>Usually that's 3 slots for the best weapon and one slots for bombs/bio-weapons.<br>"The best weapon" is a relative term as it depends on the enemies shields and potential other defense-mechanism. It can mathematically be determined. But usually just going with the newest isn't too far off. Especially when it comes to have some long-term-viability.<br>Another premise from the AI conceptor is:<br><i><q>I also came to the conclusion that specializing the designs doesn't have enough advantages to outweigh the burden this puts on the slot-limits. Due to the limited slots, an important aspect is to be able to rotate old designs out without having to scrap too much. With three specialized designs, for example, you'd have to scap half of your army if you wanted to update to a new engine or something like that. Whereas with hybrid-designs it's only 1. This keeps the update-cycles much lower.</q></i>
+
+SHIP_DESIGN_PROTOTYPE_HELP		| <h3>The prototype box</h3>Placed at the top is for you to test different combinations.<br>If you want to evolve one of your existing ships, press the Copy button that appears in the six slots to transfer it to the prototyping slot. Update it with the latest technologies, and once you are satisfied, select the destination location and from there press the Copy button that appears in the prototyping location.<br>At the start of a game, the slots will all have basic starting designs built around each of the available hull sizes. But keep in mind, the slots aren't designated for any particular hull sizes. There's no restriction to how many designs you can have for each hull size. You could theoretically play an entire game with nothing but swarms of small ships. Probably not a good idea, but you could do it if you wanted.
+
+SHIP_DESIGN_COPY_HELP			| <h3>Copy</h3>Copy an existing design to serve as a starting point for a new design.<br>The design of this box will be copied to the highlighted box.
+
+SHIP_DESIGN_COMBAT_STATS_HELP	| <h3>Combat Stats</h3>Your first step is deciding the size of your ship, which will determine its base combat stats. As you set a small, medium, large, or huge hull, you'll see the stats update. Range is a fixed value based on your fuel cell technology. Speed will be determined by your engines, which are set in the Engines section. Cost is an ongoing tally of the design's total cost in BC, which will be paid by however much the constructing colony has allocated to its Ships slider. Total Space is the running tally of all the ship's components, whereas Available Space is how much space remains for more components. Note that every level of Construction technology level adds 2% additional space to each hull size.<br>Hits points will be determined by a combination of the ship's hull size and armor type (see 4.2.5. Components for more information on armor). The base values for Missile Defense and Beam Defense are set by the design's hull size. Small hulls have a Missile and Beam Defense value of 3, Medium hulls have a Missile and Beam Defense value of 2, Large hulls have a Missile and Beam Defense of 1, and Huge hulls have a Missile and Beam Defense of 0. Missile and Beam Defense can be boosted by increasing a ship's Maneuver setting, which is capped by the ship's engine types. Missile Defense can be further boosted with ECM Jammers.
+
+SHIP_DESIGN_ENGINE_STATS_HELP	| <h3>Engines</h3>One important difference between Remnants of the Precursors and other games with ship design is that engines are 100% hands-off. You simply choose the engine type you want -- this will almost always be your best available type -- and the designer automatically adds engines to meet your power requirement, taking into account all the other settings on the Ship Design screen and displaying all the relevant information on the Engines panel. It even adds "partial engines", as you can see next to the Engines Required stat. This will routinely be a number with a decimal.<br>Your ship's engine determines its warp speed, which is how quickly it travels on the main map, measured in parsecs per year. Your ship's combat speed, which is how many spaces it moves during combat, is determined by its Maneuver class. Maneuver class is a setting for how much of the ship's power will be diverted to moving around during combat. Maneuver class is capped by a ship's engine type, and every two points in a ship's Maneuver class give it one point of Combat Speed.<br>The Cost and Size of an engine take miniaturization into account (i.e. every ten levels of Propulsion technology you have above an engine's tech level reduces its cost by 50% and its size by 25%). Power per engine is a fixed value ranging from 10 for Retro engines, 20 for Nuclear engines, 30 for SubLight engines, and so forth, all the way up to 90 for Hyper Engines. The numbers for Power Requirements, Engines Required, Total Engine Size, and Total Engine Cost adjust dynamically as you add and remove components from your design.
+
+SHIP_DESIGN_COMPONENTS_HELP		| <h3>Components</h3>Once you've selected your ship's size and engines, it's just a matter of slotting the components you want. As you install components, your design will automatically add engines as needed to meet your power requirements.<br>Computers will determine your design's Attack Level, which is compared to the target's missile or beam defense during combat.<br>Armor will determine your design's hit points. As you research better armor -- starting with titanium, and then progressing through duralloy, zortrium, andrium, tritanium, adamantium, and neutronium -- each of your hull sizes will get more hit points. Note that every type of armor is available in default strength or double strength (double strength is indicated by a II following the name). Double strength armor takes up more space, but gives your ship 50% more hit points. Also note that armor is subject to the benefits of miniaturization (i.e. every ten levels of Construction technology you have above an armor's tech level reduces its cost by 50% and its size by 25%).<br>Shields mitigate damage according to the strength of the shield. They're subject to the benefits of miniaturization (i.e. every ten levels of Force Field technology you have above a shield's tech level reduces its cost by 50% and its size by 25%). ECM Jammers contribute directly to a design's Missile Defense. The Maneuver Class isn't a component, but a setting to determine a design's combat speed as allowed by its engine type.
+
+SHIP_DESIGN_WEAPONS_STATS_HELP	| →SHIP_DESIGN_HELP_3F←
+SHIP_DESIGN_SPECIALS_STATS_HELP	| →SHIP_DESIGN_HELP_3G←
+
+SHIP_DESIGN_SIZE_HELP			| <h3>Hull Size</h3>Your first step is deciding the size of your ship, which will determine its base combat stats. As you set a small, medium, large, or huge hull, you'll see the stats update.<br>Total Space is the running tally of all the ship's components, whereas Available Space is how much space remains for more components. Note that every level of Construction technology level adds 2% additional space to each hull size.
+ 
 // Ship Design help
 SHIP_DESIGN_HELP_ALL              | OVERVIEW - an empire can have up to six active ship designs. For each design, choose a hull size then fill it with various components such as armor, shields and weapons. Each component has a size, power and cost. The total space required for a component is its size plus the size of the number of engines needed to power it. Once deployed, a ship design can be constructed in any of your colonies.
 SHIP_DESIGN_HELP_1A               | Size - larger hull sizes add cost but provide more space.
@@ -6118,9 +6140,35 @@ GOVERNOR_AUTOSPEND_NEW_FIRST_HELP	| When the governor needs to help both new col
 GOVERNOR_AUTOSPEND_NEW_FIRST_DESC	| The Governor prioritizes new colonies, those with artifacts come second.
 GOVERNOR_AUTOSPEND_NEW_FIRST		| Priority to new colonies: %1
 
-GOVERNOR_AUTOSPEND_MAX_IND_PCT_HELP	| When the governor needs to help both new colonies and colonies with artifacts, and needs to prioritize new colonies, it can be useful to set a limit at which a colony is no longer considered new.<br>Colonies above this limit will not receive funding as "new Colonies".<br>Colonies below this limit will not be taxed as they could receive funds as “new colonies”. (Which would result in wasted funds as taxation involves 50% losses)
-GOVERNOR_AUTOSPEND_MAX_IND_PCT_DESC	| Maximum development level defining a colony as new.
-GOVERNOR_AUTOSPEND_MAX_IND_PCT		| Development limit: %1%
+GOVERNOR_AS_MAX_IND_PCT_COMMON		| When the governor needs to help both new colonies and colonies with artifacts, and needs to prioritize new colonies, it can be useful to set a limit at which a colony is no longer considered new.<br>Colonies above this limit will not receive funding as "new Colonies".<br>Colonies below this limit will not be taxed as they could receive funds as “new colonies”. (Which would result in wasted funds as taxation involves 50% losses)
+
+GOVERNOR_AS_MAX_IND_UPOOR_PCT_HELP	| <b>Ultra-Poor Planets Development Limit</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_UPOOR_PCT_DESC	| Maximum development level defining a colony as new. For Ultra-Poor planets.
+GOVERNOR_AS_MAX_IND_UPOOR_PCT		| Development limit Ultra-Poor: %1%
+
+GOVERNOR_AS_MAX_IND_POOR_PCT_HELP	| <b>Poor Planets Development Limit</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_POOR_PCT_DESC	| Maximum development level defining a colony as new. For Poor planets.
+GOVERNOR_AS_MAX_IND_POOR_PCT		| Development limit Poor: %1%
+
+GOVERNOR_AS_MAX_IND_RICH_PCT_HELP	| <b>Rich Planets Development Limit</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_RICH_PCT_DESC	| Maximum development level defining a colony as new. For Rich planets.
+GOVERNOR_AS_MAX_IND_RICH_PCT		| Development limit Rich: %1%
+
+GOVERNOR_AS_MAX_IND_URICH_PCT_HELP	| <b>Ultra-Rich Planets Development Limit</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_URICH_PCT_DESC	| Maximum development level defining a colony as new. For Ultra-Rich planets.
+GOVERNOR_AS_MAX_IND_URICH_PCT		| Development limit Ultra-Rich: %1%
+
+GOVERNOR_AS_MAX_IND_ANTAR_PCT_HELP	| <b>Antaran Planets Development Limit</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_ANTAR_PCT_DESC	| Maximum development level defining a colony as new. For Antaran planets.
+GOVERNOR_AS_MAX_IND_ANTAR_PCT		| Development limit Antaran: %1%
+
+GOVERNOR_AS_MAX_IND_ORION_PCT_HELP	| <b>Orion Planets Development Limit</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_ORION_PCT_DESC	| Maximum development level defining a colony as new. For Orion planets.
+GOVERNOR_AS_MAX_IND_ORION_PCT		| Development limit Orion: %1%
+
+GOVERNOR_AUTOSPEND_MAX_IND_PCT_HELP	| <b>Normal Planets Development Limit</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AUTOSPEND_MAX_IND_PCT_DESC	| Maximum development level defining a colony as new. For Normal planets.
+GOVERNOR_AUTOSPEND_MAX_IND_PCT		| Development limit Normal: %1%
 
 GOVERNOR_AUTOSPEND_ARTEFACTS_HELP	| The Governor automatically spends reserves to maximize research on colonies with artifacts:<br>&emsp - Spends only the amount the planet can consume this turn. <br>&emsp - Starts with fully built Orion Artefacts planets, then Antaran Artefacts planets.<br>&emsp - If funds remain, helps build new Orion Artefacts colonies, then Antaran Artifact colonies. <br>&emsp - Starts with the planet with the highest production and stops when funds run out or there are no more eligible planets.<br>&emsp - Spends only on planets where a Governor is in office.
 GOVERNOR_AUTOSPEND_ARTEFACTS_DESC	| Automatically spend reserve to boost rechearch on Artefact colonies.
@@ -6132,6 +6180,9 @@ HEADERS_GOVERNOR_FUNDRAISING		| ~~~ EMPIRE FUNDRAISING ~~~
 
 HEADERS_GOVERNOR_SPENDING_DESC		| How to use reserve and emergency funds.
 HEADERS_GOVERNOR_SPENDING			| ~~~ EMPIRE SPENDING ~~~
+
+HEADERS_GOVERNOR_DEVELOPMENT_DESC	| What characterizes a colony as still being "developing", in order to obtain funding.
+HEADERS_GOVERNOR_DEVELOPMENT		| ~~~ DEFINITION DEVELOPING ~~~
 
 GOVERNOR_RESERVE_DESC				| Emergency fund to be kept in reserve for the exclusive use of the player.<br>(Not spent by governors)
 GOVERNOR_RESERVE					| Player Emergency Fund: %1

@@ -16,6 +16,8 @@
 package rotp.ui.design;
 
 import static rotp.model.ships.ShipDesignLab.MAX_DESIGNS;
+import static rotp.ui.game.AdvisorPanel.isAdvising;
+import static rotp.ui.game.IAdvisor.ADVISOR;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,6 +27,7 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.LinearGradientPaint;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -64,11 +67,13 @@ import rotp.ui.ExitButton;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
 import rotp.ui.combat.ShipBattleUI;
+import rotp.ui.game.AdvisorPanel;
 import rotp.ui.game.HelpUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.options.AllSubUI;
 import rotp.ui.options.ISubUiKeys;
 import rotp.ui.util.ParamSubUI;
+import rotp.util.AdviceBox;
 import rotp.util.AnimationManager;
 import rotp.util.Base;
 import rotp.util.ImageColorizer;
@@ -128,52 +133,58 @@ public class DesignUI extends BasePanel {
     private List<BufferedImage> shipImages = new ArrayList<>();
 
     private Shape hoverTarget;
-    private final Rectangle autoButtonArea = new Rectangle();
-    private final Rectangle clearButtonArea = new Rectangle();
-    private final Rectangle renameButtonArea = new Rectangle();
-    private final Rectangle scrapButtonArea = new Rectangle();
-    private final Rectangle scoutButtonArea = new Rectangle();
-    private final Rectangle colonizeButtonArea = new Rectangle();
-    private final Rectangle attackButtonArea = new Rectangle();
-    private final Rectangle createButtonArea = new Rectangle();
-    private final Rectangle[] copyButtonArea = new Rectangle[MAX_DESIGNS];
-    private final Rectangle shipImageArea = new Rectangle();
-    private final Polygon shipImageDecr0 = new Polygon();
-    private final Polygon shipImageIncr0 = new Polygon();
-    private final Rectangle shipImageDecr = new Rectangle();
-    private final Rectangle shipImageIncr = new Rectangle();
-    private final Rectangle sizeFieldArea = new Rectangle();
-    private final Polygon sizeFieldDecr = new Polygon();
-    private final Polygon sizeFieldIncr = new Polygon();
-    private final Rectangle engineFieldArea = new Rectangle();
-    private final Polygon engineFieldDecr = new Polygon();
-    private final Polygon engineFieldIncr = new Polygon();
-    private final Rectangle computerFieldArea = new Rectangle();
-    private final Polygon computerFieldDecr = new Polygon();
-    private final Polygon computerFieldIncr = new Polygon();
-    private final Rectangle armorFieldArea = new Rectangle();
-    private final Polygon armorFieldDecr = new Polygon();
-    private final Polygon armorFieldIncr = new Polygon();
-    private final Rectangle shieldsFieldArea = new Rectangle();
-    private final Polygon shieldsFieldDecr = new Polygon();
-    private final Polygon shieldsFieldIncr = new Polygon();
-    private final Rectangle ecmFieldArea = new Rectangle();
-    private final Polygon ecmFieldDecr = new Polygon();
-    private final Polygon ecmFieldIncr = new Polygon();
-    private final Rectangle maneuverFieldArea = new Rectangle();
-    private final Polygon maneuverFieldDecr = new Polygon();
-    private final Polygon maneuverFieldIncr = new Polygon();
-    private final Rectangle[] weaponFieldArea = new Rectangle[ShipDesign.maxWeapons];
-    private final Polygon[] weaponFieldDecr = new Polygon[ShipDesign.maxWeapons];
-    private final Polygon[] weaponFieldIncr = new Polygon[ShipDesign.maxWeapons];
-    private final Rectangle[] weaponCountArea = new Rectangle[ShipDesign.maxWeapons];
-    private final Polygon[] weaponCountDecr = new Polygon[ShipDesign.maxWeapons];
-    private final Polygon[] weaponCountIncr = new Polygon[ShipDesign.maxWeapons];
-    private final Rectangle[] specialsFieldArea = new Rectangle[ShipDesign.maxSpecials];
-    private final Polygon[] specialsFieldDecr = new Polygon[ShipDesign.maxSpecials];
-    private final Polygon[] specialsFieldIncr = new Polygon[ShipDesign.maxSpecials];
-    private final Rectangle[] shipColorArea = new Rectangle[12];
+	private final AdviceBox autoButtonArea		= new AdviceBox();
+	private final AdviceBox clearButtonArea		= new AdviceBox();
+	private final AdviceBox renameButtonArea	= new AdviceBox();
+	private final AdviceBox scrapButtonArea		= new AdviceBox();
+	private final AdviceBox scoutButtonArea		= new AdviceBox();
+	private final AdviceBox colonizeButtonArea	= new AdviceBox();
+	private final AdviceBox attackButtonArea	= new AdviceBox();
+	private final AdviceBox createButtonArea	= new AdviceBox();
+	private final AdviceBox[] copyButtonArea	= new AdviceBox[MAX_DESIGNS];
+	private final AdviceBox shipImageArea		= new AdviceBox();
+	private final Polygon shipImageDecr0		= new Polygon();
+	private final Polygon shipImageIncr0		= new Polygon();
+	private final AdviceBox shipImageDecr		= new AdviceBox();
+	private final AdviceBox shipImageIncr		= new AdviceBox();
+	private final AdviceBox sizeFieldArea		= new AdviceBox();
+	private final Polygon sizeFieldDecr			= new Polygon();
+	private final Polygon sizeFieldIncr			= new Polygon();
+	private final AdviceBox engineFieldArea		= new AdviceBox();
+	private final Polygon engineFieldDecr		= new Polygon();
+	private final Polygon engineFieldIncr		= new Polygon();
+	private final AdviceBox computerFieldArea	= new AdviceBox();
+	private final Polygon computerFieldDecr		= new Polygon();
+	private final Polygon computerFieldIncr		= new Polygon();
+	private final AdviceBox armorFieldArea		= new AdviceBox();
+	private final Polygon armorFieldDecr		= new Polygon();
+	private final Polygon armorFieldIncr		= new Polygon();
+	private final AdviceBox shieldsFieldArea	= new AdviceBox();
+	private final Polygon shieldsFieldDecr		= new Polygon();
+	private final Polygon shieldsFieldIncr		= new Polygon();
+	private final AdviceBox ecmFieldArea		= new AdviceBox();
+	private final Polygon ecmFieldDecr			= new Polygon();
+	private final Polygon ecmFieldIncr			= new Polygon();
+	private final AdviceBox maneuverFieldArea	= new AdviceBox();
+	private final Polygon maneuverFieldDecr		= new Polygon();
+	private final Polygon maneuverFieldIncr		= new Polygon();
+	private final AdviceBox[] weaponFieldArea	= new AdviceBox[ShipDesign.maxWeapons];
+	private final Polygon[] weaponFieldDecr		= new Polygon[ShipDesign.maxWeapons];
+	private final Polygon[] weaponFieldIncr		= new Polygon[ShipDesign.maxWeapons];
+	private final AdviceBox[] weaponCountArea	= new AdviceBox[ShipDesign.maxWeapons];
+	private final Polygon[] weaponCountDecr		= new Polygon[ShipDesign.maxWeapons];
+	private final Polygon[] weaponCountIncr		= new Polygon[ShipDesign.maxWeapons];
+	private final AdviceBox[] specialsFieldArea	= new AdviceBox[ShipDesign.maxSpecials];
+	private final Polygon[] specialsFieldDecr	= new Polygon[ShipDesign.maxSpecials];
+	private final Polygon[] specialsFieldIncr	= new Polygon[ShipDesign.maxSpecials];
+	private final AdviceBox[] shipColorArea		= new AdviceBox[12];
 
+	private final AdviceBox combatStatsArea		= new AdviceBox();
+	private final AdviceBox engineStatsArea		= new AdviceBox();
+	private final AdviceBox componentsArea		= new AdviceBox();
+	private final AdviceBox weaponsStatsArea	= new AdviceBox();
+	private final AdviceBox specialsStatsArea	= new AdviceBox();
+	
     final DesignComputerSelectionUI	computerSelectionUI;
     final DesignShieldSelectionUI	shieldSelectionUI;
     final DesignEcmSelectionUI		ecmSelectionUI;
@@ -184,7 +195,7 @@ public class DesignUI extends BasePanel {
     final DesignSpecialSelectionUI	specialSelectionUI;
     private final ConfirmScrapUI confirmScrapUI;
     private final ConfirmCreateUI confirmCreateUI;
-    
+
     private BufferedImage shipPaneImg;
 
     private int[] shipCounts;
@@ -212,33 +223,16 @@ public class DesignUI extends BasePanel {
 		// palette = Palette.named("Brown");
         initModel();
         // must be created after palette is set
-        computerSelectionUI = new DesignComputerSelectionUI();
-        shieldSelectionUI     = new DesignShieldSelectionUI();
-        ecmSelectionUI           = new DesignEcmSelectionUI();
-        armorSelectionUI       = new DesignArmorSelectionUI();
-        engineSelectionUI     = new DesignEngineSelectionUI();
-        maneuverSelectionUI = new DesignManeuverSelectionUI();
-        weaponSelectionUI     = new DesignWeaponSelectionUI();
-        specialSelectionUI   = new DesignSpecialSelectionUI();
-        confirmScrapUI   = new ConfirmScrapUI();
-        confirmCreateUI   = new ConfirmCreateUI();
-        for (int i=0;i<copyButtonArea.length;i++) 
-            copyButtonArea[i] = new Rectangle();
-        for (int i=0;i<weaponFieldArea.length;i++) {
-            weaponFieldArea[i] = new Rectangle();
-            weaponFieldDecr[i] = new Polygon();
-            weaponFieldIncr[i] = new Polygon();
-            weaponCountArea[i] = new Rectangle();
-            weaponCountDecr[i] = new Polygon();
-            weaponCountIncr[i] = new Polygon();
-        }
-        for (int i=0;i<specialsFieldArea.length;i++) {
-            specialsFieldArea[i] = new Rectangle();
-            specialsFieldDecr[i] = new Polygon();
-            specialsFieldIncr[i] = new Polygon();
-        }
-        for (int i=0;i<shipColorArea.length;i++) 
-            shipColorArea[i] = new Rectangle();
+	    computerSelectionUI	= new DesignComputerSelectionUI();
+	    shieldSelectionUI	= new DesignShieldSelectionUI();
+	    ecmSelectionUI		= new DesignEcmSelectionUI();
+	    armorSelectionUI	= new DesignArmorSelectionUI();
+	    engineSelectionUI	= new DesignEngineSelectionUI();
+	    maneuverSelectionUI	= new DesignManeuverSelectionUI();
+	    weaponSelectionUI	= new DesignWeaponSelectionUI();
+	    specialSelectionUI	= new DesignSpecialSelectionUI();
+	    confirmScrapUI		= new ConfirmScrapUI();
+	    confirmCreateUI		= new ConfirmCreateUI();
     }
     public void init() {
         int pid = player().id;
@@ -248,15 +242,46 @@ public class DesignUI extends BasePanel {
         orbitCounts = shipCounts;
         inTransitCounts = ships.shipDesignInTransitCounts(pid);
         orbitCounts = new int[shipCounts.length];
-        for (int i=0;i<shipCounts.length;i++) {
-            orbitCounts[i] = shipCounts[i] - inTransitCounts[i];
-        }
+		for (int i=0;i<shipCounts.length;i++)
+			orbitCounts[i] = shipCounts[i] - inTransitCounts[i];
+		initAdvisor();
     }
 	private void refreshConstructionCounts() {
 		constructionCounts = galaxy().ships.shipDesignConstructionCounts(player().id);
 	}
-    @Override
-    public boolean drawMemory()            { return true; }
+	@Override protected boolean isAdvised()	{ return true; }
+	@Override protected void initAdvisor()	{
+		ADVISOR.init(this, AdvisorPanel.SCOUT_ADVISOR, player());
+		ADVISOR.setMargins(s3, s3, 0, s400, s100);
+		ADVISOR.setTopLeftAdvice("SHIP_DESIGN_HELP_ICON");
+		ADVISOR.setAvatarSize(s80, s100);
+		ADVISOR.setWelcomeBoxLocation(s400, s3);
+
+		clearButtonArea.setAdviceHelpKey("SHIP_DESIGN_HELP_4F");
+		renameButtonArea.setAdviceHelpKey("SHIP_DESIGN_HELP_4A");
+		scrapButtonArea.setAdviceHelpKey("SHIP_DESIGN_HELP_4B");
+		scoutButtonArea.setAdviceHelpKey("SHIP_DESIGN_HELP_4H");
+		colonizeButtonArea.setAdviceHelpKey("SHIP_DESIGN_HELP_4J");
+		attackButtonArea.setAdviceHelpKey("SHIP_DESIGN_HELP_4I");
+		createButtonArea.setAdviceHelpKey("SHIP_DESIGN_HELP_4G");
+		createButtonArea.setForcedLocation(9);
+		shipImageArea.setAdviceHelpKey("SHIP_DESIGN_HELP_2J");
+		shipImageDecr.setAdviceHelpKey("SHIP_DESIGN_HELP_2J");
+		shipImageIncr.setAdviceHelpKey("SHIP_DESIGN_HELP_2J");
+		engineFieldArea.setAdviceHelpKey("SHIP_DESIGN_HELP_2A");
+		computerFieldArea.setAdviceHelpKey("SHIP_DESIGN_HELP_3A");
+		armorFieldArea.setAdviceHelpKey("SHIP_DESIGN_HELP_3B");
+		shieldsFieldArea.setAdviceHelpKey("SHIP_DESIGN_HELP_3C");
+		ecmFieldArea.setAdviceHelpKey("SHIP_DESIGN_HELP_3D");
+		maneuverFieldArea.setAdviceHelpKey("SHIP_DESIGN_HELP_3E");
+
+		combatStatsArea.setForcedWidth(s600);
+		engineStatsArea.setForcedWidth(s600);
+		componentsArea.setForcedWidth(s700);
+		weaponsStatsArea.setForcedWidth(s600);
+		specialsStatsArea.setForcedWidth(s600);
+	}
+	@Override public boolean drawMemory()	{ return true; }
     @Override
     public void animate() {
         if (!AnimationManager.current().playAnimations())
@@ -279,18 +304,68 @@ public class DesignUI extends BasePanel {
         // create center panel
         DesignTitlePanel titlePanel = new DesignTitlePanel(this, "SHIP_DESIGN_TITLE");
         configPanel = new DesignConfigPanel();
-        BasePanel mainPanel = new BasePanel();
+		BasePanel mainPanel = new BasePanel();
         mainPanel.setOpaque(false);
         mainPanel.setBorder(newEmptyBorder(10,0,0,0));
         mainPanel.setLayout(new BorderLayout(0, s5));
         mainPanel.add(titlePanel, BorderLayout.NORTH);
         mainPanel.add(configPanel, BorderLayout.CENTER);
 
+		autoButtonArea.init		(configPanel, null, "", "SHIP_DESIGN_AUTO_HELP");
+		clearButtonArea.init	(configPanel, null, "", "SHIP_DESIGN_HELP_4F");
+		renameButtonArea.init	(configPanel, null, "", "SHIP_DESIGN_HELP_4A");
+		scrapButtonArea.init	(configPanel, null, "", "SHIP_DESIGN_HELP_4B");
+		scoutButtonArea.init	(configPanel, null, "", "SHIP_DESIGN_HELP_4H");
+		colonizeButtonArea.init	(configPanel, null, "", "SHIP_DESIGN_HELP_4J");
+		attackButtonArea.init	(configPanel, null, "", "SHIP_DESIGN_HELP_4I");
+		createButtonArea.init	(configPanel, null, "", "SHIP_DESIGN_HELP_4G");
+		shipImageArea.init		(configPanel, null, "", "SHIP_DESIGN_HELP_2J");
+		shipImageDecr.init		(configPanel, null, "", "SHIP_DESIGN_HELP_2J");
+		shipImageIncr.init		(configPanel, null, "", "SHIP_DESIGN_HELP_2J");
+		sizeFieldArea.init		(configPanel, null, "", "SHIP_DESIGN_SIZE_HELP");
+		engineFieldArea.init	(configPanel, null, "", "SHIP_DESIGN_HELP_2A");
+		computerFieldArea.init	(configPanel, null, "", "SHIP_DESIGN_HELP_3A");
+		armorFieldArea.init		(configPanel, null, "", "SHIP_DESIGN_HELP_3B");
+		shieldsFieldArea.init	(configPanel, null, "", "SHIP_DESIGN_HELP_3C");
+		ecmFieldArea.init		(configPanel, null, "", "SHIP_DESIGN_HELP_3D");
+		maneuverFieldArea.init	(configPanel, null, "", "SHIP_DESIGN_HELP_3E");
+
+		combatStatsArea.init	(configPanel, null, "", "SHIP_DESIGN_COMBAT_STATS_HELP");
+		engineStatsArea.init	(configPanel, null, "", "SHIP_DESIGN_ENGINE_STATS_HELP");
+		componentsArea.init		(configPanel, null, "", "SHIP_DESIGN_COMPONENTS_HELP");
+		weaponsStatsArea.init	(configPanel, null, "", "SHIP_DESIGN_WEAPONS_STATS_HELP");
+		specialsStatsArea.init	(configPanel, null, "", "SHIP_DESIGN_SPECIALS_STATS_HELP");
+		combatStatsArea.setForcedWidth(s600);
+		engineStatsArea.setForcedWidth(s600);
+		componentsArea.setForcedWidth(s700);
+		weaponsStatsArea.setForcedWidth(s600);
+		specialsStatsArea.setForcedWidth(s600);
+
+		for (int i=0;i<weaponFieldArea.length;i++) {
+			weaponFieldArea[i] = new AdviceBox();
+			weaponFieldArea[i].init(configPanel, null, "", "SHIP_DESIGN_HELP_3F");
+			weaponFieldDecr[i] = new Polygon();
+			weaponFieldIncr[i] = new Polygon();
+			weaponCountArea[i] = new AdviceBox();
+			weaponCountArea[i].init(configPanel, null, "", "SHIP_DESIGN_HELP_3F");
+			weaponCountDecr[i] = new Polygon();
+			weaponCountIncr[i] = new Polygon();
+		}
+		for (int i=0;i<specialsFieldArea.length;i++) {
+			specialsFieldArea[i] = new AdviceBox();
+			specialsFieldArea[i].init(configPanel, null, "", "SHIP_DESIGN_HELP_3G");
+			specialsFieldDecr[i] = new Polygon();
+			specialsFieldIncr[i] = new Polygon();
+		}
+		for (int i=0;i<shipColorArea.length;i++) {
+			shipColorArea[i] = new AdviceBox();
+			shipColorArea[i].init(configPanel, null, "", "SHIP_DESIGN_HELP_1L");
+		}
+
         // create design slot panel on right side of UI
         designSlotsPanel = new DesignSlotsPanel();
-
         SlotTitlePanel slotsTitlePanel = new SlotTitlePanel("SHIP_DESIGN_SLOTS");
-        BasePanel rightPanel = new BasePanel();
+		BasePanel rightPanel = new BasePanel();
         rightPanel.setPreferredSize(new Dimension(rightPaneW, getHeight()));
         rightPanel.setBorder(newEmptyBorder(10,0,0,0));
         rightPanel.setOpaque(false);
@@ -318,7 +393,7 @@ public class DesignUI extends BasePanel {
     @Override
     public void showHelp() {
         helpFrame = 1;
-        
+
         loadHelpUI();
         repaint();   
     }
@@ -345,7 +420,7 @@ public class DesignUI extends BasePanel {
         HelpUI helpUI = RotPUI.helpUI();
         if (helpFrame == 0)
             return;
-        
+
         ShipDesign des = configPanel.shipDesign();
         switch(helpFrame) {
             case 1: loadHelpFrame1(); break;
@@ -567,7 +642,7 @@ public class DesignUI extends BasePanel {
         int w8 = scaled(330);
         int y8 = scaled(640);
         HelpUI.HelpSpec sp8 = helpUI.addBrownHelpText(x8,y8,w8, 3, text("SHIP_DESIGN_HELP_3G"));
-		sp8.setLine(x8, sp8.yc()/2, s400, sp8.yc());
+		sp8.setLine(x8, sp8.yc(), s400, sp8.yc());
     }
     private void loadHelpFrame4A() {
         int w = getWidth();
@@ -792,6 +867,14 @@ public class DesignUI extends BasePanel {
 			case KeyEvent.VK_F1:
 				if (e.isShiftDown())
 					showHotKeys();
+				else if (AdvisorPanel.helpShowAdvisor.get()) {
+					if (e.isControlDown())
+						showHelp();
+					else
+						toggleOnDemandAdvisor();
+				}
+				else if (e.isControlDown())
+					toggleOnDemandAdvisor();
 				else
 					showHelp();
 				return;
@@ -848,8 +931,8 @@ public class DesignUI extends BasePanel {
     private class DesignTitlePanel extends BasePanel implements MouseMotionListener, MouseListener {
         private static final long serialVersionUID = 1L;
         private String titleKey;
-        private Rectangle hoverBox;
-        private Rectangle helpBox = new Rectangle();
+        private Shape hoverBox;
+        private AdviceBox helpBox = new AdviceBox();
         private DesignUI parent;
         private DesignTitlePanel(DesignUI p, String s) {
             parent = p;
@@ -861,6 +944,9 @@ public class DesignUI extends BasePanel {
             setOpaque(false);
             addMouseListener(this);
             addMouseMotionListener(this);
+			helpBox.init(this, null, null, "SHIP_DESIGN_HELP_ICON");
+			helpBox.setBoxOffset(s300, -s25);
+			helpBox.setForcedWidth(s500);
         }
         @Override
         public void paintComponent(Graphics g0) {
@@ -886,21 +972,11 @@ public class DesignUI extends BasePanel {
 
             drawString(g,"?", s16, s30);
         }
-        @Override
-        public void mouseClicked(MouseEvent e) {}
-        @Override
-        public void mouseEntered(MouseEvent e) {}
-        @Override
-        public void mouseExited(MouseEvent e) {
-            if (hoverBox != null) {
-                hoverBox = null;
-                repaint();
-            }
-        }
-        @Override
-        public void mousePressed(MouseEvent e) {}
-        @Override
-        public void mouseReleased(MouseEvent e) {
+		@Override public void mouseClicked(MouseEvent e)	{}
+		@Override public void mouseEntered(MouseEvent e)	{}
+		@Override public void mouseExited(MouseEvent e)		{ hoverBox = hoverBox(null, hoverBox); }
+		@Override public void mousePressed(MouseEvent e)	{}
+		@Override public void mouseReleased(MouseEvent e)	{
             if (e.getButton() > 3)
                 return;
             //int x = e.getX();
@@ -915,26 +991,20 @@ public class DesignUI extends BasePanel {
                 		parent.showHelp();
             }
         }
-        @Override
-        public void mouseDragged(MouseEvent e) {}
-        @Override
-        public void mouseMoved(MouseEvent e) {
-            int x = e.getX();
-            int y = e.getY();
-            Rectangle prevHover = hoverBox;
-            if (helpBox.contains(x,y))
-                hoverBox = helpBox;
-
-            if (hoverBox != prevHover)
-                repaint();
-        }
-    }
+		@Override public void mouseDragged(MouseEvent e)	{}
+		@Override public void mouseMoved(MouseEvent e)		{
+			if (helpBox.contains(e.getX(), e.getY()))
+				hoverBox = hoverBox(helpBox, hoverBox);
+			else
+				hoverBox = hoverBox(null, hoverBox);
+		}
+	}
     private class SlotTitlePanel extends BasePanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;
         private String titleKey;
-        private Rectangle hoverBox;
-        private Rectangle prototypeBox = new Rectangle();
-        private Rectangle copyButton= new Rectangle();
+        private Shape hoverBox;
+        private AdviceBox prototypeBox = new AdviceBox();
+        private AdviceBox copyButton= new AdviceBox();
         private SlotTitlePanel(String s) {
             titleKey = s;
             init();
@@ -944,6 +1014,8 @@ public class DesignUI extends BasePanel {
             setOpaque(false);
             addMouseListener(this);
             addMouseMotionListener(this);
+			prototypeBox.init(this, null, "", "SHIP_DESIGN_PROTOTYPE_HELP");
+			copyButton.init(this, null, "", "SHIP_DESIGN_COPY_HELP");
         }
         @Override
         public String textureName()     { return TEXTURE_BROWN; }
@@ -955,17 +1027,16 @@ public class DesignUI extends BasePanel {
             super.paintComponent(g);
 
             String title = text(titleKey);
-            
+
             int w = getWidth();
             int h = getHeight();
             copyButton.setBounds(0,0,0,0);
             scaledFont(g, title, w, 32, 20);
-            //g.setFont(narrowFont(32));
             int sw = g.getFontMetrics().stringWidth(title);
             int x = (w-sw)/2;
             g.setColor(SystemPanel.orangeText);
             drawString(g, title, x, s32);
-            
+
             prototypeBox.setBounds(0,s50,w,h-s55);
             int shipW = shipSlotW < 0 ? s95 : shipSlotW;
             g.setColor(lightBrown);
@@ -975,7 +1046,7 @@ public class DesignUI extends BasePanel {
             g.setColor(Color.black);
             g.fillRect(s10,s60,shipW,h-s75);
             int leftM = s10+shipW+s10;
-            
+
             if ((selectedSlot >= 0) && !configPanel.shipDesign().active()) {
                 g.setFont(narrowFont(16));
                 String str = text("SHIP_DESIGN_COPY_BUTTON");
@@ -1006,7 +1077,6 @@ public class DesignUI extends BasePanel {
                 drawBorderedString(g, str, x2a, buttonY + buttonH - s6, SystemPanel.textShadowC, c0);
             }
 
-            
             String s = text("SHIP_DESIGN_PROTOTYPE");
             g.setFont(narrowFont(18));
             drawShadowedString(g, s, 3, leftM, h-s20, SystemPanel.textShadowC, SystemPanel.whiteText);
@@ -1017,14 +1087,11 @@ public class DesignUI extends BasePanel {
                 g.setStroke(stroke5);
                 g.setColor(SystemPanel.yellowText);
                 g.drawRect(boxX, boxY, w-s4, h-s59);
-            }            
+            }
         }
-        @Override
-        public void mouseClicked(MouseEvent e) { }
-        @Override
-        public void mousePressed(MouseEvent e) { }
-        @Override
-        public void mouseReleased(MouseEvent e) {
+		@Override public void mouseClicked(MouseEvent e)	{ }
+		@Override public void mousePressed(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{
             if (hoverBox == copyButton) {
                 softClick();
                 configPanel.shipDesign().copyFrom(player().shipLab().prototypeDesign());
@@ -1039,28 +1106,22 @@ public class DesignUI extends BasePanel {
                 instance.repaint();
             }
         }
-        @Override
-        public void mouseEntered(MouseEvent e) {         }
-        @Override
-        public void mouseExited(MouseEvent e) { }
-        @Override
-        public void mouseDragged(MouseEvent e) { }
-        @Override
-        public void mouseMoved(MouseEvent e) {
-            int x = e.getX();
-            int y = e.getY();
-            Rectangle prevHover = hoverBox;
-            hoverBox = null;
-            if (copyButton.contains(x,y))
-                hoverBox = copyButton;
-            else if (prototypeBox.contains(x,y))
-                hoverBox = prototypeBox;
-            
-            if (hoverBox != prevHover)
-                instance.repaint();
-        }
+		@Override public void mouseEntered(MouseEvent e)	{ }
+		@Override public void mouseExited(MouseEvent e)		{ hoverBox = hoverBox(null, hoverBox); }
+		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseMoved(MouseEvent e)		{
+			int x = e.getX();
+			int y = e.getY();
+			hoverBox = null;
+			if (copyButton.contains(x, y))
+				hoverBox = hoverBox(copyButton, hoverBox);
+			else if (prototypeBox.contains(x, y))
+				hoverBox = hoverBox(prototypeBox, hoverBox);
+			else
+				hoverBox = hoverBox(null, hoverBox);
+		}
     }
-	private final class RectDefDes extends Rectangle {
+	private final class RectDefDes extends AdviceBox {
 		private static final long serialVersionUID = 1L;
 		private final DesignSlotPanel slot;
 		private RectDefDes(DesignSlotPanel parent)	{
@@ -1418,42 +1479,34 @@ public class DesignUI extends BasePanel {
                 instance.repaint();
             }
         }
-        @Override
-        public void mouseEntered(MouseEvent mouseEvent) {}
-        @Override
-        public void mouseExited(MouseEvent mouseEvent) {
-            if (hoverTarget != null) {
-                hoverTarget = null;
-                repaint();
-            }
-        }
-        @Override
-        public void mouseDragged(MouseEvent e) { }
-        @Override
-        public void mouseMoved(MouseEvent e) {
-            int x = e.getX();
-            int y = e.getY();
-            Shape prevHover = hoverTarget;
-            hoverTarget = null;
-            if (copyButtonArea[designNum].contains(x,y)) 
-                hoverTarget = copyButtonArea[designNum];
-            else if (defaultDesignArea.contains(x,y)) {
-				hoverTarget = defaultDesignArea;
+		@Override public void mouseEntered(MouseEvent e)	{}
+		@Override public void mouseExited(MouseEvent e)		{ hoverTarget = hoverBox(null, hoverTarget); }
+		@Override public void mouseDragged(MouseEvent e)	{}
+		@Override public void mouseMoved(MouseEvent e)		{
+			int x = e.getX();
+			int y = e.getY();
+			hoverTarget = null;
+			if (copyButtonArea[designNum].contains(x, y))
+				hoverTarget = hoverBox(copyButtonArea[designNum], hoverTarget);
+			else if (defaultDesignArea.contains(x, y)) {
+				hoverTarget = hoverBox(defaultDesignArea, hoverTarget);
 				repaint(); // To react to shift press / depress
-				return;
-            }
-                
-            if (hoverTarget != prevHover)
-                repaint();
-        }
-    }
+					return;
+			}
+			else
+				hoverTarget = hoverBox(null, hoverTarget);
+		}
+	}
     private final class DesignSlotsPanel extends BasePanel {
         private static final long serialVersionUID = 1L;
         public DesignSlotsPanel() {
             setBackground(lightBrown);
             setBorder(newEmptyBorder(5,5,5,5));
-            for (int i=0;i<designPanels.length;i++)
-                designPanels[i] = new DesignSlotPanel(i);
+			for (int i=0;i<designPanels.length;i++) {
+				designPanels[i] = new DesignSlotPanel(i);
+				copyButtonArea[i] = new AdviceBox();
+				copyButtonArea[i].init(designPanels[i], null, "", "SHIP_DESIGN_COPY_HELP");
+			}
             GridLayout designLayout = new GridLayout(designPanels.length,1);
             designLayout.setVgap(s5);
             setLayout(designLayout);
@@ -1671,6 +1724,7 @@ public class DesignUI extends BasePanel {
                 shipImages.add(resizedImg);
             }
         }
+		@Override protected boolean isAdvised()	{ return false; }
         @Override
         public void animate() {
             repaintShip();
@@ -1709,22 +1763,27 @@ public class DesignUI extends BasePanel {
             int engineW = scaled(223);
             drawShipBorder(g, s10, s10, shipW, shipH);
             drawShip(g, s10, s10, shipW, shipH);
+			combatStatsArea.setBounds(s10+shipW, s10, infoW, sect1H-s35);
             drawSummaryInfo(g, des,s10+shipW, s10, infoW, sect1H);
+			engineStatsArea.setBounds(s10+shipW+infoW+s10, s10, engineW, sect1H);
             drawEngineInfo(g, des,s10+shipW+infoW+s10, s10, engineW, sect1H);
 
             // 2nd section, left: computers,armor,shields   right:ecm,maneuver
             int y1 = s10+sect1H+s10;
             int compW = (getWidth()-s30)/2;
+			componentsArea.setBounds(s10, y1+s20, compW+compW+s10, sect2H-s20);
             drawLeftComponentInfo(g, des,s10, y1, compW, sect2H);
             drawRightComponentInfo(g, des,s10+compW+s10, y1, compW, sect2H);
 
             //3rd section: weapons
             int y2 = y1+sect2H+s10;
             int boxW2 = getWidth()-s20;
+			weaponsStatsArea.setBounds(s10, y2+s20, boxW2, sect3H-s20);
             drawWeaponInfo(g, des,s10, y2, boxW2, sect3H);
 
             //4th section: specials
             int y3 = y2+sect3H+s10;
+			specialsStatsArea.setBounds(s10, y3+s20, boxW2, sect4H-s20);
             drawSpecialInfo(g, des,s10, y3, boxW2, sect4H);
         }
         private void repaintShip() {
@@ -1827,7 +1886,7 @@ public class DesignUI extends BasePanel {
                 name = des.name();
             else
                 name = text("SHIP_DESIGN_NEW");
-            
+
             scaledFont(g, name, w-s10, 32, 24);
             int titleW = g.getFontMetrics().stringWidth(name);
             int x0 = x+((w-titleW)/2);
@@ -1853,7 +1912,7 @@ public class DesignUI extends BasePanel {
             	xofs2 = s10;
             	fontSize = 16;
             }
-            
+
             int x1 = x+s10;
             int x2 = x+(w*55/100)-xofs1;
 
@@ -2091,12 +2150,12 @@ public class DesignUI extends BasePanel {
             int boxX = x2-s20-boxW;
             int boxY = y1-s15;
             int boxH = s20;
+			sizeFieldArea.setBounds(boxX, boxY, boxW,boxH);
             if (shipDesign().active()) {
                 g.fillRoundRect(boxX, boxY, boxW, boxH, s10, s10);
                 g.setColor(SystemPanel.whiteText);
             }
             else {
-                sizeFieldArea.setBounds(boxX, boxY, boxW,boxH);
                 sizeFieldDecr.reset();
                 if (des.size() != ShipDesign.SMALL) {
                     sizeFieldDecr.addPoint(boxX-s11, boxY+(boxH/2));
@@ -2139,7 +2198,7 @@ public class DesignUI extends BasePanel {
             sw = g.getFontMetrics().stringWidth(str);
             drawString(g,str, x2-s20-sw, y3);
             des.recalculateCost();
-            str = text("SHIP_DESIGN_COST_VALUE", (int)des.cost());
+            str = text("SHIP_DESIGN_COST_VALUE", des.cost());
             sw = g.getFontMetrics().stringWidth(str);
             drawString(g,str, x2-s20-sw, y4);
             str = ""+ (int)des.spaceUsed();
@@ -2569,6 +2628,8 @@ public class DesignUI extends BasePanel {
             int boxX = x3 - boxW;
             int boxY = y1 - s15;
             int boxH = s20;
+			engineFieldArea.setBounds(boxX, boxY, boxW, boxH);
+			engineFieldArea.setTech(des.engine().tech());
             if (shipDesign().active()) {
                 g.fillRoundRect(boxX, boxY, boxW, boxH, s10, s10);
                 g.setColor(SystemPanel.whiteText);
@@ -2577,7 +2638,6 @@ public class DesignUI extends BasePanel {
                 List<ShipEngine> comps = player().shipLab().engines();
                 ShipEngine first = comps.get(0);
                 ShipEngine last = comps.get(comps.size()-1);
-                engineFieldArea.setBounds(boxX, boxY, boxW, boxH);
                 engineFieldDecr.reset();
                 if (des.engine() != first) {
                     engineFieldDecr.addPoint(boxX - s11, boxY + (boxH / 2));
@@ -2750,28 +2810,22 @@ public class DesignUI extends BasePanel {
 			ShipComputer comp	= des.computer();
 			String compDesc		= comp.desc(des);
 			String compName		= comp.name().isEmpty() ? text("SHIP_DESIGN_COMPONENT_NONE") : comp.name();
-//			String compSize		= valueFmt(comp.size(des));
 			String compSpace	= valueFmt(comp.poweredSize(des));
 			String compPower	= valueFmt(comp.power(des));
-//			String compCost		= valueFmt(comp.cost(des));
 			String compCost		= valueFmt(comp.poweredCost(des));
 
 			ShipArmor armor		= des.armor();
 			String armorDesc	= armor.desc(des);
 			String armorName	= armor.name();
-//			String armorSize	= valueFmt(armor.size(des));
 			String armorSpace	= valueFmt(armor.poweredSize(des));
 			String armorPower	= valueFmt(armor.power(des));
-//			String armorCost	= valueFmt(armor.cost(des));
 			String armorCost	= valueFmt(armor.cost(des));
 
 			ShipShield shield	= des.shield();
 			String shieldDesc	= shield.desc(des);
 			String shieldName	= shield.name().isEmpty() ? text("SHIP_DESIGN_COMPONENT_NONE") : shield.name();
-//			String shieldSize	= valueFmt(shield.size(des));
 			String shieldSpace	= valueFmt(shield.poweredSize(des));
 			String shieldPower	= valueFmt(shield.power(des));
-//			String shieldCost	= valueFmt(shield.cost(des));
 			String shieldCost	= valueFmt(shield.poweredCost(des));
 
 			int nameFontSize = 15;
@@ -2798,7 +2852,6 @@ public class DesignUI extends BasePanel {
             str = text("SHIP_DESIGN_TYPE_LABEL");
             int sw = g.getFontMetrics().stringWidth(str);
             drawString(g, str, xType+(wType-sw)/2, y1);
-//            str = text("SHIP_DESIGN_SIZE_LABEL");
 			str = text("SHIP_DESIGN_COMPUTER_SPACE");
             sw = g.getFontMetrics().stringWidth(str);
             drawString(g, str, xSize+wSize-sw, y1);
@@ -2847,6 +2900,8 @@ public class DesignUI extends BasePanel {
 			int boxX = xType+s10;
             int boxY = y2-s15;
             int boxH = s20;
+			computerFieldArea.setBounds(boxX, boxY, boxW, boxH);
+			computerFieldArea.setTech(des.computer().tech());
             if (shipDesign().active()) {
                 g.fillRoundRect(boxX, boxY, boxW, boxH, s10, s10);
                 g.setColor(SystemPanel.whiteText);
@@ -2855,7 +2910,6 @@ public class DesignUI extends BasePanel {
                 List<ShipComputer> comps = player().shipLab().computers();
                 ShipComputer first = comps.get(0);
                 ShipComputer last = comps.get(comps.size()-1);
-                computerFieldArea.setBounds(boxX, boxY, boxW, boxH);
                 computerFieldDecr.reset();
                 if (comp != first) {
                     computerFieldDecr.addPoint(boxX - s11, boxY + (boxH / 2));
@@ -2916,6 +2970,8 @@ public class DesignUI extends BasePanel {
 			boxX = xType+s10;
             boxY = y3-s15;
             boxH = s20;
+			armorFieldArea.setBounds(boxX, boxY, boxW, boxH);
+			armorFieldArea.setTech(des.armor().tech());
             if (shipDesign().active()) {
                 g.fillRoundRect(boxX, boxY, boxW, boxH, s10, s10);
                 g.setColor(SystemPanel.whiteText);
@@ -2924,7 +2980,6 @@ public class DesignUI extends BasePanel {
                 List<ShipArmor> comps = player().shipLab().armors();
                 ShipArmor first = comps.get(0);
                 ShipArmor last = comps.get(comps.size()-1);
-                armorFieldArea.setBounds(boxX, boxY, boxW, boxH);
                 armorFieldDecr.reset();
                 if (armor != first) {
                     armorFieldDecr.addPoint(boxX - s11, boxY + (boxH / 2));
@@ -2984,6 +3039,8 @@ public class DesignUI extends BasePanel {
             boxX = xType+s10;
             boxY = y4-s15;
             boxH = s20;
+			shieldsFieldArea.setBounds(boxX, boxY, boxW, boxH);
+			shieldsFieldArea.setTech(des.shield().tech());
             if (shipDesign().active()) {
                 g.fillRoundRect(boxX, boxY, boxW, boxH, s10, s10);
                 g.setColor(SystemPanel.whiteText);
@@ -2992,7 +3049,6 @@ public class DesignUI extends BasePanel {
                 List<ShipShield> comps = player().shipLab().shields();
                 ShipShield first = comps.get(0);
                 ShipShield last = comps.get(comps.size()-1);
-                shieldsFieldArea.setBounds(boxX, boxY, boxW, boxH);
                 shieldsFieldDecr.reset();
                 if (shield != first) {
                     shieldsFieldDecr.addPoint(boxX - s11, boxY + (boxH / 2));
@@ -3102,13 +3158,10 @@ public class DesignUI extends BasePanel {
             g.setColor(Color.black);
             g.setFont(narrowFont(16));
             String str = text("SHIP_DESIGN_DESCRIPTION_LABEL");
-            //int sw2 = g.getFontMetrics().stringWidth(s2);
-            //drawString(g,s2, x2+(w2-sw2)/2, y1);
             drawString(g,str, x2, y1);
             str = text("SHIP_DESIGN_TYPE_LABEL");
             int sw = g.getFontMetrics().stringWidth(str);
             drawString(g,str, x3+(w3-sw)/2, y1);
-//            str = text("SHIP_DESIGN_SIZE_LABEL");
 			str = text("SHIP_DESIGN_MANEUVER_SPACE");
             sw = g.getFontMetrics().stringWidth(str);
             drawString(g,str, x4+w4-sw, y1);
@@ -3141,10 +3194,8 @@ public class DesignUI extends BasePanel {
             ShipECM ecm = des.ecm();
             String ecmDesc = ecm.desc(des);
             String ecmName = ecm.name().isEmpty() ? text("SHIP_DESIGN_COMPONENT_NONE") : ecm.name();
-//            String ecmSize = fmt(ecm.size(des), 1);
 			String ecmSpace = fmt(ecm.poweredSize(des), 1);
             String ecmPower = fmt(ecm.power(des), 1);
-//            String ecmCost = fmt(ecm.cost(des), 1);
 			String ecmCost = fmt(ecm.poweredCost(des), 1);
             g.setFont(narrowFont(fontSizeDesc));
             g.setColor(darkestBrown);
@@ -3160,6 +3211,8 @@ public class DesignUI extends BasePanel {
             int boxX = x3+s10;
             int boxY = y2-s15;
             int boxH = s20;
+			ecmFieldArea.setBounds(boxX, boxY, boxW, boxH);
+			ecmFieldArea.setTech(ecm.tech());
             if (shipDesign().active()) {
                 g.fillRoundRect(boxX, boxY, boxW, boxH, s10, s10);
                 g.setColor(SystemPanel.whiteText);
@@ -3168,7 +3221,6 @@ public class DesignUI extends BasePanel {
                 List<ShipECM> comps = player().shipLab().ecms();
                 ShipECM first = comps.get(0);
                 ShipECM last = comps.get(comps.size()-1);
-                ecmFieldArea.setBounds(boxX, boxY, boxW, boxH);
                 ecmFieldDecr.reset();
                 if (ecm != first) {
                     ecmFieldDecr.addPoint(boxX - s11, boxY + (boxH / 2));
@@ -3216,10 +3268,8 @@ public class DesignUI extends BasePanel {
             ShipManeuver manv = des.maneuver();
             String manvDesc = manv.desc(des);
             String manvName = manv.name().isEmpty() ? text("SHIP_DESIGN_COMPONENT_NONE") : manv.name();
-//            String manvSize = fmt(manv.size(des), 1);
 			String manvSpace = fmt(manv.poweredSize(des), 1);
             String manvPower = fmt(manv.power(des), 1);
-//            String manvCost = fmt(manv.cost(des), 1);
 			String manvCost = fmt(manv.poweredCost(des), 1);
             g.setFont(narrowFont(fontSizeDesc));
             g.setColor(darkestBrown);
@@ -3235,6 +3285,8 @@ public class DesignUI extends BasePanel {
             boxX = x3+s10;
             boxY = y3-s15;
             boxH = s20;
+			maneuverFieldArea.setBounds(boxX, boxY, boxW, boxH);
+			maneuverFieldArea.setTech(manv.tech());
             if (shipDesign().active()) {
                 g.fillRoundRect(boxX, boxY, boxW, boxH, s10, s10);
                 g.setColor(SystemPanel.whiteText);
@@ -3243,7 +3295,6 @@ public class DesignUI extends BasePanel {
                 List<ShipManeuver> comps = player().shipLab().availableManeuversForDesign(shipDesign());
                 ShipManeuver first = comps.get(0);
                 ShipManeuver last = comps.get(comps.size()-1);
-                maneuverFieldArea.setBounds(boxX, boxY, boxW, boxH);
                 maneuverFieldDecr.reset();
                 if (manv != first) {
                     maneuverFieldDecr.addPoint(boxX - s11, boxY + (boxH / 2));
@@ -3319,7 +3370,6 @@ public class DesignUI extends BasePanel {
             str = text("SHIP_DESIGN_RANGE_LABEL");
             sw = g.getFontMetrics().stringWidth(str);
             drawString(g,str, x5+(w5-sw)/2, y1);
-//            str = text("SHIP_DESIGN_SIZE_LABEL");
 			str = text("SHIP_DESIGN_WEAPON_SPACE");
             sw = g.getFontMetrics().stringWidth(str);
             drawString(g,str, x6+w6-sw, y1);
@@ -3349,13 +3399,12 @@ public class DesignUI extends BasePanel {
             for (int i=0;i<ShipDesign.maxWeapons;i++) {
                 ShipWeapon wpn = des.weapon(i);
                 String wpnDesc = wpn.desc(des);
-                String wpnName = wpn.name().isEmpty() ? text("SHIP_DESIGN_COMPONENT_NONE") : wpn.name();
+                boolean empty = wpn.name().isEmpty();
+                String wpnName = empty ? text("SHIP_DESIGN_COMPONENT_NONE") : wpn.name();
                 int count = des.wpnCount(i);
                 String wpnCount = ""+count;
-//                String wpnSize = fmt(count*wpn.size(des), 1);
 				String wpnPoweredSize = fmt(count*wpn.poweredSize(des), 1); // non-rounded space
                 String wpnPower = fmt(count*wpn.power(des), 1);
-//                String wpnCost = fmt(count*wpn.cost(des), 1);
 				String wpnCost = fmt(count*wpn.poweredCost(des), 1);
                 String wpnRange = ""+wpn.range();
                 int wpnDmgLo = wpn.minDamage();
@@ -3367,12 +3416,13 @@ public class DesignUI extends BasePanel {
                 int boxX = x2+s10;
                 int boxY = y2-s15;
                 int boxH = s20;
+				weaponFieldArea[i].setBounds(boxX, boxY, boxW, boxH);
+				weaponFieldArea[i].setTech(wpn.tech()); // If null standard help will be shown.
                 if (shipDesign().active()) {
                     g.fillRoundRect(boxX, boxY, boxW, boxH, s10, s10);
-                   g.setColor(SystemPanel.whiteText);
+                    g.setColor(SystemPanel.whiteText);
                 }
                  else {
-                    weaponFieldArea[i].setBounds(boxX, boxY, boxW, boxH);
                     weaponFieldDecr[i].reset();
                     if (wpn != first) {
                         weaponFieldDecr[i].addPoint(boxX - s11, boxY + (boxH / 2));
@@ -3410,12 +3460,12 @@ public class DesignUI extends BasePanel {
                 boxX = x3+s25;
                 boxY = y2-s15;
                 boxH = s20;
+				weaponCountArea[i].setBounds(boxX, boxY, boxW, boxH);
                 if (shipDesign().active()) {
                     g.fillRoundRect(boxX, boxY, boxW, boxH, s10, s10);
                     g.setColor(SystemPanel.whiteText);
                 }
                 else {
-                    weaponCountArea[i].setBounds(boxX, boxY, boxW, boxH);
                     weaponCountDecr[i].reset();
                     weaponCountDecr[i].addPoint(boxX - s11, boxY + (boxH / 2));
                     weaponCountDecr[i].addPoint(boxX - s3, boxY);
@@ -3450,8 +3500,6 @@ public class DesignUI extends BasePanel {
                 drawString(g,wpnDmg, x4+((w4-sw)/2), y2);
                 sw = g.getFontMetrics().stringWidth(wpnRange);
                 drawString(g,wpnRange, x5+((w5-sw)/2), y2);
-//                sw = g.getFontMetrics().stringWidth(wpnSize);
-//                drawString(g,wpnSize, x6+w6-sw, y2);
                 sw = g.getFontMetrics().stringWidth(wpnPoweredSize);
                 drawString(g,wpnPoweredSize, x6+w6-sw, y2);
                 sw = g.getFontMetrics().stringWidth(wpnPower);
@@ -3482,7 +3530,6 @@ public class DesignUI extends BasePanel {
             String str = text("SHIP_DESIGN_TYPE_LABEL");
             int sw = g.getFontMetrics().stringWidth(str);
             drawString(g,str, x2+(w2-sw)/2, y1);
-//            str = text("SHIP_DESIGN_SIZE_LABEL");
 			str = text("SHIP_DESIGN_SPECIAL_SPACE");
             sw = g.getFontMetrics().stringWidth(str);
             drawString(g,str, x3+w3-sw, y1);
@@ -3509,10 +3556,8 @@ public class DesignUI extends BasePanel {
                 ShipSpecial wpn = des.special(i);
                 String wpnDesc = wpn.desc(des);
                 String wpnName = wpn.name().isEmpty() ? text("SHIP_DESIGN_COMPONENT_NONE") : wpn.name();
-//                String wpnSize = fmt(wpn.size(des), 1);
                 String wpnPoweredSize = fmt(wpn.poweredSize(des), 1);
                 String wpnPower = fmt(wpn.power(des), 1);
-//                String wpnCost = fmt(wpn.cost(des), 1);
                 String wpnCost = fmt(wpn.poweredCost(des), 1);
 
                 g.setColor(Color.black);
@@ -3520,6 +3565,8 @@ public class DesignUI extends BasePanel {
                 int boxX = x2+s10;
                 int boxY = y2-s15;
                 int boxH = s20;
+				specialsFieldArea[i].setBounds(boxX, boxY, boxW, boxH);
+				specialsFieldArea[i].setTech(wpn.tech()); // If null standard help will be shown.
                 if (shipDesign().active()) {
                     g.fillRoundRect(boxX, boxY, boxW, boxH, s10, s10);
                     g.setColor(SystemPanel.whiteText);
@@ -3528,7 +3575,6 @@ public class DesignUI extends BasePanel {
                     List<ShipSpecial> specials = des.availableSpecialsForSlot(i);
                     ShipSpecial first = specials.get(0);
                     ShipSpecial last = specials.get(specials.size()-1);
-                    specialsFieldArea[i].setBounds(boxX, boxY, boxW, boxH);
                     specialsFieldDecr[i].reset();
                     if (wpn != first) {
                         specialsFieldDecr[i].addPoint(boxX - s11, boxY + (boxH / 2));
@@ -3563,8 +3609,6 @@ public class DesignUI extends BasePanel {
 
                 g.setFont(narrowFont(17));
                 g.setColor(darkestBrown);
-//                sw = g.getFontMetrics().stringWidth(wpnSize);
-//                drawString(g,wpnSize, x3 + w3 - sw, y2);
                 sw = g.getFontMetrics().stringWidth(wpnPoweredSize);
                 drawString(g,wpnPoweredSize, x3 + w3 - sw, y2);
                 sw = g.getFontMetrics().stringWidth(wpnPower);
@@ -3908,149 +3952,161 @@ public class DesignUI extends BasePanel {
 			repaint();
 			designSlotsPanel.repaint();
 		}
-		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseDragged(MouseEvent e)	{}
 		@Override public void mouseMoved(MouseEvent e)		{
-            int x = e.getX();
-            int y = e.getY();
+			int x = e.getX();
+			int y = e.getY();
 
-            Shape prevHover = hoverTarget;
-            hoverTarget = null;
+			if (scrapButtonArea.contains(x, y))
+				hoverTarget = hoverBox(scrapButtonArea, hoverTarget);
+			else if (createButtonArea.contains(x, y))
+				hoverTarget = hoverBox(createButtonArea, hoverTarget);
+			else if (autoButtonArea.contains(x, y))
+				hoverTarget = hoverBox(autoButtonArea, hoverTarget);
+			else if (renameButtonArea.contains(x, y))
+				hoverTarget = hoverBox(renameButtonArea, hoverTarget);
+			else if (clearButtonArea.contains(x, y))
+				hoverTarget = hoverBox(clearButtonArea, hoverTarget);
+			else if (scoutButtonArea.contains(x, y))
+				hoverTarget = hoverBox(scoutButtonArea, hoverTarget);
+			else if (colonizeButtonArea.contains(x, y))
+				hoverTarget = hoverBox(colonizeButtonArea, hoverTarget);
+			else if (attackButtonArea.contains(x, y))
+				hoverTarget = hoverBox(attackButtonArea, hoverTarget);
 
-            if (scrapButtonArea.contains(x,y))
-                hoverTarget = scrapButtonArea;
-            else if (createButtonArea.contains(x,y))
-                hoverTarget = createButtonArea;
-            else if (autoButtonArea.contains(x, y))
-                hoverTarget = autoButtonArea;
-            else if (renameButtonArea.contains(x,y))
-                hoverTarget = renameButtonArea;
-            else if (clearButtonArea.contains(x,y))
-                hoverTarget = clearButtonArea;
-            else if (scoutButtonArea.contains(x,y))
-                hoverTarget = scoutButtonArea;
-            else if (colonizeButtonArea.contains(x,y))
-                hoverTarget = colonizeButtonArea;
-            else if (attackButtonArea.contains(x,y))
-                hoverTarget = attackButtonArea;
-            if (shipDesign().active()) {
-                if (prevHover != hoverTarget)
-                    repaint();
-                return;
-            }
-
-            if (shipImageDecr.contains(x,y))
-                hoverTarget = shipImageDecr;
-            else if (shipImageIncr.contains(x,y))
-                hoverTarget = shipImageIncr;
-            else if (shipImageArea.contains(x,y))
-                hoverTarget = shipImageArea;
-            else if (sizeFieldArea.contains(x,y))
-                hoverTarget = sizeFieldArea;
-            else if (sizeFieldDecr.contains(x,y))
-                hoverTarget = sizeFieldDecr;
-            else if (sizeFieldIncr.contains(x,y))
-                hoverTarget = sizeFieldIncr;
-            else if (engineFieldArea.contains(x,y))
-                hoverTarget = engineFieldArea;
-            else if (engineFieldDecr.contains(x,y))
-                hoverTarget = engineFieldDecr;
-            else if (engineFieldIncr.contains(x,y))
-                hoverTarget = engineFieldIncr;
-            else if (computerFieldArea.contains(x,y))
-                hoverTarget = computerFieldArea;
-            else if (computerFieldDecr.contains(x,y))
-                hoverTarget = computerFieldDecr;
-            else if (computerFieldIncr.contains(x,y))
-                hoverTarget = computerFieldIncr;
-            else if (armorFieldArea.contains(x,y))
-                hoverTarget = armorFieldArea;
-            else if (armorFieldDecr.contains(x,y))
-                hoverTarget = armorFieldDecr;
-            else if (armorFieldIncr.contains(x,y))
-                hoverTarget = armorFieldIncr;
-            else if (shieldsFieldArea.contains(x,y))
-                hoverTarget = shieldsFieldArea;
-            else if (shieldsFieldDecr.contains(x,y))
-                hoverTarget = shieldsFieldDecr;
-            else if (shieldsFieldIncr.contains(x,y))
-                hoverTarget = shieldsFieldIncr;
-            else if (maneuverFieldArea.contains(x,y))
-                hoverTarget = maneuverFieldArea;
-            else if (maneuverFieldDecr.contains(x,y))
-                hoverTarget = maneuverFieldDecr;
-            else if (maneuverFieldIncr.contains(x,y))
-                hoverTarget = maneuverFieldIncr;
-            else if (ecmFieldArea.contains(x,y))
-                hoverTarget = ecmFieldArea;
-            else if (ecmFieldDecr.contains(x,y))
-                hoverTarget = ecmFieldDecr;
-            else if (ecmFieldIncr.contains(x,y))
-                hoverTarget = ecmFieldIncr;
-
-            if (hoverTarget == null) {
-                for (int i = 0; i < weaponFieldArea.length; i++) {
-                    if (weaponFieldArea[i].contains(x, y)) {
-                        hoverTarget = weaponFieldArea[i];
-                        break;
-                    }
-                    if (weaponFieldDecr[i].contains(x, y)) {
-                        hoverTarget = weaponFieldDecr[i];
-                        break;
-                    }
-                    if (weaponFieldIncr[i].contains(x, y)) {
-                        hoverTarget = weaponFieldIncr[i];
-                        break;
-                    }
-                    if (weaponCountArea[i].contains(x, y)) {
-                        hoverTarget = weaponCountArea[i];
-                        break;
-                    }
-                    if (weaponCountDecr[i].contains(x, y)) {
-                        hoverTarget = weaponCountDecr[i];
-                        break;
-                    }
-                    if (weaponCountIncr[i].contains(x, y)) {
-                        hoverTarget = weaponCountIncr[i];
-                        break;
-                    }
-                }
-            }
-
-            if (hoverTarget == null) {
-                for (int i = 0; i < specialsFieldArea.length; i++) {
-                    if (specialsFieldArea[i].contains(x, y)) {
-                        hoverTarget = specialsFieldArea[i];
-                        break;
-                    }
-                    if (specialsFieldDecr[i].contains(x, y)) {
-                        hoverTarget = specialsFieldDecr[i];
-                        break;
-                    }
-                    if (specialsFieldIncr[i].contains(x, y)) {
-                        hoverTarget = specialsFieldIncr[i];
-                        break;
-                    }
-                }
-            }
-            
-            if (hoverTarget == null) {
-                for (int i = 0; i < shipColorArea.length; i++) {
-                    if (shipColorArea[i].contains(x, y)) {
-                        hoverTarget = shipColorArea[i];
-                        break;
-                    }
-                }
-            }
-            
-            if (prevHover != hoverTarget)
-                repaint();
-        }
+			else if (shipImageDecr.contains(x, y))
+				hoverTarget = hoverBox(shipImageDecr, hoverTarget);
+			else if (shipImageIncr.contains(x, y))
+				hoverTarget = hoverBox(shipImageIncr, hoverTarget);
+			else if (shipImageArea.contains(x, y))
+				hoverTarget = hoverBox(shipImageArea, hoverTarget);
+			else if (sizeFieldArea.contains(x, y))
+				hoverTarget = hoverBox(sizeFieldArea, hoverTarget);
+			else if (sizeFieldDecr.contains(x, y))
+				hoverTarget = hoverBox(sizeFieldDecr, hoverTarget);
+			else if (sizeFieldIncr.contains(x, y))
+				hoverTarget = hoverBox(sizeFieldIncr, hoverTarget);
+			else if (engineFieldArea.contains(x, y))
+				hoverTarget = hoverBox(engineFieldArea, hoverTarget);
+			else if (engineFieldDecr.contains(x, y))
+				hoverTarget = hoverBox(engineFieldDecr, hoverTarget);
+			else if (engineFieldIncr.contains(x, y))
+				hoverTarget = hoverBox(engineFieldIncr, hoverTarget);
+			else if (computerFieldArea.contains(x, y))
+				hoverTarget = hoverBox(computerFieldArea, hoverTarget);
+			else if (computerFieldDecr.contains(x, y))
+				hoverTarget = hoverBox(computerFieldDecr, hoverTarget);
+			else if (computerFieldIncr.contains(x, y))
+				hoverTarget = hoverBox(computerFieldIncr, hoverTarget);
+			else if (armorFieldArea.contains(x, y))
+				hoverTarget = hoverBox(armorFieldArea, hoverTarget);
+			else if (armorFieldDecr.contains(x, y))
+				hoverTarget = hoverBox(armorFieldDecr, hoverTarget);
+			else if (armorFieldIncr.contains(x, y))
+				hoverTarget = hoverBox(armorFieldIncr, hoverTarget);
+			else if (shieldsFieldArea.contains(x, y))
+				hoverTarget = hoverBox(shieldsFieldArea, hoverTarget);
+			else if (shieldsFieldDecr.contains(x, y))
+				hoverTarget = hoverBox(shieldsFieldDecr, hoverTarget);
+			else if (shieldsFieldIncr.contains(x, y))
+				hoverTarget = hoverBox(shieldsFieldIncr, hoverTarget);
+			else if (maneuverFieldArea.contains(x, y))
+				hoverTarget = hoverBox(maneuverFieldArea, hoverTarget);
+			else if (maneuverFieldDecr.contains(x, y))
+				hoverTarget = hoverBox(maneuverFieldDecr, hoverTarget);
+			else if (maneuverFieldIncr.contains(x, y))
+				hoverTarget = hoverBox(maneuverFieldIncr, hoverTarget);
+			else if (ecmFieldArea.contains(x, y))
+				hoverTarget = hoverBox(ecmFieldArea, hoverTarget);
+			else if (ecmFieldDecr.contains(x, y))
+				hoverTarget = hoverBox(ecmFieldDecr, hoverTarget);
+			else if (ecmFieldIncr.contains(x, y))
+				hoverTarget = hoverBox(ecmFieldIncr, hoverTarget);
+			else {
+				for (int i = 0; i < weaponFieldArea.length; i++) {
+					if (weaponFieldArea[i].contains(x, y)) {
+						hoverTarget = hoverBox(weaponFieldArea[i], hoverTarget);
+						return;
+					}
+					if (weaponFieldDecr[i].contains(x, y)) {
+						hoverTarget = hoverBox(weaponFieldDecr[i], hoverTarget);
+						return;
+					}
+					if (weaponFieldIncr[i].contains(x, y)) {
+						hoverTarget = hoverBox(weaponFieldIncr[i], hoverTarget);
+						return;
+					}
+					if (weaponCountArea[i].contains(x, y)) {
+						hoverTarget = hoverBox(weaponCountArea[i], hoverTarget);
+						return;
+					}
+					if (weaponCountDecr[i].contains(x, y)) {
+						hoverTarget = hoverBox(weaponCountDecr[i], hoverTarget);
+						return;
+					}
+					if (weaponCountIncr[i].contains(x, y)) {
+						hoverTarget = hoverBox(weaponCountIncr[i], hoverTarget);
+						return;
+					}
+				}
+	
+				for (int i = 0; i < specialsFieldArea.length; i++) {
+					if (specialsFieldArea[i].contains(x, y)) {
+						hoverTarget = hoverBox(specialsFieldArea[i], hoverTarget);
+						return;
+					}
+					if (specialsFieldDecr[i].contains(x, y)) {
+						hoverTarget = hoverBox(specialsFieldDecr[i], hoverTarget);
+						return;
+					}
+					if (specialsFieldIncr[i].contains(x, y)) {
+						hoverTarget = hoverBox(specialsFieldIncr[i], hoverTarget);
+						return;
+					}
+				}
+	
+				for (int i = 0; i < shipColorArea.length; i++) {
+					if (shipColorArea[i].contains(x, y)) {
+						hoverTarget = hoverBox(shipColorArea[i], hoverTarget);
+						return;
+					}
+				}
+				if (combatStatsArea.contains(x, y)) {
+					hoverTarget = hoverBox(combatStatsArea, hoverTarget);
+					return;
+				}
+				if (engineStatsArea.contains(x, y)) {
+					hoverTarget = hoverBox(engineStatsArea, hoverTarget);
+					return;
+				}
+				if (componentsArea.contains(x, y)) {
+					hoverTarget = hoverBox(componentsArea, hoverTarget);
+					return;
+				}
+				if (weaponsStatsArea.contains(x, y)) {
+					hoverTarget = hoverBox(weaponsStatsArea, hoverTarget);
+					return;
+				}
+				if (specialsStatsArea.contains(x, y)) {
+					hoverTarget = hoverBox(specialsStatsArea, hoverTarget);
+					return;
+				}
+				if (isAdvising()) {
+					Point pt = SwingUtilities.convertPoint(this, e.getPoint(), ADVISOR);
+					AdviceBox box = ADVISOR.getExitBox().getBox();
+					if (ADVISOR.getExitBox().isSelectableAt(null, pt.x, pt.y))
+						hoverTarget = hoverBox(box, hoverTarget);
+					else
+						hoverTarget = hoverBox(null, hoverTarget);
+				}
+			}
+		}
 		@Override public void mouseClicked(MouseEvent e)	{ }
 		@Override public void mousePressed(MouseEvent e)	{ }
 		@Override public void mouseReleased(MouseEvent e)	{
             boolean shiftPressed = e.isShiftDown();
             boolean ctrlPressed = e.isControlDown();
-            
+
             if (hoverTarget == scrapButtonArea) {
                 softClick(); openScrapDialog(); return;
             }
@@ -4126,7 +4182,7 @@ public class DesignUI extends BasePanel {
 
             if (shipDesign().active())
                 return;
-            
+
             if (hoverTarget == shipImageDecr) {
                 softClick(); shipImageDecr(); return;
             }

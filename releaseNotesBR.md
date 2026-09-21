@@ -11,6 +11,11 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-09-21 (BR)
+- New settings: development limits for each planet type.
+- The Advisor has entered the Design panel.
+- Fixed some advisor display issues (pop-up remaining too long)
+
 26-09-17 (BR)
 - Fixed an issue with "Auto-flag" being set one too many times after the discovery window was displayed, possibly canceling a player's selection.
 - You now have the ability to modify the research after selecting a new one, following a technological discovery on an Artifact planet, a technology theft or a technology exchange.
@@ -18,51 +23,6 @@ When updating, you can reuse the same folder.
 26-09-16 (BR)
 - Fixed issue in ShipCombat with repulsors going in never ending loop.
 - The "Update Post Contact Spending" setting has been expanded to include all interactions with other empires (first contact, trade treaties, and declaration of war). Then, a revision of allocations will only take place if net revenues are lower than forecast revenues (the latter always being a little conservative).
-
-26-09-15 (BR)
-- Fixed excess spending estimate of shipyards when a new ship is selected.
-
-26-09-14 (BR)
-- Accrued ship production column:
-  - Will display the values before and (after) ship building when they are different.
-  - These values will be updated, even if not displayed on the right panel.
-- Fixed Governor investing in unbuildable factories.
-- The accrued ship production computed by the last time estimation will be memorized and displayed in place of the "Official" Next turn one.
-- The governor will be called after selecting a new ship in the colonies panel too.
-- New option to restore the cost of weapons from MoO1.
-
-26-09-13 (BR)
-- New option to Restore the original MoO1 ship combat maneuver power requirement.
-- Fixed the budget algorithm which was going astray due to negative fundraising...
-- Fixed help tooltip for maximum production transfer from 50% to 100%.
-  - This in all languages, hoping that it won't produce too many grammatical errors...
-
-26-09-12 (BR)
-- Fixed a potential concurrent exception.
-- Fixed occasional crash issue when selecting a stolen tech.
-- The colony development limit will now be based on the colony industry capacity.
-- Budget Max Absolute Capital can now be set to a smaller amount.
-- The accrued production on the old ship can now bw displayed in the military tab of the colonies panel.
-  - "F12" to toggle.
-- Tech Panel: Holding "Shift" while equalizing allocations will only equalize unlocked fields that already have an allocation.
-
-26-09-11 (BR)
-- New option to disable Map animations (while keeping high graphic quality)
-  - Useful for huge maps.
-
-26-09-10 (BR)
-- Budget Transfer Panel:
-  - Added "Max Capital" options.
-  - Replaced Yellow selection box with yellow text.
-  - Fixed the flickering planet.
-- Added little marker for the the first 1/6th of each bar that applies a 25% bonus to the conversion from BCs to research points.
-- DNA Workshop:
-  - Fixed tech settings counted twice in malus too.
-  - removed annoying beep.
-    - (It was a false positive error detection, when updating the file list; as for a moment the selection was set to "null")
-- Tech Panel: Improved display of total research by removing rounding errors.
-- Improved display of "Production per factory". (Now, up to two decimal places.)
-- Fixed potentially suboptimal industry allocation when terraforming.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

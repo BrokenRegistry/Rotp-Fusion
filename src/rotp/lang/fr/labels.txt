@@ -226,8 +226,8 @@ TECH_LEVEL_HEADER                 | Impact sur le niveau technologique :
 TECH_LEVEL_VALUE                  | Niveau technologique %1
 TECH_CATEGORY_HEADER              | CATÉGORIE %1
 TECH_LEVEL_OF_TECH                | Niveau %1
-TECH_IS_FREE					| (gratuite)
-TECH_IS_RESTRICTED				| (réservée)
+TECH_IS_FREE					| (recherche gratuite)
+TECH_IS_RESTRICTED				| (technologie réservée)
 
 // Technology level impact
 TECH_COMPUTERS_LEVEL_DESC		| Lors des missions d’espionnage, la différence entre votre niveau technologique informatique et celui de l’empire ciblé modifie la probabilité de réussite de la mission.
@@ -1164,6 +1164,7 @@ MAIN_GOVERNOR_TOP_LEFT_HELP		| →MAIN_AUTO_PILOT_HELP←<hr>→MAIN_GOVERNOR_HE
 MAIN_GOVERNOR_TOGGLE_HELP		| Pour activer ou désactiver le gouverneur de cette colonie.<br>Un pilote automatique de base veillera à toujours garder cette colonie propre.
 
 ALLOCATE_SUBSIDIES_HEAD			| <h2>Instructions pour l’attribution des subventions</h2>
+ALLOCATE_SUBSIDIES_NONE			| <b>Barré</b><br>Aucune subvention pour celle-ci.
 ALLOCATE_SUBSIDIES_DEFAULT		| <b>Couleur Métal</b><br>Suivre les instructions générales.
 ALLOCATE_SUBSIDIES_ALLOCATE		| <b>Couleur Or</b><br>Demande d’allocation de subventions.
 ALLOCATE_SUBSIDIES_UNLIMITED	| <b>Non Cerclé</b><br>Actif jusqu’à ce que le joueur le désactive.
@@ -1172,7 +1173,7 @@ ALLOCATE_SUBSIDIES_GRANTED		| <b>Point Vert</b><br>Des subsides ont été allou�
 ALLOCATE_SUBSIDIES_URGENCY		| <b>Cercle Magenta</b><br>Actif tant qu’une urgence sera présente.
 ALLOCATE_SUBSIDIES_GROWING		| <b>Cercle Vert</b><br>Actif tant que la colonie n’aura pas atteint la limite de développement.
 ALLOCATE_SUBSIDIES_SHIPYARD		| <b>Cercle Gris</b><br>Actif tant que le nombre de vaisseaux demandé ne sera pas construit.
-ALLOCATE_SUBSIDIES_ORDER		| <b>Cercle Bleu</b><br>Actif tant qu’une priorité bleue est présente (à l’exception de la recherche et de la construction des navires, car ils ne se désactivent pas automatiquement).
+ALLOCATE_SUBSIDIES_ORDER		| <b>Cercle Bleu</b><br>Actif tant qu’une priorité bleue est présente (à l’exception de la recherche et de la construction des vaisseaus, car ils ne se désactivent pas automatiquement).
 
 PLANET_RESERVE_UI_HELP			| →PLANETS_HELP_1H←
 PLANET_SPENDING_COST_UI_HELP	| →PLANETS_HELP_1G←
@@ -1306,6 +1307,7 @@ MAIN_ALERT_ALLIANCE_WEAKENING     | Notre alliance avec [ally_empire] s’affaib
 MAIN_ALERT_ALLIANCE_BREAKING      | Notre alliance avec [ally_empire] est sur le point de s’effondrer !
 
 // Colony Listing UI
+PLANETS_LIST_HELP				| Vos Colonies
 PLANETS_TITLE                     | Colonies [player_race_pluraladjecF]
 PLANETS_VIEW_ECOLOGY              | Vue Écologique
 PLANETS_VIEW_INDUSTRY             | Vue Industrielle
@@ -1480,7 +1482,7 @@ PLANETS_LIST_CONTRIBUTE_HELP	| →PLANETS_HELP_5C←
 PLANETS_LIST_TAXED				| Imposé
 PLANETS_LIST_TAXED_HELP			| →PLANETS_HELP_5B←
 PLANETS_LIST_ACCRUED			| En stock
-PLANETS_LIST_ACCRUED_HELP		| <h3>→PLANETS_LIST_ACCRUED←</h3>Chaque fois que vous modifiez la conception d'un vaisseau dans le chantier naval de la planète, la production accumulée sur l’ancien vaisseau est stockée.<br>Cette production accumulée sera utilisée pour accélérer la production de nouveaux navires jusqu’à 100 % jusqu’à ce que toute la production accumulée soit dépensée.<br>Ce champ affiche le montant de la production accumulée.
+PLANETS_LIST_ACCRUED_HELP		| <h3>→PLANETS_LIST_ACCRUED←</h3>Chaque fois que vous modifiez la conception d'un vaisseau dans le chantier naval de la planète, la production accumulée sur l’ancien vaisseau est stockée.<br>Cette production accumulée sera utilisée pour accélérer la production de nouveaux vaisseaus jusqu’à 100 % jusqu’à ce que toute la production accumulée soit dépensée.<br>Ce champ affiche le montant de la production accumulée.
 PLANETS_LIST_SHIPYARD			| En chantier
 PLANETS_LIST_SHIPYARD_HELP		| →PLANETS_HELP_4G←
 PLANETS_LIST_NOTES				| Notes
@@ -1538,7 +1540,7 @@ PLANETS_HELP_5C					| « Envoie »<br> Contributions volontaires par le moyen 
 PLANETS_HELP_5D					| « Reçoit »<br> Subventions pouvant être accordées après priorisation.
 PLANETS_HELP_5E					| « Budget »<br> Montant demandé par le Gouverneur ou par le *Joueur.
 PLANETS_HELP_5F					| « Optimal »<br> Montant requis pour maximiser le fonctionnement de la colonie.
-PLANETS_HELP_5G					| Instructions au gouverneur pour l’attribution des subventions :<br>Couleur métal : suivre les instructions globales.<br>Couleur or : allouer les subventions.<br>Arc rouge (clic droit) : peut piocher dans la réserve du joueur.<br>« Non cerclé » actif jusqu’à ce que le joueur le désactive.<br>« Cercle magenta » actif tant qu’une urgence est présente.<br>« Cercle vert » actif tant que la colonie n’a pas atteint la limite de développement.<br>« Cercle bleu » actif tant qu’une priorité bleue est présente (à l’exception de la recherche et de la construction des navires, car ils ne se désactivent pas automatiquement).
+PLANETS_HELP_5G					| Instructions au gouverneur pour l’attribution des subventions :<br>Couleur métal : suivre les instructions globales.<br>Couleur or : allouer les subventions.<br>Arc rouge (clic droit) : peut piocher dans la réserve du joueur.<br>« Non cerclé » actif jusqu’à ce que le joueur le désactive.<br>« Cercle magenta » actif tant qu’une urgence est présente.<br>« Cercle vert » actif tant que la colonie n’a pas atteint la limite de développement.<br>« Cercle bleu » actif tant qu’une priorité bleue est présente (à l’exception de la recherche et de la construction des vaisseaus, car ils ne se désactivent pas automatiquement).
 
 // Bombardment prompt
 MAIN_BOMBARDED_TITLE             | %1 a été bombardé par des forces [alien_race_pluraladjecF].
@@ -2307,8 +2309,8 @@ CUSTOM_RACE_BUTTON_NAMES		| Éditer les Noms
 CUSTOM_RACE_BUTTON_NAMES_DESC	| Pour rédiger la nouvelle terminologie à associer à cet OGM. Plusieures civilisations peuvent être créées, dans plusieures langues.
 CUSTOM_RACE_EMPTY_DESCRIPTION	| « Maj » et « Ctrl » peuvent être utilisés pour modifier les fonctionnalités des boutons, des clics et des défilements.
 
-CUSTOM_RACE_FLEET_DESC			| Exemple d’une flottille composée de navires issus du modèle choisi pour cette espèce.
-CUSTOM_RACE_FLEET_HELP			| Exemple d’une flottille composée de navires issus du modèle choisi pour cette espèce.<br>Si l’animation vous dérange, vous pouvez la désactiver ou l’activer en cliquant sur l’image.
+CUSTOM_RACE_FLEET_DESC			| Exemple d’une flottille composée de vaisseaus issus du modèle choisi pour cette espèce.
+CUSTOM_RACE_FLEET_HELP			| Exemple d’une flottille composée de vaisseaus issus du modèle choisi pour cette espèce.<br>Si l’animation vous dérange, vous pouvez la désactiver ou l’activer en cliquant sur l’image.
 
 // BR : Customize Player Species
 CUSTOM_RACE_RANDOM_DESCRIPTION	| ADN Aléatoire
@@ -2418,8 +2420,8 @@ CUSTOM_RACE_IGNORES_ECO           | Espèce Ignore Eco
 CUSTOM_RACE_PROPERTIE             | Propriétés de l’espèce
 CUSTOM_RACE_CREDIT_DESC           | De l’argent facile ! À chaque tour, vous obtenez : Population * Bonus de crédit / 100
 CUSTOM_RACE_CREDIT                | Bonus de Crédits
-CUSTOM_RACE_HIT_POINTS_HELP       | Influence la quantité de dégâts que vos navires peuvent subir avant d’être détruits.<br>Les →SHIP_DESIGN_HIT_POINTS_LABEL← du →SHIP_DESIGN_ARMOR_TITLE← seront multipliés par ce facteur.<br>Les bases de missiles ne sont pas affectées par ce paramètre, leur HP de base restera de 50 (la moitié de celle d’un navire à grande coque standard).
-CUSTOM_RACE_HIT_POINTS_DESC       | Influence la quantité de dégâts que vos navires peuvent subir avant d’être détruits.<br>Les →SHIP_DESIGN_HIT_POINTS_LABEL← du →SHIP_DESIGN_ARMOR_TITLE← seront multipliés par ce facteur.
+CUSTOM_RACE_HIT_POINTS_HELP       | Influence la quantité de dégâts que vos vaisseaus peuvent subir avant d’être détruits.<br>Les →SHIP_DESIGN_HIT_POINTS_LABEL← du →SHIP_DESIGN_ARMOR_TITLE← seront multipliés par ce facteur.<br>Les bases de missiles ne sont pas affectées par ce paramètre, leur HP de base restera de 50 (la moitié de celle d’un vaisseau à grande coque standard).
+CUSTOM_RACE_HIT_POINTS_DESC       | Influence la quantité de dégâts que vos vaisseaus peuvent subir avant d’être détruits.<br>Les →SHIP_DESIGN_HIT_POINTS_LABEL← du →SHIP_DESIGN_ARMOR_TITLE← seront multipliés par ce facteur.
 CUSTOM_RACE_HIT_POINTS            | Durabilité de la coque
 CUSTOM_RACE_MAINTENANCE_DESC      | Pourcentage du coût de la flotte.
 CUSTOM_RACE_MAINTENANCE           | Facteur de maintenance
@@ -2697,7 +2699,7 @@ CUSTOM_RACE_ARTIFACTS_ORION_DESC  | Recherche quadruplée
 CUSTOM_RACE_FAVORED_SHIPSET       | Modèle d’aéronefs
 CUSTOM_RACE_FAVORED_SHIPSET_DESC  | Quel est le modèle de vaisseau préféré utilisé par cette espèce ? (Si toujours disponible)
 CUSTOM_RACE_FAVORED_SHIP_SIZE     | Taille de Vaisseaux
-CUSTOM_RACE_FAVORED_SHIP_SIZE_DESC | Quelle est la taille de navire préférée utilisée par cette espèce ? (IA : Base, IA : Modnar, IA : Rookie et IA : Roleplay utiliseront ces informations)
+CUSTOM_RACE_FAVORED_SHIP_SIZE_DESC | Quelle est la taille de vaisseau préférée utilisée par cette espèce ? (IA : Base, IA : Modnar, IA : Rookie et IA : Roleplay utiliseront ces informations)
 CUSTOM_RACE_SHIP_SIZE_SMALL       | Petite
 CUSTOM_RACE_SHIP_SIZE_MEDIUM      | Moyenne
 CUSTOM_RACE_SHIP_SIZE_LARGE       | Grande
@@ -3157,11 +3159,11 @@ HEADERS_XILMI_AI_OPTIONS                    | ~~~ AUDACE DE L’IA ~~~
 SETTINGS_MOD_PLAYER_ATTACK_CONFIDENCE       | Audace d’attaque du joueur : %1 %
 SETTINGS_MOD_PLAYER_ATTACK_CONFIDENCE_DESC  | En mode Auto-Combat, détermine le degré de confiance de l’IA, attribuée au joueur, dans la capacité de combat de ses vaisseaux par rapport à leur force réelle.<br>L’augmentation de cette valeur rend l’IA plus susceptible d’accepter des pertes au combat avant de battre en retraite.
 SETTINGS_MOD_PLAYER_DEFENSE_CONFIDENCE      | Assurance défensive du joueur : %1 %
-SETTINGS_MOD_PLAYER_DEFENSE_CONFIDENCE_DESC | En mode Auto-Combat, détermine le degré de confiance de l’IA, attribuée au joueur, dans la capacité de combat de ses navires par rapport à leur force réelle.<br>L’augmentation de cette valeur rend l’IA plus susceptible d’accepter des pertes au combat avant de battre en retraite.
+SETTINGS_MOD_PLAYER_DEFENSE_CONFIDENCE_DESC | En mode Auto-Combat, détermine le degré de confiance de l’IA, attribuée au joueur, dans la capacité de combat de ses vaisseaus par rapport à leur force réelle.<br>L’augmentation de cette valeur rend l’IA plus susceptible d’accepter des pertes au combat avant de battre en retraite.
 SETTINGS_MOD_AI_ATTACK_CONFIDENCE           | Audace d’attaque de l’IA : %1 %
-SETTINGS_MOD_AI_ATTACK_CONFIDENCE_DESC      | Détermine le degré de confiance de l’IA, des opposants au joueur, dans la capacité de combat de ses navires par rapport à leur force réelle.<br>L’augmentation de cette valeur rend l’IA plus susceptible d’accepter des pertes au combat avant de battre en retraite.
+SETTINGS_MOD_AI_ATTACK_CONFIDENCE_DESC      | Détermine le degré de confiance de l’IA, des opposants au joueur, dans la capacité de combat de ses vaisseaus par rapport à leur force réelle.<br>L’augmentation de cette valeur rend l’IA plus susceptible d’accepter des pertes au combat avant de battre en retraite.
 SETTINGS_MOD_AI_DEFENSE_CONFIDENCE          | Assurance défensive de l’IA : %1%
-SETTINGS_MOD_AI_DEFENSE_CONFIDENCE_DESC     | En mode Auto-Combat, détermine le degré de confiance de l’IA, des opposants au joueur, dans la capacité de combat de ses navires par rapport à leur force réelle.<br>L’augmentation de cette valeur rend l’IA plus susceptible d’accepter des pertes au combat avant de battre en retraite.
+SETTINGS_MOD_AI_DEFENSE_CONFIDENCE_DESC     | En mode Auto-Combat, détermine le degré de confiance de l’IA, des opposants au joueur, dans la capacité de combat de ses vaisseaus par rapport à leur force réelle.<br>L’augmentation de cette valeur rend l’IA plus susceptible d’accepter des pertes au combat avant de battre en retraite.
 
 // modnar : add UI panel for modnar MOD game options
 SETTINGS_MOD_TITLE                   | Options de Modnar
@@ -3345,7 +3347,6 @@ SETTINGS_MOD_DIPLOMATIC_RETREAT_RETREATING_DESC	| L’option « Repli Diplomati
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION		| Repli vers l’ennemi : %1
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_DESC	| Une destination de repli peut-elle être une colonie ennemie ? ou avoir une flotte ennemie en orbite.
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_HELP	| Cette option complète l’option « Destination de retraite », en autorisant ou pas les destinations ayant des flottes ennemies en orbite.<br>Elle peut également limiter la portée de l’option  « Repli Hi-Tech », Les communications hyperpatiales ne donnant pas le droit de rediriger la flotte vers une colonie ennemie ou ayant une flotte ennemie en orbite. 
-
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_YES		| Interdit
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_YES_DESC	| Destinations sécuritaires seulement.
 SETTINGS_MOD_NO_RETREAT_ENEMY_DESTINATION_NO		| Autorisé
@@ -3773,13 +3774,13 @@ SETTINGS_MOD_SHOW_RANGES_EXT              | Afficher uniquement la zone d’acc�
 SETTINGS_MOD_SHOW_STARS_AND_RANGES_EXT 	  | Afficher la zone d’accès & le fond étoilé
 SETTINGS_MOD_SHOW_STARS_EXT               | Afficher uniquement le fond étoilé
 SETTINGS_MOD_SHOW_NO_STARS_AND_RANGES_EXT | Tout masquer
-SETTINGS_MOD_SHOW_RANGES_HELP              | Afficher les zones d’accès des navires sans le fond étoilé.
-SETTINGS_MOD_SHOW_STARS_AND_RANGES_HELP    | Afficher les zones d’accès des navires avec un arrière-plan étoilé.
-SETTINGS_MOD_SHOW_STARS_HELP               | Afficher l’arrière-plan étoilé, mais masquer les zones d’accès aux navires.
-SETTINGS_MOD_SHOW_NO_STARS_AND_RANGES_HELP | Masquez à la fois les zones d’accès au navire et l’arrière-plan étoilé.
+SETTINGS_MOD_SHOW_RANGES_HELP              | Afficher les zones d’accès des vaisseaus sans le fond étoilé.
+SETTINGS_MOD_SHOW_STARS_AND_RANGES_HELP    | Afficher les zones d’accès des vaisseaus avec un arrière-plan étoilé.
+SETTINGS_MOD_SHOW_STARS_HELP               | Afficher l’arrière-plan étoilé, mais masquer les zones d’accès aux vaisseaus.
+SETTINGS_MOD_SHOW_NO_STARS_AND_RANGES_HELP | Masquez à la fois les zones d’accès au vaisseau et l’arrière-plan étoilé.
 
 SETTINGS_MOD_TRACK_UFOS_ACROSS_TURNS_HELP  | →SCANNER_2_NAME← ou →SCANNER_3_NAME← peuvent déterminer automatiquement et immédiatement la destination du vaisseau. Mais même avec les portées plus courtes de →SCANNER_0_NAME← et →SCANNER_1_NAME←, les vaisseaux (lents) seront souvent à portée pendant deux tours successifs, vous pouvez donc souvent déterminer les trajectoires des vaisseaux de toute façon en plissant les yeux sur une capture d’écran du dernier tour. Cette option vous évite simplement d’avoir à plisser les yeux sur la capture d’écran du dernier tour. Deux choses à noter. Tout d’abord, sans →SCANNER_2_NAME←, les trajectoires sont affichées se terminant à l’étoile la plus proche le long de la ligne. CECI N’EST PAS UNE GARANTIE QUE LE VAISSEAU S’ARRÊTERA RÉELLEMENT LÀ (car vous ne le savez pas réellement sans →SCANNER_2_NAME←), seulement que le vaisseau se déplace dans cette direction. (Bien sûr, pour la plupart des formes de galaxies, les étoiles colinéaires proches sont rares.) Deuxièmement, alors que nous voulons nous demander si les scanners suivent « vraiment » les vaisseaux en continu entre les tours, pour permettre à cette option d’être activée par défaut, cette option ne vous donnera jamais aucune information que vous n’auriez pas déjà pu obtenir en plissant les yeux sur les captures d’écran. C’est-à-dire que lorsqu’il y a un fouillis de vaisseaux de la même conception proches les uns des autres de telle sorte que vous ne pouvez pas être complètement sûr de savoir lequel s’est déplacé où en plissant les yeux sur les captures d’écran, aucune trajectoire ne sera affichée. EN COURS : Actuellement uniquement pour les transports approchant vos propres colonies.<br>!!! Peut donner de mauvaises destinations lorsque les étoiles sont alignées !!!
-SETTINGS_MOD_TRACK_UFOS_ACROSS_TURNS_DESC  | Faites en sorte que →SCANNER_0_NAME← et →SCANNER_1_NAME← suivent automatiquement les trajectoires des navires lorsque les navires peuvent être identifiés sans ambiguïté au cours de tours successifs. !!! Peut donner de mauvaises destinations lorsque les étoiles sont alignées !!!
+SETTINGS_MOD_TRACK_UFOS_ACROSS_TURNS_DESC  | Faites en sorte que →SCANNER_0_NAME← et →SCANNER_1_NAME← suivent automatiquement les trajectoires des vaisseaus lorsque les vaisseaus peuvent être identifiés sans ambiguïté au cours de tours successifs. !!! Peut donner de mauvaises destinations lorsque les étoiles sont alignées !!!
 SETTINGS_MOD_TRACK_UFOS_ACROSS_TURNS       | Traquer les OVNI : %1
 
 SETTINGS_MOD_ALLOW_TECH_STEALING_HELP    | Pour activer ou désactiver les activités de vol de technologies.<br>Lorsque désactivé, la moitié du bonus d’infiltration sera attribuée au bonus de recherche.<br>La pénalité d’infiltration n’aura pas d’impact sur le bonus de recherche.
@@ -3844,7 +3845,7 @@ SETTINGS_MOD_CHAIN_RALLY_SPEED_DESC      | Vitesse à utiliser lors de la sélec
 SETTINGS_MOD_CHAIN_RALLY_SPEED           | →CHAIN_RALLY_SPEED_HK← : %1
 SETTINGS_MOD_CHAIN_RALLY_SPEED_FLEET_DESC | Basé sur la vitesse du vaisseau en construction ou du vaisseau le plus lent de la flotte sélectionnée.
 SETTINGS_MOD_CHAIN_RALLY_SPEED_FLEET     | Flotte
-SETTINGS_MOD_CHAIN_RALLY_SPEED_MIN_DESC  | Basé sur la vitesse de du modèle de navire actif la plus lente.
+SETTINGS_MOD_CHAIN_RALLY_SPEED_MIN_DESC  | Basé sur la vitesse de du modèle de vaisseau actif la plus lente.
 SETTINGS_MOD_CHAIN_RALLY_SPEED_MIN       | Min
 SETTINGS_MOD_CHAIN_RALLY_SPEED_TOP_DESC  | Basé sur la vitesse maximale autorisée par les technologies actuellement connues.
 SETTINGS_MOD_CHAIN_RALLY_SPEED_TOP       | Top
@@ -4685,7 +4686,7 @@ SETTINGS_MOD_REBELLION_RETURN_TURN_DESC  | →REF_RETURN_1← →REF_REBELLION�
 SETTINGS_MOD_REBELLION_RETURN_TURN       | →REF_REBELLION← →REF_RETURN←
 
 REF_DERELICT                             | Épave
-REF_DERELICT_2                           | Découverte d’un ancien navire abandonné
+REF_DERELICT_2                           | Découverte d’un ancien vaisseau abandonné
 SETTINGS_MOD_DERELICT_DELAY_TURN_HELP    | →SETTINGS_MOD_DERELICT_DELAY_TURN_DESC← →REF_INTRO← →EVENT_DERELICT←
 SETTINGS_MOD_DERELICT_DELAY_TURN_DESC    | →REF_DELAY_1← →REF_DERELICT← →REF_DELAY_2←
 SETTINGS_MOD_DERELICT_DELAY_TURN         | →REF_DERELICT← →REF_DELAY←
@@ -5260,7 +5261,7 @@ AUTO_SD_PREF_BEAM_FOCUS			| Focalisateurs d’énergie : %1 %
 AUTO_SD_PREF_BEAM_FOCUS_DESC	| →AUTO_SD_PREF_DESC← les dispositifs focalisateurs d’énergie ? (Concentration à haute énergie et Interface Oracle)
 
 HEADERS_AUTO_SD_AUTO_TAG		| ~~~ ÉTIQUETAGE AUTOMATIQUE ~~~
-HEADERS_AUTO_SD_AUTO_TAG_DESC	| Les navires reconnus comme éclaireurs ou colonisateurs seront automatiquement marqués pour un envoi automatisé.
+HEADERS_AUTO_SD_AUTO_TAG_DESC	| Les vaisseaus reconnus comme éclaireurs ou colonisateurs seront automatiquement marqués pour un envoi automatisé.
 HEADERS_AUTO_SD_SIZE			| ~~~ SURCOÛT DES COQUES ~~~
 HEADERS_AUTO_SD_SIZE_DESC		| Ajustements des coûts des coques. Plus le Surcoût est élevé, plus les coûts estimés sont élevés, et moins il sera probable que cette coque soit choisie.
 HEADERS_AUTO_SD_SPACE			| ~~~ RÉPARTITION DES ESPACES ~~~
@@ -5271,6 +5272,26 @@ HEADERS_AUTO_SD_PREF			| ~~~ CHOIX DE FONCTIONNALITÉS ~~~
 HEADERS_AUTO_SD_PREF_DESC		| Préférences pour les fonctionnalités générales des vaisseaux.
 HEADERS_AUTO_SD_MODE			| ~~~ RÈGLES POUR LE CONCEPTEUR ~~~
 HEADERS_AUTO_SD_MODE_DESC		| Quelles sont les règles à suivre par le concepteur de vaisseaux ?
+
+// Ship Design Advisor
+SHIP_DESIGN_HELP_ICON			| <h3>Concepts</h3>Le concept de construction des vaisseaux le plus important est peut-être aussi le plus ésotérique : vous n’aurez que six types de vaisseaux en jeu. Si jamais vous souhaitez concevoir et construire un nouveau type de vaisseau, vous devrez remplacer l’un de vos six modèles, ce qui implique nécessairement la mise au rebut de tous les vaisseaus de ce modèle. C’est exaspérant, je sais. Mais vous savez ce qui est encore plus exaspérant ? Jouez à un 4X avec vingt variantes de la même unité et vous devez les suivre toutes.<br>Que vous l’aimiez ou le détestiez, la limite de six vaisseaux est un élément fondamental de Remnants of the Precursors, tout comme c’était un élément fondamental de Master of Orion. Heureusement, Remnants of the Precursors vous offre un septième emplacement « prototype » où vous pouvez expérimenter différents modèles avant de les engager dans l’un de vos six emplacements.<br>Un autre concept important distinct des autres jeux est la mise à l’échelle de la taille et du coût : les composants du vaisseau n’ont pas de coût ni de taille fixes. Au lieu de cela, le coût et la taille diminuent à mesure que vous recherchez de nouvelles technologies dans la catégorie technologique de ce composant. Tous les dix niveaux dépassant le niveau d’un composant, son coût est réduit de 50 % et sa taille est réduite de 25 % (les composants de la catégorie Technologie d’arme rétrécissent plus rapidement ; leur taille est réduite de 50 % tous les dix niveaux). Vous n’avez pas besoin de surveiller tout cela, mais vous devez être conscient que les composants « plus anciens » deviendront de moins en moins chers et plus petits. Cela les maintient pertinents même une fois qu’ils sont « obsolètes ».<br><hr><br>→SHIP_DESIGN_HELP_HK←
+
+SHIP_DESIGN_AUTO_HELP			| <h3>Conception Automatisée</h3>La meilleure IA mettra à niveau la conception actuelle vers ce qu’elle considère comme la conception la plus efficace :<br>Généralement, il s’agit de 3 emplacements pour la meilleure arme et d’un emplacement pour les bombes/armes biologiques.<br>"La meilleure arme" est un terme relatif car il dépend des boucliers ennemis et d’autres mécanismes de défense potentiels. Cela peut être déterminé mathématiquement. Mais généralement, il n’est pas très loin d’opter pour le plus récent. Surtout lorsqu’il s’agit d’avoir une certaine viabilité à long terme.<br>Une autre prémisse du concepteur de l’IA est la suivante :<br><i><q>Je suis également arrivé à la conclusion que la spécialisation des conceptions ne présente pas suffisamment d’avantages pour compenser le fardeau que cela impose aux limites des emplacements. En raison du nombre limité d’emplacements, un aspect important est de pouvoir faire pivoter les anciens modèles sans avoir à trop les mettre au rebut. Avec trois conceptions spécialisées, par exemple, vous devrez supprimer la moitié de votre armée si vous souhaitez passer à un nouveau moteur ou quelque chose du genre. Alors qu’avec les conceptions hybrides, ce n’est que 1. Cela réduit considérablement les cycles de mise à jour.</q></i>
+
+SHIP_DESIGN_PROTOTYPE_HELP		| <h3>L’emplacement de prototypage</h3>Placé en haut, il vous permet de tester différentes combinaisons.<br>Si vous désirez faire évoluer un de vos vaisseau existant, appuyez sur le Copier qui apparaît dans les six emplacements pour le transférer dans l’emplacement de prototypage. Mettez le à jour avec le dernières technologies, et une fois que vous êtes satisfait, sélectionnez l’emplacement de destination et de là appuyez sur le Copier qui apparaît dans l’emplacement de prototypage.<br>Au début d’une partie, les emplacements auront tous des conceptions de départ de base construites autour de chacune des tailles de coque disponibles. Mais gardez à l’esprit que les emplacements ne sont pas destinés à des tailles de coque particulières. Il n’y a aucune restriction quant au nombre de modèles que vous pouvez avoir pour chaque taille de coque. Vous pourriez théoriquement jouer un jeu entier avec rien d’autre que des essaims de petits vaisseaus. Ce n’est probablement pas une bonne idée, mais vous pouvez le faire si vous le souhaitez.
+
+SHIP_DESIGN_COPY_HELP			| <h3>Copier</h3>Copier une conception existante pour servir de point de départ à une nouvelle conception.<br>Ce modèle de vaisseau sera copié dans l’emplacement en surbrillance.
+
+SHIP_DESIGN_COMBAT_STATS_HELP	| <h3>Statistiques de combat</h3>Votre première étape consiste à décider de la taille de votre vaisseau, qui déterminera ses statistiques de combat de base. Lorsque vous définissez une coque petite, moyenne, grande ou énorme, vous verrez la mise à jour des statistiques. L’autonomie est une valeur fixe basée sur votre technologie de combustible. La vitesse sera déterminée par vos moteurs, qui sont définis dans la section Moteurs. Le coût est un décompte continu du coût total de la conception en CG, qui sera payé en fonction du montant que la colonie en construction a alloué à son curseur de vaisseaus. L’espace total est le décompte de tous les composants du vaisseau, tandis que l’espace disponible correspond à l’espace restant pour ajouter des composants. Notez que chaque niveau de technologie de construction ajoute 2 % d’espace supplémentaire à chaque taille de coque.<br>Les points de vie seront déterminés par une combinaison de la taille de la coque et du type de blindage du vaisseau (voir 4.2.5. Composants pour plus d’informations sur le blindage). Les valeurs de base pour la défense antimissile et la défense par faisceau sont définies par la taille de la coque du modèle. Les petites coques ont une valeur de défense contre les missiles et les faisceaux de 3, les coques moyennes ont une valeur de défense contre les missiles et les faisceaux de 2, les grandes coques ont une défense contre les missiles et les faisceaux de 1 et les coques énormes ont une défense contre les missiles et les faisceaux de 0. La défense contre les missiles et les faisceaux peut être renforcée en augmentant le paramètre de manœuvre d’un vaisseau, qui est plafonné par les types de moteur du vaisseau. La défense antimissile peut être encore renforcée avec les brouilleurs ECM.
+
+SHIP_DESIGN_ENGINE_STATS_HELP	| <h3>Motorisation</h3>Une différence importante entre Remnants of the Precursors et les autres jeux de conception de vaisseaux est que les moteurs sont 100 % sans intervention. Vous choisissez simplement le type de moteur que vous souhaitez -- ce sera presque toujours votre meilleur type disponible -- et le concepteur ajoute automatiquement des moteurs pour répondre à vos besoins en puissance, en prenant en compte tous les autres paramètres sur l’écran Ship Design et en affichant toutes les informations pertinentes sur le panneau Moteurs. Il ajoute même des « moteurs partiels », comme vous pouvez le voir à côté de la statistique Moteurs requis. Il s’agira généralement d’un nombre avec une décimale.<br>Le moteur de votre vaisseau détermine sa vitesse de distorsion, c’est-à-dire la vitesse à laquelle il se déplace sur la carte principale, mesurée en parsecs par an. La vitesse de combat de votre vaisseau, c’est-à-dire le nombre de cases qu’il parcourt pendant le combat, est déterminée par sa classe de manœuvre. La classe de manœuvre détermine la quantité de puissance du vaisseau qui sera détournée pour se déplacer pendant le combat. La classe de manœuvre est limitée par le type de moteur d’un vaisseau, et tous les deux points dans la classe de manœuvre d’un vaisseau lui donnent un point de vitesse de combat.<br>Le coût et la taille d’un moteur prennent en compte la miniaturisation (c’est-à-dire que tous les dix niveaux de technologie de propulsion que vous possédez au-dessus du niveau technologique d’un moteur réduisent son coût de 50 % et sa taille de 25 %). La puissance par moteur est une valeur fixe allant de 10 pour les moteurs rétro, 20 pour les moteurs nucléaires, 30 pour les moteurs SubLight, et ainsi de suite, jusqu’à 90 pour les moteurs Hyper. Les chiffres relatifs à la puissance requise, aux moteurs requis, à la taille totale du moteur et au coût total du moteur s’ajustent dynamiquement à mesure que vous ajoutez et supprimez des composants de votre conception.
+
+SHIP_DESIGN_COMPONENTS_HELP		| <h3>Composants</h3>Une fois que vous avez sélectionné la taille et les moteurs de votre vaisseau, il ne reste plus qu’à insérer les composants souhaités. Au fur et à mesure que vous installez des composants, votre conception ajoutera automatiquement des moteurs selon vos besoins pour répondre à vos besoins en énergie.<br>Les ordinateurs détermineront le niveau d’attaque de votre conception, qui est comparé au missile ou à la défense par faisceau de la cible pendant le combat.<br>L’armure déterminera les points de vie de votre conception. Au fur et à mesure que vous recherchez une meilleure armure - en commençant par le titane, puis en progressant vers le duralloy, le zortrium, l’andrium, le tritanium, l’adamantium et le neutronium - chacune de vos tailles de coque obtiendra plus de points de vie. Notez que chaque type d’armure est disponible en force par défaut ou en double force (la double force est indiquée par un II après le nom). Une armure à double résistance prend plus de place, mais donne à votre vaisseau 50 % de points de vie en plus. Notez également que l’armure est soumise aux avantages de la miniaturisation (c’est-à-dire que tous les dix niveaux de technologie de construction que vous possédez au-dessus du niveau technologique d’une armure, son coût est réduit de 50 % et sa taille de 25 %).<br>Les boucliers atténuent les dégâts en fonction de la force du bouclier. Ils bénéficient des avantages de la miniaturisation (c’est-à-dire que tous les dix niveaux de technologie Force Field dont vous disposez au-dessus du niveau technologique d’un bouclier réduisent son coût de 50 % et sa taille de 25 %). Les brouilleurs ECM contribuent directement à la défense antimissile d’une conception. La classe de manœuvre n’est pas un composant, mais un paramètre permettant de déterminer la vitesse de combat d’un modèle telle que permise par son type de moteur.
+
+SHIP_DESIGN_WEAPONS_STATS_HELP	| →SHIP_DESIGN_HELP_3F←
+SHIP_DESIGN_SPECIALS_STATS_HELP	| →SHIP_DESIGN_HELP_3G←
+
+SHIP_DESIGN_SIZE_HELP			| <h3>Taille de la coque</h3>Votre première étape consiste à décider de la taille de votre vaisseau, qui déterminera ses statistiques de combat de base. Lorsque vous définissez une coque petite, moyenne, grande ou énorme, vous verrez la mise à jour des statistiques.<br>L’espace total est le décompte de tous les composants du vaisseau, tandis que l’espace disponible est l’espace restant pour plus de composants. Notez que chaque niveau de technologie de construction ajoute 2 % d’espace supplémentaire à chaque taille de coque.
 
 // Ship Design help
 SHIP_DESIGN_HELP_ALL              | APERÇU - Un empire peut avoir jusqu’à six modèles de vaisseaux actifs. Pour chaque conception, choisissez une taille de coque puis remplissez-la de divers composants tels que des armures, des boucliers et des armes. Chaque composant a une taille, une Puiss. et un coût. L’espace total requis pour un composant est sa taille plus la taille du nombre de moteurs nécessaires pour l’alimenter. Une fois déployé, un modèle de vaisseau peut être construit dans n’importe laquelle de vos colonies.
@@ -5298,15 +5319,15 @@ SHIP_DESIGN_HELP_2I               | Coût total - Coût de construction total po
 SHIP_DESIGN_HELP_2J               | L’image attribuée à la conception de vaisseau sélectionné. Il y a six images différentes pour chacune des quatre tailles de coque. Lors de la création d’un nouveau design de vaisseau, cliquez sur pour faire défiler les options.
 SHIP_DESIGN_HELP_2K               | Le nom de la conception du vaisseau.
 SHIP_DESIGN_HELP_3A               | Ordinateur - Affectent le niveau d’attaque de votre vaisseau au combat.
-SHIP_DESIGN_HELP_3B               | Armure - Affecte les points de vie de votre vaisseau. L’armure lourde l’augmente de 50 %.
+SHIP_DESIGN_HELP_3B               | Armure - Affecte les points de vie de votre vaisseau. L’armure lourde l’augmente de 50 %.
 SHIP_DESIGN_HELP_3C               | Boucliers - Réduisent les dégâts des attaques entrantes.
 SHIP_DESIGN_HELP_3D               | Les contre-mesures électroniques améliorent votre défense antimissile.
 SHIP_DESIGN_HELP_3E               | Manœuvre - Augmente la manœuvrabilité et les défenses du vaisseau.
-SHIP_DESIGN_HELP_3F               | Armes - Peuvent infliger des dégâts aux vaisseaux et colonies ennemis. Jusqu’à quatre types d’armes différents peuvent être ajoutés à une conception de vaisseau.
-SHIP_DESIGN_HELP_3G               | Spéciaux - Appareils qui offrent des capacités uniques à votre vaisseau. Jusqu’à trois dispositifs spéciaux peuvent être ajoutés à une conception de vaisseau.
+SHIP_DESIGN_HELP_3F               | Armes - Peuvent infliger des dégâts aux vaisseaux et colonies ennemis. Jusqu’à quatre types d’armes différents peuvent être ajoutés à vos vaisseaux.
+SHIP_DESIGN_HELP_3G               | Spéciaux - Appareils qui offrent des capacités uniques à votre vaisseau. Jusqu’à trois dispositifs spéciaux peuvent être ajoutés à vos vaisseaux.
 SHIP_DESIGN_HELP_4A               | Renommer - Vous permet de changer la désignation d’un modèle existant.
-SHIP_DESIGN_HELP_4B               | Supprimer conception - Supprime une conception existante. Les vaisseaux démolis retournent 25% de leur valeur de construction au trésor.
-SHIP_DESIGN_HELP_4C               | Les conceptions de vaisseaux déployés peuvent être construites sur n’importe laquelle de vos colonies.
+SHIP_DESIGN_HELP_4B               | Supprimer conception - Supprime une conception existante. Les vaisseaux démolis retournent 25 % de leur valeur de construction au trésor.
+SHIP_DESIGN_HELP_4C               | Les modèles de vaisseaux déployés peuvent être construits sur n’importe laquelle de vos colonies.
 SHIP_DESIGN_HELP_4D               | Les emplacements de conception de vaisseau disponibles peuvent être sélectionnés afin de créer un nouveau design.
 SHIP_DESIGN_HELP_4E               | Copier - Copier une conception existante pour servir de point de départ à une nouvelle conception.
 SHIP_DESIGN_HELP_4F               | Effacer - Réinitialise tous les composants sélectionnés.
@@ -6049,7 +6070,7 @@ GOVERNOR_TRANSPORT_POOR_DBL_DESC    | Les gouverneurs des planètes pauvres cont
 GOVERNOR_TRANSPORT_POOR_DBL         | Pauvres x2 : %1
 GOVERNOR_TRANSPORT_POOR_DBL_LABEL   | Les planètes pauvres contribuent doublement aux migrations.
 
-GOVERNOR_TRANSPORT_TO_BESIEGED_HELP	| Les gouverneurs n’enverront jamais de transports lorsque des navires ennemis en orbite peuvent intercepter vos troupes.<br>Mais si leur flotte est majoritairement composée de bombardiers, les troupes pourraient s’y faufiler, pour être malheureusement éliminées lors du prochain bombardement.<br>Il est également possible que des troupes ennemies mieux équipées soient en route, et que toute reconquête par combat terrestre soit impossible.<br>Il devient alors préférable de conserver sa population pour renforcer les défenses des colonies proches du front.
+GOVERNOR_TRANSPORT_TO_BESIEGED_HELP	| Les gouverneurs n’enverront jamais de transports lorsque des vaisseaux ennemis en orbite peuvent intercepter vos troupes.<br>Mais si leur flotte est majoritairement composée de bombardiers, les troupes pourraient s’y faufiler, pour être malheureusement éliminées lors du prochain bombardement.<br>Il est également possible que des troupes ennemies mieux équipées soient en route, et que toute reconquête par combat terrestre soit impossible.<br>Il devient alors préférable de conserver sa population pour renforcer les défenses des colonies proches du front.
 GOVERNOR_TRANSPORT_TO_BESIEGED_DESC	| Les gouverneurs n’enverront pas de transports vers des colonies assiégées par un empire ennemi.
 GOVERNOR_TRANSPORT_TO_BESIEGED		| Exclure les assiégés: %1
 
@@ -6119,9 +6140,35 @@ GOVERNOR_AUTOSPEND_NEW_FIRST_HELP	| Lorsque le gouverneur doit aider à la fois 
 GOVERNOR_AUTOSPEND_NEW_FIRST_DESC	| Le Gouverneur priorise les nouvelles colonies, celles avec des artefacts passent après.
 GOVERNOR_AUTOSPEND_NEW_FIRST		| Priorité aux nouvelles colonies : %1
 
-GOVERNOR_AUTOSPEND_MAX_IND_PCT_HELP	| Lorsque le gouverneur doit aider à la fois les nouvelles colonies et les colonies avec des artefacts, et doit donner la priorité aux nouvelles colonies, il peut être utile de fixer une limite à partir de laquelle une colonie n’est plus considérée comme nouvelle.<br>Les colonies au-dessus de cette limite ne recevront pas de financement en tant que « nouvelles colonies ».<br>Les colonies en dessous de cette limite ne seront pas imposées car elles pourraient recevoir des fonds en tant que « nouvelles colonies ». (Ce qui entraînerait un gaspillage de fonds puisque les impôts impliquent des pertes de 50 %)
-GOVERNOR_AUTOSPEND_MAX_IND_PCT_DESC	| Niveau de développement maximal définissant une colonie comme étant nouvelle.
-GOVERNOR_AUTOSPEND_MAX_IND_PCT		| Limite de développement : %1 %
+GOVERNOR_AS_MAX_IND_PCT_COMMON		| Lorsque le gouverneur doit aider à la fois les nouvelles colonies et les colonies avec des artefacts, et doit donner la priorité aux nouvelles colonies, il peut être utile de fixer une limite à partir de laquelle une colonie n’est plus considérée comme nouvelle.<br>Les colonies au-dessus de cette limite ne recevront pas de financement en tant que « nouvelles colonies ».<br>Les colonies en dessous de cette limite ne seront pas imposées car elles pourraient recevoir des fonds en tant que « nouvelles colonies ». (Ce qui entraînerait un gaspillage de fonds puisque les impôts impliquent des pertes de 50 %)
+
+GOVERNOR_AS_MAX_IND_UPOOR_PCT_HELP	| <b>Limite de développement pour les colonies utra-pauvres</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_UPOOR_PCT_DESC	| Niveau de développement maximal définissant une colonie comme étant nouvelle. Pour les planètes ultra-pauvres.
+GOVERNOR_AS_MAX_IND_UPOOR_PCT		| Limite pour Ultra-Pauvres : %1 %
+
+GOVERNOR_AS_MAX_IND_POOR_PCT_HELP	| <b>Limite de développement pour les colonies pauvres</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_POOR_PCT_DESC	| Niveau de développement maximal définissant une colonie comme étant nouvelle. Pour les planètes pauvres.
+GOVERNOR_AS_MAX_IND_POOR_PCT		| Limite pour Pauvres : %1 %
+
+GOVERNOR_AS_MAX_IND_RICH_PCT_HELP	| <b>Limite de développement pour les colonies riches</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_RICH_PCT_DESC	| Niveau de développement maximal définissant une colonie comme étant nouvelle. Pour les planètes riches.
+GOVERNOR_AS_MAX_IND_RICH_PCT		| Limite pour Riches : %1 %
+
+GOVERNOR_AS_MAX_IND_URICH_PCT_HELP	| <b>Limite de développement pour les colonies utra-riches</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_URICH_PCT_DESC	| Niveau de développement maximal définissant une colonie comme étant nouvelle. Pour les planètes ultra-riches.
+GOVERNOR_AS_MAX_IND_URICH_PCT		| Limite pour Ultra-Riches : %1 %
+
+GOVERNOR_AS_MAX_IND_ANTAR_PCT_HELP	| <b>Limite de développement pour les colonies Antariennes</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_ANTAR_PCT_DESC	| Niveau de développement maximal définissant une colonie comme étant nouvelle. Pour les planètes avec des artefacts Antariens.
+GOVERNOR_AS_MAX_IND_ANTAR_PCT		| Limite pour Antariennes : %1 %
+
+GOVERNOR_AS_MAX_IND_ORION_PCT_HELP	| <b>Limite de développement pour les colonies Orion</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AS_MAX_IND_ORION_PCT_DESC	| Niveau de développement maximal définissant une colonie comme étant nouvelle. Pour les planètes avec des artefacts Orion.
+GOVERNOR_AS_MAX_IND_ORION_PCT		| Limite pour Orions : %1 %
+
+GOVERNOR_AUTOSPEND_MAX_IND_PCT_HELP	| <b>Limite de développement pour les colonies normales</b><br>→GOVERNOR_AS_MAX_IND_PCT_COMMON←
+GOVERNOR_AUTOSPEND_MAX_IND_PCT_DESC	| Niveau de développement maximal définissant une colonie comme étant nouvelle. Pour les planètes normales.
+GOVERNOR_AUTOSPEND_MAX_IND_PCT		| Limite pour Normales : %1 %
 
 GOVERNOR_AUTOSPEND_ARTEFACTS_HELP	| Le Gouverneur dépense automatiquement les réserves pour maximiser la recherche sur les colonies avec artéfacts:<br>&emsp - Ne dépense que le montant que la planète peut consommer ce tour-ci.<br>&emsp - Commence par les planètes pleinement construites, Vestiges puis Artefact.<br>&emsp - S’il reste des fonds, aide à construire les nouvelles colonies Vestiges, puis Artéfacts.<br>&emsp - Commence par la planète dont la production est la plus forte, et s’arrête lorsque l’argent vient à manquer ou qu’il n’y a plus de planètes éligibles.<br>&emsp - Ne dépense que sur les planètes où un gouverneur est en poste.
 GOVERNOR_AUTOSPEND_ARTEFACTS_DESC	| Le Gouverneur dépense automatiquement les réserves pour maximiser la recherche sur les colonies avec artéfacts.
@@ -6133,6 +6180,9 @@ HEADERS_GOVERNOR_FUNDRAISING		| ~~~ COLLECTE DES FONDS D’URGENCE ~~~
 
 HEADERS_GOVERNOR_SPENDING_DESC		| Comment utiliser la réserve et les fonds d’urgence.
 HEADERS_GOVERNOR_SPENDING			| ~~~ UTILISATION DES FONDS ~~~
+
+HEADERS_GOVERNOR_DEVELOPMENT_DESC	| Ce qui caractérise une colonie comme étant encore « en développement », afin d'obtenir du financement.
+HEADERS_GOVERNOR_DEVELOPMENT		| ~~~ DÉFINITION DE EN DÉVELOPPEMENT ~~~
 
 GOVERNOR_RESERVE_DESC				| Fonds d’urgence à garder en réserve à l’usage exclusif tu joueur.<br>(Non dépensée par les gouverneurs)
 GOVERNOR_RESERVE					| Fonds d’urgence du joueur : %1
@@ -6199,8 +6249,8 @@ GOVERNOR_SHIP_BUILDING_DESC 		| Continuer la construction navale avec gouverneur
 GOVERNOR_SHIP_BUILDING				| Financer les chantiers navals : %1
 GOVERNOR_SHIP_BUILDING_LABEL		| Continuer la construction navale avec gouverneur activé.
 
-GOVERNOR_FOLLOW_COLONY_REQUESTS_HELP     | Le gouverneur flexible va s’adapter aux demandes spécifiques du joueur.<br>- Il s’assure d’abord que la colonie reste propre.<br>- Ensuite, il s’occupe de vos demandes urgentes, dans l’ordre suivant : Boucliers, Bases, Population, Usines, Croissance de la colonie.<br>- Ensuite, il exécute vos tâches prioritaires, en leur attribuant le pourcentage de fonds alloués. Dans l’ordre suivant : Quantité spécifiée de navires, Recherche (Violet)<br>- Vient ensuite le moment de faire grandir la colonie en équilibrant la construction d’usines et la croissance de la population.<br>- S’il reste des fonds, ils seront à nouveau assignés aux tâches prioritaires<br>- Viennent ensuite les tâches de moindre priorité en suivant vos instructions (Bleu). Dans l’ordre suivant : Défenses, Navires, Recherche.<br>- S’il n’y a pas d’instructions, la séquence sera : Défense, Recherche.<br>Note: Si vous verrouillez les allocations des Vaisseaux : Il ne les modifiera pas<br>D’autres ajustements sont disponibles dans les paramètres avancés.<br><br>Le gouverneur autonome (Celui d’origine)  suivra vos consignes générales, et gérera les détails par lui même.
-GOVERNOR_FOLLOW_COLONY_REQUESTS_DESC     | Si une « →MAIN_COLONY_SHIPYARD_LIMIT← » est définie, elle sera construite en priorité. Si vous verrouillez les allocations de navires : Il ne les modifiera pas. Il suivra également la priorité indiquée en bleu (Ctrl-Clic sur le texte à gauche)
+GOVERNOR_FOLLOW_COLONY_REQUESTS_HELP	| Le gouverneur flexible va s’adapter aux demandes spécifiques du joueur.<br>- Il s’assure d’abord que la colonie reste propre.<br>- Ensuite, il s’occupe de vos demandes urgentes, dans l’ordre suivant : Boucliers, Bases, Population, Usines, Croissance de la colonie.<br>- Ensuite, il exécute vos tâches prioritaires, en leur attribuant le pourcentage de fonds alloués. Dans l’ordre suivant : Quantité spécifiée de vaisseaux, Recherche (Violet)<br>- Vient ensuite le moment de faire grandir la colonie en équilibrant la construction d’usines et la croissance de la population.<br>- S’il reste des fonds, ils seront à nouveau assignés aux tâches prioritaires<br>- Viennent ensuite les tâches de moindre priorité en suivant vos instructions (Bleu). Dans l’ordre suivant : Défenses, Vaisseaux Recherche.<br>- S’il n’y a pas d’instructions, la séquence sera : Défense, Recherche.<br>Note: Si vous verrouillez les allocations des Vaisseaux : Il ne les modifiera pas<br>D’autres ajustements sont disponibles dans les paramètres avancés.<br><br>Le gouverneur autonome (Celui d’origine)  suivra vos consignes générales, et gérera les détails par lui même.
+GOVERNOR_FOLLOW_COLONY_REQUESTS_DESC     | Si une « →MAIN_COLONY_SHIPYARD_LIMIT← » est définie, elle sera construite en priorité. Si vous verrouillez les allocations de vaisseaux : Il ne les modifiera pas. Il suivra également la priorité indiquée en bleu (Ctrl-Clic sur le texte à gauche)
 GOVERNOR_FOLLOW_COLONY_REQUESTS          | Gouverneurs : %1
 GOVERNOR_FOLLOW_COLONY_REQUESTS_LABEL    | Gouverneurs Flexibles
 GOVERNOR_FOLLOW_COLONY_REQUESTS_YES      | Flexibles

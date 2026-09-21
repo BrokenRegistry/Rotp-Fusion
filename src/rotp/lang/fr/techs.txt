@@ -1171,7 +1171,7 @@ SHIPWPN_2_INFO         | Disponible uniquement avec une portée de 1. (Pas de ve
 
 SHIPWPN_3_NAME         | Canon à ions
 SHIPWPN_3_ITEM2        | Canon à ions lourds
-SHIPWPN_3_DETAIL       | Armes à faisceau de haute intensité capables d’infliger 3 à 8 points de dégâts. Les canons à ions lourds frappent pendant 3 à 15 et ont une portée de deux espaces.
+SHIPWPN_3_DETAIL       | Armes à faisceau de haute intensité capables d’infliger 3 à 8 points de dégâts. Les canons à ions lourds ont une portée de deux espaces et infligent 3 à 15 points de dégâts.
 
 SHIPWPN_4_NAME         | Canon à projectiles
 SHIPWPN_4_BRIEF        | Réduit de moitié la force du bouclier

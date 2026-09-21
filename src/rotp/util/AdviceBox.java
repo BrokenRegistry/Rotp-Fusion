@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 
 import rotp.model.IAdvice;
 import rotp.model.Sprite;
+import rotp.model.tech.Tech;
 import rotp.ui.util.IParam;
 import rotp.util.Base.Rect;
 import rotp.util.sound.SoundManager;
@@ -32,6 +33,7 @@ public class AdviceBox extends Rect implements IAdvice {
 	private String labelKey, adviceHelpKey, topLeftHelpKey, advisorImageKey;
 	private String adviceHelpTxt;
 	private IParam<?> param;
+	private Tech tech;
 	private Point arrowOffset = new Point();		// to offset the arrow tip
 	private Point boxOffset = new Point(s25, s25);	// to push the box away from the target
 	private Point targetLoc = new Point();			// to offset the box relative to parents locations
@@ -66,6 +68,7 @@ public class AdviceBox extends Rect implements IAdvice {
 	public int yOffset()		{ return y + arrowOffset.y; }
 	public Point getBoxOffset()	{ return boxOffset; }
 	public Point getTargetLoc()	{ return new Point(targetLoc.x + arrowOffset.x, targetLoc.y + arrowOffset.y); }
+	public Tech getTech()		{ return tech; }
 	public IParam<?> getParam()	{ return param; }
 	public JComponent getPane()	{ return panel; }
 	public int getForcedWidth()		{ return forcedWidth; }
@@ -82,6 +85,7 @@ public class AdviceBox extends Rect implements IAdvice {
 			targetLoc = SwingUtilities.convertPoint(panel, getLocation(), dest);
 	}
 	public void setLevel(int rank)				{ level = rank; }
+	public void setTech(Tech t)					{ tech = t; }
 	public void setParam(IParam<?> p)			{ param = p; }
 	public void setPane(JComponent c)			{ panel = c; }
 	public void setArrowOffset(Point pt)		{ arrowOffset = pt; }
@@ -124,6 +128,9 @@ public class AdviceBox extends Rect implements IAdvice {
 		if (param != null)
 			return param.getFullHelp();
 
+		if (tech != null)
+			return tech.getTechInfo();
+
 		if (adviceHelpKey != null)
 			return LabelManager.current().realLabel(adviceHelpKey);
 
@@ -153,7 +160,15 @@ public class AdviceBox extends Rect implements IAdvice {
 	}
 	public void mapX(int i)	{ x = i; selectionBox.x = i;}
 	public void mapY(int i)	{ y = i; selectionBox.y = i;}
-	public void hovering(boolean b)	{ hovering = b; }
+	public void hovering(boolean b)	{
+		boolean wasHovering = hovering;
+		hovering = b;
+		if (hovering && !wasHovering && isAdvising())
+			ADVISOR.hoveringOverElement(this);
+		else if(wasHovering && !hovering && isAdvising())
+			ADVISOR.leavedElement(this);
+		hovering = b;
+	}
 
 	public void setSelectionBounds(int x, int y, int w, int h)	{ selectionBox.setBounds(x, y, w, h); }
 	public void setSelectionSize(int w, int h)		{ selectionBox.setSize(w, h); }

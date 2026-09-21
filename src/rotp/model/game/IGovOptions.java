@@ -84,12 +84,55 @@ public interface IGovOptions {
 			.isUpdateDef(true)
 			.setIsGhostMethod(IGovOptions::notGrantingFunds)
 			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
-	ParamInteger autospendMaxIndustryPct		= new ParamInteger(GOV_UI, "AUTOSPEND_MAX_IND_PCT", 35)
-			.setLimits(10, 75)
+
+	ParamInteger autospendMaxIndustryNormalPct	= new ParamInteger(GOV_UI, "AUTOSPEND_MAX_IND_PCT", 30)
+			.setLimits(1, 99)
 			.setIncrements(1, 5, 20)
 			.pctValue(true)
 			.setIsGhostMethod(IGovOptions::notGrantingFunds)
 			.setNewValueMethod(IGovOptions::makesBudgetObsolete);
+	ParamInteger autospendMaxIndustryUPoorPct	= new ParamInteger(GOV_UI, "AS_MAX_IND_UPOOR_PCT", 75)
+			.setLimits(1, 99)
+			.setIncrements(1, 5, 20)
+			.pctValue(true)
+			.setIsGhostMethod(IGovOptions::notGrantingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete)
+			.formerName("AUTOSPEND_MAX_IND_PCT");
+	ParamInteger autospendMaxIndustryPoorPct	= new ParamInteger(GOV_UI, "AS_MAX_IND_POOR_PCT", 60)
+			.setLimits(1, 99)
+			.setIncrements(1, 5, 20)
+			.pctValue(true)
+			.setIsGhostMethod(IGovOptions::notGrantingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete)
+			.formerName("AUTOSPEND_MAX_IND_PCT");
+	ParamInteger autospendMaxIndustryRichPct	= new ParamInteger(GOV_UI, "AS_MAX_IND_RICH_PCT", 15)
+			.setLimits(1, 99)
+			.setIncrements(1, 5, 20)
+			.pctValue(true)
+			.setIsGhostMethod(IGovOptions::notGrantingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete)
+			.formerName("AUTOSPEND_MAX_IND_PCT");
+	ParamInteger autospendMaxIndustryURichPct	= new ParamInteger(GOV_UI, "AS_MAX_IND_URICH_PCT", 10)
+			.setLimits(1, 99)
+			.setIncrements(1, 5, 20)
+			.pctValue(true)
+			.setIsGhostMethod(IGovOptions::notGrantingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete)
+			.formerName("AUTOSPEND_MAX_IND_PCT");
+	ParamInteger autospendMaxIndustryAntaranPct	= new ParamInteger(GOV_UI, "AS_MAX_IND_ANTAR_PCT", 60)
+			.setLimits(1, 99)
+			.setIncrements(1, 5, 20)
+			.pctValue(true)
+			.setIsGhostMethod(IGovOptions::notGrantingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete)
+			.formerName("AUTOSPEND_MAX_IND_PCT");
+	ParamInteger autospendMaxIndustryOrionPct	= new ParamInteger(GOV_UI, "AS_MAX_IND_ORION_PCT", 75)
+			.setLimits(1, 99)
+			.setIncrements(1, 5, 20)
+			.pctValue(true)
+			.setIsGhostMethod(IGovOptions::notGrantingFunds)
+			.setNewValueMethod(IGovOptions::makesBudgetObsolete)
+			.formerName("AUTOSPEND_MAX_IND_PCT");
 	ParamInteger reserveForPlayer		= new ParamInteger(GOV_UI, "RESERVE", 0)
 			.setLimits(0, 100000)
 			.setIncrements(10, 50, 200)
@@ -121,7 +164,13 @@ public interface IGovOptions {
 		autoSpendOnArtefacts.updated(true);
 		autoSpendOnNewColonies.updated(true);
 		autoSpendOnNewColoniesFirst.updated(true);
-		autospendMaxIndustryPct.updated(true);
+		autospendMaxIndustryUPoorPct.updated(true);
+		autospendMaxIndustryPoorPct.updated(true);
+		autospendMaxIndustryRichPct.updated(true);
+		autospendMaxIndustryURichPct.updated(true);
+		autospendMaxIndustryAntaranPct.updated(true);
+		autospendMaxIndustryOrionPct.updated(true);
+		autospendMaxIndustryNormalPct.updated(true);
 	}
 	private static boolean redoBudgetNotAllowed()	{
 		return !( redoBudgetRaiseAllowed.get() && governorRaiseFunds.get()

@@ -320,6 +320,7 @@
 
 ### Miscellaneous:
 
+- New settings: development limits for each planet type.
 - You now have the ability to modify the research after selecting a new one, following a technological discovery on an Artifact planet, a technology theft or a technology exchange.
 - The colony development limit will now be based on the colony industry capacity.
 - Budget Max Absolute Capital can now be set to a smaller amount.
@@ -479,6 +480,7 @@
 
 ### Guide and Help:
 
+- The Advisor has entered the Design panel.
 - Improved help for options "Retreat Destination", "Hyper Comm Retreat", and “Retreat toward enemy”.
 - Extension of the advisor, to be able to call it on demand, this in order to display help on the element under the cursor.
   - On the Galaxy map, including some overlay windows.
@@ -511,6 +513,7 @@
 
 ### Fixes:
 
+- Fixed some advisor display issues (pop-up remaining too long)
 - Fixed an issue with "Auto-flag" being set one too many times after the discovery window was displayed, possibly canceling a player's selection.
 - You now have the ability to modify the research after selecting a new one, following a technological discovery on an Artifact planet, a 
 - Fixed issue in ShipCombat with repulsors going in never ending loop.

@@ -361,6 +361,7 @@ public interface IAdvisor extends ScaledInteger {
 		Species species;
 		IAdvice target;
 		Point topLeftBoxLocation	= new Point(s50, s50);
+		Point welcomeBoxLocation;
 		int leftMargin	= s3;
 		int rightMargin	= 0;
 		int floorMargin	= s3;

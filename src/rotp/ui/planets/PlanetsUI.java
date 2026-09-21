@@ -3089,19 +3089,10 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                 }
             }
         }
-        @Override
-        public void mouseEntered(MouseEvent e) {  }
-		@Override public void mouseExited(MouseEvent e)	{
-			if (hoverBox != null) {
-				if (hoverBox instanceof AdviceBox)
-					((AdviceBox) hoverBox).hovering(false);
-				hoverBox = null;
-				repaint();
-			}
-		}
-        @Override
-        public void mouseDragged(MouseEvent e) { }
-		@Override public void mouseMoved(MouseEvent e) {
+		@Override public void mouseEntered(MouseEvent e)	{}
+		@Override public void mouseExited(MouseEvent e)		{ hoverBox = hoverBox(null, hoverBox); }
+		@Override public void mouseDragged(MouseEvent e)	{}
+		@Override public void mouseMoved(MouseEvent e)		{
 			int x = e.getX();
 			int y = e.getY();
 

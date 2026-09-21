@@ -197,11 +197,8 @@ public final class EmpireColonyInfoPane extends BasePanel {
 		@Override public void mouseExited(MouseEvent e)		{
 			setModifierKeysState(e);
 			parentUI.exitCurrentPane(this);
-            if (hoverBox != null) {
-                hoverBox = null;
-                repaint();
-            }
-        }
+			hoverBox = hoverBox(null, hoverBox);
+		}
 		@Override public void mousePressed(MouseEvent e)	{ parentUI.enterCurrentPane(this); }
         @Override public void mouseReleased(MouseEvent e)	{
             if (e.getButton() > 3)
@@ -502,10 +499,7 @@ public final class EmpireColonyInfoPane extends BasePanel {
         }
         @Override public void mouseExited(MouseEvent e)		{
         	parentUI.exitCurrentPane(this);
-            if (hoverBox != null) {
-                hoverBox = null;
-                repaint();
-            }
+        	hoverBox = hoverBox(null, hoverBox);
             colonies.clear();
         }
         @Override public void mouseReleased(MouseEvent e)	{

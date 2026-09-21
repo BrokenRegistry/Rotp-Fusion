@@ -305,7 +305,13 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public boolean	trainSpiesASAP()				{ return trainSpiesASAP.get(); }
 	public boolean	contactUpdateSpending()			{ return contactUpdateSpending.get(); }
 	public boolean	isAutospendOnNewColoniesFirst()	{ return autoSpendOnNewColoniesFirst.get(); }
-	public float	autospendMaxIndustryRatio()		{ return autospendMaxIndustryPct.getFloat(); }
+	public float	autospendMaxIndRatioNormal()	{ return autospendMaxIndustryNormalPct.getFloat(); }
+	public float	autospendMaxIndRatioUPoor()		{ return autospendMaxIndustryUPoorPct.getFloat(); }
+	public float	autospendMaxIndRatioPoor()		{ return autospendMaxIndustryPoorPct.getFloat(); }
+	public float	autospendMaxIndRatioRich()		{ return autospendMaxIndustryRichPct.getFloat(); }
+	public float	autospendMaxIndRatioURich()		{ return autospendMaxIndustryURichPct.getFloat(); }
+	public float	autospendMaxIndRatioAntaran()	{ return autospendMaxIndustryAntaranPct.getFloat(); }
+	public float	autospendMaxIndRatioOrion()		{ return autospendMaxIndustryOrionPct.getFloat(); }
 	public boolean	excludeTransportToBesieged()	{ return transportExcludeBesieged.get(); }
 	private float	autospendReserveRatio()			{ return reservePlayerPerMille.getFloat(); }
 	public int		autospendMinReserve(float prod)	{ return Math.max(getReserve(), (int)(autospendReserveRatio()*prod)); }

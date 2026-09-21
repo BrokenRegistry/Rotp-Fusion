@@ -41,7 +41,6 @@ import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.TechCategorySprite;
-import rotp.ui.tech.AllocateTechUI;
 import rotp.ui.vipconsole.IVIPListener;
 
 public final class MapOverlayEspionageMission implements IMapOverlay, IVIPListener {
@@ -339,7 +338,7 @@ public final class MapOverlayEspionageMission implements IMapOverlay, IVIPListen
 			for(String tId : techList) {
 				Tech t = tech(tId);
 				txt += sep;
-				txt += AllocateTechUI.getTechInfo(t);
+				txt += t.getTechInfo();
 				sep = "<hr>";
 			}
 			categorySprites[catNum].getBox().setAdviceHelpText(txt);
@@ -347,7 +346,7 @@ public final class MapOverlayEspionageMission implements IMapOverlay, IVIPListen
 		else {
 			Tech t = tech(techList.get(0));
 			techDesc = t.name();
-			String txt = AllocateTechUI.getTechInfo(t);
+			String txt = t.getTechInfo();
 			categorySprites[catNum].getBox().setAdviceHelpText(txt);
 		}
 

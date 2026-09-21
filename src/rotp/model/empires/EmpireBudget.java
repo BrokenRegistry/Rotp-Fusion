@@ -201,7 +201,6 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 		checkClean = false; // TO DO BR: set checkClean = false;
 		GovernorOptions govOptions = session().getGovernorOptions();
 		boolean shieldWithoutBases = govOptions.getShieldWithoutBases();
-		float maxIndustryRatio = govOptions.autospendMaxIndustryRatio();
 
 		checkForClean("planTheBudget start unclean: ");
 
@@ -231,7 +230,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 						continue;
 					Colony col = sys.colony();
 					if (col != null)
-						col.budget().budgetReset(shieldWithoutBases, maxIndustryRatio);
+						col.budget().budgetReset(shieldWithoutBases);
 				}
 				return;
 		}
@@ -241,7 +240,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 				continue;
 			Colony col = sys.colony();
 			if (col != null)
-				col.budget().budgetReset(shieldWithoutBases, maxIndustryRatio, clearGrant, clearRaise, forceGovern);
+				col.budget().budgetReset(shieldWithoutBases, clearGrant, clearRaise, forceGovern);
 		}
 		checkForClean("planTheBudget col.budget().budgetReset loop unclean: ");
 
@@ -309,7 +308,6 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 		boolean newColoniesFirst = govOptions.isAutospendOnNewColoniesFirst();
 		boolean spendOnNewColonies = govOptions.isAutospendOnNewColonies();
 		boolean spendToBoostArtefact = govOptions.isAutospendOnArtefacts();
-		float autospendMaxIndustryRatio = govOptions.autospendMaxIndustryRatio();
 
 		if (helpRandomEvent || fromPlayer)
 			requestSubsidiesForRandomEvents(budgets, fromPlayer, grant);
@@ -319,7 +317,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 
 		if (newColoniesFirst) {
 			if (spendOnNewColonies)
-				requestSubsidiesForNewColony(budgets, autospendMaxIndustryRatio, fromPlayer, grant);
+				requestSubsidiesForNewColony(budgets, fromPlayer, grant);
 			if (spendToBoostArtefact)
 				requestSubsidiesForArtefactColony (budgets, fromPlayer, grant);
 		}
@@ -327,7 +325,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 			if (spendToBoostArtefact)
 				requestSubsidiesForArtefactColony (budgets, fromPlayer, grant);
 			if (spendOnNewColonies)
-				requestSubsidiesForNewColony(budgets, autospendMaxIndustryRatio, fromPlayer, grant);
+				requestSubsidiesForNewColony(budgets, fromPlayer, grant);
 		}
 		if (!fromPlayer)
 			return;
@@ -376,11 +374,11 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 		for (ColonyBudget budget : budgets)
 			budgetizeReserve(budget, false, grant);
 	}
-	private void requestSubsidiesForNewColony (List<ColonyBudget> allBudgets, float maxIndustryRatio, boolean fromPlayer, boolean grant)	{
+	private void requestSubsidiesForNewColony (List<ColonyBudget> allBudgets, boolean fromPlayer, boolean grant)	{
 		List<ColonyBudget> budgets = new ArrayList<>();
 		for (Iterator<ColonyBudget> iter = allBudgets.iterator(); iter.hasNext(); ) {
 			ColonyBudget budget = iter.next();
-			if (budget.isNewColony(maxIndustryRatio)) {
+			if (budget.isNewColony()) {
 				budgets.add(budget);
 				iter.remove();
 			}
@@ -462,7 +460,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 						break;
 					if (excessRevenueBC < 0) {
 						// add one tick back
-						excessRevenueBC += cBudget.tryToContribute(-2*excessRevenueBC, true);
+						excessRevenueBC += cBudget.tryToContribute(-2*excessRevenueBC, false);
 						break;
 					}
 				}

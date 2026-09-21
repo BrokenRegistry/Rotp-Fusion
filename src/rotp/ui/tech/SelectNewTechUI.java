@@ -139,7 +139,6 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
     }
     public TechCategory category()        { return category; }
 
-	private String getAdvice(Tech tech)	{ return AllocateTechUI.getTechInfo(tech); }
     private Image paintToImage() {
         if (finished)
             return null;
@@ -262,7 +261,7 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
 
 			AdviceBox box = new AdviceBox(this);
 			box.setBounds(x1, y1, techWidth, th);
-			box.setAdviceHelpText(getAdvice(t));
+			box.setAdviceHelpText(t.getTechInfo());
 			box.setBoxOffset(s50, s25);
 			techBoxes.put(id, box);
 

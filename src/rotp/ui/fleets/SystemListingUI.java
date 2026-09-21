@@ -15,6 +15,7 @@
  */
 package rotp.ui.fleets;
 
+import static rotp.ui.game.IAdvisor.ADVISOR;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -23,6 +24,7 @@ import java.awt.Image;
 import java.awt.LinearGradientPaint;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -47,6 +49,7 @@ import rotp.model.ships.ShipLibrary;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseTextField;
 import rotp.ui.RotPUI;
+import rotp.ui.game.AdvisorPanel;
 import rotp.ui.game.IAdvisor;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.SystemTransportSprite;
@@ -84,8 +87,8 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
     private final List<List<SystemButton>> rowButtons = new ArrayList<>();
 	private SystemButton hoveringButton;
 
-    private final Rectangle listBox = new Rectangle();
-	private Rectangle hoverBox;
+    private final AdviceBox listBox = new AdviceBox();
+	private Shape hoverBox;
     private boolean dragging = false;
     private final int dragStartX = 0;
     private final int dragStartY = 0;
@@ -150,6 +153,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         addMouseMotionListener(this);
         addMouseWheelListener(this);
         postInit();
+		listBox.init(this, null, "", "PLANETS_LIST_HELP");
     }
     public void selectedColumn(Column col)  { selectedColumn = col; }
     public DataView newDataView() { return new DataView(); }
@@ -410,31 +414,24 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             return;
         }
     }
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
+	@Override public void mouseMoved(MouseEvent e)	{
+		int x = e.getX();
+		int y = e.getY();
 
-        Rectangle prevHover = hoverBox;
-        hoverBox = null;
-        if (listScroller.contains(x,y)) {
-//        	System.out.println("listScroller.contains(x,y)");
-        	hoverBox = listScroller;
-        }
-        else if (backScroller.contains(x,y)) {
-//        	System.out.println("backScroller.contains(x,y)");
-        	hoverBox = backScroller;
-        }
+		if (listScroller.contains(x, y)) {
+			hoverBox = hoverBox(listScroller, hoverBox);
+			return;
+		}
+		if (backScroller.contains(x, y)) {
+			hoverBox = hoverBox(backScroller, hoverBox);
+			return;
+		}
+		if (listBox.contains(x, y)) {
+			hoverBox = hoverBox(listBox, hoverBox);
+			return;
+		}
+		hoverBox = hoverBox(null, hoverBox);
 
-        else if (listBox.contains(x,y)) {
-//        	System.out.println("listBox.contains(x,y)");
-        	hoverBox = listBox;
-        }
-
-        if (prevHover != hoverBox) {
-            repaint();
-            return;
-        }
         int deltaY = y - lastMouseY;
         lastMouseY = y;
 
@@ -1266,13 +1263,16 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             if (hoveringHeader != column) {
                 hoveringHeader = column;
                 redrawHeaders = true;
+				adviceBox.hovering(true);
             }
         }
         @Override public void exit()	{
             super.exit();
             hoveringHeader = null;
             redrawHeaders = true;
+			ADVISOR.leavedElement(this);
 			adviceBox.hovering(false);
+			repaint();
         }
         @Override public void click()	{ column.click(); }
     }
@@ -1301,15 +1301,16 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             }
             return null;
         }
-        @Override
-        public boolean isSelectableAt(int x0, int y0) {
-            return (x0 >= x)
-                && (x0 <= x+w)
-                && (y0 <= y)
-                && (y0 >= y-h);
-        }
-        @Override
-        public void enter() {  }
+		@Override public boolean isSelectableAt(int x0, int y0)	{
+			boolean hovering = (x0 >= x)
+					&& (x0 <= x+w)
+					&& (y0 <= y)
+					&& (y0 >= y-h);
+			if (hovering && AdvisorPanel.isAdvising())
+				ADVISOR.hoveringOverElement(null);
+			return hovering;
+		}
+		@Override public void enter()	{ ADVISOR.hoveringOverElement(null); }
         @Override
         public void exit()  {  }
         @Override

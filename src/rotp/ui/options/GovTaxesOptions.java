@@ -56,7 +56,14 @@ final class GovTaxesOptions extends AbstractOptionsSubUI {
 
 				HEADER_SPACER_50,
 				autoSpendOnNewColoniesFirst,
-				autospendMaxIndustryPct,
+				new ParamTitle("GOVERNOR_DEVELOPMENT"),
+				autospendMaxIndustryUPoorPct,
+				autospendMaxIndustryPoorPct,
+				autospendMaxIndustryNormalPct,
+				autospendMaxIndustryRichPct,
+				autospendMaxIndustryURichPct,
+				autospendMaxIndustryAntaranPct,
+				autospendMaxIndustryOrionPct,
 
 				HEADER_SPACER_50,
 				subsidyTerraformUse,
@@ -109,7 +116,7 @@ final class GovTaxesOptions extends AbstractOptionsSubUI {
 
 						LINE_SPACER_25,
 						autoSpendOnNewColoniesFirst,
-						autospendMaxIndustryPct,
+						autospendMaxIndustryNormalPct,
 
 						LINE_SPACER_25,
 						subsidyTerraformUse,

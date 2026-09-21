@@ -219,6 +219,7 @@ public class Tech implements Base, ScaledInteger {
     protected String  brief(int i)			{ return text(shDesc, i); }
     protected String  brief(String s)		{ return text(shDesc, s); }
     public	  String  brief2()				{ return text(shDesc2); }
+    protected String  brief2(String s)		{ return text(shDesc2, s); }
     public	  String  item()				{ return item == null ? name() : text(item); }
     public	  String  item2()				{ return item2 == null ? item() : text(item2); }
     public	  String  imageKey()			{ return ""; }
@@ -416,4 +417,48 @@ public class Tech implements Base, ScaledInteger {
             return Base.compare(pr2, pr1);
         }
     }
+	public static String getTechInfo(Tech tech)	{ return tech.getTechInfo(); }
+	public String getTechInfo()					{ return getTechInfo(""); }
+	public String getTechInfo(String s1)		{
+		String info = "";
+		// Tech Name
+		String txt	= name();
+		if (!txt.isEmpty())
+			info = txt;
+
+		// Tech Type Info
+		String techTypeName	= techTypeName();
+		if (techTypeName != null)
+			info += " (" + techTypeName + ")";
+
+		// Tech info
+		txt = text("TECH_LEVEL_OF_TECH", level);
+		info += NEWLINE + txt;
+		if (free)
+			info += " " + text("TECH_IS_FREE");
+		if (restricted)
+			info += " " + text("TECH_IS_RESTRICTED");
+
+		txt = brief(s1);
+		if (!txt.isEmpty())
+			info += NEWLINE + txt;
+
+		txt = brief2(s1);
+		if (!txt.isEmpty())
+			info += NEWLINE + txt;
+		txt = detail();
+		if (!txt.isEmpty())
+			info += NEWLINE + txt;
+		txt = info();
+		if (txt != null && !txt.isEmpty())
+			info += NEWLINE + NEWLINE + txt;
+
+		// Tech Type Info
+		txt	= techTypeDesc();
+		if (txt != null) {
+			info += NEWLINE + NEWLINE + techTypeName;
+			info += NEWLINE + txt;
+		}
+		return info;
+	}
 }
