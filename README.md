@@ -45,6 +45,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-09-22 (BR)
+- Fixed the crossed coin icon not appearing in the colonies columns.
+- Improved a bit the coin image quality (Some scaling issues)
+- New content for the advisor: the list of events expected in the development of the industry.
+- Fixed a shortcut key overlap on the colonies panel.
 - Fixed a potential null pointer exception when sending transports.
 - Fixed ROI analysis when stolen factories are available, the analysis will now be progressive and use the available ones before switching to population growth when factories become too expensive.
 - Improvement of the advisor content, on continuous shipbuilding.

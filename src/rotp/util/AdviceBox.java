@@ -123,7 +123,10 @@ public class AdviceBox extends Rect implements IAdvice {
 	public String getAdvisorImageKey()	{ return advisorImageKey; }
 	public String getAdviceHelpText()	{
 		if (adviceHelpTxt != null)
-			return adviceHelpTxt;
+			if (adviceHelpKey != null)
+				return IParam.langLabel(adviceHelpKey, adviceHelpTxt);
+			else
+				return adviceHelpTxt;
 
 		if (param != null)
 			return param.getFullHelp();

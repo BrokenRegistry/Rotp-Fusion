@@ -202,6 +202,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		return govAutoFundTag;
 	}
 	public boolean govFundColony()				{ return govAutoFundTag().isFunded(); }
+	public boolean hasFundColonyTag()			{ return isGovernor() && govAutoFundTag().isTagged(); }
 	private boolean govFundColonyUpdated()		{ return govAutoFundTag().updateAndGetIsFunded(); }
 	public boolean getFundFromReserve()			{ return govAutoFundTag().useReserve() && isGovernor(); }
 	public int getFundingMandate()				{ return govAutoFundTag().fundingMandate(); }
@@ -3186,6 +3187,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			fundingMandate = UNFUNDED;
 			return false;
 		}
+		public boolean isTagged()		{ return fundingMandate != UNFUNDED; }
 		public boolean isCrossed()		{ return fundingMandate == CROSSED; }
 		public boolean isFunded()		{ return fundingMandate > UNFUNDED; }
 		public BufferedImage getCoinImage(int width) {

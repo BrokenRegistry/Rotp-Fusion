@@ -480,6 +480,7 @@
 
 ### Guide and Help:
 
+- New content for the advisor: the list of events expected in the development of the industry.
 - The Advisor has entered the Design panel.
 - Improved help for options "Retreat Destination", "Hyper Comm Retreat", and “Retreat toward enemy”.
 - Extension of the advisor, to be able to call it on demand, this in order to display help on the element under the cursor.
@@ -513,6 +514,9 @@
 
 ### Fixes:
 
+- Fixed the crossed coin icon not appearing in the colonies columns.
+- Improved a bit the coin image quality (Some scaling issues)
+- Fixed a shortcut key overlap on the colonies panel.
 - Fixed a potential null pointer exception when sending transports.
 - Fixed ROI analysis when stolen factories are available, the analysis will now be progressive and use the available ones before switching to population growth when factories become too expensive.
 - Improvement of the advisor content, on continuous shipbuilding.

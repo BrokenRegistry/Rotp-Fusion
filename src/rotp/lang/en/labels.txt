@@ -1043,6 +1043,19 @@ GOVERNOR_IS_OFF_BUTTON            | Ungoverned
 GOVERNOR_IS_ON_AND_OFF_BUTTON     | Governor
 GOVERNOR_OPTIONS                  | Mandate
 
+MAIN_COLONY_HEADER_ADVISOR		| <br><hr><h3>During the next turn</h3>
+MAIN_COLONY_ROBOT_CONTROL_HELP	| Robotic control level: %1 of %2.
+MAIN_COLONY_NEW_FACTORIES_HELP	| <br>Construction of %1 new factories → %2 factories.
+MAIN_COLONY_ALIEN_FACT_HELP		| <br>Conversion of %1 alien factories → %2 factories.
+MAIN_COLONY_ROBOT_CTRL_UP_HELP	| <br>Refited factories to level %1.
+MAIN_COLONY_REFIT_FACT_HELP		| <br>Factory refit in progress: %1 BC of %2 BC.
+MAIN_COLONY_ALL_FACT_BUILT_HELP	| <br>The maximum number of factories has been reached.
+MAIN_COLONY_FACTORIES_HELP		| <br>The number of factories increases from %1 to %2.
+MAIN_COLONY_TO_RESEARCH_HELP	| <br>Surplus %1 BC sent to Research
+MAIN_COLONY_TO_TRESOR_HELP		| <br>Surplus %1 BC sent to empire treasury.
+MAIN_COLONY_UNUSED_FACT_HELP	| <br>Unused Factories: %1
+MAIN_COLONY_NEEDED_FACT_HELP	| <br>Needed Factories: %1
+
 MAIN_COLONY_SPENDING_NONE         | None
 MAIN_COLONY_SPENDING_RESERVE      | Reserve
 MAIN_COLONY_SPENDING_TECH         | Tech
@@ -1120,7 +1133,7 @@ ALLOCATION_LABEL_4_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_R
 ALLOCATION_SLIDER_HELP			| <h3>Ratio bars:</h3> They show the breakdown of a planet's production.<br>The spending for each bar can be adjusted:<ul><li>With the mouse wheel.</li><li>Clicking within the bar.</li><li>Clicking on the left/right arrows for each bar.</li></ul>
 ALLOCATION_SLIDER_0_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
 ALLOCATION_SLIDER_1_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
-ALLOCATION_SLIDER_2_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_INDUSTRY_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_2_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_INDUSTRY_HELP←%1<br><hr> →ALLOCATION_SLIDER_HELP←
 ALLOCATION_SLIDER_3_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_ECOLOGY_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
 ALLOCATION_SLIDER_4_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
 

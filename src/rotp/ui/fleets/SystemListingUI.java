@@ -966,18 +966,26 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 		@Override public void draw(Graphics g, RowSprite row, StarSystem sys, int x, int y, int w) {
 			super.draw(g, row, sys, x, y, w);
 			Colony col = sys.colony();
-			if (!col.govFundColony() || !col.isGovernor())
+			if (!col.hasFundColonyTag())
 				return;
 
 			int iconWidth = s18;
+			int tmpW = s30;
 			BufferedImage img = col.getCoinImage(s25);
 			int imgH = img.getHeight();
 			int imgW = img.getWidth();
+
+			BufferedImage buffer = new BufferedImage (tmpW, tmpW, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = buffer.createGraphics();
+			setRenderingHints(g2);
+			g2.drawImage(img, 0, 0,tmpW, tmpW, 0, 0, imgW, imgH, null);
+			g2.dispose();
+
 			int imgX = x + (w-iconWidth)/2;
 			int imgY = y - (rowHeight() + iconWidth)/2;
 			g.setColor(Color.BLACK);
 			g.fillOval(imgX, imgY, iconWidth, iconWidth);
-			g.drawImage(img, imgX, imgY, imgX + iconWidth, imgY + iconWidth, 0, 0, imgW, imgH, null);
+			g.drawImage(buffer, imgX, imgY, imgX + iconWidth, imgY + iconWidth, 0, 0, tmpW, tmpW, null);
 		}
 		@Override public void drawHeader(Graphics g, int x0, int y0, int w) {
 			x = x0;
@@ -986,17 +994,25 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 			if (iconWidth > w)
 				width = iconWidth;
 
-			Image img = Colony.getBaseCoinImage(s25);
-			int imgH = img.getHeight(null);
-			int imgW = img.getWidth(null);
+			int tmpW = s30;
+			BufferedImage img = Colony.getBaseCoinImage(s25);
+			int imgH = img.getHeight();
+			int imgW = img.getWidth();
+
+			BufferedImage buffer = new BufferedImage (tmpW, tmpW, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = buffer.createGraphics();
+			setRenderingHints(g2);
+			g2.drawImage(img, 0, 0,tmpW, tmpW, 0, 0, imgW, imgH, null);
+			g2.dispose();
+
 			int imgX = x + (w-iconWidth)/2;
-			int imgY = y - (rowHeight() + iconWidth - s3)/2;
+			int imgY = y - (rowHeight() + iconWidth)/2;
 			if (hoveringHeader == this)
 				g.setColor(Color.WHITE);
 			else
 				g.setColor(Color.BLACK);
 			g.fillOval(imgX, imgY, iconWidth, iconWidth);
-			g.drawImage(img, imgX, imgY, imgX + iconWidth, imgY + iconWidth, 0, 0, imgW, imgH, null);
+			g.drawImage(buffer, imgX, imgY, imgX + iconWidth, imgY + iconWidth, 0, 0, tmpW, tmpW, null);
 		}
 	}
 	private final class SystemNameColumn extends SystemDataColumn {

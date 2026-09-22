@@ -974,10 +974,11 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                     multiSpendingPane.toggleGovernor();
                 return;
             case KeyEvent.VK_B:
-            	if(shift)
-            		multiSpendingPane.decreaseBase(e);
-            	else
-            		multiSpendingPane.increaseBase(e);
+				if(shift)
+					multiSpendingPane.decreaseBase(e);
+				else
+					multiSpendingPane.increaseBase(e);
+				return;
 			case KeyEvent.VK_O:
 				ParamSubUI subUI = AllSubUI.getHandle(ISubUiKeys.GOVERNOR_TAXES_UI_KEY).getUI();
 				subUI.start(instance);

@@ -597,35 +597,56 @@ public class EmpireColonySpendingPane extends BasePanel {
 
             g.fill(fillRect);
 
-            if (category == Colony.INDUSTRY)  {
-            	ColonyIndustry industry = colony.industry();
-            	Float[] factoryBalance = industry.factoryBalance();
-            	float balance   = factoryBalance[0];
-            	Float refitFlag = factoryBalance[1];
-            	boolean rightAmount = (balance == 0);
-            	boolean warning = !rightAmount;// && !colony.isGovernor();
-            	if (warning) {
-            		String indStr = "";
-            		if (balance > 0) {
-						indStr = text("MAIN_COLONY_SPENDING_UNUSED_FACT", df1.format(balance));
+			if (category == Colony.INDUSTRY)  {
+				ColonyIndustry industry	= colony.industry();
+				float[] factoryBalance	= industry.factoryBalance();
+				float balance			= factoryBalance[0];
+				float refitFlag			= factoryBalance[1];
+				float factories			= factoryBalance[2];
+				float upcomingFactories	= factoryBalance[3];
+				float alienFactories	= factoryBalance[4];
+				float finalFactories	= factories + upcomingFactories;
+				int robotControls		= industry.effectiveRobotControls();
+				int maxRobotControls	= industry.maxRobotControls();
+				boolean rightAmount = (balance == 0);
+				String advStr = text("MAIN_COLONY_HEADER_ADVISOR");
+				advStr += text("MAIN_COLONY_ROBOT_CONTROL_HELP", robotControls, maxRobotControls);
+				String upcomingAdvisorResult = industry.upcomingAdvisorResult();
+				advStr += upcomingAdvisorResult;
+				if (factories < finalFactories)
+					advStr += text("MAIN_COLONY_FACTORIES_HELP", fmt(factories), fmt(finalFactories));
+
+				boolean warning = !rightAmount;// && !colony.isGovernor();
+				if (warning) {
+					String indStr = "";
+					if (balance > 0) {
+						String balanceStr = df1.format(balance);
+						indStr = text("MAIN_COLONY_SPENDING_UNUSED_FACT", balanceStr);
+						advStr += text("MAIN_COLONY_UNUSED_FACT_HELP", balanceStr);
 						g.setColor(Color.ORANGE);
 						g.fill(fillRect);
 						g.setColor(Color.GRAY);
-                	}
-                	else {
-						indStr = text("MAIN_COLONY_SPENDING_NEEDED_FACT", df1.format(-balance));
+					}
+					else {
+						String balanceStr = df1.format(-balance);
+						indStr = text("MAIN_COLONY_SPENDING_NEEDED_FACT", balanceStr);
+						advStr += text("MAIN_COLONY_NEEDED_FACT_HELP", balanceStr);
 						g.setColor(Color.LIGHT_GRAY);
-	                }
-					if (refitFlag == null)
+					}
+					if (refitFlag == 1f)
 						indStr = text("MAIN_COLONY_SPENDING_REFIT") + ", " + indStr;
-	            	//g.setFont(narrowFont(14));
-	            	int fontSize = scaledFont(g, indStr, boxW-s5, 14, 10);
-	            	int yOff = scaled(4 + (14-fontSize)/2);
-	            	int sw1 = g.getFontMetrics().stringWidth(indStr);
-	            	int x1 = (boxW-sw1)/2;
-	            	drawString(g, indStr, boxL+x1, boxTopY+boxH-yOff);
-            	}
-            }
+					//g.setFont(narrowFont(14));
+					int fontSize = scaledFont(g, indStr, boxW-s5, 14, 10);
+					int yOff = scaled(4 + (14-fontSize)/2);
+					int sw1 = g.getFontMetrics().stringWidth(indStr);
+					int x1 = (boxW-sw1)/2;
+					drawString(g, indStr, boxL+x1, boxTopY+boxH-yOff);
+				}
+				if (upcomingAdvisorResult.isEmpty())
+					sliderBox.setAdviceHelpText(upcomingAdvisorResult);
+				else
+					sliderBox.setAdviceHelpText(advStr);
+			}
 
             if (category == Colony.ECOLOGY)  {
                 float popGrowth = colony.ecology().upcomingPopGrowthFloat();
