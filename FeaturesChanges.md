@@ -513,6 +513,9 @@
 
 ### Fixes:
 
+- Fixed a potential null pointer exception when sending transports.
+- Fixed ROI analysis when stolen factories are available, the analysis will now be progressive and use the available ones before switching to population growth when factories become too expensive.
+- Improvement of the advisor content, on continuous shipbuilding.
 - Fixed some advisor display issues (pop-up remaining too long)
 - Fixed an issue with "Auto-flag" being set one too many times after the discovery window was displayed, possibly canceling a player's selection.
 - You now have the ability to modify the research after selecting a new one, following a technological discovery on an Artifact planet, a 

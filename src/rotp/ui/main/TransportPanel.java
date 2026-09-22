@@ -523,10 +523,13 @@ public final class TransportPanel extends BasePanel {
             int x = e.getX();
             int y = e.getY();
 
-            if (destBox.contains(x,y)) {
-                StarSystem sys = parent.transport().destination();
-                parent.parent.parent.clickedSprite(sys);
-            }
+			if (destBox.contains(x,y)) {
+				Transport tr = parent.transport();
+				if (tr != null ) {
+					StarSystem sys = parent.transport().destination();
+					parent.parent.parent.clickedSprite(sys);
+				}
+			}
         }
     }
 }

@@ -2215,6 +2215,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
      *
      */
     private void manage(boolean loweredShipPriority) {
+		debug = false;	// TO DO BR: Set to false
         GovernorOptions gov = govOptions();
         GovWorksheet gws	= new GovWorksheet(this, loweredShipPriority);
 		float prevTech		= totalPlanetaryResearch();
@@ -2224,7 +2225,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		// or by locking it
 		// Will still try to keep direct allocations.
 
-    	// unlock always managed sliders
+		// unlock always managed sliders
         locked(DEFENSE,  false);
         locked(INDUSTRY, false);
         locked(ECOLOGY,  false);

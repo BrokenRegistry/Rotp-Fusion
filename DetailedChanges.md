@@ -2,6 +2,11 @@
 
 ## What's New
 
+26-09-22 (BR)
+- Fixed a potential null pointer exception when sending transports.
+- Fixed ROI analysis when stolen factories are available, the analysis will now be progressive and use the available ones before switching to population growth when factories become too expensive.
+- Improvement of the advisor content, on continuous shipbuilding.
+
 26-09-21 (BR)
 - New settings: development limits for each planet type.
 - The Advisor has entered the Design panel.

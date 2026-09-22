@@ -1104,13 +1104,13 @@ MAIN_ALERT_NOTIF_SPRITE_HELP	| <h3>Alert notification</h3><hr>Here you will find
 
 ALLOCATION_HEADER_HELP			| <h2><center>Resource Allocation Panel</center></h2> Each star system divides its production into five areas.<br> Grayed bars indicate that the production bar has been locked and will not change.<br> Click on the label to lock/unlock.
 
-ALLOCATION_SHIPYARD_HELP		| <h3>Shipyard</h3> Constructs the selected ship design.<br>Large ships may take multiple turns.
+ALLOCATION_SHIPYARD_HELP		| <h3>Shipyard</h3> Constructs the selected ship design.<br>Large ships may take multiple turns.<br>To order the governor to build ships continuously, right-click (or Ctrl-Click) the label to turn it blue.
 ALLOCATION_DEFENSES_HELP		| <h3>Defenses</h3> Builds and upgrades missile bases up to the specified limit and planetary shields when available.<br>Shields will be built or upgraded before the missile bases.
 ALLOCATION_INDUSTRY_HELP		| <h3>Industry</h3> Builds factories, which increase overall colony production.
 ALLOCATION_ECOLOGY_HELP			| <h3>Ecology</h3>  Cleans industrial waste, terraforms the planet, and can increase population growth.
 ALLOCATION_RESEARCH_HELP		| <h3>Technology</h3> Adds to the empire's overall research.
 
-ALLOCATION_LABEL_HELP			| <h3>Category label:</h3>Click here to lock / Unlock the spending. <small><i>(Greyed when locked)</i></small><br>Ctrl-Click to cancel or restore colony orders. <small><i>(The ones you can gives after a Technology update)</i></small><br> These fields are prioritized during the "<b>Next Turn</b>" process.<br> An option is available to show them in blue... or not.
+ALLOCATION_LABEL_HELP			| <h3>Category label:</h3>Click here to lock / Unlock the spending. <small><i>(Greyed when locked)</i></small><br>Right-Click or Ctrl-Click to cancel / restore colony orders and priority. <small><i>(The ones you can gives after a Technology update)</i></small><br> These fields are prioritized during the "<b>Next Turn</b>" process.<br> An option is available to show them in blue... or not.
 ALLOCATION_LABEL_0_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
 ALLOCATION_LABEL_1_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
 ALLOCATION_LABEL_2_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_INDUSTRY_HELP←<br><hr> →ALLOCATION_LABEL_HELP←

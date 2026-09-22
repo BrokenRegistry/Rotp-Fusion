@@ -1104,13 +1104,13 @@ MAIN_ALERT_NOTIF_SPRITE_HELP	| <h3>Notification d’alertes</h3><hr>Vous trouver
 
 ALLOCATION_HEADER_HELP			| <h2>Panneau d’allocation des ressources</h2> Chaque colonie divise sa production en cinq zones.<br>Les barres grisées indiquent que la barre de production a été verrouillée et ne changera pas.<br>Cliquez sur le nom pour verrouiller/déverrouiller.
 
-ALLOCATION_SHIPYARD_HELP		| <h3>Chantier naval</h3>Construit le modèle de vaisseau sélectionné.<br>Les gros vaisseaux peuvent prendre plusieurs tours.
+ALLOCATION_SHIPYARD_HELP		| <h3>Chantier naval</h3>Construit le modèle de vaisseau sélectionné.<br>Les gros vaisseaux peuvent prendre plusieurs tours.<br>Pour ordonner au gouverneur de construire des vaisseaux en continu, faites un clic droit (ou Ctrl-Clic) sur le label pour le rendre bleu.
 ALLOCATION_DEFENSES_HELP		| <h3>Défenses</h3>Construit et améliore les bases de missiles jusqu’à la limite spécifiée et les boucliers planétaires lorsqu’ils sont disponibles.<br>Les boucliers seront toujours construits et mis à jour avant les bases de missiles.
 ALLOCATION_INDUSTRY_HELP		| <h3>Industrie</h3>Construit des usines qui augmenteront la production globale de la colonie.
 ALLOCATION_ECOLOGY_HELP			| <h3>>Écologie</h3>Nettoie les déchets industriels, terraforme la planète et peut augmenter la croissance démographique.
 ALLOCATION_RESEARCH_HELP		| <h3>Technologie</h3>Ajoute à la recherche globale de l’empire.
 
-ALLOCATION_LABEL_HELP			| <h3>Nom de la catégorie</h3>Cliquez ici pour verrouiller / déverrouiller les dépenses. <small><i>(En gris lorsque verrouillé)</i></small><br>Clique + Ctrl pour annuler ou restaurer les ordres des colonies.<small><i>(Que vous pouvez fixer après une mise à jour technologique)</i></small><br> Ces champs sont priorisés lors du processus de « <b>Tour suivant</b> ».<br> Une option est disponible pour les afficher en bleu... ou pas.
+ALLOCATION_LABEL_HELP			| <h3>Nom de la catégorie</h3>Cliquez ici pour verrouiller / déverrouiller les dépenses. <small><i>(En gris lorsque verrouillé)</i></small><br>un clic droit (ou Ctrl-Clic) pour annuler ou restaurer les ordres des colonies.<small><i>(Que vous pouvez fixer après une mise à jour technologique)</i></small><br> Ces champs sont priorisés lors du processus de « <b>Tour suivant</b> ».<br> Une option est disponible pour les afficher en bleu... ou pas.
 ALLOCATION_LABEL_0_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
 ALLOCATION_LABEL_1_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
 ALLOCATION_LABEL_2_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_INDUSTRY_HELP←<br><hr> →ALLOCATION_LABEL_HELP←

@@ -72,7 +72,7 @@ public class EmpireColonySpendingPane extends BasePanel {
     static final Color sliderBackDisabled	= new Color(65,65,65);
     static final Color sliderTextEnabled	= Color.black;
     static final Color sliderTextDisabled	= new Color(65,65,65);
-    static final Color sliderTextHasOrder	= new Color(0,0,142);
+    static final Color sliderTextHasOrder	= new Color(0,0,192);
     static final Color sliderTextHasOrderD	= new Color(65,65,142);
     static final Color sliderTextUrged		= new Color(142,0,142);
     static final Color sliderTextUrgedD		= new Color(96,65,128);

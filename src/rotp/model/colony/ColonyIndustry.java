@@ -169,13 +169,13 @@ public final class ColonyIndustry extends ColonySpendingCategory {
 
         c.addFollowUpSpendingOrder(orderAmt);
     }
-    float bestFactoryCost(float bc) {
-    	float totalConvertCost = convertableAlienFactories() * factoryConversionCost();
-    	if (totalConvertCost < bc && convertableAlienFactories() > 0)
-    		return factoryConversionCost();
-    	else
-    		return newFactoryCost();
-    }
+	float bestFactoryCost(float bc)	{
+		float totalConvertCost = convertableAlienFactories() * factoryConversionCost();
+		if (totalConvertCost >= bc && convertableAlienFactories() > 0)
+			return factoryConversionCost();
+		else
+			return newFactoryCost();
+	}
 	void commitTurn()	{
         factories += newFactories;
         if (!empire().divertColonyExcessToResearch())
