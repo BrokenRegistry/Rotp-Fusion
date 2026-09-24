@@ -480,6 +480,8 @@
 
 ### Guide and Help:
 
+- Fixed and updated the galaxy size description (Thanks to @Corbeau)
+- New content for the advisor: in defense, shipyard and ecology.
 - New content for the advisor: the list of events expected in the development of the industry.
 - The Advisor has entered the Design panel.
 - Improved help for options "Retreat Destination", "Hyper Comm Retreat", and “Retreat toward enemy”.

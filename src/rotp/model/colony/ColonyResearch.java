@@ -59,7 +59,7 @@ public final class ColonyResearch extends ColonySpendingCategory {
             projectBC = min(unallocatedBC, project.remainingResearchBC());
             project.addResearchBC(projectBC);
             unallocatedBC -= projectBC;
-        }       
+        }
     }
 	float researchBonus()	{
     	return  planet().researchAdj()
@@ -67,32 +67,30 @@ public final class ColonyResearch extends ColonySpendingCategory {
     			* empire().researchNoSpyBonusPct()
     			* GameSession.researchBonus();
     }
-    @Override
-    public boolean warning()      {
-        return (project != null) && (max(0, totalBC()) < project.remainingResearchBC()); }
-    @Override
-    public String upcomingResult() {
+	@Override public boolean warning()	{ return (project != null) && (max(0, totalBC()) < project.remainingResearchBC()); }
+	@Override public String[] upcomingResult()	{ // TODO BR: adviceStr
+		String adviceStr = "";
         if (colony().allocation(categoryType()) == 0)
-            return text(noneText);
+			return new String[] {text(noneText), adviceStr};
 
         float bc = totalBC();
         if (project != null) {
             bc -=  project.remainingResearchBC();
             if (bc <= 0)
-                return text(project.projectKey());
+				return new String[] {text(project.projectKey()), adviceStr};
         }
-        
-        if (colony().empire().tech().researchCompleted())
-            return text(reserveText);
 
-        return text(researchPointsText, (int)bc);
+        if (colony().empire().tech().researchCompleted())
+			return new String[] {text(reserveText), adviceStr};
+
+		return new String[] {text(researchPointsText, (int)bc), adviceStr};
     }
     @Override
     public void assessTurn() { }
 	void commitTurn()	{ 
         if (empire().tech().researchCompleted()) 
             empire().addReserve(unallocatedBC);
-           
+
         unallocatedBC = 0;
     }
 	void capturedBy(Empire newCiv)	{

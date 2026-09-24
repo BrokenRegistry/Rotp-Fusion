@@ -494,11 +494,10 @@ public class ColonyShipyard extends ColonySpendingCategory {
         float researchBC = reserveBC * researchFactor;
         return new float[] {reserveBC, researchBC};
     }
-    @Override
-    public String upcomingResult() {
+	@Override public String[] upcomingResult()	{
     	// If no allocation but buildLimit > 0 the accumulated reserves could be enough to build the ship.
         if (colony().allocation(categoryType()) == 0 && buildLimit() == 0)
-            return noneText;
+			return new String[] {text(noneText), ""};
 
 		float tmpShipReserveBC = shipReserveBC;
         float tmpShipBC = shipBC;
@@ -525,62 +524,115 @@ public class ColonyShipyard extends ColonySpendingCategory {
         totalBC += fromReserve;
 
         if (totalBC == 0)
-            return text(noneText);
+			return new String[] {text(noneText), ""};
 
-        if (buildingObsoleteDesign())
-            return overflowText();
+		String adviceStr = text("MAIN_COLONY_HEADER_ADVISOR");
+		if (buildingObsoleteDesign()) {
+			adviceStr += text("MAIN_COLONY_OBSOLETE_SHIP_HELP");
+			return new String[] {overflowText(), adviceStr};
+		}
 
         // returns how many years if we are not spending enough to finish even 1 
         float missingBC = cost-totalBC;
-        if (missingBC>0) {
-            if (newBC == 0)
-                return text(noneText);
-            else {
-            	int turns = (int) Math.ceil(missingBC/newBC);
-            	tmpShipReserveBC-=fromReserve;
-            	if(tmpShipReserveBC>0 && !buildingStargate) {
-            		int reserveTurns = (int) (tmpShipReserveBC/newBC);
-            		turns=(int) Math.ceil(missingBC/(2*newBC));
-            		if (turns > reserveTurns) {
-            			turns = reserveTurns+1;
-            			missingBC-= (tmpShipReserveBC+turns*newBC);
-            			if (missingBC>0)
-            				turns += (int) Math.ceil(missingBC/newBC);
-            		}
-            	}
-            	turns+=1;
-                // int turns = (int) Math.ceil((cost - accumBC) / newBC);
-            	// BR: Fixed turns estimation when ship reserve is used
-                if (turns == 1)
-                    return text(yearText, 1);
-                else if (turns > 99)
-                    return text(yearsLongText, turns);
-                else
-                    return text(yearsText, turns);
-            }
-        }
+		if (missingBC>0) {
+			if (newBC == 0)
+				return new String[] {text(noneText), ""};
+			else {
+				int turns = ceil(missingBC/newBC);
+				if (fromReserve > 0)
+					adviceStr += text("MAIN_COLONY_FROM_SHIP_RSV_HELP", fmt(fromReserve));
+				tmpShipReserveBC-=fromReserve;
+				if(tmpShipReserveBC>0 && !buildingStargate) {
+					int reserveTurns = (int) (tmpShipReserveBC/newBC);
+					turns = ceil(missingBC/(2*newBC));
+					if (turns > reserveTurns) {
+						turns = reserveTurns+1;
+						missingBC-= (tmpShipReserveBC+turns*newBC);
+						if (missingBC>0)
+							turns += (int) Math.ceil(missingBC/newBC);
+					}
+				}
+				adviceStr += text("MAIN_COLONY_SHIP_SPENDING_HELP", fmt(newBC), fmt(totalBC), fmt(cost));
+				turns++;
+				// int turns = (int) Math.ceil((cost - accumBC) / newBC);
+				// BR: Fixed turns estimation when ship reserve is used
+				if (turns == 1) {
+					String ys = text(yearText, 1);
+					adviceStr += text("MAIN_COLONY_SHIP_TURN_HELP", ys);
+					return new String[] {ys, adviceStr};
+				}
+				else if (turns > 99) {
+					adviceStr += text("MAIN_COLONY_SHIP_TURN_HELP", text(yearsText, turns));
+					return new String[] {text(yearsLongText, turns), adviceStr};
+				}
+				else {
+					String ys = text(yearsText, turns);
+					adviceStr += text("MAIN_COLONY_SHIP_TURN_HELP", text(yearsText, turns));
+					return new String[] {ys, adviceStr};
+				}
+			}
+		}
 
-        // if building stargate, anything after 1 is overflow
-        if (buildingStargate)
-            return overflowText();
+		// if building stargate, anything after 1 is overflow
+		if (buildingStargate) {
+			adviceStr += text("MAIN_COLONY_STARGATE_HELP");
+			if (newBC > 0) {
+				if (!empire().divertColonyExcessToResearch())
+					adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2, 1));
+				else if (empire().tech().researchCompleted())
+					adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2, 1));
+				else
+					adviceStr += text("MAIN_COLONY_TO_RESEARCH_HELP", fmt(newBC, 1));
+			}
+			return new String[] {overflowText(), adviceStr};
+		}
 
-        // if building ships with no limit, specify how many ships
-        if (buildLimit() == 0)  {
-            int  ships = (int) (totalBC / cost);
-            if (ships == 1)
-                return text(yearText, "1");
-            else
-                return text(perYearText, ships);
-        }
+		// if building ships with no limit, specify how many ships
+		if (buildLimit() == 0) {
+			float shipsF = totalBC / cost;
+			adviceStr += text("MAIN_COLONY_SHIPS_UL_HELP", fmt(shipsF, 1));
+			int  ships = (int) shipsF;
+			if (ships == 1)
+				return new String[] {text(yearText, "1"), adviceStr};
+			else
+				return new String[] {text(perYearText, ships), adviceStr};
+		}
 
 		// BR: Build limit is > 0 -> show number of ship are built first.
-        // not spending enough to hit the build limit, specify how many ships
-        int  ships = (int) (totalBC / cost);
-        if (ships == 1)
-            return text(yearText, "1");
-        else
-            return text(perYearText, ships);
-    }
+		// not spending enough to hit the build limit, specify how many ships
+		int ships = min(buildLimit(), (int)(totalBC / cost));
+
+		if (fromReserve > 0)
+			adviceStr += text("MAIN_COLONY_FROM_SHIP_RSV_HELP", fmt(fromReserve));
+
+
+		final float totalcost = cost*buildLimit();
+		final float remainBC = totalBC-totalcost;
+
+		if (totalcost > totalBC) {
+			adviceStr += text("MAIN_COLONY_SHIP_SPENDING_HELP", fmt(newBC), fmt(totalBC), fmt(totalcost));
+			adviceStr += text("MAIN_COLONY_SHIPS_BUILT_HELP", ships, buildLimit());
+			totalBC -= ships * cost;
+			adviceStr += text("MAIN_COLONY_SHIPS_ACCRUAL_HELP", fmt(totalBC));			
+		}
+		else {
+			adviceStr += text("MAIN_COLONY_SHIP_SPENDING_HELP", fmt(newBC-remainBC), fmt(totalcost), fmt(totalcost));
+			adviceStr += text("MAIN_COLONY_SHIPS_BUILT_HELP", ships, buildLimit());
+			adviceStr += text("MAIN_COLONY_SHIPS_COMPLETE_HELP");
+			if (remainBC > 0 ) {
+				if (!empire().divertColonyExcessToResearch())
+					adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(remainBC/2, 1));
+				else if (empire().tech().researchCompleted())
+					adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(remainBC/2, 1));
+				else
+					adviceStr += text("MAIN_COLONY_TO_RESEARCH_HELP", fmt(remainBC, 1));
+			}
+		}
+		if (ships == 1)
+			return new String[] {text(yearText, "1"), adviceStr};
+		else
+			return new String[] {text(perYearText, ships), adviceStr};
+	}
     public float maxSpendingNeeded() {
         float totalCost = 0;
         if (buildingStargate)

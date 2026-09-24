@@ -120,7 +120,7 @@ public class VIPStarView implements IVIPConsole {
 			out += NEWLINE;
 			int pct = 2 * colony.allocation(category);
 			String labelText  = text(Colony.categoryName(category));
-			String resultText = text(colony.category(category).upcomingResult());
+			String resultText = text(colony.category(category).upcomingResult()[0]);
 			out += labelText + " = " + pct + "%, out = " + resultText;
 			if (!colony.canAdjust(category))
 				out += " (locked)";

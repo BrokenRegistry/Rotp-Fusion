@@ -54,6 +54,11 @@ public final class ColonyIndustry extends ColonySpendingCategory {
             return maxRobotControls();
         return robotControls() + empire().robotControlsAdj(); 
     }
+	private int effectiveRobotControls(int rc)	{ 
+		if(empire().ignoresFactoryRefit())
+			return maxRobotControls();
+		return rc + empire().robotControlsAdj(); 
+	}
 	public int maxRobotControls()		{ return tech().topRobotControls() + empire().robotControlsAdj(); }
     @Override
     public float totalBC()              { return super.totalBC() * planet().productionAdj(); }
@@ -239,17 +244,16 @@ public final class ColonyIndustry extends ColonySpendingCategory {
         float researchBC = reserveBC * researchFactor;
         return new float[] {reserveBC, researchBC};
     }
-    @Override
-    public String upcomingResult() {
-        if (colony().allocation(categoryType()) == 0)
-            return text(noneText);
+	@Override public String[] upcomingResult()	{
+		if (colony().allocation(categoryType()) == 0)
+			return new String[] {text(noneText), ""};
 
         float prodBC = pct()* colony().totalProductionIncome() * planet().productionAdj();
         float rsvBC = pct() * colony().maxReserveIncome();
         float startBC = prodBC+rsvBC+industryReserveBC;
         float newBC = prodBC+rsvBC+industryReserveBC;
         if (newBC <= 0)
-            return text(noneText);
+			return new String[] {text(noneText), ""};
 
         int colonyControls = min(robotControls, tech().topRobotControls());
         float builtFactories = factories;
@@ -259,26 +263,33 @@ public final class ColonyIndustry extends ColonySpendingCategory {
 
         int previouslyConvertedFactories = 0;
 
+		String adviceStr = text("MAIN_COLONY_HEADER_ADVISOR");
+		adviceStr += text("MAIN_COLONY_ROBOT_CONTROL_HELP", effectiveRobotControls(), maxRobotControls());
         while ((newBC > 0) && (colonyControls <= tech().topRobotControls())) {
             // how many total factories can we have at current controls?
             float buildableFactories = maxBuildableFactories(colonyControls);
 
             // if we already have that many factories, then upgrade robotic controls if possible 
             if (buildableFactories <= builtFactories) {
-                if (colonyControls == tech().topRobotControls())
-                    break; // no more robotic control upgrades, so quit
+				if (colonyControls == tech().topRobotControls()) {
+					adviceStr += text("MAIN_COLONY_ALL_FACT_BUILT_HELP");
+					break; // no more robotic control upgrades, so quit
+				}
                 if (newBC > 0) {
                     float upgradeCost = 0;
                     float factoriesToRefit = buildableFactories;
                     if (!empire().ignoresFactoryRefit())
                         upgradeCost = factoriesToRefit * tech().bestFactoryCost() / 2;
                     // not enough to upgrade? save off BC for next turn and exit
-                    if (upgradeCost > newBC) 
-                        return text(refitFactoriesText);
+					if (upgradeCost > newBC) {
+						adviceStr += text("MAIN_COLONY_REFIT_FACT_HELP", fmt(newBC, 1), fmt(upgradeCost, 1));
+						return new String[] {text(refitFactoriesText), adviceStr};
+					}
                     else {
                         // pay to upgrade all factories to new RC at once
                         newBC -= upgradeCost;
                         colonyControls++;
+						adviceStr += text("MAIN_COLONY_ROBOT_CTRL_UP_HELP", effectiveRobotControls(colonyControls));
                         buildableFactories = maxBuildableFactories(colonyControls);
                     }
                 }
@@ -294,6 +305,7 @@ public final class ColonyIndustry extends ColonySpendingCategory {
                     possibleNewFactories += delta;
                     builtFactories += delta;
                     previouslyConvertedFactories += delta;
+					adviceStr += text("MAIN_COLONY_ALIEN_FACT_HELP", fmt(delta, 1), fmt(builtFactories, 1));
                 }
             }
             // second, try to build new factories at current controls
@@ -306,95 +318,22 @@ public final class ColonyIndustry extends ColonySpendingCategory {
                 possibleNewFactories += delta;
                 builtFactories += delta;
                 newBC -= buildCost;
+				if (delta > 0)
+					adviceStr += text("MAIN_COLONY_NEW_FACTORIES_HELP", fmt(delta, 1), fmt(builtFactories, 1));
             }
         }
 
-        if (newBC > 0)
-            return overflowText();
-        else
-            return buildFactoriesText(possibleNewFactories, startBC);
-    }
-	public String upcomingAdvisorResult()	{
-		if (colony().allocation(categoryType()) == 0)
-			return "";
-
-		float prodBC = pct()* colony().totalProductionIncome() * planet().productionAdj();
-		float rsvBC = pct() * colony().maxReserveIncome();
-		float newBC = prodBC+rsvBC+industryReserveBC;
-		if (newBC <= 0)
-			return text("");
-
-		int colonyControls = min(robotControls, tech().topRobotControls());
-		float builtFactories = factories;
-		// cost to build up to max useable factories
-		int previouslyConvertedFactories = 0;
-
-		String adviceStr = "";
-		while ((newBC > 0) && (colonyControls <= tech().topRobotControls())) {
-			// how many total factories can we have at current controls?
-			float buildableFactories = maxBuildableFactories(colonyControls);
-
-			// if we already have that many factories, then upgrade robotic controls if possible 
-			if (buildableFactories <= builtFactories) {
-				if (colonyControls == tech().topRobotControls()) {
-					adviceStr += text("MAIN_COLONY_ALL_FACT_BUILT_HELP");
-					break; // no more robotic control upgrades, so quit
-				}
-				if (newBC > 0) {
-					float upgradeCost = 0;
-					float factoriesToRefit = buildableFactories;
-					if (!empire().ignoresFactoryRefit())
-						upgradeCost = factoriesToRefit * tech().bestFactoryCost() / 2;
-					// not enough to upgrade? save off BC for next turn and exit
-					if (upgradeCost > newBC) {
-						adviceStr += text("MAIN_COLONY_REFIT_FACT_HELP", fmt(newBC), fmt(upgradeCost));
-						return adviceStr;
-					}
-					else {
-						adviceStr += text("MAIN_COLONY_ROBOT_CTRL_UP_HELP", colonyControls);
-						// pay to upgrade all factories to new RC at once
-						newBC -= upgradeCost;
-						colonyControls++;
-						buildableFactories = maxBuildableFactories(colonyControls);
-					}
-				}
-			}
-			// first, try to convert existing alien factories to our max build limit
-			if (builtFactories < buildableFactories) {
-				int convertableFactories = convertableAlienFactories(colonyControls)-previouslyConvertedFactories;
-				if (convertableFactories > 0) {
-					float totalConvertCost = convertableFactories * factoryConversionCost();
-					float convertCost = min(newBC, totalConvertCost);
-					float delta = convertCost/factoryConversionCost();
-					newBC -= convertCost;
-					builtFactories += delta;
-					previouslyConvertedFactories += delta;
-					adviceStr += text("MAIN_COLONY_ALIEN_FACT_HELP", fmt(delta), fmt(builtFactories));
-				}
-			}
-			// second, try to build new factories at current controls
-			if (builtFactories < buildableFactories) {
-				float costPerFactory = tech().newFactoryCost(colonyControls);
-				float factoriesToBuild = buildableFactories-builtFactories;
-				float totalBuildCost = factoriesToBuild * costPerFactory;
-				float buildCost = min(newBC, totalBuildCost);
-				float delta = buildCost/costPerFactory;
-				builtFactories += delta;
-				newBC -= buildCost;
-				if (delta > 0)
-					adviceStr += text("MAIN_COLONY_NEW_FACTORIES_HELP", fmt(delta), fmt(builtFactories));
-			}
-		}
-
 		if (newBC > 0) {
 			if (!empire().divertColonyExcessToResearch())
-				adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2));
+				adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2, 1));
 			else if (empire().tech().researchCompleted())
-				adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2));
+				adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2, 1));
 			else
-				adviceStr += text("MAIN_COLONY_TO_RESEARCH_HELP", fmt(newBC));
+				adviceStr += text("MAIN_COLONY_TO_RESEARCH_HELP", fmt(newBC, 1));
+			return new String[] {overflowText(), adviceStr};
 		}
-		return adviceStr;
+		else
+			return new String[] {buildFactoriesText(possibleNewFactories, startBC), adviceStr};
 	}
     private String buildFactoriesText(float delta, float newBC) {
         float deltaRounded = delta >= 10 ? (int) delta : (float)Math.floor(delta*10)/10;
@@ -604,7 +543,7 @@ public final class ColonyIndustry extends ColonySpendingCategory {
 		if (robotControls != tech().topRobotControls() || alienFactories != 0) // check for refit
 			refitFlag = 1f;
 
-	return new float[] {factoryBalance, refitFlag, factories, upcomingFactories, alienFactories};
+	return new float[] {factoryBalance, refitFlag, factories, upcomingFactories};
     }
     //
     // PRIVATE METHODS

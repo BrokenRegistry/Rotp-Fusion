@@ -301,11 +301,11 @@ public final class ColonyEcology extends ColonySpendingCategory {
         newBC = max(0, newBC);
         return (newBC < colony().wasteCleanupCost());
     }
-    @Override
-    public String upcomingResult(){
+	@Override public String[] upcomingResult()	{
         Colony c = colony();
 
-        float newBC = totalAvailableBCthisCategory(c.totalProductionIncome(), c.maxReserveIncome());
+		float totalFund = c.totalProductionIncome() + c.maxReserveIncome();
+		float newBC = pct() * totalFund;
         newBC = max(0, newBC);
         float cost;
 
@@ -317,52 +317,91 @@ public final class ColonyEcology extends ColonySpendingCategory {
         float expPop = min(workingPop+expGrowth, planet().currentSize());
         floatPopGrowth = expPop - currentPop;  // BR: To allow fine tuning
         expectedPopGrowth = (int) (expPop) - (int) currentPop; // BR: ?!
+		Planet p = c.planet();
+		float currentSize = p.currentSize();
+
+		String adviceStr = text("MAIN_COLONY_HEADER_ADVISOR");
+		float sentPop = c.inTransport();
+		float afterOutTrans = currentPop - sentPop;
+		if (sentPop > 0)
+			adviceStr += text("MAIN_COLONY_SENT_POP_HELP", fmt(sentPop, 1), fmt(afterOutTrans, 1));
+
+		float afterGrowth = afterOutTrans + expGrowth;
+		adviceStr += text("MAIN_COLONY_NORMAL_GROW_HELP", fmt(expGrowth, 1), fmt(afterGrowth, 1));
+
+		float inPop = galaxy().friendlyPopApproachingSystemNextTurn(c.starSystem());
+		float afterInTransport = min(currentSize, afterGrowth + inPop);
+		if (inPop > 0)
+			adviceStr += text("MAIN_COLONY_INCOMING_POP_HELP", fmt(inPop, 1), fmt(afterInTransport, 1));
 
         // check for waste cleanup
         cost = c.wasteCleanupCost();
-        if (newBC < cost) 
-            return text(wasteText);
+		if (newBC < cost) {
+			adviceStr += text("MAIN_COLONY_WASTE_BC_HELP", fmt(newBC, 1), fmt(cost, 1));
+			int tick = ceil(cost/totalFund * MAX_TICKS) - allocation();
+			adviceStr += text("MAIN_COLONY_WASTE_TICK_HELP", tick);
+			return new String[] {text(wasteText), adviceStr};
+		}
 
         if (c.allocation(categoryType()) == 0)
-            return text(noneText);
+			return new String[] {text(noneText), adviceStr};
 		// BR: Moved at the end to allow the return of the real pop growth
 		//if (allocation() == cleanupAllocationNeeded())
 		if (newBC == cost)
-			return text(cleanupText);
+			return new String[] {text(cleanupText), adviceStr};
 
         newBC -= cost;
         // check for atmospheric terraforming
         Empire emp = c.empire();
-        Planet p = c.planet();
         boolean canTerraformAtmosphere = p.canTerraformAtmosphere(emp);
         if (canTerraformAtmosphere) {
             cost = atmosphereTerraformCost() - hostileBC;
-            if (newBC < cost)
-                return text(atmosphereText);
+			if (newBC < cost) {
+				adviceStr += text("MAIN_COLONY_ATM_TERRA_HELP", fmt(newBC, 1), fmt(cost, 1));
+				return new String[] {text(atmosphereText), adviceStr};
+			}
+			else
+				adviceStr += text("MAIN_COLONY_ATM_TERRA_HELP", fmt(cost, 1), fmt(cost, 1));
             newBC -= cost;
         }
 
         // check for soil enrichment
         TechTree tr = emp.tech();
-        if ((! p.isEnvironmentHostile()) || canTerraformAtmosphere) {
+        if ((!p.isEnvironmentHostile()) || canTerraformAtmosphere) {
             if (tr.enrichSoil()) {
-                int envUpgrade = tr.topSoilEnrichmentTech().environment - p.environment();
-                if (envUpgrade > 0) {
-                    cost = ((tr.topSoilEnrichmentTech().environment - p.environment()) * SOIL_UPGRADE_BC) - soilEnrichBC;
-                    if (newBC < cost)
-                        return text(enrichSoilText);
-                    newBC -= cost;
-                }
+				float accumBC = soilEnrichBC;
+				for (int env=p.environment(); env<tr.topSoilEnrichmentTech().environment; env++) {
+					String key = p.isEnvironmentFertile() ? "MAIN_COLONY_ENRICH_GAIA_HELP" : "MAIN_COLONY_ENRICH_FERTILE_HELP";
+					cost = SOIL_UPGRADE_BC - accumBC;
+					if (newBC < cost) {
+						adviceStr += text(key, fmt(newBC + accumBC, 1), fmt(SOIL_UPGRADE_BC, 1));
+						return new String[] {text(enrichSoilText), adviceStr};
+					}
+					else
+						adviceStr += text(key, fmt(SOIL_UPGRADE_BC, 1), fmt(SOIL_UPGRADE_BC, 1));
+					if (accumBC > SOIL_UPGRADE_BC) // should not!
+						accumBC -= SOIL_UPGRADE_BC;
+					else {
+						accumBC = 0;
+						newBC -= cost;
+					}
+				}
             }
         }
 
-        // check for terraforming
-        float maxPopSize = c.maxSize();
-        float roomToGrow = maxPopSize - p.currentSize();
-        if (roomToGrow > 0) {
-            cost = roomToGrow * tr.topTerraformingTech().costPerMillion;
-            if (newBC < cost) 
-                 return text(terraformText);
+		// check for terraforming
+		float maxPopSize  = c.maxSize();
+		float roomToGrow  = maxPopSize - currentSize;
+		if (roomToGrow > 0) {
+			float costPerMillion = tr.topTerraformingTech().costPerMillion;
+			cost = roomToGrow * costPerMillion;
+			if (newBC < cost) {
+				float newPop = newBC/costPerMillion;
+				adviceStr += text("MAIN_COLONY_TERRAFORM_HELP", fmt(newPop, 1), fmt(currentSize+newPop, 1));
+				return new String[] {text(terraformText), adviceStr};
+			}
+			else
+				adviceStr += text("MAIN_COLONY_TERRAFORM_HELP", fmt(roomToGrow, 1), fmt(maxPopSize, 1));
             newBC -= cost;
         }
 
@@ -374,8 +413,13 @@ public final class ColonyEcology extends ColonySpendingCategory {
             float pop = workingPop + expGrowth + min(newPopPurchaseable, newBC/newPopCost);
             floatPopGrowth = pop - currentPop;
             expectedPopGrowth = (int) pop - (int) currentPop;
-            if (newBC < cost)
-                return text(growthText);
+			if (newBC < cost) {
+				float cloned = newBC/newPopCost;
+				adviceStr += text("MAIN_COLONY_CLONING_HELP", fmt(cloned), fmt(afterInTransport + cloned, 1));
+				return new String[] {text(growthText), adviceStr};
+			}
+			else
+				adviceStr += text("MAIN_COLONY_CLONING_HELP", fmt(newPopPurchaseable, 1), fmt(maxPopSize, 1));
             newBC -= cost;
         }
         else {
@@ -384,13 +428,20 @@ public final class ColonyEcology extends ColonySpendingCategory {
         }
 
 		if (allocation() == cleanupAllocationNeeded())
-			return text(cleanupText);
+			return new String[] {text(cleanupText), adviceStr};
 
         // if less <1% of income, show "Clean", else show "Reserve"
         if (newBC <= (c.totalIncome()/100))
-            return text(growthText);
-        else
-            return overflowText();
+			return new String[] {text(growthText), adviceStr};
+        else {
+			if (!empire().divertColonyExcessToResearch())
+				adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2, 1));
+			else if (empire().tech().researchCompleted())
+				adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2, 1));
+			else
+				adviceStr += text("MAIN_COLONY_TO_RESEARCH_HELP", fmt(newBC, 1));
+			return new String[] {overflowText(), adviceStr};
+        }
     }
     @Override public float[] excessSpending() {
         Colony c = colony();

@@ -312,60 +312,81 @@ public final class ColonyDefense extends ColonySpendingCategory {
 		final float researchBC = reserveBC * researchFactor;
         return new float[] {reserveBC, researchBC};
     }
-    @Override
-    public String upcomingResult() {
-        if (colony().allocation(categoryType()) == 0)
-            return text(noneText);
+	@Override public String[] upcomingResult()	{
+		if (colony().allocation(categoryType()) == 0)
+			return new String[] {text(noneText), ""};
 
 		final float prodBC = pct()* colony().totalProductionIncome() * planet().productionAdj();
 		final float rsvBC = pct() * colony().maxReserveIncome();
-        float newBC = max(0, prodBC+rsvBC);
-        float shieldCost = 0;
+		String adviceStr = text("MAIN_COLONY_HEADER_ADVISOR");
+		float newBC = max(0, prodBC+rsvBC);
 
-        if (!shieldAtMaxLevel())
-            shieldCost = (maxShieldLevel() - shield) * 100;
+		// Shielding
+		if (!shieldAtMaxLevel()) {
+			final float maxShieldLevel = maxShieldLevel();
+			final float shieldCost = (maxShieldLevel - shield) * 100;
+			if (newBC < shieldCost) {
+				final float newLevel = shield + newBC/shieldCost;
+				adviceStr += text("MAIN_COLONY_SHIELD_SPEND_HELP", fmt(newBC));
+				adviceStr += text("MAIN_COLONY_SHIELD_LEVEL_HELP", fmt(shield), fmt(newLevel), fmt(maxShieldLevel));
+				return new String[] {text(shieldText), adviceStr};
+			}
+			else {
+				adviceStr += text("MAIN_COLONY_SHIELD_SPEND_HELP", fmt(shieldCost));
+				adviceStr += text("MAIN_COLONY_SHIELD_FINAL_HELP", fmt(shield), fmt(maxShieldLevel));
+				newBC -= shieldCost;
+			}
+		}
 
-        if (newBC < shieldCost)
-            return text(shieldText);
-
-        newBC -= shieldCost;
-
-        float upgradeCost = 0;
 		final float baseCost = missileBase.cost(empire());
 		final float newBaseCost = tech().bestMissileBase().cost(empire());
+		// Upgrading
+		if (missileBase != tech().bestMissileBase()) {
+			float upgradeCost = rawBases() * Math.max(0,newBaseCost-baseCost);
+			final float spentBC = newBC;
+			newBC += baseUpgradeBC;
+			if (newBC < upgradeCost) {
+				adviceStr += text("MAIN_COLONY_BASES_UP_SPEND_HELP", fmt(spentBC), fmt(newBC), fmt(upgradeCost));
+				return new String[] {text(upgradeBasesText), adviceStr};
+			}
+			else {
+				newBC -= upgradeCost;
+				adviceStr += text("MAIN_COLONY_BASES_UP_SPEND_HELP", fmt(spentBC-newBC), fmt(upgradeCost), fmt(upgradeCost));
+				adviceStr += text("MAIN_COLONY_BASES_UPGRADED_HELP");
+			}
+		}
 
-        if (missileBase != tech().bestMissileBase()) {
-            newBC += baseUpgradeBC;
-            upgradeCost = rawBases() * Math.max(0,newBaseCost-baseCost);
-            if (newBC < upgradeCost)
-                return text(upgradeBasesText);
-        }
-
-        newBC -= upgradeCost;
-
+		// Build New Bases
 		final float maxCost = (maxBases() - rawBases()) * newBaseCost;
 		final float newBases = rawBases() + (newBC/newBaseCost);
 		final int delta = (int) newBases - activeBases();
 
-        if (newBC <= maxCost) {
-            if (delta < 1) {
-                if (newBC == 0)
-                    return text(noneText);
-                else {
-                    int turns = (int) Math.ceil( (1- (rawBases() % 1)) * newBaseCost/newBC);
-                    if (turns > 99)
-                        return text(yearsLongText, turns);
-                    else
-                        return text(yearsText, turns);
-                }
-            }
-            else if (delta == 1)
-                return text(yearText, 1);
-            else
-                return text(perYearText, delta);
-        }
-        return overflowText();
-    }
+		if (newBC <= maxCost) {
+			if (newBC == 0)
+				return new String[] {text(noneText), adviceStr};
+			adviceStr += text("MAIN_COLONY_BASES_SPEND_HELP", fmt(newBC));
+			adviceStr += text("MAIN_COLONY_BASES_NEW_HELP", fmt(rawBases()), fmt(newBases));
+			if (delta < 1) {
+				final int turns = ceil( (1- (rawBases() % 1)) * newBaseCost/newBC);
+				if (turns > 99)
+					return new String[] {text(yearsLongText, turns), adviceStr};
+				else
+					return new String[] {text(yearsText, turns), adviceStr};
+			}
+			else if (delta == 1)
+				return new String[] {text(yearText, 1), adviceStr};
+			else
+				return new String[] {text(perYearText, delta), adviceStr};
+		}
+		newBC -= maxCost;
+		if (!empire().divertColonyExcessToResearch())
+			adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2, 1));
+		else if (empire().tech().researchCompleted())
+			adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2, 1));
+		else
+			adviceStr += text("MAIN_COLONY_TO_RESEARCH_HELP", fmt(newBC, 1));
+		return new String[] {overflowText(), adviceStr};
+	}
     public float maxSpendingNeeded() {
 		final float buildShieldCost = Math.max(0, (maxShieldLevel() - shield) * 100);
 		final float upgradeMissileBasesCost = Math.max(0,  missileUpgradeCost() - baseUpgradeBC);

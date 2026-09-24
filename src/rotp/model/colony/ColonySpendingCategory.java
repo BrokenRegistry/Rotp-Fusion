@@ -55,7 +55,7 @@ public abstract class ColonySpendingCategory implements Base, Serializable {
      * In particular, GameSession.nextTurnProcess() checks for random events before resolving colony spending.
      * A ship that was expected to be built next year might not be built if an unexpected earthquake strikes the colony during the year.
     */
-    public abstract String upcomingResult();
+	public abstract String[] upcomingResult();
 
     public abstract int categoryType();
     public abstract boolean isCompleted();

@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-09-24 (BR)
+- Fixed and updated the galaxy size description (Thanks to @Corbeau)
+- New content for the advisor: in defense, shipyard and ecology.
+
 26-09-22 (BR)
 - Fixed the crossed coin icon not appearing in the colonies columns.
 - Improved a bit the coin image quality (Some scaling issues)

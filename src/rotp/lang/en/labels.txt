@@ -1048,13 +1048,42 @@ MAIN_COLONY_ROBOT_CONTROL_HELP	| Robotic control level: %1 of %2.
 MAIN_COLONY_NEW_FACTORIES_HELP	| <br>Construction of %1 new factories → %2 factories.
 MAIN_COLONY_ALIEN_FACT_HELP		| <br>Conversion of %1 alien factories → %2 factories.
 MAIN_COLONY_ROBOT_CTRL_UP_HELP	| <br>Refited factories to level %1.
-MAIN_COLONY_REFIT_FACT_HELP		| <br>Factory refit in progress: %1 BC of %2 BC.
+MAIN_COLONY_REFIT_FACT_HELP		| <br>Factory refit in progress: %1BC of %2BC.
 MAIN_COLONY_ALL_FACT_BUILT_HELP	| <br>The maximum number of factories has been reached.
 MAIN_COLONY_FACTORIES_HELP		| <br>The number of factories increases from %1 to %2.
-MAIN_COLONY_TO_RESEARCH_HELP	| <br>Surplus %1 BC sent to Research
-MAIN_COLONY_TO_TRESOR_HELP		| <br>Surplus %1 BC sent to empire treasury.
+MAIN_COLONY_TO_RESEARCH_HELP	| <br>Surplus %1BC sent to Research
+MAIN_COLONY_TO_TRESOR_HELP		| <br>Surplus %1BC sent to empire treasury.
 MAIN_COLONY_UNUSED_FACT_HELP	| <br>Unused Factories: %1
 MAIN_COLONY_NEEDED_FACT_HELP	| <br>Needed Factories: %1
+
+MAIN_COLONY_SENT_POP_HELP		| Sent by transport: %1 pop → %2 pop.<br>
+MAIN_COLONY_NORMAL_GROW_HELP	| Normal growth: %1 pop → %2 pop.
+MAIN_COLONY_INCOMING_POP_HELP	| <br>Incoming transport: %1 pop → %2 pop.<br>
+MAIN_COLONY_WASTE_BC_HELP		| <br>Missing fund for cleaning: %1BC of %2BC
+MAIN_COLONY_WASTE_TICK_HELP		| <br>Needs %1 more tick for full cleaning.
+MAIN_COLONY_ATM_TERRA_HELP		| <br>Atmosphere Terraforming %1BC of %2BC.
+MAIN_COLONY_ENRICH_FERTILE_HELP	| <br>Enrich to Fertile %1BC of %2BC.
+MAIN_COLONY_ENRICH_GAIA_HELP	| <br>Enrich to Gaia %1BC of %2BC.
+MAIN_COLONY_TERRAFORM_HELP		| <br>Terraform: Size increased by %1 → %2.
+MAIN_COLONY_CLONING_HELP		| <br>Cloning pop: Pop increased by %1 → %2.
+
+MAIN_COLONY_OBSOLETE_SHIP_HELP	| <b><font color="#FF0000">!!! Error Building Obsolete Design !!!</font></b>
+MAIN_COLONY_FROM_SHIP_RSV_HELP	| Taken from Ship Accrued %1BC<br>
+MAIN_COLONY_SHIP_SPENDING_HELP	| Spending on Ship %1BC → %2BC of %3BC.
+MAIN_COLONY_SHIP_TURN_HELP		| <br>Remaining years until delivrery %1.
+MAIN_COLONY_STARGATE_HELP		| <br>→ Stargate delivrery.
+MAIN_COLONY_SHIPS_UL_HELP		| <br>→ %1 Ships.
+MAIN_COLONY_SHIPS_BUILT_HELP	| <br>Ship delivred %1 of %2
+MAIN_COLONY_SHIPS_COMPLETE_HELP	| <br>Ship request completed
+MAIN_COLONY_SHIPS_ACCRUAL_HELP	| <br>New Accrual %1BC
+
+MAIN_COLONY_SHIELD_SPEND_HELP	| Spending on Shields %1BC.
+MAIN_COLONY_SHIELD_LEVEL_HELP	| <br>Shields Level %1 → %2 of %3.
+MAIN_COLONY_SHIELD_FINAL_HELP	| <br>Shields completed %1 → %2.<br>
+MAIN_COLONY_BASES_UP_SPEND_HELP	| Spending on upgrading Bases %1BC → %2BC of %3BC.
+MAIN_COLONY_BASES_UPGRADED_HELP	| <br>Bases upgraded<br>
+MAIN_COLONY_BASES_SPEND_HELP	| Spending on new Bases %1BC
+MAIN_COLONY_BASES_NEW_HELP		| <br>New Bases from %1 to %2.
 
 MAIN_COLONY_SPENDING_NONE         | None
 MAIN_COLONY_SPENDING_RESERVE      | Reserve
@@ -1131,11 +1160,11 @@ ALLOCATION_LABEL_3_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_E
 ALLOCATION_LABEL_4_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
 
 ALLOCATION_SLIDER_HELP			| <h3>Ratio bars:</h3> They show the breakdown of a planet's production.<br>The spending for each bar can be adjusted:<ul><li>With the mouse wheel.</li><li>Clicking within the bar.</li><li>Clicking on the left/right arrows for each bar.</li></ul>
-ALLOCATION_SLIDER_0_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
-ALLOCATION_SLIDER_1_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_0_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←%1<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_1_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←%1<br><hr> →ALLOCATION_SLIDER_HELP←
 ALLOCATION_SLIDER_2_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_INDUSTRY_HELP←%1<br><hr> →ALLOCATION_SLIDER_HELP←
-ALLOCATION_SLIDER_3_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_ECOLOGY_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
-ALLOCATION_SLIDER_4_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_3_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_ECOLOGY_HELP←%1<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_4_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←%1<br><hr> →ALLOCATION_SLIDER_HELP←
 
 ALLOCATION_RESULT_MIN_MAX_HELP	| <hr><h3>Assistant Key Modifiers:</h3><dl><dt><i>No key Modifiers</i>  ⇒  <b>Smooth Min/Max</b></dt><dd>This is equivalent to clicking Up/Down arrow till reaching the target. Liberated BC will be smartly redistributed. (Following the "Refresh" method)</dd> <dt><i>Shift-Click</i>  ⇒  <b>Smart Min/Max</b></dt><dd>This will clear the unlocked spending, set the Min/Max allocation, clean <b>ECO</b>, then smartly redistribute the remaining BC.</dd><dt><i>Ctrl-Click</i>  ⇒  <b>Refresh</b></dt> <dd>This will clear the unlocked spending then smartly redistribute the available BC in accordance with your prioritization, in the sequence: { Ecology, Industry, Ship, Defense, Research }</dd>
 
@@ -1813,7 +1842,7 @@ SETUP_GALAXY_SIZE_LABEL           | Size
 SETUP_RACE_MULTIPLIER             | x%1
 SETUP_GALAXY_SHAPE_LABEL          | Shape
 
-SETUP_GALAXY_SIZE_HELP            | The galaxy size will determine the number of stars and therefore the maximum player count.<br>Note that there are multiple star counts for some size settings. For instance, an average sized galaxy can have 100 or 150 stars. A large galaxy can have 225 or 333 stars.<br> Each selection will change the number of opponents to its default setting, which can then be adjusted on the "Select Opponents" panel.
+SETUP_GALAXY_SIZE_HELP            | The size of the galaxy will determine the number of star systems and may also limit the maximum number of empires.<br>Some size changes reset the number of opponents to a default value, which you can then readjust.<br><font color="#FF0000">Be careful!</font> Computing time grows exponentially with he size of galaxy and the number of empires. If you go wild, at one point the game may become unplayable. The exact numbers depend on the exact settings, installation and computer power.<br><cite>For example, one report says that, around Turn 250 (still relatively early in that particular game), with 10,000 stars and 40 empires, the turn computation started taking many hours (6 and progressively more).</cite>
 SETUP_GALAXY_SIZE_DESC            | Select the Galaxy Size
 SETUP_GALAXY_SIZE                 | Galaxy Size: %1
 SETUP_GALAXY_SIZE_STAR_PER_EMPIRE | %1 s/e

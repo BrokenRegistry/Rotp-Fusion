@@ -1052,9 +1052,38 @@ MAIN_COLONY_REFIT_FACT_HELP		| <br>Mise à jour des usines en cours : %1 CG su
 MAIN_COLONY_ALL_FACT_BUILT_HELP	| <br>Le nombre maximal d’usines est atteint.
 MAIN_COLONY_FACTORIES_HELP		| <br>Le nombre d'usines passe de %1 à %2.
 MAIN_COLONY_TO_RESEARCH_HELP	| <br>Surplus de %1 CG envoyés à la recherche.
-MAIN_COLONY_TO_TRESOR_HELP		| <br>Surplus de %1 CG envoyés au trésor de l'empire.
+MAIN_COLONY_TO_TRESOR_HELP		| <br>Surplus de %1 CG envoyés au trésor de l’empire.
 MAIN_COLONY_UNUSED_FACT_HELP	| <br>Usines inutilisées : %1
 MAIN_COLONY_NEEDED_FACT_HELP	| <br>Usines requises : %1
+
+MAIN_COLONY_SENT_POP_HELP		| Transports partant : %1 pop → %2 pop.<br>
+MAIN_COLONY_NORMAL_GROW_HELP	| Croissance normale : %1 pop. → %2 pop.
+MAIN_COLONY_INCOMING_POP_HELP	| <br>Transports entrant : %1 pop → %2 pop.<br>
+MAIN_COLONY_WASTE_BC_HELP		| <br>Fonds manquant pour le nettoyage : %1 CG sur %2 CG
+MAIN_COLONY_WASTE_TICK_HELP		| <br>Nécessite %1 tics pour un nettoyage complet.
+MAIN_COLONY_ATM_TERRA_HELP		| <br>Terraformation atmosphérique : %1 CG sur %2 CG
+MAIN_COLONY_ENRICH_FERTILE_HELP	| <br>Transformation vers Fertile : %1 CG sur %2 CG
+MAIN_COLONY_ENRICH_GAIA_HELP	| <br>Transformation vers Gaia : %1 CG sur %2 CG
+MAIN_COLONY_TERRAFORM_HELP		| <br>Terraformation : La taille augmente de %1 → %2.
+MAIN_COLONY_CLONING_HELP		| <br>Clonage : La population a augmenté de %1 → %2.
+
+MAIN_COLONY_OBSOLETE_SHIP_HELP	| <b><font color="#FF0000">!!! Erreur Construction d’un design obsolète !!!</font></b>
+MAIN_COLONY_FROM_SHIP_RSV_HELP	| Puisé dans la réserve %1 CG<br>
+MAIN_COLONY_SHIP_SPENDING_HELP	| Dépenses de vaisseaux %1 CG → %2 CG of %3 CG.
+MAIN_COLONY_SHIP_TURN_HELP		| <br>Temps restant avant la livraison %1.
+MAIN_COLONY_STARGATE_HELP		| <br>→ La porte des étoile sera livrée.
+MAIN_COLONY_SHIPS_UL_HELP		| <br>→ %1 Vaisseaux.
+MAIN_COLONY_SHIPS_BUILT_HELP	| <br>Vaisseaux livrés %1 of %2
+MAIN_COLONY_SHIPS_COMPLETE_HELP	| <br>Tous les vaisseaux demandé seront livrés.
+MAIN_COLONY_SHIPS_ACCRUAL_HELP	| <br>Nouvelles réserves %1 CG.
+
+MAIN_COLONY_SHIELD_SPEND_HELP	| Dépenses sur le boucliers : %1 CG.
+MAIN_COLONY_SHIELD_LEVEL_HELP	| <br>Boucliers ajoutés : %1 → %2 sur %3.
+MAIN_COLONY_SHIELD_FINAL_HELP	| <br>Boucliers Terminéa : %1 → %2.<br>
+MAIN_COLONY_BASES_UP_SPEND_HELP	| Dépenses de mise à jour : %1 CG → %2 CG sur %3 CG.
+MAIN_COLONY_BASES_UPGRADED_HELP	| <br>Les bases seront à jour<br>
+MAIN_COLONY_BASES_SPEND_HELP	| Dépenses pour de nouvelles bases : %1 CG.
+MAIN_COLONY_BASES_NEW_HELP		| <br>Nouvelles bases de : %1 à %2.
 
 MAIN_COLONY_SPENDING_NONE         | Aucune
 MAIN_COLONY_SPENDING_RESERVE      | Réserve
@@ -1131,11 +1160,11 @@ ALLOCATION_LABEL_3_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_E
 ALLOCATION_LABEL_4_HELP			| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←<br><hr> →ALLOCATION_LABEL_HELP←
 
 ALLOCATION_SLIDER_HELP			| <h3>Barres de ratio:</h3> Elles montrent la répartition de la production d’une planète.<br>Les dépenses pour chaque barre peuvent être ajustées:<ul><li>À l’aide de la molette de la souris.</li><li>En cliquant dans la barre.</li><li>En cliquant sur les flèches gauche/droite de chaque barre.</li></ul>
-ALLOCATION_SLIDER_0_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
-ALLOCATION_SLIDER_1_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_0_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_SHIPYARD_HELP←%1<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_1_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_DEFENSES_HELP←%1<br><hr> →ALLOCATION_SLIDER_HELP←
 ALLOCATION_SLIDER_2_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_INDUSTRY_HELP←%1<br><hr> →ALLOCATION_SLIDER_HELP←
-ALLOCATION_SLIDER_3_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_ECOLOGY_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
-ALLOCATION_SLIDER_4_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_3_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_ECOLOGY_HELP←%1<br><hr> →ALLOCATION_SLIDER_HELP←
+ALLOCATION_SLIDER_4_HELP		| →ALLOCATION_HEADER_HELP←<br><hr> →ALLOCATION_RESEARCH_HELP←%1<br><hr> →ALLOCATION_SLIDER_HELP←
 
 ALLOCATION_RESULT_MIN_MAX_HELP	| <hr><h3>Touches de modification des assistants:</h3><dl><dt><i>Pas de touches de modification</i>  ⇒  <b>Smooth Min/Max</b></dt><dd>C’est équivalent à cliquer sur la flèche Haut/Bas jusqu’à atteindre la cible. Les CG libérés seront redistribués intelligemment. (Suivant la méthode de « Rafraîchir »)</dd> <dt><i>Maj + Clic</i>  ⇒  <b>Smart Min/Max</b></dt><dd>Mettra à zéro les dépenses débloquées, définira l’allocation Min/Max, nettoiera <b>ÉCO</b>, puis redistribuera intelligemment les CG restants.</dd><dt><i>Ctrl + Clic</i>  ⇒  <b>Rafraîchir</b></dt> <dd>Mettra à zéro les dépenses débloquées puis redistribuera intelligemment les CG disponibles selon votre priorisation, dans la séquence : { Écologie, Industrie, Flotte, Défenses, Recherche }</dd>
 
@@ -1813,7 +1842,7 @@ SETUP_GALAXY_SIZE_LABEL           | Taille
 SETUP_RACE_MULTIPLIER             | x%1
 SETUP_GALAXY_SHAPE_LABEL          | Type de Galaxie
 
-SETUP_GALAXY_SIZE_HELP            | La taille de la galaxie déterminera le nombre d’étoiles et donc le nombre maximum de joueurs.<br>Notez qu’il y a plusieurs étoiles pour certains paramètres de taille. Par exemple, une galaxie de taille moyenne peut avoir 100 ou 150 étoiles. Une grande galaxie peut avoir 225 ou 333 étoiles.<br> Chaque sélection changera le nombre d’opposants à son paramètre par défaut, qui peut ensuite être ajusté sur le panneau «Sélectionner les opposants».
+SETUP_GALAXY_SIZE_HELP            | La taille de la galaxie déterminera le nombre de systèmes stellaires et pourra également limiter le nombre maximum d’empires.<br>Certaines modifications de taille réinitialisent le nombre d’adversaires à une valeur par défaut, que vous pourrez ensuite réajuster.<br><font color="#FF0000">Soyez prudent !</font> Le temps de calcul augmente de façon exponentielle avec la taille de la galaxie et le nombre d’empires. Si vous vous abusez, à un moment donné, le jeu peut devenir injouable. Les valeurs limites dépendent des paramètres choisis, de l’installation et de la puissance de l’ordinateur.<br><cite>Par exemple, il a été rapporté que, vers le tour 250 (encore relativement tôt dans ce jeu particulier), avec 10 000 étoiles et 40 empires, le passage au tour suivant peut atteindre plusieurs heures (6 et progressivement plus).</cite>
 SETUP_GALAXY_SIZE_DESC            | Sélectionnez la taille de la Galaxie
 SETUP_GALAXY_SIZE                 | Taille de la Galaxie : %1
 SETUP_GALAXY_SIZE_STAR_PER_EMPIRE | %1 é/e

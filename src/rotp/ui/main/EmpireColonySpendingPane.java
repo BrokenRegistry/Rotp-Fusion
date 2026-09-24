@@ -518,6 +518,9 @@ public class EmpireColonySpendingPane extends BasePanel {
                 return;
             }
             String text = text(Colony.categoryName(category));
+			String[] upcomingResult = colony.category(category).upcomingResult();
+			String resultText = upcomingResult[0];
+			String advStr = upcomingResult[1];
 
 			// --------------------------------------------------------
 			// Left side: label
@@ -604,17 +607,11 @@ public class EmpireColonySpendingPane extends BasePanel {
 				float refitFlag			= factoryBalance[1];
 				float factories			= factoryBalance[2];
 				float upcomingFactories	= factoryBalance[3];
-				float alienFactories	= factoryBalance[4];
 				float finalFactories	= factories + upcomingFactories;
-				int robotControls		= industry.effectiveRobotControls();
-				int maxRobotControls	= industry.maxRobotControls();
 				boolean rightAmount = (balance == 0);
-				String advStr = text("MAIN_COLONY_HEADER_ADVISOR");
-				advStr += text("MAIN_COLONY_ROBOT_CONTROL_HELP", robotControls, maxRobotControls);
-				String upcomingAdvisorResult = industry.upcomingAdvisorResult();
-				advStr += upcomingAdvisorResult;
+				String upcomingAdvisorResult = advStr;
 				if (factories < finalFactories)
-					advStr += text("MAIN_COLONY_FACTORIES_HELP", fmt(factories), fmt(finalFactories));
+					advStr += text("MAIN_COLONY_FACTORIES_HELP", fmt(factories, 1), fmt(finalFactories, 1));
 
 				boolean warning = !rightAmount;// && !colony.isGovernor();
 				if (warning) {
@@ -643,9 +640,7 @@ public class EmpireColonySpendingPane extends BasePanel {
 					drawString(g, indStr, boxL+x1, boxTopY+boxH-yOff);
 				}
 				if (upcomingAdvisorResult.isEmpty())
-					sliderBox.setAdviceHelpText(upcomingAdvisorResult);
-				else
-					sliderBox.setAdviceHelpText(advStr);
+					advStr = upcomingAdvisorResult;
 			}
 
             if (category == Colony.ECOLOGY)  {
@@ -673,6 +668,7 @@ public class EmpireColonySpendingPane extends BasePanel {
                 g.setClip(prevClip);
             }
 
+			sliderBox.setAdviceHelpText(advStr);
             if (hoverBox == sliderBox) {
                 g.setColor(SystemPanel.yellowText);
                 Stroke prev = g.getStroke();
@@ -686,11 +682,8 @@ public class EmpireColonySpendingPane extends BasePanel {
 			textCol = SystemPanel.blackText;
 			if (hoverBox == resultBox)
 				textCol = SystemPanel.yellowText;
-			String resultText;
 			if (isAltDown() && isCtrlDown())
 				resultText = text("PLANETS_AMT_BC", fmt(colony.category(category).totalBC(), 1));
-			else
-				resultText = text(colony.category(category).upcomingResult());
 
 			g.setColor(textCol);
             scaledFont(g, resultText, rightMargin()-s10, 18, 14);
