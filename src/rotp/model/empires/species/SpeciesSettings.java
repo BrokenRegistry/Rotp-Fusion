@@ -1665,14 +1665,23 @@ public abstract class SpeciesSettings implements Base{
 
 				private SettingResearch(String nameLangLabel) {
 					super(ROOT, nameLangLabel, 100, 50, 200, 1, 5, 20, NORMALIZED, new float[]{c0, c1, c2, c3, c4}, null);
+					hasNoCost(false);
+				}
+				@Override protected Integer randomize(float rand) {
+					float lim1 = settingCost(100);
+					float lim2 = settingCost(0);
+					if (rand > 0)
+						rand *= Math.max(lim1, lim2);
+					else
+						rand *= -Math.min(lim1, lim2);
+					return getValueFromCost(rand);
 				}
 				@Override public float settingCost()	{ return settingCost(combinedValue()); }
 				@Override public float settingCost(Integer value) {
 					float baseCost = (value - baseCostDefault)/norm;
 					float cost = 0;
-					for (int i=0; i<posCostFactor.length; i++) {
-						cost += posCostFactor[i] * Math.pow(baseCost, i);			
-					}
+					for (int i=0; i<posCostFactor.length; i++)
+						cost += posCostFactor[i] * Math.pow(baseCost, i);
 					return cost;
 				}
 				@Override public String guiSettingDisplayStr() {
@@ -1808,16 +1817,24 @@ public abstract class SpeciesSettings implements Base{
 				private static final float	norm = 50f;
 
 				private SettingDiscovery(String nameLangLabel) {
-					super(ROOT, nameLangLabel, 0, -100, 100, 1, 5, 20, NORMALIZED,
-							new float[]{c0, c1, c2, c3, c4, c5}, null);
+					super(ROOT, nameLangLabel, 0, -100, 100, 1, 5, 20, NORMALIZED, new float[]{c0, c1, c2, c3, c4, c5}, null);
+					hasNoCost(false);
+				}
+				@Override protected Integer randomize(float rand) {
+					float lim1 = settingCost(100);
+					float lim2 = settingCost(0);
+					if (rand > 0)
+						rand *= Math.max(lim1, lim2);
+					else
+						rand *= -Math.min(lim1, lim2);
+					return getValueFromCost(rand);
 				}
 				@Override public float settingCost()	{ return settingCost(combinedValue()); }
 				@Override public float settingCost(Integer value) {
 					float baseCost = (value - baseCostDefault)/norm;
 					float cost = 0;
-					for (int i=0; i<posCostFactor.length; i++) {
-						cost += posCostFactor[i] * Math.pow(baseCost, i);			
-					}
+					for (int i=0; i<posCostFactor.length; i++)
+						cost += posCostFactor[i] * Math.pow(baseCost, i);
 					return cost;
 				}
 				@Override public String guiSettingDisplayStr() {

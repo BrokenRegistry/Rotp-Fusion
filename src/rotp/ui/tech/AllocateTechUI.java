@@ -15,8 +15,6 @@
  */
 package rotp.ui.tech;
 
-import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
-import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 import static rotp.model.game.IBaseOptsTools.MOD_UI;
 
 import java.awt.Color;
@@ -1190,9 +1188,23 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
         totalPlanetaryResearchSpending = player().totalPlanetaryResearchSpending();
         repaint();
     }
+	private void reachPct(int pct)	{
+		player().tech().equalizeToPct(pct/100f + 1f, false);
+		repaint();
+	}
+	private void numKey(KeyEvent e, int i)	{
+		softClick();
+		if (e.isAltDown())
+			reachPct(10 * i);
+		else if (e.isShiftDown())
+			decrement(i-1, true);
+		else if (e.isControlDown())
+			toggleCategoryLock(i-1);
+		else
+			increment(i-1, true);
+	}
     @Override public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
-        int mods = e.getModifiersEx();
         switch (k) {
             case KeyEvent.VK_F1:
             	if (e.isShiftDown())
@@ -1228,54 +1240,36 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
                 return;
             case KeyEvent.VK_TAB:
                 return;
-            case KeyEvent.VK_1:
-                if (mods == 0)
-                    increment(0, true);
-                else if (mods == SHIFT_DOWN_MASK)
-                    decrement(0, true);
-                else if (mods == CTRL_DOWN_MASK)
-                    toggleCategoryLock(0);
-                return;
-            case KeyEvent.VK_2:
-                if (mods == 0)
-                    increment(1, true);
-                else if (mods == SHIFT_DOWN_MASK)
-                    decrement(1, true);
-                else if (mods == CTRL_DOWN_MASK)
-                    toggleCategoryLock(1);
-                return;
-            case KeyEvent.VK_3:
-                if (mods == 0)
-                    increment(2, true);
-                else if (mods == SHIFT_DOWN_MASK)
-                    decrement(2, true);
-                else if (mods == CTRL_DOWN_MASK)
-                    toggleCategoryLock(2);
-                return;
-            case KeyEvent.VK_4:
-                if (mods == 0)
-                    increment(3, true);
-                else if (mods == SHIFT_DOWN_MASK)
-                    decrement(3, true);
-                else if (mods == CTRL_DOWN_MASK)
-                    toggleCategoryLock(3);
-                return;
-            case KeyEvent.VK_5:
-                if (mods == 0)
-                    increment(4, true);
-                else if (mods == SHIFT_DOWN_MASK)
-                    decrement(4, true);
-                else if (mods == CTRL_DOWN_MASK)
-                    toggleCategoryLock(4);
-                return;
-            case KeyEvent.VK_6:
-                if (mods == 0)
-                    increment(5, true);
-                else if (mods == SHIFT_DOWN_MASK)
-                    decrement(5, true);
-                else if (mods == CTRL_DOWN_MASK)
-                    toggleCategoryLock(5);
-                return;
+			case KeyEvent.VK_1:
+				numKey(e, 1);
+				return;
+			case KeyEvent.VK_2:
+				numKey(e, 2);
+				return;
+			case KeyEvent.VK_3:
+				numKey(e, 3);
+				return;
+			case KeyEvent.VK_4:
+				numKey(e, 4);
+				return;
+			case KeyEvent.VK_5:
+				numKey(e, 5);
+				return;
+			case KeyEvent.VK_6:
+				numKey(e, 6);
+				return;
+			case KeyEvent.VK_7:
+				reachPct(70);
+				return;
+			case KeyEvent.VK_8:
+				reachPct(80);
+				return;
+			case KeyEvent.VK_9:
+				reachPct(90);
+				return;
+			case KeyEvent.VK_0:
+				reachPct(0);
+				return;
             case KeyEvent.VK_ESCAPE:
                 exit(false);
                 return;

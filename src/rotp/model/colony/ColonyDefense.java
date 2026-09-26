@@ -349,7 +349,7 @@ public final class ColonyDefense extends ColonySpendingCategory {
 				adviceStr += text("MAIN_COLONY_BASES_UP_SPEND_HELP", fmt(spentBC), fmt(newBC), fmt(upgradeCost));
 				return new String[] {text(upgradeBasesText), adviceStr};
 			}
-			else {
+			else if (upgradeCost > 0) {
 				newBC -= upgradeCost;
 				adviceStr += text("MAIN_COLONY_BASES_UP_SPEND_HELP", fmt(spentBC-newBC), fmt(upgradeCost), fmt(upgradeCost));
 				adviceStr += text("MAIN_COLONY_BASES_UPGRADED_HELP");
@@ -378,6 +378,8 @@ public final class ColonyDefense extends ColonySpendingCategory {
 			else
 				return new String[] {text(perYearText, delta), adviceStr};
 		}
+		adviceStr += text("MAIN_COLONY_BASES_SPEND_HELP", fmt(maxCost));
+		adviceStr += text("MAIN_COLONY_BASES_NEW_HELP", fmt(rawBases()), fmt(maxBases));
 		newBC -= maxCost;
 		if (!empire().divertColonyExcessToResearch())
 			adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2, 1));

@@ -598,7 +598,7 @@ public class DNAFactory extends SpeciesSettings {
 			setting.settingToSkill(race());
 			setting.updateOption(destOptions);
 		}
-	}	
+	}
 	// -#-
 	// #========== Setting initialization ==========
 	//

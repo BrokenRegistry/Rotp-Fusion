@@ -373,6 +373,8 @@
 
 ### User Interfaces:
 
+- Tech UI: "Alt-Num" will equalize the tech allocation up to the limit of: num * 10% chance of discovery.
+  - example: "Alt-6" ==> no more tick will be given once the chance of discovery exceeds 60%.
 - Budget Max Absolute Capital can now be set to a smaller amount.
 - The accrued production on the old ship can now bw displayed in the military tab of the colonies panel.
   - "F12" to toggle.
@@ -516,6 +518,7 @@
 
 ### Fixes:
 
+- Fixed "Randomize" issue with "Tech Discovery" and "Tech Research"
 - Fixed the crossed coin icon not appearing in the colonies columns.
 - Improved a bit the coin image quality (Some scaling issues)
 - Fixed a shortcut key overlap on the colonies panel.

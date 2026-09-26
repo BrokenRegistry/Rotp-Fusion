@@ -11,6 +11,12 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-09-26 (BR)
+- Fixed "Randomize" issue with "Tech Discovery" and "Tech Research"
+- Improved advisor content in defense allocation
+- Tech UI: "Alt-Num" will equalize the tech allocation up to the limit of: num * 10% chance of discovery.
+  - example: "Alt-6" ==> no more tick will be given once the chance of discovery exceeds 60%.  
+
 26-09-24 (BR)
 - Fixed and updated the galaxy size description (Thanks to @Corbeau)
 - New content for the advisor: in defense, shipyard and ecology.
@@ -28,14 +34,6 @@ When updating, you can reuse the same folder.
 - New settings: development limits for each planet type.
 - The Advisor has entered the Design panel.
 - Fixed some advisor display issues (pop-up remaining too long)
-
-26-09-17 (BR)
-- Fixed an issue with "Auto-flag" being set one too many times after the discovery window was displayed, possibly canceling a player's selection.
-- You now have the ability to modify the research after selecting a new one, following a technological discovery on an Artifact planet, a technology theft or a technology exchange.
-
-26-09-16 (BR)
-- Fixed issue in ShipCombat with repulsors going in never ending loop.
-- The "Update Post Contact Spending" setting has been expanded to include all interactions with other empires (first contact, trade treaties, and declaration of war). Then, a revision of allocations will only take place if net revenues are lower than forecast revenues (the latter always being a little conservative).
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

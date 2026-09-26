@@ -45,6 +45,7 @@ public final class TechCategory implements Base, Serializable {
 
     private static float RESEARCH_INTEREST = 0.25f;
     public static final int MAX_ALLOCATION_TICKS = 60;
+	public static final int MAX_INTEREST_TICKS = MAX_ALLOCATION_TICKS/6;
     private static final int MAX_QUINTILES = 20;
     private static String[] researchKeys = { "TECH_RESEARCH_COMPUTER", "TECH_RESEARCH_CONSTRUCTION",
                     "TECH_RESEARCH_FORCE_FIELD", "TECH_RESEARCH_PLANETOLOGY", "TECH_RESEARCH_PROPULSION", "TECH_RESEARCH_WEAPON" };
@@ -658,6 +659,23 @@ public final class TechCategory implements Base, Serializable {
 
         return upcomingDiscoveryChance(tree.empire().totalPlanetaryResearch());
     }
+	public int tickForDiscoveryChance(int pct, float totalRP)	{
+		if (currentTech == null)
+			return 0;
+		Tech current = tech(currentTech);
+		final int costForTech = costForTech(current);
+		final float costForPct = costForTech * (1 + pct/100f);
+		float missing = costForPct - totalBC;
+		if (missing <= 0)
+			return 0;
+		final float tickRP = totalRP/MAX_ALLOCATION_TICKS;
+		if (missing <= totalRP/6) {
+			final float iIickRP = tickRP + tickRP * RESEARCH_INTEREST;
+			return ceil(missing / iIickRP);
+		}
+		missing -= totalRP/6;
+		return MAX_INTEREST_TICKS + ceil(missing / tickRP);
+	}
     private float currentResearch() { return currentResearch(tree.totalResearchThisTurn); }
     public float currentResearch(float totalRP) {
         float categoryBC = totalRP * allocationPct();

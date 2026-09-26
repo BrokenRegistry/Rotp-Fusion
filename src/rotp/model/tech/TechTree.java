@@ -17,6 +17,7 @@ package rotp.model.tech;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -361,47 +362,113 @@ public final class TechTree implements Base, Serializable {
         }
         return true;
     }
-    public void equalizeAllocations() {
-		if (isShiftDown()) { // Equalize fields with allocations
-			int freeAlloc = TechCategory.MAX_ALLOCATION_TICKS;
-			List<TechCategory> toEqualize = new ArrayList<>();
-			for (TechCategory cat: category)
-				if (cat.locked())
-					freeAlloc -= cat.allocation();
-				else if (cat.allocation() > 0)
-					toEqualize.add(cat);
+	public int equalizeToPct(float limit, boolean allUnlocked)	{
+		float researchBC = player().totalPlanetaryResearchSpending();
+		int freeAlloc = TechCategory.MAX_ALLOCATION_TICKS;
+		List<TechCategory> toAdjust = new ArrayList<>();
+		List<TechCategory> unlocked = new ArrayList<>();
+		for (TechCategory cat: category)
+			if (cat.locked())
+				freeAlloc -= cat.allocation();
+			else if (cat.allocation() > 0 || allUnlocked)
+				toAdjust.add(cat);
+			else
+				unlocked.add(cat);
 
-			if (toEqualize.size() <= 1)
-				return; // Nothing to equalize
+		if (freeAlloc == 0)
+			return 0; // Nothing to adjust
+		if (unlocked.isEmpty() && toAdjust.size() <= 1)
+			return 0; // Nothing to adjust
 
-			for (TechCategory cat: toEqualize)
-				cat.allocation(0);
+		for (TechCategory cat: toAdjust)
+			cat.allocation(0);
 
-			while(freeAlloc > 0)
-				for (TechCategory cat: toEqualize)
-					if (--freeAlloc >= 0)
-						cat.adjustAllocation(1);
-					else
-						return;
-			return;
+		// Cap to limit
+		freeAlloc = distributeTick(freeAlloc, toAdjust, limit, researchBC);
+		if (freeAlloc <= 0)
+			return freeAlloc;
+
+		// There are tick remaining
+		// Cap to 100%
+		freeAlloc = distributeTick(freeAlloc, toAdjust, 1f, researchBC);
+		if (freeAlloc <= 0)
+			return freeAlloc;
+
+		// There are tick remaining
+		// try to spend on unlocked
+		freeAlloc = distributeTick(freeAlloc, unlocked, 1f, researchBC);
+		if (freeAlloc <= 0)
+			return freeAlloc;
+
+		// There are tick remaining
+		// try to spend on all
+		freeAlloc = distributeTick(freeAlloc, Arrays.asList(category), 1f, researchBC);
+		if (freeAlloc <= 0)
+			return freeAlloc;
+
+		// All research is saturated
+		return redistributeRemainingAlloc(freeAlloc);
+	}
+	private int distributeTick(int freeAlloc, List<TechCategory> techList, float limit, float researchBC)	{
+		List<TechCategory> list = new ArrayList<>(techList); // to not alter the original list
+		while(freeAlloc > 0 && !list.isEmpty()) {
+			List<TechCategory> loopList = new ArrayList<>(list); // never alter a list in a for loop
+			for (TechCategory cat: loopList) {
+				if (cat.upcomingDiscoveryChance(researchBC) >= limit)
+					list.remove(cat);
+				else if (--freeAlloc >= 0)
+					cat.adjustAllocation(1);
+				else
+					return 0; // used all tick
+			}
 		}
-        int freeAlloc = TechCategory.MAX_ALLOCATION_TICKS;
-        int numLocks = 0;
-
-        for (TechCategory cat: category) {
-            if (cat.locked()) {
-                freeAlloc -= cat.allocation();
-                numLocks++;
-            } else {
-                cat.allocation(0);
-            }
-        }
-        // if every category is locked, don't try to equalize
-        if (category.length == numLocks)
-            return;
-        redistributeRemainingAlloc(freeAlloc);
-    }
-    public void redistributeRemainingAlloc(int freeAlloc) {
+		return freeAlloc;
+	}
+	public void equalizeAllocations()	{ equalizeToPct(2, !isShiftDown()); }
+//		if (isShiftDown()) { // Equalize fields with allocations
+//			equalizeToPct(1, false);
+////			int freeAlloc = TechCategory.MAX_ALLOCATION_TICKS;
+////			List<TechCategory> toEqualize = new ArrayList<>();
+////			for (TechCategory cat: category)
+////				if (cat.locked())
+////					freeAlloc -= cat.allocation();
+////				else if (cat.allocation() > 0)
+////					toEqualize.add(cat);
+////
+////			if (toEqualize.size() <= 1)
+////				return; // Nothing to equalize
+////
+////			for (TechCategory cat: toEqualize)
+////				cat.allocation(0);
+////
+////			while(freeAlloc > 0)
+////				for (TechCategory cat: toEqualize)
+////					if (--freeAlloc >= 0)
+////						cat.adjustAllocation(1);
+////					else
+////						return;
+//			return;
+//		}
+//		else {
+//			equalizeToPct(1, true);
+//		}
+////        int freeAlloc = TechCategory.MAX_ALLOCATION_TICKS;
+////        int numLocks = 0;
+////
+////        for (TechCategory cat: category) {
+////            if (cat.locked()) {
+////                freeAlloc -= cat.allocation();
+////                numLocks++;
+////            } else {
+////                cat.allocation(0);
+////            }
+////        }
+////        // if every category is locked, don't try to equalize
+////        if (category.length == numLocks)
+////            return;
+////        redistributeRemainingAlloc(freeAlloc);
+//    }
+    public int redistributeRemainingAlloc(int freeAlloc) {
         while(freeAlloc > 0)
         {
             int unlockedCategories = 0;
@@ -414,6 +481,8 @@ public final class TechTree implements Base, Serializable {
                 if(freeAlloc <= 0)
                     break;
             }
+			if(freeAlloc <= 0)
+				return freeAlloc;
             if(unlockedCategories == 0) {
                 for (TechCategory cat: category) {
                     if (!cat.researchCompleted()) {
@@ -425,9 +494,12 @@ public final class TechTree implements Base, Serializable {
                         break;
                 }
             }
+			if(freeAlloc <= 0)
+				return freeAlloc;
             if(unlockedCategories == 0) //Neither unlocked categories nor categories that still can research something were found
-                return;
+                return freeAlloc;
         }
+		return freeAlloc;
     }
     public boolean canColonize(PlanetType pt) {
         if (options().restrictedColonization())
