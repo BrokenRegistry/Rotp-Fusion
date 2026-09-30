@@ -87,7 +87,7 @@ public class ParamDirectory extends ParamString	{
 	}
 	public boolean createNewDefault(String folderName, String template)	{
 		if (createNewDefault(folderName))
-			return copyFromRessource(template, true);
+			return copyFromRessource(template, false);
 		return false;
 	}
 	public boolean copyFromRessource(String template, boolean over)	{
