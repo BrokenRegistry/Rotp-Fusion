@@ -621,11 +621,11 @@ public class ColonyShipyard extends ColonySpendingCategory {
 			adviceStr += text("MAIN_COLONY_SHIPS_COMPLETE_HELP");
 			if (remainBC > 0 ) {
 				if (!empire().divertColonyExcessToResearch())
-					adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(remainBC/2, 1));
+					adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(remainBC/2));
 				else if (empire().tech().researchCompleted())
-					adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(remainBC/2, 1));
+					adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(remainBC/2));
 				else
-					adviceStr += text("MAIN_COLONY_TO_RESEARCH_HELP", fmt(remainBC, 1));
+					adviceStr += text("MAIN_COLONY_TO_RESEARCH_HELP", fmt(remainBC));
 			}
 		}
 		if (ships == 1)

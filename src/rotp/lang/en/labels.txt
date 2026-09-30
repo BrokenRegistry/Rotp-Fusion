@@ -1043,7 +1043,7 @@ GOVERNOR_IS_OFF_BUTTON            | Ungoverned
 GOVERNOR_IS_ON_AND_OFF_BUTTON     | Governor
 GOVERNOR_OPTIONS                  | Mandate
 
-MAIN_COLONY_HEADER_ADVISOR		| <br><hr><h3>During the next turn</h3>
+MAIN_COLONY_HEADER_ADVISOR		| <br><hr><h3>In the coming year:</h3>
 MAIN_COLONY_ROBOT_CONTROL_HELP	| Robotic control level: %1 of %2.
 MAIN_COLONY_NEW_FACTORIES_HELP	| <br>Construction of %1 new factories → %2 factories.
 MAIN_COLONY_ALIEN_FACT_HELP		| <br>Conversion of %1 alien factories → %2 factories.
@@ -1071,8 +1071,8 @@ MAIN_COLONY_OBSOLETE_SHIP_HELP	| <b><font color="#FF0000">!!! Error Building Obs
 MAIN_COLONY_FROM_SHIP_RSV_HELP	| Taken from Ship Accrued %1BC<br>
 MAIN_COLONY_SHIP_SPENDING_HELP	| Spending on Ship %1BC → %2BC of %3BC.
 MAIN_COLONY_SHIP_TURN_HELP		| <br>Remaining years until delivrery %1.
-MAIN_COLONY_STARGATE_HELP		| <br>→ Stargate delivrery.
-MAIN_COLONY_SHIPS_UL_HELP		| <br>→ %1 Ships.
+MAIN_COLONY_STARGATE_HELP		| → Stargate delivrery.
+MAIN_COLONY_SHIPS_UL_HELP		| → %1 Ships.
 MAIN_COLONY_SHIPS_BUILT_HELP	| <br>Ship delivred %1 of %2
 MAIN_COLONY_SHIPS_COMPLETE_HELP	| <br>Ship request completed
 MAIN_COLONY_SHIPS_ACCRUAL_HELP	| <br>New Accrual %1BC
@@ -1205,7 +1205,7 @@ MAIN_GOVERNOR_ADVANCED_HELP		| <h3>Special Instructions</h3>The governors, altho
 MAIN_GOVERNOR_TOP_LEFT_HELP		| →MAIN_AUTO_PILOT_HELP←<hr>→MAIN_GOVERNOR_HELP←<hr>→MAIN_GOVERNOR_ADVANCED_HELP←
 MAIN_GOVERNOR_TOGGLE_HELP		| To activate or deactivate the governor of this colony.<br>A basic autopilot will always keep this colony clean.
 
-ALLOCATE_SUBSIDIES_HEAD			| <h2>Instructions for allocating subsidies</h2>
+ALLOCATE_SUBSIDIES_HEAD			| <h2>Instructions for allocating subsidies</h2>Specific instructions for awarding grants to this colony.<br>These instructions can be permanent or automatically deactivate when the purpose is achieved.
 ALLOCATE_SUBSIDIES_NONE			| <b>Crossed</b><br>No subsidy for this one.
 ALLOCATE_SUBSIDIES_DEFAULT		| <b>Metal color</b><br>Follow global instructions.
 ALLOCATE_SUBSIDIES_ALLOCATE		| <b>Gold color</b><br>Allocate subsidies.
@@ -1510,19 +1510,19 @@ PLANETS_LIST_PRODUCTION_HELP	| →PLANETS_HELP_3E←
 PLANETS_LIST_CAPACITY			| Capacity
 PLANETS_LIST_CAPACITY_HELP		| →PLANETS_HELP_3H←
 PLANETS_LIST_RESERVE			| Reserve
-PLANETS_LIST_RESERVE_HELP		| →PLANETS_HELP_3F←
+PLANETS_LIST_RESERVE_HELP		| <h3>→PLANETS_LIST_RESERVE←</H3>Reserve present in the colony vault.<be>These are either recently transferred funds or excess funds that could not be used during the previous year.
 PLANETS_LIST_IND_RATIO			| Industry
 PLANETS_LIST_IND_RATIO_HELP		| →PLANETS_HELP_3H←
 PLANETS_LIST_NEEDED				| Optimal
-PLANETS_LIST_NEEDED_HELP		| →PLANETS_HELP_5F←
+PLANETS_LIST_NEEDED_HELP		| <h3>→PLANETS_LIST_NEEDED←</H3>Beyond this amount, the colony will be limited by its own production capacity...<br>Any additional funds would be carried over to subsequent years.
 PLANETS_LIST_BUDGET				| Budget
-PLANETS_LIST_BUDGET_HELP		| →PLANETS_HELP_5E←
+PLANETS_LIST_BUDGET_HELP		| <h3>→PLANETS_LIST_BUDGET←</H3>If the governor general has the mandate to allocate funds to the colonies, the result of his planning will be reported in this column.<br>The governor will never allocate a budget greater than the value of the column “→PLANETS_LIST_NEEDED←”<br>If the player decides to allocate funds himself, his choice will also be entered in this column, accompanied by an asterix. This amount will then be treated as a priority.<br>If the governor is asked to update the budget, he will take these amounts into account and reallocate the remaining funds.<br>In the event of an excessive budget the “→PLANETS_LIST_SUBSIDY←” column will reflect what will happen.
 PLANETS_LIST_SUBSIDY			| Gets
-PLANETS_LIST_SUBSIDY_HELP		| →PLANETS_HELP_5D←
+PLANETS_LIST_SUBSIDY_HELP		| <h3>→PLANETS_LIST_SUBSIDY←</H3>The amount that will ultimately be transferred to the colony at the start of the “Next Turn”.<br>If the governor's budget is up to date, this column will be a copy of the “→PLANETS_LIST_BUDGET←” column.<br>If the player has modified the budget, it will always be treated as a priority, within the limits of available funds.
 PLANETS_LIST_CONTRIBUTE			| Gives
-PLANETS_LIST_CONTRIBUTE_HELP	| →PLANETS_HELP_5C←
+PLANETS_LIST_CONTRIBUTE_HELP	| <h3>→PLANETS_LIST_CONTRIBUTE←</H3>Contributions to the empire's treasuries via surplus allocations.<br>This column will remain empty if the player has chosen to transfer these funds to research.
 PLANETS_LIST_TAXED				| Taxed
-PLANETS_LIST_TAXED_HELP			| →PLANETS_HELP_5B←
+PLANETS_LIST_TAXED_HELP			| →PLANETS_HELP_5B←Contributions to the empire's treasury, which fall under the level of taxes and tax exemptions.
 PLANETS_LIST_ACCRUED			| Accrual
 PLANETS_LIST_ACCRUED_HELP		| <h3>→PLANETS_LIST_ACCRUED←</h3>Whenever you change ship design in the planet's shipyard, the accrued production on the old ship is stored.<br>This accrued production will be used to accelerate the production of new ships by up to 100% until all the accrued production is spent.<br>This field shows the amount of accrued production.
 PLANETS_LIST_SHIPYARD			| Shipyard

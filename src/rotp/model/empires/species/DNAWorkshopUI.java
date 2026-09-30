@@ -237,7 +237,7 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 	private void reloadRaceList(boolean foldersRework) {
 		raceList.reload(foldersRework);
 		contentPane.settingsPane.gmoSelection.updateList(raceList.getListForUI());
-		refreshAll();
+		// refreshAll(); // BR: !!! NO DO NOT REFRESH HERE, it's to early for some callers (Save To File)
 	}
 	private Rectangle getLocationOnScreen(JComponent c)	{
 		return new Rectangle(c.getLocationOnScreen(), c.getSize());
@@ -607,6 +607,8 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 		private void gmoSelectionAction(ActionEvent evt)	{
 			String prevValue = raceList.settingValue();
 			String selection = (String) gmoSelection.getSelectedItem();
+			if (selection == null)
+				return;
 			raceList.selectedValue(selection);
 			// Test validity
 			if (!raceList.settingValue().equals(selection)) {
@@ -743,7 +745,7 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 		}
 		private void setPlayerAction(ActionEvent e)	{
 			synchronized (lock) {
-			buttonClick();
+				buttonClick();
 				IGameOptions opts = guiOptions();
 				DynOptions player = dnaFactory().getAsOptions();
 				opts.selectedPlayerCustomRace(player);
@@ -758,7 +760,6 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 			}
 			refreshAll();
 		}
-
 		private RButton newSaveButton()	{
 			RButton button = RotPButtons.newBigButton(ROOT + "GUI_SAVE", true);
 			button.setMinimumSize(new Dimension(s150, s30));
@@ -768,6 +769,7 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 		}
 		private void saveAction(ActionEvent e)	{
 			synchronized (lock) {
+				buttonClick();
 				String currentSpecies = raceKey.settingValue();
 				dnaFactory().saveRace();
 				reloadRaceList(false);
@@ -775,7 +777,6 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 			}
 			refreshAll();
 		}
-
 	}
 	// ========================================================================
 	// === Level 3: ==> Cost Panel

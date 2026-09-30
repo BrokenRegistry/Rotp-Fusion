@@ -81,9 +81,7 @@ public final class GalaxyFactory implements Base {
 		Species.loadAllList();
 		IGameOptions opts = GameSession.instance().options();
 		GalaxyShape shape = opts.galaxyShape();
-		// for extremely large maps, shape is not fully generated on Setup UI
-		if (!shape.fullyInit())
-			shape.fullGenerate();
+		shape.fullGenerate();
 
 		Galaxy g = new Galaxy(shape);
 		GameSession.instance().galaxy(g);

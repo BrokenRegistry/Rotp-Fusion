@@ -2,6 +2,18 @@
 
 ## What's New
 
+26-09-30 (BR)
+- Budget:
+  - Governor-related buttons will only be displayed when there is at least one colony governed.
+  - Expanded advisor content.
+- DNA Workshop:
+  - Fixed "Save to File" not working after randomization.
+  - Fixed a possible crash if a ".race" file was deleted while the workshop was open.
+  - Fixed Tech Discovery randomization.
+  - Fixed the display not always being refreshed.
+  - When creating the "CustomSpecies" directory, example files will be included.
+- Galaxy map: reduced the ship selection box.
+
 26-09-26 (BR)
 - Fixed "Randomize" issue with "Tech Discovery" and "Tech Research"
 - Improved advisor content in defense allocation

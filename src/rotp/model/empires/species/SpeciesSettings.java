@@ -9,7 +9,6 @@ import static rotp.ui.util.PlayerShipSet.DISPLAY_RACE_SET;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.nio.file.Path;
@@ -1577,20 +1576,14 @@ public abstract class SpeciesSettings implements Base{
 			@Override public String guiSettingDisplayStr() {
 				return getLabel() + ": " + guideSelectedValue() + " " + costString(cost());
 			}
-			@Override protected boolean next(Integer i) {
-				super.next(i);
-				// To force refresh the display for those parameters 
+			@Override public void selectedValue(Integer newValue) {
+				super.selectedValue(newValue);
 				computer.updated(true);
 				construction.updated(true);
 				forceField.updated(true);
 				planet.updated(true);
 				propulsion.updated(true);
 				weapon.updated(true);
-				return true;
-			}
-			@Override public boolean toggle(MouseWheelEvent e) {
-				super.toggle(e);
-				return true;
 			}
 
 			String costString(float cost) {
@@ -1668,8 +1661,8 @@ public abstract class SpeciesSettings implements Base{
 					hasNoCost(false);
 				}
 				@Override protected Integer randomize(float rand) {
-					float lim1 = settingCost(100);
-					float lim2 = settingCost(0);
+					float lim1 = settingCost(200);
+					float lim2 = settingCost(60);
 					if (rand > 0)
 						rand *= Math.max(lim1, lim2);
 					else
@@ -1729,20 +1722,14 @@ public abstract class SpeciesSettings implements Base{
 			@Override public String guiSettingDisplayStr() {
 				return getLabel() + ": " + guideSelectedValue() + " " + costString(cost());
 			}
-			@Override protected boolean next(Integer i) {
-				super.next(i);
-				// To force refresh the display for those parameters 
+			@Override public void selectedValue(Integer newValue) {
+				super.selectedValue(newValue);
 				computer.updated(true);
 				construction.updated(true);
 				forceField.updated(true);
 				planet.updated(true);
 				propulsion.updated(true);
 				weapon.updated(true);
-				return true;
-			}
-			@Override public boolean toggle(MouseWheelEvent e) {
-				super.toggle(e);
-				return true;
 			}
 
 			String costString(float cost) {
@@ -1821,13 +1808,13 @@ public abstract class SpeciesSettings implements Base{
 					hasNoCost(false);
 				}
 				@Override protected Integer randomize(float rand) {
-					float lim1 = settingCost(100);
-					float lim2 = settingCost(0);
+					float lim1 = settingCost(0)*2;
+					float lim2 = settingCost(100)*2;
 					if (rand > 0)
 						rand *= Math.max(lim1, lim2);
 					else
 						rand *= -Math.min(lim1, lim2);
-					return getValueFromCost(rand);
+					return getValueFromCost(rand)-(int)baseCostDefault;
 				}
 				@Override public float settingCost()	{ return settingCost(combinedValue()); }
 				@Override public float settingCost(Integer value) {

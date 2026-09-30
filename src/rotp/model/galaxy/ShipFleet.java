@@ -1139,7 +1139,7 @@ public class ShipFleet extends FleetBase {
         else
             g2.drawImage(img, x+w, y, -w, h, map);
 
-        int pad = s8;
+        int pad = s4;
         selectBox().setBounds(x-pad,y-pad,w+pad+pad,h+pad+pad);
 
         int cnr = s10;

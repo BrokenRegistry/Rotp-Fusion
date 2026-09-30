@@ -540,10 +540,10 @@ public class DNAFactory extends SpeciesSettings {
 						float request = minRequest + rand().nextFloat() * (maxRequest-minRequest);
 
 						setting.setValueFromCost(setting.settingCost()+request*costFactor);
-					} else {
-						setting.setRandom(setting.lastRandomSource()
-								+ maxChange*Math.signum(changeRequest));
 					}
+					else
+						setting.setRandom(setting.lastRandomSource() + maxChange*Math.signum(changeRequest));
+
 					cost += setting.settingCost();
 					if (updateGui)
 						setting.guiSelect();
@@ -795,7 +795,8 @@ public class DNAFactory extends SpeciesSettings {
 	// #==================== RaceList ====================
 	//
 	private static boolean isFilled(String value)	{ return value != null && !value.isEmpty() && !value.startsWith("_"); }
-	private File[] loadListing()	{
+	private File[] loadListing()					{ return loadListing(true); }
+	private File[] loadListing(boolean tryToCopy)	{
 		boolean isJarPath = IMainOptions.speciesDirectory.isJarPath();
 		log("DNAFactory.loadListing Species Directory is Jar Path = " + isJarPath);
 		File speciesDir = new File(speciesDirectoryPath());
@@ -806,8 +807,13 @@ public class DNAFactory extends SpeciesSettings {
 		int maxSubDir = isJarPath? 0 : 8;
 		scanSubDir(speciesList, folderList, speciesDir, null, 0, maxSubDir);
 		log("DNAFactory.RaceList loadListing() finalized size = " + speciesList.size());
-		if (isJarPath && speciesList.isEmpty())
-			IMainOptions.speciesDirectory.createNewDefault(IMainOptions.DEFAULT_CUSTOM_SPECIES_FOLDER);
+		if (isJarPath && speciesList.isEmpty() && tryToCopy) {
+			// Create a dedicate directory to secure the scanning of sub-folders
+			String folderName = IMainOptions.DEFAULT_CUSTOM_SPECIES_FOLDER;
+			String templateName = "races/" + folderName;
+			if (IMainOptions.speciesDirectory.createNewDefault(folderName, templateName))
+				return loadListing(false);
+		}
 		return speciesList.toArray(new File[0]);
 	}
 	private Boolean contains(List<File> folderList, File dir) {
@@ -1279,11 +1285,6 @@ public class DNAFactory extends SpeciesSettings {
 				reload = false;
 				return;
 			}
-			if (index() == 0) {
-				initSkillsForEditor((DynOptions) IGameOptions.playerCustomRace.get());
-				newValue = true;
-				return;
-			}
 			if (index()>=listSize()-16) { // Base Race
 				isReference(true);
 				String key = Species.languageToKey(value.substring(1));
@@ -1332,7 +1333,7 @@ public class DNAFactory extends SpeciesSettings {
 			else {
 				SoundManager.current().playAudioClip("MisClick");
 				System.out.println("File not found!");
-				selectedValue(defaultRaceKey);
+				reload(false);
 			}
 		}
 	}

@@ -111,14 +111,10 @@ public class RComboBox<T> extends JComboBox<T> implements RotPComponents, MouseL
 	@Override public void mousePressed(MouseEvent evt)	{ }
 	@Override public void mouseReleased(MouseEvent evt)	{ mouseEntered(evt); }
 	@Override public void mouseEntered(MouseEvent evt)	{ setDescription(); }
-	@Override public void mouseExited(MouseEvent evt)	{
-//		hideGuide();
-		clearDescription();
-	}
+	@Override public void mouseExited(MouseEvent evt)	{ clearDescription(); }
 
 	public void updateList(List<T> newList)	{
 		removeAllItems();
-//		this.item
 		selectionList = newList;
 		for(T item : selectionList)
 			addItem(item);

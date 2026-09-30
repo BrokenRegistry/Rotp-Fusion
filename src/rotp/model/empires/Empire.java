@@ -267,6 +267,12 @@ public final class Empire extends Species implements NamedObject {
 		spendingNotYetMade = true;
 	}
 	public boolean spendingNotYetMade()			{ return spendingNotYetMade; }
+	public boolean hasGovernor()	{
+		for (StarSystem sys : colonizedSystems)
+			if (sys.colony().isGovernor())
+				return true;
+		return false;
+	}
 	public void clearShipImages()	{
 		shipImage		= null;
 		shipImageLarge	= null;

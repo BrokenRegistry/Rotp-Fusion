@@ -347,10 +347,7 @@ public class Transport extends FleetBase {
         else
             g2.drawImage(img, x+sW, y, x, y+sH, 0, 0, w, h, map);
 
-        int s5 = BasePanel.s5;
-        int s10 = BasePanel.s10;
-        //int s20 = BasePanel.s20;
-        int cnr = BasePanel.s10;
+        int cnr = s10;
 
         selectBox().setBounds(x-s5,y-s5,sW+s10,sH+s10);
 

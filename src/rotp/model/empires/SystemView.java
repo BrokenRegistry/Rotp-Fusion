@@ -715,9 +715,9 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
         	vPlanetType = null;
         	planetType_();
         }
-        // May be: Update flags ==> NO
-//        if (owner().isPlayer())
-//        	autoFlagPlanet(system().planet());
+		// To makes the auto-flag follow the planets evolutions.
+		if (owner().isPlayer())
+			autoFlagPlanet(system().planet());
         vCurrentSize = (int) system().planet().currentSize();
     }
     private void setColonyData() {

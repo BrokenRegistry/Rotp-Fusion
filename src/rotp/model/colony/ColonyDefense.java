@@ -382,11 +382,11 @@ public final class ColonyDefense extends ColonySpendingCategory {
 		adviceStr += text("MAIN_COLONY_BASES_NEW_HELP", fmt(rawBases()), fmt(maxBases));
 		newBC -= maxCost;
 		if (!empire().divertColonyExcessToResearch())
-			adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2, 1));
+			adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2));
 		else if (empire().tech().researchCompleted())
-			adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2, 1));
+			adviceStr += text("MAIN_COLONY_TO_TRESOR_HELP", fmt(newBC/2));
 		else
-			adviceStr += text("MAIN_COLONY_TO_RESEARCH_HELP", fmt(newBC, 1));
+			adviceStr += text("MAIN_COLONY_TO_RESEARCH_HELP", fmt(newBC));
 		return new String[] {overflowText(), adviceStr};
 	}
     public float maxSpendingNeeded() {

@@ -87,6 +87,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 
 	private Shape hoverBox, prevHover;
 	private boolean initted = false;
+	private boolean hasGovernor;
 
 	private final ActionButton optimalBudgetButton, optimalShareButton, convertButton, governorButton;
 	private final ActionButton transfertButton, cancelButton, budgetButton;
@@ -168,6 +169,8 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 	}
 	void targetSystems(List<StarSystem> syslist) {
 		initted = false;	// in case of language change
+		empire = player();
+		hasGovernor = empire.hasGovernor();
 		targetSystems = syslist;
 		emptyList = syslist.isEmpty();
 		if(!emptyList) {
@@ -288,7 +291,6 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		initted = true;
 	}
 	private void setDefaultAmt() {
-		empire = player();
 		budget = colony.budget();
 		isPlayer = budget.isPlayerBudget();
 		isGovernor = budget.governorBudgetBC() != null;
@@ -330,21 +332,22 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 	}
 	@Override protected boolean isAdvised()	{ return true; }
 	private Point drawBox(Graphics2D g, Point pos) {
-		String description = text("PLANETS_BUTTON_DO_CLEAR_DESC");
-		g.setFont(descriptionFont());
-		List<String> lines = wrappedLines(g, description, infoWidth);
-		for (String line : lines) {
-			int sw = g.getFontMetrics().stringWidth(line);
-			int infoX = boxX + margins + (infoWidth - sw)/2;
-			drawShadowedString(g, line, 3, infoX, pos.y, SystemPanel.textShadowC, SystemPanel.whiteText);
-			pos.y += lineH;
-		}
-
 		boolean disabled = player().divertColonyExcessToResearch();
-		pos = drawButtonLine(g, pos, ALL, disabled, clearAllRaiseButton, clearAllBudgetButton, clearAllGrantButton);
-		pos = drawButtonLine(g, pos, null, disabled, redoAllRaiseButton, redoAllBudgetButton, redoAllGrantButton);
-		pos = drawButtonLine(g, pos, LIST, disabled, listClearRaiseButton, listClearBudgetButton, listClearGrantButton);
-		pos = drawButtonLine(g, pos, null, disabled, listRaiseButton, listBudgetButton, listGrantButton);
+		if (hasGovernor) {
+			String description = text("PLANETS_BUTTON_DO_CLEAR_DESC");
+			g.setFont(descriptionFont());
+			List<String> lines = wrappedLines(g, description, infoWidth);
+			for (String line : lines) {
+				int sw = g.getFontMetrics().stringWidth(line);
+				int infoX = boxX + margins + (infoWidth - sw)/2;
+				drawShadowedString(g, line, 3, infoX, pos.y, SystemPanel.textShadowC, SystemPanel.whiteText);
+				pos.y += lineH;
+			}
+			pos = drawButtonLine(g, pos, ALL, disabled, clearAllRaiseButton, clearAllBudgetButton, clearAllGrantButton);
+			pos = drawButtonLine(g, pos, null, disabled, redoAllRaiseButton, redoAllBudgetButton, redoAllGrantButton);
+			pos = drawButtonLine(g, pos, LIST, disabled, listClearRaiseButton, listClearBudgetButton, listClearGrantButton);
+			pos = drawButtonLine(g, pos, null, disabled, listRaiseButton, listBudgetButton, listGrantButton);
+		}
 
 		pos = drawCheckboxes(g, pos);	
 
@@ -435,12 +438,13 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		return pos;
 	}
 	private Point drawCheckboxes(Graphics2D g, Point pos)	{
-		// Draw line
-		g.setColor(SystemPanel.blackText);
-		g.drawLine(infoLeft, pos.y, infoLeft + infoWidth, pos.y);
-		pos.y += vSep;
+		if (hasGovernor) {
+			// Draw line
+			g.setColor(SystemPanel.blackText);
+			g.drawLine(infoLeft, pos.y, infoLeft + infoWidth, pos.y);
+			pos.y += vSep;
+		}
 		Point posRight = new Point(pos.x + infoWidth/2, pos.y);
-
 		// Divert excess to research
 		toResearchCheckbox.setLocation(pos.x, pos.y-checkW);
 		toResearchCheckbox.drawCheckbox(g);
@@ -448,32 +452,35 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		oldWayCheckbox.setLocation(posRight.x, posRight.y-checkW);
 		oldWayCheckbox.drawCheckbox(g);
 
-		pos.y += vSep;
-		posRight.y = pos.y;
-		// governor Grant Funds
-		governorGrantCheckbox.setLocation(pos.x, pos.y-checkW);
-		governorGrantCheckbox.drawCheckbox(g);
-		// governor Raise Funds
-		governorRaiseCheckbox.setLocation(posRight.x, posRight.y-checkW);
-		governorRaiseCheckbox.drawCheckbox(g);
+		if (hasGovernor) {
+			pos.y += vSep;
+			posRight.y = pos.y;
+			// governor Grant Funds
+			governorGrantCheckbox.setLocation(pos.x, pos.y-checkW);
+			governorGrantCheckbox.drawCheckbox(g);
+			// governor Raise Funds
+			governorRaiseCheckbox.setLocation(posRight.x, posRight.y-checkW);
+			governorRaiseCheckbox.drawCheckbox(g);
+	
+			pos.y += vSep;
+			posRight.y = pos.y;
+			// redo Budget Grant Allowed
+			canUpdateGrantCheckbox.setLocation(pos.x, pos.y-checkW);
+			canUpdateGrantCheckbox.drawCheckbox(g);
+			// redo Budget Raise Allowed
+			canUpdateRaiseCheckbox.setLocation(posRight.x, posRight.y-checkW);
+			canUpdateRaiseCheckbox.drawCheckbox(g);
 
-		pos.y += vSep;
-		posRight.y = pos.y;
-		// redo Budget Grant Allowed
-		canUpdateGrantCheckbox.setLocation(pos.x, pos.y-checkW);
-		canUpdateGrantCheckbox.drawCheckbox(g);
-		// redo Budget Raise Allowed
-		canUpdateRaiseCheckbox.setLocation(posRight.x, posRight.y-checkW);
-		canUpdateRaiseCheckbox.drawCheckbox(g);
-
+			pos.y += vSep/2;
+			posRight.y = pos.y;
+			int xShift = checkW * 5/3 -s5;
+			maxAbsCapitalParamBox.setLocation(pos.x+xShift, pos.y);
+			maxAbsCapitalParamBox.drawParamBox(g);
+			maxPctCapitalParamBox.setLocation(posRight.x+xShift, posRight.y);
+			maxPctCapitalParamBox.drawParamBox(g);
+			pos.y += vSep/2;
+		}
 		pos.y += vSep/2;
-		posRight.y = pos.y;
-		int xShift = checkW * 5/3 -s5;
-		maxAbsCapitalParamBox.setLocation(pos.x+xShift, pos.y);
-		maxAbsCapitalParamBox.drawParamBox(g);
-		maxPctCapitalParamBox.setLocation(posRight.x+xShift, posRight.y);
-		maxPctCapitalParamBox.drawParamBox(g);
-		pos.y += vSep;
 
 		// Draw line
 		pos.y += vSep/4;
@@ -580,7 +587,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		String currentChoice;
 		if (isPlayer)
 			currentChoice = text("PLANETS_BUDGET_CURRENT_PLAYER", fmt(ceil(budget.playerBudgetBC())), "");
-		else if (isGovernor)
+		else if (budget.governorBudgetBC() != null)
 			currentChoice = text("PLANETS_BUDGET_GOVERNOR_ALONE", fmt(budget.governorBudgetBC()), "");
 		else
 			currentChoice = text("PLANETS_BUDGET_CURRENT_NONE");
@@ -626,7 +633,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		helpUI = RotPUI.helpUI();
 		helpUI.clear();
 		int height = getHeight();
-		int bottom = height - s25;
+		int bottom = height - (hasGovernor? s25 : s190);
 		int bw = scaled(300);
 		int xSep = s50;
 
@@ -660,32 +667,36 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		HelpUI.HelpSpec spL3 = helpUI.addBrownHelpText(x, y, w, 0, optimalBudgetButton.getDescriptionText());
 		spL3.setLine(spL3.xe(), spL3.yc(), tx, ty);
 
-		tx = canUpdateGrantCheckbox.x - s5;
-		ty = canUpdateGrantCheckbox.yc() + s3;
-		w = bw;
 		y = ySep-spL3.y();
-		HelpUI.HelpSpec spL4 = helpUI.addBrownHelpText(x, y, w, 0, IGovOptions.redoBudgetGrantAllowed.getDescription());
-		spL4.setLine(spL4.xe(), spL4.yc(), tx, ty);
+		if (hasGovernor) {
+			tx = canUpdateGrantCheckbox.x - s5;
+			ty = canUpdateGrantCheckbox.yc() + s3;
+			w = bw;
+			y = ySep-spL3.y();
+			HelpUI.HelpSpec spL4 = helpUI.addBrownHelpText(x, y, w, 0, IGovOptions.redoBudgetGrantAllowed.getDescription());
+			spL4.setLine(spL4.xe(), spL4.yc(), tx, ty);
 
-		tx = governorGrantCheckbox.x - s5;
-		ty = governorGrantCheckbox.yc();
-		w = bw;
-		y = ySep-spL4.y();
-		HelpUI.HelpSpec spL5 = helpUI.addBrownHelpText(x, y, w, 0, IGovOptions.governorGrantFunds.getDescription());
-		spL5.setLine(spL5.xe(), spL5.yc(), tx, ty);
+			tx = governorGrantCheckbox.x - s5;
+			ty = governorGrantCheckbox.yc();
+			w = bw;
+			y = ySep-spL4.y();
+			HelpUI.HelpSpec spL5 = helpUI.addBrownHelpText(x, y, w, 0, IGovOptions.governorGrantFunds.getDescription());
+			spL5.setLine(spL5.xe(), spL5.yc(), tx, ty);
 
-		tx = toResearchCheckbox.x - s5;
-		ty = toResearchCheckbox.yc() - s3;
-		w = bw;
-		y = ySep-spL5.y();
-		HelpUI.HelpSpec spL6 = helpUI.addBrownHelpText(x, y, w, 0, IMapOptions.divertExcessToResearch.getDescription());
-		spL6.setLine(spL6.xe(), spL6.yc(), tx, ty);
+			y = ySep-spL5.y();
+		}
 
-		tx = oldWayCheckbox.x - s5;
-		ty = oldWayCheckbox.yc() - s3;
-		y = ySep-spL6.y();
-		HelpUI.HelpSpec spL7 = helpUI.addBrownHelpText(x, y, w, 0, IGovOptions.autospendImmediateTransfer.getDescription());
-		spL7.setLine(spL7.xe(), spL7.yc(), tx, ty);
+			tx = toResearchCheckbox.x - s5;
+			ty = toResearchCheckbox.yc() - s3;
+			w = bw;
+			HelpUI.HelpSpec spL6 = helpUI.addBrownHelpText(x, y, w, 0, IMapOptions.divertExcessToResearch.getDescription());
+			spL6.setLine(spL6.xe(), spL6.yc(), tx, ty);
+
+			tx = oldWayCheckbox.x - s5;
+			ty = oldWayCheckbox.yc() - s3;
+			y = ySep-spL6.y();
+			HelpUI.HelpSpec spL7 = helpUI.addBrownHelpText(x, y, w, 0, IGovOptions.autospendImmediateTransfer.getDescription());
+			spL7.setLine(spL7.xe(), spL7.yc(), tx, ty);
 
 		// RIGHT SIDE
 		ySep = s10;
@@ -706,17 +717,19 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		HelpUI.HelpSpec spR3 = helpUI.addBrownHelpText(x, y, w, 0, optimalShareButton.getDescriptionText());
 		spR3.setLine(spR3.x(), spR3.yc(), tx, ty);
 
-		tx = canUpdateRaiseCheckbox.getTextRightX() + s5;
-		ty = canUpdateRaiseCheckbox.yc() + s3;
-		y = ySep-spR3.y();
-		HelpUI.HelpSpec spR4 = helpUI.addBrownHelpText(x, y, w, 0, canUpdateRaiseCheckbox.getParam().getDescription());
-		spR4.setLine(spR4.x(), spR4.yc(), tx, ty);
+		if (hasGovernor) {
+			tx = canUpdateRaiseCheckbox.getTextRightX() + s5;
+			ty = canUpdateRaiseCheckbox.yc() + s3;
+			y = ySep-spR3.y();
+			HelpUI.HelpSpec spR4 = helpUI.addBrownHelpText(x, y, w, 0, canUpdateRaiseCheckbox.getParam().getDescription());
+			spR4.setLine(spR4.x(), spR4.yc(), tx, ty);
 
-		tx = governorRaiseCheckbox.getTextRightX() + s5;
-		ty = governorRaiseCheckbox.yc() - s2;
-		y = ySep-spR4.y();
-		HelpUI.HelpSpec spR5 = helpUI.addBrownHelpText(x, y, w, 0, governorRaiseCheckbox.getParam().headerHelp(false));
-		spR5.setLine(spR5.x(), spR5.yce(), tx, ty);
+			tx = governorRaiseCheckbox.getTextRightX() + s5;
+			ty = governorRaiseCheckbox.yc() - s2;
+			y = ySep-spR4.y();
+			HelpUI.HelpSpec spR5 = helpUI.addBrownHelpText(x, y, w, 0, governorRaiseCheckbox.getParam().headerHelp(false));
+			spR5.setLine(spR5.x(), spR5.yce(), tx, ty);
+		}
 	}
     private void increment()   { setAmt(amt+1); }
     private void decrement()   { setAmt(amt-1); }

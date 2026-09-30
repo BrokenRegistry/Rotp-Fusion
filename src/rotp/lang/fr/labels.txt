@@ -1043,7 +1043,7 @@ GOVERNOR_IS_OFF_BUTTON            | Gouverneur
 GOVERNOR_IS_ON_AND_OFF_BUTTON     | Gouverneur
 GOVERNOR_OPTIONS                  | Mandat
 
-MAIN_COLONY_HEADER_ADVISOR		| <br><hr><h3>Durant le prochain tour</h3>
+MAIN_COLONY_HEADER_ADVISOR		| <br><hr><h3>Dans l’année à venir :</h3>
 MAIN_COLONY_ROBOT_CONTROL_HELP	| Niveau de contrôle robotique : %1 sur %2.
 MAIN_COLONY_NEW_FACTORIES_HELP	| <br>Construction de %1 nouvelles usines → %2 usines.
 MAIN_COLONY_ALIEN_FACT_HELP		| <br>Conversion de %1 usines extraterrestres → %2 usines.
@@ -1071,8 +1071,8 @@ MAIN_COLONY_OBSOLETE_SHIP_HELP	| <b><font color="#FF0000">!!! Erreur Constructio
 MAIN_COLONY_FROM_SHIP_RSV_HELP	| Puisé dans la réserve %1 CG<br>
 MAIN_COLONY_SHIP_SPENDING_HELP	| Dépenses de vaisseaux %1 CG → %2 CG of %3 CG.
 MAIN_COLONY_SHIP_TURN_HELP		| <br>Temps restant avant la livraison %1.
-MAIN_COLONY_STARGATE_HELP		| <br>→ La porte des étoile sera livrée.
-MAIN_COLONY_SHIPS_UL_HELP		| <br>→ %1 Vaisseaux.
+MAIN_COLONY_STARGATE_HELP		| → La porte des étoile sera livrée.
+MAIN_COLONY_SHIPS_UL_HELP		| → %1 Vaisseaux.
 MAIN_COLONY_SHIPS_BUILT_HELP	| <br>Vaisseaux livrés %1 of %2
 MAIN_COLONY_SHIPS_COMPLETE_HELP	| <br>Tous les vaisseaux demandé seront livrés.
 MAIN_COLONY_SHIPS_ACCRUAL_HELP	| <br>Nouvelles réserves %1 CG.
@@ -1205,7 +1205,7 @@ MAIN_GOVERNOR_ADVANCED_HELP		| <h3>Instructions Spéciales</h3>Les gouverneurs, 
 MAIN_GOVERNOR_TOP_LEFT_HELP		| →MAIN_AUTO_PILOT_HELP←<hr>→MAIN_GOVERNOR_HELP←<hr>→MAIN_GOVERNOR_ADVANCED_HELP←
 MAIN_GOVERNOR_TOGGLE_HELP		| Pour activer ou désactiver le gouverneur de cette colonie.<br>Un pilote automatique de base veillera à toujours garder cette colonie propre.
 
-ALLOCATE_SUBSIDIES_HEAD			| <h2>Instructions pour l’attribution des subventions</h2>
+ALLOCATE_SUBSIDIES_HEAD			| <h2>Instructions pour l’attribution des subventions</h2>Instructions spécifiques pour l'attribution de subventions à cette colonie.<br>Ces instructions peuvent être permanentes ou automatiquement désactivées lorsque l'objectif est atteint.
 ALLOCATE_SUBSIDIES_NONE			| <b>Barré</b><br>Aucune subvention pour celle-ci.
 ALLOCATE_SUBSIDIES_DEFAULT		| <b>Couleur Métal</b><br>Suivre les instructions générales.
 ALLOCATE_SUBSIDIES_ALLOCATE		| <b>Couleur Or</b><br>Demande d’allocation de subventions.
@@ -1510,21 +1510,21 @@ PLANETS_LIST_PRODUCTION_HELP	| →PLANETS_HELP_3E←
 PLANETS_LIST_CAPACITY			| Capacité
 PLANETS_LIST_CAPACITY_HELP		| →PLANETS_HELP_3H←
 PLANETS_LIST_RESERVE			| Réserve
-PLANETS_LIST_RESERVE_HELP		| →PLANETS_HELP_3F←
+PLANETS_LIST_RESERVE_HELP		| <h3>→PLANETS_LIST_RESERVE←</H3>Réserve présente dans le coffre-fort de la colonie.<be>Il s’agit soit de fonds récemment transférés, soit de fonds excédentaires qui n’ont pu être utilisés au cours de l’année précédente.
 PLANETS_LIST_IND_RATIO			| Usines
 PLANETS_LIST_IND_RATIO_HELP		| →PLANETS_HELP_3H←
 PLANETS_LIST_NEEDED				| Optimal
-PLANETS_LIST_NEEDED_HELP		| →PLANETS_HELP_5F←
+PLANETS_LIST_NEEDED_HELP		| <h3>→PLANETS_LIST_NEEDED←</H3>Au-delà de ce montant, la colonie sera limitée par sa propre capacité de production...<br>Les éventuels fonds supplémentaires seraient reportés aux années suivantes.
 PLANETS_LIST_BUDGET				| Budget
-PLANETS_LIST_BUDGET_HELP		| →PLANETS_HELP_5E←
+PLANETS_LIST_BUDGET_HELP		| <h3>→PLANETS_LIST_BUDGET←</H3>Si le gouverneur général a pour mandat d’allouer des fonds aux colonies, le résultat de sa planification sera reporté dans cette colonne.<br>Le gouverneur n’allouera jamais un budget supérieur à la valeur de la colonne « →PLANETS_LIST_NEEDED← »<br>Si le joueur décide d’allouer lui-même des fonds, son choix sera également inscrit dans cette colonne, accompagné d’un astérisque. Ce montant sera alors traité en priorité.<br>Si le gouverneur est invité à mettre à jour le budget, il prendra en compte ces montants et réaffectera les fonds restants.<br>En cas de budget excessif la colonne « →PLANETS_LIST_SUBSIDY← » reflétera ce qui se passera.
 PLANETS_LIST_SUBSIDY			| Reçoit
-PLANETS_LIST_SUBSIDY_HELP		| →PLANETS_HELP_5D←
+PLANETS_LIST_SUBSIDY_HELP		| <h3>→PLANETS_LIST_SUBSIDY←</H3>Le montant qui sera finalement transféré à la colonie au début du « Prochain Tour ».<br>Si le budget du gouverneur est à jour, cette colonne sera une copie de la colonne « →PLANETS_LIST_BUDGET← ».<br>Si le joueur a modifié le budget, il sera toujours traité en priorité, dans la limite des fonds disponibles.
 PLANETS_LIST_CONTRIBUTE			| Envoie
-PLANETS_LIST_CONTRIBUTE_HELP	| →PLANETS_HELP_5C←
+PLANETS_LIST_CONTRIBUTE_HELP	| <h3>→PLANETS_LIST_CONTRIBUTE←</H3>Contributions au trésor de l'empire via les surplus d'allocations.<br>Cette colonne restera vide si le joueur a choisi de transférer ces fonds vers la recherche.
 PLANETS_LIST_TAXED				| Imposé
-PLANETS_LIST_TAXED_HELP			| →PLANETS_HELP_5B←
+PLANETS_LIST_TAXED_HELP			| <h3>→PLANETS_LIST_TAXED←</H3>Contributions au trésor de l'empire, qui relèvent du niveau des impôts et des exonérations fiscales.
 PLANETS_LIST_ACCRUED			| En stock
-PLANETS_LIST_ACCRUED_HELP		| <h3>→PLANETS_LIST_ACCRUED←</h3>Chaque fois que vous modifiez la conception d'un vaisseau dans le chantier naval de la planète, la production accumulée sur l’ancien vaisseau est stockée.<br>Cette production accumulée sera utilisée pour accélérer la production de nouveaux vaisseaus jusqu’à 100 % jusqu’à ce que toute la production accumulée soit dépensée.<br>Ce champ affiche le montant de la production accumulée.
+PLANETS_LIST_ACCRUED_HELP		| <h3>→PLANETS_LIST_ACCRUED←</h3>Chaque fois que vous modifiez la conception d’un vaisseau dans le chantier naval de la planète, la production accumulée sur l’ancien vaisseau est stockée.<br>Cette production accumulée sera utilisée pour accélérer la production de nouveaux vaisseaus jusqu’à 100 % jusqu’à ce que toute la production accumulée soit dépensée.<br>Ce champ affiche le montant de la production accumulée.
 PLANETS_LIST_SHIPYARD			| En chantier
 PLANETS_LIST_SHIPYARD_HELP		| →PLANETS_HELP_4G←
 PLANETS_LIST_NOTES				| Notes

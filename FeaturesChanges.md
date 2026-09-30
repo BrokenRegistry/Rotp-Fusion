@@ -320,6 +320,8 @@
 
 ### Miscellaneous:
 
+- DNA Workshop:
+  - When creating the "CustomSpecies" directory, example files will be included.
 - New settings: development limits for each planet type.
 - You now have the ability to modify the research after selecting a new one, following a technological discovery on an Artifact planet, a technology theft or a technology exchange.
 - The colony development limit will now be based on the colony industry capacity.
@@ -373,6 +375,7 @@
 
 ### User Interfaces:
 
+- Galaxy map: reduced the ship selection box.
 - Tech UI: "Alt-Num" will equalize the tech allocation up to the limit of: num * 10% chance of discovery.
   - example: "Alt-6" ==> no more tick will be given once the chance of discovery exceeds 60%.
 - Budget Max Absolute Capital can now be set to a smaller amount.
@@ -482,6 +485,9 @@
 
 ### Guide and Help:
 
+- Budget:
+  - Governor-related buttons will only be displayed when there is at least one colony governed.
+  - Expanded advisor content.
 - Fixed and updated the galaxy size description (Thanks to @Corbeau)
 - New content for the advisor: in defense, shipyard and ecology.
 - New content for the advisor: the list of events expected in the development of the industry.
@@ -518,6 +524,11 @@
 
 ### Fixes:
 
+- DNA Workshop:
+  - Fixed "Save to File" not working after randomization.
+  - Fixed a possible crash if a ".race" file was deleted while the workshop was open.
+  - Fixed Tech Discovery randomization.
+  - Fixed the display not always being refreshed.
 - Fixed "Randomize" issue with "Tech Discovery" and "Tech Research"
 - Fixed the crossed coin icon not appearing in the colonies columns.
 - Improved a bit the coin image quality (Some scaling issues)

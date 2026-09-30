@@ -110,8 +110,12 @@ public abstract class GalaxyShape implements Base, Serializable {
 		rand	= randRnd;
 		randX	= randRnd;
 		randY	= randRnd;
-		finalNumberStarSystems = opts.numberStarSystems(true);
+		// in case of random, will generate a new value
 		numOpponents = max(0, opts.selectedNumberOpponents(true));
+		// takes into account the number of opponents, and may adjust it
+		finalNumberStarSystems = opts.numberStarSystems(true);
+		// Get the final value
+		numOpponents = max(0, opts.selectedNumberOpponents());
 		numEmpires	 = numOpponents + 1;
 
 		initFinalOption1();
