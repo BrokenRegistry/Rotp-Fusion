@@ -821,8 +821,7 @@ public class DNAFactory extends SpeciesSettings {
 	void copyGMOSpeciesSamples()	{
 		String folderName = IMainOptions.DEFAULT_CUSTOM_SPECIES_FOLDER;
 		String templateName = "races/" + folderName;
-		speciesDirectory.copyFromRessource(templateName + "/SpeciesPlus", false);
-		speciesDirectory.copyFromRessource(templateName + "/Species40", false);
+		speciesDirectory.copyFromRessource(templateName);
 	}
 	private Boolean contains(List<File> folderList, File dir) {
 		try {

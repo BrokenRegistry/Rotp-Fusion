@@ -87,79 +87,52 @@ public class ParamDirectory extends ParamString	{
 	}
 	public boolean createNewDefault(String folderName, String template)	{
 		if (createNewDefault(folderName))
-			return copyFromRessource(template, false);
+			return copyFromRessource(template);
 		return false;
 	}
-	public boolean copyFromRessource(String template, boolean over)	{
+	public boolean copyFromRessource(String template)	{
 		URL url = Rotp.class.getResource(template);
 		File dest = new File(get());
-		File parent = dest.getParentFile();
-		if (over && parent != null)
-			return FileUtils.copyResourcesRecursively(url, parent);
-		else
-			return FileUtils.copyResourcesRecursively(url, dest);
+		return CopyUtils.copyResourcesRecursively(url, dest);
 	}
 
-	// Source - https://stackoverflow.com/a/3348150
-	// Posted by Jabber, modified by community. See post 'Timeline' for change history
-	// Retrieved 2026-09-27, License - CC BY-SA 3.0
-	public class FileUtils {
-		private static boolean copyFile(final File toCopy, final File destFile) {
+	public class CopyUtils {
+		public static boolean copyResourcesRecursively(final URL srcUrl, final File destDir)	{
 			try {
-				FileInputStream src = new FileInputStream(toCopy);
-				FileOutputStream dest = new FileOutputStream(destFile);
-				boolean copied = FileUtils.copyStream(src, dest);
-				try { dest.close(); }
-				catch (IOException e) {
-					e.printStackTrace();
+				URLConnection urlConnection = srcUrl.openConnection();
+				if (urlConnection instanceof JarURLConnection)
+					return copyJarResourcesRecursively((JarURLConnection) urlConnection, destDir);
+				else {
+					File src = new File(srcUrl.getPath());
+					if (destDir.exists() || destDir.mkdir())
+						return copyFolderContent(src, destDir);
+					else
+						return false;
 				}
-				try { src.close(); }
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-				return copied;
 			}
-			catch (final FileNotFoundException e) {
+			catch (final IOException e) {
 				e.printStackTrace();
 			}
 			return false;
 		}
-		private static boolean copyFilesRecusively(final File toCopy, final File destDir) {
-			assert destDir.isDirectory();
+		private static boolean copyJarResourcesRecursively(JarURLConnection jarSrc, File destDir) throws IOException	{
+			final JarFile jarFile = jarSrc.getJarFile();
 
-			if (!toCopy.isDirectory())
-				return FileUtils.copyFile(toCopy, new File(destDir, toCopy.getName()));
-			else {
-				final File newDestDir = new File(destDir, toCopy.getName());
-				if (!newDestDir.exists() && !newDestDir.mkdir())
-					return false;
-
-				for (final File child : toCopy.listFiles()) {
-					if (!FileUtils.copyFilesRecusively(child, newDestDir)) {
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-		private static boolean copyJarResourcesRecursively(final File destDir, final JarURLConnection jarConnection) throws IOException {
-			final JarFile jarFile = jarConnection.getJarFile();
-
-			for (final Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); ) {
-				final JarEntry entry = e.nextElement();
-				if (entry.getName().startsWith(jarConnection.getEntryName())) {
-					final String filename = Strings.CS.removeStart(entry.getName(), jarConnection.getEntryName());
-					final File f = new File(destDir, filename);
+			for (Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); ) {
+				JarEntry entry = e.nextElement();
+				if (entry.getName().startsWith(jarSrc.getEntryName())) {
+					String filename = Strings.CS.removeStart(entry.getName(), jarSrc.getEntryName());
+					File f = new File(destDir, filename);
 					if (!entry.isDirectory()) {
-						final InputStream entryInputStream = jarFile.getInputStream(entry);
-						if(!FileUtils.copyStream(entryInputStream, f)) {
+						InputStream entryInputStream = jarFile.getInputStream(entry);
+						if(!copyStream(entryInputStream, f)) {
 							entryInputStream.close();
 							return false;
 						}
 						entryInputStream.close();
 					} 
 					else {
-						if (!FileUtils.ensureDirectoryExists(f)) {
+						if (!ensureDirectoryExists(f)) {
 							jarFile.close();
 							throw new IOException("Could not create directory: " + f.getAbsolutePath());
 						}
@@ -169,27 +142,45 @@ public class ParamDirectory extends ParamString	{
 			jarFile.close();
 			return true;
 		}
-		public static boolean copyResourcesRecursively(final URL originUrl, final File destination) {
+		private static boolean ensureDirectoryExists(File f)		{ return f.exists() || f.mkdir(); }
+		private static boolean copyStream(InputStream is, File f)	{
 			try {
-				final URLConnection urlConnection = originUrl.openConnection();
-				if (urlConnection instanceof JarURLConnection)
-					return FileUtils.copyJarResourcesRecursively(destination, (JarURLConnection) urlConnection);
-				else {
-					return FileUtils.copyFilesRecusively(new File(originUrl.getPath()), destination);
-				}
-			} catch (final IOException e) {
+				FileOutputStream out = new FileOutputStream(f);
+				boolean copied = copyStream(is, out);
+				try { out.close(); }
+				catch (IOException e) { e.printStackTrace(); }
+				return copied;
+			}
+			catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
 			return false;
 		}
-		private static boolean copyStream(final InputStream is, final File f) {
-			try {
-				FileOutputStream out = new FileOutputStream(f);
-				boolean copied =  FileUtils.copyStream(is, out);
-				try { out.close(); }
-				catch (IOException e) {
-					e.printStackTrace();
+
+		private static boolean copyFolderContent(File srcDir, File destDir)	{
+			assert srcDir.isDirectory();
+			assert destDir.isDirectory();
+			for (File child : srcDir.listFiles())
+				if (child.isDirectory()) {
+					File subDir = new File(destDir, child.getName());
+					if (subDir.exists() || subDir.mkdir())
+						copyFolderContent(child, subDir);
+					else
+						return false; // Don't exist and can't create it
 				}
+				else 
+					copyFile(child, new File(destDir, child.getName()));
+			return true;
+		}
+		private static boolean copyFile(File toCopy, File destFile) {
+			try {
+				FileInputStream src = new FileInputStream(toCopy);
+				FileOutputStream dest = new FileOutputStream(destFile);
+				boolean copied = copyStream(src, dest);
+				try { dest.close(); }
+				catch (IOException e) { e.printStackTrace(); }
+				try { src.close(); }
+				catch (IOException e) { e.printStackTrace(); }
 				return copied;
 			}
 			catch (final FileNotFoundException e) {
@@ -202,9 +193,9 @@ public class ParamDirectory extends ParamString	{
 				final byte[] buf = new byte[1024];
 
 				int len = 0;
-				while ((len = is.read(buf)) > 0) {
+				while ((len = is.read(buf)) > 0)
 					os.write(buf, 0, len);
-				}
+
 				is.close();
 				os.close();
 				return true;
@@ -212,9 +203,6 @@ public class ParamDirectory extends ParamString	{
 				e.printStackTrace();
 			}
 			return false;
-		}
-		private static boolean ensureDirectoryExists(final File f) {
-			return f.exists() || f.mkdir();
 		}
 	}
 }
