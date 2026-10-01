@@ -510,7 +510,6 @@ public final class HistoryUI extends BasePanel implements MouseListener {
             //g.setFont(narrowFont(18));
             Font fontSansSerif = new Font("SansSerif", Font.BOLD, 20); // modnar: change font to display unicode
 			if (onlySymblol) {
-				
 				fontForSymbol = new Font("SansSerif", Font.BOLD, 40);
 				g.setFont(fontForSymbol);
 			}

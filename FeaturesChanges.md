@@ -375,6 +375,7 @@
 
 ### User Interfaces:
 
+- DNA Workshop: New button on the side of the directory selection button to copy GMO species samples to the selected directory.
 - Galaxy map: reduced the ship selection box.
 - Tech UI: "Alt-Num" will equalize the tech allocation up to the limit of: num * 10% chance of discovery.
   - example: "Alt-6" ==> no more tick will be given once the chance of discovery exceeds 60%.

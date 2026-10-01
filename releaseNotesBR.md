@@ -11,6 +11,9 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-01 (BR)
+- DNA Workshop: New button on the side of the directory selection button to copy GMO species samples to the selected directory.
+
 26-09-30 (BR)
 - Budget:
   - Governor-related buttons will only be displayed when there is at least one colony governed.

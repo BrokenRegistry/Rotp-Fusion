@@ -2350,6 +2350,8 @@ CUSTOM_RACE_BUTTON_FOLDER_DESC	| Choisir le répertoire contenant vos espèces p
 CUSTOM_RACE_BUTTON_NAMES		| Éditer les Noms
 CUSTOM_RACE_BUTTON_NAMES_DESC	| Pour rédiger la nouvelle terminologie à associer à cet OGM. Plusieures civilisations peuvent être créées, dans plusieures langues.
 CUSTOM_RACE_EMPTY_DESCRIPTION	| « Maj » et « Ctrl » peuvent être utilisés pour modifier les fonctionnalités des boutons, des clics et des défilements.
+CUSTOM_RACE_BUTTON_SAMPLE		| ++
+CUSTOM_RACE_BUTTON_SAMPLE_DESC	| Ajouter des examples dans votre répertoire d'espèces personalisées.
 
 CUSTOM_RACE_FLEET_DESC			| Exemple d’une flottille composée de vaisseaus issus du modèle choisi pour cette espèce.
 CUSTOM_RACE_FLEET_HELP			| Exemple d’une flottille composée de vaisseaus issus du modèle choisi pour cette espèce.<br>Si l’animation vous dérange, vous pouvez la désactiver ou l’activer en cliquant sur l’image.

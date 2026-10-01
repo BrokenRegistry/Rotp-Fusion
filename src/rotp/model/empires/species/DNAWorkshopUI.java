@@ -541,8 +541,8 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 			add(new JLabel(), newGbc(0, 0, 4,2, 0,0, CENTER, NONE, new Insets(scaled(540), scaled(680), 0, 0), 0,0));
 
 			int side = s10;
-			int[] settingWidth	= {scaled(160), scaled(160), scaled(160), scaled(160)};
-			int[] subPanelWidth	= {scaled(180), scaled(180), scaled(180), scaled(180)};
+			int[] settingWidth	= {s160, s160, s160, s160};
+			int[] subPanelWidth	= {s180, s180, s180, s180};
 			int x = 0;
 			int y = 0;
 			JPanel  subPanel = newSubPanel(subPanelWidth[x]);
@@ -553,7 +553,7 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 				RandomizePane rg = new RandomizePane();
 				add(rg, newGbc(0,1, 1,1, 1,0, SOUTH, NONE, new Insets(0, side, side, 0), 0,0));
 
-				add(newFolderButton(), newGbc(x, y, 1,1, 0,0, CENTER, NONE, new Insets(side, 0, 0, 0), 0,0));
+				add(new FolderSelectionPanel(s180), newGbc(x, y, 1,1, 0,0, CENTER, NONE, new Insets(side, s10, 0, 0), 0,0));
 				y++;
 				gmoSelection = newGMOSelection();
 				subPanel.add(gmoSelection, newGbc(x, y, 1,1, 0,0, CENTER, HORIZONTAL, new Insets(s5, 0, side, 0), 0,0));
@@ -652,28 +652,6 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 			g.fillRect(0, 0, w, h);
 
 			g.dispose();
-		}
-		private RButton newFolderButton()	{
-			RButton button = new RButton(ROOT + "BUTTON_FOLDER", RotPButtons.DEFAULT_FONT_SIZE);
-			button.setMinimumSize(new Dimension(scaled(125), s10));
-			button.setParam(speciesDirectory);
-			button.setParent(workshop);
-			button.setLabelKey();
-			button.setListener(e -> selectFolderAction(e));
-			return button;
-		}
-		private String selectFolderAction(MouseEvent e)	{
-			if (e.getID() == MouseEvent.MOUSE_RELEASED) {
-				synchronized (lock) {
-					if (e.isControlDown())
-						reloadRaceList(true);
-					else
-						reloadRaceList(false);
-					dnaFactory().loadRace();
-				}
-				repaint();
-			}
-			return null;
 		}
 	}
 	// ========================================================================
@@ -776,6 +754,65 @@ public final class DNAWorkshopUI extends BasePanel implements RotPComponents {//
 				raceList.selectedValue(currentSpecies);
 			}
 			refreshAll();
+		}
+	}
+	// ========================================================================
+	// === Level 3: ==> Folder selection
+	//
+	private class FolderSelectionPanel extends JPanel	{
+		private static final long serialVersionUID = 1L;
+		private FolderSelectionPanel(int width)	{
+			setOpaque(false);
+			setLayout(new GridBagLayout());
+			add(newFolderButton(), newGbc(0, 0, 1,1, 0,0, WEST, NONE, new Insets(s10, 0, 0, 0), 0,0));
+			addVariableSpace(this, 1, 0);
+			add(newSampleButton(), newGbc(2, 0, 1,1, 0,0, EAST, NONE, new Insets(s10, 0, 0, 0), 0,0));
+
+		}
+		private RButton newFolderButton()	{
+			RButton button = new RButton(ROOT + "BUTTON_FOLDER", RotPButtons.DEFAULT_FONT_SIZE);
+			button.setMinimumSize(new Dimension(scaled(125), s10));
+			button.setParam(speciesDirectory);
+			button.setParent(workshop);
+			button.setLabelKey();
+			button.setListener(e -> selectFolderAction(e));
+			return button;
+		}
+		private String selectFolderAction(MouseEvent e)	{
+			if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+				synchronized (lock) {
+					if (e.isControlDown())
+						reloadRaceList(true);
+					else
+						reloadRaceList(false);
+					dnaFactory().loadRace();
+				}
+				repaint();
+			}
+			return null;
+		}
+		private RButton newSampleButton()	{
+			RButton button = new RButton(ROOT + "BUTTON_SAMPLE", RotPButtons.DEFAULT_FONT_SIZE);
+			button.setMinimumSize(new Dimension(s10, s10));
+			button.setParent(workshop);
+			button.setLabelKey();
+			button.setListener(e -> addSamplesAction(e));
+			button.setText("⩢");
+			int side = scaled(RotPButtons.DEFAULT_FONT_SIZE);
+			int top = s1 + side/10;
+			int bottom = s1 + side/20;
+			Font font = new Font("SansSerif", Font.BOLD, side);
+			button.setFont(font);
+			button.setMargin(new Insets(top, s5, bottom, s5));
+			return button;
+		}
+		private String addSamplesAction(MouseEvent e)	{
+			if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+				dnaFactory().copyGMOSpeciesSamples();
+				playAudioClip("SpecialClick");
+				reloadRaceList(false);
+			}
+			return null;
 		}
 	}
 	// ========================================================================

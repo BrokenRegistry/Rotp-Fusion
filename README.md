@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-01 (BR)
+- DNA Workshop: New button on the side of the directory selection button to copy GMO species samples to the selected directory.
+
 26-09-30 (BR)
 - Budget:
   - Governor-related buttons will only be displayed when there is at least one colony governed.
@@ -75,3 +78,5 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## [To-Do list](TodoList.md)
 
 [How To](doc/HowTo.md)
+
+

@@ -17,6 +17,7 @@
 package rotp.model.empires.species;
 
 import static rotp.Rotp.rand;
+import static rotp.model.game.IMainOptions.speciesDirectory;
 import static rotp.model.game.IMainOptions.speciesDirectoryPath;
 import static rotp.model.game.IPreGameOptions.randomAlienRaces;
 import static rotp.model.game.IPreGameOptions.randomAlienRacesMax;
@@ -810,11 +811,18 @@ public class DNAFactory extends SpeciesSettings {
 		if (isJarPath && speciesList.isEmpty() && tryToCopy) {
 			// Create a dedicate directory to secure the scanning of sub-folders
 			String folderName = IMainOptions.DEFAULT_CUSTOM_SPECIES_FOLDER;
-			String templateName = "races/" + folderName;
-			if (IMainOptions.speciesDirectory.createNewDefault(folderName, templateName))
+			if (IMainOptions.speciesDirectory.createNewDefault(folderName)) {
+				copyGMOSpeciesSamples();
 				return loadListing(false);
+			}
 		}
 		return speciesList.toArray(new File[0]);
+	}
+	void copyGMOSpeciesSamples()	{
+		String folderName = IMainOptions.DEFAULT_CUSTOM_SPECIES_FOLDER;
+		String templateName = "races/" + folderName;
+		speciesDirectory.copyFromRessource(templateName + "/SpeciesPlus", false);
+		speciesDirectory.copyFromRessource(templateName + "/Species40", false);
 	}
 	private Boolean contains(List<File> folderList, File dir) {
 		try {

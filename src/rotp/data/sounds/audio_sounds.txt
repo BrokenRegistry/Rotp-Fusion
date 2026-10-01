@@ -6,6 +6,7 @@ SoftClick               , data/sounds/click_soft.wav         , 50             ,
 MisClick                , data/sounds/click_invalid.wav      , 100            ,
 MapClick                , data/sounds/click_map.wav          , 50             ,
 MenuClick               , data/sounds/click_menu.wav         , 100            ,
+SpecialClick            , data/sounds/tonal_fountain.wav     , 100            ,
 
 #Ship Landings
 AlkariShip               , data/sounds/ship_alkari.wav        , 100            ,
