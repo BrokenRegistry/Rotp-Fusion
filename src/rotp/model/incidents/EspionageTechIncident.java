@@ -62,7 +62,7 @@ public class EspionageTechIncident extends DiplomaticIncident {
     public void frameEmpire(Empire e) {
         empThief = e.id;
         if (galaxy().empire(empVictim).isPlayerControlled())
-            TechStolenAlert.create(empThief, techId);
+            TechStolenAlert.create(empVictim, empThief, techId);
     }
     @Override
     public String warningMessageId() { return galaxy().empire(empVictim).isPlayerControlled() ? "" : DialogueManager.WARNING_ESPIONAGE; }

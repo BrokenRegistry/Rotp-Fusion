@@ -19,7 +19,10 @@ import rotp.model.game.GameSession;
 
 public class SpyReportAlert extends GameAlert {
     public static void create() {
-        GameSession.addAlert(new SpyReportAlert());
+        create(rotp.model.empires.Empire.PLAYER_ID);
+    }
+    public static void create(int recipientEmpireId) {
+        GameSession.addAlertForEmpire(recipientEmpireId, new SpyReportAlert());
     }
     @Override
     public String description() {

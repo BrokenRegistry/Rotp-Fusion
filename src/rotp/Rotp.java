@@ -37,6 +37,7 @@ import javax.swing.JOptionPane;
 import rotp.model.game.GameSession;
 import rotp.model.game.MOO1GameOptions;
 import rotp.model.game.RulesetManager;
+import rotp.multiplayer.session.Phase1ConsoleHarness;
 import rotp.model.planet.PlanetFactory;
 import rotp.model.ships.ShipLibrary;
 import rotp.model.tech.TechLibrary;
@@ -201,6 +202,11 @@ public final class Rotp {
             GameSession.instance().loadSession("", loadSaveFile, false);
 
         becomeVisible();
+        if (containsArg(args, "phase1")) {
+            Thread harness = new Thread(Phase1ConsoleHarness::run, "Phase1ConsoleHarness");
+            harness.setDaemon(true);
+            harness.start();
+        }
         installGCMonitoring();
 		System.out.println("OS = " + OSUtil.getOS()); // To initialize the value
 //        isIDE(); // To initialize the value

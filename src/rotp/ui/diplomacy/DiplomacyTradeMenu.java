@@ -47,6 +47,7 @@ public class DiplomacyTradeMenu extends DiplomaticMessage {
     public boolean enabled(int i)        { return i <= choices.size();  }
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         if (!enabled(i))
             return;
 
@@ -58,6 +59,7 @@ public class DiplomacyTradeMenu extends DiplomaticMessage {
             escape();
             return;
         }
+        if (queueHotSeatOffer(rotp.multiplayer.hotseat.HotSeatDiplomacy.Offer.TRADE, choices.get(i), null)) return;
         DiplomaticReply reply = diplomat().diplomatAI().receiveOfferTrade(player(), choices.get(i));
 
         // get return menu for reply (after it's clicked)

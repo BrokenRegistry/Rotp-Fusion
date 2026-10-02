@@ -23,14 +23,18 @@ public class PlunderTechNotification implements TurnNotification {
     int sysId;
     int empId;
 
-    public static void create(String t, int s, int e) {
-        GameSession.addTurnNotification(new PlunderTechNotification(t,s,e));
+    public static void create(int recipientEmpireId, String t, int s, int e) {
+        GameSession.addTurnNotificationForEmpire(recipientEmpireId,
+                new PlunderTechNotification(t,s,e));
     }
     public PlunderTechNotification(String t, int s, int e) {
         techId = t;
         sysId = s;
         empId = e;
     }
+    public String techId() { return techId; }
+    public int systemId() { return sysId; }
+    public int sourceEmpireId() { return empId; }
     @Override
     public String displayOrder() { return PLUNDER_TECH; }
 

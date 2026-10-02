@@ -50,6 +50,7 @@ public class DiplomacyJointWarMenu extends DiplomaticMessage {
 
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         if (!enabled(i))
             return;
 
@@ -61,6 +62,7 @@ public class DiplomacyJointWarMenu extends DiplomaticMessage {
             escape();
             return;
         }
+        if (queueHotSeatOffer(rotp.multiplayer.hotseat.HotSeatDiplomacy.Offer.JOINT_WAR, 0, choices.get(i).id)) return;
         // get the reply which contains text response from AI
         DiplomaticReply reply = diplomat().diplomatAI().receiveOfferJointWar(player(), choices.get(i));
 

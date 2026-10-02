@@ -186,7 +186,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 	private boolean checkForClean(String str)	{
 		if (!checkClean)
 			return true;
-		int[] needCleaning	= player().needCleaning();
+		int[] needCleaning	= empire.needCleaning();
 		int govLockCount	= needCleaning[Colony.GOV_LOCKED_DIRTY];
 		int govUnlockCount	= needCleaning[Colony.GOV_UNLOCKED_DIRTY];
 		int lockedCount		= needCleaning[Colony.LOCKED_DIRTY];

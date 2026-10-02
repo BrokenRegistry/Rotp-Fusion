@@ -305,6 +305,10 @@ public final class SaveGameUI extends BasePanel implements MouseListener, MouseW
         return "";
     }
     public void saveGame(String s) {
+        if (session().hotSeatState() != null && !rotp.multiplayer.hotseat.HotSeatPersistence.canSave(session())) {
+            showError(text("HOTSEAT_FINISH_CHOICE"));
+            return;
+        }
         if (s.isEmpty())
             return;
         if (!validFileName(selectIndex)) {

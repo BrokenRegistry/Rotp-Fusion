@@ -189,12 +189,12 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     private final SetupGalaxyUI setupGalaxyUI = new SetupGalaxyUI();
     private final RaceIntroUI raceIntroUI = new RaceIntroUI();
     private MainUI mainUI;
-    private final DesignUI designUI = new DesignUI();
-    private final FleetUI fleetUI = new FleetUI();
-    private final SystemsUI systemsUI = new SystemsUI();
-    private final RacesUI racesUI = new RacesUI();
-    private final PlanetsUI planetsUI = new PlanetsUI();
-    private final AllocateTechUI allocateTechUI = new AllocateTechUI();
+    private DesignUI designUI = new DesignUI();
+    private FleetUI fleetUI = new FleetUI();
+    private SystemsUI systemsUI = new SystemsUI();
+    private RacesUI racesUI = new RacesUI();
+    private PlanetsUI planetsUI = new PlanetsUI();
+    private AllocateTechUI allocateTechUI = new AllocateTechUI();
     private final SelectNewTechUI selectNewTechUI = new SelectNewTechUI();
     private final DiscoverTechUI discoverTechUI = new DiscoverTechUI();
     private final ShipBattleUI shipBattleUI = new ShipBattleUI();
@@ -204,7 +204,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     private final GNNUI gnnUI = new GNNUI();
     private final ColonizePlanetUI colonizePlanetUI = new ColonizePlanetUI();
     private final ColonyViewUI colonyViewUI = new ColonyViewUI();
-    private final DiplomaticMessageUI diplomaticMessageUI = new DiplomaticMessageUI();
+    private DiplomaticMessageUI diplomaticMessageUI = new DiplomaticMessageUI();
     private final GalacticCouncilUI galacticCouncilUI = new GalacticCouncilUI();
     private final GameOverUI gameOverUI = new GameOverUI();
     private final ErrorUI errorUI = new ErrorUI();
@@ -346,7 +346,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         if (drawNextTurnNotice && GameSession.performingTurn()) {
             drawNotice(g, 28, -s100);
         }
-        requestFocusInWindow();
+        if (!rotp.ui.multiplayer.HotSeatDesktop.blocksNavigation()) requestFocusInWindow();
     }
     /* public void repaintNotice() {
         int w0 = scaled(500);
@@ -426,9 +426,27 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     	}
     }
     public void selectMainPanel()      { selectMainPanel(false); }
+    /** Discard viewer-specific controls and caches before a private handoff reveals them. */
+    public void resetHotSeatPanels() {
+        if (!SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("UI reset outside EDT");
+        remove(mainUI()); remove(designUI); remove(fleetUI); remove(systemsUI);
+        remove(racesUI); remove(planetsUI); remove(allocateTechUI);
+        if (diplomaticMessageUI.getParent() != null) diplomaticMessageUI.getParent().remove(diplomaticMessageUI);
+        mainUI = new MainUI(); designUI = new DesignUI(); fleetUI = new FleetUI();
+        systemsUI = new SystemsUI(); racesUI = new RacesUI(); planetsUI = new PlanetsUI();
+        allocateTechUI = new AllocateTechUI();
+        diplomaticMessageUI = new DiplomaticMessageUI();
+        if (UserPreferences.windowed()) add(diplomaticMessageUI, DIPLOMATIC_MESSAGE_PANEL);
+        else dialogPane.addToLayout(diplomaticMessageUI, DIPLOMATIC_MESSAGE_PANEL);
+        add(mainUI, MAIN_PANEL); add(designUI, DESIGN_PANEL); add(fleetUI, FLEET_PANEL);
+        add(systemsUI, SYSTEMS_PANEL); add(racesUI, RACES_PANEL); add(planetsUI, PLANETS_PANEL);
+        add(allocateTechUI, TECH_PANEL);
+        mainUI.checkMapInitialized();
+        revalidate();
+    }
     public void selectMainPanel(boolean pauseNextTurn)      {
         disableGlassPane();
-        if (!session().status().inProgress()) {
+        if (!(session().hotSeatState() == null ? session().status().inProgress() : session().inProgress())) {
             selectGameOverPanel();
             return;
         }
@@ -945,6 +963,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     }
     @Override
     public void animate() {
+        if (rotp.ui.multiplayer.HotSeatDesktop.blocksNavigation()) return;
         try {
             AnimationManager.reclaimImages();
             if (playAnimations()) {

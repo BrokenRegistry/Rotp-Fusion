@@ -292,7 +292,12 @@ public final class ShipCombatManager implements Base {
         checkDeclareWar(emp1, emp2);
         checkDeclareWar(emp2, emp1);
 
-		if (playerInBattle()) {
+		if (session().controllerRegistry() != null) {
+			allowRetreat = false;
+			showAnimations = false;
+			resolveAllCombat();
+		}
+		else if (playerInBattle()) {
 			switch (fleetAutoCombat.get()) {
 				case FLEET_AUTO_COMBAT_AUTO:
 					allowRetreat = false;
@@ -356,7 +361,12 @@ public final class ShipCombatManager implements Base {
         if (combatIsFinished())
             return;
 
-		if (playerInBattle()) {
+		if (session().controllerRegistry() != null) {
+			allowRetreat = false;
+			showAnimations = false;
+			resolveAllCombat();
+		}
+		else if (playerInBattle()) {
 			allowRetreat = playerSelection() == ShipBattleUI.SMART_RESOLVE;
 			session().pauseNextTurnProcessing("Fleet Auto combat");
 			RotPUI.instance().selectShipBattlePanel(this, playerSelection());
@@ -620,6 +630,19 @@ public final class ShipCombatManager implements Base {
             results.logIncidents();
 
 		combatAlreadyEnded = true;
+        if (session().hotSeatInbox() != null) {
+            for (Empire participant : results.empires()) {
+                if (!session().controllerRegistry().isHumanControlled(participant.id)) continue;
+                List<String> lines = new ArrayList<>();
+                lines.add(participant.sv.name(system.id));
+                lines.add(text(victor == participant ? "HOTSEAT_COMBAT_WON" : "HOTSEAT_COMBAT_LOST"));
+                for (var loss : results.shipsDestroyed().entrySet())
+                    if (loss.getKey().empire() == participant)
+                        lines.add(text("HOTSEAT_SHIPS_LOST", loss.getKey().name(), String.valueOf(loss.getValue())));
+                session().hotSeatInbox().append(galaxy().currentTurn(), participant.id, "COMBAT",
+                        text("HOTSEAT_COMBAT"), lines);
+            }
+        }
     }
 	private void maxTurnRetreatEmpire(Empire e) {
 		List<CombatStack> activeStacks = new ArrayList<>(results.activeStacks());
@@ -743,10 +766,10 @@ public final class ShipCombatManager implements Base {
             empiresInConflict.remove(passiveEmp);
         }
 		Empire attacker = results().attacker();
-		if (attacker != null && attacker.isPlayer())
+		if (attacker != null && attacker.isHumanEmpire())
 			doNotTargetHarmlessColony = playerDontTargetHarmlessColony.get();
 		// Ask Player & Remove Passive player empire
-		if (playerInBattle() && passives.isEmpty())
+		if (session().controllerRegistry() == null && playerInBattle() && passives.isEmpty())
 			promptPlayer();
 	}
 	private boolean playerShouldRetreat()	{ return new ShipCaptainAdvisor(player()).playerShouldRetreat(); }
@@ -847,7 +870,7 @@ public final class ShipCombatManager implements Base {
             empiresInConflict.remove(passiveEmp);
         }
 		// Ask Player & Remove Passive player empire
-		if (playerInBattle() && passives.isEmpty())
+		if (session().controllerRegistry() == null && playerInBattle() && passives.isEmpty())
 			promptPlayer();
     }
     private void retreatEmpire(Empire e) {
@@ -877,7 +900,7 @@ public final class ShipCombatManager implements Base {
 
         // build civs array, placing player ships first
         results.clearEmpires();
-        if (playerInCombat) {
+        if (session().controllerRegistry() == null && playerInCombat) {
             results.addEmpire(player());
             empiresInCombat.remove(player());
         }

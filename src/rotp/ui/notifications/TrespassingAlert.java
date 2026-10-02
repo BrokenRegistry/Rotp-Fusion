@@ -22,16 +22,21 @@ public class TrespassingAlert extends GameAlert {
     private final int empHostId;
     private final int empShipId;
     private final int sysId;
-    public static void create(int emp1, int emp2, int sys) {
-        GameSession.addAlert(new TrespassingAlert(emp1, emp2, sys));
+    public static void create(int recipientEmpireId, int emp1, int emp2, int sys) {
+        GameSession.addAlertForEmpire(recipientEmpireId,
+                new TrespassingAlert(emp1, emp2, sys));
     }
     @Override
     public String description() {
+        return descriptionForEmpire(player().id);
+    }
+    @Override
+    public String descriptionForEmpire(int recipientEmpireId) {
         Empire empHost = galaxy().empire(empHostId);
         Empire empShip = galaxy().empire(empShipId);
-        String sysName = player().sv.knownName(sysId);
+        String sysName = galaxy().empire(recipientEmpireId).sv.knownName(sysId);
         String desc;
-        if (empHost.isPlayer()) {
+        if (empHostId == recipientEmpireId) {
            desc = text("MAIN_ALERT_TRESPASSING1", sysName);
            desc = empShip.replaceTokens(desc, "alien");
         }

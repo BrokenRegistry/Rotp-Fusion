@@ -846,6 +846,7 @@ public class DesignUI extends BasePanel {
 			((RectDefDes) hoverTarget).slot.repaint();
 	}
 	@Override public void keyPressed(KeyEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;
 		if (frame().getGlassPane().isVisible()) {
 			BasePanel selectionPane = (BasePanel) frame().getGlassPane();
 			selectionPane.keyPressed(e);
@@ -977,6 +978,7 @@ public class DesignUI extends BasePanel {
 		@Override public void mouseExited(MouseEvent e)		{ hoverBox = hoverBox(null, hoverBox); }
 		@Override public void mousePressed(MouseEvent e)	{}
 		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             //int x = e.getX();
@@ -991,7 +993,8 @@ public class DesignUI extends BasePanel {
                 		parent.showHelp();
             }
         }
-		@Override public void mouseDragged(MouseEvent e)	{}
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;}
 		@Override public void mouseMoved(MouseEvent e)		{
 			if (helpBox.contains(e.getX(), e.getY()))
 				hoverBox = hoverBox(helpBox, hoverBox);
@@ -1092,6 +1095,7 @@ public class DesignUI extends BasePanel {
 		@Override public void mouseClicked(MouseEvent e)	{ }
 		@Override public void mousePressed(MouseEvent e)	{ }
 		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;
             if (hoverBox == copyButton) {
                 softClick();
                 configPanel.shipDesign().copyFrom(player().shipLab().prototypeDesign());
@@ -1108,7 +1112,8 @@ public class DesignUI extends BasePanel {
         }
 		@Override public void mouseEntered(MouseEvent e)	{ }
 		@Override public void mouseExited(MouseEvent e)		{ hoverBox = hoverBox(null, hoverBox); }
-		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
 		@Override public void mouseMoved(MouseEvent e)		{
 			int x = e.getX();
 			int y = e.getY();
@@ -1455,6 +1460,7 @@ public class DesignUI extends BasePanel {
         public void mousePressed(MouseEvent mouseEvent) {}
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (hoverTarget == copyButtonArea[designNum]) {
                 softClick();
                 configPanel.shipDesign().copyFrom(slotDesign());
@@ -1481,7 +1487,8 @@ public class DesignUI extends BasePanel {
         }
 		@Override public void mouseEntered(MouseEvent e)	{}
 		@Override public void mouseExited(MouseEvent e)		{ hoverTarget = hoverBox(null, hoverTarget); }
-		@Override public void mouseDragged(MouseEvent e)	{}
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;}
 		@Override public void mouseMoved(MouseEvent e)		{
 			int x = e.getX();
 			int y = e.getY();
@@ -3630,6 +3637,7 @@ public class DesignUI extends BasePanel {
         	}
         }
         private void scrapAction() {
+        if (!hotSeatCanEdit(player().id)) return;
         	String previousName = shipDesign().name();
             player().shipLab().scrapDesign(shipDesign());
             if (options().keepShipDesignName())
@@ -3904,6 +3912,7 @@ public class DesignUI extends BasePanel {
             }
         }
         private void setShipColor(int i) {
+        if (!hotSeatCanEdit(player().id)) return;
             ShipDesign des =  shipDesign();
             des.shipColor(ShipDesign.shipColors[i]);
         }
@@ -3952,7 +3961,8 @@ public class DesignUI extends BasePanel {
 			repaint();
 			designSlotsPanel.repaint();
 		}
-		@Override public void mouseDragged(MouseEvent e)	{}
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;}
 		@Override public void mouseMoved(MouseEvent e)		{
 			int x = e.getX();
 			int y = e.getY();
@@ -4104,6 +4114,7 @@ public class DesignUI extends BasePanel {
 		@Override public void mouseClicked(MouseEvent e)	{ }
 		@Override public void mousePressed(MouseEvent e)	{ }
 		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;
             boolean shiftPressed = e.isShiftDown();
             boolean ctrlPressed = e.isControlDown();
 
@@ -4309,6 +4320,7 @@ public class DesignUI extends BasePanel {
             }
         }
 		@Override public void mouseWheelMoved(MouseWheelEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;
 			int count = e.getUnitsToScroll();
 			boolean shiftPressed = e.isShiftDown();
 			boolean ctrlPressed = e.isControlDown();

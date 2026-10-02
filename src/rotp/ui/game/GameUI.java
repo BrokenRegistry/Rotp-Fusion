@@ -828,11 +828,13 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         String filename = manualFilePath();
         return readerExists(filename);
     }
-    public	boolean canContinue()    { return session().status().inProgress() || GameSession.hasRecentSession(); }
+    public boolean canContinue() { return session().hotSeatState() != null || session().status().inProgress() || GameSession.hasRecentSession(); }
     private	boolean canRecenStart()  { return GameSession.hasRecentStartSession(); }
     private boolean canNewGame()     { return true; }
     private boolean canLoadGame()    { return true; }
-    private boolean canSaveGame()    { return session().status().inProgress() || isCtrlDown(); }
+    private boolean canSaveGame() { return session().hotSeatState() == null
+            ? session().status().inProgress() || isCtrlDown()
+            : rotp.multiplayer.hotseat.HotSeatPersistence.canSave(session()); }
     private boolean canOpenManual()  { return manualExists(); }
     private boolean canExit()        { return true; }
     private boolean canRestart()     { 
@@ -1169,6 +1171,10 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 		misClick();
     }
     private void replayLastTurn() { // BR:
+        if (session().hotSeatState() != null) {
+            javax.swing.JOptionPane.showMessageDialog(this, text("HOTSEAT_REPLAY_DISABLED"));
+            return;
+        }
         if (canRecenStart()) {
             buttonClick();
            	session().loadRecentStartGame(true);
@@ -1181,12 +1187,18 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         }
     }
     public void continueGame() { // BR:
+        if (session().hotSeatState() != null) {
+            session().hotSeatState().coverForLoad();
+            session().openHotSeatDesktop(true);
+            return;
+        }
         if (canContinue()) {
             buttonClick();
             if (!session().status().inProgress()) {
             	session().loadLastSavedGame(true);
             	// session().loadRecentSession(true);
             }
+            if (session().hotSeatState() != null) return;
 			rulesetManager().setAsGameMode();
 			UserPreferences.reload();
 
@@ -1245,6 +1257,10 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 		}
     }
     private void goToSettings() {
+        if (session().hotSeatState() != null) {
+            javax.swing.JOptionPane.showMessageDialog(this, text("HOTSEAT_SHARED_POLICIES"));
+            return;
+        }
 		buttonClick();
 		onTop = false;
 		MainOptionsUI mainOptionsUI = RotPUI.mainOptionsUI();

@@ -244,7 +244,7 @@ public final class ColonyDefense extends ColonySpendingCategory {
         if (knownBaseCosts.containsKey(missileBase))
             baseCost = knownBaseCosts.get(missileBase);
         else {
-            baseCost = missileBase.cost(player());
+            baseCost = missileBase.cost(empire());
             knownBaseCosts.put(missileBase, baseCost);
         }
         return (activeBases() * baseCost * .02f); 

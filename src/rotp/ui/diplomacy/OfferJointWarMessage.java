@@ -46,6 +46,7 @@ public class OfferJointWarMessage extends TurnNotificationMessage {
     }
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         log("OfferPactMessage - selected: ", str(i));
         switch(i) {
         case 0: 

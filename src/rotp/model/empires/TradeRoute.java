@@ -60,8 +60,8 @@ public class TradeRoute implements Base, Serializable {
         
         profit = min(maxProfit(), profit + (pct * level) );
         if ((profit == level) && (profit > prevProfit)) {
-            if (view.owner().isPlayer())
-               TradeTreatyMaturedAlert.create(view.empId(), level);
+            if (view.owner().isPlayer() || view.owner().isPlayerControlled())
+               TradeTreatyMaturedAlert.create(view.ownerId(), view.empId(), level);
         }
         if (active())
             TradeIncomeIncident.create(view, profit, profit/ownerProd);

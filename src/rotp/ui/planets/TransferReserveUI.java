@@ -161,6 +161,12 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		listClearRaiseButton= new ActionButton(this, LIST+CLEAR+RAISE, clearPaint, RIGHT, okButtonBdrC, false);
 		initModel();
 	}
+    private boolean hotSeatReserveEditable() {
+        if (session().hotSeatState() == null) return true;
+        return empire != null && hotSeatCanEdit(empire.id) && targetSystems != null
+                && targetSystems.stream().allMatch(s -> s != null && s.colony() != null
+                        && s.colony().empire() == empire);
+    }
     private void initModel() {
         setOpaque(false);
         addMouseListener(this);
@@ -812,66 +818,79 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		disableGlassPane();
 	}
 	private void redoGrantFundsButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(player().allColonizedSystems(), true, false, EmpireBudget.REDO, true);
 		exit();
 	}
 	private void redoRaiseFundsButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(player().allColonizedSystems(), false, true, EmpireBudget.REDO, true);
 		exit();
 	}
 	private void redoAllBudgetButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(player().allColonizedSystems(), true, true, EmpireBudget.REDO, true);
 		exit();
 	}
 	private void clearGrantFundsButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(player().allColonizedSystems(), true, false, EmpireBudget.CLEAR, true);
 		exit();
 	}
 	private void clearRaiseFundsButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(player().allColonizedSystems(), false, true, EmpireBudget.CLEAR, true);
 		exit();
 	}
 	private void clearAllBudgetButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(player().allColonizedSystems(), true, true, EmpireBudget.CLEAR, true);
 		exit();
 	}
 	private void listGrantFundsButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(targetSystems, true, false, EmpireBudget.LIST, true);
 		exit();
 	}
 	private void listRaiseFundsButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(targetSystems, false, true, EmpireBudget.LIST, true);
 		exit();
 	}
 	private void listAllBudgetButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(targetSystems, true, true, EmpireBudget.LIST, true);
 		exit();
 	}
 	private void clearListGrantFundsButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(targetSystems, true, false, EmpireBudget.CLEAR, true);
 		exit();
 	}
 	private void clearListRaiseFundsButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(targetSystems, false, true, EmpireBudget.CLEAR, true);
 		exit();
 	}
 	private void clearListAllBudgetButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		player().budget().redoBudget(targetSystems, true, true, EmpireBudget.CLEAR, true);
 		exit();
 	}
-	private void transfertButtonAction()	{ // No changes
+	private void transfertButtonAction()	{
+        if (!hotSeatReserveEditable()) return; // No changes
 		softClick();
 		float pct = (float) amt / MAX_TICKS;
 		int amount = (int) (pct*player().totalReserve());
@@ -885,6 +904,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		exit();
 	}
 	private void transfertBudgetButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		boolean carryUnfunded = govOptions().autospendCarryUnfunded();
 		for(StarSystem sys : targetSystems)
@@ -894,6 +914,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		exit();
 	}
 	private void budgetButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		int amount = (int) (playerRsv * amt / MAX_TICKS);
 		for(StarSystem sys : targetSystems) {
@@ -911,6 +932,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		exit();
 	}
 	private void govButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		for(StarSystem sys : targetSystems)
 			sys.colony().budget().playerBudgetBC(null);
@@ -919,6 +941,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		exit();
 	}
 	private void wishShareButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		int wishSum = 0;
 		int onBudget = 0;
@@ -947,6 +970,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		exit();
 	}
 	private void wishBudgetButtonAction()	{
+        if (!hotSeatReserveEditable()) return;
 		softClick();
 		// clear player budget
 		for(StarSystem sys : targetSystems)
@@ -968,6 +992,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 	@Override public Shape getHoverBox()	{ return hoverBox; }
 	@Override public void cancelHelp()		{ if (isAdvising()) ADVISOR.advanceMap(); }
 	@Override public void keyPressed(KeyEvent e)	{
+        if (!hotSeatReserveEditable()) return;
 		setModifierKeysState(e);
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_ESCAPE:
@@ -1017,6 +1042,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
     }
     @Override public void mousePressed(MouseEvent arg0)	{ }
     @Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatReserveEditable()) return;
         if (e.getButton() > 3)
             return;
         int prevAmt = amt;
@@ -1155,6 +1181,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 			misClick();
 	}
 	@Override  public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatReserveEditable()) return;
 		prevHover = hoverBox;
         setHoverSprite(e.getX(),e.getY());
 
@@ -1170,6 +1197,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatReserveEditable()) return;
         int count = e.getUnitsToScroll();
         if (hoverBox == reserveSlider) {
             int prevAmt = amt;

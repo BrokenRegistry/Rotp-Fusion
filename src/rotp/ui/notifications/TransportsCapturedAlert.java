@@ -26,22 +26,29 @@ public class TransportsCapturedAlert extends GameAlert {
     private final StarSystem system;
     private final int num;
     public static void create(Empire att, Empire def, StarSystem s, int n) {
-        GameSession.addAlert(new TransportsCapturedAlert(att,def,s,n));
+        if (att.isPlayerControlled())
+            GameSession.addAlertForEmpire(att.id, new TransportsCapturedAlert(att,def,s,n));
+        if (def.isPlayerControlled())
+            GameSession.addAlertForEmpire(def.id, new TransportsCapturedAlert(att,def,s,n));
     }
     @Override
     public String description() {
+        return descriptionForEmpire(player().id);
+    }
+    @Override
+    public String descriptionForEmpire(int recipientEmpireId) {
+        String systemName = galaxy().empire(recipientEmpireId).sv.knownName(system.id);
         String desc;
-        if (attacker.isPlayer()) {
-            desc = text("MAIN_ALERT_TRANSPORTS_CAPTURED", systemName(), str(num));
+        if (attacker.id == recipientEmpireId) {
+            desc = text("MAIN_ALERT_TRANSPORTS_CAPTURED", systemName, str(num));
             desc = defender.replaceTokens(desc, "alien");
         }
         else {
-            desc = text("MAIN_ALERT_INVADERS_CAPTURED", systemName(), str(num));
+            desc = text("MAIN_ALERT_INVADERS_CAPTURED", systemName, str(num));
             desc = attacker.replaceTokens(desc, "alien");
         }
         return desc;
     }
-    private String systemName() { return player().sv.knownName(system.id); }
     private TransportsCapturedAlert(Empire att, Empire def, StarSystem s, int n) {
         attacker = att;
         defender = def;

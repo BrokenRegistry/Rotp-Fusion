@@ -6959,3 +6959,91 @@ SETUP_RACE_HELP_HK		| →HK_HEADER← →HK_F1← →HK_GUIDE← <br> →HK_FOG�
 MOD_OPTIONS_HELP_HK		| <b><u>HOTKEYS:</u></b> →HK_SHIFT_F1← <br>F1 : Show contextual Help. <br>→HK_SET_DEFAULT←<br>→HK_GUIDE← <br>→HK_ESCAPE←
 
 SETUP_GAME_HELP_HK		| H / F1 : Show Help.<br><br> - / + : Shrink / Expand Window.<br><br>C / Escape : Continue<br>      (Either the current game or the last saved game)<br>R : Replay Last Turn.<br>N / Ctrl+N: New Game / Quick Start.<br>L / Ctrl+L : Load Game / Load Options.<br>S / Ctrl+S : Save Game / Save Options.<br>T : Go to Settings.<br>O / M : Open Manual.<br>E / X : Exit Game.<br><br>Z : Hide text to get a better view of the background.
+
+# Local hot-seat play
+HOTSEAT_SETUP_TITLE | Local Hot Seat - Human Players
+HOTSEAT_EMPIRE | Empire slot
+HOTSEAT_HUMAN | Human
+HOTSEAT_PLAYER_NAME | Player name
+HOTSEAT_DEFAULT_NAME | Player %1
+HOTSEAT_USE | Use Hot Seat
+HOTSEAT_SINGLE_PLAYER | Single Player
+HOTSEAT_CANCEL | Cancel
+HOTSEAT_INVALID_NAMES | Choose at least two humans with different, nonblank names.
+HOTSEAT_HANDOFF | Pass the computer to %1
+HOTSEAT_HANDOFF_DETAIL | Continue only when you are ready to view your empire.
+HOTSEAT_CONTINUE | Continue
+HOTSEAT_REPORTS | %1 - Reports
+HOTSEAT_RESOLVING | Resolving the shared turn...
+HOTSEAT_RESOLUTION_FAILED | Turn resolution stopped. Load the last safe save to recover.
+HOTSEAT_FINISHED | This match has ended.
+HOTSEAT_SCOUTING | Scouting
+HOTSEAT_RESEARCH | Research
+HOTSEAT_CONSTRUCTION | Ships constructed
+HOTSEAT_DIPLOMACY | Diplomacy
+HOTSEAT_BOMBARDMENT | Bombardment
+HOTSEAT_SABOTAGE | Sabotage
+HOTSEAT_POPULATION | Population: %1 -> %2
+HOTSEAT_BASES | Bases: %1 -> %2
+HOTSEAT_FACTORIES | Factories: %1 -> %2
+HOTSEAT_FINISH | Finish Player Turn
+HOTSEAT_CURRENT_PLAYER | Current player: %1
+HOTSEAT_SETUP_BUTTON | Players: %1 humans (Hot Seat)
+HOTSEAT_SETUP_SINGLE | Players: Single Player
+HOTSEAT_OPTIONS_ERROR | Hot seat requires fixed opponents, autoplay off, debug autorun off and ironman off. Check human assignments after changing the opponent count.
+HOTSEAT_COUNCIL_VOTE | Galactic Council - Vote
+HOTSEAT_COUNCIL_RULING | Galactic Council - Accept the ruling?
+HOTSEAT_ABSTAIN | Abstain
+HOTSEAT_ACCEPT | Accept
+HOTSEAT_REJECT | Reject
+HOTSEAT_COLONIZE | Colonize %1?
+HOTSEAT_COLONIZE_YES | Establish colony
+HOTSEAT_SKIP | Skip
+HOTSEAT_BOMBARD | Bombard
+HOTSEAT_TARGET_BOMBARD | Targeted bombardment
+HOTSEAT_ESPIONAGE | Espionage - Choose a technology to steal
+HOTSEAT_NO_FRAME | Do not frame another empire
+HOTSEAT_FRAME | Frame %1
+HOTSEAT_CONFIRM | Confirm
+HOTSEAT_SABOTAGE_FACTORIES | Destroy factories
+HOTSEAT_SABOTAGE_MISSILES | Destroy missile bases
+HOTSEAT_SABOTAGE_REBELS | Incite rebellion
+HOTSEAT_OFFER_TRADE | Offers a trade treaty at this level:
+HOTSEAT_OFFER_PEACE | Offers peace
+HOTSEAT_OFFER_PACT | Offers a non-aggression pact
+HOTSEAT_OFFER_ALLIANCE | Offers an alliance
+HOTSEAT_OFFER_JOINT_WAR | Requests joint war against
+HOTSEAT_SHARED_POLICIES | Shared governor and game policies are fixed for this hot-seat match. Per-colony governor controls remain available.
+HOTSEAT_VIP_DISABLED | The VIP console is unavailable during hot-seat play.
+HOTSEAT_UNSUPPORTED |  (unavailable in hot seat)
+HOTSEAT_OFFER_QUEUED | Offer sent. The other human will answer during shared turn resolution.
+HOTSEAT_OFFER_INVALID | This offer is no longer eligible or is already waiting for a reply.
+HOTSEAT_REPLY_ACCEPT | The recipient accepted this offer.
+HOTSEAT_REPLY_REJECT | The recipient declined this offer.
+HOTSEAT_FINISH_CHOICE | Finish this choice before saving.
+HOTSEAT_RESTORE_SAFE | Restore last safe checkpoint
+HOTSEAT_MENU | Return to menu
+HOTSEAT_LOAD_FAILED | Unable to load the checkpoint. Your current game has been preserved.
+HOTSEAT_REPLAY_DISABLED | Turn replay is unavailable during hot-seat play.
+HOTSEAT_SAVE_CHECKPOINT | Save checkpoint
+HOTSEAT_SAVE_CHECKPOINT_DETAIL | Save this pending choice as HotSeat-Decision.rotp
+HOTSEAT_SAVED | Checkpoint saved.
+HOTSEAT_ALERT | Empire report
+HOTSEAT_COMBAT_WON | Your forces won the battle.
+HOTSEAT_COMBAT_LOST | Your forces lost or withdrew from the battle.
+HOTSEAT_SHIPS_LOST | %1 lost: %2
+HOTSEAT_COMBAT | Space battle
+HOTSEAT_INVASION | Ground battle
+HOTSEAT_INVASION_CAPTURED | The attackers captured the colony.
+HOTSEAT_INVASION_DEFENDED | The defenders held the colony.
+HOTSEAT_RESULT_MILITARY | Military victory
+HOTSEAT_RESULT_MILITARY_ALLIANCE | Alliance victory
+HOTSEAT_RESULT_COUNCIL | Council victory
+HOTSEAT_RESULT_NO_HUMANS_REMAIN | All human empires have been eliminated
+HOTSEAT_RESULT_ONGOING | Match in progress
+HOTSEAT_STANDING_WON | Victory
+HOTSEAT_STANDING_LOST | Defeat
+HOTSEAT_STANDING_ACTIVE | Active
+HOTSEAT_STANDING_ELIMINATED | Eliminated
+HOTSEAT_COUNCIL_RULING_DETAIL | The Galactic Council elected %1. Accept recognizes this empire as the elected leader and joins its supporters. Reject defies the ruling and joins the rebellion; the match continues if opposing sides remain.
+HOTSEAT_REPLY_INVALID | This offer is no longer eligible. No treaty or war order was applied.

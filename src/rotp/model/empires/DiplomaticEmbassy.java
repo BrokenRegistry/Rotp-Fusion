@@ -120,7 +120,7 @@ public final class DiplomaticEmbassy implements Base, Serializable {
     public boolean muted()                               { return muted; }
     public void toggleMuted()                            { muted = !muted; }
     public void beginWarPreparations(String cb, DiplomaticIncident inc) {
-    	if (!options().canStartWar(view.owner().isPlayer(), view.isPlayer()))
+		if (!options().canStartWar(view.owner().isHumanEmpire(), view.isHumanEmpire()))
     		return;
         // don't replace an existing casus belli unless the new one is worse
         if (casusBelliInc != null) {
@@ -402,7 +402,7 @@ public final class DiplomaticEmbassy implements Base, Serializable {
 	public void recallAmbassador()	{ withdrawAmbassador(Integer.MAX_VALUE); }
 	public void openEmbassy()		{ withdrawAmbassador(0); }
     public boolean diplomatGone()      { return diplomatGoneTimer > 0;  }
-	public boolean wantWar() { return otherEmbassy().relations() < -50 && options().canStartWar(owner().isPlayer(), view.isPlayer()); }
+	public boolean wantWar() { return otherEmbassy().relations() < -50 && options().canStartWar(owner().isHumanEmpire(), view.isHumanEmpire()); }
     public boolean isAlly()            { return (alliance() || unity()); }
     public boolean alliedWithEnemy() {
         List<Empire> myEnemies = owner().warEnemies();
@@ -433,10 +433,10 @@ public final class DiplomaticEmbassy implements Base, Serializable {
         view.otherView().setSuggestedAllocations();
     }
     public boolean isFriend()    { return pact() || alliance() || unity(); }
-	public boolean isEnemy() { return anyWar() || (onWarFooting() && options().canStartWar(owner().isPlayer(), view.isPlayer())); }
+	public boolean isEnemy() { return anyWar() || (onWarFooting() && options().canStartWar(owner().isHumanEmpire(), view.isHumanEmpire())); }
     public boolean anyWar()      { return war() || finalWar(); }
     public boolean atPeace()     { return peaceTreatyInEffect(); }
-	public boolean menacing() { return anyWar() || (onWarFooting() && options().canStartWar(owner().isPlayer(), view.isPlayer())); }
+	public boolean menacing() { return anyWar() || (onWarFooting() && options().canStartWar(owner().isHumanEmpire(), view.isHumanEmpire())); }
 	public boolean hostile()	 { return !isFriend(); }
 	public boolean noEntente()	 { return !isFriend() && !atPeace(); }
 
@@ -643,8 +643,9 @@ public final class DiplomaticEmbassy implements Base, Serializable {
         otherEmbassy().addIncident(SignAllianceIncident.create(empire(), owner()));
         GNNAllianceFormedNotice.create(owner(), empire());
         // check for military alliance win
-        if (view.owner().isPlayer() || view.isPlayer()) {
-            if (galaxy().allAlliedWithPlayer())
+        if (session().controllerRegistry() == null
+                && (view.owner().isPlayer() || view.isPlayer())) {
+            if (galaxy().allAlliedWithPlayer() && !options().noAllianceCouncil())
                 session().status().winMilitaryAlliance();
         }
         return inc;

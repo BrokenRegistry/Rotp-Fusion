@@ -58,11 +58,10 @@ public class TreatyAlliance extends DiplomaticTreaty {
         initStandings();  // backwards-save compatibility
         int index = emp.id == empire1 ? 0 : 1;
         int prevStanding = standings[index];
-        boolean isPlayerStanding = false;
-        switch(index) {
-            case 0: isPlayerStanding = empire2 == Empire.PLAYER_ID; break;
-            case 1: isPlayerStanding = empire1 == Empire.PLAYER_ID; break;
-        }
+        int recipientEmpireId = index == 0 ? empire2 : empire1;
+        boolean isHumanStanding = session().controllerRegistry() == null
+                ? recipientEmpireId == Empire.PLAYER_ID
+                : session().controllerRegistry().isHumanControlled(recipientEmpireId);
 
        
         Empire emp1 = galaxy().empire(empire1);
@@ -100,17 +99,17 @@ public class TreatyAlliance extends DiplomaticTreaty {
             standings[1] += adj;
         }
         
-        if (isPlayerStanding) {
+        if (isHumanStanding) {
             Empire nonPlayerEmpire = null;
             switch(index) {
                 case 0: nonPlayerEmpire = emp1; break;
                 case 1: nonPlayerEmpire = emp2; break;
             }
             if ((prevStanding >= 0) && (standings[index] < 0)) {
-                AllianceBreakingAlert.create(nonPlayerEmpire);
+                AllianceBreakingAlert.create(recipientEmpireId, nonPlayerEmpire);
             }
             else if ((prevStanding >= 25) && (standings[index] < 25)) {
-                AllianceWeakeningAlert.create(nonPlayerEmpire);
+                AllianceWeakeningAlert.create(recipientEmpireId, nonPlayerEmpire);
             }
         }
         

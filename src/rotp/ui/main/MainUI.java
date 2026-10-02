@@ -202,6 +202,18 @@ public final class MainUI extends BasePanel implements IMapHandler {
         overlayAdvice = new MapOverlayAdvice(this);
         overlay = overlayNone;
     }
+    @Override protected void paintChildren(java.awt.Graphics graphics) {
+        super.paintChildren(graphics);
+        if (session().hotSeatSetup() != null) {
+            var snapshot = session().hotSeatState().snapshot();
+            if (snapshot.ownerPlayerId() != null) {
+                graphics.setColor(java.awt.Color.WHITE);
+                graphics.setFont(narrowFont(18));
+                graphics.drawString(text("HOTSEAT_CURRENT_PLAYER",
+                        session().hotSeatSetup().displayName(snapshot.ownerPlayerId())), s20, s25);
+            }
+        }
+    }
     public void init(boolean pauseNextTurn) {
         map.init();
 		initOnDemandAdvisorPanel();
@@ -224,6 +236,19 @@ public final class MainUI extends BasePanel implements IMapHandler {
         saveX = map.centerX();
         saveY = map.centerY();
         sessionVar("MAINUI_SAVE_CLICKED", clickedSprite());
+    }
+    public rotp.multiplayer.hotseat.HotSeatViewState captureHotSeatView() {
+        Integer selected = clickedSprite() instanceof StarSystem system ? system.id : null;
+        return new rotp.multiplayer.hotseat.HotSeatViewState(map.centerX(), map.centerY(), map.scaleY(), selected);
+    }
+    public void restoreHotSeatView(rotp.multiplayer.hotseat.HotSeatViewState view) {
+        if (view == null) return;
+        map.centerX(view.centerX());
+        map.centerY(view.centerY());
+        map.setScale(view.scale());
+        Integer id = view.selectedSystemId();
+        if (id != null && id >= 0 && id < galaxy().numStarSystems() && player().sv.isScouted(id))
+            clickedSprite(galaxy().system(id));
     }
     public void restoreMapState() {
         showDisplayPanel();

@@ -21,8 +21,9 @@ import rotp.model.game.GameSession;
 public class TradeTreatyMaturedAlert extends GameAlert {
     private final int empId;
     private final int amt;
-     public static void create(int id, int tradeAmt) {
-        GameSession.addAlert(new TradeTreatyMaturedAlert(id, tradeAmt));
+     public static void create(int recipientEmpireId, int id, int tradeAmt) {
+        GameSession.addAlertForEmpire(recipientEmpireId,
+                new TradeTreatyMaturedAlert(id, tradeAmt));
     }
     @Override
     public String description() {

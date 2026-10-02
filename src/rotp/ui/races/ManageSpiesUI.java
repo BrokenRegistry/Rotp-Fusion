@@ -446,22 +446,26 @@ public class ManageSpiesUI extends BasePanel implements MouseListener, MouseWhee
         }
     }   
     private boolean increaseSliderValue(int index) {
+        if (index < 0 || index >= empireViews.size() || !hotSeatCanEdit(empireViews.get(index).owner().id)) return false;
         EmpireView view = empireViews.get(index);
         int oldValue = view.spies().allocation();
         view.spies().increaseSpending();
         return oldValue != view.spies().allocation();
     }
     private boolean decreaseSliderValue(int index) {
+        if (index < 0 || index >= empireViews.size() || !hotSeatCanEdit(empireViews.get(index).owner().id)) return false;
         EmpireView view = empireViews.get(index);
         int oldValue = view.spies().allocation();
         view.spies().decreaseSpending();
         return oldValue != view.spies().allocation();
     }
     private void nextSpyMission(int index) {
+        if (index < 0 || index >= empireViews.size() || !hotSeatCanEdit(empireViews.get(index).owner().id)) return ;
         EmpireView view = empireViews.get(index);
         view.spies().nextMission();
     }
     private void previousSpyMission(int index) {
+        if (index < 0 || index >= empireViews.size() || !hotSeatCanEdit(empireViews.get(index).owner().id)) return ;
         EmpireView view = empireViews.get(index);
         view.spies().prevMission();        
     }
@@ -480,6 +484,7 @@ public class ManageSpiesUI extends BasePanel implements MouseListener, MouseWhee
     }
     @Override
     public void keyPressed(KeyEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int k = e.getKeyCode();
         if (k == KeyEvent.VK_ESCAPE) {
             exit();
@@ -499,6 +504,7 @@ public class ManageSpiesUI extends BasePanel implements MouseListener, MouseWhee
     }
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         dragY = 0;
         if (e.getButton() > 3)
             return;
@@ -556,6 +562,7 @@ public class ManageSpiesUI extends BasePanel implements MouseListener, MouseWhee
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int count = e.getUnitsToScroll();
         for (int i=0;i<spendingBoxes.size(); i++) {
             if (hoverButton == spendingBoxes.get(i)) {
@@ -587,6 +594,7 @@ public class ManageSpiesUI extends BasePanel implements MouseListener, MouseWhee
     }
     @Override
     public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int x = e.getX();
         int y = e.getY();
         int dY = y-dragY;

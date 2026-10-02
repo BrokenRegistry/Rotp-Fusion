@@ -32,7 +32,15 @@ public class SystemTransportSprite extends MapSprite {
         source(s);
     }
 	public int amt()		{ return homeSystem().transportAmt(); }
-	public void amt(int i)	{ homeSystem().transportAmt(i); }
+    public void amt(int i) {
+        if (!canEditOrder()) return;
+        homeSystem().transportAmt(session().hotSeatState() == null ? i
+                : bounds(0, i, player().sv.maxTransportsToSend(homeSystem().id)));
+    }
+    private boolean canEditOrder() {
+        return homeSystem().empire() != null
+                && rotp.multiplayer.hotseat.HotSeatOrders.canEdit(homeSystem().empire().id);
+    }
     public FlightPathSprite pathSpriteTo(StarSystem sys) {
         // no system transports for uncolonized systems
         if (!player().sv.isColonized(homeSystem().id))
@@ -44,6 +52,7 @@ public class SystemTransportSprite extends MapSprite {
         return new FlightPathSprite(homeSystem().colony().transport(), sys);
     }
     public void cancel() {
+        if (!canEditOrder()) return;
         Transport tr = homeSystem().colony().transport();
         amt(tr.size());
         homeSystem().transportDestId = id(tr.destination());
@@ -51,12 +60,13 @@ public class SystemTransportSprite extends MapSprite {
         hoveringDest = null;
     }
     public void launch() {
-        amt(0);
+        homeSystem().transportAmt(0);
         homeSystem().transportDestId = StarSystem.NULL_ID;
         clickedDest = null;
         hoveringDest = null;
     }
     public void clear() {
+        if (!canEditOrder()) return;
         amt(0);
         homeSystem().transportDestId = StarSystem.NULL_ID;
         clickedDest = null;
@@ -65,11 +75,13 @@ public class SystemTransportSprite extends MapSprite {
 		player().budget().makeTransortObsolete();
     }
     public void accept(boolean govern) {
+        if (!canEditOrder()) return;
         homeSystem().transportDestId = id(clickedDest);
         homeSystem().transportTravelTime = 0;
         homeSystem().colony().scheduleTransportsToSystem(clickedDest, amt(), false, govern);
     }
     public void accept(float travelTime, boolean govern) {
+        if (!canEditOrder()) return;
         homeSystem().transportDestId = id(clickedDest);
         homeSystem().transportTravelTime = travelTime;
         homeSystem().colony().scheduleTransportsToSystem(clickedDest, amt(), travelTime, govern);
@@ -83,6 +95,7 @@ public class SystemTransportSprite extends MapSprite {
         return (clickedDest != null) && (amt() > 0) && ((clickedDest != tr.destination()) || (amt() != tr.size()));
     }
     public boolean increment(int n) {
+        if (!canEditOrder() || n < 0) return false;
         int maxSendingSize = player().sv.maxTransportsToSend(homeSystem().id);
         int prevAmt = amt();
         int newAmt = bounds(0, (prevAmt+n), maxSendingSize);
@@ -93,6 +106,7 @@ public class SystemTransportSprite extends MapSprite {
         return true;
     }
     public boolean decrement(int n) {
+        if (!canEditOrder() || n < 0) return false;
         int prevAmt = amt();
         int newAmt = max(0, (prevAmt-n));
         if (prevAmt == newAmt)

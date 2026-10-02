@@ -44,33 +44,39 @@ public class DiplomaticNotification implements TurnNotification, Base {
 		if (!notificationIsAllowed(messageType))
 			return;
 		DiplomaticNotification notif = new DiplomaticNotification(v, messageType);
-		GameSession.addTurnNotification(notif);
+		GameSession.addTurnNotificationForEmpire(v.empId(), notif);
 	}
 	public static void create(EmpireView v, String messageType, Empire otherEmp)	{
 		if (!notificationIsAllowed(messageType))
 			return;
 		DiplomaticNotification notif = new DiplomaticNotification(v, messageType);
 		notif.other = otherEmp;
-		GameSession.addTurnNotification(notif);
+		GameSession.addTurnNotificationForEmpire(v.empId(), notif);
 	}
 	public static void createAndNotify(EmpireView v, String messageType)	{
 		if (!notificationIsAllowed(messageType))
 			return;
-		new DiplomaticNotification(v, messageType).notifyPlayer();
+        if (GameSession.instance().controllerRegistry() != null)
+            GameSession.addTurnNotificationForEmpire(v.empId(),
+                    new DiplomaticNotification(v, messageType));
+        else
+            new DiplomaticNotification(v, messageType).notifyPlayer();
 	}
 	public static void create(EmpireView v, DiplomaticIncident inc, String messageType)	{
 		if (!notificationIsAllowed(messageType))
 			return;
 		DiplomaticNotification notif = new DiplomaticNotification(v, inc, messageType);
-		GameSession.addTurnNotification(notif);
+		GameSession.addTurnNotificationForEmpire(v.empId(), notif);
 	}
     public static DiplomaticNotification create(EmpireView v, DiplomaticIncident inc) {
         DiplomaticNotification notif = new DiplomaticNotification(v, inc);
-        GameSession.addTurnNotification(notif);
+        GameSession.addTurnNotificationForEmpire(v.empId(), notif);
         return notif;
     }
     public static DiplomaticNotification create(Empire talk, DiplomaticIncident inc) {
         DiplomaticNotification notif = new DiplomaticNotification(talk, inc);
+        if (GameSession.instance().controllerRegistry() != null)
+            throw new IllegalStateException("Diplomatic notice requires a recipient empire");
         GameSession.addTurnNotification(notif);
         return notif;
     }

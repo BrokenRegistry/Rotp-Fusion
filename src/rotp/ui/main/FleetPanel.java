@@ -200,6 +200,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         return newFleet;
     }
 	private void sendFleet()	{
+        if (selectedFleet() == null || !hotSeatCanEdit(selectedFleet().empId())) return;
         // attempts to send fleet (OK button) if that selected
         // vars are valid
         if (!canSendFleet()) 
@@ -231,6 +232,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         parent.parent.map().repaint();
     }
     public void undeployFleet() {
+        if (selectedFleet() == null || !hotSeatCanEdit(selectedFleet().empId())) return;
         galaxy().ships.undeployFleet(selectedFleet());
         selectNewFleet(null);
         parent.parent.reselectCurrentSystem();
@@ -402,6 +404,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
     }
     @Override
     public void keyPressed(KeyEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
     	setModifierKeysState(e); // BR: For the Flag color selection
         int k = e.getKeyCode();
         switch (k) {
@@ -742,6 +745,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         }
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             boolean up = e.getWheelRotation() > 0;
             scrollToNextFleet(up);
         }
@@ -1339,6 +1343,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         }
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             int count = e.getUnitsToScroll();
             if (count == 0)
                 return;
@@ -1370,7 +1375,8 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 repaint();
         }
         @Override
-        public void mouseDragged(MouseEvent e) { }
+        public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
         @Override
         public void mouseMoved(MouseEvent e) {
             int x = e.getX();
@@ -1424,6 +1430,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();
@@ -1712,7 +1719,8 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         }
 
         @Override
-        public void mouseDragged(MouseEvent e) { }
+        public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
         @Override
         public void mouseMoved(MouseEvent e) {
 			setModifierKeysState(e);
@@ -1746,6 +1754,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();

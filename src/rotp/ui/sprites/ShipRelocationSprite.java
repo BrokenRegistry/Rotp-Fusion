@@ -67,7 +67,10 @@ public class ShipRelocationSprite extends MapSprite {
     public StarSystem rallySystem()           { return player().sv.rallySystem(from.id); }
     public StarSystem homeSystemView()        { return (StarSystem) source(); }
     public boolean forwardRallies()           { return player().sv.forwardRallies(from.id); }
-    public void toggleForwardRallies()        { player().sv.toggleForwardRallies(from.id); }
+    public void toggleForwardRallies() {
+        if (from.empire() == null || !rotp.multiplayer.hotseat.HotSeatOrders.canEdit(from.empire().id)) return;
+        player().sv.toggleForwardRallies(from.id);
+    }
 
     private FlightPathSprite pathSprite() {
         if (pathSprite == null)

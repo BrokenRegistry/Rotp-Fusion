@@ -26,6 +26,7 @@ public class TurnNotificationMessage extends DiplomaticMessage {
     }
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         escape();
     }
 }

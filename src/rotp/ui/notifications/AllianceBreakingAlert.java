@@ -20,8 +20,8 @@ import rotp.model.game.GameSession;
 
 public class AllianceBreakingAlert  extends GameAlert {
     private final Empire empire;
-    public static void create(Empire e) {
-        GameSession.addAlert(new AllianceBreakingAlert(e));
+    public static void create(int recipientEmpireId, Empire e) {
+        GameSession.addAlertForEmpire(recipientEmpireId, new AllianceBreakingAlert(e));
     }
     @Override
     public String description() {

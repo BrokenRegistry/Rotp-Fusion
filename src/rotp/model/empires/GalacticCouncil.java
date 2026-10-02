@@ -32,7 +32,6 @@ import rotp.ui.NoticeMessage;
 import rotp.ui.RotPUI;
 import rotp.ui.diplomacy.DialogueManager;
 import rotp.ui.main.overlay.MapOverlayAdvice;
-import rotp.ui.notifications.CouncilVoteNotification;
 import rotp.ui.notifications.GNNNotification;
 import rotp.util.Base;
 
@@ -59,19 +58,23 @@ public class GalacticCouncil implements Base, Serializable {
     private Empire rebelLeader; // Challenger
 
     //convention variables - reset when convention starts
-    private transient List<Empire> voters, empires;
-    private transient int voteIndex = 0;
-    private transient double[] votes; // BR: Double to avoid equality in forced end of game
-    private transient double totalVotes, votes1, votes2, lastVotes, playerVotes;
-    private transient double playerVotesRatio;
-    private transient Empire candidate1, candidate2, lastVoter, lastVoted;
+    private List<Empire> voters, empires;
+    private int voteIndex = 0;
+    private double[] votes; // BR: Double to avoid equality in forced end of game
+    private double totalVotes, votes1, votes2, lastVotes, playerVotes;
+    private double playerVotesRatio;
+    private Empire candidate1, candidate2, lastVoter, lastVoted;
+    private long conventionSequence;
+    private boolean finalWarStarted;
 
     public static float pctRequired()  { return IGameOptions.counciRequiredPct.get(); }  // BR:Made it adjustable
     public Empire rebelLeader()        { return rebelLeader; }
     public Empire leader()             { return leader; }
     public void leader(Empire e)       { leader = e; }
     public List<Empire>  allies()      { return allies; }
+    public List<Empire>  rebels()      { return rebels; }
     public boolean finalWar()          { return !rebels.isEmpty(); }
+    public boolean finalWarStarted()   { return finalWarStarted; }
     public void addAlly(Empire e)      { allies.add(e); }
     public void addRebel(Empire e)     { rebels.add(e); }
     public boolean isAllied(Empire e)  { return allies.contains(e); }
@@ -126,11 +129,13 @@ public class GalacticCouncil implements Base, Serializable {
 			}
 			else {
 				openConvention(); // to initialize variables.
-				leader = candidate1;
-				rebelLeader = candidate2;
-				votes1 = votes[0];
-				votes2 = votes[1];
-				end();
+                leader = candidate1;
+                rebelLeader = candidate2;
+                votes1 = votes[0];
+                votes2 = votes[1];
+                if (session().controllerRegistry() != null)
+                    allies.add(leader);
+                end();
 				return;
 			}
 		}
@@ -180,12 +185,45 @@ public class GalacticCouncil implements Base, Serializable {
     }
     private void convene() {
         openConvention();
-        CouncilVoteNotification.create();
+        session().councilDecisionAdapter().presentConvention(session(), this);
     }
     public boolean votingInProgress()  { return voteIndex < voters().size(); }
     public boolean hasVoted(Empire e)  { return voters().indexOf(e) < voteIndex; }
 	public long votes(Empire e)        { return (long) votes[voters().indexOf(e)]; }
     public Empire nextVoter()  { return voters().get(voteIndex); }
+    public int voteIndex() { return voteIndex; }
+    public long conventionSequence() { return conventionSequence; }
+    public boolean hasPendingHumanVote() {
+        return votes != null && votingInProgress() && nextVoter().isPlayerControlled();
+    }
+    public Empire nextHumanRulingEmpire() {
+        if (leader == null || votingInProgress() || disbanded())
+            return null;
+        for (Empire empire : empires()) {
+            if (empire.isPlayerControlled())
+                return empire;
+        }
+        return null;
+    }
+    public void continueNonPlayerRulings() {
+        if (leader == null || votingInProgress() || disbanded())
+            return;
+        for (Empire empire : new ArrayList<>(empires())) {
+            if (!empire.isPlayerControlled())
+                empire.diplomatAI().acceptCouncilRuling(this);
+        }
+    }
+    public boolean castHumanRuling(int empireId, boolean accept) {
+        Empire empire = galaxy().empire(empireId);
+        if (empire == null || !empire.isPlayerControlled()
+                || nextHumanRulingEmpire() != empire)
+            return false;
+        if (accept)
+            acceptRuling(empire);
+        else
+            defyRuling(empire);
+        return true;
+    }
     public Empire candidate1() { return candidate1; }
     public Empire candidate2() { return candidate2; }
     public Empire lastVoter()  { return lastVoter; }
@@ -208,8 +246,15 @@ public class GalacticCouncil implements Base, Serializable {
             castNextVote(nextVoter().diplomatAI().councilVoteFor(candidate1(), candidate2()));
     }
     public void castPlayerVote(Empire chosen) {
-        if (nextVoter().isPlayer())
-            castNextVote(chosen);
+        castHumanVote(Empire.PLAYER_ID, chosen);
+    }
+    public boolean castHumanVote(int voterEmpireId, Empire chosen) {
+        if (!hasPendingHumanVote() || nextVoter().id != voterEmpireId)
+            return false;
+        if (chosen != null && chosen != candidate1 && chosen != candidate2)
+            return false;
+        castNextVote(chosen);
+        return true;
     }
     public void continueNonPlayerVoting() {
         while (votingInProgress() && !nextVoter().isPlayerControlled())
@@ -254,19 +299,24 @@ public class GalacticCouncil implements Base, Serializable {
             return;
         // The Final war started
         currentStatus = FINAL_WAR;
-        rotp.ui.notifications.TradeTechNotification.showSkipTechButton = true;
-        boolean playerhasAlliance = player().alliedWith(leader.id);
-        status.playerVotesRatio((float)playerVotesRatio);
-        if (leader.isPlayer()) {
-        	status.playerStatus(GameStatus.playerIsLeader);
-        	status.allianceWithLeader(false);
-        }
-        else if (rebelLeader.isPlayer()) {
-        	status.playerStatus(GameStatus.playerIsChallenger);
-        	status.allianceWithLeader(playerhasAlliance);
-        }
-        else {
-        	status.allianceWithLeader(playerhasAlliance);
+        boolean rostered = session().controllerRegistry() != null;
+        if (!rostered)
+            rotp.ui.notifications.TradeTechNotification.showSkipTechButton = true;
+        boolean playerhasAlliance = false;
+        if (!rostered) {
+            playerhasAlliance = player().alliedWith(leader.id);
+            status.playerVotesRatio((float)playerVotesRatio);
+            if (leader.isPlayer()) {
+                status.playerStatus(GameStatus.playerIsLeader);
+                status.allianceWithLeader(false);
+            }
+            else if (rebelLeader.isPlayer()) {
+                status.playerStatus(GameStatus.playerIsChallenger);
+                status.allianceWithLeader(playerhasAlliance);
+            }
+            else {
+                status.allianceWithLeader(playerhasAlliance);
+            }
         }
 
         boolean electedLeaderIsCrazy = rebels.contains(leader);
@@ -287,7 +337,12 @@ public class GalacticCouncil implements Base, Serializable {
         }
 
         // if player won the vote and no rebels, game over
-        if (leader.isPlayer()) {
+        if (rostered && (rebels.isEmpty() || options().immediateCouncilWin()
+                || options().realmsBeyondCouncil() || isForcedEndOfGame())) {
+            currentStatus = DISBANDED;
+            return;
+        }
+        if (!rostered && leader.isPlayer()) {
             if (rebels.isEmpty()
             		|| options().immediateCouncilWin()
             		|| options().realmsBeyondCouncil()
@@ -297,7 +352,7 @@ public class GalacticCouncil implements Base, Serializable {
             }
         }
         // if player accepted ruling, also game over
-        else if (allies.contains(player()) || options().realmsBeyondCouncil()) {
+        else if (!rostered && (allies.contains(player()) || options().realmsBeyondCouncil())) {
             if (playerhasAlliance && !options().noAllianceCouncil())
                 session().status().winCouncilAlliance();
             else
@@ -308,14 +363,17 @@ public class GalacticCouncil implements Base, Serializable {
         // ==> final war:
         // Either player is rebelling against leader,
         // or player is leader and at least one AI is rebelling
-        if (leader.isPlayerControlled())
-            galaxy().giveAdvice(MapOverlayAdvice.MAIN_ADVISOR_COUNCIL_RESISTED, leader.raceName());
-        else 
-            galaxy().giveAdvice(MapOverlayAdvice.MAIN_ADVISOR_RESIST_COUNCIL);
+        if (!rostered) {
+            if (leader.isPlayerControlled())
+                galaxy().giveAdvice(MapOverlayAdvice.MAIN_ADVISOR_COUNCIL_RESISTED, leader.raceName());
+            else
+                galaxy().giveAdvice(MapOverlayAdvice.MAIN_ADVISOR_RESIST_COUNCIL);
+        }
 
         // all members of alliance declare final war on player or all rebels
         // everyone gets the incident first. Once Final War is declared, no
         // more incidents are checked
+        finalWarStarted = true;
         for (Empire rebel: rebels) {
             for (Empire ally: allies) {
                 FinalWarIncident.create(ally, leader, rebel);
@@ -339,7 +397,7 @@ public class GalacticCouncil implements Base, Serializable {
 			int emp2 = 1;
 			for (Empire ally2: allies) {
 				if (ally1 != ally2) {
-					if (System.currentTimeMillis() - lastTime >= minDelay) {
+					if (!rostered && System.currentTimeMillis() - lastTime >= minDelay) {
 						String str = text("COUNCIL_ESTABLISH_UNITY", emp1, emp2, numAllies);
 						NoticeMessage.resetSubstatus(str);
 						RotPUI.instance().paintCouncilNotice(shading);
@@ -363,6 +421,8 @@ public class GalacticCouncil implements Base, Serializable {
             for (Tech tech : leader.tech().techsUnknownTo(ally, false))
                 ally.tech().acquireTechThroughTrade(tech.id, leader.id);
         }
+        if (rostered)
+            return;
         if (leader.isPlayerControlled()) {
             for (Empire rebel: rebels) 
                 rebel.respond(DialogueManager.WARNING_REBELLING_AGAINST, leader);
@@ -375,6 +435,8 @@ public class GalacticCouncil implements Base, Serializable {
         }
     }
     private void openConvention() {
+        conventionSequence++;
+        finalWarStarted = false;
         initConventionVars();
 
         // calculate vote total for each empire
@@ -385,7 +447,7 @@ public class GalacticCouncil implements Base, Serializable {
 						Empire voter = empires.get(i);
 						votes[i] = voter.empireNonDynaTechnoIndPower() / 100;
 						totalVotes += votes[i];
-						if (voter.isPlayer())
+                        if (session().controllerRegistry() == null && voter.isPlayer())
 							playerVotes = votes[i];
 					}
 					break;
@@ -394,7 +456,7 @@ public class GalacticCouncil implements Base, Serializable {
 						Empire voter = empires.get(i);
 						votes[i] = voter.empireNonDynaPower() / 100;
 						totalVotes += votes[i];
-						if (voter.isPlayer())
+                        if (session().controllerRegistry() == null && voter.isPlayer())
 							playerVotes = votes[i];
 					}
 					break;
@@ -403,7 +465,7 @@ public class GalacticCouncil implements Base, Serializable {
 						Empire voter = empires.get(i);
 						votes[i] = voter.totalPlanetaryPopulation() / 100;
 						totalVotes += votes[i];
-						if (voter.isPlayer())
+                        if (session().controllerRegistry() == null && voter.isPlayer())
 							playerVotes = votes[i];
 					}
 					break;
@@ -414,10 +476,10 @@ public class GalacticCouncil implements Base, Serializable {
 				Empire voter = empires.get(i);
 				votes[i] = (int) Math.ceil(voter.totalPlanetaryPopulation() / 100);
 				totalVotes += votes[i];
-				if (voter.isPlayer())
+                if (session().controllerRegistry() == null && voter.isPlayer())
 					playerVotes = votes[i];
 			}
-        playerVotesRatio = (float)playerVotes/totalVotes;
+        playerVotesRatio = totalVotes == 0 ? 0 : (float)playerVotes/totalVotes;
 
         log("Convening council. # empires: " + empires.size());
     }
@@ -446,14 +508,28 @@ public class GalacticCouncil implements Base, Serializable {
         votes2 = 0;
         candidate1 = empires.get(0);
         candidate2 = empires.get(1);
-    	if (options().playerVotesFirst()) {
-    		empires.remove(player());
-    		empires.add(0, player());
-    	}
-    	else if (options().playerVotesLast()) {
-    		empires.remove(player());
-    		empires.add(player());
-    	}
+        if (session().controllerRegistry() != null) {
+            List<Empire> humanVoters = new ArrayList<>();
+            for (Empire empire : empires) {
+                if (empire.isPlayerControlled())
+                    humanVoters.add(empire);
+            }
+            if (options().playerVotesFirst() || options().playerVotesLast()) {
+                empires.removeAll(humanVoters);
+                if (options().playerVotesFirst())
+                    empires.addAll(0, humanVoters);
+                else
+                    empires.addAll(humanVoters);
+            }
+        }
+        else if (options().playerVotesFirst()) {
+            empires.remove(player());
+            empires.add(0, player());
+        }
+        else if (options().playerVotesLast()) {
+            empires.remove(player());
+            empires.add(player());
+        }
         voteIndex = 0;
         totalVotes = 0;
         lastVotes = 0;
@@ -487,8 +563,12 @@ public class GalacticCouncil implements Base, Serializable {
         // if leader is elected, ask all empires to accept ruling
         if (leader != null) {
             rebels.addAll(allVoters);
+            if (session().controllerRegistry() != null) {
+                continueNonPlayerRulings();
+                return;
+            }
             for (Empire c : allVoters)
-            	c.diplomatAI().acceptCouncilRuling(this);
+                c.diplomatAI().acceptCouncilRuling(this);
             return;
         }
 
@@ -520,6 +600,11 @@ public class GalacticCouncil implements Base, Serializable {
     	boolean deadWasAllied  = allies.contains(deadEmpire);
         allies.remove(deadEmpire);
         rebels.remove(deadEmpire);
+        if (session().controllerRegistry() != null) {
+            if (leader != null && (rebels.isEmpty() || allies.isEmpty()))
+                currentStatus = DISBANDED;
+            return;
+        }
         
         if (deadEmpire.isPlayer()) {
             if (leader().isPlayer()) {

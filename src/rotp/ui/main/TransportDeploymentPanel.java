@@ -140,6 +140,7 @@ public class TransportDeploymentPanel extends SystemPanel {
     }
     @Override
     public void keyPressed(KeyEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int k = e.getKeyCode();
         int mods = e.getModifiersEx();
 
@@ -220,11 +221,13 @@ public class TransportDeploymentPanel extends SystemPanel {
         }
     }
     public void clearTransport() {
+        if (!hotSeatCanEdit(player().id)) return;
         transportSprite().clear();
         mapHandler().clickedSprite(transportSprite().homeSystem());
         mapHandler().repaint();
     }
     public void acceptTransport() {
+        if (!hotSeatCanEdit(player().id)) return;
         if (!canSendTransports())
             return;
 
@@ -234,6 +237,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         mapHandler().repaint();
     }
     public void decrement(boolean click) {
+        if (!hotSeatCanEdit(player().id)) return;
         if (transportSprite().decrement(1)) {
             if (click)
                 softClick();
@@ -243,6 +247,7 @@ public class TransportDeploymentPanel extends SystemPanel {
             misClick();
     }
     public void increment(boolean click) {
+        if (!hotSeatCanEdit(player().id)) return;
         if (transportSprite().increment(1)) {
             if (click)
                 softClick();
@@ -296,9 +301,11 @@ public class TransportDeploymentPanel extends SystemPanel {
         @Override
         protected BasePanel bottomPane() { return new ToSystemDetailPane(); }
         @Override
-        public void mouseWheelMoved(MouseWheelEvent e) { }
+        public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
         @Override
-        public void mouseDragged(MouseEvent e) { }
+        public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
         @Override
         public void mouseMoved(MouseEvent e) { }
         @Override
@@ -315,7 +322,8 @@ public class TransportDeploymentPanel extends SystemPanel {
         @Override
         public void mousePressed(MouseEvent e) { }
         @Override
-        public void mouseReleased(MouseEvent e) { }
+        public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
     }
     class FromSystemDetailPane extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
         private static final long serialVersionUID = 1L;
@@ -531,6 +539,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();
@@ -573,6 +582,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         }
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             int rot = e.getWheelRotation();
             if (hoverBox == sliderBox) {
                 if (rot > 0)
@@ -582,7 +592,8 @@ public class TransportDeploymentPanel extends SystemPanel {
             }
         }
         @Override
-        public void mouseDragged(MouseEvent arg0) { }
+        public void mouseDragged(MouseEvent arg0) {
+        if (!hotSeatCanEdit(player().id)) return; }
         @Override
         public void mouseMoved(MouseEvent e) {
             int x = e.getX();
@@ -753,7 +764,8 @@ public class TransportDeploymentPanel extends SystemPanel {
             }
         }
         @Override
-        public void mouseDragged(MouseEvent e) { }
+        public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
         @Override
         public void mouseMoved(MouseEvent e) {
             int x = e.getX();
@@ -772,6 +784,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             boolean rightClick = SwingUtilities.isRightMouseButton(e);
             boolean middleClick = SwingUtilities.isMiddleMouseButton(e);
             if (hoverBox == flagBox) {
@@ -800,6 +813,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         }
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         	setModifierKeysState(e); // BR: For the Flag color selection
             if (hoverBox == flagBox) {
                 StarSystem sys = destination();
@@ -949,7 +963,8 @@ public class TransportDeploymentPanel extends SystemPanel {
             g.setStroke(prev2);
         }
         @Override
-        public void mouseDragged(MouseEvent e) { }
+        public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
         @Override
         public void mouseMoved(MouseEvent e) {
 			setModifierKeysState(e);
@@ -983,6 +998,7 @@ public class TransportDeploymentPanel extends SystemPanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             if (e.getClickCount() > 1)

@@ -42,6 +42,7 @@ public class ThreatForAttack extends TurnNotificationMessage {
     }
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         log("ThreatForAttack - selected: ", str(i));
         switch(i) {
         case 1: 

@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<version>Fusion-2026-09-30</version>
+	<version>Fusion-2026-10-01</version>
 
 	<!-- Project Declaration -->
 	<groupId>com.rayfowler</groupId>
@@ -113,12 +113,19 @@
 			<artifactId>xchart</artifactId>
 			<version>3.8.8</version>
 		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<!-- Files generation -->
 	<build>
 		<!-- Resources non-conventionnal location Declaration-->
 		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>tests</testSourceDirectory>
 		<resources>
 			<resource>
 				<directory>src</directory>
@@ -155,6 +162,11 @@
 		</pluginManagement>
 		<!-- Building tools -->
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.5.4</version>
+			</plugin>
 			<plugin>
 				<groupId>org.basepom.maven</groupId>
 				<artifactId>duplicate-finder-maven-plugin</artifactId>
@@ -216,8 +228,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.15.0</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<release>${java.version}</release>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -486,4 +497,26 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>phase1-acceptance</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<!-- Engine singletons and hidden Swing components belong to one test JVM. -->
+							<forkCount>1</forkCount>
+							<reuseForks>false</reuseForks>
+							<forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
+							<systemPropertyVariables>
+								<rotp.integration>true</rotp.integration>
+							</systemPropertyVariables>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

@@ -270,7 +270,10 @@ public final class GalaxyFactory implements Base {
 
 		// after all is done, set playerCiv
 		g.player(g.empire(0));
-		player().setBeginningColonyAllocations();
+		for (Empire e : g.empires()) {
+			if (e.isHumanEmpire())
+				e.setBeginningColonyAllocations();
+		}
 
 		for (Empire e : g.empires())
 			e.ai().scientist().setDefaultTechTreeAllocations();
@@ -291,8 +294,12 @@ public final class GalaxyFactory implements Base {
 		long tm4 = System.currentTimeMillis();
 		log("Other inits: "+(tm4-tm3c)+"ms");
 
-		g.player().refreshViews(false);
-		g.player().makeNextTurnDecisions();
+		for (Empire e : g.empires()) {
+			if (e.isHumanEmpire()) {
+				e.refreshViews(false);
+				e.makeNextTurnDecisions();
+			}
+		}
 		long tm5 = System.currentTimeMillis();
 		log("Next Turn Decision: "+(tm5-tm4)+"ms");
 

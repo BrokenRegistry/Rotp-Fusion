@@ -27,7 +27,6 @@ import rotp.model.ships.ShipDesign;
 import rotp.model.tech.Tech;
 import rotp.model.tech.TechCategory;
 import rotp.model.tech.TechTree;
-import rotp.ui.RotPUI;
 import rotp.ui.notifications.SabotageNotification;
 import rotp.util.Base;
 
@@ -334,8 +333,10 @@ public final class SpyNetwork implements Base, Serializable {
         }
 
         if (rpt.spiesLost() > 0) {
-            if (view.owner().isPlayer() || view.isPlayer())
-            session().enableSpyReport();
+            if (view.owner().isPlayer() || view.owner().isPlayerControlled())
+                session().enableSpyReport(view.ownerId());
+            if (view.isPlayer() || view.isPlayerControlled())
+                session().enableSpyReport(view.empId());
         }
 
         if (spyConfessed || activeSpies.isEmpty() || isHide())
@@ -357,7 +358,7 @@ public final class SpyNetwork implements Base, Serializable {
         TechTree empTech = view().techUncut();
         Empire owner = view().owner();
 
-        List<String> prevPossible = owner.isPlayer() ? new ArrayList<>(possibleTechs()) : null;
+        List<String> prevPossible = owner.isHumanEmpire() ? new ArrayList<>(possibleTechs()) : null;
 
         tech.spyOnTechs(empTech);
         float maxTech = owner.tech().maxTechLevel();
@@ -365,17 +366,17 @@ public final class SpyNetwork implements Base, Serializable {
         possibleTechs = empTech.worseTechsUnknownToCiv(owner.tech(), maxTech);
 
         // BR: remove the forbidden tech from the possibleTechs spying list
-        possibleTechs.removeAll(options().forbiddenTechList(owner.isPlayer()));
+        possibleTechs.removeAll(options().forbiddenTechList(owner.isHumanEmpire()));
 
         // BR: no tech are shown if "No tech stealing)
         if (options().forbidTechStealing())
         	possibleTechs.clear();
 
-        if (owner.isPlayer()) {
+        if (owner.isHumanEmpire()) {
             List<String> newPossible = new ArrayList<>(possibleTechs());
             newPossible.removeAll(prevPossible);
             if (!newPossible.isEmpty()) {
-                session().enableSpyReport();
+                session().enableSpyReport(owner.id);
                 report().recordTechsLearned(newPossible);
             }
         }  
@@ -497,7 +498,7 @@ public final class SpyNetwork implements Base, Serializable {
             // this brings up category selection panel
             // which triggers mission.stealTech() and displayed tech stolen panel
             // which then checks mission.canFrame and triggers mission.frameEmpire()
-            RotPUI.instance().selectEspionageMissionPanel(eMission, empire().id);
+            session().espionageDecisionAdapter().present(session(), eMission, empire().id);
         }
 
         return eMission;
@@ -532,7 +533,7 @@ public final class SpyNetwork implements Base, Serializable {
         allocationBC += bc;
         float cost = costForNextSpy();
 
-        if (!empire().isPlayer() || options().spyOverSpend()) {
+        if (!empire().isHumanEmpire() || options().spyOverSpend()) {
 	        while (allocationBC >= cost) {
 	            addNewSpy();
 	            allocationBC -= cost;
@@ -619,6 +620,8 @@ public final class SpyNetwork implements Base, Serializable {
         if (bestSpy == null)
             return;
 
+		// Target legality can change as systems change hands between turns.
+		sabotageTargets = null;
 		// Select the Mission
 		Sabotage sabotageChoice = owner().spyMasterAI().bestSabotageChoice(view);
         if (sabotageChoice == null)
@@ -632,7 +635,11 @@ public final class SpyNetwork implements Base, Serializable {
 			return;
 
         if (owner().isPlayerControlled()) {
-            SabotageNotification.addMission(eMission, chosenSystem.id);
+            if (session().controllerRegistry() == null)
+                SabotageNotification.addMission(eMission, chosenSystem.id);
+            else
+                session().sabotageDecisionAdapter().resolve(session(), eMission,
+                        chosenSystem.id);
             return;
         }
 

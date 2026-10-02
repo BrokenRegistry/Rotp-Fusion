@@ -76,6 +76,7 @@ public class DiplomacyOfferAidMenu extends DiplomaticMessage {
     public boolean enabled(int i)      { return i < options.size(); }
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         if (!enabled(i))
             return;
 

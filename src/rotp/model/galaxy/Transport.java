@@ -277,7 +277,7 @@ public class Transport extends FleetBase {
             else {
                 log(concat(str(size()), " ", empire.name(), " transports perished at ", dest.name()));
                 if (empire.isPlayerControlled())
-                    TransportsPerishedAlert.create(targetEmp, dest);
+                    TransportsPerishedAlert.create(empire, dest);
                 size(0);
             }
         }

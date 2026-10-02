@@ -506,6 +506,7 @@ public class DiplomaticMessageUI extends FadeInPanel
     }
     @Override
     public void keyPressed(KeyEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         if (waitingOnMessage())
                 return;
 
@@ -544,6 +545,7 @@ public class DiplomaticMessageUI extends FadeInPanel
     public void mousePressed(MouseEvent arg0) { }
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         if (e.getButton() > 3)
             return;
         if (selectHover < 0)

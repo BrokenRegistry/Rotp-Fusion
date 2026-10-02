@@ -205,6 +205,7 @@ public final class ConfirmScrapUI extends BasePanel implements MouseListener, Mo
         disableGlassPane();
     }
     private void scrapAction() {
+        if (targetDesign == null || !hotSeatCanEdit(targetDesign.empire().id)) return;
 		String previousName = targetDesign.name();
 		ShipDesign newDes = player().shipLab().scrapDesign(targetDesign);
 		if (options().keepShipDesignName()) {
@@ -219,6 +220,7 @@ public final class ConfirmScrapUI extends BasePanel implements MouseListener, Mo
     }
     @Override
     public void keyPressed(KeyEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int k = e.getKeyCode();
         if ((k == KeyEvent.VK_ESCAPE)
         ||  (k == KeyEvent.VK_C)){
@@ -245,6 +247,7 @@ public final class ConfirmScrapUI extends BasePanel implements MouseListener, Mo
     public void mousePressed(MouseEvent arg0) { }
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         if (e.getButton() > 3)
             return;
         if (hoverTarget == cancelButtonArea) {
@@ -259,7 +262,8 @@ public final class ConfirmScrapUI extends BasePanel implements MouseListener, Mo
         }
     }
     @Override
-    public void mouseDragged(MouseEvent e) { }
+    public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
     @Override
     public void mouseMoved(MouseEvent e) {
         int x = e.getX();

@@ -802,6 +802,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         g.fillRect(s10,getHeight()-scaled(200),getWidth()-s20, scaled(190));
     }
 	@Override public void keyPressed(KeyEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
 		setModifierKeysState(e); // BR: For the Flag color selection
 		repaintOnAltChange();
         boolean repaint = false;
@@ -1466,6 +1467,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		}
 		@Override public void mousePressed(MouseEvent e)	{}
 		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             if (hoverBox == null)
@@ -1486,7 +1488,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                 		parent.showHelp();
             }
         }
-		@Override public void mouseDragged(MouseEvent e)	{}
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;}
 		@Override public void mouseMoved(MouseEvent e)		{
 			int x = e.getX();
 			int y = e.getY();
@@ -2162,6 +2165,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		}
 		@Override public void mousePressed(MouseEvent arg0)	{ enterCurrentPane(this); }
 		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;
 			enterCurrentPane(this);
 			//repaintOnAltChange();
             if (e.getButton() > 3)
@@ -2221,7 +2225,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
                 instance.repaint();
             }
         }
-		@Override public void mouseDragged(MouseEvent arg0)	{ enterCurrentPane(this); }
+		@Override public void mouseDragged(MouseEvent arg0)	{
+        if (!hotSeatCanEdit(player().id)) return; enterCurrentPane(this); }
 		@Override public void mouseMoved(MouseEvent e)		{
 			enterCurrentPane(this);
 			int x = e.getX();
@@ -2245,6 +2250,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 				hoverBox = hoverBox(null, hoverBox);
 		}
 		@Override public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
 			enterCurrentPane(this);
 			int x = e.getX();
 			int y = e.getY();
@@ -2385,6 +2391,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		}
 		@Override public void mousePressed(MouseEvent arg0)	{ }
 		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();
@@ -2396,7 +2403,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             }
         }
         @Override
-        public void mouseDragged(MouseEvent arg0) { }
+        public void mouseDragged(MouseEvent arg0) {
+        if (!hotSeatCanEdit(player().id)) return; }
 		@Override public void mouseMoved(MouseEvent e)	{
 			int x = e.getX();
 			int y = e.getY();
@@ -2573,7 +2581,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             g.setColor(palette.black);
             drawString(g,val, x2+w2-sw, y1);
         }
-		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
 		@Override public void mouseMoved(MouseEvent e)		{
 			int x = e.getX();
 			int y = e.getY();
@@ -2585,7 +2594,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		}
 		@Override public void mouseClicked(MouseEvent e)	{ }
 		@Override public void mousePressed(MouseEvent e)	{ }
-		@Override public void mouseReleased(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
 		@Override public void mouseEntered(MouseEvent e)	{ }
 		@Override public void mouseExited(MouseEvent e)	{
 			if (hoverBox != null) {
@@ -2685,7 +2695,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
             g.setColor(palette.black);
             drawString(g,val, amtP-sw, y1);
         }
-		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
 		@Override public void mouseMoved(MouseEvent e)		{
 			int x = e.getX();
 			int y = e.getY();
@@ -2716,7 +2727,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		}
 		@Override public void mouseClicked(MouseEvent e)	{ }
 		@Override public void mousePressed(MouseEvent e)	{ }
-		@Override public void mouseReleased(MouseEvent e)	{ 
+		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;
 			if (!isAdvising())
 				return;
 			Point pt = SwingUtilities.convertPoint(this, e.getPoint(), ADVISOR);
@@ -3061,6 +3073,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();
@@ -3092,7 +3105,8 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         }
 		@Override public void mouseEntered(MouseEvent e)	{}
 		@Override public void mouseExited(MouseEvent e)		{ hoverBox = hoverBox(null, hoverBox); }
-		@Override public void mouseDragged(MouseEvent e)	{}
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;}
 		@Override public void mouseMoved(MouseEvent e)		{
 			int x = e.getX();
 			int y = e.getY();
@@ -3112,6 +3126,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 		}
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             int rot = e.getWheelRotation();
             if (hoverBox == sliderBox) {
                 if (rot > 0)
@@ -3140,6 +3155,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         private static final long serialVersionUID = 1L;
         @Override
         public void actionPerformed(ActionEvent ev) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (listingUI.scrollUp())
                 instance.repaint();
         }
@@ -3148,6 +3164,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         private static final long serialVersionUID = 1L;
         @Override
         public void actionPerformed(ActionEvent ev) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (listingUI.scrollDown())
                 instance.repaint();
         }
@@ -3156,6 +3173,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         private static final long serialVersionUID = 1L;
         @Override
         public void actionPerformed(ActionEvent ev) {
+        if (!hotSeatCanEdit(player().id)) return;
             displayedSystems = null;
             setFieldValues(lastSelectedSystem());
             finish(false);

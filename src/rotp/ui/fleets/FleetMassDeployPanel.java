@@ -47,6 +47,7 @@ public class FleetMassDeployPanel extends BasePanel {
         initModel();
     }
     public void deploySelectedFleets() {
+        if (!hotSeatCanEdit(player().id)) return;
         if (!canDeployFleets())
             return;
         StarSystem dest = topParent.targetSystem;
@@ -175,6 +176,7 @@ public class FleetMassDeployPanel extends BasePanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();
@@ -278,7 +280,8 @@ public class FleetMassDeployPanel extends BasePanel {
         }
 		@Override public void mouseClicked(MouseEvent e)	{ }
 		@Override public void mousePressed(MouseEvent e)	{ }
-		@Override public void mouseReleased(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
 		@Override public void mouseDragged(MouseEvent e)	{ }
 		@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
 		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
@@ -353,6 +356,7 @@ public class FleetMassDeployPanel extends BasePanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();

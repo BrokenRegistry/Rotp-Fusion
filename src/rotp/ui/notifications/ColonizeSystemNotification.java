@@ -18,7 +18,6 @@ package rotp.ui.notifications;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.game.GameSession;
 import rotp.model.ships.ShipDesign;
-import rotp.ui.RotPUI;
 import rotp.util.Base;
 
 public class ColonizeSystemNotification implements TurnNotification, Base {
@@ -27,19 +26,25 @@ public class ColonizeSystemNotification implements TurnNotification, Base {
     private final ShipDesign design;
 
     public static void create(int systemId, ShipFleet fl, ShipDesign d) {
-        GameSession.addTurnNotification(new ColonizeSystemNotification(systemId, fl, d));
+        GameSession.addTurnNotificationForEmpire(fl.empId(),
+                new ColonizeSystemNotification(systemId, fl, d));
     }
     private ColonizeSystemNotification(int systemId, ShipFleet fl, ShipDesign d) {
         sysId = systemId;
         fleet = fl;
         design = d;
     }
+    public int systemId() { return sysId; }
+    public ShipFleet fleet() { return fleet; }
+    public ShipDesign design() { return design; }
     @Override
     public String displayOrder() { return PROMPT_COLONIZE; }
     @Override
     public void notifyPlayer() {
         // last minute check to ensure fleet is valid and system is uncolonized
-        if (fleet.hasShip(design) && !galaxy().system(sysId).isColonized())
-            RotPUI.instance().promptForColonization(sysId, fleet, design);
+        if (fleet.hasShip(design) && !galaxy().system(sysId).isColonized()) {
+            GameSession session = GameSession.instance();
+            session.colonizationDecisionAdapter().present(session, sysId, fleet, design);
+        }
     }
 }

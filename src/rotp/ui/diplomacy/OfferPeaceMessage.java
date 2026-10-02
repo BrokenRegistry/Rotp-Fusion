@@ -39,6 +39,7 @@ public class OfferPeaceMessage extends TurnNotificationMessage {
     }
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         log("OfferPeaceMessage - selected: ", str(i));
         switch(i) {
         case 0: 

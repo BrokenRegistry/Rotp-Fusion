@@ -107,6 +107,11 @@ public class VIPConsole extends JPanel  implements IVIPConsole, ActionListener {
 		instance.resultPane.setText("Current turn: " + turn + turnReport);
 	}
 	public static void showConsole(boolean show)	{
+        if (show && rotp.model.game.GameSession.instance().hotSeatState() != null) {
+            javax.swing.JOptionPane.showMessageDialog(Rotp.getFrame(),
+                    new rotp.util.Base() { }.text("HOTSEAT_VIP_DISABLED"));
+            return;
+        }
 		if(!Rotp.isIDE())
 			Rotp.setVisible(!show);
 		if (frame == null) {

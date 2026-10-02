@@ -485,11 +485,10 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 	public boolean orbitingShipsBarColony(ShipFleet flCol)	{
 		List<ShipFleet> fleets	= orbitingFleetsNoMonster();
 		Empire fleetColEmpire	= flCol.empire();
-		boolean flColIsPlayer	= fleetColEmpire.isPlayer();
 		IGameOptions opts = options();
 		for (ShipFleet fleet: fleets) {
 			Empire fleetEmpire = fleet.empire();
-			if (flColIsPlayer && fleetEmpire.isPlayer())
+			if (fleetColEmpire == fleetEmpire)
 				continue;
 			if (opts.skirmishesAllowed(fleetColEmpire, fleetEmpire)
 					&& fleet.isArmedForShipCombat()

@@ -57,6 +57,14 @@ import rotp.util.Base;
 import rotp.util.ThickBevelBorder;
 
 public class BasePanel extends JPanel implements Base, ScaledInteger, InterfacePreview {
+    private final long hotSeatViewGeneration = rotp.ui.multiplayer.HotSeatDesktop.viewerGeneration();
+    /** Reject callbacks retained by a previous viewer's panel. */
+    public boolean hotSeatCanEdit(int empireId) {
+        if (session().hotSeatState() == null) return true;
+        return hotSeatViewGeneration == rotp.ui.multiplayer.HotSeatDesktop.viewerGeneration()
+                && session().hotSeatController() != null
+                && session().hotSeatController().canEdit(empireId);
+    }
     private static final long serialVersionUID = 1L;
     public static final String TEXTURE_GRAY = "TEXTURE_GRAY";
     public static final String TEXTURE_BROWN = "TEXTURE_BROWN";
@@ -166,11 +174,15 @@ public class BasePanel extends JPanel implements Base, ScaledInteger, InterfaceP
 
     public JFrame frame()                  { return (JFrame) SwingUtilities.getRoot(RotPUI.instance()); }
     public void enableGlassPane(BasePanel p) {
+        if (rotp.ui.multiplayer.HotSeatDesktop.blocksNavigation()) return;
         p.setVisible(false);
         frame().setGlassPane(p);
         p.setVisible(true);
     }
-    public void disableGlassPane()  { frame().getGlassPane().setVisible(false); }
+    public void disableGlassPane()  {
+        if (!rotp.ui.multiplayer.HotSeatDesktop.blocksNavigation())
+            frame().getGlassPane().setVisible(false);
+    }
     public void showError(String s) {
         disableGlassPane();
         ErrorDialogPanel err = new ErrorDialogPanel(s);

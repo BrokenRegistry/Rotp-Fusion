@@ -52,7 +52,10 @@ public class BombardSystemNotification implements TurnNotification, Base {
 		if (!GameSession.instance().options().skirmishesAllowed(emp1, emp2))
 			return;
 
-        if (emp1.isPlayerControlled() && !autoBomb)
+        if (GameSession.instance().controllerRegistry() != null)
+            GameSession.instance().bombardmentDecisionAdapter().resolve(
+                    GameSession.instance(), sysId, fl, autoBomb, bombingTarget);
+        else if (emp1.isPlayerControlled() && !autoBomb)
             RotPUI.instance().promptForBombardment(sysId, fl);
         else if ((emp2 != null) && emp2.isPlayerControlled())
             RotPUI.instance().showBombardmentNotice(sysId, fl);

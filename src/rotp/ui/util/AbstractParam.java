@@ -375,17 +375,20 @@ public abstract class AbstractParam<T> implements IParam<T> {
 			newValueMethod.newValue(newValue);
 	}
 	protected void setFromCfg(T newValue)	{
+        if (rotp.model.game.GameSession.hotSeatPolicyLocked(getCfgLabel())) return;
 		updated(true);
 		value(newValue);
 		updateOption(dynOpts());
 	}
 	public T silentSet(T newValue) 			{ // Reserved call from governor class
+        if (rotp.model.game.GameSession.hotSeatPolicyLocked(getCfgLabel())) return value();
 		updated(true);
 		value(newValue);
 		setOption(newValue); // For overrider
 		return newValue;
 	}
 	public T set(T newValue)				{
+        if (rotp.model.game.GameSession.hotSeatPolicyLocked(getCfgLabel())) return value();
 		updated(true);;
 		trueChange(false);
 		if(updated() && value() != null && newValue != null)

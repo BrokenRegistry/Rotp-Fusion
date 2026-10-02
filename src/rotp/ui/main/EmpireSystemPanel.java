@@ -116,6 +116,7 @@ public class EmpireSystemPanel extends SystemPanel {
     }
     @Override
     public void keyPressed(KeyEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
     	setModifierKeysState(e); // BR: For the Flag color selection
     	repaintOnAltChange();
         int k = e.getKeyCode();
@@ -861,6 +862,7 @@ public class EmpireSystemPanel extends SystemPanel {
 		}
 		@Override public void mousePressed(MouseEvent e)	{ enterCurrentPane(this); }
 		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;
 			enterCurrentPane(this);
             if (e.getButton() > 3)
                 return;
@@ -956,7 +958,8 @@ public class EmpireSystemPanel extends SystemPanel {
                 }
             }
         }
-		@Override public void mouseDragged(MouseEvent e)	{ enterCurrentPane(this); }
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; enterCurrentPane(this); }
 		@Override public void mouseMoved(MouseEvent e)		{
 			setModifierKeysState(e);
 			enterCurrentPane(this);
@@ -988,6 +991,7 @@ public class EmpireSystemPanel extends SystemPanel {
 				hoverBox = hoverBox(null, hoverBox);
 		}
 		@Override public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
 			setModifierKeysState(e);
 			enterCurrentPane(this);
             int x = e.getX();
