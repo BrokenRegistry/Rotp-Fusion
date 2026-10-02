@@ -80,6 +80,13 @@ public class DiplomaticNotification implements TurnNotification, Base {
         GameSession.addTurnNotification(notif);
         return notif;
     }
+    /** Hot seat: rebuild a delivered message so the recipient sees it on the diplomacy screen. */
+    public static DiplomaticNotification report(EmpireView v, String messageType, Empire otherEmp,
+            DiplomaticIncident inc) {
+        DiplomaticNotification notif = new DiplomaticNotification(v, inc, messageType);
+        notif.other = otherEmp;
+        return notif;
+    }
     public DiplomaticNotification() { }
 
     public DiplomaticNotification(EmpireView v, String messageType) {

@@ -212,6 +212,29 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
         frameEmpire2 = null;
         initConsoleSelection("Plunder Ship Technology", true);
     }
+    /** Hot seat: report a theft already resolved; framing was chosen during the mission. */
+    public void stolenTechReport(String techId, Integer sysId, int empId) {
+        Galaxy gal = galaxy();
+        clearBuffer();
+        startFadeTimer();
+        startTimeMs = System.currentTimeMillis();
+        holoPct = 0;
+        view = SPY_VIEW;
+        mode = MODE_SHOW_TECH;
+        background = BACKGROUND_ALIEN_LAB;
+        researchedTech = false;
+        tech = tech(techId);
+        sourceEmpire = gal.empire(empId);
+        system = sysId == null ? gal.system(sourceEmpire.capitalSysId()) : gal.system(sysId);
+        player().resetSpy();
+        mission = null;
+        title = text("TECH_STOLEN_TITLE", text(sourceEmpire.raceName()), player().sv.name(system.id));
+        title = sourceEmpire.replaceTokens(title, "alien");
+        finished = false;
+        frameEmpire1 = null;
+        frameEmpire2 = null;
+        initConsoleSelection("Steal Technology", true);
+    }
     public void stealTech(EspionageMission m, int empId) {
         Galaxy gal = galaxy();
         clearBuffer();

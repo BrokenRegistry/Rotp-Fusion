@@ -1081,6 +1081,28 @@ public final class GameSession implements Base, Serializable {
         for (List<StarSystem> systems : scoutedSystemsForEmpire(empireId).values())
             systems.clear();
     }
+    /** Hot seat: load a stored report into the viewer's scouting overlay data; null clears it. */
+    public void hotSeatScoutedReport(Map<String, ? extends List<Integer>> systemIds) {
+        clearScoutedSystemsForEmpire(Empire.PLAYER_ID);
+        if (systemIds == null)
+            return;
+        var bySource = scoutedSystemsForEmpire(Empire.PLAYER_ID);
+        systemIds.forEach((source, ids) -> {
+            List<StarSystem> systems = bySource.computeIfAbsent(source, ignored -> new ArrayList<>());
+            for (int id : ids)
+                systems.add(galaxy.system(id));
+        });
+    }
+    /** Hot seat: load a stored report into the viewer's ship construction overlay data. */
+    public void hotSeatShipsReport(Map<Integer, Integer> designCounts) {
+        var ships = shipConstructionForEmpire(Empire.PLAYER_ID);
+        ships.clear();
+        var lab = galaxy.empire(Empire.PLAYER_ID).shipLab();
+        designCounts.forEach((designId, count) -> {
+            if (lab.design(designId) != null)
+                ships.put(lab.design(designId), count);
+        });
+    }
 	public static boolean haveScoutedSystems()	{
         return instance().haveScoutedSystemsForEmpire(Empire.PLAYER_ID);
     }

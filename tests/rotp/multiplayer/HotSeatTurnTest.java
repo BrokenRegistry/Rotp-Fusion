@@ -13,6 +13,7 @@ import rotp.Rotp;
 import rotp.model.game.*;
 import rotp.multiplayer.hotseat.*;
 import rotp.multiplayer.turn.*;
+import rotp.ui.RotPUI;
 import rotp.ui.multiplayer.*;
 
 @EnabledIfSystemProperty(named = "rotp.integration", matches = "true")
@@ -93,6 +94,47 @@ class HotSeatTurnTest {
         } finally { HotSeatTestFixture.onEdt(controller[0]::close); }
     }
 
+    @Test void reportsPlayOnTheGamesOwnScreensBeforePlanningUnlocks() throws Exception {
+        var game = HotSeatTestFixture.start(1, 0);
+        game.startHotSeatGame(game.options(), new HotSeatSetup(List.of(
+                new HotSeatSetup.Assignment("a", "Alice", 0),
+                new HotSeatSetup.Assignment("b", "Bob", 1))));
+        HotSeatController[] controller = new HotSeatController[1];
+        HotSeatTestFixture.onEdt(() -> {
+            controller[0] = new HotSeatController(game, new HotSeatDesktop(), new ImmediateChoices());
+            controller[0].start();
+        });
+        try {
+            awaitPlanning(game);
+            for (var earlier : game.hotSeatInbox().unread(1)) game.hotSeatInbox().acknowledge(1, earlier.id());
+            String tech = game.galaxy().empire(1).tech().allKnownTechs().get(0);
+            game.hotSeatInbox().append(game.galaxy().currentTurn(), 1, "TECH", "Research", List.of(tech),
+                    new TechnologyNotice(TechnologyNotice.Kind.DISCOVERED, 1, tech, null, null));
+            game.hotSeatInbox().append(game.galaxy().currentTurn(), 1, "COMBAT", "Combat", List.of("Won"));
+            var first = game.hotSeatState().snapshot();
+            HotSeatTestFixture.onEdt(() -> assertTrue(controller[0].finishPlayerTurn("a", first.revision())));
+            long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(30);
+            while (!(RotPUI.instance().selectedPanel() instanceof rotp.ui.tech.DiscoverTechUI)) {
+                assertTrue(System.nanoTime() < deadline, "Discovery screen did not appear");
+                HotSeatTestFixture.onEdt(() -> {
+                    if (Rotp.getFrame().getGlassPane() instanceof HotSeatPrivacyPane handoff) handoff.acknowledge();
+                });
+                Thread.sleep(20);
+            }
+            HotSeatTestFixture.onEdt(() -> assertFalse(controller[0].canEdit(1), "Planning waits for the reports"));
+            game.resumeNextTurnProcessing();
+            deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(30);
+            while (!(Rotp.getFrame().getGlassPane() instanceof HotSeatReportsPanel)) {
+                assertTrue(System.nanoTime() < deadline, "Battle summary did not follow");
+                Thread.sleep(20);
+            }
+            HotSeatTestFixture.onEdt(() -> ((HotSeatReportsPanel) Rotp.getFrame().getGlassPane()).acknowledge());
+            awaitPlanning(game);
+            HotSeatTestFixture.onEdt(() -> assertTrue(controller[0].canEdit(1)));
+            assertTrue(game.hotSeatInbox().unread(1).isEmpty());
+        } finally { HotSeatTestFixture.onEdt(controller[0]::close); }
+    }
+
     static void awaitPlanning(GameSession game) throws Exception { awaitPlanning(game, null); }
     /** Records the owner of each acknowledged decision handoff when asked. */
     static void awaitPlanning(GameSession game, List<String> decisionHandoffs) throws Exception {
@@ -108,8 +150,10 @@ class HotSeatTurnTest {
                 else if (Rotp.getFrame().getGlassPane() instanceof HotSeatReportsPanel reports)
                     reports.acknowledge();
             });
-            if (game.hotSeatState().snapshot().stage() == HotSeatState.Stage.PLANNING
-                    && !HotSeatDesktop.blocksNavigation()) return;
+            boolean planning = game.hotSeatState().snapshot().stage() == HotSeatState.Stage.PLANNING;
+            // Reports play on the game's own screens over the map: click through each one.
+            if (planning && GameSession.performingTurn()) game.resumeNextTurnProcessing();
+            else if (planning && !HotSeatDesktop.blocksNavigation()) return;
             assertNotEquals(HotSeatState.Stage.ERROR, game.hotSeatState().snapshot().stage());
             Thread.sleep(20);
         }

@@ -48,6 +48,7 @@ import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.Empire;
 import rotp.model.empires.EspionageMission;
 import rotp.model.empires.SabotageMission;
+import rotp.model.empires.SpyNetwork;
 import rotp.model.empires.species.DNAWorkshopUI;
 import rotp.model.empires.species.NameEditorUI;
 import rotp.model.empires.species.SpeciesSettings.AllSpeciesAttributes;
@@ -355,6 +356,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         int y0 = (getHeight()-h0)/2;
         repaint(x0,y0,w0,h0);
     } */
+    public BasePanel selectedPanel()  { return selectedPanel; }
     private void selectCurrentPanel() { selectPanel(currentPane, selectedPanel); }
 
 	// PLAYER-TRIGGERED ACTIONS
@@ -637,6 +639,12 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         selectPanel(SABOTAGE_PANEL, sabotageUI);
         session().waitUntilNextTurnCanProceed();
     }
+    public void selectSabotageResultReport(Empire target, int sysId, SpyNetwork.Sabotage action, int amount) {
+        session().pauseNextTurnProcessing("Show Sabotage Result");
+        sabotageUI.showResultReport(target, sysId, action, amount);
+        selectPanel(SABOTAGE_PANEL, sabotageUI);
+        session().waitUntilNextTurnCanProceed();
+    }
     public void selectHistoryPanel(int empId, boolean showAll) {
         historyUI.init(empId, showAll);
         enableGlassPane(historyUI);
@@ -662,6 +670,19 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
             drawNextTurnNotice = false;
             session().pauseNextTurnProcessing("Show Bombard Notice");
             mainUI().showBombardmentNotice(sysId, fl);
+            selectMainPanel();
+            session().waitUntilNextTurnCanProceed();
+        } finally {
+            drawNextTurnNotice = true;
+        }
+    }
+    public void showBombardmentResult(int sysId, Empire attacker, float popBefore, float popAfter,
+            float basesBefore, float basesAfter, float factBefore, float factAfter) {
+        try {
+            drawNextTurnNotice = false;
+            session().pauseNextTurnProcessing("Show Bombard Result");
+            mainUI().showBombardmentResult(sysId, attacker, popBefore, popAfter,
+                    basesBefore, basesAfter, factBefore, factAfter);
             selectMainPanel();
             session().waitUntilNextTurnCanProceed();
         } finally {
@@ -761,6 +782,15 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     public void selectTradeTechPanel(String techId, int empId) {
         session().pauseNextTurnProcessing("Show Trade Tech");
         discoverTechUI.tradeTech(techId, empId);
+        if (!UserPreferences.windowed())
+            selectDialogPanel(DISCOVER_TECH_PANEL, discoverTechUI);
+        else
+            selectPanel(DISCOVER_TECH_PANEL, discoverTechUI);
+        session().waitUntilNextTurnCanProceed();
+    }
+    public void selectStolenTechReport(String techId, Integer sysId, int empId) {
+        session().pauseNextTurnProcessing("Show Stolen Tech");
+        discoverTechUI.stolenTechReport(techId, sysId, empId);
         if (!UserPreferences.windowed())
             selectDialogPanel(DISCOVER_TECH_PANEL, discoverTechUI);
         else

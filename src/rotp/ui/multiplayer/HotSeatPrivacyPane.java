@@ -1,13 +1,10 @@
 package rotp.ui.multiplayer;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import rotp.ui.BasePanel;
 
@@ -19,18 +16,12 @@ public final class HotSeatPrivacyPane extends BasePanel {
 
     public HotSeatPrivacyPane(String playerName, Runnable confirm) {
         setOpaque(true);
-        setBackground(new Color(18, 22, 30));
         setLayout(new GridBagLayout());
         JPanel content = new JPanel(new BorderLayout(20, 28));
         content.setOpaque(false);
         content.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
-        JLabel heading = new JLabel(text("HOTSEAT_HANDOFF", playerName), JLabel.CENTER);
-        heading.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 28));
-        heading.setForeground(Color.WHITE);
-        content.add(heading, BorderLayout.NORTH);
-        JLabel description = new JLabel(text("HOTSEAT_HANDOFF_DETAIL"), JLabel.CENTER);
-        description.setForeground(new Color(200, 207, 220));
-        content.add(description, BorderLayout.CENTER);
+        content.add(HotSeatStyle.title(text("HOTSEAT_HANDOFF", playerName)), BorderLayout.NORTH);
+        content.add(HotSeatStyle.body(text("HOTSEAT_HANDOFF_DETAIL"), 20), BorderLayout.CENTER);
         proceed = new JButton(text("HOTSEAT_CONTINUE")) {
             private static final long serialVersionUID = 1L;
             @Override protected void processMouseEvent(MouseEvent event) {
@@ -38,16 +29,20 @@ public final class HotSeatPrivacyPane extends BasePanel {
                 super.processMouseEvent(event);
             }
         };
-        proceed.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+        HotSeatStyle.button(proceed, 24);
         proceed.addActionListener(event -> {
             if (accepted) return;
             accepted = true;
             proceed.setEnabled(false);
             confirm.run();
         });
-        content.add(proceed, BorderLayout.SOUTH);
+        JPanel footer = new JPanel();
+        footer.setOpaque(false);
+        footer.add(proceed);
+        content.add(footer, BorderLayout.SOUTH);
         add(content);
     }
 
+    @Override public void paintComponent(java.awt.Graphics g) { HotSeatStyle.paintBackdrop(g, this); }
     public void acknowledge() { proceed.doClick(0); }
 }

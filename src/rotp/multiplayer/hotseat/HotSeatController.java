@@ -28,6 +28,8 @@ public final class HotSeatController implements AutoCloseable, Base {
     private volatile boolean boundarySave;
     // The player who acknowledged the last decision handoff and is still at the screen.
     private volatile String seatedOwner;
+    // Reports are playing on the revealed map; planning stays locked until they finish.
+    private volatile boolean replayingReports;
     private long missionSequence;
 
     public HotSeatController(GameSession session, HotSeatDesktop desktop, HotSeatDecisions decisions) {
@@ -56,7 +58,7 @@ public final class HotSeatController implements AutoCloseable, Base {
     public boolean canEdit(int empireId) {
         var snapshot = game.hotSeatState().snapshot();
         var seat = game.controllerRegistry().seatForEmpire(empireId);
-        return !closed && !running.get() && game == GameSession.instance()
+        return !closed && !running.get() && !replayingReports && game == GameSession.instance()
                 && !desktop.isCovered() && snapshot.stage() == HotSeatState.Stage.PLANNING
                 && seat != null && seat.playerId().equals(snapshot.ownerPlayerId());
     }
@@ -67,7 +69,7 @@ public final class HotSeatController implements AutoCloseable, Base {
     public boolean finishPlayerTurn(String owner, long revision) {
         requireEdt();
         var before = game.hotSeatState().snapshot();
-        if (closed || running.get() || desktop.isCovered() || before.revision() != revision
+        if (closed || running.get() || replayingReports || desktop.isCovered() || before.revision() != revision
                 || before.stage() != HotSeatState.Stage.PLANNING || !Objects.equals(before.ownerPlayerId(), owner)) return false;
         if (!saveLastSafe()) return false;
         if (!game.inProgress()) {
@@ -254,13 +256,28 @@ public final class HotSeatController implements AutoCloseable, Base {
             desktop.activateViewer(game, owner);
             int empire = game.galaxy().player().id;
             var reports = game.hotSeatInbox().unread(empire);
-            if (reports.isEmpty()) desktop.revealPlanning();
-            else desktop.showPrivatePanel(new HotSeatReportsPanel(game.hotSeatSetup().displayName(owner),
-                    reports, () -> {
-                        if (closed || !Objects.equals(owner, game.hotSeatState().snapshot().ownerPlayerId())) return;
-                        for (var report : reports) game.hotSeatInbox().acknowledge(empire, report.id());
-                        desktop.revealPlanning();
-                    }));
+            Runnable summary = () -> {
+                if (closed || !Objects.equals(owner, game.hotSeatState().snapshot().ownerPlayerId())) return;
+                var rest = reports.stream().filter(r -> !HotSeatReportReplay.replayable(r)).toList();
+                for (var report : reports)
+                    if (HotSeatReportReplay.replayable(report)) game.hotSeatInbox().acknowledge(empire, report.id());
+                if (rest.isEmpty()) { desktop.revealPlanning(); return; }
+                desktop.showPrivatePanel(new HotSeatReportsPanel(game.hotSeatSetup().displayName(owner),
+                        rest, () -> {
+                            if (closed || !Objects.equals(owner, game.hotSeatState().snapshot().ownerPlayerId())) return;
+                            for (var report : rest) game.hotSeatInbox().acknowledge(empire, report.id());
+                            desktop.revealPlanning();
+                        }));
+            };
+            var replay = reports.stream().filter(HotSeatReportReplay::replayable).toList();
+            if (replay.isEmpty()) { summary.run(); return; }
+            // The game's own report screens, shown over this player's map.
+            replayingReports = true;
+            desktop.revealPlanning();
+            HotSeatReportReplay.play(game, replay, () -> !closed, () -> {
+                replayingReports = false;
+                summary.run();
+            });
         });
     }
 
@@ -285,26 +302,27 @@ public final class HotSeatController implements AutoCloseable, Base {
         for (var human : game.hotSeatSetup().humans()) {
             String owner = human.playerId();
             scouting.put(owner, (empire, systems) -> report(empire, "SCOUT", text("HOTSEAT_SCOUTING"),
-                    systems.values().stream().flatMap(List::stream).distinct().map(id -> systemName(empire, id)).toList()));
+                    systems.values().stream().flatMap(List::stream).distinct().map(id -> systemName(empire, id)).toList(),
+                    scoutedPayload(systems)));
             technology.put(owner, n -> report(n.recipientEmpireId(), "TECH", text("HOTSEAT_RESEARCH"),
-                    List.of(tech(n.techId()).name(), tech(n.techId()).detail())));
+                    List.of(tech(n.techId()).name(), tech(n.techId()).detail()), n));
             ships.put(owner, (empire, counts) -> report(empire, "SHIPS", text("HOTSEAT_CONSTRUCTION"),
                     counts.entrySet().stream().map(e -> game.galaxy().empire(empire).shipLab()
-                            .design(e.getKey()).name() + ": " + e.getValue()).toList()));
+                            .design(e.getKey()).name() + ": " + e.getValue()).toList(), new HashMap<>(counts)));
             diplomacy.put(owner, n -> {
                 report(n.recipientEmpireId(), "DIPLOMACY", text("HOTSEAT_DIPLOMACY"),
                         List.of(game.galaxy().empire(n.talkerEmpireId()).name(),
-                                n.messageType().replace('-', ':').replaceAll("([a-z])([A-Z])", "$1 $2")));
+                                n.messageType().replace('-', ':').replaceAll("([a-z])([A-Z])", "$1 $2")), n);
                 return false;
             });
             bombingReports.put(owner, n -> report(n.recipientEmpireId(), "BOMBARDMENT", text("HOTSEAT_BOMBARDMENT"),
                     List.of(systemName(n.recipientEmpireId(), n.systemId()),
                             text("HOTSEAT_POPULATION", String.valueOf(n.populationBefore()), String.valueOf(n.populationAfter())),
                             text("HOTSEAT_BASES", String.valueOf(n.basesBefore()), String.valueOf(n.basesAfter())),
-                            text("HOTSEAT_FACTORIES", String.valueOf(n.factoriesBefore()), String.valueOf(n.factoriesAfter())))));
+                            text("HOTSEAT_FACTORIES", String.valueOf(n.factoriesBefore()), String.valueOf(n.factoriesAfter()))), n));
             sabotageReports.put(owner, n -> report(n.recipientEmpireId(), "SABOTAGE", text("HOTSEAT_SABOTAGE"),
                     List.of(systemName(n.recipientEmpireId(), n.systemId()),
-                            text("HOTSEAT_SABOTAGE_" + n.action()) + ": " + n.amount())));
+                            text("HOTSEAT_SABOTAGE_" + n.action()) + ": " + n.amount()), n));
             bombing.put(owner, d -> mission(owner, () -> decisions.bombardment(d)));
             espionage.put(owner, d -> mission(owner, () -> decisions.espionage(d)));
             sabotage.put(owner, d -> mission(owner, () -> decisions.sabotage(d)));
@@ -317,26 +335,33 @@ public final class HotSeatController implements AutoCloseable, Base {
     }
 
     private String systemName(int owner, int system) { return game.galaxy().empire(owner).sv.name(system); }
-    private void report(int owner, String kind, String title, List<String> lines) {
-        game.hotSeatInbox().append(game.galaxy().currentTurn(), owner, kind, title, lines);
+    private void report(int owner, String kind, String title, List<String> lines, java.io.Serializable payload) {
+        game.hotSeatInbox().append(game.galaxy().currentTurn(), owner, kind, title, lines, payload);
+    }
+    private static HashMap<String, ArrayList<Integer>> scoutedPayload(Map<String, List<Integer>> systems) {
+        var copy = new HashMap<String, ArrayList<Integer>>();
+        systems.forEach((source, ids) -> copy.put(source, new ArrayList<>(ids)));
+        return copy;
     }
     private void showStatus(String key) {
         requireEdt();
-        BasePanel panel = new BasePanel();
+        BasePanel panel = new BasePanel() {
+            private static final long serialVersionUID = 1L;
+            @Override public void paintComponent(java.awt.Graphics g) { HotSeatStyle.paintBackdrop(g, this); }
+        };
         panel.setLayout(new java.awt.GridBagLayout());
-        panel.setBackground(new java.awt.Color(20, 24, 32));
-        JLabel label = new JLabel(text(key));
-        label.setForeground(java.awt.Color.WHITE);
+        JLabel label = HotSeatStyle.title(text(key));
         panel.add(label);
         if (key.equals("HOTSEAT_RESOLUTION_FAILED")) {
             JPanel actions = new JPanel();
-            JButton restore = new JButton(text("HOTSEAT_RESTORE_SAFE"));
+            actions.setOpaque(false);
+            JButton restore = HotSeatStyle.button(new JButton(text("HOTSEAT_RESTORE_SAFE")), 22);
             restore.setEnabled(lastSafeFile().isFile());
             restore.addActionListener(e -> {
                 try { HotSeatPersistence.load(lastSafeFile()); }
                 catch (Exception failure) { label.setText(text("HOTSEAT_LOAD_FAILED")); }
             });
-            JButton menu = new JButton(text("HOTSEAT_MENU"));
+            JButton menu = HotSeatStyle.button(new JButton(text("HOTSEAT_MENU")), 22);
             menu.addActionListener(e -> { close(); rotp.ui.RotPUI.instance().selectGamePanel(); });
             actions.add(restore); actions.add(menu);
             panel.setLayout(new java.awt.BorderLayout(20, 20));
@@ -372,6 +397,11 @@ public final class HotSeatController implements AutoCloseable, Base {
         requireEdt();
         closed = true;
         if (pending != null) pending.cancel(true);
+        if (replayingReports) {
+            // Release the report screen still waiting, and the turn flag it holds.
+            game.resumeNextTurnProcessing();
+            GameSession.performingTurn(false);
+        }
         worker.shutdownNow();
         desktop.close();
     }

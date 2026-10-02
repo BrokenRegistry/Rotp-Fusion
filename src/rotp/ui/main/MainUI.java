@@ -395,6 +395,12 @@ public final class MainUI extends BasePanel implements IMapHandler {
         overlayBombardedNotice.init(sysId, fl);
         repaint();
     }
+    public void showBombardmentResult(int sysId, Empire attacker, float popBefore, float popAfter,
+            float basesBefore, float basesAfter, float factBefore, float factAfter) {
+        overlayBombardedNotice.initResult(sysId, attacker, popBefore, popAfter,
+                basesBefore, basesAfter, factBefore, factAfter);
+        repaint();
+    }
     public void showShipCombatPrompt(ShipCombatManager mgr) {
         overlay = overlayShipCombatPrompt;
         overlayShipCombatPrompt.init(mgr);

@@ -33,6 +33,7 @@ public class StealTechNotification implements TurnNotification {
     }
     public String stolenTechId() { return mission.stolenTech(); }
     public int sourceEmpireId() { return empId; }
+    public Integer systemId() { return mission.targetSystem() == null ? null : mission.targetSystem().id; }
     @Override
     public String displayOrder() { return STEAL_TECH; }
     @Override

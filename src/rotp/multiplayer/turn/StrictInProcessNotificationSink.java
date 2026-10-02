@@ -359,7 +359,7 @@ public final class StrictInProcessNotificationSink implements TurnNotificationSi
         if (notification instanceof StealTechNotification stolen
                 && stolen.stolenTechId() != null)
             return new TechnologyNotice(TechnologyNotice.Kind.STOLEN,
-                    recipientEmpireId, stolen.stolenTechId(), null,
+                    recipientEmpireId, stolen.stolenTechId(), stolen.systemId(),
                     stolen.sourceEmpireId());
         return null;
     }
@@ -374,7 +374,8 @@ public final class StrictInProcessNotificationSink implements TurnNotificationSi
         DiplomacyNotice notice = new DiplomacyNotice(playerId, recipientEmpireId,
                 notification.talker().id, notification.otherEmpire() == null ? null
                         : notification.otherEmpire().id, type,
-                type.equals(DialogueManager.OFFER_TRADE) ? tradeAmount : null, offer);
+                type.equals(DialogueManager.OFFER_TRADE) ? tradeAmount : null, offer,
+                notification.incident());
         if (offer && deferDiplomacy) {
             session.deferDiplomacyDecision(notice);
             return;

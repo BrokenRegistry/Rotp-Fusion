@@ -10,11 +10,14 @@ public final class HotSeatInbox implements Serializable {
     private long nextId = 1;
     private final List<HotSeatReport> reports = new ArrayList<>();
 
+    public long append(int turn, int owner, String kind, String title, List<String> lines) {
+        return append(turn, owner, kind, title, lines, null);
+    }
     public synchronized long append(int turn, int owner, String kind, String title,
-            List<String> lines) {
+            List<String> lines, java.io.Serializable payload) {
         if (turn < 0 || owner < 0) throw new IllegalArgumentException("Invalid report owner or turn");
         var report = new HotSeatReport(nextId, turn, owner, Objects.requireNonNull(kind),
-                Objects.requireNonNull(title), lines);
+                Objects.requireNonNull(title), lines, payload);
         reports.add(report);
         return nextId++;
     }
