@@ -26,6 +26,8 @@ public final class HotSeatController implements AutoCloseable, Base {
     private volatile boolean closed;
     private volatile CompletableFuture<?> pending;
     private volatile boolean boundarySave;
+    // The player who acknowledged the last decision handoff and is still at the screen.
+    private volatile String seatedOwner;
     private long missionSequence;
 
     public HotSeatController(GameSession session, HotSeatDesktop desktop, HotSeatDecisions decisions) {
@@ -43,6 +45,7 @@ public final class HotSeatController implements AutoCloseable, Base {
 
     public void resume() {
         requireEdt();
+        seatedOwner = null;
         attachProviders();
         if (game.hotSeatState().snapshot().pendingDecisionId() != null
                 || game.hotSeatState().snapshot().stage() == HotSeatState.Stage.RESOLVING)
@@ -136,24 +139,31 @@ public final class HotSeatController implements AutoCloseable, Base {
                     == DecisionRouter.Result.ACCEPTED);
             accepted(d.ownerPlayerId(), d.id());
         } else if (!checkpoint.researchChoices().isEmpty()) {
-            var d = checkpoint.researchChoices().get(0);
+            var d = seatedFirst(checkpoint.researchChoices(), PendingResearchDecision::ownerPlayerId);
             String value = request(d.ownerPlayerId(), d.id(), true, () -> decisions.research(d));
             require(new ResearchDecisionRouter(game).submit(d.ownerPlayerId(), d.id(), d.empireId(),
                     d.categoryIndex(), value) == ResearchDecisionRouter.Result.ACCEPTED);
             accepted(d.ownerPlayerId(), d.id());
         } else if (!checkpoint.colonizationChoices().isEmpty()) {
-            var d = checkpoint.colonizationChoices().get(0);
+            var d = seatedFirst(checkpoint.colonizationChoices(), PendingColonizationDecision::ownerPlayerId);
             boolean value = request(d.ownerPlayerId(), d.id(), true, () -> decisions.colonize(d));
             require(game.answerColonizationDecision(d.ownerPlayerId(), d.id(), value));
             accepted(d.ownerPlayerId(), d.id());
         } else if (!checkpoint.diplomacyChoices().isEmpty()) {
-            var d = checkpoint.diplomacyChoices().get(0);
+            var d = seatedFirst(checkpoint.diplomacyChoices(), c -> c.notice().ownerPlayerId());
             String owner = d.notice().ownerPlayerId();
             boolean value = request(owner, d.id(), true, () -> decisions.diplomacy(d));
             require(game.answerDiplomacyDecision(owner, d.id(), value));
             accepted(owner, d.id());
         } else return false;
         return true;
+    }
+
+    /** Keeps the seated player's remaining choices together before handing off. */
+    private <T> T seatedFirst(List<T> choices, java.util.function.Function<T, String> owner) {
+        String seated = seatedOwner;
+        for (T choice : choices) if (Objects.equals(seated, owner.apply(choice))) return choice;
+        return choices.get(0);
     }
 
     private <T> T request(String owner, String id, boolean safe,
@@ -169,9 +179,7 @@ public final class HotSeatController implements AutoCloseable, Base {
         if (safe && !saveLastSafe()) throw new IllegalStateException("Unable to save the decision boundary");
         onEdt(() -> {
             var snapshot = game.hotSeatState().snapshot();
-            desktop.cover(snapshot, () -> {
-                if (closed || !game.hotSeatState().confirmHandoff(snapshot.revision())) return;
-                desktop.activateViewer(game, owner);
+            Runnable show = () -> {
                 try {
                     display.get().whenComplete((value, error) -> {
                         if (closed) return;
@@ -179,6 +187,18 @@ public final class HotSeatController implements AutoCloseable, Base {
                         else response.completeExceptionally(error);
                     });
                 } catch (Throwable error) { response.completeExceptionally(error); }
+            };
+            // Same player still seated: no privacy boundary to cross.
+            if (owner.equals(seatedOwner) && desktop.isCovered()) {
+                if (!closed && game.hotSeatState().confirmHandoff(snapshot.revision())) show.run();
+                return;
+            }
+            seatedOwner = null;
+            desktop.cover(snapshot, () -> {
+                if (closed || !game.hotSeatState().confirmHandoff(snapshot.revision())) return;
+                desktop.activateViewer(game, owner);
+                seatedOwner = owner;
+                show.run();
             });
         });
         try { return response.get(); }
@@ -202,6 +222,7 @@ public final class HotSeatController implements AutoCloseable, Base {
     private void presentPlanning() {
         requireEdt();
         if (closed) return;
+        seatedOwner = null;
         if (!game.inProgress() && game.hotSeatState().snapshot().stage() != HotSeatState.Stage.FINISHED)
             game.hotSeatState().finishMatch();
         if (!saveLastSafe()) return;

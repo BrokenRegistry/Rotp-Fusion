@@ -13,6 +13,7 @@ import org.junit.jupiter.api.io.TempDir;
 import rotp.Rotp;
 import rotp.multiplayer.turn.*;
 import rotp.ui.multiplayer.*;
+import rotp.ui.tech.SelectNewTechUI;
 import rotp.model.empires.SpyNetwork.Sabotage;
 
 @EnabledIfSystemProperty(named = "rotp.integration", matches = "true")
@@ -38,8 +39,16 @@ class HotSeatDecisionTest {
                 assertTrue(visibleText(Rotp.getFrame().getGlassPane()).contains(game.galaxy().empire(1).name()),
                         "Ruling must identify the elected empire");
                 clickFirst(); assertTrue(ruling.join());
-                var research = panels.research(new PendingResearchDecision("t", "human-0", 0, 0, List.of(tech)));
-                clickFirst(); assertEquals(tech, research.join());
+                var category = game.galaxy().empire(0).tech().category(0);
+                var legal = category.techIdsAvailableForResearch();
+                String current = category.currentTech();
+                var research = panels.research(new PendingResearchDecision("t", "human-0", 0, 0, legal));
+                var screen = find(Rotp.getFrame().getGlassPane(), SelectNewTechUI.class);
+                assertNotNull(screen, "Research must use the game's own selection screen");
+                assertFalse(research.isDone());
+                screen.consoleEntry("1");
+                assertTrue(legal.contains(research.join()));
+                assertEquals(current, category.currentTech(), "The turn engine, not the screen, applies the choice");
                 var colonize = panels.colonize(new PendingColonizationDecision("c", "human-0", 0, 0, 0));
                 clickFirst(); assertTrue(colonize.join());
                 var diplomacy = panels.diplomacy(new PendingDiplomacyDecision("d", new DiplomacyNotice(
@@ -57,6 +66,15 @@ class HotSeatDecisionTest {
         });
     }
 
+    private static <T> T find(Component component, Class<T> type) {
+        if (type.isInstance(component)) return type.cast(component);
+        if (component instanceof Container container)
+            for (Component child : container.getComponents()) {
+                T found = find(child, type);
+                if (found != null) return found;
+            }
+        return null;
+    }
     private static void clickFirst() { buttons(Rotp.getFrame().getGlassPane()).get(0).doClick(0); }
     private static String visibleText(Component component) {
         String value = component instanceof JTextArea area ? area.getText() : "";

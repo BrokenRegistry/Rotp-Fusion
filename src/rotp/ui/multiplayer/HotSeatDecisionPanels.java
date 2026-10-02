@@ -3,6 +3,8 @@ package rotp.ui.multiplayer;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -12,6 +14,7 @@ import rotp.multiplayer.hotseat.HotSeatDecisions;
 import rotp.multiplayer.turn.*;
 import rotp.ui.BasePanel;
 import rotp.ui.diplomacy.DialogueManager;
+import rotp.ui.tech.SelectNewTechUI;
 import rotp.util.Base;
 
 /** Legal choices only, presented on the owner's opaque desktop. */
@@ -34,10 +37,34 @@ public final class HotSeatDecisionPanels implements HotSeatDecisions, Base {
         return yesNo(text("HOTSEAT_COUNCIL_RULING_DETAIL", game.galaxy().council().leader().name()),
                 "HOTSEAT_ACCEPT", "HOTSEAT_REJECT");
     }
+    /** The game's own research screen; the choice returns to the turn worker. */
     @Override public CompletableFuture<String> research(PendingResearchDecision d) {
-        var options = new ArrayList<Option<String>>();
-        for (String id : d.legalTechIds()) options.add(new Option<>(tech(id).name() + " - " + tech(id).detail(), id));
-        return choose(text("HOTSEAT_RESEARCH"), options);
+        requireEdt();
+        var future = new CompletableFuture<String>();
+        var screen = new SelectNewTechUI();
+        screen.hotSeatCategory(game.galaxy().empire(d.empireId()).tech().category(d.categoryIndex()), id -> {
+            if (d.legalTechIds().contains(id)) future.complete(id);
+        });
+        screen.setFocusable(true);
+        screen.addKeyListener(new KeyAdapter() {
+            @Override public void keyPressed(KeyEvent e) { screen.keyPressed(e); }
+        });
+        // The game's animation timer pauses while the desktop is covered.
+        Timer repaint = new Timer(100, null);
+        repaint.addActionListener(e -> {
+            if (future.isDone() || !screen.isDisplayable()) repaint.stop();
+            else screen.repaint();
+        });
+        BasePanel panel = new BasePanel();
+        panel.setLayout(new BorderLayout());
+        panel.setBackground(Color.BLACK);
+        panel.add(screen, BorderLayout.CENTER);
+        JPanel footer = saveFooter();
+        if (footer != null) panel.add(footer, BorderLayout.SOUTH);
+        desktop.showPrivatePanel(panel);
+        screen.requestFocusInWindow();
+        repaint.start();
+        return future;
     }
     @Override public CompletableFuture<Boolean> colonize(PendingColonizationDecision d) {
         return yesNo(text("HOTSEAT_COLONIZE", systemName(d.empireId(), d.systemId())),
@@ -142,22 +169,25 @@ public final class HotSeatDecisionPanels implements HotSeatDecisions, Base {
         heading.setForeground(Color.WHITE);
         heading.setFont(heading.getFont().deriveFont(24f));
         panel.add(heading, BorderLayout.NORTH);
-        if (game.hotSeatState() != null) {
-            JPanel footer = new JPanel();
-            JButton save = new JButton(text("HOTSEAT_SAVE_CHECKPOINT"));
-            save.setEnabled(rotp.multiplayer.hotseat.HotSeatPersistence.canSave(game));
-            save.setToolTipText(text(save.isEnabled() ? "HOTSEAT_SAVE_CHECKPOINT_DETAIL" : "HOTSEAT_FINISH_CHOICE"));
-            JLabel status = new JLabel(" ");
-            save.addActionListener(e -> {
-                try {
-                    game.saveSession("HotSeat-Decision.rotp", false);
-                    status.setText(text("HOTSEAT_SAVED"));
-                } catch (Exception failure) { status.setText(text("HOTSEAT_FINISH_CHOICE")); }
-            });
-            footer.add(save); footer.add(status);
-            panel.add(footer, BorderLayout.SOUTH);
-        }
+        JPanel footer = saveFooter();
+        if (footer != null) panel.add(footer, BorderLayout.SOUTH);
         return panel;
+    }
+    private JPanel saveFooter() {
+        if (game.hotSeatState() == null) return null;
+        JPanel footer = new JPanel();
+        JButton save = new JButton(text("HOTSEAT_SAVE_CHECKPOINT"));
+        save.setEnabled(rotp.multiplayer.hotseat.HotSeatPersistence.canSave(game));
+        save.setToolTipText(text(save.isEnabled() ? "HOTSEAT_SAVE_CHECKPOINT_DETAIL" : "HOTSEAT_FINISH_CHOICE"));
+        JLabel status = new JLabel(" ");
+        save.addActionListener(e -> {
+            try {
+                game.saveSession("HotSeat-Decision.rotp", false);
+                status.setText(text("HOTSEAT_SAVED"));
+            } catch (Exception failure) { status.setText(text("HOTSEAT_FINISH_CHOICE")); }
+        });
+        footer.add(save); footer.add(status);
+        return footer;
     }
     private String empireName(int id) { return game.galaxy().empire(id).name(); }
     private String systemName(int empire, int id) { return game.galaxy().empire(empire).sv.name(id); }

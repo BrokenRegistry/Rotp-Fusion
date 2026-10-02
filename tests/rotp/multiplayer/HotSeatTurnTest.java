@@ -56,12 +56,55 @@ class HotSeatTurnTest {
         } finally { HotSeatTestFixture.onEdt(controller[0]::close); }
     }
 
-    static void awaitPlanning(GameSession game) throws Exception {
+    @Test void aSeatedPlayerAnswersAllTheirChoicesBehindOneHandoff() throws Exception {
+        var game = HotSeatTestFixture.start(1, 0);
+        game.startHotSeatGame(game.options(), new HotSeatSetup(List.of(
+                new HotSeatSetup.Assignment("a", "Alice", 0),
+                new HotSeatSetup.Assignment("b", "Bob", 1))));
+        var researched = new java.util.ArrayList<String>();
+        var handoffs = new java.util.ArrayList<String>();
+        HotSeatController[] controller = new HotSeatController[1];
+        HotSeatTestFixture.onEdt(() -> {
+            controller[0] = new HotSeatController(game, new HotSeatDesktop(), new ImmediateChoices() {
+                @Override public CompletableFuture<String> research(PendingResearchDecision d) {
+                    researched.add(d.ownerPlayerId());
+                    return super.research(d);
+                }
+            });
+            controller[0].start();
+        });
+        try {
+            awaitPlanning(game, handoffs);
+            // Several open research categories per empire, as after a productive turn.
+            for (int empire : List.of(0, 1))
+                for (int category = 0; category < 3; category++)
+                    game.galaxy().empire(empire).tech().category(category).requestSelection();
+            for (String owner : List.of("a", "b")) {
+                var snapshot = game.hotSeatState().snapshot();
+                HotSeatTestFixture.onEdt(() -> assertTrue(controller[0].finishPlayerTurn(owner, snapshot.revision())));
+                awaitPlanning(game, handoffs);
+            }
+            assertTrue(researched.size() > 2, "Fixture should produce several research choices: " + researched);
+            for (int i = 1; i < handoffs.size(); i++)
+                assertNotEquals(handoffs.get(i - 1), handoffs.get(i), "Repeated decision handoff: " + handoffs);
+            for (int i = 2; i < researched.size(); i++)
+                assertFalse(researched.get(i).equals(researched.get(i - 2))
+                        && !researched.get(i).equals(researched.get(i - 1)), "Choices interleaved: " + researched);
+        } finally { HotSeatTestFixture.onEdt(controller[0]::close); }
+    }
+
+    static void awaitPlanning(GameSession game) throws Exception { awaitPlanning(game, null); }
+    /** Records the owner of each acknowledged decision handoff when asked. */
+    static void awaitPlanning(GameSession game, List<String> decisionHandoffs) throws Exception {
         long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(30);
         while (System.nanoTime() < deadline) {
             HotSeatTestFixture.onEdt(() -> {
-                if (Rotp.getFrame().getGlassPane() instanceof HotSeatPrivacyPane handoff)
+                if (Rotp.getFrame().getGlassPane() instanceof HotSeatPrivacyPane handoff) {
+                    var snapshot = game.hotSeatState().snapshot();
+                    if (decisionHandoffs != null && snapshot.pendingDecisionId() != null)
+                        decisionHandoffs.add(snapshot.ownerPlayerId());
                     handoff.acknowledge();
+                }
                 else if (Rotp.getFrame().getGlassPane() instanceof HotSeatReportsPanel reports)
                     reports.acknowledge();
             });

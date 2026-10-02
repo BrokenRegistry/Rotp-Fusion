@@ -169,7 +169,7 @@ class HotSeatRecoveryTest {
         awaitDecision(restored);
         var decision = new rotp.multiplayer.turn.ResearchDecisionRouter(restored).pending(1, 0);
         String chosen = decision.legalTechIds().get(0);
-        HotSeatTestFixture.onEdt(() -> clickTechnology(Rotp.getFrame().getGlassPane(), new rotp.util.Base() { }.tech(chosen).name()));
+        HotSeatTestFixture.onEdt(() -> assertTrue(clickTechnology(Rotp.getFrame().getGlassPane(), chosen)));
         HotSeatTurnTest.awaitPlanning(restored);
         assertEquals(chosen, restored.galaxy().empire(1).tech().computer().currentTech());
         assertEquals(1, restored.galaxy().currentTurn());
@@ -188,12 +188,15 @@ class HotSeatRecoveryTest {
         }
         fail("Decision did not appear");
     }
-    private static boolean clickTechnology(java.awt.Component component, String name) {
-        if (component instanceof javax.swing.JButton button && button.getText().startsWith(name)) {
-            button.doClick(0); return true;
+    /** Picks a technology on the game's own research screen, which lists choices by level. */
+    private static boolean clickTechnology(java.awt.Component component, String techId) {
+        if (component instanceof rotp.ui.tech.SelectNewTechUI screen) {
+            var listed = new java.util.ArrayList<>(screen.category().techIdsAvailableForResearch());
+            listed.sort(rotp.model.tech.Tech.LEVEL);
+            return screen.consoleEntry(String.valueOf(listed.indexOf(techId) + 1)) == rotp.ui.vipconsole.IVIPListener.VALID_ENTRY;
         }
         if (component instanceof java.awt.Container container)
-            for (var child : container.getComponents()) if (clickTechnology(child, name)) return true;
+            for (var child : container.getComponents()) if (clickTechnology(child, techId)) return true;
         return false;
     }
 }
