@@ -38,6 +38,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 import javax.swing.border.Border;
 
@@ -126,6 +127,8 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
 
     /** Hot seat: show the result of a sabotage mission the turn engine already resolved. */
     public void showResultReport(Empire target, int sysId, Sabotage action, int amount) {
+        hotSeatChoose = null;
+        hotSeatCancel = null;
         mission = null;
         reportAction = action;
         reportTarget = target;
@@ -143,7 +146,30 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
         currentState = REQUEST_MISSION;
         advanceToNextState();
     }
+    // Hot seat: report the chosen target; the turn engine runs the mission.
+    private BiPredicate<Sabotage, Integer> hotSeatChoose;
+    private Runnable hotSeatCancel;
+    public void hotSeatMission(SabotageMission sm, int sysId, BiPredicate<Sabotage, Integer> choose, Runnable cancel) {
+        init(sm, sysId);
+        hotSeatChoose = choose;
+        hotSeatCancel = cancel;
+    }
+    /** True when hot seat handled the action; the choice is final once accepted. */
+    private boolean hotSeatAction(Sabotage action) {
+        if (hotSeatChoose == null)
+            return false;
+        if (hotSeatChoose.test(action, systemToDisplay().id)) {
+            hotSeatChoose = null;
+            hotSeatCancel = null;
+            exited = true;
+        }
+        else
+            misClick();
+        return true;
+    }
     public void init(SabotageMission sm, int sysId)       {
+        hotSeatChoose = null;
+        hotSeatCancel = null;
         reportAction = null;
         reportTarget = null;
         reportSystem = null;
@@ -177,18 +203,24 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
         initModel();
     }
     public void destroyFactories() {
+        if (hotSeatAction(Sabotage.FACTORIES))
+            return;
         mission.destroyFactories(systemToDisplay());
         session().enableSpyReport();
         advanceToNextState();
         return;
     }
     public void destroyBases() {
+        if (hotSeatAction(Sabotage.MISSILES))
+            return;
         mission.destroyMissileBases(systemToDisplay());
         session().enableSpyReport();
         advanceToNextState();
         return;
     }
     public void inciteRebellion() {
+        if (hotSeatAction(Sabotage.REBELS))
+            return;
         StarSystem sys = systemToDisplay();
         Leader prevLeader = sys.empire().leader();
         mission.inciteRebellion(sys);
@@ -197,6 +229,14 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
         advanceToNextState();
     }
     public void cancelMission() {
+        if (hotSeatCancel != null) {
+            Runnable cancel = hotSeatCancel;
+            hotSeatChoose = null;
+            hotSeatCancel = null;
+            exited = true;
+            cancel.run();
+            return;
+        }
         mission.cancelMission();
         currentState = SHOW_RESULTS;
         advanceToNextState();

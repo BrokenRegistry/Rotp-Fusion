@@ -49,6 +49,8 @@ public class TechCategorySprite extends MapSprite {
 			return;
         if (click)
             softClick();
+        if (parent.hotSeatCategorySelected(categoryId()))
+            return;
         mission.stealTech(t);
         parent.espionageCategorySelected();
     }

@@ -80,7 +80,26 @@ public final class MapOverlayEspionageMission implements IMapOverlay, IVIPListen
             RotPUI.instance().selectStealTechPanel(mission, empId);
         }
     }
+    // Hot seat: report the category; the turn engine steals the tech.
+    private java.util.function.Consumer<String> hotSeatCategory;
+    public void hotSeatInit(EspionageMission esp, int id, java.util.function.Consumer<String> category) {
+        init(esp, id);
+        hotSeatCategory = category;
+    }
+    public boolean hotSeatCategorySelected(String categoryId) {
+        if (hotSeatCategory == null)
+            return false;
+        if (drawSprites) {
+            drawSprites = false;
+            var category = hotSeatCategory;
+            hotSeatCategory = null;
+            parent.clearOverlay();
+            category.accept(categoryId);
+        }
+        return true;
+    }
     public void init(EspionageMission esp, int id) {
+        hotSeatCategory = null;
         labImg = null;
         mission = esp;
         empId = id;

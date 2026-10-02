@@ -420,6 +420,20 @@ public final class MainUI extends BasePanel implements IMapHandler {
         overlaySpies.init();
         repaint();
     }
+    public void showHotSeatColonizePrompt(int sysId, ShipFleet fl, ShipDesign d, java.util.function.Consumer<Boolean> answer) {
+        overlay = overlayColonizePrompt;
+        overlayColonizePrompt.hotSeatInit(sysId, fl, d, answer);
+    }
+    public void showHotSeatBombardPrompt(int sysId, ShipFleet fl, java.util.function.IntConsumer answer) {
+        overlay = overlayBombardPrompt;
+        overlayBombardPrompt.hotSeatInit(sysId, fl, answer);
+        repaint();
+    }
+    public void showHotSeatEspionageMission(EspionageMission esp, int empId, java.util.function.Consumer<String> category) {
+        overlay = overlayEspionageMission;
+        overlayEspionageMission.hotSeatInit(esp, empId, category);
+        repaint();
+    }
     public void showEspionageMission(EspionageMission esp, int empId) {
         overlay = overlayEspionageMission;
         overlayEspionageMission.init(esp, empId);

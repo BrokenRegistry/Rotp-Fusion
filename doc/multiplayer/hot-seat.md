@@ -24,7 +24,9 @@ If you change the opponent count after assigning players, reopen the player edit
 
 The current player's name appears at the top of the galaxy map. Issue orders using the normal colony, fleet, design, research and diplomacy screens. Click **Finish Player Turn** when ready. The game hides the map and names the next person. Only that person should acknowledge the handoff.
 
-The galaxy advances once after every living human finishes. AI empires act during that shared resolution. Decisions may then request another handoff to the person who owns the choice. Each player sees their own reports before returning to planning. Eliminated players no longer submit turns, but can still receive their final reports.
+The galaxy advances once after every living human finishes. AI empires act during that shared resolution. Decisions may then request a handoff to the person who owns the choice; one handoff covers all of that person's waiting choices. Choices use the game's own screens: the Galactic Council, research selection, colonize and bombard prompts, diplomatic offers, espionage (including framing) and sabotage.
+
+Each player's reports play on the game's own screens after their handoff, before planning unlocks: discoveries, scouted systems, ships built, diplomatic messages, bombardment and sabotage results. Automatically resolved battles and invasions, which have no single-player screen, appear in a summary. Eliminated players no longer submit turns, but can still receive their final reports.
 
 Each seat keeps a separate map position and selected system. Do not use debug viewer switching; it is disabled for these matches.
 

@@ -67,6 +67,60 @@ class HotSeatAcceptanceTest {
         HotSeatTestFixture.onEdt(game.hotSeatController()::close);
     }
 
+    @org.junit.jupiter.api.Test void humansVoteOnTheGalacticCouncilScreen() throws Exception {
+        var game = HotSeatTestFixture.start(2, 0);
+        var options = game.options().copyAllOptions();
+        options.selectedCouncilWinOption(rotp.model.game.IGameOptions.COUNCIL_IMMEDIATE);
+        game.startHotSeatGame(options, new HotSeatSetup(List.of(
+                new HotSeatSetup.Assignment("a", "Alice", 0), new HotSeatSetup.Assignment("b", "Bob", 1))));
+        game.galaxy().empire(0).allColonizedSystems().get(0).colony().setPopulation(1000);
+        HotSeatTestFixture.set(game.galaxy().council().getClass(), game.galaxy().council(), "nextAction", 2);
+        HotSeatTestFixture.set(game.galaxy().council().getClass(), game.galaxy().council(), "actionCountdown", 0);
+        var councilViewers = new java.util.ArrayList<Integer>();
+        HotSeatTestFixture.onEdt(() -> {
+            var desktop = new HotSeatDesktop();
+            var controller = new HotSeatController(game, desktop, new HotSeatDecisionPanels(game, desktop));
+            try { HotSeatTestFixture.set(GameSession.class, game, "hotSeatController", controller); }
+            catch (Exception failure) { throw new AssertionError(failure); }
+            controller.start();
+        });
+        long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(60);
+        while (!(Rotp.getFrame().getGlassPane() instanceof HotSeatResultPanel) && System.nanoTime() < deadline) {
+            HotSeatTestFixture.onEdt(() -> {
+                var glass = Rotp.getFrame().getGlassPane();
+                var snapshot = game.hotSeatState().snapshot();
+                boolean covered = HotSeatDesktop.blocksNavigation();
+                if (glass instanceof HotSeatPrivacyPane pane && covered) pane.acknowledge();
+                else if (glass instanceof HotSeatReportsPanel pane && covered) pane.acknowledge();
+                else if (covered && glass instanceof java.awt.Container c && findTech(c) != null) findTech(c).consoleEntry("1");
+                else if (!covered && RotPUI.instance().selectedPanel() instanceof rotp.ui.GalacticCouncilUI council
+                        && snapshot.stage() == HotSeatState.Stage.DECISION) {
+                    if (councilViewers.isEmpty() || councilViewers.get(councilViewers.size() - 1) != game.galaxy().player().id)
+                        councilViewers.add(game.galaxy().player().id);
+                    council.keyPressed(new java.awt.event.KeyEvent(council, java.awt.event.KeyEvent.KEY_PRESSED,
+                            System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_1, java.awt.event.KeyEvent.CHAR_UNDEFINED));
+                }
+                else if (snapshot.stage() == HotSeatState.Stage.PLANNING && GameSession.performingTurn())
+                    game.resumeNextTurnProcessing();
+                else if (snapshot.stage() == HotSeatState.Stage.PLANNING && !covered)
+                    game.hotSeatController().finishPlayerTurn(snapshot.ownerPlayerId(), snapshot.revision());
+            });
+            assertNotEquals(HotSeatState.Stage.ERROR, game.hotSeatState().snapshot().stage());
+            Thread.sleep(20);
+        }
+        assertInstanceOf(HotSeatResultPanel.class, Rotp.getFrame().getGlassPane());
+        assertEquals(MatchOutcome.Cause.COUNCIL, game.matchOutcome().cause());
+        assertTrue(councilViewers.containsAll(List.of(0, 1)), "Each human votes on the council screen: " + councilViewers);
+        HotSeatTestFixture.onEdt(game.hotSeatController()::close);
+    }
+    private static rotp.ui.tech.SelectNewTechUI findTech(java.awt.Container container) {
+        for (var child : container.getComponents()) {
+            if (child instanceof rotp.ui.tech.SelectNewTechUI screen) return screen;
+            if (child instanceof java.awt.Container inner && findTech(inner) != null) return findTech(inner);
+        }
+        return null;
+    }
+
     private static void awaitResult(GameSession game) throws Exception {
         long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(30);
         while (!(Rotp.getFrame().getGlassPane() instanceof HotSeatResultPanel) && System.nanoTime() < deadline) {

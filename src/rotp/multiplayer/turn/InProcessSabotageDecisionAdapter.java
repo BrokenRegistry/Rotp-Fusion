@@ -48,7 +48,7 @@ public final class InProcessSabotageDecisionAdapter implements SabotageDecisionA
         legal.put(Sabotage.MISSILES, systemIds(targets.baseTargets));
         legal.put(Sabotage.REBELS, systemIds(targets.rebellionTargets));
         SabotageDecision decision = new SabotageDecision(seat.playerId(), ownerId,
-                mission.target().id, suggestedSystemId, legal);
+                mission.target().id, suggestedSystemId, legal, mission);
         Choice choice = provider.choose(decision);
         if (choice == null) {
             mission.cancelMission();

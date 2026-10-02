@@ -506,6 +506,48 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     public void selectPlanetsPanel()   { planetsUI.init(); selectPanel(PLANETS_PANEL, planetsUI); }
     public void selectTechPanel()      { allocateTechUI.init(); selectPanel(TECH_PANEL, allocateTechUI); }
     public void selectTechPanel(int r) { allocateTechUI.init(r); selectPanel(TECH_PANEL, allocateTechUI); }
+    // Hot seat: native decision screens that report the choice instead of applying it.
+    public void selectHotSeatCouncilVote(java.util.function.Consumer<Empire> vote) {
+        galacticCouncilUI.hotSeatVote(vote);
+        selectHotSeatDialog(COUNCIL_PANEL, galacticCouncilUI);
+    }
+    public void selectHotSeatCouncilRuling(java.util.function.Consumer<Boolean> ruling) {
+        galacticCouncilUI.hotSeatRuling(ruling);
+        selectHotSeatDialog(COUNCIL_PANEL, galacticCouncilUI);
+    }
+    public boolean selectHotSeatDiplomaticOffer(DiplomaticNotification notif, java.util.function.Consumer<Boolean> accept) {
+        if (!diplomaticMessageUI.hotSeatOffer(notif, accept))
+            return false;
+        selectHotSeatDialog(DIPLOMATIC_MESSAGE_PANEL, diplomaticMessageUI);
+        return true;
+    }
+    public void selectHotSeatSabotage(SabotageMission m, int sysId,
+            java.util.function.BiPredicate<SpyNetwork.Sabotage, Integer> choose, Runnable cancel) {
+        sabotageUI.hotSeatMission(m, sysId, choose, cancel);
+        selectPanel(SABOTAGE_PANEL, sabotageUI);
+    }
+    public void selectHotSeatFrame(EspionageMission m, String techId, int empId, java.util.function.IntConsumer framed) {
+        discoverTechUI.hotSeatFrame(m, techId, empId, framed);
+        selectHotSeatDialog(DISCOVER_TECH_PANEL, discoverTechUI);
+    }
+    public void selectHotSeatColonize(int sysId, ShipFleet fl, ShipDesign d, java.util.function.Consumer<Boolean> answer) {
+        mainUI().showHotSeatColonizePrompt(sysId, fl, d, answer);
+        selectMainPanel();
+    }
+    public void selectHotSeatBombard(int sysId, ShipFleet fl, java.util.function.IntConsumer answer) {
+        mainUI().showHotSeatBombardPrompt(sysId, fl, answer);
+        selectMainPanel();
+    }
+    public void selectHotSeatEspionage(EspionageMission m, int empId, java.util.function.Consumer<String> category) {
+        mainUI().showHotSeatEspionageMission(m, empId, category);
+        selectMainPanel();
+    }
+    private void selectHotSeatDialog(String name, BasePanel panel) {
+        if (!UserPreferences.windowed())
+            selectDialogPanel(name, panel);
+        else
+            selectPanel(name, panel);
+    }
     public void selectCouncilPanel()   {
     	if (IDebugOptions.debugAutoRun()) {
     		galacticCouncilUI.autoRun();

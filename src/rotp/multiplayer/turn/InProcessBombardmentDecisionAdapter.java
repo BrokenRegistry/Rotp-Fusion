@@ -45,7 +45,7 @@ public final class InProcessBombardmentDecisionAdapter implements BombardmentDec
             boolean targetAllowed = session.options().targetBombardAllowedForPlayer();
             float limit = 0.5f + session.options().selectedBombingTarget();
             BombardmentDecision decision = new BombardmentDecision(attackerSeat.playerId(),
-                    attacker.id, defender.id, systemId, targetAllowed, limit);
+                    attacker.id, defender.id, systemId, targetAllowed, limit, fleet);
             choice = Objects.requireNonNull(provider.choose(decision), "bombardment choice");
             if (choice == Choice.TARGET_BOMBARD && !targetAllowed)
                 throw new IllegalArgumentException("Target bombardment is disabled");

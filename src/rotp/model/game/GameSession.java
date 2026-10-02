@@ -629,6 +629,22 @@ public final class GameSession implements Base, Serializable {
             pendingColonizationChoices = new ArrayList<>();
         pendingColonizationChoices.add(new ColonizationChoice(decision, fleet, design));
     }
+    /** Hot seat: the waiting colony ship, for the game's own colonize prompt. */
+    public ShipFleet colonizationFleet(String decisionId) {
+        ColonizationChoice choice = colonizationChoice(decisionId);
+        return choice == null ? null : choice.fleet;
+    }
+    public ShipDesign colonizationDesign(String decisionId) {
+        ColonizationChoice choice = colonizationChoice(decisionId);
+        return choice == null ? null : choice.design;
+    }
+    private ColonizationChoice colonizationChoice(String decisionId) {
+        if (pendingColonizationChoices != null)
+            for (ColonizationChoice choice : pendingColonizationChoices)
+                if (choice.decision.id().equals(decisionId))
+                    return choice;
+        return null;
+    }
     public boolean answerColonizationDecision(String playerId, String decisionId,
             boolean colonize) {
         if (pendingColonizationChoices == null || performingTurn

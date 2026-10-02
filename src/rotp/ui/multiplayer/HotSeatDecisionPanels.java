@@ -13,7 +13,9 @@ import rotp.model.game.GameSession;
 import rotp.multiplayer.hotseat.HotSeatDecisions;
 import rotp.multiplayer.turn.*;
 import rotp.ui.BasePanel;
+import rotp.ui.RotPUI;
 import rotp.ui.diplomacy.DialogueManager;
+import rotp.ui.notifications.DiplomaticNotification;
 import rotp.ui.tech.SelectNewTechUI;
 import rotp.util.Base;
 
@@ -27,13 +29,40 @@ public final class HotSeatDecisionPanels implements HotSeatDecisions, Base {
         this.desktop = desktop;
     }
 
+    // The game's own screens, shown on the decider's uncovered desktop. Each reports the
+    // choice back to the turn worker, which applies it. Without the live game objects a
+    // screen needs, a decision falls back to a plain list of the legal choices.
+
     @Override public CompletableFuture<Integer> councilVote(PendingDecision d) {
+        var council = game.galaxy().council();
+        // The council screen needs a convened vote waiting on this seat.
+        if (council.candidate1() != null && council.votingInProgress()
+                && council.nextVoter().id == d.empireId()) {
+            var future = new CompletableFuture<Integer>();
+            nativeCouncilVote(d, future);
+            return future;
+        }
         var options = new ArrayList<Option<Integer>>();
         for (int empire : d.legalEmpireIds()) options.add(new Option<>(empireName(empire), empire));
         if (d.abstainAllowed()) options.add(new Option<>(text("HOTSEAT_ABSTAIN"), null));
         return choose(text("HOTSEAT_COUNCIL_VOTE"), options);
     }
+    private void nativeCouncilVote(PendingDecision d, CompletableFuture<Integer> future) {
+        desktop.revealPlanning();
+        RotPUI.instance().selectHotSeatCouncilVote(chosen -> {
+            Integer id = chosen == null ? null : chosen.id;
+            boolean legal = id == null ? d.abstainAllowed() : d.legalEmpireIds().contains(id);
+            if (legal) future.complete(id);
+            else nativeCouncilVote(d, future);
+        });
+    }
     @Override public CompletableFuture<Boolean> councilRuling(PendingDecision d) {
+        if (game.galaxy().council().hasLeader()) {
+            var future = new CompletableFuture<Boolean>();
+            desktop.revealPlanning();
+            RotPUI.instance().selectHotSeatCouncilRuling(future::complete);
+            return future;
+        }
         return yesNo(text("HOTSEAT_COUNCIL_RULING_DETAIL", game.galaxy().council().leader().name()),
                 "HOTSEAT_ACCEPT", "HOTSEAT_REJECT");
     }
@@ -67,13 +96,41 @@ public final class HotSeatDecisionPanels implements HotSeatDecisions, Base {
         return future;
     }
     @Override public CompletableFuture<Boolean> colonize(PendingColonizationDecision d) {
+        var fleet = game.colonizationFleet(d.id());
+        var design = game.colonizationDesign(d.id());
+        if (fleet != null && design != null) {
+            var future = new CompletableFuture<Boolean>();
+            desktop.revealPlanning();
+            RotPUI.instance().selectHotSeatColonize(d.systemId(), fleet, design, future::complete);
+            return future;
+        }
         return yesNo(text("HOTSEAT_COLONIZE", systemName(d.empireId(), d.systemId())),
                 "HOTSEAT_COLONIZE_YES", "HOTSEAT_SKIP");
     }
     @Override public CompletableFuture<Boolean> diplomacy(PendingDiplomacyDecision d) {
+        var n = d.notice();
+        var talker = game.galaxy().empire(n.talkerEmpireId());
+        var view = talker == null ? null : talker.viewForEmpire(n.recipientEmpireId());
+        if (view != null) {
+            var future = new CompletableFuture<Boolean>();
+            var other = n.targetEmpireId() == null ? null : game.galaxy().empire(n.targetEmpireId());
+            desktop.revealPlanning();
+            if (RotPUI.instance().selectHotSeatDiplomaticOffer(
+                    DiplomaticNotification.report(view, n.messageType(), other, n.incident()), future::complete))
+                return future;
+        }
         return yesNo(diplomacyDescription(game, d.notice()), "HOTSEAT_ACCEPT", "HOTSEAT_REJECT");
     }
     @Override public CompletableFuture<InProcessBombardmentDecisionAdapter.Choice> bombardment(BombardmentDecision d) {
+        if (d.fleet() != null) {
+            var future = new CompletableFuture<InProcessBombardmentDecisionAdapter.Choice>();
+            desktop.revealPlanning();
+            RotPUI.instance().selectHotSeatBombard(d.systemId(), d.fleet(), choice -> future.complete(
+                    choice == 2 && d.targetAllowed() ? InProcessBombardmentDecisionAdapter.Choice.TARGET_BOMBARD
+                    : choice == 0 ? InProcessBombardmentDecisionAdapter.Choice.SKIP
+                    : InProcessBombardmentDecisionAdapter.Choice.BOMBARD));
+            return future;
+        }
         var options = new ArrayList<Option<InProcessBombardmentDecisionAdapter.Choice>>();
         options.add(new Option<>(text("HOTSEAT_SKIP"), InProcessBombardmentDecisionAdapter.Choice.SKIP));
         options.add(new Option<>(text("HOTSEAT_BOMBARD"), InProcessBombardmentDecisionAdapter.Choice.BOMBARD));
@@ -83,6 +140,20 @@ public final class HotSeatDecisionPanels implements HotSeatDecisions, Base {
     @Override public CompletableFuture<InProcessEspionageDecisionAdapter.Choice> espionage(EspionageDecision d) {
         requireEdt();
         var future = new CompletableFuture<InProcessEspionageDecisionAdapter.Choice>();
+        if (d.mission() != null) {
+            desktop.revealPlanning();
+            RotPUI.instance().selectHotSeatEspionage(d.mission(), d.victimEmpireId(), category -> {
+                String techId = d.categoryTechIds().get(category);
+                if (techId == null) return;
+                // As in single player, a frameable theft must name one of the two suspects.
+                if (d.frameableEmpireIds().size() < 2)
+                    future.complete(new InProcessEspionageDecisionAdapter.Choice(techId, null));
+                else RotPUI.instance().selectHotSeatFrame(d.mission(), techId, d.victimEmpireId(), framed ->
+                        future.complete(new InProcessEspionageDecisionAdapter.Choice(techId,
+                                d.frameableEmpireIds().contains(framed) ? framed : null)));
+            });
+            return future;
+        }
         BasePanel panel = panel(text("HOTSEAT_ESPIONAGE"));
         JComboBox<Option<String>> technologies = new JComboBox<>();
         d.categoryTechIds().values().stream().distinct().sorted().forEach(id ->
@@ -107,6 +178,16 @@ public final class HotSeatDecisionPanels implements HotSeatDecisions, Base {
         return future;
     }
     @Override public CompletableFuture<InProcessSabotageDecisionAdapter.Choice> sabotage(SabotageDecision d) {
+        if (d.mission() != null) {
+            var future = new CompletableFuture<InProcessSabotageDecisionAdapter.Choice>();
+            desktop.revealPlanning();
+            RotPUI.instance().selectHotSeatSabotage(d.mission(), d.suggestedSystemId(), (action, system) -> {
+                if (!d.targetSystemIds().getOrDefault(action, List.of()).contains(system)) return false;
+                future.complete(new InProcessSabotageDecisionAdapter.Choice(action, system));
+                return true;
+            }, () -> future.complete(null));
+            return future;
+        }
         var options = new ArrayList<Option<InProcessSabotageDecisionAdapter.Choice>>();
         for (var action : rotp.model.empires.SpyNetwork.Sabotage.values())
             for (int system : d.targetSystemIds().getOrDefault(action, List.of()))

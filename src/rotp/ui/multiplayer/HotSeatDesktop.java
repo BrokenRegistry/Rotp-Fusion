@@ -115,7 +115,7 @@ public final class HotSeatDesktop implements KeyEventDispatcher, AutoCloseable {
         ++generation;
         RotPUI.instance().selectMainPanel();
         covered = false;
-        pane.setVisible(false);
+        if (pane != null) pane.setVisible(false);
         RotPUI.instance().requestFocusInWindow();
     }
 

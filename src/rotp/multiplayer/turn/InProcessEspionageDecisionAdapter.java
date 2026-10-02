@@ -53,7 +53,7 @@ public final class InProcessEspionageDecisionAdapter implements EspionageDecisio
                 frameableIds.add(empire.id);
         }
         EspionageDecision decision = new EspionageDecision(seat.playerId(), empireId,
-                victimEmpireId, mission.targetSystem().id, categoryTechIds, frameableIds);
+                victimEmpireId, mission.targetSystem().id, categoryTechIds, frameableIds, mission);
         Provider provider = providers.get(seat.playerId());
         if (provider == null)
             throw new IllegalStateException("No espionage provider for " + seat.playerId());
