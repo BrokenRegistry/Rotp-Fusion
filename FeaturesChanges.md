@@ -375,6 +375,8 @@
 
 ### User Interfaces:
 
+- Transport synchronization will now be remembered independently for invasions and migrations.
+- Added the number of flags setting inside the flag sub-panel.
 - DNA Workshop: New button on the side of the directory selection button to copy GMO species samples to the selected directory.
 - Galaxy map: reduced the ship selection box.
 - Tech UI: "Alt-Num" will equalize the tech allocation up to the limit of: num * 10% chance of discovery.

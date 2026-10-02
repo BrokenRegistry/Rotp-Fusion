@@ -14,13 +14,12 @@ final class FlagOptions extends AbstractOptionsSubUI {
 	@Override public SafeListPanel optionsMap()	{
 		SafeListPanel map = new SafeListPanel(OPTION_ID);
 		map.add(new SafeListParam(Arrays.asList(
+				flagColorCount,
+
+				HEADER_SPACER_50,
 				new ParamTitle("AUTO_FLAG_ID_SELECTION"),
 				autoFlagAssignation1, autoFlagAssignation2,
 				autoFlagAssignation3, autoFlagAssignation4,
-
-				HEADER_SPACER_50,
-				new ParamTitle("AUTO_FLAG_IN_NEBULA"),
-				flagInNebulaColor, flagNotNebulaColor,
 
 				HEADER_SPACER_50,
 				new ParamTitle("AUTO_FLAG_COLONY_TECH"),
@@ -51,7 +50,11 @@ final class FlagOptions extends AbstractOptionsSubUI {
 				flagAridColor, flagSteppeColor, flagDesertColor, flagMinimalColor,
 				flagBarrenColor, flagTundraColor, flagDeadColor,
 				flagInfernoColor, flagToxicColor, flagRadiatedColor,
-				flagAsteroidColor
+				flagAsteroidColor,
+
+				HEADER_SPACER_50,
+				new ParamTitle("AUTO_FLAG_IN_NEBULA"),
+				flagInNebulaColor, flagNotNebulaColor
 				)));
 		return map;
 	}

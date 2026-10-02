@@ -1295,6 +1295,10 @@ public class DNAFactory extends SpeciesSettings {
 			if (index()>=listSize()-16) { // Base Race
 				isReference(true);
 				String key = Species.languageToKey(value.substring(1));
+				if (key == null) {
+					reload(false);
+					return;
+				}
 				race(Species.getAnim(key).copy(true));
 
 				// Create missing language setting attributes

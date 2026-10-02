@@ -40,22 +40,22 @@ import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.sprites.SystemTransportSprite;
-import rotp.util.Palette;
 
-public class MassTransportsDialog extends BasePanel {
-    private static final long serialVersionUID = 1L;
-    static int MAX_ROWS = 12;
-    Palette palette;
-    FleetUI topParent;
-    TransportTargetListingUI listingUI;
-    TransportTargetFooterUI footerUI;
-    List<StarSystem> sourceSystems = new ArrayList<>();
-    boolean synched = true; // BR: Default was false!
-    final Color backgroundC = new Color(76,57,41,192);
-    
-    public MassTransportsDialog(FleetUI p) {
+final class MassTransportsDialog extends BasePanel {
+	private static final long serialVersionUID = 1L;
+	private static int MAX_ROWS = 12;
+	private FleetUI topParent;
+	private TransportTargetListingUI listingUI;
+	private TransportTargetFooterUI footerUI;
+	private List<StarSystem> sourceSystems = new ArrayList<>();
+	private boolean synched = true; // BR: Default was false!
+	private boolean invasionSynched	= true;
+	private boolean growingSynched	= false;
+	private boolean isInvasion;
+	private final Color backgroundC = new Color(76,57,41,192);
+
+	MassTransportsDialog(FleetUI p)	{
         topParent = p;
-        palette = Palette.named("Brown");
         init();
     }
     private void init() {
@@ -93,12 +93,12 @@ public class MassTransportsDialog extends BasePanel {
         }
         return (int) Math.ceil(time);
     }
-    void cancelChanges() {
+	private void cancelChanges()	{
 		player().budget().makeTransortObsolete();
         for (StarSystem sys : sourceSystems)
             sys.transportSprite().cancel();
     }
-    void sendTransports() {
+	private void sendTransports()	{
         List<StarSystem> launchPoints = new ArrayList<>();
         for (StarSystem sys : sourceSystems) {
             SystemTransportSprite spr = sys.transportSprite();
@@ -119,19 +119,27 @@ public class MassTransportsDialog extends BasePanel {
         }
         player().deployTransports(launchPoints, topParent.targetSystem, synched);
     }
-    void clickSynch()	{ synched = !synched; }
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        listingUI.mouseWheelMoved(e);
-    }
+	private void clickSynch()	{
+		synched = !synched;
+		if (isInvasion)
+			invasionSynched = synched;
+		else
+			growingSynched = synched;
+	}
+	void mouseWheelMoved(MouseWheelEvent e)	{ listingUI.mouseWheelMoved(e); }
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(backgroundC);
         g.fillRect(0, 0, getWidth(), getHeight());
     }
-    public void initSystems() {
-        StarSystem.TARGET_SYSTEM = topParent.targetSystem;
-        //Empire pl = player();
+	void initSystems()	{
+		StarSystem.TARGET_SYSTEM = topParent.targetSystem;
+		isInvasion = (!StarSystem.TARGET_SYSTEM.empire().isPlayer() || StarSystem.TARGET_SYSTEM.colony().inRebellion());
+		if (isInvasion)
+			synched = invasionSynched;
+		else
+			synched = growingSynched;
         sourceSystems.clear();
         sourceSystems.addAll(topParent.filteredSystems);
         sourceSystems.remove(topParent.targetSystem);
@@ -180,7 +188,7 @@ public class MassTransportsDialog extends BasePanel {
         add(new TransportTargetSideUI(), BorderLayout.WEST);
         add(footerUI, BorderLayout.SOUTH);
     }
-    class TransportTargetHeaderUI extends BasePanel {
+	private final class TransportTargetHeaderUI extends BasePanel {
         private static final long serialVersionUID = 1L;
         public TransportTargetHeaderUI() {
             initModel();
@@ -217,16 +225,13 @@ public class MassTransportsDialog extends BasePanel {
             }
         }
     }
-    class TransportTargetListingUI extends SystemListingUI {
+	private final class TransportTargetListingUI extends SystemListingUI {
         private static final long serialVersionUID = 1L;
         private DataView view;
         private StarSystem selectedSystem;
         // private final int[] sysIds;
         private SystemSetTransportsColumn transportsCol;
-        TransportTargetListingUI(BasePanel p) {
-            super(p);
-            //sysIds = new int[MAX_ROWS];
-        }
+		private TransportTargetListingUI(BasePanel p)	{ super(p); }
         @Override
         public String textureName()           { return TEXTURE_BROWN; }
         @Override
@@ -283,7 +288,7 @@ public class MassTransportsDialog extends BasePanel {
             selectedColumn(distCol);
         }
     }
-    class TransportTargetSideUI extends BasePanel {
+	private final class TransportTargetSideUI extends BasePanel {
         private static final long serialVersionUID = 1L;
         public TransportTargetSideUI() {
             init();
@@ -293,19 +298,18 @@ public class MassTransportsDialog extends BasePanel {
             setOpaque(false);
         }
     }
-    class TransportTargetFooterUI extends BasePanel implements MouseListener, MouseMotionListener {
+	private final class TransportTargetFooterUI extends BasePanel implements MouseListener, MouseMotionListener {
         private static final long serialVersionUID = 1L;
         private final Color okButtonBdrC = new Color(158,165,156);
         private final Color cancelButtonBdrC = new Color(148,131,112);
         private LinearGradientPaint synchBackC;
         private LinearGradientPaint sendBackC;
         private LinearGradientPaint cancelBackC;
-        Rectangle synchButton = new Rectangle();
-        Rectangle sendButton = new Rectangle();
-        Rectangle cancelButton = new Rectangle();
-//        Rectangle ecoBox = new Rectangle();
-        Rectangle hoverBox;
-        Area textureArea;
+		private Rectangle synchButton	= new Rectangle();
+		private Rectangle sendButton	= new Rectangle();
+		private Rectangle cancelButton	= new Rectangle();
+		private Rectangle hoverBox;
+		private Area textureArea;
 
         public TransportTargetFooterUI() {
             initModel();
@@ -503,14 +507,9 @@ public class MassTransportsDialog extends BasePanel {
                 softClick();
                 repaint();
             }
-//            else if (hoverBox == ecoBox) {
-//            	options().transportAutoRefillToggle();
-//                softClick();
-//                repaint();
-//            }
         }
         @Override
-        public void mouseEntered(MouseEvent e) {    }
+        public void mouseEntered(MouseEvent e) { }
         @Override
         public void mouseExited(MouseEvent e) {
             if (hoverBox != null) {

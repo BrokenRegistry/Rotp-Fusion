@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-02 (BR)
+- Transport synchronization will now be remembered independently for invasions and migrations.
+- Added the number of flags setting inside the flag sub-panel.
+
 26-10-01 (BR)
 - DNA Workshop: New button on the side of the directory selection button to copy GMO species samples to the selected directory.
 
@@ -58,16 +62,6 @@ java -jar target/rotp-<timestamp>-mini.jar
   - Fixed the display not always being refreshed.
   - When creating the "CustomSpecies" directory, example files will be included.
 - Galaxy map: reduced the ship selection box.
-
-26-09-26 (BR)
-- Fixed "Randomize" issue with "Tech Discovery" and "Tech Research"
-- Improved advisor content in defense allocation
-- Tech UI: "Alt-Num" will equalize the tech allocation up to the limit of: num * 10% chance of discovery.
-  - example: "Alt-6" ==> no more tick will be given once the chance of discovery exceeds 60%.  
-
-26-09-24 (BR)
-- Fixed and updated the galaxy size description (Thanks to Corbeau)
-- New content for the advisor: in defense, shipyard and ecology.
 
 
 ### [Features Historic](FeaturesChanges.md)
