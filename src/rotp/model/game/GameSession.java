@@ -229,6 +229,7 @@ public final class GameSession implements Base, Serializable {
     public static GameSession restoreHotSeatEnvelope(File source) throws Exception {
         if (!javax.swing.SwingUtilities.isEventDispatchThread())
             throw new IllegalStateException("Load hot-seat games on the event thread");
+        rotp.multiplayer.pbem.BuildStamp.requireMatch(source);
         GameSession restored;
         try (ZipFile zip = new ZipFile(source)) {
             ZipEntry entry = zip.getEntry("GameSession.dat");
@@ -2199,6 +2200,8 @@ public final class GameSession implements Base, Serializable {
                 out.putNextEntry(new ZipEntry("GameSession.dat"));
                 out.write(data);
                 out.closeEntry();
+                // After the session: the generic loader reads the first entry.
+                if (currSession.playByEmail != null) rotp.multiplayer.pbem.BuildStamp.write(out);
             }
             try {
                 Files.move(temporary, destination, StandardCopyOption.ATOMIC_MOVE,
@@ -2402,6 +2405,10 @@ public final class GameSession implements Base, Serializable {
         try {
             log("Loading game from file: ", filename);
             File saveFile = dir.isEmpty() ? new File(filename) : new File(dir, filename);
+            try { rotp.multiplayer.pbem.BuildStamp.requireMatch(saveFile); }
+            catch (rotp.multiplayer.pbem.BuildStamp.MismatchException mismatch) {
+                throw new RuntimeException(text("PBEM_BUILD_MISMATCH", mismatch.fileBuild, mismatch.localBuild));
+            }
             // assume the file is not zipped, load it directly
             try (InputStream file = new FileInputStream(saveFile)) {
                 newSession = loadObjectData(file);

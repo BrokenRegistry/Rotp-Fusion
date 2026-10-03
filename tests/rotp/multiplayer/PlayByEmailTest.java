@@ -110,6 +110,43 @@ class PlayByEmailTest {
         } finally { HotSeatTestFixture.onEdt(controller::close); }
     }
 
+    @Test void turnFilesCarryTheBuildAndAMismatchIsRefusedBeforeLoading() throws Exception {
+        var game = startMatch();
+        var controller = attach(game);
+        try {
+            HotSeatTurnTest.awaitPlanning(game);
+            var file = directory.resolve("stamp.rotp").toFile();
+            HotSeatTestFixture.onEdt(() -> {
+                try { HotSeatPersistence.save(game, file); }
+                catch (Exception ex) { throw new AssertionError(ex); }
+            });
+            String stamp;
+            try (var zip = new java.util.zip.ZipFile(file)) {
+                assertEquals("GameSession.dat", zip.entries().nextElement().getName(), "Session stays first");
+                var properties = new java.util.Properties();
+                properties.load(zip.getInputStream(zip.getEntry(rotp.multiplayer.pbem.BuildStamp.ZIP_ENTRY)));
+                stamp = properties.getProperty(rotp.multiplayer.pbem.BuildStamp.KEY);
+            }
+            assertEquals(rotp.multiplayer.pbem.BuildStamp.current(), stamp);
+
+            var tampered = directory.resolve("other-build.rotp").toFile();
+            try (var in = new java.util.zip.ZipFile(file);
+                    var out = new java.util.zip.ZipOutputStream(new java.io.FileOutputStream(tampered))) {
+                for (var entry : java.util.Collections.list(in.entries())) {
+                    out.putNextEntry(new java.util.zip.ZipEntry(entry.getName()));
+                    if (entry.getName().equals(rotp.multiplayer.pbem.BuildStamp.ZIP_ENTRY))
+                        out.write((rotp.multiplayer.pbem.BuildStamp.KEY + "=someone-else\n").getBytes());
+                    else in.getInputStream(entry).transferTo(out);
+                    out.closeEntry();
+                }
+            }
+            var refused = assertThrows(RuntimeException.class,
+                    () -> GameSession.instance().loadSession("", tampered.getPath(), false));
+            assertTrue(refused.getMessage().contains("someone-else"), refused.getMessage());
+            assertSame(game, GameSession.instance(), "The current game is untouched");
+        } finally { HotSeatTestFixture.onEdt(controller::close); }
+    }
+
     @Test void simulationSettingsStoredPerComputerAreFrozenForTheMatch() throws Exception {
         String aggression = rotp.model.game.IInGameOptions.gameAgressiveness.get();
         startMatch();
