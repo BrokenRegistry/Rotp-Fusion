@@ -39,6 +39,7 @@
 
 ### Later:
 
+- DNA Workshop : random variant of species
 - Add subterraneans equivalent in custom species..
   - Population Bonus/Malus per empire imply a lot of method call changes... -> Postponed
   - Option to remove "Ask join war"

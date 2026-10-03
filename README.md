@@ -44,6 +44,12 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-03 (BR)
+- New ships display options:
+  - No transports.
+  - No ships.
+- Transport icon size is now linked to transport size.
+
 26-10-02 (BR)
 - Transport synchronization will now be remembered independently for invasions and migrations.
 - Added the number of flags setting inside the flag sub-panel.

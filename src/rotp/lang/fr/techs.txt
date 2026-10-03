@@ -306,40 +306,40 @@ COMBATTRANSPORT_0_INFO     | Les transporteurs de combat donnent à chaque trans
 CONTROLENV_NAME      | Colonisation
 CONTROLENV_DETAIL    | Par défaut, toute module de colonisation spéciale peut coloniser une planète de cette hostilité ou d’un niveau inférieur dans la « hiérarchie des hostilités » de Stérile à Irradié. Mais si vous définissez l’option « Restreint », un environnement hostile aura besoin d’une base de colonie de ce type spécifique. Désormais, le module de colonisation irradiée dont vous aurez besoin pour coloniser la planète la plus hostile n’est plus la base de colonie par excellence.<br> Séquence d’hostilité : Stérile, Toundra, Morte, Enfer, Toxique et Irradié.
 
-CONTROLENV_0_NAME    | Maîtrise des environnements normaux
-CONTROLENV_0_ITEM    | Module de colonisation standard
-CONTROLENV_0_BRIEF   | Autorise les atterrissages sur des planètes standard
-CONTROLENV_0_DETAIL  | Permet la colonisation des planètes standard.
+CONTROLENV_0_NAME	| Maîtrise des environnements normaux
+CONTROLENV_0_ITEM	| Module de colonisation standard
+CONTROLENV_0_BRIEF	| Pour coloniser les planètes standard
+CONTROLENV_0_DETAIL	| Permet d’accéder et de coloniser les planètes standard.
 
-CONTROLENV_1_NAME    | Maîtrise des environnements stériles
-CONTROLENV_1_ITEM    | Module de colonisation « Stérile »
-CONTROLENV_1_BRIEF   | Autorise les atterrissages sur des planètes stériles
-CONTROLENV_1_DETAIL  | Permet la colonisation des planètes stériles et moins hostiles.
+CONTROLENV_1_NAME	| Maîtrise des environnements stériles
+CONTROLENV_1_ITEM	| Module de colonisation « Stérile »
+CONTROLENV_1_BRIEF	| Pour coloniser les planètes stériles
+CONTROLENV_1_DETAI	| Permet d’accéder et de coloniser les planètes stériles et moins hostiles.
 
-CONTROLENV_2_NAME    | Maîtrise des environnements toundra
-CONTROLENV_2_ITEM    | Module de colonisation « Toundra »
-CONTROLENV_2_BRIEF   | Autorise les atterrissages sur des planètes toundra
-CONTROLENV_2_DETAIL  | Permet la colonisation des planètes toundra et moins hostiles.
+CONTROLENV_2_NAME	| Maîtrise des environnements toundra
+CONTROLENV_2_ITEM	| Module de colonisation « Toundra »
+CONTROLENV_2_BRIEF	| Pour coloniser les planètes toundra
+CONTROLENV_2_DETAIL	| Permet d’accéder et de coloniser les planètes toundra et moins hostiles.
 
-CONTROLENV_3_NAME    | Maîtrise des environnements morts
-CONTROLENV_3_ITEM    | Module de colonisation « Mort »
-CONTROLENV_3_BRIEF   | Autorise les atterrissages sur des planètes mortes
-CONTROLENV_3_DETAIL  | Permet la colonisation des planètes mortes et moins hostiles.
+CONTROLENV_3_NAME	| Maîtrise des environnements morts
+CONTROLENV_3_ITEM 	| Module de colonisation « Mort »
+CONTROLENV_3_BRIEF	| Pour coloniser les planètes mortes
+CONTROLENV_3_DETAIL	| Permet d’accéder et de coloniser les planètes mortes et moins hostiles.
 
-CONTROLENV_4_NAME    | Maîtrise des environnements infernaux
-CONTROLENV_4_ITEM    | Module de colonisation « Infernal »
-CONTROLENV_4_BRIEF   | Autorise les atterrissages sur des planètes inferno
-CONTROLENV_4_DETAIL  | Permet la colonisation des planètes inferno et moins hostiles.
+CONTROLENV_4_NAME	| Maîtrise des environnements infernaux
+CONTROLENV_4_ITEM	| Module de colonisation « Infernal »
+CONTROLENV_4_BRIEF	| Pour coloniser les planètes inferno
+CONTROLENV_4_DETAIL	| Permet d’accéder et de coloniser les planètes inferno et moins hostiles.
 
-CONTROLENV_5_NAME    | Maîtrise des environnements toxiques
-CONTROLENV_5_ITEM    | Module de colonisation « Toxique »
-CONTROLENV_5_BRIEF   | Autorise les atterrissages sur des planètes toxiques
-CONTROLENV_5_DETAIL  | Permet la colonisation des planètes toxiques et moins hostiles.
+CONTROLENV_5_NAME	| Maîtrise des environnements toxiques
+CONTROLENV_5_ITEM	| Module de colonisation « Toxique »
+CONTROLENV_5_BRIEF	| Pour coloniser les planètes toxiques
+CONTROLENV_5_DETAIL	| Permet d’accéder et de coloniser les planètes toxiques et moins hostiles.
 
-CONTROLENV_6_NAME    | Maîtrise des environnements irradiés
-CONTROLENV_6_ITEM    | Module de colonisation « Irradié »
-CONTROLENV_6_BRIEF   | Permet les atterrissages sur des planètes irradiées
-CONTROLENV_6_DETAIL  | Permet la colonisation des planètes irradiées et moins hostiles.
+CONTROLENV_6_NAME	| Maîtrise des environnements irradiés
+CONTROLENV_6_ITEM 	| Module de colonisation « Irradié »
+CONTROLENV_6_BRIEF	| Pour coloniser les planètes irradiées
+CONTROLENV_6_DETAIL	| Permet d’accéder et de coloniser les planètes irradiées et moins hostiles.
 
 
 //

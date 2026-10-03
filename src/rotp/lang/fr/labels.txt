@@ -3796,17 +3796,23 @@ SETTINGS_MOD_HIDE_SYSTEM_NAME_HELP       | Tout masquer.
 SETTINGS_MOD_SHOW_SYSTEM_NAME_HELP       | Afficher uniquement le nom du système stellaire.
 SETTINGS_MOD_SHOW_SYSTEM_DATA_HELP       | Afficher le nom du système stellaire au-dessus des données de la colonie.
 
-SETTINGS_MOD_SHIP_DISPLAY_DESC           | Quels vaisseaux en mouvement doivent être affichés ? (En lien avec l’icône à gauche de la galaxie)
-SETTINGS_MOD_SHIP_DISPLAY                | Affichage des vaisseaux : %1
-SETTINGS_MOD_SHOW_ALL_SHIPS              | Tous
-SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS 	     | Transports
-SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS       | Armés
-SETTINGS_MOD_SHOW_ALL_SHIPS_EXT          | Afficher tout les vaisseaux
-SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS_EXT   | Afficher les transports et les vaisseaux armés
-SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_EXT   | Afficher uniquement les bâtiments de guerre
-SETTINGS_MOD_SHOW_ALL_SHIPS_HELP         | Afficher tout ce qui bouge.
-SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS_HELP  | Afficher les transports et les vaisseaux armés, masquer les vaisseaux non armés.
-SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_HELP  | Afficher uniquement les bâtiments de guerre, masquer les transports et les vaisseaux non armés.
+SETTINGS_MOD_SHIP_DISPLAY_DESC			| Quels vaisseaux en mouvement doivent être affichés ? (En lien avec l’icône à gauche de la galaxie)
+SETTINGS_MOD_SHIP_DISPLAY				| Affichage des vaisseaux : %1
+SETTINGS_MOD_SHOW_ALL_SHIPS				| Tous
+SETTINGS_MOD_SHOW_ALL_SHIPS_EXT			| Afficher tout les vaisseaux
+SETTINGS_MOD_SHOW_ALL_SHIPS_HELP		| Afficher tout ce qui bouge.
+SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS		| Transports
+SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS_EXT	| Afficher les transports et les vaisseaux armés
+SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS_HELP	| Afficher les transports et les vaisseaux armés, masquer les vaisseaux non armés.
+SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS		| Armés
+SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_EXT	| Afficher uniquement les bâtiments de guerre
+SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_HELP	| Afficher uniquement les bâtiments de guerre, masquer les transports et les vaisseaux non armés.
+SETTINGS_MOD_HIDE_TRANSPORT_SHIPS		| Pas de transports
+SETTINGS_MOD_HIDE_TRANSPORT_SHIPS_EXT	| Cacher les transports
+SETTINGS_MOD_HIDE_TRANSPORT_SHIPS_HELP	| Afficher uniquement les vaisseaux standards, et cacher les transports.
+SETTINGS_MOD_HIDE_FLEETS				| Pas de flottes
+SETTINGS_MOD_HIDE_FLEETS_EXT			| Cacher tous les vaisseaux
+SETTINGS_MOD_HIDE_FLEETS_HELP			| Ne pas afficher les vaisseaux ni les transports sur la carte.
 
 SETTINGS_MOD_SHOW_SHIP_RANGES_DESC       | Quels limites devraient être affichés à proximité des systèmes stellaires ? (En lien avec l’icône à gauche de la galaxie)
 SETTINGS_MOD_SHOW_SHIP_RANGES            | Fond & Zone : %1

@@ -198,7 +198,6 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
 	}
 
     public IMapHandler parent()     { return parent; }
-    public boolean showArmedShips() { return true; }
     public void clearHoverSprite()  { hoverSprite = null; }
     private Location currentFocus()  { return parent.mapFocus();  }
     private void currentFocus(IMappedObject o)  { parent.mapFocus(o); }
@@ -1528,4 +1527,48 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         parent.hoveringOverSprite(newSelection);
     }
 	void altToggled (boolean isAltDown)	{ parent.hoveringOverSprite(hoverSprite); }
+
+	public boolean showArmedShips()		{ return showArmed; }
+	public boolean showPioneers()		{ return showPioneers; }
+	public boolean showTroops()			{ return showTroops; }
+	public boolean showUnarmedShips()	{ return showUnarmed; }
+
+	private static boolean showPioneers;
+	private static boolean showTroops;
+	private static boolean showArmed;
+	private static boolean showUnarmed;
+	public static void newShipDisplayValue(String s)	{
+		switch (s) {
+			case DISPLAY_ALL:
+				showPioneers= true;
+				showTroops	= true;
+				showArmed	= true;
+				showUnarmed	= true;
+				return;
+			case DISPLAY_NONE:
+				showPioneers= false;
+				showTroops	= false;
+				showArmed	= false;
+				showUnarmed	= false;
+				return;
+			case DISPLAY_NO_UNARMED:
+				showPioneers= false;
+				showTroops	= true;
+				showArmed	= true;
+				showUnarmed	= false;
+				return;
+			case DISPLAY_ARMED:
+				showPioneers= false;
+				showTroops	= false;
+				showArmed	= true;
+				showUnarmed	= false;
+				return;
+			case DISPLAY_NO_TRANSPORT:
+				showPioneers= false;
+				showTroops	= false;
+				showArmed	= true;
+				showUnarmed	= true;
+				return;
+		}
+	}
 }

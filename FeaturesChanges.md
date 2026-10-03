@@ -320,6 +320,10 @@
 
 ### Miscellaneous:
 
+- New ships display options:
+  - No transports.
+  - No ships.
+- Transport icon size is now linked to transport size.
 - DNA Workshop:
   - When creating the "CustomSpecies" directory, example files will be included.
 - New settings: development limits for each planet type.

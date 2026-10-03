@@ -1,5 +1,6 @@
 package rotp.model.game;
 
+import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamInteger;
 import rotp.ui.util.ParamList;
@@ -43,15 +44,20 @@ public interface IMapOptions extends IBaseOptsTools {
 	default boolean showSystemNames()		{ return systemNameDisplay.get().equals("Name"); }
 	default boolean showSystemData() 		{ return systemNameDisplay.get().equals("Data"); }
 
-	ParamList shipDisplay	= new ParamList (MOD_UI, "SHIP_DISPLAY", "All")
+	String DISPLAY_ALL			= "All";
+	String DISPLAY_NO_UNARMED	= "NoUnarmed";
+	String DISPLAY_ARMED		= "Armed";
+	String DISPLAY_NO_TRANSPORT	= "NoTransport";
+	String DISPLAY_NONE			= "None";
+	public static final ParamList shipDisplay = new ParamList (MOD_UI, "SHIP_DISPLAY", "All")
 			.showFullGuide(true)
-			.put("All",		 MOD_UI + "SHOW_ALL_SHIPS")
-			.put("NoUnarmed", MOD_UI + "SHOW_NO_UNARMED_SHIPS")
-			.put("Armed",	 MOD_UI + "SHOW_ONLY_ARMED_SHIPS");
-	default void resetShipDisplay()					{ shipDisplay.set("All");}
-	default void toggleShipDisplay(boolean reverse)	{ shipDisplay.toggle(reverse);}
-	default boolean showFriendlyTransports()		{ return !shipDisplay.get().equals("Armed"); }
-	default boolean showUnarmedShips()				{ return shipDisplay.get().equals("All"); }
+			.put(DISPLAY_ALL,			MOD_UI + "SHOW_ALL_SHIPS")
+			.put(DISPLAY_NO_UNARMED,	MOD_UI + "SHOW_NO_UNARMED_SHIPS")
+			.put(DISPLAY_ARMED,			MOD_UI + "SHOW_ONLY_ARMED_SHIPS")
+			.put(DISPLAY_NO_TRANSPORT,	MOD_UI + "HIDE_TRANSPORT_SHIPS")
+			.put(DISPLAY_NONE,			MOD_UI + "HIDE_FLEETS")
+			.setNewValueMethod(GalaxyMapPanel::newShipDisplayValue);
+	default void resetShipDisplay()		{ shipDisplay.set("All");}
 
 	ParamList showShipRanges	= new ParamList (MOD_UI, "SHOW_SHIP_RANGES", "SR")
 			.showFullGuide(true)

@@ -31,26 +31,26 @@ import rotp.model.galaxy.Galaxy;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.RulesetManager;
-import rotp.ui.BasePanel;
+import rotp.ui.ScaledInteger;
 import rotp.ui.util.ParamInteger;
 import rotp.util.Base;
 
-public class ShipLibrary implements Base {
-    static ShipLibrary instance = new ShipLibrary();
-    public static ShipLibrary current()   { return instance; }
+public class ShipLibrary implements Base, ScaledInteger {
+	private static ShipLibrary instance = new ShipLibrary();
+	public static ShipLibrary current()	{ return instance; }
 
-    public static final int sizes = 4;
-    public static final int designsPerSize = 6;
-    public static final String imageDir = "images/ships/";
-    public static final String setFilename = "listing.txt";
+	private static final int sizes = 4;
+	public static final int designsPerSize	= 6;
+	private static final String imageDir	= "images/ships/";
+	private static final String setFilename	= "listing.txt";
 
     public ImageIcon stargate;
     public List<String> styles = new ArrayList<>();
-    public List<String> unchosenStyles = new ArrayList<>();
-    public List<ShipStyle> shipStyles  = new ArrayList<>();
-    public List<Integer> missileDesign = new ArrayList<>();
-    public List<Integer> scatterDesign = new ArrayList<>();
-    public List<Integer> torpedoDesign = new ArrayList<>();
+	private List<String> unchosenStyles	= new ArrayList<>();
+	private List<ShipStyle> shipStyles	= new ArrayList<>();
+	List<Integer> missileDesign	= new ArrayList<>();
+	List<Integer> scatterDesign	= new ArrayList<>();
+	List<Integer> torpedoDesign	= new ArrayList<>();
 
     private static final String[] sizeKey = { "A", "B", "C", "D" };
     private static final String[] designKey = { "01", "02", "03", "04", "05", "06" };
@@ -61,7 +61,7 @@ public class ShipLibrary implements Base {
     static {
         current().loadData();
     }
-    public int selectRandomUnchosenSet() {
+	int selectRandomUnchosenSet()	{
         if (unchosenStyles.isEmpty())
             resetUnchosenStyles();
 
@@ -70,56 +70,50 @@ public class ShipLibrary implements Base {
         return styles.indexOf(setName);
     }
     public BufferedImage scoutImage(Integer colorId) {
-        int destH = BasePanel.s10;
-        int destW = BasePanel.s17;
+        int destH = s10;
+        int destW = s17;
         int[] pX = new int[3];
         int[] pY = new int[3];
-        
-        pX[0] = BasePanel.s4;
-        pX[1] = BasePanel.s4;
-        pX[2] = BasePanel.s15;
-        pY[0] = BasePanel.s1;
-        pY[1] = BasePanel.s9;
-        pY[2] = BasePanel.s5;
-        
+
+        pX[0] = s4;
+        pX[1] = s4;
+        pX[2] = s15;
+        pY[0] = s1;
+        pY[1] = s9;
+        pY[2] = s5;
+
         BufferedImage destImg = newBufferedImage(destW, destH);
         Graphics2D g = destImg.createGraphics();
         setRenderingHints(g);
         Color c0 = options().shipColor(colorId);
         g.setColor(c0);
         g.fillPolygon(pX, pY, 3);
-        g.setStroke(BasePanel.stroke2);
+        g.setStroke(stroke2);
         g.setColor(Color.black);
         g.drawPolygon(pX, pY, 3);
         g.dispose();
         return destImg;
     }
     public BufferedImage shipImage(Integer colorId) {
-        int destH = BasePanel.s12;
-        int destW = BasePanel.s20;
+        int destH = s12;
+        int destW = s20;
         int[] pX = new int[3];
         int[] pY = new int[3];
-        
-        int s1 = BasePanel.s1;
-        int s2 = BasePanel.s2;
-        int s3 = BasePanel.s3;
-        int s6 = BasePanel.s6;
-        int s9 = BasePanel.s9;
-        
-        pX[0] = BasePanel.s4;
-        pX[1] = BasePanel.s4;
-        pX[2] = BasePanel.s18;
-        pY[0] = BasePanel.s1;
-        pY[1] = BasePanel.s11;
-        pY[2] = BasePanel.s6;
-        
+
+        pX[0] = s4;
+        pX[1] = s4;
+        pX[2] = s18;
+        pY[0] = s1;
+        pY[1] = s11;
+        pY[2] = s6;
+
         BufferedImage destImg = newBufferedImage(destW, destH);
         Graphics2D g = destImg.createGraphics();
         setRenderingHints(g);
         Color c0 = options().shipColor(colorId);
         g.setColor(c0);
         g.fillPolygon(pX, pY, 3);
-        g.setStroke(BasePanel.stroke2);
+        g.setStroke(stroke2);
         g.setColor(Color.yellow);
         g.fillRect( 0, s6, s3, s1);
         g.setColor(Color.orange);
@@ -131,31 +125,25 @@ public class ShipLibrary implements Base {
         return destImg;
     }
     public BufferedImage shipImageLarge(Integer colorId) {
-        int destH = BasePanel.s16;
-        int destW = BasePanel.s25;
+        int destH = s16;
+        int destW = s25;
         int[] pX = new int[3];
         int[] pY = new int[3];
-        
-        int s1 = BasePanel.s1;
-        int s2 = BasePanel.s2;
-        int s3 = BasePanel.s3;
-        int s8 = BasePanel.s8;
-        int s13 = BasePanel.s13;
-        
-        pX[0] = BasePanel.s4;
-        pX[1] = BasePanel.s4;
-        pX[2] = BasePanel.s23;
-        pY[0] = BasePanel.s1;
-        pY[1] = BasePanel.s15;
-        pY[2] = BasePanel.s8;
-        
+
+        pX[0] = s4;
+        pX[1] = s4;
+        pX[2] = s23;
+        pY[0] = s1;
+        pY[1] = s15;
+        pY[2] = s8;
+
         BufferedImage destImg = newBufferedImage(destW, destH);
         Graphics2D g = destImg.createGraphics();
         setRenderingHints(g);
         Color c0 = options().shipColor(colorId);
         g.setColor(c0);
         g.fillPolygon(pX, pY, 3);
-        g.setStroke(BasePanel.stroke2);
+        g.setStroke(stroke2);
         g.setColor(Color.yellow);
         g.fillRect( 0, s8, s3, s1);
         g.setColor(Color.orange);
@@ -167,33 +155,25 @@ public class ShipLibrary implements Base {
         return destImg;
     }
     public BufferedImage shipImageHuge(Integer colorId) {
-        int destH = BasePanel.s20;
-        int destW = BasePanel.s30;
+        int destH = s20;
+        int destW = s30;
         int[] pX = new int[3];
         int[] pY = new int[3];
-        
-        int s1 = BasePanel.s1;
-        int s2 = BasePanel.s2;
-        int s3 = BasePanel.s3;
-        int s6 = BasePanel.s6;
-        int s10 = BasePanel.s10;
-        int s14 = BasePanel.s14;
-        int s17 = BasePanel.s17;
-        
-        pX[0] = BasePanel.s4;
-        pX[1] = BasePanel.s4;
-        pX[2] = BasePanel.s28;
-        pY[0] = BasePanel.s1;
-        pY[1] = BasePanel.s19;
-        pY[2] = BasePanel.s10;
-        
+
+        pX[0] = s4;
+        pX[1] = s4;
+        pX[2] = s28;
+        pY[0] = s1;
+        pY[1] = s19;
+        pY[2] = s10;
+
         BufferedImage destImg = newBufferedImage(destW, destH);
         Graphics2D g = destImg.createGraphics();
         setRenderingHints(g);
         Color c0 = options().shipColor(colorId);
         g.setColor(c0);
         g.fillPolygon(pX, pY, 3);
-        g.setStroke(BasePanel.stroke2);
+        g.setStroke(stroke2);
         g.setColor(Color.yellow);
         g.fillRect( 0, s10, s3, s1);
         g.setColor(Color.orange);
@@ -206,24 +186,45 @@ public class ShipLibrary implements Base {
         g.dispose();
         return destImg;
     }
-    public BufferedImage transportImage(Integer colorId) {
-        int destH = BasePanel.s7;
-        int destW = BasePanel.s16;
-        int s1 = BasePanel.s1;
-        int s2 = BasePanel.s2;
-        int crv = BasePanel.s4;
-        BufferedImage destImg = newBufferedImage(destW, destH);
-        Graphics2D g = destImg.createGraphics();
-        setRenderingHints(g);
-        Color c0 = options().shipColor(colorId);
-        g.setColor(c0);
-        g.fillRoundRect(s1,s1,destW-s2,destH-s2,crv,crv);
-        g.setStroke(BasePanel.stroke2);
-        g.setColor(Color.black);
-        g.drawRoundRect(s1,s1,destW-s2,destH-s2,crv,crv);
-        g.dispose();
-        return destImg;
-    }
+//    public BufferedImage transportImage(int colorId, int size) {
+//        int destH = s7;
+//        int destW = s16;
+//        int crv = s4;
+//        BufferedImage destImg = newBufferedImage(destW, destH);
+//        Graphics2D g = destImg.createGraphics();
+//        setRenderingHints(g);
+//        Color c0 = options().shipColor(colorId);
+//        g.setColor(c0);
+//        g.fillRoundRect(s1,s1,destW-s2,destH-s2,crv,crv);
+//        g.setStroke(stroke2);
+//        g.setColor(Color.black);
+//        g.drawRoundRect(s1,s1,destW-s2,destH-s2,crv,crv);
+//        g.dispose();
+//        return destImg;
+//    }
+	public BufferedImage transportImage(int colorId, int size) {
+		switch (size) {
+			case 0: return transportImage(colorId, s4, s16*s4/s7, s4*s4/s7);
+			case 1: return transportImage(colorId, s5, s16*s5/s7, s4*s5/s7);
+			case 2: return transportImage(colorId, s6, s16*s6/s7, s4*s6/s7);
+			case 4: return transportImage(colorId, s8, s16*s8/s7, s4*s8/s7);
+			default: return transportImage(colorId, s7, s16, s4);
+		}
+	}
+	public BufferedImage transportImage(int colorId, int destH, int destW, int crv)	{
+		final int s1x2 = s1 + s1;
+		BufferedImage destImg = newBufferedImage(destW, destH);
+		Graphics2D g = destImg.createGraphics();
+		setRenderingHints(g);
+		Color c0 = options().shipColor(colorId);
+		g.setColor(c0);
+		g.fillRoundRect(s1, s1, destW-s1x2, destH-s1x2 , crv, crv);
+		g.setStroke(stroke2);
+		g.setColor(Color.black);
+		g.drawRoundRect(s1, s1, destW-s1x2, destH-s1x2, crv, crv);
+		g.dispose();
+		return destImg;
+	}
     public ShipImage shipImage(int styleNum, int size, int num) {
         int shipSeq = (size * designsPerSize) + num;
         styleNum = bounds(0, styleNum, shipStyles.size()-1);
@@ -236,7 +237,7 @@ public class ShipLibrary implements Base {
         return images.get(shipSeq).nextIcon();
     }
 
-    public List<String> validIconKeys(int labNum, int size) {
+	List<String> validIconKeys(int labNum, int size)	{
         List<String> validIconKeys = new ArrayList<>();
 
         List<ShipImage> images = shipStyles.get(labNum).images;
@@ -349,7 +350,7 @@ public class ShipLibrary implements Base {
         		design = des;
         }
         scatterDesign.add(design);
-        
+
     	id++;
         if (entries.length > id) {
         	Integer des = getInteger(entries[id].trim());
@@ -357,10 +358,6 @@ public class ShipLibrary implements Base {
         		design = des;
         }
         torpedoDesign.add(design);
-
-    	// int mark = input.indexOf(',', 0);
-        // String setName = input.substring(0, mark).trim();
-        // styles.add(setName);
     }
 	public static final ParamInteger shipSpritesAlpha	= new ParamInteger(MOD_UI, "SHIP_SPRITES_OPACITY", 255)
 			.setLimits(0, 255)

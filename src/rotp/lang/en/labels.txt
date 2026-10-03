@@ -3796,17 +3796,23 @@ SETTINGS_MOD_HIDE_SYSTEM_NAME_HELP       | Hide everything.
 SETTINGS_MOD_SHOW_SYSTEM_NAME_HELP       | Show only the star system name
 SETTINGS_MOD_SHOW_SYSTEM_DATA_HELP       | Show the star system name above the colony data.
 
-SETTINGS_MOD_SHIP_DISPLAY_DESC           | Which moving ships should be displayed? (Related to the icon button on the left of the Galaxy)
-SETTINGS_MOD_SHIP_DISPLAY                | Ship Display: %1
-SETTINGS_MOD_SHOW_ALL_SHIPS              | All
-SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS 	     | Transport
-SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS       | Armed
-SETTINGS_MOD_SHOW_ALL_SHIPS_EXT          | Every moving things
-SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS_EXT   | Transports and armed ships
-SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_EXT   | Only displays warships
-SETTINGS_MOD_SHOW_ALL_SHIPS_HELP         | Show me every moving things.
-SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS_HELP  | Show transports and armed ships, hide unarmed ships.
-SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_HELP  | Show only War ships, hide transports and unarmed ships.
+SETTINGS_MOD_SHIP_DISPLAY_DESC			| Which moving fleets should be displayed? (Related to the icon button on the left of the Galaxy)
+SETTINGS_MOD_SHIP_DISPLAY				| Ship Display: %1
+SETTINGS_MOD_SHOW_ALL_SHIPS				| All
+SETTINGS_MOD_SHOW_ALL_SHIPS_EXT			| Every moving things
+SETTINGS_MOD_SHOW_ALL_SHIPS_HELP		| Show me every moving things.
+SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS		| Transports
+SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS_EXT	| Transports and armed ships
+SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS_HELP	| Show transports and armed ships, hide unarmed ships.
+SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS		| Armed
+SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_EXT	| Only displays warships
+SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_HELP	| Show only War ships, hide transports and unarmed ships.
+SETTINGS_MOD_HIDE_TRANSPORT_SHIPS		| No Transports
+SETTINGS_MOD_HIDE_TRANSPORT_SHIPS_EXT	| Hide Transports
+SETTINGS_MOD_HIDE_TRANSPORT_SHIPS_HELP	| Show only regular ships, and hide transports.
+SETTINGS_MOD_HIDE_FLEETS				| No Fleets
+SETTINGS_MOD_HIDE_FLEETS_EXT			| Hide All Fleets
+SETTINGS_MOD_HIDE_FLEETS_HELP			| Do not show ships or transports on the map.
 
 SETTINGS_MOD_SHOW_SHIP_RANGES_DESC       | Which ships should be displayed near the star systems? (Related to the icon button on the left of the Galaxy)
 SETTINGS_MOD_SHOW_SHIP_RANGES            | Starry bg & Areas: %1

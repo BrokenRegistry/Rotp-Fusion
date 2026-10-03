@@ -317,9 +317,9 @@ public class Transport extends FleetBase {
     @Override
     public boolean decideWhetherDisplayed(GalaxyMapPanel map) {
         if (!map.parent().isClicked(this)) {
-            if ((empire == targetEmp) && !map.showFriendlyTransports())
+            if ((empire == targetEmp) && !map.showPioneers())
                 return false;
-            if ((empire != targetEmp) && !map.showArmedShips())
+            if ((empire != targetEmp) && !map.showTroops())
                 return false;
         }
         if (map.scaleX() > maxMapScale())
@@ -333,7 +333,7 @@ public class Transport extends FleetBase {
         int x = mapX(map);
         int y = mapY(map);
 
-        BufferedImage img = empire.transportImage();
+        BufferedImage img = empire.transportImage(size());
         int w = img.getWidth();
         int h = img.getHeight();
 
@@ -341,8 +341,7 @@ public class Transport extends FleetBase {
         int sH = h;
 
 
-        if ((destination() == null)
-        || (destination().x() > x()))
+        if ((destination() == null) || (destination().x() > x()))
             g2.drawImage(img, x, y, x+sW, y+sH, 0, 0, w, h, map);
         else
             g2.drawImage(img, x+sW, y, x, y+sH, 0, 0, w, h, map);
@@ -374,7 +373,7 @@ public class Transport extends FleetBase {
 
 	@Override public boolean isSelectableAt(GalaxyMapPanel map, int mapX, int mapY)	{
 		if (selectBox().contains(mapX, mapY)) {
-			if (map.showFriendlyTransports())
+			if (map.showPioneers())
 				return true;
 			return player() != targetEmp;
 		}

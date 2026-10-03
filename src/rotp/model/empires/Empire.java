@@ -227,7 +227,7 @@ public final class Empire extends Species implements NamedObject {
     private transient BufferedImage shipImageLarge;
     private transient BufferedImage shipImageHuge;
     private transient BufferedImage scoutImage;
-    private transient BufferedImage transportImage;
+	private transient BufferedImage[] transportImages;
     private transient Color nameColor;
     private transient Color ownershipColor;
     private transient Color selectionColor;
@@ -278,7 +278,7 @@ public final class Empire extends Species implements NamedObject {
 		shipImageLarge	= null;
 		shipImageHuge	= null;
 		scoutImage		= null;
-		transportImage	= null;
+		transportImages	= null;
 	}
     public float benchmark() { return benchmark; }
         public void setBenchmark() {
@@ -463,7 +463,7 @@ public final class Empire extends Species implements NamedObject {
         shipImageLarge = null;
         shipImageHuge = null;
         scoutImage = null;
-        transportImage = null;
+		transportImages = null;
     }
     public boolean canSeeShips(int empId) {
     	if (isMonster(empId))
@@ -497,11 +497,28 @@ public final class Empire extends Species implements NamedObject {
             shipImageHuge = ShipLibrary.current().shipImageHuge(shipColorId());
         return shipImageHuge;
     }
-    public BufferedImage transportImage() {
-        if (transportImage == null)
-            transportImage = ShipLibrary.current().transportImage(shipColorId());
-        return transportImage;
-    }
+	private BufferedImage[] transportImages() {
+		if (transportImages == null)
+			transportImages = new BufferedImage[5];
+		return transportImages;
+	}
+	private BufferedImage getTransportImage(int id)	{
+		if (transportImages()[id] == null)
+			transportImages[id] = ShipLibrary.current().transportImage(shipColorId(), id);
+		return transportImages[id];
+	}
+	public BufferedImage transportImage(int size) {
+		if (size <= 5)
+			return getTransportImage(0);
+		else if (size <= 15)
+			return getTransportImage(1);
+		else if (size <= 30)
+			return getTransportImage(2);
+		else if (size <= 60)
+			return getTransportImage(3);
+		else
+			return getTransportImage(4);
+	}
     public Color nameColor() {
         if (nameColor == null) {
             Color c = color();
