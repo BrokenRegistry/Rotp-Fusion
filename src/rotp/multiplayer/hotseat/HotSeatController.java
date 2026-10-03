@@ -323,6 +323,13 @@ public final class HotSeatController implements AutoCloseable, Base {
             sabotageReports.put(owner, n -> report(n.recipientEmpireId(), "SABOTAGE", text("HOTSEAT_SABOTAGE"),
                     List.of(systemName(n.recipientEmpireId(), n.systemId()),
                             text("HOTSEAT_SABOTAGE_" + n.action()) + ": " + n.amount()), n));
+            if (game.playByEmail() != null) {
+                // Nobody waits at the keyboard mid-phase: standing orders answer at once.
+                bombing.put(owner, d -> StandingOrderProviders.bombard(game, d));
+                espionage.put(owner, d -> StandingOrderProviders.espionage(game, d));
+                sabotage.put(owner, d -> StandingOrderProviders.sabotage(game, d));
+                continue;
+            }
             bombing.put(owner, d -> mission(owner, () -> decisions.bombardment(d)));
             espionage.put(owner, d -> mission(owner, () -> decisions.espionage(d)));
             sabotage.put(owner, d -> mission(owner, () -> decisions.sabotage(d)));
