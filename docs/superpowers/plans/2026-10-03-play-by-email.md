@@ -13,22 +13,22 @@ Integration: add `-Pphase1-acceptance` (sets `rotp.integration=true`).
 
 ---
 
-- [ ] **1. Rules (TDD, unit):** `StandingOrders`, `StandingOrderRules` (bombard, sabotage), `PinHash`,
+- [x] **1. Rules (TDD, unit):** `StandingOrders`, `StandingOrderRules` (bombard, sabotage), `PinHash`,
   `TurnFiles.fileName(label, turn, name)`, `BuildStamp` (current + `requireMatch`). Tests in
   `tests/rotp/multiplayer/pbem/*Test.java`. Commit.
-- [ ] **2. Match state:** `PlayByEmail` (label, orders, pins). `GameSession.playByEmail` field, getter,
+- [x] **2. Match state:** `PlayByEmail` (label, orders, pins). `GameSession.playByEmail` field, getter,
   `startHotSeatGame(options, setup, boolean)`; reset in `startGame`/stop. Setup panel button +
   `SetupGalaxyUI` plumbing; button label shows "(Play by Email)". Commit.
-- [ ] **3. Machine-local settings:** PBEM guard in `AI.promptForBombardment` and colonize path; audit
+- [x] **3. Machine-local settings:** PBEM guard in `AI.promptForBombardment` and colonize path; audit
   other cfg-backed options read by model code. Integration test: prefs set to always-bomb /
   auto-colonize do not bypass PBEM routing. Commit.
-- [ ] **4. Standing-order providers:** in `attachProviders`, PBEM providers apply rules; espionage via
+- [x] **4. Standing-order providers:** in `attachProviders`, PBEM providers apply rules; espionage via
   scientist/spymaster AI. Integration test driving each adapter with a PBEM match. Commit.
-- [ ] **5. Build stamp in saves:** extra zip entry for PBEM saves; check before deserialize in both load
+- [x] **5. Build stamp in saves:** extra zip entry for PBEM saves; check before deserialize in both load
   paths (`loadSession` and `restoreHotSeatEnvelope`); label `PBEM_BUILD_MISMATCH`. Test. Commit.
-- [ ] **6. PIN screen:** PIN variant of `HotSeatPrivacyPane`; `HotSeatDesktop.cover` uses it in PBEM.
+- [x] **6. PIN screen:** PIN variant of `HotSeatPrivacyPane`; `HotSeatDesktop.cover` uses it in PBEM.
   Test set / wrong / right PIN. Commit.
-- [ ] **7. Send flow:** controller `localPlayer`; on handoff to another player write turn file and show
+- [x] **7. Send flow:** controller `localPlayer`; on handoff to another player write turn file and show
   Send screen; Finish-turn screen with standing orders; silent drop of eliminated reports.
   Integration test: two-player round trip via files with fresh loads. Commit.
-- [ ] **8. Docs + full test run + manual three-round game.** Player guide `doc/multiplayer/play-by-email.md`.
+- [x] **8. Docs + full test run + manual three-round game.** Player guide `doc/multiplayer/play-by-email.md`.

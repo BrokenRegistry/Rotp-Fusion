@@ -73,7 +73,7 @@ class PlayByEmailTest {
     static GameSession play(java.util.function.Predicate<GameSession> done, List<String> sent,
             java.util.Set<String> wrongPinFirst) throws Exception {
         var tried = new java.util.HashSet<String>();
-        long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(120);
+        long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(300);
         while (true) {
             GameSession game = GameSession.instance();
             if (done.test(game)) return game;
@@ -165,8 +165,10 @@ class PlayByEmailTest {
             });
             assertEquals(orders, game.playByEmail().orders("a"));
 
-            var done = play(g -> g != game && planningReady(g) && g.galaxy().currentTurn() == firstTurn + 1,
+            var done = play(g -> g != game && planningReady(g) && g.galaxy().currentTurn() == firstTurn + 3,
                     sent, java.util.Set.of("a"));
+            System.out.println("Turn files sent: " + sent);
+            assertTrue(sent.size() >= 6, "Three rounds need at least two files each: " + sent);
             assertTrue(sent.get(0).matches("PBEM-\\d{8}-\\d{4}-T\\d{3}-for-Bob[.]rotp"), sent.toString());
             assertTrue(sent.get(sent.size() - 1).endsWith("-for-Alice.rotp"), sent.toString());
             assertEquals("a", done.hotSeatState().snapshot().ownerPlayerId());
