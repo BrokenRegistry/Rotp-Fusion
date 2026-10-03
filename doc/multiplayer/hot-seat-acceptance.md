@@ -100,3 +100,30 @@ The one fresh reviewer reported four Important findings, no Critical/Minor findi
 - Identically hashed playtest copy launched in native Java 17. Cold Continue restored Alice's Turn 5 handoff, persisted private scouting report and map. Production correctly showed net 59/gross 71 and 21 RP, matching the pre-save values. `delivery-visible-stderr.log` remained empty. The test game was closed after verification.
 - `git -c core.safecrlf=false diff --check`: passed. Existing main checkout and uncommitted Phase 1 work preserved; no commit, merge or publication. The generated EXE/Windows ZIP were not independently exercised; the verified deliverable is the full JAR.
 - Player launch/setup instructions: `doc/multiplayer/hot-seat.md`. Supported actions and restrictions: `doc/multiplayer/hot-seat-actions.md`. All eight task contracts are complete; this delivers local hot-seat play, not the later network multiplayer milestone.
+
+### Windows EXE packaging repair (October 2, 2026)
+
+- Root cause: the previous delivery build skipped Maven Antrun media conversion. The mini JAR excludes original PNG/JPG/WAV media; without WebP/OGG replacements, the wrapped EXE failed during startup at `ImageManager.image` / `ShipBattleUI.init`.
+- Rebuilt with Java 17 and `mvn -DskipTests -Dmaven.javadoc.skip=true package`, with the project-root `cwebp.exe` and `oggenc.exe` on PATH. No gameplay source changes were required. `target/windows-rebuild.log`: BUILD SUCCESS at 12:21, after full media conversion.
+- Verified every source image/audio file has its converted output. New mini JAR contains 4,960 WebP images, 74 OGG audio files, and the hotseat controller/setup classes, including the previously missing asteroid and stargate images.
+- Distribution: `target/rotp-Fusion-2026-10-02-windows.zip`; SHA-256 `28C0029B1E154435CA5F664177737C7BA6E95901CDA3AA6D4CDDB845BB53CBB0`.
+- Extracted into `target/windows-exe-verified`. Launch4j log confirms the EXE uses the extracted `jre/bin/javaw.exe`. A responsive game window was observed; the user confirmed that the desktop launch reached the main menu.
+- Console startup with the same EXE and bundled runtime no longer reports missing images or the startup exception. Java 25 emits a native-access warning for the WebP decoder; it does not prevent startup.
+- This was a packaging/startup check, not a repeat of the complete gameplay regression suite. The old October 1 EXE/ZIP remains unchanged. Installation instructions now identify the repaired October 2 package and explain why release builds must not skip conversion.
+
+### Hotseat report progress-overlay fix (October 2, 2026)
+
+- Reproduced the persistent "Refreshing Views" notice covering the native scouting report. Hotseat report replay called native report screens directly and omitted the progress-notice suppression normally supplied by `RotPUI.processNotification`.
+- `HotSeatReportReplay` now hides the turn notice for each blocking report and restores its previous value in `finally`. The turn/planning lock remains active until playback ends.
+- New `HotSeatReportReplayTest` failed before the fix because the notice remained enabled over the scouting screen. After the fix, native scouting and ship-construction reports hide the notice, dismiss through their normal Escape handler, and restore planning and notice state.
+- Full `phase1-acceptance` suite: 125 tests passed, zero failures/errors/skips (`target/hotseat-progress-package.log`). Focused independent review found no actionable issues.
+- Rebuilt EXE/ZIP: BUILD SUCCESS at 18:13. Updated `target/windows-native-ui/rotp-Fusion-2026-10-02.exe`, the copy used by `Play Rotp Hotseat.cmd`; verified it matches the build (SHA-256 `CEF22CA44DFC9DD0BB0E935267C15D56202DA58E59E6531EBEAF1AAB72D9D7D1`). Packaged replay bytecode matches the tested class. Previous EXE retained in `target/backup/rotp-before-report-progress-fix.exe`; saves/settings unchanged.
+
+### Diplomatic Continue acknowledgement fix (October 2, 2026)
+
+- Reproduced first-contact reports that would not close through mouse Continue or the `1` key. The screen accepted input, but `TurnNotificationMessage.select` rejected it through the planning-order guard while native report replay intentionally kept planning locked.
+- Added a separate acknowledgement check that retains player, revision and viewer-generation validation. Informational turn notifications can acknowledge during report playback; order-producing diplomacy selections retain their original guard. Escape also rejects stale notifications.
+- Both real UI input regressions failed before the fix and passed afterwards. The mouse case paints the native screen at the game's display scale and clicks its Continue hitbox. Tests also reject stale Continue/Escape after a handoff, and retain the scouting/ship progress-overlay regression.
+- Full suite: 127 passed, zero failures/errors/skips (`target/hotseat-diplomatic-continue-package.log`). Focused review found no actionable issues.
+- Build verification initially encountered missing runtime metadata/media after VS Code's concurrent Java auto-build rewrote `target/classes`. Auto-build was temporarily paused, runtime resources restored from the previous verified package, and tests rerun successfully. Installation instructions now explain this build conflict.
+- Final package: BUILD SUCCESS at 18:45. Updated the EXE used by `Play Rotp Hotseat.cmd`; SHA-256 `46364E1FD2F6933ED7461F14232FC1FAE529559923A836BAC77FDBC8E5652863`. Packaged diplomacy/replay classes match the tested classes; all 4,960 WebP images and 74 OGG files are present. Original VS Code settings restored byte-for-byte. Previous EXE retained in `target/backup/rotp-before-diplomatic-continue-fix.exe`; saves/settings unchanged.

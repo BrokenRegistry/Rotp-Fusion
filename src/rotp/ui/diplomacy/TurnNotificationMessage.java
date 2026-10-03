@@ -22,11 +22,11 @@ public class TurnNotificationMessage extends DiplomaticMessage {
     }
     @Override
     public void escape() {
+        if (!hotSeatCanAcknowledge()) return;
         session().resumeNextTurnProcessing();
     }
     @Override
     public void select(int i) {
-        if (!hotSeatCanAct()) return;
         escape();
     }
 }

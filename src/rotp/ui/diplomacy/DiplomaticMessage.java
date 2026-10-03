@@ -56,12 +56,20 @@ public abstract class DiplomaticMessage implements Base {
     private long hotSeatGeneration;
     private String hotSeatActor;
     protected boolean hotSeatCanAct() {
+        return hotSeatCanAct(false);
+    }
+    /** Dismissing a turn report is allowed while planning orders remain locked. */
+    protected boolean hotSeatCanAcknowledge() {
+        return hotSeatCanAct(true);
+    }
+    private boolean hotSeatCanAct(boolean acknowledgement) {
         if (session().hotSeatState() == null) return true;
         var snapshot = session().hotSeatState().snapshot();
         return hotSeatGeneration == rotp.ui.multiplayer.HotSeatDesktop.viewerGeneration()
                 && snapshot.revision() == hotSeatRevision
                 && java.util.Objects.equals(hotSeatActor, snapshot.ownerPlayerId())
-                && rotp.multiplayer.hotseat.HotSeatOrders.canEdit(player().id);
+                && ((acknowledgement && rotp.model.game.GameSession.performingTurn())
+                    || rotp.multiplayer.hotseat.HotSeatOrders.canEdit(player().id));
     }
     protected boolean hotSeatHumanRecipient() {
         return session().hotSeatState() != null && diplomat != null

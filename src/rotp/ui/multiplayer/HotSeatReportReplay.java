@@ -39,9 +39,16 @@ public final class HotSeatReportReplay {
             try {
                 for (HotSeatReport report : reports) {
                     if (game != GameSession.instance() || !active.getAsBoolean()) break;
+                    // Native notification playback normally does this in processNotification.
+                    // Keep the turn lock, but hide its stale progress notice while awaiting input.
+                    boolean previousNotice = RotPUI.drawNextTurnNotice;
+                    RotPUI.drawNextTurnNotice = false;
                     try { show(game, report); }
                     catch (Throwable failure) { failure.printStackTrace(); }
-                    finally { game.resumeNextTurnProcessing(); }
+                    finally {
+                        RotPUI.drawNextTurnNotice = previousNotice;
+                        game.resumeNextTurnProcessing();
+                    }
                 }
             } finally {
                 // Planning unlocks only once the controller has taken back over.
