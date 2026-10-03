@@ -6969,7 +6969,7 @@ MOD_OPTIONS_HELP_HK		| <b><u>HOTKEYS:</u></b> →HK_SHIFT_F1← <br>F1 : Show co
 SETUP_GAME_HELP_HK		| H / F1 : Show Help.<br><br> - / + : Shrink / Expand Window.<br><br>C / Escape : Continue<br>      (Either the current game or the last saved game)<br>R : Replay Last Turn.<br>N / Ctrl+N: New Game / Quick Start.<br>L / Ctrl+L : Load Game / Load Options.<br>S / Ctrl+S : Save Game / Save Options.<br>T : Go to Settings.<br>O / M : Open Manual.<br>E / X : Exit Game.<br><br>Z : Hide text to get a better view of the background.
 
 # Local hot-seat play
-HOTSEAT_SETUP_TITLE | Local Hot Seat - Human Players
+HOTSEAT_SETUP_TITLE | Human Players
 HOTSEAT_EMPIRE | Empire slot
 HOTSEAT_HUMAN | Human
 HOTSEAT_PLAYER_NAME | Player name
@@ -7063,7 +7063,9 @@ PBEM_SEND_DETAIL | Saved as %1 in your save folder. Email the file to %2, or lea
 PBEM_RETURN_MENU | Return to menu
 PBEM_HERE | %1 is here
 PBEM_ENTER_PIN | %1, enter your PIN
-PBEM_CHOOSE_PIN | %1, choose a PIN (4 to 12 characters). You will need it to open your turns.
+PBEM_CHOOSE_PIN | %1, choose a PIN
+PBEM_CHOOSE_PIN_DETAIL | 4 to 12 characters. You will need it to open each of your turns.
+PBEM_PIN | PIN:
 PBEM_CONFIRM_PIN | Repeat the PIN:
 PBEM_WRONG_PIN | That PIN is not correct.
 PBEM_PIN_MISMATCH | The two PINs do not match.

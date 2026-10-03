@@ -56,18 +56,26 @@ public final class HotSeatPrivacyPane extends BasePanel {
             pin = repeat = null;
             content.add(HotSeatStyle.body(text("HOTSEAT_HANDOFF_DETAIL"), 20), BorderLayout.CENTER);
         } else {
-            pin = new JPasswordField(PinHash.MAX_LENGTH);
-            repeat = choosing ? new JPasswordField(PinHash.MAX_LENGTH) : null;
+            pin = pinField();
+            repeat = choosing ? pinField() : null;
             JPanel fields = new JPanel(new GridLayout(0, 1, 8, 8));
             fields.setOpaque(false);
+            if (choosing) fields.add(HotSeatStyle.body(text("PBEM_CHOOSE_PIN_DETAIL"), 20));
+            fields.add(HotSeatStyle.body(text("PBEM_PIN"), 20));
             fields.add(pin);
             if (repeat != null) {
-                fields.add(HotSeatStyle.body(text("PBEM_CONFIRM_PIN"), 18));
+                fields.add(HotSeatStyle.body(text("PBEM_CONFIRM_PIN"), 20));
                 fields.add(repeat);
             }
             error.setForeground(new Color(255, 120, 120));
+            error.setFont(narrowFont(20));
+            error.setHorizontalAlignment(JLabel.CENTER);
             fields.add(error);
-            content.add(fields, BorderLayout.CENTER);
+            // Natural width, not the title's: a PIN is at most 12 characters.
+            JPanel center = new JPanel(new GridBagLayout());
+            center.setOpaque(false);
+            center.add(fields);
+            content.add(center, BorderLayout.CENTER);
             pin.addActionListener(e -> proceed.doClick(0));
             if (repeat != null) repeat.addActionListener(e -> proceed.doClick(0));
         }
@@ -82,6 +90,13 @@ public final class HotSeatPrivacyPane extends BasePanel {
         footer.add(proceed);
         content.add(footer, BorderLayout.SOUTH);
         add(content);
+    }
+
+    private JPasswordField pinField() {
+        JPasswordField field = new JPasswordField(10);
+        field.setFont(narrowFont(26));
+        field.setHorizontalAlignment(JPasswordField.CENTER);
+        return field;
     }
 
     private boolean unlocked(PinGate gate) {

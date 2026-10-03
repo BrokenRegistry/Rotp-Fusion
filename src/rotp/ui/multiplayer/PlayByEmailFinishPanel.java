@@ -43,14 +43,8 @@ public final class PlayByEmailFinishPanel extends BasePanel {
         }
         void select(E value) {
             selected = value;
-            for (int i = 0; i < values.length; i++) {
-                boolean on = values[i] == value;
-                JButton button = buttons.get(i);
-                button.setBackground(on ? GameUI.borderBrightColor() : GameUI.buttonBackgroundColor());
-                button.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(on ? java.awt.Color.WHITE : GameUI.borderBrightColor(), on ? 3 : 2),
-                        BorderFactory.createEmptyBorder(on ? 5 : 6, 18, on ? 5 : 6, 18)));
-            }
+            for (int i = 0; i < values.length; i++)
+                HotSeatStyle.selected(buttons.get(i), values[i] == value);
         }
         JPanel row() {
             JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
