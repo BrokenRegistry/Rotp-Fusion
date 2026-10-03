@@ -533,7 +533,7 @@ public final class SpyNetwork implements Base, Serializable {
         allocationBC += bc;
         float cost = costForNextSpy();
 
-        if (!empire().isHumanEmpire() || options().spyOverSpend()) {
+        if (!owner().isHumanEmpire() || options().spyOverSpend()) {
 	        while (allocationBC >= cost) {
 	            addNewSpy();
 	            allocationBC -= cost;
@@ -550,7 +550,10 @@ public final class SpyNetwork implements Base, Serializable {
             allocationBC -= cost;
             cost = costForNextSpy();
         }
-       	empire().addReserve(allocationBC);
+        if (count >= target) {
+            owner().addReserve(allocationBC);
+            allocationBC = 0;
+        }
     }
     private void addNewSpy() { activeSpies.add(new Spy(this));  }
 
