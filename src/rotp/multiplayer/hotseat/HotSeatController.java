@@ -30,6 +30,8 @@ public final class HotSeatController implements AutoCloseable, Base {
     private volatile String seatedOwner;
     // Reports are playing on the revealed map; planning stays locked until they finish.
     private volatile boolean replayingReports;
+    // Play by email: who last unlocked this computer with their PIN since the match was opened.
+    private volatile String localPlayer;
     private long missionSequence;
 
     public HotSeatController(GameSession session, HotSeatDesktop desktop, HotSeatDecisions decisions) {
@@ -63,13 +65,29 @@ public final class HotSeatController implements AutoCloseable, Base {
                 && seat != null && seat.playerId().equals(snapshot.ownerPlayerId());
     }
     public boolean safeToSave() { return !running.get() || boundarySave || pending != null && game.hotSeatState().snapshot().recoverable(); }
-    public boolean safeToReplace() { return !running.get() || pending != null; }
+    // A closed controller's worker can stay marked running after its wait was cancelled.
+    public boolean safeToReplace() { return closed || !running.get() || pending != null; }
     public void captureView() { desktop.captureView(game); }
 
     public boolean finishPlayerTurn(String owner, long revision) {
         requireEdt();
         var before = game.hotSeatState().snapshot();
         if (closed || running.get() || replayingReports || desktop.isCovered() || before.revision() != revision
+                || before.stage() != HotSeatState.Stage.PLANNING || !Objects.equals(before.ownerPlayerId(), owner)) return false;
+        var byEmail = game.playByEmail();
+        if (byEmail == null) return completePlayerTurn(owner, revision);
+        desktop.showPrivatePanel(new PlayByEmailFinishPanel(game.hotSeatSetup().displayName(owner),
+                byEmail.orders(owner), orders -> {
+                    if (closed) return;
+                    byEmail.orders(owner, orders);
+                    if (!completePlayerTurn(owner, revision)) desktop.revealPlanning();
+                }, desktop::revealPlanning));
+        return true;
+    }
+
+    private boolean completePlayerTurn(String owner, long revision) {
+        var before = game.hotSeatState().snapshot();
+        if (closed || running.get() || before.revision() != revision
                 || before.stage() != HotSeatState.Stage.PLANNING || !Objects.equals(before.ownerPlayerId(), owner)) return false;
         if (!saveLastSafe()) return false;
         if (!game.inProgress()) {
@@ -196,7 +214,7 @@ public final class HotSeatController implements AutoCloseable, Base {
                 return;
             }
             seatedOwner = null;
-            desktop.cover(snapshot, () -> {
+            handoff(snapshot, () -> {
                 if (closed || !game.hotSeatState().confirmHandoff(snapshot.revision())) return;
                 desktop.activateViewer(game, owner);
                 seatedOwner = owner;
@@ -234,6 +252,11 @@ public final class HotSeatController implements AutoCloseable, Base {
             if (finished || game.galaxy().empire(human.empireId()).extinct()) {
                 var reports = game.hotSeatInbox().unread(human.empireId());
                 if (reports.isEmpty()) continue;
+                if (game.playByEmail() != null) {
+                    // Never wait on a player who is out of the game for a file round trip.
+                    for (var report : reports) game.hotSeatInbox().acknowledge(human.empireId(), report.id());
+                    continue;
+                }
                 var privateHandoff = new HotSeatSnapshot(snapshot.turn(), snapshot.revision(), snapshot.stage(),
                         human.playerId(), snapshot.finishedPlayers(), null, true);
                 desktop.cover(privateHandoff, () -> desktop.showPrivatePanel(new HotSeatReportsPanel(
@@ -250,7 +273,7 @@ public final class HotSeatController implements AutoCloseable, Base {
                     () -> { close(); rotp.ui.RotPUI.instance().selectGamePanel(); }));
             return;
         }
-        desktop.cover(snapshot, () -> {
+        handoff(snapshot, () -> {
             if (closed || !game.hotSeatState().confirmHandoff(snapshot.revision())) return;
             String owner = snapshot.ownerPlayerId();
             desktop.activateViewer(game, owner);
@@ -279,6 +302,34 @@ public final class HotSeatController implements AutoCloseable, Base {
                 summary.run();
             });
         });
+    }
+
+    /**
+     * Hands the computer to the snapshot's owner. In play by email a different person means
+     * saving a turn file for them; nobody sees the next empire without its PIN.
+     */
+    private void handoff(HotSeatSnapshot snapshot, Runnable confirm) {
+        if (game.playByEmail() == null) { desktop.cover(snapshot, confirm); return; }
+        String owner = snapshot.ownerPlayerId();
+        Runnable unlocked = () -> { localPlayer = owner; confirm.run(); };
+        if (owner.equals(localPlayer) && desktop.isCovered()) { confirm.run(); return; }
+        if (localPlayer == null) { desktop.cover(snapshot, unlocked); return; }
+        String name = game.hotSeatSetup().displayName(owner);
+        java.io.File file = GameSession.saveFileNamed(rotp.multiplayer.pbem.TurnFiles.fileName(
+                game.playByEmail().matchLabel(), snapshot.turn(), name));
+        try { HotSeatPersistence.save(game, file); }
+        catch (Exception failure) {
+            failure.printStackTrace();
+            game.hotSeatState().failResolution();
+            showStatus("HOTSEAT_RESOLUTION_FAILED");
+            return;
+        }
+        game.playByEmailSentFile(file);
+        localPlayer = null;
+        desktop.clearPrivateUi();
+        desktop.showPrivatePanel(new PlayByEmailSendPanel(name, file.getName(),
+                () -> { close(); rotp.ui.RotPUI.instance().selectGamePanel(); },
+                () -> { if (!closed) desktop.cover(snapshot, unlocked); }));
     }
 
     private Set<String> living() {

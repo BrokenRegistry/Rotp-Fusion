@@ -1187,6 +1187,12 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         }
     }
     public void continueGame() { // BR:
+        if (session().playByEmailSentFile() != null) {
+            // The live session may be mid-phase; the sent file is the clean continuation point.
+            try { rotp.multiplayer.hotseat.HotSeatPersistence.load(session().playByEmailSentFile()); }
+            catch (Exception failure) { javax.swing.JOptionPane.showMessageDialog(this, failure.getMessage()); }
+            return;
+        }
         if (session().hotSeatState() != null) {
             session().hotSeatState().coverForLoad();
             session().openHotSeatDesktop(true);

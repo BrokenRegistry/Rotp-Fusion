@@ -2,6 +2,8 @@
 
 Two or more people share one computer and take turns controlling separate empires. AI empires may fill the other slots. This is local play; it does not add network multiplayer.
 
+To play from separate computers by passing a turn file, see [play by email](play-by-email.md).
+
 ## Start a match
 
 For this verified Windows checkout, run from `F:\Projects-PCGames\Rotp-Fusion`:
@@ -40,7 +42,7 @@ Council, research, colonization and diplomacy prompts have a **Save checkpoint**
 
 ## Supported actions
 
-See [the action table](hot-seat-actions.md). Battles resolve automatically. Human-to-human technology barter, counteroffers and threats are unavailable. Shared governor/game policy settings are fixed when the match starts; per-colony governors, locks and ship requests remain available.
+See [the action table](hot-seat-actions.md). Battles resolve automatically. Human-to-human technology barter, counteroffers and threats are unavailable. Shared governor/game policy settings, plus the per-computer rally combat, rally loss, AI aggressiveness, ship-based missile and harmless-colony settings, are fixed when the match starts; per-colony governors, locks and ship requests remain available.
 
 ## Build and acceptance
 

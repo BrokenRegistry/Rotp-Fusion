@@ -190,6 +190,10 @@ public final class GameSession implements Base, Serializable {
     private rotp.multiplayer.pbem.PlayByEmail playByEmail;
     public rotp.multiplayer.pbem.PlayByEmail playByEmail() { return playByEmail; }
     public static boolean isPlayByEmail() { return instance != null && instance.playByEmail != null; }
+    // The turn file this computer last wrote for someone else; Continue reopens it.
+    private transient File playByEmailSentFile;
+    public File playByEmailSentFile() { return playByEmailSentFile; }
+    public void playByEmailSentFile(File file) { playByEmailSentFile = file; }
     public static boolean hotSeatPolicyLocked(String key) {
         return instance != null && instance.hotSeatPolicies != null && instance.hotSeatPolicies.locks(key);
     }
@@ -1214,6 +1218,7 @@ public final class GameSession implements Base, Serializable {
         stopCurrentGame();
         hotSeatSetup = setup;
         playByEmail = byEmail;
+        playByEmailSentFile = null;
         hotSeatSaveEnvelope = null;
         hotSeatPolicies = null;
         hotSeatInbox = setup == null ? null : new rotp.multiplayer.hotseat.HotSeatInbox();
@@ -1271,6 +1276,7 @@ public final class GameSession implements Base, Serializable {
         stopCurrentGame();
         hotSeatSetup = null;
         playByEmail = null;
+        playByEmailSentFile = null;
         hotSeatSaveEnvelope = null;
         hotSeatPolicies = null;
         hotSeatInbox = null;

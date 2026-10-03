@@ -53,13 +53,137 @@ class PlayByEmailTest {
         return controller[0];
     }
 
+    static final java.util.Map<String, String> PINS = java.util.Map.of("a", "1111", "b", "2222");
+
+    static boolean planningReady(GameSession game) {
+        if (game.hotSeatState().snapshot().stage() != HotSeatState.Stage.PLANNING) return false;
+        // Reports play on the game's own screens over the map: click through each one.
+        if (GameSession.performingTurn()) { game.resumeNextTurnProcessing(); return false; }
+        return !HotSeatDesktop.blocksNavigation();
+    }
+
+    static void awaitPlanning(GameSession game) throws Exception {
+        play(g -> planningReady(g), new java.util.ArrayList<>(), java.util.Set.of());
+    }
+
+    /**
+     * Plays as every person in turn: types PINs, sends turn files and opens them again as the
+     * recipient would, until done. Players named in wrongPinFirst first try a wrong PIN.
+     */
+    static GameSession play(java.util.function.Predicate<GameSession> done, List<String> sent,
+            java.util.Set<String> wrongPinFirst) throws Exception {
+        var tried = new java.util.HashSet<String>();
+        long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(120);
+        while (true) {
+            GameSession game = GameSession.instance();
+            if (done.test(game)) return game;
+            assertTrue(System.nanoTime() < deadline, "Timed out: " + game.hotSeatState().snapshot());
+            assertNotEquals(HotSeatState.Stage.ERROR, game.hotSeatState().snapshot().stage());
+            java.io.File[] next = new java.io.File[1];
+            if (planningReady(game)) HotSeatTestFixture.onEdt(() -> {
+                var snapshot = game.hotSeatState().snapshot();
+                assertTrue(game.hotSeatController().finishPlayerTurn(snapshot.ownerPlayerId(), snapshot.revision()));
+                var finish = (rotp.ui.multiplayer.PlayByEmailFinishPanel) rotp.Rotp.getFrame().getGlassPane();
+                finish.send(finish.orders());
+            });
+            HotSeatTestFixture.onEdt(() -> {
+                var glass = rotp.Rotp.getFrame().getGlassPane();
+                if (!glass.isVisible()) return;
+                String owner = game.hotSeatState().snapshot().ownerPlayerId();
+                if (glass instanceof rotp.ui.multiplayer.HotSeatPrivacyPane pin && pin.asksForPin()) {
+                    if (wrongPinFirst.contains(owner) && tried.add(owner)) {
+                        pin.enterPin("0000");
+                        assertEquals(GameSession.instance().text("PBEM_WRONG_PIN"), pin.errorText());
+                        assertSame(pin, rotp.Rotp.getFrame().getGlassPane(), "A wrong PIN must not unlock");
+                    } else pin.enterPin(PINS.get(owner));
+                } else if (glass instanceof rotp.ui.multiplayer.PlayByEmailSendPanel send) {
+                    next[0] = game.playByEmailSentFile();
+                    send.returnToMenu();
+                } else if (glass instanceof rotp.ui.multiplayer.HotSeatReportsPanel reports) reports.acknowledge();
+            });
+            if (next[0] != null) {
+                sent.add(next[0].getName());
+                open(next[0]);
+            }
+            Thread.sleep(20);
+        }
+    }
+
+    /** Opens a turn file as its recipient, with scripted answers for the recipient's choices. */
+    static GameSession open(java.io.File file) throws Exception {
+        var restored = HotSeatPersistence.load(file);
+        long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(30);
+        boolean[] covered = new boolean[1];
+        while (!covered[0]) {
+            assertTrue(System.nanoTime() < deadline, "A loaded turn must open behind a PIN screen");
+            HotSeatTestFixture.onEdt(() -> covered[0] = rotp.Rotp.getFrame().getGlassPane()
+                    instanceof rotp.ui.multiplayer.HotSeatPrivacyPane pin && pin.isVisible() && pin.asksForPin());
+            Thread.sleep(20);
+        }
+        HotSeatTestFixture.onEdt(() -> {
+            restored.hotSeatController().close();
+            var controller = new HotSeatController(restored, new HotSeatDesktop(), new NoMissionPrompts());
+            try { HotSeatTestFixture.set(GameSession.class, restored, "hotSeatController", controller); }
+            catch (Exception ex) { throw new AssertionError(ex); }
+            controller.resume();
+        });
+        return restored;
+    }
+
+    @Test void aRoundTripByFilesNeedsEachPlayersPinAndKeepsStandingOrders() throws Exception {
+        var game = startMatch();
+        int firstTurn = game.galaxy().currentTurn();
+        var controller = attach(game);
+        try {
+            long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(30);
+            rotp.ui.multiplayer.HotSeatPrivacyPane[] pin = new rotp.ui.multiplayer.HotSeatPrivacyPane[1];
+            while (pin[0] == null) {
+                assertTrue(System.nanoTime() < deadline, "Alice must be asked to choose a PIN");
+                HotSeatTestFixture.onEdt(() -> {
+                    if (rotp.Rotp.getFrame().getGlassPane() instanceof rotp.ui.multiplayer.HotSeatPrivacyPane p
+                            && p.isVisible() && p.asksForPin()) pin[0] = p;
+                });
+                Thread.sleep(20);
+            }
+            HotSeatTestFixture.onEdt(() -> {
+                pin[0].enterPin("12");
+                assertEquals(game.text("PBEM_PIN_INVALID"), pin[0].errorText());
+                assertFalse(game.playByEmail().hasPin("a"));
+            });
+            List<String> sent = new java.util.ArrayList<>();
+            play(g -> planningReady(g), sent, java.util.Set.of());
+            assertTrue(game.playByEmail().hasPin("a"));
+            assertEquals(List.of(), sent, "The first player plays on the computer that created the match");
+
+            var orders = new StandingOrders(Bombard.ALWAYS, Frame.WHEN_POSSIBLE, SabotageTarget.MISSILES);
+            HotSeatTestFixture.onEdt(() -> {
+                var snapshot = game.hotSeatState().snapshot();
+                assertTrue(controller.finishPlayerTurn("a", snapshot.revision()));
+                var finish = (rotp.ui.multiplayer.PlayByEmailFinishPanel) rotp.Rotp.getFrame().getGlassPane();
+                assertEquals(StandingOrders.DEFAULT, finish.orders());
+                finish.send(orders);
+            });
+            assertEquals(orders, game.playByEmail().orders("a"));
+
+            var done = play(g -> g != game && planningReady(g) && g.galaxy().currentTurn() == firstTurn + 1,
+                    sent, java.util.Set.of("a"));
+            assertTrue(sent.get(0).matches("PBEM-\\d{8}-\\d{4}-T\\d{3}-for-Bob[.]rotp"), sent.toString());
+            assertTrue(sent.get(sent.size() - 1).endsWith("-for-Alice.rotp"), sent.toString());
+            assertEquals("a", done.hotSeatState().snapshot().ownerPlayerId());
+            assertEquals(orders, done.playByEmail().orders("a"), "Standing orders travel with the file");
+            assertTrue(done.playByEmail().hasPin("b"));
+            assertFalse(done.playByEmail().pinMatches("b", "1111"));
+            HotSeatTestFixture.onEdt(done.hotSeatController()::close);
+        } finally { HotSeatTestFixture.onEdt(controller::close); }
+    }
+
     @Test void standingOrdersBombardWithoutPromptingAndIgnoreTheSharedSetting() throws Exception {
         var game = startMatch();
         assertNotNull(game.playByEmail());
         var controller = attach(game);
         String shared = IConvenienceOptions.autoBombard_.get();
         try {
-            HotSeatTurnTest.awaitPlanning(game);
+            awaitPlanning(game);
             IConvenienceOptions.autoBombard_.set(IConvenienceOptions.AUTOBOMBARD_NEVER);
             Empire attacker = game.galaxy().empire(0);
             Empire defender = game.galaxy().empire(1);
@@ -88,7 +212,7 @@ class PlayByEmailTest {
         var game = startMatch();
         var controller = attach(game);
         try {
-            HotSeatTurnTest.awaitPlanning(game);
+            awaitPlanning(game);
             Empire owner = game.galaxy().empire(0);
             Empire victim = game.galaxy().empire(1);
             StarSystem target = victim.allColonizedSystems().get(0);
@@ -114,7 +238,7 @@ class PlayByEmailTest {
         var game = startMatch();
         var controller = attach(game);
         try {
-            HotSeatTurnTest.awaitPlanning(game);
+            awaitPlanning(game);
             var file = directory.resolve("stamp.rotp").toFile();
             HotSeatTestFixture.onEdt(() -> {
                 try { HotSeatPersistence.save(game, file); }

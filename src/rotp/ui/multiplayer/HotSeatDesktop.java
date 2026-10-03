@@ -44,8 +44,15 @@ public final class HotSeatDesktop implements KeyEventDispatcher, AutoCloseable {
         long ticket = ++generation;
         hideSecondaryWindows();
         var setup = GameSession.instance().hotSeatSetup();
-        String name = setup == null ? snapshot.ownerPlayerId() : setup.displayName(snapshot.ownerPlayerId());
-        pane = new HotSeatPrivacyPane(name, () -> {
+        String owner = snapshot.ownerPlayerId();
+        String name = setup == null ? owner : setup.displayName(owner);
+        var byEmail = GameSession.instance().playByEmail();
+        HotSeatPrivacyPane.PinGate gate = byEmail == null ? null : new HotSeatPrivacyPane.PinGate() {
+            @Override public boolean hasPin() { return byEmail.hasPin(owner); }
+            @Override public boolean matches(String pin) { return byEmail.pinMatches(owner, pin); }
+            @Override public void set(String pin) { byEmail.setPin(owner, pin); }
+        };
+        pane = new HotSeatPrivacyPane(name, gate, () -> {
             if (!closed && generation == ticket) confirm.run();
         });
         installPane(pane);
@@ -125,7 +132,7 @@ public final class HotSeatDesktop implements KeyEventDispatcher, AutoCloseable {
         if (event.getID() == KeyEvent.KEY_PRESSED) fresh = pressedKeys.add(event.getKeyCode());
         if (event.getID() == KeyEvent.KEY_RELEASED) pressedKeys.remove(event.getKeyCode());
         if (!covered) return false;
-        if (pane instanceof HotSeatPrivacyPane handoff) {
+        if (pane instanceof HotSeatPrivacyPane handoff && !handoff.asksForPin()) {
             if (fresh && event.getID() == KeyEvent.KEY_PRESSED && event.getKeyCode() == KeyEvent.VK_ENTER)
                 handoff.acknowledge();
             event.consume();
