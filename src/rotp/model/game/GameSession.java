@@ -187,6 +187,9 @@ public final class GameSession implements Base, Serializable {
     private transient rotp.multiplayer.hotseat.HotSeatController hotSeatController;
     private rotp.multiplayer.hotseat.HotSeatPolicies hotSeatPolicies;
     private rotp.multiplayer.hotseat.HotSeatSaveEnvelope hotSeatSaveEnvelope;
+    private rotp.multiplayer.pbem.PlayByEmail playByEmail;
+    public rotp.multiplayer.pbem.PlayByEmail playByEmail() { return playByEmail; }
+    public static boolean isPlayByEmail() { return instance != null && instance.playByEmail != null; }
     public static boolean hotSeatPolicyLocked(String key) {
         return instance != null && instance.hotSeatPolicies != null && instance.hotSeatPolicies.locks(key);
     }
@@ -1186,6 +1189,10 @@ public final class GameSession implements Base, Serializable {
     }
     public void startHotSeatGame(IGameOptions newGameOptions,
             rotp.multiplayer.hotseat.HotSeatSetup setup) {
+        startHotSeatGame(newGameOptions, setup, false);
+    }
+    public void startHotSeatGame(IGameOptions newGameOptions,
+            rotp.multiplayer.hotseat.HotSeatSetup setup, boolean byEmail) {
         java.util.Objects.requireNonNull(setup, "setup");
         if (newGameOptions.isAutoPlay() || newGameOptions.randomNumAliens()
                 || IDebugOptions.debugAutoRun() || newGameOptions.selectedIronmanLoad()
@@ -1193,12 +1200,19 @@ public final class GameSession implements Base, Serializable {
             throw new IllegalArgumentException(
                     "Hot seat requires fixed opponents, autoplay off, debug autorun off and ironman off");
         ControllerRegistry registry = setup.registry(newGameOptions.selectedNumberOpponents() + 1);
-        startGame(newGameOptions, registry, setup);
+        startGame(newGameOptions, registry, setup, !byEmail ? null : new rotp.multiplayer.pbem.PlayByEmail(
+                setup.humans().stream().map(rotp.multiplayer.hotseat.HotSeatSetup.Assignment::playerId).toList(),
+                java.time.LocalDateTime.now()));
     }
     private void startGame(IGameOptions newGameOptions, ControllerRegistry registry,
             rotp.multiplayer.hotseat.HotSeatSetup setup) {
+        startGame(newGameOptions, registry, setup, null);
+    }
+    private void startGame(IGameOptions newGameOptions, ControllerRegistry registry,
+            rotp.multiplayer.hotseat.HotSeatSetup setup, rotp.multiplayer.pbem.PlayByEmail byEmail) {
         stopCurrentGame();
         hotSeatSetup = setup;
+        playByEmail = byEmail;
         hotSeatSaveEnvelope = null;
         hotSeatPolicies = null;
         hotSeatInbox = setup == null ? null : new rotp.multiplayer.hotseat.HotSeatInbox();
@@ -1255,6 +1269,7 @@ public final class GameSession implements Base, Serializable {
     public void restartGame(IGameOptions newGameOptions, GalaxyCopy src) {
         stopCurrentGame();
         hotSeatSetup = null;
+        playByEmail = null;
         hotSeatSaveEnvelope = null;
         hotSeatPolicies = null;
         hotSeatInbox = null;

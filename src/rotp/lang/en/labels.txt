@@ -7055,3 +7055,32 @@ HOTSEAT_STANDING_ACTIVE | Active
 HOTSEAT_STANDING_ELIMINATED | Eliminated
 HOTSEAT_COUNCIL_RULING_DETAIL | The Galactic Council elected %1. Accept recognizes this empire as the elected leader and joins its supporters. Reject defies the ruling and joins the rebellion; the match continues if opposing sides remain.
 HOTSEAT_REPLY_INVALID | This offer is no longer eligible. No treaty or war order was applied.
+PBEM_USE | Use Play by Email
+PBEM_SETUP_BUTTON | Players: %1 humans (Play by Email)
+PBEM_BUILD_MISMATCH | This turn was made with build %1; you have build %2. Every player must run the same game version.
+PBEM_SEND_TITLE | Send this turn to %1
+PBEM_SEND_DETAIL | Saved as %1 in your save folder. Email the file to %2, or leave it in a shared folder. They open it with Load Game.
+PBEM_RETURN_MENU | Return to menu
+PBEM_HERE | %1 is here
+PBEM_ENTER_PIN | %1, enter your PIN
+PBEM_CHOOSE_PIN | %1, choose a PIN (4 to 12 characters). You will need it to open your turns.
+PBEM_CONFIRM_PIN | Repeat the PIN:
+PBEM_WRONG_PIN | That PIN is not correct.
+PBEM_PIN_MISMATCH | The two PINs do not match.
+PBEM_PIN_INVALID | Use 4 to 12 characters without spaces.
+PBEM_FINISH_TITLE | %1 - Finish turn
+PBEM_FINISH_DETAIL | Standing orders answer these choices while you are away and stay in force until you change them. The game chooses which technology your spies steal.
+PBEM_BOMBARD | Bombard enemy colonies:
+PBEM_BOMBARD_NEVER | Never
+PBEM_BOMBARD_ALWAYS | Always
+PBEM_BOMBARD_AT_WAR | Only at war
+PBEM_BOMBARD_AT_WAR_NOT_INVADING | At war, unless my troops are landing
+PBEM_FRAME | After spying, frame another empire:
+PBEM_FRAME_NEVER | Never
+PBEM_FRAME_WHEN_POSSIBLE | When possible
+PBEM_SABOTAGE | Sabotage target:
+PBEM_SABOTAGE_FACTORIES | Factories
+PBEM_SABOTAGE_MISSILES | Missile bases
+PBEM_SABOTAGE_REBELS | Incite rebellion
+PBEM_SEND | Send turn
+PBEM_BACK | Back
