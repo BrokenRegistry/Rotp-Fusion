@@ -22,6 +22,7 @@
 
 ### Features:
 
+- New multiplayer feature (Hot-seat).
 - New option to restore the cost of weapons from MoO1.
 - New option to Restore the original MoO1 ship combat maneuver power requirement.
 - New option to select how the ship repulsors works.

@@ -125,7 +125,7 @@ final class MassTransportsDialog extends BasePanel {
         }
         player().deployTransports(launchPoints, topParent.targetSystem, synched);
     }
-  private void clickSynch()	{
+	private void clickSynch()	{
 		synched = !synched;
 		if (isInvasion)
 			invasionSynched = synched;
@@ -134,8 +134,8 @@ final class MassTransportsDialog extends BasePanel {
 	}
 	void mouseWheelMoved(MouseWheelEvent e)	{
         if (!hotSeatCanEdit(player().id)) return;
-    listingUI.mouseWheelMoved(e);
-  }
+        listingUI.mouseWheelMoved(e);
+	}
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);

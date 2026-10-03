@@ -6967,3 +6967,125 @@ SETUP_RACE_HELP_HK		| →HK_HEADER← →HK_F1← →HK_GUIDE← <br> →HK_FOG�
 MOD_OPTIONS_HELP_HK		| <b><u>HOTKEYS:</u></b> →HK_SHIFT_F1← <br>F1 : Afficher l’aide contextuelle. <br>→HK_SET_DEFAULT←<br>→HK_GUIDE← <br>→HK_ESCAPE←
 
 SETUP_GAME_HELP_HK		| H / F1 : Afficher l’aide.<br><br> - / + : Réduire / Agrandir la fenêtre.<br><br>C / Échapper : Continuer<br>      (Soit la partie en cours, soit la dernière partie sauvegardée)<br>R : Rejouer le dernier tour.<br>N / Ctrl+N : Nouvelle Partie / Relancer les dés.<br>L / Ctrl+L : Charger une Partie / Charger des Options.<br>S / Ctrl+S : Sauver la Partie / Sauver les Options.<br>T : Accédez aux paramètres.<br>O / M : Ouvrir le manuel.<br>E / X : Quitter le jeu.<br><br>Z : Cacher le texte pour mieu voir l’arrière plan.
+
+# Local hot-seat play
+HOTSEAT_SETUP_TITLE			| Joueurs humains
+HOTSEAT_EMPIRE				| Case de l’empire
+HOTSEAT_HUMAN				| Humain
+HOTSEAT_PLAYER_NAME			| Nom du joueur
+HOTSEAT_DEFAULT_NAME		| Joueur %1
+HOTSEAT_USE					| Utiliser le Hot Seat
+HOTSEAT_SINGLE_PLAYER		| Un joueur
+HOTSEAT_CANCEL				| Annuler
+HOTSEAT_INVALID_NAMES		| Choisissez au moins deux joueurs humains avec des noms différents et non vides.
+HOTSEAT_HANDOFF				| Transmettez l’ordinateur à %1
+HOTSEAT_HANDOFF_DETAIL		| Continuez seulement lorsque vous êtes prêt à voir votre empire.
+HOTSEAT_CONTINUE			| Continuer
+HOTSEAT_REPORTS				| %1 - Rapports
+HOTSEAT_RESOLVING			| Résolution du tour partagé...
+HOTSEAT_RESOLUTION_FAILED	| La résolution du tour s’est arrêtée. Chargement de la dernière sauvegarde sécuritaire.
+HOTSEAT_FINISHED			| Ce match est terminé.
+HOTSEAT_SCOUTING			| Exploration
+HOTSEAT_RESEARCH			| Recherche
+HOTSEAT_CONSTRUCTION		| Vaisseaux construits
+HOTSEAT_DIPLOMACY			| Diplomatie
+HOTSEAT_BOMBARDMENT			| Bombardment
+HOTSEAT_SABOTAGE			| Sabotage
+HOTSEAT_POPULATION			| Population : %1 -> %2
+HOTSEAT_BASES				| Bases : %1 -> %2
+HOTSEAT_FACTORIES			| Usines : %1 -> %2
+HOTSEAT_FINISH				| Terminer le tour du joueur
+HOTSEAT_CURRENT_PLAYER		| Joueur actuel : %1
+HOTSEAT_SETUP_BUTTON		| Joueurs : %1 humains (Hot Seat)
+HOTSEAT_SETUP_SINGLE		| Joueurs : Joueur unique
+HOTSEAT_OPTIONS_ERROR		| Hot Seat nécessite des adversaires fixes, le mode automatique désactivé, le débogage automatique et Ironman désactivé. Vérifiez les affectations humaines après modification du nombre d’adversaires.
+HOTSEAT_COUNCIL_VOTE		| Conseil Galactique - Vote
+HOTSEAT_COUNCIL_RULING		| Conseil Galactique - Acceptez-vous le résultat ?
+HOTSEAT_ABSTAIN				| Abstention
+HOTSEAT_ACCEPT				| Accepter
+HOTSEAT_REJECT				| Refuser
+HOTSEAT_COLONIZE			| Coloniser %1 ?
+HOTSEAT_COLONIZE_YES		| Étabir la colonie
+HOTSEAT_SKIP				| Passer
+HOTSEAT_BOMBARD				| Bombarder
+HOTSEAT_TARGET_BOMBARD		| Bombardement limité
+HOTSEAT_ESPIONAGE			| Espionnage - Choisissez une technologie à voler
+HOTSEAT_NO_FRAME			| Ne pas blâmer un autre empire
+HOTSEAT_FRAME				| Blâmer %1
+HOTSEAT_CONFIRM				| Confirmer
+HOTSEAT_SABOTAGE_FACTORIES	| Détruire des usines
+HOTSEAT_SABOTAGE_MISSILES	| Détruire des bases de missiles
+HOTSEAT_SABOTAGE_REBELS		| Inciter une rebellion
+HOTSEAT_OFFER_TRADE			| Propose un traité commercial à ce niveau :
+HOTSEAT_OFFER_PEACE			| Proposer la paix
+HOTSEAT_OFFER_PACT			| Proposer un pacte de non-agression
+HOTSEAT_OFFER_ALLIANCE		| Proposer une alliance
+HOTSEAT_OFFER_JOINT_WAR		| Proposer une guerre conjointer contre
+HOTSEAT_SHARED_POLICIES		| Les politiques partagées du gouverneur et du jeu sont fixées pour ce match Hot Seat. Les contrôles du gouverneur par colonie restent disponibles.
+HOTSEAT_VIP_DISABLED		| La console VIP n’est pas disponible pendant le jeu hot-seat.
+HOTSEAT_UNSUPPORTED			| (indisponible en hot-seat)
+HOTSEAT_OFFER_QUEUED		| L’offre est envoyée. L’autre joueur répondra lors de la résolution du tour partagé.
+HOTSEAT_OFFER_INVALID		| Cette offre n’est plus valide, ou est déjà en attente de réponse.
+HOTSEAT_REPLY_ACCEPT		| Le destinataire a accepté cette offre.
+HOTSEAT_REPLY_REJECT		| Le destinataire a refusé cette offre.
+HOTSEAT_FINISH_CHOICE		| Terminez ce choix avant de sauvegarder.
+HOTSEAT_RESTORE_SAFE		| Restaurer la dernière sauvegarde de sécurité
+HOTSEAT_MENU				| Retourner au menu
+HOTSEAT_LOAD_FAILED			| Impossible de charger la sauvegarde de sécurité. Votre jeu actuel a été conservé.
+HOTSEAT_REPLAY_DISABLED		| La relecture des tours n’est pas disponible pendant le jeu hot-seat.
+HOTSEAT_SAVE_CHECKPOINT		| Enregistrer la Sauvegarde de sécurité
+HOTSEAT_SAVE_CHECKPOINT_DETAIL	| Enregistrez ce choix en attente sous HotSeat-Decision.rotp
+HOTSEAT_SAVED				| La sauvegarde de sécurité a été enregistrée.
+HOTSEAT_ALERT				| Rapport de l’empire
+HOTSEAT_COMBAT_WON			| Vos forces ont gagné la bataille.
+HOTSEAT_COMBAT_LOST			| Vos forces ont perdu ou se sont retirées de la bataille.
+HOTSEAT_SHIPS_LOST			| %1 perdus : %2
+HOTSEAT_COMBAT				| Bataille spatiale
+HOTSEAT_INVASION			| Combat au sol
+HOTSEAT_INVASION_CAPTURED	| Les assaillants se sont emparés de la colonie.
+HOTSEAT_INVASION_DEFENDED	| Les défenseurs ont conservé la colonie.
+HOTSEAT_RESULT_MILITARY				| Victoire militaire
+HOTSEAT_RESULT_MILITARY_ALLIANCE	| Victoire par alliance
+HOTSEAT_RESULT_COUNCIL				| Victoire par élection
+HOTSEAT_RESULT_NO_HUMANS_REMAIN		| Tous les joueurs humains ont été éliminés
+HOTSEAT_RESULT_ONGOING				| Match en cours
+HOTSEAT_STANDING_WON				| Victoire
+HOTSEAT_STANDING_LOST				| Défaite
+HOTSEAT_STANDING_ACTIVE				| Actif
+HOTSEAT_STANDING_ELIMINATED			| Éliminé
+HOTSEAT_COUNCIL_RULING_DETAIL		| Le Conseil Galactique a élu %1. Reconnaît cet empire comme le leader élu et rejoint ses partisans. Refuse, défie la décision et rejoint la rébellion ; le match continue si les équipes adverses restent.
+HOTSEAT_REPLY_INVALID				| Cette offre n’est plus éligible. Aucun traité ou ordre de guerre n’a été appliqué.
+PBEM_USE							| Jouer par e-mail
+PBEM_SETUP_BUTTON					| Joueurs : %1 humains (par e-mail)
+PBEM_BUILD_MISMATCH					| Ce tour a été créé avec la version %1 ; vous avez la version %2. Tous les joueurs doivent utiliser la même version du jeu.
+PBEM_SEND_TITLE						| Envoyez ce tour à %1
+PBEM_SEND_DETAIL					| Enregistré sous %1 dans votre dossier de sauvegarde. Envoyez le fichier à %2 par e-mail, ou laissez-le dans un dossier partagé. Il s’ouvre avec Charger une Partie.
+PBEM_RETURN_MENU					| Retourner au menu
+PBEM_HERE							| %1 est là
+PBEM_ENTER_PIN						| %1, entrez votre code PIN
+PBEM_CHOOSE_PIN						| %1, choisissez un code PIN
+PBEM_CHOOSE_PIN_DETAIL				| 4 à 12 caractères. Il vous sera demandé pour ouvrir chacun de vos tours.
+PBEM_PIN							| Code PIN :
+PBEM_CONFIRM_PIN					| Répétez le code PIN :
+PBEM_WRONG_PIN						| Ce code PIN est incorrect.
+PBEM_PIN_MISMATCH					| Les deux codes PIN ne correspondent pas.
+PBEM_PIN_INVALID					| Utilisez de 4 à 12 caractères, sans espace.
+PBEM_FINISH_TITLE					| %1 - Terminer le tour
+PBEM_FINISH_DETAIL					| Les ordres permanents répondent à ces choix pendant votre absence et restent en vigueur jusqu’à ce que vous les changiez. Le jeu choisit la technologie que vos espions volent.
+PBEM_BOMBARD						| Bombarder les colonies ennemies :
+PBEM_BOMBARD_NEVER					| Jamais
+PBEM_BOMBARD_ALWAYS					| Toujours
+PBEM_BOMBARD_AT_WAR					| Seulement en guerre
+PBEM_BOMBARD_AT_WAR_NOT_INVADING	| En guerre, sauf si mes troupes débarquent
+PBEM_FRAME							| Après l’espionnage, blâmer un autre empire :
+PBEM_FRAME_NEVER					| Jamais
+PBEM_FRAME_WHEN_POSSIBLE			| Si possible
+PBEM_SABOTAGE						| Cible du sabotage :
+PBEM_SABOTAGE_FACTORIES				| Usines
+PBEM_SABOTAGE_MISSILES				| Bases de missiles
+PBEM_SABOTAGE_REBELS				| Inciter une rebellion
+PBEM_SEND							| Envoyer le tour
+PBEM_BACK							| Retour
+PBEM_FINAL_TITLE					| La partie est terminée
+PBEM_FINAL_DETAIL					| Enregistré sous %1 dans votre dossier de sauvegarde. Envoyez-le à chaque joueur pour qu’il puisse l’ouvrir et voir le résultat.
+PBEM_SHOW_RESULTS					| Voir les résultats

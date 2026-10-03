@@ -173,7 +173,7 @@ public interface RotPButtons extends RotPComponents	{
 			setRenderingHints(g);
 			int w = getWidth();
 			int h = getHeight();
-			
+
 			// Paint Background
 			if (isPaintedBackground())
 				g2.setPaint(getBackGroundPaint());
