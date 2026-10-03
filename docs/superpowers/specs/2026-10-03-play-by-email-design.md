@@ -34,11 +34,11 @@ creates it. Setup panel gets a **Use Play by Email** button beside **Use Hot Sea
 `HotSeatController.attachProviders()`: in PBEM mode bombing/espionage/sabotage providers apply the
 seat's standing orders immediately instead of `mission(...)` prompts. Hot seat is unchanged.
 
-Per-computer settings must not leak into another player's empire. In PBEM mode,
-`AI.promptForBombardment` ignores `autoBombard*` (always routes the human attacker to the adapter
-with `autoBomb=false`), and the colonize path ignores `autoColonize` (always prompts → deferred
-decision). Audit other `Remnants.cfg`-backed options read by model code during resolution; fix any
-that change simulation for human empires.
+Per-computer settings must not leak into another player's empire. In PBEM mode
+`AI.promptForBombardment` ignores the match-wide `autoBombard*` setting so standing orders decide.
+`autoColonize` is saved with the game, so it stays a shared match setting. The `Remnants.cfg`-backed
+options that change simulation (rally combat, rally losses, AI aggressiveness, ship-based missiles,
+harmless-colony targeting) are frozen with the governor policies in `HotSeatPolicies`.
 
 ## Turn files and the send step
 
