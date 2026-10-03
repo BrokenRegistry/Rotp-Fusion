@@ -269,8 +269,11 @@ public final class HotSeatController implements AutoCloseable, Base {
             }
         }
         if (finished) {
-            desktop.showPrivatePanel(new HotSeatResultPanel(game.matchOutcome(), game.hotSeatSetup(),
-                    () -> { close(); rotp.ui.RotPUI.instance().selectGamePanel(); }));
+            Runnable results = () -> desktop.showPrivatePanel(new HotSeatResultPanel(game.matchOutcome(),
+                    game.hotSeatSetup(), () -> { close(); rotp.ui.RotPUI.instance().selectGamePanel(); }));
+            // The match ended here: everyone else needs the final file to see the result.
+            if (game.playByEmail() != null && localPlayer != null) sendFinalResult(snapshot, results);
+            else results.run();
             return;
         }
         handoff(snapshot, () -> {
@@ -316,7 +319,7 @@ public final class HotSeatController implements AutoCloseable, Base {
         if (localPlayer == null) { desktop.cover(snapshot, unlocked); return; }
         String name = game.hotSeatSetup().displayName(owner);
         java.io.File file = GameSession.saveFileNamed(rotp.multiplayer.pbem.TurnFiles.fileName(
-                game.playByEmail().matchLabel(), snapshot.turn(), name));
+                game.playByEmail().matchLabel(), snapshot.turn(), snapshot.revision(), name));
         try { HotSeatPersistence.save(game, file); }
         catch (Exception failure) {
             failure.printStackTrace();
@@ -327,9 +330,24 @@ public final class HotSeatController implements AutoCloseable, Base {
         game.playByEmailSentFile(file);
         localPlayer = null;
         desktop.clearPrivateUi();
-        desktop.showPrivatePanel(new PlayByEmailSendPanel(name, file.getName(),
+        desktop.showPrivatePanel(PlayByEmailSendPanel.forPlayer(name, file.getName(),
                 () -> { close(); rotp.ui.RotPUI.instance().selectGamePanel(); },
                 () -> { if (!closed) desktop.cover(snapshot, unlocked); }));
+    }
+
+    private void sendFinalResult(HotSeatSnapshot snapshot, Runnable results) {
+        java.io.File file = GameSession.saveFileNamed(rotp.multiplayer.pbem.TurnFiles.finalFileName(
+                game.playByEmail().matchLabel(), snapshot.turn()));
+        try { HotSeatPersistence.save(game, file); }
+        catch (Exception failure) {
+            failure.printStackTrace();
+            results.run();
+            return;
+        }
+        game.playByEmailSentFile(file);
+        localPlayer = null;
+        desktop.clearPrivateUi();
+        desktop.showPrivatePanel(PlayByEmailSendPanel.finalResult(file.getName(), results));
     }
 
     private Set<String> living() {

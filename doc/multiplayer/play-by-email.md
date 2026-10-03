@@ -16,13 +16,17 @@ Two or more people play one game from their own computers by passing a turn file
 
 ## Taking a turn
 
-1. Open the turn file with **Load Game**. The file name says whose turn it is, for example `PBEM-20261003-1405-T012-for-Bob.rotp`.
+1. Open the turn file with **Load Game**. The file name says whose turn it is, for example `PBEM-20261003-1405-T012-r0041-for-Bob.rotp`. The `r` number grows with every handoff, so the newest file for you has the highest one.
 2. Enter your PIN. The first time you open one of your turns, you choose it (4 to 12 characters). Keep it to yourself. It cannot be reset.
 3. Read your reports, then plan with the normal screens.
 4. Click **Finish Player Turn**. Review your standing orders (below) and click **Send turn**.
 5. The game saves the next file in your save folder and says who it is for. Send it, then click **Return to menu**. If that person is sitting next to you, click **(name) is here** instead.
 
 When the last player in a round finishes, that computer also resolves the turn for everyone, including the AI empires. If resolution raises a choice for another player, such as a research pick, a Council vote, a colonization prompt or a diplomatic offer, the game saves a file for that player and waits for them. Choices for the player at the keyboard appear straight away.
+
+## When the match ends
+
+The computer that resolves the last turn saves `PBEM-...-T0NN-final.rotp` and asks you to send it to every player. Opening it shows the result screen; no PIN is needed.
 
 ## Standing orders
 
@@ -43,5 +47,5 @@ A few settings are normally stored per computer: rally points joining combat, ra
 ## Limits
 
 - **Honor system.** The PIN stops casual peeking. Every file still contains the whole galaxy, so a determined player could read it. A player who resolves a turn could also reload and play it differently. Play with people you trust.
-- Players who are eliminated do not receive their final reports. Everyone sees the result screen when the match ends.
+- Players who are eliminated do not receive their final reports.
 - Space battles resolve automatically, as in hot seat. The [hot-seat action table](hot-seat-actions.md) lists what else is supported.

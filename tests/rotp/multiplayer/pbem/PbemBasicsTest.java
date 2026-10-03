@@ -32,9 +32,18 @@ class PbemBasicsTest {
     @Test void turnFileNamesAreSafeAndSortable() {
         String label = TurnFiles.matchLabel(LocalDateTime.of(2026, 10, 3, 14, 5));
         assertEquals("PBEM-20261003-1405", label);
-        assertEquals("PBEM-20261003-1405-T012-for-Bob.rotp", TurnFiles.fileName(label, 12, "Bob"));
-        assertEquals("PBEM-20261003-1405-T003-for-Mary_Ann.rotp", TurnFiles.fileName(label, 3, " Mary Ann/../ "));
-        assertEquals("PBEM-20261003-1405-T003-for-player.rotp", TurnFiles.fileName(label, 3, "***"));
+        assertEquals("PBEM-20261003-1405-T012-r0007-for-Bob.rotp", TurnFiles.fileName(label, 12, 7, "Bob"));
+        assertEquals("PBEM-20261003-1405-T003-r0012-for-Mary Ann_.._.rotp", TurnFiles.fileName(label, 3, 12, " Mary Ann/../ "));
+        assertEquals("PBEM-20261003-1405-T003-r0001-for-player.rotp", TurnFiles.fileName(label, 3, 1, " ... "));
+        assertEquals("PBEM-20261003-1405-T009-final.rotp", TurnFiles.finalFileName(label, 9));
+    }
+
+    @Test void turnFileNamesNeverCollide() {
+        String label = "PBEM-20261003-1405";
+        assertNotEquals(TurnFiles.fileName(label, 3, 5, "Mary Ann"), TurnFiles.fileName(label, 3, 5, "Mary_Ann"),
+                "Different players stay distinct");
+        assertNotEquals(TurnFiles.fileName(label, 3, 5, "Alice"), TurnFiles.fileName(label, 3, 9, "Alice"),
+                "A planning file and a later choice in the same turn stay distinct");
     }
 
     @Test void buildMismatchIsReportedWithBothBuilds() {

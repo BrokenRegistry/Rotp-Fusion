@@ -29,6 +29,7 @@ class PlayByEmailTest {
 
     /** Fails the test if a mid-phase choice ever reaches a screen in play by email. */
     static class NoMissionPrompts extends HotSeatTurnTest.ImmediateChoices {
+        @Override public CompletableFuture<Integer> councilVote(PendingDecision d) { return CompletableFuture.completedFuture(0); }
         @Override public CompletableFuture<InProcessBombardmentDecisionAdapter.Choice> bombardment(BombardmentDecision d) { throw new AssertionError("bombard prompt"); }
         @Override public CompletableFuture<InProcessEspionageDecisionAdapter.Choice> espionage(EspionageDecision d) { throw new AssertionError("espionage prompt"); }
         @Override public CompletableFuture<InProcessSabotageDecisionAdapter.Choice> sabotage(SabotageDecision d) { throw new AssertionError("sabotage prompt"); }
@@ -96,9 +97,9 @@ class PlayByEmailTest {
                         assertEquals(GameSession.instance().text("PBEM_WRONG_PIN"), pin.errorText());
                         assertSame(pin, rotp.Rotp.getFrame().getGlassPane(), "A wrong PIN must not unlock");
                     } else pin.enterPin(PINS.get(owner));
-                } else if (glass instanceof rotp.ui.multiplayer.PlayByEmailSendPanel send) {
+                } else if (glass instanceof rotp.ui.multiplayer.PlayByEmailSendPanel send && !send.isFinalResult()) {
                     next[0] = game.playByEmailSentFile();
-                    send.returnToMenu();
+                    send.primary();
                 } else if (glass instanceof rotp.ui.multiplayer.HotSeatReportsPanel reports) reports.acknowledge();
             });
             if (next[0] != null) {
@@ -169,7 +170,7 @@ class PlayByEmailTest {
                     sent, java.util.Set.of("a"));
             System.out.println("Turn files sent: " + sent);
             assertTrue(sent.size() >= 6, "Three rounds need at least two files each: " + sent);
-            assertTrue(sent.get(0).matches("PBEM-\\d{8}-\\d{4}-T\\d{3}-for-Bob[.]rotp"), sent.toString());
+            assertTrue(sent.get(0).matches("PBEM-\\d{8}-\\d{4}-T\\d{3}-r\\d{4}-for-Bob[.]rotp"), sent.toString());
             assertTrue(sent.get(sent.size() - 1).endsWith("-for-Alice.rotp"), sent.toString());
             assertEquals("a", done.hotSeatState().snapshot().ownerPlayerId());
             assertEquals(orders, done.playByEmail().orders("a"), "Standing orders travel with the file");
@@ -177,6 +178,48 @@ class PlayByEmailTest {
             assertFalse(done.playByEmail().pinMatches("b", "1111"));
             HotSeatTestFixture.onEdt(done.hotSeatController()::close);
         } finally { HotSeatTestFixture.onEdt(controller::close); }
+    }
+
+    @Test void theFinalResultIsSavedForEveryPlayerAndOpensWithoutAPin() throws Exception {
+        var game = HotSeatTestFixture.start(2, 0);
+        var options = game.options().copyAllOptions();
+        options.selectedCouncilWinOption(IGameOptions.COUNCIL_IMMEDIATE);
+        game.startHotSeatGame(options, new HotSeatSetup(List.of(
+                new HotSeatSetup.Assignment("a", "Alice", 0),
+                new HotSeatSetup.Assignment("b", "Bob", 1))), true);
+        game.galaxy().empire(0).allColonizedSystems().get(0).colony().setPopulation(1000);
+        HotSeatTestFixture.set(game.galaxy().council().getClass(), game.galaxy().council(), "nextAction", 2);
+        HotSeatTestFixture.set(game.galaxy().council().getClass(), game.galaxy().council(), "actionCountdown", 0);
+        attach(game);
+        List<String> sent = new java.util.ArrayList<>();
+        var ended = play(g -> rotp.Rotp.getFrame().getGlassPane() instanceof rotp.ui.multiplayer.PlayByEmailSendPanel p
+                && p.isVisible() && p.isFinalResult(), sent, java.util.Set.of());
+        java.io.File finalFile = ended.playByEmailSentFile();
+        assertTrue(finalFile.getName().matches("PBEM-\\d{8}-\\d{4}-T\\d{3}-final[.]rotp"), finalFile.getName());
+        assertTrue(finalFile.isFile());
+        assertFalse(sent.isEmpty(), "A Council vote for the absent player travels by file: " + sent);
+        assertEquals(new java.util.HashSet<>(sent).size(), sent.size(), "Every handoff has its own file: " + sent);
+        HotSeatTestFixture.onEdt(() -> {
+            ((rotp.ui.multiplayer.PlayByEmailSendPanel) rotp.Rotp.getFrame().getGlassPane()).primary();
+            assertInstanceOf(rotp.ui.multiplayer.HotSeatResultPanel.class, rotp.Rotp.getFrame().getGlassPane());
+        });
+        HotSeatTestFixture.onEdt(ended.hotSeatController()::close);
+
+        var opened = HotSeatPersistence.load(finalFile);
+        long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(30);
+        boolean[] results = new boolean[1];
+        while (!results[0]) {
+            assertTrue(System.nanoTime() < deadline, "The final file must open on the result screen");
+            HotSeatTestFixture.onEdt(() -> {
+                var glass = rotp.Rotp.getFrame().getGlassPane();
+                assertFalse(glass instanceof rotp.ui.multiplayer.HotSeatPrivacyPane p && p.isVisible() && p.asksForPin(),
+                        "Results are public; no PIN");
+                results[0] = glass instanceof rotp.ui.multiplayer.HotSeatResultPanel && glass.isVisible();
+            });
+            Thread.sleep(20);
+        }
+        assertEquals(rotp.multiplayer.session.MatchOutcome.Cause.COUNCIL, opened.matchOutcome().cause());
+        HotSeatTestFixture.onEdt(opened.hotSeatController()::close);
     }
 
     @Test void standingOrdersBombardWithoutPromptingAndIgnoreTheSharedSetting() throws Exception {

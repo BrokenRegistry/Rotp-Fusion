@@ -7084,3 +7084,6 @@ PBEM_SABOTAGE_MISSILES | Missile bases
 PBEM_SABOTAGE_REBELS | Incite rebellion
 PBEM_SEND | Send turn
 PBEM_BACK | Back
+PBEM_FINAL_TITLE | The match is over
+PBEM_FINAL_DETAIL | Saved as %1 in your save folder. Send it to every player so they can open it and see the result.
+PBEM_SHOW_RESULTS | Show results
