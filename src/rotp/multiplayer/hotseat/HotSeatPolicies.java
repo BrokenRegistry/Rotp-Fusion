@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import rotp.model.combat.ShipCombatManager;
+import rotp.model.game.IConvenienceOptions;
 import rotp.model.game.IInGameOptions;
 import rotp.model.game.IMainOptions;
 import rotp.ui.options.AllSubUI;
@@ -40,6 +41,11 @@ public final class HotSeatPolicies implements Serializable {
         params.add(IInGameOptions.gameAgressiveness);
         params.add(IMainOptions.shipBasedMissiles);
         params.add(ShipCombatManager.playerDontTargetHarmlessColony);
+        // Gameplay switches shown on screens that otherwise stay open during a match.
+        params.add(IConvenienceOptions.autoBombard_);
+        params.add(IConvenienceOptions.autoColonize_);
+        params.add(IConvenienceOptions.techExchangeAutoRefuse);
+        params.add(IMainOptions.defaultSettings);
         return params;
     }
 }

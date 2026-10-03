@@ -7021,7 +7021,7 @@ HOTSEAT_OFFER_PEACE | Offers peace
 HOTSEAT_OFFER_PACT | Offers a non-aggression pact
 HOTSEAT_OFFER_ALLIANCE | Offers an alliance
 HOTSEAT_OFFER_JOINT_WAR | Requests joint war against
-HOTSEAT_SHARED_POLICIES | Shared governor and game policies are fixed for this hot-seat match. Per-colony governor controls remain available.
+HOTSEAT_SHARED_POLICIES | These settings are shared by every empire, so they keep the values chosen when this match started. Per-colony governor controls and display settings remain available.
 HOTSEAT_VIP_DISABLED | The VIP console is unavailable during hot-seat play.
 HOTSEAT_UNSUPPORTED |  (unavailable in hot seat)
 HOTSEAT_OFFER_QUEUED | Offer sent. The other human will answer during shared turn resolution.
@@ -7089,3 +7089,7 @@ PBEM_BACK | Back
 PBEM_FINAL_TITLE | The match is over
 PBEM_FINAL_DETAIL | Saved as %1 in your save folder. Send it to every player so they can open it and see the result.
 PBEM_SHOW_RESULTS | Show results
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_TITLE | Display Settings
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_UI | Display
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_BUTTON | Display
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_DETAIL | Settings that only change what this computer shows. Gameplay settings are fixed for the match.

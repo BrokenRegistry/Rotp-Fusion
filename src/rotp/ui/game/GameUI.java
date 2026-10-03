@@ -1263,10 +1263,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 		}
     }
     private void goToSettings() {
-        if (session().hotSeatState() != null) {
-            javax.swing.JOptionPane.showMessageDialog(this, text("HOTSEAT_SHARED_POLICIES"));
-            return;
-        }
+        // In a match the main settings stay open: display, sound and saves are this computer's.
 		buttonClick();
 		onTop = false;
 		MainOptionsUI mainOptionsUI = RotPUI.mainOptionsUI();

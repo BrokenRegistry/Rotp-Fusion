@@ -7021,7 +7021,7 @@ HOTSEAT_OFFER_PEACE			| Proposer la paix
 HOTSEAT_OFFER_PACT			| Proposer un pacte de non-agression
 HOTSEAT_OFFER_ALLIANCE		| Proposer une alliance
 HOTSEAT_OFFER_JOINT_WAR		| Proposer une guerre conjointer contre
-HOTSEAT_SHARED_POLICIES		| Les politiques partagées du gouverneur et du jeu sont fixées pour ce match Hot Seat. Les contrôles du gouverneur par colonie restent disponibles.
+HOTSEAT_SHARED_POLICIES		| Ces paramètres sont partagés par tous les empires ; ils gardent les valeurs choisies au début de ce match. Les contrôles du gouverneur par colonie et les paramètres d’affichage restent disponibles.
 HOTSEAT_VIP_DISABLED		| La console VIP n’est pas disponible pendant le jeu hot-seat.
 HOTSEAT_UNSUPPORTED			| (indisponible en hot-seat)
 HOTSEAT_OFFER_QUEUED		| L’offre est envoyée. L’autre joueur répondra lors de la résolution du tour partagé.
@@ -7089,3 +7089,7 @@ PBEM_BACK							| Retour
 PBEM_FINAL_TITLE					| La partie est terminée
 PBEM_FINAL_DETAIL					| Enregistré sous %1 dans votre dossier de sauvegarde. Envoyez-le à chaque joueur pour qu’il puisse l’ouvrir et voir le résultat.
 PBEM_SHOW_RESULTS					| Voir les résultats
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_TITLE	| Paramètres d’affichage
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_UI	| Affichage
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_BUTTON	| Affichage
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_DETAIL	| Paramètres qui ne changent que l’affichage de cet ordinateur. Les paramètres de jeu sont fixés pour le match.

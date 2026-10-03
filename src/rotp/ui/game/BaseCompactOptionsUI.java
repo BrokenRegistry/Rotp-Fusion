@@ -680,8 +680,14 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	}
 	public  void start(String p, BasePanel ui) { // Called from subUI
         if (session().hotSeatState() != null) {
-            javax.swing.JOptionPane.showMessageDialog(rotp.Rotp.getFrame(), text("HOTSEAT_SHARED_POLICIES"));
-            return;
+            // During a match only display screens open; gameplay settings are fixed for everyone.
+            if (rotp.ui.options.MultiplayerDisplayOptions.replacesDuringMatch(GUI_ID))
+                initUI(rotp.model.game.IBaseOptsTools.MOD_UI + rotp.ui.options.MultiplayerDisplayOptions.OPTION_ID
+                        + "_TITLE", rotp.ui.options.MultiplayerDisplayOptions.OPTION_ID);
+            else if (!rotp.ui.options.MultiplayerDisplayOptions.displayOnly(GUI_ID)) {
+                javax.swing.JOptionPane.showMessageDialog(rotp.Rotp.getFrame(), text("HOTSEAT_SHARED_POLICIES"));
+                return;
+            }
         }
 		parentUI = ui;
 		ModifierKeysState.reset();
