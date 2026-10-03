@@ -202,16 +202,20 @@ public final class MainUI extends BasePanel implements IMapHandler {
         overlayAdvice = new MapOverlayAdvice(this);
         overlay = overlayNone;
     }
-    @Override protected void paintChildren(java.awt.Graphics graphics) {
-        super.paintChildren(graphics);
-        if (session().hotSeatSetup() != null) {
-            var snapshot = session().hotSeatState().snapshot();
-            if (snapshot.ownerPlayerId() != null) {
-                graphics.setColor(java.awt.Color.WHITE);
-                graphics.setFont(narrowFont(18));
-                graphics.drawString(text("HOTSEAT_CURRENT_PLAYER",
-                        session().hotSeatSetup().displayName(snapshot.ownerPlayerId())), s20, s25);
-            }
+    /**
+     * The seated player's name, on its own layer above the map so partial map
+     * repaints cannot erase it. It has no listeners, so clicks reach the map.
+     */
+    private final class CurrentPlayerLabel extends BasePanel {
+        private static final long serialVersionUID = 1L;
+        CurrentPlayerLabel() { setOpaque(false); }
+        @Override public void paintComponent(java.awt.Graphics g) {
+            if (session().hotSeatSetup() == null || session().hotSeatState() == null) return;
+            String owner = session().hotSeatState().snapshot().ownerPlayerId();
+            if (owner == null) return;
+            g.setFont(narrowFont(20));
+            drawShadowedString(g, text("HOTSEAT_CURRENT_PLAYER", session().hotSeatSetup().displayName(owner)),
+                    2, s5, s22, java.awt.Color.black, java.awt.Color.white);
         }
     }
     public void init(boolean pauseNextTurn) {
@@ -493,11 +497,15 @@ public final class MainUI extends BasePanel implements IMapHandler {
         buttonPanel = new MainButtonPanel(this);
         buttonPanel.setBounds(s5,h-s5-buttonH,w-s10,buttonH);
 
+        CurrentPlayerLabel currentPlayer = new CurrentPlayerLabel();
+        currentPlayer.setBounds(s60, s5, s500, s30);
+
         setLayout(new BorderLayout());
         add(layers, BorderLayout.CENTER);
 
 		layers.add(ADVISOR, JLayeredPane.MODAL_LAYER);
         layers.add(buttonPanel, JLayeredPane.PALETTE_LAYER);
+        layers.add(currentPlayer, JLayeredPane.PALETTE_LAYER);
         layers.add(displayPanel, JLayeredPane.PALETTE_LAYER);
         layers.add(map, JLayeredPane.DEFAULT_LAYER);
         setOpaque(false);
