@@ -493,6 +493,7 @@
 
 ### Guide and Help:
 
+- Fixed Spy Overspend OFF "creating money"
 - Budget:
   - Governor-related buttons will only be displayed when there is at least one colony governed.
   - Expanded advisor content.

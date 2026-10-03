@@ -3,6 +3,7 @@
 ## What's New
 
 26-10-03 (BR)
+- Fixed Spy Overspend OFF "creating money"
 - French translation for Hot-Seat.
 - added Rotp colors to the multiplayer button in the galaxy panel.
 

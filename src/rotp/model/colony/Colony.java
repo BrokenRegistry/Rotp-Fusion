@@ -3159,7 +3159,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		private boolean useReserve()	{ return useReserve && isFunded(); }
 		private boolean updateAndGetIsFunded()	{
 			// check if there are changes and return the new state
-			boolean debug = true;
+			// debug = true;
 			switch (fundingMandate) {
 				case CROSSED:	return false;
 				case UNFUNDED:	return false;
