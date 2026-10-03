@@ -69,6 +69,7 @@ public class DiplomacyTechCounterMenu extends DiplomacyRequestReply {
     }
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         if (!enabled(i))
                 return;
 

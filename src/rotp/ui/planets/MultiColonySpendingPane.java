@@ -92,6 +92,11 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
     private Rectangle hoverBox;
     private int selectedCat = 0;
 
+    private boolean hotSeatSelectionEditable() {
+        if (session().hotSeatState() == null) return true;
+        return parent.systemsToDisplay() != null && parent.systemsToDisplay().stream()
+                .allMatch(s -> s != null && s.colony() != null && hotSeatCanEdit(s.colony().empire().id));
+    }
     private final SystemViewer parent;
     MultiColonySpendingPane(SystemViewer p, Color c0, Color text, Color hi, Color lo) {
         parent = p;
@@ -538,6 +543,7 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
         }
     }
 	private void toggleCatOrders(int cat) {
+        if (!hotSeatSelectionEditable()) return;
 		selectedCat = cat;
 		List<StarSystem> systems = parent.systemsToDisplay();
 		Boolean hasOrder = hasOrder(systems, cat);
@@ -560,6 +566,8 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
 
 	void toggleGovernor()	{ setGovernor(!isGovernor(false)); }
     public void setGovernor(boolean gov) {
+        if (!hotSeatCanEdit(player().id)) return;
+        if (!hotSeatSelectionEditable()) return;
         List<StarSystem> systems = parent.systemsToDisplay();
         for (StarSystem sys: systems) {
             Colony c = sys.colony();
@@ -573,6 +581,8 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
         parent.repaintAll();
     }
     void increaseBase(InputEvent e) {
+        if (!hotSeatSelectionEditable()) return;
+        if (!hotSeatCanEdit(player().id)) return;
         List<StarSystem> systems = parent.systemsToDisplay();
         for (StarSystem sys: systems) {
             Colony c = sys.colony();
@@ -585,6 +595,8 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
         parent.repaintAll();
     }
     void decreaseBase(InputEvent e) {
+        if (!hotSeatSelectionEditable()) return;
+        if (!hotSeatCanEdit(player().id)) return;
         List<StarSystem> systems = parent.systemsToDisplay();
         for (StarSystem sys: systems) {
             Colony c = sys.colony();
@@ -597,6 +609,8 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
         parent.repaintAll();
     }
     public void setSpendingLevel(float pct) {
+        if (!hotSeatCanEdit(player().id)) return;
+        if (!Float.isFinite(pct) || pct < 0 || pct > 1 || !hotSeatSelectionEditable()) return;
         List<StarSystem> systems = parent.systemsToDisplay();
         for (StarSystem sys: systems) {
             Colony c = sys.colony();
@@ -608,6 +622,8 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
         parent.repaintAll();
     }
     void smoothSmartMax() {
+        if (!hotSeatSelectionEditable()) return;
+        if (!hotSeatCanEdit(player().id)) return;
         List<StarSystem> systems = parent.systemsToDisplay();
         for (StarSystem sys: systems) {
             Colony colony = sys.colony();
@@ -625,6 +641,8 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
     }
 
     void setLock(int cat, boolean lock) {
+        if (!hotSeatSelectionEditable()) return;
+        if (!hotSeatCanEdit(player().id)) return;
         List<StarSystem> systems = parent.systemsToDisplay();
         for (StarSystem sys: systems) {
             Colony c = sys.colony();
@@ -643,6 +661,7 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
     }
 	@Override public void mousePressed(MouseEvent ev) { parent.enterCurrentPane(this); }
 	@Override public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
 		parent.enterCurrentPane(this);
         if (e.getButton() > 3)
             return;
@@ -680,7 +699,8 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
 			else
 				EmpireColonySpendingPane.governorOptions();
     }
-	@Override public void mouseDragged(MouseEvent arg0) { parent.enterCurrentPane(this); }
+	@Override public void mouseDragged(MouseEvent arg0) {
+        if (!hotSeatCanEdit(player().id)) return; parent.enterCurrentPane(this); }
 	@Override public void mouseMoved(MouseEvent e) {
 		parent.enterCurrentPane(this);
         int x = e.getX();

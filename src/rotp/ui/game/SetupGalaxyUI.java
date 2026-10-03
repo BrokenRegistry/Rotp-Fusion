@@ -282,8 +282,23 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		instance = this;
 		init0();
 	}
+    private rotp.multiplayer.hotseat.HotSeatSetup hotSeatSetup;
+    private final javax.swing.JButton hotSeatButton = new javax.swing.JButton();
+    private void editHotSeatPlayers() {
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i <= opts.selectedNumberOpponents(); i++) {
+            String race = i == 0 ? opts.selectedPlayerRace() : opts.selectedOpponentRace(i - 1);
+            names.add((i + 1) + ": " + (race == null ? text(OPPONENT_RANDOM) : Species.getSpeciesName(race)));
+        }
+        enableGlassPane(new rotp.ui.multiplayer.HotSeatSetupPanel(names, hotSeatSetup,
+                setup -> { hotSeatSetup = setup; disableGlassPane(); repaint(); },
+                () -> { disableGlassPane(); repaint(); }));
+    }
 	private void init0() {
 		isSubMenu = false;
+        setLayout(null);
+        hotSeatButton.addActionListener(e -> editHotSeatPlayers());
+        add(hotSeatButton);
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
@@ -804,6 +819,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
     @Override protected void doExitBoxAction() { doStartBoxAction(); }
     private void doStartBoxAction() {
 		buttonClick();
+        if (hotSeatSetup != null) { startGame(); return; }
 		switch (ModifierKeysState.get()) {
 		case CTRL:
 		case CTRL_SHIFT:
@@ -1374,6 +1390,10 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		}
 	}
 	@Override public void paintComponent(Graphics g0) {
+        hotSeatButton.setVisible(isOnTop && !starting);
+        hotSeatButton.setBounds(scaled(30), scaled(646), scaled(300), scaled(32));
+        hotSeatButton.setText(hotSeatSetup == null ? text("HOTSEAT_SETUP_SINGLE")
+                : text("HOTSEAT_SETUP_BUTTON", hotSeatSetup.humans().size()));
 		//showTiming = true; // TO DO BR: COMMENTS
 		if (!isOnTop)
 			return;
@@ -1929,6 +1949,17 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		starting = false;
 	}
 	public	void startGame() {
+        if (hotSeatSetup != null) {
+            try {
+                hotSeatSetup.registry(opts.selectedNumberOpponents() + 1);
+                if (opts.isAutoPlay() || opts.randomNumAliens() || rotp.model.game.IDebugOptions.debugAutoRun()
+                        || opts.selectedIronmanLoad() || !opts.isGameOptionsAllowed())
+                    throw new IllegalArgumentException();
+            } catch (IllegalArgumentException invalid) {
+                javax.swing.JOptionPane.showMessageDialog(this, text("HOTSEAT_OPTIONS_ERROR"));
+                return;
+            }
+        }
 		Empire.resetPlayerId();
 		opts.saveOptionsToFile(LIVE_OPTIONS_FILE);
 		starting = true;
@@ -1938,9 +1969,14 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		close();
 		final Runnable save = () -> {
 			long start = System.currentTimeMillis();
-			GameSession.instance().startGame(opts);
-			RotPUI.instance().mainUI().checkMapInitialized();
-			RotPUI.instance().selectIntroPanel();
+            if (hotSeatSetup == null) {
+                GameSession.instance().startGame(opts);
+                RotPUI.instance().mainUI().checkMapInitialized();
+                RotPUI.instance().selectIntroPanel();
+            } else {
+                GameSession.instance().startHotSeatGame(opts, hotSeatSetup);
+                GameSession.instance().openHotSeatDesktop(false);
+            }
 			log("TOTAL GAME START TIME:" +(System.currentTimeMillis()-start));
 			log("Game Name; "+GameUI.gameName);
 			starting = false;

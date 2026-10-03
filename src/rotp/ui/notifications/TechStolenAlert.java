@@ -21,8 +21,8 @@ public class TechStolenAlert extends GameAlert {
     private final int empSpy;
     @SuppressWarnings("unused")
 	private final String techId;
-    public static void create(int emp, String t) {
-        GameSession.addAlert(new TechStolenAlert(emp,t));
+    public static void create(int victimEmpireId, int emp, String t) {
+        GameSession.addAlertForEmpire(victimEmpireId, new TechStolenAlert(emp,t));
     }
     @Override
     public String description() {

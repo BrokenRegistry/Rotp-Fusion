@@ -27,7 +27,8 @@ public final class ColonyResearch extends ColonySpendingCategory {
     private float projectBC = 0;
     private float unallocatedBC = 0;
     private ColonyResearchProject project;
-    private transient ColonyResearchProject completedProject;
+    // Assessment still needs the completed project's allocation request after reload.
+    private ColonyResearchProject completedProject;
 
     public boolean hasProject()                    { return project != null; }
     public void project(ColonyResearchProject p)   { project = p; }

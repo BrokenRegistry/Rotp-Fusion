@@ -94,8 +94,10 @@ public final class TransportPanel extends BasePanel {
         }
 		@Override public void mouseClicked(MouseEvent e)	{ }
 		@Override public void mousePressed(MouseEvent e)	{ }
-		@Override public void mouseReleased(MouseEvent e)	{ }
-		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
 		@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
 		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
 		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.parent.parent); }
@@ -334,7 +336,8 @@ public final class TransportPanel extends BasePanel {
             g.drawImage(img, x0, y0, x0+dispW, y0+dispH, 0, 0, imgW, imgH, null);
         }
         @Override
-        public void mouseDragged(MouseEvent e) { }
+        public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
         @Override
         public void mouseMoved(MouseEvent e) {
 			setModifierKeysState(e);
@@ -364,6 +367,7 @@ public final class TransportPanel extends BasePanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();
@@ -488,7 +492,8 @@ public final class TransportPanel extends BasePanel {
             g.setStroke(prev2);
         }
         @Override
-        public void mouseDragged(MouseEvent e) { }
+        public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
         @Override
         public void mouseMoved(MouseEvent e) {
 			setModifierKeysState(e);
@@ -518,6 +523,7 @@ public final class TransportPanel extends BasePanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();

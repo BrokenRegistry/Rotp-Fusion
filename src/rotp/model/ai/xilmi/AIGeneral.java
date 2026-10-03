@@ -401,7 +401,7 @@ public class AIGeneral implements Base, General {
         float additional = expectedEnemyTransportKillPower(target) * (1 - empire.fleetCommanderAI().bridgeHeadConfidence(target));
         
         // BR: To take into account the maxLandingTroops option
-        if ((needed + additional) > options().maxLandingTroops(target, empire.isPlayer()))
+        if ((needed + additional) > options().maxLandingTroops(target, empire.isHumanEmpire()))
         	return;
         if(combatTransport > 0)
             needed = max(needed + additional, needed / combatTransport);
@@ -558,7 +558,7 @@ public class AIGeneral implements Base, General {
             //return expectedTargetPopulation * killRatio;
         }
         float troop = empire.sv.population(id) * killRatio;
-        if (troop > options().maxLandingTroops(sys, empire.isPlayer()))
+        if (troop > options().maxLandingTroops(sys, empire.isHumanEmpire()))
         	return Float.MAX_VALUE;
         return troop;
     }

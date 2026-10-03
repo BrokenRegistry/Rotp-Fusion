@@ -100,6 +100,7 @@ public class DiplomacyTreatyMenu extends DiplomaticMessage {
     public boolean enabled(int i)  { return i < options.size(); }
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         if (!enabled(i))
             return;
         if (i >= options.size())
@@ -107,6 +108,15 @@ public class DiplomacyTreatyMenu extends DiplomaticMessage {
 
         int choice = options.get(i);
         DiplomaticReply reply;
+        if (hotSeatHumanRecipient()) {
+            if (choice == PROPOSE_PEACE && queueHotSeatOffer(rotp.multiplayer.hotseat.HotSeatDiplomacy.Offer.PEACE, 0, null)) return;
+            if (choice == PROPOSE_PACT && queueHotSeatOffer(rotp.multiplayer.hotseat.HotSeatDiplomacy.Offer.PACT, 0, null)) return;
+            if (choice == PROPOSE_ALLIANCE && queueHotSeatOffer(rotp.multiplayer.hotseat.HotSeatDiplomacy.Offer.ALLIANCE, 0, null)) return;
+            if (choice == PROPOSE_TRADE) {
+                DiplomaticMessage.show(view(), DialogueManager.DIPLOMACY_TRADE_MENU);
+                return;
+            }
+        }
         switch(choice) {
             case PROPOSE_PEACE          : reply = diplomat().diplomatAI().receiveOfferPeace(player());    break;
             case PROPOSE_TRADE          : 

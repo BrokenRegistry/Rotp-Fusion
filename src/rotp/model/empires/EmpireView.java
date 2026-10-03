@@ -89,6 +89,7 @@ public final class EmpireView implements Base, Serializable {
     public boolean extinct()              { return empire.extinct(); }
     public int homeSysId()                { return empire.homeSysId(); }
     public boolean isPlayer()             { return empire.isPlayer(); }
+    public boolean isHumanEmpire()        { return empire.isHumanEmpire(); }
     public boolean isPlayerControlled()   { return empire.isPlayerControlled(); }
 
     void clearDataForExtinctEmpire(int id)		{ empire.clearDataForExtinctEmpire(id); }
@@ -117,7 +118,7 @@ public final class EmpireView implements Base, Serializable {
     }
 	void validateOnLoad() { // For backward compatibility
 		embassy.validateOnLoad();
-		if (owner().isPlayer()) // Variables not used by AI
+		if (owner().isHumanEmpire()) // Variables not used by AI
 			spies.validateOnLoad();
 	}
     EmpireView(Empire o, Empire c) {

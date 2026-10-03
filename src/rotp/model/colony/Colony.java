@@ -162,10 +162,12 @@ public final class Colony implements Base, IMappedObject, Serializable {
     private boolean autoShips	= govOptions().isAutoShipsByDefault();
     int govShipBuildSparePct	= 100 - govOptions().defaultShipTakePct();
 
-    private transient boolean hasNewOrders = false;
+    private boolean hasNewOrders = false;
     private transient int cleanupAllocation = 0;
-    private transient boolean recalcSpendingForNewTaxRate;
-    public  transient boolean reallocationRequired = false;
+    // Pending model work must survive a save before colony production runs.
+    private boolean recalcSpendingForNewTaxRate;
+    // Pending spending work crosses the production/assessment checkpoint boundary.
+    public boolean reallocationRequired = false;
 
 	public ColonyBudget budget()	{	// player only
 		if (budget == null)
@@ -316,7 +318,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             spending[i].init(this);
 
         setPopulation(2);
-		if (empire().isPlayer())
+		if (empire().isHumanEmpire())
 			shipyard().goToDefaultDesign();
 		else
 			shipyard().goToNextDesign();
@@ -332,7 +334,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             if (flEmp != empire && flEmp.sv != null)
                 flEmp.sv.refreshFullScan(sys.id);
         }
-		if (empire().isPlayer())
+		if (empire().isHumanEmpire())
 			setDefaultGovernor();
     }
     public boolean isBuildingShip() { return shipyard().design() instanceof ShipDesign; }
@@ -435,8 +437,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 	private boolean isDeveloped(boolean shieldWithoutBases)	{ return options().isDeveloped(this, shieldWithoutBases); }
 	public boolean isDeveloped()	{
 		IGameOptions options = options();
-		if (empire().isPlayer())
-			return options.isDeveloped(this, options.shieldAlones());
+        if (empire().isHumanEmpire())
+            return options.isDeveloped(this, options.shieldAlones());
 		return defense().isCompleted() && industry().isCompleted() && ecology().isCompleted();
 	}
     float orderAmount(Colony.Orders order) {
@@ -658,10 +660,10 @@ public final class Colony implements Base, IMappedObject, Serializable {
         ShipDesign scout = lab.scoutDesign();
         ShipDesign colony = lab.colonyDesign();
 
-		if (emp.isPlayer())
+		if (emp.isHumanEmpire())
 			setDefaultGovernor();
 		// modnar: normal resources for player or non-challengeMode
-		if (emp.isPlayer() || !challengeMode) {
+		if (emp.isHumanEmpire() || !challengeMode) {
 	        setPopulation(50);
 	        previousPopulation = population();
 	        industry().factories(30);
@@ -674,7 +676,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		}
 		// modnar: add extra starting resources, if challengeMode and AI
 		// double initial ships, increase pop/factories to approximately double initial production
-		if (emp.isAI() && challengeMode) {
+		if (!emp.isHumanEmpire() && challengeMode) {
 	        setPopulation(80);
 	        previousPopulation = population();
 	        industry().factories(80);
@@ -691,10 +693,10 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public void setCompanionWorldValues() {
         Empire emp = empire();
 
-		if (emp.isPlayer())
+		if (emp.isHumanEmpire())
 			setDefaultGovernor();
 		// modnar: normal resources for player or non-challengeMode
-		if (emp.isPlayer() || !challengeMode) {
+		if (emp.isHumanEmpire() || !challengeMode) {
 	        setPopulation(30);
 	        previousPopulation = population();
 	        industry().factories(20);
@@ -702,7 +704,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		}
 		// modnar: add extra starting resources, if challengeMode and AI
 		// increase pop/factories to approximately double initial production
-		if (emp.isAI() && challengeMode) {
+		if (!emp.isHumanEmpire() && challengeMode) {
 	        setPopulation(50);
 	        previousPopulation = population();
 	        industry().factories(50);
@@ -733,6 +735,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
             empire.overthrowLeader();
             return;
         }
+        if (session().controllerRegistry() != null)
+            return;
         Empire pl = player();
         String message = null;
         if (empire == pl) {
@@ -1172,7 +1176,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 
         // modnar: add dynamic difficulty option, change AI colony production
         float dynaMod = 1.0f;
-		boolean isPlayer = empire.isPlayer();
+		boolean isPlayer = empire.isHumanEmpire();
 		IGameOptions opts = options();
 		if (!isPlayer && opts.selectedDynamicDifficulty() && !(galaxy().currentTurn() < 5)) {
 			dynaMod = empire.dynaMod();
@@ -1189,7 +1193,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public float nonDynaProd() {
         if (inRebellion())
             return 0.0f;
-        float mod = empire().isPlayer() ? 1.0f : options().aiProductionModifier();
+        float mod = empire().isHumanEmpire() ? 1.0f : options().aiProductionModifier();
         float workerProd = workingPopulation() * empire.workerProductivity();
         float factoryOutput = mod*(workerProd + usedFactories());
         return factoryOutput - transportCost();
@@ -1281,11 +1285,11 @@ public final class Colony implements Base, IMappedObject, Serializable {
         return (int) ((planet.currentSize() * desiredPct) - expectedPopulationLongTerm());
     }
     float newWaste() {
-        float mod = empire().isPlayer() ? 1.0f : options().aiWasteModifier();
+        float mod = empire().isHumanEmpire() ? 1.0f : options().aiWasteModifier();
         return max(0, usedFactories() * tech().factoryWasteMod() * mod);
     }
     private float wastePerFactory()	{
-        float mod = empire().isPlayer() ? 1.0f : options().aiWasteModifier();
+        float mod = empire().isHumanEmpire() ? 1.0f : options().aiWasteModifier();
         return max(0, tech().factoryWasteMod() * mod);
     }
     public float factoryNetProductivity()	{
@@ -1476,7 +1480,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         if (lost > 0) {
             log(concat(str(t.launchSize()), " ", t.empire().raceName(), " transports perished at ", name()));
             if (t.empire().isPlayerControlled()) 
-                TransportsKilledAlert.create(empire(), starSystem(), lost);
+                TransportsKilledAlert.create(t.empire(), empire(), starSystem(), lost);
             else if (empire().isPlayerControlled()) 
                 InvadersKilledAlert.create(t.empire(), starSystem(), lost);
             if(t.size() == 0)
@@ -1509,7 +1513,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         if (lost > 0) {
             log(concat(str(tr.launchSize()), " ", tr.empire().raceName(), " transports perished at ", name()));
             if (tr.empire().isPlayerControlled()) 
-                TransportsKilledAlert.create(empire(), starSystem(), lost);
+                TransportsKilledAlert.create(tr.empire(), empire(), starSystem(), lost);
             else if (empire().isPlayerControlled()) 
                 InvadersKilledAlert.create(tr.empire(), starSystem(), lost);
             if(tr.size() == 0)
@@ -1520,7 +1524,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
         setPopulation(rebels);
 
         if (population() > 0) {
-            if (empire.isPlayerControlled() || tr.empire().isPlayerControlled())
+            if (session().controllerRegistry() == null
+                    && (empire.isPlayerControlled() || tr.empire().isPlayerControlled()))
                 RotPUI.instance().selectGroundBattlePanel(this, tr);
             else
                 completeDefenseAgainstTransports(tr);
@@ -1545,7 +1550,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 
         if (!tr.empire().canColonize(starSystem())) {
             if (tr.empire().isPlayerControlled())
-                TransportsKilledAlert.create(empire(), starSystem(), tr.launchSize());
+                TransportsKilledAlert.create(tr.empire(), empire(), starSystem(), tr.launchSize());
             else if (empire().isPlayerControlled())
                 InvadersKilledAlert.create(tr.empire(), starSystem(), tr.launchSize());
             tr.size(0);
@@ -1612,7 +1617,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         lost = min(lost, num);
 
         // BR: No more than allowed
-        passed = min(passed, (int)options().maxLandingTroops(starSystem(), tr.empire().isPlayer()));
+        passed = min(passed, (int)options().maxLandingTroops(starSystem(), tr.empire().isHumanEmpire()));
         lost = max(0, (num - passed));
         tr.size(passed);
 
@@ -1622,7 +1627,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         if (lost > 0) {
             log(concat(str(tr.launchSize()), " ", tr.empire().raceName(), " transports perished at ", name()));
             if (tr.empire().isPlayerControlled()) 
-                TransportsKilledAlert.create(empire(), starSystem(), lost);
+                TransportsKilledAlert.create(tr.empire(), empire(), starSystem(), lost);
             else if (empire().isPlayerControlled()) 
                 InvadersKilledAlert.create(tr.empire(), starSystem(), lost);
             if(tr.size() == 0)
@@ -1631,7 +1636,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 
         float startingPop = population();
         if (population() > 0) {
-            if (empire.isPlayerControlled() || tr.empire().isPlayerControlled())
+            if (session().controllerRegistry() == null
+                    && (empire.isPlayerControlled() || tr.empire().isPlayerControlled()))
                 RotPUI.instance().selectGroundBattlePanel(this, tr);
             else
                 completeDefenseAgainstTransports(tr);
@@ -1649,6 +1655,14 @@ public final class Colony implements Base, IMappedObject, Serializable {
         }
 
         // did planet ownership change?
+        if (session().hotSeatInbox() != null) {
+            for (Empire participant : new Empire[] {empire(), tr.empire()})
+                if (session().controllerRegistry().isHumanControlled(participant.id))
+                    session().hotSeatInbox().append(galaxy().currentTurn(), participant.id, "INVASION",
+                            text("HOTSEAT_INVASION"), java.util.List.of(participant.sv.name(starSystem().id),
+                                    text(tr.size() > 0 ? "HOTSEAT_INVASION_CAPTURED" : "HOTSEAT_INVASION_DEFENDED"),
+                                    text("HOTSEAT_POPULATION", String.valueOf(startingPop), String.valueOf(population()))));
+        }
         if (tr.size() > 0) {
             ColonyCapturedIncident.create(tr.empire(), empire(), starSystem(), popLost);
             capturedByTransport(tr);
@@ -1684,7 +1698,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         starSystem().addEvent(new SystemCapturedEvent(tr.empId()));
         tr.empire().lastAttacker(loser);
 
-        Empire pl = player();
+        Empire pl = tr.empire();
         if (tr.empire().isPlayerControlled()) {
             allocation(SHIP, 0);
             allocation(DEFENSE,0);
@@ -1693,7 +1707,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             allocation(RESEARCH,0);
             String str1 = text("MAIN_ALLOCATE_COLONY_CAPTURED", pl.sv.knownName(starSystem().id), pl.raceName());
             str1 = pl.replaceTokens(str1, "spy");
-            session().addSystemToAllocate(starSystem(), str1);
+            session().addSystemToAllocateForEmpire(pl.id, starSystem(), str1);
         }
         // list of possible techs that could be recovered from factories
         List<Tech> possibleTechs = empire().tech().techsUnknownTo(tr.empire(), false);
@@ -1727,7 +1741,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         empire = tr.empire();
         defense().maxBases(empire.defaultMaxBases());
         buildFortress();
-		if (tr.empire().isPlayer())
+		if (tr.empire().isHumanEmpire())
 			shipyard().goToDefaultDesign();
 		else
 			shipyard().goToNextDesign();
@@ -2257,7 +2271,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
         //locked(INDUSTRY, true);
 
 		float techAdj = totalPlanetaryResearch() - prevTech;
-		RotPUI.instance().techUI().adjustPlanetaryResearch(techAdj);
+        if (session().controllerRegistry() == null)
+            RotPUI.instance().techUI().adjustPlanetaryResearch(techAdj);
     }
 	private void checkForReserveFromRich() {
 		// Check if Rich and Ultra contribute to reserve
@@ -2289,7 +2304,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
         for (int i = 0; i < spending.length; i++)
             if (spending[i] == null || spending[i].colony() == null)
                 return;
-        RotPUI.instance().techUI().resetPlanetaryResearch();
+        if (session().controllerRegistry() == null)
+            RotPUI.instance().techUI().resetPlanetaryResearch();
         if (governorGotPlayerRequest()) {
         	manage(loweredShipPriority);
         	return;
@@ -2388,7 +2404,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		checkForReserveFromRich();
 
 		float techAdj = totalPlanetaryResearch() - prevTech;
-        RotPUI.instance().techUI().adjustPlanetaryResearch(techAdj);
+        if (session().controllerRegistry() == null)
+            RotPUI.instance().techUI().adjustPlanetaryResearch(techAdj);
         /*System.out.println(galaxy().currentTurn()+" "+empire.name()+" "+name()+" After Govern:");
         System.out.println(galaxy().currentTurn()+" "+empire.name()+" Ship: "+allocation(SHIP));
         System.out.println(galaxy().currentTurn()+" "+empire.name()+" Def : "+allocation(DEFENSE));

@@ -21,12 +21,14 @@ import rotp.ui.RotPUI;
 public class DiscoverTechNotification implements TurnNotification {
     String techId;
 
-    public static void create(String id) {
-        GameSession.addTurnNotification(new DiscoverTechNotification(id));
+    public static void create(int recipientEmpireId, String id) {
+        GameSession.addTurnNotificationForEmpire(recipientEmpireId,
+                new DiscoverTechNotification(id));
     }
     private DiscoverTechNotification(String id) {
         techId = id;
     }
+    public String techId() { return techId; }
     @Override
     public String displayOrder() { return DISCOVER_TECH; }
     @Override

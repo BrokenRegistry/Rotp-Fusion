@@ -23,13 +23,17 @@ public class StealTechNotification implements TurnNotification {
     EspionageMission mission;
     int empId;
 
-    public static void create(EspionageMission t, int empId) {
-        GameSession.addTurnNotification(new StealTechNotification(t, empId));
+    public static void create(int recipientEmpireId, EspionageMission t, int empId) {
+        GameSession.addTurnNotificationForEmpire(recipientEmpireId,
+                new StealTechNotification(t, empId));
     }
     public StealTechNotification(EspionageMission t, int id) {
         mission = t;
         empId = id;
     }
+    public String stolenTechId() { return mission.stolenTech(); }
+    public int sourceEmpireId() { return empId; }
+    public Integer systemId() { return mission.targetSystem() == null ? null : mission.targetSystem().id; }
     @Override
     public String displayOrder() { return STEAL_TECH; }
     @Override

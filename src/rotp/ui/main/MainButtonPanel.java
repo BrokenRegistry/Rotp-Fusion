@@ -185,7 +185,9 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
         g.setStroke(prevS);
 
         String label;
-        if (opts.ironmanLocked())
+        if (session().hotSeatState() != null)
+            label = text("HOTSEAT_FINISH");
+        else if (opts.ironmanLocked())
         	label = text("MAIN_NAVIGATION_LOCKED", opts.selectedIronmanLoadDelay());
         else if (opts.autoRunAILocked())
         	label = text("MAIN_NAVIGATION_AUTO_RUN_AI", opts.selectedIronmanLoadDelay());
@@ -251,6 +253,7 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
     }
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         if (e.getButton() > 3)
             return;
         int x = e.getX();
@@ -279,7 +282,7 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
         		return;
         	}
             click = 1;
-            parent.handleNextTurn();
+            if (session().hotSeatState() == null) parent.handleNextTurn();
             session().nextTurn();
         }
         for (int i=0;i<buttonBox.length;i++) {
@@ -294,7 +297,8 @@ public final class MainButtonPanel extends BasePanel implements MouseListener, M
             buttonClick();
     }
     @Override
-    public void mouseDragged(MouseEvent arg0) { }
+    public void mouseDragged(MouseEvent arg0) {
+        if (!hotSeatCanEdit(player().id)) return; }
     @Override
     public void mouseMoved(MouseEvent e) {
         int x = e.getX();

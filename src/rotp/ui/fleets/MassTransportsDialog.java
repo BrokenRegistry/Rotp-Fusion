@@ -93,12 +93,18 @@ final class MassTransportsDialog extends BasePanel {
         }
         return (int) Math.ceil(time);
     }
-	private void cancelChanges()	{
+    private boolean hotSeatSourcesEditable(List<StarSystem> systems) {
+        return session().hotSeatState() == null || hotSeatCanEdit(player().id)
+                && systems.stream().allMatch(s -> s != null && s.empire() == player());
+    }
+    void cancelChanges() {
+        if (!hotSeatSourcesEditable(sourceSystems)) return;
 		player().budget().makeTransortObsolete();
         for (StarSystem sys : sourceSystems)
             sys.transportSprite().cancel();
     }
-	private void sendTransports()	{
+    void sendTransports() {
+        if (!hotSeatSourcesEditable(sourceSystems)) return;
         List<StarSystem> launchPoints = new ArrayList<>();
         for (StarSystem sys : sourceSystems) {
             SystemTransportSprite spr = sys.transportSprite();
@@ -119,21 +125,26 @@ final class MassTransportsDialog extends BasePanel {
         }
         player().deployTransports(launchPoints, topParent.targetSystem, synched);
     }
-	private void clickSynch()	{
+  private void clickSynch()	{
 		synched = !synched;
 		if (isInvasion)
 			invasionSynched = synched;
 		else
 			growingSynched = synched;
 	}
-	void mouseWheelMoved(MouseWheelEvent e)	{ listingUI.mouseWheelMoved(e); }
+	void mouseWheelMoved(MouseWheelEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return;
+    listingUI.mouseWheelMoved(e);
+  }
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(backgroundC);
         g.fillRect(0, 0, getWidth(), getHeight());
     }
-	void initSystems()	{
+    public void initSystems() {
+        if (!hotSeatSourcesEditable(topParent.filteredSystems)) return;
+        //Empire pl = player();
 		StarSystem.TARGET_SYSTEM = topParent.targetSystem;
 		isInvasion = (!StarSystem.TARGET_SYSTEM.empire().isPlayer() || StarSystem.TARGET_SYSTEM.colony().inRebellion());
 		if (isInvasion)
@@ -487,6 +498,7 @@ final class MassTransportsDialog extends BasePanel {
         public void mousePressed(MouseEvent e) {    }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                     return;
             if (hoverBox == cancelButton) {
@@ -519,6 +531,7 @@ final class MassTransportsDialog extends BasePanel {
         }
         @Override
         public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             Shape prevHover = hoverBox;
             setHoverSprite(e.getX(),e.getY());
 

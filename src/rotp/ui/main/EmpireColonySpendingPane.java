@@ -148,6 +148,11 @@ public class EmpireColonySpendingPane extends BasePanel {
     public void mapListener(GalaxyMapPanel map)  { mapListener = map; }
     @Override
     public String textureName()            { return parent.subPanelTextureName(); }
+    private boolean hotSeatColonyEditable() {
+        if (session().hotSeatState() == null) return true;
+        StarSystem system = parent.systemViewToDisplay();
+        return system != null && system.colony() != null && hotSeatCanEdit(system.colony().empire().id);
+    }
     private void init() {
         shipSlider     = new EmpireSliderPane(this, Colony.SHIP);
         defSlider      = new EmpireSliderPane(this, Colony.DEFENSE);
@@ -382,6 +387,7 @@ public class EmpireColonySpendingPane extends BasePanel {
     }
 
     @Override public void keyPressed(KeyEvent e) {
+        if (!hotSeatColonyEditable()) return;
         int k = e.getKeyCode();
         int mods = e.getModifiersEx();
         switch (k) {
@@ -705,6 +711,7 @@ public class EmpireColonySpendingPane extends BasePanel {
         private int boxBorderW()        { return s3; }
 
         private void decrement(boolean click) {
+        if (!hotSeatColonyEditable()) return;
             StarSystem sys = parent.systemViewToDisplay();
             if (sys == null)
                 return;
@@ -729,6 +736,7 @@ public class EmpireColonySpendingPane extends BasePanel {
                 misClick();
         }
         private void smoothMaxClick(boolean click, MouseEvent e) {
+        if (!hotSeatColonyEditable()) return;
         	// Common start
             StarSystem sys = parent.systemViewToDisplay();
             if (sys == null)
@@ -759,6 +767,7 @@ public class EmpireColonySpendingPane extends BasePanel {
             parent.repaint();
         }
         private void commonResultBox(boolean click, MouseEvent e) {
+        if (!hotSeatColonyEditable()) return;
         	// Common start
             StarSystem sys = parent.systemViewToDisplay();
             if (sys == null)
@@ -830,6 +839,7 @@ public class EmpireColonySpendingPane extends BasePanel {
             parent.repaint();
         }
         private void increment(boolean click) {
+        if (!hotSeatColonyEditable()) return;
             StarSystem sys = parent.systemViewToDisplay();
             if (sys == null)
                 return;
@@ -854,6 +864,7 @@ public class EmpireColonySpendingPane extends BasePanel {
                 misClick();
         }
         private void toggleLock() {
+        if (!hotSeatColonyEditable()) return;
             softClick();
             StarSystem sys = parent.systemViewToDisplay();
             if (sys == null)
@@ -892,6 +903,7 @@ public class EmpireColonySpendingPane extends BasePanel {
         }
         @Override public void mousePressed(MouseEvent ev) { }
         @Override public void mouseReleased(MouseEvent e) {
+        if (!hotSeatColonyEditable()) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();
@@ -955,7 +967,8 @@ public class EmpireColonySpendingPane extends BasePanel {
                 }
             }
         }
-        @Override public void mouseDragged(MouseEvent e) { }
+        @Override public void mouseDragged(MouseEvent e) {
+        if (!hotSeatColonyEditable()) return; }
 		@Override public void mouseMoved(MouseEvent e) {
 			setModifierKeysState(e);
 			int x = e.getX();
@@ -983,6 +996,7 @@ public class EmpireColonySpendingPane extends BasePanel {
 				hoverBox = hoverBox(null, hoverBox);
 		}
         @Override public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatColonyEditable()) return;
 			setModifierKeysState(e);
             int rot = e.getWheelRotation();
             if (hoverBox == sliderBox) {
@@ -1020,6 +1034,7 @@ public class EmpireColonySpendingPane extends BasePanel {
 		}
 	}
     private void toggleGovernor() {
+        if (!hotSeatColonyEditable()) return;
         if (parent.systemViewToDisplay() != null && parent.systemViewToDisplay().colony() != null) {
             Colony colony = parent.systemViewToDisplay().colony();
             colony.setGovernor(!colony.isGovernor());
@@ -1030,6 +1045,7 @@ public class EmpireColonySpendingPane extends BasePanel {
         }
     }
     private void toggleAutoShips() {
+        if (!hotSeatColonyEditable()) return;
         if (parent.systemViewToDisplay() != null && parent.systemViewToDisplay().colony() != null) {
             Colony colony = parent.systemViewToDisplay().colony();
             colony.setAutoShips(!colony.isAutoShips());
@@ -1037,6 +1053,11 @@ public class EmpireColonySpendingPane extends BasePanel {
         }
     }
     public static void governorOptions() {
+        if (rotp.model.game.GameSession.instance().hotSeatState() != null) {
+            javax.swing.JOptionPane.showMessageDialog(rotp.Rotp.getFrame(),
+                    new rotp.util.Base() { }.text("HOTSEAT_SHARED_POLICIES"));
+            return;
+        }
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
 			public void run() {

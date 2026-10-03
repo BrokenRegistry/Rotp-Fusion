@@ -31,6 +31,7 @@ public class SimpleMessage extends DiplomaticMessage {
     public void escape()                         { select(0); }
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         if (nextView == null)
             RotPUI.instance().selectRacesPanel();
         else

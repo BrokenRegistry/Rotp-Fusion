@@ -1382,6 +1382,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int count = e.getUnitsToScroll();
         int inc = 1;
         if (e.isShiftDown())
@@ -1420,6 +1421,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
     }
     @Override
     public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int x = e.getX();
         int y = e.getY();
         int dY = y-dragY;
@@ -1515,6 +1517,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
     }
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int inc = 1;
         if (e.isShiftDown())
         	inc = 5;

@@ -25,13 +25,17 @@ public class TransportsPerishedAlert extends GameAlert {
 	private final Empire empire;
     private final StarSystem system;
     public static void create(Empire e, StarSystem s) {
-        GameSession.addAlert(new TransportsPerishedAlert(e,s));
+        GameSession.addAlertForEmpire(e.id, new TransportsPerishedAlert(e,s));
     }
     @Override
     public String description() {
-        return text("MAIN_ALERT_TRANSPORTS_PERISHED", systemName());
+        return descriptionForEmpire(player().id);
     }
-    private String systemName() { return player().sv.knownName(system.id); }
+    @Override
+    public String descriptionForEmpire(int recipientEmpireId) {
+        return text("MAIN_ALERT_TRANSPORTS_PERISHED",
+                galaxy().empire(recipientEmpireId).sv.knownName(system.id));
+    }
     private TransportsPerishedAlert(Empire e, StarSystem s) {
         empire = e;
         system = s;

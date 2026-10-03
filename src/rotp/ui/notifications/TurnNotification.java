@@ -26,6 +26,7 @@ public interface TurnNotification extends Comparable<TurnNotification> {
     static final String SYSTEM_SCANNED   = "3000";  // after all tech discovery notifications
     static final String PROMPT_BOMBARD   = "4000";  // must occur before colonize prompt
     static final String PROMPT_COLONIZE  = "4001";  // after system scans & ship combat
+    static final String SABOTAGE_RESULT  = "4002";  // after bombardment and colonization
     static final String COUNCIL_NOTIFY   = "5000";
     static final String SELECT_NEW_TECH  = "7000";  // after all tech discovery notifications
     static final String GNN_NOTIFY         = "8000";

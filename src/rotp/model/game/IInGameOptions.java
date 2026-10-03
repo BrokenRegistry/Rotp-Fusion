@@ -738,8 +738,8 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	default boolean alwaysAtWar()	{ return gameAgressiveness.get().equals(AGGRESSIV_ALWAYS_WAR); }
 	default boolean canStopWar()	{ return !alwaysAtWar(); }
 	default boolean canStartWar(Empire ask, Empire target)	{
-		boolean askIsPlayer		= ask == null ?		false : ask.isPlayer();
-		boolean targetIsPlayer	= target == null ?	false : target.isPlayer();
+		boolean askIsPlayer		= ask == null ?		false : ask.isHumanEmpire();
+		boolean targetIsPlayer	= target == null ?	false : target.isHumanEmpire();
 		return canStartWar(askIsPlayer, targetIsPlayer);
 	}
 	default boolean canStartWar(boolean askIsPlayer, boolean targetIsPlayer)	{
@@ -778,8 +778,8 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 		if (view != null && view.embassy().war())
 			return true;
 
-		boolean askIsPlayer		= ask.isPlayer();
-		boolean targetIsPlayer	= target.isPlayer();
+		boolean askIsPlayer		= ask.isHumanEmpire();
+		boolean targetIsPlayer	= target.isHumanEmpire();
 		if (askIsPlayer)
 			switch (gameAgressiveness.get()) {
 				case AGGRESSIV_NEVER_WAR:

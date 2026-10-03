@@ -1323,7 +1323,7 @@ public class AIDiplomat implements Base, Diplomat {
             return false;
         if (!view.inEconomicRange())
             return false;
-		if (!options().canStartWar(empire.isPlayer(), view.isPlayer()))
+		if (!options().canStartWar(empire.isHumanEmpire(), view.isHumanEmpire()))
 			return false;
 
         // look at new incidents. If any trigger war, pick

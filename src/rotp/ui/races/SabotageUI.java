@@ -38,6 +38,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 import javax.swing.border.Border;
 
@@ -45,6 +46,7 @@ import rotp.model.Sprite;
 import rotp.model.empires.Empire;
 import rotp.model.empires.Leader;
 import rotp.model.empires.SabotageMission;
+import rotp.model.empires.SpyNetwork.Sabotage;
 import rotp.model.empires.SystemView;
 import rotp.model.galaxy.Location;
 import rotp.model.galaxy.Nebula;
@@ -113,7 +115,64 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
 
     @Override
     public boolean drawMemory()            { return true; }
+    // Hot seat: a resolved mission's result, replayed without a live mission.
+    private Sabotage reportAction;
+    private Empire reportTarget;
+    private StarSystem reportSystem;
+    private int reportAmount;
+    private boolean destroyingFactories() { return reportAction == null ? mission.isDestroyFactories() : reportAction == Sabotage.FACTORIES; }
+    private boolean destroyingBases()     { return reportAction == null ? mission.isDestroyBases() : reportAction == Sabotage.MISSILES; }
+    private boolean incitingRebellion()   { return reportAction == null ? mission.isInciteRebellion() : reportAction == Sabotage.REBELS; }
+    private Empire sabotageTarget()       { return reportAction == null ? mission.target() : reportTarget; }
+
+    /** Hot seat: show the result of a sabotage mission the turn engine already resolved. */
+    public void showResultReport(Empire target, int sysId, Sabotage action, int amount) {
+        hotSeatChoose = null;
+        hotSeatCancel = null;
+        mission = null;
+        reportAction = action;
+        reportTarget = target;
+        reportSystem = galaxy().system(sysId);
+        reportAmount = amount;
+        exited = false;
+        destroyCount = 0;
+        explosionFrame = 0;
+        inciteAudioPlayed = false;
+        backGradient = null;
+        animationIndex = 0;
+        audioClip = null;
+        repaintCount = 3;
+        inRebellion = reportSystem.colony() != null && reportSystem.colony().inRebellion();
+        currentState = REQUEST_MISSION;
+        advanceToNextState();
+    }
+    // Hot seat: report the chosen target; the turn engine runs the mission.
+    private BiPredicate<Sabotage, Integer> hotSeatChoose;
+    private Runnable hotSeatCancel;
+    public void hotSeatMission(SabotageMission sm, int sysId, BiPredicate<Sabotage, Integer> choose, Runnable cancel) {
+        init(sm, sysId);
+        hotSeatChoose = choose;
+        hotSeatCancel = cancel;
+    }
+    /** True when hot seat handled the action; the choice is final once accepted. */
+    private boolean hotSeatAction(Sabotage action) {
+        if (hotSeatChoose == null)
+            return false;
+        if (hotSeatChoose.test(action, systemToDisplay().id)) {
+            hotSeatChoose = null;
+            hotSeatCancel = null;
+            exited = true;
+        }
+        else
+            misClick();
+        return true;
+    }
     public void init(SabotageMission sm, int sysId)       {
+        hotSeatChoose = null;
+        hotSeatCancel = null;
+        reportAction = null;
+        reportTarget = null;
+        reportSystem = null;
         mission = sm;
         exited = false;
         currentState = REQUEST_MISSION;
@@ -144,18 +203,24 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
         initModel();
     }
     public void destroyFactories() {
+        if (hotSeatAction(Sabotage.FACTORIES))
+            return;
         mission.destroyFactories(systemToDisplay());
         session().enableSpyReport();
         advanceToNextState();
         return;
     }
     public void destroyBases() {
+        if (hotSeatAction(Sabotage.MISSILES))
+            return;
         mission.destroyMissileBases(systemToDisplay());
         session().enableSpyReport();
         advanceToNextState();
         return;
     }
     public void inciteRebellion() {
+        if (hotSeatAction(Sabotage.REBELS))
+            return;
         StarSystem sys = systemToDisplay();
         Leader prevLeader = sys.empire().leader();
         mission.inciteRebellion(sys);
@@ -164,6 +229,14 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
         advanceToNextState();
     }
     public void cancelMission() {
+        if (hotSeatCancel != null) {
+            Runnable cancel = hotSeatCancel;
+            hotSeatChoose = null;
+            hotSeatCancel = null;
+            exited = true;
+            cancel.run();
+            return;
+        }
         mission.cancelMission();
         currentState = SHOW_RESULTS;
         advanceToNextState();
@@ -749,12 +822,12 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
         private Image panelBuffer;
         private List<Image> animationFrames;
         public void init() {
-            Empire emp = mission.target();
-            if (mission.isDestroyBases()) 
+            Empire emp = sabotageTarget();
+            if (destroyingBases()) 
                 animationFrames = emp.sabotageMissileFrames();
-            else if (mission.isDestroyFactories()) 
+            else if (destroyingFactories()) 
                 animationFrames = emp.sabotageFactoryFrames();
-            else if (mission.isInciteRebellion()) 
+            else if (incitingRebellion()) 
                 animationFrames = emp.sabotageRebellionFrames();
             
             // if no animation, just show a star background
@@ -780,16 +853,17 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
           
             if ((currentState == SHOW_RESULTS)) {
                 String msg;
-                if (mission.isDestroyFactories()) 
-                    msg = text("SABOTAGE_FACTORIES_RESULT", mission.factoriesDestroyed());
-                else if (mission.isDestroyBases()) 
-                    msg = text("SABOTAGE_BASES_RESULT", mission.missileBasesDestroyed());
+                if (destroyingFactories()) 
+                    msg = text("SABOTAGE_FACTORIES_RESULT", reportAction == null ? mission.factoriesDestroyed() : reportAmount);
+                else if (destroyingBases()) 
+                    msg = text("SABOTAGE_BASES_RESULT", reportAction == null ? mission.missileBasesDestroyed() : reportAmount);
                 else {
                     if (inRebellion)
                         msg = text("SABOTAGE_REBELS_REVOLT");
                     else {
-                        int pct = (int) (systemToDisplay().colony().rebellionPct()*100);
-                        msg = text("SABOTAGE_REBELS_TOTAL", mission.rebelsIncited(), pct);
+                        StarSystem sys = reportAction == null ? systemToDisplay() : reportSystem;
+                        int pct = sys.colony() == null ? 0 : (int) (sys.colony().rebellionPct()*100);
+                        msg = text("SABOTAGE_REBELS_TOTAL", reportAction == null ? mission.rebelsIncited() : reportAmount, pct);
                     }
                 }
 
@@ -819,7 +893,7 @@ public final class SabotageUI extends BasePanel implements MouseListener, IVIPLi
             if (currentState == SHOW_ANIMATION) {
                 if (animationIndex == 0) {
                     sleep(1000);  // pause on the opening scene before the explosion
-                    if (mission.isInciteRebellion())
+                    if (incitingRebellion())
                         audioClip = playAudioClip("SabotageRiot");
                     else
                         audioClip = playAudioClip("SabotageExplosion");

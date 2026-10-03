@@ -65,7 +65,24 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
         clickSprite = new ClickToContinueSprite(parent);
     }
 	public void releaseObjects()	{ fleet = null; }
+    // Hot seat: report the choice; the turn engine bombs. 0 = cancel, 1 = bombard, 2 = target.
+    private java.util.function.IntConsumer hotSeatAnswer;
+    public void hotSeatInit(int systemId, ShipFleet fl, java.util.function.IntConsumer answer) {
+        init(systemId, fl);
+        hotSeatAnswer = answer;
+    }
+    private boolean answerHotSeat(int choice) {
+        if (hotSeatAnswer == null)
+            return false;
+        var answer = hotSeatAnswer;
+        hotSeatAnswer = null;
+        parent.clearOverlay();
+        parent.repaint();
+        answer.accept(choice);
+        return true;
+    }
     public void init(int systemId, ShipFleet fl) {
+        hotSeatAnswer = null;
         drawSprites = true;
         planetImg = null;
         Empire pl = player();
@@ -105,6 +122,8 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
         if (drawSprites) {
             drawSprites = false;
             mask = null;
+            if (answerHotSeat(2))
+                return;
             targetBombard();
             bombard();
 			ADVISOR.onHold();
@@ -116,6 +135,8 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
             drawSprites = false;
             mask = null;
             softClick();
+            if (answerHotSeat(1))
+                return;
             bombard();
 			ADVISOR.onHold();
             parent.map().repaint();
@@ -125,6 +146,8 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
         if (drawSprites) {
             drawSprites = false;
             mask = null;
+            if (answerHotSeat(0))
+                return;
             advanceMap();
         }
     }

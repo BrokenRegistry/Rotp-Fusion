@@ -40,6 +40,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import rotp.model.empires.Empire;
 import rotp.model.empires.GalacticCouncil;
@@ -100,7 +101,44 @@ public final class GalacticCouncilUI extends FadeInPanel
         addMouseMotionListener(this);
         addMouseWheelListener(this);
     }
+    // Hot seat: the turn engine runs the council; this screen only reports one seat's choice.
+    private Consumer<Empire> hotSeatVote;
+    private Consumer<Boolean> hotSeatRuling;
+    public void hotSeatVote(Consumer<Empire> vote) {
+        init();
+        hotSeatVote = vote;
+        displayMode = Display.ASK_PLAYER_VOTE;
+    }
+    public void hotSeatRuling(Consumer<Boolean> ruling) {
+        init();
+        hotSeatRuling = ruling;
+        displayMode = Display.ACCEPT_RULING;
+    }
+    /** False when hot seat took the vote, which ends this screen's part. */
+    private boolean castVote(Empire chosen) {
+        if (hotSeatVote == null) {
+            galaxy().council().castPlayerVote(chosen);
+            return true;
+        }
+        Consumer<Empire> vote = hotSeatVote;
+        hotSeatVote = null;
+        vote.accept(chosen);
+        return false;
+    }
+    private boolean rule(boolean accept) {
+        if (hotSeatRuling == null) {
+            if (accept) galaxy().council().acceptRuling(player());
+            else galaxy().council().defyRuling(player());
+            return true;
+        }
+        Consumer<Boolean> ruling = hotSeatRuling;
+        hotSeatRuling = null;
+        ruling.accept(accept);
+        return false;
+    }
     public void init() {
+        hotSeatVote = null;
+        hotSeatRuling = null;
         showVoterSummary = false;
         displayMode = Display.ANNOUNCE;
         background = player().council();
@@ -1203,25 +1241,27 @@ public final class GalacticCouncilUI extends FadeInPanel
         // no key presses on screens where player selection is required
         switch(displayMode) {
             case ASK_PLAYER_VOTE:
+                boolean voted;
                 switch(k) {
-                    case KeyEvent.VK_1: c.castPlayerVote(c.candidate1()); break;
-                    case KeyEvent.VK_2: c.castPlayerVote(c.candidate2()); break;
-                    case KeyEvent.VK_3: c.castPlayerVote(null); break;
+                    case KeyEvent.VK_1: voted = castVote(c.candidate1()); break;
+                    case KeyEvent.VK_2: voted = castVote(c.candidate2()); break;
+                    case KeyEvent.VK_3: voted = castVote(null); break;
                     default: return; // don't advance screen if no vote
                 }
-                advanceScreen();
+                if (voted) advanceScreen();
                 return;
             case ACCEPT_RULING:
+                boolean ruled;
                 switch(k) {
-                    case KeyEvent.VK_1: c.acceptRuling(player()); break;
+                    case KeyEvent.VK_1: ruled = rule(true); break;
                     case KeyEvent.VK_2:
                     	if (options().realmsBeyondCouncil())
                     		return;
-                    	c.defyRuling(player());
+                    	ruled = rule(false);
                     	break;
                     default: return; // don't advance screen if no vote
                 }
-                advanceScreen();
+                if (ruled) advanceScreen();
                 return;
             default:
                 switch(k) {
@@ -1301,24 +1341,26 @@ public final class GalacticCouncilUI extends FadeInPanel
                     advanceScreen();
                 return;
             case ASK_PLAYER_VOTE:
+                boolean voted;
                 if (hoverTarget == candidate1Box) 
-                    c.castPlayerVote(c.candidate1());
+                    voted = castVote(c.candidate1());
                 else if (hoverTarget == candidate2Box)
-                    c.castPlayerVote(c.candidate2());
+                    voted = castVote(c.candidate2());
                 else if (hoverTarget == abstainBox)
-                    c.castPlayerVote(null);
+                    voted = castVote(null);
                 else
                     return;
-                advanceScreen();
+                if (voted) advanceScreen();
                 return;
             case ACCEPT_RULING:
+                boolean ruled;
                 if (hoverTarget == acceptBox) 
-                    c.acceptRuling(player());
+                    ruled = rule(true);
                 else if (hoverTarget == rejectBox)
-                    c.defyRuling(player());
+                    ruled = rule(false);
                 else
                     return;
-                advanceScreen();
+                if (ruled) advanceScreen();
                 return;
         }
     }

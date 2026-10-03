@@ -361,6 +361,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int x = e.getX();
         int y = e.getY();
         // if y < rowHeight() then we are clicking on the header row
@@ -385,6 +386,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
     }
     @Override
     public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int x = e.getX();
         int y = e.getY();
         int dY = y-dragY;
@@ -480,6 +482,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
     }
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         dragY = 0;
         if (e.getButton() > 3)
             return;
@@ -1350,6 +1353,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         private static final long serialVersionUID = 1L;
         @Override
         public void mouseReleased(StarSystem sys, MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             if (sys == null)
@@ -1387,6 +1391,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         public boolean wantsMouseWheel()       { return true; }
         @Override
         public void mouseWheelMoved(StarSystem sys, MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             int rot = e.getWheelRotation();
             if (rot > 0)
                 sys.transportSprite().decrement(rot);
@@ -1398,6 +1403,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         private static final long serialVersionUID = 1L;
         @Override
         public void mouseReleased(StarSystem sys, MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             if (sys.transportSprite().decrement(1)) {
@@ -1418,6 +1424,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         private static final long serialVersionUID = 1L;
         @Override
         public void mouseReleased(StarSystem sys, MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             if (sys.transportSprite().increment(1)) {
@@ -1438,6 +1445,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         private static final long serialVersionUID = 1L;
         @Override
         public void mouseReleased(StarSystem sys, MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             sys.transportSprite().clear();
@@ -1455,6 +1463,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         private static final long serialVersionUID = 1L;
         @Override
         public void mouseReleased(StarSystem sys, MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         	setModifierKeysState(e); // BR: For the Flag color selection
             if (e.getButton() > 3)
                 return;
@@ -1477,6 +1486,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         }
         @Override
         public void mouseWheelMoved(StarSystem sys, MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         	setModifierKeysState(e); // BR: For the Flag color selection
             int rot = e.getWheelRotation();
             if (rot < 0)

@@ -161,6 +161,17 @@ public final class Empire extends Species implements NamedObject {
 		if (turnModCounter > dynaModCounter) {
 			double empIndPowerLevel = nonDynaIndPowerLevel();
 			double playerIndPowerLevel = player().nonDynaIndPowerLevel();
+			if (session().controllerRegistry() != null) {
+				playerIndPowerLevel = 0;
+				for (var seat : session().controllerRegistry().seats()) {
+					Empire human = galaxy().empire(seat.empireId());
+					if (seat.controllerType() == rotp.multiplayer.session.PlayerSeat.ControllerType.HUMAN
+							&& human != null && !human.extinct())
+						playerIndPowerLevel = Math.max(playerIndPowerLevel,
+								human.nonDynaIndPowerLevel());
+				}
+				playerIndPowerLevel = Math.max(playerIndPowerLevel, 0.001);
+			}
 			double r_empInd = empIndPowerLevel / playerIndPowerLevel;
 			dynaMod = (float) (1.0 + (options().getDynamicDifficultyScale(r_empInd) - 1.0) * turnMod());
 			dynaModCounter = turnModCounter;
@@ -242,14 +253,14 @@ public final class Empire extends Species implements NamedObject {
     private transient float totalEmpireShipMaintenanceCost;
     private transient float totalEmpireStargateCost;
     private transient float totalEmpireMissileBaseCost;
-	private transient float lastNetIncome; // To check for changes after diplomatic contact.
+	private float lastNetIncome; // Pending comparison with income before this turn's production.
     private transient float benchmark;
     private transient int inRange;
     public  transient int numColoniesHistory;
     private transient String empireName;
     private transient List<SpaceMonster> visibleMonsters = new ArrayList<>();
     private transient UfoTracker ufoTracker;
-    private transient boolean spendingNotYetMade;
+    private boolean spendingNotYetMade;
     private Point.Float playerMapCenter;
     private EmpireBudget playerBudget;
 
@@ -320,7 +331,9 @@ public final class Empire extends Species implements NamedObject {
     }
     public AI ai() {
         if (ai == null) {
-            if(selectedAI < 0)
+            if (session().controllerRegistry() != null && isHumanEmpire())
+                ai = new AI(this, IGameOptions.PLAYER);
+            else if(selectedAI < 0)
                 ai = new AI(this, options().selectedAI(this));
             else
                 ai = new AI(this, selectedAI);
@@ -672,9 +685,18 @@ public final class Empire extends Species implements NamedObject {
     public boolean isNull()              { return id == NULL_ID; };
     public boolean isNotEmpire()         { return id < DEFAULT_PLAYER_ID; };
 	@Override public boolean isPlayer()	 { return id == PLAYER_ID; };
+    public boolean isHumanEmpire() {
+        if (session().controllerRegistry() != null)
+            return session().controllerRegistry().isHumanControlled(id);
+        return isPlayer();
+    }
     public boolean isAI()                { return id != PLAYER_ID; }; // !!! FOR UI ONLY
     public boolean isPlayerControlled()  { return !isAIControlled(); }
-    public boolean isAIControlled()      { return isAI() || options().isAutoPlay(); }
+    public boolean isAIControlled()      {
+        if (session().controllerRegistry() != null)
+            return session().controllerRegistry().isAIControlled(id);
+        return isAI() || options().isAutoPlay();
+    }
     //public boolean isAIControlled()      { return true; } //for quick switch to test how the AI would have fared in a game
     public Color color()                 { return options().color(bannerColor); }
     int shipColorId()					{ return colorId(); }
@@ -1341,7 +1363,7 @@ public final class Empire extends Species implements NamedObject {
             }
         }
 
-		if (isPlayer() && (netIncome() < lastNetIncome) && govOptions().contactUpdateSpending())
+		if (isHumanEmpire() && (netIncome() < lastNetIncome) && govOptions().contactUpdateSpending())
 				redoGovTurnDecisions();
 
         // assign planetary funds/costs & enact development
@@ -1946,7 +1968,7 @@ public final class Empire extends Species implements NamedObject {
         return rebellingPop > loyalPop;
     }
     public void overthrowLeader() {
-        if (isPlayer()) {
+        if (isHumanEmpire()) {
             //session().status().loseOverthrown();
             return;
         }
@@ -2353,7 +2375,7 @@ public final class Empire extends Species implements NamedObject {
 	            if (shipyard.design() == oldDesign) {
 	                if ((newDesign != null) && newDesign.active())
 	                    shipyard.switchToDesign(newDesign);
-	                else if (isPlayer())
+	                else if (isHumanEmpire())
 	                	shipyard.goToDefaultDesign();
 	                else
 	                    shipyard.goToNextDesign();
@@ -3097,7 +3119,7 @@ public final class Empire extends Species implements NamedObject {
         boolean newTech = tech().learnTech(techId);
         if (newTech && isPlayerControlled()) {
             log("Tech: ", techId, " researched");
-            DiscoverTechNotification.create(techId);
+            DiscoverTechNotification.create(id, techId);
         }
         // share techs with New Republic allies
         for (EmpireView v: empireViews) {
@@ -3114,14 +3136,14 @@ public final class Empire extends Species implements NamedObject {
         boolean newTech = tech().learnTech(t.id);
         if (newTech && isPlayerControlled()) {
             log("Tech: ", t.name(), " plundered from: ", s.name());
-            PlunderTechNotification.create(t.id, s.id, emp.id);
+            PlunderTechNotification.create(id, t.id, s.id, emp.id);
         }
     }
     public void plunderShipTech(Tech t, int empId) {
         boolean newTech = tech().learnTech(t.id);
         if (newTech && isPlayerControlled()) {
             log("Ship tech: ", t.name(), " plundered ");
-            PlunderShipTechNotification.create(t.id, empId);
+            PlunderShipTechNotification.create(id, t.id, empId);
         }
     }
     void plunderAncientTech(StarSystem s) {
@@ -3144,7 +3166,7 @@ public final class Empire extends Species implements NamedObject {
             boolean newTech = tech().learnTech(t.id);
             if (newTech && isPlayerControlled()) {
                 log("Tech: ", t.name(), " discovered on: ", s.name());
-                PlunderTechNotification.create(t.id, s.id, -1);
+                PlunderTechNotification.create(id, t.id, s.id, -1);
             }
         }
     }
@@ -3526,7 +3548,7 @@ public final class Empire extends Species implements NamedObject {
         if (g.council().finalWar()) {
             g.council().removeEmpire(this);
         }
-        else { 
+        else if (session().controllerRegistry() == null) {
             List<Empire> activeEmpires = galaxy().activeEmpires();
             // Player has gone extinct. Determine loss condition
             if (isPlayer()) {
@@ -3838,14 +3860,14 @@ public final class Empire extends Species implements NamedObject {
     public List<StarSystem> orderedUnderAttackSystems(boolean showUnarmed, boolean showTransports) {
         List<StarSystem> list = new ArrayList<>();
         Galaxy g = galaxy();
-        Empire pl = player();
+        Empire pl = this;
         for (StarSystem sys: pl.allColonizedSystems()) {
             if (sys != null &&
             		(sys.enemyShipsInOrbit(pl) || sys.hasEvent())) // BR: to track incoming monsters
                 list.add(sys);
         }
         if (knowShipETA) {
-            List<Ship> vShips = player().visibleShips();
+            List<Ship> vShips = visibleShips();
             for (Ship sh: vShips) {
                 if (sh != null && sh.empId() != pl.id) {
                     StarSystem sys = g.system(sh.destSysId());

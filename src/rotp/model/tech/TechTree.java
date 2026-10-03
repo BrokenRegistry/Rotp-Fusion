@@ -80,7 +80,8 @@ public final class TechTree implements Base, Serializable {
     private List<String> newTechs;
     private List<TradeTechNotification> tradedTechNotifs;
     private boolean[] colonizableHostility = new boolean[13];
-    public transient float totalResearchThisTurn = 0;
+    // Production captures this amount for the later research phase.
+    public float totalResearchThisTurn = 0;
 
     public Empire empire()                                            { return empire; }
     public TechCategory category(int i)                               { return category[i]; }
@@ -202,7 +203,7 @@ public final class TechTree implements Base, Serializable {
 				hasCloakingTech = true;
 			else if (techType == Tech.BLACK_HOLE)
 				hasBlackHoleTech = true;
-			else if (techType == Tech.STARGATE && empire.isPlayer())
+            else if (techType == Tech.STARGATE && empire.isHumanEmpire())
 				// In case of Empire swapping, as some AI remove this info.
 				canBuildStargate = true;
 		}
@@ -312,7 +313,7 @@ public final class TechTree implements Base, Serializable {
             for (TradeTechNotification notif: tradedTechNotifs()) {
                 boolean newTech = learnTech(notif.techId);
                 if (newTech)
-                    GameSession.addTurnNotification(notif);
+                    GameSession.addTurnNotificationForEmpire(empire().id, notif);
             }
         }
         else {
@@ -844,7 +845,7 @@ public final class TechTree implements Base, Serializable {
     	if (spying && opts.forbidTechStealing()) // No tech stealing = no tech plundering
     		return result;
 
-        List<String> forbiddenTech = opts.forbiddenTechList(empire.isPlayer());
+        List<String> forbiddenTech = opts.forbiddenTechList(empire.isHumanEmpire());
         for (TechCategory cat: category) {
         	List<String> catTech = new ArrayList<>(cat.knownTechs());
         	catTech.removeAll(forbiddenTech);

@@ -29,31 +29,38 @@ public class GNNNotification implements TurnNotification {
 
 
     public static void notifyAllianceFormed(String message) {
-        GameSession.addTurnNotification(new GNNNotification(message, "GNN_Alliance_Formed", true, true));
+        enqueue(new GNNNotification(message, "GNN_Alliance_Formed", true, true));
     }
     public static void notifyAllianceBroken(String message) {
-        GameSession.addTurnNotification(new GNNNotification(message, "GNN_Alliance_Broken", true, true));
+        enqueue(new GNNNotification(message, "GNN_Alliance_Broken", true, true));
     }
     public static void notifyCouncil(String message) {
-        GameSession.addTurnNotification(new GNNNotification(message, "GNN_Expansion", false, false));
+        enqueue(new GNNNotification(message, "GNN_Expansion", false, false));
     }
     public static void notifyExpansion(String message) {
-        GameSession.addTurnNotification(new GNNNotification(message, "GNN_Expansion", false, true));
+        enqueue(new GNNNotification(message, "GNN_Expansion", false, true));
     }
     public static void notifyRebellion(String message, boolean player) {
-        GameSession.addTurnNotification(new GNNNotification(message, "GNN_Rebellion", false, !player));
+        enqueue(new GNNNotification(message, "GNN_Rebellion", false, !player));
     }
     public static void notifyGenocide(String message) {
-        GameSession.addTurnNotification(new GNNNotification(message, "GNN_Genocide", false, true));
+        enqueue(new GNNNotification(message, "GNN_Genocide", false, true));
     }
     public static void notifyImmediateEvent(String message, String id) {
-        RotPUI.instance().processNotification(new GNNRandomEventNotification(message, id));
+        if (GameSession.instance().controllerRegistry() == null)
+            RotPUI.instance().processNotification(new GNNRandomEventNotification(message, id));
     }
     public static void notifyRandomEvent(String message, String id) {
-        GameSession.addTurnNotification(new GNNRandomEventNotification(message, id));
+        enqueue(new GNNRandomEventNotification(message, id));
     }
     public static void notifyRanking(String message, List<Empire> empireList) {
-        GameSession.addTurnNotification(new GNNRankingNotification(message, empireList, "GNN_Ranking"));
+        enqueue(new GNNRankingNotification(message, empireList, "GNN_Ranking"));
+    }
+    private static void enqueue(TurnNotification notification) {
+        // News messages are still formatted from the local player's perspective.
+        // Omit them in rostered games until a recipient-safe news view exists.
+        if (GameSession.instance().controllerRegistry() == null)
+            GameSession.addTurnNotification(notification);
     }
     private GNNNotification(String msg, String id, boolean alliance, boolean nonEssential) {
         message = msg;

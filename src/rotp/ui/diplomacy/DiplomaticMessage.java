@@ -52,6 +52,41 @@ public abstract class DiplomaticMessage implements Base {
     protected String messageType = "";
     protected String remark;
     protected boolean returnToMap = false;
+    private long hotSeatRevision;
+    private long hotSeatGeneration;
+    private String hotSeatActor;
+    protected boolean hotSeatCanAct() {
+        return hotSeatCanAct(false);
+    }
+    /** Dismissing a turn report is allowed while planning orders remain locked. */
+    protected boolean hotSeatCanAcknowledge() {
+        return hotSeatCanAct(true);
+    }
+    private boolean hotSeatCanAct(boolean acknowledgement) {
+        if (session().hotSeatState() == null) return true;
+        var snapshot = session().hotSeatState().snapshot();
+        return hotSeatGeneration == rotp.ui.multiplayer.HotSeatDesktop.viewerGeneration()
+                && snapshot.revision() == hotSeatRevision
+                && java.util.Objects.equals(hotSeatActor, snapshot.ownerPlayerId())
+                && ((acknowledgement && rotp.model.game.GameSession.performingTurn())
+                    || rotp.multiplayer.hotseat.HotSeatOrders.canEdit(player().id));
+    }
+    protected boolean hotSeatHumanRecipient() {
+        return session().hotSeatState() != null && diplomat != null
+                && session().controllerRegistry().isHumanControlled(diplomat.id);
+    }
+    protected boolean queueHotSeatOffer(rotp.multiplayer.hotseat.HotSeatDiplomacy.Offer offer,
+            int tradeLevel, Integer target) {
+        if (!hotSeatHumanRecipient()) return false;
+        if (!hotSeatCanAct()) return true;
+        var result = new rotp.multiplayer.hotseat.HotSeatDiplomacy(session())
+                .submit(hotSeatActor, hotSeatRevision, offer, diplomat.id, tradeLevel, target);
+        javax.swing.JOptionPane.showMessageDialog(rotp.Rotp.getFrame(), text(
+                result == rotp.multiplayer.hotseat.HotSeatDiplomacy.Result.QUEUED
+                        ? "HOTSEAT_OFFER_QUEUED" : "HOTSEAT_OFFER_INVALID"));
+        rotp.ui.RotPUI.instance().selectRacesPanel();
+        return true;
+    }
 
     public int numReplies()                      { return 1; }
     public int numDataLines()                    { return 0; }
@@ -61,9 +96,16 @@ public abstract class DiplomaticMessage implements Base {
     public String dataLine(int i)                { return ""; }
     public boolean enabled(int i)                { return true; }
     public void escape()                         { }
-    public void select(int i)                    { escape(); }
+    public void select(int i)                    {
+        if (!hotSeatCanAct()) return; escape(); }
 
     public void init() {
+        if (session().hotSeatState() != null) {
+            var snapshot = session().hotSeatState().snapshot();
+            hotSeatRevision = snapshot.revision();
+            hotSeatActor = snapshot.ownerPlayerId();
+            hotSeatGeneration = rotp.ui.multiplayer.HotSeatDesktop.viewerGeneration();
+        }
         // clear vars used for individual messages
         remark = null;
         incident = null;

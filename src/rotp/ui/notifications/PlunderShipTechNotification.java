@@ -22,13 +22,16 @@ public class PlunderShipTechNotification implements TurnNotification {
     String techId;
     int empId;
 
-    public static void create(String t, int e) {
-        GameSession.addTurnNotification(new PlunderShipTechNotification(t,e));
+    public static void create(int recipientEmpireId, String t, int e) {
+        GameSession.addTurnNotificationForEmpire(recipientEmpireId,
+                new PlunderShipTechNotification(t,e));
     }
     public PlunderShipTechNotification(String t, int e) {
         techId = t;
         empId = e;
     }
+    public String techId() { return techId; }
+    public int sourceEmpireId() { return empId; }
     @Override
     public String displayOrder() { return PLUNDER_TECH; }
 

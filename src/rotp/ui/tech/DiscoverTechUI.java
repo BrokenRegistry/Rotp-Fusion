@@ -129,6 +129,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
         clearBuffer();
         startFadeTimer();
         startTimeMs = System.currentTimeMillis();
+        hotSeatFramed = null;
         holoPct = 0;
         view = SCIENTIST_VIEW;
         mode = MODE_SHOW_TECH;
@@ -150,6 +151,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
         clearBuffer();
         startFadeTimer();
         startTimeMs = System.currentTimeMillis();
+        hotSeatFramed = null;
         holoPct = 0;
         view = SCIENTIST_VIEW;
         mode = MODE_SHOW_TECH;
@@ -172,6 +174,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
         clearBuffer();
         startFadeTimer();
         startTimeMs = System.currentTimeMillis();
+        hotSeatFramed = null;
         holoPct = 0;
         view = TROOPER_VIEW;
         mode = MODE_SHOW_TECH;
@@ -196,6 +199,7 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
         clearBuffer();
         startFadeTimer();
         startTimeMs = System.currentTimeMillis();
+        hotSeatFramed = null;
         holoPct = 0;
         view = TROOPER_VIEW;
         mode = MODE_SHOW_TECH;
@@ -212,11 +216,61 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
         frameEmpire2 = null;
         initConsoleSelection("Plunder Ship Technology", true);
     }
+    // Hot seat: report the framed empire; the turn engine steals and frames.
+    private java.util.function.IntConsumer hotSeatFramed;
+    public void hotSeatFrame(EspionageMission m, String techId, int empId, java.util.function.IntConsumer framed) {
+        Galaxy gal = galaxy();
+        clearBuffer();
+        startFadeTimer();
+        startTimeMs = System.currentTimeMillis();
+        holoPct = 0;
+        view = SPY_VIEW;
+        mode = MODE_SHOW_TECH;
+        background = BACKGROUND_ALIEN_LAB;
+        researchedTech = false;
+        tech = tech(techId);
+        system = m.targetSystem();
+        sourceEmpire = gal.empire(empId);
+        player().resetSpy();
+        mission = m;
+        title = text("TECH_STOLEN_TITLE", text(sourceEmpire.raceName()), player().sv.name(system.id));
+        title = sourceEmpire.replaceTokens(title, "alien");
+        finished = false;
+        frameEmpire1 = m.empiresToFrame().get(0);
+        frameEmpire2 = m.empiresToFrame().get(1);
+        hotSeatFramed = framed;
+        initConsoleSelection("Steal Technology", true);
+    }
+    /** Hot seat: report a theft already resolved; framing was chosen during the mission. */
+    public void stolenTechReport(String techId, Integer sysId, int empId) {
+        Galaxy gal = galaxy();
+        clearBuffer();
+        startFadeTimer();
+        startTimeMs = System.currentTimeMillis();
+        hotSeatFramed = null;
+        holoPct = 0;
+        view = SPY_VIEW;
+        mode = MODE_SHOW_TECH;
+        background = BACKGROUND_ALIEN_LAB;
+        researchedTech = false;
+        tech = tech(techId);
+        sourceEmpire = gal.empire(empId);
+        system = sysId == null ? gal.system(sourceEmpire.capitalSysId()) : gal.system(sysId);
+        player().resetSpy();
+        mission = null;
+        title = text("TECH_STOLEN_TITLE", text(sourceEmpire.raceName()), player().sv.name(system.id));
+        title = sourceEmpire.replaceTokens(title, "alien");
+        finished = false;
+        frameEmpire1 = null;
+        frameEmpire2 = null;
+        initConsoleSelection("Steal Technology", true);
+    }
     public void stealTech(EspionageMission m, int empId) {
         Galaxy gal = galaxy();
         clearBuffer();
         startFadeTimer();
         startTimeMs = System.currentTimeMillis();
+        hotSeatFramed = null;
         holoPct = 0;
         view = SPY_VIEW;
         mode = MODE_SHOW_TECH;
@@ -680,6 +734,17 @@ public class DiscoverTechUI extends FadeInPanel implements MouseListener, MouseM
         finish();
     }
     private void handleFrameEmpireAction(int buttonId) {
+        if (hotSeatFramed != null) {
+            Empire framed = buttonId == 1 ? frameEmpire1 : buttonId == 2 ? frameEmpire2 : null;
+            if (framed == null)
+                return;
+            var answer = hotSeatFramed;
+            hotSeatFramed = null;
+            finished = true;
+            repaint();
+            answer.accept(framed.id);
+            return;
+        }
         if (buttonId == 1) {
             mission.frameEmpire(frameEmpire1);
         }

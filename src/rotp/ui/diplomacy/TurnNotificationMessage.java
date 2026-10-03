@@ -22,6 +22,7 @@ public class TurnNotificationMessage extends DiplomaticMessage {
     }
     @Override
     public void escape() {
+        if (!hotSeatCanAcknowledge()) return;
         session().resumeNextTurnProcessing();
     }
     @Override

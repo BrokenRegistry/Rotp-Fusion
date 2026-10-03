@@ -282,6 +282,7 @@ final class ConfirmCreateUI extends BasePanel implements KeyListener, MouseListe
         disableGlassPane();
     }
     private void createAction() {
+        if (targetDesign == null || !hotSeatCanEdit(targetDesign.empire().id)) return;
         if (renamingOnly && nameField.getText().trim().isEmpty()) {
             cancelAction();
             return;
@@ -302,6 +303,7 @@ final class ConfirmCreateUI extends BasePanel implements KeyListener, MouseListe
     }
     @Override
     public void keyPressed(KeyEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         keystrokeCount++;
         int k = e.getKeyCode();
         if (k == KeyEvent.VK_BACK_SPACE) {
@@ -325,6 +327,7 @@ final class ConfirmCreateUI extends BasePanel implements KeyListener, MouseListe
     public void mousePressed(MouseEvent arg0) { }
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         if (e.getButton() > 3)
             return;
         if (hoverTarget == cancelButtonArea) {
@@ -339,7 +342,8 @@ final class ConfirmCreateUI extends BasePanel implements KeyListener, MouseListe
         }
     }
     @Override
-    public void mouseDragged(MouseEvent e) { }
+    public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
     @Override
     public void mouseMoved(MouseEvent e) {
         int x = e.getX();
@@ -358,6 +362,7 @@ final class ConfirmCreateUI extends BasePanel implements KeyListener, MouseListe
         private static final long serialVersionUID = 1L;
         @Override
         public void actionPerformed(ActionEvent ev) {
+        if (!hotSeatCanEdit(player().id)) return;
             createAction();
         }
     }
@@ -365,6 +370,7 @@ final class ConfirmCreateUI extends BasePanel implements KeyListener, MouseListe
         private static final long serialVersionUID = 1L;
         @Override
         public void actionPerformed(ActionEvent ev) {
+        if (!hotSeatCanEdit(player().id)) return;
             cancelAction();
         }
     }

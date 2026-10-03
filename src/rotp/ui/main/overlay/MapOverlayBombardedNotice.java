@@ -42,6 +42,7 @@ public final class MapOverlayBombardedNotice implements IMapOverlay {
 	private MainUI parent;
 	private int sysId;
 	private ShipFleet fleet;
+	private Empire attacker;
 	private int pop, endPop, bases, endBases, fact, endFact, shield;
 	private ClickToContinueSprite clickSprite;
 
@@ -51,6 +52,7 @@ public final class MapOverlayBombardedNotice implements IMapOverlay {
     }
     public void releaseObjects() {
     	fleet = null;
+    	attacker = null;
     }
     public void init(int systemId, ShipFleet fl) {
         mask = null;
@@ -58,6 +60,7 @@ public final class MapOverlayBombardedNotice implements IMapOverlay {
         sysId = systemId;
         Empire pl = player();
         fleet = fl;
+        attacker = fl.empire();
         pl.sv.refreshFullScan(sysId);
         pop = pl.sv.population(sysId);
         bases = pl.sv.bases(sysId);
@@ -75,6 +78,32 @@ public final class MapOverlayBombardedNotice implements IMapOverlay {
             advanceMap();
             return;
         }
+        show();
+    }
+    /** Hot seat: show a bombardment the turn engine already resolved. */
+    public void initResult(int systemId, Empire attackerEmpire, float popBefore, float popAfter,
+            float basesBefore, float basesAfter, float factBefore, float factAfter) {
+        mask = null;
+        planetImg = null;
+        sysId = systemId;
+        fleet = null;
+        attacker = attackerEmpire;
+        Empire pl = player();
+        pl.sv.refreshFullScan(sysId);
+        shield = pl.sv.shieldLevel(sysId);
+        pop = (int) popBefore;
+        endPop = (int) popAfter;
+        bases = (int) basesBefore;
+        endBases = (int) basesAfter;
+        fact = (int) factBefore;
+        endFact = (int) factAfter;
+        if ((pop == endPop) && (bases == endBases) && (fact == endFact)) {
+            advanceMap();
+            return;
+        }
+        show();
+    }
+    private void show() {
         StarSystem sys = galaxy().system(sysId);
         parent.setOverlay(this);
         parent.hideDisplayPanel();
@@ -174,8 +203,8 @@ public final class MapOverlayBombardedNotice implements IMapOverlay {
         int x0 = boxX+((leftW-sw)/2);
         drawBorderedString(g, yearStr, 2, x0, boxY+boxH1-s20, SystemPanel.textShadowC, SystemPanel.orangeText);
 
-        String titleStr = text("MAIN_BOMBARDED_TITLE", sysName, fleet.empire().raceName());
-        titleStr = fleet.empire().replaceTokens(titleStr, "alien");
+        String titleStr = text("MAIN_BOMBARDED_TITLE", sysName, attacker.raceName());
+        titleStr = attacker.replaceTokens(titleStr, "alien");
         scaledFont(g, titleStr, boxW-leftW, 22, 16);
         drawShadowedString(g, titleStr, 4, boxX+leftW, boxY+s30, SystemPanel.textShadowC, Color.white);
         String contStr = text("CLICK_CONTINUE");

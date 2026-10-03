@@ -68,6 +68,7 @@ public final class MapOverlayNone implements IMapOverlay {
 		return true;
 	}
     @Override public boolean handleKeyPress(KeyEvent e) {
+        if (!parent.hotSeatCanEdit(player().id)) return true;
 		// BR: For the Flag color selection
     	// setModifierKeysState(e); // Already done in MainUI
     	if(GameSession.autoRunning() && (e.getKeyCode() == KeyEvent.VK_ESCAPE)) {
@@ -238,7 +239,7 @@ public final class MapOverlayNone implements IMapOverlay {
             		misClick();
             		break;
             	}
-                parent.handleNextTurn();
+                if (session().hotSeatState() == null) parent.handleNextTurn();
                 session().nextTurn();
                 break;
             case KeyEvent.VK_O: // BR:

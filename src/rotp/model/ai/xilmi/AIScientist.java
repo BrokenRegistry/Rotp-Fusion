@@ -86,7 +86,6 @@ import rotp.model.tech.TechSubspaceInterdictor;
 import rotp.model.tech.TechTeleporter;
 import rotp.model.tech.TechTorpedoWeapon;
 import rotp.model.tech.TechTree;
-import rotp.ui.notifications.SelectTechNotification;
 import rotp.util.Base;
 
 public class AIScientist implements Base, Scientist {
@@ -523,7 +522,7 @@ public class AIScientist implements Base, Scientist {
             Tech firstTech = techs.get(0);
             // we stop asking for user selection once we finished Future Tech 1
             if (firstTech.futureTechLevel() < 2) {
-                GameSession.addTurnNotification(new SelectTechNotification(cat));
+                GameSession.requestTechSelection(cat);
                 return;
             }
         }

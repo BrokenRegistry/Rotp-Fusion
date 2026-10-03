@@ -43,6 +43,7 @@ public class SystemMassTransportPanel  extends SystemPanel {
         initModel(0);
     }
     public void deployTransports() {
+        if (!hotSeatCanEdit(player().id)) return;
         if (!canDeployTransports())
             return;
 
@@ -137,7 +138,8 @@ public class SystemMassTransportPanel  extends SystemPanel {
 		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
 		@Override public void mouseClicked(MouseEvent e)	{ }
 		@Override public void mousePressed(MouseEvent e)	{ }
-		@Override public void mouseReleased(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
 		@Override public void mouseDragged(MouseEvent arg0)	{ }
 		@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
     }
@@ -215,6 +217,7 @@ public class SystemMassTransportPanel  extends SystemPanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();

@@ -85,6 +85,9 @@ public class SystemMassSpendingPanel  extends BasePanel implements MouseMotionLi
         topParent.drawBrownButton(g, text("FLEETS_CANCEL"), cancelBox, hoverBox, h-s32);
     }
     private void setShipSpendingLevel(float pct) {
+        if (!hotSeatCanEdit(player().id)) return;
+        if (!Float.isFinite(pct) || pct < 0 || pct > 1 || topParent.filteredSystems.stream()
+                .anyMatch(s -> s == null || s.colony() == null || !hotSeatCanEdit(s.colony().empire().id))) return;
         for (StarSystem sys: topParent.filteredSystems) {
             Colony c = sys.colony();
             if (c != null) {
@@ -138,6 +141,7 @@ public class SystemMassSpendingPanel  extends BasePanel implements MouseMotionLi
     public void mousePressed(MouseEvent e) { }
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         if (e.getButton() > 3)
             return;
         int x = e.getX();

@@ -54,6 +54,8 @@ public class SystemMassRallyPanel extends SystemPanel {
         initModel(0);
     }
     public void startRallies() {
+        if (!hotSeatCanEdit(player().id)) return;
+        if (topParent.filteredSystems.stream().anyMatch(s -> s == null || s.empire() == null || !hotSeatCanEdit(s.empire().id))) return;
         if (!canStartRallies()) {
         	misClick();
         	return;
@@ -84,6 +86,8 @@ public class SystemMassRallyPanel extends SystemPanel {
         topParent.repaint();
     }
     public void startRallyToGates(int action) {
+        if (!hotSeatCanEdit(player().id)) return;
+        if (topParent.filteredSystems.stream().anyMatch(s -> s == null || s.empire() == null || !hotSeatCanEdit(s.empire().id))) return;
     	List<StarSystem> destSystems = player().systemsWithStargate();
         if (destSystems.isEmpty()) {
         	misClick();
@@ -283,6 +287,7 @@ public class SystemMassRallyPanel extends SystemPanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();

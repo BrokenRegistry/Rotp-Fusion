@@ -189,6 +189,7 @@ public final class Galaxy implements Base, Serializable {
 	public boolean playerSwapRequest()	 	 { return requestToSwapPlayer; }
 	public boolean swapPlayerEmpire()		 { return swapPlayerEmpire(requestedSwapPlayer); }
 	public boolean swapPlayerEmpire(int id)	 {
+        if (session().hotSeatState() != null) return false;
 		if (ironmanLockedOptions) {
 			misClick();
 			return false;
@@ -230,6 +231,15 @@ public final class Galaxy implements Base, Serializable {
 	}
 
     public void player(Empire d)             { playerEmpire = d; }
+    /** Changes desktop perspective only; controller ownership and AI settings stay fixed. */
+    public void activateHotSeatViewer(int empireId) {
+        Empire viewer = empire(empireId);
+        if (session().controllerRegistry() == null || viewer == null
+                || !session().controllerRegistry().isHumanControlled(empireId))
+            throw new IllegalArgumentException("Viewer must be a rostered human");
+        playerEmpire = viewer;
+        Empire.updatePlayerId(empireId);
+    }
     @Override
     public Empire player()                   { return playerEmpire; }
     @Override
@@ -289,7 +299,8 @@ public final class Galaxy implements Base, Serializable {
             adviceGiven.add(key);
     }
     private boolean adviceAlreadyGiven(String key) {
-        return adviceGiven.contains(key) || options().isAutoPlay();
+        return adviceGiven.contains(key) || options().isAutoPlay()
+                || session().controllerRegistry() != null;
     }
     public void giveAdvice(String key) {
         if (!adviceAlreadyGiven(key)) {
@@ -484,6 +495,9 @@ public final class Galaxy implements Base, Serializable {
 				emp.startAlwaysAtWar();
 	}
 	public void validateOnLoad()	{
+        validateOnLoad(true);
+    }
+    public void validateOnLoad(boolean restorePersistentRandom) {
     	if (dynamicOptions == null)
     		dynamicOptions = new DynOptions();
     	if (galRandom == null) // For backward compatibility
@@ -500,7 +514,7 @@ public final class Galaxy implements Base, Serializable {
     		if (swappedPositions)
         		System.out.println("!!! Swapped Positions");
     	}
-    	if (options().persistentRNG())
+        if (restorePersistentRandom && options().persistentRNG())
     		Rotp.rand(galRandom);
 //    	orionEmpire().isOrion = true;
     	orionEmpire = new Empire(this, -2, orionId(), 0, "Orion"); // to update tech
@@ -565,10 +579,11 @@ public final class Galaxy implements Base, Serializable {
             memLog();
             // RotPUI.instance().mainUI().showMemoryLowPrompt(); // TO DO BR: Comment
         }
-        if (IDebugOptions.selectedShowVIPPanel())
+        if (session().controllerRegistry() == null && IDebugOptions.selectedShowVIPPanel())
         	VIPConsole.updateConsole();
         giveAdvice(MapOverlayAdvice.MAIN_ADVISOR_SCOUT);
-        session().processNotifications();
+        if (session().controllerRegistry() == null)
+            session().processNotifications();
     }
     public void moveShipsInTransit() {
         // move transports

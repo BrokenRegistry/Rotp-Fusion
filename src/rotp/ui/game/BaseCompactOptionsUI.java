@@ -679,6 +679,10 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			param.setFromDefault(excludeCfg, excludeSubMenu);
 	}
 	public  void start(String p, BasePanel ui) { // Called from subUI
+        if (session().hotSeatState() != null) {
+            javax.swing.JOptionPane.showMessageDialog(rotp.Rotp.getFrame(), text("HOTSEAT_SHARED_POLICIES"));
+            return;
+        }
 		parentUI = ui;
 		ModifierKeysState.reset();
 		start();

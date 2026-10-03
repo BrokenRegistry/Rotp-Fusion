@@ -202,6 +202,18 @@ public final class MainUI extends BasePanel implements IMapHandler {
         overlayAdvice = new MapOverlayAdvice(this);
         overlay = overlayNone;
     }
+    @Override protected void paintChildren(java.awt.Graphics graphics) {
+        super.paintChildren(graphics);
+        if (session().hotSeatSetup() != null) {
+            var snapshot = session().hotSeatState().snapshot();
+            if (snapshot.ownerPlayerId() != null) {
+                graphics.setColor(java.awt.Color.WHITE);
+                graphics.setFont(narrowFont(18));
+                graphics.drawString(text("HOTSEAT_CURRENT_PLAYER",
+                        session().hotSeatSetup().displayName(snapshot.ownerPlayerId())), s20, s25);
+            }
+        }
+    }
     public void init(boolean pauseNextTurn) {
         map.init();
 		initOnDemandAdvisorPanel();
@@ -224,6 +236,19 @@ public final class MainUI extends BasePanel implements IMapHandler {
         saveX = map.centerX();
         saveY = map.centerY();
         sessionVar("MAINUI_SAVE_CLICKED", clickedSprite());
+    }
+    public rotp.multiplayer.hotseat.HotSeatViewState captureHotSeatView() {
+        Integer selected = clickedSprite() instanceof StarSystem system ? system.id : null;
+        return new rotp.multiplayer.hotseat.HotSeatViewState(map.centerX(), map.centerY(), map.scaleY(), selected);
+    }
+    public void restoreHotSeatView(rotp.multiplayer.hotseat.HotSeatViewState view) {
+        if (view == null) return;
+        map.centerX(view.centerX());
+        map.centerY(view.centerY());
+        map.setScale(view.scale());
+        Integer id = view.selectedSystemId();
+        if (id != null && id >= 0 && id < galaxy().numStarSystems() && player().sv.isScouted(id))
+            clickedSprite(galaxy().system(id));
     }
     public void restoreMapState() {
         showDisplayPanel();
@@ -370,6 +395,12 @@ public final class MainUI extends BasePanel implements IMapHandler {
         overlayBombardedNotice.init(sysId, fl);
         repaint();
     }
+    public void showBombardmentResult(int sysId, Empire attacker, float popBefore, float popAfter,
+            float basesBefore, float basesAfter, float factBefore, float factAfter) {
+        overlayBombardedNotice.initResult(sysId, attacker, popBefore, popAfter,
+                basesBefore, basesAfter, factBefore, factAfter);
+        repaint();
+    }
     public void showShipCombatPrompt(ShipCombatManager mgr) {
         overlay = overlayShipCombatPrompt;
         overlayShipCombatPrompt.init(mgr);
@@ -387,6 +418,20 @@ public final class MainUI extends BasePanel implements IMapHandler {
     public void showSpyReport() {
         overlay = overlaySpies;
         overlaySpies.init();
+        repaint();
+    }
+    public void showHotSeatColonizePrompt(int sysId, ShipFleet fl, ShipDesign d, java.util.function.Consumer<Boolean> answer) {
+        overlay = overlayColonizePrompt;
+        overlayColonizePrompt.hotSeatInit(sysId, fl, d, answer);
+    }
+    public void showHotSeatBombardPrompt(int sysId, ShipFleet fl, java.util.function.IntConsumer answer) {
+        overlay = overlayBombardPrompt;
+        overlayBombardPrompt.hotSeatInit(sysId, fl, answer);
+        repaint();
+    }
+    public void showHotSeatEspionageMission(EspionageMission esp, int empId, java.util.function.Consumer<String> category) {
+        overlay = overlayEspionageMission;
+        overlayEspionageMission.hotSeatInit(esp, empId, category);
         repaint();
     }
     public void showEspionageMission(EspionageMission esp, int empId) {

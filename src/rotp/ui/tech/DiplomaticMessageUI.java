@@ -15,6 +15,10 @@
  */
 package rotp.ui.tech;
 
+import rotp.model.game.GameSession;
+
+import java.util.function.Consumer;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
@@ -99,7 +103,36 @@ public class DiplomaticMessageUI extends FadeInPanel
     @Override
     public String ambienceSoundKey() { return diplomatEmpire.isPlayer() ? defaultAmbience() : diplomatEmpire.diplomacyTheme(); }
 
+    // Hot seat: an offer answered for the turn engine, which applies the treaty itself.
+    private Consumer<Boolean> hotSeatAnswer;
+    public boolean hotSeatOffer(DiplomaticNotification notif, Consumer<Boolean> accept) {
+        hotSeatAnswer = accept;
+        if (initMessage(notif))
+            return true;
+        hotSeatAnswer = null;
+        return false;
+    }
+    /** Hot-seat offers and replayed reports are answered outside the planning edit window. */
+    private boolean canAnswer() {
+        return hotSeatAnswer != null || GameSession.performingTurn() || hotSeatCanEdit(player().id);
+    }
+    private void escapeMessage() {
+        exited = true;
+        if (hotSeatAnswer != null)
+            answerHotSeat(false);
+        else
+            message.escape();
+    }
+    private void answerHotSeat(boolean accept) {
+        Consumer<Boolean> answer = hotSeatAnswer;
+        hotSeatAnswer = null;
+        answer.accept(accept);
+    }
     public boolean init(DiplomaticNotification notif) {
+        hotSeatAnswer = null;
+        return initMessage(notif);
+    }
+    private boolean initMessage(DiplomaticNotification notif) {
         clearBuffer();
         diplomatEmpire = notif.talker();
         if (diplomatEmpire.isPlayer()) {
@@ -140,13 +173,15 @@ public class DiplomaticMessageUI extends FadeInPanel
         	log("Skipped Offer Trade by Empire now at war");
         	// System.out.println("Skipped Offer Trade by Empire now at war");
             exited = true;
-            message.escape();
+            if (hotSeatAnswer == null)
+                message.escape();
         	return false;
         }
         
         return true;
     }
     public void initReply(DiplomacyRequestReply reply) {
+        hotSeatAnswer = null;
         diplomatEmpire = reply.view().owner();
         if (diplomatEmpire.isPlayer()) {
             flag = player().flagNorm();
@@ -474,7 +509,10 @@ public class DiplomaticMessageUI extends FadeInPanel
             return;
         exited = true;
         softClick();
-        message.select(opt);
+        if (hotSeatAnswer != null)
+            answerHotSeat(opt == 0); // every offer lists acceptance first
+        else
+            message.select(opt);
     }
     private boolean waitingOnMessage() {
         if (diplomatEmpire.isPlayer() || !message.showTalking())
@@ -506,6 +544,7 @@ public class DiplomaticMessageUI extends FadeInPanel
     }
     @Override
     public void keyPressed(KeyEvent e) {
+        if (!canAnswer()) return;
         if (waitingOnMessage())
                 return;
 
@@ -523,8 +562,7 @@ public class DiplomaticMessageUI extends FadeInPanel
             	RotPUI.instance().selectTechPanel(1);
             	return;
             case KeyEvent.VK_ESCAPE:
-                exited = true;
-                message.escape();
+                escapeMessage();
         }
     }
 
@@ -544,6 +582,7 @@ public class DiplomaticMessageUI extends FadeInPanel
     public void mousePressed(MouseEvent arg0) { }
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (!canAnswer()) return;
         if (e.getButton() > 3)
             return;
         if (selectHover < 0)

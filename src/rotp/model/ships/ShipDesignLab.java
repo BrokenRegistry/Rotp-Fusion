@@ -159,7 +159,7 @@ public class ShipDesignLab implements Base, Serializable {
         loadInitialDesigns();
 
         // modnar: add battleScout option to give player super Scout design
-        if ( c.isPlayerControlled() && options().selectedBattleScout() ) { 
+        if ( c.isHumanEmpire() && options().selectedBattleScout() ) {
             ShipDesign design;
             design = battleScoutDesign();
 			design.checkForAutoTag();
@@ -201,19 +201,19 @@ public class ShipDesignLab implements Base, Serializable {
 
 		if (empire.isMonster())
 			return;
-		boolean isPlayer = empire.isPlayer();
-		boolean isActive = !(isPlayer && options().scoutAndColonyOnly());
+		boolean isHuman = empire.isHumanEmpire();
+		boolean isActive = !(isHuman && options().scoutAndColonyOnly());
 
         ShipDesign design;
         rotp.model.ai.xilmi.NewShipTemplate nst = new rotp.model.ai.xilmi.NewShipTemplate();
 
         design = startingScoutDesign();
         setScoutDesign(design, 0);
-		if (isPlayer)
+		if (isHuman)
 			design.checkForAutoTag();
 
         design = nst.autoDestroyerDesign(empire.shipDesignerAI(), 0);
-        if (isPlayer)
+        if (isHuman)
             design.name(text("SHIP_DESIGN_1ST_FIGHTER_NAME"));
         if(design.isArmed()) {
         	setFighterDesign(design, 1);
@@ -221,20 +221,20 @@ public class ShipDesignLab implements Base, Serializable {
         }
 
         design = nst.autoBomberDesign(empire.shipDesignerAI(), 1);
-        if (isPlayer)
+        if (isHuman)
             design.name(text("SHIP_DESIGN_1ST_BOMBER_NAME"));
         setBomberDesign(design, 2);
         design.active(isActive);
 
         design = nst.autoDestroyerDesign(empire.shipDesignerAI(), 1);
-        if (isPlayer)
+        if (isHuman)
             design.name(text("SHIP_DESIGN_1ST_DESTROYER_NAME"));
         setDestroyerDesign(design, 3);
         design.active(isActive);
 
         design = startingColonyDesign();
         setColonyDesign(design, 4);
-		if (isPlayer)
+		if (isHuman)
 			design.checkForAutoTag();
     }
     public void nextTurn() {
@@ -344,7 +344,7 @@ public class ShipDesignLab implements Base, Serializable {
         ShipDesign design = newBlankDesign(ShipDesign.SMALL);
         design.special(0, specialReserveFuel());
         design.mission(ShipDesign.SCOUT);
-        if (empire.isAI())
+        if (!empire.isHumanEmpire())
             nameDesign(design);
         else
             design.name(text("SHIP_DESIGN_1ST_SCOUT_NAME"));
@@ -356,7 +356,7 @@ public class ShipDesignLab implements Base, Serializable {
         design.engine(engines().get(0));
         design.addWeapon(beamWeapon(0, false), 1);
         design.mission(ShipDesign.FIGHTER);
-        if (empire.isAI())
+        if (!empire.isHumanEmpire())
             nameDesign(design);
         else
             design.name(text("SHIP_DESIGN_1ST_FIGHTER_NAME"));
@@ -368,7 +368,7 @@ public class ShipDesignLab implements Base, Serializable {
         design.computer(computers().get(1));
         design.addWeapon(bombWeapon(0), 3);
         design.mission(ShipDesign.BOMBER);
-        if (empire.isAI())
+        if (!empire.isHumanEmpire())
             nameDesign(design);
         else
             design.name(text("SHIP_DESIGN_1ST_BOMBER_NAME"));
@@ -381,7 +381,7 @@ public class ShipDesignLab implements Base, Serializable {
         design.addWeapon(beamWeapon(0, false), 4);
         design.computer(computers().get(1));
         design.shield(shields().get(1));
-        if (empire.isAI())
+        if (!empire.isHumanEmpire())
             nameDesign(design);
         else
             design.name(text("SHIP_DESIGN_1ST_DESTROYER_NAME"));
@@ -392,7 +392,7 @@ public class ShipDesignLab implements Base, Serializable {
         ShipDesign design = newBlankDesign(ShipDesign.LARGE);
         design.mission(ShipDesign.COLONY);
         design.special(0, empire.shipDesignerAI().bestColonySpecial());
-        if (empire.isAI())
+        if (!empire.isHumanEmpire())
             nameDesign(design);
         else
             design.name(text("SHIP_DESIGN_1ST_COLONY_NAME"));

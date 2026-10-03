@@ -1466,7 +1466,7 @@ public class AIShipCaptain implements Base, ShipCaptain {
     {
         CombatStackColony col = mgr.results().colonyStack;
         float baseConfidence = 1.0f;
-        if(stack.empire().isPlayer())
+        if(stack.empire().isHumanEmpire())
         {
             if(col != null && col.empire() == empire)
             {

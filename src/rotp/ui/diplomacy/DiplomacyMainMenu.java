@@ -48,6 +48,8 @@ public class DiplomacyMainMenu extends DiplomaticMessage {
             options.add(THREATEN_MENU);
         else if (plAI.canDeclareWar(dip))
             options.add(WAR_MENU);
+        if (hotSeatHumanRecipient() && plAI.canDeclareWar(dip) && !options.contains(WAR_MENU))
+            options.add(WAR_MENU);
 
         options.add(EXIT);
     }
@@ -56,7 +58,10 @@ public class DiplomacyMainMenu extends DiplomaticMessage {
     @Override
     public int numReplies()             { return options.size(); }
     @Override
-    public boolean enabled(int i)       { return i < options.size(); }
+    public boolean enabled(int i) {
+        if (i < 0 || i >= options.size()) return false;
+        return !hotSeatHumanRecipient() || options.get(i) != TECHNOLOGY_MENU && options.get(i) != THREATEN_MENU;
+    }
     @Override
     public String reply(int i)          { 
         if (i >= options.size())
@@ -66,9 +71,9 @@ public class DiplomacyMainMenu extends DiplomaticMessage {
         switch(choice) {
             case TREATY_MENU      : return text("DIPLOMACY_MENU_TREATIES");
             case TRADE_MENU       : return text("DIPLOMACY_MENU_TRADE");
-            case TECHNOLOGY_MENU  : return text("DIPLOMACY_MENU_TECHNOLOGY");
+            case TECHNOLOGY_MENU  : return text("DIPLOMACY_MENU_TECHNOLOGY") + (hotSeatHumanRecipient() ? text("HOTSEAT_UNSUPPORTED") : "");
             case AID_MENU         : return text("DIPLOMACY_MENU_OFFER_AID");
-            case THREATEN_MENU    : return text("DIPLOMACY_MENU_THREATEN");
+            case THREATEN_MENU    : return text("DIPLOMACY_MENU_THREATEN") + (hotSeatHumanRecipient() ? text("HOTSEAT_UNSUPPORTED") : "");
             case WAR_MENU         : return text("DIPLOMACY_MENU_DECLARE_WAR");
             case EXIT             : return text("DIPLOMACY_MENU_GOODBYE"); 
         }
@@ -76,6 +81,7 @@ public class DiplomacyMainMenu extends DiplomaticMessage {
     }
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         if (!enabled(i))
             return;
         if (i >= options.size())
@@ -84,6 +90,10 @@ public class DiplomacyMainMenu extends DiplomaticMessage {
         Empire pl = player();
         log("DiplomacyMainMenu - selected: ", str(i));
         int choice = options.get(i);
+        if (hotSeatHumanRecipient() && choice == TRADE_MENU) {
+            DiplomaticMessage.show(view(), DialogueManager.DIPLOMACY_TRADE_MENU);
+            return;
+        }
 
         switch(choice) {
             case TREATY_MENU     : DiplomaticMessage.show(view(), DialogueManager.DIPLOMACY_TREATY_MENU); break;

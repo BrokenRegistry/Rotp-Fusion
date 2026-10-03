@@ -303,7 +303,7 @@ public class AIGeneral implements Base, General {
         // Willing to take 1.1:1 losses to invade normal 100-pop size planet with 200 factories.
         // For invading normal 80-pop size planet with 320 factories, be willing to take ~1:1 losses.
         float value = takePlanetValue(sys) * 1.1f;
-        if (value > options().maxLandingTroops(sys, empire.isPlayer()))
+        if (value > options().maxLandingTroops(sys, empire.isHumanEmpire()))
         	return false;
         return needed < pop * value;
     }
@@ -330,7 +330,7 @@ public class AIGeneral implements Base, General {
         
         // BR: moved transport size computation here to test for limits
         float troops = mult*troopsNecessaryToTakePlanet(v, sys);
-        if (troops > options().maxLandingTroops(sys, empire.isPlayer()))
+        if (troops > options().maxLandingTroops(sys, empire.isHumanEmpire()))
         	return;
 
         if (empire.sv.hasFleetForEmpire(sys.id, empire))
@@ -487,7 +487,7 @@ public class AIGeneral implements Base, General {
             //return empire.sv.population(id) * killRatio;
         }
         float troop = empire.sv.population(id) * killRatio;
-        if (troop > options().maxLandingTroops(sys, empire.isPlayer()))
+        if (troop > options().maxLandingTroops(sys, empire.isHumanEmpire()))
         	return Float.MAX_VALUE;
         return troop;
     }

@@ -48,7 +48,7 @@ public class SabotageRebellionIncident extends DiplomaticIncident {
         incited = m.rebelsIncited();
         severity = max(-25,(-2*incited)+ev.embassy().currentSpyIncidentSeverity());
     }
-    private String systemName()      { return player().sv.knownName(sysId); }
+    private String systemName()      { return galaxy().empire(empVictim).sv.knownName(sysId); }
     @Override
     public boolean isSpying()        { return true; }
     @Override

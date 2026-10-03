@@ -79,16 +79,35 @@ public final class TechCategory implements Base, Serializable {
     private boolean researchCompleted = false;
     private boolean researchStarted = false;
 	private int selectionTime = 0;
+    private boolean selectionPending;
+    private long selectionSequence;
 
     public int index()                     { return index; }
     void index(int i)                      { index = i; }
     public List<String> knownTechs()       { return knownTechs; }
     public String currentTech()            { return currentTech; }
+    public Empire empire()                  { return tree.empire(); }
+    public boolean selectionPending()       { return selectionPending; }
+    public long selectionSequence()         { return selectionSequence; }
+    public boolean requestSelection() {
+        if (selectionPending)
+            return false;
+        selectionPending = true;
+        selectionSequence++;
+        return true;
+    }
+    public boolean selectPendingTech(String techId) {
+        if (!selectionPending || techId == null || !techIdsAvailableForResearch().contains(techId))
+            return false;
+        Tech selected = tech(techId);
+        return selected != null && currentTech(selected);
+    }
     public boolean currentTech(Tech t)     { 
         if (!id().equals(t.cat.id()))
             return false;
         researchStarted = true;
         currentTech = t.id();
+        selectionPending = false;
 		selectionTime = galaxy().numberTurns();
         return true;
     }
@@ -254,7 +273,7 @@ public final class TechCategory implements Base, Serializable {
     public List<String> possibleTechs()  { return possibleTechs; }
     public List<String> allTechs()       { return TechLibrary.baseCategory[index].possibleTechs(); }
 	public List<String> allowedTechs()	{
-		boolean isPlayer = tree.empire().isPlayer();
+		boolean isPlayer = tree.empire().isHumanEmpire();
 		List<String> allowedTechs = new ArrayList<>();
 		for (String techId : allTechs())
 			if (isAllowed(techId, isPlayer))
@@ -289,7 +308,7 @@ public final class TechCategory implements Base, Serializable {
 		for (int i=0; i<baseCat.possibleTechs.size(); i++) {
 			String id = baseCat.possibleTechs.get(i);
 			Tech t = tech(id);
-			if (!t.restricted && emp.canResearch(t) && !t.free && isAllowed(id, emp.isPlayer())) { // BR: never add in some Technologies
+			if (!t.restricted && emp.canResearch(t) && !t.free && isAllowed(id, emp.isHumanEmpire())) { // BR: never add in some Technologies
 				List<String> techs = techsByQuintile[t.quintile()-1];
 				techs.add(id);
 			}
@@ -297,7 +316,7 @@ public final class TechCategory implements Base, Serializable {
 
 		// BR: always add in some Technologies
 		for (ParamTech tech : options().techModList())
-			if (tech.isAlways(index, tech.techSeqNum, emp.isPlayer()))
+			if (tech.isAlways(index, tech.techSeqNum, emp.isHumanEmpire()))
 				addPossibleTech(tech.techId());
 
 		for (int i=0; i<MAX_QUINTILES; i++) {
@@ -353,7 +372,7 @@ public final class TechCategory implements Base, Serializable {
             String id = baseCat.possibleTechs.get(i);
             Tech t = tech(id);
             if (!t.restricted && emp.canResearch(t) && !t.free
-                && isAllowed(id, emp.isPlayer())) { // BR: never add in some Technologies
+                && isAllowed(id, emp.isHumanEmpire())) { // BR: never add in some Technologies
                 List<String> techs = techsByQuintile[t.quintile()-1];
                 techs.add(id);
             }
@@ -361,7 +380,7 @@ public final class TechCategory implements Base, Serializable {
 
 		// BR: always add in some Technologies
 		for (ParamTech tech : options().techModList())
-			if (tech.isAlways(index, tech.techSeqNum, emp.isPlayer()))
+			if (tech.isAlways(index, tech.techSeqNum, emp.isHumanEmpire()))
 				addPossibleTech(tech.techId());
 
         for (int i=0;i<MAX_QUINTILES;i++) {

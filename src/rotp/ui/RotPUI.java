@@ -48,6 +48,7 @@ import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.Empire;
 import rotp.model.empires.EspionageMission;
 import rotp.model.empires.SabotageMission;
+import rotp.model.empires.SpyNetwork;
 import rotp.model.empires.species.DNAWorkshopUI;
 import rotp.model.empires.species.NameEditorUI;
 import rotp.model.empires.species.SpeciesSettings.AllSpeciesAttributes;
@@ -189,12 +190,12 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     private final SetupGalaxyUI setupGalaxyUI = new SetupGalaxyUI();
     private final RaceIntroUI raceIntroUI = new RaceIntroUI();
     private MainUI mainUI;
-    private final DesignUI designUI = new DesignUI();
-    private final FleetUI fleetUI = new FleetUI();
-    private final SystemsUI systemsUI = new SystemsUI();
-    private final RacesUI racesUI = new RacesUI();
-    private final PlanetsUI planetsUI = new PlanetsUI();
-    private final AllocateTechUI allocateTechUI = new AllocateTechUI();
+    private DesignUI designUI = new DesignUI();
+    private FleetUI fleetUI = new FleetUI();
+    private SystemsUI systemsUI = new SystemsUI();
+    private RacesUI racesUI = new RacesUI();
+    private PlanetsUI planetsUI = new PlanetsUI();
+    private AllocateTechUI allocateTechUI = new AllocateTechUI();
     private final SelectNewTechUI selectNewTechUI = new SelectNewTechUI();
     private final DiscoverTechUI discoverTechUI = new DiscoverTechUI();
     private final ShipBattleUI shipBattleUI = new ShipBattleUI();
@@ -204,7 +205,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     private final GNNUI gnnUI = new GNNUI();
     private final ColonizePlanetUI colonizePlanetUI = new ColonizePlanetUI();
     private final ColonyViewUI colonyViewUI = new ColonyViewUI();
-    private final DiplomaticMessageUI diplomaticMessageUI = new DiplomaticMessageUI();
+    private DiplomaticMessageUI diplomaticMessageUI = new DiplomaticMessageUI();
     private final GalacticCouncilUI galacticCouncilUI = new GalacticCouncilUI();
     private final GameOverUI gameOverUI = new GameOverUI();
     private final ErrorUI errorUI = new ErrorUI();
@@ -346,7 +347,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         if (drawNextTurnNotice && GameSession.performingTurn()) {
             drawNotice(g, 28, -s100);
         }
-        requestFocusInWindow();
+        if (!rotp.ui.multiplayer.HotSeatDesktop.blocksNavigation()) requestFocusInWindow();
     }
     /* public void repaintNotice() {
         int w0 = scaled(500);
@@ -355,6 +356,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         int y0 = (getHeight()-h0)/2;
         repaint(x0,y0,w0,h0);
     } */
+    public BasePanel selectedPanel()  { return selectedPanel; }
     private void selectCurrentPanel() { selectPanel(currentPane, selectedPanel); }
 
 	// PLAYER-TRIGGERED ACTIONS
@@ -426,9 +428,27 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     	}
     }
     public void selectMainPanel()      { selectMainPanel(false); }
+    /** Discard viewer-specific controls and caches before a private handoff reveals them. */
+    public void resetHotSeatPanels() {
+        if (!SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("UI reset outside EDT");
+        remove(mainUI()); remove(designUI); remove(fleetUI); remove(systemsUI);
+        remove(racesUI); remove(planetsUI); remove(allocateTechUI);
+        if (diplomaticMessageUI.getParent() != null) diplomaticMessageUI.getParent().remove(diplomaticMessageUI);
+        mainUI = new MainUI(); designUI = new DesignUI(); fleetUI = new FleetUI();
+        systemsUI = new SystemsUI(); racesUI = new RacesUI(); planetsUI = new PlanetsUI();
+        allocateTechUI = new AllocateTechUI();
+        diplomaticMessageUI = new DiplomaticMessageUI();
+        if (UserPreferences.windowed()) add(diplomaticMessageUI, DIPLOMATIC_MESSAGE_PANEL);
+        else dialogPane.addToLayout(diplomaticMessageUI, DIPLOMATIC_MESSAGE_PANEL);
+        add(mainUI, MAIN_PANEL); add(designUI, DESIGN_PANEL); add(fleetUI, FLEET_PANEL);
+        add(systemsUI, SYSTEMS_PANEL); add(racesUI, RACES_PANEL); add(planetsUI, PLANETS_PANEL);
+        add(allocateTechUI, TECH_PANEL);
+        mainUI.checkMapInitialized();
+        revalidate();
+    }
     public void selectMainPanel(boolean pauseNextTurn)      {
         disableGlassPane();
-        if (!session().status().inProgress()) {
+        if (!(session().hotSeatState() == null ? session().status().inProgress() : session().inProgress())) {
             selectGameOverPanel();
             return;
         }
@@ -486,6 +506,48 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     public void selectPlanetsPanel()   { planetsUI.init(); selectPanel(PLANETS_PANEL, planetsUI); }
     public void selectTechPanel()      { allocateTechUI.init(); selectPanel(TECH_PANEL, allocateTechUI); }
     public void selectTechPanel(int r) { allocateTechUI.init(r); selectPanel(TECH_PANEL, allocateTechUI); }
+    // Hot seat: native decision screens that report the choice instead of applying it.
+    public void selectHotSeatCouncilVote(java.util.function.Consumer<Empire> vote) {
+        galacticCouncilUI.hotSeatVote(vote);
+        selectHotSeatDialog(COUNCIL_PANEL, galacticCouncilUI);
+    }
+    public void selectHotSeatCouncilRuling(java.util.function.Consumer<Boolean> ruling) {
+        galacticCouncilUI.hotSeatRuling(ruling);
+        selectHotSeatDialog(COUNCIL_PANEL, galacticCouncilUI);
+    }
+    public boolean selectHotSeatDiplomaticOffer(DiplomaticNotification notif, java.util.function.Consumer<Boolean> accept) {
+        if (!diplomaticMessageUI.hotSeatOffer(notif, accept))
+            return false;
+        selectHotSeatDialog(DIPLOMATIC_MESSAGE_PANEL, diplomaticMessageUI);
+        return true;
+    }
+    public void selectHotSeatSabotage(SabotageMission m, int sysId,
+            java.util.function.BiPredicate<SpyNetwork.Sabotage, Integer> choose, Runnable cancel) {
+        sabotageUI.hotSeatMission(m, sysId, choose, cancel);
+        selectPanel(SABOTAGE_PANEL, sabotageUI);
+    }
+    public void selectHotSeatFrame(EspionageMission m, String techId, int empId, java.util.function.IntConsumer framed) {
+        discoverTechUI.hotSeatFrame(m, techId, empId, framed);
+        selectHotSeatDialog(DISCOVER_TECH_PANEL, discoverTechUI);
+    }
+    public void selectHotSeatColonize(int sysId, ShipFleet fl, ShipDesign d, java.util.function.Consumer<Boolean> answer) {
+        mainUI().showHotSeatColonizePrompt(sysId, fl, d, answer);
+        selectMainPanel();
+    }
+    public void selectHotSeatBombard(int sysId, ShipFleet fl, java.util.function.IntConsumer answer) {
+        mainUI().showHotSeatBombardPrompt(sysId, fl, answer);
+        selectMainPanel();
+    }
+    public void selectHotSeatEspionage(EspionageMission m, int empId, java.util.function.Consumer<String> category) {
+        mainUI().showHotSeatEspionageMission(m, empId, category);
+        selectMainPanel();
+    }
+    private void selectHotSeatDialog(String name, BasePanel panel) {
+        if (!UserPreferences.windowed())
+            selectDialogPanel(name, panel);
+        else
+            selectPanel(name, panel);
+    }
     public void selectCouncilPanel()   {
     	if (IDebugOptions.debugAutoRun()) {
     		galacticCouncilUI.autoRun();
@@ -619,6 +681,12 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         selectPanel(SABOTAGE_PANEL, sabotageUI);
         session().waitUntilNextTurnCanProceed();
     }
+    public void selectSabotageResultReport(Empire target, int sysId, SpyNetwork.Sabotage action, int amount) {
+        session().pauseNextTurnProcessing("Show Sabotage Result");
+        sabotageUI.showResultReport(target, sysId, action, amount);
+        selectPanel(SABOTAGE_PANEL, sabotageUI);
+        session().waitUntilNextTurnCanProceed();
+    }
     public void selectHistoryPanel(int empId, boolean showAll) {
         historyUI.init(empId, showAll);
         enableGlassPane(historyUI);
@@ -644,6 +712,19 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
             drawNextTurnNotice = false;
             session().pauseNextTurnProcessing("Show Bombard Notice");
             mainUI().showBombardmentNotice(sysId, fl);
+            selectMainPanel();
+            session().waitUntilNextTurnCanProceed();
+        } finally {
+            drawNextTurnNotice = true;
+        }
+    }
+    public void showBombardmentResult(int sysId, Empire attacker, float popBefore, float popAfter,
+            float basesBefore, float basesAfter, float factBefore, float factAfter) {
+        try {
+            drawNextTurnNotice = false;
+            session().pauseNextTurnProcessing("Show Bombard Result");
+            mainUI().showBombardmentResult(sysId, attacker, popBefore, popAfter,
+                    basesBefore, basesAfter, factBefore, factAfter);
             selectMainPanel();
             session().waitUntilNextTurnCanProceed();
         } finally {
@@ -743,6 +824,15 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     public void selectTradeTechPanel(String techId, int empId) {
         session().pauseNextTurnProcessing("Show Trade Tech");
         discoverTechUI.tradeTech(techId, empId);
+        if (!UserPreferences.windowed())
+            selectDialogPanel(DISCOVER_TECH_PANEL, discoverTechUI);
+        else
+            selectPanel(DISCOVER_TECH_PANEL, discoverTechUI);
+        session().waitUntilNextTurnCanProceed();
+    }
+    public void selectStolenTechReport(String techId, Integer sysId, int empId) {
+        session().pauseNextTurnProcessing("Show Stolen Tech");
+        discoverTechUI.stolenTechReport(techId, sysId, empId);
         if (!UserPreferences.windowed())
             selectDialogPanel(DISCOVER_TECH_PANEL, discoverTechUI);
         else
@@ -945,6 +1035,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
     }
     @Override
     public void animate() {
+        if (rotp.ui.multiplayer.HotSeatDesktop.blocksNavigation()) return;
         try {
             AnimationManager.reclaimImages();
             if (playAnimations()) {

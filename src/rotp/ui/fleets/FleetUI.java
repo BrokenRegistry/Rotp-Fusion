@@ -1129,6 +1129,7 @@ public final class FleetUI extends BasePanel implements IMapHandler, ActionListe
     }
     @Override
     public void keyPressed(KeyEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
     	setModifierKeysState(e); // BR: For the Flag color selection
         if (e.getKeyChar() == '?') {
             showHelp();
@@ -1184,6 +1185,7 @@ public final class FleetUI extends BasePanel implements IMapHandler, ActionListe
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
     	setModifierKeysState(e); // BR: For the Flag color selection
         if (massTransportDialog.isVisible())
             massTransportDialog.mouseWheelMoved(e);
@@ -1253,6 +1255,7 @@ public final class FleetUI extends BasePanel implements IMapHandler, ActionListe
         public void mousePressed(MouseEvent e) {}
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             // int x = e.getX();
@@ -1268,7 +1271,8 @@ public final class FleetUI extends BasePanel implements IMapHandler, ActionListe
             }
         }
         @Override
-        public void mouseDragged(MouseEvent e) {}
+        public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;}
         @Override
         public void mouseMoved(MouseEvent e) {
 			setModifierKeysState(e);

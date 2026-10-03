@@ -44,7 +44,8 @@ public class ColonyShipyard extends ColonySpendingCategory {
 	private Integer defaultDesignId  = null; // If null Get the one from the Empire
 	private transient ShipFleet orbitFleetCopy;
 	private transient ShipFleet rallyFleetCopy; // Transit that join combat
-    private transient float maxAllowedShipBCProd;
+    // Preserve the estimate used by the current turn; null supports older saves.
+    private Float maxAllowedShipBCProd = -1f;
     private transient int newShips = 0;
 	private transient float shipAccruedBC = 0;
 	private transient float unusedAccruedBC = 0;
@@ -103,7 +104,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 		//xilmi: setting those to false before potentially leaving function as otherwise the message will keep coming every turn
 		shipLimitReached = false;
 		stargateCompleted = false;
-		maxAllowedShipBCProd = -1;
+		maxAllowedShipBCProd = -1f;
 		// if we switched designs, send previous ship BC to shipyard reserve
 		if (design != prevDesign) {
 			if (prevDesign instanceof DesignStargate)
@@ -182,7 +183,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 				placeNewShipsInOrbit(shipDesign, newShips);
 				if (emp.isPlayerControlled()) {
 					log(colony().name(), " has constructed: ", str(newShips), " ", design.name());
-					GameSession.addShipsConstructed(shipDesign,  newShips);
+					GameSession.addShipsConstructed(emp.id, shipDesign, newShips);
 				}
 			}
 		}
@@ -303,7 +304,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 		return true;
 	}
     private float maxAllowedShipBCProd() {
-        if (maxAllowedShipBCProd < 0)
+        if (maxAllowedShipBCProd == null || maxAllowedShipBCProd < 0)
             maxAllowedShipBCProd = empire().governorAI().maxShipBCPermitted(colony())* planet().productionAdj();
         return maxAllowedShipBCProd;
     }
@@ -317,7 +318,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
         stargateBC = 0;
         shipBC = 0;
         newShips = 0;
-        maxAllowedShipBCProd = -1;
+        maxAllowedShipBCProd = -1f;
         clearFleetsCopies();
     }
     @Override
@@ -378,8 +379,8 @@ public class ColonyShipyard extends ColonySpendingCategory {
         resetQueueData();
         shipLimitReached = false;
         clearFleetsCopies();
-        maxAllowedShipBCProd = -1;
-        if (newCiv.isPlayer())
+        maxAllowedShipBCProd = -1f;
+        if (newCiv.isHumanEmpire())
         	goToDefaultDesign(); 
     }
     public void goToPrevDesign() {

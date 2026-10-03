@@ -24,13 +24,17 @@ public class TransportsKilledAlert extends GameAlert {
     private final Empire empire;
     private final StarSystem system;
     private final int num;
-    public static void create(Empire e, StarSystem s, int n) {
-        GameSession.addAlert(new TransportsKilledAlert(e,s,n));
+    public static void create(Empire attacker, Empire defender, StarSystem s, int n) {
+        GameSession.addAlertForEmpire(attacker.id, new TransportsKilledAlert(defender,s,n));
     }
-    private String systemName() { return player().sv.knownName(system.id); }
     @Override
     public String description() {
-        String desc = text("MAIN_ALERT_TRANSPORTS_KILLED", systemName(), str(num));
+        return descriptionForEmpire(player().id);
+    }
+    @Override
+    public String descriptionForEmpire(int recipientEmpireId) {
+        String desc = text("MAIN_ALERT_TRANSPORTS_KILLED",
+                galaxy().empire(recipientEmpireId).sv.knownName(system.id), str(num));
         desc = empire.replaceTokens(desc, "alien");
         return desc;
     }

@@ -25,15 +25,21 @@ public class FactoriesDestroyedAlert extends GameAlert {
     private final int count;
     private final StarSystem system;
     public static void create(Empire e, int num, StarSystem sv) {
-        GameSession.addAlert(new FactoriesDestroyedAlert(e,num,sv));
+        GameSession.addAlertForEmpire(sv.empId(), new FactoriesDestroyedAlert(e,num,sv));
     }
     @Override
     public String description() {
+        return descriptionForEmpire(player().id);
+    }
+    @Override
+    public String descriptionForEmpire(int recipientEmpireId) {
         String desc;
         if (spy == null)
-            desc = text("MAIN_ALERT_FACTORIES_DESTROYED2", str(count), player().sv.knownName(system.id));
+            desc = text("MAIN_ALERT_FACTORIES_DESTROYED2", str(count),
+                    galaxy().empire(recipientEmpireId).sv.knownName(system.id));
         else {
-            desc = text("MAIN_ALERT_FACTORIES_DESTROYED", str(count), player().sv.knownName(system.id));
+            desc = text("MAIN_ALERT_FACTORIES_DESTROYED", str(count),
+                    galaxy().empire(recipientEmpireId).sv.knownName(system.id));
             desc = spy.replaceTokens(desc, "alien");
         }
         return desc;

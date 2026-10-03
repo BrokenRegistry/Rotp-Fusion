@@ -37,6 +37,7 @@ import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.swing.SwingUtilities;
 
@@ -63,6 +64,7 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
     static Color grayDark = new Color(64,64,64);
 
     private TechCategory category;
+    private Consumer<String> hotSeatChoice;
     private String hoverTech;
     private boolean boundNotSet;
 
@@ -121,7 +123,13 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
     @Override
     public String ambienceSoundKey() { return "ResearchAmbience"; }
 
+    /** Hot seat: report the choice instead of applying it and resuming the single-player turn. */
+    public void hotSeatCategory(TechCategory c, Consumer<String> choice) {
+        category(c);
+        hotSeatChoice = choice;
+    }
     public void category(TechCategory c)  {
+        hotSeatChoice = null;
         player().resetScientist();
         category = c;
         techIndex = 0;
@@ -349,10 +357,14 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
             return max(widthRatio, heightRatio);
     }
     private void selectTech(String id) {
-        if (id.isEmpty())
+        if (id.isEmpty() || finished)
             return;
         Tech t = tech(id);
-        if (!category().currentTech(t))
+        if (hotSeatChoice != null) {
+            if (!availableTechs.contains(id))
+                return;
+        }
+        else if (!category().currentTech(t))
             return;
 
         finished = true;
@@ -363,7 +375,10 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
 		}
         log("Tech: ", t.name(), " selected for research");
         repaint();
-        session().resumeNextTurnProcessing();
+        if (hotSeatChoice != null)
+            hotSeatChoice.accept(id);
+        else
+            session().resumeNextTurnProcessing();
     }
 	private void mouseAt(int x, int y)	{
 		hoverTech = "";

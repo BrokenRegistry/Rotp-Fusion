@@ -68,7 +68,7 @@ public class SabotageBasesIncident extends DiplomaticIncident {
             }
         }
     }
-    private String systemName() { return player().sv.knownName(sysId); }
+    private String systemName() { return galaxy().empire(empVictim).sv.knownName(sysId); }
     @Override
     public boolean isSpying()   { return true; }
     @Override

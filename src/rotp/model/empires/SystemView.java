@@ -623,12 +623,12 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
         if (!scouted()) {
             log("Orbital scan scouts new system: ", system().name());
             owner().shareSystemInfoWithAllies(this);
-            if (owner().isPlayer())
+            if (owner().isHumanEmpire())
             	autoFlagPlanet(system().planet());
             if (owner().isPlayerControlled()) {
-                GameSession.addSystemScouted(system());
-                if (system().empire() != player())
-                    system().addEvent(new SystemScoutedEvent(player().id));
+                GameSession.addSystemScouted(owner().id, system());
+                if (system().empire() != owner())
+                    system().addEvent(new SystemScoutedEvent(owner().id));
             }
         }
         scoutTime = galaxy().currentYear();
@@ -644,11 +644,11 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
             owner().plunderAncientTech(system());
     }
     public void refreshAllySharingScan() {
-	    if (!scouted() && owner().isPlayer())
+	    if (!scouted() && owner().isHumanEmpire())
 	        	autoFlagPlanet(system().planet());
         if (owner().isPlayerControlled() && !scouted()) {
             log("Ally shares new system data: ", system().name());
-            GameSession.addSystemScoutedByAllies(system());
+            GameSession.addSystemScoutedByAllies(owner().id, system());
         }
 
         scoutTime = galaxy().currentYear();
@@ -660,10 +660,10 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
         if (!scouted()) {
             log("Long range planet scan scouts new system: ", system().name());
             owner().shareSystemInfoWithAllies(this);
-            if (owner().isPlayer())
+            if (owner().isHumanEmpire())
             	autoFlagPlanet(system().planet());
             if (owner().isPlayerControlled())
-                GameSession.addSystemScoutedByAstronomers(system());
+                GameSession.addSystemScoutedByAstronomers(owner().id, system());
         }
 
         scoutTime = galaxy().currentYear();
@@ -676,10 +676,10 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
         if (!scouted()) {
             log("Long range ship scan scouts new system: ", system().name());
             owner().shareSystemInfoWithAllies(this);
-            if (owner().isPlayer())
+            if (owner().isHumanEmpire())
             	autoFlagPlanet(system().planet());
-            if (owner().isPlayer())
-                GameSession.addSystemScouted(system());
+            if (owner().isPlayerControlled())
+                GameSession.addSystemScouted(owner().id, system());
         }
 
         scoutTime = galaxy().currentYear();
@@ -716,7 +716,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
         	planetType_();
         }
 		// To makes the auto-flag follow the planets evolutions.
-		if (owner().isPlayer())
+		if (owner().isHumanEmpire())
 			autoFlagPlanet(system().planet());
         vCurrentSize = (int) system().planet().currentSize();
     }
@@ -894,11 +894,11 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
             return false;
         if (scouted() && system().hasEvent())
             return true;
-        if(system().empire() == player())
+        if(system().empire() == owner())
         {
             for (ShipFleet fl: orbitingFleets()) {
-                if (fl.isPotentiallyArmed(player())) {
-                    if (player().atWarWith(fl.empId())) { 
+                if (fl.isPotentiallyArmed(owner())) {
+                    if (owner().atWarWith(fl.empId())) {
                         return true;
                     }
                 }
@@ -989,7 +989,9 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     private SystemView(int sId, int empId) {
         ownerId = empId;
         sysId = sId;
-        if (player().id == ownerId)
+        if (session().controllerRegistry() == null
+                ? player().id == ownerId
+                : session().controllerRegistry().isHumanControlled(ownerId))
         	setForwardRallies(options().defaultForwardRally());
     }
     private void setLocationSecurity() {

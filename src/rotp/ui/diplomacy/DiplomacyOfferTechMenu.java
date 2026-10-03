@@ -48,6 +48,7 @@ public class DiplomacyOfferTechMenu extends DiplomaticMessage {
     }
     @Override
     public void select(int i) {
+        if (!hotSeatCanAct()) return;
         if (!enabled(i))
             return;
 

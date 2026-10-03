@@ -16,7 +16,7 @@
 package rotp.ui.notifications;
 
 import rotp.model.tech.TechCategory;
-import rotp.ui.RotPUI;
+import rotp.model.game.GameSession;
 
 public class SelectTechNotification implements TurnNotification {
     TechCategory category;
@@ -24,10 +24,12 @@ public class SelectTechNotification implements TurnNotification {
     public SelectTechNotification(TechCategory cat) {
         category = cat;
     }
+    public TechCategory category() { return category; }
     @Override
     public String displayOrder() { return SELECT_NEW_TECH+category.key(); }
     @Override
     public void notifyPlayer() {
-        RotPUI.instance().selectSelectNewTechPanel(category);
+        GameSession session = GameSession.instance();
+        session.researchDecisionAdapter().presentSelection(session, category);
     }
 }

@@ -1177,11 +1177,13 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
             treeX = scaled((400*quintile)-600);
     }
     public void equalize() {
+        if (!hotSeatCanEdit(player().id)) return;
         softClick();
         player().tech().equalizeAllocations();
         repaint();
     }
     public void toggleOverflowSpending() {
+        if (!hotSeatCanEdit(player().id)) return;
         softClick();
         player().toggleColonyExcessToResearch();
         totalPlanetaryResearch = player().totalPlanetaryResearch();
@@ -1189,6 +1191,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
         repaint();
     }
 	private void reachPct(int pct)	{
+        if (!hotSeatCanEdit(player().id)) return;
 		player().tech().equalizeToPct(pct/100f + 1f, false);
 		repaint();
 	}
@@ -1204,6 +1207,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
 			increment(i-1, true);
 	}
     @Override public void keyPressed(KeyEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int k = e.getKeyCode();
         switch (k) {
             case KeyEvent.VK_F1:
@@ -1276,12 +1280,15 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
         }
     }
     public void toggleCategoryLock(int i) {
+        if (!hotSeatCanEdit(player().id)) return;
+        if (i < 0 || i >= rotp.model.tech.TechTree.NUM_CATEGORIES) return;
         softClick();
         TechCategory cat = player().tech().category(i);
         cat.toggleLock();
         repaint();
     }
     private void decrement(int i, boolean click) {
+        if (!hotSeatCanEdit(player().id)) return;
         if (player().tech().adjustTechAllocation(i, -1)) {
             if (click)
                 softClick();
@@ -1291,6 +1298,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
             misClick();
     }
     private void increment(int i, boolean click) {
+        if (!hotSeatCanEdit(player().id)) return;
         if (player().tech().adjustTechAllocation(i, 1)) {
             if (click)
                 softClick();
@@ -1349,6 +1357,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
     }
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int x = e.getX();
         int y = e.getY();
 		boolean rightClick = SwingUtilities.isRightMouseButton(e);
@@ -1447,6 +1456,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
     }
     @Override
     public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int x = e.getX();
         int y = e.getY();
         if (treeBox.contains(x,y))
@@ -1468,6 +1478,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int x = e.getX();
         int y = e.getY();
         int rot = e.getWheelRotation();

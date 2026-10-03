@@ -139,6 +139,7 @@ public class RallyPointPanel extends SystemPanel {
     }
     @Override
     public void keyPressed(KeyEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
         int k = e.getKeyCode();
         switch (k) {
             case KeyEvent.VK_ESCAPE:
@@ -183,6 +184,11 @@ public class RallyPointPanel extends SystemPanel {
     public StarSystem systemViewToDisplay() {
         return system();
     }
+    private boolean hotSeatRallyEditable() {
+        return session().hotSeatState() == null || relocationSprite() != null
+                && relocationSprite().from().empire() != null
+                && hotSeatCanEdit(relocationSprite().from().empire().id);
+    }
     private ShipRelocationSprite relocationSprite() {
         Sprite sprite = parentSpritePanel().spriteToDisplay();
         if (sprite instanceof ShipRelocationSprite)
@@ -209,6 +215,7 @@ public class RallyPointPanel extends SystemPanel {
             || (destination() == player().sv.rallySystem(sys.id)));
     }
     public void cancelRelocation() {
+        if (!hotSeatRallyEditable()) return;
         StarSystem sys = relocationSprite().from();
         relocationSprite().clear();
 		if (lastPreviewChain != null)
@@ -219,6 +226,7 @@ public class RallyPointPanel extends SystemPanel {
         mapHandler().repaint();
     }
     public void createRelocationPath() {
+        if (!hotSeatRallyEditable()) return;
         if (!canRelocateShips())
             return;
         ShipRelocationSprite spr = relocationSprite();
@@ -248,6 +256,7 @@ public class RallyPointPanel extends SystemPanel {
         mapHandler().repaint();
     }
     public void cancelRelocationPath() {
+        if (!hotSeatRallyEditable()) return;
         StarSystem sys = relocationSprite().homeSystemView();
         player().sv.stopRally(sys.id);
         defaultChainRally();
@@ -299,8 +308,10 @@ public class RallyPointPanel extends SystemPanel {
         protected BasePanel bottomPane() { return new ToSystemDetailPane(); }
 		@Override public void mouseClicked(MouseEvent e)	{ }
 		@Override public void mousePressed(MouseEvent e)	{ }
-		@Override public void mouseReleased(MouseEvent e)	{ }
-		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
 		@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
 		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
 		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
@@ -430,6 +441,7 @@ public class RallyPointPanel extends SystemPanel {
         }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                 return;
             int x = e.getX();
@@ -461,7 +473,8 @@ public class RallyPointPanel extends SystemPanel {
             }
         }
         @Override
-        public void mouseDragged(MouseEvent e) { }
+        public void mouseDragged(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return; }
         @Override
         public void mouseMoved(MouseEvent e) {
 			setModifierKeysState(e);
@@ -555,8 +568,10 @@ public class RallyPointPanel extends SystemPanel {
         }
 		@Override public void mouseClicked(MouseEvent e)	{ }
 		@Override public void mousePressed(MouseEvent e)	{ }
-		@Override public void mouseReleased(MouseEvent e)	{ }
-		@Override public void mouseDragged(MouseEvent e)	{ }
+		@Override public void mouseReleased(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
+		@Override public void mouseDragged(MouseEvent e)	{
+        if (!hotSeatCanEdit(player().id)) return; }
 		@Override public void mouseMoved(MouseEvent e)		{ setModifierKeysState(e); }
 		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
 		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, mapHandler()); }
@@ -689,7 +704,8 @@ public class RallyPointPanel extends SystemPanel {
             largeRedBackC = new LinearGradientPaint(start, mid1, dist, redColors);
         }
         @Override
-        public void mouseDragged(MouseEvent arg0) { }
+        public void mouseDragged(MouseEvent arg0) {
+        if (!hotSeatCanEdit(player().id)) return; }
         @Override
         public void mouseMoved(MouseEvent e) {
 			setModifierKeysState(e);
@@ -723,6 +739,7 @@ public class RallyPointPanel extends SystemPanel {
         public void mousePressed(MouseEvent e) { }
         @Override
         public void mouseReleased(MouseEvent e) {
+        if (!hotSeatCanEdit(player().id)) return;
             if (e.getButton() > 3)
                     return;
             int x = e.getX();

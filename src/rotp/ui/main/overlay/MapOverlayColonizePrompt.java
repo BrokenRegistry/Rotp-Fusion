@@ -57,7 +57,24 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
     	fleet = null;
     	design = null;
     }
+    // Hot seat: report the answer; the turn engine colonizes.
+    private java.util.function.Consumer<Boolean> hotSeatAnswer;
+    public void hotSeatInit(int systemId, ShipFleet fl, ShipDesign d, java.util.function.Consumer<Boolean> answer) {
+        init(systemId, fl, d);
+        hotSeatAnswer = answer;
+    }
+    private boolean answerHotSeat(boolean colonize) {
+        if (hotSeatAnswer == null)
+            return false;
+        var answer = hotSeatAnswer;
+        hotSeatAnswer = null;
+        parent.clearOverlay();
+        parent.repaint();
+        answer.accept(colonize);
+        return true;
+    }
     public void init(int systemId, ShipFleet fl, ShipDesign d) {
+        hotSeatAnswer = null;
         StarSystem sys = galaxy().system(systemId);
         sysId = systemId;
         fleet = fl;
@@ -90,6 +107,8 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
             mask = null;
             planetImg = null;
             softClick();
+            if (answerHotSeat(true))
+                return;
             parent.clearOverlay();
             parent.repaintAllImmediately();
             RotPUI.instance().selectColonizationPanel(sysId, fleet, design);
@@ -100,7 +119,8 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
             drawSprites = false;
             mask = null;
             planetImg = null;
-            advanceMap();
+            if (!answerHotSeat(false))
+                advanceMap();
         }
     }
     @Override
