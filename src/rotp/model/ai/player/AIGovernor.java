@@ -18,6 +18,8 @@ package rotp.model.ai.player;
 import rotp.model.ai.interfaces.Governor;
 import rotp.model.colony.Colony;
 import rotp.model.empires.Empire;
+import rotp.model.empires.SystemView;
+import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.GameSession;
 import rotp.util.Base;
@@ -51,7 +53,7 @@ public final class AIGovernor implements Base, Governor {
 		if ((bases > 0) && col.defense().missileBasesCompletedThisTurn())
 			session().addSystemToAllocate(sys, text("MAIN_ALLOCATE_BASES_COMPLETE", name, col.defense().maxBases()));
 		if (col.industry().isCompletedThisTurn())
-			session().addSystemToAllocate(sys, text("MAIN_ALLOCATE_MAX_FACTORIES", name, (int)col.industry().maxBuildableFactories()));
+			session().addSystemToAllocate(sys, text("MAIN_ALLOCATE_MAX_FACTORIES", name, col.industry().maxBuildableFactories()));
 		if (!cleanupOK)
 			session().addSystemToAllocate(sys, text("MAIN_ALLOCATE_ECO_LOCKED_WASTE", name));
 		if (col.ecology().populationGrowthCompletedThisTurn())
@@ -72,6 +74,21 @@ public final class AIGovernor implements Base, Governor {
 			baseSetAutoPilotAllocations(col);
 			col.validate();
 		}
+	}
+	@Override public float targetPopPct(SystemView sv)	{
+		float totalEmpirePopulationCapacity = empire.generalAI().totalEmpirePopulationCapacity(empire);
+		if(totalEmpirePopulationCapacity > 0) {
+			float tgtPercentage = empire.totalEmpirePopulation() / totalEmpirePopulationCapacity;
+			//we don't want to bolster systems in a war-zone but also not send their pop away
+			float currentPercentage = tgtPercentage;
+			if(sv.system().colony() != null)
+				currentPercentage = sv.system().colony().populationPct();
+			for(ShipFleet fl : sv.system().orbitingFleets())
+				if(fl.isArmed() && fl.empire().aggressiveWith(empire.id))
+					return currentPercentage;
+			return tgtPercentage;
+		}
+		return 0;
 	}
 	private boolean ensureMinimumCleanup(Colony col)	{
 		// return true if eco spending is set to enough for waste

@@ -76,8 +76,8 @@ public final class ShipDisplaySprite extends MapControlSprite  {
 			BufferedImage img = player().shipImage();
 			g2.drawImage(img, startX+s4, startY+s10, map);
 		}
-		if (map.showFriendlyTransports()) {
-			BufferedImage img = player().transportImage();
+		if (map.showPioneers() || map.showTroops()) {
+			BufferedImage img = player().transportImage(50);
 			g2.drawImage(img, startX+s12, startY+s5, map);
 		}
 		if (map.showUnarmedShips()) {

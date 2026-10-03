@@ -398,7 +398,7 @@ public class LabelManager implements Base {
 		case 160:	// non-breaking space
 		case 167:	// § The section sign
 		case 178:	// ² squared
-		case 183:	// · central dor
+		case 183:	// · central dot
 		case 8203:	// Zero-Width Space
 		case 8226:	// • bullet point 
 		case 8239:	//   indivisible space
