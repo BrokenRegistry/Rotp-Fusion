@@ -56,6 +56,17 @@ class PlayByEmailTest {
 
     static final java.util.Map<String, String> PINS = java.util.Map.of("a", "1111", "b", "2222");
 
+    /** Clicks the button with this label, as a player would. */
+    static void click(java.awt.Container root, String label) {
+        var stack = new java.util.ArrayDeque<java.awt.Component>(List.of(root));
+        while (!stack.isEmpty()) {
+            var c = stack.pop();
+            if (c instanceof javax.swing.AbstractButton b && label.equals(b.getText())) { b.doClick(0); return; }
+            if (c instanceof java.awt.Container k) for (var child : k.getComponents()) stack.push(child);
+        }
+        fail("No button labelled " + label);
+    }
+
     static boolean planningReady(GameSession game) {
         if (game.hotSeatState().snapshot().stage() != HotSeatState.Stage.PLANNING) return false;
         // Reports play on the game's own screens over the map: click through each one.
@@ -162,7 +173,10 @@ class PlayByEmailTest {
                 assertTrue(controller.finishPlayerTurn("a", snapshot.revision()));
                 var finish = (rotp.ui.multiplayer.PlayByEmailFinishPanel) rotp.Rotp.getFrame().getGlassPane();
                 assertEquals(StandingOrders.DEFAULT, finish.orders());
-                finish.send(orders);
+                for (String key : List.of("PBEM_BOMBARD_ALWAYS", "PBEM_FRAME_WHEN_POSSIBLE", "PBEM_SABOTAGE_MISSILES"))
+                    click(finish, game.text(key));
+                assertEquals(orders, finish.orders(), "Clicking an option selects it");
+                click(finish, game.text("PBEM_SEND"));
             });
             assertEquals(orders, game.playByEmail().orders("a"));
 

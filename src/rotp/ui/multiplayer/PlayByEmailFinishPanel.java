@@ -1,54 +1,96 @@
 package rotp.ui.multiplayer;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.*;
 import rotp.multiplayer.pbem.StandingOrders;
 import rotp.multiplayer.pbem.StandingOrders.*;
 import rotp.ui.BasePanel;
+import rotp.ui.game.GameUI;
 
-/** Review standing orders, then send the turn. */
+/**
+ * Review standing orders, then send the turn. Options are buttons, not dropdowns:
+ * a dropdown's list opens beneath the cover this screen is drawn on.
+ */
 public final class PlayByEmailFinishPanel extends BasePanel {
     private static final long serialVersionUID = 1L;
-    private final JComboBox<Choice<Bombard>> bombard;
-    private final JComboBox<Choice<Frame>> frame;
-    private final JComboBox<Choice<SabotageTarget>> sabotage;
+    private final Options<Bombard> bombard;
+    private final Options<Frame> frame;
+    private final Options<SabotageTarget> sabotage;
     private final JButton send;
 
-    /** Shows the translated label while keeping the enum value. */
-    private record Choice<E extends Enum<E>>(E value, String label) {
-        @Override public String toString() { return label; }
+    /** One question's options; exactly one is selected and drawn highlighted. */
+    private final class Options<E extends Enum<E>> {
+        private final List<JButton> buttons = new ArrayList<>();
+        private final E[] values;
+        private E selected;
+        Options(E[] values, String prefix, E initial) {
+            this.values = values;
+            for (E value : values) {
+                JButton button = HotSeatStyle.button(new JButton(text(prefix + value.name())), 18);
+                button.addActionListener(e -> select(value));
+                buttons.add(button);
+            }
+            select(initial);
+        }
+        void select(E value) {
+            selected = value;
+            for (int i = 0; i < values.length; i++) {
+                boolean on = values[i] == value;
+                JButton button = buttons.get(i);
+                button.setBackground(on ? GameUI.borderBrightColor() : GameUI.buttonBackgroundColor());
+                button.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(on ? java.awt.Color.WHITE : GameUI.borderBrightColor(), on ? 3 : 2),
+                        BorderFactory.createEmptyBorder(on ? 5 : 6, 18, on ? 5 : 6, 18)));
+            }
+        }
+        JPanel row() {
+            JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+            row.setOpaque(false);
+            buttons.forEach(row::add);
+            return row;
+        }
     }
 
     public PlayByEmailFinishPanel(String playerName, StandingOrders current,
             Consumer<StandingOrders> onSend, Runnable onBack) {
         setLayout(new BorderLayout(15, 25));
-        setBorder(BorderFactory.createEmptyBorder(60, 120, 50, 120));
+        setBorder(BorderFactory.createEmptyBorder(50, 80, 40, 80));
         add(HotSeatStyle.title(text("PBEM_FINISH_TITLE", playerName)), BorderLayout.NORTH);
-        JPanel center = new JPanel(new BorderLayout(10, 20));
-        center.setOpaque(false);
-        JTextArea detail = new JTextArea(text("PBEM_FINISH_DETAIL"));
+
+        bombard = new Options<>(Bombard.values(), "PBEM_BOMBARD_", current.bombard());
+        frame = new Options<>(Frame.values(), "PBEM_FRAME_", current.frame());
+        sabotage = new Options<>(SabotageTarget.values(), "PBEM_SABOTAGE_", current.sabotage());
+        JPanel questions = new JPanel(new GridBagLayout());
+        questions.setOpaque(false);
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.anchor = GridBagConstraints.WEST;
+        c.insets = new Insets(0, 0, 8, 0);
+        JTextArea detail = new JTextArea(text("PBEM_FINISH_DETAIL"), 0, 50);
         detail.setEditable(false);
         detail.setLineWrap(true);
         detail.setWrapStyleWord(true);
         HotSeatStyle.body(detail, 20);
-        center.add(detail, BorderLayout.NORTH);
-        JPanel rows = new JPanel(new GridLayout(0, 2, 16, 12));
-        rows.setOpaque(false);
-        bombard = combo(Bombard.values(), "PBEM_BOMBARD_", current.bombard());
-        frame = combo(Frame.values(), "PBEM_FRAME_", current.frame());
-        sabotage = combo(SabotageTarget.values(), "PBEM_SABOTAGE_", current.sabotage());
-        rows.add(HotSeatStyle.body(text("PBEM_BOMBARD"), 20));
-        rows.add(bombard);
-        rows.add(HotSeatStyle.body(text("PBEM_FRAME"), 20));
-        rows.add(frame);
-        rows.add(HotSeatStyle.body(text("PBEM_SABOTAGE"), 20));
-        rows.add(sabotage);
-        center.add(rows, BorderLayout.CENTER);
+        c.insets = new Insets(0, 0, 24, 0);
+        questions.add(detail, c);
+        addQuestion(questions, c, "PBEM_BOMBARD", bombard.row());
+        addQuestion(questions, c, "PBEM_FRAME", frame.row());
+        addQuestion(questions, c, "PBEM_SABOTAGE", sabotage.row());
+        // Centered at natural size instead of stretched to fill the screen.
+        JPanel center = new JPanel(new GridBagLayout());
+        center.setOpaque(false);
+        center.add(questions);
         add(center, BorderLayout.CENTER);
+
         send = HotSeatStyle.button(new JButton(text("PBEM_SEND")), 22);
         JButton back = HotSeatStyle.button(new JButton(text("PBEM_BACK")), 22);
         send.addActionListener(e -> {
@@ -68,30 +110,24 @@ public final class PlayByEmailFinishPanel extends BasePanel {
         add(footer, BorderLayout.SOUTH);
     }
 
-    private <E extends Enum<E>> JComboBox<Choice<E>> combo(E[] values, String prefix, E selected) {
-        JComboBox<Choice<E>> box = new JComboBox<>();
-        for (E value : values) {
-            var choice = new Choice<>(value, text(prefix + value.name()));
-            box.addItem(choice);
-            if (value == selected) box.setSelectedItem(choice);
-        }
-        return box;
+    private void addQuestion(JPanel questions, GridBagConstraints c, String key, Component row) {
+        JLabel label = HotSeatStyle.body(text(key), 22);
+        label.setHorizontalAlignment(SwingConstants.LEFT);
+        c.insets = new Insets(0, 0, 6, 0);
+        questions.add(label, c);
+        c.insets = new Insets(0, 0, 22, 0);
+        questions.add(row, c);
     }
-    @SuppressWarnings("unchecked")
-    private static <E extends Enum<E>> E value(JComboBox<Choice<E>> box) {
-        return ((Choice<E>) box.getSelectedItem()).value();
+
+    public StandingOrders orders() {
+        return new StandingOrders(bombard.selected, frame.selected, sabotage.selected);
     }
-    public StandingOrders orders() { return new StandingOrders(value(bombard), value(frame), value(sabotage)); }
     @Override public void paintComponent(Graphics g) { HotSeatStyle.paintBackdrop(g, this); }
-    /** Selects orders and sends, as a player would. */
+    /** Selects orders and sends, as a player would by clicking. */
     public void send(StandingOrders orders) {
-        select(bombard, orders.bombard());
-        select(frame, orders.frame());
-        select(sabotage, orders.sabotage());
+        bombard.select(orders.bombard());
+        frame.select(orders.frame());
+        sabotage.select(orders.sabotage());
         if (send.isEnabled()) send.doClick(0);
-    }
-    private static <E extends Enum<E>> void select(JComboBox<Choice<E>> box, E value) {
-        for (int i = 0; i < box.getItemCount(); i++)
-            if (box.getItemAt(i).value() == value) box.setSelectedIndex(i);
     }
 }
