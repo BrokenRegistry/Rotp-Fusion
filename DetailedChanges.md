@@ -3,6 +3,13 @@
 ## What's New
 
 26-10-03 (BR)
+- French translation for Hot-Seat.
+- added Rotp colors to the multiplayer button in the galaxy panel.
+
+26-10-03 (DM)
+- New multiplayer feature (Hot-seat).
+
+26-10-03 (BR)
 - New ships display options:
   - No transports.
   - No ships.

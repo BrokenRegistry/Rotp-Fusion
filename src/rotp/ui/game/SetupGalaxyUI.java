@@ -62,6 +62,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -78,6 +79,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -101,6 +104,7 @@ import rotp.model.game.IGameOptions;
 import rotp.model.game.IInGameOptions;
 import rotp.model.game.RulesetManager;
 import rotp.model.game.SafeListParam;
+import rotp.ui.BasePanel;
 import rotp.ui.NoticeMessage;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
@@ -283,7 +287,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		init0();
 	}
     private rotp.multiplayer.hotseat.HotSeatSetup hotSeatSetup;
-    private final javax.swing.JButton hotSeatButton = new javax.swing.JButton();
+    private final HotSeatButton hotSeatButton = new HotSeatButton();
     private void editHotSeatPlayers() {
         List<String> names = new ArrayList<>();
         for (int i = 0; i <= opts.selectedNumberOpponents(); i++) {
@@ -1390,8 +1394,10 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		}
 	}
 	@Override public void paintComponent(Graphics g0) {
+		int buttonW = s300;
+		int buttonX = leftBoxX + (boxW-buttonW)/2;
         hotSeatButton.setVisible(isOnTop && !starting);
-        hotSeatButton.setBounds(scaled(30), scaled(646), scaled(300), scaled(32));
+        hotSeatButton.setBounds(buttonX, s5, buttonW, s32);
         hotSeatButton.setText(hotSeatSetup == null ? text("HOTSEAT_SETUP_SINGLE")
                 : text("HOTSEAT_SETUP_BUTTON", hotSeatSetup.humans().size()));
 		//showTiming = true; // TO DO BR: COMMENTS
@@ -2883,6 +2889,60 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			if (bmFileChooser.getSelectedFile() != null) {
 				preview(bmFileChooser.getSelectedFile().getPath(), opts.galaxyShape().paramOption3());
 			}
+		}
+	}
+	private final class HotSeatButton extends JButton	{
+		private static final long serialVersionUID = 1L;
+		private static final int fontSize = 20;
+		private HotSeatButton()	{
+			setFont(narrowFont(fontSize));
+			setForeground(GameUI.borderBrightColor());
+			setBackground(GameUI.buttonBackgroundColor());
+			setVerticalTextPosition(AbstractButton.BOTTOM);
+			setHorizontalTextPosition(AbstractButton.CENTER);
+			setMargin(rotpMargin());
+			setOpaque(false);
+			setFocusPainted(false);
+			setBorderPainted(false);
+			setContentAreaFilled(false);
+		}
+		private Insets rotpMargin()	{
+			int side = scaled(fontSize);
+			int top = s2 + side/10;
+			int bottom = s2 + side/20;
+			return new Insets(top, side, bottom, side);
+		}
+		@Override protected void paintComponent(Graphics g)	{
+			Point pt = getMousePosition();
+			boolean highlightBorder = (pt != null && contains(pt));
+			Graphics2D g2 = (Graphics2D) g;
+			setRenderingHints(g);
+			int w = getWidth();
+			int h = getHeight();
+
+			// Paint Background
+			g2.setPaint(GameUI.buttonBackground(0, getWidth()));
+			g2.fillRoundRect(0, 0, w-1, h-1, cnr, cnr);
+
+			// Paint Borders
+			g2.setStroke(BasePanel.stroke1);
+			if (highlightBorder)
+				g2.setColor(Color.YELLOW);
+			else
+				g2.setColor(GameUI.borderBrightColor());
+			g2.drawRoundRect(0, 0, w-1, h-1, cnr, cnr);
+
+			// Paint Text
+			g2.setFont(getFont());
+			Insets margin = getMargin();
+			String text = getText();
+			int sw	= g2.getFontMetrics().stringWidth(text);
+			int x	= max((w-sw)/2, margin.left);
+			int sh	= h - margin.top - margin.bottom;
+			int y	= (sh*75)/100 + margin.top;
+			Color c	= highlightBorder ? Color.yellow : GameUI.borderBrightColor();
+			g2.setColor(c);
+			drawShadowedString(g2, text, 2, x, y, GameUI.borderDarkColor(), c);
 		}
 	}
 }
