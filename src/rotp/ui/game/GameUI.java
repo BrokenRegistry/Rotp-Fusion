@@ -1187,6 +1187,12 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         }
     }
     public void continueGame() { // BR:
+        if (session().playByEmailSentFile() != null) {
+            // The live session may be mid-phase; the sent file is the clean continuation point.
+            try { rotp.multiplayer.hotseat.HotSeatPersistence.load(session().playByEmailSentFile()); }
+            catch (Exception failure) { javax.swing.JOptionPane.showMessageDialog(this, failure.getMessage()); }
+            return;
+        }
         if (session().hotSeatState() != null) {
             session().hotSeatState().coverForLoad();
             session().openHotSeatDesktop(true);
@@ -1257,10 +1263,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 		}
     }
     private void goToSettings() {
-        if (session().hotSeatState() != null) {
-            javax.swing.JOptionPane.showMessageDialog(this, text("HOTSEAT_SHARED_POLICIES"));
-            return;
-        }
+        // In a match the main settings stay open: display, sound and saves are this computer's.
 		buttonClick();
 		onTop = false;
 		MainOptionsUI mainOptionsUI = RotPUI.mainOptionsUI();

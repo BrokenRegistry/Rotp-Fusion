@@ -287,6 +287,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		init0();
 	}
     private rotp.multiplayer.hotseat.HotSeatSetup hotSeatSetup;
+    private boolean playByEmail;
     private final HotSeatButton hotSeatButton = new HotSeatButton();
     private void editHotSeatPlayers() {
         List<String> names = new ArrayList<>();
@@ -295,7 +296,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
             names.add((i + 1) + ": " + (race == null ? text(OPPONENT_RANDOM) : Species.getSpeciesName(race)));
         }
         enableGlassPane(new rotp.ui.multiplayer.HotSeatSetupPanel(names, hotSeatSetup,
-                setup -> { hotSeatSetup = setup; disableGlassPane(); repaint(); },
+                (setup, byEmail) -> { hotSeatSetup = setup; playByEmail = byEmail; disableGlassPane(); repaint(); },
                 () -> { disableGlassPane(); repaint(); }));
     }
 	private void init0() {
@@ -1399,7 +1400,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
         hotSeatButton.setVisible(isOnTop && !starting);
         hotSeatButton.setBounds(buttonX, s5, buttonW, s32);
         hotSeatButton.setText(hotSeatSetup == null ? text("HOTSEAT_SETUP_SINGLE")
-                : text("HOTSEAT_SETUP_BUTTON", hotSeatSetup.humans().size()));
+                : text(playByEmail ? "PBEM_SETUP_BUTTON" : "HOTSEAT_SETUP_BUTTON", hotSeatSetup.humans().size()));
 		//showTiming = true; // TO DO BR: COMMENTS
 		if (!isOnTop)
 			return;
@@ -1980,7 +1981,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
                 RotPUI.instance().mainUI().checkMapInitialized();
                 RotPUI.instance().selectIntroPanel();
             } else {
-                GameSession.instance().startHotSeatGame(opts, hotSeatSetup);
+                GameSession.instance().startHotSeatGame(opts, hotSeatSetup, playByEmail);
                 GameSession.instance().openHotSeatDesktop(false);
             }
 			log("TOTAL GAME START TIME:" +(System.currentTimeMillis()-start));

@@ -546,7 +546,7 @@ public final class SpyNetwork implements Base, Serializable {
         allocationBC += bc;
         float cost = costForNextSpy();
 
-        if (!empire().isHumanEmpire() || options().spyOverSpend()) {
+        if (!owner().isHumanEmpire() || options().spyOverSpend()) {
 	        while (allocationBC >= cost) {
 	            addNewSpy();
 	            allocationBC -= cost;

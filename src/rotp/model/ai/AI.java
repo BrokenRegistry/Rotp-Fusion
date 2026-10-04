@@ -311,6 +311,11 @@ public final class AI implements Base {
     public int promptForBombardment(StarSystem sys, ShipFleet fl) {
         // if player, prompt for decision to bomb instead of deciding here
         if (empire.isPlayerControlled()) {
+            // Play by email: each player's standing orders decide, not a shared setting.
+            if (rotp.model.game.GameSession.isPlayByEmail()) {
+                BombardSystemNotification.create(id(sys), fl, false, 0);
+                return 0;
+            }
             if (options().autoBombardNever())
                 return 0;
             boolean autoBomb = false;

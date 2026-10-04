@@ -6969,7 +6969,7 @@ MOD_OPTIONS_HELP_HK		| <b><u>HOTKEYS:</u></b> →HK_SHIFT_F1← <br>F1 : Affich
 SETUP_GAME_HELP_HK		| H / F1 : Afficher l’aide.<br><br> - / + : Réduire / Agrandir la fenêtre.<br><br>C / Échapper : Continuer<br>      (Soit la partie en cours, soit la dernière partie sauvegardée)<br>R : Rejouer le dernier tour.<br>N / Ctrl+N : Nouvelle Partie / Relancer les dés.<br>L / Ctrl+L : Charger une Partie / Charger des Options.<br>S / Ctrl+S : Sauver la Partie / Sauver les Options.<br>T : Accédez aux paramètres.<br>O / M : Ouvrir le manuel.<br>E / X : Quitter le jeu.<br><br>Z : Cacher le texte pour mieu voir l’arrière plan.
 
 # Local hot-seat play
-HOTSEAT_SETUP_TITLE			| Hot Seat local – Joueurs humains
+HOTSEAT_SETUP_TITLE			| Joueurs humains
 HOTSEAT_EMPIRE				| Case de l’empire
 HOTSEAT_HUMAN				| Humain
 HOTSEAT_PLAYER_NAME			| Nom du joueur
@@ -7021,7 +7021,7 @@ HOTSEAT_OFFER_PEACE			| Proposer la paix
 HOTSEAT_OFFER_PACT			| Proposer un pacte de non-agression
 HOTSEAT_OFFER_ALLIANCE		| Proposer une alliance
 HOTSEAT_OFFER_JOINT_WAR		| Proposer une guerre conjointer contre
-HOTSEAT_SHARED_POLICIES		| Les politiques partagées du gouverneur et du jeu sont fixées pour ce match Hot Seat. Les contrôles du gouverneur par colonie restent disponibles.
+HOTSEAT_SHARED_POLICIES		| Ces paramètres sont partagés par tous les empires ; ils gardent les valeurs choisies au début de ce match. Les contrôles du gouverneur par colonie et les paramètres d’affichage restent disponibles.
 HOTSEAT_VIP_DISABLED		| La console VIP n’est pas disponible pendant le jeu hot-seat.
 HOTSEAT_UNSUPPORTED			| (indisponible en hot-seat)
 HOTSEAT_OFFER_QUEUED		| L’offre est envoyée. L’autre joueur répondra lors de la résolution du tour partagé.
@@ -7055,3 +7055,41 @@ HOTSEAT_STANDING_ACTIVE				| Actif
 HOTSEAT_STANDING_ELIMINATED			| Éliminé
 HOTSEAT_COUNCIL_RULING_DETAIL		| Le Conseil Galactique a élu %1. Reconnaît cet empire comme le leader élu et rejoint ses partisans. Refuse, défie la décision et rejoint la rébellion ; le match continue si les équipes adverses restent.
 HOTSEAT_REPLY_INVALID				| Cette offre n’est plus éligible. Aucun traité ou ordre de guerre n’a été appliqué.
+PBEM_USE							| Jouer par e-mail
+PBEM_SETUP_BUTTON					| Joueurs : %1 humains (par e-mail)
+PBEM_BUILD_MISMATCH					| Ce tour a été créé avec la version %1 ; vous avez la version %2. Tous les joueurs doivent utiliser la même version du jeu.
+PBEM_SEND_TITLE						| Envoyez ce tour à %1
+PBEM_SEND_DETAIL					| Enregistré sous %1 dans votre dossier de sauvegarde. Envoyez le fichier à %2 par e-mail, ou laissez-le dans un dossier partagé. Il s’ouvre avec Charger une Partie.
+PBEM_RETURN_MENU					| Retourner au menu
+PBEM_HERE							| %1 est là
+PBEM_ENTER_PIN						| %1, entrez votre code PIN
+PBEM_CHOOSE_PIN						| %1, choisissez un code PIN
+PBEM_CHOOSE_PIN_DETAIL				| 4 à 12 caractères. Il vous sera demandé pour ouvrir chacun de vos tours.
+PBEM_PIN							| Code PIN :
+PBEM_CONFIRM_PIN					| Répétez le code PIN :
+PBEM_WRONG_PIN						| Ce code PIN est incorrect.
+PBEM_PIN_MISMATCH					| Les deux codes PIN ne correspondent pas.
+PBEM_PIN_INVALID					| Utilisez de 4 à 12 caractères, sans espace.
+PBEM_FINISH_TITLE					| %1 - Terminer le tour
+PBEM_FINISH_DETAIL					| Les ordres permanents répondent à ces choix pendant votre absence et restent en vigueur jusqu’à ce que vous les changiez. Le jeu choisit la technologie que vos espions volent.
+PBEM_BOMBARD						| Bombarder les colonies ennemies :
+PBEM_BOMBARD_NEVER					| Jamais
+PBEM_BOMBARD_ALWAYS					| Toujours
+PBEM_BOMBARD_AT_WAR					| Seulement en guerre
+PBEM_BOMBARD_AT_WAR_NOT_INVADING	| En guerre, sauf si mes troupes débarquent
+PBEM_FRAME							| Après l’espionnage, blâmer un autre empire :
+PBEM_FRAME_NEVER					| Jamais
+PBEM_FRAME_WHEN_POSSIBLE			| Si possible
+PBEM_SABOTAGE						| Cible du sabotage :
+PBEM_SABOTAGE_FACTORIES				| Usines
+PBEM_SABOTAGE_MISSILES				| Bases de missiles
+PBEM_SABOTAGE_REBELS				| Inciter une rebellion
+PBEM_SEND							| Envoyer le tour
+PBEM_BACK							| Retour
+PBEM_FINAL_TITLE					| La partie est terminée
+PBEM_FINAL_DETAIL					| Enregistré sous %1 dans votre dossier de sauvegarde. Envoyez-le à chaque joueur pour qu’il puisse l’ouvrir et voir le résultat.
+PBEM_SHOW_RESULTS					| Voir les résultats
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_TITLE	| Paramètres d’affichage
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_UI	| Affichage
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_BUTTON	| Affichage
+SETTINGS_MOD_MULTIPLAYER_DISPLAY_DETAIL	| Paramètres qui ne changent que l’affichage de cet ordinateur. Les paramètres de jeu sont fixés pour le match.

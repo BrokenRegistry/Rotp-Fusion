@@ -1,12 +1,13 @@
 package rotp.ui.multiplayer;
 
+import rotp.ui.BasePanel;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.RenderingHints;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -52,21 +53,61 @@ public final class HotSeatStyle implements Base {
         text.setOpaque(false);
         text.setBorder(BorderFactory.createEmptyBorder());
     }
-    /** A plain JButton drawn like the game's buttons. */
+    /** Client property: an option button drawn as the current choice. */
+    public static final String SELECTED = "rotp.hotseat.selected";
+
+    /** A JButton drawn like the game's own buttons (see BaseModPanel.drawButton). */
     public static <B extends AbstractButton> B button(B button, int size) {
-        button.setUI(new BasicButtonUI());
+        button.setUI(new GameButtonUI());
         button.setFont(BASE.narrowFont(size));
-        button.setForeground(GameUI.buttonTextColor());
-        button.setBackground(GameUI.buttonBackgroundColor());
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
         button.setFocusPainted(false);
+        button.setRolloverEnabled(true);
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(GameUI.borderBrightColor(), 2),
-                BorderFactory.createEmptyBorder(8, 28, 8, 28)));
-        button.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) { if (button.isEnabled()) button.setForeground(GameUI.textHoverColor()); }
-            @Override public void mouseExited(MouseEvent e) { button.setForeground(GameUI.buttonTextColor()); }
-        });
+        button.setBorder(BorderFactory.createEmptyBorder(6, 22, 6, 22));
         return button;
+    }
+    public static void selected(AbstractButton button, boolean on) {
+        button.putClientProperty(SELECTED, on);
+        button.repaint();
+    }
+
+    /**
+     * Drawn as SetupGalaxyUI's player button: gradient fill, rounded bright outline and
+     * shadowed label, yellow on hover. A selected option keeps a thicker outline.
+     */
+    private static final class GameButtonUI extends BasicButtonUI {
+        @Override public void paint(Graphics g0, JComponent c) {
+            AbstractButton b = (AbstractButton) c;
+            Graphics2D g = (Graphics2D) g0.create();
+            try {
+                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                boolean on = Boolean.TRUE.equals(b.getClientProperty(SELECTED));
+                boolean hover = b.isEnabled() && b.getModel().isRollover();
+                int cnr = BasePanel.s5;
+                int w = c.getWidth(), h = c.getHeight();
+                g.setPaint(GameUI.buttonBackground(0, w));
+                g.fillRoundRect(0, 0, w - 1, h - 1, cnr, cnr);
+                Color fore = !b.isEnabled() ? GameUI.borderDarkColor()
+                        : hover ? Color.yellow : GameUI.borderBrightColor();
+                g.setColor(fore);
+                if (on) {
+                    g.setStroke(BasePanel.stroke3);
+                    g.drawRoundRect(1, 1, w - 3, h - 3, cnr, cnr);
+                } else {
+                    g.setStroke(BasePanel.stroke1);
+                    g.drawRoundRect(0, 0, w - 1, h - 1, cnr, cnr);
+                }
+                g.setFont(b.getFont());
+                FontMetrics fm = g.getFontMetrics();
+                String label = b.getText();
+                java.awt.Insets margin = b.getInsets();
+                int x = Math.max((w - fm.stringWidth(label)) / 2, margin.left);
+                int y = (h - margin.top - margin.bottom) * 75 / 100 + margin.top;
+                BASE.drawShadowedString(g, label, 2, x, y, GameUI.borderDarkColor(), fore);
+            } finally { g.dispose(); }
+        }
     }
 }

@@ -103,6 +103,7 @@ public final class AllSubUI {
 		put(new SystemsOptions());
 		put(new RulesOptions());
 		put(new SettingsOptions());
+		put(new MultiplayerDisplayOptions());
 		put(new SetupParameters());
 	}
 

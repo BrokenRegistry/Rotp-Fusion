@@ -187,6 +187,13 @@ public final class GameSession implements Base, Serializable {
     private transient rotp.multiplayer.hotseat.HotSeatController hotSeatController;
     private rotp.multiplayer.hotseat.HotSeatPolicies hotSeatPolicies;
     private rotp.multiplayer.hotseat.HotSeatSaveEnvelope hotSeatSaveEnvelope;
+    private rotp.multiplayer.pbem.PlayByEmail playByEmail;
+    public rotp.multiplayer.pbem.PlayByEmail playByEmail() { return playByEmail; }
+    public static boolean isPlayByEmail() { return instance != null && instance.playByEmail != null; }
+    // The turn file this computer last wrote for someone else; Continue reopens it.
+    private transient File playByEmailSentFile;
+    public File playByEmailSentFile() { return playByEmailSentFile; }
+    public void playByEmailSentFile(File file) { playByEmailSentFile = file; }
     public static boolean hotSeatPolicyLocked(String key) {
         return instance != null && instance.hotSeatPolicies != null && instance.hotSeatPolicies.locks(key);
     }
@@ -226,6 +233,7 @@ public final class GameSession implements Base, Serializable {
     public static GameSession restoreHotSeatEnvelope(File source) throws Exception {
         if (!javax.swing.SwingUtilities.isEventDispatchThread())
             throw new IllegalStateException("Load hot-seat games on the event thread");
+        rotp.multiplayer.pbem.BuildStamp.requireMatch(source);
         GameSession restored;
         try (ZipFile zip = new ZipFile(source)) {
             ZipEntry entry = zip.getEntry("GameSession.dat");
@@ -1186,6 +1194,10 @@ public final class GameSession implements Base, Serializable {
     }
     public void startHotSeatGame(IGameOptions newGameOptions,
             rotp.multiplayer.hotseat.HotSeatSetup setup) {
+        startHotSeatGame(newGameOptions, setup, false);
+    }
+    public void startHotSeatGame(IGameOptions newGameOptions,
+            rotp.multiplayer.hotseat.HotSeatSetup setup, boolean byEmail) {
         java.util.Objects.requireNonNull(setup, "setup");
         if (newGameOptions.isAutoPlay() || newGameOptions.randomNumAliens()
                 || IDebugOptions.debugAutoRun() || newGameOptions.selectedIronmanLoad()
@@ -1193,12 +1205,20 @@ public final class GameSession implements Base, Serializable {
             throw new IllegalArgumentException(
                     "Hot seat requires fixed opponents, autoplay off, debug autorun off and ironman off");
         ControllerRegistry registry = setup.registry(newGameOptions.selectedNumberOpponents() + 1);
-        startGame(newGameOptions, registry, setup);
+        startGame(newGameOptions, registry, setup, !byEmail ? null : new rotp.multiplayer.pbem.PlayByEmail(
+                setup.humans().stream().map(rotp.multiplayer.hotseat.HotSeatSetup.Assignment::playerId).toList(),
+                java.time.LocalDateTime.now()));
     }
     private void startGame(IGameOptions newGameOptions, ControllerRegistry registry,
             rotp.multiplayer.hotseat.HotSeatSetup setup) {
+        startGame(newGameOptions, registry, setup, null);
+    }
+    private void startGame(IGameOptions newGameOptions, ControllerRegistry registry,
+            rotp.multiplayer.hotseat.HotSeatSetup setup, rotp.multiplayer.pbem.PlayByEmail byEmail) {
         stopCurrentGame();
         hotSeatSetup = setup;
+        playByEmail = byEmail;
+        playByEmailSentFile = null;
         hotSeatSaveEnvelope = null;
         hotSeatPolicies = null;
         hotSeatInbox = setup == null ? null : new rotp.multiplayer.hotseat.HotSeatInbox();
@@ -1255,6 +1275,8 @@ public final class GameSession implements Base, Serializable {
     public void restartGame(IGameOptions newGameOptions, GalaxyCopy src) {
         stopCurrentGame();
         hotSeatSetup = null;
+        playByEmail = null;
+        playByEmailSentFile = null;
         hotSeatSaveEnvelope = null;
         hotSeatPolicies = null;
         hotSeatInbox = null;
@@ -2184,6 +2206,8 @@ public final class GameSession implements Base, Serializable {
                 out.putNextEntry(new ZipEntry("GameSession.dat"));
                 out.write(data);
                 out.closeEntry();
+                // After the session: the generic loader reads the first entry.
+                if (currSession.playByEmail != null) rotp.multiplayer.pbem.BuildStamp.write(out);
             }
             try {
                 Files.move(temporary, destination, StandardCopyOption.ATOMIC_MOVE,
@@ -2387,6 +2411,10 @@ public final class GameSession implements Base, Serializable {
         try {
             log("Loading game from file: ", filename);
             File saveFile = dir.isEmpty() ? new File(filename) : new File(dir, filename);
+            try { rotp.multiplayer.pbem.BuildStamp.requireMatch(saveFile); }
+            catch (rotp.multiplayer.pbem.BuildStamp.MismatchException mismatch) {
+                throw new RuntimeException(text("PBEM_BUILD_MISMATCH", mismatch.fileBuild, mismatch.localBuild));
+            }
             // assume the file is not zipped, load it directly
             try (InputStream file = new FileInputStream(saveFile)) {
                 newSession = loadObjectData(file);
