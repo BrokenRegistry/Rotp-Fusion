@@ -31,11 +31,26 @@ class PbemBasicsTest {
 
     @Test void turnFileNamesAreSafeAndSortable() {
         String label = TurnFiles.matchLabel(LocalDateTime.of(2026, 10, 3, 14, 5));
-        assertEquals("PBEM-20261003-1405", label);
-        assertEquals("PBEM-20261003-1405-T012-r0007-for-Bob.rotp", TurnFiles.fileName(label, 12, 7, "Bob"));
-        assertEquals("PBEM-20261003-1405-T003-r0012-for-Mary Ann_.._.rotp", TurnFiles.fileName(label, 3, 12, " Mary Ann/../ "));
-        assertEquals("PBEM-20261003-1405-T003-r0001-for-player.rotp", TurnFiles.fileName(label, 3, 1, " ... "));
-        assertEquals("PBEM-20261003-1405-T009-final.rotp", TurnFiles.finalFileName(label, 9));
+        assertTrue(label.startsWith("PBEM-20261003-1405-"), label);
+        assertEquals(label + "-T012-r0007-for-Bob.rotp", TurnFiles.fileName(label, 12, 7, "Bob"));
+        assertEquals(label + "-T003-r0012-for-Mary Ann_.._.rotp", TurnFiles.fileName(label, 3, 12, " Mary Ann/../ "));
+        assertEquals(label + "-T003-r0001-for-player.rotp", TurnFiles.fileName(label, 3, 1, " ... "));
+        assertEquals(label + "-T009-final.rotp", TurnFiles.finalFileName(label, 9));
+    }
+
+    @Test void matchesCreatedAtTheSameTimeHaveDistinctPersistentFileNames() throws Exception {
+        var created = LocalDateTime.of(2026, 10, 3, 14, 5);
+        var first = new PlayByEmail(java.util.List.of("a", "b"), created);
+        var second = new PlayByEmail(java.util.List.of("a", "b"), created);
+        assertNotEquals(TurnFiles.fileName(first.matchLabel(), 1, 2, "Bob"),
+                TurnFiles.fileName(second.matchLabel(), 1, 2, "Bob"));
+        assertNotEquals(TurnFiles.finalFileName(first.matchLabel(), 1),
+                TurnFiles.finalFileName(second.matchLabel(), 1));
+        var bytes = new ByteArrayOutputStream();
+        try (var out = new ObjectOutputStream(bytes)) { out.writeObject(first); }
+        try (var in = new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray()))) {
+            assertEquals(first.matchLabel(), ((PlayByEmail) in.readObject()).matchLabel());
+        }
     }
 
     @Test void turnFileNamesNeverCollide() {

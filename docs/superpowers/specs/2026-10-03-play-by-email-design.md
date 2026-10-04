@@ -11,9 +11,10 @@ creates it. Setup panel gets a **Use Play by Email** button beside **Use Hot Sea
 `SetupGalaxyUI` passes the flag through. `HotSeatSetup` is unchanged.
 
 `PlayByEmail` (package `rotp.multiplayer.pbem`) holds:
-- `matchLabel` — `PBEM-yyyyMMdd-HHmm` at creation; prefixes turn-file names.
+- `matchLabel` — `PBEM-yyyyMMdd-HHmm-<UUID>` at creation; persists across loads and prefixes turn-file names so separate matches cannot overwrite each other.
 - `Map<String, StandingOrders> orders` — per player ID, defaults on creation.
 - `Map<String, PinHash> pins` — per player ID; absent until first unlock.
+- `finalResultExported` — saved as true in the final file so recipients open the result directly; recovery checkpoints retain false until export succeeds.
 
 ## Standing orders
 

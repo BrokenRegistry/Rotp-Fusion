@@ -2,13 +2,15 @@ package rotp.multiplayer.pbem;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 /** Names that tell players whose turn a file holds; each handoff gets its own file. */
 public final class TurnFiles {
     private TurnFiles() { }
 
     public static String matchLabel(LocalDateTime created) {
-        return "PBEM-" + created.format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmm"));
+        return "PBEM-" + created.format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmm"))
+                + "-" + UUID.randomUUID();
     }
 
     /** The handoff revision keeps a turn's planning and decision files apart. */

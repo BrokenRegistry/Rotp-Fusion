@@ -184,7 +184,7 @@ class PlayByEmailTest {
                     sent, java.util.Set.of("a"));
             System.out.println("Turn files sent: " + sent);
             assertTrue(sent.size() >= 6, "Three rounds need at least two files each: " + sent);
-            assertTrue(sent.get(0).matches("PBEM-\\d{8}-\\d{4}-T\\d{3}-r\\d{4}-for-Bob[.]rotp"), sent.toString());
+            assertTrue(sent.get(0).matches("PBEM-\\d{8}-\\d{4}-[0-9a-f-]{36}-T\\d{3}-r\\d{4}-for-Bob[.]rotp"), sent.toString());
             assertTrue(sent.get(sent.size() - 1).endsWith("-for-Alice.rotp"), sent.toString());
             assertEquals("a", done.hotSeatState().snapshot().ownerPlayerId());
             assertEquals(orders, done.playByEmail().orders("a"), "Standing orders travel with the file");
@@ -209,7 +209,8 @@ class PlayByEmailTest {
         var ended = play(g -> rotp.Rotp.getFrame().getGlassPane() instanceof rotp.ui.multiplayer.PlayByEmailSendPanel p
                 && p.isVisible() && p.isFinalResult(), sent, java.util.Set.of());
         java.io.File finalFile = ended.playByEmailSentFile();
-        assertTrue(finalFile.getName().matches("PBEM-\\d{8}-\\d{4}-T\\d{3}-final[.]rotp"), finalFile.getName());
+        assertEquals(rotp.multiplayer.pbem.TurnFiles.finalFileName(ended.playByEmail().matchLabel(),
+                ended.hotSeatState().snapshot().turn()), finalFile.getName());
         assertTrue(finalFile.isFile());
         assertFalse(sent.isEmpty(), "A Council vote for the absent player travels by file: " + sent);
         assertEquals(new java.util.HashSet<>(sent).size(), sent.size(), "Every handoff has its own file: " + sent);
@@ -234,6 +235,50 @@ class PlayByEmailTest {
         }
         assertEquals(rotp.multiplayer.session.MatchOutcome.Cause.COUNCIL, opened.matchOutcome().cause());
         HotSeatTestFixture.onEdt(opened.hotSeatController()::close);
+    }
+
+    @Test void recoveredResolutionExportsTheFinalResultWithoutAnotherPinPrompt() throws Exception {
+        var game = startMatch();
+        var controller = attach(game);
+        awaitPlanning(game);
+        HotSeatTestFixture.onEdt(controller::close);
+        // Model a saved resolution boundary after the last colony was destroyed.
+        var state = game.hotSeatState();
+        assertTrue(state.finishPlanning("a", state.snapshot().revision(), java.util.Set.of("a", "b")));
+        assertTrue(state.confirmHandoff(state.snapshot().revision()));
+        assertTrue(state.finishPlanning("b", state.snapshot().revision(), java.util.Set.of("a", "b")));
+        state.resolutionBoundary(true);
+        game.turnCoordinator().startTurn(game.galaxy().currentTurn());
+        for (var system : new java.util.ArrayList<>(game.galaxy().empire(1).allColonizedSystems()))
+            system.colony().destroy();
+        var checkpoint = directory.resolve("terminal-resolution.rotp").toFile();
+        HotSeatPersistence.save(game, checkpoint);
+
+        var recovered = HotSeatPersistence.load(checkpoint);
+        try {
+            long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(30);
+            boolean[] finished = new boolean[1];
+            while (!finished[0]) {
+                assertTrue(System.nanoTime() < deadline, "Recovery did not finish");
+                HotSeatTestFixture.onEdt(() -> {
+                    var pane = rotp.Rotp.getFrame().getGlassPane();
+                    assertFalse(pane instanceof rotp.ui.multiplayer.HotSeatPrivacyPane,
+                            "Terminal resolution needs no further player choice");
+                    finished[0] = pane instanceof rotp.ui.multiplayer.HotSeatResultPanel
+                            || pane instanceof rotp.ui.multiplayer.PlayByEmailSendPanel send && send.isFinalResult();
+                });
+                Thread.sleep(20);
+            }
+            assertNotNull(recovered.playByEmailSentFile(), "Recovery must export the final turn file");
+            assertTrue(recovered.playByEmailSentFile().isFile());
+            var finalFile = recovered.playByEmailSentFile();
+            HotSeatTestFixture.onEdt(recovered.hotSeatController()::close);
+            var recipient = HotSeatPersistence.load(finalFile);
+            try {
+                HotSeatTestFixture.onEdt(() -> assertInstanceOf(rotp.ui.multiplayer.HotSeatResultPanel.class,
+                        rotp.Rotp.getFrame().getGlassPane(), "Recipients open results without another send screen"));
+            } finally { HotSeatTestFixture.onEdt(recipient.hotSeatController()::close); }
+        } finally { HotSeatTestFixture.onEdt(recovered.hotSeatController()::close); }
     }
 
     @Test void standingOrdersBombardWithoutPromptingAndIgnoreTheSharedSetting() throws Exception {

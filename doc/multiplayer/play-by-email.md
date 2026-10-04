@@ -16,7 +16,7 @@ Two or more people play one game from their own computers by passing a turn file
 
 ## Taking a turn
 
-1. Open the turn file with **Load Game**. The file name says whose turn it is, for example `PBEM-20261003-1405-T012-r0041-for-Bob.rotp`. The `r` number grows with every handoff, so the newest file for you has the highest one.
+1. Open the turn file with **Load Game**. The file name includes the creation date, a unique match ID, and whose turn it is: `PBEM-20261003-1405-<match-id>-T012-r0041-for-Bob.rotp`. The `r` number grows with every handoff, so the newest file for you within that match has the highest one.
 2. Enter your PIN. The first time you open one of your turns, you choose it (4 to 12 characters). Keep it to yourself. It cannot be reset.
 3. Read your reports, then plan with the normal screens.
 4. Click **Finish Player Turn**. Review your standing orders (below) and click **Send turn**.

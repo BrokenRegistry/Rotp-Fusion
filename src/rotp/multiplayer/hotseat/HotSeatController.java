@@ -272,7 +272,8 @@ public final class HotSeatController implements AutoCloseable, Base {
             Runnable results = () -> desktop.showPrivatePanel(new HotSeatResultPanel(game.matchOutcome(),
                     game.hotSeatSetup(), () -> { close(); rotp.ui.RotPUI.instance().selectGamePanel(); }));
             // The match ended here: everyone else needs the final file to see the result.
-            if (game.playByEmail() != null && localPlayer != null) sendFinalResult(snapshot, results);
+            if (game.playByEmail() != null && !game.playByEmail().finalResultExported())
+                sendFinalResult(snapshot, results);
             else results.run();
             return;
         }
@@ -338,8 +339,12 @@ public final class HotSeatController implements AutoCloseable, Base {
     private void sendFinalResult(HotSeatSnapshot snapshot, Runnable results) {
         java.io.File file = GameSession.saveFileNamed(rotp.multiplayer.pbem.TurnFiles.finalFileName(
                 game.playByEmail().matchLabel(), snapshot.turn()));
+        // Persist this in the final file so recipients go directly to the results.
+        // A recovery checkpoint still needs an export even without a local PIN unlock.
+        game.playByEmail().finalResultExported(true);
         try { HotSeatPersistence.save(game, file); }
         catch (Exception failure) {
+            game.playByEmail().finalResultExported(false);
             failure.printStackTrace();
             results.run();
             return;

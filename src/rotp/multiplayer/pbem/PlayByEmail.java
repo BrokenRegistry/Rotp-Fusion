@@ -14,6 +14,7 @@ public final class PlayByEmail implements Serializable {
     private final List<String> players;
     private final HashMap<String, StandingOrders> orders = new HashMap<>();
     private final HashMap<String, PinHash> pins = new HashMap<>();
+    private boolean finalResultExported;
 
     public PlayByEmail(List<String> playerIds, LocalDateTime created) {
         players = List.copyOf(playerIds);
@@ -22,6 +23,8 @@ public final class PlayByEmail implements Serializable {
     }
 
     public String matchLabel() { return matchLabel; }
+    public boolean finalResultExported() { return finalResultExported; }
+    public void finalResultExported(boolean exported) { finalResultExported = exported; }
 
     public synchronized StandingOrders orders(String playerId) {
         return orders.getOrDefault(require(playerId), StandingOrders.DEFAULT);
