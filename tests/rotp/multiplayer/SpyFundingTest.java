@@ -14,7 +14,7 @@ class SpyFundingTest {
     @TempDir static Path directory;
     @BeforeAll static void initialize() throws Exception { HotSeatTestFixture.initialize(directory); }
 
-    @Test void humanOwnersRefundExcessOnceRegardlessOfTargetController() throws Exception {
+    @Test void humanOwnersKeepExcessForFutureSpiesRegardlessOfTargetController() throws Exception {
         var game = HotSeatTestFixture.start(2, 0, 1);
         boolean previous = IInGameOptions.spyOverSpend.get();
         try {
@@ -27,16 +27,19 @@ class SpyFundingTest {
                     spies.maxSpies(1);
                     float reserve = owner.totalReserve();
                     float targetReserve = target.totalReserve();
-                    fund(spies, owner.baseSpyCost() + 40);
+                    float excess = owner.baseSpyCost() / 2;
+                    fund(spies, owner.baseSpyCost() + excess);
                     assertEquals(1, spies.numActiveSpies(), "Recruit only the requested spy");
-                    assertEquals(reserve + 20, owner.totalReserve(), "Refund excess to the payer at 50%");
+                    assertEquals(reserve, owner.totalReserve(), "Unused spy funds stay in the network");
                     assertEquals(targetReserve, target.totalReserve(), "Do not credit the target");
                     fund(spies, 0);
-                    assertEquals(reserve + 20, owner.totalReserve(), "Do not refund the same funds twice");
+                    assertEquals(reserve, owner.totalReserve(), "Retained funds must not create treasury money");
+                    assertEquals(1, spies.numActiveSpies(), "Do not exceed the human owner's target");
                     spies.maxSpies(2);
                     float cost = spies.realCostForNextSpy();
+                    assertEquals(owner.baseSpyCost() - excess, cost, "Retained funds reduce the next spy's cost");
                     fund(spies, cost - 1);
-                    assertEquals(1, spies.numActiveSpies(), "Refunded funds cannot recruit another spy");
+                    assertEquals(1, spies.numActiveSpies(), "Partial funding cannot recruit another spy");
                     fund(spies, 1);
                     assertEquals(2, spies.numActiveSpies());
                 }

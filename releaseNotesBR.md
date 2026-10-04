@@ -12,6 +12,7 @@ When updating, you can reuse the same folder.
 <b><ins>Very last changes:</ins></b>
 
 26-10-03 (BR)
+- Fixed Spy Overspend OFF "creating money"
 - French translation for Hot-Seat.
 - added Rotp colors to the multiplayer button in the galaxy panel.
 

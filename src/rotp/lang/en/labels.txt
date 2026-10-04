@@ -3877,7 +3877,7 @@ SETTINGS_MOD_TRANSPORT_AUTO_ECO_NO_DESC  | Default will be set to No.
 SETTINGS_MOD_TRANSPORT_AUTO_ECO_NO       | Off
 SETTINGS_MOD_TRANSPORT_AUTO_ECO_LAST_DESC | Will keep the last colony setting.
 SETTINGS_MOD_TRANSPORT_AUTO_ECO_LAST      | Last
-SETTINGS_MOD_SPY_OVERSPEND_DESC          | Use all the available budget to by spy, or stop spending once the team is complete.
+SETTINGS_MOD_SPY_OVERSPEND_DESC          | Use all the available budget to buy spies, or stop spending once the team is complete.
 SETTINGS_MOD_SPY_OVERSPEND               | Spy Overspend: %1
 
 SETTINGS_MOD_DEFAULT_FORWARD_RALLY_DESC		| Default action when setting a rally point: should fleets rallying to this colony also be redirected?

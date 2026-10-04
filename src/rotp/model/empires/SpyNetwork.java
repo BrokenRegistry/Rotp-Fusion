@@ -203,9 +203,11 @@ public final class SpyNetwork implements Base, Serializable {
     }
     public float allocationPct()        { return (float) allocation/MAX_SPENDING_TICKS; }
     public float rawAllocationCostPct() { return allocationPct() * MAX_SPENDING_PCT; }
-    public float allocationCostPct()    { 
-        if (numActiveSpies() >= maxSpies)
-            return 0;
+	public float allocationCostPct()	{
+		int missingSpies = maxSpies - numActiveSpies();
+		// do not compute the buyable spies if none is missing
+		if (missingSpies <= 0 || missingSpies <= buyableSpiesFromReserve())
+			return 0;
         if (!view.inEconomicRange())
             return 0;
         return rawAllocationCostPct();
@@ -528,6 +530,17 @@ public final class SpyNetwork implements Base, Serializable {
     public List<Tech> unknownTechs() {
         return tech.techsUnknownTo(owner(), true);
     }
+	private int buyableSpiesFromReserve()	{
+		int buyable = 0;
+		float cost = costForNextSpy();
+		float totalCost = cost;
+		while (totalCost <= allocationBC) {
+			buyable++;
+			cost *= 2;
+			totalCost += cost;
+		}
+		return buyable;
+	}
     private void allocateSpyBC(float bc) {
         log("Allocating spy bc: "+bc);
         allocationBC += bc;
@@ -550,12 +563,8 @@ public final class SpyNetwork implements Base, Serializable {
             allocationBC -= cost;
             cost = costForNextSpy();
         }
-        if (count >= target) {
-            owner().addReserve(allocationBC);
-            allocationBC = 0;
-        }
     }
-    private void addNewSpy() { activeSpies.add(new Spy(this));  }
+    private void addNewSpy() { activeSpies.add(new Spy(this)); }
 
     private float costForNextSpy() {
         float spyCost = owner().baseSpyCost();
