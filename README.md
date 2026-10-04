@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-04 (Legendmaster)
+- New multiplayer feature (Play by E-Mail).
+
 26-10-03 (BR)
 - Fixed Spy Overspend OFF "creating money"
 - French translation for Hot-Seat.

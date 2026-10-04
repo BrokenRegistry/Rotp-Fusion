@@ -11,12 +11,15 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-04 (Legendmaster)
+- New multiplayer feature (Play by E-Mail).
+
 26-10-03 (BR)
 - Fixed Spy Overspend OFF "creating money"
 - French translation for Hot-Seat.
 - added Rotp colors to the multiplayer button in the galaxy panel.
 
-26-10-03 (DM)
+26-10-03 (Legendmaster)
 - New multiplayer feature (Hot-seat).
 
 26-10-03 (BR)

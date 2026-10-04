@@ -7056,7 +7056,7 @@ HOTSEAT_STANDING_ELIMINATED			| Éliminé
 HOTSEAT_COUNCIL_RULING_DETAIL		| Le Conseil Galactique a élu %1. Reconnaît cet empire comme le leader élu et rejoint ses partisans. Refuse, défie la décision et rejoint la rébellion ; le match continue si les équipes adverses restent.
 HOTSEAT_REPLY_INVALID				| Cette offre n’est plus éligible. Aucun traité ou ordre de guerre n’a été appliqué.
 PBEM_USE							| Jouer par e-mail
-PBEM_SETUP_BUTTON					| Joueurs : %1 humains (par e-mail)
+PBEM_SETUP_BUTTON					| Joueurs : %1 humains (par e-mail)
 PBEM_BUILD_MISMATCH					| Ce tour a été créé avec la version %1 ; vous avez la version %2. Tous les joueurs doivent utiliser la même version du jeu.
 PBEM_SEND_TITLE						| Envoyez ce tour à %1
 PBEM_SEND_DETAIL					| Enregistré sous %1 dans votre dossier de sauvegarde. Envoyez le fichier à %2 par e-mail, ou laissez-le dans un dossier partagé. Il s’ouvre avec Charger une Partie.
@@ -7077,10 +7077,10 @@ PBEM_BOMBARD_NEVER					| Jamais
 PBEM_BOMBARD_ALWAYS					| Toujours
 PBEM_BOMBARD_AT_WAR					| Seulement en guerre
 PBEM_BOMBARD_AT_WAR_NOT_INVADING	| En guerre, sauf si mes troupes débarquent
-PBEM_FRAME							| Après l’espionnage, blâmer un autre empire :
+PBEM_FRAME							| Après l’espionnage, blâmer un autre empire :
 PBEM_FRAME_NEVER					| Jamais
 PBEM_FRAME_WHEN_POSSIBLE			| Si possible
-PBEM_SABOTAGE						| Cible du sabotage :
+PBEM_SABOTAGE						| Cible du sabotage :
 PBEM_SABOTAGE_FACTORIES				| Usines
 PBEM_SABOTAGE_MISSILES				| Bases de missiles
 PBEM_SABOTAGE_REBELS				| Inciter une rebellion
