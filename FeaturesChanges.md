@@ -533,6 +533,7 @@
 
 ### Fixes:
 
+- Multiplayer setup: let the player roster scroll with many empires
 - Fixed the responsivity of the search field in the option panel...
   - The galaxy map and sprites were still displayed behind the options panel, temporarily stealing focus and eating keystrokes.
 - DNA Workshop:

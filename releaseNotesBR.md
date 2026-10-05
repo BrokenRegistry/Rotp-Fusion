@@ -11,6 +11,9 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-05 (Legendmaster)
+- Multiplayer setup: let the player roster scroll with many empires
+
 26-10-05 (BR)
 - Fixed the responsivity of the search field in the option panel...
   - The galaxy map and sprites were still displayed behind the options panel, temporarily stealing focus and eating keystrokes.
