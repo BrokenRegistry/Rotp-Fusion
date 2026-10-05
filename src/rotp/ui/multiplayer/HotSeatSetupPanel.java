@@ -2,6 +2,7 @@ package rotp.ui.multiplayer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -60,10 +61,19 @@ public final class HotSeatSetupPanel extends BasePanel {
         scroll.setOpaque(false);
         scroll.getViewport().setOpaque(false);
         scroll.setBorder(BorderFactory.createEmptyBorder());
-        // Centered at natural size instead of stretched to fill the window.
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
+        // GridBag drops to minimum sizes when the roster is taller than the window;
+        // keep the full row width (plus scroll bar) so only the height shrinks.
+        int width = rows.getPreferredSize().width
+                + scroll.getVerticalScrollBar().getPreferredSize().width;
+        scroll.setMinimumSize(new Dimension(width, 100));
+        // Centered at natural width; height is capped to the window so long rosters scroll.
         JPanel center = new JPanel(new GridBagLayout());
         center.setOpaque(false);
-        center.add(scroll);
+        GridBagConstraints sc = new GridBagConstraints();
+        sc.fill = GridBagConstraints.VERTICAL;
+        sc.weighty = 1;
+        center.add(scroll, sc);
         add(center, BorderLayout.CENTER);
 
         JPanel footer = new JPanel(new BorderLayout(0, 10));
