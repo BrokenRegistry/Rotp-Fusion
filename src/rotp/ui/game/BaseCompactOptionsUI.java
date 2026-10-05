@@ -52,6 +52,7 @@ import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
 import rotp.ui.design.DesignUI;
 import rotp.ui.main.EmpireColonySpendingPane;
+import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.GovernorOptionsPanel;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.options.AllSubUI;
@@ -259,6 +260,8 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		callParam	= null;
 		initSearchField();
 		initResultField();
+		add(resultField, 0);
+		add(searchField, 0);
 	}
 	@Override protected void terminate()	{
 		parentUI = null;
@@ -279,7 +282,6 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		searchField.setVisible(true);
 		searchField.setLocation(extraSep, yDesc);
 		searchField.addMouseListener(this);
-		add(searchField, 0);
 	}
 	private void initResultField() {
 		resultField = searchField.resultField;
@@ -294,7 +296,6 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		resultField.setFocusTraversalKeysEnabled(false);
 		resultField.setVisible(false);
 		resultField.setLocation(extraSep, yDesc);
-		add(resultField, 0);
 	}
 	// ========== Optimization Methods ==========
 	//
@@ -690,6 +691,11 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
             }
         }
 		parentUI = ui;
+		if (ui == null) {
+			RotPUI.instance().mainUI().hideDisplayPanel();
+			GalaxyMapPanel map = RotPUI.instance().mainUI().map();
+			map.setVisible(false);
+		}
 		ModifierKeysState.reset();
 		start();
 	}
@@ -782,10 +788,13 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			if (session().galaxy().playerSwapRequest()) {
 				session().galaxy().swapPlayerEmpire();
 				RotPUI.instance().selectMainPanel();
+			}
+			else {
+				GalaxyMapPanel map = RotPUI.instance().mainUI().map();
+				map.setVisible(true);
+				map.resetRangeAreas();
 				RotPUI.instance().mainUI().showDisplayPanel();
 			}
-			else
-				RotPUI.instance().mainUI().map().resetRangeAreas();
 		}
 		terminate();
 	}
@@ -856,7 +865,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 	}
 	@Override protected String GUI_ID()		{ return GUI_ID; }
 	@Override public void paintComponent(Graphics g0)	{
-		//showTiming = true; // TO DO BR: COMMENT
+		showTiming = true; // TODO BR: COMMENT
 		if (showTiming)
 			System.out.println("===== Compact PaintComponents =====");
 		long timeStart = System.currentTimeMillis();
@@ -968,10 +977,10 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		if (e.getComponent() == searchField) {
 			hoverBox = searchBox;
 			searchField.newSearch();
-			searchField.requestFocus();
 		}
-		if (e.getComponent() == resultField) {
-			resultField.requestFocus();
+		else if (e.getComponent() == resultField) {
+			searchField.requestFocusInWindow();
+//			resultField.requestFocus();
 			hoverBox = searchResultsBox;
 		}
 		repaint();
@@ -1005,6 +1014,17 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		if (e != null) { // to select again a box that have been changed by reloadUI
 			mX = e.getX();
 			mY = e.getY();
+			if (e.getComponent() == searchField) {
+				hoverBox = searchBox;
+				searchField.newSearch();
+			}
+			else if (e.getComponent() == resultField) {
+				searchField.requestFocusInWindow();
+//				resultField.requestFocus();
+				hoverBox = searchResultsBox;
+				repaint();
+				return;
+			}
 		}
 		if (hoverBox != null && hoverBox.contains(mX,mY)) {
 			hoverChanged = false;

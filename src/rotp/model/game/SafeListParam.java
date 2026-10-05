@@ -6,6 +6,7 @@ import java.util.Collection;
 import rotp.ui.util.IParam;
 import rotp.ui.util.IParam.ParamSearchList;
 import rotp.ui.util.ParamSpacer;
+import rotp.ui.util.ParamSubUI;
 
 public class SafeListParam extends ArrayList<IParam<?>> {
 	private static final long serialVersionUID = 1L;
@@ -89,5 +90,21 @@ public class SafeListParam extends ArrayList<IParam<?>> {
 				param.processSearch(paramSet, ui, toSearch, min, stripAccents);
 		}
 		return paramSet;
+	}
+	public SafeListParam getCascadedList()	{ return getCascadedList(getNoSpacer(), null, 10); }
+	private static SafeListParam getCascadedList(SafeListParam src, SafeListParam dest, int maxLvl)	{
+		if (dest == null)
+			dest= new SafeListParam(src.name);
+		for (IParam<?> param : src)
+			if (param == null)
+				continue;
+			else if (param.isSubMenu())
+				if (maxLvl >=0 )
+					getCascadedList(((ParamSubUI)param).optionsList().getNoSpacer(), dest, maxLvl-1);
+				else
+					System.err.println("getCascadedList looped more than the limit");
+			else
+				dest.add(param);
+		return dest;
 	}
 }

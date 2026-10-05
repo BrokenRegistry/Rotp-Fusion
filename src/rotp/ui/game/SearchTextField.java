@@ -44,12 +44,11 @@ class SearchTextField extends BaseTextField	{
 		SwingUtilities.convertPointFromScreen(loc, this);
 		return contains(loc);
 	}
-
 	private void validFocus()	{
 		if (hasFocus())
 			return;
 		if (hasMouse() || resultField.hasMouse())
-			requestFocus();
+			requestFocusInWindow();
 	}
 	void clearResult()	{
 		resultField.finalList = null;
@@ -78,7 +77,7 @@ class SearchTextField extends BaseTextField	{
 			resultField.updateText();
 			resultField.setVisible(true);
 			newSearchResults(false);
-			requestFocus();
+			requestFocusInWindow();
 		}
 		validFocus();
 	}

@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-05 (BR)
+- Fixed the responsivity of the search field in the option panel...
+  - The galaxy map and sprites were still displayed behind the options panel, temporarily stealing focus and eating keystrokes.
+
 26-10-04 (Legendmaster)
 - New multiplayer feature (Play by E-Mail).
 
@@ -67,18 +71,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 26-10-01 (BR)
 - DNA Workshop: New button on the side of the directory selection button to copy GMO species samples to the selected directory.
-
-26-09-30 (BR)
-- Budget:
-  - Governor-related buttons will only be displayed when there is at least one colony governed.
-  - Expanded advisor content.
-- DNA Workshop:
-  - Fixed "Save to File" not working after randomization.
-  - Fixed a possible crash if a ".race" file was deleted while the workshop was open.
-  - Fixed Tech Discovery randomization.
-  - Fixed the display not always being refreshed.
-  - When creating the "CustomSpecies" directory, example files will be included.
-- Galaxy map: reduced the ship selection box.
 
 
 ### [Features Historic](FeaturesChanges.md)

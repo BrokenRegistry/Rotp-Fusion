@@ -533,6 +533,8 @@
 
 ### Fixes:
 
+- Fixed the responsivity of the search field in the option panel...
+  - The galaxy map and sprites were still displayed behind the options panel, temporarily stealing focus and eating keystrokes.
 - DNA Workshop:
   - Fixed "Save to File" not working after randomization.
   - Fixed a possible crash if a ".race" file was deleted while the workshop was open.

@@ -39,14 +39,14 @@ public final class RulesWidgetSprite extends MapControlSprite {
 	@Override
 	public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
 		checkForChange(e);
-		if (options().isGameOptionsAllowed()) {
+		if (options().isGameOptionsAllowed() && session().hotSeatState() == null) {
 			ParamSubUI optionsUI = AllSubUI.rulesSubUI();
 			optionsUI.start(null);
 		}
 	}
 	@Override
 	public void draw(GalaxyMapPanel map, Graphics2D g2) {
-		if (!options().isGameOptionsAllowed()) {
+		if (!options().isGameOptionsAllowed() || session().hotSeatState() != null) {
 			return;
 		}
 		int w = width;

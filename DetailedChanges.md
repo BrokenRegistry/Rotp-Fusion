@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-10-05 (BR)
+- Fixed the responsivity of the search field in the option panel...
+  - The galaxy map and sprites were still displayed behind the options panel, temporarily stealing focus and eating keystrokes.
+
 26-10-04 (Legendmaster)
 - New multiplayer feature (Play by E-Mail).
 

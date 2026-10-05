@@ -31,6 +31,7 @@ class ResultTextArea extends JTextArea implements MouseListener, MouseMotionList
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
+		setFocusable(false);
 	}
 	void updateText()	{ setText(finalList.toString(CRLF, false)); }
 	boolean hasMouse()	{
