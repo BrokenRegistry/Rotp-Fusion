@@ -11,6 +11,10 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-06 (BR)
+- Incoming transport will be taken into account for subsidies.
+- Improved advisor prevision for ecology spending.
+
 26-10-05 (Legendmaster)
 - Multiplayer setup: let the player roster scroll with many empires
 

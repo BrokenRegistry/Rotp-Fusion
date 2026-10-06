@@ -1170,6 +1170,26 @@ public final class Colony implements Base, IMappedObject, Serializable {
     private float usedFactories()     {
         return (int) min(industry().factories(), workingPopulation() * industry().effectiveRobotControls());
     }
+	float productionAfterNextTurnTransports()	{
+		if (inRebellion())
+			return 0.0f;
+
+		// modnar: add dynamic difficulty option, change AI colony production
+		float dynaMod = 1.0f;
+		boolean isPlayer = empire.isHumanEmpire();
+		IGameOptions opts = options();
+		if (!isPlayer && opts.selectedDynamicDifficulty() && !(galaxy().currentTurn() < 4))
+			dynaMod = empire.dynaMod();
+
+		float mod = isPlayer ? 1.0f : (opts.aiProductionModifier()*dynaMod);
+
+		// Currently, this assumes that all incoming transports will not be shot down.
+		float workingPop = populationAfterNextTurnTransports();
+		float workerProd = workingPop * empire.workerProductivity();
+		float usedFactories = (int) min(industry().factories(), workingPop * industry().effectiveRobotControls());
+		float factoryOutput = mod*(workerProd + usedFactories);
+		return factoryOutput;
+	}
     public float production() {
         if (inRebellion())
             return 0.0f;
@@ -2925,9 +2945,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		private void resetGrant(boolean govern)	{
 			budgetSubsidiesBC(0);
 			governorBudgetBC(null);
-			reserveNeededBC(max(0, ceil(production() - rawReserveIncome())));
-			if(isGovernor() && govAutoFundTag().isCrossed())
-				reserveNeededBC(0);
+			updateReserveNeeded();
 			if (govern)
 				governIfNeeded();
 		}
@@ -2935,12 +2953,16 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			if (govern)
 				governIfNeeded();
 		}
+		private void updateReserveNeeded()	{ 
+			if(isGovernor() && govAutoFundTag().isCrossed())
+				reserveNeededBC(0);
+			else
+				reserveNeededBC(max(0, ceil(productionAfterNextTurnTransports() - rawReserveIncome())));
+		}
 		public void budgetReset(boolean shieldWithoutBases)	{ // For Ungoverned
 			colonyIsDeveloped = isDeveloped(shieldWithoutBases);
 			colonyIsGrowing	= isGrowing();
-			reserveNeededBC(max(0, ceil(production() - rawReserveIncome())));
-			if(isGovernor() && govAutoFundTag().isCrossed())
-				reserveNeededBC(0);
+			updateReserveNeeded();
 		}
 		public void budgetReset(boolean shieldWithoutBases, boolean grant, boolean raise, boolean govern)	{
 			govFundColonyUpdated();
@@ -2994,7 +3016,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			}
 			budgetSubsidiesBC(0);
 			governorBudgetBC(null);
-			reserveNeededBC(max (0, ceil(production() - rawReserveIncome())));
+			updateReserveNeeded();
 			if (carryUnfunded) {
 				if (isPlayerBudget()) {
 					playerBudgetBC(playerBudgetBC() - ceil(transfered));

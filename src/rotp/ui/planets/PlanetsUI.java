@@ -177,6 +177,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         notesField.setFont(narrowFont(20));
 		initAdvisor();
         listingUI.open();
+		player().budget().redoBudget(player().allColonizedSystems(), false, false, EmpireBudget.REFRESH, false);
     }
     private void initModel() {
         BasePanel centerPanel = new BasePanel();
@@ -276,10 +277,6 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 	private void refreshBudget()	{
 		if(player().budget().budgetIfNeeded())
 			repaint();
-		else {
-			player().budget().redoBudget(player().allColonizedSystems(), false, false, EmpireBudget.REFRESH, false);
-			repaint();
-		}
 	}
     @Override
     public String subPanelTextureName()    { return TEXTURE_BROWN; }

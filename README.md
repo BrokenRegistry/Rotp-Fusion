@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-06 (BR)
+- Incoming transport will be taken into account for subsidies.
+- Improved advisor prevision for ecology spending.
+
 26-10-05 (Legendmaster)
 - Multiplayer setup: let the player roster scroll with many empires
 

@@ -302,44 +302,55 @@ public final class ColonyEcology extends ColonySpendingCategory {
         return (newBC < colony().wasteCleanupCost());
     }
 	@Override public String[] upcomingResult()	{
-        Colony c = colony();
-
-		float totalFund = c.totalProductionIncome() + c.maxReserveIncome();
-		float newBC = pct() * totalFund;
-        newBC = max(0, newBC);
-        float cost;
-
-        // new population
-        float currentPop = c.population();
-        // Currently, this assumes that all incoming transports will not be shot down.
-        float workingPop = c.populationAfterNextTurnTransports();
-        float expGrowth  = c.normalPopGrowth();
-        float expPop = min(workingPop+expGrowth, planet().currentSize());
-        floatPopGrowth = expPop - currentPop;  // BR: To allow fine tuning
-        expectedPopGrowth = (int) (expPop) - (int) currentPop; // BR: ?!
-		Planet p = c.planet();
-		float currentSize = p.currentSize();
-
+		Colony c = colony();
 		String adviceStr = text("MAIN_COLONY_HEADER_ADVISOR");
+		String newLine = ""; // the header already has one
+
+		// new population
+		final Planet p = c.planet();
+		final float currentSize = p.currentSize();
+		final float currentPop = c.population();
+
 		float sentPop = c.inTransport();
 		float afterOutTrans = currentPop - sentPop;
-		if (sentPop > 0)
-			adviceStr += text("MAIN_COLONY_SENT_POP_HELP", fmt(sentPop, 1), fmt(afterOutTrans, 1));
+		if (sentPop > 0) {
+			adviceStr += newLine + text("MAIN_COLONY_SENT_POP_HELP", fmt(sentPop, 1), fmt(afterOutTrans, 1));
+			newLine = NEWLINE;
+		}
 
-		float afterGrowth = afterOutTrans + expGrowth;
-		adviceStr += text("MAIN_COLONY_NORMAL_GROW_HELP", fmt(expGrowth, 1), fmt(afterGrowth, 1));
+		// Currently, this assumes that all incoming transports will not be shot down.
+		final float inPop = galaxy().friendlyPopApproachingSystemNextTurn(c.starSystem());
+		final float workingPop = min(currentSize, afterOutTrans + inPop);
+		if (inPop > 0) {
+			adviceStr += newLine + text("MAIN_COLONY_INCOMING_POP_HELP", fmt(inPop, 1), fmt(workingPop, 1));
+			newLine = NEWLINE;
+		}
 
-		float inPop = galaxy().friendlyPopApproachingSystemNextTurn(c.starSystem());
-		float afterInTransport = min(currentSize, afterGrowth + inPop);
-		if (inPop > 0)
-			adviceStr += text("MAIN_COLONY_INCOMING_POP_HELP", fmt(inPop, 1), fmt(afterInTransport, 1));
+		float expGrowth  = p.normalPopGrowth(workingPop);
+		float expPop = min(workingPop+expGrowth, currentSize);
+		floatPopGrowth = expPop - currentPop;  // BR: To allow fine tuning
+		expectedPopGrowth = (int) (expPop) - (int) currentPop; // BR: ?!
+		final float afterGrowth = workingPop + expGrowth;
+		adviceStr += newLine + text("MAIN_COLONY_NORMAL_GROW_HELP", fmt(expGrowth, 1), fmt(afterGrowth, 1));
+		newLine = NEWLINE;
 
-        // check for waste cleanup
-        cost = c.wasteCleanupCost();
+		// Using funds
+		final float nextTurnProd = c.productionAfterNextTurnTransports();
+		final float nextTurnRsv = min(nextTurnProd, c.reserveIncome());
+		final float totalFund = nextTurnProd + nextTurnRsv;
+		float newBC = max(0, pct() * totalFund);
+		float cost;
+		if (newBC > 0) {
+			adviceStr += newLine + text("MAIN_COLONY_FUNDING_HELP", fmt(nextTurnProd, 1), fmt(nextTurnRsv, 1), fmt(totalFund, 1));
+		}
+
+		
+		// check for waste cleanup
+		cost = c.wasteCleanupCost();
 		if (newBC < cost) {
-			adviceStr += text("MAIN_COLONY_WASTE_BC_HELP", fmt(newBC, 1), fmt(cost, 1));
+			adviceStr += newLine + text("MAIN_COLONY_WASTE_BC_HELP", fmt(newBC, 1), fmt(cost, 1));
 			int tick = ceil(cost/totalFund * MAX_TICKS) - allocation();
-			adviceStr += text("MAIN_COLONY_WASTE_TICK_HELP", tick);
+			adviceStr += newLine + text("MAIN_COLONY_WASTE_TICK_HELP", tick);
 			return new String[] {text(wasteText), adviceStr};
 		}
 
@@ -352,16 +363,16 @@ public final class ColonyEcology extends ColonySpendingCategory {
 
         newBC -= cost;
         // check for atmospheric terraforming
-        Empire emp = c.empire();
-        boolean canTerraformAtmosphere = p.canTerraformAtmosphere(emp);
+		final Empire emp = c.empire();
+		final boolean canTerraformAtmosphere = p.canTerraformAtmosphere(emp);
         if (canTerraformAtmosphere) {
             cost = atmosphereTerraformCost() - hostileBC;
 			if (newBC < cost) {
-				adviceStr += text("MAIN_COLONY_ATM_TERRA_HELP", fmt(newBC, 1), fmt(cost, 1));
+				adviceStr += newLine + text("MAIN_COLONY_ATM_TERRA_HELP", fmt(newBC, 1), fmt(cost, 1));
 				return new String[] {text(atmosphereText), adviceStr};
 			}
 			else
-				adviceStr += text("MAIN_COLONY_ATM_TERRA_HELP", fmt(cost, 1), fmt(cost, 1));
+				adviceStr += newLine + text("MAIN_COLONY_ATM_TERRA_HELP", fmt(cost, 1), fmt(cost, 1));
             newBC -= cost;
         }
 
@@ -374,11 +385,11 @@ public final class ColonyEcology extends ColonySpendingCategory {
 					String key = p.isEnvironmentFertile() ? "MAIN_COLONY_ENRICH_GAIA_HELP" : "MAIN_COLONY_ENRICH_FERTILE_HELP";
 					cost = SOIL_UPGRADE_BC - accumBC;
 					if (newBC < cost) {
-						adviceStr += text(key, fmt(newBC + accumBC, 1), fmt(SOIL_UPGRADE_BC, 1));
+						adviceStr += newLine + text(key, fmt(newBC + accumBC, 1), fmt(SOIL_UPGRADE_BC, 1));
 						return new String[] {text(enrichSoilText), adviceStr};
 					}
 					else
-						adviceStr += text(key, fmt(SOIL_UPGRADE_BC, 1), fmt(SOIL_UPGRADE_BC, 1));
+						adviceStr += newLine + text(key, fmt(SOIL_UPGRADE_BC, 1), fmt(SOIL_UPGRADE_BC, 1));
 					if (accumBC > SOIL_UPGRADE_BC) // should not!
 						accumBC -= SOIL_UPGRADE_BC;
 					else {
@@ -390,36 +401,36 @@ public final class ColonyEcology extends ColonySpendingCategory {
         }
 
 		// check for terraforming
-		float maxPopSize  = c.maxSize();
-		float roomToGrow  = maxPopSize - currentSize;
+		final float maxPopSize  = c.maxSize();
+		final float roomToGrow  = maxPopSize - currentSize;
 		if (roomToGrow > 0) {
-			float costPerMillion = tr.topTerraformingTech().costPerMillion;
+			final float costPerMillion = tr.topTerraformingTech().costPerMillion;
 			cost = roomToGrow * costPerMillion;
 			if (newBC < cost) {
-				float newPop = newBC/costPerMillion;
-				adviceStr += text("MAIN_COLONY_TERRAFORM_HELP", fmt(newPop, 1), fmt(currentSize+newPop, 1));
+				final float newPop = newBC/costPerMillion;
+				adviceStr += newLine + text("MAIN_COLONY_TERRAFORM_HELP", fmt(newPop, 1), fmt(currentSize+newPop, 1));
 				return new String[] {text(terraformText), adviceStr};
 			}
 			else
-				adviceStr += text("MAIN_COLONY_TERRAFORM_HELP", fmt(roomToGrow, 1), fmt(maxPopSize, 1));
+				adviceStr += newLine + text("MAIN_COLONY_TERRAFORM_HELP", fmt(roomToGrow, 1), fmt(maxPopSize, 1));
             newBC -= cost;
         }
 
         // check for purchasing new pop
-        float newPopPurchaseable = getNewPopPurchasableShortTerm();
+		final float newPopPurchaseable = getNewPopPurchasableShortTerm();
         if (newPopPurchaseable > 0) {
-            float newPopCost = tr.populationCost();
+			final float newPopCost = tr.populationCost();
             cost = newPopPurchaseable * newPopCost;
-            float pop = workingPop + expGrowth + min(newPopPurchaseable, newBC/newPopCost);
+			final float pop = workingPop + expGrowth + min(newPopPurchaseable, newBC/newPopCost);
             floatPopGrowth = pop - currentPop;
             expectedPopGrowth = (int) pop - (int) currentPop;
 			if (newBC < cost) {
-				float cloned = newBC/newPopCost;
-				adviceStr += text("MAIN_COLONY_CLONING_HELP", fmt(cloned), fmt(afterInTransport + cloned, 1));
+				final float cloned = newBC/newPopCost;
+				adviceStr += newLine + text("MAIN_COLONY_CLONING_HELP", fmt(cloned), fmt(workingPop + cloned, 1));
 				return new String[] {text(growthText), adviceStr};
 			}
 			else
-				adviceStr += text("MAIN_COLONY_CLONING_HELP", fmt(newPopPurchaseable, 1), fmt(maxPopSize, 1));
+				adviceStr += newLine + text("MAIN_COLONY_CLONING_HELP", fmt(newPopPurchaseable, 1), fmt(maxPopSize, 1));
             newBC -= cost;
         }
         else {

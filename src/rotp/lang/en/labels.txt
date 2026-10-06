@@ -1044,6 +1044,8 @@ GOVERNOR_IS_ON_AND_OFF_BUTTON     | Governor
 GOVERNOR_OPTIONS                  | Mandate
 
 MAIN_COLONY_HEADER_ADVISOR		| <br><hr><h3>In the coming year:</h3>
+MAIN_COLONY_FUNDING_HELP		| Funds: Production %1BC + Reserve %2BC = %3BC
+
 MAIN_COLONY_ROBOT_CONTROL_HELP	| Robotic control level: %1 of %2.
 MAIN_COLONY_NEW_FACTORIES_HELP	| <br>Construction of %1 new factories → %2 factories.
 MAIN_COLONY_ALIEN_FACT_HELP		| <br>Conversion of %1 alien factories → %2 factories.
@@ -1056,16 +1058,16 @@ MAIN_COLONY_TO_TRESOR_HELP		| <br>Surplus %1BC sent to empire treasury.
 MAIN_COLONY_UNUSED_FACT_HELP	| <br>Unused Factories: %1
 MAIN_COLONY_NEEDED_FACT_HELP	| <br>Needed Factories: %1
 
-MAIN_COLONY_SENT_POP_HELP		| Sent by transport: %1 pop → %2 pop.<br>
+MAIN_COLONY_SENT_POP_HELP		| Sent by transport: %1 pop → %2 pop.
 MAIN_COLONY_NORMAL_GROW_HELP	| Normal growth: %1 pop → %2 pop.
-MAIN_COLONY_INCOMING_POP_HELP	| <br>Incoming transport: %1 pop → %2 pop.<br>
-MAIN_COLONY_WASTE_BC_HELP		| <br>Missing fund for cleaning: %1BC of %2BC
-MAIN_COLONY_WASTE_TICK_HELP		| <br>Needs %1 more tick for full cleaning.
-MAIN_COLONY_ATM_TERRA_HELP		| <br>Atmosphere Terraforming %1BC of %2BC.
-MAIN_COLONY_ENRICH_FERTILE_HELP	| <br>Enrich to Fertile %1BC of %2BC.
-MAIN_COLONY_ENRICH_GAIA_HELP	| <br>Enrich to Gaia %1BC of %2BC.
-MAIN_COLONY_TERRAFORM_HELP		| <br>Terraform: Size increased by %1 → %2.
-MAIN_COLONY_CLONING_HELP		| <br>Cloning pop: Pop increased by %1 → %2.
+MAIN_COLONY_INCOMING_POP_HELP	| Incoming transport: %1 pop → %2 pop.
+MAIN_COLONY_WASTE_BC_HELP		| Missing fund for cleaning: %1BC of %2BC
+MAIN_COLONY_WASTE_TICK_HELP		| Needs %1 more tick for full cleaning.
+MAIN_COLONY_ATM_TERRA_HELP		| Atmosphere Terraforming %1BC of %2BC.
+MAIN_COLONY_ENRICH_FERTILE_HELP	| Enrich to Fertile %1BC of %2BC.
+MAIN_COLONY_ENRICH_GAIA_HELP	| Enrich to Gaia %1BC of %2BC.
+MAIN_COLONY_TERRAFORM_HELP		| Terraform: Size increased by %1 → %2.
+MAIN_COLONY_CLONING_HELP		| Cloning pop: Pop increased by %1 → %2.
 
 MAIN_COLONY_OBSOLETE_SHIP_HELP	| <b><font color="#FF0000">!!! Error Building Obsolete Design !!!</font></b>
 MAIN_COLONY_FROM_SHIP_RSV_HELP	| Taken from Ship Accrued %1BC<br>

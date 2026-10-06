@@ -1044,6 +1044,8 @@ GOVERNOR_IS_ON_AND_OFF_BUTTON     | Gouverneur
 GOVERNOR_OPTIONS                  | Mandat
 
 MAIN_COLONY_HEADER_ADVISOR		| <br><hr><h3>Dans l’année à venir :</h3>
+MAIN_COLONY_FUNDING_HELP		| Allocation: Production %1 CG + Réserve %2 CG = %3 CG
+
 MAIN_COLONY_ROBOT_CONTROL_HELP	| Niveau de contrôle robotique : %1 sur %2.
 MAIN_COLONY_NEW_FACTORIES_HELP	| <br>Construction de %1 nouvelles usines → %2 usines.
 MAIN_COLONY_ALIEN_FACT_HELP		| <br>Conversion de %1 usines extraterrestres → %2 usines.
@@ -1056,16 +1058,16 @@ MAIN_COLONY_TO_TRESOR_HELP		| <br>Surplus de %1 CG envoyés au trésor de l’e
 MAIN_COLONY_UNUSED_FACT_HELP	| <br>Usines inutilisées : %1
 MAIN_COLONY_NEEDED_FACT_HELP	| <br>Usines requises : %1
 
-MAIN_COLONY_SENT_POP_HELP		| Transports partant : %1 pop → %2 pop.<br>
+MAIN_COLONY_SENT_POP_HELP		| Transports partant : %1 pop → %2 pop.
 MAIN_COLONY_NORMAL_GROW_HELP	| Croissance normale : %1 pop. → %2 pop.
-MAIN_COLONY_INCOMING_POP_HELP	| <br>Transports entrant : %1 pop → %2 pop.<br>
-MAIN_COLONY_WASTE_BC_HELP		| <br>Fonds manquant pour le nettoyage : %1 CG sur %2 CG
-MAIN_COLONY_WASTE_TICK_HELP		| <br>Nécessite %1 tics pour un nettoyage complet.
-MAIN_COLONY_ATM_TERRA_HELP		| <br>Terraformation atmosphérique : %1 CG sur %2 CG
-MAIN_COLONY_ENRICH_FERTILE_HELP	| <br>Transformation vers Fertile : %1 CG sur %2 CG
-MAIN_COLONY_ENRICH_GAIA_HELP	| <br>Transformation vers Gaia : %1 CG sur %2 CG
-MAIN_COLONY_TERRAFORM_HELP		| <br>Terraformation : La taille augmente de %1 → %2.
-MAIN_COLONY_CLONING_HELP		| <br>Clonage : La population a augmenté de %1 → %2.
+MAIN_COLONY_INCOMING_POP_HELP	| Transports entrant : %1 pop → %2 pop.
+MAIN_COLONY_WASTE_BC_HELP		| Fonds manquant pour le nettoyage : %1 CG sur %2 CG
+MAIN_COLONY_WASTE_TICK_HELP		| Nécessite %1 tics pour un nettoyage complet.
+MAIN_COLONY_ATM_TERRA_HELP		| Terraformation atmosphérique : %1 CG sur %2 CG
+MAIN_COLONY_ENRICH_FERTILE_HELP	| Transformation vers Fertile : %1 CG sur %2 CG
+MAIN_COLONY_ENRICH_GAIA_HELP	| Transformation vers Gaia : %1 CG sur %2 CG
+MAIN_COLONY_TERRAFORM_HELP		| Terraformation : La taille augmente de %1 → %2.
+MAIN_COLONY_CLONING_HELP		| Clonage : La population a augmenté de %1 → %2.
 
 MAIN_COLONY_OBSOLETE_SHIP_HELP	| <b><font color="#FF0000">!!! Erreur Construction d’un design obsolète !!!</font></b>
 MAIN_COLONY_FROM_SHIP_RSV_HELP	| Puisé dans la réserve %1 CG<br>
