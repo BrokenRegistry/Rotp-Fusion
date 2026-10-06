@@ -45,6 +45,7 @@ java -jar target/rotp-<timestamp>-mini.jar
 ## What's New
 
 26-10-06 (BR)
+- Using the "Transfer" button will now mark the budget as invalid, the budget will then be updated, based on the player's settings.
 - Incoming transport will be taken into account for subsidies.
 - Improved advisor prevision for ecology spending.
 

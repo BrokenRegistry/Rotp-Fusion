@@ -533,6 +533,7 @@
 
 ### Fixes:
 
+- Using the "Transfer" button will now mark the budget as invalid, the budget will then be updated, based on the player's settings.
 - Incoming transport will be taken into account for subsidies.
 - Improved advisor prevision for ecology spending.
 - Multiplayer setup: let the player roster scroll with many empires

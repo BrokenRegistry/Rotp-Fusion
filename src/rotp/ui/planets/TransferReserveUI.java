@@ -889,6 +889,14 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		player().budget().redoBudget(targetSystems, true, true, EmpireBudget.CLEAR, true);
 		exit();
 	}
+	private void refreshBudget()	{
+		if(player().budget().budgetIfNeeded())
+			repaint();
+		else {
+			player().budget().redoBudget(player().allColonizedSystems(), false, false, EmpireBudget.REFRESH, false);
+			repaint();
+		}
+	}
 	private void transfertButtonAction()	{
         if (!hotSeatReserveEditable()) return; // No changes
 		softClick();
@@ -901,6 +909,8 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 			if(empire.totalReserve() == 0)
 				break;
 		}
+		empire.budget().makeBudgetColonyObsolete();
+		refreshBudget();
 		exit();
 	}
 	private void transfertBudgetButtonAction()	{
@@ -910,7 +920,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		for(StarSystem sys : targetSystems)
 			sys.colony().budget().transfertBudget(carryUnfunded);
 		empire.budget().makeBudgetColonyObsolete();
-		empire.budget().refreshBudget();
+		refreshBudget();
 		exit();
 	}
 	private void budgetButtonAction()	{
@@ -963,7 +973,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		for(StarSystem sys : targetSystems)
 			sys.colony().budget().budgetizeRatio(ratio);
 		empire.budget().makeBudgetColonyObsolete();
-		empire.budget().refreshBudget();
+		refreshBudget();
 
 		// Grant funding
 		player().budget().redoBudget(targetSystems, true, false, EmpireBudget.LIST, true);
@@ -983,7 +993,7 @@ final class TransferReserveUI extends BasePanel implements MouseListener, MouseW
 		for(StarSystem sys : targetSystems)
 			sys.colony().budget().budgetizeNeeded();
 		empire.budget().makeBudgetColonyObsolete();
-		empire.budget().refreshBudget();
+		refreshBudget();
 
 		// Grant funding
 		player().budget().redoBudget(targetSystems, true, false, EmpireBudget.LIST, true);

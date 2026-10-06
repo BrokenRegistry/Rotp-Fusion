@@ -177,7 +177,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
         notesField.setFont(narrowFont(20));
 		initAdvisor();
         listingUI.open();
-		player().budget().redoBudget(player().allColonizedSystems(), false, false, EmpireBudget.REFRESH, false);
+		refreshBudget();
     }
     private void initModel() {
         BasePanel centerPanel = new BasePanel();
@@ -277,6 +277,14 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 	private void refreshBudget()	{
 		if(player().budget().budgetIfNeeded())
 			repaint();
+		else {
+			player().budget().redoBudget(player().allColonizedSystems(), false, false, EmpireBudget.REFRESH, false);
+			repaint();
+		}
+	}
+	private void limitedRefreshBudget()	{
+		if(player().budget().budgetIfNeeded())
+			repaint();
 	}
     @Override
     public String subPanelTextureName()    { return TEXTURE_BROWN; }
@@ -287,12 +295,12 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 	@Override
 	public void animateForLowGraphic()	{
 		if (animationCount() % 4 == 0)
-			refreshBudget();
+			limitedRefreshBudget();
 	}
     @Override
     public void animate() {
 		if (animationCount() % 2 == 0)
-			refreshBudget();
+			limitedRefreshBudget();
 
         if (!playAnimations())
             return;
