@@ -628,8 +628,8 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
         for (StarSystem sys: systems) {
             Colony colony = sys.colony();
             if (colony != null) {
-            	if(!colony.locked(selectedCat))
-                    colony.smoothMaxSlider(selectedCat);
+				if(!colony.locked(selectedCat))
+					colony.smoothMaxSlider(selectedCat, colony.nextTotalIncome());
                 if(selectedCat != ECOLOGY)
                 	colony.checkEcoAtClean();
                 if(selectedCat != RESEARCH && !colony.locked(RESEARCH))

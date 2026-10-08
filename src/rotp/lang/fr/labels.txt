@@ -1044,7 +1044,8 @@ GOVERNOR_IS_ON_AND_OFF_BUTTON     | Gouverneur
 GOVERNOR_OPTIONS                  | Mandat
 
 MAIN_COLONY_HEADER_ADVISOR		| <br><hr><h3>Dans l’année à venir :</h3>
-MAIN_COLONY_FUNDING_HELP		| Allocation: Production %1 CG + Réserve %2 CG = %3 CG
+MAIN_COLONY_TOTAL_FUNDS_HELP	| Fonds pour la colonnie : Revenu net %1 CG + Réserve %2 CG = %3 CG
+MAIN_COLONY_LOCAL_FUNDS_HELP	| Fonds pour ce champs : Fraction %1 % → %2 CG
 
 MAIN_COLONY_ROBOT_CONTROL_HELP	| Niveau de contrôle robotique : %1 sur %2.
 MAIN_COLONY_NEW_FACTORIES_HELP	| <br>Construction de %1 nouvelles usines → %2 usines.
@@ -1061,6 +1062,7 @@ MAIN_COLONY_NEEDED_FACT_HELP	| <br>Usines requises : %1
 MAIN_COLONY_SENT_POP_HELP		| Transports partant : %1 pop → %2 pop.
 MAIN_COLONY_NORMAL_GROW_HELP	| Croissance normale : %1 pop. → %2 pop.
 MAIN_COLONY_INCOMING_POP_HELP	| Transports entrant : %1 pop → %2 pop.
+MAIN_COLONY_FUTURE_TRANSP_HELP	| Transports à venir : %1 pop.
 MAIN_COLONY_WASTE_BC_HELP		| Fonds manquant pour le nettoyage : %1 CG sur %2 CG
 MAIN_COLONY_WASTE_TICK_HELP		| Nécessite %1 tics pour un nettoyage complet.
 MAIN_COLONY_ATM_TERRA_HELP		| Terraformation atmosphérique : %1 CG sur %2 CG

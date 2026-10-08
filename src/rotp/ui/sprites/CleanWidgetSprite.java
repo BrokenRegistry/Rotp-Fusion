@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rotp.model.colony.Colony;
+import rotp.model.game.GameSession;
 import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.SystemPanel;
@@ -50,6 +51,8 @@ public final class CleanWidgetSprite extends MapControlSprite {
 		return image;
 	}
 	public void checkForEcoClean ()	{
+		if (GameSession.performingTurn())
+			return;
 		int[] needCleaning = player().needCleaning();
 		govLockCount	= needCleaning[Colony.GOV_LOCKED_DIRTY];
 		govUnlockCount	= needCleaning[Colony.GOV_UNLOCKED_DIRTY];

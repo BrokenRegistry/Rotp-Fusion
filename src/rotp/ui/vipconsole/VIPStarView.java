@@ -348,7 +348,7 @@ public class VIPStarView implements IVIPConsole {
 				return out + "Maxed keeping ECO clean";
 			case COL_SMOOTH_MAX:
 				colony.keepEcoLockedToClean = true;
-				colony.smoothMaxSlider(category);
+				colony.smoothMaxSlider(category, colony.nextTotalIncome());
 				colony.checkEcoAtClean();
 				return out + "Smart Maxed";
 			default:
@@ -411,7 +411,7 @@ public class VIPStarView implements IVIPConsole {
 				colony.checkEcoAtClean();
 				return out + "Set ECO to clean";
 			case COL_ECO_GROWTH:
-				colony.smoothMaxSlider(category);
+				colony.smoothMaxSlider(category, colony.nextTotalIncome());
 				return out + "Smart Maxed";
 			case COL_ECO_TERRAFORM:
 				colony.checkEcoAtTerraform();

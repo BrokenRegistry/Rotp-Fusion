@@ -186,7 +186,7 @@ public class RandomEvents implements Base, Serializable {
 			return;
 
 		eventChance = min(maxChanceIncr(), eventChance + chanceIncr());
-		// eventChance = 1; // TO DO BR: COMMENT
+		// eventChance = 1; // TO DO BR: ### COMMENT
 		// System.out.println("eventChance = " + eventChance);
 		if (turnRnd() > eventChance)
 			return;
@@ -207,7 +207,7 @@ public class RandomEvents implements Base, Serializable {
 		//		events.remove(triggeredEvent);
 		//	}
 		eventChance = START_CHANCE; // Reset the probability counter
-		
+
 		Empire affectedEmpire;
 		if (opts.selectedFixedEventsMode()) {
 			affectedEmpire = empireForFixedEvent();
@@ -222,6 +222,8 @@ public class RandomEvents implements Base, Serializable {
 			affectedEmpire = empireForGoodEvent();
 		else
 			affectedEmpire = empireForBadEvent();
+		//affectedEmpire = player(); // TO DO BR: ### REMOVE
+
 		// If Monster & concurrent: create a copy of the event
 		if (allowConcurrence(triggeredEvent)) {
 			RandomEventMonsters rem = (RandomEventMonsters) triggeredEvent;
@@ -252,9 +254,9 @@ public class RandomEvents implements Base, Serializable {
 		}
 		else
 			triggeredEvent.trigger(affectedEmpire);
-		
+
 		lastEvent = triggeredEvent; // modnar: keep track of last event
-	   
+
 		if (IDebugOptions.debugAutoRun() && IDebugOptions.debugLogEvents())
 			turnLog(IGameOptions.AUTORUN_EVENTS, triggeredEvent.notificationText());
 	}

@@ -11,6 +11,13 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-08 (BR)
+- Fixed the Gauntlet event disrupting colony reserve management.
+  - The enormous loss of income resulting from this event triggered a reaction from the governor who attempted a readjustment of allocations, intended in principle to keep the colony clean and deliver the promised ship... This readjustment was not planned for events of this origin, nor of such magnitude, nor so early in the progress of the turn...
+- Fixed reference point for reporting population growth or loss. It's not normal that after the Gauntlet event, all the arrows are green!
+- Partial deactivation of left widgets during turn processing: If the player loses a colony while a widget is interrogating it, this could crash the game...
+- Minor improvements to the governor and advisor.
+
 26-10-06 (BR)
 - Using the "Transfer" button will now mark the budget as invalid, the budget will then be updated, based on the player's settings.
 - Incoming transport will be taken into account for subsidies.
@@ -39,13 +46,6 @@ When updating, you can reuse the same folder.
   - No transports.
   - No ships.
 - Transport icon size is now linked to transport size.
-
-26-10-02 (BR)
-- Transport synchronization will now be remembered independently for invasions and migrations.
-- Added the number of flags setting inside the flag sub-panel.
-
-26-10-01 (BR)
-- DNA Workshop: New button on the side of the directory selection button to copy GMO species samples to the selected directory.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

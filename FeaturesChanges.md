@@ -533,6 +533,10 @@
 
 ### Fixes:
 
+- Fixed the Gauntlet event disrupting colony reserve management.
+  - The enormous loss of income resulting from this event triggered a reaction from the governor who attempted a readjustment of allocations, intended in principle to keep the colony clean and deliver the promised ship... This readjustment was not planned for events of this origin, nor of such magnitude, nor so early in the progress of the turn...
+- Fixed reference point for reporting population growth or loss. It's not normal that after the Gauntlet event, all the arrows are green!
+- Partial deactivation of left widgets during turn processing: If the player loses a colony while a widget is interrogating it, this could crash the game...
 - Using the "Transfer" button will now mark the budget as invalid, the budget will then be updated, based on the player's settings.
 - Incoming transport will be taken into account for subsidies.
 - Improved advisor prevision for ecology spending.

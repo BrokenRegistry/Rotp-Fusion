@@ -32,9 +32,11 @@ public final class ColonyIndustry extends ColonySpendingCategory {
     private float unallocatedBC = 0;
     private float newFactories = 0;
 
-    @Override
-    public void init(Colony c) {
-        super.init(c);
+	ColonyIndustry (Colony c)	{
+		super(c);
+		init();
+	}
+	private void init() {
         factories = 0;
         robotControls = TechRoboticControls.BASE_ROBOT_CONTROLS;
         industryReserveBC = 0;
@@ -69,16 +71,16 @@ public final class ColonyIndustry extends ColonySpendingCategory {
     public int maxBuildableFactories()  { return (int) (planet().currentSize() * maxRobotControls()); }
 	private int maxBuildableFactories(int rc)	{ return (int) (planet().currentSize() * (rc+empire().robotControlsAdj())); }
     public int maxUseableFactories()         { return maxUseableFactories(robotControls()); }
-	private int maxUseableFactories(int rc)		{ return (int) colony().population() * (rc+empire().robotControlsAdj()); }
+	private int maxUseableFactories(int rc)		{ return (int) colony.population() * (rc+empire().robotControlsAdj()); }
     @Override public boolean isCompleted()   { return factories >= maxBuildableFactories(); }
     @Override public boolean isCompleted(int maxMissingFactories)	{
     	return (maxBuildableFactories()-factories) <= maxMissingFactories;
     }
     public boolean isCompletedThisTurn() { return isCompleted(0) && (newFactories > 0); }
     @Override
-    public float orderedValue()          { return max(super.orderedValue(), colony().orderAmount(Colony.Orders.FACTORIES)); }
+    public float orderedValue()          { return max(super.orderedValue(), colony.orderAmount(Colony.Orders.FACTORIES)); }
     @Override
-    public void removeSpendingOrders()   { colony().removeColonyOrder(Colony.Orders.FACTORIES); }
+    public void removeSpendingOrders()   { colony.removeColonyOrder(Colony.Orders.FACTORIES); }
 	void capturedBy(Empire newCiv)			{
         if (newCiv == empire())
             return;
@@ -165,14 +167,13 @@ public final class ColonyIndustry extends ColonySpendingCategory {
     }
     @Override
     public void assessTurn() {
-        Colony c = colony();
         float orderAmt = 0;
         if (isCompletedThisTurn()) {
-            orderAmt = max(orderAmt, c.orderAmount(Colony.Orders.FACTORIES));
-            c.removeColonyOrder(Colony.Orders.FACTORIES);
+            orderAmt = max(orderAmt, colony.orderAmount(Colony.Orders.FACTORIES));
+            colony.removeColonyOrder(Colony.Orders.FACTORIES);
         }
 
-        c.addFollowUpSpendingOrder(orderAmt);
+        colony.addFollowUpSpendingOrder(orderAmt);
     }
 	float bestFactoryCost(float bc)	{
 		float totalConvertCost = convertableAlienFactories() * factoryConversionCost();
@@ -188,12 +189,12 @@ public final class ColonyIndustry extends ColonySpendingCategory {
         unallocatedBC = 0;
     }
     @Override public float[] excessSpending() {
-        if (colony().allocation(categoryType()) == 0)
+        if (colony.allocation(categoryType()) == 0)
             return new float[] {0, 0};
 
-        float rawProdBC = pct() * colony().totalProductionIncome();
+        float rawProdBC = pct() * colony.totalProductionIncome();
         float prodBC = rawProdBC * planet().productionAdj();
-        float rsvBC = pct() * colony().maxReserveIncome();
+        float rsvBC = pct() * colony.maxReserveIncome();
         float totalBC = prodBC + rsvBC;
         float researchFactor = (rawProdBC+rsvBC) / totalBC;
         totalBC += industryReserveBC;
@@ -245,11 +246,11 @@ public final class ColonyIndustry extends ColonySpendingCategory {
         return new float[] {reserveBC, researchBC};
     }
 	@Override public String[] upcomingResult()	{
-		if (colony().allocation(categoryType()) == 0)
+		if (colony.allocation(categoryType()) == 0)
 			return new String[] {text(noneText), ""};
 
-        float prodBC = pct()* colony().totalProductionIncome() * planet().productionAdj();
-        float rsvBC = pct() * colony().maxReserveIncome();
+        float prodBC = pct()* colony.totalProductionIncome() * planet().productionAdj();
+        float rsvBC = pct() * colony.maxReserveIncome();
         float startBC = prodBC+rsvBC+industryReserveBC;
         float newBC = prodBC+rsvBC+industryReserveBC;
         if (newBC <= 0)
@@ -389,15 +390,15 @@ public final class ColonyIndustry extends ColonySpendingCategory {
 
         // adjust cost for planetary production
         // assume any amount over current production comes from reserve (no adjustment)
-        float totalBC = (colony().totalProductionIncome() * planet().productionAdj()) + colony().maxReserveIncome();
+        float totalBC = (colony.totalProductionIncome() * planet().productionAdj()) + colony.maxReserveIncome();
         if (totalCost > totalBC)
-            totalCost += colony().totalProductionIncome() * (1 - planet().productionAdj());
+            totalCost += colony.totalProductionIncome() * (1 - planet().productionAdj());
         else
-            totalCost *= colony().totalIncome() / totalBC;
+            totalCost *= colony.totalIncome() / totalBC;
 
         return totalCost;
     }
-    public int maxAllocationNeeded() { return maxAllocationNeeded(colony().totalIncome()); }
+    public int maxAllocationNeeded() { return maxAllocationNeeded(colony.totalIncome()); }
 	int maxAllocationNeeded(float totalIncome)	{
         float needed = maxSpendingNeeded();
         if (needed <= 0)
@@ -409,7 +410,7 @@ public final class ColonyIndustry extends ColonySpendingCategory {
     private float smoothRefitSpendingNeeded(float targetPopPct) {
         float planetSize = planet().currentSize();
         float expectedPopulationLongTerm = expectedPopulation()
-        		+ galaxy().friendlyPopApproachingSystem(colony().starSystem());
+        		+ galaxy().friendlyPopApproachingSystem(colony.starSystem());
         float expectedMissingPopulation	= planetSize - expectedPopulationLongTerm;
         float allowedMissingPopulation	= planetSize * (1-targetPopPct);
         // You may want some natural growth
@@ -453,11 +454,11 @@ public final class ColonyIndustry extends ColonySpendingCategory {
  
         // adjust cost for planetary production
         // assume any amount over current production comes from reserve (no adjustment)
-        float totalBC = (colony().totalProductionIncome() * planet().productionAdj()) + colony().maxReserveIncome();
+        float totalBC = (colony.totalProductionIncome() * planet().productionAdj()) + colony.maxReserveIncome();
         if (totalCost > totalBC)
-            totalCost += colony().totalProductionIncome() * (1 - planet().productionAdj());
+            totalCost += colony.totalProductionIncome() * (1 - planet().productionAdj());
         else
-            totalCost *= colony().totalIncome() / totalBC;
+            totalCost *= colony.totalIncome() / totalBC;
 
         return totalCost;
     }
@@ -511,20 +512,19 @@ public final class ColonyIndustry extends ColonySpendingCategory {
  
         // adjust cost for planetary production
         // assume any amount over current production comes from reserve (no adjustment)
-        float totalBC = (colony().totalProductionIncome() * planet().productionAdj()) + colony().maxReserveIncome();
+        float totalBC = (colony.totalProductionIncome() * planet().productionAdj()) + colony.maxReserveIncome();
         if (totalCost > totalBC)
-            totalCost += colony().totalProductionIncome() * (1 - planet().productionAdj());
+            totalCost += colony.totalProductionIncome() * (1 - planet().productionAdj());
         else
-            totalCost *= colony().totalIncome() / totalBC;
+            totalCost *= colony.totalIncome() / totalBC;
 
         return totalCost;
     }
     private float expectedPopulation() {
-    	float curentPopulation	 = colony().population();
-//       	float upcomingPopGrowth  = colony().ecology().upcomingPopGrowth(); // Next Turn
-       	float upcomingPopGrowth  = colony().ecology().upcomingPopGrowthFloat(); // Next Turn
+    	float curentPopulation	 = colony.population();
+       	float upcomingPopGrowth  = colony.ecology().upcomingPopGrowthFloat(); // Next Turn
     	float expectedPopulation = curentPopulation + upcomingPopGrowth;
-    	expectedPopulation		 = min(expectedPopulation, colony().maxSize());
+    	expectedPopulation		 = min(expectedPopulation, colony.maxSize());
     	return expectedPopulation;
     }
 	public float[] factoryBalance()	{
@@ -549,11 +549,11 @@ public final class ColonyIndustry extends ColonySpendingCategory {
     // PRIVATE METHODS
     //
     private float upcomingFactories() {
-        if (colony().allocation(categoryType()) == 0)
+        if (colony.allocation(categoryType()) == 0)
             return 0;
 
-        float prodBC = pct()* colony().totalProductionIncome() * planet().productionAdj();
-        float rsvBC = pct() * colony().maxReserveIncome();
+        float prodBC = pct()* colony.totalProductionIncome() * planet().productionAdj();
+        float rsvBC = pct() * colony.maxReserveIncome();
         float newBC = prodBC+rsvBC+industryReserveBC;
         int colonyControls = min(robotControls, tech().topRobotControls());
         float builtFactories = factories;
@@ -640,48 +640,48 @@ public final class ColonyIndustry extends ColonySpendingCategory {
         p.addAlienFactories(randomEmpId, -1);
         newFactories++;
     }
-    @Override public int refreshAllocationNeeded(boolean prioritized, boolean hadShipSpending, float targetPopPct) {
-    	if (prioritized)
-    		return maxAllocationNeeded();
-    	float needed;
-    	if (options().useSmartRefit())
-    		needed = smoothRefitSpendingNeeded(targetPopPct);
-    	else
-    		needed = smoothSpendingNeeded();
-        if (needed <= 0)
-            return 0;
-        float pctNeeded = min(1, needed / colony().totalIncome());
-        int ticks = (int) Math.ceil(pctNeeded * MAX_TICKS);
-        return ticks;
-    }
-    @Override public int smoothAllocationNeeded(boolean prioritized) {
-    	if (prioritized)
-    		return maxAllocationNeeded();
+	@Override public int refreshAllocationNeeded(boolean prioritized, boolean hadShipSpending, float targetPopPct, float income) {
+		if (prioritized)
+			return maxAllocationNeeded(income);
+		float needed;
+		if (options().useSmartRefit())
+			needed = smoothRefitSpendingNeeded(targetPopPct);
+		else
+			needed = smoothSpendingNeeded();
+		if (needed <= 0)
+			return 0;
+		float pctNeeded = min(1, needed / income);
+		int ticks = (int) Math.ceil(pctNeeded * MAX_TICKS);
+		return ticks;
+	}
+	@Override public int smoothAllocationNeeded(boolean prioritized, float income)	{
+		if (prioritized)
+			return maxAllocationNeeded(income);
 
-    	float needed = smoothSpendingNeeded();
-        if (needed <= 0)
-            return 0;
-        float pctNeeded = min(1, needed / colony().totalIncome());
-        int ticks = (int) Math.ceil(pctNeeded * MAX_TICKS);
-        return ticks;
-    }
-    @Override public int smartAllocationNeeded(MouseEvent e) {
-    	if (e==null || SwingUtilities.isLeftMouseButton(e))
-    		return maxAllocationNeeded();
-    	if (SwingUtilities.isRightMouseButton(e))
-    		return MAX_TICKS;
-    	if (SwingUtilities.isMiddleMouseButton(e))
-    		return smoothAllocationNeeded(false);
-    	return 0;
-    }
-    @Override public int govAllocationNeeded(boolean prioritized, GovWorksheet gws) {
-    	if (prioritized)
-    		return maxAllocationNeeded();
-    	float needed = smoothRefitSpendingNeeded(gws.targetPopPercent);
-        if (needed <= 0)
-            return 0;
-        float pctNeeded = min(1, needed / gws.totalIncome);
-        int ticks = (int) Math.ceil(pctNeeded * MAX_TICKS);
-        return ticks;
-    }
+		float needed = smoothSpendingNeeded();
+		if (needed <= 0)
+			return 0;
+		float pctNeeded = min(1, needed / income);
+		int ticks = (int) Math.ceil(pctNeeded * MAX_TICKS);
+		return ticks;
+	}
+	@Override public int smartAllocationNeeded(MouseEvent e, float income)	{
+		if (e==null || SwingUtilities.isLeftMouseButton(e))
+			return maxAllocationNeeded(income);
+		if (SwingUtilities.isRightMouseButton(e))
+			return MAX_TICKS;
+		if (SwingUtilities.isMiddleMouseButton(e))
+			return smoothAllocationNeeded(false, income);
+		return 0;
+	}
+	@Override public int govAllocationNeeded(boolean prioritized, GovWorksheet gws)	{
+		if (prioritized)
+			return maxAllocationNeeded(gws.totalIncome);
+		float needed = smoothRefitSpendingNeeded(gws.targetPopPercent);
+		if (needed <= 0)
+			return 0;
+		float pctNeeded = min(1, needed / gws.totalIncome);
+		int ticks = (int) Math.ceil(pctNeeded * MAX_TICKS);
+		return ticks;
+	}
 }

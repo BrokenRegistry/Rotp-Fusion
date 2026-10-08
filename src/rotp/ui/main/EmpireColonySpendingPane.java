@@ -750,8 +750,8 @@ public class EmpireColonySpendingPane extends BasePanel {
             }
             float prevTech = mapListener == null ? 0 : colony.totalPlanetaryResearch();
 
-            // Specific optimizations
-            colony.verifiedSmoothMaxSlider(category, e, true);
+			// Specific optimizations
+			colony.verifiedSmoothMaxSlider(category, e, true, colony.nextTotalIncome());
 
             // Common End
         	if (mapListener == null)
@@ -781,11 +781,12 @@ public class EmpireColonySpendingPane extends BasePanel {
             }
             float prevTech = mapListener == null ? 0 : colony.totalPlanetaryResearch();
            	boolean hadsShipSpending = colony.allocation(Colony.SHIP) > 0;
+			float income = colony.nextTotalIncome();
 
             // Specific optimizations
            	if (e.isShiftDown() && e.isControlDown()) { // Smooth Max Under test
-            	boolean v2 = !options().useSmartRefit();
-           		colony.verifiedSmoothMaxSlider(category, e, v2);
+				boolean v2 = !options().useSmartRefit();
+				colony.verifiedSmoothMaxSlider(category, e, v2, income);
            	}
            	else if (e.isShiftDown()) { // Smart Max, clear the free spending
                 colony.clearUnlockedSpending();
@@ -794,7 +795,7 @@ public class EmpireColonySpendingPane extends BasePanel {
                 }
                 else {
                     int allocation = colony.allocationRemaining();
-                    int allocationNeeded = colony.category(category).smartAllocationNeeded(e);
+                    int allocationNeeded = colony.category(category).smartAllocationNeeded(e, income);
                     allocation = min(allocation, allocationNeeded);
                     if(allocation == 0 && category != RESEARCH)
                         allocation = colony.allocationRemaining();
@@ -815,13 +816,13 @@ public class EmpireColonySpendingPane extends BasePanel {
             	colony.clearUnlockedSpending();
             	if (!colony.locked(ECOLOGY))
             		colony.allocation(ECOLOGY, colony.ecology().cleanupAllocationNeeded());
-            	colony.redistributeSpending(-1, hadsShipSpending, true);
+            	colony.redistributeSpending(-1, hadsShipSpending, true, income);
             }
 
             // Smooth Max
             else {
             	boolean v2 = options().useSmartRefit();
-            	colony.verifiedSmoothMaxSlider(category, e, v2);
+            	colony.verifiedSmoothMaxSlider(category, e, v2, income);
             	//colony.checkEcoAtClean();
             }
 

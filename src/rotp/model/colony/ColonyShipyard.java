@@ -54,6 +54,22 @@ public class ColonyShipyard extends ColonySpendingCategory {
     private float queuedBC = 0;
     private int desiredShips = 0;
 
+	ColonyShipyard (Colony c)	{
+		super(c);
+		init();
+	}
+	private void init() {
+        hasStargate = false;
+        buildingStargate = false;
+        design = null;
+        prevDesign = null;
+        stargateBC = 0;
+        shipBC = 0;
+        newShips = 0;
+        maxAllowedShipBCProd = -1f;
+        clearFleetsCopies();
+    }
+
 	public float shipAccruedBC()			{ return shipAccruedBC; }	// for UI only
 	public String shipAccruedBCStr()		{
 		shipAccruedBC = shipReserveBC;
@@ -66,7 +82,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 
 	private ShipFleet rallyFleetCopy()	{
 		if (rallyFleetCopy == null)
-			rallyFleetCopy = new ShipFleet(empire().id, colony().starSystem());
+			rallyFleetCopy = new ShipFleet(empire().id, colony.starSystem());
 		return rallyFleetCopy;
 	}
 	// BR: Public methods related to rally joining combat, ordered by call sequence.
@@ -87,7 +103,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 			unusedAccruedBC = shipReserveBC;
 
 			// Orbiting and transit fleets are now set; save a copy in case of combat
-			ShipFleet orbitingFleet = colony().starSystem().orbitingFleetForEmpire(empire());
+			ShipFleet orbitingFleet = colony.starSystem().orbitingFleetForEmpire(empire());
 			if (orbitingFleet != null) {
 				orbitFleetCopy = ShipFleet.copy(orbitingFleet);
 				// System.out.println("nexTurn orbitFleetCopy = " + orbitFleetCopy.toString()); // TO DO BR: Comment
@@ -121,7 +137,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 		float cost = design.cost();
 		newShips = 0;
 
-		if (colony().allocation(categoryType()) == 0 && buildLimit() == 0) {
+		if (colony.allocation(categoryType()) == 0 && buildLimit() == 0) {
 			// BR: if ship are requested, check if current BC can build the ship
 			// A new tech may have lowered the ship cost, so no additional spending is required.
 			return;
@@ -132,7 +148,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
 			return;
 		}
 
-		Empire emp = colony().empire();
+		Empire emp = empire();
 		if (buildingStargate) {
 			stargateBC += newBC;
 			if (stargateBC >= cost) {
@@ -179,10 +195,10 @@ public class ColonyShipyard extends ColonySpendingCategory {
 				ShipDesign shipDesign = (ShipDesign) design;
 				shipDesign.addBuildCount(newShips);
 				emp.shipLab().recordConstruction(shipDesign, newShips);
-				emp.shipBuildingSystems().add(colony().starSystem());
+				emp.shipBuildingSystems().add(colony.starSystem());
 				placeNewShipsInOrbit(shipDesign, newShips);
 				if (emp.isPlayerControlled()) {
-					log(colony().name(), " has constructed: ", str(newShips), " ", design.name());
+					log(colony.name(), " has constructed: ", str(newShips), " ", design.name());
 					GameSession.addShipsConstructed(emp.id, shipDesign, newShips);
 				}
 			}
@@ -191,8 +207,8 @@ public class ColonyShipyard extends ColonySpendingCategory {
 	}
 	// 3.b nextTurnPart1
 	private void placeNewShipsInOrbit(ShipDesign d, int count)	{
-		Empire emp = colony().empire();
-		StarSystem sys = colony().starSystem();
+		Empire emp = empire();
+		StarSystem sys = colony.starSystem();
 		int sysId = sys.id;
 		int designId = d.id();
 
@@ -223,10 +239,9 @@ public class ColonyShipyard extends ColonySpendingCategory {
 		if (rallyFleetCopy == null)
 			return;
 
-		Colony c = colony();
-		Empire emp = c.empire();
+		Empire emp = colony.empire();
 		int empId = emp.id;
-		int sysId = c.starSystem().id;
+		int sysId = colony.starSystem().id;
 		if (!(emp.sv.hasRallyPoint(sysId) && emp.alliedWith(emp.sv.empId(sysId))))
 			return;
 
@@ -245,11 +260,10 @@ public class ColonyShipyard extends ColonySpendingCategory {
 		if (!buildingStargate)
 			return Float.MAX_VALUE;
 
-		Colony c = colony();
-		if (c.allocation(categoryType()) == 0)
+		if (colony.allocation(categoryType()) == 0)
 			return Float.MAX_VALUE;
 
-		float newBC = pct() * (c.totalProductionIncome() * planet().productionAdj() + c.maxReserveIncome());
+		float newBC = pct() * (colony.totalProductionIncome() * planet().productionAdj() + colony.maxReserveIncome());
 		float totalBC = newBC + stargateBC;
 		if (totalBC <= 0)
 			return Float.MAX_VALUE;
@@ -305,21 +319,8 @@ public class ColonyShipyard extends ColonySpendingCategory {
 	}
     private float maxAllowedShipBCProd() {
         if (maxAllowedShipBCProd == null || maxAllowedShipBCProd < 0)
-            maxAllowedShipBCProd = empire().governorAI().maxShipBCPermitted(colony())* planet().productionAdj();
+            maxAllowedShipBCProd = empire().governorAI().maxShipBCPermitted(colony)* planet().productionAdj();
         return maxAllowedShipBCProd;
-    }
-    @Override
-    public void init(Colony c) {
-        super.init(c);
-        hasStargate = false;
-        buildingStargate = false;
-        design = null;
-        prevDesign = null;
-        stargateBC = 0;
-        shipBC = 0;
-        newShips = 0;
-        maxAllowedShipBCProd = -1f;
-        clearFleetsCopies();
     }
     @Override
     public int categoryType()            { return Colony.SHIP; }
@@ -420,7 +421,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
     public int upcomingShipCount()    {
         if (buildingObsoleteDesign())
             return 0;
-        if (colony().allocation(categoryType()) == 0)
+        if (colony.allocation(categoryType()) == 0)
             return 0;
     	return upcomingShipCount(pct());
     }
@@ -436,8 +437,8 @@ public class ColonyShipyard extends ColonySpendingCategory {
         }
 		shipAccruedBC = tmpShipReserveBC;
 		unusedAccruedBC = tmpShipReserveBC;
-        float prodBC = pct * colony().totalProductionIncome() * planet().productionAdj();
-        float rsvBC  = pct * colony().maxReserveIncome();
+        float prodBC = pct * colony.totalProductionIncome() * planet().productionAdj();
+        float rsvBC  = pct * colony.maxReserveIncome();
         float newBC  = prodBC + rsvBC;
         float totalBC = max(newBC + accumBC, 0);
         float cost = design.cost();
@@ -463,12 +464,12 @@ public class ColonyShipyard extends ColonySpendingCategory {
         return text("MAIN_COLONY_SHIPYARD_LIMIT",buildLimit());
     } */
     @Override public float[] excessSpending() {
-        if (colony().allocation(categoryType()) == 0)
+        if (colony.allocation(categoryType()) == 0)
             return new float[] {0, 0};
 
-        float rawProdBC = pct() * colony().totalProductionIncome();
+        float rawProdBC = pct() * colony.totalProductionIncome();
         float prodBC = rawProdBC * planet().productionAdj();
-        float rsvBC = pct() * colony().maxReserveIncome();
+        float rsvBC = pct() * colony.maxReserveIncome();
         float totalBC = prodBC+rsvBC;
         float researchFactor = (rawProdBC+rsvBC) / totalBC;
 
@@ -497,7 +498,7 @@ public class ColonyShipyard extends ColonySpendingCategory {
     }
 	@Override public String[] upcomingResult()	{
     	// If no allocation but buildLimit > 0 the accumulated reserves could be enough to build the ship.
-        if (colony().allocation(categoryType()) == 0 && buildLimit() == 0)
+        if (colony.allocation(categoryType()) == 0 && buildLimit() == 0)
 			return new String[] {text(noneText), ""};
 
 		float tmpShipReserveBC = shipReserveBC;
@@ -509,8 +510,8 @@ public class ColonyShipyard extends ColonySpendingCategory {
                 tmpShipReserveBC += tmpShipBC;
             accumBC = 0;
         }
-        float prodBC = pct()* colony().totalProductionIncome() * planet().productionAdj();
-        float rsvBC = pct() * colony().maxReserveIncome();
+        float prodBC = pct()* colony.totalProductionIncome() * planet().productionAdj();
+        float rsvBC = pct() * colony.maxReserveIncome();
         float newBC = prodBC+rsvBC;
         float totalBC = max(newBC+accumBC, 0);
         float cost = design.cost();
@@ -648,15 +649,15 @@ public class ColonyShipyard extends ColonySpendingCategory {
 
         // adjust cost for planetary production
         // assume any amount over current production comes from reserve (no adjustment)
-        float totalBC = (colony().totalProductionIncome() * planet().productionAdj()) + colony().maxReserveIncome();
+        float totalBC = (colony.totalProductionIncome() * planet().productionAdj()) + colony.maxReserveIncome();
         if (totalCost > totalBC)
-            totalCost += colony().totalProductionIncome() * (1 - planet().productionAdj());
+            totalCost += colony.totalProductionIncome() * (1 - planet().productionAdj());
         else
-            totalCost *= colony().totalIncome() / totalBC;
+            totalCost *= colony.totalIncome() / totalBC;
 
         return totalCost;
     }
-    int maxAllocationNeeded()	{ return maxAllocationNeeded(colony().totalIncome()); }
+    int maxAllocationNeeded()	{ return maxAllocationNeeded(colony.totalIncome()); }
 	private int maxAllocationNeeded(float totalIncome)	{
         float needed = maxSpendingNeeded();
         if (needed <= 0)
@@ -665,30 +666,29 @@ public class ColonyShipyard extends ColonySpendingCategory {
         int ticks = (int) Math.ceil(pctNeeded * MAX_TICKS);
         return ticks;
     } 
-    @Override public int smoothAllocationNeeded(boolean prioritized) {
-    	int buildTarget = buildLimit();
-    	if (buildingStargate)
-    		buildTarget = 1;
-    	else if (buildTarget == 0)
-    			return prioritized? MAX_TICKS : 0;
+	@Override public int smoothAllocationNeeded(boolean prioritized, float income)	{
+		int buildTarget = buildLimit();
+		if (buildingStargate)
+			buildTarget = 1;
+		else if (buildTarget == 0)
+				return prioritized? MAX_TICKS : 0;
 
-    	// Start at 1 tick, as even if 0BC are needed, no tick = no ship
-    	for (int tick=1; tick<=MAX_TICKS; tick++) {
-    		if (upcomingShipCount((float) tick / MAX_TICKS) >= buildTarget)
-    			return tick;
-    	}
-        return MAX_TICKS;
-    }
-    @Override public int smartAllocationNeeded(MouseEvent e) {
-    	if (e==null || SwingUtilities.isLeftMouseButton(e)) // Target limit
-    		return smoothAllocationNeeded(false);
-    	if (SwingUtilities.isRightMouseButton(e)) // Max Available
-    		return MAX_TICKS;
-    	if (SwingUtilities.isMiddleMouseButton(e)) // AI suggestion, but free for future uses
-    		return maxAllocationNeeded();
-    	return 0;
-    }
-    @Override public int refreshAllocationNeeded(boolean prioritized, boolean hadShipSpending, float targetPopPercent) {
-   		return smoothAllocationNeeded(prioritized || hadShipSpending);
-    }
+		// Start at 1 tick, as even if 0BC are needed, no tick = no ship
+		for (int tick=1; tick<=MAX_TICKS; tick++)
+			if (upcomingShipCount((float) tick / MAX_TICKS) >= buildTarget)
+				return tick;
+		return MAX_TICKS;
+	}
+	@Override public int smartAllocationNeeded(MouseEvent e, float income)	{
+		if (e==null || SwingUtilities.isLeftMouseButton(e)) // Target limit
+			return smoothAllocationNeeded(false, income);
+		if (SwingUtilities.isRightMouseButton(e)) // Max Available
+			return MAX_TICKS;
+		if (SwingUtilities.isMiddleMouseButton(e)) // AI suggestion, but free for future uses
+			return maxAllocationNeeded(income);
+		return 0;
+	}
+	@Override public int refreshAllocationNeeded(boolean prioritized, boolean hadShipSpending, float targetPopPercent, float income) {
+		return smoothAllocationNeeded(prioritized || hadShipSpending, income);
+	}
 }

@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
+import rotp.model.game.GameSession;
 import rotp.model.tech.Tech;
 import rotp.model.tech.TechCategory;
 import rotp.ui.RotPUI;
@@ -83,7 +84,7 @@ public final class TechStatusSprite extends MapControlSprite {
         g2.setColor(background);
         g2.fillRoundRect(startX, startY, width, height, cnr, cnr);
 
-        if (tech != null)
+        if (tech != null && (show || !GameSession.performingTurn()))
         	if (options().showTechProgress())
         		RotPUI.instance().techUI().drawResearchBubble(g2, cat, true, Color.lightGray, Color.black, Color.lightGray, 
         				blueBucketBgC, lightBlueBucketC, lightBlueBucketC, darkBlueBucketC,

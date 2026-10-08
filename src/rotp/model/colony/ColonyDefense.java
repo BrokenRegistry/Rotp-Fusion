@@ -38,6 +38,8 @@ public final class ColonyDefense extends ColonySpendingCategory {
     private boolean shieldCompleted = false;
     private boolean missileBasesUpgraded = false;
 
+    ColonyDefense (Colony c)	{ super(c); }
+
 	public MissileBase missileBase()		{ return missileBase; }	// Missiles bases characteristics
 	public int activeBases()				{ return (int) bases; }	// Number of working bases
 	public float rawBases()					{ return bases; }	// Raw number of bases
@@ -51,10 +53,10 @@ public final class ColonyDefense extends ColonySpendingCategory {
 
     public boolean shieldCompleted()       { return shieldCompleted && shieldAtMaxLevel(); }
     public boolean missileBasesUpgraded()  { return missileBasesUpgraded && (missileBase == tech().bestMissileBase()); }
-	void updateMissileBase()				{ missileBase = colony().tech().bestMissileBase(); }
+	void updateMissileBase()				{ missileBase = colony.tech().bestMissileBase(); }
     @Override public boolean isCompleted() {
 		final boolean missilesDone = (maxBases() == 0)
-				|| ((missileBase == colony().tech().bestMissileBase()) &&  missileBasesCompleted());
+				|| ((missileBase == colony.tech().bestMissileBase()) &&  missileBasesCompleted());
         return missilesDone && shieldAtMaxLevel();
     }
 	public float completedPct(boolean shieldWithoutBases)	{
@@ -92,7 +94,7 @@ public final class ColonyDefense extends ColonySpendingCategory {
 	}
 	@Override public boolean isCompleted(int maxMissingBase) { return isCompleted(maxMissingBase, govOptions().getShieldWithoutBases()); }
     public boolean shieldAtMaxLevel()      {
-        return colony().starSystem().inNebula() || (shield >= maxShieldLevel());
+        return colony.starSystem().inNebula() || (shield >= maxShieldLevel());
     }
 	boolean missileBasesCompleted()	{
         return (rawBases() >= maxBases())
@@ -120,14 +122,14 @@ public final class ColonyDefense extends ColonySpendingCategory {
     public String battleSuitDesc()   { return tech().topBattleSuitTech().name(); }
     public String weaponDesc()       { return tech().topHandWeaponTech().name(); }
     public String personalShieldDesc() { return tech().topPersonalShieldTech().name(); }
-    public int troops()              { return (int) Math.ceil(colony().population()); }
+    public int troops()              { return ceil(colony.population()); }
 
     private float orderedBasesValue() {
         // if no bases needed for this colony, ignore the order for minimum base spending
-        return maxBases() == 0 ? 0 : colony().orderAmount(Colony.Orders.BASES);
+        return maxBases() == 0 ? 0 : colony.orderAmount(Colony.Orders.BASES);
     }
     private float orderedShieldValue() {
-        return shieldAtMaxLevel() ? 0 : colony().orderAmount(Colony.Orders.SHIELD);
+        return shieldAtMaxLevel() ? 0 : colony.orderAmount(Colony.Orders.SHIELD);
     }
     @Override
     public float orderedValue() {
@@ -137,8 +139,8 @@ public final class ColonyDefense extends ColonySpendingCategory {
     }
     @Override
     public void removeSpendingOrders()   {
-        colony().removeColonyOrder(Colony.Orders.BASES);
-        colony().removeColonyOrder(Colony.Orders.SHIELD);
+        colony.removeColonyOrder(Colony.Orders.BASES);
+        colony.removeColonyOrder(Colony.Orders.SHIELD);
     }
 	void capturedBy(Empire newCiv)	{
         if (newCiv == empire())
@@ -238,7 +240,7 @@ public final class ColonyDefense extends ColonySpendingCategory {
             empire().addReserve(unallocatedBC);
         unallocatedBC = 0;
     }
-    public float maxShieldLevel()      { return colony().starSystem().inNebula() ? 0 : tech().maxPlanetaryShieldLevel(); }
+    public float maxShieldLevel()      { return colony.starSystem().inNebula() ? 0 : tech().maxPlanetaryShieldLevel(); }
     public float missileBaseMaintenanceCost(Map<MissileBase, Float> knownBaseCosts) { 
         float baseCost = 0;
         if (knownBaseCosts.containsKey(missileBase))
@@ -264,15 +266,15 @@ public final class ColonyDefense extends ColonySpendingCategory {
         return activeBases() * missileBase.firepower(shield);
     }
     public int missileShieldLevel() {
-        return (colony().starSystem().inNebula() || empire() == null) ? 0 : shieldLevel() + (int) tech().maxDeflectorShieldLevel();
+        return (colony.starSystem().inNebula() || empire() == null) ? 0 : shieldLevel() + (int) tech().maxDeflectorShieldLevel();
     }
     @Override public float[] excessSpending() {
-        if (colony().allocation(categoryType()) == 0)
+        if (colony.allocation(categoryType()) == 0)
             return new float[] {0, 0};
 
-		final float rawProdBC = pct() * colony().totalProductionIncome();
+		final float rawProdBC = pct() * colony.totalProductionIncome();
         float prodBC = rawProdBC * planet().productionAdj();
-		final float rsvBC = pct() * colony().maxReserveIncome();
+		final float rsvBC = pct() * colony.maxReserveIncome();
 		float totalBC = prodBC+rsvBC;
 		final float researchFactor = (rawProdBC+rsvBC) / totalBC;
 
@@ -313,11 +315,11 @@ public final class ColonyDefense extends ColonySpendingCategory {
         return new float[] {reserveBC, researchBC};
     }
 	@Override public String[] upcomingResult()	{
-		if (colony().allocation(categoryType()) == 0)
+		if (colony.allocation(categoryType()) == 0)
 			return new String[] {text(noneText), ""};
 
-		final float prodBC = pct()* colony().totalProductionIncome() * planet().productionAdj();
-		final float rsvBC = pct() * colony().maxReserveIncome();
+		final float prodBC = pct()* colony.totalProductionIncome() * planet().productionAdj();
+		final float rsvBC = pct() * colony.maxReserveIncome();
 		String adviceStr = text("MAIN_COLONY_HEADER_ADVISOR");
 		float newBC = max(0, prodBC+rsvBC);
 
@@ -397,15 +399,15 @@ public final class ColonyDefense extends ColonySpendingCategory {
 
         // adjust cost for planetary production
         // assume any amount over current production comes from reserve (no adjustment)
-        float totalBC = (colony().totalProductionIncome() * planet().productionAdj()) + colony().maxReserveIncome();
+        float totalBC = (colony.totalProductionIncome() * planet().productionAdj()) + colony.maxReserveIncome();
         if (totalCost > totalBC)
-            totalCost += colony().totalProductionIncome() * (1 - planet().productionAdj());
+            totalCost += colony.totalProductionIncome() * (1 - planet().productionAdj());
         else
-            totalCost *= colony().totalIncome() / totalBC;
+            totalCost *= colony.totalIncome() / totalBC;
 
         return totalCost;
     }
-    public int maxAllocationNeeded() { return maxAllocationNeeded(colony().totalIncome()); }
+    public int maxAllocationNeeded() { return maxAllocationNeeded(colony.totalIncome()); }
 	int maxAllocationNeeded(float totalIncome)		{
 		final float needed = maxSpendingNeeded();
         if (needed <= 0)
@@ -413,7 +415,6 @@ public final class ColonyDefense extends ColonySpendingCategory {
 		final float pctNeeded = min(1, needed / totalIncome);
 		return ceil(pctNeeded * MAX_TICKS);
     }
-	private int shieldAllocationNeeded()			{ return shieldAllocationNeeded(colony().totalIncome()); }
 	int shieldAllocationNeeded(float totalIncome)	{
         final float needed = (maxShieldLevel() - shield) * 100;
         if (needed <= 0)
@@ -421,14 +422,14 @@ public final class ColonyDefense extends ColonySpendingCategory {
         float pctNeeded = min(1, needed / totalIncome);
 		return ceil(pctNeeded * MAX_TICKS);
     }
-    @Override public int smoothAllocationNeeded(boolean prioritized) { return maxAllocationNeeded(); }
-    @Override public int smartAllocationNeeded(MouseEvent e) {
-    	if (e==null || SwingUtilities.isLeftMouseButton(e)) // Upgrade And go to Target limit
-    		return maxAllocationNeeded();
-    	if (SwingUtilities.isRightMouseButton(e)) // Max Available
-    		return MAX_TICKS;
-    	if (SwingUtilities.isMiddleMouseButton(e)) // Shield only
-    		return shieldAllocationNeeded();
-    	return 0;
-    }
+	@Override public int smoothAllocationNeeded(boolean prioritized, float income)	{ return maxAllocationNeeded(income); }
+	@Override public int smartAllocationNeeded(MouseEvent e, float income)	{
+		if (e==null || SwingUtilities.isLeftMouseButton(e)) // Upgrade And go to Target limit
+			return maxAllocationNeeded(income);
+		if (SwingUtilities.isRightMouseButton(e)) // Max Available
+			return MAX_TICKS;
+		if (SwingUtilities.isMiddleMouseButton(e)) // Shield only
+			return shieldAllocationNeeded(income);
+		return 0;
+	}
 }

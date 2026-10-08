@@ -30,12 +30,14 @@ public final class ColonyResearch extends ColonySpendingCategory {
     // Assessment still needs the completed project's allocation request after reload.
     private ColonyResearchProject completedProject;
 
+	ColonyResearch (Colony c)	{ super(c); }
+
     public boolean hasProject()                    { return project != null; }
     public void project(ColonyResearchProject p)   { project = p; }
     public void endProject()                       { 
         completedProject = project; 
         project = null; 
-        colony().reallocationRequired = true;
+        colony.reallocationRequired = true;
     }
     public boolean hasCompletedProject()           { return completedProject != null; }
     public ColonyResearchProject completedProject() { return completedProject; }
@@ -71,7 +73,7 @@ public final class ColonyResearch extends ColonySpendingCategory {
 	@Override public boolean warning()	{ return (project != null) && (max(0, totalBC()) < project.remainingResearchBC()); }
 	@Override public String[] upcomingResult()	{ // TODO BR: adviceStr
 		String adviceStr = "";
-        if (colony().allocation(categoryType()) == 0)
+        if (colony.allocation(categoryType()) == 0)
 			return new String[] {text(noneText), adviceStr};
 
         float bc = totalBC();
@@ -81,7 +83,7 @@ public final class ColonyResearch extends ColonySpendingCategory {
 				return new String[] {text(project.projectKey()), adviceStr};
         }
 
-        if (colony().empire().tech().researchCompleted())
+        if (colony.empire().tech().researchCompleted())
 			return new String[] {text(reserveText), adviceStr};
 
 		return new String[] {text(researchPointsText, (int)bc), adviceStr};
@@ -100,21 +102,21 @@ public final class ColonyResearch extends ColonySpendingCategory {
         projectBC = 0;
         unallocatedBC = 0;
     }
-    @Override public int smoothAllocationNeeded(boolean prioritized) { 
+	@Override public int smoothAllocationNeeded(boolean prioritized, float income)	{
 		if (empire().tech().researchCompleted())
 			return 0;
 		else
 			return MAX_TICKS;
-    }
-    @Override public int smartAllocationNeeded(MouseEvent e) {
-    	if (empire().tech().researchCompleted())
+	}
+	@Override public int smartAllocationNeeded(MouseEvent e, float income)	{
+		if (empire().tech().researchCompleted())
 			return 0;
-    	if (e==null || SwingUtilities.isLeftMouseButton(e))
-   			return smoothAllocationNeeded(colony().prioritizeResearch());
-    	if (SwingUtilities.isRightMouseButton(e))
-    		return 0;
-    	if (SwingUtilities.isMiddleMouseButton(e))
-    		return 0;
-    	return 0;
-    }
+		if (e==null || SwingUtilities.isLeftMouseButton(e))
+			return smoothAllocationNeeded(colony.prioritizeResearch(), income);
+		if (SwingUtilities.isRightMouseButton(e))
+			return 0;
+		if (SwingUtilities.isMiddleMouseButton(e))
+			return 0;
+		return 0;
+	}
 }

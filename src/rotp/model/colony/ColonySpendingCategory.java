@@ -25,28 +25,29 @@ import rotp.util.Base;
 
 public abstract class ColonySpendingCategory implements Base, Serializable {
     private static final long serialVersionUID = 1L;
-	public static final String noneText = "MAIN_COLONY_SPENDING_NONE";
-	public static final String reserveText = "MAIN_COLONY_SPENDING_RESERVE";
-	public static final String techText = "MAIN_COLONY_SPENDING_TECH";
-	public static final String convertAlienFactoriesText = "MAIN_COLONY_SPENDING_CONVERT";
-	public static final String refitFactoriesText = "MAIN_COLONY_SPENDING_REFIT";
-	public static final String maximumFactoriesText = "MAIN_COLONY_SPENDING_MAX_FACT";
-	public static final String wasteText = "MAIN_COLONY_SPENDING_WASTE";
-	public static final String atmosphereText = "MAIN_COLONY_SPENDING_ATMOSPHERE";
-	public static final String enrichSoilText = "MAIN_COLONY_SPENDING_ENRICH_SOIL";
-	public static final String terraformText = "MAIN_COLONY_SPENDING_TERRAFORM";
-	public static final String cleanupText = "MAIN_COLONY_SPENDING_CLEANUP";
-	public static final String growthText = "MAIN_COLONY_SPENDING_GROWTH";
-	public static final String shieldText = "MAIN_COLONY_SPENDING_SHIELD";
-	public static final String upgradeBasesText = "MAIN_COLONY_SPENDING_UPG_BASES";
-	public static final String researchPointsText = "MAIN_COLONY_SPENDING_RP";
-	public static final String yearsLongText = "MAIN_COLONY_COMPLETION_CENTURY";
-	public static final String yearsText = "MAIN_COLONY_COMPLETION_YEARS";
-	public static final String yearText = "MAIN_COLONY_COMPLETION_YEAR";
-	public static final String perYearText = "MAIN_COLONY_COMPLETION_PER_YEAR";
-    public static final int MAX_TICKS = 50;
+	static final String noneText = "MAIN_COLONY_SPENDING_NONE";
+	static final String reserveText = "MAIN_COLONY_SPENDING_RESERVE";
+	private static final String techText = "MAIN_COLONY_SPENDING_TECH";
+	// static final String convertAlienFactoriesText = "MAIN_COLONY_SPENDING_CONVERT";
+	static final String refitFactoriesText = "MAIN_COLONY_SPENDING_REFIT";
+	// static final String maximumFactoriesText = "MAIN_COLONY_SPENDING_MAX_FACT";
+	static final String wasteText = "MAIN_COLONY_SPENDING_WASTE";
+	static final String atmosphereText = "MAIN_COLONY_SPENDING_ATMOSPHERE";
+	static final String enrichSoilText = "MAIN_COLONY_SPENDING_ENRICH_SOIL";
+	static final String terraformText = "MAIN_COLONY_SPENDING_TERRAFORM";
+	static final String cleanupText = "MAIN_COLONY_SPENDING_CLEANUP";
+	static final String growthText = "MAIN_COLONY_SPENDING_GROWTH";
+	static final String shieldText = "MAIN_COLONY_SPENDING_SHIELD";
+	static final String upgradeBasesText = "MAIN_COLONY_SPENDING_UPG_BASES";
+	static final String researchPointsText = "MAIN_COLONY_SPENDING_RP";
+	static final String yearsLongText = "MAIN_COLONY_COMPLETION_CENTURY";
+	static final String yearsText = "MAIN_COLONY_COMPLETION_YEARS";
+	static final String yearText = "MAIN_COLONY_COMPLETION_YEAR";
+	static final String perYearText = "MAIN_COLONY_COMPLETION_PER_YEAR";
+	public static final int MAX_TICKS = 50;
 
-    private Colony colony;
+	protected final Colony colony;
+	ColonySpendingCategory (Colony c)	{ colony = c; }
 
     /**
      * upcomingResult() is the text displayed to the player in the EmpireColonySpendingPane.
@@ -63,20 +64,19 @@ public abstract class ColonySpendingCategory implements Base, Serializable {
     public abstract void assessTurn();
 
     public boolean isCompleted(int maxMissing) { return isCompleted(); }
-    public ColonySpendingCategory () {  }
     @Override
     public String toString()            { return str(allocation()); }
-    public float totalBC()              { return pct() * colony().totalIncome(); }
+    public float totalBC()              { return pct() * colony.totalIncome(); }
     public float totalBCForEmpire()     { return totalBC(); }
     public int allocation()             { return colony.allocation(categoryType()); }
-    public float pct()                  { return (float)allocation()/ MAX_TICKS; }
-    public float totalAvailableBCthisCategory(float totalProd, float totalReserve) {
+    float pct()                  { return (float)allocation()/ MAX_TICKS; }
+    float totalAvailableBCthisCategory(float totalProd, float totalReserve) {
         float prodBC = pct() * totalProd;
         float rsvBC = pct() * totalReserve;
         return prodBC + rsvBC;
     }
     public boolean warning()            { return false; }
-    public String overflowText()        { 
+    String overflowText()        { 
         if (!empire().divertColonyExcessToResearch())
             return text(reserveText);
         else if (empire().tech().researchCompleted())
@@ -84,12 +84,10 @@ public abstract class ColonySpendingCategory implements Base, Serializable {
         else
             return text(techText);
     }
-    public void init(Colony c)        { colony = c; }
-    public Colony colony()            { return colony; }
-    public Planet planet()            { return colony().planet(); }
-    public Empire empire()            { return colony().empire(); }
-    public TechTree tech()            { return empire().tech(); }
-    public String name()              { return ""; }
+	Colony colony()				{ return colony; }
+	Planet planet()				{ return colony.planet(); }
+	Empire empire()				{ return colony.empire(); }
+	TechTree tech()				{ return empire().tech(); }
     public float orderedValue()       { return colony.locked(categoryType()) ? pct() : 0; }
     public void removeSpendingOrders() { }
     public boolean canLowerMaintenance() { return false; }
@@ -103,12 +101,12 @@ public abstract class ColonySpendingCategory implements Base, Serializable {
         return allocation() - oldValue;
     }
     public float[] excessSpending()        { return new float[] {0, 0}; }
-    public int smoothAllocationNeeded(boolean prioritized)	{ return 0; }
-    public int smartAllocationNeeded(MouseEvent e)			{ return 0; }
-    public int refreshAllocationNeeded(boolean prioritized, boolean hadShipSpending, float targetPopPct) {
-    	return smoothAllocationNeeded(prioritized);
-    }
-    public int govAllocationNeeded(boolean prioritized, GovWorksheet gws) {
-    	return refreshAllocationNeeded(prioritized, gws.keepDirectShipAlloc, gws.targetPopPercent);
-    }
+	public int smoothAllocationNeeded(boolean prioritized, float income)	{ return 0; }
+	public int smartAllocationNeeded(MouseEvent e, float income)			{ return 0; }
+	public int refreshAllocationNeeded(boolean prioritized, boolean hadShipSpending, float targetPopPct, float income)	{
+		return smoothAllocationNeeded(prioritized, income);
+	}
+	public int govAllocationNeeded(boolean prioritized, GovWorksheet gws)	{
+		return refreshAllocationNeeded(prioritized, gws.keepDirectShipAlloc, gws.targetPopPercent, gws.totalIncome);
+	}
 }

@@ -685,7 +685,7 @@ public final class Galaxy implements Base, Serializable {
         }
         return pop;
     }
-    public int friendlyPopApproachingSystemNextTurn(StarSystem sys) {
+    public int friendlyPopApproachingSystemNextTurn(StarSystem sys) { // player call only
         int pop = 0;
         Galaxy gal = galaxy();
 		List<Transport> allTransport = new ArrayList<>(gal.transports()); // ! Concurrent modifications
@@ -707,7 +707,7 @@ public final class Galaxy implements Base, Serializable {
         }
         return pop;
     }
-    public int enemyPopApproachingPlayerSystem(StarSystem sys) {
+    public int enemyPopApproachingPlayerSystem(StarSystem sys) { // player call only
         int pop = 0;
         Empire pl = player();
         for (Transport sh: transports) {

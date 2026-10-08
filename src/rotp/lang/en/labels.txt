@@ -1044,7 +1044,8 @@ GOVERNOR_IS_ON_AND_OFF_BUTTON     | Governor
 GOVERNOR_OPTIONS                  | Mandate
 
 MAIN_COLONY_HEADER_ADVISOR		| <br><hr><h3>In the coming year:</h3>
-MAIN_COLONY_FUNDING_HELP		| Funds: Production %1BC + Reserve %2BC = %3BC
+MAIN_COLONY_TOTAL_FUNDS_HELP	| Colony Funds: Net Income %1BC + Reserve %2BC = %3BC
+MAIN_COLONY_LOCAL_FUNDS_HELP	| Field Funds: Fraction %1% → %2BC
 
 MAIN_COLONY_ROBOT_CONTROL_HELP	| Robotic control level: %1 of %2.
 MAIN_COLONY_NEW_FACTORIES_HELP	| <br>Construction of %1 new factories → %2 factories.
@@ -1061,6 +1062,7 @@ MAIN_COLONY_NEEDED_FACT_HELP	| <br>Needed Factories: %1
 MAIN_COLONY_SENT_POP_HELP		| Sent by transport: %1 pop → %2 pop.
 MAIN_COLONY_NORMAL_GROW_HELP	| Normal growth: %1 pop → %2 pop.
 MAIN_COLONY_INCOMING_POP_HELP	| Incoming transport: %1 pop → %2 pop.
+MAIN_COLONY_FUTURE_TRANSP_HELP	| Upcoming transport: %1 pop.
 MAIN_COLONY_WASTE_BC_HELP		| Missing fund for cleaning: %1BC of %2BC
 MAIN_COLONY_WASTE_TICK_HELP		| Needs %1 more tick for full cleaning.
 MAIN_COLONY_ATM_TERRA_HELP		| Atmosphere Terraforming %1BC of %2BC.

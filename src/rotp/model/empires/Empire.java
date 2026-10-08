@@ -276,6 +276,14 @@ public final class Empire extends Species implements NamedObject {
 		lastNetIncome = netIncome(); // To check for changes after diplomatic contact.
 		budget().transferBudget();
 		spendingNotYetMade = true;
+		// This way the effect of the gauntlet will be shown
+		for (StarSystem sys: allColonizedSystems()) {
+			if (sys == null)
+				continue;
+			Colony col = sys.colony();
+			if (col != null)
+				col.setPreviousPopulation();
+		}
 	}
 	public boolean spendingNotYetMade()			{ return spendingNotYetMade; }
 	public boolean hasGovernor()	{
@@ -1681,15 +1689,6 @@ public final class Empire extends Species implements NamedObject {
 				else
 					col.checkEcoAtClean();
 			}
-//		for (int i = 0; i < sv.count(); ++i)
-//			if (sv.empire(i) == this && sv.isColonized(i)) {
-//				Colony col = sv.colony(i);
-//				if (col.isGovernor())
-//					col.governIfNeeded();
-//				else
-//					col.checkEcoAtClean();
-//			}
-		ai().treasurer().allocateReserve(this);
 	}
 	public void redoGovTurnDecisionsRich() { // Only for player
 		budget().makeBudgetOptionsObsolete();
