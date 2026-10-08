@@ -285,7 +285,8 @@ public final class Empire extends Species implements NamedObject {
 				col.setPreviousPopulation();
 		}
 	}
-	public boolean spendingNotYetMade()			{ return spendingNotYetMade; }
+	public boolean spendingNotYetMade()	{ return spendingNotYetMade; }
+	public void clearTransportImages()	{ transportImages = null; }
 	public boolean hasGovernor()	{
 		for (StarSystem sys : colonizedSystems)
 			if (sys.colony().isGovernor())
@@ -531,11 +532,11 @@ public final class Empire extends Species implements NamedObject {
 	public BufferedImage transportImage(int size) {
 		if (size <= 5)
 			return getTransportImage(0);
-		else if (size <= 15)
+		else if (size <= 10)
 			return getTransportImage(1);
-		else if (size <= 30)
+		else if (size <= 20)
 			return getTransportImage(2);
-		else if (size <= 60)
+		else if (size <= 40)
 			return getTransportImage(3);
 		else
 			return getTransportImage(4);

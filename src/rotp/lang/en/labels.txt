@@ -3660,6 +3660,13 @@ SETTINGS_MOD_ALIEN_TRANSP_OPACITY		| Ongoing Alien Transport: %1
 SETTINGS_MOD_SHIP_SPRITES_OPACITY_DESC	| Opacity of the fleets and transports sprites.
 SETTINGS_MOD_SHIP_SPRITES_OPACITY		| Ship Sprites Opacity: %1
 
+SETTINGS_MOD_TRANSP_ONE_SIZE_DESC		| How to represent transport ships on the galaxy map?
+SETTINGS_MOD_TRANSP_ONE_SIZE			| Size of transport icons: %1
+SETTINGS_MOD_TRANSP_ONE_SIZE_YES_DESC	| All alike... A nice big rectangle with rounded corners.
+SETTINGS_MOD_TRANSP_ONE_SIZE_YES		| One size fit all
+SETTINGS_MOD_TRANSP_ONE_SIZE_NO_DESC	| Adapt the size of the icon to the contents of the transport ship.
+SETTINGS_MOD_TRANSP_ONE_SIZE_NO			| Tailored
+
 SETTINGS_MOD_AUTO_VAR_VIEW_DESC			| Should using the F7/F8 keys to quickly move from one threatened colony to another automatically activate war view?
 SETTINGS_MOD_AUTO_VAR_VIEW				| F7/F8 activate War View: %1
 

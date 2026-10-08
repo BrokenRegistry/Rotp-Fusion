@@ -3660,6 +3660,13 @@ SETTINGS_MOD_ALIEN_TRANSP_OPACITY		| Opacité des troupes étrangères : %1
 SETTINGS_MOD_SHIP_SPRITES_OPACITY_DESC	| Opacité des sprites des flottes et des transports.
 SETTINGS_MOD_SHIP_SPRITES_OPACITY		| Opacité des sprites : %1
 
+SETTINGS_MOD_TRANSP_ONE_SIZE_DESC		| Comment représenter les vaisseaux de transports sur la carte de la galaxie ?
+SETTINGS_MOD_TRANSP_ONE_SIZE			| Taille des icônes de transport : %1
+SETTINGS_MOD_TRANSP_ONE_SIZE_YES_DESC	| Tous pareils... Un bon gros rectangle au coins arrondis.
+SETTINGS_MOD_TRANSP_ONE_SIZE_YES		| Taille unique
+SETTINGS_MOD_TRANSP_ONE_SIZE_NO_DESC	| Adaptez la taille de l’icône au contenu du vaisseau de transport.
+SETTINGS_MOD_TRANSP_ONE_SIZE_NO			| Sur mesure
+
 SETTINGS_MOD_AUTO_VAR_VIEW_DESC			| L’utilisation les touches F7/F8, pour se déplacer rapidement d’une colonie menacée à l’autre, doit-elle activer automatiquement la vue de guerre ?
 SETTINGS_MOD_AUTO_VAR_VIEW				| F7/F8 activent la vue de guerre : %1
 

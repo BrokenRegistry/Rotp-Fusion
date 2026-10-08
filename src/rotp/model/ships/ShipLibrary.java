@@ -32,6 +32,7 @@ import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.RulesetManager;
 import rotp.ui.ScaledInteger;
+import rotp.ui.util.ParamBoolean;
 import rotp.ui.util.ParamInteger;
 import rotp.util.Base;
 
@@ -203,6 +204,9 @@ public class ShipLibrary implements Base, ScaledInteger {
 //        return destImg;
 //    }
 	public BufferedImage transportImage(int colorId, int size) {
+		if (singleTransportIconSize.get())
+			return transportImage(colorId, s7, s16, s4);
+
 		switch (size) {
 			case 0: return transportImage(colorId, s4, s16*s4/s7, s4*s4/s7);
 			case 1: return transportImage(colorId, s5, s16*s5/s7, s4*s5/s7);
@@ -367,6 +371,18 @@ public class ShipLibrary implements Base, ScaledInteger {
 	private static final void setShipSpritesColors(Integer alpha)	{
 		IGameOptions options = RulesetManager.current().currentOptions();
 		options.initShipColors(alpha);
+		GameSession session = GameSession.instance();
+		if (session == null)
+			return;
+		Galaxy galaxy= session.galaxy();
+		if (galaxy == null)
+			return;
+		galaxy.clearShipImages();
+	}
+	public static final ParamBoolean singleTransportIconSize = new ParamBoolean(MOD_UI, "TRANSP_ONE_SIZE", true)
+			.isCfgFile(true)
+			.setNewValueMethod(ShipLibrary::resetTransportIcons);
+	private static final void resetTransportIcons(Boolean b)	{
 		GameSession session = GameSession.instance();
 		if (session == null)
 			return;

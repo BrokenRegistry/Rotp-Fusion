@@ -46,6 +46,8 @@ final class ZoomOptions extends AbstractOptionsSubUI {
 				FlightPathSprite.alienTransportOpacity,
 				LINE_SPACER_25,
 				FlightPathSprite.rallyOpacity,
+				LINE_SPACER_25,
+				ShipLibrary.singleTransportIconSize,
 				HEADER_SPACER_50,
 				new ParamTitle("MAP_SHIP_OPACITY"),
 				ShipLibrary.shipSpritesAlpha
@@ -83,6 +85,7 @@ final class ZoomOptions extends AbstractOptionsSubUI {
 						empireReplayZoomOut,
 						replayTurnPace,
 						LINE_SPACER_25,
+						ShipLibrary.singleTransportIconSize,
 						ShipLibrary.shipSpritesAlpha
 						));
 		return majorList;

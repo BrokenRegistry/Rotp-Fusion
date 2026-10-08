@@ -90,6 +90,10 @@ public final class Galaxy implements Base, Serializable {
 		for (Empire e : empires)
 			e.clearShipImages();
 	}
+	public void clearTransportImages()	{
+		for (Empire e : empires)
+			e.clearTransportImages();
+	}
     public	Integer nextHashCodeDiplomaticIncident() {
     	if (lastHashCodeDiplomaticIncident!=null)
     		lastHashCodeDiplomaticIncident++;
