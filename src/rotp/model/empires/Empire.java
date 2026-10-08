@@ -3373,9 +3373,12 @@ public final class Empire extends Species implements NamedObject {
         if (totalEmpireProduction <= 0) {
             float totalProductionBC = 0;
             List<StarSystem> systems = new ArrayList<>(allColonizedSystems());
-            for (StarSystem sys: systems)
-            	if (sys != null)
-            		totalProductionBC += sys.colony().production();
+			for (StarSystem sys: systems)
+				if (sys != null) {
+					Colony col = sys.colony();
+						if (col != null)
+							totalProductionBC += col.production();
+				}
             totalEmpireProduction = totalProductionBC;
         }
         return totalEmpireProduction;

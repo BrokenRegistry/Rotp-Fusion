@@ -310,13 +310,13 @@ public final class Colony implements Base, IMappedObject, Serializable {
     }
     private void init() {
         buildFortress();
+		clearTransport();
 		spending = new ColonySpendingCategory[] {
 				new ColonyShipyard(this),
 				new ColonyDefense(this),
 				new ColonyIndustry(this),
 				new ColonyEcology(this),
 				new ColonyResearch(this) };
-		clearTransport();
 
         setPopulation(2);
 		if (empire().isHumanEmpire())
@@ -2352,9 +2352,11 @@ public final class Colony implements Base, IMappedObject, Serializable {
         // don't govern if it hasn't been fully initialized
         // I added this due to adding governor logic in clearTransports which is called
         // during the initialization process
-        for (int i = 0; i < spending.length; i++)
-            if (spending[i] == null || spending[i].colony() == null)
-                return;
+		if (spending == null)
+			return;
+//        for (int i = 0; i < spending.length; i++)
+//            if (spending[i] == null || spending[i].colony() == null)
+//                return;
         if (session().controllerRegistry() == null)
             RotPUI.instance().techUI().resetPlanetaryResearch();
         if (governorGotPlayerRequest()) {

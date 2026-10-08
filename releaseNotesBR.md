@@ -12,6 +12,8 @@ When updating, you can reuse the same folder.
 <b><ins>Very last changes:</ins></b>
 
 26-10-08 (BR)
+- Fixed possible crash on new colony.
+- Fixed null pointer exception due to concurrent modification while computing the total production.
 - New option to make transport ships awesome again.
 - Fixed the Gauntlet event disrupting colony reserve management.
   - The enormous loss of income resulting from this event triggered a reaction from the governor who attempted a readjustment of allocations, intended in principle to keep the colony clean and deliver the promised ship... This readjustment was not planned for events of this origin, nor of such magnitude, nor so early in the progress of the turn...

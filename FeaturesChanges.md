@@ -533,6 +533,8 @@
 
 ### Fixes:
 
+- Fixed possible crash on new colony.
+- Fixed null pointer exception due to concurrent modification while computing the total production.
 - Fixed the Gauntlet event disrupting colony reserve management.
   - The enormous loss of income resulting from this event triggered a reaction from the governor who attempted a readjustment of allocations, intended in principle to keep the colony clean and deliver the promised ship... This readjustment was not planned for events of this origin, nor of such magnitude, nor so early in the progress of the turn...
 - Fixed reference point for reporting population growth or loss. It's not normal that after the Gauntlet event, all the arrows are green!

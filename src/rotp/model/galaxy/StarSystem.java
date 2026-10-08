@@ -361,9 +361,8 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     public float population()   { return isColonized() ? colony().population() : 0.0f; }
     public Planet planet() {
         // modnar: change planet sizes with selectedPlanetQualityOption, pass to createPlanet
-        float quality_bonus = options().planetSizeBonus();
         if (planet == null)
-            planet = PlanetFactory.createPlanet(this, quality_bonus*session().populationBonus());
+            planet = PlanetFactory.createPlanet(this, options().planetSizeBonus()*session().populationBonus());
         return planet;
     }
     public void planet(Planet p)                { planet = p; }
