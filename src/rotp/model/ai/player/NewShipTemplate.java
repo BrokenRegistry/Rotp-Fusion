@@ -641,7 +641,7 @@ public class NewShipTemplate extends ShipTemplate { // For Player auto Design
 		// Initial weighting of what isn't weapons
 		shieldWeight	= 4;
 		ecmWeight		= 3;	
-		maneuverWeight	= 2;
+		maneuverWeight	= 4;
 		armorWeight		= 3;
 		reinforcedArmorAllowed	= emp.shipDesignModReinforcedArmor(); 
 		sameSpeedAllowed		= emp.shipDesignModSpeedMatching(); 

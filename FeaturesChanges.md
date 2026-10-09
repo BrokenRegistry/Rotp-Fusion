@@ -533,6 +533,8 @@
 
 ### Fixes:
 
+- Assign more weight to maneuverability
+  - Under Moo1 ruleset maneuverability is quite a bit bigger and AI would often design ships with only 1 combat-speed
 - Fixed possible crash on new colony.
 - Fixed null pointer exception due to concurrent modification while computing the total production.
 - Fixed the Gauntlet event disrupting colony reserve management.
