@@ -126,6 +126,8 @@ public class AIShipCaptain implements Base, ShipCaptain {
                         shouldPerformKiting = true;
                     if(tgtBeforeClose != null && stack.optimalFiringRange(tgtBeforeClose) > 1)
                         shouldPerformKiting = true;
+                    if(tgtBeforeClose != null && tgtBeforeClose.maxMove() < stack.maxMove())
+                        shouldPerformKiting = true;
                 }
             }
             if(stack.repulsorRange() > 0)
