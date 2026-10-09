@@ -12,6 +12,7 @@ When updating, you can reuse the same folder.
 <b><ins>Very last changes:</ins></b>
 
 26-10-09 (Xilmi)
+- Faster AI-ships now kite slower ships
 - Assign more weight to maneuverability
   - Under Moo1 ruleset maneuverability is quite a bit bigger and AI would often design ships with only 1 combat-speed
 
