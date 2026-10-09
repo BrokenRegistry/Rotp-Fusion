@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-10-09 (BR)
+- Extended the maximum screen size percentage to attempt to resolve a player's issue.
+
 26-10-09 (Xilmi)
 - Faster AI-ships now kite slower ships
 - Assign more weight to maneuverability

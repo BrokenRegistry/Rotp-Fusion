@@ -315,7 +315,7 @@ public class UserPreferences implements IMainOptions {
 			screenSizePct = i;
 			return;
 		}
-		screenSizePct = Math.max(25,Math.min(i,200));
+		screenSizePct = Math.max(25,Math.min(i,400));
 	}
 	public static boolean shrinkFrame() {
 		int oldSize = screenSizePct;
