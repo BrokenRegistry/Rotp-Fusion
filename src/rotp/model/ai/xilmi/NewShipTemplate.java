@@ -307,7 +307,7 @@ public class NewShipTemplate extends ShipTemplate {
         }
         int ecmWeight = 3;    
         ecmWeight = (int)Math.round(ecmWeight * 2 * enemyMissilePercentage);
-        int maneuverWeight = 2;
+        int maneuverWeight = 4;
         int armorWeight = 3; 
         int specialsWeight = 4; 
         boolean sameSpeedAllowed = true; 
