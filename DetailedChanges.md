@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-10-09 (BR)
+- Updated Advisor for Ecology allocation and Defense Allocation...
+
 26-10-08 (BR)
 - Fixed possible crash on new colony.
 - Fixed null pointer exception due to concurrent modification while computing the total production.

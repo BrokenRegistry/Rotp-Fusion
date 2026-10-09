@@ -1174,27 +1174,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		final float nextTurnRsv = min(nextTurnProd, reserveIncome());
 		return nextTurnProd + nextTurnRsv;
 	}
-	class UpComingState {
-		// Population
-		final float currentSize	= planet.currentSize();
-		final float currentPop	= population();
-		final float sentPop		= inTransport();
-		final float nextTurnTr	= galaxy().friendlyPopApproachingSystemNextTurn(starSystem());
-		final float longTermTr	= galaxy().friendlyPopApproachingSystem(starSystem());
-		// Production
-		final float workingPop	= currentPop - sentPop + nextTurnTr;
-		final float missingPop	= currentSize - currentPop + sentPop + longTermTr;
-		final float workerProd	= workingPop * empire.workerProductivity();
-		final float usedFact	= (int) min(industry().factories(), workingPop * industry().effectiveRobotControls());
-		final float nextProd	= workerProd + usedFact;
-		final float net2Raw		= totalProductionIncome() / production();
-		final float nextIncome	= nextProd * net2Raw; // We expect the same charge ratio
-		final float nextRsv		= min(nextProd, reserveIncome());
-		final float nextBC		= nextIncome + nextRsv;
-		UpComingState()	{
-
-		}
-	}
 	float productionAfterNextTurnTransports()	{
 		if (inRebellion())
 			return 0.0f;

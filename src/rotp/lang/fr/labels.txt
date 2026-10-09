@@ -1044,8 +1044,9 @@ GOVERNOR_IS_ON_AND_OFF_BUTTON     | Gouverneur
 GOVERNOR_OPTIONS                  | Mandat
 
 MAIN_COLONY_HEADER_ADVISOR		| <br><hr><h3>Dans l’année à venir :</h3>
-MAIN_COLONY_TOTAL_FUNDS_HELP	| Fonds pour la colonnie : Revenu net %1 CG + Réserve %2 CG = %3 CG
-MAIN_COLONY_LOCAL_FUNDS_HELP	| Fonds pour ce champs : Fraction %1 % → %2 CG
+MAIN_COLONY_TOTAL_FUNDS_HELP	| Prévisions pour la colonie : Revenu net %1 CG + Réserve %2 CG = %3 CG
+MAIN_COLONY_LOCAL_FUNDS_HELP	| Fonds attendus : Fraction %1 % → %2 CG
+MAIN_COLONY_NO_LOCAL_FUNDS_HELP	| Fonds attendus : non financé
 
 MAIN_COLONY_ROBOT_CONTROL_HELP	| Niveau de contrôle robotique : %1 sur %2.
 MAIN_COLONY_NEW_FACTORIES_HELP	| <br>Construction de %1 nouvelles usines → %2 usines.
@@ -1063,31 +1064,32 @@ MAIN_COLONY_SENT_POP_HELP		| Transports partant : %1 pop → %2 pop.
 MAIN_COLONY_NORMAL_GROW_HELP	| Croissance normale : %1 pop. → %2 pop.
 MAIN_COLONY_INCOMING_POP_HELP	| Transports entrant : %1 pop → %2 pop.
 MAIN_COLONY_FUTURE_TRANSP_HELP	| Transports à venir : %1 pop.
-MAIN_COLONY_WASTE_BC_HELP		| Fonds manquant pour le nettoyage : %1 CG sur %2 CG
+MAIN_COLONY_WASTE_BC_HELP		| Fonds manquant pour le nettoyage : %1 CG sur %2 CG
 MAIN_COLONY_WASTE_TICK_HELP		| Nécessite %1 tics pour un nettoyage complet.
-MAIN_COLONY_ATM_TERRA_HELP		| Terraformation atmosphérique : %1 CG sur %2 CG
-MAIN_COLONY_ENRICH_FERTILE_HELP	| Transformation vers Fertile : %1 CG sur %2 CG
-MAIN_COLONY_ENRICH_GAIA_HELP	| Transformation vers Gaia : %1 CG sur %2 CG
+MAIN_COLONY_ATM_TERRA_HELP		| Terraformation atmosphérique : %1 CG sur %2 CG
+MAIN_COLONY_ENRICH_FERTILE_HELP	| Transformation vers Fertile : %1 CG sur %2 CG
+MAIN_COLONY_ENRICH_GAIA_HELP	| Transformation vers Gaia : %1 CG sur %2 CG
 MAIN_COLONY_TERRAFORM_HELP		| Terraformation : La taille augmente de %1 → %2.
 MAIN_COLONY_CLONING_HELP		| Clonage : La population a augmenté de %1 → %2.
 
 MAIN_COLONY_OBSOLETE_SHIP_HELP	| <b><font color="#FF0000">!!! Erreur Construction d’un design obsolète !!!</font></b>
-MAIN_COLONY_FROM_SHIP_RSV_HELP	| Puisé dans la réserve %1 CG<br>
-MAIN_COLONY_SHIP_SPENDING_HELP	| Dépenses de vaisseaux %1 CG → %2 CG of %3 CG.
+MAIN_COLONY_FROM_SHIP_RSV_HELP	| Puisé dans la réserve %1 CG<br>
+MAIN_COLONY_SHIP_SPENDING_HELP	| Dépenses de vaisseaux %1 CG → %2 CG of %3 CG.
 MAIN_COLONY_SHIP_TURN_HELP		| <br>Temps restant avant la livraison %1.
 MAIN_COLONY_STARGATE_HELP		| → La porte des étoile sera livrée.
 MAIN_COLONY_SHIPS_UL_HELP		| → %1 Vaisseaux.
 MAIN_COLONY_SHIPS_BUILT_HELP	| <br>Vaisseaux livrés %1 of %2
 MAIN_COLONY_SHIPS_COMPLETE_HELP	| <br>Tous les vaisseaux demandé seront livrés.
-MAIN_COLONY_SHIPS_ACCRUAL_HELP	| <br>Nouvelles réserves %1 CG.
+MAIN_COLONY_SHIPS_ACCRUAL_HELP	| <br>Nouvelles réserves %1 CG.
 
-MAIN_COLONY_SHIELD_SPEND_HELP	| Dépenses sur le boucliers : %1 CG.
-MAIN_COLONY_SHIELD_LEVEL_HELP	| <br>Boucliers ajoutés : %1 → %2 sur %3.
-MAIN_COLONY_SHIELD_FINAL_HELP	| <br>Boucliers Terminéa : %1 → %2.<br>
-MAIN_COLONY_BASES_UP_SPEND_HELP	| Dépenses de mise à jour : %1 CG → %2 CG sur %3 CG.
-MAIN_COLONY_BASES_UPGRADED_HELP	| <br>Les bases seront à jour<br>
-MAIN_COLONY_BASES_SPEND_HELP	| Dépenses pour de nouvelles bases : %1 CG.
-MAIN_COLONY_BASES_NEW_HELP		| <br>Nouvelles bases de : %1 à %2.
+MAIN_COLONY_SHIELD_SPEND_HELP	| Dépenses sur le boucliers : %1 CG.
+MAIN_COLONY_SHIELD_LEVEL_HELP	| Boucliers ajoutés : %1 → %2 sur %3.
+MAIN_COLONY_SHIELD_FINAL_HELP	| Boucliers Terminéa : %1 → %2.
+MAIN_COLONY_BASES_UP_SPEND_HELP	| Dépenses de mise à jour : %1 CG → %2 CG sur %3 CG.
+MAIN_COLONY_BASES_UPGRADED_HELP	| Les bases seront à jour
+MAIN_COLONY_BASES_SPEND_HELP	| Dépenses pour de nouvelles bases : %1 CG.
+MAIN_COLONY_BASES_NEW_HELP		| Nouvelles bases de : %1 à %2.
+MAIN_COLONY_BASES_SCRAP_HELP	| %1 bases seront détruites pour un retour de %2.
 
 MAIN_COLONY_SPENDING_NONE         | Aucune
 MAIN_COLONY_SPENDING_RESERVE      | Réserve

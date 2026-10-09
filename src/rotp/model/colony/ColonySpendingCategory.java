@@ -109,4 +109,41 @@ public abstract class ColonySpendingCategory implements Base, Serializable {
 	public int govAllocationNeeded(boolean prioritized, GovWorksheet gws)	{
 		return refreshAllocationNeeded(prioritized, gws.keepDirectShipAlloc, gws.targetPopPercent, gws.totalIncome);
 	}
+	float incomeAdjust()	{ return planet().productionAdj(); }
+	class UpcomingResult	{
+		// Population
+		final float currentSize	= planet().currentSize();
+		final float currentPop	= colony.population();
+		final float sentPop		= colony.inTransport();
+		final float nextTurnTr	= galaxy().friendlyPopApproachingSystemNextTurn(colony.starSystem());
+		final float longTermTr	= galaxy().friendlyPopApproachingSystem(colony.starSystem());
+		// Production
+		final float workingPop	= currentPop - sentPop + nextTurnTr;
+		final float missingPop	= currentSize - currentPop + sentPop + longTermTr;
+		final float workerProd	= workingPop * empire().workerProductivity();
+		final float usedFact	= (int) min(colony.industry().factories(), workingPop * colony.industry().effectiveRobotControls());
+		final float nextProd	= workerProd + usedFact;
+		final float nextRsv		= min(nextProd, colony.reserveIncome());
+		final float raw2Net		= colony.totalProductionIncome() / colony.production();
+		final float nextIncome	= nextProd * raw2Net * incomeAdjust(); // We expect the same charge ratio
+		final float nextTotalBC	= nextIncome + nextRsv;
+		final float nextBC		= max(0, pct() * nextTotalBC);
+		String adviceHeader()	{
+			String adv = text("MAIN_COLONY_HEADER_ADVISOR");
+			adv += text("MAIN_COLONY_TOTAL_FUNDS_HELP", fmt(nextIncome, 1), fmt(nextRsv, 1), fmt(nextTotalBC, 1));
+			if (nextBC == 0)
+				adv += NEWLINE + text("MAIN_COLONY_NO_LOCAL_FUNDS_HELP");
+			else
+				adv += NEWLINE + text("MAIN_COLONY_LOCAL_FUNDS_HELP", fmt(pct()*100, 0), fmt(nextBC, 1));
+			return adv;
+		}
+		String adviceSurplus(float bc)	{
+			if (!empire().divertColonyExcessToResearch())
+				return text("MAIN_COLONY_TO_TRESOR_HELP", fmt(bc/2));
+			else if (empire().tech().researchCompleted())
+				return text("MAIN_COLONY_TO_TRESOR_HELP", fmt(bc/2));
+			else
+				return text("MAIN_COLONY_TO_RESEARCH_HELP", fmt(bc));
+		}
+	}
 }

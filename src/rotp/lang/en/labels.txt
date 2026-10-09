@@ -1044,8 +1044,9 @@ GOVERNOR_IS_ON_AND_OFF_BUTTON     | Governor
 GOVERNOR_OPTIONS                  | Mandate
 
 MAIN_COLONY_HEADER_ADVISOR		| <br><hr><h3>In the coming year:</h3>
-MAIN_COLONY_TOTAL_FUNDS_HELP	| Colony Funds: Net Income %1BC + Reserve %2BC = %3BC
-MAIN_COLONY_LOCAL_FUNDS_HELP	| Field Funds: Fraction %1% → %2BC
+MAIN_COLONY_TOTAL_FUNDS_HELP	| Forecasts for the colony: Net Income %1BC + Reserve %2BC = %3BC
+MAIN_COLONY_LOCAL_FUNDS_HELP	| Expected funds: Fraction %1% → %2BC
+MAIN_COLONY_NO_LOCAL_FUNDS_HELP	| Expected funds: unfunded
 
 MAIN_COLONY_ROBOT_CONTROL_HELP	| Robotic control level: %1 of %2.
 MAIN_COLONY_NEW_FACTORIES_HELP	| <br>Construction of %1 new factories → %2 factories.
@@ -1082,12 +1083,13 @@ MAIN_COLONY_SHIPS_COMPLETE_HELP	| <br>Ship request completed
 MAIN_COLONY_SHIPS_ACCRUAL_HELP	| <br>New Accrual %1BC
 
 MAIN_COLONY_SHIELD_SPEND_HELP	| Spending on Shields %1BC.
-MAIN_COLONY_SHIELD_LEVEL_HELP	| <br>Shields Level %1 → %2 of %3.
-MAIN_COLONY_SHIELD_FINAL_HELP	| <br>Shields completed %1 → %2.<br>
+MAIN_COLONY_SHIELD_LEVEL_HELP	| Shields Level %1 → %2 of %3.
+MAIN_COLONY_SHIELD_FINAL_HELP	| Shields completed %1 → %2.
 MAIN_COLONY_BASES_UP_SPEND_HELP	| Spending on upgrading Bases %1BC → %2BC of %3BC.
-MAIN_COLONY_BASES_UPGRADED_HELP	| <br>Bases upgraded<br>
+MAIN_COLONY_BASES_UPGRADED_HELP	| Bases upgraded
 MAIN_COLONY_BASES_SPEND_HELP	| Spending on new Bases %1BC
-MAIN_COLONY_BASES_NEW_HELP		| <br>New Bases from %1 to %2.
+MAIN_COLONY_BASES_NEW_HELP		| New Bases from %1 to %2.
+MAIN_COLONY_BASES_SCRAP_HELP	| %1 bases will be destroyed for a return of %2 BC.
 
 MAIN_COLONY_SPENDING_NONE         | None
 MAIN_COLONY_SPENDING_RESERVE      | Reserve
