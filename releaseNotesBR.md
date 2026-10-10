@@ -11,6 +11,9 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-10 (BR)
+- Fixed industry vs eco balance when alien factories are refited.
+
 26-10-09 (BR)
 - Extended the maximum screen size percentage to attempt to resolve a player's issue.
 

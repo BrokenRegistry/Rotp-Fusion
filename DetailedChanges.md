@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-10-10 (BR)
+- Fixed industry vs eco balance when alien factories are refited.
+
 26-10-09 (BR)
 - Extended the maximum screen size percentage to attempt to resolve a player's issue.
 

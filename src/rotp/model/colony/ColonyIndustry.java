@@ -425,31 +425,27 @@ public final class ColonyIndustry extends ColonySpendingCategory {
         float totalCost = 0;
         float buildableFactories = planetSize * effectiveControls;;
         int previouslyConvertedFactories = 0;
-            
-        // if we already have that many factories, then let pop growth
-        if (buildableFactories <= builtFactories)
-        	return 0;
 
-        // first, try to convert existing alien factories to our max build limit
-        if (builtFactories < buildableFactories) {
-            int convertableFactories = convertableAlienFactories(colonyControls)-previouslyConvertedFactories;
-            if (convertableFactories > 0) {
-                float convertCost = convertableFactories * factoryConversionCost();
-                float delta = convertCost/factoryConversionCost();
-                totalCost += convertCost;
-                builtFactories += delta;
-                previouslyConvertedFactories += delta;
-            }
-        }
-        // second, try to build new factories at current controls
-        if (builtFactories < buildableFactories) {
-            float costPerFactory = tech().newFactoryCost(colonyControls);
-            float factoriesToBuild = buildableFactories-builtFactories;
-            float buildCost = factoriesToBuild * costPerFactory;
-            float delta = buildCost/costPerFactory;
-            totalCost += buildCost;
-            builtFactories += delta;
-        }
+		// if we already have that many factories, then let pop growth
+		float missingFactories = buildableFactories - builtFactories;
+		if (missingFactories <= 0)
+			return 0;
+
+		// first, try to convert existing alien factories to our max build limit
+		int convertableFactories = convertableAlienFactories(colonyControls)-previouslyConvertedFactories;
+		if (convertableFactories > 0) {
+			float delta = min(missingFactories, convertableFactories);
+			float convertCost = delta * factoryConversionCost();
+			totalCost += convertCost;
+			missingFactories -= delta;
+		}
+
+		// second, try to build new factories at current controls
+		if (missingFactories > 0) {
+			float costPerFactory = tech().newFactoryCost(colonyControls);
+			float buildCost = missingFactories * costPerFactory;
+			totalCost += buildCost;
+		}
         totalCost = max(0, totalCost-industryReserveBC);
  
         // adjust cost for planetary production
