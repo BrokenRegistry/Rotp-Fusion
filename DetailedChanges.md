@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-10-12 (BR)
+- Fixed Advisor display glitch with colonies in rebellion.
+- In Progress: Centralization of the production estimate in the next turn, to calculate it only once for all categories. And offer the possibility to select "Old Way" or "New Way". (In the "Old Way", transport must be scanned only for ecological allocation, while in the "New Way" they must be scanned for each category... But by centralizing, once for all categories is enough!)
+
 26-10-10 (BR)
 - Fixed industry vs eco balance when alien factories are refited.
 

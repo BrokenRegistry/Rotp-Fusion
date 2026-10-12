@@ -3,32 +3,29 @@ package rotp.model.colony;
 import static rotp.model.colony.ColonySpendingCategory.MAX_TICKS;
 
 import rotp.model.empires.Empire;
-import rotp.model.galaxy.Galaxy;
-import rotp.model.game.GameSession;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IGovOptions;
 import rotp.model.planet.Planet;
 import rotp.model.tech.TechTree;
 
-public final class GovWorksheet {
+public final class GovWorksheet extends NextProductionReport {
 	private final GovernorOptions gov;
-	private final Colony c;
+//	private final Colony c;
 	private final TechTree tech;
 	private final Planet p;
 	private final ColonyIndustry industry;
 	private final ColonyEcology ecology;
 	private final float planetProdAdj, factoryNetYield, workerBaseROI;
-	private final float maxReserveIncome;
 	private final float workerToFactoryROILimit;
 	private final boolean wasShipRequest, hasSubsidies, useROILimit;
 	final boolean promoteShips, keepDirectShipAlloc, shouldBuildGate, promoteBases;
-	final float totalIncome, cleanupCost;
+	final float cleanupCost;
 	final float targetPopPercent;
+	final float expGrowth;
 
 	float maxSize;
-	float targetPopMin, initialPop, targetPopPctToBuy;
+	float targetPopMin, targetPopPctToBuy;
 	float minGrowth = 2.0f;
-	float workingPop;
 
 	float atmosphereCost, nextEnrichSoilCost, terraformCost;
 	boolean promoteWorkers, promoteTerraform;
@@ -36,85 +33,70 @@ public final class GovWorksheet {
 	public boolean canTerraformAtmosphere, canEnrichSoil, canTerraform, anyTerraform;
 	public float atmosphereIncrease, enrichIncrease, terraformIncrease;
 
-	public float minGrowth()	{
-		return minGrowth;
-	}
-	public float targetPopMin()	{
-		return initialPop + minGrowth;
-	}
-	public float targetPopPctToBuy()	{
-		return targetPopPctToBuy;
-	}
+	public float minGrowth()			{ return minGrowth; }
+	public float targetPopMin()			{ return currentPop + minGrowth; }
+	public float targetPopPctToBuy()	{ return targetPopPctToBuy; }
 
 	GovWorksheet (Colony colony, boolean loweredShipPriority)	{
+		super(colony, colony.planet().currentSize(), colony.population(), colony.inTransport(),
+				colony.empire().workerProductivity(), colony.reserveIncome());
 		final ColonyShipyard shipyard	= colony.shipyard();
 		final Empire e	= colony.empire();
-		final Galaxy gal = GameSession.instance().galaxy();
-		c	= colony;
-		p	= c.planet();
-		gov	= c.govOptions();
-		industry = c.industry();
-		ecology	 = c.ecology();
+		p	= colony.planet();
+		gov	= colony.govOptions();
+		industry = colony.industry();
+		ecology	 = colony.ecology();
 		tech	 = e.tech();
 
-		float baseWorkingPop =  c.workingPopulation();
-		float inPopNT	= gal.friendlyPopApproachingSystemNextTurn(c.starSystem());
-		float inPopLT	= gal.friendlyPopApproachingSystem(c.starSystem()) - inPopNT;
-		maxSize		= c.ultimateMaxSize();
-		initialPop	= c.population();
-		workingPop	= baseWorkingPop + inPopNT;
-		targetPopPercent	= gov.isAutotransportFull()? (1 - Math.max(c.normalPopGrowth(), 3)/c.maxSize()) : 1f;
-		float neutralGrowth	= p.normalPopGrowth(workingPop, e);
-		boolean hasRequest	= c.prioritizeShips() || c.prioritizeResearch();
+		maxSize	= colony.ultimateMaxSize();
+		expGrowth	= p.normalPopGrowth(workingPopulation);
+		targetPopPercent	= gov.isAutotransportFull()? (1 - Math.max(expGrowth, 3)/colony.maxSize()) : 1f;
+		boolean hasRequest	= colony.prioritizeShips() || colony.prioritizeResearch();
 		if (gov.legacyGrowthMode() || !hasRequest) { // Force boost
-			minGrowth		= maxSize - workingPop - inPopLT; // = max growth in this case;
+			minGrowth		= maxSize - workingPopulation - nextTurnTransport; // = max growth in this case;
 			targetPopMin	= maxSize;
 		}
 		else {
 			float workable	= Math.min(maxSize, industry.factories() / industry.robotControls());
 			float boostLim	= Math.max(workable, maxSize * gov.colonyEarlyBoostPct());
 			if (gov.compensateGrowth())
-				minGrowth	= Math.max(neutralGrowth, gov.minColonyGrowth());
+				minGrowth	= Math.max(expGrowth, gov.minColonyGrowth());
 			else
 				minGrowth	= gov.minColonyGrowth();
-			targetPopMin	= Math.min(maxSize, workingPop + minGrowth);
+			targetPopMin	= Math.min(maxSize, workingPopulation + minGrowth);
 			targetPopMin	= Math.max(targetPopMin, boostLim);
 		}
 		targetPopPctToBuy	= targetPopMin/maxSize;
 
-		float nextTurnProd	= c.productionAfterNextTurnTransports();
-		maxReserveIncome	= Math.min(nextTurnProd, c.reserveIncome());
 		hasSubsidies	= maxReserveIncome > 0;
-		float net2Raw	= c.totalProductionIncome() / c.production();
-		totalIncome		= nextTurnProd*net2Raw + maxReserveIncome;
-		cleanupCost		= Math.min(c.wasteCleanupCost(workingPop), totalIncome);
+		cleanupCost		= Math.min(colony.wasteCleanupCost(workingPopulation), totalIncome);
 		planetProdAdj	= p.productionAdj();
-		factoryNetYield	= c.factoryNetProductivity();
-		workerBaseROI	= e.workerProductivity() / tech.populationCost();
-		boolean buildingStargate	= c.allocation(Colony.SHIP) > 0 &&
+		factoryNetYield	= colony.factoryNetProductivity();
+		workerBaseROI	= workerProductivity / tech.populationCost();
+		boolean buildingStargate	= colony.allocation(Colony.SHIP) > 0 &&
 				shipyard.design().equals(e.shipLab().stargateDesign()) &&
 				!shipyard.stargateCompleted();
-		boolean wasBuildingShips	= c.allocation(Colony.SHIP) > 0 && !buildingStargate;
+		boolean wasBuildingShips	= colony.allocation(Colony.SHIP) > 0 && !buildingStargate;
 		promoteShips	 = shipyard.buildLimit() > 0;
-		shouldBuildGate	 = !promoteShips && gov.shouldBuildGate(c);		
-		wasShipRequest	 = promoteShips || c.prioritizeShips();
-		promoteTerraform = c.ultimateMaxSize() > p.currentSize();
+		shouldBuildGate	 = !promoteShips && gov.shouldBuildGate(colony);		
+		wasShipRequest	 = promoteShips || colony.prioritizeShips();
+		promoteTerraform = maxSize > currentSize;
 		workerToFactoryROILimit = gov.workerToFactoryROILimit();
 		useROILimit	= e.numColonies() < gov.maxColoniesForROI();
 		// Defense management
 		// Set max missile bases if minimum is set
-		ColonyDefense defense = c.defense();
+		ColonyDefense defense = colony.defense();
 		int minBase = gov.getMinimumMissileBases();
 		int maxBase = defense.maxBases();
 		if (minBase > 0 && maxBase < minBase)
 			defense.maxBases(minBase);
-		promoteBases = !defense.isCompleted() && gov.earlyBaseBuilding() && c.industry().factoryToMaxRatio() >= gov.earlyBaseBoostPct();
+		promoteBases = !defense.isCompleted() && gov.earlyBaseBuilding() && colony.industry().factoryToMaxRatio() >= gov.earlyBaseBoostPct();
 
 		// Ships management
 		boolean isDirectShipAlloc	= !loweredShipPriority && wasBuildingShips && !wasShipRequest;
 		keepDirectShipAlloc	= isDirectShipAlloc && gov.isShipbuilding();
 
-		c.ecology().checkPlanetImprovement(this);
+		colony.ecology().checkPlanetImprovement(this);
 		promoteTerraform = promoteTerraform();
 	}
 	int[] govBuildSeq()	{
@@ -124,7 +106,7 @@ public final class GovWorksheet {
 			return Colony.govBuildSeq;
 	}
 	private float workerToFactoryROI()	{
-		float industryBC = totalIncome * c.allocation(Colony.INDUSTRY)/MAX_TICKS;
+		float industryBC = totalIncome * colony.allocation(Colony.INDUSTRY)/MAX_TICKS;
 		float factoryNetCost = industry.bestFactoryCost(industryBC) / planetProdAdj;
 		float factoryNetROI	 = factoryNetYield / factoryNetCost;
 		float workerToFactoryROI = workerBaseROI / factoryNetROI;
@@ -158,7 +140,7 @@ public final class GovWorksheet {
 		return promoteWorkers && useROILimit;
 	}
 	int updateLimitedAllocation(int alloc)	{
-		int spare = (alloc * c.govShipBuildSparePct) / 100;
+		int spare = (alloc * colony.govShipBuildSparePct) / 100;
 		int limitedAllocation = alloc - spare;
 		return limitedAllocation;
 	}
@@ -167,7 +149,7 @@ public final class GovWorksheet {
 		// determine how much categories are over/under spent
 		int spendingTotal = 0;
 		for (int i = 0; i < Colony.NUM_CATS; i++)
-			spendingTotal += c.spending[i].allocation();
+			spendingTotal += colony.spending[i].allocation();
 		int alloc = maxAllocation - spendingTotal;
 		return alloc;
 	}
@@ -199,12 +181,10 @@ public final class GovWorksheet {
 			return true;
 
 		// True if minimum population is already there
-		float nextTurnPop	= c.population() + ecology.upcomingPopGrowthFloat();
-		float currentsize	= p.currentSize();;
-		float PopulationPct	= nextTurnPop/currentsize;
+		float nextTurnPop	= workingPopulation + expGrowth;
+		float PopulationPct	= nextTurnPop/currentSize;
 		if (PopulationPct >= gov.terraformPopulationPct())
 			return true;
-		float missingPop = currentsize - nextTurnPop;
 		if (missingPop <= gov.terraformMissingPopulation())
 			return true;
 
@@ -230,7 +210,7 @@ public final class GovWorksheet {
 	boolean shouldBuildGate()			{ return shouldBuildGate; }
 	@Override public String toString()	{
 		String cr = System.lineSeparator();
-		String str = c.name();
+		String str = colony.name();
 		str += cr + "planetProdAdj: "	+ planetProdAdj;
 		str += cr + "factoryNetYield: "	+ factoryNetYield;
 		str += cr + "workerBaseROI: "	+ workerBaseROI;
@@ -244,8 +224,8 @@ public final class GovWorksheet {
 		str += cr + "targetPopPercent: "	+ targetPopPercent;
 		str += cr + "maxSize: "	+ maxSize;
 		str += cr + "targetPopMin: "	+ targetPopMin;
-		str += cr + "initialPop: "	+ initialPop;
-		str += cr + "workingPop: "	+ workingPop;
+		str += cr + "currentPop: "	+ currentPop;
+		str += cr + "workingPopulation: "	+ workingPopulation;
 		str += cr + "targetPopPctToBuy: "	+ targetPopPctToBuy;
 		str += cr + "minGrowth: "	+ minGrowth;
 		str += cr + "atmosphereCost: "	+ atmosphereCost;
@@ -264,9 +244,9 @@ public final class GovWorksheet {
 		str += cr + "keepDirectShipAlloc: "	+ keepDirectShipAlloc;
 		str += cr + "shouldBuildGate: "	+ shouldBuildGate;
 		str += cr + "promoteBases: "	+ promoteBases;
-		int maxAllocationNeeded = c.industry().maxAllocationNeeded();
+		int maxAllocationNeeded = colony.industry().maxAllocationNeeded();
 		str += cr + "maxAllocationNeeded: "	+ maxAllocationNeeded;
-		
+
 		return str;
 	}
 }

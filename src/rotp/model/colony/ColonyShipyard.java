@@ -363,7 +363,6 @@ public class ColonyShipyard extends ColonySpendingCategory {
     public float stargateMaintenanceCost() {
         return hasStargate ? TechStargate.MAINTENANCE : 0;
     }
-	float maintenanceCost()			{ return 0; }
 	void capturedBy(Empire newCiv)	{
         if (newCiv == empire())
             return;

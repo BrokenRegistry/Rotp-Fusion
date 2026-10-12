@@ -671,9 +671,8 @@ public final class Galaxy implements Base, Serializable {
     }
     public int playerPopApproachingSystem(StarSystem sys) {
         int pop = 0;
-        Galaxy gal = galaxy();
 
-		List<Transport> list = new ArrayList<>(gal.transports());
+		List<Transport> list = new ArrayList<>(transports());
 		for (Transport tr: list) {
             if (tr != null && tr.empId() == player().id) {
                 if (tr.destSysId() == sys.id)
@@ -689,20 +688,49 @@ public final class Galaxy implements Base, Serializable {
         }
         return pop;
     }
+	public int[] newPopApproachingSystem(StarSystem system)	{ // player call only
+		if (system == null)
+			return new int[] {0, 0};
+		final Empire empire = system.empire();
+		final int empId = empire.id;
+		final int sysId = system.id;
+		int nextTurn = 0;
+		int longTerm = 0;
+		List<Transport> allTransport = new ArrayList<>(transports()); // ! Concurrent modifications
+		for (Transport tr: allTransport)
+			if (tr != null && tr.empId() == empId && tr.destSysId() == sysId)
+				if (tr.travelTurnsRemainingAdjusted() <= 1)
+					nextTurn += tr.size();
+				else
+					longTerm += tr.size();
+
+		List<StarSystem> allColonizedSystems = new ArrayList<>(empire.allColonizedSystems());
+		for (StarSystem sys : allColonizedSystems)
+			if(sys != null) {
+				Colony col = system.colony();
+				if (col.transporting() && (col.transport().destSysId() == sysId))
+					if (col.transport().travelTurnsRemainingAdjusted() <= 1)
+						nextTurn += col.inTransport();
+					else
+						longTerm += col.inTransport();
+			}
+		return new int[] {nextTurn, longTerm};
+	}
     public int friendlyPopApproachingSystemNextTurn(StarSystem sys) { // player call only
         int pop = 0;
-        Galaxy gal = galaxy();
-		List<Transport> allTransport = new ArrayList<>(gal.transports()); // ! Concurrent modifications
+		final int empId = sys.empire().id;
+		final int sysId = sys.id;
+		List<Transport> allTransport = new ArrayList<>(transports()); // ! Concurrent modifications
 		for (Transport tr: allTransport)
-			if (tr != null && tr.empId() == sys.empire().id)
-				if (tr.destSysId() == sys.id && tr.travelTurnsRemainingAdjusted() <= 1)
+			if (tr != null && tr.empId() == empId)
+				if (tr.destSysId() == sysId && tr.travelTurnsRemainingAdjusted() <= 1)
 					pop += tr.size();
 
-        for (int i=0; i<gal.numStarSystems(); i++) {
-            StarSystem system = gal.system(i);
+        for (int i=0; i<numStarSystems(); i++) {
+            StarSystem system = system(i);
             if (system.planet().isColonized()) {
                 Colony col = system.planet().colony();
-                if ((col.empire() == sys.empire()) && col.transporting() && (col.transport().destSysId() == sys.id)) {
+                if ((col.empireId() == empId) && col.transporting() && (col.transport().destSysId() == sysId)) {
                     if (col.transport().travelTurnsRemainingAdjusted() <= 1) {
                         pop += col.inTransport();
                     }

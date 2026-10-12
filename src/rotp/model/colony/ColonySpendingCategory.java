@@ -119,15 +119,16 @@ public abstract class ColonySpendingCategory implements Base, Serializable {
 		final float longTermTr	= galaxy().friendlyPopApproachingSystem(colony.starSystem());
 		// Production
 		final float workingPop	= currentPop - sentPop + nextTurnTr;
-		final float missingPop	= currentSize - currentPop + sentPop + longTermTr;
+		final float missingPop	= currentSize - currentPop + sentPop - longTermTr;
 		final float workerProd	= workingPop * empire().workerProductivity();
 		final float usedFact	= (int) min(colony.industry().factories(), workingPop * colony.industry().effectiveRobotControls());
-		final float nextProd	= workerProd + usedFact;
+		final float nextProd	= colony.inRebellion() ? 0f : (workerProd + usedFact);
 		final float nextRsv		= min(nextProd, colony.reserveIncome());
-		final float raw2Net		= colony.totalProductionIncome() / colony.production();
+		final float raw2Net		= colony.inRebellion() ? 1f : colony.totalProductionIncome() / colony.production();
 		final float nextIncome	= nextProd * raw2Net * incomeAdjust(); // We expect the same charge ratio
 		final float nextTotalBC	= nextIncome + nextRsv;
 		final float nextBC		= max(0, pct() * nextTotalBC);
+
 		String adviceHeader()	{
 			String adv = text("MAIN_COLONY_HEADER_ADVISOR");
 			adv += text("MAIN_COLONY_TOTAL_FUNDS_HELP", fmt(nextIncome, 1), fmt(nextRsv, 1), fmt(nextTotalBC, 1));

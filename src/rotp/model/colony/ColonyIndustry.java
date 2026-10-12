@@ -246,8 +246,8 @@ public final class ColonyIndustry extends ColonySpendingCategory {
         return new float[] {reserveBC, researchBC};
     }
 	@Override public String[] upcomingResult()	{
-		if (colony.allocation(categoryType()) == 0)
-			return new String[] {text(noneText), ""};
+//		if (colony.allocation(categoryType()) == 0)
+//			return new String[] {text(noneText), ""};
 
         float prodBC = pct()* colony.totalProductionIncome() * planet().productionAdj();
         float rsvBC = pct() * colony.maxReserveIncome();

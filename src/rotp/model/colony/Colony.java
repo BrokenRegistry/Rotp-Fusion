@@ -167,6 +167,12 @@ public final class Colony implements Base, IMappedObject, Serializable {
     // Pending spending work crosses the production/assessment checkpoint boundary.
     public boolean reallocationRequired = false;
 
+	public ProductionReport getProductionReport(boolean next) {
+		if (next)
+			return new NextProductionReport(this, planet().currentSize(), population(), inTransport(), empire.workerProductivity(), reserveIncome());
+		else
+			return new OldProductionReport(this, planet().currentSize(), population(), inTransport(), empire.workerProductivity(), reserveIncome());
+	}
 	public ColonyBudget budget()	{	// player only
 		if (budget == null)
 			budget = new ColonyBudget();
@@ -347,6 +353,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public StarSystem starSystem()  { return planet().starSystem(); }
     public Planet planet()          { return planet; }
     public Empire empire()          { return empire; }
+	public int empireId()			{ return empire.id; }
     TechTree tech()                 { return empire.tech(); }
     public String name()            { return starSystem().name(); }
 
@@ -1167,8 +1174,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public boolean isHomeworld()      { return ((empire != null) && (empire.homeSysId() == starSystem().id)); }
     public boolean isCapital()        { return ((empire != null) && (empire.capitalSysId() == starSystem().id)); }
     public float workingPopulation() { return population() - inTransport(); }
-	private float usedFactories()		{ return usedFactories(workingPopulation()); }
-	private float usedFactories(float pop)	{ return (int) min(industry().factories(), pop * industry().effectiveRobotControls()); }
+	float usedFactories()			{ return usedFactories(workingPopulation()); }
+	int usedFactories(float prod)	{ return (int) min(industry().factories(), prod * industry().effectiveRobotControls()); }
 	public float nextTotalIncome()	{ // total Income After Next Turn Transports
 		final float nextTurnProd = productionAfterNextTurnTransports();
 		final float nextTurnRsv = min(nextTurnProd, reserveIncome());
@@ -1202,15 +1209,13 @@ public final class Colony implements Base, IMappedObject, Serializable {
         float dynaMod = 1.0f;
 		boolean isPlayer = empire.isHumanEmpire();
 		IGameOptions opts = options();
-		if (!isPlayer && opts.selectedDynamicDifficulty() && !(galaxy().currentTurn() < 5)) {
+		if (!isPlayer && opts.selectedDynamicDifficulty() && !(galaxy().currentTurn() < 5))
 			dynaMod = empire.dynaMod();
-        }
 
 		float mod = isPlayer ? 1.0f : (opts.aiProductionModifier()*dynaMod);
 
         float workerProd = workingPopulation() * empire.workerProductivity();
-        float factoryOutput = mod*(workerProd + usedFactories());
-        return factoryOutput - transportCost();
+		return mod * (workerProd + usedFactories());
     }
     // modnar: add dynamic difficulty option, change AI colony production
     // create unscaled production, nonDynaProd, to avoid infinite recursion
@@ -1219,8 +1224,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             return 0.0f;
         float mod = empire().isHumanEmpire() ? 1.0f : options().aiProductionModifier();
         float workerProd = workingPopulation() * empire.workerProductivity();
-        float factoryOutput = mod*(workerProd + usedFactories());
-        return factoryOutput - transportCost();
+		return mod * (workerProd + usedFactories());
     }
     public float maxProduction() {
         float workerProd = planet().maxSize() * empire.workerProductivity();
@@ -1262,8 +1266,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		// we are taxed at the empire rate if the empire is taxing all colonies, or we are finished developing
 		return 0.01f * production() * empireTaxPct;
 	}
-//	public float colonyTaxes()	{ return colonyTaxes(empire.empireTaxLevel()); }
-
     private void ensureProperSpendingRates() {
         if (recalcSpendingForNewTaxRate) 
         {
@@ -1283,9 +1285,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
         float stargateCost = prod * empire.stargateCostPerBC();
         float tradeIncome = actualTradeIncome();
         float defenseCost = prod * empire.missileBaseCostPerBC();
-        float shipyardCost = shipyard().maintenanceCost();
 
-        return max(0, prod - reserveCost - securityCost - defenseCost - shipyardCost + tradeIncome - shipCost - stargateCost);
+		return max(0, prod - reserveCost - securityCost - defenseCost + tradeIncome - shipCost - stargateCost);
     }
     public float expectedPopulationLongTerm() {
         return workingPopulation() + normalPopGrowth() + incomingTransports();
@@ -1380,7 +1381,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public boolean transporting()	{ return (transport().isActive()); }
     public boolean canTransport()	{ return (!inRebellion() && !transporting()); }
     public float inTransport()		{ return transporting() ? transport().size() : 0; }
-    private float transportCost()	{ return inTransport(); }
     public void clearTransport() {
         starSystem().clearTransportSprite();
         StarSystem oldDest = transport().destination();
@@ -1415,10 +1415,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
                 starSystem().transportSprite().launch();
         }
     }
-//	public void scheduleTransportsToSystem(StarSystem dest, int pop, float travelTime) {
-//		
-//	}
-
 	public void scheduleTransportsToSystem(StarSystem dest, int pop, float travelTime, boolean govern) {
 		scheduleTransportsToSystem(dest, pop, true, govern);
         if (dest != starSystem()) {
@@ -3429,6 +3425,40 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			}
 			gi.dispose();
 			return img.getSubimage(0, y, maxTextW, imgHeight-y);
+		}
+	}
+	public interface IProdReport	{
+		float colTotalProductionIncome();
+		float colMaxReserveIncome();
+		float colTotalIncome();
+		float colProduction();
+	}
+
+	public class ProdReport implements IProdReport	{
+		private Float totalProductionIncome;
+		private Float maxReserveIncome;
+		private Float totalIncome;
+		private Float production;
+
+		@Override public float colTotalProductionIncome()	{
+			if (totalProductionIncome == null)
+				totalProductionIncome = totalProductionIncome();
+			return totalProductionIncome;
+		}
+		@Override public float colMaxReserveIncome()	{
+			if (maxReserveIncome == null)
+				maxReserveIncome = maxReserveIncome();
+			return maxReserveIncome;
+		}
+		@Override public float colTotalIncome()	{
+			if (totalIncome == null)
+				totalIncome = totalIncome();
+			return totalIncome;
+		}
+		@Override public float colProduction()	{
+			if (production == null)
+				production = production();
+			return production;
 		}
 	}
 }
