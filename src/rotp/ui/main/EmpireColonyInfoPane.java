@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import rotp.model.colony.Colony;
+import rotp.model.colony.ColonyIndustry;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.planet.Planet;
@@ -553,7 +554,35 @@ public final class EmpireColonyInfoPane extends BasePanel {
 			basesBox.init(this, null, null, "INFO_PANEL_PRODUCTION_HELP");
 			titleBox.init(this, null, null, "INFO_PANEL_PRODUCTION_HELP");
         }
-        @Override public String textureName()		{ return parentUI.subPanelTextureName(); }
+		private void advisorHelp(List<Colony> cols)	{
+			String adv = "";
+			if (cols.size() == 1) {
+				Colony colony = cols.get(0);
+				Empire empire =colony.empire();
+				ColonyIndustry industry =colony.industry();
+				final float workerProd	= empire.workerProductivity();
+				final float workerCost	= empire.tech().populationCost();
+				final float workerTTV	= workerCost / workerProd;
+				final float factoryProd	= colony.factoryNetProductivity() * colony.planet().productionAdj();
+				final float factoryCost	= industry.newFactoryCost();
+				final float factoryTTV	= factoryCost / factoryProd;
+				adv = text("INFO_PANEL_ROI_RATIO_HELP",
+						fmt(workerTTV, 1), fmt(workerCost, 0), fmt(workerProd, 2),
+						fmt(factoryTTV, 1), fmt(factoryCost, 0), fmt(factoryProd, 2),
+						fmt(factoryTTV/workerTTV *100, 0));
+				final float numAlienFactories = colony.planet().numAlienFactories();
+				if (numAlienFactories > 0) {
+					final float alienCost	= industry.factoryConversionCost();
+					final float alienTTV	= alienCost / factoryProd;
+					adv += NEWLINE + text("INFO_PANEL_ALIEN_ROI_RATIO_HELP",
+							fmt(alienTTV, 1), fmt(alienCost, 0), fmt(factoryProd, 2),
+							fmt(alienTTV/workerTTV *100, 0));
+				}
+			}
+			basesBox.setAdviceHelpText(adv);
+			titleBox.setAdviceHelpText(adv);
+		}
+		@Override public String textureName()		{ return parentUI.subPanelTextureName(); }
 		@Override protected String titleString()	{
 			if (isShiftDown() || isAltDown())
 				return text("MAIN_COLONY_PRODUCTION_ALT");
@@ -562,6 +591,7 @@ public final class EmpireColonyInfoPane extends BasePanel {
 		}
 		@Override protected boolean urged(Colony c) { return c.govUrgeBuildUp(); }
 		@Override protected String valueString(List<Colony> c)	{
+			advisorHelp(c);
 			if (isShiftDown() || isAltDown()) {
 				if (c.isEmpty())
 					return "?";

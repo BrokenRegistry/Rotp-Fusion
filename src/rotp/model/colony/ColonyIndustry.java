@@ -613,8 +613,7 @@ public final class ColonyIndustry extends ColonySpendingCategory {
         }
         return possibleNewFactories;
     }
-    private float factoryConversionCost()    { return 2; }
-    // private boolean hasAlienFactories()       { return planet().numAlienFactories() > 0; }
+	public float factoryConversionCost()	{ return 2; }
     private float totalAlienConversionCost() { 
         return convertableAlienFactories() * factoryConversionCost(); 
     }

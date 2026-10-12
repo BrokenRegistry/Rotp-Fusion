@@ -1196,7 +1196,10 @@ INFO_PANEL_SHIELD_HELP			| Planetary shield level for the colony.<br>Shields can
 
 INFO_PANEL_BASES_HELP			| Number of missile bases and the maximum desired for this planet.<br>Click or use the mouse wheel to change the maximum.<br>Note: Base construction can only begin if the shields are completed and up to date.<hr>→INFO_PANEL_URGENCY_HELP←<hr>It is urgent to finalize our missile bases.<br>(Enemy ships are approaching)
 
-INFO_PANEL_PRODUCTION_HELP		| Actual production adjusted for empire-wide trade income, spy and security costs, as well as missile base and ship maintenance, followed by (Total planetary production from industry and population).<br>Press "Shift" to display production per worker, without factory. followed by (Production by factory, after cleaning pollution)<hr>→INFO_PANEL_URGENCY_HELP←<hr>Do not let yourself be distracted by anything other than building and populating this colony.
+INFO_PANEL_PRODUCTION_HELP		| Actual production adjusted for empire-wide trade income, spy and security costs, as well as missile base and ship maintenance, followed by (Total planetary production from industry and population).<br>Press "Shift" to display production per worker, without factory. followed by (Production by factory, after cleaning pollution)<hr>→INFO_PANEL_URGENCY_HELP←<hr>Do not let yourself be distracted by anything other than building and populating this colony.%1
+
+INFO_PANEL_ROI_RATIO_HELP		| <br><hr><h3>Time to Value and Retour On Investment</h3>Worker TTV: %1 years&emsp;( Cost: %2 BC&ensp;/&ensp;Productivity: %3 BC )<br>Factory TTV: %4  years&emsp;( Cost: %5 BC&ensp;/&ensp;Productivity: %6 BC )<br>Worker ROI / Factory ROI: %7%
+INFO_PANEL_ALIEN_ROI_RATIO_HELP	| Alien factory conversion TTV: %1  years&emsp;( Cost: %2 BC&ensp;/&ensp;Productivity: %3 BC )<br>Worker ROI / Conversion ROI: %4%
 
 DETAIL_PANEL_FLAGS_HELP			| Place up to 4 flags on the system to help it stand out on the galaxy map.<br>Left Button = Forward<br>Right Button = Backward<br>Middle Button = Reset<br>"Home" = Auto-Flag.<br>"Ctrl" for Right flags<br>"Shift" for bottom flags.
 

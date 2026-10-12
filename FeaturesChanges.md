@@ -495,6 +495,7 @@
 
 ### Guide and Help:
 
+- New advisor TTV and ROI content while hovering Production field.
 - Fixed Spy Overspend OFF "creating money"
 - Budget:
   - Governor-related buttons will only be displayed when there is at least one colony governed.
