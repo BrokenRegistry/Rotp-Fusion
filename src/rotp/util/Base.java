@@ -91,6 +91,7 @@ import rotp.model.galaxy.StarSystem;
 import rotp.model.game.DynOptions;
 import rotp.model.game.GameSession;
 import rotp.model.game.GovernorOptions;
+import rotp.model.game.IConvenienceOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.RulesetManager;
 import rotp.model.tech.Tech;
@@ -657,6 +658,21 @@ public interface Base extends InputEventUtil {
         else
             return text("MAIN_TURN_DISPLAY", galaxy().currentTurn());
     }
+	default String longYearOrTurn(boolean includeLoadTime)	{
+		IGameOptions opts = options();
+		Galaxy gal = galaxy();
+		String str = opts.displayYear()? text("MAIN_YEAR_DISPLAY", gal.currentYear()) : text("MAIN_TURN_DISPLAY", gal.currentTurn());
+
+		if (includeLoadTime)
+			str = "[" + (int)gal.timeSinceLastLoad() + "] " + str;
+
+		if (IConvenienceOptions.showNextCouncil.get() && !opts.selectedCouncilWinOption().equals(IGameOptions.COUNCIL_NONE)) {
+			int nextC = galaxy().council().nextCouncil();
+			if (nextC > 0)
+				 str += " (" + nextC + ")";
+		}
+		return str;
+	}
     public default boolean equal(float d1, float d2, float precision) {
         return Math.abs(d1-d2) < precision;
     }
@@ -1958,4 +1974,5 @@ public interface Base extends InputEventUtil {
 		dir.mkdirs();
 		return path.toFile();
 	}
+	default String toString(Object obj)	{ return obj == null ? "null" : obj.toString(); }
 }

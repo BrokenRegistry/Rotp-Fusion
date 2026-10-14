@@ -37,9 +37,8 @@ public class OfferPactMessage extends TurnNotificationMessage {
         }
         return ""; 
     }
-    @Override
-    public void select(int i) {
-        if (!hotSeatCanAct()) return;
+	@Override public void select(int i)	{
+		quietlyValidateHotSeatCanAct();
         log("OfferPactMessage - selected: ", str(i));
         switch(i) {
         case 0: 

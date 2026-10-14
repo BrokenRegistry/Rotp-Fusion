@@ -21,6 +21,7 @@ import rotp.ui.RotPUI;
 public class DiplomacyRequestReply extends DiplomaticMessage {
     public static DiplomacyRequestReply create(Empire e, DiplomaticReply r) {
         DiplomacyRequestReply msg = new DiplomacyRequestReply();
+		msg.init(); // BR: Required for the hotSeat validation
         msg.reply(r);
         msg.diplomat(e);
         return msg;
@@ -29,11 +30,9 @@ public class DiplomacyRequestReply extends DiplomaticMessage {
     protected void reply(DiplomaticReply r) { reply = r; }
     @Override
     public String remark() { return reply.remark(); }
-    @Override
-    public void escape()                         { select(0); }
-    @Override
-    public void select(int i) {
-        if (!hotSeatCanAct()) return;
+	@Override public void escape()		{ select(0); }
+	@Override public void select(int i)	{
+		quietlyValidateHotSeatCanAct();
         if (reply.resumeTurn) 
             session().resumeNextTurnProcessing();
         else if (reply.returnToMap)

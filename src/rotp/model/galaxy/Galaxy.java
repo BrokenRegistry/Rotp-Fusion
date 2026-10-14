@@ -55,6 +55,7 @@ public final class Galaxy implements Base, Serializable {
     public static final String SYSTEMS_KEY	= "SETUP_SYSTEM_LIST";
     
     private float currentTime = 0;
+    private transient float loadTime;
     private final GalacticCouncil council = new GalacticCouncil();
     private final RandomEvents events = new RandomEvents();
     public final Ships ships = new Ships();
@@ -72,6 +73,11 @@ public final class Galaxy implements Base, Serializable {
     private float maxScaleAdj = 1.0f;
     public int systemCount = 0;
 
+	private void updateLoadTime()	{
+		loadTime = currentTime;
+		System.out.println("updateLoadTime() " + longYearOrTurn(true));
+	}
+	public float timeSinceLastLoad()	{ return currentTime - loadTime; }
     private DynOptions dynamicOptions = new DynOptions();// BR: Dynamic options
     private Integer lastHashCodeDiplomaticIncident	= 0;
     private Integer lastHashCodeShipDesign			= 0;
@@ -502,6 +508,7 @@ public final class Galaxy implements Base, Serializable {
         validateOnLoad(true);
     }
     public void validateOnLoad(boolean restorePersistentRandom) {
+		updateLoadTime();
     	if (dynamicOptions == null)
     		dynamicOptions = new DynOptions();
     	if (galRandom == null) // For backward compatibility
@@ -520,7 +527,6 @@ public final class Galaxy implements Base, Serializable {
     	}
         if (restorePersistentRandom && options().persistentRNG())
     		Rotp.rand(galRandom);
-//    	orionEmpire().isOrion = true;
     	orionEmpire = new Empire(this, -2, orionId(), 0, "Orion"); // to update tech
         for (Empire emp: empires())
              emp.validateOnLoad();

@@ -55,6 +55,33 @@ public abstract class DiplomaticMessage implements Base {
     private long hotSeatRevision;
     private long hotSeatGeneration;
     private String hotSeatActor;
+
+	@Override public String toString()	{
+		String ls = System.lineSeparator();
+		String str = super.toString();
+		str += System.lineSeparator() + "Diplomat: "		+ toString(diplomat);
+		str += ls + "Incident: "		+ toString(incident);
+		str += ls + "Message Type: "	+ toString(messageType);
+		str += ls + "Remark: "			+ toString(remark);
+		str += ls + "Return To Map: "	+ toString(returnToMap);
+		str += ls + "HotSeat Revision: "	+ toString(hotSeatRevision);
+		str += ls + "HotSeat Generation: "	+ toString(hotSeatGeneration);
+		str += ls + "HotSeat Actor: "		+ toString(hotSeatActor);
+		return str;
+	}
+	/**
+	 * Blocking a player behind a bugged UI is not very useful
+	 * Let them continue. The issue will be logged,
+	 * and the testing developer will see this warning instead.
+	 */
+	protected boolean quietlyValidateHotSeatCanAct() {
+		if (hotSeatCanAct(false))
+			return true;
+		String errStr = "HotSeat do not recognise this selection as valid " + System.lineSeparator() + toString();
+		log(errStr);
+		System.err.println(errStr);
+		return false;
+	}
     protected boolean hotSeatCanAct() {
         return hotSeatCanAct(false);
     }
@@ -96,8 +123,10 @@ public abstract class DiplomaticMessage implements Base {
     public String dataLine(int i)                { return ""; }
     public boolean enabled(int i)                { return true; }
     public void escape()                         { }
-    public void select(int i)                    {
-        if (!hotSeatCanAct()) return; escape(); }
+	public void select(int i)	{
+		quietlyValidateHotSeatCanAct();
+		escape();
+	}
 
     public void init() {
         if (session().hotSeatState() != null) {

@@ -20,13 +20,15 @@ public class TurnNotificationMessage extends DiplomaticMessage {
     public TurnNotificationMessage(String  s) {
         messageType = s;
     }
-    @Override
-    public void escape() {
-        if (!hotSeatCanAcknowledge()) return;
-        session().resumeNextTurnProcessing();
-    }
-    @Override
-    public void select(int i) {
-        escape();
-    }
+	/**
+	 * Blocking a player behind a bugged UI is not very useful
+	 * Let them continue by pressing "Escape",
+	 * The issue will be logged,
+	 * and the testing developer will see this warning instead.
+	 */
+	@Override public void escape()	{
+		quietlyValidateHotSeatCanAct();
+		session().resumeNextTurnProcessing();
+	}
+	@Override public void select(int i)	{ escape(); }
 }

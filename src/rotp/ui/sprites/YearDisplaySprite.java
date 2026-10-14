@@ -20,9 +20,6 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
 import rotp.model.game.GameSession;
-import rotp.model.game.IConvenienceOptions;
-import rotp.model.game.IGameOptions;
-import rotp.ui.game.AdvisorPanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
@@ -38,10 +35,17 @@ public final class YearDisplaySprite extends MapSprite {
 			return false;
 		super.isSelectableAt(map, x, y);
 		if (hovering)
-			if (options().displayYear())
-				box.setAdviceHelpKey("MAIN_YEAR_DISPLAY" + AdvisorPanel.HELP_KEY);
+			if (GameSession.instance().isHotSeat())
+				if (options().displayYear())
+					box.setAdviceHelpKey("MAIN_YEAR_DISPLAY_HOTSEAT_HELP");
+				else
+					box.setAdviceHelpKey("MAIN_TURN_DISPLAY_HOTSEAT_HELP");
 			else
-				box.setAdviceHelpKey("MAIN_TURN_DISPLAY" + AdvisorPanel.HELP_KEY);
+				if (options().displayYear())
+					box.setAdviceHelpKey("MAIN_YEAR_DISPLAY_HELP");
+				else
+					box.setAdviceHelpKey("MAIN_TURN_DISPLAY_HELP");
+
 		return hovering;
 	}
     @Override
@@ -51,13 +55,7 @@ public final class YearDisplaySprite extends MapSprite {
         if (GameSession.currentAlert() != null)
             return;
 
-        String s = displayYearOrTurn();
-		if (IConvenienceOptions.showNextCouncil.get() 
-				&& !options().selectedCouncilWinOption().equals(IGameOptions.COUNCIL_NONE)) {
-        	int nextC = galaxy().council().nextCouncil();
-        	 if (nextC > 0)
-        		 s += " (" + nextC + ")";
-        }
+		String s = longYearOrTurn(GameSession.instance().isHotSeat());
         g.setFont(narrowFont(24));
 
         int sw = g.getFontMetrics().stringWidth(s);
@@ -78,10 +76,16 @@ public final class YearDisplaySprite extends MapSprite {
         hovering = true;
 
         options().toggleYearDisplay();
-		if (options().displayYear())
-			box.setAdviceHelpKey("MAIN_YEAR_DISPLAY" + AdvisorPanel.HELP_KEY);
+		if (GameSession.instance().isHotSeat())
+			if (options().displayYear())
+				box.setAdviceHelpKey("MAIN_YEAR_DISPLAY_HOTSEAT_HELP");
+			else
+				box.setAdviceHelpKey("MAIN_TURN_DISPLAY_HOTSEAT_HELP");
 		else
-			box.setAdviceHelpKey("MAIN_TURN_DISPLAY" + AdvisorPanel.HELP_KEY);
+			if (options().displayYear())
+				box.setAdviceHelpKey("MAIN_YEAR_DISPLAY_HELP");
+			else
+				box.setAdviceHelpKey("MAIN_TURN_DISPLAY_HELP");
     }
 	@Override public void repaint(GalaxyMapPanel map)	{ map.repaint(minMapX, box.y, maxButtonW, box.height); }
 }

@@ -43,9 +43,8 @@ public class OfferTradeMessage extends TurnNotificationMessage {
         }
         return "";
     }
-    @Override
-    public void select(int i) {
-        if (!hotSeatCanAct()) return;
+	@Override public void select(int i)	{
+		quietlyValidateHotSeatCanAct();
         log("OfferTradeMessage - selected: ", str(i));
         switch(i) {
             case 0:

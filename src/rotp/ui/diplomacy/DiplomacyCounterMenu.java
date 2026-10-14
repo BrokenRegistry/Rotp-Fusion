@@ -16,6 +16,7 @@
 package rotp.ui.diplomacy;
 
 import java.util.List;
+
 import rotp.model.empires.Empire;
 
 public class DiplomacyCounterMenu extends DiplomacyRequestReply {
@@ -77,9 +78,8 @@ public class DiplomacyCounterMenu extends DiplomacyRequestReply {
             default: return false;
         }
     }
-    @Override
-    public void select(int i) {
-        if (!hotSeatCanAct()) return;
+	@Override public void select(int i)	{
+		quietlyValidateHotSeatCanAct();
         if (!enabled(i))
             return;
         log("DiplomacyCounterMenu - selected: ", str(i));

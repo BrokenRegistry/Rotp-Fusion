@@ -798,6 +798,8 @@ MAIN_YEAR_DISPLAY				| Year  %1
 MAIN_YEAR_DISPLAY_HELP			| Displays the current year.<br>And if applicable, and if the player has requested it, the number of years remaining until the next election.
 MAIN_TURN_DISPLAY				| Turn  %1
 MAIN_TURN_DISPLAY_HELP			| Displays the current game round number.<br>If applicable, and if the player has requested it, the number of rounds remaining until the next election.
+MAIN_YEAR_DISPLAY_HOTSEAT_HELP	| →MAIN_YEAR_DISPLAY_HELP←<br>Only for Hot Seat: The number of years since the game was last loaded is displayed in brackets on the left.
+MAIN_TURN_DISPLAY_HOTSEAT_HELP	| →MAIN_TURN_DISPLAY_HELP←<br>Only for Hot Seat: The number of turns played since the last game load is displayed in brackets on the left.
 MAIN_SPY_REPORT                   | Spy
 MAIN_TECH_NONE                    | No Research
 MAIN_TECH_COMPLETED               | Research Completed
@@ -6996,6 +6998,16 @@ HOTSEAT_CANCEL | Cancel
 HOTSEAT_INVALID_NAMES | Choose at least two humans with different, nonblank names.
 HOTSEAT_HANDOFF | Pass the computer to %1
 HOTSEAT_HANDOFF_DETAIL | Continue only when you are ready to view your empire.
+HOTSEAT_HANDOFF_POST_PREPARE		| Text for post Prepare phase.
+HOTSEAT_HANDOFF_POST_LAUNCH			| Text for post Launch phase.
+HOTSEAT_HANDOFF_POST_MOVEMENT		| Text for post Movement phase.
+HOTSEAT_HANDOFF_POST_COUNCIL		| Text for post Council phase.
+HOTSEAT_HANDOFF_POST_EMPIRE_TURN	| Text for post Empire Turn phase.
+HOTSEAT_HANDOFF_POST_SPACE_COMBAT	| Text for post Space Combat phase.
+HOTSEAT_HANDOFF_POST_POST_COLONIZATION	| Text for post Colonization phase.
+HOTSEAT_HANDOFF_POST_DIPLOMACY		| Text for post Diplomacy phase.
+HOTSEAT_HANDOFF_POST_DECISIONS		| Text for post Decision phase.
+HOTSEAT_HANDOFF_POST_REFRESH		| You start %1
 HOTSEAT_CONTINUE | Continue
 HOTSEAT_REPORTS | %1 - Reports
 HOTSEAT_RESOLVING | Resolving the shared turn...

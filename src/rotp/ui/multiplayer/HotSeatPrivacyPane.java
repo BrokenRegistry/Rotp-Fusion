@@ -5,11 +5,13 @@ import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+
 import rotp.multiplayer.pbem.PinHash;
 import rotp.ui.BasePanel;
 
@@ -54,6 +56,14 @@ public final class HotSeatPrivacyPane extends BasePanel {
         HotSeatStyle.button(proceed, 24);
         if (gate == null) {
             pin = repeat = null;
+//			JPanel center = new JPanel(new GridLayout(0, 1, 8, 8));
+//			center.setOpaque(false);
+//			center.add(HotSeatStyle.body(text("HOTSEAT_HANDOFF_DETAIL"), 20));
+//			String turn = longYearOrTurn(true);
+//			Phase phase = GameSession.instance().turnCoordinator().lastCompletedPhase();
+//			String key = "HOTSEAT_HANDOFF_POST_" + phase.name();
+//			center.add(HotSeatStyle.body(text(key, turn), 20));
+//			content.add(center, BorderLayout.CENTER);
             content.add(HotSeatStyle.body(text("HOTSEAT_HANDOFF_DETAIL"), 20), BorderLayout.CENTER);
         } else {
             pin = pinField();

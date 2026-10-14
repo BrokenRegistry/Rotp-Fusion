@@ -79,9 +79,8 @@ public class DiplomacyMainMenu extends DiplomaticMessage {
         }
         return ""; 
     }
-    @Override
-    public void select(int i) {
-        if (!hotSeatCanAct()) return;
+	@Override public void select(int i)	{
+		quietlyValidateHotSeatCanAct();
         if (!enabled(i))
             return;
         if (i >= options.size())

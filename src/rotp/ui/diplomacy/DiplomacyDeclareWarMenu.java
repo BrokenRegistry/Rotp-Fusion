@@ -17,6 +17,7 @@ package rotp.ui.diplomacy;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
 import rotp.ui.RotPUI;
@@ -52,9 +53,8 @@ public class DiplomacyDeclareWarMenu extends DiplomaticMessage {
     }
     @Override
     public boolean enabled(int i)        { return i < options.size();  }
-    @Override
-    public void select(int i) {
-        if (!hotSeatCanAct()) return;
+	@Override public void select(int i)	{
+		quietlyValidateHotSeatCanAct();
         if (!enabled(i))
             return;
         if (i >= options.size())

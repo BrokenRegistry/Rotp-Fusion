@@ -558,8 +558,8 @@ public final class EmpireColonyInfoPane extends BasePanel {
 			String adv = "";
 			if (cols.size() == 1) {
 				Colony colony = cols.get(0);
-				Empire empire =colony.empire();
-				ColonyIndustry industry =colony.industry();
+				Empire empire = colony.empire();
+				ColonyIndustry industry = colony.industry();
 				final float workerProd	= empire.workerProductivity();
 				final float workerCost	= empire.tech().populationCost();
 				final float workerTTV	= workerCost / workerProd;
@@ -596,7 +596,7 @@ public final class EmpireColonyInfoPane extends BasePanel {
 				if (c.isEmpty())
 					return "?";
 				Colony col = c.get(0);
-				Empire e =col.empire();
+				Empire e = col.empire();
 				String workerProd = fmt(e.workerProductivity(), 2);
 				String factoryProd = fmt(col.factoryNetProductivity(), 2);
 				return concat(workerProd, "  (", factoryProd, ")");

@@ -559,7 +559,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
 		private final List<Column> columns = new ArrayList<>();
         public void addColumn(Column c)   { columns.add(c); }
     }
-    public abstract class Column implements Base { // TODO
+    public abstract class Column implements Base {
 		static final String YEARS_OR_TURNS = "YEARS_OR_TURNS";
         String headerKey;
         int width;
@@ -1262,7 +1262,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         public boolean equalsSprite(Sprite s)  { return this == s; }
         public StarSystem system()             { return null; }
     }
-	private final class HeaderSprite extends Sprite implements IAdvice { // TODO
+	private final class HeaderSprite extends Sprite implements IAdvice {
 		private Column column;
 		private AdviceBox adviceBox = new AdviceBox();
 		private HeaderSprite(Column col, BasePanel parent, int colWidth) {

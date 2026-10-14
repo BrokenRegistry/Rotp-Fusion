@@ -50,9 +50,7 @@ import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.SpaceMonster;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.GameSession;
-import rotp.model.game.IConvenienceOptions;
 import rotp.model.game.IDebugOptions;
-import rotp.model.game.IGameOptions;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
@@ -213,6 +211,7 @@ public final class MainUI extends BasePanel implements IMapHandler {
             if (session().hotSeatSetup() == null || session().hotSeatState() == null) return;
             String owner = session().hotSeatState().snapshot().ownerPlayerId();
             if (owner == null) return;
+			setRenderingHints(g);
             g.setFont(narrowFont(20));
             drawShadowedString(g, text("HOTSEAT_CURRENT_PLAYER", session().hotSeatSetup().displayName(owner)),
                     2, s5, s22, java.awt.Color.black, java.awt.Color.white);
@@ -970,13 +969,7 @@ public final class MainUI extends BasePanel implements IMapHandler {
         g.setFont(narrowFont(18));
         drawString(g,title, x1, y1);
 
-        String yearStr = displayYearOrTurn();
-		if (IConvenienceOptions.showNextCouncil.get() 
-				&& !options().selectedCouncilWinOption().equals(IGameOptions.COUNCIL_NONE)) {
-			int nextC = galaxy().council().nextCouncil();
-			 if (nextC > 0)
-				 yearStr += " (" + nextC + ")";
-        }
+		String yearStr = longYearOrTurn(GameSession.instance().isHotSeat());
         g.setFont(narrowFont(16));
         int yearW = g.getFontMetrics().stringWidth(yearStr);
         drawString(g,yearStr, x+w-s5-yearW, y+h-s5);

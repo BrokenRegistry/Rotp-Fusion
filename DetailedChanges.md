@@ -3,6 +3,10 @@
 ## What's New
 
 26-10-14 (BR)
+- Improved player identification text quality. 
+  - Anti-cheat: The number of turns since the last reload is now displayed on the left side of the Year (Turn).
+  - Diplomacy UI: Fixed the "Continue" doing nothing.
+  - All Notification UI: Reduced the effect of bug security blocking player responses, when a problem was identified and the player was not expected to provide responses: The player will still be able to respond and continue their game. (And report the bug if it was real)
 - Fixed auto flag not always recognizing asteroids.
 - Fixed Pulsar Damage
   - It was wrongly applied the same damage to all groups of ships, while the moO1 rules say that each group has its own random roll, and since the RotP manual doesn't mention any changes to the original rules, each group's damage is now random.

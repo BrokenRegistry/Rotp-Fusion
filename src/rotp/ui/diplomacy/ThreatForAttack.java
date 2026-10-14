@@ -40,8 +40,8 @@ public class ThreatForAttack extends TurnNotificationMessage {
         }
         return ""; 
     }
-    @Override
-    public void select(int i) {
+	@Override public void select(int i)	{
+		quietlyValidateHotSeatCanAct();
         if (!hotSeatCanAct()) return;
         log("ThreatForAttack - selected: ", str(i));
         switch(i) {
