@@ -304,7 +304,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     	int color = 0;
     	if (planet.isResourceNormal())
     		color = flagAssetNormalColor.getIndex();
-    	if (planet.type().key() == NONE) // Asteroid won't be shown as Normal
+    	if (NONE.equals(planet.type().key())) // Asteroid won't be shown as Normal
     		color = flagNoneColor.getIndex();
 
     	// For backward compatibility.
@@ -327,7 +327,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     	int color = 0;
     	if (planet.isEnvironmentNormal())
     		color = flagEnvNormalColor.getIndex();
-    	if (planet.type().key() == NONE)
+    	if (NONE.equals(planet.type().key()))
     		color = flagEnvNoneColor.getIndex();
     	else if (planet.isEnvironmentNone())
     		color = flagEnvNoneColor.getIndex();
