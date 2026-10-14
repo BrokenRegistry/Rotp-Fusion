@@ -536,6 +536,8 @@
 
 ### Fixes:
 
+- Fixed Pulsar Damage
+  - It was wrongly applied the same damage to all groups of ships, while the moO1 rules say that each group has its own random roll, and since the RotP manual doesn't mention any changes to the original rules, each group's damage is now random.
 - Fixed Advisor display glitch with colonies in rebellion.
 - Assign more weight to maneuverability
   - Under Moo1 ruleset maneuverability is quite a bit bigger and AI would often design ships with only 1 combat-speed

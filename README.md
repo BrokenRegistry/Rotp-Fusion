@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-14 (BR)
+- Fixed Pulsar Damage
+  - It was wrongly applied the same damage to all groups of ships, while the moO1 rules say that each group has its own random roll, and since the RotP manual doesn't mention any changes to the original rules, each group's damage is now random.
+
 26-10-12 (BR)
 - New advisor TTV and ROI content while hovering Production field.
 - Fixed Advisor display glitch with colonies in rebellion.

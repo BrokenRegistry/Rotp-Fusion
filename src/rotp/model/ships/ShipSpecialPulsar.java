@@ -44,15 +44,15 @@ public final class ShipSpecialPulsar extends ShipSpecial {
     @Override
     public void fireUpon(CombatStack source, CombatStack target, int count, ShipCombatManager mgr) {
         float maxDam = tech().firstShipDamage + (int)((tech().extraShipDamage * (source.num-1)));
-        float dam = roll(1,(int)maxDam);
-
-        tech().drawSpecialAttack(source, target, count, dam);
+        tech().drawSpecialAttack(source, target, count, 0); // Damage does not matter
 
         for (int x0=source.x-1; x0<=source.x+1; x0++) {
             for (int y0=source.y-1; y0<=source.y+1; y0++) {
                 CombatStack st = source.mgr.stackAt(x0,y0);
-                if ((st != null) && st.isShip() && (st != source)) 
-                    st.takePulsarDamage(dam, 1);
+				if ((st != null) && st.isShip() && (st != source)) {
+					float dam = roll(1,(int)maxDam); // each group has it's own roll
+					st.takePulsarDamage(dam, 1);
+				}
             }
         }
     }
