@@ -22,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import rotp.model.game.GameSession;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.options.AllSubUI;
 import rotp.ui.util.ParamSubUI;
@@ -38,6 +39,8 @@ public final class SettingsWidgetSprite extends MapControlSprite {
 	public boolean acceptDoubleClicks()		 { return false; }
 	@Override
 	public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+		if (GameSession.performingTurn())
+			return;
 		checkForChange(e);
 		ParamSubUI optionsUI = AllSubUI.settingsSubUI();
 		optionsUI.start(null);

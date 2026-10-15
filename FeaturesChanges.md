@@ -536,6 +536,7 @@
 
 ### Fixes:
 
+- Galaxy Map: Disabled the action of the left icons when they should not be used.
 - Improved player identification text quality. 
   - Anti-cheat: The number of turns since the last reload is now displayed on the left side of the Year (Turn).
   - Diplomacy UI: Fixed the "Continue" doing nothing.

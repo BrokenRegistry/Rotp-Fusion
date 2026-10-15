@@ -11,6 +11,9 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-15 (BR)
+- Galaxy Map: Disabled the action of the left icons when they should not be used.
+
 26-10-14 (BR)
 - Improved player identification text quality. 
   - Anti-cheat: The number of turns since the last reload is now displayed on the left side of the Year (Turn).

@@ -72,6 +72,8 @@ public final class CleanWidgetSprite extends MapControlSprite {
 	@Override
 	public boolean acceptDoubleClicks()	 { return false; }
 	@Override public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+		if (GameSession.performingTurn())
+			return;
 		player().checkEcoAtClean(e);
 	}
 	private String toLabel(int count, String key, boolean shiftDown, boolean ctrlDown) {

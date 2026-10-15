@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-15 (BR)
+- Galaxy Map: Disabled the action of the left icons when they should not be used.
+
 26-10-14 (BR)
 - Multi-player Hot-Seat
   - Improved player identification text quality. 

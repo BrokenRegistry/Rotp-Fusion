@@ -24,6 +24,7 @@ import java.awt.LinearGradientPaint;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
+import rotp.model.game.GameSession;
 import rotp.ui.RotPUI;
 import rotp.ui.main.GalaxyMapPanel;
 
@@ -43,6 +44,8 @@ public final class SpyReportSprite extends MapControlSprite {
 	}
     @Override
     public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+		if (GameSession.performingTurn())
+			return;
         RotPUI.instance().showSpyReport();
         map.parent().hoveringOverSprite(null);
     }

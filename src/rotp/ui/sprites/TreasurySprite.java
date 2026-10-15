@@ -23,6 +23,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import rotp.model.game.GameSession;
 import rotp.ui.RotPUI;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.SystemPanel;
@@ -35,6 +36,8 @@ public final class TreasurySprite extends MapControlSprite {
 	}
     @Override
     public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+		if (GameSession.performingTurn())
+			return;
         RotPUI.instance().selectPlanetsPanel();
         map.parent().hoveringOverSprite(null);
     }

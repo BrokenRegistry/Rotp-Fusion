@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
+import rotp.model.game.GameSession;
 import rotp.model.tech.Tech;
 import rotp.model.tech.TechCategory;
 import rotp.ui.RotPUI;
@@ -37,6 +38,8 @@ public final class TechStatusSprite extends MapControlSprite {
 	}
     @Override
     public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+		if (GameSession.performingTurn())
+			return;
         RotPUI.instance().selectTechPanel();
         RotPUI.instance().techUI().selectTechCategory(category);
         map.parent().hoveringOverSprite(null);

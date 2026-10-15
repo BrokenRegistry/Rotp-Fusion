@@ -20,6 +20,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import rotp.model.game.GameSession;
 import rotp.ui.game.GameOverUI;
 import rotp.ui.main.GalaxyMapPanel;
 
@@ -33,6 +34,8 @@ public final class AFewMoreTurnsSprite extends MapControlSprite {
 	}
 	@Override public boolean acceptDoubleClicks()	{ return false; }
 	@Override public void click(GalaxyMapPanel map, int count, boolean rightClick, boolean click, boolean middleClick, MouseEvent e) {
+		if (GameSession.performingTurn())
+			return;
 		if (session().aFewMoreTurns())
 			session().aFewMoreTurns(false);
 	}
