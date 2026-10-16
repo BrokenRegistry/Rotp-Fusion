@@ -349,13 +349,13 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	public void resetToDefaultValue()	{ set(defaultValue()); }
 	public T defaultValue()				{ return defaultValue.get(DEF_VAL.defVal()); }
 	@Override public T get()			{
-		if (getPlayerValueMethod != null) {
-			T newVal = getPlayerValue();
-			if (newVal != null) {
-				value = newVal;
-				return value;
-			}
-		}
+//		if (getPlayerValueMethod != null) {
+//			T newVal = getPlayerValue();
+//			if (newVal != null) {
+//				value = newVal;
+//				return value;
+//			}
+//		}
 		if (getValueMethod != null) {
 			T newVal = getValueMethod.getValue();
 			if (newVal != null) {
@@ -407,9 +407,9 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	}
 	public T set(T newValue)				{
         if (rotp.model.game.GameSession.hotSeatPolicyLocked(getCfgLabel())) return value();
-		if (setPlayerValueMethod != null) {
-			newValue = setPlayerValue(newValue);
-		}
+//		if (setPlayerValueMethod != null) {
+//			newValue = setPlayerValue(newValue);
+//		}
 		updated(true);;
 		trueChange(false);
 		if(updated() && value() != null && newValue != null)
