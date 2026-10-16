@@ -289,7 +289,7 @@ public final class TechLibrary implements Base {
     }
 	public static final ParamBoolean moo1WeaponCost = new ParamBoolean(IBaseOptsTools.MOD_UI, "MOO1_WEAPON_COST", false)
 			.setDefaultValue(DefaultValues.MOO1_DEFAULT, true)
-			.setNewValueMethod(TechLibrary::setNewWeaponCost);
+			.addNewValueMethod(TechLibrary::setNewWeaponCost);
 	private static void setNewWeaponCost(Boolean b) {
 		if (instance == null || b == null)
 			return;

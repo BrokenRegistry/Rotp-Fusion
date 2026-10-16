@@ -1580,5 +1580,5 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
 			.put(MORE_BUBBLE_NO,	MOD_UI + MORE_BUBBLE + "_" + MORE_BUBBLE_NO)
 			.put(MORE_BUBBLE_FEW,	MOD_UI + MORE_BUBBLE + "_" + MORE_BUBBLE_FEW)
 			.put(MORE_BUBBLE_ALL,	MOD_UI + MORE_BUBBLE + "_" + MORE_BUBBLE_ALL)
-			.setNewValueMethod(AllocateTechUI::setMoreIcon);
+			.addNewValueMethod(AllocateTechUI::setMoreIcon);
 }

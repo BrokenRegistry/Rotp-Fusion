@@ -56,7 +56,7 @@ public interface IMapOptions extends IBaseOptsTools {
 			.put(DISPLAY_ARMED,			MOD_UI + "SHOW_ONLY_ARMED_SHIPS")
 			.put(DISPLAY_NO_TRANSPORT,	MOD_UI + "HIDE_TRANSPORT_SHIPS")
 			.put(DISPLAY_NONE,			MOD_UI + "HIDE_FLEETS")
-			.setNewValueMethod(GalaxyMapPanel::newShipDisplayValue);
+			.addNewValueMethod(GalaxyMapPanel::newShipDisplayValue);
 	default void resetShipDisplay()		{ shipDisplay.set("All");}
 
 	ParamList showShipRanges	= new ParamList (MOD_UI, "SHOW_SHIP_RANGES", "SR")

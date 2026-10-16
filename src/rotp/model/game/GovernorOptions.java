@@ -7,6 +7,8 @@ import java.awt.event.MouseWheelEvent;
 import java.io.Serializable;
 
 import rotp.model.colony.Colony;
+import rotp.model.empires.Empire;
+import rotp.model.galaxy.Galaxy;
 import rotp.ui.options.AllSubUI;
 import rotp.ui.util.AbstractParam;
 import rotp.ui.util.IParam;
@@ -121,6 +123,7 @@ public class GovernorOptions implements Serializable, IGovOptions {
 		callForRefresh	= callForRefresh || (call == GOV_REFRESH);
 		callForReset	= callForReset   || (call == GOV_RESET);
 	}
+	private Empire	player()			{ return Galaxy.current().player(); }
 	public void		clearRefresh()		{ callForRefresh = false; }
 	public void		clearReset()		{ clearRefresh(); callForReset = false; }
 	public boolean	refreshRequested()	{ return callForRefresh; }

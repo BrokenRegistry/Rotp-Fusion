@@ -390,53 +390,53 @@ public final class FlightPathSprite extends MapSprite {
 			.setLimits(0, 255)
 			.setIncrements(1, 5, 20)
 			.isCfgFile(true)
-			.setNewValueMethod(FlightPathSprite::setRallyOpacity);
+			.addNewValueMethod(FlightPathSprite::setRallyOpacity);
 
 	public static ParamInteger systemTransportOpacity	= new ParamInteger(MOD_UI, "SYS_TRANSPORT_OPACITY", 255)
 			.setLimits(0, 255)
 			.setIncrements(1, 5, 20)
 			.isCfgFile(true)
-			.setNewValueMethod(FlightPathSprite::setSystemTransportOpacity);
+			.addNewValueMethod(FlightPathSprite::setSystemTransportOpacity);
 
 	public static ParamInteger systemTroopOpacity	= new ParamInteger(MOD_UI, "SYS_TROOP_OPACITY", 255)
 			.setLimits(0, 255)
 			.setIncrements(1, 5, 20)
 			.isCfgFile(true)
-			.setNewValueMethod(FlightPathSprite::setSystemTroopOpacity);
+			.addNewValueMethod(FlightPathSprite::setSystemTroopOpacity);
 
 	public static ParamInteger playerTransportOpacity	= new ParamInteger(MOD_UI, "PLAYER_TRANSP_OPACITY", 255)
 			.setLimits(0, 255)
 			.setIncrements(1, 5, 20)
 			.isCfgFile(true)
-			.setNewValueMethod(FlightPathSprite::setPlayerTransportOpacity);
+			.addNewValueMethod(FlightPathSprite::setPlayerTransportOpacity);
 
 	public static ParamInteger playerTroopOpacity	= new ParamInteger(MOD_UI, "PLAYER_TROOP_OPACITY", 255)
 			.setLimits(0, 255)
 			.setIncrements(1, 5, 20)
 			.isCfgFile(true)
-			.setNewValueMethod(FlightPathSprite::setPlayerTroopOpacity);
+			.addNewValueMethod(FlightPathSprite::setPlayerTroopOpacity);
 
 	public static ParamInteger invaderTroopOpacity	= new ParamInteger(MOD_UI, "INVADER_TROOP_OPACITY", 255)
 			.setLimits(0, 255)
 			.setIncrements(1, 5, 20)
 			.isCfgFile(true)
-			.setNewValueMethod(FlightPathSprite::setInvaderTroopOpacity);
+			.addNewValueMethod(FlightPathSprite::setInvaderTroopOpacity);
 
 	public static ParamInteger alienTransportOpacity	= new ParamInteger(MOD_UI, "ALIEN_TRANSP_OPACITY", 255)
 			.setLimits(0, 255)
 			.setIncrements(1, 5, 20)
 			.isCfgFile(true)
-			.setNewValueMethod(FlightPathSprite::setAlienTransportOpacity);
+			.addNewValueMethod(FlightPathSprite::setAlienTransportOpacity);
 
 	public static ParamInteger minimumInvasionDisplay	= new ParamInteger(MOD_UI, "MIN_INVASION_DISP", 1)
 			.setLimits(0, 255)
 			.setIncrements(1, 5, 20)
 			.isCfgFile(true)
-			.setNewValueMethod(FlightPathSprite::setMinInvasionDisp);
+			.addNewValueMethod(FlightPathSprite::setMinInvasionDisp);
 
 	public static ParamInteger minimumTransportDisplay	= new ParamInteger(MOD_UI, "MIN_TRANSPORT_DISP", 1)
 			.setLimits(0, 255)
 			.setIncrements(1, 5, 20)
 			.isCfgFile(true)
-			.setNewValueMethod(FlightPathSprite::setMinTransportDisp);
+			.addNewValueMethod(FlightPathSprite::setMinTransportDisp);
 }

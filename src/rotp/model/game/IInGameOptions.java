@@ -67,7 +67,7 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 
 	String DYNAMIC_DIFFICULTY_UPDATE_ID	= "turnMod";
 	ParamBoolean dynamicDifficulty	= new ParamBoolean(MOD_UI, "DYNAMIC_DIFFICULTY", false)
-			.setUpdateParameters(IInGameOptions::tagDynamicDifficulty, "");
+			.addUpdateParameters(IInGameOptions::tagDynamicDifficulty, "");
 	default boolean selectedDynamicDifficulty()	{ return dynamicDifficulty.get(); }
 
 	final class ParamDynDiffInt extends ParamInteger	{
@@ -79,19 +79,19 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	ParamInteger dynamicDifficultyDelay	= new ParamDynDiffInt(MOD_UI, "DYNAMIC_DIFFICULTY_DELAY", 150)
 			.setLimits(20, 500)
 			.setIncrements(1, 5, 20)
-			.setUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
+			.addUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
 	default int dynamicDifficultyDelay()		{ return dynamicDifficultyDelay.get(); }
 
 	ParamInteger dynamicDifficultyRange	= new ParamDynDiffInt(MOD_UI, "DYNAMIC_DIFFICULTY_RANGE", 10)
 			.setLimits(0, 500)
 			.setIncrements(1, 5, 20)
-			.setUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
+			.addUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
 	default int dynamicDifficultyRange()		{ return dynamicDifficultyRange.get(); }
 
 	ParamInteger dynamicDifficultySpan	= new ParamDynDiffInt(MOD_UI, "DYNAMIC_DIFFICULTY_SPAN", 100)
 			.setLimits(10, 500)
 			.setIncrements(1, 5, 20)
-			.setUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
+			.addUpdateParameters(Empire::valueUpdated, DYNAMIC_DIFFICULTY_UPDATE_ID);
 	default float dynamicDifficultySpan()		{ return dynamicDifficultySpan.get()/100f; }
 
 	static double dynamicDifficultyBaseTurnMod(int turn, int delay, int range)	{
@@ -491,7 +491,7 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	String END_OF_GAME_TURN_POWER	= END_OF_GAME + "_TURN_POWER";
 	ParamList endOfGameCondition	= new ParamList( MOD_UI, END_OF_GAME, END_OF_GAME_NORMAL)
 			.showFullGuide(true)
-			.setUpdateParameters(IInGameOptions::tagEndOfGameTurn, "")
+			.addUpdateParameters(IInGameOptions::tagEndOfGameTurn, "")
 			.put(END_OF_GAME_NORMAL,		MOD_UI + END_OF_GAME_NORMAL)
 			.put(END_OF_GAME_TURN_COUNCIL,	MOD_UI + END_OF_GAME_TURN_COUNCIL)
 			.put(END_OF_GAME_TURN_POP,		MOD_UI + END_OF_GAME_TURN_POP)
@@ -629,8 +629,8 @@ public interface IInGameOptions extends IRandomEvents, IConvenienceOptions, ICom
 	}
 	ParamBoolean taxOnlyDeveloped	= new ParamBoolean(MOD_UI, "TAX_ONLY_DEVELOPED", true)
 			.isDuplicate(true)
-			.setNewValueMethod(IInGameOptions::setTaxOnlyDeveloped)
-			.setGetValueMethod(IInGameOptions::getTaxOnlyDeveloped);
+			.addNewValueMethod(IInGameOptions::setTaxOnlyDeveloped)
+			.addGetValueMethod(IInGameOptions::getTaxOnlyDeveloped);
 
 	ParamInteger maxMissingPopulation	= new ParamInteger(MOD_UI, "DEV_MAX_MISSING_POP", 3)
 			.setDefaultValue(MOO1_DEFAULT, 0)

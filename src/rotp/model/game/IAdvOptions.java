@@ -386,7 +386,7 @@ public interface IAdvOptions extends IBaseOptsTools {
 		dynamicRangeQuad.updated(true);
 	}
 	ParamBoolean dynamicRange	= new ParamBoolean(ADV_UI, "DYNAMIC_RANGE", false)
-			.setUpdateParameters(IAdvOptions::tagDynamicRange, "");
+			.addUpdateParameters(IAdvOptions::tagDynamicRange, "");
 	default boolean dynamicRange()		{ return dynamicRange.get(); }
 
 	ParamInteger dynamicRangePerMille	= new ParamDynRngInt(ADV_UI, "DYNAMIC_RANGE_FACTOR", 0)

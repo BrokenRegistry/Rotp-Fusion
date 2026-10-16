@@ -31,12 +31,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import javax.swing.SwingUtilities;
 
 import rotp.Rotp;
+import rotp.model.empires.Empire;
+import rotp.model.galaxy.Galaxy;
 import rotp.model.game.DynamicOptions;
+import rotp.model.game.GameSession;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.RulesetManager;
@@ -72,8 +78,10 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	private List<LinkData> linkList;
 	private boolean processingToggle = false;
 	private boolean	forcedRefresh	 = false;
+	private BiFunction<Empire, T, T> setPlayerValueMethod;
+	private Function<Empire, T> getPlayerValueMethod;
 	private IGetValue<T> getValueMethod;	// Mainly to set static values
-	private INewValue<T> newValueMethod;	// Mainly to set static values
+	private Consumer<T> newValueMethod;	// Mainly to set static values
 	private IUpdated<T> valueUpdatedMethod;	// Mainly for UI: Request redraw
 	private String valueUpdatedMethodId;
 	private BooleanSupplier isGhostMethod;
@@ -84,7 +92,7 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	}
 	public IUpdated<T> getUpdatedMethod()		{ return valueUpdatedMethod; }
 	public String getUpdatedId()				{ return valueUpdatedMethodId; }
-	public INewValue<T> getNewValueMethod()		{ return newValueMethod; }
+	public Consumer<T> getNewValueMethod()		{ return newValueMethod; }
 	public IGetValue<T> getGetValueMethod()		{ return getValueMethod; }
 	public BooleanSupplier getIsGhostMethod()	{ return isGhostMethod; }
 	@Override public boolean isGhost()			{ return isGhostMethod == null ? false : isGhostMethod.getAsBoolean(); } // TODO BR: Upgrade overridden Methods
@@ -159,7 +167,7 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	protected void setOptionValue(IGameOptions options, T value) {
 		if (isDuplicate()) { // Just in case!
 			if (newValueMethod != null)
-				newValueMethod.newValue(value);
+				newValueMethod.accept(value);
 			else
 				System.err.println("getFromOption() not updated to getOptionValue: " + name);
 		}		
@@ -341,14 +349,24 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	public void resetToDefaultValue()	{ set(defaultValue()); }
 	public T defaultValue()				{ return defaultValue.get(DEF_VAL.defVal()); }
 	@Override public T get()			{
-		if (getValueMethod != null)
-			value = getValueMethod.getValue();
-		else if (isCfgFile) {
+		if (getPlayerValueMethod != null) {
+			T newVal = getPlayerValue();
+			if (newVal != null) {
+				value = newVal;
+				return value;
+			}
+		}
+		if (getValueMethod != null) {
+			T newVal = getValueMethod.getValue();
+			if (newVal != null) {
+				value = newVal;
+				return value;
+			}
+		}
+		if (isCfgFile)
 			value = getOption();
-		}
-		else if (isDuplicate) {
+		else if (isDuplicate)
 			value = getOptionValue(opts());
-		}
 		return value;
 	}	
 	public T setFromIndex(int i)		{ return null; }
@@ -372,7 +390,7 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	private void value(T newValue)			{
 		value = newValue;
 		if (newValueMethod != null && Rotp.initialized())
-			newValueMethod.newValue(newValue);
+			newValueMethod.accept(newValue);
 	}
 	protected void setFromCfg(T newValue)	{
         if (rotp.model.game.GameSession.hotSeatPolicyLocked(getCfgLabel())) return;
@@ -389,6 +407,9 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	}
 	public T set(T newValue)				{
         if (rotp.model.game.GameSession.hotSeatPolicyLocked(getCfgLabel())) return value();
+		if (setPlayerValueMethod != null) {
+			newValue = setPlayerValue(newValue);
+		}
 		updated(true);;
 		trueChange(false);
 		if(updated() && value() != null && newValue != null)
@@ -418,22 +439,46 @@ public abstract class AbstractParam<T> implements IParam<T> {
 		forcedRefresh = forced;
 		return this;
 	}
-	public AbstractParam<T> setUpdateParameters(IUpdated<T> method, String id)	{
+	public AbstractParam<T> addUpdateParameters(IUpdated<T> method, String id)	{
 		valueUpdatedMethod = method;
 		setUpdatedId(id);
 		return this;
 	}
-	public AbstractParam<T> setNewValueMethod(INewValue<T> method)	{
+	public AbstractParam<T> addNewValueMethod(Consumer<T> method)	{
 		newValueMethod = method;
 		return this;
 	}
-	public AbstractParam<T> setGetValueMethod(IGetValue<T> method)	{
+	public AbstractParam<T> addGetValueMethod(IGetValue<T> method)	{
 		getValueMethod = method;
 		return this;
 	}
-	public AbstractParam<T> setIsGhostMethod(BooleanSupplier method)	{
+	public AbstractParam<T> addIsGhostMethod(BooleanSupplier method)	{
 		isGhostMethod = method;
 		return this;
+	}
+	public AbstractParam<T> addSetPlayerValueMethod(BiFunction<Empire, T, T> method)	{
+		setPlayerValueMethod = method;
+		return this;
+	}
+	public AbstractParam<T> addGetPlayerValueMethod(Function<Empire, T> method)	{
+		getPlayerValueMethod = method;
+		return this;
+	}
+	private T setPlayerValue(T val)	{
+		if (!GameSession.instance().isReady() || RulesetManager.current().isSetupMode())
+			return val;
+		Galaxy galaxy = GameSession.instance().galaxy();
+		if (galaxy == null)
+			return val;
+		return setPlayerValueMethod.apply(galaxy.player(), val);
+	}
+	private T getPlayerValue()	{
+		if (RulesetManager.current().isSetupMode())
+			return null;
+		Galaxy galaxy = GameSession.instance().galaxy();
+		if (galaxy == null)
+			return null;
+		return getPlayerValueMethod.apply(galaxy.player());
 	}
 
 	/**

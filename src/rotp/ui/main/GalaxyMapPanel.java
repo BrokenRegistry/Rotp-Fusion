@@ -123,21 +123,21 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
 			.cfgFormat("%")
 			.guiFormat("%")
 			.isCfgFile(true)
-			.setNewValueMethod(GalaxyMapPanel::maxFlagScale);
+			.addNewValueMethod(GalaxyMapPanel::maxFlagScale);
 	public static ParamFloat showPathFactor	= new ParamFloat(MOD_UI, "SHOW_PATH_FACTOR", 1.0f)
 			.setLimits(0.3f, 3f)
 			.setIncrements(0.01f, 0.05f, 0.2f)
 			.cfgFormat("%")
 			.guiFormat("%")
 			.isCfgFile(true)
-			.setNewValueMethod(GalaxyMapPanel::maxRallyScale);
+			.addNewValueMethod(GalaxyMapPanel::maxRallyScale);
 	public static ParamFloat showFleetFactor	= new ParamFloat(MOD_UI, "SHOW_FLEET_FACTOR", 1.0f)
 			.setLimits(0.3f, 3f)
 			.setIncrements(0.01f, 0.05f, 0.2f)
 			.cfgFormat("%")
 			.guiFormat("%")
 			.isCfgFile(true)
-			.setNewValueMethod(GalaxyMapPanel::setFleetScales);
+			.addNewValueMethod(GalaxyMapPanel::setFleetScales);
 
 
     private final IMapHandler parent;

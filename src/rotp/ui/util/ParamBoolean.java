@@ -25,8 +25,12 @@ import static rotp.ui.util.IParam.tableFormat;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
+import rotp.model.empires.Empire;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 
@@ -76,20 +80,28 @@ public class ParamBoolean extends AbstractParam<Boolean> {
 		super.setDefaultValue(key, value);
 		return this;
 	}
-	@Override public ParamBoolean setUpdateParameters(IUpdated<Boolean> method, String id)	{
-		super.setUpdateParameters(method, id);
+	@Override public ParamBoolean addUpdateParameters(IUpdated<Boolean> method, String id)	{
+		super.addUpdateParameters(method, id);
 		return this;
 	}
-	@Override public ParamBoolean setNewValueMethod(INewValue<Boolean> method)	{
-		super.setNewValueMethod(method);
+	@Override public ParamBoolean addNewValueMethod(Consumer<Boolean> method)	{
+		super.addNewValueMethod(method);
 		return this;
 	}
-	@Override public ParamBoolean setGetValueMethod(IGetValue<Boolean> method)	{
-		super.setGetValueMethod(method);
+	@Override public ParamBoolean addGetValueMethod(IGetValue<Boolean> method)	{
+		super.addGetValueMethod(method);
 		return this;
 	}
-	@Override public ParamBoolean setIsGhostMethod(BooleanSupplier method)	{
-		super.setIsGhostMethod(method);
+	@Override public ParamBoolean addIsGhostMethod(BooleanSupplier method)	{
+		super.addIsGhostMethod(method);
+		return this;
+	}
+	@Override public ParamBoolean addSetPlayerValueMethod(BiFunction<Empire, Boolean, Boolean> method)	{
+		super.addSetPlayerValueMethod(method);
+		return this;
+	}
+	@Override public ParamBoolean addGetPlayerValueMethod(Function<Empire, Boolean> method)	{
+		super.addGetPlayerValueMethod(method);
 		return this;
 	}
 	@Override public String	getFullHelp()		{ return getHeadGuide() + getTableHelp(); }

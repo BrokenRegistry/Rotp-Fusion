@@ -51,7 +51,7 @@ public interface IParam<T> extends InterfaceOptions{
 	default void initDependencies(int level)	{}
 	// remote call
 	interface IUpdated<T>	{ public void valueUpdated(String id); }	// Mainly for UI: Request redraw
-	interface INewValue<T>	{ public void newValue(T value); }			// To convert to and update local values
+//	interface INewValue<T>	{ public void newValue(T value); }			// To convert to and update local values
 	interface IGetValue<T>	{ public T getValue(); }	// To get local values (easier than overriding class
 
 	default T get()								{ return null; }

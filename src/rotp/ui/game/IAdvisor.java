@@ -71,7 +71,7 @@ public interface IAdvisor extends ScaledInteger {
 			.setIncrements(1, 5, 20)
 			.isCfgFile(true)
 			.pctValue(true)
-			.setNewValueMethod(IAdvisor.ADVISOR::updateAvatarSize);
+			.addNewValueMethod(IAdvisor.ADVISOR::updateAvatarSize);
 
 	default BufferedImage getAdvisorImage(Species species, String key)	{
 		species.resetScientist();

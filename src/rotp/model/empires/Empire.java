@@ -119,8 +119,8 @@ public final class Empire extends Species implements NamedObject {
 			.setIncrements(1, 2, 5)
 			.pctValue(true)
 			.isDuplicate(true)
-			.setNewValueMethod(Empire::playerTaxLevelChanged)
-			.setGetValueMethod(Empire::playerTaxLevel);
+			.addNewValueMethod(Empire::playerTaxLevelChanged)
+			.addGetValueMethod(Empire::playerTaxLevel);
 	private static void playerTaxLevelChanged(int val)	{
 		if (RulesetManager.current().isSetupMode())
 			return;

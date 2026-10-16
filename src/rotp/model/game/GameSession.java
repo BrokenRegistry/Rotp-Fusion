@@ -254,6 +254,7 @@ public final class GameSession implements Base, Serializable {
             instance(restored);
             restored.options().setAsGame();
             restored.restoreHotSeatPolicies();
+			restored.rulesetManager().setAsGameMode(); // TODO BR: ### VALIDATE HOTSEAT
             Rotp.rand(copyCheckpointRandom(restored.inProcessCheckpointRandom));
             restored.galaxy.validateOnLoad(false);
             // Transient maintenance caches deserialize as zero, which is a valid
@@ -321,7 +322,7 @@ public final class GameSession implements Base, Serializable {
 	private transient boolean loading = false;
 
 	public boolean loading()					{ return loading; }
-	boolean isReady()							{ return galaxy()!=null && !loading(); }
+	public boolean isReady()							{ return galaxy()!=null && !loading(); }
     public GameStatus status()                   { return status; }
     public long id()                             { return id; }
     public long achievementId()                  {

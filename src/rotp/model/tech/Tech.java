@@ -152,7 +152,7 @@ public class Tech implements Base, ScaledInteger {
 	public static void newMiniaturizationValue(Boolean value)	{ moo1Mini = value; }
 	public static ParamBoolean moo1Miniaturization	= new ParamBoolean(MOD_UI, "MOO1_MINIATURIZE", false)
 			.setDefaultValue(MOO1_DEFAULT, true)
-			.setNewValueMethod(Tech::newMiniaturizationValue);
+			.addNewValueMethod(Tech::newMiniaturizationValue);
 
 	public static String buildId(String s, int i)	{ return s + ":" + i; }
 

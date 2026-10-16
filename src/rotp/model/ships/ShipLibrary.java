@@ -367,7 +367,7 @@ public class ShipLibrary implements Base, ScaledInteger {
 			.setLimits(0, 255)
 			.setIncrements(1, 5, 20)
 			.isCfgFile(true)
-			.setNewValueMethod(ShipLibrary::setShipSpritesColors);
+			.addNewValueMethod(ShipLibrary::setShipSpritesColors);
 	private static final void setShipSpritesColors(Integer alpha)	{
 		IGameOptions options = RulesetManager.current().currentOptions();
 		options.initShipColors(alpha);
@@ -381,7 +381,7 @@ public class ShipLibrary implements Base, ScaledInteger {
 	}
 	public static final ParamBoolean singleTransportIconSize = new ParamBoolean(MOD_UI, "TRANSP_ONE_SIZE", true)
 			.isCfgFile(true)
-			.setNewValueMethod(ShipLibrary::resetTransportIcons);
+			.addNewValueMethod(ShipLibrary::resetTransportIcons);
 	private static final void resetTransportIcons(Boolean b)	{
 		GameSession session = GameSession.instance();
 		if (session == null)

@@ -19,6 +19,7 @@ package rotp.ui.util;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.function.Consumer;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -47,12 +48,12 @@ public class ParamString extends AbstractParam<String> {
 	@Override public ParamString isUpdateDef(boolean is) { super.isUpdateDef(is) ; return this; }
 	@Override public ParamString isDuplicate(boolean is) { super.isDuplicate(is) ; return this; }
 	@Override public ParamString isCfgFile(boolean is)	 { super.isCfgFile(is)   ; return this; }
-	@Override public ParamString setUpdateParameters(IUpdated<String> method, String id)	{
-		super.setUpdateParameters(method, id);
+	@Override public ParamString addUpdateParameters(IUpdated<String> method, String id)	{
+		super.addUpdateParameters(method, id);
 		return this;
 	}
-	@Override public ParamString setNewValueMethod(INewValue<String> method)	{
-		super.setNewValueMethod(method);
+	@Override public ParamString addNewValueMethod(Consumer<String> method)	{
+		super.addNewValueMethod(method);
 		return this;
 	}
 

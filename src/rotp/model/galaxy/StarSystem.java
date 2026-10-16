@@ -91,21 +91,21 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
 			.setLimits(2, 24)
 			.setIncrements(1, 2, 5)
 			.isCfgFile(true)
-			.setNewValueMethod(StarSystem::setMinFont);
+			.addNewValueMethod(StarSystem::setMinFont);
 	public static ParamFloat showInfoFontRatio	= new ParamFloat(MOD_UI, "SHOW_INFO_FONT_RATIO", 0.7f)
 			.setLimits(0.2f, 3f)
 			.setIncrements(0.01f, 0.05f, 0.2f)
 			.cfgFormat("%")
 			.guiFormat("%")
 			.isCfgFile(true)
-			.setNewValueMethod(StarSystem::setMinFont2);
+			.addNewValueMethod(StarSystem::setMinFont2);
 	public static ParamFloat mapFontFactor	= new ParamFloat(MOD_UI, "MAP_FONT_FACTOR", 1.0f)
 			.setLimits(0.3f, 3f)
 			.setIncrements(0.01f, 0.05f, 0.2f)
 			.cfgFormat("%")
 			.guiFormat("%")
 			.isCfgFile(true)
-			.setNewValueMethod(StarSystem::setFontPct);
+			.addNewValueMethod(StarSystem::setFontPct);
 
     private String name = "";
     private float x, y;

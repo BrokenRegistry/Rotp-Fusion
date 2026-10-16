@@ -150,7 +150,7 @@ public class PlanetsUI extends BasePanel implements SystemViewer {
 	private BasePanel currentPane = null;
 
 	public static final ParamBoolean showShipyardAccruedColumn = new ParamBoolean("PLANETS_", "SHOW_ACCRUED_COL", false)
-			.setNewValueMethod(PlanetsUI::setAccruedColumn);
+			.addNewValueMethod(PlanetsUI::setAccruedColumn);
 	private static final void setAccruedColumn(Boolean b)	{
 		if (instance != null)
 			instance.initDataViews();

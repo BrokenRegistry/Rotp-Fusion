@@ -26,6 +26,7 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 
 import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
@@ -118,16 +119,16 @@ public class ParamSubUI extends AbstractParam<SafeListPanel> {
 	@Override public ParamSubUI isUpdateDef(boolean is) { super.isUpdateDef(is) ; return this; }
 	@Override public ParamSubUI isDuplicate(boolean is) { super.isDuplicate(is) ; return this; }
 	@Override public ParamSubUI isCfgFile(boolean is)	{ super.isCfgFile(is)   ; return this; }
-	@Override public ParamSubUI setUpdateParameters(IUpdated<SafeListPanel> method, String id)	{
-		super.setUpdateParameters(method, id);
+	@Override public ParamSubUI addUpdateParameters(IUpdated<SafeListPanel> method, String id)	{
+		super.addUpdateParameters(method, id);
 		return this;
 	}
-	@Override public ParamSubUI setNewValueMethod(INewValue<SafeListPanel> method)	{
-		super.setNewValueMethod(method);
+	@Override public ParamSubUI addNewValueMethod(Consumer<SafeListPanel> method)	{
+		super.addNewValueMethod(method);
 		return this;
 	}
-	@Override public ParamSubUI setIsGhostMethod(BooleanSupplier method)	{
-		super.setIsGhostMethod(method);
+	@Override public ParamSubUI addIsGhostMethod(BooleanSupplier method)	{
+		super.addIsGhostMethod(method);
 		return this;
 	}
 	@Override public boolean isDefaultValue()	{ 

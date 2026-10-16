@@ -21,8 +21,12 @@ import static rotp.ui.util.IParam.langLabel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.LinkedHashMap;
+import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
+import rotp.model.empires.Empire;
 import rotp.model.game.IGameOptions;
 import rotp.ui.BasePanel;
 
@@ -138,20 +142,28 @@ public class ParamInteger extends AbstractParam<Integer> {
 		super.setDefaultValue(key, value);
 		return this;
 	}
-	@Override public ParamInteger setUpdateParameters(IUpdated<Integer> method, String id)	{
-		super.setUpdateParameters(method, id);
+	@Override public ParamInteger addUpdateParameters(IUpdated<Integer> method, String id)	{
+		super.addUpdateParameters(method, id);
 		return this;
 	}
-	@Override public ParamInteger setNewValueMethod(INewValue<Integer> method)	{
-		super.setNewValueMethod(method);
+	@Override public ParamInteger addNewValueMethod(Consumer<Integer> method)	{
+		super.addNewValueMethod(method);
 		return this;
 	}
-	@Override public ParamInteger setGetValueMethod(IGetValue<Integer> method)	{
-		super.setGetValueMethod(method);
+	@Override public ParamInteger addGetValueMethod(IGetValue<Integer> method)	{
+		super.addGetValueMethod(method);
 		return this;
 	}
-	@Override public ParamInteger setIsGhostMethod(BooleanSupplier method)	{
-		super.setIsGhostMethod(method);
+	@Override public ParamInteger addIsGhostMethod(BooleanSupplier method)	{
+		super.addIsGhostMethod(method);
+		return this;
+	}
+	@Override public ParamInteger addSetPlayerValueMethod(BiFunction<Empire, Integer, Integer> method)	{
+		super.addSetPlayerValueMethod(method);
+		return this;
+	}
+	@Override public ParamInteger addGetPlayerValueMethod(Function<Empire, Integer> method)	{
+		super.addGetPlayerValueMethod(method);
 		return this;
 	}
 	@Override public String[] getModifiers()	{

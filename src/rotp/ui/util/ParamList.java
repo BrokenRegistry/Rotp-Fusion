@@ -26,6 +26,7 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 
 import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
@@ -107,16 +108,16 @@ public class ParamList extends AbstractParam<String> {
 		super.setDefaultValue(key, value);
 		return this;
 	}
-	@Override public ParamList setUpdateParameters(IUpdated<String> method, String id)	{
-		super.setUpdateParameters(method, id);
+	@Override public ParamList addUpdateParameters(IUpdated<String> method, String id)	{
+		super.addUpdateParameters(method, id);
 		return this;
 	}
-	@Override public ParamList setNewValueMethod(INewValue<String> method)	{
-		super.setNewValueMethod(method);
+	@Override public ParamList addNewValueMethod(Consumer<String> method)	{
+		super.addNewValueMethod(method);
 		return this;
 	}
-	@Override public ParamList setIsGhostMethod(BooleanSupplier method)	{
-		super.setIsGhostMethod(method);
+	@Override public ParamList addIsGhostMethod(BooleanSupplier method)	{
+		super.addIsGhostMethod(method);
 		return this;
 	}
 	@Override public boolean isActive()					{ return listSize()>0; }
