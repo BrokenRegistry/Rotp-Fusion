@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-10-17 (BR)
+- Load/save user option button: Right click to open the file chooser.
+- File chooser: Fixed button text and color for French speaking players.
+
 26-10-15 (BR)
 - Galaxy Map: Disabled the action of the left icons when they should not be used.
 

@@ -816,7 +816,7 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 		}
 		close();
 	}
-	@Override protected void doUserBoxAction()		{
+	@Override protected void doUserBoxAction(MouseEvent e)	{
 		switch (ModifierKeysState.get()) {
 		case CTRL: // saveGlobalUserKey
 		case CTRL_SHIFT: // saveLocalUserKey
@@ -826,9 +826,9 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			UserPreferences.reload();
 			break; 
 		}
-		super.doUserBoxAction();
+		super.doUserBoxAction(e);
 	}
-	@Override protected void doDefaultBoxAction()	{
+	@Override protected void doDefaultBoxAction(MouseEvent e)	{
 		switch (ModifierKeysState.get()) {
 		case CTRL:
 		case CTRL_SHIFT: // cancelKey
@@ -838,16 +838,16 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			setLocalToDefault(false, true);
 			break; 
 		}
-		super.doDefaultBoxAction();
+		super.doDefaultBoxAction(e);
 	}
-	@Override protected void doLastBoxAction()		{
+	@Override protected void doLastBoxAction(MouseEvent e)	{
 		buttonClick();
 		switch (ModifierKeysState.get()) {
 		case SHIFT: // setLocalLastKey
 		default: // setGlobalLastKey
 			UserPreferences.reload();
 		}
-		super.doLastBoxAction();
+		super.doLastBoxAction(e);
 	}
 	@Override protected void forceUpdate(boolean b)	{
 		forceUpdate = b;
@@ -1066,13 +1066,13 @@ public final class BaseCompactOptionsUI extends BaseModPanel implements MouseWhe
 			return;
 		}
 		else if (hoverBox == defaultBox)
-			doDefaultBoxAction();
+			doDefaultBoxAction(e);
 		else if (hoverBox == userBox)
-			doUserBoxAction();
+			doUserBoxAction(e);
 		else if (hoverBox == guideBox)
 			doGuideBoxAction();
 		else if (hoverBox == lastBox)
-			doLastBoxAction();
+			doLastBoxAction(e);
 	}
 	@Override public void mouseWheelMoved(MouseWheelEvent e) { mouseCommon(null, e); }
 }

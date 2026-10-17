@@ -254,7 +254,7 @@ public final class GameSession implements Base, Serializable {
             instance(restored);
             restored.options().setAsGame();
             restored.restoreHotSeatPolicies();
-			restored.rulesetManager().setAsGameMode(); // TODO BR: ### VALIDATE HOTSEAT
+//			restored.rulesetManager().setAsGameMode(); // TODO BR: ### VALIDATE HOTSEAT
             Rotp.rand(copyCheckpointRandom(restored.inProcessCheckpointRandom));
             restored.galaxy.validateOnLoad(false);
             // Transient maintenance caches deserialize as zero, which is a valid
@@ -268,7 +268,7 @@ public final class GameSession implements Base, Serializable {
             performingTurn = false;
             autoRunning = false;
             clearViewingState();
-            restored.startExecutors();
+            GameSession.startExecutors();
             restored.hotSeatState.coverForLoad();
             restored.openHotSeatDesktop(true);
             return restored;

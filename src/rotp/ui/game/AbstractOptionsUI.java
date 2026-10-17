@@ -377,7 +377,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 		}
 		super.doExitBoxAction();
 	}
-	@Override protected void doDefaultBoxAction()	{
+	@Override protected void doDefaultBoxAction(MouseEvent e)	{
 		if (globalOptions) { // The old ways
 			buttonClick();
 			switch (ModifierKeysState.get()) {
@@ -392,7 +392,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 			refreshGui(0);
 		}
 		else
-			super.doDefaultBoxAction();
+			super.doDefaultBoxAction(e);
 	}
 	@Override public void refreshGui(int level)	{
 		super.refreshGui(level);
@@ -490,13 +490,13 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 		if (hoverBox == exitBox)
 			doExitBoxAction();
 		else if (hoverBox == defaultBox)
-			doDefaultBoxAction();
+			doDefaultBoxAction(e);
 		else if (hoverBox == userBox)
-			doUserBoxAction();
+			doUserBoxAction(e);
 		else if (hoverBox == guideBox)
 			doGuideBoxAction();
 		else if (hoverBox == lastBox)
-			doLastBoxAction();
+			doLastBoxAction(e);
 	}
 	@Override public void mouseEntered(MouseEvent e)	{
 		for (int i=0; i<activeList.size(); i++) {

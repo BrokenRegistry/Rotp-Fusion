@@ -16,9 +16,11 @@
 package rotp.model.game;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import rotp.Rotp;
 import rotp.model.ai.AIEntry;
 import rotp.model.ai.AIList;
 import rotp.model.empires.Empire;
@@ -30,6 +32,7 @@ import rotp.model.planet.Planet;
 import rotp.model.tech.TechEngineWarp;
 import rotp.ui.game.SetupGalaxyUI;
 import rotp.ui.util.StringList;
+import rotp.util.Base;
 
 public interface IGameOptions extends IModOptions {
     public static final int MAX_OPPONENTS = SetupGalaxyUI.MAX_DISPLAY_OPPS;
@@ -788,19 +791,31 @@ public interface IGameOptions extends IModOptions {
 	 * @param fileName
 	 * @param paramList
 	 */
-	void saveOptionsToFile (String fileName, SafeListParam paramList);
+	default void saveOptionsToFile(String fileName, SafeListParam paramList)	{
+		File file = Base.newFile(Rotp.jarPath(), fileName);
+		saveOptionsToFile(file, paramList);
+	}
+	void saveOptionsToFile(File file, SafeListParam paramList);
 	/**
 	 * Save all options to file
 	 * @param fileName
 	 */
-	void saveOptionsToFile (String fileName);
+	default void saveOptionsToFile(String fileName)	{
+		File file = Base.newFile(Rotp.jarPath(), fileName);
+		saveOptionsToFile(file);
+	}
+	void saveOptionsToFile(File file);
 	/**
 	 * Load the file and update the listed parameters
 	 * (Options and options' tools)
 	 * @param fileName
 	 * @param paramList
 	 */
-	void updateFromFile (String fileName, SafeListParam paramList);
+	default void updateFromFile(String fileName, SafeListParam paramList)	{
+		File file = Base.newFile(Rotp.jarPath(), fileName);
+		updateFromFile(file, paramList);
+	}
+	void updateFromFile(File file, SafeListParam paramList);
 	/**
 	 * update the listed parameters From their default values
 	 * (Options and options' tools)
@@ -809,8 +824,16 @@ public interface IGameOptions extends IModOptions {
 	void resetPanelSettingsToDefault (SafeListParam paramList, boolean excludeCfg, boolean excludeSubMenu);
 
 	void resetAllNonCfgSettingsToDefault();
-	void updateAllFromFile(String fileName);
-	void updateAllNonCfgFromFile(String fileName);
+	default void updateAllFromFile(String fileName)	{
+		File file = Base.newFile(Rotp.jarPath(), fileName);
+		updateAllFromFile(file);
+	}
+	void updateAllFromFile(File file);
+	default void updateAllNonCfgFromFile(String fileName)	{
+		File file = Base.newFile(Rotp.jarPath(), fileName);
+		updateAllNonCfgFromFile(file);
+	}
+	void updateAllNonCfgFromFile(File file);
 	void copyAliensAISettings(IGameOptions dest);
 	
 	// Tools For Debug

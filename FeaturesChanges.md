@@ -382,6 +382,7 @@
 
 ### User Interfaces:
 
+- Load/save user option button: Right click to open the file chooser.
 - Transport synchronization will now be remembered independently for invasions and migrations.
 - Added the number of flags setting inside the flag sub-panel.
 - DNA Workshop: New button on the side of the directory selection button to copy GMO species samples to the selected directory.
@@ -536,6 +537,7 @@
 
 ### Fixes:
 
+- File chooser: Fixed button text and color for French speaking players.
 - Galaxy Map: Disabled the action of the left icons when they should not be used.
 - Improved player identification text quality. 
   - Anti-cheat: The number of turns since the last reload is now displayed on the left side of the Year (Turn).

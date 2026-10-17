@@ -2805,6 +2805,9 @@ SETTINGS_LOCAL_USER_SET           | Perso. »» Local
 SETTINGS_GLOBAL_USER_SET          | Perso. »» Global
 SETTINGS_LOCAL_USER_SAVE          | Local »» Perso.
 SETTINGS_GLOBAL_USER_SAVE         | Global »» Perso.
+SETTINGS_OPTION_EXTENSION_NAME	| Fichiers d’options
+SETTINGS_LOAD_USER_OPTION_TITLE	| Choisissez le fichier à lire
+SETTINGS_SAVE_USER_OPTION_TITLE	| Choisissez le fichier de destination
 SETTINGS_STAR_DENSITY             | Densité des étoiles : %1
 SETTINGS_RANDOM_EVENTS            | Événements aléatoires : %1
 SETTINGS_RESEARCH_RATE            | Vitesse de la recherche : %1
@@ -6642,7 +6645,7 @@ SETTINGS_MOD_AUTO_SEND_FLEET_UI_DESC	| Paramètres du gouverneur pour l’envoi 
 // BR: Tech Trigger Add-on
 //
 ENGINE_8_TRIGGER                    | →ENGINE_8_DETAIL←<br>Il est illégal d’utiliser un hyperdrive pour commettre un vol, un pillage ou un piratage.
-STARGATE_0_TRIGGER                  | →STARGATE_0_DETAIL←<br>Traverser l’espace interdimensionnel ne réveille presque jamais les abominations surnaturelles.
+STARGATE_0_TRIGGER                  | →STARGATE_0_DETAIL←<br>Traverser l’espace interdimensionnel ne réveille presque jamais des abominations surnaturelles.
 CLONE_1_TRIGGER                     | →CLONE_1_DETAIL←<br>Le GrowInAtor est parfaitement sûr ! Rien ne peut se passer de mal.
 
 //
@@ -6684,12 +6687,13 @@ SETTINGS_LOCAL_DEFAULT_DESC       | Définir les options de ce panneau à leurs 
 SETTINGS_GLOBAL_DEFAULT_DESC      | Définir les options de toutes les interfaces graphiques à leurs valeurs par défaut.
 SETTINGS_LOCAL_LAST_GAME_DESC     | Définir les options de ce panneau en fonction de la dernière partie jouée.
 SETTINGS_GLOBAL_LAST_GAME_DESC    | Définir les options de toutes les interfaces graphiques en fonction des valeurs de la dernière partie jouée.
-SETTINGS_LOCAL_LAST_SET_DESC      | Définir les options de ce panneau en fonction des valeurs de la dernière interface utilisateur graphique (à partir du fichier).
-SETTINGS_GLOBAL_LAST_SET_DESC     | Définir les options de toutes les interfaces utilisateur graphiques en fonction des valeurs de la dernière interface utilisateur graphique (à partir du fichier).
-SETTINGS_LOCAL_USER_SET_DESC      | Définir les options de ce panneau en fonction des valeurs préférées de l’utilisateur (à partir du fichier).
-SETTINGS_GLOBAL_USER_SET_DESC     | Définir les options de toutes les interfaces utilisateur graphiques en fonction des valeurs préférées de l’utilisateur (à partir du fichier).
-SETTINGS_LOCAL_USER_SAVE_DESC     | Enregistrer les options de ce panneau comme valeurs préférées de l’utilisateur (vers le fichier).
-SETTINGS_GLOBAL_USER_SAVE_DESC    | Enregistrer les options de toutes les interfaces utilisateur graphiques comme valeurs préférées de l’utilisateur (vers le fichier).
+SETTINGS_LOCAL_LAST_SET_DESC      | Définir les options de ce panneau en fonction des valeurs de la dernière interface utilisateur graphique (Lire le fichier).
+SETTINGS_GLOBAL_LAST_SET_DESC     | Définir les options de toutes les interfaces utilisateur graphiques en fonction des valeurs de la dernière interface utilisateur graphique (Lire le fichier).
+SETTINGS_HEADER_USER_DESC		| <dl><dt>Click Gauche</dt><dd>Utiliser le fichier d’options utilisateur par défaut.</dd><dt>Click Droit</dt><dd>Ouvrir une fenêtre de sélection de fichier.</dd></dl>
+SETTINGS_LOCAL_USER_SET_DESC	| Définir les options de ce panneau en fonction des valeurs préférées de l’utilisateur (Lire le fichier).
+SETTINGS_GLOBAL_USER_SET_DESC	| Définir les options de toutes les interfaces utilisateur graphiques en fonction des valeurs préférées de l’utilisateur (Lire le fichier).
+SETTINGS_LOCAL_USER_SAVE_DESC	| Enregistrer les options de ce panneau comme valeurs préférées de l’utilisateur (Écrire le fichier).
+SETTINGS_GLOBAL_USER_SAVE_DESC	| Enregistrer les options de toutes les interfaces utilisateur graphiques comme valeurs préférées de l’utilisateur (Écrire le fichier).
 SETTINGS_SEARCH_ICON_DESC		| Une recherche floue vous donnera une liste de 10 résultats maximum, le plus pertinent apparaissant en bas de la liste.<br>Cliquez sur un [Panneau] ou un [Sous-panneau] pour l’ouvrir. Cliquez sur une option pour modifier sa valeur. Utilisez la roulette n’importe où sur une ligne pour modifier la valeur de l’option.
 SETTINGS_SEARCH_ICON_HELP		| Une recherche floue vous donnera une liste de 10 résultats maximum, le plus pertinent apparaissant en bas de la liste.<br>Les résultats sont affichés soit :<br>[Panneau] |-> Option<br>ou<br>[Panneau] |-> [Sous-panneau]<br><br>Cliquez sur un [Panneau] ou un [Sous-panneau] pour l’ouvrir.<br>Cliquez sur une option pour modifier sa valeur.<br>Utilisez la roulette n’importe où sur une ligne pour modifier la valeur de l’option.<br><br>La recherche est effectuée à partir du panneau actuel et de ses sous-panneaux.<br>La recherche est effectuée dans la langue sélectionnée.
 

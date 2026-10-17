@@ -89,13 +89,16 @@ public class RotpFileChooser extends JFileChooser implements Base{
 				((JToggleButton)comp[i]).setBackground(GameUI.setupFrame());
 			if(comp[i] instanceof JButton) {
 				String txt = ((JButton)comp[i]).getText();
-				String cancel = LabelManager.current().label("BUTTON_TEXT_CANCEL");
-				String open = LabelManager.current().label("BUTTON_TEXT_OPEN");
-				if (txt!=null && (cancel.equals(txt) || open.equals(txt))) {
-					((JButton)comp[i]).setMargin(new Insets(topInset, sideInset, 0, sideInset));
-					((JButton)comp[i]).setBackground(GameUI.buttonBackgroundColor());
-					((JButton)comp[i]).setForeground(GameUI.buttonTextColor());
-					((JButton)comp[i]).setVerticalAlignment(SwingConstants.TOP);
+				if (txt!=null && !txt.isBlank()) {
+					JButton button = (JButton)comp[i];
+					if (i == 0)
+						button.setText(LabelManager.current().label("BUTTON_TEXT_OPEN"));
+					else
+						button.setText(LabelManager.current().label("BUTTON_TEXT_CANCEL"));
+					button.setMargin(new Insets(topInset, sideInset, 0, sideInset));
+					button.setBackground(GameUI.buttonBackgroundColor());
+					button.setForeground(GameUI.buttonTextColor());
+					button.setVerticalAlignment(SwingConstants.TOP);
 				}
 			}
 			if(comp[i] instanceof JScrollPane)

@@ -34,6 +34,8 @@ public class ParamButtonHelp implements IParam<String> {
 	protected EnumMap<ModifierKeysState, String>  nameMap = new EnumMap<>(ModifierKeysState.class);
 	protected EnumMap<ModifierKeysState, Boolean> showMap = new EnumMap<>(ModifierKeysState.class);
 	private final String	name;
+	private String headerKey;
+	
 	// ===== Constructors =====
 	//
 	public ParamButtonHelp(String label, String base, String shift, String ctrl, String ctrlShift) {
@@ -54,11 +56,13 @@ public class ParamButtonHelp implements IParam<String> {
 		showMap.put(ModifierKeysState.CTRL, showCtrl);
 		showMap.put(ModifierKeysState.CTRL_SHIFT, showCtrlShift);
 	}
+	public ParamButtonHelp setHeaderKey(String key)	{ headerKey = key; return this;}
 	protected String helpLine(ModifierKeysState state, int html) {
-		String help, line;
 		String label = nameMap.get(state);
 		if (label == null || label.isEmpty() || !showMap.get(state))
 			return "";
+
+		String help, line;
 		if (html == 1)
 			help = langDesc(label);
 		else
@@ -71,16 +75,23 @@ public class ParamButtonHelp implements IParam<String> {
 			line += NEWLINE + help;
 			return line;
 		}
-		line = htmlTuneFont(-2, state.helpLine);
-		line += "&nbsp <b>( "+ langName(label) + " )</b>";
-		line += NEWLINE + help;
+		line = "<dl><dt>" + htmlTuneFont(-2, state.helpLine);
+		line += "&nbsp <b>( "+ langName(label) + " )</b></dt><dd>";
+		line += help + "</dd></dl>";
 		return line;
 	}
+	private String getHeaderHelp(int html)	{
+		if (headerKey == null || headerKey.isEmpty())
+			return "";
+		if (html == 1)
+			return langDesc(headerKey);
+		else
+			return langHelp(headerKey);
+	}
 	private String buildHelp(int html) {
-		String result = "";
-		String help = "";
+		String result = getHeaderHelp(html);
 		for( ModifierKeysState state: nameMap.keySet()) {
-			help = helpLine(state, html);
+			String help = helpLine(state, html);
 			if (!help.isEmpty())
 				if (result.isEmpty())
 					result = help;

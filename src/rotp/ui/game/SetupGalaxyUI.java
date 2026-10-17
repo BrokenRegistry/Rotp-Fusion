@@ -2511,13 +2511,13 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		if (hoverBox == backBox)
 			doBackBoxAction();
 		else if (hoverBox == defaultBox)
-			doDefaultBoxAction();
+			doDefaultBoxAction(e);
 		else if (hoverBox == guideBox)
 			doGuideBoxAction();
 		else if (hoverBox == userBox)
-			doUserBoxAction();
+			doUserBoxAction(e);
 		else if (hoverBox == lastBox)
-			doLastBoxAction();
+			doLastBoxAction(e);
 		else if (hoverBox == settingsBox)
 			goToOptions();
 		else if (hoverBox == tuneGalaxyBox)

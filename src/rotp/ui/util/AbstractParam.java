@@ -157,6 +157,11 @@ public abstract class AbstractParam<T> implements IParam<T> {
 		if (isDuplicate()) { // Just in case!
 			if (getValueMethod != null)
 				return getValueMethod.getValue();
+			if (getPlayerValueMethod != null) { // As security
+				T newVal = getPlayerValue();
+				if (newVal != null)
+					return value;
+			}
 			else
 				System.err.println("getOption() Not set " + getCfgLabel());
 		}		
@@ -465,7 +470,9 @@ public abstract class AbstractParam<T> implements IParam<T> {
 		return this;
 	}
 	private T setPlayerValue(T val)	{
-		if (!GameSession.instance().isReady() || RulesetManager.current().isSetupMode())
+		if (!GameSession.instance().isReady())
+			return val;
+		if (RulesetManager.current().isSetupMode())
 			return val;
 		Galaxy galaxy = GameSession.instance().galaxy();
 		if (galaxy == null)
@@ -474,7 +481,7 @@ public abstract class AbstractParam<T> implements IParam<T> {
 	}
 	private T getPlayerValue()	{
 		if (RulesetManager.current().isSetupMode())
-			return null;
+			return getOptionValue(opts());
 		Galaxy galaxy = GameSession.instance().galaxy();
 		if (galaxy == null)
 			return null;

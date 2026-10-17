@@ -11,6 +11,10 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-17 (BR)
+- Load/save user option button: Right click to open the file chooser.
+- File chooser: Fixed button text and color for French speaking players.
+
 26-10-15 (BR)
 - Galaxy Map: Disabled the action of the left icons when they should not be used.
 
@@ -27,9 +31,6 @@ When updating, you can reuse the same folder.
 - New advisor TTV and ROI content while hovering Production field.
 - Fixed Advisor display glitch with colonies in rebellion.
 - In Progress: Centralization of the production estimate in the next turn, to calculate it only once for all categories. And offer the possibility to select "Old Way" or "New Way". (In the "Old Way", transport must be scanned only for ecological allocation, while in the "New Way" they must be scanned for each category... But by centralizing, once for all categories is enough!)
-
-26-10-10 (BR)
-- Fixed industry vs eco balance when alien factories are refited.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

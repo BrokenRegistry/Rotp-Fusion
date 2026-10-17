@@ -1285,13 +1285,13 @@ public final class SetupRaceUI extends BaseModPanel implements MouseWheelListene
         else if (hoverBox == exitBox)
         	doNextBoxAction();
         else if (hoverBox == defaultBox)
-        	doDefaultBoxAction();
+        	doDefaultBoxAction(e);
         else if (hoverBox == guideBox)
 			doGuideBoxAction();
         else if (hoverBox == userBox)
-			doUserBoxAction();
+			doUserBoxAction(e);
         else if (hoverBox == lastBox)
-			doLastBoxAction();
+			doLastBoxAction(e);
         // BR: Player Race customization
         else if (hoverBox == playerRaceSettingBox)
             goToPlayerRaceCustomization(e);

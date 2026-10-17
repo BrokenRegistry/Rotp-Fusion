@@ -70,9 +70,9 @@ public class ParamDefaultButtonHelp extends ParamButtonHelp {
 			line += NEWLINE + help;
 			return line;
 		}
-		line = htmlTuneFont(-2, state.helpLine);
-		line += "&nbsp <b>( "+ langName(label) + " )</b>";
-		line += NEWLINE + help;
+		line = "<dl><dt>" + htmlTuneFont(-2, state.helpLine);
+		line += "&nbsp <b>( "+ langName(label) + " )</b></dt><dd>";
+		line += help + "</dd></dl>";
 		return line;
 	}
 	@Override public String getToolTip()	{ return super.getToolTip() + selectedDefaultAddon(); }

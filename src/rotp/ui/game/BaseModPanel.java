@@ -41,12 +41,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.LinkedList;
 
 import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
 import javax.swing.JTextPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import rotp.Rotp;
+import rotp.model.game.IGameOptions;
 import rotp.model.game.IMainOptions;
 import rotp.model.game.SafeListParam;
 import rotp.ui.BasePanel;
@@ -56,6 +60,8 @@ import rotp.ui.UserPreferences;
 import rotp.ui.util.IParam;
 import rotp.ui.util.ParamButtonHelp;
 import rotp.ui.util.ParamDefaultButtonHelp;
+import rotp.ui.util.RotpFileChooser;
+import rotp.util.Base;
 import rotp.util.LabelManager;
 import rotp.util.ModifierKeysState;
 
@@ -492,13 +498,15 @@ public abstract class BaseModPanel extends BasePanel implements MouseListener, M
 			setGlobalUserKey,
 			setLocalUserKey,
 			saveGlobalUserKey,
-			saveLocalUserKey);
+			saveLocalUserKey)
+			.setHeaderKey("SETTINGS_HEADER_USER");
 	private static final ParamButtonHelp userSubButton = new ParamButtonHelp(
 			"SETTINGS_BUTTON_USER", // For Help Do not add the list
 			setLocalUserKey,	true,
 			setLocalUserKey,	false,
 			saveLocalUserKey,	true,
-			saveLocalUserKey,	false);
+			saveLocalUserKey,	false)
+			.setHeaderKey("SETTINGS_HEADER_USER");
 	protected String userButtonKey() {
 		if (isSubMenu)
 			return userSubButton.getKey();
@@ -513,48 +521,99 @@ public abstract class BaseModPanel extends BasePanel implements MouseListener, M
 			localInit(g);
 		return userButtonWidth;
 	}
-	protected void doUserBoxAction() {
-		buttonClick();
+	protected void doUserBoxAction(MouseEvent e) {
+		ModifierKeysState modifierKeysState = ModifierKeysState.get();
+		File file = null;
+		if (isRightClick(e)) {
+			String dirPath = Rotp.jarPath();
+			String ext = IGameOptions.OPTIONFILE_EXTENSION;
+			ext = ext.replace(".", "");
+			JFileChooser chooser = new RotpFileChooser();
+			chooser.setCurrentDirectory(new File(dirPath));
+			chooser.setAcceptAllFileFilterUsed(false);
+			chooser.addChoosableFileFilter(new FileNameExtensionFilter(text("SETTINGS_OPTION_EXTENSION_NAME"), ext));
+
+			boolean isSaveDialog = e.isControlDown();
+			if (isSaveDialog) {
+				chooser.setDialogTitle(text("SETTINGS_SAVE_USER_OPTION_TITLE"));
+				int status = chooser.showSaveDialog(this);
+				if (status == JFileChooser.APPROVE_OPTION)
+					file = chooser.getSelectedFile();
+			}
+			else {
+				chooser.setDialogTitle(text("SETTINGS_LOAD_USER_OPTION_TITLE"));
+				int status = chooser.showOpenDialog(this);
+				if (status == JFileChooser.APPROVE_OPTION)
+					file = chooser.getSelectedFile();
+			}
+		}
+		else
+			file = Base.newFile(Rotp.jarPath(), USER_OPTIONS_FILE);
+
+		if (file == null) {
+			misClick();
+			return;
+		}
+
 		if (isSubMenu)
-			switch (ModifierKeysState.get()) {
+			switch (modifierKeysState) {
 			case CTRL:
 			case CTRL_SHIFT: // saveLocalUserKey
-				guiOptions().saveOptionsToFile(USER_OPTIONS_FILE, localOptions());
+				guiOptions().saveOptionsToFile(file, localOptions());
 				return;
 			case SHIFT: // setLocalUserKey
 			default:
 				loadingOptions = true;
-				guiOptions().updateFromFile(USER_OPTIONS_FILE, localOptions());
+				guiOptions().updateFromFile(file, localOptions());
 				loadingOptions = false;
 				refreshGui(0);
 				return;
 			}
 		else
-			switch (ModifierKeysState.get()) {
+			switch (modifierKeysState) {
 			case CTRL: // saveGlobalUserKey
-				guiOptions().saveOptionsToFile(USER_OPTIONS_FILE);
+				guiOptions().saveOptionsToFile(file);
 				return;
 			case CTRL_SHIFT: // saveLocalUserKey
-				guiOptions().saveOptionsToFile(USER_OPTIONS_FILE, localOptions());
+				guiOptions().saveOptionsToFile(file, localOptions());
 				return;
 			case SHIFT: // setLocalUserKey
 				loadingOptions = true;
-				guiOptions().updateFromFile(USER_OPTIONS_FILE, localOptions());
+				guiOptions().updateFromFile(file, localOptions());
 				loadingOptions = false;
 				refreshGui(0);
 				return;
 			default: // setGlobalUserKey
 				loadingOptions = true;
 				if (globalOptions) {
-					guiOptions().updateFromFile(USER_OPTIONS_FILE, localOptions());
+					guiOptions().updateFromFile(file, localOptions());
 				}
 				else
-					guiOptions().updateAllNonCfgFromFile(USER_OPTIONS_FILE);
+					guiOptions().updateAllNonCfgFromFile(file);
 				loadingOptions = false;
 				refreshGui(0);
 				return;
 			}
 	}	
+//	private String doUserBoxOptionsLoad()	{
+//		String dirPath = Rotp.jarPath();
+//		String ext = IGameOptions.OPTIONFILE_EXTENSION;
+//		ext = ext.replace(".", "");
+//		JFileChooser chooser = new RotpFileChooser();
+//		chooser.setCurrentDirectory(new File(dirPath));
+//		chooser.setAcceptAllFileFilterUsed(false);
+//		chooser.addChoosableFileFilter(new FileNameExtensionFilter("Options", ext));
+//		int status = chooser.showOpenDialog(this);
+//		if (status == JFileChooser.APPROVE_OPTION) {
+//			File file = chooser.getSelectedFile();
+//			if (file != null) {
+//				buttonClick();
+//				newGameOptions().updateAllNonCfgFromFile(file.getName());
+//				return;
+//			}
+//		}
+//		misClick();
+//	}
 
 	// ==================== Default Button ====================
 	//
@@ -590,7 +649,7 @@ public abstract class BaseModPanel extends BasePanel implements MouseListener, M
 			localInit(g);
 		return defaultButtonWidth;
 	}
-	protected void doDefaultBoxAction() {
+	protected void doDefaultBoxAction(MouseEvent e) {
 		buttonClick();
 		if (isSubMenu)
 			switch (ModifierKeysState.get()) {
@@ -666,7 +725,7 @@ public abstract class BaseModPanel extends BasePanel implements MouseListener, M
 			localInit(g);
 		return lastButtonWidth;
 	}
-	protected void doLastBoxAction() {
+	protected void doLastBoxAction(MouseEvent e) {
 		buttonClick();
 		 if (isSubMenu)
 			 switch (ModifierKeysState.get()) {
