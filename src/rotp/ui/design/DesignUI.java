@@ -1486,7 +1486,10 @@ public class DesignUI extends BasePanel {
             }
         }
 		@Override public void mouseEntered(MouseEvent e)	{}
-		@Override public void mouseExited(MouseEvent e)		{ hoverTarget = hoverBox(null, hoverTarget); }
+		@Override public void mouseExited(MouseEvent e)		{
+			hoverTarget = hoverBox(null, hoverTarget);
+			repaint();
+		}
 		@Override public void mouseDragged(MouseEvent e)	{
         if (!hotSeatCanEdit(player().id)) return;}
 		@Override public void mouseMoved(MouseEvent e)		{
@@ -1498,7 +1501,7 @@ public class DesignUI extends BasePanel {
 			else if (defaultDesignArea.contains(x, y)) {
 				hoverTarget = hoverBox(defaultDesignArea, hoverTarget);
 				repaint(); // To react to shift press / depress
-					return;
+				return;
 			}
 			else
 				hoverTarget = hoverBox(null, hoverTarget);
