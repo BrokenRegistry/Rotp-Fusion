@@ -1339,6 +1339,7 @@ public final class GameSession implements Base, Serializable {
 		ironmanLocked	= false;
 		aFewMoreTurns	= false;
 		RacesUI.instance.resetFinalVars();
+		RotPUI.instance().getCouncilPanel().resetFinalVars();
 		EmpireColonySpendingPane.resetPanel();
 		MultiColonySpendingPane.resetPanel();
 		AdvisorPanel.ADVISOR.onHold();

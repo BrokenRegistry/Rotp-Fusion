@@ -548,6 +548,7 @@ public final class RotPUI extends BasePanel implements ActionListener, KeyListen
         else
             selectPanel(name, panel);
     }
+	public GalacticCouncilUI getCouncilPanel()	{ return galacticCouncilUI; }
     public void selectCouncilPanel()   {
     	if (IDebugOptions.debugAutoRun()) {
     		galacticCouncilUI.autoRun();

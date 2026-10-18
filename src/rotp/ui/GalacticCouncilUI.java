@@ -39,6 +39,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -48,6 +49,7 @@ import rotp.model.game.IDebugOptions;
 import rotp.ui.main.MainUI;
 import rotp.ui.main.SystemPanel;
 import rotp.ui.vipconsole.IVIPListener;
+import rotp.util.AnimationManager.MugAnimation;
 
 public final class GalacticCouncilUI extends FadeInPanel
 		implements MouseListener, MouseMotionListener, MouseWheelListener, IVIPListener {
@@ -69,7 +71,7 @@ public final class GalacticCouncilUI extends FadeInPanel
     static final Color grayEdgeC = new Color(59,59,59);
     static final Color grayMidC = new Color(93,93,93);
     static final Color scrollBarC = new Color(177,177,177);
-    
+
     private final Rectangle summaryBox = new Rectangle();
     private final Rectangle continueBox = new Rectangle();
     private final Rectangle skipBox = new Rectangle();
@@ -92,15 +94,27 @@ public final class GalacticCouncilUI extends FadeInPanel
     private Empire displayedDiplomat;
     private BufferedImage diplomatImg;
     BufferedImage raceImg;
-     
+
+	private final HashMap<Integer, MugAnimation> passiveMug = new HashMap<>();
+
     public GalacticCouncilUI() {
         init0();
     }
+
     private void init0() {
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);
     }
+	public void resetFinalVars()	{ passiveMug.clear(); }
+	private BufferedImage getPassiveMug(Empire emp)	{
+		MugAnimation mug = passiveMug.get(emp.id);
+		if (mug == null) {
+			mug = emp.diploMugPassive();
+			passiveMug.put(emp.id, mug);
+		}
+		return mug.getFrame();
+	}
     // Hot seat: the turn engine runs the council; this screen only reports one seat's choice.
     private Consumer<Empire> hotSeatVote;
     private Consumer<Boolean> hotSeatRuling;
@@ -380,8 +394,8 @@ public final class GalacticCouncilUI extends FadeInPanel
         int x3a = 0;
         int x3b = w-w3;
 
-        BufferedImage img1 = c.candidate1().diploMugshotQuiet();
-        BufferedImage img2 = c.candidate2().diploMugshotQuiet();
+		BufferedImage img1 = getPassiveMug(c.candidate1());
+		BufferedImage img2 = getPassiveMug(c.candidate2());
 
         // modnar: use (slightly) better sampling
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -991,7 +1005,7 @@ public final class GalacticCouncilUI extends FadeInPanel
         int imgW = img.getWidth();
         int imgH = img.getHeight();
 
-        BufferedImage img2 = voter.diploMugshotQuiet();
+		BufferedImage img2 = getPassiveMug(voter);
         g.drawImage(img2, x,y,imgW, imgH, null);
 
         boolean voted = c.hasVoted(voter);
@@ -1276,8 +1290,9 @@ public final class GalacticCouncilUI extends FadeInPanel
     public void animate() {
         if (stillFading()) {
             advanceFade();
-            repaint();
+//            repaint();
         }
+        repaint();
     }
     @Override
     public void mouseClicked(MouseEvent e) { }

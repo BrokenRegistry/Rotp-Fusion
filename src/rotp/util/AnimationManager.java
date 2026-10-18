@@ -45,9 +45,6 @@ public enum AnimationManager implements Base {
     private final HashMap<String, Animation> animations = new HashMap<>();
     private final HashMap<String, List<String>> explosions = new HashMap<>();
 
-//    private static int imgKey(int w, int h) {
-//        return (w*1000)+h;
-//    }
     private AnimationManager() {
         loadAnimationList(animationListFile);
         loadExplosions();
@@ -69,7 +66,7 @@ public enum AnimationManager implements Base {
     public void addAnimation(String key, Animation anim) {
         animations.put(key, anim);
     }
-    public void reset(String animationSpecifier) {
+	void reset(String animationSpecifier)	{
         List<String> specs = this.substrings(animationSpecifier, ',');
         String key = altKey(specs.get(0));
 
@@ -212,7 +209,7 @@ public enum AnimationManager implements Base {
             err("Not enough fields for image line: ", line);
             return;
         }
-        addAnimation(vals.get(0), new Animation(vals.get(1)));
+		addAnimation(vals.get(0), new Animation(vals.get(1), vals.get(0)));
     }
     private void loadExplosions() {
         log("Loading Explosions...");
@@ -283,30 +280,83 @@ public enum AnimationManager implements Base {
         }
         return new Rectangle(x,y,w,h);
     }
-    class Animation implements Base {
-        String filename;
-        int stepRate = 1;
-        List<AnimationImage> images = new ArrayList<>();
-        public Animation(String fn) {
-            loadDefinition(fn);
-        }
-        public void reset() {
+	public MugAnimation getSpecificAnimation(String animationSpecifier, List<String> exclusionKeys)	{
+		if ((animationSpecifier == null) || animationSpecifier.isEmpty())
+			return null;
+		List<String> specs = substrings(animationSpecifier, ',');
+		String key = altKey(specs.get(0));
+		Animation anim = animations.get(key);
+		MugAnimation spAnim = new MugAnimation(anim, animationSpecifier, exclusionKeys);
+		return spAnim;
+	}
+	public final class MugAnimation extends Animation {
+		private final String animationSpecifier, key;
+		private final List<String> exclusionKeys;
+		private final List<String> specs;
+
+		private MugAnimation(Animation toCopy, String animKey, List<String> exclude)	{
+			super(toCopy);
+			animationSpecifier = animKey;
+			exclusionKeys = exclude;
+			specs = substrings(animationSpecifier, ',');
+			key = altKey(specs.get(0));
+		}
+		public BufferedImage getFrame() {
+			if ((animationSpecifier == null) || animationSpecifier.isEmpty())
+				return null;
+
+			Rectangle area = null;
+			try { area = specs.size() > 1 ? parseArea(specs.get(1)) : null; }
+			catch (Exception e) { err(e.getMessage()); }
+
+			BufferedImage result;
+			result = currentFrame(exclusionKeys);
+
+			// err if no animation or image found matching the requested key
+			if (result == null)
+				throw new RuntimeException("Invalid animation requested. key: "+key);
+
+			// use sub-image if requested
+			if (area != null)
+				result = result.getSubimage(area.x, area.y, area.width, area.height);
+
+			return result;
+		}
+	}
+	private class Animation implements Base {
+		protected String filename, key;
+		protected int stepRate = 1;
+		protected List<AnimationImage> images = new ArrayList<>();
+		protected Animation(String fn, String key)	{ 
+			loadDefinition(fn);
+			this.key = key;
+		}
+		private Animation(Animation toCopy)	{
+			key = toCopy.key;
+			filename = toCopy.filename;
+			stepRate = toCopy.stepRate;
+			for(AnimationImage image : toCopy.images) {
+				images.add(image.getCopy());
+			}
+		}
+		public Animation getCopy()	{ return new Animation(this); }
+		private void reset() {
             for (AnimationImage img: images)
                 img.reset();
         }
-        public BufferedImage frame(int index) {
-            BufferedImage resultImg = null;
-            for (AnimationImage image : images)
-                resultImg = image.drawFrame(resultImg, index);
-            return resultImg;
-        }
-        public BufferedImage currentFrame() {
-            BufferedImage resultImg = null;
-            for (AnimationImage image: images)
-                resultImg = image.drawCurrentFrame(resultImg, null);
-            return resultImg;
-        }
-        public BufferedImage currentFrame(List<String> exclusionKeys) {
+//        public BufferedImage frame(int index) {
+//            BufferedImage resultImg = null;
+//            for (AnimationImage image : images)
+//                resultImg = image.drawFrame(resultImg, index);
+//            return resultImg;
+//        }
+//        public BufferedImage currentFrame() {
+//            BufferedImage resultImg = null;
+//            for (AnimationImage image: images)
+//                resultImg = image.drawCurrentFrame(resultImg, null);
+//            return resultImg;
+//        }
+        protected BufferedImage currentFrame(List<String> exclusionKeys) {
             BufferedImage resultImg = null;
             for (AnimationImage image: images)
                 resultImg = image.drawCurrentFrame(resultImg, exclusionKeys);
@@ -357,18 +407,20 @@ public enum AnimationManager implements Base {
             images.add(img);
         }
     }
-    class AnimationImage implements Base {
-        String key;
-        Rectangle area;
-        List<AnimationImageFrame> frames = new ArrayList<>();
-        int framesToSkip = 0;
-        int maxDuration = 0;
-        int minDuration = 0;
-        int frameIndex = -1;
-        int frameRemainingCount = 0;
-        long prevAnimationCount = 0;
-        int skipsRemaining = 0;
-        public AnimationImage(String s, int skip, Rectangle rect, List<String> frameSpecs) {
+	private final class AnimationImage implements Base {
+		private String key;
+		private Rectangle area;
+		private List<AnimationImageFrame> frames = new ArrayList<>();
+		private int framesToSkip = 0;
+		private int maxDuration = 0;
+		private int minDuration = 0;
+		private int frameIndex = -1;
+		private int frameRemainingCount = 0;
+		private long prevAnimationCount = 0;
+		private int skipsRemaining = 0;
+		private int uiAnimationSync = 0; // several empires can share the same avatar
+
+		private AnimationImage(String s, int skip, Rectangle rect, List<String> frameSpecs) {
             key = s;
             framesToSkip = max(0, skip); // can't be < 0
             skipsRemaining = framesToSkip;
@@ -383,13 +435,29 @@ public enum AnimationManager implements Base {
             }
             goToNextFrame();
         }
-        public void reset() {
+		private AnimationImage(AnimationImage toCopy)	{
+			key		= toCopy.key;
+			area	= toCopy.area;
+			frames	= toCopy.frames;
+			maxDuration	= toCopy.maxDuration;
+			minDuration	= toCopy.minDuration;
+			frameIndex	= toCopy.frameIndex;
+			framesToSkip	= toCopy.framesToSkip;
+			skipsRemaining	= toCopy.skipsRemaining;
+			uiAnimationSync	= toCopy.uiAnimationSync;
+			frameRemainingCount	= toCopy.frameRemainingCount;
+			prevAnimationCount	= toCopy.prevAnimationCount;
+
+			reset();
+		}
+		private AnimationImage getCopy()	{ return new AnimationImage(this); }
+		private void reset() {
             frameIndex = -1;
             frameRemainingCount = 0;
             prevAnimationCount = 0;
             skipsRemaining = framesToSkip;
         }
-        public BufferedImage drawCurrentFrame(BufferedImage resultImg, List<String> exclusionKeys) {
+		private BufferedImage drawCurrentFrame(BufferedImage resultImg, List<String> exclusionKeys) {
             // if we are excluding this animation, result the default first frame
             skipsRemaining--;
             if ((exclusionKeys != null) && exclusionKeys.contains(key))
@@ -397,7 +465,7 @@ public enum AnimationManager implements Base {
             findCurrentFrame();
             return drawFrame(resultImg, frameIndex);
         }
-        public BufferedImage drawFrame(BufferedImage resultImg, int index) {
+		private BufferedImage drawFrame(BufferedImage resultImg, int index) {
             // get image of current frame
             Image frameImg = skipsRemaining > 0 ? null : currentFrame(index).image();
             // if resultImg==null, returns frame image
@@ -438,8 +506,11 @@ public enum AnimationManager implements Base {
                 //log("frame:"+key+"  ms:"+currentMs+"  frames:"+frames.size()+"  maxDur:"+maxDuration+"   area:"+area);
                 return;
             }
-
-            frameRemainingCount--;
+			int uiCount = RotPUI.instance().animationCount();
+			if (uiCount != uiAnimationSync) {
+				uiAnimationSync = uiCount;
+				frameRemainingCount--;
+			}
             if (frameRemainingCount < 1)
                 goToNextFrame();
         }
@@ -451,19 +522,13 @@ public enum AnimationManager implements Base {
             frameRemainingCount = currentFrame(frameIndex).displayCount();
         }
     }
-    class AnimationImageFrame implements Base {
-        String imageKey;
-        int msLo;
-        int msHi;
-        public AnimationImageFrame(String spec) {
-            parseSpec(spec);
-        }
-        public Image image() {
-            return image(imageKey);
-        }
-        public int displayCount() {
-            return roll(msLo,msHi);
-        }
+	private class AnimationImageFrame implements Base {
+		private String imageKey;
+		private int msLo;
+		private int msHi;
+		private AnimationImageFrame(String spec)	{ parseSpec(spec); }
+		private Image image()		{ return image(imageKey); }
+		private int displayCount()	{ return roll(msLo,msHi); }
         private void parseSpec(String spec) {
             List<String> vals = this.substrings(spec, ':');
             imageKey = vals.get(0);

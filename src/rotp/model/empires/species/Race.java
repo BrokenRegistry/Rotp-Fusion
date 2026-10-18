@@ -23,6 +23,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import rotp.model.empires.RaceCombatAnimation;
+import rotp.util.AnimationManager;
+import rotp.util.AnimationManager.MugAnimation;
 
 class Race extends SpeciesSkills {
 	private static final long serialVersionUID = 1L;
@@ -275,6 +277,9 @@ class Race extends SpeciesSkills {
 			diploMug = newBufferedImage(diploMugshotQuiet());
 		return diploMug;
 	}
+	MugAnimation diploMugPassive()	{ return AnimationManager.current().getSpecificAnimation(mugshotKey, notTalking); }
+	MugAnimation diploMugActive()	{ return AnimationManager.current().getSpecificAnimation(mugshotKey, null); }
+
 //	BufferedImage wideDiploMug()	{
 //		if (wideDiploMug == null)
 //			wideDiploMug = newBufferedImage(diploWideMugshot());

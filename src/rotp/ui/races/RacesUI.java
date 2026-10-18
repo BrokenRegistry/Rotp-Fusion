@@ -59,11 +59,12 @@ import rotp.ui.game.HelpUI;
 import rotp.ui.game.HelpUI.HelpSpec;
 import rotp.ui.main.SystemPanel;
 import rotp.util.AnimationManager;
+import rotp.util.AnimationManager.MugAnimation;
 
-public class RacesUI extends BasePanel {
+public final class RacesUI extends BasePanel {
     private static final long serialVersionUID = 1L;
     public static RacesUI instance;
-    
+
     private static final String DIPLOMACY_PANEL = "Diplomacy";
     private static final String INTELLIGENCE_PANEL = "Intelligence";
     private static final String MILITARY_PANEL = "Military";
@@ -72,36 +73,38 @@ public class RacesUI extends BasePanel {
 	private static BasePanel currentPanel;
 
     public static final Color scrollBarC = new Color(211,166,125);
-    public static final Color lightBrown = new Color(178,124,87);
+	static final Color lightBrown = new Color(178,124,87);
     public static final Color brown = new Color(141,101,76);
-    public static final Color darkBrown = new Color(112,85,68);
-    public static final Color darkerBrown = new Color(75,55,39);
-    public static final Color gradientBottom = new Color(110,79,56);
+	static final Color darkBrown = new Color(112,85,68);
+	static final Color darkerBrown = new Color(75,55,39);
+	static final Color gradientBottom = new Color(110,79,56);
     private static final Color raceEdgeColor = new Color(114,75,49);
     private static final Color raceCenterColor = new Color(179,117,77);
-    static Color[] relationsC = new Color[40];
-    public static BufferedImage raceBackImg;
-    public static BufferedImage raceIconBackImg;
-    Rect diplomacyBox = new Rect();
-    Rect intelligenceBox = new Rect();
-    Rect militaryBox = new Rect();
-    Rect statusBox = new Rect();
+	private static Color[] relationsC = new Color[40];
+	private static BufferedImage raceBackImg;
+	private static BufferedImage raceIconBackImg;
+	private Rect diplomacyBox = new Rect();
+	private Rect intelligenceBox = new Rect();
+	private Rect militaryBox = new Rect();
+	private Rect statusBox = new Rect();
 
     private final List<Empire> empires = new ArrayList<>();
 
-    BasePanel cardPanel;
-    MainTitlePanel titlePanel;
-    RacesDiplomacyUI diploPanel;
-    RacesIntelligenceUI intelPanel;
-    public RacesMilitaryUI militaryPanel;
-    RacesStatusUI statusPanel;
-    RacePlayerRelationsPane raceListingPanel;
-    RacesSetColorUI setColorPanel;
+	private BasePanel cardPanel;
+	private MainTitlePanel titlePanel;
+	private RacesDiplomacyUI diploPanel;
+	private RacesIntelligenceUI intelPanel;
+	public RacesMilitaryUI militaryPanel;
+	private RacesStatusUI statusPanel;
+	private RacePlayerRelationsPane raceListingPanel;
+	private RacesSetColorUI setColorPanel;
     private final CardLayout cardLayout = new CardLayout();
     private int pad = 10;
     private int helpFrame = 0;
     private LinearGradientPaint backGradient;
     private final HashMap<Empire, Shape> colorIcons = new HashMap<>();
+	private final HashMap<Integer, MugAnimation> passiveMug = new HashMap<>();
+	private final HashMap<Integer, MugAnimation> activeMug = new HashMap<>();
 
     public RacesUI() {
         instance = this;
@@ -109,11 +112,28 @@ public class RacesUI extends BasePanel {
         initModel();
         initRelationsColors();
     }
-    public void resetFinalVars()	{
-    	empires.clear();
-    	colorIcons.clear();
-    }
-
+	public void resetFinalVars()	{
+		empires.clear();
+		colorIcons.clear();
+		passiveMug.clear();
+		activeMug.clear();
+	}
+	private BufferedImage getPassiveMug(Empire emp)	{
+		MugAnimation mug = passiveMug.get(emp.id);
+		if (mug == null) {
+			mug = emp.diploMugPassive();
+			passiveMug.put(emp.id, mug);
+		}
+		return mug.getFrame();
+	}
+	private BufferedImage getActiveMug(Empire emp)	{
+		MugAnimation mug = activeMug.get(emp.id);
+		if (mug == null) {
+			mug = emp.diploMugActive();
+			activeMug.put(emp.id, mug);
+		}
+		return mug.getFrame();
+	}
     @Override
     public boolean drawMemory()		{ return true; }
     @Override
@@ -122,9 +142,9 @@ public class RacesUI extends BasePanel {
             return;
         if (frame().getGlassPane().isVisible())
             return;
-        if (animationCount() % 3 != 0)
-            return;
-        diploPanel.animate();
+//        if (animationCount() % 3 != 0)
+//            return;
+        raceListingPanel.animate();
     }
     @Override
     public void cancelHelp() {
@@ -529,7 +549,7 @@ public class RacesUI extends BasePanel {
         Empire e = (Empire) sessionVar("RACESUI_EMPIRE");
         return (e == null) || e.extinct() ? player() : e;
     }
-    public Empire selectedIconEmpire() {
+	Empire selectedIconEmpire()	{
         Empire e = (Empire) sessionVar("RACESUI_ICON_EMPIRE");
         return (e == null) || e.extinct() ? player() : e;
     }
@@ -542,14 +562,14 @@ public class RacesUI extends BasePanel {
             statusPanel.changedEmpire();
         }
     }
-    public void selectedIconEmpire(Empire e)  {
+	private void selectedIconEmpire(Empire e)	{
         if (e != selectedIconEmpire()) 
             sessionVar("RACESUI_ICON_EMPIRE", e);
     }
-    public Shape selectedIconShape() {
-        Empire e = selectedIconEmpire();
-        return colorIcons.get(e);
-    }
+//    public Shape selectedIconShape() {
+//        Empire e = selectedIconEmpire();
+//        return colorIcons.get(e);
+//    }
     private boolean selectPrevEmpire() {
         int index = empires.indexOf(selectedEmpire());
         if (index <= 0)
@@ -564,7 +584,7 @@ public class RacesUI extends BasePanel {
         selectedEmpire(empires.get(index+1));
         return true;    
     }
-    public EmpireView selectedView() {
+	EmpireView selectedView()	{
         Empire selectedEmpire = selectedEmpire();
         if (selectedEmpire == player())
             return null;
@@ -572,7 +592,7 @@ public class RacesUI extends BasePanel {
     }
     public void selectDiplomacyTab()  { diploPanel.init(); titlePanel.selectTab(DIPLOMACY_PANEL); }
     public void selectIntelligenceTab()  { titlePanel.selectTab(INTELLIGENCE_PANEL); }
-    public BufferedImage raceIconBackImg() {
+	BufferedImage raceIconBackImg()	{
         if (raceIconBackImg == null) {
             int w = scaled(200);
             raceIconBackImg = newStarBackground(this,w,w);
@@ -650,7 +670,7 @@ public class RacesUI extends BasePanel {
         g.setPaint(backGradient);
         g.fillRect(s10,getHeight()-scaled(200),getWidth()-s20, scaled(190));
     }
-    public void drawRelationsBar(Graphics2D g, Empire emp, int x, int y, int w, int h, int arrowW, int arrowH) {
+	void drawRelationsBar(Graphics2D g, Empire emp, int x, int y, int w, int h, int arrowW, int arrowH) {
         int cats = relationsC.length;
         int h0 = h*3/4;
         int w0 = w/cats;
@@ -684,7 +704,7 @@ public class RacesUI extends BasePanel {
         g.setColor(Color.white);
         g.fillPolygon(ptX, ptY, 3);
     }
-    public void drawAllianceStars(Graphics2D g, int x, int y, int val, int imgW) {
+	void drawAllianceStars(Graphics2D g, int x, int y, int val, int imgW) {
         int[] stars = new int[5];
         Image[] img = new Image[3];
         img[0] = image("Star_Empty");
@@ -801,18 +821,18 @@ public class RacesUI extends BasePanel {
         buttonClick();
         RotPUI.instance().selectMainPanel(pauseNextTurn);
     }
-    class MainTitlePanel extends BasePanel implements MouseMotionListener, MouseListener {
-        private static final long serialVersionUID = 1L;
-        RacesUI parent;
-        String titleKey;
-        public MainTitlePanel(RacesUI p, String s) {
+	private final class MainTitlePanel extends BasePanel implements MouseMotionListener, MouseListener {
+		private static final long serialVersionUID = 1L;
+		private RacesUI parent;
+		private String titleKey;
+		private MainTitlePanel(RacesUI p, String s) {
             parent = p;
             titleKey = s;
             initModel();
         }
-        Rect hoverBox;
-        Rect helpBox = new Rect();
-        Area textureArea;
+		private Rect hoverBox;
+		private Rect helpBox = new Rect();
+		private Area textureArea;
 
         private void initModel() {
             setOpaque(false);
@@ -912,7 +932,7 @@ public class RacesUI extends BasePanel {
             Color c0 = (box == hoverBox) ? Color.yellow : SystemPanel.whiteLabelText;
             drawShadowedString(g, label, 3, x0, y0, SystemPanel.textShadowC, c0);
         }
-        public void selectNextTab() {
+		private void selectNextTab() {
             switch(selectedPanel) {
                 case DIPLOMACY_PANEL: selectTab(INTELLIGENCE_PANEL); break;
                 case INTELLIGENCE_PANEL: selectTab(MILITARY_PANEL); break;
@@ -920,7 +940,7 @@ public class RacesUI extends BasePanel {
                 case STATUS_PANEL: selectTab(DIPLOMACY_PANEL); break;
             }
         }
-        public void selectPreviousTab() {
+		private void selectPreviousTab() {
             switch(selectedPanel) {
                 case DIPLOMACY_PANEL: selectTab(STATUS_PANEL); break;
                 case INTELLIGENCE_PANEL: selectTab(DIPLOMACY_PANEL); break;
@@ -1015,10 +1035,10 @@ public class RacesUI extends BasePanel {
                 repaint();
         }
     }
-    final class EmpireTitlePanel extends BasePanel {
+	private final class EmpireTitlePanel extends BasePanel {
         private static final long serialVersionUID = 1L;
-        String titleKey;
-        public EmpireTitlePanel(String s) {
+		private String titleKey;
+		private EmpireTitlePanel(String s) {
             titleKey = s;
             setPreferredSize(new Dimension(getWidth(), s45));
             setOpaque(false);
@@ -1032,17 +1052,21 @@ public class RacesUI extends BasePanel {
             drawString(g,title, s10, s35);
         }
     }
-    final class RacePlayerRelationsPane extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
+	private final class RacePlayerRelationsPane extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
         private static final long serialVersionUID = 1L;
+		private final static int SPEAK_TIME_MIN	= 50;
+		private final static int SPEAK_TIME_MAX	= 100;
         private final HashMap<Empire, Rect> contactBoxes = new HashMap<>();
         private Empire hoverEmp;
         private boolean hoveringIcon;
-        int dragY;
-        int contactsY, contactsYMax;    
-        int contactH, listH;
-        Rect contactsListBox = new Rect();
-        Rect contactsScroller = new Rect();
-        Shape hoverShape;
+		private int dragY;
+		private int contactsY, contactsYMax;    
+		private int contactH, listH;
+		private Rect contactsListBox = new Rect();
+		private Rect contactsScroller = new Rect();
+		private Shape hoverShape;
+		private int speakTimeCounter;
+		private boolean thePlayerSpeak;
 
         public RacePlayerRelationsPane() {
             setBackground(lightBrown);
@@ -1057,6 +1081,14 @@ public class RacesUI extends BasePanel {
             contactsY = 0;
             contactH = s100;
         }
+		@Override public void animate()	{
+			speakTimeCounter--;
+			if (speakTimeCounter < 0) {
+				thePlayerSpeak = !thePlayerSpeak;
+				speakTimeCounter = roll(SPEAK_TIME_MIN, SPEAK_TIME_MAX);
+			}
+			repaint();
+		}
         @Override
         public String textureName()            { return TEXTURE_BROWN; }
         @Override
@@ -1071,7 +1103,7 @@ public class RacesUI extends BasePanel {
 
             // data area
             g.setColor(brown);
-            int y1 = 0;
+            int y1 = contactH + s6;
             int x1 = 0;
             int w1 = w;
             int h1 = h-y1-s10;
@@ -1082,14 +1114,32 @@ public class RacesUI extends BasePanel {
                 r.setBounds(0,0,0,0);
 
             listH = h-y1-s10;
-            int fullListH = empires.size()*contactH;
+            int fullListH = (empires.size()-1)*contactH;
             int rightM = listH >= fullListH ? 0 : s20;
             int w2 = w1-rightM;
             int bottomY = y1+listH;
             int y2 = y1 - contactsY;
-            
             contactsListBox.setBounds(x1,y1,w1,listH);
+
+			// Player on the top
+			Empire pl = player();
+			{
+				int y1Pl = 0;
+				int y2Pl = y1Pl - 0;
+				Rect contactClip = new Rect(x1, y2Pl, w2, contactH+s3);
+				g.setClip(contactClip);
+				drawContact(g, pl, x1, y2Pl, w2, contactH);
+				if (pl == selectedEmpire()) {
+					Stroke prev = g.getStroke();
+					g.setStroke(stroke4);
+					g.setColor(SystemPanel.yellowText);
+					g.drawRect(x1+s4, y2Pl+s4, w2-s8, contactH-s4);
+					g.setStroke(prev);
+				}
+			}
             for (Empire e: empires) {
+				if (e.isPlayer())
+					continue;
                 Rect contactClip = new Rect(x1, y2, w2, contactH+s3).intersection(contactsListBox);
                 g.setClip(contactClip);
                 drawContact(g, e, x1, y2, w2, contactH);
@@ -1140,7 +1190,7 @@ public class RacesUI extends BasePanel {
             int w1 = back.getWidth();
             int h1 = back.getHeight();
             int mgn = (h-h1)/2;
-            
+
             boolean selected = emp == selectedEmpire();
 
             Color blackC = selected ? Color.black : SystemPanel.blackText;
@@ -1175,7 +1225,7 @@ public class RacesUI extends BasePanel {
             	int xAge = xSh + (sSh-swa)/2;
             	drawBorderedString(g, age, xAge, yAge, Color.black, Color.white);
             }
-            	
+
             setColorIcon(emp, sh);
             if ((hoverEmp == emp) && hoveringIcon) {
                 Stroke prev = g.getStroke();
@@ -1244,7 +1294,7 @@ public class RacesUI extends BasePanel {
                 if (!emp.masksDiplomacy()) 
                     drawRelationsBar(g, emp, x1, y0+h0-s25, w0-x1-s10, s10, s10, s5);
             }
-            
+
             if (UserPreferences.texturesInterface()) 
                 drawTextureWithExistingClip(g, x0,y0,w0,h0);
             drawRaceImage(g, emp, back, x0, y0, h0, inRange);
@@ -1268,7 +1318,21 @@ public class RacesUI extends BasePanel {
             }
         }
         public void drawRaceImage(Graphics2D g, Empire emp, BufferedImage back, int x, int y, int h, boolean inRange) {
-            BufferedImage img = emp.diploMugshotQuiet();
+			BufferedImage img;
+			if (emp.isPlayer())
+				if (emp == selectedEmpire())
+					img = getPassiveMug(emp);
+				else if (thePlayerSpeak)
+					img = getActiveMug(emp);
+				else
+					img = getPassiveMug(emp);
+			else
+				if (emp != selectedEmpire())
+					img = getPassiveMug(emp);
+				else if (thePlayerSpeak)
+					img = getPassiveMug(emp);
+				else
+					img = getActiveMug(emp);
 
             int w1 = back.getWidth();
             int h1 = back.getHeight();
@@ -1322,25 +1386,24 @@ public class RacesUI extends BasePanel {
                     y2 += s16;
                 }
             }
-            
         }
-        public BufferedImage raceBackImg() {
+        private BufferedImage raceBackImg() {
             if (raceBackImg == null)
                 initRaceBackImg();
             return raceBackImg;
         }
-        public void changedEmpire() {
-            Empire emp = selectedEmpire();
-            int empIndex = empires.indexOf(emp);
-            
-            int numEmpires = (getHeight()-s10)/contactH;
-            if (empIndex <= numEmpires) {
-                contactsY = 0;
-                return;
-            }
-            int offset = min(empIndex, empires.size()-numEmpires);
-            contactsY = contactH*offset;
-        }
+//        public void changedEmpire() {
+//            Empire emp = selectedEmpire();
+//            int empIndex = empires.indexOf(emp);
+//            
+//            int numEmpires = (getHeight()-s10)/contactH;
+//            if (empIndex <= numEmpires) {
+//                contactsY = 0;
+//                return;
+//            }
+//            int offset = min(empIndex, empires.size()-numEmpires);
+//            contactsY = contactH*offset;
+//        }
         private void initRaceBackImg() {
             int w = s76;
             int h = s82;
@@ -1361,12 +1424,10 @@ public class RacesUI extends BasePanel {
                 contactBoxes.put(emp, new Rect());
             return contactBoxes.get(emp);
         }
-        public void setColorIcon(Empire emp, Shape sh) {
-            colorIcons.put(emp, sh);
-        }
+		private void setColorIcon(Empire emp, Shape sh)	{ colorIcons.put(emp, sh); }
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
-            int count = e.getUnitsToScroll();           
+            int count = e.getUnitsToScroll();
             boolean hoveringEmp = false;
             for (Rect rect: contactBoxes.values()) {
                 if (hoverShape == rect) {
@@ -1433,6 +1494,14 @@ public class RacesUI extends BasePanel {
                     break;
                 }
             }
+			if (hoverShape == null) {
+				Empire emp = player();
+				Rect rec = contactBoxes.get(emp);
+				if (rec.contains(x,y)) {
+					hoverShape = rec;
+					hoverEmp = emp;
+				}
+			}
             if (hoverShape == null) {
                 for (Empire emp: contactBoxes.keySet()) {
                     Rect rec = contactBoxes.get(emp);
@@ -1445,9 +1514,9 @@ public class RacesUI extends BasePanel {
             }
             if (contactsScroller.contains(x,y)) 
                 hoverShape = contactsScroller;
- 
+
             if (hoverShape != prevHover)
-                repaint();     
+                repaint();
         }
         @Override
         public void mouseClicked(MouseEvent mouseEvent) { }
@@ -1493,9 +1562,9 @@ public class RacesUI extends BasePanel {
             }
         }
     }
-    class ExitDesignButton extends ExitButton {
+	private final class ExitDesignButton extends ExitButton {
         private static final long serialVersionUID = 1L;
-        public ExitDesignButton(int w, int h, int vMargin, int hMargin) {
+		private  ExitDesignButton(int w, int h, int vMargin, int hMargin) {
             super(w, h, vMargin, hMargin);
         }
         @Override

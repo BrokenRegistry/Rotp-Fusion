@@ -73,10 +73,7 @@ public final class Galaxy implements Base, Serializable {
     private float maxScaleAdj = 1.0f;
     public int systemCount = 0;
 
-	private void updateLoadTime()	{
-		loadTime = currentTime;
-		System.out.println("updateLoadTime() " + longYearOrTurn(true));
-	}
+	private void updateLoadTime()		{ loadTime = currentTime; }
 	public float timeSinceLastLoad()	{ return currentTime - loadTime; }
     private DynOptions dynamicOptions = new DynOptions();// BR: Dynamic options
     private Integer lastHashCodeDiplomaticIncident	= 0;

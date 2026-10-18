@@ -2,6 +2,13 @@
 
 ## What's New
 
+26-10-18 (BR)
+- Council UI: Fixed the animation of diplomats.
+- Empires UI: Fixed the animation of diplomats, which only moved when the mouse was constantly moving...
+  - The same species will no longer be synchronized.
+  - The selected diplomat will speak with the player.
+- Design UI: fixed design boxes display refresh.
+
 26-10-17 (BR)
 - Load/save user option button: Right click to open the file chooser.
 - File chooser: Fixed button text and color for French speaking players.

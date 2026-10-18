@@ -24,6 +24,7 @@ import rotp.model.game.IGameOptions;
 import rotp.model.planet.PlanetType;
 import rotp.model.tech.Tech;
 import rotp.ui.util.StringList;
+import rotp.util.AnimationManager.MugAnimation;
 import rotp.util.Base;
 import rotp.util.LabelManager;
 
@@ -478,6 +479,8 @@ public class Species implements ISpecies, Base, Serializable {
 	public Image transport()				{ return anim.transport(); }
 	public Image gnnEvent(String s)			{ return anim.gnnEvent(s); }
 	public Color gnnTextColor()				{ return anim.gnnTextColor(); }
+	public MugAnimation diploMugPassive()	{ return anim.diploMugPassive(); }
+	public MugAnimation diploMugActive()	{ return anim.diploMugActive(); }
 
 	public void resetScientist()			{ anim.resetScientist(); }
 	public void resetSpy()					{ anim.resetSpy(); }

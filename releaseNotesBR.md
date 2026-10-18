@@ -11,6 +11,13 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-18 (BR)
+- Council UI: Fixed the animation of diplomats.
+- Empires UI: Fixed the animation of diplomats, which only moved when the mouse was constantly moving...
+  - The same species will no longer be synchronized.
+  - The selected diplomat will speak with the player.
+- Design UI: fixed design boxes display refresh.
+
 26-10-17 (BR)
 - Load/save user option button: Right click to open the file chooser.
 - File chooser: Fixed button text and color for French speaking players.
@@ -26,11 +33,6 @@ When updating, you can reuse the same folder.
 - Fixed auto flag not always recognizing asteroids.
 - Fixed Pulsar Damage
   - It was wrongly applied the same damage to all groups of ships, while the moO1 rules say that each group has its own random roll, and since the RotP manual doesn't mention any changes to the original rules, each group's damage is now random.
-
-26-10-12 (BR)
-- New advisor TTV and ROI content while hovering Production field.
-- Fixed Advisor display glitch with colonies in rebellion.
-- In Progress: Centralization of the production estimate in the next turn, to calculate it only once for all categories. And offer the possibility to select "Old Way" or "New Way". (In the "Old Way", transport must be scanned only for ecological allocation, while in the "New Way" they must be scanned for each category... But by centralizing, once for all categories is enough!)
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)
