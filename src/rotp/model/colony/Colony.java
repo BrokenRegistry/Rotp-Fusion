@@ -409,7 +409,11 @@ public final class Colony implements Base, IMappedObject, Serializable {
                 + (float) Math.round(defense().rawBases() * 100) / 100 + " shd:"
                 + (float) Math.round(defense().shield() * 100) / 100;
     }
-
+	public void takesGauntletRelicDamage()	{
+		setPopulation(0.5f * population());
+		if (inRebellion())
+			rebels(rebels()/2);
+	}
     public int displayPopulation()          { return population < 1 ? (int) Math.ceil(population) : (int) population; }
     public float population()               { return population; }
     public void setPopulation(float pop)    { population = pop; }

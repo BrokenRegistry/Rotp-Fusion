@@ -3,6 +3,7 @@
 ## What's New
 
 26-10-18 (BR)
+- Fixed Random Event Gauntlet Relic: Transports and Rebels will also be impacted.
 - Council UI: Fixed the animation of diplomats.
 - Empires UI: Fixed the animation of diplomats, which only moved when the mouse was constantly moving...
   - The same species will no longer be synchronized.

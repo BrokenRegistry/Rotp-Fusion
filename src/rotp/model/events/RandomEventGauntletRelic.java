@@ -20,6 +20,7 @@ import java.util.List;
 
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.galaxy.Transport;
 import rotp.model.game.IGameOptions;
 import rotp.model.planet.Planet;
 import rotp.model.tech.TechTree;
@@ -51,20 +52,22 @@ public class RandomEventGauntletRelic extends AbstractRandomEvent {
     }
     @Override
     public void trigger(Empire emp) {
-        
         // step through all colonized systems
         // cut population on all colonies in half
-        for (Empire e: galaxy().empires()) {
-            for (StarSystem sys: e.allColonizedSystems()) {
-                sys.planet().colony().setPopulation( 0.5f * sys.population() );
-            }
-        }
+		for (Empire e: galaxy().empires())
+			for (StarSystem sys: e.allColonizedSystems())
+				sys.planet().colony().takesGauntletRelicDamage();
 
-    	if (emp == null || emp.extinct()) {
-        	GNNNotification.notifyRandomEvent(notificationText(emp.isPlayer() 
-    				|| player().hasContact(emp)), "GNN_Event_Relic_Gauntlet");
-            return;
-    	}
+		// step through all transport fleet
+		// cut population on all transport in half
+		for (Transport tr: galaxy().transports())
+			if (tr != null)
+				tr.size( max(1, tr.size()/2)); // do not set transport size to 0
+
+		if (emp == null || emp.extinct()) { // in case of ironman
+			GNNNotification.notifyRandomEvent(notificationText(isPlayer(emp) || player().hasContact(emp)), "GNN_Event_Relic_Gauntlet");
+			return;
+		}
 
         // find all colonies in target empire that are less than base size 90
         // increase base size of those planets 10
@@ -74,7 +77,7 @@ public class RandomEventGauntletRelic extends AbstractRandomEvent {
                 pl.baseSize(pl.baseSize() + 10.0f);
             }
         }
-        
+
         // find unknown Techs in Planetology category
         List<String> availableTechs = new ArrayList<>();
 

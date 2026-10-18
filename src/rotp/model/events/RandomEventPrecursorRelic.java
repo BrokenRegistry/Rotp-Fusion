@@ -51,7 +51,6 @@ public class RandomEventPrecursorRelic extends AbstractRandomEvent {
     }
     @Override
     public void trigger(Empire emp) {
-        
         // find all star systems that have no planets
         List<StarSystem> systems = new ArrayList<>();
         for (StarSystem sys : galaxy().starSystems())
@@ -76,18 +75,17 @@ public class RandomEventPrecursorRelic extends AbstractRandomEvent {
                 		sys.planet().setResourceRich();
                 }
             }
-            if (emp == null || emp.extinct()) {
-            	GNNNotification.notifyRandomEvent(notificationText(emp.isPlayer() 
-            				|| player().hasContact(emp)), "GNN_Event_Relic_Planets");
-            	return;
-            }
+			if (emp == null || emp.extinct()) { // in case of ironman
+				GNNNotification.notifyRandomEvent(notificationText(isPlayer(emp) || player().hasContact(emp)), "GNN_Event_Relic_Planets");
+				return;
+			}
         }
         // find unknown Techs in Construction category
         List<String> availableTechs = new ArrayList<>();
 
         TechTree empTech = emp.tech();
         int maxConsLevel = (int) empTech.construction().techLevel()+10;
-        
+
         // BR: fixed tech Library deletion
         // allTechs() is the static tech library list!
         // List<String> unkConstructionTechs =  empTech.construction().allTechs();
@@ -119,7 +117,7 @@ public class RandomEventPrecursorRelic extends AbstractRandomEvent {
         // BR: Fix for "Precursor Relic" event; Now every one has the same chance
 		// if (emp.isPlayer() || player().hasContact(emp))
 		//     GNNNotification.notifyRandomEvent(notificationText(), "GNN_Event_Relic_Planets");
-        GNNNotification.notifyRandomEvent(notificationText(emp.isPlayer() 
+        GNNNotification.notifyRandomEvent(notificationText(emp.isPlayer()
         				|| player().hasContact(emp)), "GNN_Event_Relic_Planets");
 
         for (String techId: discoveredTechs)
