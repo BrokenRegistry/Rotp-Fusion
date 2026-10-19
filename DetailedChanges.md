@@ -2,6 +2,11 @@
 
 ## What's New
 
+26-10-19 (BR)
+- Fixed an very old bug in the "next turn" waste computing.
+  - Waste is now added at the time of production calculation, before industry can change the robotic level and distort the value calculated later by ecology.
+- The governor will check for Rich-Artefact type planest and will not apply conflicting request.
+
 26-10-18 (BR)
 - Fixed Random Event Gauntlet Relic: Transports and Rebels will also be impacted.
 - Council UI: Fixed the animation of diplomats.

@@ -914,7 +914,7 @@ public class EmpireColonySpendingPane extends BasePanel {
 				if (governorBox.contains(x,y))
 					toggleGovernor();
 				else if (coinBox.contains(x,y))
-					toggleFunding(SwingUtilities.isRightMouseButton(e));
+					toggleFunding(e);
 				else if (optionsBox.contains(x,y))
 					if (SwingUtilities.isRightMouseButton(e)) {
 						ParamSubUI optionsUI = AllSubUI.getHandle(ISubUiKeys.GOVERNOR_SPECIAL_UI_KEY).getUI();
@@ -1025,10 +1025,10 @@ public class EmpireColonySpendingPane extends BasePanel {
     }
     // BR: made static because there is two instances of EmpireColonySpendingPane
     static GovernorFrame governorOptionsFrame = null;
-	private void toggleFunding(boolean isRightClick) { // TODO BR: Validate
+	private void toggleFunding(MouseEvent e) {
 		if (parent.systemViewToDisplay() != null && parent.systemViewToDisplay().colony() != null) {
 			Colony colony = parent.systemViewToDisplay().colony();
-			colony.govFundColony(isRightClick);
+			colony.govFundColony(e);
 //			if (colony.isGovernor())
 //				colony.govern();
 			parent.repaint();

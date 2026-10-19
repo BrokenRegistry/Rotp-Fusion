@@ -161,8 +161,10 @@ public final class ColonyEcology extends ColonySpendingCategory {
         float rsvBC = pct() * totalReserve;
         float newBC = totalAvailableBCthisCategory(totalProd, totalReserve);
 
-        // add new waste created from this turn & clean it up
-        addWaste(c.newWaste());
+		// BR: Moved at the colony level, when the production es computed
+		// This because the industry may already have changed the robotic level
+		// // add new waste created from this turn & clean it up
+		// addWaste(c.newWaste());
         wasteCleaned = wasteWillClean(newBC);
         newBC -= (wasteCleaned / tr.wasteElimination());
 

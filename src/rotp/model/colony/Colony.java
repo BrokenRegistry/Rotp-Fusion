@@ -213,7 +213,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 	public boolean getFundFromReserve()			{ return govAutoFundTag().useReserve() && isGovernor(); }
 	public int getFundingMandate()				{ return govAutoFundTag().fundingMandate(); }
 	public BufferedImage getCoinImage(int w)	{ return govAutoFundTag().getCoinImage(w); }
-	public void govFundColony(boolean reserve)	{ govAutoFundTag().toggle(reserve); }
+	public void govFundColony(MouseEvent e)		{ govAutoFundTag().toggle(e); }
 
     private boolean governorGotPlayerRequest()	{ return govOptions().isManageableGovernor(); }
     public boolean isObedientGovernor()			{ return govOptions().isManageableGovernor(); }
@@ -417,35 +417,33 @@ public final class Colony implements Base, IMappedObject, Serializable {
     public int displayPopulation()          { return population < 1 ? (int) Math.ceil(population) : (int) population; }
     public float population()               { return population; }
     public void setPopulation(float pop)    { population = pop; }
-    // public void adjustPopulation(float pop) { population += pop; }
     public int rebels()                     { return rebels; }
     public void rebels(int i)               { rebels = i; }
     public int deltaPopulation()            { return (int) population - (int) previousPopulation - (int) inTransport(); }
     public boolean destroyed()              { return population <= 0; }
     public boolean inRebellion()            { return rebellion && (rebels > 0); }
     public float rebellionPct()             { return rebels / population(); }
-    // public boolean hasOrders()              { return !orders.isEmpty(); }
     public boolean isUrged(int cat)			{ return cat==RESEARCH && govUrgeResearch(); }
-    public boolean hasOrder(int cat)		{ // BR:
-    	switch (cat) {
-	    	case DEFENSE:
-	    		return orders.containsKey(Orders.SHIELD)
-	    				|| orders.containsKey(Orders.BASES);
-	    	case INDUSTRY:
-	    		return orders.containsKey(Orders.FACTORIES);
-	    	case ECOLOGY:
-	    		return orders.containsKey(Orders.SOIL)
-	    				|| orders.containsKey(Orders.ATMOSPHERE)
-	    	    		|| orders.containsKey(Orders.TERRAFORM)
-	    				|| orders.containsKey(Orders.POPULATION);
-	    	case SHIP:
-	    		return prioritizeShips();
-	    	case RESEARCH:
-	    		return prioritizeResearch();
-    		default:
-    			return false;
-    	}
-    }
+	public boolean hasOrder(int cat)		{ // BR:
+		switch (cat) {
+			case DEFENSE:
+				return orders.containsKey(Orders.SHIELD)
+						|| orders.containsKey(Orders.BASES);
+			case INDUSTRY:
+				return orders.containsKey(Orders.FACTORIES);
+			case ECOLOGY:
+				return orders.containsKey(Orders.SOIL)
+						|| orders.containsKey(Orders.ATMOSPHERE)
+			    		|| orders.containsKey(Orders.TERRAFORM)
+						|| orders.containsKey(Orders.POPULATION);
+			case SHIP:
+				return prioritizeShips();
+			case RESEARCH:
+				return prioritizeResearch();
+			default:
+				return false;
+		}
+	}
 	private boolean isDeveloped(boolean shieldWithoutBases)	{ return options().isDeveloped(this, shieldWithoutBases); }
 	public boolean isDeveloped()	{
 		IGameOptions options = options();
@@ -809,6 +807,11 @@ public final class Colony implements Base, IMappedObject, Serializable {
 
         if ((totalProd <= 0) && (reserveIncome <= 0))
             return;
+
+		// BR: Add the real waste now, before the robotic level could change 
+		// add new waste created from this turn & clean it up
+		float newWaste = newWaste();
+		planet().addWaste(newWaste);
 
         float usedReserve = maxReserveIncome();
 
@@ -1249,9 +1252,9 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		if (embargoed() || inRebellion() || reserveIncome() > 1 || isGrowing())
 			return false;
 		if (empire.empireTaxOnlyDeveloped())
-			return !(planet().isArtifact() || planet.isLowResource()) && isDeveloped();
+			return !((planet().isArtifact() && !planet.isHighResource()) || planet.isLowResource()) && isDeveloped();
 		// Taxes non developed and developed Artifacts
-		if (planet().isArtifact())
+		if (planet().isArtifact() && !planet.isHighResource())
 			return isDeveloped();
 		return true;
 	}
@@ -2306,13 +2309,11 @@ public final class Colony implements Base, IMappedObject, Serializable {
     }
 	private void checkForReserveFromRich() {
 		// Check if Rich and Ultra contribute to reserve
-		if (planet.isHighResource()) {
-			if(govOptions().isReserveFromRich()
-					&& !options().divertColonyExcessToResearch()) {
-				int research = allocation(RESEARCH);
-				allocation(RESEARCH, 0);
-				addAllocation(INDUSTRY, research);
-			}
+		if (planet.isHighResource() && govOptions().isReserveFromRich()
+				&& !options().divertColonyExcessToResearch() && !budget().isNeedy()) {
+			int research = allocation(RESEARCH);
+			allocation(RESEARCH, 0);
+			addAllocation(INDUSTRY, research);
 		}
 	}
     public void govern() { govern(false); }
@@ -2980,7 +2981,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			govFundColonyUpdated();
 			colonyIsDeveloped = isDeveloped(shieldWithoutBases);
 			colonyIsGrowing	= isGrowing();
-			boolean hasGrant = playerBudgetBC()!=null || governorBudgetBC()!=null || budgetSubsidiesBC()!=0;
+			boolean hasGrant = hasGrant();
 			if (grant) {
 				resetGrant(false);
 				if (hasGrant)
@@ -2992,6 +2993,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			if (raise)
 				resetRaise(govern && !hasGrant);
 		}
+		public boolean hasGrant()	{ return playerBudgetBC()!=null || (governorBudgetBC()!=null && governorBudgetBC()>0) || budgetSubsidiesBC()!=0; }
+		public boolean isNeedy()	{ return  hasGrant() || govFundColony(); }
 		@Override public String toString()		{
 			String str = name();
 			str += " finalBudget: "	+ displayBudgetBC();
@@ -3160,9 +3163,13 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			str += " Mandate: " + fundingMandate;
 			return str;
 		}
-		private void toggle(boolean reserve)	{
+		private void toggle(MouseEvent e)	{
+			boolean reserve = isRightClick(e);
+			boolean setToDefault = isMidClick(e);
 			if (reserve)
 				toggleReserve();
+			else if(setToDefault)
+				fundingMandate = UNFUNDED;
 			else
 				fundingMandate = toggleMandate();
 			if (isGovernor())
@@ -3190,7 +3197,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 
 		private int fundingMandate()	{ return fundingMandate; }
 		private void toggleReserve()	{ useReserve = !useReserve; empire.budget().makeBudgetColonyObsolete(); }
-		private boolean useReserve()	{ return useReserve && isFunded(); }
+		private boolean useReserve()	{ return useReserve && !govFundColony(); }
 		private boolean updateAndGetIsFunded()	{
 			// check if there are changes and return the new state
 			// debug = true;

@@ -44,6 +44,11 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-19 (BR)
+- Fixed an very old bug in the "next turn" waste computing.
+  - Waste is now added at the time of production calculation, before industry can change the robotic level and distort the value calculated later by ecology.
+- The governor will check for Rich-Artefact type planest and will not apply conflicting request.
+
 26-10-18 (BR)
 - Fixed Random Event Gauntlet Relic: Transports and Rebels will also be impacted.
 - Council UI: Fixed the animation of diplomats.
@@ -58,16 +63,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 26-10-15 (BR)
 - Galaxy Map: Disabled the action of the left icons when they should not be used.
-
-26-10-14 (BR)
-- Multi-player Hot-Seat
-  - Improved player identification text quality. 
-  - Anti-cheat: The number of turns since the last reload is now displayed on the left side of the Year (Turn).
-  - Diplomacy UI: Fixed the "Continue" doing nothing.
-  - All Notification UI: Reduced the effect of bug security blocking player responses, when a problem was identified and the player was not expected to provide responses: The player will still be able to respond and continue their game. (And report the bug if it was real)
-- Fixed auto flag not always recognizing asteroids.
-- Fixed Pulsar Damage
-  - It was wrongly applied the same damage to all groups of ships, while the moO1 rules say that each group has its own random roll, and since the RotP manual doesn't mention any changes to the original rules, each group's damage is now random.
 
 
 ### [Features Historic](FeaturesChanges.md)
