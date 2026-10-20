@@ -43,6 +43,7 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
 	private Color maskC  = new Color(40,40,40,160);
 	private Area mask;
 	private BufferedImage planetImg;
+	private boolean refreshImg;
 	private MainUI parent;
 	private int sysId;
 	private ShipFleet fleet;
@@ -74,6 +75,7 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
         return true;
     }
     public void init(int systemId, ShipFleet fl, ShipDesign d) {
+		planetImg = null;
         hotSeatAnswer = null;
         StarSystem sys = galaxy().system(systemId);
         sysId = systemId;
@@ -89,6 +91,7 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
         parent.map().resetRangeAreas();
         parent.mapFocus(sys);
         parent.clickedSprite(sys);
+		refreshImg = true; // BR: just in case of "refresh being called during the init phase
         parent.repaint();
     }
     private void toggleFlagColor(boolean reverse) {
@@ -172,7 +175,7 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
         g.fillRect(boxX, boxY, boxW, boxH1);
 
         // draw planet image
-        if (planetImg == null) {
+		if (planetImg == null || refreshImg) {
             if (sys.planet().type().isAsteroids()) {
                 planetImg = newBufferedImage(boxW, boxH-boxH1);
                 Graphics imgG = planetImg.createGraphics();
@@ -184,6 +187,7 @@ public final class MapOverlayColonizePrompt implements IMapOverlay {
             }
             else 
                 planetImg = sys.planet().type().panoramaImage();
+			refreshImg = false;
         }
         g.drawImage(planetImg, boxX, boxY+boxH1, boxW, boxH-boxH1, null);
 

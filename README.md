@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-20 (BR)
+- Fixed an issue where "system discovery", "Colonize", "Combat", or "Bombard" windows would sometimes display the panorama of the previous planet.
+
 26-10-19 (BR)
 - Fixed an very old bug in the "next turn" waste computing.
   - Waste is now added at the time of production calculation, before industry can change the robotic level and distort the value calculated later by ecology.

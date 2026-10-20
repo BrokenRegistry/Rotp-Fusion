@@ -49,6 +49,7 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
 	private Color maskC  = new Color(40,40,40,160);
 	private Area mask;
 	private BufferedImage planetImg;
+	private boolean refreshImg;
 	private MainUI parent;
 	private boolean bombarded = false;
 	private int sysId;
@@ -109,6 +110,7 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
         estKills = Math.round(fl.expectedBombardDamage(false) / 200f);
         estFactoryKills = Math.round(fl.expectedBombardDamage(true) / 50f);
         initConsoleSelection("Bombard Planet", false);
+		refreshImg = true; // BR: just in case of "refresh being called during the init phase
     }
     private void toggleFlagColor(boolean reverse) {
         player().sv.toggleFlagColor(sysId, reverse);
@@ -232,7 +234,7 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
 
         String sysName = player().sv.knownName(sys.id);
         // draw planet image
-        if (planetImg == null) {
+		if (planetImg == null || refreshImg) {
             if (sys.planet().type().isAsteroids()) {
                 planetImg = newBufferedImage(boxW, boxH-boxH1);
                 Graphics imgG = planetImg.createGraphics();
@@ -260,6 +262,7 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
                     imgG.dispose();
                 }
             }
+			refreshImg = false;
         }
         g.drawImage(planetImg, boxX, boxY+boxH1, boxW, boxH-boxH1, null);
 

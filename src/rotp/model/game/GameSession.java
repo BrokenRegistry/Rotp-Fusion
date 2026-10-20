@@ -1622,6 +1622,7 @@ public final class GameSession implements Base, Serializable {
 
                 if (processNotifications()) {
                     log("Notifications processed 1 - back to MainPanel");
+					gal.refreshAllEmpireViews(); // This way, the display will be up to date.
                     RotPUI.instance().selectMainPanel();
                 }
                 turnCoordinator().run(Phase.SPACE_COMBAT,
@@ -1634,6 +1635,7 @@ public final class GameSession implements Base, Serializable {
                 forEachHumanEmpire(Empire::updateScoutMessages);
                 if (processNotifications()) {
                     log("Notifications processed 2 - back to MainPanel");
+					gal.refreshAllEmpireViews(); // This way, the display will be up to date.
                     RotPUI.instance().selectMainPanel();
                 }
                 turnCoordinator().run(Phase.INVASIONS, () -> {
@@ -1647,12 +1649,14 @@ public final class GameSession implements Base, Serializable {
 				}
                 if (processNotifications()) {
                     log("Notifications processed 3 - back to MainPanel");
+					gal.refreshAllEmpireViews(); // This way, the display will be up to date.
                     RotPUI.instance().selectMainPanel();
                 }
                 turnCoordinator().run(Phase.POST_COLONIZATION,
                         () -> gal.postNextTurn3()); // BR: post colonization scouting
                 if (processNotifications()) {
                     log("Notifications processed 3a - back to MainPanel");
+					gal.refreshAllEmpireViews(); // This way, the display will be up to date.
                     RotPUI.instance().selectMainPanel();
                 }
 

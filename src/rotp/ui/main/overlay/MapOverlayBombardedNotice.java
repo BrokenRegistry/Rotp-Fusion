@@ -39,6 +39,7 @@ public final class MapOverlayBombardedNotice implements IMapOverlay {
 	private Color maskC  = new Color(40,40,40,160);
 	private Area mask;
 	private BufferedImage planetImg;
+	private boolean refreshImg;
 	private MainUI parent;
 	private int sysId;
 	private ShipFleet fleet;
@@ -78,6 +79,7 @@ public final class MapOverlayBombardedNotice implements IMapOverlay {
             advanceMap();
             return;
         }
+		refreshImg = true; // BR: just in case of "refresh being called during the init phase
         show();
     }
     /** Hot seat: show a bombardment the turn engine already resolved. */
@@ -164,7 +166,7 @@ public final class MapOverlayBombardedNotice implements IMapOverlay {
         String sysName = pl.sv.knownName(sysId);
 
         // draw planet image
-        if (planetImg == null) {
+		if (planetImg == null || refreshImg) {
             if (sys.planet().type().isAsteroids()) {
                 planetImg = newBufferedImage(boxW, boxH-boxH1);
                 Graphics imgG = planetImg.createGraphics();
@@ -192,6 +194,7 @@ public final class MapOverlayBombardedNotice implements IMapOverlay {
                     imgG.dispose();
                 }
             }
+			refreshImg = false;
         }
         g.drawImage(planetImg, boxX, boxY+boxH1, boxW, boxH-boxH1, null);
 

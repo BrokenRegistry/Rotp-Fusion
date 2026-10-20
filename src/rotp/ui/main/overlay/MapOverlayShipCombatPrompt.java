@@ -66,6 +66,7 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
 	private Color popupTxtC	= SystemPanel.darkOrangeText;
 	private Area mask;
 	private BufferedImage planetImg;
+	private boolean refreshImg;
 	private MainUI parent;
 	private int sysId;
 	private int boxX, boxY, boxW, boxH;
@@ -100,6 +101,7 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
         parent.map().recenterMapOn(sys);
         parent.mapFocus(sys);
         parent.clickedSprite(sys);
+		refreshImg = true; // BR: just in case of "refresh being called during the init phase
         parent.repaint();
         initConsoleSelection("Ship Combat", false);
     }
@@ -244,7 +246,7 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
 
         boolean scouted = player().sv.isScouted(sys.id);
         // draw planet image
-        if (planetImg == null) {
+		if (planetImg == null || refreshImg) {
             if (!scouted || sys.planet().type().isAsteroids()) {
                 planetImg = newBufferedImage(boxW, boxH2);
                 Graphics imgG = planetImg.createGraphics();
@@ -272,6 +274,7 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
                     imgG.dispose();
                 }
             }
+			refreshImg = false;
         }
         g.drawImage(planetImg, boxX, boxY+boxH1, boxW, boxH2, null);
 

@@ -43,6 +43,7 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
 	private Color maskC  = new Color(40,40,40,160);
 	private Area mask;
 	private BufferedImage planetImg;
+	private boolean refreshImg;
 	private MainUI parent;
 	private List<StarSystem> scoutSystems = new ArrayList<>();
 	private List<StarSystem> allySystems = new ArrayList<>();
@@ -63,6 +64,7 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
 		orderedSystems.clear();
     }
     public void init(HashMap<String, List<StarSystem>> newSystems) {
+		planetImg = null;
         parent.hideDisplayPanel();
         parent.map().setScale(20);
         systemIndex = 0;
@@ -86,6 +88,7 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
             Collections.sort(orderedSystems, StarSystem.NAME);
             mapSelectIndex(0);
         }
+		refreshImg = true; // BR: just in case of "refresh being called during the init phase
     }
     private void mapSelectIndex(int i) {
         mask = null;
@@ -96,6 +99,7 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
         parent.mapFocus(nextSystem);
         parent.clickedSprite(nextSystem);
         parent.repaint();
+		refreshImg = true; // BR: just in case of "refresh being called during the init phase
     }
     private void nextSystem() {
         systemIndex++;
@@ -194,7 +198,7 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
         g.fillRect(boxX, boxY, boxW, boxH1);
 
         // draw planet image
-        if (planetImg == null) {
+		if (planetImg == null || refreshImg) {
             if (sys.planet().type().isAsteroids()) {
                 planetImg = newBufferedImage(boxW, boxH-boxH1);
                 Graphics imgG = planetImg.createGraphics();
@@ -206,6 +210,7 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
             }
             else 
                 planetImg = sys.planet().type().panoramaImage();
+			refreshImg = false;
         }
         g.drawImage(planetImg, boxX, boxY+boxH1, boxW, boxH-boxH1, null);
 
