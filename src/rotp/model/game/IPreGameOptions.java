@@ -49,6 +49,13 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 	ParamBoolean randomTechStart	= new ParamBoolean(MOD_UI, "RANDOM_TECH_START", false);
 	default boolean selectedRandomTechStart()	{ return randomTechStart.get(); }
 
+	ParamInteger fillerSystemsPct	= new ParamInteger(MOD_UI, "FILLER_SYSTEMS_PCT" , 0)
+			.setLimits(0, 2000)
+			.setIncrements(50, 100, 500)
+			.pctValue(true)
+			.loop(false);
+	default float	fillerSystemsFactor()	{ return fillerSystemsPct.getFloat(); }
+
 	ParamInteger companionWorlds	= new ParamInteger(MOD_UI, "COMPANION_WORLDS" , 0)
 			.setLimits(-4, 6)
 			.setIncrements(1, 1, 1)

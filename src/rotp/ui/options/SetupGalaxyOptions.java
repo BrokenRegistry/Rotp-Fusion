@@ -17,6 +17,7 @@ final class SetupGalaxyOptions extends AbstractOptionsSubUI {
 				new ParamTitle("GALAXY_CONTENT"),
 				galaxyAge,
 				starDensity,
+				fillerSystemsPct,
 				empiresSpreadingFactor,
 				looseNeighborhood
 				)));
@@ -32,7 +33,8 @@ final class SetupGalaxyOptions extends AbstractOptionsSubUI {
 		SafeListParam minorList = new SafeListParam(uiMinorKey(),
 				Arrays.asList(
 						galaxyAge,
-						starDensity
+						starDensity,
+						fillerSystemsPct
 						));
 		return minorList;
 	}
@@ -41,6 +43,7 @@ final class SetupGalaxyOptions extends AbstractOptionsSubUI {
 				Arrays.asList(
 						galaxyAge,
 						starDensity,
+						fillerSystemsPct,
 						empiresSpreadingFactor,
 						looseNeighborhood,
 						minStarsPerEmpire,

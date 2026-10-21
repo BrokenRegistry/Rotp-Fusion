@@ -130,7 +130,7 @@ public class ParamInteger extends AbstractParam<Integer> {
 		this.ppmValue = ppmValue;
 		return this;
 	}
-	public float getFloat()	{ return pctValue? get()/100f : perMilleValue? get()/1000f : ppmValue? get()/1000000f : get(); }
+	public float getFloat()	{ return pctValue? 0.01f*get() : perMilleValue? 0.001f*get() : ppmValue? 0.000001f*get() : get(); }
 	// ===== Overriders =====
 	//
 	@Override public ParamInteger isValueInit(boolean is) { super.isValueInit(is)  ; return this; }

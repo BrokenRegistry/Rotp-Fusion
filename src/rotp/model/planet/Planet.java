@@ -227,6 +227,13 @@ public class Planet implements Base, IMappedObject, Serializable, ISystemsOption
         artifacts = RUINS_ANTARAN;
         bonusTechs = 1;
     }
+	public void initAsFillerAsteroid()	{
+		initPlanetType(PlanetType.NONE);
+		makeEnvironmentNone();
+		baseSize(0);
+		bonusTechs = -1; // no need to add a new parameter...
+	}
+	public boolean isFillerAsteroid()	{ return bonusTechs < 0; } // BR:
 	// modnar: setArtifactRace for setting Race Homeworld to be Artifact
 	void setArtifactRace()				{ artifacts = RUINS_ANTARAN; }
 	// BR: even more Scientific race

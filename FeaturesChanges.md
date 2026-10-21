@@ -22,6 +22,7 @@
 
 ### Features:
 
+- New option that add "filler" asteroid star systems to makes the galaxy more "realistic"
 - New multiplayer feature (Hot-seat).
 - New option to restore the cost of weapons from MoO1.
 - New option to Restore the original MoO1 ship combat maneuver power requirement.
@@ -541,6 +542,8 @@
 
 ### Fixes:
 
+- Fixed "null pointer exception" error occuring when the cost of a non existent fighter design was requested.
+   - A new fighter design is build instead of returning "null".
 - Fixed an issue where "system discovery", "Colonize", "Combat", or "Bombard" windows would sometimes display the panorama of the previous planet.
 - Fixed an very old bug in the "next turn" waste computing.
   - Waste is now added at the time of production calculation, before industry can change the robotic level and distort the value calculated later by ecology.

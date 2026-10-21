@@ -64,6 +64,13 @@ public class StarSystemFactory implements Base {
 		sys.planet(PlanetFactory.createHomeworld(species, sys, session().populationBonus(), true));
 		return sys;
 	}
+	StarSystem newFillerAsteroidSystem(Galaxy gal)	{
+		IGameOptions opts = GameSession.instance().options();
+		String type = opts.randomStarType();
+		StarSystem sys = StarSystem.create(type, gal);
+		sys.planet(PlanetFactory.createFillerAsteroid(sys));
+		return sys;
+	}
     // modnar: add option to start game with additional colonies
     // modnar: use orion star type (red, orange, yellow)
     // BR: for symmetric galaxies add option to copy player characteristics

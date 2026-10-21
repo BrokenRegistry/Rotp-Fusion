@@ -346,7 +346,7 @@ public final class GuardianPirates extends GuardianMonsters {
 	private float stackScale()	{
 		// modnar: adjust Space Pirate ship stack stats based on galaxy empire development
 		// based on highest average tech level, difficulty, and galaxy size
-		int totalStars = galaxy().numStarSystems();
+		int totalStars = galaxy().systemCountNoFillers();
 		// log10 for slow growing function
 		// for totalStars =  33   100   200   500   1000   5000
 		//	 stackScale ~ 0.5   1.0   1.3   1.7	2.0	2.7

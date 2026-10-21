@@ -93,6 +93,11 @@ public class PlanetFactory implements Base {
     private static boolean combo(ParamAAN2 aan2, boolean b, boolean isPlayer) {
     	return aan2.isAlways(isPlayer) || (!aan2.isNever(isPlayer) && b);
     }
+	public static Planet createFillerAsteroid(StarSystem sys)	{
+		Planet p = new Planet(sys);
+		p.initAsFillerAsteroid();
+		return p;
+	}
 	public static Planet createHomeworld(Species species, StarSystem sys, float bonus, boolean isPlayer) {
 		IGameOptions opts = GameSession.instance().options();
 		Planet p = instance.options().randomPlayerPlanet(species, sys);

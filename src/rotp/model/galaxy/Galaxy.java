@@ -72,6 +72,7 @@ public final class Galaxy implements Base, Serializable {
     private final int heightLY;
     private float maxScaleAdj = 1.0f;
     public int systemCount = 0;
+	private int systemCountNoFillers = 0;
 
 	private void updateLoadTime()		{ loadTime = currentTime; }
 	public float timeSinceLastLoad()	{ return currentTime - loadTime; }
@@ -139,6 +140,7 @@ public final class Galaxy implements Base, Serializable {
     }
 	public DynOptions dynamicOptions()			{ return dynamicOptions; } // BR:
 	public int beginningYear()					{ return player().startingYear(); }
+	public int systemCountNoFillers()			{ return systemCountNoFillers; }
     public float currentTime()               { return currentTime; }
     public GalacticCouncil council()         { return council; }
     public RandomEvents events()       		 { return events; }
@@ -162,12 +164,13 @@ public final class Galaxy implements Base, Serializable {
         if (s.hasMonster())
         	s.monster().setEmpireSystem(systemCount, s);
         systemCount++;
-        
+
         Nebula neb = nebulaContaining(s);
         s.inNebula(neb != null);
         if (neb != null)
             neb.noteStarSystem(s);
     }
+    public void systemCountNoFillers(int i)	{ systemCountNoFillers = i; }
     public StarSystem system(int i)          { return (i < 0) || (i >= numStarSystems()) ? null : starSystems[i]; }
 	// BR: for debug purpose
 	public StarSystem system(String name)	 {
@@ -506,6 +509,8 @@ public final class Galaxy implements Base, Serializable {
     }
     public void validateOnLoad(boolean restorePersistentRandom) {
 		updateLoadTime();
+		if (systemCountNoFillers() == 0)
+			systemCountNoFillers(systemCount);
     	if (dynamicOptions == null)
     		dynamicOptions = new DynOptions();
     	if (galRandom == null) // For backward compatibility

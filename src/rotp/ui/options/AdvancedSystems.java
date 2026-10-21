@@ -31,6 +31,7 @@ public final class AdvancedSystems extends AbstractOptionsSubUI {
 				HEADER_SPACER_100,
 				new ParamTitle("GAME_OTHER"),
 				looseNeighborhood,
+				fillerSystemsPct,
 				orionToEmpireModifier,
 				empiresSpreadingFactor,
 				galaxyRandSource,

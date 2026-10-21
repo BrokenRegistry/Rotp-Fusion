@@ -58,7 +58,10 @@ public abstract class GalaxyShape implements Base, Serializable {
 	private int regionScale = 16;
 	protected int fullWidth, fullHeight, width, height;
 	int maxStars = 0;
+	private int fillerStars = 0;
+	private int totalStars = 0;
 	private int num = 0;
+	private int numFiller = 0;
 	private int homeStars = 0;
 	private int genAttempt = 0;
 	private boolean usingRegions = false;
@@ -71,6 +74,9 @@ public abstract class GalaxyShape implements Base, Serializable {
 	private static float cx; // Width galaxy center
 	private static float cy; // Height galaxy center
 	private float sysBuffer = 1.9f;
+	private float fillerBuffer = sysBuffer;
+	private float fillerBufferFactor = 1f;
+	private float maxPreviewFactor = 1f;
 	private int numEmpires;
 	private int numOpponents;
 	protected Rand randRnd = new Rand(rng().nextLong()); // For random option selection purpose
@@ -87,7 +93,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	private int loopValid		= 0;
 	private boolean isValid		= false;
 
-	protected int finalNumberStarSystems;
+	protected int finalNumberStarSystems; // BR: Original value, Without the fillers
 	protected String finalOption1, finalOption2, finalOption3, finalOption4;
 	protected int option1, option2, option3, option4;
 	protected boolean[] randomizeShapeOptions;
@@ -111,9 +117,13 @@ public abstract class GalaxyShape implements Base, Serializable {
 		randX	= randRnd;
 		randY	= randRnd;
 		// in case of random, will generate a new value
-		numOpponents = max(0, opts.selectedNumberOpponents(true));
 		// takes into account the number of opponents, and may adjust it
-		finalNumberStarSystems = opts.numberStarSystems(true);
+		numOpponents = max(0, opts.selectedNumberOpponents(true));
+
+		float fillerFactor	= opts.fillerSystemsFactor();
+		maxPreviewFactor	= 1f + fillerFactor;
+		fillerBufferFactor	= (float) (1.0/Math.sqrt(maxPreviewFactor));
+		finalNumberStarSystems	= opts.numberStarSystems(true);
 		// Get the final value
 		numOpponents = max(0, opts.selectedNumberOpponents());
 		numEmpires	 = numOpponents + 1;
@@ -284,6 +294,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	//
 	public int numCompanionWorld()	{ return numCompanions; }
 	public int numberStarSystems()	{ return num; }
+	int numberFillerSystems(){ return numFiller; }
 	// modnar: add option to start game with additional colonies
 	// modnar: these colonies are in addition to number of stars chosen in galaxy
 	int totalStarSystems()	{
@@ -430,13 +441,13 @@ public abstract class GalaxyShape implements Base, Serializable {
 		} // The empires are set
 
 		// ===== add other systems to fill out galaxy
-		int attempts = addUncolonizedSystemsSymmetric();
+		int attempts[] = addUncolonizedSystemsSymmetric();
 		companionWorlds = new CompanionWorld(empSystems.get(0), numCompanions).symmetric();
 		long tm1 = System.currentTimeMillis();
-		log("Galaxy generation: "+(tm1-tm0)+"ms  Regions: " + usingRegions+"  Attempts: ", str(attempts), "  stars:", str(num), "/", str(maxStars));
+		log("Galaxy generation: "+(tm1-tm0)+"ms  Regions: " + usingRegions+"  Attempts: ", str(attempts[0]), "/", str(attempts[1]), "  stars:", str(num), "/", str(maxStars));
 		return true;
 	}
-	private int addUncolonizedSystemsSymmetric() {
+	private int[] addUncolonizedSystemsSymmetric() {
 		int maxAttempts = maxStars * 10;
 		// we've already generated 3(or more) stars for every empire so reduce their
 		// total from the count of remaining stars to create ("too many stars" bug)
@@ -449,18 +460,42 @@ public abstract class GalaxyShape implements Base, Serializable {
 		while ((num < nonEmpireStars) && (attempts++ < maxAttempts)) {
 			// Find a location
 			CtrPoint pt = getValidRandomSymmetric();
-			if (!isTooNearExistingSystem(pt.getX(), pt.getY() ,false)) {
+			if (!isTooNearExistingSystem(pt.getX(), pt.getY(), false)) {
 				addSystem(pt.get());
 				// Then fill the symmetry
 				// get the stars
 				oppPt = getSymmetricSystems(pt);
 				//  no test needed, they are valid by symmetry.
-			   	for (CtrPoint opp : oppPt) {
-			   		addSystem(opp.get());
-			   	}
+				for (CtrPoint opp : oppPt)
+					addSystem(opp.get());
 			}
 		}
-		return attempts;
+
+		// add filler systems
+		int fillerAttempts = 0;
+		if (fillerStars > 0) {
+			numFiller = 0;
+			int limitStars = totalStars - (empSystems.size() * homeStarNum);
+			limitStars = 1 + Math.floorDiv(limitStars-1, numEmpires) * numEmpires;
+			while ((num < limitStars) && (fillerAttempts++ < maxAttempts)) {
+				// Find a location
+				CtrPoint pt = getValidRandomSymmetric();
+				if (!isTooNearExistingSystem(pt.getX(), pt.getY(), fillerBuffer)) {
+					addSystem(pt.get());
+					// Then fill the symmetry
+					// get the stars
+					oppPt = getSymmetricSystems(pt);
+					//  no test needed, they are valid by symmetry.
+					for (CtrPoint opp : oppPt) {
+						addSystem(opp.get());
+						numFiller++;
+					}
+				}
+			}
+			numFiller *= empSystems.size();
+		}
+
+		return new int[] {attempts, fillerAttempts};
 	}
 	// \BR
 	private boolean valid(Point.Float p)	{ return valid(p.x, p.y); }
@@ -515,7 +550,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 		if (full)
 			maxStars = finalNumberStarSystems();
 		else
-			maxStars = min(MaxPreviewSystems, finalNumberStarSystems);
+			maxStars = min((int)(MaxPreviewSystems/maxPreviewFactor), finalNumberStarSystems);
 
 		// common symmetric and non symmetric initializer for generation
 		log("Galaxy shape: "+maxStars+ " stars"+ "  regionScale: "+regionScale+"   emps:"+numEmpires);
@@ -524,6 +559,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 
 		// systemBuffer() is minimum distance between any 2 stars
 		sysBuffer    = systemBuffer();
+		fillerBuffer = sysBuffer * fillerBufferFactor;
 		empireBuffer = empireBuffer();
 		// Orion buffer is 50% greater with minimum of 8 ly.
 		orionBuffer  = max(4 * sysBuffer, empireBuffer*3/2); // BR: Restored Vanilla values.
@@ -538,15 +574,18 @@ public abstract class GalaxyShape implements Base, Serializable {
 	}
 	private void quickInit() {
 		fullyInit = false;
-		init(min(MaxPreviewSystems, finalNumberStarSystems));
+		init(min((int)(MaxPreviewSystems/maxPreviewFactor), finalNumberStarSystems));
 	}
 	protected void init(int numStars) {
 		// System.out.println("========== GalaxyShape.init(): genAttempt = " + genAttempt);
 		numCompanions = opts.signedCompanionWorlds();
 		num = 0;
+		numFiller = 0;
 		homeStars = 0;
 		empSystems.clear();
-		maxStars = numStars;
+		maxStars	= numStars;
+		totalStars	= (int)(maxStars * maxPreviewFactor);
+		fillerStars	= totalStars - maxStars;
 
 		initWidthHeight();
 		float minSize = min(fullWidth, fullHeight);
@@ -555,7 +594,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 			regionScale = min(64, (int) (minSize / 6.0));
 			regions = new ShapeRegion[regionScale][regionScale];
 			// int regionStars = (int) (2.5*maxStars/regionScale); // BR: reserve no more needed
-			int regionStars = (int) (0.25*maxStars/regionScale); // BR: enough for dynamic arrays
+			int regionStars = (int) (0.25*totalStars/regionScale); // BR: enough for dynamic arrays
 			regionStars = max(2, regionStars); // BR: should never be a problem... But!
 			for (int i=0;i<regionScale;i++) {
 				for (int j=0;j<regionScale;j++)
@@ -563,8 +602,8 @@ public abstract class GalaxyShape implements Base, Serializable {
 			}
 		}
 		else {
-			x = new float[maxStars];
-			y = new float[maxStars];
+			x = new float[totalStars];
+			y = new float[totalStars];
 		}
 	}
 	protected void initWidthHeight() {
@@ -694,10 +733,11 @@ public abstract class GalaxyShape implements Base, Serializable {
 		}
 
 		// add other systems to fill out galaxy
-		int attempts = addUncolonizedSystems();
+		int attempts[] = addUncolonizedSystems();
+		// add other systems to fill out galaxy
 		addCompanionsWorld();
 		long tm1 = System.currentTimeMillis();
-		log("Galaxy generation: "+(tm1-tm0)+"ms  Regions: " + usingRegions+"  Attempts: ", str(attempts), "  stars:", str(num), "/", str(maxStars));
+		log("Galaxy generation: "+(tm1-tm0)+"ms  Regions: " + usingRegions+"  Attempts: ", str(attempts[0]), "/", str(attempts[1]), "  stars:", str(num), "/", str(maxStars));
 		return true;
 	}
 	protected int galaxyEdgeBuffer() {
@@ -738,7 +778,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 			companionWorlds[i] = new CompanionWorld(empSystems.get(i), numCompanions);
 		}
 	}
-	private int addUncolonizedSystems() {
+	private int[] addUncolonizedSystems() {
 		int maxAttempts = maxStars * 10;
 
 		// we've already generated 3(or more) stars for every empire so reduce their
@@ -751,9 +791,22 @@ public abstract class GalaxyShape implements Base, Serializable {
 			if (!isTooNearExistingSystem(pt.x,pt.y,false))
 				addSystem(pt);
 		}
+		// add filler systems
+		int fillerAttempts = 0;
+		if (fillerStars > 0) {
+			numFiller = 0;
+			int limitStars = totalStars - (empSystems.size() * homeStarNum);
+			while ((num < limitStars) && (fillerAttempts++ < maxAttempts)) {
+				findAnyValidLocation(pt);
+				if (!isTooNearExistingSystem(pt.x, pt.y, fillerBuffer)) {
+					addSystem(pt);
+					numFiller++;
+				}
+			}
+		}
 		// System.out.println("addUncolonizedSystems(): attempts/maxStars = "
 		//                    + (float)attempts/maxStars);
-		return attempts;
+		return new int[] {attempts, fillerAttempts};
 	}
 	private Point.Float findAnyValidLocation(Point.Float p) {
 		setRandom(p);

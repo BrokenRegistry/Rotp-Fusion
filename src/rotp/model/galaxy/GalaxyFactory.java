@@ -572,7 +572,12 @@ public final class GalaxyFactory implements Base {
 
 		// add all other systems, starting at index 1
 		if (opts.galaxyShape().isSymmetric()) { // BR: Symmetry management
-			for (int i=1; i<sh.numberStarSystems(); i+=sh.numEmpires()) {
+			final int numFillerSystems  = sh.numberFillerSystems();
+			final int numSystemsTotal   = sh.numberStarSystems();
+			final int numRegularSystems = numSystemsTotal - numFillerSystems;
+			final int numEmpires = sh.numEmpires();
+			int i;
+			for (i=1; i<numRegularSystems; i+=numEmpires) {
 				// first symmetry system
 				StarSystem refSys = StarSystemFactory.current().newSystem(g);
 				sh.coords(i, pt);
@@ -591,9 +596,28 @@ public final class GalaxyFactory implements Base {
 					g.addStarSystem(sys);
 				}
 			}
+			g.systemCountNoFillers(i);
+			for (; i<numSystemsTotal; i+=numEmpires) {
+				// first symmetry system
+				StarSystem refSys = StarSystemFactory.current().newFillerAsteroidSystem(g);
+				sh.coords(i, pt);
+				refSys.setXY(pt.x, pt.y);
+				g.addStarSystem(refSys);
+				// other symmetry systems
+				for (int k=i+1; k<i+sh.numEmpires(); k++) {
+					StarSystem sys = StarSystemFactory.current().copySystem(g, refSys);
+					sh.coords(k, pt);
+					sys.setXY(pt.x, pt.y);
+					g.addStarSystem(sys);
+				}
+			}
 		}
 		else {
-			for (int i=1;i<sh.numberStarSystems();i++) {
+			final int numFillerSystems  = sh.numberFillerSystems();
+			final int numSystemsTotal   = sh.numberStarSystems();
+			final int numRegularSystems = numSystemsTotal - numFillerSystems;
+			int i;
+			for (i=1; i<numRegularSystems; i++) {
 				StarSystem sys = StarSystemFactory.current().newSystem(g);
 				sh.coords(i, pt);
 				sys.setXY(pt.x, pt.y);
@@ -602,6 +626,13 @@ public final class GalaxyFactory implements Base {
 						&& galaxy().tooCloseToHomeWorld(sys, opts.selectedMinDistArtifactPlanet()))
 					sys.planet().removeArtifact();
 				sys.addMonster();
+				g.addStarSystem(sys);
+			}
+			g.systemCountNoFillers(i);
+			for (; i<numSystemsTotal; i++) {
+				StarSystem sys = StarSystemFactory.current().newFillerAsteroidSystem(g);
+				sh.coords(i, pt);
+				sys.setXY(pt.x, pt.y);
 				g.addStarSystem(sys);
 			}
 		}

@@ -11,6 +11,11 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-21 (BR)
+- Fixed "null pointer exception" error occuring when the cost of a non existent fighter design was requested.
+   - A new fighter design is build instead of returning "null".
+- New option that add "filler" asteroid star systems to makes the galaxy more "realistic"
+
 26-10-20 (BR)
 - Fixed an issue where "system discovery", "Colonize", "Combat", or "Bombard" windows would sometimes display the panorama of the previous planet.
 

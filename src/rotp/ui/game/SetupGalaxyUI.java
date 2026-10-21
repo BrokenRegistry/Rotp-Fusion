@@ -180,16 +180,16 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	private PolyBox	shapeBoxR		= new PolyBox(RIGHT_ARROW);
 	private Box		mapOption1Box;
 	private PolyBox	mapOption1BoxL	= new PolyBox(LEFT_ARROW);
-	private PolyBox	mapOption1BoxR	= new PolyBox(RIGHT_ARROW);			 
+	private PolyBox	mapOption1BoxR	= new PolyBox(RIGHT_ARROW);
 	private Box		mapOption2Box;
 	private PolyBox	mapOption2BoxL	= new PolyBox(LEFT_ARROW);
-	private PolyBox	mapOption2BoxR	= new PolyBox(RIGHT_ARROW);			 
+	private PolyBox	mapOption2BoxR	= new PolyBox(RIGHT_ARROW);
 	private Box		mapOption3Box;
 	private PolyBox	mapOption3BoxL	= new PolyBox(LEFT_ARROW);
-	private PolyBox	mapOption3BoxR	= new PolyBox(RIGHT_ARROW);			 
+	private PolyBox	mapOption3BoxR	= new PolyBox(RIGHT_ARROW);
 	private Box		mapOption4Box;
 	private PolyBox	mapOption4BoxL	= new PolyBox(LEFT_ARROW);
-	private PolyBox	mapOption4BoxR	= new PolyBox(RIGHT_ARROW);			 
+	private PolyBox	mapOption4BoxR	= new PolyBox(RIGHT_ARROW);
 	private Box		sizeOptionBox; // BR:
 	private PolyBox	sizeOptionBoxL	= new PolyBox(LEFT_ARROW);
 	private PolyBox	sizeOptionBoxR	= new PolyBox(RIGHT_ARROW);
@@ -1136,7 +1136,13 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		int galaxyBoxW = boxW-s40;
 		int y3 = galaxyY+galaxyH+s16;
 		int numSystem = opts.galaxyShape().finalNumberStarSystems();
-		String systemsLbl = text("SETUP_GALAXY_NUMBER_SYSTEMS", numSystem);
+		String numStr = Integer.toString(numSystem);
+		float fillerFactor = opts.fillerSystemsFactor();
+		if (fillerFactor > 0) {
+			int fillers = numSystem + (int)(numSystem * fillerFactor);
+			numStr += " (" + fillers + ")";
+		}
+		String systemsLbl = text("SETUP_GALAXY_NUMBER_SYSTEMS", numStr);
 		int sw3 = g.getFontMetrics().stringWidth(systemsLbl);
 		int x3 = rightBoxX+s20+((galaxyBoxW/2)-sw3)/2;
 		drawString(g,systemsLbl, x3,y3);

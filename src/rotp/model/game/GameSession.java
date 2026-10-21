@@ -254,7 +254,6 @@ public final class GameSession implements Base, Serializable {
             instance(restored);
             restored.options().setAsGame();
             restored.restoreHotSeatPolicies();
-//			restored.rulesetManager().setAsGameMode(); // TODO BR: ### VALIDATE HOTSEAT
             Rotp.rand(copyCheckpointRandom(restored.inProcessCheckpointRandom));
             restored.galaxy.validateOnLoad(false);
             // Transient maintenance caches deserialize as zero, which is a valid
@@ -1046,7 +1045,7 @@ public final class GameSession implements Base, Serializable {
 	public static float damageBonus()	{ return 1.0f; }
 	public static float researchBonus()	{ return 1.0f; }
     public float researchMapSizeAdjustment() {
-        float stars = galaxy().numStarSystems();
+        float stars = galaxy().systemCountNoFillers();
         int races = galaxy().numOpponents()+2;
         float targetRatio = 12.0f;
         return sqrt(stars/races/targetRatio);

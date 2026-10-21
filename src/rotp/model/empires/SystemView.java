@@ -304,7 +304,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     	int color = 0;
     	if (planet.isResourceNormal())
     		color = flagAssetNormalColor.getIndex();
-    	if (NONE.equals(planet.type().key())) // Asteroid won't be shown as Normal
+		if (planet.type().isAsteroids()) // Asteroid won't be shown as Normal
     		color = flagNoneColor.getIndex();
 
     	// For backward compatibility.
@@ -327,7 +327,7 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     	int color = 0;
     	if (planet.isEnvironmentNormal())
     		color = flagEnvNormalColor.getIndex();
-    	if (NONE.equals(planet.type().key()))
+		if (planet.type().isAsteroids())
     		color = flagEnvNoneColor.getIndex();
     	else if (planet.isEnvironmentNone())
     		color = flagEnvNoneColor.getIndex();
@@ -342,9 +342,9 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     private void setTypeFlagColor(Planet planet, int id) {
     	int color;
 		switch (planet.type().key()) {
-	    case NONE:
-	    	color = flagAsteroidColor.getIndex();
-	    	break;
+		case NONE:
+			color = flagAsteroidColor.getIndex();
+			break;
 	    case RADIATED:
 	    	color = flagRadiatedColor.getIndex();
 	    	break;
@@ -391,9 +391,9 @@ public class SystemView implements IMappedObject, IFlagOptions, Base, Serializab
     private void setTechFlagColor(Planet planet, int id) {
     	int color;
 		switch (planet.type().key()) {
-	    case NONE:
-	    	color = flagTechNoneColor.getIndex();
-	    	break;
+		case NONE:
+			color = flagTechNoneColor.getIndex();
+			break;
 	    case RADIATED:
 	    	color = flagTechRadiatedColor.getIndex();
 	    	break;

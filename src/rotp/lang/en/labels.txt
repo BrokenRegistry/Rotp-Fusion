@@ -3463,6 +3463,11 @@ SETTINGS_MOD_END_OF_GAME_TURN_POWER			| Total Power
 SETTINGS_MOD_END_OF_GAME_TURN_DESC			| Only active when the "→HK_END_OF_GAME←" is not set to "→SETTINGS_MOD_END_OF_GAME_NORMAL←"<br>The turn at which the game will end, and a winner will be declared.
 SETTINGS_MOD_END_OF_GAME_TURN				| Max Game Turns: %1
 
+SETTINGS_MOD_FILLER_SYSTEMS_PCT_HELP		| For players who enjoy a densely populated galaxy but don't want every turn to take an eternity, this option allows for the addition of star systems containing asteroids that will never be converted into planets by random events.<br>The galaxy is generated as usual, and then these "filler" stars are added.<br>It is therefore recommended to choose a reasonable galaxy size when this option is enabled.<br>These "filler" stars are not taken into account in the calculation of the research factor.
+SETTINGS_MOD_FILLER_SYSTEMS_PCT_DESC		| Percentage of "filler" star systems to add to the galaxy<br>Asteroids only; these will never be converted by random events.
+SETTINGS_MOD_FILLER_SYSTEMS_PCT				| "filler" star systems: %1%
+SETTINGS_MOD_FILLER_SYSTEMS_PCT_MAP			| "filler": %1%
+
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR_HELP | To adjust the Empire Home worlds spreading; (Vanilla value is 100%).<br>A small value will allow home worlds to be closer, resulting in a great variety of distances.<br>Increasing this value will push away the home worlds, resulting in more uniformized distances.<br>This parameter can be adjusted on the Galaxy map preview.
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR_DESC | Minimum distance between Empire Home worlds Factor in %.(Not allowed on "complex galaxies")
 SETTINGS_MOD_EMPIRES_SPREADING_FACTOR      | Empires Spreading: %1%

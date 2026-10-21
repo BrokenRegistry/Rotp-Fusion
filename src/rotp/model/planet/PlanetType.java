@@ -32,12 +32,12 @@ import rotp.util.ColorMap;
 
 public class PlanetType implements Base {
     private static final int MAX_SHIPS = 4;
-    public static final int TERRAIN_MAX = 10000000; // number of possible terrains
+	static final int TERRAIN_MAX = 10000000; // number of possible terrains
 
     private static final HashMap<String, PlanetType> typeMap = new HashMap<>();
     public static PlanetType keyed(String s)       { return typeMap.get(s); }
     public static Collection<PlanetType> allTypes(){ return typeMap.values(); }
-    public static void addType(PlanetType r)       { typeMap.put(r.key(), r); }
+	static void addType(PlanetType r)			{ typeMap.put(r.key(), r); }
 
     public static final String NONE = "PLANET_NONE";
     public static final String RADIATED = "PLANET_RADIATED";
@@ -69,22 +69,22 @@ public class PlanetType implements Base {
     public static final int HOSTILITY_JUNGLE = 1;
     public static final int HOSTILITY_TERRAN = 0;
 
-    public static final List<String> planetTypes = Arrays.asList(new String[] {
-    			NONE,
-    			RADIATED,
-    			TOXIC,
-    			INFERNO,
-    			DEAD,
-    			TUNDRA,
-    			BARREN,
-    			MINIMAL,
-    			DESERT,
-    			STEPPE,
-    			ARID,
-    			OCEAN,
-    			JUNGLE,
-    			TERRAN
-    			});
+	public static final List<String> planetTypes = Arrays.asList(new String[] {
+		NONE,
+		RADIATED,
+		TOXIC,
+		INFERNO,
+		DEAD,
+		TUNDRA,
+		BARREN,
+		MINIMAL,
+		DESERT,
+		STEPPE,
+		ARID,
+		OCEAN,
+		JUNGLE,
+		TERRAN
+	});
 
     private String key;
     private String descBiological;
@@ -119,9 +119,9 @@ public class PlanetType implements Base {
             sphereResolution = new HashMap<>();
         return sphereResolution;
     }
-    public Sphere2D smallSphere(Planet p)               { return smallSpheres().get(p.terrainSeed());  }
-    public void smallSphere(Sphere2D sph, Planet p)     { smallSpheres().put(p.terrainSeed(), sph); }
-    public int sphereResolution(Planet p)         {
+	Sphere2D smallSphere(Planet p)				{ return smallSpheres().get(p.terrainSeed());  }
+	void smallSphere(Sphere2D sph, Planet p)	{ smallSpheres().put(p.terrainSeed(), sph); }
+	int sphereResolution(Planet p)	{
         if (sphereResolution().containsKey(p.terrainSeed()))
             return sphereResolution().get(p.terrainSeed());
         else
@@ -135,38 +135,38 @@ public class PlanetType implements Base {
     public String toString()                  { return concat("PlanetType: ", key); }
 
     public String key()                       { return key; }
-    public void key(String s)                 { key = s; }
-    public String descBiological()            { return descBiological; }
-    public void descBiological(String s)      { descBiological = s; }
-    public String descSilicoid()              { return descSilicoid; }
-    public void descSilicoid(String s)        { descSilicoid = s; }
+	void key(String s)				{ key = s; }
+	private String descBiological()	{ return descBiological; }
+	void descBiological(String s)	{ descBiological = s; }
+	private String descSilicoid()	{ return descSilicoid; }
+	void descSilicoid(String s)		{ descSilicoid = s; }
     public int hostility()                    { return hostility; }
-    public void hostility(int i)              { hostility = i; }
-    public String terrainKey()                { return terrainKey; }
-    public void terrainKey(String s)          { terrainKey = s; }
-    public String panoramaKey()               { return panoramaKey; }
-    public void panoramaKey(String s)         { panoramaKey = s; }
-    public int minSize()                      { return minSize; }
-    public void minSize(int i)                { minSize = i; }
-    public int maxSize()                      { return maxSize; }
-    public void maxSize(int i)                { maxSize = i; }
-    public void landscapeKeys(String s)       { landscapeKeys.addAll(substrings(s, ',')); }
-    public List<String> atmosphereKeys()      { return atmosphereKeys; }
-    public List<String> cloudKeys()           { return cloudKeys; }
+	void hostility(int i)			{ hostility = i; }
+//	String terrainKey()				{ return terrainKey; }
+	void terrainKey(String s)		{ terrainKey = s; }
+//	String panoramaKey()	{ return panoramaKey; }
+	void panoramaKey(String s)		{ panoramaKey = s; }
+	int minSize()					{ return minSize; }
+	void minSize(int i)				{ minSize = i; }
+	int maxSize()					{ return maxSize; }
+	void maxSize(int i)				{ maxSize = i; }
+	void landscapeKeys(String s)	{ landscapeKeys.addAll(substrings(s, ',')); }
+//	List<String> atmosphereKeys()	{ return atmosphereKeys; }
+//	List<String> cloudKeys()		{ return cloudKeys; }
 
     public int shipX(int i)                   { return shipX[i]; }
-    public void shipX(int i, int val)         { shipX[i] = val; }
+	void shipX(int i, int val)		{ shipX[i] = val; }
     public int shipY(int i)                   { return shipY[i]; }
-    public void shipY(int i, int val)         { shipY[i] = val; }
+	void shipY(int i, int val)		{ shipY[i] = val; }
     public int shipW(int i)                   { return shipW[i]; }
-    public void shipW(int i, int val)         { shipW[i] = val; }
+	void shipW(int i, int val)		{ shipW[i] = val; }
 
-    public void cloudKeys(String s) {
+	void cloudKeys(String s)		{
         cloudKeys.clear();
         if (!s.trim().isEmpty())
             cloudKeys.addAll(substrings(s, ','));
     }
-    public void atmosphereKeys(String s) {
+	void atmosphereKeys(String s)	{
         atmosphereKeys.clear();
         if (!s.trim().isEmpty())
             atmosphereKeys.addAll(substrings(s, ','));
@@ -174,9 +174,9 @@ public class PlanetType implements Base {
 
     public String name()                      { return text(key); }
     public boolean hostileToTerrans()         { return hostility >= HOSTILITY_BARREN; }
-    public int randomTerrainSeed()            { return random(terrainSeeds); }
+	int randomTerrainSeed()			{ return random(terrainSeeds); }
 
-    public boolean isAsteroids()              { return key.equals(NONE); }
+	public boolean isAsteroids()	{ return key.equals(NONE); }
 
     public String description(Empire emp) {
         if (emp.ignoresPlanetEnvironment())
@@ -196,24 +196,20 @@ public class PlanetType implements Base {
             panoramaImage = newBufferedImage(currentFrame(panoramaKey));
         return panoramaImage;
     }
-    public String randomLandscapeKey() {
-        return random(landscapeKeys);
-    }
+	String randomLandscapeKey()		{ return random(landscapeKeys); }
     public Image randomCloudImage() {
         return cloudKeys.isEmpty() ? null : image(random(cloudKeys));
     }
     public Image atmosphereImage() {
         return atmosphereKeys.isEmpty() ? null : image(atmosphereKeys.get(0));
     }
-    public int randomSize() {
-        return 5* roll(minSize()/5, maxSize()/5);
-    }
+	int randomSize()	{ return 5* roll(minSize()/5, maxSize()/5); }
     public ColorMap colorMap()  {
         if (colorMap == null)
             colorMap = new ColorMap();
         return colorMap;
     }
-    public float randomOceanPct() {
+	float randomOceanPct()	{
         switch(key()) {
             case OCEAN:
                 return random(0.8f,1.0f);
@@ -240,7 +236,7 @@ public class PlanetType implements Base {
                 return 0.0f;
         }
     }
-    public int randomIceLevel() {
+	int randomIceLevel()	{
         switch(key()) {
             case OCEAN:
                 return roll(10,30);
@@ -271,7 +267,7 @@ public class PlanetType implements Base {
                 return  roll(0,20);
         }
     }
-    public int randomCloudThickness() {
+	int randomCloudThickness()	{
         // inferno 600+
         // none = 0
         // wisps = 300-350
@@ -301,7 +297,7 @@ public class PlanetType implements Base {
                 return  0;
         }
     }
-    public int[] asteroidProbability(String type) {
+	int[] asteroidProbability(String type)	{
     	int typeIdx  = planetTypes.indexOf(type);
     	if (typeIdx == 0)
     		return new int[] {0, 0, 100};

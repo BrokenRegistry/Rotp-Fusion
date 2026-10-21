@@ -53,9 +53,9 @@ public class RandomEventPrecursorRelic extends AbstractRandomEvent {
     public void trigger(Empire emp) {
         // find all star systems that have no planets
         List<StarSystem> systems = new ArrayList<>();
-        for (StarSystem sys : galaxy().starSystems())
-            if (sys.planet().type().isAsteroids())
-            	systems.add(sys);
+		for (StarSystem sys : galaxy().starSystems())
+			if (sys.planet().type().isAsteroids() && !sys.planet().isFillerAsteroid())
+				systems.add(sys);
 
         if (!systems.isEmpty()) {
             float richArtifactProb = 0.02f; // BR: to replace the nebulae fixed bug

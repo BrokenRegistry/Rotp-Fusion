@@ -21,6 +21,7 @@ public final class PreGameOptions extends AbstractOptionsSubUI {
 				galaxyAge, starDensity,
 				empiresSpreadingFactor,
 				looseNeighborhood,
+				fillerSystemsPct,
 				minStarsPerEmpire, prefStarsPerEmpire, dynStarsPerEmpire,
 
 				HEADER_SPACER_50,

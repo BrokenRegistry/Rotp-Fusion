@@ -44,6 +44,11 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-21 (BR)
+- Fixed "null pointer exception" error occuring when the cost of a non existent fighter design was requested.
+   - A new fighter design is build instead of returning "null".
+- New option that add "filler" asteroid star systems to makes the galaxy more "realistic"
+
 26-10-20 (BR)
 - Fixed an issue where "system discovery", "Colonize", "Combat", or "Bombard" windows would sometimes display the panorama of the previous planet.
 
@@ -59,13 +64,6 @@ java -jar target/rotp-<timestamp>-mini.jar
   - The same species will no longer be synchronized.
   - The selected diplomat will speak with the player.
 - Design UI: fixed design boxes display refresh.
-
-26-10-17 (BR)
-- Load/save user option button: Right click to open the file chooser.
-- File chooser: Fixed button text and color for French speaking players.
-
-26-10-15 (BR)
-- Galaxy Map: Disabled the action of the left icons when they should not be used.
 
 
 ### [Features Historic](FeaturesChanges.md)
