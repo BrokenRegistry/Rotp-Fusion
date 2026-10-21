@@ -389,8 +389,8 @@ public class AIShipDesigner implements Base, ShipDesigner {
                 }
             }
         }
-       
-        ShipDesign currDesign = BestDesignToFight();
+
+        ShipDesign currDesign = getBestDesignToFight();
 
         // check for an available slot for the new design
         int slot = lab.availableDesignSlot();
@@ -786,9 +786,15 @@ public class AIShipDesigner implements Base, ShipDesigner {
         }
         return repeller;
     }
-    @Override
-    public ShipDesign BestDesignToFight()
-    {
+	@Override public ShipDesign BestDesignToFight() {
+		bestDesignToFight = getBestDesignToFight();
+		if (bestDesignToFight == null) {
+			updateFighterDesign();	// BR: I trust this method to create a new design...
+			bestDesignToFight = getBestDesignToFight();
+		}
+		return bestDesignToFight;
+	}
+    private ShipDesign getBestDesignToFight() {
         if(bestDesignToFight != null)
             return bestDesignToFight;
         ShipDesignLab lab = lab();
