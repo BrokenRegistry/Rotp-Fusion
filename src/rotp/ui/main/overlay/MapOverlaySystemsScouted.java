@@ -98,8 +98,8 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
         parent.map().resetRangeAreas();
         parent.mapFocus(nextSystem);
         parent.clickedSprite(nextSystem);
-        parent.repaint();
 		refreshImg = true; // BR: just in case of "refresh being called during the init phase
+        parent.repaint();
     }
     private void nextSystem() {
         systemIndex++;
@@ -208,8 +208,24 @@ public final class MapOverlaySystemsScouted implements IMapOverlay {
                 p.drawStar((Graphics2D) imgG, sys.starType(), s60, boxW*4/5, (boxH-boxH1)/3);
                 imgG.dispose();
             }
-            else 
-                planetImg = sys.planet().type().panoramaImage();
+			else {
+				planetImg = sys.planet().type().panoramaImage();
+				Empire emp = pl.sv.empire(sys.id);
+				if (emp != null) {
+					BufferedImage fortImg = emp.fortress(sys.colony().fortressNum());
+					int planetW = planetImg.getWidth();
+					int planetH = planetImg.getHeight();
+					int fortW = scaled(fortImg.getWidth());
+					int fortH = scaled(fortImg.getHeight());
+					int fortScaleW = fortW*planetW/w;
+					int fortScaleH = fortH*planetW/w;
+					int fortX = planetImg.getWidth()-fortScaleW;
+					int fortY = planetImg.getHeight()-fortScaleH+(planetH/5);
+					Graphics imgG = planetImg.createGraphics();
+					imgG.drawImage(fortImg, fortX, fortY, fortX+fortScaleW, fortY+fortScaleH, 0, 0, fortImg.getWidth(), fortImg.getHeight(), null);
+					imgG.dispose();
+				}
+			}
 			refreshImg = false;
         }
         g.drawImage(planetImg, boxX, boxY+boxH1, boxW, boxH-boxH1, null);

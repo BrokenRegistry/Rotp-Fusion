@@ -187,14 +187,14 @@ public class PlanetType implements Base {
     public BufferedImage terrainImage()           {
         if (terrainImage == null)
             terrainImage = newBufferedImage(currentFrame(terrainKey));
-        return terrainImage;
+        return newBufferedImage(terrainImage);
     }
     public BufferedImage panoramaImage()           {
         if (panoramaKey == null)
             return null;
         if (panoramaImage == null)
             panoramaImage = newBufferedImage(currentFrame(panoramaKey));
-        return panoramaImage;
+        return newBufferedImage(panoramaImage);
     }
 	String randomLandscapeKey()		{ return random(landscapeKeys); }
     public Image randomCloudImage() {

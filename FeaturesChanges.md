@@ -501,6 +501,10 @@
 
 ### Guide and Help:
 
+- Fixed an issue where the wrong city was displayed in the "Scouted Systems" windows (which, incidentally, should not even contain this element).
+  - The "Bombardment" window was causing this unprotected panoramic image to be altered.
+  - The panoramic image is now protected against any alteration.
+  - The colony image (if one exists) is now also displayed in the "Explored Systems" windows.
 - New advisor TTV and ROI content while hovering Production field.
 - Fixed Spy Overspend OFF "creating money"
 - Budget:

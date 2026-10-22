@@ -246,11 +246,11 @@ public final class MapOverlayBombardPrompt implements IMapOverlay, IVIPListener 
             }
             else {
                 planetImg = sys.planet().type().panoramaImage();
-                int planetW = planetImg.getWidth();
-                int planetH = planetImg.getHeight();
                 Empire emp = pl.sv.empire(sysId);
                 if (emp != null) {
                     BufferedImage fortImg = emp.fortress(sys.colony().fortressNum());
+					int planetW = planetImg.getWidth();
+					int planetH = planetImg.getHeight();
                     int fortW = scaled(fortImg.getWidth());
                     int fortH = scaled(fortImg.getHeight());
                     int fortScaleW = fortW*planetW/w;

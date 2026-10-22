@@ -2,6 +2,12 @@
 
 ## What's New
 
+26-10-22 (BR)
+- Fixed an issue where the wrong city was displayed in the "Scouted Systems" windows (which, incidentally, should not even contain this element).
+  - The "Bombardment" window was causing this unprotected panoramic image to be altered.
+  - The panoramic image is now protected against any alteration.
+  - The colony image (if one exists) is now also displayed in the "Explored Systems" windows.
+
 26-10-21 (BR)
 - Fixed "null pointer exception" error occuring when the cost of a non existent fighter design was requested.
    - A new fighter design is build instead of returning "null".
