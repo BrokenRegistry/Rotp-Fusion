@@ -408,7 +408,9 @@ public class AIShipDesigner implements Base, ShipDesigner {
 
         // find best hypothetical design vs current targets
         ShipDesign newDesign = newFighterDesign(0);
-        
+		if (newDesign == null)
+			newDesign = lab.startingFighterDesign();
+
         if(currDesign == null)
         {
             if(slot < 0)

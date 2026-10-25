@@ -25,7 +25,7 @@ public abstract class ParamFleetAuto extends ParamList	{
 	private static final String FLEET_AUTO_TEAMS	= "FLEET_AUTO_SEND_TEAMS";	// Teamed design
 	private static final String FLEET_AUTO_ALL		= "FLEET_AUTO_SEND_ALL";	// All designs
 	private static final String FLEET_AUTO_ANY		= "FLEET_AUTO_SEND_ANY";	// Old Way
-	
+
 	public ParamFleetAuto(String name, String defaultCfgLabel)	{
 		super(IGovOptions.GOV_UI, name, defaultCfgLabel);
 		showFullGuide(true);
@@ -109,13 +109,13 @@ public abstract class ParamFleetAuto extends ParamList	{
 			// Cheapest to most expensive
 			// sort ships fastest to slowest, send out fastest Attack ships first
 			sort((d1, d2) -> {
-				int rangeDiff = Boolean.compare(d1.isExtendedRange(), d2.isExtendedRange());
+				int rangeDiff = Boolean.compare(d1.isExtendedRange, d2.isExtendedRange);
 				if (rangeDiff != 0)
 					return rangeDiff;
 				// desc order
-				float warpDiff = d2.warpSpeed() - d1.warpSpeed();
+				float warpDiff = d2.warpSpeed - d1.warpSpeed;
 				// ascendent order, cheapest first
-				int costDiff = d1.cost() - d2.cost();
+				int costDiff = d1.cost - d2.cost;
 				if (warpDiff != 0)
 					return  (int) Math.signum(warpDiff);
 				else
@@ -126,61 +126,55 @@ public abstract class ParamFleetAuto extends ParamList	{
 			// non-extended range to extended range
 			// least hostile to most hostile colony bases, send out least hostile colony bases first
 			// sort ships fastest to slowest, send out fastest colony ships first
-			sort((fleet1, fleet2) -> {
-				int rangeDiff = Boolean.compare(fleet1.isExtendedRange(), fleet2.isExtendedRange());
-				// desc order
-
-				// Sort by range if not equals
-				if (rangeDiff != 0)
-					return rangeDiff;
-
-				// Sort by environment if not equals
-				int envDiff = fleet1.environment() - fleet2.environment();
-				if (envDiff != 0)
-					return envDiff;
-
-				// Sort by speed if not equals
-				float warpDiff = fleet2.warpSpeed() - fleet1.warpSpeed();
-				// ascendent order, cheapest first
-				int costDiff = fleet1.cost() - fleet2.cost();
-				if (warpDiff != 0)
-					return (int) Math.signum(warpDiff);
-				else
-					// then sort by cost.
-					return costDiff;
-			});
+			int maxCost = 0;
+			for (SubFleet sf : this)
+				if (sf.cost > maxCost)
+					maxCost = sf.cost;
+			// weight the lower the better
+			for (SubFleet sf : this) {
+				// non-extended range first
+				sf.colonizeWeight = sf.isExtendedRange ? 0 : 10000;
+				// least hostile first
+				sf.colonizeWeight += sf.environment * 1000;
+				// fastest first (max speed = 275;
+				sf.colonizeWeight -= sf.warpSpeed * 2;
+				// cheapest first
+				sf.colonizeWeight += sf.cost/maxCost;
+			}
+			sort((sf1, sf2) -> (int) Math.signum(sf1.warpSpeedValue - sf2.warpSpeedValue));
 		}
 		void sortByWarpSpeed()	{
-			sort((sf1, sf2) ->  {
-				float warpDiff = sf2.warpSpeed() - sf1.warpSpeed();
-				// Quick first
-				if (warpDiff != 0)
-					return (int) Math.signum(warpDiff);
+			int maxCost = 0;
+			for (SubFleet sf : this)
+				if (sf.cost > maxCost)
+					maxCost = sf.cost;
+			// value the higher the better
+			for (SubFleet sf : this) {
+				// Quick first			// Expensive first (colony or armed scout)
+				sf.warpSpeedValue = sf.warpSpeed * 10 + sf.cost/maxCost;
 				// Short range first
-				int rangeDiff = Boolean.compare(sf1.isExtendedRange(), sf2.isExtendedRange());
-				int costDiff = sf2.cost() - sf1.cost(); // send colony first
-				if (rangeDiff != 0) 
-					return rangeDiff;
-				else // Expensive first (colony or armed scout)
-					return costDiff;
-			});
+				if (!sf.isExtendedRange)
+					sf.warpSpeedValue += 5;
+			}
+			sort((sf1, sf2) -> (int) Math.signum(sf2.warpSpeedValue - sf1.warpSpeedValue));
 		}
 		void sortByTimeToSys(int sysId)	{
 			StarSystem sys = empire.sv.system(sysId);
-			sort((sf1, sf2) -> (int)Math.signum(
-					sf1.fleet.travelTimeAdjusted(sys, sf1.warpSpeed) -
-					sf2.fleet.travelTimeAdjusted(sys, sf2.warpSpeed)) );
+			for (SubFleet subFleet : this)
+				subFleet.timeToSys = subFleet.fleet.travelTimeAdjusted(sys, subFleet.warpSpeed);
+
+			sort( (sf1, sf2) -> (int)Math.signum(sf1.timeToSys - sf2.timeToSys) );
 		}
 		float minWarpSpeed()	{
 			float minWarpSpeed = -1;
 			for (SubFleet subFleet : this)
-				if (minWarpSpeed < 0 || subFleet.warpSpeed() < minWarpSpeed)
-					minWarpSpeed = subFleet.warpSpeed();
+				if (minWarpSpeed < 0 || subFleet.warpSpeed < minWarpSpeed)
+					minWarpSpeed = subFleet.warpSpeed;
 			return minWarpSpeed;
 		}
 		boolean hasExtendedRange()	{
 			for (SubFleet subFleet : this)
-				if (subFleet.isExtendedRange())
+				if (subFleet.isExtendedRange)
 					return true;
 			return false;
 		}
@@ -203,15 +197,30 @@ public abstract class ParamFleetAuto extends ParamList	{
 		}
 		return false;
 	}
-	final record SubFleet (
-			ShipFleet fleet,
-			int[] shipCounts,
-			float warpSpeed,
-			int cost,
-			int environment,
-			boolean isExtendedRange)	{
-		private int numShips()			{ return IntStream.of(shipCounts()).sum(); }
-		boolean entireFleet()			{ return fleet().numShips() == numShips(); }
+	final class SubFleet {
+		final ShipFleet fleet;
+		final int[] shipCounts;
+		final float warpSpeed;
+		private final int cost;
+		private final int environment;
+		final boolean isExtendedRange;
+		private float warpSpeedValue;
+		private float colonizeWeight;
+		float timeToSys;
+
+		private SubFleet(ShipFleet fl, int[] counts, float wSpeed, int cost, int env, boolean isExtRange)	{
+			fleet = fl;
+			shipCounts	= counts;
+			warpSpeed	= wSpeed;
+			this.cost	= cost;
+			environment	= env;
+			isExtendedRange	= isExtRange;
+			colonizeWeight	= Float.MAX_VALUE;
+			warpSpeedValue	= Float.MAX_VALUE;
+			timeToSys		= Float.MAX_VALUE;
+		}
+		private int numShips()			{ return IntStream.of(shipCounts).sum(); }
+		boolean entireFleet()			{ return fleet.numShips() == numShips(); }
 		private boolean canColonize(PlanetType pt)	{
 			if (pt == null)
 				return false;
@@ -290,38 +299,6 @@ public abstract class ParamFleetAuto extends ParamList	{
 			buildNextFleet();
 			return nextCounts != null;
 		}
-/*		public boolean fitForSystem(int id)	{
-			return new AutoSendFleet(fleet, id).hasSubFleet();
-		}
-		public boolean alreadyFit(ShipFleet fleet, int sysId)	{
-			return new AutoSendFleet(fleet, sysId).hasSubFleet();
-		}
-		public int subFleetCount()			{ return fleetCount; }
-		public ShipFleet fleet()			{ return fleet; }
-		public int warpSpeed()				{
-			if (buildNextFleet())
-				return warpSpeed;
-			System.err.println("Error: Empty autoSendFleet asked for speed");
-			return 1;
-		}
-		public boolean isExtendedRange()	{
-			if (buildNextFleet())
-				return isExtRange;
-			System.err.println("Error: Empty autoSendFleet asked for extendedRange");
-			return false;
-		}
-		public int[] getNextCounts()		{
-			if (nextCounts == null)
-				buildNextFleet();
-			if (nextCounts != null) {
-				int[]  counts = nextCounts;
-				nextCounts = null;
-				fleetCount--;
-				return counts;
-			}
-			else 
-				return new int[MAX_DESIGNS];
-		} */
 		private boolean buildNextFleet()	{
 			if (nextCounts != null)
 				return true;

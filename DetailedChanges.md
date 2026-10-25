@@ -2,6 +2,11 @@
 
 ## What's New
 
+26-10-25 (BR)
+- Improved automated exploration and colonization functions for scenarios where the number of ships is lower than the number of systems to be visited.
+  - Previously, the first ship would select the best target without considering whether another ship might be closer to it.
+  - Now, the trajectories of all ships are analyzed to determine the optimal pairing.
+
 26-10-22 (BR)
 - Fixed an issue where the wrong city was displayed in the "Scouted Systems" windows (which, incidentally, should not even contain this element).
   - The "Bombardment" window was causing this unprotected panoramic image to be altered.

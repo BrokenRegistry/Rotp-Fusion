@@ -546,6 +546,9 @@
 
 ### Fixes:
 
+- Improved automated exploration and colonization functions for scenarios where the number of ships is lower than the number of systems to be visited.
+  - Previously, the first ship would select the best target without considering whether another ship might be closer to it.
+  - Now, the trajectories of all ships are analyzed to determine the optimal pairing.
 - Fixed "null pointer exception" error occuring when the cost of a non existent fighter design was requested.
    - A new fighter design is build instead of returning "null".
 - Fixed an issue where "system discovery", "Colonize", "Combat", or "Bombard" windows would sometimes display the panorama of the previous planet.

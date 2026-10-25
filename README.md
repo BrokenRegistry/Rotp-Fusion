@@ -44,6 +44,11 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-25 (BR)
+- Improved automated exploration and colonization functions for scenarios where the number of ships is lower than the number of systems to be visited.
+  - Previously, the first ship would select the best target without considering whether another ship might be closer to it.
+  - Now, the trajectories of all ships are analyzed to determine the optimal pairing.
+
 26-10-22 (BR)
 - Fixed an issue where the wrong city was displayed in the "Scouted Systems" windows (which, incidentally, should not even contain this element).
   - The "Bombardment" window was causing this unprotected panoramic image to be altered.
@@ -57,19 +62,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 26-10-20 (BR)
 - Fixed an issue where "system discovery", "Colonize", "Combat", or "Bombard" windows would sometimes display the panorama of the previous planet.
-
-26-10-19 (BR)
-- Fixed an very old bug in the "next turn" waste computing.
-  - Waste is now added at the time of production calculation, before industry can change the robotic level and distort the value calculated later by ecology.
-- The governor will check for Rich-Artefact type planest and will not apply conflicting request.
-
-26-10-18 (BR)
-- Fixed Random Event Gauntlet Relic: Transports and Rebels will also be impacted.
-- Council UI: Fixed the animation of diplomats.
-- Empires UI: Fixed the animation of diplomats, which only moved when the mouse was constantly moving...
-  - The same species will no longer be synchronized.
-  - The selected diplomat will speak with the player.
-- Design UI: fixed design boxes display refresh.
 
 
 ### [Features Historic](FeaturesChanges.md)

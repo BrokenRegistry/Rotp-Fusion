@@ -22,7 +22,7 @@ import rotp.model.planet.PlanetType;
 import rotp.util.Base;
 
 // BR: Moved Governor Ship automation from empire to here
-public class AIFleetCommander implements Base, FleetCommander {
+public final class AIFleetCommander implements Base, FleetCommander {
 	private static final float MAX_ALLOWED_SHIP_MAINT = 0.35f;
 	private final Empire empire;
 	public AIFleetCommander(Empire e)	{ empire = e; }
@@ -66,11 +66,12 @@ public class AIFleetCommander implements Base, FleetCommander {
 	}
 	private interface TargetsSorter	{
 		void sort(Integer sourceSystem, List<Target> targets, float warpSpeed);
+		void sortTravels(List<FleetPlan> fleetPlans);
 	}
 	/**
 	 * Sort fleets by value and to be as close to target system as possible
 	 */
-	private class ColonyPriority implements TargetsSorter	{
+	private final class ColonyPriority implements TargetsSorter	{
 		private final float secondColonyWeight;
 		private final float distanceWeight;
 		private final boolean autoColonyMultiple;
@@ -100,18 +101,42 @@ public class AIFleetCommander implements Base, FleetCommander {
 				maxTravelTime = 1;
 			//System.out.println(message+" maxDistance =" + maxDistance + " maxValue=" + maxValue);
 
-			float maxDistance1 = maxTravelTime;
-			float maxValue1 = maxValue;
+			for (Target target : targets)
+				target.setWeight(autoColonizeWeight(source, target, maxTravelTime, maxValue, warpSpeed, autoColonyMultiple, secondColonyWeight, distanceWeight));
+
 			// planets with lowest weight are most desirable (closest/best)
-			targets.sort((s1, s2) -> (int) Math.signum(
-					autoColonizeWeight(source, s1, maxDistance1, maxValue1, warpSpeed, autoColonyMultiple, secondColonyWeight, distanceWeight) -
-					autoColonizeWeight(source, s2, maxDistance1, maxValue1, warpSpeed, autoColonyMultiple, secondColonyWeight, distanceWeight)));
+			targets.sort((s1, s2) -> (int) Math.signum(s1.getWeight() - s2.getWeight()));
 			//for (Target target : targets) {
-			//	double weight = autocolonizeWeight(source, target, maxDistance, maxValue, warpSpeed);
-			//	System.out.format(message+" System %d %s travel=%.1f value=%.1f weight=%.2f%n",
+			//	System.out.format(message+" System %d %s fleetPlan=%.1f value=%.1f target.getWeight()=%.2f%n",
 			//			target.sysId, empire.sv.name(target.sysId), source.travelTimeTo(empire.sv.system(target.sysId), warpSpeed),
 			//			planetValue(target.sysId), weight);
 			//}
+		}
+		@Override public void sortTravels(List<FleetPlan> fleetPlans)	{ // TODO BR: sortTravels
+			float maxTravelTime = -1;
+			float maxValue = -1;
+			for (FleetPlan fleetPlan : fleetPlans) {
+				if (maxValue < 0 || maxValue < fleetPlan.planetValue)
+					maxValue = fleetPlan.planetValue;
+				if (maxTravelTime < fleetPlan.timeToSys)
+					maxTravelTime = fleetPlan.timeToSys;
+			}
+			if (Math.abs(maxTravelTime) <= 0.1)
+				maxTravelTime = 1;
+
+			for (FleetPlan fleetPlan : fleetPlans) {
+				// let's flip value percent and sort by descending order. That's because in rare cases distancePercent could be
+				// greater than 1
+				float valuePercent = 1 - fleetPlan.planetValue / maxValue;
+				float distancePercent = fleetPlan.timeToSys / maxTravelTime;
+				// default distance is worth 50% of weight, value 50%
+				float valueWeight = 1 - distanceWeight;
+				fleetPlan.colonizeWeight = valuePercent * valueWeight + distancePercent * distanceWeight;
+
+				if (autoColonyMultiple && fleetPlan.alreadyTargeted)
+					fleetPlan.colonizeWeight /= (secondColonyWeight + 0.001f);
+			}
+			fleetPlans.sort((s1, s2) -> (int) Math.signum(s1.colonizeWeight - s2.colonizeWeight));
 		}
 	}
 	private double autoColonizeWeight(StarSystem source, Target target, float maxDistance, float maxValue, float warpSpeed, boolean autoColonyMultiple, float secondColonyWeight, float distanceWeight) {
@@ -128,7 +153,7 @@ public class AIFleetCommander implements Base, FleetCommander {
 		return weight;
 		// return valuePercent * 0.5 + distancePercent * 0.5;
 	}
-	private class ScoutPriority implements TargetsSorter	{
+	private final class ScoutPriority implements TargetsSorter	{
 		private final float secondScoutWeight;
 		private final boolean autoScoutMultiple;
 		public ScoutPriority()	{
@@ -152,14 +177,18 @@ public class AIFleetCommander implements Base, FleetCommander {
 			//System.out.println(message+" maxDistance =" + maxDistance + " maxValue=" + maxValue);
 
 			float maxDistance1 = maxTravelTime;
+			for (Target target : targets)
+				target.setWeight(autoScoutWeight(source, target, maxDistance1, warpSpeed, secondScoutWeight, autoScoutMultiple));
+
 			// planets with lowest weight are most desirable (closest/best)
-			targets.sort((s1, s2) -> (int) Math.signum(
-					autoScoutWeight(source, s1, maxDistance1, warpSpeed, secondScoutWeight, autoScoutMultiple) -
-					autoScoutWeight(source, s2, maxDistance1, warpSpeed, secondScoutWeight, autoScoutMultiple)));
+			targets.sort((s1, s2) -> (int) Math.signum(s1.getWeight() - s2.getWeight()));
+		}
+		@Override public void sortTravels(List<FleetPlan> fleetPlans)	{
+			fleetPlans.sort((s1, s2) -> (int) Math.signum(s1.getWeight() - s2.getWeight()));
 		}
 	}
 	private double autoScoutWeight(StarSystem source, Target target, float maxDistance, float warpSpeed, float secondScoutWeight, boolean autoScoutMultiple) {
-		float weight = source.travelTimeTo(empire.sv.system(target.sysId), warpSpeed) / maxDistance;
+		float weight = source.travelTimeTo(empire.sv.system(target.sysId), warpSpeed);// / maxDistance;
 		if (autoScoutMultiple && target.alreadyTargeted)
 			weight /= (secondScoutWeight + 0.001f);
 		return weight;
@@ -168,12 +197,10 @@ public class AIFleetCommander implements Base, FleetCommander {
 	/**
 	 * Sort fleets by value and to be as close to target system as possible
 	 */
-	private class ColonizePriority implements SystemsSorter	{
+	private final class AttackPriority implements SystemsSorter	{
 		@SuppressWarnings("unused")
 		private final String message;
-		public ColonizePriority(String message)	{
-			this.message = message;
-		}
+		public AttackPriority(String message)	{ this.message = message; }
 		@Override public void sort(Integer sourceSystem, List<Integer> targets, float warpSpeed)	{
 			// ok, let's use both distance and value of planet to prioritize colonization, 50% and 50%
 			StarSystem source = empire.sv.system(sourceSystem);
@@ -196,19 +223,20 @@ public class AIFleetCommander implements Base, FleetCommander {
 
 			float maxDistance1 = maxTravelTime;
 			float maxValue1 = maxValue;
+
 			// planets with lowest weight are most desirable (closest/best)
 			targets.sort((s1, s2) -> (int) Math.signum(
-					autocolonizeWeight(source, s1, maxDistance1, maxValue1, warpSpeed) -
-					autocolonizeWeight(source, s2, maxDistance1, maxValue1, warpSpeed)));
+					autoAttackWeight(source, s1, maxDistance1, maxValue1, warpSpeed) -
+					autoAttackWeight(source, s2, maxDistance1, maxValue1, warpSpeed)));
 			//for (int si : targets) {
 			//	double weight = autocolonizeWeight(source, si, maxDistance, maxValue, warpSpeed);
-			//	System.out.format(message+" System %d %s travel=%.1f value=%.1f weight=%.2f%n",
+			//	System.out.format(message+" System %d %s fleetPlan=%.1f value=%.1f weight=%.2f%n",
 			//			si, empire.sv.name(si), source.travelTimeTo(empire.sv.system(si), warpSpeed),
 			//			planetValue(si), weight);
 			//}
 		}
 	}
-	private double autocolonizeWeight(StarSystem source, int targetId, float maxDistance, float maxValue, float warpSpeed) {
+	private double autoAttackWeight(StarSystem source, int targetId, float maxDistance, float maxValue, float warpSpeed) {
 		// let's flip value percent and sort by descending order. That's because in rare cases distancePercent could be
 		// greater than 1
 		float valuePercent = 1 - planetValue(targetId) / maxValue;
@@ -378,7 +406,53 @@ public class AIFleetCommander implements Base, FleetCommander {
 		// don't send out armed scout ships when enemy fleet is incoming, hence the need for defend predicate
 		autoSendFleets(targets, new ScoutPriority(), subFleetList, rules, goTurn);
 	}
-	record Target(int sysId, int timeToBest, boolean alreadyTargeted) {}
+	private final class Target	{
+		private final int sysId;
+		private final int timeToBest;
+		private final boolean alreadyTargeted;
+		private double weight = -1f;
+
+		Target(int sysId, int timeToBest, boolean alreadyTargeted)	{
+			this.sysId = sysId;
+			this.timeToBest = timeToBest;
+			this.alreadyTargeted = alreadyTargeted;
+		}
+		private void setWeight(double w)	{ weight = w; }
+		private double getWeight()			{ return weight; }
+	}
+	private final class FleetPlan	{
+		private final Target target;
+		private final SubFleet subfleet;
+		private final boolean alreadyTargeted;
+		private final double weight;
+		private final float timeToSys;
+		private final float planetValue;
+		private float colonizeWeight;
+
+		FleetPlan(Target target, SubFleet subfleet)	{
+			this.target		= target;
+			this.subfleet	= subfleet;
+			weight			= target.weight;
+			alreadyTargeted	= target.alreadyTargeted;
+			timeToSys		= subfleet.timeToSys;
+			colonizeWeight	= Float.MAX_VALUE;
+			planetValue		= planetValue(target.sysId);
+		}
+		private double getWeight()	{ return weight; }
+		@Override public String toString()	{
+			SystemInfo sv = empire.sv;
+			String s = "Weight: " + fmt((float) weight, 2);
+			s += " TimeToSys: " + fmt(timeToSys, 2);
+			s += " " + sv.name(target.sysId);
+			s += " id: " + target.sysId;
+			s += " alreadyTargeted: " + alreadyTargeted;
+			s += " " + subfleet.fleet.toString();
+			s += " planetValue: " + fmt(planetValue, 2);
+			s += " Colonize Weight: " + fmt(colonizeWeight, 2);
+			return s;
+		}
+	}
+
 	/**
 	 * Search for the worthy targets
 	 * @param subFleetList available fleets
@@ -586,7 +660,7 @@ public class AIFleetCommander implements Base, FleetCommander {
 		//for (Integer i: targets)
 		//	System.out.println("ToAttack "+empire.sv.name(i) + " scouted="+empire.sv.view(i).scouted()+" extrange=" + empire.sv.inScoutRange(i) + " range=" + empire.sv.inShipRange(i));
 
-		autoSendShips(targets, new ColonizePriority("toAttack"), subFleetList, rules, 999);
+		autoSendShips(targets, new AttackPriority("toAttack"), subFleetList, rules, 999);
 	}
 	/**
 	 * Identify the list of available fleets
@@ -635,23 +709,23 @@ public class AIFleetCommander implements Base, FleetCommander {
 
 				if (subFleet != null) {
 					// don't send same fleet to multiple destinations by mistake
-					if (!subFleet.fleet().isOrbiting())
+					if (!subFleet.fleet.isOrbiting())
 						continue;
 					// System.out.println("Deploying ships from Fleet " + fleet + " " + fleet.system().name());
-					float warpSpeed = subFleet.warpSpeed();
-					systemsSorter.sort(subFleet.fleet().sysId(), targets, warpSpeed);
+					float warpSpeed = subFleet.warpSpeed;
+					systemsSorter.sort(subFleet.fleet.sysId(), targets, warpSpeed);
 
 					for (Iterator<Integer> iTarget = targets.iterator(); iTarget.hasNext(); ) {
 						int sysId = iTarget.next();
 						if (alreadyHasDesignsOrbiting(sysId, rules) || !rules.fitForSystem(subFleet, sysId))
 							continue;
-						float travelTime = subFleet.fleet().travelTimeTo(empire.sv.system(sysId), warpSpeed);
+						float travelTime = subFleet.fleet.travelTimeTo(empire.sv.system(sysId), warpSpeed);
 						if (travelTime > maxTravelTime)
 							continue;
 						boolean deployed = false;
-						if (!subFleet.isExtendedRange() && empire.sv.inShipRange(sysId))
+						if (!subFleet.isExtendedRange && empire.sv.inShipRange(sysId))
 							deployed = deploy(subFleet, sysId);	// deploy
-						else if (subFleet.isExtendedRange() && empire.sv.inScoutRange(sysId)) 
+						else if (subFleet.isExtendedRange && empire.sv.inScoutRange(sysId)) 
 							deployed = deploy(subFleet, sysId);	// deploy
 						if (deployed) {
 							iTarget.remove();	// remove empire system as it has a ship assigned already
@@ -681,14 +755,14 @@ public class AIFleetCommander implements Base, FleetCommander {
 					// if fleet was sent elsewhere during previous iteration, don't redirect it again
 					if (!rules.fitForSystem(subFleet, sysId))
 						continue;
-					float travelTime = subFleet.fleet().travelTimeTo(empire.sv.system(sysId), warpSpeed);
+					float travelTime = subFleet.fleet.travelTimeTo(empire.sv.system(sysId), warpSpeed);
 					if (travelTime > maxTravelTime)
 						continue;
 
 					boolean deployed = false;
-					if (!subFleet.isExtendedRange() && empire.sv.inShipRange(sysId))
+					if (!subFleet.isExtendedRange && empire.sv.inShipRange(sysId))
 						deployed = deploy(subFleet, sysId);	// deploy
-					else if (subFleet.isExtendedRange() && empire.sv.inScoutRange(sysId)) 
+					else if (subFleet.isExtendedRange && empire.sv.inScoutRange(sysId)) 
 						deployed = deploy(subFleet, sysId);	// deploy
 					if (deployed) {
 						iTarget.remove();	// remove empire system as it has a ship assigned already
@@ -699,98 +773,83 @@ public class AIFleetCommander implements Base, FleetCommander {
 			}
 		}
 	}
+	private void autoSendFleets(List<Target> targets, TargetsSorter targetsSort, SubFleetList subFleets, ParamFleetAuto rules, float maxTravelTime)	{
+		int lastTargetSize = 0;
+		while (true) {
+			if (subFleets.isEmpty() || targets.isEmpty() || targets.size() == lastTargetSize)
+				return;
+			lastTargetSize = targets.size();
 
-	private void autoSendFleets(List<Target> targets,
-							  TargetsSorter targetsSorter,
-							  SubFleetList subFleetList,
-							  ParamFleetAuto rules,
-							  float maxTravelTime)	{
+			List<FleetPlan> fleetPlans = getFleetPlans(targets, targetsSort, subFleets, rules, maxTravelTime);
+			if (fleetPlans.isEmpty())
+				return;
 
-		if (subFleetList.isEmpty())
-			return;
+			for (FleetPlan fleetPlan : fleetPlans) {
+				if (!targets.contains(fleetPlan.target) || !subFleets.contains(fleetPlan.subfleet))
+					break; // Already be used ==> Rebuild the map
 
-		if (targets.size() > subFleetList.size()) {
-			// System.out.println("MORE TARGET SYSTEMS THAN SHIPS");
-			// we have more stars to explore than we have ships, so
-			// we take ships and send them to closest systems.
-			for (Iterator<SubFleet> iFleet = subFleetList.iterator(); iFleet.hasNext(); ) {
-				SubFleet subFleet = iFleet.next();
-				if (targets.isEmpty())
-					break;
-
-				if (subFleet != null) {
-					// don't send same fleet to multiple destinations by mistake
-					if (!subFleet.fleet().isOrbiting())
-						continue;
-					// System.out.println("Deploying ships from Fleet " + fleet + " " + fleet.system().name());
-					float warpSpeed = subFleet.warpSpeed();
-					targetsSorter.sort(subFleet.fleet().sysId(), targets, warpSpeed);
-
-					for (Iterator<Target> iTarget = targets.iterator(); iTarget.hasNext(); ) {
-						Target target = iTarget.next();
-						int sysId = target.sysId;
-						if (alreadyHasDesignsOrbiting(sysId, rules) || !rules.fitForSystem(subFleet, sysId))
-							continue;
-						int travelTime = ceil(subFleet.fleet().travelTimeTo(empire.sv.system(sysId), warpSpeed));
-						if (travelTime >= target.timeToBest)
-							continue;
-						boolean deployed = false;
-						if (!subFleet.isExtendedRange() && empire.sv.inShipRange(sysId))
-							deployed = deploy(subFleet, sysId);	// deploy
-						else if (subFleet.isExtendedRange() && empire.sv.inScoutRange(sysId)) 
-							deployed = deploy(subFleet, sysId);	// deploy
-						if (deployed) {
-							iTarget.remove();	// remove empire system as it has a ship assigned already
-							iFleet.remove();
-							break; // Go to next fleet
-						}
-					}
+				boolean deployed = deploy(fleetPlan.subfleet, fleetPlan.target.sysId);	// deploy
+				if (deployed) {
+					targets.remove(fleetPlan.target);	// remove star system as it has a ship assigned already
+					subFleets.remove(fleetPlan.subfleet);
 				}
 			}
 		}
-		else {
-			// System.out.println("MORE SHIPS THAN TARGET SYSTEMS");
-			// We sort target systems by distance from home as the starting point
-			float warpSpeed = subFleetList.minWarpSpeed();
-			// System.out.println("Warp Speed "+warpSpeed);
-			targetsSorter.sort(empire.homeSysId(), targets, warpSpeed);
+	}
+	private List<FleetPlan> getFleetPlans(List<Target> targets, TargetsSorter targetsSort, SubFleetList subFleets, ParamFleetAuto rules, float maxTravelTime)	{
+		List<FleetPlan> fleetPlans = new ArrayList<>();
+		if (subFleets.isEmpty() || targets.isEmpty())
+			return fleetPlans;
+		for (SubFleet subFleet : subFleets) {
+			if (subFleet == null)
+				continue;
+			Target target = getBestTargetForSubFleet(targets, targetsSort, subFleet, rules, maxTravelTime);
+			if (target == null)
+				continue;
+			FleetPlan fleetPlan = new FleetPlan(target, subFleet);
+			fleetPlans.add(fleetPlan);
+		}
+		targetsSort.sortTravels(fleetPlans);
+//		System.out.println("---");
+//		for (FleetPlan fleetPlan : fleetPlans) {
+//			System.out.println(fleetPlan.toString());
+//		}
+		return fleetPlans;
+	}
+	private Target getBestTargetForSubFleet(List<Target> targets, TargetsSorter targetsSort, SubFleet subFleet, ParamFleetAuto rules, float maxTravelTime)	{
+		if (subFleet == null || targets.isEmpty())
+			return null;
+		// don't send same fleet to multiple destinations by mistake
+		if (!subFleet.fleet.isOrbiting())
+			return null;
 
-			for (Iterator<Target> iTarget = targets.iterator(); iTarget.hasNext(); ) {
-				Target target = iTarget.next();
-				int sysId = target.sysId;
-				if (alreadyHasDesignsOrbiting(sysId, rules))
-					continue;
-				// System.out.println("Finding fleets for system " + empire.sv.name(si)+" "+empire.sv.descriptiveName(si));
-				subFleetList.sortByTimeToSys(sysId);
+		// System.out.println("Deploying ships from Fleet " + fleet + " " + fleet.system().name());
+		float warpSpeed = subFleet.warpSpeed;
+		targetsSort.sort(subFleet.fleet.sysId(), targets, warpSpeed);
 
-				for (Iterator<SubFleet> iFleet = subFleetList.iterator(); iFleet.hasNext(); ) {
-					SubFleet subFleet = iFleet.next();
-					// if fleet was sent elsewhere during previous iteration, don't redirect it again
-					if (!rules.fitForSystem(subFleet, sysId))
-						continue;
-					int travelTime = ceil(subFleet.fleet().travelTimeTo(empire.sv.system(sysId), warpSpeed));
-					if (travelTime >= target.timeToBest)
-						continue;
-
-					boolean deployed = false;
-					if (!subFleet.isExtendedRange() && empire.sv.inShipRange(sysId))
-						deployed = deploy(subFleet, sysId);	// deploy
-					else if (subFleet.isExtendedRange() && empire.sv.inScoutRange(sysId)) 
-						deployed = deploy(subFleet, sysId);	// deploy
-					if (deployed) {
-						iTarget.remove();	// remove empire system as it has a ship assigned already
-						iFleet.remove();
-						break; // go to next target
-					}
-				}
+		for (Target target : targets) {
+			int sysId = target.sysId;
+			if (alreadyHasDesignsOrbiting(sysId, rules) || !rules.fitForSystem(subFleet, sysId))
+				continue;
+			int travelTime = ceil(subFleet.fleet.travelTimeTo(empire.sv.system(sysId), warpSpeed));
+			if (travelTime >= target.timeToBest)
+				continue;
+			if (!subFleet.isExtendedRange && empire.sv.inShipRange(sysId)) {
+				subFleet.timeToSys = travelTime;
+				return target;
+			}
+			if (subFleet.isExtendedRange && empire.sv.inScoutRange(sysId)) {
+				subFleet.timeToSys = travelTime;
+				return target;
 			}
 		}
+		return null;
 	}
 	private boolean deploy(SubFleet subFleet, int target)	{
 		if (subFleet.entireFleet())
-			galaxy().ships.deployFleet(subFleet.fleet(), empire.sv.system(target).id);
+			galaxy().ships.deployFleet(subFleet.fleet, empire.sv.system(target).id);
 		else
-			return galaxy().ships.deploySubfleet(subFleet.fleet(), subFleet.shipCounts(), empire.sv.system(target).id);
+			return galaxy().ships.deploySubfleet(subFleet.fleet, subFleet.shipCounts, empire.sv.system(target).id);
 		return true;
 	}
 }
