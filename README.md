@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-26 (BR)
+- Addition of information regarding the current level of the miniaturization effect.
+
 26-10-25 (BR)
 - Improved automated exploration and colonization functions for scenarios where the number of ships is lower than the number of systems to be visited.
   - Previously, the first ship would select the best target without considering whether another ship might be closer to it.

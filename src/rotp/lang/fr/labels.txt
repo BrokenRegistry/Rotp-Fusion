@@ -224,8 +224,11 @@ TECH_NEXT_LEVEL                   | Niveau après la découverte de la technolog
 TECH_HOVER_LEVEL                  | Niveau après la découverte de la technologie survolée %1 (+%2)
 TECH_LEVEL_HEADER                 | Impact sur le niveau technologique :
 TECH_LEVEL_VALUE                  | Niveau technologique %1
-TECH_CATEGORY_HEADER              | CATÉGORIE %1
+TECH_CATEGORY_HEADER			| <h3>CATÉGORIE %1</h3><hr>
+TECH_RESEARCHED_HEADER			| <h3>Info sur la technologie sélectionnée</h3><hr>
+TECH_HOVERED_HEADER				| <h3>Info sur la technologie survolée</h3><hr>
 TECH_LEVEL_OF_TECH                | Niveau %1
+TECH_IS_MINIATURIZABLE			| &ensp;(Miniaturisé : taille %1 %, coût %2 %)
 TECH_IS_FREE					| (recherche gratuite)
 TECH_IS_RESTRICTED				| (technologie réservée)
 

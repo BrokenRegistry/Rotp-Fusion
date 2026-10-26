@@ -38,6 +38,7 @@ public final class TechScanner extends Tech {
         init();
     }
 	@Override public boolean canBeMiniaturized()	{ return moo1Mini; }
+	@Override protected boolean hideMiniaturizationInfo()	{ return false; }
     @Override
     public void init() {
         super.init();

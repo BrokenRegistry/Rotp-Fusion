@@ -224,8 +224,11 @@ TECH_NEXT_LEVEL                   | Level after selected tech discovery %1 (+%2)
 TECH_HOVER_LEVEL                  | Level after hovered tech discovery %1 (+%2)
 TECH_LEVEL_HEADER                 | Technology level impact:
 TECH_LEVEL_VALUE                  | Technology level %1
-TECH_CATEGORY_HEADER              | CATEGORY %1
+TECH_CATEGORY_HEADER			| <h3>CATEGORY %1</h3><hr>
+TECH_RESEARCHED_HEADER			| <h3>Current Tech related Info</h3><hr>
+TECH_HOVERED_HEADER				| <h3>Hovered Tech related Info</h3><hr>
 TECH_LEVEL_OF_TECH                | Level %1
+TECH_IS_MINIATURIZABLE			| &ensp;(Miniaturized: size %1%, cost %2%)
 TECH_IS_FREE					| (research free)
 TECH_IS_RESTRICTED				| (restricted technology)
 

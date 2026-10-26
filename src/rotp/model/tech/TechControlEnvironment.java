@@ -35,6 +35,7 @@ public final class TechControlEnvironment extends Tech {
     }
     @Override
     public boolean canBeMiniaturized()      { return true; }
+	@Override protected boolean hideMiniaturizationInfo()	{ return false; }
     @Override
     public void init() {
         super.init();

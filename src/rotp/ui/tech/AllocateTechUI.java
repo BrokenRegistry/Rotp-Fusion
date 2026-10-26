@@ -221,7 +221,7 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
         float  catLevel	= cat.techLevel();
     	int	   maxLevel	= cat.maxTechLevel();
         String levelTxt	= text("TECH_CURRENT_LEVEL", shortFmt(catLevel));
-        catInfo += NEWLINE + levelTxt;
+        catInfo += levelTxt;
 
     	// Current Tech related Info
         int xCur = xCat + wCat + xSep;
@@ -230,7 +230,8 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
     	String currentTech = cat.currentTech();
     	if (currentTech != null) {
             Tech tech	= player().tech().tech(currentTech);
-            String curInfo	= tech.getTechInfo();
+			String curInfo	= text("TECH_RESEARCHED_HEADER");
+			curInfo			+= tech.getTechInfo();
             int levelInc	= 1 + max(0, tech.level() - maxLevel);
             float nextLevel	= catLevel + levelInc;
             String txt	= text("TECH_NEXT_LEVEL", shortFmt(nextLevel), shortFmt(levelInc));
@@ -244,7 +245,8 @@ public final class AllocateTechUI extends BasePanel implements MouseListener, Mo
         int wHov = boxW;
         if (techId != null && !techId.equals(currentTech)) {
             Tech tech	= player().tech().tech(techId);
-            String hovInfo	= tech.getTechInfo();
+			String hovInfo	= text("TECH_HOVERED_HEADER");
+			hovInfo			+= tech.getTechInfo();
             int levelInc	= 1 + max(0, tech.level() - maxLevel);
             float hovLevel	= catLevel + levelInc;
             String txt	= text("TECH_HOVER_LEVEL", shortFmt(hovLevel), shortFmt(levelInc));

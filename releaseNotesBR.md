@@ -11,6 +11,9 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-26 (BR)
+- Addition of information regarding the current level of the miniaturization effect.
+
 26-10-25 (BR)
 - Improved automated exploration and colonization functions for scenarios where the number of ships is lower than the number of systems to be visited.
   - Previously, the first ship would select the best target without considering whether another ship might be closer to it.

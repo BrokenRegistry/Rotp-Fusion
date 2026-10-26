@@ -149,19 +149,19 @@ public class Tech implements Base, ScaledInteger {
     	typeMap.put(FUTURE_WEAPON, "FUTUREWEAPON");
     }
 	protected static boolean moo1Mini = false;
-	public static void newMiniaturizationValue(Boolean value)	{ moo1Mini = value; }
+	private static void newMiniaturizationValue(Boolean value)	{ moo1Mini = value; }
 	public static ParamBoolean moo1Miniaturization	= new ParamBoolean(MOD_UI, "MOO1_MINIATURIZE", false)
 			.setDefaultValue(MOO1_DEFAULT, true)
 			.addNewValueMethod(Tech::newMiniaturizationValue);
 
-	public static String buildId(String s, int i)	{ return s + ":" + i; }
+	protected static String buildId(String s, int i)	{ return s + ":" + i; }
 
     public String id;
     public int techType;
     public int typeSeq;
     public int level;
     public TechCategory cat;
-    public String iconFilename;
+    protected String iconFilename;
     public String effectKey; // BR: Never used
 
     // BR: Made private to easily track their access
@@ -174,16 +174,16 @@ public class Tech implements Base, ScaledInteger {
     private String item2 = null;
     private String shDesc2 = ""; // for short description 2 = brief2()
 
-    public int sequence;
+    //public int sequence;
     public int quintile = 0;
     public boolean restricted = false;
     public boolean free = false;
     public float cost = 0;
-    public float size = 0;
-    public float power = 0;
+	protected float size = 0;
+	protected float power = 0;
 
     public String id()               { return id; }
-    public void id(String s, int i)  { id = buildId(s, i); }
+	protected void id(String s, int i)	{ id = buildId(s, i); }
     public Tech () {  }
 
 //    public Tech(int lv, int seq, TechCategory c) {
@@ -219,15 +219,15 @@ public class Tech implements Base, ScaledInteger {
     protected String  brief(int i)			{ return text(shDesc, i); }
     protected String  brief(String s)		{ return text(shDesc, s); }
     public	  String  brief2()				{ return text(shDesc2); }
-    protected String  brief2(String s)		{ return text(shDesc2, s); }
+	private String  brief2(String s)		{ return text(shDesc2, s); }
     public	  String  item()				{ return item == null ? name() : text(item); }
     public	  String  item2()				{ return item2 == null ? item() : text(item2); }
     public	  String  imageKey()			{ return ""; }
-    public	  String  techTypeKey()			{ return typeMap.get(techType); }
-    public	  String  techTypeName()		{ return labels().realLabel(techTypeKey() + "_NAME"); }
-    public	  String  techTypeDesc()		{ return labels().realLabel(techTypeKey() + "_DETAIL"); }
-    public	  String  infoKey()				{ return name.replace("_NAME", "_INFO"); }
-    public	  String  info()				{ return labels().realLabel(infoKey()); }
+	private	  String  techTypeKey()			{ return typeMap.get(techType); }
+	private	  String  techTypeName()		{ return labels().realLabel(techTypeKey() + "_NAME"); }
+	private	  String  techTypeDesc()		{ return labels().realLabel(techTypeKey() + "_DETAIL"); }
+	private	  String  infoKey()				{ return name.replace("_NAME", "_INFO"); }
+	private	  String  info()				{ return labels().realLabel(infoKey()); }
     
     public	  Image	  image()				{ return iconFilename == null ? null : image(iconFilename); }
     public	  int	  futureTechLevel()		{ return 0; }
@@ -282,8 +282,9 @@ public class Tech implements Base, ScaledInteger {
     public void drawSuccessfulAttack(CombatStack source, CombatStack target, int wpnNum, float dmg, int count, float force) { }
 
     public float researchCost()             { return cat.costForTech(this); }
-    public int maxMiniaturizationLevels()   { return 50; }
+	private int maxMiniaturizationLevels()	{ return 50; }
     public boolean canBeMiniaturized()      { return false; }
+	protected boolean hideMiniaturizationInfo()	{ return free && cost==0 && size==0; }
 
     public float sizeMiniaturization(Empire emp) {
         TechCategory empireCat = emp == null ? cat : emp.tech().category(cat.index());
@@ -417,9 +418,9 @@ public class Tech implements Base, ScaledInteger {
             return Base.compare(pr2, pr1);
         }
     }
-	public static String getTechInfo(Tech tech)	{ return tech.getTechInfo(); }
-	public String getTechInfo()					{ return getTechInfo(""); }
-	public String getTechInfo(String s1)		{
+	public String getTechInfo()	{ return getTechInfo("", true); }
+	public String getTechInfo(boolean allowMiniaturizationInfo)	{ return getTechInfo("", allowMiniaturizationInfo); }
+	private String getTechInfo(String s1, boolean allowMiniaturizationInfo)	{
 		String info = "";
 		// Tech Name
 		String txt	= name();
@@ -434,6 +435,12 @@ public class Tech implements Base, ScaledInteger {
 		// Tech info
 		txt = text("TECH_LEVEL_OF_TECH", level);
 		info += NEWLINE + txt;
+		if (allowMiniaturizationInfo && canBeMiniaturized() && !hideMiniaturizationInfo()) {
+			Empire player = player();
+			float costPct = 100 * costMiniaturization(player);
+			float sizePct = 100 * sizeMiniaturization(player);
+			info += text("TECH_IS_MINIATURIZABLE", fmt(sizePct,1), fmt(costPct,1));
+		}
 		if (free)
 			info += " " + text("TECH_IS_FREE");
 		if (restricted)

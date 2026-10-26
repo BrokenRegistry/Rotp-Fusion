@@ -501,6 +501,7 @@
 
 ### Guide and Help:
 
+- Addition of information regarding the current level of the miniaturization effect.
 - Fixed an issue where the wrong city was displayed in the "Scouted Systems" windows (which, incidentally, should not even contain this element).
   - The "Bombardment" window was causing this unprotected panoramic image to be altered.
   - The panoramic image is now protected against any alteration.

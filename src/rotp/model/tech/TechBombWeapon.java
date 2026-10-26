@@ -43,6 +43,7 @@ public final class TechBombWeapon extends TechMoO1Cost {
     }
     @Override
     public boolean canBeMiniaturized()      { return true; }
+	@Override protected boolean hideMiniaturizationInfo()	{ return false; }
     @Override
     public void init() {
         super.init();

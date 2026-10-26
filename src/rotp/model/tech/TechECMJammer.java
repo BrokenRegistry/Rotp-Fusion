@@ -34,6 +34,7 @@ public final class TechECMJammer extends Tech {
     }
     @Override
     public boolean canBeMiniaturized()      { return true; }
+	@Override protected boolean hideMiniaturizationInfo()	{ return typeSeq == 0; }
     @Override
     public void init() {
         super.init();
