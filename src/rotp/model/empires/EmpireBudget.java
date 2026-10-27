@@ -134,7 +134,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 
 		// Governor alone
 		int request = budget.reserveNeededBC();
-		boolean noLimit = budget.noMinumumReserve();
+		boolean noLimit = budget.noMinimumReserve();
 		float available = noLimit? unusedGovernor : unusedGovernor - minReserve;
 		float subsidies = available >= request ? request : available;
 		subsidies = max(0, subsidies);
@@ -353,7 +353,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 		List<ColonyBudget> budgets = new ArrayList<>();
 		for (Iterator<ColonyBudget> iter = allBudgets.iterator(); iter.hasNext(); ) {
 			ColonyBudget budget = iter.next();
-			if (budget.noMinumumReserve()) {
+			if (budget.noMinimumReserve()) {
 				budgets.add(budget);
 				iter.remove();
 			}

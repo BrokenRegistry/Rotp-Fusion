@@ -36,11 +36,13 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 
 import rotp.model.colony.Colony;
+import rotp.model.colony.Colony.GovAutoFundTag;
 import rotp.model.galaxy.StarSystem;
 import rotp.ui.BasePanel;
 import rotp.ui.SystemViewer;
@@ -49,6 +51,7 @@ import rotp.ui.main.SystemPanel;
 import rotp.ui.options.AllSubUI;
 import rotp.ui.options.ISubUiKeys;
 import rotp.ui.util.ParamSubUI;
+import rotp.util.AdviceBox;
 
 public class MultiColonySpendingPane extends BasePanel implements MouseListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
@@ -61,6 +64,7 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
 	private static final Color textColorOn			= new Color(209, 209, 209);
 	private static final Color textColorOff			= new Color(178, 124, 87);
 	private static final Color buttonColor			= new Color(209, 209, 209);
+	private static final int COIN_WIDTH	= s25;
 
 	private static BufferedImage governorImage, noGovernorImage, mixedGovernorImage;
 	private static int governorImageEmpireId;
@@ -76,22 +80,22 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
 	private static int buttonMargin	= s20;
 	private static int buttonOffset	= s10;
 	private static boolean needInitialization = true;
-	private final Rectangle governorBox	= new Rectangle();
-	private final Rectangle optionsBox	= new Rectangle();
 
-	public static void resetPanel()	{ needInitialization = true; }
-
+	private final AdviceBox governorBox;
+	private final AdviceBox optionsBox;
+	private final AdviceBox coinBox;
+	private final AdviceBox spending0Box;
+	private final AdviceBox spending25Box;
+	private final AdviceBox spending50Box;
+	private final AdviceBox spending75Box;
+	private final AdviceBox spendingMaxBox;
+	private final AdviceBox[] catBox = new AdviceBox[5];
     private LinearGradientPaint greenBackC;
     private Color backC;
-    private Rectangle spending0Box = new Rectangle();
-    private Rectangle spending25Box = new Rectangle();
-    private Rectangle spending50Box = new Rectangle();
-    private Rectangle spending75Box = new Rectangle();
-    private Rectangle spendingMaxBox = new Rectangle();
-    private Rectangle[] catBox = new Rectangle[5];
-    private Rectangle hoverBox;
+    private Shape hoverBox;
     private int selectedCat = 0;
 
+	public static void resetPanel()	{ needInitialization = true; }
     private boolean hotSeatSelectionEditable() {
         if (session().hotSeatState() == null) return true;
         return parent.systemsToDisplay() != null && parent.systemsToDisplay().stream()
@@ -101,13 +105,33 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
     MultiColonySpendingPane(SystemViewer p, Color c0, Color text, Color hi, Color lo) {
         parent = p;
         backC = c0;
+		spending0Box	= new AdviceBox(this);
+		spending25Box	= new AdviceBox(this);
+		spending50Box	= new AdviceBox(this);
+		spending75Box	= new AdviceBox(this);
+		spendingMaxBox	= new AdviceBox(this);
+		governorBox		= new AdviceBox(this);
+		optionsBox		= new AdviceBox(this);
+		coinBox			= new AdviceBox(this);
         init();
     }
     @Override
     public String textureName()            { return parent.subPanelTextureName(); }
     private void init() {
-        for (int i=0;i<catBox.length;i++)
-            catBox[i] = new Rectangle();
+		spending0Box.setAdviceHelpKey("PLANETS_SPENDING_HELP");
+		spending25Box.setAdviceHelpKey("PLANETS_SPENDING_HELP");
+		spending50Box.setAdviceHelpKey("PLANETS_SPENDING_HELP");
+		spending75Box.setAdviceHelpKey("PLANETS_SPENDING_HELP");
+		spendingMaxBox.setAdviceHelpKey("PLANETS_SPENDING_HELP");
+		governorBox.setAdviceHelpKey("MAIN_GOVERNOR_TOGGLE_HELP");
+		governorBox.setTopLeftHelpKey("MAIN_GOVERNOR_TOP_LEFT_HELP");
+		optionsBox.setAdviceHelpKey("MAIN_HELP_MOD_1B");
+		coinBox.setGetHelpImg(Colony.CoinAdvisor::getSubsidiesInstruction);
+
+		for (int i=0;i<catBox.length;i++) {
+			catBox[i] = new AdviceBox(this);
+			catBox[i].setAdviceHelpKey("PLANETS_CATEGORY_HELP");
+		}
 
         setOpaque(true);
         addMouseListener(this);
@@ -301,7 +325,7 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
 		double titleDy = (buttonH-titleH)/2;
 		int titleX = round(optButtonX + (optButtonW-titleW)/2);
 		int titleY = round(buttonY + buttonH - descent-titleDy);
-		
+
 		if (hovered) {
 			borderC = SystemPanel.yellowText;
 			titleC  = SystemPanel.yellowText;
@@ -311,31 +335,88 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
 			titleC  = textColorOn;
 		}
 		optionsBox.setBounds(optButtonX, buttonY, optButtonW, buttonH);
-		
+
 		Stroke prevStroke = g.getStroke();
 		g.setStroke(stroke2);
 		g.setColor(borderC);
 		g.drawRect(optButtonX, buttonY, optButtonW, buttonH);
 		g.setStroke(prevStroke);
-		
 		g.setColor(titleC);
 		g.drawString(title, titleX, titleY);
 	}
+	private void drawCoinButton(Graphics2D g, boolean hovered)	{
+		List<StarSystem> governedSystems = governedSystems();
+		if (governedSystems.isEmpty()) {
+			coinBox.setBounds(0, 0, 0, 0);
+			return;
+		}
+		int fundX = (govButtonX + govButtonW + optButtonX - COIN_WIDTH)/2;
+		int fundY = buttonY + (buttonH - COIN_WIDTH)/2;
+		coinBox.setBounds(fundX, fundY, COIN_WIDTH, COIN_WIDTH);
+
+		Integer selFundingMandate = selectionFundingMandate(governedSystems);
+		Boolean seltCanUseReserve  = selectionCanUseReserve(governedSystems);
+		BufferedImage img = GovAutoFundTag.getUndefinedCoinImage(COIN_WIDTH, player(), selFundingMandate, seltCanUseReserve);
+		int imgH = img.getHeight();
+		int imgW = img.getWidth();
+		g.setColor(Color.BLACK);
+		g.fillOval(fundX, fundY, iconWidth, iconWidth);
+		g.drawImage(img, fundX, fundY, fundX + COIN_WIDTH, fundY + COIN_WIDTH, 0, 0, imgW, imgH, null);
+
+		if (hovered) {
+			g.setColor(SystemPanel.yellowText);
+			Stroke prevStroke = g.getStroke();
+			g.setStroke(stroke2);
+			g.drawOval(fundX, fundY, COIN_WIDTH, COIN_WIDTH);
+			g.setStroke(prevStroke);
+		}
+	}
+	private List<StarSystem> governedSystems()	{
+		List<StarSystem> allSystems = parent.systemsToDisplay();
+		List<StarSystem> governedSystems = new ArrayList<>();
+		for (StarSystem sys: allSystems)
+			if (sys.colony().isGovernor())
+				governedSystems.add(sys);
+		return governedSystems;
+	}
+	private Integer selectionFundingMandate(List<StarSystem> governedSystems)	{
+		int currentFundingMandate = governedSystems.get(0).colony().getFundingMandate();
+		for (StarSystem sys: governedSystems)
+			if (currentFundingMandate != sys.colony().getFundingMandate())
+				return null;
+		return currentFundingMandate;
+	}
+	private Boolean selectionCanUseReserve(List<StarSystem> governedSystems)	{
+		boolean currentCanUseReserve = governedSystems.get(0).colony().govFundCanUseReserve();
+		for (StarSystem sys: governedSystems)
+			if (currentCanUseReserve != sys.colony().govFundCanUseReserve())
+				return null;
+		return currentCanUseReserve;
+	}
+	@Override public void paint(Graphics g0)	{
+		super.paint(g0);
+		// BR: So the coin is above the textures.
+		Graphics2D g = (Graphics2D) g0;
+		StarSystem sys = parent.systemViewToDisplay();
+		if (sys == null)
+			return;
+		Colony colony = sys.colony();
+		if (colony == null)
+			return;
+		drawCoinButton(g, hoverBox == coinBox);
+	}
+
 	@Override public void paintComponent(Graphics g0) {
         Graphics2D g = (Graphics2D) g0;
         super.paintComponent(g);
 		if (needInitialization)
 			reinitPanel(g);
         int w = getWidth();
-        
+
         if (greenBackC == null)
             initGradients();
 
-    	
         g.setFont(narrowFont(20));
-//        String titleText = text("MAIN_COLONY_ALLOCATE_SPENDING");
-//        drawShadowedString(g, titleText, 2, s5, y0, MainUI.shadeBorderC(), textC);
-
 		buttonY = s8;
 		drawGovernorButton(g, hoverBox == governorBox);
 		drawOptionsButton(g, hoverBox == optionsBox);
@@ -565,6 +646,14 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
 	}
 
 	void toggleGovernor()	{ setGovernor(!isGovernor(false)); }
+	private void toggleFunding(MouseEvent e) {
+		List<StarSystem> governedSystems = governedSystems();
+		if (governedSystems.isEmpty())
+			return;
+
+		GovAutoFundTag.toggle(e, governedSystems);
+		parent.repaintAll();
+	}
     public void setGovernor(boolean gov) {
         if (!hotSeatCanEdit(player().id)) return;
         if (!hotSeatSelectionEditable()) return;
@@ -603,7 +692,6 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
             if (c != null) {
             	c.defense().incrMaxBases(-1, false, false);
             	c.governIfNeeded();
-            	//c.defense().incrMaxBases(-1, e.isShiftDown(), e.isControlDown());
             }
         }
         parent.repaintAll();
@@ -639,7 +727,6 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
         }
         parent.repaintAll();
     }
-
     void setLock(int cat, boolean lock) {
         if (!hotSeatSelectionEditable()) return;
         if (!hotSeatCanEdit(player().id)) return;
@@ -687,6 +774,8 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
             setSpendingLevel(1);
 		else if (hoverBox == governorBox)
 			toggleGovernor();
+		else if (hoverBox == coinBox)
+			toggleFunding(e);
 		else if (hoverBox == optionsBox)
 			if (SwingUtilities.isRightMouseButton(e)) {
 				ParamSubUI optionsUI = AllSubUI.getHandle(ISubUiKeys.GOVERNOR_SPECIAL_UI_KEY).getUI();
@@ -703,36 +792,28 @@ public class MultiColonySpendingPane extends BasePanel implements MouseListener,
         if (!hotSeatCanEdit(player().id)) return; parent.enterCurrentPane(this); }
 	@Override public void mouseMoved(MouseEvent e) {
 		parent.enterCurrentPane(this);
-        int x = e.getX();
-        int y = e.getY();
+		int x = e.getX();
+		int y = e.getY();
 
-        Rectangle newHover = null;
-		if (governorBox.contains(x,y))
-			newHover = governorBox;
-		else if (optionsBox.contains(x,y))
-			newHover = optionsBox;
-		else if (spending0Box.contains(x,y))
-            newHover = spending0Box;
-        else if (spending25Box.contains(x,y))
-            newHover = spending25Box;
-        else if (spending50Box.contains(x,y))
-            newHover = spending50Box;
-        else if (spending75Box.contains(x,y))
-            newHover = spending75Box;
-        else if (spendingMaxBox.contains(x,y))
-            newHover = spendingMaxBox;
-        else {
-            for (int i=0;i<catBox.length;i++) {
-                if (catBox[i].contains(x,y)) {
-                    newHover = catBox[i];
-                    break;
-                }
-            }
-        }
-
-        if (newHover != hoverBox) {
-            hoverBox = newHover;
-            repaint();
-        }
-    }
+		if (coinBox.isSelectableAt(x, y))
+			hoverBox = hoverBox(coinBox, hoverBox);
+		else if (governorBox.contains(x, y))
+			hoverBox = hoverBox(governorBox, hoverBox);
+		else if (optionsBox.contains(x, y))
+			hoverBox = hoverBox(optionsBox, hoverBox);
+		else if (spending0Box.contains(x, y))
+			hoverBox = hoverBox(spending0Box, hoverBox);
+		else if (spending25Box.contains(x, y))
+			hoverBox = hoverBox(spending25Box, hoverBox);
+		else if (spending50Box.contains(x, y))
+			hoverBox = hoverBox(spending50Box, hoverBox);
+		else if (spending75Box.contains(x, y))
+			hoverBox = hoverBox(spending75Box, hoverBox);
+		else if (spendingMaxBox.contains(x, y))
+			hoverBox = hoverBox(spendingMaxBox, hoverBox);
+		else
+			for (int i=0;i<catBox.length;i++)
+				if (catBox[i].contains(x, y))
+					hoverBox = hoverBox(catBox[i], hoverBox);
+	}
 }

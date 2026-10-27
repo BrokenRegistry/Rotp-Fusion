@@ -44,6 +44,11 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-10-27 (BR)
+- The spending instruction (The little coin) can now be adjusted when multiple colonies are selected.
+  - Ungoverned colonies will be ignored.
+  - Only options available to all of the selected governed colonies will be offered.
+
 26-10-26 (BR)
 - Addition of information regarding the current level of the miniaturization effect.
 
@@ -51,20 +56,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 - Improved automated exploration and colonization functions for scenarios where the number of ships is lower than the number of systems to be visited.
   - Previously, the first ship would select the best target without considering whether another ship might be closer to it.
   - Now, the trajectories of all ships are analyzed to determine the optimal pairing.
-
-26-10-22 (BR)
-- Fixed an issue where the wrong city was displayed in the "Scouted Systems" windows (which, incidentally, should not even contain this element).
-  - The "Bombardment" window was causing this unprotected panoramic image to be altered.
-  - The panoramic image is now protected against any alteration.
-  - The colony image (if one exists) is now also displayed in the "Explored Systems" windows.
-
-26-10-21 (BR)
-- Fixed "null pointer exception" error occuring when the cost of a non existent fighter design was requested.
-   - A new fighter design is build instead of returning "null".
-- New option that add "filler" asteroid star systems to makes the galaxy more "realistic".
-
-26-10-20 (BR)
-- Fixed an issue where "system discovery", "Colonize", "Combat", or "Bombard" windows would sometimes display the panorama of the previous planet.
 
 
 ### [Features Historic](FeaturesChanges.md)

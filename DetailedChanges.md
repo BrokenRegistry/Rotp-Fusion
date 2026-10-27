@@ -2,6 +2,11 @@
 
 ## What's New
 
+26-10-27 (BR)
+- The spending instruction (The little coin) can now be adjusted when multiple colonies are selected.
+  - Ungoverned colonies will be ignored.
+  - Only options available to all of the selected governed colonies will be offered.
+
 26-10-26 (BR)
 - Addition of information regarding the current level of the miniaturization effect.
 

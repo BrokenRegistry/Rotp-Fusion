@@ -112,7 +112,7 @@ public final class AIFleetCommander implements Base, FleetCommander {
 			//			planetValue(target.sysId), weight);
 			//}
 		}
-		@Override public void sortTravels(List<FleetPlan> fleetPlans)	{ // TODO BR: sortTravels
+		@Override public void sortTravels(List<FleetPlan> fleetPlans)	{
 			float maxTravelTime = -1;
 			float maxValue = -1;
 			for (FleetPlan fleetPlan : fleetPlans) {

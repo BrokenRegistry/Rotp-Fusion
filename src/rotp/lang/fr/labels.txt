@@ -1555,6 +1555,9 @@ PLANETS_SPENDING_25               | Dépenses %1 25%
 PLANETS_SPENDING_50               | Dépenses %1 50%
 PLANETS_SPENDING_75               | Dépenses %1 75%
 PLANETS_SPENDING_MAX              | Dépenses %1 maximales
+PLANETS_SPENDING_HELP			| Allouer les mêmes dépenses à toutes les colonies sélectionnées.
+PLANETS_CATEGORY_HELP			| Choisir la catégorie qui sera ajustée par les boutons d'ajustement.
+
 PLANETS_HELP_ALL				| <h3>APERÇU</h3>Cet écran affiche les données économiques de votre empire ainsi qu’une liste de vos colonies triables selon diverses données.
 PLANETS_HELP_ICON				| →PLANETS_HELP_ALL←<hr>→PLANETS_HELP_HK←
 PLANETS_HELP_1A					| « Écologie »<br> Cliquez sur cet onglet pour afficher les données écologiques des colonies.

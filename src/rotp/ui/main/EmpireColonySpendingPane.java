@@ -78,6 +78,7 @@ public class EmpireColonySpendingPane extends BasePanel {
     static final Color sliderTextUrgedD		= new Color(96,65,128);
 	static final Color COIN_GOLD_COLOR		= new Color(255, 215, 0);
 	static final Color COIN_OFF_COLOR		= new Color(152, 102, 52);
+	private static final int coinWidth		= s25;
 
     private static BufferedImage governorImage;
     private static BufferedImage noGovernorImage;
@@ -88,7 +89,6 @@ public class EmpireColonySpendingPane extends BasePanel {
     private static int maxButtonFontSize = 17;
     private static int minButtonFontSize = 12;
     private static int govFontSize;
-	private static int coinWidth	= s25;
     private static int iconWidth    = s25;
     private static int buttonH      = s25;
     private static int buttonY;
@@ -324,7 +324,6 @@ public class EmpireColonySpendingPane extends BasePanel {
 			coinBox.setBounds(0, 0, 0, 0);
 			return;
 		}
-		coinWidth	= s25;
 		int fundX = (govButtonX + govButtonW + optButtonX - coinWidth)/2;
 		int fundY = buttonY + (buttonH - coinWidth)/2;
 		coinBox.setBounds(fundX, fundY, coinWidth, coinWidth);
@@ -1029,8 +1028,6 @@ public class EmpireColonySpendingPane extends BasePanel {
 		if (parent.systemViewToDisplay() != null && parent.systemViewToDisplay().colony() != null) {
 			Colony colony = parent.systemViewToDisplay().colony();
 			colony.govFundColony(e);
-//			if (colony.isGovernor())
-//				colony.govern();
 			parent.repaint();
 		}
 	}

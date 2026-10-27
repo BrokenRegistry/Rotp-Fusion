@@ -25,6 +25,7 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -64,6 +65,7 @@ import rotp.ui.notifications.GNNNotification;
 import rotp.ui.notifications.InvadersKilledAlert;
 import rotp.ui.notifications.TransportsKilledAlert;
 import rotp.util.Base;
+import rotp.util.FontManager;
 import rotp.util.Palette;
 
 public final class Colony implements Base, IMappedObject, Serializable {
@@ -103,10 +105,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
     private static final int TARGETED_DAMAGE_FOR_FACTLOSS = 100;
     private static final int UNTARGETED_DAMAGE_FOR_POPLOSS = 200;
     private static final int UNTARGETED_DAMAGE_FOR_FACTLOSS = 50;
-	private static final Color GROWING_COLOR = new Color(95, 255, 48);
-	private static final Color ORDER_COLOR	 = new Color(31, 63, 255);
-	private static final Color URGENCY_COLOR = new Color(160, 0, 160);
-	private static final Color GRANTED_COLOR = GROWING_COLOR;
 	private static boolean debug = false; // TO DO BR: Set to false;
 
     public enum Orders {
@@ -207,13 +205,17 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			govAutoFundTag = new GovAutoFundTag();
 		return govAutoFundTag;
 	}
+	public boolean govFundCanUseReserve()		{ return govAutoFundTag().canUseReserve; }
 	public boolean govFundColony()				{ return govAutoFundTag().isFunded(); }
 	public boolean hasFundColonyTag()			{ return isGovernor() && govAutoFundTag().isTagged(); }
 	private boolean govFundColonyUpdated()		{ return govAutoFundTag().updateAndGetIsFunded(); }
 	public boolean getFundFromReserve()			{ return govAutoFundTag().useReserve() && isGovernor(); }
 	public int getFundingMandate()				{ return govAutoFundTag().fundingMandate(); }
+	public boolean setFundingMandate(int i)		{ return govAutoFundTag().setFundingMandate(i); }
 	public BufferedImage getCoinImage(int w)	{ return govAutoFundTag().getCoinImage(w); }
 	public void govFundColony(MouseEvent e)		{ govAutoFundTag().toggle(e); }
+	public List<Integer> allowedMandates()		{ return govAutoFundTag().allowedMandates(); }
+	public int toggleMandate(List<Integer> allowedMandates)	{ return govAutoFundTag().toggleMandate(allowedMandates); }
 
     private boolean governorGotPlayerRequest()	{ return govOptions().isManageableGovernor(); }
     public boolean isObedientGovernor()			{ return govOptions().isManageableGovernor(); }
@@ -3012,7 +3014,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			return str;
 		}
 		public boolean hasProject()				{ return research().hasProject(); }
-		public boolean noMinumumReserve()		{ return getFundFromReserve(); }
+		public boolean noMinimumReserve()		{ return getFundFromReserve(); }
 		public boolean isGovernorBudget()		{ return isGovernor() && govFundColony(); }
 		public boolean isNewColony()			{ return isGrowing(); }
 		public boolean isArtifact()				{ return planet().isArtifact(); }
@@ -3143,9 +3145,16 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		}
 	}
 
-	private final class GovAutoFundTag implements ScaledInteger, Serializable	{
+	public final class GovAutoFundTag implements ScaledInteger, Serializable	{
 		private static final long serialVersionUID = 1L;
-		private static final Color COIN_GOLD_COLOR = new Color(255, 215, 0);
+		private static final Color COIN_GOLD_COLOR	= new Color(255, 215, 0);
+		private static final Color COIN_GRAY_COLOR	= new Color(160, 160, 160);
+		private static final Color UNDEFINED_COLOR	= new Color(178, 124, 87);
+		private static final Color GROWING_COLOR	= new Color(95, 255, 48);
+		private static final Color ORDER_COLOR		= new Color(31, 63, 255);
+		private static final Color URGENCY_COLOR	= new Color(160, 0, 160);
+		private static final Color SHIP_COLOR		= new Color(15, 15, 15);
+		private static final Color GRANTED_COLOR	= GROWING_COLOR;
 		private static final int CROSSED	= -10;
 		private static final int UNFUNDED	= 0;
 		private static final int GROWING	= 10;
@@ -3153,15 +3162,64 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		private static final int URGENCY	= 30;
 		private static final int SHIP_WORK	= 40;
 		private static final int UNLIMITED	= 50;
+		private static final int UNDEFINED	= 1000;
 
 		private int fundingMandate = 0;
-		private boolean useReserve = false;
+		private boolean canUseReserve = false;
 
 		@Override public String toString()	{
 			String str = name();
-			str += " Use reserves: " + useReserve;
+			str += " Can Use reserves: " + canUseReserve;
 			str += " Mandate: " + fundingMandate;
 			return str;
+		}
+		private static List<StarSystem> governedSystems(List<StarSystem> systems)	{
+			List<StarSystem> governedSystems = new ArrayList<>();
+			for (StarSystem sys: systems)
+				if (sys.colony().isGovernor())
+					governedSystems.add(sys);
+			return governedSystems;
+		}
+		private static List<Integer> allowedFundingMandates(List<StarSystem> governedSystems)	{
+			List<Integer> allowedFundingMandates = null;
+			for (StarSystem sys: governedSystems)
+				if (allowedFundingMandates == null)
+					allowedFundingMandates = sys.colony().allowedMandates();
+				else
+					allowedFundingMandates.retainAll(sys.colony().allowedMandates());
+			return allowedFundingMandates;
+		}
+		public static void toggle(MouseEvent e, List<StarSystem> systems)	{
+			List<StarSystem> governedSystems = governedSystems(systems);
+			boolean reserve = SwingUtilities.isRightMouseButton(e);
+			boolean setToDefault = SwingUtilities.isMiddleMouseButton(e);
+			if (reserve)
+				toggleReserve(governedSystems);
+			else if(setToDefault)
+				setFunding(UNFUNDED, governedSystems);
+			else {
+				List<Integer> allowedMandate = allowedFundingMandates(governedSystems);
+				Colony firstColony = governedSystems.get(0).colony();
+				int newFundingMandate = firstColony.toggleMandate(allowedMandate);
+				setFunding(newFundingMandate, governedSystems);
+			}
+		}
+		private static void toggleReserve(List<StarSystem> governedSystems)	{
+			Colony firstColony = governedSystems.get(0).colony();
+			boolean newReserveState = !firstColony.govAutoFundTag().canUseReserve;
+			for (StarSystem sys: governedSystems) {
+				final Colony colony = sys.colony();
+				colony.govAutoFundTag().canUseReserve = newReserveState;
+				colony.empire.budget().makeBudgetColonyObsolete();
+				colony.empire.budget().colonyBudget(sys);
+			}
+		}
+		private static void setFunding(int mandate, List<StarSystem> governedSystems)	{
+			for (StarSystem sys: governedSystems) {
+				final Colony colony = sys.colony();
+				colony.setFundingMandate(mandate);
+				colony.empire.budget().colonyBudget(sys);
+			}
 		}
 		private void toggle(MouseEvent e)	{
 			boolean reserve = isRightClick(e);
@@ -3171,11 +3229,22 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			else if(setToDefault)
 				fundingMandate = UNFUNDED;
 			else
-				fundingMandate = toggleMandate();
+				fundingMandate = toggleMandates();
 			if (isGovernor())
 				empire.budget().colonyBudget(starSystem());
 		}
-		private int toggleMandate()	{
+		private boolean setFundingMandate(int mandate)	{
+			if (allowedMandates().contains(mandate)) {
+				fundingMandate = mandate;
+				if (isGovernor())
+					empire.budget().colonyBudget(starSystem());
+				return true;
+			}
+			if (isGovernor())
+				empire.budget().colonyBudget(starSystem());
+			return false;
+		}
+		private int toggleMandates()	{
 			int mandate = UNFUNDED;
 			switch (fundingMandate) {
 				case UNFUNDED:	if (isGrowing())	return GROWING;
@@ -3188,7 +3257,34 @@ public final class Colony implements Base, IMappedObject, Serializable {
 			}
 			return mandate;
 		}
-
+		private int toggleMandate(List<Integer> allowedMandates)	{ // For Multi-Selection
+			int mandate = UNFUNDED;
+			switch (fundingMandate) {
+				case UNFUNDED:	if (allowedMandates.contains(GROWING))	return GROWING;
+				case GROWING:	if (allowedMandates.contains(ORDERS))	return ORDERS;
+				case ORDERS:	if (allowedMandates.contains(URGENCY))	return URGENCY;
+				case URGENCY:	if (allowedMandates.contains(SHIP_WORK))return SHIP_WORK;
+				case SHIP_WORK:	return UNLIMITED;
+				case UNLIMITED:	return CROSSED;
+				case CROSSED:	return UNFUNDED;
+			}
+			return mandate;
+		}
+		private List<Integer> allowedMandates()	{
+			List<Integer> allowedMandate = new ArrayList<>();
+			allowedMandate.add(CROSSED);
+			allowedMandate.add(UNFUNDED);
+			if (isGrowing())
+				allowedMandate.add(GROWING);
+			if (hasOrders())
+				allowedMandate.add(ORDERS);
+			if (hasUrgency())
+				allowedMandate.add(URGENCY);
+			if (hasShipWork())
+				allowedMandate.add(SHIP_WORK);
+			allowedMandate.add(UNLIMITED);
+			return allowedMandate;
+		}
 		private boolean hasOrders()		{ return !orders.isEmpty(); }
 		private boolean hasUrgency()	{
 			return govUrgeBases || govUrgePop || govUrgeFactories || govUrgeShips || govUrgeBuildUp || govUrgeResearch;
@@ -3196,8 +3292,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		private boolean hasShipWork()	{ return shipyard().buildLimit() > 0; }
 
 		private int fundingMandate()	{ return fundingMandate; }
-		private void toggleReserve()	{ useReserve = !useReserve; empire.budget().makeBudgetColonyObsolete(); }
-		private boolean useReserve()	{ return useReserve && !govFundColony(); }
+		private void toggleReserve()	{ canUseReserve = !canUseReserve; empire.budget().makeBudgetColonyObsolete(); }
+		private boolean useReserve()	{ return canUseReserve && govFundColony(); }
 		private boolean updateAndGetIsFunded()	{
 			// check if there are changes and return the new state
 			// debug = true;
@@ -3249,16 +3345,24 @@ public final class Colony implements Base, IMappedObject, Serializable {
 		public boolean isCrossed()		{ return fundingMandate == CROSSED; }
 		public boolean isFunded()		{ return fundingMandate > UNFUNDED; }
 		public BufferedImage getCoinImage(int width) {
-			return getCoinImage(width, empire(), fundingMandate, useReserve(), budget().budgetSubsidiesBC() > 0);
+			return getCoinImage(width, empire(), fundingMandate, canUseReserve, budget().budgetSubsidiesBC() > 0);
 		}
-		private static BufferedImage getCoinImage(int width, Species empire, int fundingMandate, boolean useReserve, boolean granted) {
+		public static BufferedImage getUndefinedCoinImage(int width, Species empire, Integer fundingMandate, Boolean canUseReserve) {
+			if (fundingMandate == null)
+				fundingMandate = UNDEFINED;
+			return getCoinImage(width, empire, fundingMandate, canUseReserve, false);
+		}
+		private static BufferedImage getCoinImage(int width, Species empire, int fundingMandate, Boolean useReserve, boolean granted) {
 			int w = width + width;
 
 			BufferedImage buffer = new BufferedImage (w, w, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = buffer.createGraphics();
-
+			empire.setRenderingHints(g);
 			if (fundingMandate != UNFUNDED) {
-				g.setColor(COIN_GOLD_COLOR);
+				if (fundingMandate == UNDEFINED)
+					g.setColor(UNDEFINED_COLOR);
+				else
+					g.setColor(COIN_GOLD_COLOR);
 				g.fillOval(0, 0, w, w);
 
 				int margin = w/8;
@@ -3297,8 +3401,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
 						g.drawOval(coinTL, coinTL, coinW, coinW);
 						break;
 					case SHIP_WORK:
-						int grey = 15;
-						g.setColor(new Color(grey, grey, grey));
+						g.setColor(SHIP_COLOR);
 						g.drawOval(coinTL, coinTL, coinW, coinW);
 						break;
 					case CROSSED:
@@ -3312,16 +3415,30 @@ public final class Colony implements Base, IMappedObject, Serializable {
 						g.drawLine(tl, tl, w1, w1);
 						g.dispose();
 						return buffer;
+					case UNDEFINED:
+						String label = "?";
+						g.setColor(Color.WHITE);
+						g.setFont(FontManager.current().narrowFont(28));
+						int sw = g.getFontMetrics().stringWidth(label);
+						int x0 = (w-sw)/2;
+						int y0 = s35;  
+						g.drawString(label, x0, y0);
+						break;
 				}
-				if (useReserve) {
+				if (useReserve == null) {
 					g.setStroke(stroke3);
-					g.setColor(new Color(255, 0, 0));
+					g.setColor(Color.RED);
+					g.drawArc(coinTL, coinTL, coinW, coinW, 0, 45);
+					g.drawArc(coinTL, coinTL, coinW, coinW, 135, 45);
+				}
+				else if (useReserve) {
+					g.setStroke(stroke3);
+					g.setColor(Color.RED);
 					g.drawArc(coinTL, coinTL, coinW, coinW, 30, 120);
 				}
 			}
 			else { // Unfunded
-				int grey = 160;
-				g.setColor(new Color(grey, grey, grey));
+				g.setColor(COIN_GRAY_COLOR);
 				g.fillOval(0, 0, w, w);
 				int margin = w/8;
 				int coinTL = margin;

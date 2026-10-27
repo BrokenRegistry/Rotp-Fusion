@@ -1555,6 +1555,9 @@ PLANETS_SPENDING_25               | 25% %1 Spending
 PLANETS_SPENDING_50               | 50% %1 Spending
 PLANETS_SPENDING_75               | 75% %1 Spending
 PLANETS_SPENDING_MAX              | Maximum %1 Spending
+PLANETS_SPENDING_HELP			| Allocate the same spending to all selected colonies.
+PLANETS_CATEGORY_HELP			| Select the category for the spending buttons.
+
 PLANETS_HELP_ALL				| <h3>OVERVIEW</h3>This screen shows your empire's economic data along with a listing of your colonies sortable by various data.
 PLANETS_HELP_ICON				| →PLANETS_HELP_ALL←<hr>→PLANETS_HELP_HK←
 PLANETS_HELP_1A					| Ecology <br> Click this tab to show ecological data for colonies.
