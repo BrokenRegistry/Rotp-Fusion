@@ -2,6 +2,11 @@
 
 ## What's New
 
+26-10-28 (BR)
+- New default value for auto-spend Industry capacity limits.
+  - 50% is the optimal value for planets without artefacts.
+  - 98% for the planets with artefacts.
+
 26-10-27 (BR)
 - The spending instruction (The little coin) can now be adjusted when multiple colonies are selected.
   - Ungoverned colonies will be ignored.
