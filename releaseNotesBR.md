@@ -11,6 +11,11 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-29 (BR)
+- New option to force spending all the collected funds. (After the growing colonies have been served)
+- New default value for auto-spend Industry capacity limits.
+	- 98% for the planets poor and ultra-poor.
+
 26-10-28 (BR)
 - New default value for auto-spend Industry capacity limits.
   - 50% is the optimal value for planets without artefacts.

@@ -7,7 +7,7 @@ import rotp.util.LanguageManager;
 
 public final class SettingsOptions extends AbstractOptionsSubUI {
 	static final String OPTION_ID = SETTINGS_OPTIONS_UI_KEY;
-	
+
 	@Override public String optionId()			{ return OPTION_ID; }
 
 	@Override public SafeListPanel optionsMap()	{ return inGameOptionsMap(); }
@@ -33,8 +33,6 @@ public final class SettingsOptions extends AbstractOptionsSubUI {
 		list.addAll(AllSubUI.getHandle(FLAG_OPTIONS_UI_KEY).getUiMajor(false));
 		list.add(HEADER_SPACER_50);
 		list.addAll(AllSubUI.getHandle(SHIP_COMBAT_SETTINGS_UI_KEY).getUiMinor(false));
-		list.add(HEADER_SPACER_50);
-		list.addAll(AllSubUI.getHandle(GOVERNOR_UI_KEY).getUiMinor(false));
 		list.add(HEADER_SPACER_50);
 		list.addAll(AllSubUI.getHandle(NEW_OPTIONS_BETA_UI_KEY).getUiMajor(false));
 		map.add(list);

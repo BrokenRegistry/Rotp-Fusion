@@ -308,6 +308,7 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public boolean	trainSpiesASAP()				{ return trainSpiesASAP.get(); }
 	public boolean	contactUpdateSpending()			{ return contactUpdateSpending.get(); }
 	public boolean	isAutospendOnNewColoniesFirst()	{ return autoSpendOnNewColoniesFirst.get(); }
+	public boolean	isAutospendAllAvailable()		{ return autoSpendAllAvailable.get(); }
 	public float	autospendMaxIndRatioNormal()	{ return autospendMaxIndustryNormalPct.getFloat(); }
 	public float	autospendMaxIndRatioUPoor()		{ return autospendMaxIndustryUPoorPct.getFloat(); }
 	public float	autospendMaxIndRatioPoor()		{ return autospendMaxIndustryPoorPct.getFloat(); }

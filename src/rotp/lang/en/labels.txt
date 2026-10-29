@@ -6218,6 +6218,11 @@ GOVERNOR_AUTOSPEND_IMMEDIATE_DESC	| To restore the old way: Governors do not use
 GOVERNOR_AUTOSPEND_IMMEDIATE		| Immediate Transfer: %1
 GOVERNOR_AUTOSPEND_IMMEDIATE_LABEL	| Restore the old way
 
+GOVERNOR_AUTOSPEND_ALL_FUNDS_HELP	| After allocating funds to the “growing” colonies, dedicate the remaining funds to the other colonies. (With the exception of the reserved portion, of course.)<br>Note that the default definition of “growing” colonies, gives a positive return on investment. When funding more developed colonies, you may not necessarily recover the capital invested.
+OVERNOR_AUTOSPEND_ALL_FUNDS_DESC	| After allocating funds to the “growing” colonies, dedicate the remaining funds to the other colonies. (With the exception of the reserved portion, of course.)
+GOVERNOR_AUTOSPEND_ALL_FUNDS		| Auto spend all funds: %1
+GOVERNOR_AUTOSPEND_ALL_FUNDS_LABEL	| Auto spend all funds
+
 GOVERNOR_AUTOSPEND_NEW_FIRST_HELP	| When the governor needs to help both new colonies and colonies with artifacts, he will need to prioritize new settlements.
 GOVERNOR_AUTOSPEND_NEW_FIRST_DESC	| The Governor prioritizes new colonies, those with artifacts come second.
 GOVERNOR_AUTOSPEND_NEW_FIRST		| Priority to new colonies: %1

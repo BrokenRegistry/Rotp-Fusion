@@ -56,6 +56,8 @@ final class GovTaxesOptions extends AbstractOptionsSubUI {
 
 				HEADER_SPACER_50,
 				autoSpendOnNewColoniesFirst,
+				autoSpendAllAvailable,
+				LINE_SPACER_25,
 				new ParamTitle("GOVERNOR_DEVELOPMENT"),
 				autospendMaxIndustryUPoorPct,
 				autospendMaxIndustryPoorPct,

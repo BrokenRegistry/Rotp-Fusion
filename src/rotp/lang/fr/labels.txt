@@ -6218,6 +6218,11 @@ GOVERNOR_AUTOSPEND_IMMEDIATE_DESC	| Les gouverneurs n’utilisent pas le budget,
 GOVERNOR_AUTOSPEND_IMMEDIATE		| Transfert immédiat : %1
 GOVERNOR_AUTOSPEND_IMMEDIATE_LABEL	| Restaurer l’ancienne méthode
 
+GOVERNOR_AUTOSPEND_ALL_FUNDS_HELP	| Après avoir alloué des fonds aux colonies « en croissance », consacrer les fonds restants aux autres colonies. (À l’exception, bien entendu, de la part réservée.)<br>Notez que, selon la définition par défaut, les colonies « en croissance » génèrent un retour sur investissement positif. En revanche, lorsque vous financez des colonies plus développée, il est possible que vous ne récupériez pas les fonds investis.
+GOVERNOR_AUTOSPEND_ALL_FUNDS_DESC	| Après avoir alloué des fonds aux colonies « en croissance », consacrer les fonds restants aux autres colonies. (À l’exception, bien entendu, de la part réservée.)
+GOVERNOR_AUTOSPEND_ALL_FUNDS		| Tout dépenser : %1
+GOVERNOR_AUTOSPEND_ALL_FUNDS_LABEL	| out dépenser
+
 GOVERNOR_AUTOSPEND_NEW_FIRST_HELP	| Lorsque le gouverneur doit aider à la fois les nouvelles colonies et les colonies avec des artéfacts, il devra donner la priorité aux nouvelles colonies.
 GOVERNOR_AUTOSPEND_NEW_FIRST_DESC	| Le Gouverneur priorise les nouvelles colonies, celles avec des artefacts passent après.
 GOVERNOR_AUTOSPEND_NEW_FIRST		| Priorité aux nouvelles colonies : %1

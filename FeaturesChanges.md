@@ -233,6 +233,9 @@
 
 ### Governor:
 
+- New option to force spending all the collected funds. (After the growing colonies have been served)
+- New default value for auto-spend Industry capacity limits.
+	- 98% for the planets poor and ultra-poor.
 - New default value for auto-spend Industry capacity limits.
   - 50% is the optimal value for planets without artefacts.
   - 98% for the planets with artefacts.

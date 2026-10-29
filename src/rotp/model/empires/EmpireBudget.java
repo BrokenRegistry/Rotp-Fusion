@@ -308,6 +308,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 		boolean newColoniesFirst = govOptions.isAutospendOnNewColoniesFirst();
 		boolean spendOnNewColonies = govOptions.isAutospendOnNewColonies();
 		boolean spendToBoostArtefact = govOptions.isAutospendOnArtefacts();
+		boolean spendOnAllColonies = govOptions.isAutospendAllAvailable();
 
 		if (helpRandomEvent || fromPlayer)
 			requestSubsidiesForRandomEvents(budgets, fromPlayer, grant);
@@ -327,6 +328,9 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 			if (spendOnNewColonies)
 				requestSubsidiesForNewColony(budgets, fromPlayer, grant);
 		}
+		if (spendOnAllColonies && !fromPlayer) {
+			requestSubsidiesForAllColonies(budgets, fromPlayer, grant);
+		}
 		if (!fromPlayer)
 			return;
 
@@ -334,6 +338,19 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 		for (ColonyBudget budget : budgets)
 			budgetizeReserve(budget, fromPlayer, grant);
 		budgets.clear();
+	}
+	private void requestSubsidiesForAllColonies (List<ColonyBudget> allBudgets, boolean fromPlayer, boolean grant)	{
+		List<ColonyBudget> budgets = new ArrayList<>();
+		for (Iterator<ColonyBudget> iter = allBudgets.iterator(); iter.hasNext(); ) {
+			ColonyBudget budget = iter.next();
+			if (!budget.colonyIsDeveloped()) {
+				budgets.add(budget);
+				iter.remove();
+			}
+		}
+		Collections.sort(budgets, Colony.INCREASING_BUDGET);
+		for (ColonyBudget budget : budgets)
+			budgetizeReserve(budget, fromPlayer, grant);
 	}
 	private void requestSubsidiesForRandomEvents(List<ColonyBudget> allBudgets, boolean fromPlayer, boolean grant)	{
 		List<ColonyBudget> budgets = new ArrayList<>();
