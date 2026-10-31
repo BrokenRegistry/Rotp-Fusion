@@ -138,7 +138,7 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
 			return;
 		Empire player = player();
 		RacesMilitaryUI milPane = RacesUI.instance.militaryPanel;
-		
+
 		int ws = parent.getWidth();
 		int w = scaled(947);
 		int h = s80;
@@ -496,7 +496,7 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
     	parent.addNextTurnControl(warButton);
         warButton.init(this, g);
         warButton.mapX(boxX+boxW - warButton.width()-margin);
-        warButton.mapY(boxY + margin);            	           	
+        warButton.mapY(boxY + margin);
         warButton.draw(parent.map(), g);
 
         drawFleetsInfo(g);
@@ -505,7 +505,6 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
     public boolean handleKeyPress(KeyEvent e) {
 		if (baseHandleKeyPress(e))
 			return true;
-        Empire aiEmpire = mgr.results().aiEmpire();
         switch(e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
             	if (showInfo!=0) { // break info before entering battle
@@ -522,33 +521,30 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
 						mgr.dontTargetHarmlessColony(false);
                 startCombat(ShipBattleUI.ENTER_COMBAT);
                 break;
-            case KeyEvent.VK_A:
-				if (aiEmpire != null) {
+			case KeyEvent.VK_A:
+				if (mgr.results().attacker().isPlayer())
+					if (e.isShiftDown())
+						mgr.dontTargetHarmlessColony(true);
+					else if (e.isControlDown())
+						mgr.dontTargetHarmlessColony(false);
+				startCombat(ShipBattleUI.AUTO_RESOLVE);
+				break;
+			case KeyEvent.VK_S:
+				if (advisor.playerShouldRetreat())
+					startCombat(ShipBattleUI.RETREAT_ALL); // Immediate retreat
+				else {
 					if (mgr.results().attacker().isPlayer())
 						if (e.isShiftDown())
 							mgr.dontTargetHarmlessColony(true);
 						else if (e.isControlDown())
 							mgr.dontTargetHarmlessColony(false);
-					startCombat(ShipBattleUI.AUTO_RESOLVE);
+					startCombat(ShipBattleUI.SMART_RESOLVE);
 				}
-                break;
-            case KeyEvent.VK_S:
-				if (aiEmpire != null)
-					if (advisor.playerShouldRetreat())
-						startCombat(ShipBattleUI.RETREAT_ALL); // Immediate retreat
-					else {
-						if (mgr.results().attacker().isPlayer())
-							if (e.isShiftDown())
-								mgr.dontTargetHarmlessColony(true);
-							else if (e.isControlDown())
-								mgr.dontTargetHarmlessColony(false);
-						startCombat(ShipBattleUI.SMART_RESOLVE);
-					}
-                break;
-            case KeyEvent.VK_R:
-                if (aiEmpire != null)
-                    startCombat(ShipBattleUI.RETREAT_ALL);
-                break;
+				break;
+			case KeyEvent.VK_R:
+				if (mgr.playerCanRetreat())
+					startCombat(ShipBattleUI.RETREAT_ALL);
+				break;
 			case KeyEvent.VK_F:
 				toggleFlagColor(e.isShiftDown());
 				break;

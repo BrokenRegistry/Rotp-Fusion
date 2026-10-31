@@ -11,6 +11,9 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
+26-10-31 (BR)
+- Ship combat prompt: keyboard shortcuts will only function when the corresponding buttons are displayed.
+
 26-10-29 (BR)
 - New option to force spending all the collected funds. (After the growing colonies have been served)
 - New default value for auto-spend Industry capacity limits.
@@ -25,14 +28,6 @@ When updating, you can reuse the same folder.
 - The spending instruction (The little coin) can now be adjusted when multiple colonies are selected.
   - Ungoverned colonies will be ignored.
   - Only options available to all of the selected governed colonies will be offered.
-
-26-10-26 (BR)
-- Addition of information regarding the current level of the miniaturization effect.
-
-26-10-25 (BR)
-- Improved automated exploration and colonization functions for scenarios where the number of ships is lower than the number of systems to be visited.
-  - Previously, the first ship would select the best target without considering whether another ship might be closer to it.
-  - Now, the trajectories of all ships are analyzed to determine the optimal pairing.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

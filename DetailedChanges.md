@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-10-31 (BR)
+- Ship combat prompt: keyboard shortcuts will only function when the corresponding buttons are displayed.
+
 26-10-29 (BR)
 - New option to force spending all the collected funds. (After the growing colonies have been served)
 - New default value for auto-spend Industry capacity limits.
