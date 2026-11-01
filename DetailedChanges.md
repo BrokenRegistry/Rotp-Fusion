@@ -2,6 +2,11 @@
 
 ## What's New
 
+26-11-01 (BR)
+- Budget:
+  - Funds are now collected by shifting allocations into the "Industry" category. This allows for easier identification of the colonies that contribute to the empire's reserves.
+  - The shift in resource allocation, from research to the creation of reserves, begins now, targeting the smallest colonies first, in order to free up the most productive colonies for fleet construction.
+
 26-10-31 (BR)
 - Ship combat prompt: keyboard shortcuts will only function when the corresponding buttons are displayed.
 

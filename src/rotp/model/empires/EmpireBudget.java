@@ -485,10 +485,11 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 		checkForClean("planTheBudget requestSubsidies(raiseFunds) excessRevenueBC > allowedExcessRevenue unclean: ");
 
 		if (excessRevenueBC < 0) {
+			Collections.sort(funders, Colony.INCREASING_BUDGET);
 			Collections.sort(funders, DEC_RESOURCES);
 			for (ColonyBudget cBudget : funders)
 				if (cBudget.isSubjectToTaxes()) {
-					excessRevenueBC += cBudget.tryToContribute(-2*excessRevenueBC, true);
+					excessRevenueBC += cBudget.tryToContribute(-2*excessRevenueBC, false);
 					if (excessRevenueBC >= 0)
 						break;
 				}

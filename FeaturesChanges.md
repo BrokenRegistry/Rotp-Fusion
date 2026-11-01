@@ -233,6 +233,9 @@
 
 ### Governor:
 
+- Budget:
+  - Funds are now collected by shifting allocations into the "Industry" category. This allows for easier identification of the colonies that contribute to the empire's reserves.
+  - The shift in resource allocation, from research to the creation of reserves, begins now, targeting the smallest colonies first, in order to free up the most productive colonies for fleet construction.
 - New option to force spending all the collected funds. (After the growing colonies have been served)
 - New default value for auto-spend Industry capacity limits.
 	- 98% for the planets poor and ultra-poor.

@@ -44,6 +44,11 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-11-01 (BR)
+- Budget:
+  - Funds are now collected by shifting allocations into the "Industry" category. This allows for easier identification of the colonies that contribute to the empire's reserves.
+  - The shift in resource allocation, from research to the creation of reserves, begins now, targeting the smallest colonies first, in order to free up the most productive colonies for fleet construction.
+
 26-10-31 (BR)
 - Ship combat prompt: keyboard shortcuts will only function when the corresponding buttons are displayed.
 
@@ -56,11 +61,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 - New default value for auto-spend Industry capacity limits.
   - 50% is the optimal value for planets without artefacts.
   - 98% for the planets with artefacts.
-
-26-10-27 (BR)
-- The spending instruction (The little coin) can now be adjusted when multiple colonies are selected.
-  - Ungoverned colonies will be ignored.
-  - Only options available to all of the selected governed colonies will be offered.
 
 
 ### [Features Historic](FeaturesChanges.md)
