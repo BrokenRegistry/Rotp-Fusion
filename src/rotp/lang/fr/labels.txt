@@ -5604,7 +5604,7 @@ RACES_DIPLOMACY_EVENT_EFFECT      | Effet
 RACES_DIPLOMACY_ABILITY           | Aptitudes de l’espèce
 RACES_DIPLOMACY_FLEETS_POWER_RATIO	| Rapport de puissance des flottes
 RACES_DIPLOMACY_EMPIRES_POWER_RATIO	| Rapport de puissance des empires
-RACES_DIPLOMACY_AGE					| (%1)
+RACES_DIPLOMACY_AGE					|  (%1)
 RACES_MANAGE_DIALOG_OK            | OK
 RACES_MANAGE_REINSTATE_DIPLOMAT   | Réintégrer votre Diplomate
 RACES_MANAGE_RECALL_DIPLOMAT      | Rappeler votre Diplomate

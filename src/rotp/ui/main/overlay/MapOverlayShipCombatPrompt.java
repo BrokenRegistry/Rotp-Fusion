@@ -17,6 +17,7 @@ package rotp.ui.main.overlay;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -799,96 +800,128 @@ public final class MapOverlayShipCombatPrompt implements IMapOverlay, IVIPListen
             	int lineH = s18;
             	int bd = s3;
             	int cnr = s10;
-            	int w3 = s200;
-            	int h3 = s30;
-            	int x3 = boxX + boxW - w3;
-				int y3 = box.y - h3 - s15;
-            	int ws = w3 - s20;
-            	int xs = x3+((w3-ws)/2);
-            	int ys = y3 + h3 - s9;
             	if (anyWar) {
-            		if (embassy != null) { // Thus not a monster
-            			g.setColor(MainUI.paneShadeC);
-                		g.fillRoundRect(x3-bd, y3-bd, w3+bd+bd, h3+bd+bd, cnr, cnr);
-            			g.setColor(MainUI.textBoxShade0);
-                		g.fillRoundRect(x3, y3, w3, h3, cnr, cnr);
-                		String str = embassy.treatyStatus();
-                		int sw = g.getFontMetrics().stringWidth(str);
-                		int xv = x3+((w3-sw)/2);
-                		g.setColor(Color.RED);
-                		g.drawString(str, xv, ys);
-            		}
-            	}
-            	else if (embassy != null && view != null && alien != null) { // should never be...
-            		int xe = x3 + w3 - s10;
-            		h3 = scaled(130);
-					y3 = box.y - h3 - s15;
-            		ys = y3 + lineH;
-            		g.setColor(MainUI.paneShadeC);
-            		g.fillRoundRect(x3-bd, y3-bd, w3+bd+bd, h3+bd+bd, cnr, cnr);
-            		g.setColor(MainUI.textBoxShade0);
-            		g.fillRoundRect(x3, y3, w3, h3, cnr, cnr);
-            		String str = embassy.treatyStatus();
-            		g.setColor(SystemPanel.blackText);
-            		g.drawString(str, xs, ys);
+					if (embassy != null) { // Thus not a monster
+						String str = embassy.treatyStatus();
+						int sw = g.getFontMetrics().stringWidth(str);
+						int w3 = max(s200, sw + s20);
+						int x3 = boxX + boxW - w3;
+						int xv = x3+((w3-sw)/2);
+						int h3 = s30;
+						int y3 = box.y - h3 - s15;
+						int ys = y3 + h3 - s9;
+						g.setColor(MainUI.paneShadeC);
+						g.fillRoundRect(x3-bd, y3-bd, w3+bd+bd, h3+bd+bd, cnr, cnr);
+						g.setColor(MainUI.textBoxShade0);
+						g.fillRoundRect(x3, y3, w3, h3, cnr, cnr);
+						g.setColor(Color.RED);
+						g.drawString(str, xv, ys);
+					}
+				}
+				else if (embassy != null && view != null && alien != null) { // should never be...
+					FontMetrics fontMetrics = g.getFontMetrics();
+					// Treaty Status
+					String treatyStatusStr	= embassy.treatyStatus();
+					int treatyStatusWidth	= fontMetrics.stringWidth(treatyStatusStr);
 
-            		ys += lineH;
-            		str = text("RACES_DIPLOMACY_TRADE_TREATY");
-            		g.drawString(str, xs, ys);
-            		str = text("RACES_DIPLOMACY_TRADE_AMT", view.trade().level());
-            		int sw = g.getFontMetrics().stringWidth(str);
-            		int xv = xe - sw;
-            		g.drawString(str, xv, ys);
+					// Trade Treaty Nominal
+					String tradeTreatyStr	= text("RACES_DIPLOMACY_TRADE_TREATY");
+					String tradeAmountStr	= text("RACES_DIPLOMACY_TRADE_AMT", view.trade().level());
+					int tradeAmountWidth	= fontMetrics.stringWidth(tradeAmountStr);
+					int maximumTxtWidth		= max(treatyStatusWidth, fontMetrics.stringWidth(treatyStatusStr) + tradeAmountWidth);
 
-            		ys += lineH;
-            		str = text("RACES_DIPLOMACY_CURRENT_TRADE");
-            		g.drawString(str, xs, ys);
-            		int amt = (int) view.trade().profit();
-            		str = text("RACES_DIPLOMACY_TRADE_AMT", str(amt));
-            		sw = g.getFontMetrics().stringWidth(str);
-            		xv = xe - sw;
-            		g.drawString(str, xv, ys);
+					// Trade Treaty Current state
+					String currentTradeStr	= text("RACES_DIPLOMACY_CURRENT_TRADE");
+					String currentAmountStr	= text("RACES_DIPLOMACY_TRADE_AMT", fmt(view.trade().profit(), 0));
+					int currentAmountWidth	= g.getFontMetrics().stringWidth(currentAmountStr);
+					maximumTxtWidth			= max(maximumTxtWidth, fontMetrics.stringWidth(currentTradeStr) + currentAmountWidth);
 
-            		// Fleets power
-            		ys += lineH;
-            		str = text("RACES_DIPLOMACY_FLEETS_POWER_RATIO");
-            		g.drawString(str, xs, ys);
-            		int age =  alien.status().age(player());
-            		float alienPower  = alien.status().lastViewValue(player, EmpireStatus.FLEET);
-            		float playerPower = player.status().ageViewValue(player, EmpireStatus.FLEET, age);
-            		float ratio = playerPower/alienPower;
-            		str = df1.format(ratio);
-            		if (age>1) // Current turn has not been computed
-					str += text("RACES_DIPLOMACY_AGE", (age-1));
-            		sw = g.getFontMetrics().stringWidth(str);
-            		xv = xe - sw;
-            		g.drawString(str, xv, ys);
+					// Fleets power
+					String fleetPowerStr	= text("RACES_DIPLOMACY_FLEETS_POWER_RATIO");
+					int age					= alien.status().age(player());
+					int currentTurn			= galaxy().numberTurns();
+					float alienPower		= alien.status().ageViewValue(player, EmpireStatus.FLEET, age+1);
+					float playerPower		= player.status().ageViewValue(player, EmpireStatus.FLEET, 1);
+					float ratio				= playerPower/alienPower;
+					String fleetRatioStr	= df1.format(ratio);
+					if (age > currentTurn)
+						fleetRatioStr = "?" + text("RACES_DIPLOMACY_AGE", "-");
+					else if (age>1) // Current turn has not been computed
+						fleetRatioStr += text("RACES_DIPLOMACY_AGE", -(age-1));
+					int fleetRatioWidth		= g.getFontMetrics().stringWidth(fleetRatioStr);
+					maximumTxtWidth			= max(maximumTxtWidth, fontMetrics.stringWidth(fleetPowerStr) + fleetRatioWidth);
 
-            		// Empires power
-            		ys += lineH;
-            		str = text("RACES_DIPLOMACY_EMPIRES_POWER_RATIO");
-            		g.drawString(str, xs, ys);
-            		age =  alien.status().age(player());
-            		alienPower  = alien.status().lastViewValue(player, EmpireStatus.POWER);
-            		playerPower = player.status().ageViewValue(player, EmpireStatus.POWER, age);
-            		ratio = playerPower/alienPower;
-            		str = df1.format(ratio);
-            		if (age>1) // Current turn has not been computed
-					str += text("RACES_DIPLOMACY_AGE", (age-1));
-            		sw = g.getFontMetrics().stringWidth(str);
-            		xv = xe - sw;
-            		g.drawString(str, xv, ys);
+					// Empires power
+					String empirePowerStr	= text("RACES_DIPLOMACY_EMPIRES_POWER_RATIO");
+					alienPower	= alien.status().ageViewValue(player, EmpireStatus.POWER, age+1);
+					playerPower	= player.status().ageViewValue(player, EmpireStatus.POWER, 1);
+					ratio		= playerPower/alienPower;
+					String empireRatioStr	= df1.format(ratio);
+					if (age > currentTurn)
+						empireRatioStr = "?" + text("RACES_DIPLOMACY_AGE", "-");
+					else if (age>1) // Current turn has not been computed
+						empireRatioStr += text("RACES_DIPLOMACY_AGE", -(age-1));
+					int empireRatioWidth	= g.getFontMetrics().stringWidth(empireRatioStr);
+					maximumTxtWidth			= max(maximumTxtWidth, fontMetrics.stringWidth(empirePowerStr) + empireRatioWidth);
 
 					// declare war?
-					if (options().canStartWar(player, alien)) {
+					boolean canStartWar	= options().canStartWar(player, alien);
+					String startWarStr	= label();
+					int startWarWidth = g.getFontMetrics().stringWidth(startWarStr);
+					if (canStartWar)
+						maximumTxtWidth	= max(maximumTxtWidth, startWarWidth);
+
+					int w3 = max(maximumTxtWidth + s30, s200);
+					int x3 = boxX + boxW - w3;
+					int ws = w3 - s20;
+					int xs = x3+((w3-ws)/2);
+					int xe = x3 + w3 - s10;
+					int h3 = scaled(130);
+					int y3 = box.y - h3 - s15;
+					int ys = y3 + lineH;
+
+					// draw the box
+					g.setColor(MainUI.paneShadeC);
+					g.fillRoundRect(x3-bd, y3-bd, w3+bd+bd, h3+bd+bd, cnr, cnr);
+					g.setColor(MainUI.textBoxShade0);
+					g.fillRoundRect(x3, y3, w3, h3, cnr, cnr);
+
+					// Treaty Status
+					g.setColor(SystemPanel.blackText);
+					g.drawString(treatyStatusStr, xs, ys);
+
+					// Trade Treaty Nominal
+					ys += lineH;
+					g.drawString(tradeTreatyStr, xs, ys);
+					int xv = xe - tradeAmountWidth;
+					g.drawString(tradeAmountStr, xv, ys);
+
+					// Trade Treaty Current state
+					ys += lineH;
+					g.drawString(currentTradeStr, xs, ys);
+					xv = xe - currentAmountWidth;
+					g.drawString(currentAmountStr, xv, ys);
+
+					// Fleets power
+					ys += lineH;
+					g.drawString(fleetPowerStr, xs, ys);
+					xv = xe - fleetRatioWidth;
+					g.drawString(fleetRatioStr, xv, ys);
+
+					// Empires power
+					ys += lineH;
+					g.drawString(empirePowerStr, xs, ys);
+					xv = xe - empireRatioWidth;
+					g.drawString(empireRatioStr, xv, ys);
+
+					// declare war?
+					if (canStartWar) {
 						ys += lineH + s10;
-						str = label();
-						sw = g.getFontMetrics().stringWidth(str);
-						xv = x3+((w3-sw)/2);
+						xv = x3 + (w3-startWarWidth)/2;
 						g.setColor(Color.RED);
-						drawBorderedString(g, str, xv, ys, SystemPanel.grayText, Color.RED);
+						drawBorderedString(g, startWarStr, xv, ys, SystemPanel.grayText, Color.RED);
 					}
-            	}
+				}
             }
             else {
             	int sx2 = flag.getWidth(null);

@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-11-03 (BR)
+- Added informative text inside BitmapGalaxyExample.zip
+- Ship combat prompt: Corrected the French text that was overflowing.
+
 26-11-01 (BR)
 - Budget:
   - Funds are now collected by shifting allocations into the "Industry" category. This allows for easier identification of the colonies that contribute to the empire's reserves.
