@@ -32,8 +32,10 @@ import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.IGameOptions;
@@ -44,15 +46,19 @@ import rotp.ui.sprites.SystemTransportSprite;
 final class MassTransportsDialog extends BasePanel {
 	private static final long serialVersionUID = 1L;
 	private static int MAX_ROWS = 12;
+
+	private final List<StarSystem> sourceSystems = new ArrayList<>();
+	private final Map<StarSystem, Float> transportTimes = new HashMap<>();
+	private final Comparator<StarSystem> transportTimeComparator = Comparator.comparingDouble(this::transportTime);
+	private final Color backgroundC = new Color(76,57,41,192);
+
 	private FleetUI topParent;
 	private TransportTargetListingUI listingUI;
 	private TransportTargetFooterUI footerUI;
-	private List<StarSystem> sourceSystems = new ArrayList<>();
 	private boolean synched = true; // BR: Default was false!
 	private boolean invasionSynched	= true;
 	private boolean growingSynched	= false;
 	private boolean isInvasion;
-	private final Color backgroundC = new Color(76,57,41,192);
 
 	MassTransportsDialog(FleetUI p)	{
         topParent = p;
@@ -71,28 +77,36 @@ final class MassTransportsDialog extends BasePanel {
         }
         return amt;
     }
-    private int minTransportTime() {
-        float time = Float.MAX_VALUE;
-        for (StarSystem sys : sourceSystems) {
-            StarSystem dest = sys.transportSprite().starSystem();
-            if ((dest == null) || (dest == topParent.targetSystem)) {
-                if (sys.transportSprite().amt() > 0)
-                    time = min(time, sys.transportTimeTo(topParent.targetSystem));
-            }
-        }
-        return (int) Math.ceil(time);
-    }
-    private int maxTransportTime() {
-        float time = 0;
-        for (StarSystem sys : sourceSystems) {
-            StarSystem dest = sys.transportSprite().starSystem();
-            if ((dest == null) || (dest == topParent.targetSystem)) {
-                if (sys.transportSprite().amt() > 0)
-                    time = max(time, sys.transportTimeTo(topParent.targetSystem));
-            }
-        }
-        return (int) Math.ceil(time);
-    }
+	private float transportTime(StarSystem sys) {
+		Float time = transportTimes.get(sys);
+		if (time == null) {
+			time = sys.transportTimeTo(topParent.targetSystem);
+			transportTimes.put(sys, time);
+		}
+		return time;
+	}
+	private String transportTimeString(StarSystem sys)	{ return str((int) Math.ceil(transportTime(sys))); }
+	private int[] transportStats() {
+		int total = 0;
+		int minTime = Integer.MAX_VALUE;
+		int maxTime = 0;
+		for (StarSystem sys : sourceSystems) {
+			SystemTransportSprite spr = sys.transportSprite();
+			StarSystem dest = spr.starSystem();
+			if ((dest == null) || (dest == topParent.targetSystem)) {
+				int amt = spr.amt();
+				total += amt;
+				if (amt > 0) {
+					int time = (int) Math.ceil(transportTime(sys));
+					minTime = min(minTime, time);
+					maxTime = max(maxTime, time);
+				}
+			}
+		}
+		if (total == 0)
+			return new int[] {0, 0, 0};
+		return new int[] {total, minTime, maxTime};
+	}
     private boolean hotSeatSourcesEditable(List<StarSystem> systems) {
         return session().hotSeatState() == null || hotSeatCanEdit(player().id)
                 && systems.stream().allMatch(s -> s != null && s.empire() == player());
@@ -154,8 +168,11 @@ final class MassTransportsDialog extends BasePanel {
         sourceSystems.clear();
         sourceSystems.addAll(topParent.filteredSystems);
         sourceSystems.remove(topParent.targetSystem);
-        Collections.sort(sourceSystems, StarSystem.TRANSPORT_TIME_TO_TARGET_SYSTEM);
-
+//        Collections.sort(sourceSystems, StarSystem.TRANSPORT_TIME_TO_TARGET_SYSTEM);
+		transportTimes.clear();
+		for (StarSystem sys : sourceSystems)
+			transportTimes.put(sys, sys.transportTimeTo(topParent.targetSystem));
+		sourceSystems.sort(transportTimeComparator);
         IGameOptions opts = options();
         if (opts.transportAutoEcoDefaultYes())
         	for (StarSystem sys : sourceSystems)
@@ -176,6 +193,7 @@ final class MassTransportsDialog extends BasePanel {
     }
     public void close() {
         setVisible(false);
+		transportTimes.clear();
         listingUI.close();
         footerUI.close();
     }
@@ -281,7 +299,7 @@ final class MassTransportsDialog extends BasePanel {
 			Column pTypeCol		= newPlanetTypeColumn("PLANETS_LIST_TYPE", "PLANET_TYPE", s90, StarSystem.PLANET_TYPE);
 			Column maxNoLossCol	= newSystemDataColumn("PLANETS_LIST_MAX_TRANS_NO_LOSS", "NO_LOSS", s60, palette.black, StarSystem.TRANS_NO_LOSS, RIGHT);
 			Column maxToFillCol	= newSystemDataColumn("PLANETS_LIST_MAX_TRANS_TO_FILL", "TO_FILL", s60, palette.black, StarSystem.TRANS_TO_FILL, RIGHT);
-			Column distCol		= newSystemDataColumn(Column.YEARS_OR_TURNS, "TRANSPORT_TURNS", s60, palette.black, StarSystem.TRANSPORT_TIME_TO_TARGET_SYSTEM, RIGHT);
+			Column distCol		= newSystemDataColumn(Column.YEARS_OR_TURNS, "TRANSPORT_TURNS", s60, palette.black, transportTimeComparator, RIGHT, MassTransportsDialog.this::transportTimeString);
 			transportsCol		= newSystemSetTransportsColumn("PLANETS_LIST_TRANSPORTS", this, 999);
 
             view = new DataView();
@@ -343,11 +361,11 @@ final class MassTransportsDialog extends BasePanel {
 
             int w = getWidth();
             int h = getHeight();
-
-            int totalTransports = totalTransports();
-            int minTime = totalTransports == 0 ? 0 : minTransportTime();
-            int maxTime = totalTransports == 0 ? 0 : maxTransportTime();
-            String transportDetail = "";
+			int[] stats = transportStats();
+			int totalTransports = stats[0];
+			int minTime = stats[1];
+			int maxTime = stats[2];
+			String transportDetail = "";
             if (totalTransports > 0) {
                 if ((synched) || (minTime == maxTime))
                     transportDetail = text("FLEETS_TRANSPORT_TIME", str(maxTime));
@@ -356,8 +374,7 @@ final class MassTransportsDialog extends BasePanel {
             }
 
             g.setFont(narrowFont(20));
-            int total = totalTransports();
-            String totalStr = total == 0 ? "" : str(total);
+			String totalStr = totalTransports == 0 ? "" : str(totalTransports);
             String acceptText = text("FLEETS_TRANSPORTS_SEND", totalStr);
             String cancelText = text("FLEETS_CANCEL");
             int sw1 = g.getFontMetrics().stringWidth(acceptText);

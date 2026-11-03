@@ -776,12 +776,6 @@ public final class Empire extends Species implements NamedObject {
             return false;
         if (sys.colony().quarantined())
             return false;
-
-        for (StarSystem abSys: galaxy().abandonedSystems()) {
-            if (abSys != null && sv.inShipRange(abSys.id) && canColonize(abSys))
-                return true;
-        }
-
         return true;
     }
     public boolean canAbandonTo(StarSystem sys) {

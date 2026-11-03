@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-11-03 (Frank Zago)
+- Optimization of transport duration calculations in the "Mass Transport" window:
+ - The duration is calculated once and then stored, which speeds up sorting. This makes a noticeable difference for routes passing through nebulae in giant galaxies.
+
 26-11-03 (BR)
 - Added informative text inside BitmapGalaxyExample.zip
 - Ship combat prompt: Corrected the French text that was overflowing.

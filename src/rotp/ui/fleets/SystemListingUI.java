@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
@@ -160,6 +161,9 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
     public RowNumColumn newRowNumColumn(String s, int i, int align) {
         return new RowNumColumn(s, i, align);
     }
+	public SystemDataColumn newSystemDataColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align, Function<StarSystem, String> valueProvider) {
+		return new SystemDataColumn(s1, s2, i, clr, c, align, valueProvider);
+	}
     public SystemDataColumn newSystemDataColumn(String s1, String s2, int i, Color clr, Comparator<StarSystem> c, int align) {
         return new SystemDataColumn(s1, s2, i, clr, c, align);
     }
@@ -846,15 +850,19 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
     }
 	private class SystemDataColumn extends Column {
 		protected String attributeKey;
-		private Color color;
-		private Comparator<StarSystem> comp;
-		private SystemDataColumn(String s1, String s2, int w, Color clr, Comparator<StarSystem> c, int a) {
+		private final Color color;
+		private final Comparator<StarSystem> comp;
+		private final Function<StarSystem, String> valueProvider;
+
+		private SystemDataColumn(String s1, String s2, int w, Color clr, Comparator<StarSystem> c, int a)	{ this(s1, s2, w, clr, c, a, null); }
+		private SystemDataColumn(String s1, String s2, int w, Color clr, Comparator<StarSystem> c, int a, Function<StarSystem, String> valueProvider) {
             headerKey = s1;
             attributeKey = s2;
             width = w;
             color = clr;
             comp = c;
             align = a;
+			this.valueProvider = valueProvider;
         }
         protected Color color(StarSystem sys)   { return color; }
 		private boolean enabled()	{ return comp != null; }
@@ -872,7 +880,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             if (attributeKey.isEmpty())
                 return;
 
-            String val = sys.getAttribute(attributeKey);
+			String val = valueProvider == null ? sys.getAttribute(attributeKey) : valueProvider.apply(sys);
             int sw = g.getFontMetrics().stringWidth(val);
             int w0 = w-s10;
             if (sw > w0)

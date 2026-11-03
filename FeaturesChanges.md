@@ -559,6 +559,8 @@
 
 ### Fixes:
 
+- Optimization of transport duration calculations in the "Mass Transport" window:
+ - The duration is calculated once and then stored, which speeds up sorting. This makes a noticeable difference for routes passing through nebulae in giant galaxies.
 - Added informative text inside BitmapGalaxyExample.zip
 - Ship combat prompt: Corrected the French text that was overflowing.
 - Ship combat prompt: keyboard shortcuts will only function when the corresponding buttons are displayed.
