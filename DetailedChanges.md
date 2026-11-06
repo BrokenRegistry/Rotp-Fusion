@@ -2,6 +2,15 @@
 
 ## What's New
 
+26-11-06 (Frank Zago)
+- Fix stale transport slider hitbox on existing transport.
+- Fix infinite scrolling in system history pane and add scrollbar.
+
+26-11-06 (BR)
+- Fixed an issue where "filler stars" were "mixed up" and incorrectly identified by the optimization process for the construction of large galaxies.
+- Fixed occasional crash in ground battle.
+- Fixed mouse click sometime requiring mouse being moved to act. (in council and galaxy setup)
+
 26-11-03 (Frank Zago)
 - Optimization of transport duration calculations in the "Mass Transport" window:
  - The duration is calculated once and then stored, which speeds up sorting. This makes a noticeable difference for routes passing through nebulae in giant galaxies.

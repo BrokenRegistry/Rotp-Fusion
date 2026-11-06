@@ -44,6 +44,15 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-11-06 (Frank Zago)
+- Fix stale transport slider hitbox on existing transport.
+- Fix infinite scrolling in system history pane and add scrollbar.
+
+26-11-06 (BR)
+- Fixed an issue where "filler stars" were "mixed up" and incorrectly identified by the optimization process for the construction of large galaxies.
+- Fixed occasional crash in ground battle.
+- Fixed mouse click sometime requiring mouse being moved to act. (in council and galaxy setup)
+
 26-11-03 (Frank Zago)
 - Optimization of transport duration calculations in the "Mass Transport" window:
  - The duration is calculated once and then stored, which speeds up sorting. This makes a noticeable difference for routes passing through nebulae in giant galaxies.
@@ -56,19 +65,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 - Budget:
   - Funds are now collected by shifting allocations into the "Industry" category. This allows for easier identification of the colonies that contribute to the empire's reserves.
   - The shift in resource allocation, from research to the creation of reserves, begins now, targeting the smallest colonies first, in order to free up the most productive colonies for fleet construction.
-
-26-10-31 (BR)
-- Ship combat prompt: keyboard shortcuts will only function when the corresponding buttons are displayed.
-
-26-10-29 (BR)
-- New option to force spending all the collected funds. (After the growing colonies have been served)
-- New default value for auto-spend Industry capacity limits.
-	- 98% for the planets poor and ultra-poor.
-
-26-10-28 (BR)
-- New default value for auto-spend Industry capacity limits.
-  - 50% is the optimal value for planets without artefacts.
-  - 98% for the planets with artefacts.
 
 
 ### [Features Historic](FeaturesChanges.md)

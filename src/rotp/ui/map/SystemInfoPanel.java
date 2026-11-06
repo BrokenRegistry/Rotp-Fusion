@@ -23,6 +23,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -371,17 +372,28 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
                 comments.setText(emptyNotes);
         }
     }
-    final class SystemHistoryPane extends BasePanel implements MouseListener, MouseWheelListener {
+    final class SystemHistoryPane extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
         private static final long serialVersionUID = 1L;
         private final int lineH = s16;
         private final int scrollH = 3 * lineH;
+		private final Color scrollBarC = new Color(211,166,125);
+		private final Color scrollTrackC = new Color(90,68,54);
         StarSystem sys, lastSys;
         int offsetY = 0;
+		int maxOffsetY = 0;
+		int dragStartY = 0;
+		int dragStartOffsetY = 0;
+		boolean draggingScrollbar = false;
+		boolean hoveringScrollbar = false;
 
         Rectangle eventsBox = new Rectangle();
+		Rectangle scrollTrack = new Rectangle();
+		Rectangle scrollThumb = new Rectangle();
+
         SystemHistoryPane() {
             setBackground(unselectedC);
             addMouseListener(this);
+			addMouseMotionListener(this);
             addMouseWheelListener(this);
        }
         @Override
@@ -390,43 +402,61 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
             int h = getHeight();
             Graphics2D g = (Graphics2D) g0;
             super.paintComponent(g);
+			scrollTrack.setBounds(0,0,0,0);
+			scrollThumb.setBounds(0,0,0,0);
             sys = systemViewToDisplay();
             if (sys != lastSys) {
-            	lastSys = sys;
-            	offsetY = 0;
+				lastSys = sys;
+				offsetY = 0;
+				maxOffsetY = 0;
             }
             if (sys == null)
                 return;
-            
+
             int id = sys.id;
             SystemView sv = player().sv.view(id);
             String title = text("SYSTEMS_HISTORY");
             g.setFont(narrowFont(22));
             drawShadowedString(g, title, 2, s10, s25, MainUI.shadeBorderC(), SystemPanel.whiteLabelText);
-            
+
             eventsBox.setBounds(s5, s35, w-s10, h-s40);
             //g.setColor(selectedC);
             //g.fill(eventsBox);
 
             if (!sv.scouted())
                 return;
-            
+
             g.setClip(eventsBox);
-            
+
             g.setFont(narrowFont(16));
             g.setColor(SystemPanel.blackText);
-            int y0 = eventsBox.y+s20-offsetY;
             int x0 = eventsBox.x+s10;
             int w0 = eventsBox.width-s20;
             // int lineH = s16;
             int lastTurn = sv.lastReportTurn();
             List<StarSystemEvent> reverseEvents = new ArrayList<>(sv.system().events());
             Collections.reverse(reverseEvents);
+
+			int scrollW = s10;
+			int textW = w0-s40;
+			int contentH = historyHeight(g, reverseEvents, lastTurn, textW);
+			boolean needsScroll = (contentH-lineH+s20-s3 > eventsBox.height);
+			if (needsScroll) {
+				// leave room for the scrollbar without overlapping the text
+				textW = textW-scrollW-s5;
+				contentH = historyHeight(g, reverseEvents, lastTurn, textW);
+			}
+			// contentH counts the trailing gap after the last event, so subtract
+			// one line height to stop scrolling once the last line is visible
+			maxOffsetY = max(0, contentH-lineH+s20-s3-eventsBox.height+s5);
+			offsetY = min(maxOffsetY, max(0, offsetY));
+			int y0 = eventsBox.y+s20-offsetY;
+
             for (StarSystemEvent ev: reverseEvents) {
                 if (lastTurn >= ev.turn()) {
                     String yr= ev.year();
                     String desc = ev.description();
-                    List<String> descLines = this.wrappedLines(g, desc, w0-s40);
+					List<String> descLines = this.wrappedLines(g, desc, textW);
                     int yrOffset = (descLines.size()-1)*(lineH/2);
                     drawString(g,yr, x0, y0+yrOffset);
                     for (String line: descLines) {
@@ -437,30 +467,93 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
                 }
             }
             g.setClip(null);
-        }
-        @Override
-        public void mouseClicked(MouseEvent e) { 
-        	if (SwingUtilities.isMiddleMouseButton(e))
-        		offsetY = 0;
-        	if (SwingUtilities.isRightMouseButton(e))
-        		offsetY += scrollH;
-        	if (SwingUtilities.isLeftMouseButton(e))
-        		offsetY = max(0, offsetY-scrollH);
-        }
-        @Override
-        public void mousePressed(MouseEvent e) { }
-        @Override
-        public void mouseReleased(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
-        @Override
-        public void mouseExited(MouseEvent e) { }
-		@Override
-		public void mouseWheelMoved(MouseWheelEvent e) {
-			if (e.getWheelRotation() > 0)
-				offsetY += scrollH;
-			else
-				offsetY = max(0, offsetY-scrollH);
+
+			if (needsScroll) {
+				int trackX = eventsBox.x+eventsBox.width-scrollW-s3;
+				int trackY = eventsBox.y+s20;
+				int trackH = eventsBox.height-s20-s5;
+				int thumbH = max(s12, (int) ((float)trackH*eventsBox.height/(eventsBox.height+maxOffsetY)));
+				int thumbY = trackY+(int) ((float)(trackH-thumbH)*offsetY/maxOffsetY);
+				scrollTrack.setBounds(trackX, trackY, scrollW, trackH);
+				scrollThumb.setBounds(trackX, thumbY, scrollW, thumbH);
+				g.setColor(scrollTrackC);
+				g.fillRoundRect(trackX, trackY, scrollW, trackH, scrollW, scrollW);
+				g.setColor(scrollBarC);
+				g.fillRoundRect(trackX, thumbY, scrollW, thumbH, scrollW, scrollW);
+				if (hoveringScrollbar) {
+					Stroke prev = g.getStroke();
+					g.setColor(Color.yellow);
+					g.setStroke(stroke2);
+					g.drawRoundRect(trackX, thumbY, scrollW, thumbH, scrollW, scrollW);
+					g.setStroke(prev);
+				}
+			}
 		}
-    }
+		private int historyHeight(Graphics g, List<StarSystemEvent> events, int lastTurn, int textW) {
+			int height = 0;
+			for (StarSystemEvent ev: events)
+				if (lastTurn >= ev.turn())
+					height += wrappedLines(g, ev.description(), textW).size()*lineH + s3;
+			return height;
+		}
+		private void scroll(int delta) {
+			offsetY = max(0, min(maxOffsetY, offsetY+delta));
+			repaint();
+		}
+		@Override public void mouseClicked(MouseEvent e) { 
+			if (SwingUtilities.isMiddleMouseButton(e)) {
+				offsetY = 0;
+				repaint();
+			}
+		}
+		@Override public void mousePressed(MouseEvent e) {
+			if (!SwingUtilities.isLeftMouseButton(e))
+				return;
+
+			if (scrollThumb.contains(e.getPoint())) {
+				draggingScrollbar = true;
+				dragStartY = e.getY();
+				dragStartOffsetY = offsetY;
+			}
+			else if (scrollTrack.contains(e.getPoint()) && maxOffsetY > 0) {
+				int thumbRange = scrollTrack.height-scrollThumb.height;
+				if (thumbRange > 0) {
+					int thumbY = e.getY()-scrollTrack.y-scrollThumb.height/2;
+					thumbY = max(0, min(thumbRange, thumbY));
+					offsetY = (int) ((float)maxOffsetY*thumbY/thumbRange);
+					repaint();
+				}
+			}
+		}
+		@Override public void mouseReleased(MouseEvent e) {
+			draggingScrollbar = false;
+		}
+		@Override public void mouseDragged(MouseEvent e) {
+			if (!draggingScrollbar)
+				return;
+
+			int thumbRange = scrollTrack.height-scrollThumb.height;
+			if (thumbRange <= 0 || maxOffsetY <= 0)
+				return;
+
+			int dy = e.getY()-dragStartY;
+			offsetY = max(0, min(maxOffsetY, dragStartOffsetY+(int) ((float)dy*maxOffsetY/thumbRange)));
+			repaint();
+		}
+		@Override public void mouseMoved(MouseEvent e) {
+			boolean hovering = scrollThumb.contains(e.getPoint());
+			if (hovering != hoveringScrollbar) {
+				hoveringScrollbar = hovering;
+				repaint();
+			}
+		}
+		@Override public void mouseEntered(MouseEvent e) { }
+		@Override public void mouseExited(MouseEvent e)  {
+			if (hoveringScrollbar) {
+				hoveringScrollbar = false;
+				repaint();
+			}
+		}
+		@Override public void mouseWheelMoved(MouseWheelEvent e) { scroll(e.getWheelRotation() > 0 ? scrollH : -scrollH); }
+	}
 }
