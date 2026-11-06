@@ -248,6 +248,8 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         int row1Y = y0;
         //y0 += (rowHeight()+cellSpacing);
         int rowNum = 0;
+		while (rowButtons.size() > numRows)
+			rowButtons.remove(rowButtons.size()-1);
         int y1 = rowH; // already drew the header row
         g.setClip(leftM, y1, w-rightM-leftM, listH);
         minDisplayY = y1+rowH;
@@ -267,7 +269,10 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             }
 			boolean visible = (y0 >= y1) && ((y0) <= maxDisplayY);
 			int ys = visible? y0 : 0;
-			RowSprite row = new RowSprite(sys, rowButtons.get(rowNum), leftM, ys, 0, rowHeight());
+			List<SystemButton> buttons = rowButtons.get(rowNum);
+			for (SystemButton button : buttons)
+				button.reset();
+			RowSprite row = new RowSprite(sys, buttons, leftM, ys, 0, rowHeight());
 			x0 = leftM;
 			if (visible || isLastSelected) {
 				for (Column col: dv.columns) {
@@ -686,6 +691,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
                 return;
 
             if (!player().canSendTransportsFrom(sys)) {
+				removeTransportButtons(row);
                 if (sys.colony().inRebellion())
                     drawErrorString(g2, text("MAIN_PLANET_REBELLION"), x+s10, y-s6);
                 else if (sys.colony().quarantined())
@@ -700,6 +706,15 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
                 drawExistingTransports(g2, row, sys, x, y - s26, w);
             }
         }
+		private void removeSliderButtons(RowSprite row) {
+			row.removeButton(TRANSPORT_SLIDER);
+			row.removeButton(TRANSPORT_DECREMENT);
+			row.removeButton(TRANSPORT_INCREMENT);
+		}
+		private void removeTransportButtons(RowSprite row) {
+			removeSliderButtons(row);
+			row.removeButton(TRANSPORT_STOP);
+		}
         private void drawErrorString(Graphics2D g, String err, int x0, int y1) {
             g.setFont(narrowFont(18));
             g.setColor(SystemPanel.blackText);
@@ -711,6 +726,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         	Color sliderBgC	 = autoEco ? sliderButtonEcoColor : sliderButtonColor;
             int amt = sys.transportSprite().amt();
             int maxAmt = player().sv.maxTransportsToSend(sys.id);
+			row.removeButton(TRANSPORT_STOP);
             if (maxAmt == 0) {
                 drawUnableToSendTransports(g, row, sys, x0, y1-s3, w);
                 return;
@@ -793,6 +809,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             }
         }
         private void drawUnableToSendTransports(Graphics2D g, RowSprite row, StarSystem sys, int x0, int y1, int w) {
+			removeTransportButtons(row);
             g.setColor(Color.black);
             String sysName = player().sv.knownName(sys.id);
             String detail = text("FLEETS_CANNOT_SEND_TRANSPORTS", sysName);
@@ -800,6 +817,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             drawString(g,detail, x0+s10, y1+s18);
         }
         private void drawExistingTransports(Graphics2D g, RowSprite row, StarSystem sys, int x0, int y1, int w) {
+			removeSliderButtons(row);
             TransportStopButton stopButton = (TransportStopButton) row.getButton(TRANSPORT_STOP);
             if (stopButton == null) {
                 stopButton = new TransportStopButton();
@@ -1328,6 +1346,11 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
             }
             return null;
         }
+		private void removeButton(int id) {
+			for (int i=buttons.size()-1; i>=0; i--)
+				if (buttons.get(i).id() == id)
+					buttons.remove(i);
+		}
 		@Override public boolean isSelectableAt(int x0, int y0)	{
 			boolean hovering = (x0 >= x)
 					&& (x0 <= x+w)
