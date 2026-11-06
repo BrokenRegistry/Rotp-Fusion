@@ -700,7 +700,7 @@ public class GroundBattleUI extends BasePanel implements MouseListener {
         }
         else {
             victim = random(remainingDefenders);
-	        if (victim == null) {
+			if (victim == null || victim < 0) { // BR: "-1" was returned and crashed the game...
 	            victim = deathThisTurn;
 	            deathThisTurn = 0;
 	        }
