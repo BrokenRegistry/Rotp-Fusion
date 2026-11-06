@@ -2503,6 +2503,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	@Override public void mouseReleased(MouseEvent e) { // BR: added full mouse control
 		if (e.getButton() > 3)
 			return;
+		super.mouseMoved(e); // To update hoverBox
 		if (hoverBox == null && hoverPolyBox == null)
 			return;
 		if (hoverBox == helpBox) {

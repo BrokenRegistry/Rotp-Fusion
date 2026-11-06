@@ -1311,6 +1311,7 @@ public final class GalacticCouncilUI extends FadeInPanel
     }
     @Override
     public void mouseReleased(MouseEvent e) {
+    	mouseMoved(e);  // To update hoverTarget
         dragY = 0;
         if ((e.getButton() > 3) || e.getClickCount() > 1)
             return;
