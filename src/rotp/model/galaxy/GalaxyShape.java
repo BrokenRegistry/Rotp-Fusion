@@ -500,7 +500,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	// \BR
 	private boolean valid(Point.Float p)	{ return valid(p.x, p.y); }
 	public float maxScaleAdj()				{ return 1.0f; }
-	public void coords(int n, Point.Float pt)	{
+	public void coords(int n, Point.Float pt)	{ // TODO BR: Fix
 		if (n == 0) { // BR: Fixed Orion at the wrong place with regions
 			if (orionXY == null) // BR: I don't know why this happen!!!
 				return;
@@ -508,26 +508,26 @@ public abstract class GalaxyShape implements Base, Serializable {
 			pt.y = orionXY.y;
 			return;
 		}
-		if (usingRegions) {
-			int i = n-1; // BR: Fixed Orion at the wrong place with regions
-			for (int a=0;a<regionScale;a++) {
-				for (int b=0;b<regionScale;b++) {
-					if (i >= regions[a][b].num)
-						i -= regions[a][b].num;
-					else {
-						pt.x = regions[a][b].x[i];
-						pt.y = regions[a][b].y[i];
-						//log("system: "+n+"  is a:"+a+" b:"+b+"  i:"+i);
-						return;
-					}
-				}
-			}
-			throw new RuntimeException("Invalid x index requested: "+i);
-		}
-		else {
+//		if (usingRegions) {
+//			int i = n-1; // BR: Fixed Orion at the wrong place with regions
+//			for (int a=0;a<regionScale;a++) {
+//				for (int b=0;b<regionScale;b++) {
+//					if (i >= regions[a][b].num)
+//						i -= regions[a][b].num;
+//					else {
+//						pt.x = regions[a][b].x[i];
+//						pt.y = regions[a][b].y[i];
+//						//log("system: "+n+"  is a:"+a+" b:"+b+"  i:"+i);
+//						return;
+//					}
+//				}
+//			}
+//			throw new RuntimeException("Invalid x index requested: "+i);
+//		}
+//		else {
 			pt.x = x[n];
 			pt.y = y[n];
-		}
+//		}
 	}
 	public boolean isValid()	{ return isValid; }
 	// BR: ========== Initialization Methods ==========
@@ -590,6 +590,12 @@ public abstract class GalaxyShape implements Base, Serializable {
 		initWidthHeight();
 		float minSize = min(fullWidth, fullHeight);
 		usingRegions = (minSize > 100) && !isSymmetric();
+
+		// BR: The "No region" is now always built to be able to retrieve the placement sequence
+		x = new float[totalStars];
+		y = new float[totalStars];
+
+		// BR: The region are still used to speed up the distance validation
 		if (usingRegions) {
 			regionScale = min(64, (int) (minSize / 6.0));
 			regions = new ShapeRegion[regionScale][regionScale];
@@ -600,10 +606,6 @@ public abstract class GalaxyShape implements Base, Serializable {
 				for (int j=0;j<regionScale;j++)
 					regions[i][j] = new ShapeRegion(regionStars);
 			}
-		}
-		else {
-			x = new float[totalStars];
-			y = new float[totalStars];
 		}
 	}
 	protected void initWidthHeight() {
@@ -836,7 +838,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	private void addSystem(Point.Float pt) { // BR: changed to protected
 		addSystem(pt.x, pt.y);
 	}
-	private void addSystem(float x0, float y0) {
+	private void addSystem(float x0, float y0) { // TODO BR: Fix
 		if (num == 0) { // Orion: already stored in orionXY!
 			if(!usingRegions) { // To be safe, but should not be needed!
 				x[num] = x0;
@@ -845,17 +847,17 @@ public abstract class GalaxyShape implements Base, Serializable {
 			num++;
 			return;
 		}
+		// BR: The "No region" is now always built to be able to retrieve the placement sequence
+		x[num] = x0;
+		y[num] = y0;
+
+		// BR: The region are still used to speed up the distance validation
 		if (usingRegions) {
 			int xRgn = (int) (regionScale*x0/fullWidth);
 			int yRgn = (int) (regionScale*y0/fullHeight);
 			regions[xRgn][yRgn].addSystem(x0,y0);
-			num++;
 		}
-		else {
-			x[num] = x0;
-			y[num] = y0;
-			num++;
-		}
+		num++;
 	}
 	private boolean isTooNearExistingSystem(float x0, float y0, boolean isHomeworld) {
 		if (isHomeworld) {
