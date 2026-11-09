@@ -155,7 +155,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
     private boolean prioritizeResearch	= false;
     private boolean governor = govOptions().isGovernorOnByDefault();
     private GovAutoFundTag govAutoFundTag;
-    private boolean autoShips	= govOptions().isAutoShipsByDefault();
+    private boolean autoShips	= govOptions().isAutoShipsByDefault(); // Not yet implemented
     int govShipBuildSparePct	= 100 - govOptions().defaultShipTakePct();
 
     private boolean hasNewOrders = false;
@@ -1926,8 +1926,8 @@ public final class Colony implements Base, IMappedObject, Serializable {
         }
     }
 
-    public boolean isAutoShips()                        { return autoShips; }
-    public void setAutoShips(boolean autoShips)         { this.autoShips = autoShips; }
+    public boolean isAutoShips()                        { return autoShips; }			// Not yet implemented
+    public void setAutoShips(boolean autoShips)         { this.autoShips = autoShips; }	// Not yet implemented
     boolean prioritizeShips()                           { return prioritizeShips; }
     private void prioritizeShips(boolean prioritize)    { prioritizeShips = prioritize; }
     boolean prioritizeResearch()                        { return prioritizeResearch; }

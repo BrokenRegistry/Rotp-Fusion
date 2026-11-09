@@ -77,8 +77,8 @@ public final class AIFleetCommander implements Base, FleetCommander {
 		private final boolean autoColonyMultiple;
 		public ColonyPriority()	{
 			GovernorOptions gov	= govOptions();
-			secondColonyWeight	= gov.secondColonyWeightPct();
-			distanceWeight		= gov.colonyDistanceWeight();
+			secondColonyWeight	= gov.secondColonyWeightRatio();
+			distanceWeight		= gov.colonyDistanceWeightRatio();
 			autoColonyMultiple	= gov.autoColonizeTuned() && gov.autoColonizeMultiple();
 		}
 		@Override public void sort(Integer sourceSystem, List<Target> targets, float warpSpeed)	{
@@ -148,8 +148,11 @@ public final class AIFleetCommander implements Base, FleetCommander {
 		float valueWeight = 1 - distanceWeight;
 		float weight = valuePercent * valueWeight + distancePercent * distanceWeight;
 
-		if (autoColonyMultiple && target.alreadyTargeted)
-			weight /= (secondColonyWeight + 0.001f);
+		if (target.alreadyTargeted)
+			if (autoColonyMultiple)
+				return weight / (secondColonyWeight + 0.001f); // flip value percent
+			else
+				return weight *10000f; // flip value percent
 		return weight;
 		// return valuePercent * 0.5 + distancePercent * 0.5;
 	}
@@ -158,7 +161,7 @@ public final class AIFleetCommander implements Base, FleetCommander {
 		private final boolean autoScoutMultiple;
 		public ScoutPriority()	{
 			GovernorOptions gov = govOptions();
-			secondScoutWeight = gov.secondScoutWeightPct();
+			secondScoutWeight = gov.secondScoutWeightRatio();
 			autoScoutMultiple = gov.autoScoutSmart() && gov.autoScoutMultiple();
 		}
 		@Override public void sort(Integer sourceSystem, List<Target> targets, float warpSpeed)	{
@@ -189,8 +192,11 @@ public final class AIFleetCommander implements Base, FleetCommander {
 	}
 	private double autoScoutWeight(StarSystem source, Target target, float maxDistance, float warpSpeed, float secondScoutWeight, boolean autoScoutMultiple) {
 		float weight = source.travelTimeTo(empire.sv.system(target.sysId), warpSpeed);// / maxDistance;
-		if (autoScoutMultiple && target.alreadyTargeted)
-			weight /= (secondScoutWeight + 0.001f);
+		if (target.alreadyTargeted)
+			if(autoScoutMultiple)
+				return weight / (secondScoutWeight + 0.001f);  // flip weight
+			else
+				return weight * 10000f;
 		return weight;
 	}
 
@@ -242,7 +248,7 @@ public final class AIFleetCommander implements Base, FleetCommander {
 		float valuePercent = 1 - planetValue(targetId) / maxValue;
 		float distancePercent = source.travelTimeTo(empire.sv.system(targetId), warpSpeed) / maxDistance;
 		// so distance is worth 50% of weight, value 50%
-		float distanceWeight = govOptions().colonyDistanceWeight();
+		float distanceWeight = govOptions().colonyDistanceWeightRatio();
 		float valueWeight = 1 - distanceWeight;
 		return valuePercent * valueWeight + distancePercent * distanceWeight;
 		// return valuePercent * 0.5 + distancePercent * 0.5;

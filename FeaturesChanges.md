@@ -559,6 +559,8 @@
 
 ### Fixes:
 
+- Fixed technologies that cost nothing when restarting.
+- Renaming of certain function names that are confusing (Pct -> Ratio)
 - Fix stale transport slider hitbox on existing transport.
 - Fix infinite scrolling in system history pane and add scrollbar.
 - Fixed an issue where "filler stars" were "mixed up" and incorrectly identified by the optimization process for the construction of large galaxies.

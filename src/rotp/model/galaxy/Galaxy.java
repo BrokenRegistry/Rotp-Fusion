@@ -277,6 +277,7 @@ public final class Galaxy implements Base, Serializable {
         maxScaleAdj	= src.maxScaleAdj;
         starSystems	= new StarSystem[src.numStarSystems];
         empires		= new Empire[src.numEmpires];
+		systemCountNoFillers = src.systemCountNoFillers;
     }
     public Galaxy(GalaxyShape sh) {
         widthLY = sh.width();
@@ -895,10 +896,11 @@ public final class Galaxy implements Base, Serializable {
 		private float maxScaleAdj;
 		int numCompWorlds;
 		int numStarSystems;
+		int systemCountNoFillers;
 		SystemBaseData[] starSystems;
 		private int numEmpires;
 		public EmpireBaseData[] empires;
-		
+
 		GalaxyBaseData(Galaxy src) {
 			width		= src.width();
 			height		= src.height();
@@ -907,6 +909,10 @@ public final class Galaxy implements Base, Serializable {
 			numCompWorlds	= src.empire(0).getCompanionWorldsNumber();
 
 			numStarSystems = src.numStarSystems();
+			systemCountNoFillers = src.systemCountNoFillers();
+			if (systemCountNoFillers == 0)
+				systemCountNoFillers = numStarSystems;
+
 			starSystems	   = new SystemBaseData[numStarSystems];
 			StarSystem[] originalSystems = src.originalStarSystem();
 			for (int i=0; i<src.systemCount; i++ )
@@ -946,14 +952,5 @@ public final class Galaxy implements Base, Serializable {
 				player.raceOptions	= playerRaceOptions;
 			}
 		}
-//		void playerRace(String r, String dr, boolean isCR, DynOptions options, int ai, CivilizationId civId) {
-//			empires[0].setRace(r, dr, isCR, options, ai, civId);
-//		}
-//		LinkedList<String> alienRaces() {
-//			LinkedList<String> list = new LinkedList<>();
-//			for (int i=1; i<numEmpires; i++)
-//				list.add(empires[i].raceKey);
-//			return list;
-//		}
-    }
+	}
 }

@@ -272,8 +272,8 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public void		setAutoAttackShipCount(int i)	{ autoAttackCount.silentSet(i); }
 	public void		autoAttack(MouseWheelEvent e)	{ autoAttackCount.toggle(e); }
 
-	public boolean	isAutoShipsByDefault()			{ return autoShipsDefault.get(); }
-	public void		setAutoShipsByDefault(boolean b){ autoShipsDefault.silentSet(b); }
+	public boolean	isAutoShipsByDefault()			{ return autoShipsDefault.get(); }	// Not yet implemented
+	public void		setAutoShipsByDefault(boolean b){ autoShipsDefault.silentSet(b); }	// Not yet implemented
 
 	// Fine Tuning options: Not in the floating windows
 	public String	subsidyNormalUse()				{ return subsidyNormalUse.get(); }
@@ -281,30 +281,30 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public float	workerToFactoryROILimit()		{ return workerToFactoryROI.get()/100f; }
 	public int		maxColoniesForROI()				{ return maxColoniesForROI.get(); }
 	public boolean	showTriggeredROI()				{ return showTriggeredROI.get(); }
-	public float	terraformFactoryPct()			{ return terraformFactoryPct.get()/100f; }
-	public float	terraformPopulationPct()		{ return terraformPopulationPct.get()/100f; }
+	public float	terraformFactoryRatio()			{ return terraformFactoryPct.get()/100f; }
+	public float	terraformPopulationRatio()		{ return terraformPopulationPct.get()/100f; }
 	public float	terraformMissingPopulation()	{ return terraformPopulation.get(); }
-	public float	terraformCost2Income()			{ return terraformCost2Income.get()/100f; }
+	public float	terraformCost2IncomeRatio()		{ return terraformCost2Income.get()/100f; }
 	public int		defaultShipTakePct()			{ return defaultShipTakePct.get(); }
-	public float	colonyDistanceWeight()			{ return colonyDistanceWeight.get()/100f; }
+	public float	colonyDistanceWeightRatio()		{ return colonyDistanceWeight.get()/100f; }
 	public boolean	compensateGrowth()				{ return compensateGrowth.get(); }
 	public float	minColonyGrowth()				{ return minColonyGrowth.get(); }
-	public float	colonyEarlyBoostPct()			{ return colonyEarlyBoostPct.get()/100f; }
+	public float	colonyEarlyBoostRatio()			{ return colonyEarlyBoostPct.get()/100f; }
 	public boolean	earlyBaseBuilding()				{ return earlyBaseBuilding.get(); }
-	public float	earlyBaseBoostPct()				{ return earlyBaseBoostPct.get()/100f; }
+	public float	earlyBaseBoostRatio()			{ return earlyBaseBoostPct.get()/100f; }
 	public boolean	armedScoutGuard()				{ return armedScoutGuard.get(); }
 	public boolean	autoScoutSmart()				{ return autoScoutSmart.get(); }
 	public boolean	autoScoutMultiple()				{ return autoScoutMultiple.get(); }
 	public int		autoScoutMaxTime()				{ return autoScoutMaxTime.get(); }
 	public int		autoScoutSaveTime()				{ return autoScoutSaveTime.get(); }
-	public float	secondScoutWeightPct()			{ return secondScoutWeightPct.getFloat(); }
+	public float	secondScoutWeightRatio()		{ return secondScoutWeightPct.getFloat(); }
 	public boolean	armedColonizerGuard()			{ return armedColonizerGuard.get(); }
 	public boolean	armedColonizerFight()			{ return armedColonizerFight.get(); }
 	public boolean	autoColonizeTuned()				{ return autoColonizeTuned.get(); }
 	public boolean	autoColonizeMultiple()			{ return autoColonizeMultiple.get(); }
 	public int		autoColonizeMaxTime()			{ return autoColonizeMaxTime.get(); }
 	public int		autoColonizeSaveTime()			{ return autoColonizeSaveTime.get(); }
-	public float	secondColonyWeightPct()			{ return secondColonyWeightPct.getFloat(); }
+	public float	secondColonyWeightRatio()		{ return secondColonyWeightPct.getFloat(); }
 	public boolean	trainSpiesASAP()				{ return trainSpiesASAP.get(); }
 	public boolean	contactUpdateSpending()			{ return contactUpdateSpending.get(); }
 	public boolean	isAutospendOnNewColoniesFirst()	{ return autoSpendOnNewColoniesFirst.get(); }
@@ -334,11 +334,11 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	public boolean	redoBudgetOnTransport()			{ return redoBudgetOnTransport.get(); }
 	public boolean	redoBudgetOnColony()			{ return redoBudgetOnColony.get(); }
 	public boolean	redoBudgetOnSpendings()			{ return redoBudgetOnSpendings.get(); }
-	public boolean	redoBudgetRaiseAllowed()		{ return redoBudgetRaiseAllowed.get() && autospendRaiseFunds(); }
+	public boolean	isRedoBudgetRaiseAllowed()		{ return redoBudgetRaiseAllowed.get() && autospendRaiseFunds(); }
 	public void		toggleRedoBudgetRaiseAllowed()	{ redoBudgetRaiseAllowed.toggle(); }
-	public boolean	redoBudgetGrantAllowed()		{ return redoBudgetGrantAllowed.get() && autospendGrantFunds(); }
+	public boolean	isRedoBudgetGrantAllowed()		{ return redoBudgetGrantAllowed.get() && autospendGrantFunds(); }
 	public void		toggleRedoBudgetGrantAllowed()	{ redoBudgetGrantAllowed.toggle(); }
-	public boolean	redoBudgetAllowed()				{ return redoBudgetRaiseAllowed() || redoBudgetRaiseAllowed(); }
+	public boolean	isRedoBudgetAllowed()			{ return isRedoBudgetGrantAllowed() || isRedoBudgetRaiseAllowed(); }
 	public boolean	autospendImmediateTransfer()	{ return autospendImmediateTransfer.get(); }
 	public void		toggleAutospendOldWay()			{ autospendImmediateTransfer.toggle(); }
 	public boolean	raiseFundFromUngoverned()		{ return grantFundToUngoverned.get(); }

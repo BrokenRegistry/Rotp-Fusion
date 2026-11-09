@@ -53,8 +53,8 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 			return false;
 		if (status.isNewBudgetRequired()) {
 			GovernorOptions govOptions = session().getGovernorOptions();
-			boolean grant = govOptions.redoBudgetGrantAllowed();
-			boolean raise = govOptions.redoBudgetRaiseAllowed();
+			boolean grant = govOptions.isRedoBudgetGrantAllowed();
+			boolean raise = govOptions.isRedoBudgetRaiseAllowed();
 			redoBudget(empire.allColonizedSystems(), grant, raise, REDO, true);
 			return true;
 		}
@@ -73,8 +73,8 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 	}
 	public void colonyBudget(StarSystem system)	{
 			GovernorOptions govOptions = session().getGovernorOptions();
-		boolean grant = govOptions.redoBudgetGrantAllowed();
-		boolean raise = govOptions.redoBudgetRaiseAllowed();
+		boolean grant = govOptions.isRedoBudgetGrantAllowed();
+		boolean raise = govOptions.isRedoBudgetRaiseAllowed();
 		boolean fullRedo = grant && raise;
 		// the colony will be fully updated, but the other will follow the rules
 		if (status.isNewBudgetRequired()) {
@@ -560,7 +560,7 @@ public final class EmpireBudget extends ReinitBudget implements Base, Serializab
 
 		private boolean isNewBudgetRequired()	{
 			GovernorOptions govOptions = session().getGovernorOptions();
-			if (govOptions.redoBudgetAllowed())
+			if (govOptions.isRedoBudgetAllowed())
 				return (newOptions()		&& govOptions.redoBudgetOnOptionChange())
 						|| (newTaxLevel()	&& govOptions.redoBudgetOnTaxChange())
 						|| (newTransport()	&& govOptions.redoBudgetOnTransport())

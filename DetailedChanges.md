@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-11-09 (BR)
+- Fixed technologies that cost nothing when restarting.
+- Renaming of certain function names that are confusing (Pct -> Ratio)
+
 26-11-06 (Frank Zago)
 - Fix stale transport slider hitbox on existing transport.
 - Fix infinite scrolling in system history pane and add scrollbar.

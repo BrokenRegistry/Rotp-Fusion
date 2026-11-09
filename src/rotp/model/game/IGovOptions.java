@@ -452,6 +452,7 @@ public interface IGovOptions {
 	ParamInteger secondScoutWeightPct 	= new ParamInteger(GOV_UI, "2ND_SCOUT_WEIGHT_PCT", 0)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20)
+			.pctValue(true)
 			.addIsGhostMethod(IGovOptions::notScoutSmartOrSingle);
 
 	private static void tagAutoColonizeAll(String id)	{
@@ -488,6 +489,7 @@ public interface IGovOptions {
 	ParamInteger secondColonyWeightPct 	= new ParamInteger(GOV_UI, "2ND_COLONY_WEIGHT_PCT", 0)
 			.setLimits(0, 100)
 			.setIncrements(1, 5, 20)
+			.pctValue(true)
 			.addIsGhostMethod(IGovOptions::notTunedOrSingle);
 
 	ParamBoolean trainSpiesASAP			= new ParamBoolean(GOV_UI, "TRAIN_SPIES_ASAP", true);

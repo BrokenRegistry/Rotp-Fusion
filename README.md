@@ -44,6 +44,10 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-11-09 (BR)
+- Fixed technologies that cost nothing when restarting.
+- Renaming of certain function names that are confusing (Pct -> Ratio)
+
 26-11-06 (Frank Zago)
 - Fix stale transport slider hitbox on existing transport.
 - Fix infinite scrolling in system history pane and add scrollbar.
@@ -60,11 +64,6 @@ java -jar target/rotp-<timestamp>-mini.jar
 26-11-03 (BR)
 - Added informative text inside BitmapGalaxyExample.zip
 - Ship combat prompt: Corrected the French text that was overflowing.
-
-26-11-01 (BR)
-- Budget:
-  - Funds are now collected by shifting allocations into the "Industry" category. This allows for easier identification of the colonies that contribute to the empire's reserves.
-  - The shift in resource allocation, from research to the creation of reserves, begins now, targeting the smallest colonies first, in order to free up the most productive colonies for fleet construction.
 
 
 ### [Features Historic](FeaturesChanges.md)

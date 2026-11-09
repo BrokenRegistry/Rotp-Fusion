@@ -62,7 +62,7 @@ import rotp.ui.util.ParamInteger;
 import rotp.util.Base;
 import rotp.util.Palette;
 
-public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
+public final class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     private static final long serialVersionUID = 1L;
     private static int  minFont  = 8;	// BR: Remotely changed
     private static int  fontPct  = 100;	// BR: Remotely changed

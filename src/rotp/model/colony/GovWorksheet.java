@@ -58,7 +58,7 @@ public final class GovWorksheet extends NextProductionReport {
 		}
 		else {
 			float workable	= Math.min(maxSize, industry.factories() / industry.robotControls());
-			float boostLim	= Math.max(workable, maxSize * gov.colonyEarlyBoostPct());
+			float boostLim	= Math.max(workable, maxSize * gov.colonyEarlyBoostRatio());
 			if (gov.compensateGrowth())
 				minGrowth	= Math.max(expGrowth, gov.minColonyGrowth());
 			else
@@ -90,7 +90,7 @@ public final class GovWorksheet extends NextProductionReport {
 		int maxBase = defense.maxBases();
 		if (minBase > 0 && maxBase < minBase)
 			defense.maxBases(minBase);
-		promoteBases = !defense.isCompleted() && gov.earlyBaseBuilding() && colony.industry().factoryToMaxRatio() >= gov.earlyBaseBoostPct();
+		promoteBases = !defense.isCompleted() && gov.earlyBaseBuilding() && colony.industry().factoryToMaxRatio() >= gov.earlyBaseBoostRatio();
 
 		// Ships management
 		boolean isDirectShipAlloc	= !loweredShipPriority && wasBuildingShips && !wasShipRequest;
@@ -177,20 +177,20 @@ public final class GovWorksheet extends NextProductionReport {
 		float numFactories = industry.factories();
 		int currentBuildableFactories = industry.currentBuildableFactories();
 		float factoryCompletion = numFactories/currentBuildableFactories;
-		if (factoryCompletion >= gov.terraformFactoryPct())
+		if (factoryCompletion >= gov.terraformFactoryRatio())
 			return true;
 
 		// True if minimum population is already there
 		float nextTurnPop	= workingPopulation + expGrowth;
 		float PopulationPct	= nextTurnPop/currentSize;
-		if (PopulationPct >= gov.terraformPopulationPct())
+		if (PopulationPct >= gov.terraformPopulationRatio())
 			return true;
 		if (missingPop <= gov.terraformMissingPopulation())
 			return true;
 
 		// True if one improvement is done in one turn.
 		float costLimit = totalIncome - cleanupCost;
-		costLimit *= gov.terraformCost2Income();
+		costLimit *= gov.terraformCost2IncomeRatio();
 		if (p.isResourceUltraPoor()) // 3 turns for ultra poor
 			costLimit *= 3;
 		else if (p.isResourcePoor()) // 2 turns for poor
