@@ -687,7 +687,7 @@ public final class DiplomaticEmbassy implements Base, Serializable {
 //        owner().joinGalacticAlliance();
 //        empire().joinGalacticAlliance();
         owner().shareSystemInfoWithAlly(empire());
-        
+
         // stop spying
         view.spies().activeSpies().clear();
         view.spies().maxSpies(0);

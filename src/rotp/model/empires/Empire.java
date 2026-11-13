@@ -1961,30 +1961,47 @@ public final class Empire extends Species implements NamedObject {
         }
         return rebellingPop > loyalPop;
     }
-    public void overthrowLeader() {
-        if (isHumanEmpire()) {
-            //session().status().loseOverthrown();
-            return;
-        }
+	private void changeAllegiance()	{
+		GalacticCouncil council = galaxy().council();
+		boolean wasAlly = council.isAllied(this);
+		leader = new Leader(this);
+		if (viewForEmpire(player()).embassy().contact()) {
+			String leaderDesc = text("LEADER_PERSONALITY_FORMAT", leader.personality(),leader.objective());
+			String key = wasAlly? "GNN_OVERTHROW_TO_REBEL" : "GNN_OVERTHROW_TO_ALLY";
+			String message = text(key, leaderDesc);
+			message = replaceTokens(message, "alien");
+			GNNNotification.notifyImmediateRebellion(message, false);
+		}
+		council.changeAllegiance(this);
+	}
+	private void changeLeader()	{
+		leader = new Leader(this);
+		for (EmpireView view: empireViews())
+			if (view != null)
+				view.breakAllTreaties();
 
-        leader = new Leader(this);
-        for (EmpireView view: empireViews()) {
-            if (view != null)
-                view.breakAllTreaties();
-        }
-        
-        // end all rebellions
-        for (StarSystem sys: allColonizedSystems())
-        	if (sys != null)
-        		sys.colony().clearAllRebellion();
+		if (viewForEmpire(player()).embassy().contact()) {
+			String leaderDesc = text("LEADER_PERSONALITY_FORMAT", leader.personality(),leader.objective());
+			String message = text("GNN_OVERTHROW", leaderDesc);
+			message = replaceTokens(message, "alien");
+			GNNNotification.notifyRebellion(message, false);
+		}
+	}
+	public void overthrowLeader()	{
+		if (isHumanEmpire())
+			//session().status().loseOverthrown();
+			return;
 
-        if (viewForEmpire(player()).embassy().contact()) {
-            String leaderDesc = text("LEADER_PERSONALITY_FORMAT", leader.personality(),leader.objective());
-            String message = text("GNN_OVERTHROW", leaderDesc);
-            message = replaceTokens(message, "alien");
-            GNNNotification.notifyRebellion(message, false);
-        }
-    }
+		// end all rebellions
+		for (StarSystem sys: allColonizedSystems())
+			if (sys != null)
+				sys.colony().clearAllRebellion();
+
+		if (galaxy().council().finalWar())
+			changeAllegiance();
+		else
+			changeLeader();
+	}
     public boolean inEconomicRange(int empId) {
         Empire e = galaxy().empire(empId);
         float range = max(e.scoutRange(), scoutRange());

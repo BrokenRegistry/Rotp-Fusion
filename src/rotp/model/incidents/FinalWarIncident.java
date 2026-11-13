@@ -19,7 +19,7 @@ import rotp.model.empires.Empire;
 import rotp.ui.diplomacy.DialogueManager;
 import rotp.ui.notifications.DiplomaticNotification;
 
-public class FinalWarIncident extends DiplomaticIncident {
+public final class FinalWarIncident extends DiplomaticIncident {
     private static final long serialVersionUID = 1L;
     final int empNotified;
     final int empRebel;
@@ -55,4 +55,9 @@ public class FinalWarIncident extends DiplomaticIncident {
         s1 = galaxy().empire(empRebel).replaceTokens(s1, "rebel");
         return s1;
     }
+	@Override public boolean moreSevere(DiplomaticIncident inc)	{
+		if  (inc == null || inc instanceof FinalWarIncident) // for the case a leader is overthrown
+			return true;
+		return Math.abs(currentSeverity()) > Math.abs(inc.currentSeverity());
+	}
 }

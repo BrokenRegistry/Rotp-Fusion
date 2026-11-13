@@ -371,8 +371,8 @@ public class GalacticCouncil implements Base, Serializable {
         }
 
         // all members of alliance declare final war on player or all rebels
-        // everyone gets the incident first. Once Final War is declared, no
-        // more incidents are checked
+        // everyone gets the incident first. Once Final War is declared,
+        // no more incidents are checked (Except for the new final war in case of overthrown leader)
         finalWarStarted = true;
         for (Empire rebel: rebels) {
             for (Empire ally: allies) {
@@ -434,6 +434,58 @@ public class GalacticCouncil implements Base, Serializable {
             }
         }
     }
+    private void changeAllegianceToAllied(Empire ally)	{
+		// From Rebel to Ally after being overthrown
+		rebels().remove(ally);
+		addAlly(ally);
+		// all members of alliance declare final war on player or all rebels
+		// everyone gets the incident first. Once Final War is declared,
+		// no more incidents are checked (Except for the new final war in case of overthrown leader)
+		for (Empire rebel: rebels)
+			FinalWarIncident.create(ally, leader, rebel);
+
+		// empire declare final war on all rebels
+		for (Empire rebel: rebels)
+			ally.viewForEmpire(rebel).embassy().declareFinalWar();
+
+		// all members of alliance establish unity with each other
+		// this ensures no spying costs and all learned techs traded freely
+		for (Empire ally2: allies)
+			if (ally2 != ally) {
+				ally2.viewForEmpire(ally).embassy().establishUnity();
+				// may not be required, but is part of the initial unity process
+				ally.viewForEmpire(ally2).embassy().establishUnity();
+			}
+
+		// empire share techs with leader
+		for (Tech tech : ally.tech().techsUnknownTo(leader, false))
+			leader.tech().acquireTechThroughTrade(tech.id, ally.id);
+
+		// leader then shares all techs with empire
+		for (Tech tech : leader.tech().techsUnknownTo(ally, false))
+			ally.tech().acquireTechThroughTrade(tech.id, leader.id);
+	}
+	private void changeAllegianceToRebel(Empire rebel)	{
+		// From Ally to Rebel after being overthrown
+		allies().remove(rebel);
+		addRebel(rebel);
+		// all members of alliance declare final war on player or all rebels
+		// everyone gets the incident first. Once Final War is declared,
+		// no more incidents are checked (Except for the new final war in case of overthrown leader)
+		for (Empire ally: allies)
+			FinalWarIncident.create(ally, leader, rebel);
+
+		// all members of alliance declare final war on empire
+		for (Empire ally: allies)
+			ally.viewForEmpire(rebel).embassy().declareFinalWar();
+	}
+	public void changeAllegiance(Empire empire)	{
+		if (isAllied(empire))
+			changeAllegianceToRebel(empire);
+		else
+			changeAllegianceToAllied(empire);
+		checkForGameOver();
+	}
     private void openConvention() {
         conventionSequence++;
         finalWarStarted = false;
@@ -605,95 +657,53 @@ public class GalacticCouncil implements Base, Serializable {
                 currentStatus = DISBANDED;
             return;
         }
-        
+
         if (deadEmpire.isPlayer()) {
-            if (leader().isPlayer()) {
+            if (leader().isPlayer())
                 // player was leader of alliance and still lost!
                 session().status().loseNewRepublic();
-                return;
-            }
-            else if (deadWasAllied) {
-            	// Should not happen! as accepting as non leader ends the game
-            	// But in case of an future option...
-            	// player was part of alliance and still lost!
-            	session().status().loseNewRepublicAsAllied();
-                return;
-            }
-            else if (rebelLeader().isPlayer()) {
+            else if (deadWasAllied)
+				// Should not happen! as accepting as non leader ends the game
+				// But in case of an future option...
+				// player was part of alliance and still lost!
+				session().status().loseNewRepublicAsAllied();
+            else if (rebelLeader().isPlayer())
                 // player was rebel leader against alliance and lost
                 session().status().loseRebellion();
-                return;
-            }
-            else {
-	            // player was following rebels against alliance and lost
-            	// player was not candidate
+            else
+				// player was following rebels against alliance and lost
+				// or player was not candidate
 	            session().status().loseRebellionAsFollower();
-                return;
-            }
         }
-        else { // Player is alive
-        	if (rebels.isEmpty()) { // rebellion has been defeated
-        		if (leader().isPlayer()) {
-        			// leaded by player the rebellion has been defeated.
-                    session().status().winNewRepublic();
-                    return;
-                }
-        		else if (allies.contains(leader())) { // Not reachable yet
-                	// player was part of winning alliance!
-                	session().status().winNewRepublicAsAllied();
-                    return;
-                }
-        		else { // Not reachable yet
-                	// player was part of winning alliance! but leader has been defeated
-                	session().status().winNewRepublicAsChampion();
-                    return;                	
-                }
-        	}
-        	if (allies.isEmpty()) { // New Republic has been defeated
-        		if (rebelLeader().isPlayer()) {
-        			// player was leading rebellion!
-        			if (rebels.size() == 1) {
-	                    session().status().winRebellion();
-	                    return;
-                    }
-        			else {
-	                    session().status().winRebellionAlliance();
-	                    return;
-                    }
-        		}
-        		else { // player was part of winning rebellion!
-        			if (rebels.size() == 1) {
-	                    session().status().winRebellionAsFollower();
-	                    return;
-                    }
-        			else {
-	                    session().status().winRebellionAllianceAsFollower();
-	                    return;
-                    }        				
-        		}
-        	}
-
-//        	if (rebels.isEmpty() && leader().isPlayer())
-//                // rebellion has been defeated
-//                session().status().winNewRepublic();
-//            else if (rebels.isEmpty() && deadWasAllied)
-//                // rebellion has been defeated
-//                session().status().winNewRepublicAsAllied();
-//            else if (allies.isEmpty() && !leader().isPlayer()) {
-//                // New Republic has been defeated
-//                if (rebels.size() == 1) 
-//                    session().status().winRebellion();
-//                else
-//                    session().status().winRebellionAlliance();
-//            }               
-        }
+		else // Player is alive
+			checkForGameOver();
     }
-//    private void ensureFullContact() {
-//        List<Empire> emps = new ArrayList<>(galaxy().activeEmpires());
-//        for (Empire emp1: galaxy().activeEmpires()) {
-//            emps.remove(emp1);
-//            for (Empire emp2: emps)
-//                emp1.makeContact(emp2);
-//        }
-//    }
+	private void checkForGameOver()	{
+		if (rebels.isEmpty()) { // rebellion has been defeated
+			if (leader().isPlayer())
+				// leaded by player the rebellion has been defeated.
+				session().status().winNewRepublic();
+			else if (allies.contains(leader())) // Not reachable yet
+				// player was part of winning alliance!
+				session().status().winNewRepublicAsAllied();
+			else // Not reachable yet
+				// player was part of winning alliance! but leader has been defeated
+				session().status().winNewRepublicAsChampion();
+		}
+		else if (allies.isEmpty()) { // New Republic has been defeated
+			if (rebelLeader().isPlayer()) {
+				// player was leading rebellion!
+				if (rebels.size() == 1)
+					session().status().winRebellion();
+				else
+					session().status().winRebellionAlliance();
+			}
+			else { // player was part of winning rebellion!
+				if (rebels.size() == 1)
+					session().status().winRebellionAsFollower();
+				else
+					session().status().winRebellionAllianceAsFollower();
+			}
+		}
+	}
 }

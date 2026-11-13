@@ -48,6 +48,7 @@ import rotp.model.incidents.DiplomaticIncident;
 import rotp.model.incidents.EncroachmentIncident;
 import rotp.model.incidents.EspionageTechIncident;
 import rotp.model.incidents.ExpansionIncident;
+import rotp.model.incidents.FinalWarIncident;
 import rotp.model.incidents.FinancialAidIncident;
 import rotp.model.incidents.MilitaryBuildupIncident;
 import rotp.model.incidents.OathBreakerIncident;
@@ -1709,9 +1710,9 @@ public class AIDiplomat implements Base, Diplomat {
     public void noticeIncident(DiplomaticIncident inc, Empire emp) {
         EmpireView view = empire.viewForEmpire(emp);
         // incidents don't matter once final war is declared
-        if (view.embassy().finalWar())
+        if (view.embassy().finalWar() && !(inc instanceof FinalWarIncident)) // for the case a leader is overthrown
             return;
-        
+
         view.embassy().addIncident(inc);
 
         if (inc.triggersWar() && !view.embassy().anyWar())

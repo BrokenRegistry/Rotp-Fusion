@@ -16,6 +16,7 @@
 package rotp.ui.notifications;
 
 import java.util.List;
+
 import rotp.model.empires.Empire;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
@@ -43,6 +44,10 @@ public class GNNNotification implements TurnNotification {
     public static void notifyRebellion(String message, boolean player) {
         enqueue(new GNNNotification(message, "GNN_Rebellion", false, !player));
     }
+	public static void notifyImmediateRebellion(String message, boolean player) {
+		if (GameSession.instance().controllerRegistry() == null)
+			RotPUI.instance().processNotification(new GNNNotification(message, "GNN_Rebellion", false, !player));
+	}
     public static void notifyGenocide(String message) {
         enqueue(new GNNNotification(message, "GNN_Genocide", false, true));
     }

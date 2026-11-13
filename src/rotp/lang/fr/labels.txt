@@ -1833,6 +1833,8 @@ GNN_PLAYER_REBELLION              | %1 s’est rebellé et refuse de contribuer 
 GNN_ALIEN_REBELLION               | %1 s’est rebellé et a refusé de contribuer [rebelling_race_pluralnounto]. Au moins %2 millions de rebelles contrôlent la colonie.
 GNN_PLAYER_REBELLION_SPREAD       | La rébellion continue de se propager parmi [rebelling_race_pluralnoun]. Au moins %2 millions de rebelles contrôlent désormais la colonie de %1.
 GNN_OVERTHROW                     | Un nouveau chef a émergé de l’intérieur [alien_empireof]. Les rumeurs indiquent que le nouvel empereur est %1. Les relations sont devenues neutres et les échanges ont été perturbés.
+GNN_OVERTHROW_TO_REBEL			| Un nouveau chef a émergé de l’intérieur [alien_empireof]. Les rumeurs indiquent que le nouvel empereur est %1.<br><br>Ce nouveau dirigeant a décidé de quitter l’Union Galactique pour rejoindre les empires rebels.
+GNN_OVERTHROW_TO_ALLY			| Un nouveau chef a émergé de l’intérieur [alien_empireof]. Les rumeurs indiquent que le nouvel empereur est %1.<br><br>Ce nouveau dirigeant a décidé de quitter les empires rebels pour rejoindre l’Union Galactique.
 GNN_END_COUNCIL                   | Avec seulement deux Empires restants, les tentatives d’unification de la galaxie avec un Conseil Galactique ont pris fin. De nombreux dirigeants débattent maintenant du type de solution finale qui peut apporter une paix durable.
 GNN_FORM_COUNCIL                  | En quête de paix, les représentants de chaque espèce se réuniront bientôt pour tenter d’élire un empereur galactique. Les candidats seront les dirigeants des deux empires les plus peuplés.
 GNN_ALLY_AT_WAR                   | Notre allié, [ally_empire], est entré en guerre contre [other_race_pluralnoun].
