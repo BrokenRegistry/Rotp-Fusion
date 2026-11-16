@@ -345,6 +345,7 @@ public final class StarSystem implements Base, Sprite, IMappedObject, Serializab
     	}
     	return galaxy().ships.orbitingFleets(id);
     }
+	public List<ShipFleet> trespassingFleets(int trespId ) { return galaxy().ships.trespassingFleets(id, trespId, empId()); }
     public List<ShipFleet> orbitingFleetsNoMonster() {
     	return galaxy().ships.orbitingFleets(id);
     }

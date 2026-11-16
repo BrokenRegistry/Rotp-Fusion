@@ -652,7 +652,7 @@ public class Ships implements Base, Serializable {
     }
     private ShipFleet deployedFleet(int empId, int sysId, int destSysId, int turns) {
         List<ShipFleet> fleetsAll = allFleetsCopy();
-        
+
         for (ShipFleet fl: fleetsAll) {
             if (fl != null && (fl.empId() == empId) && (fl.sysId() == sysId) 
             			&& fl.isDeployed() && (fl.destSysId() == destSysId)) {
@@ -666,7 +666,7 @@ public class Ships implements Base, Serializable {
     List<ShipFleet> incomingFleets(int sysId) {
         List<ShipFleet> fleets = new ArrayList<>();
         List<ShipFleet> fleetsAll = allFleetsCopy();
-        
+
         for (ShipFleet fl: fleetsAll) {
             if (fl != null) {
                 if ((fl.destSysId() == sysId) && (fl.inTransit() || fl.isDeployed()))
@@ -675,10 +675,20 @@ public class Ships implements Base, Serializable {
         }
         return fleets;
     }
+	public List<ShipFleet> trespassingFleets(int sysId, int trespId, int sysEmpId) {
+		List<ShipFleet> fleets = new ArrayList<>();
+		if (sysEmpId == Empire.NULL_ID || trespId == Empire.NULL_ID)
+			return fleets;
+		List<ShipFleet> fleetsAll = allFleetsCopy();
+		for (ShipFleet fl: fleetsAll)
+			if (fl != null && fl.empId() == trespId && fl.isOrbiting(sysId) && fl.visibleTo(sysEmpId))
+				fleets.add(fl);
+		return fleets;
+	}
     List<ShipFleet> orbitingFleets(int sysId) {
         List<ShipFleet> fleets = new ArrayList<>();
         List<ShipFleet> fleetsAll = allFleetsCopy();
-        
+
         for (ShipFleet fl: fleetsAll) {
             // NPE was found on a map repaint during next turn. 
             // unsure how this is possible since allFleets var is private with no accessor
@@ -693,7 +703,7 @@ public class Ships implements Base, Serializable {
     List<ShipFleet> deployedFleets(int sysId) {
         List<ShipFleet> fleets = new ArrayList<>();
         List<ShipFleet> fleetsAll = allFleetsCopy();
-        
+
         for (ShipFleet fl: fleetsAll) {
             if (fl != null) {
                 if ((fl.sysId() == sysId) && fl.isDeployed())

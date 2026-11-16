@@ -152,6 +152,7 @@ public class ShipFleet extends FleetBase {
 	void makeDeployed()					{ status(Status.DEPLOYED); }
 	private void makeInTransit()		{ status(Status.IN_TRANSIT); }
 	public void makeRetreatOnArrival()	{ status(Status.RETREAT_ON_ARRIVAL); }
+	public boolean isOrbiting(int sysId)	{ return sysId == sysId() && isOrbiting() && !retreating(); }
 	public boolean isOrbiting()				{ return status() == Status.ORBITING; }
 	@Override public boolean isDeployed()	{ return status() == Status.DEPLOYED; }
 	@Override public boolean inTransit()	{ return status() == Status.IN_TRANSIT || retreatOnArrival(); }

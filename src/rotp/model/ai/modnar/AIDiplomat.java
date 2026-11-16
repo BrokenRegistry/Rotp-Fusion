@@ -1698,11 +1698,9 @@ public class AIDiplomat implements Base, Diplomat {
         if (view.alliedWith(empire.id))
             return;
         for (StarSystem sys: empire.allColonizedSystems()) {
-            List<ShipFleet> fleets = sys.orbitingFleetsNoMonster();
-            for (ShipFleet fl: fleets) {
-                if (!fl.retreating() && (view.is(fl.empire())))
-                    events.add(new TrespassingIncident(view,sys,fl));
-            }
+            List<ShipFleet> fleets = sys.trespassingFleets(view.empId());
+            for (ShipFleet fl: fleets)
+                events.add(new TrespassingIncident(view,sys,fl));
         }
     }
     @Override
