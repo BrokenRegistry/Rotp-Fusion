@@ -94,6 +94,7 @@ import rotp.ui.notifications.GNNGenocideNotice;
 import rotp.ui.notifications.GNNNotification;
 import rotp.ui.notifications.PlunderShipTechNotification;
 import rotp.ui.notifications.PlunderTechNotification;
+import rotp.ui.notifications.TransportsKilledAlert;
 import rotp.ui.util.ParamInteger;
 import rotp.util.Base;
 import rotp.util.Rand;
@@ -1152,6 +1153,15 @@ public final class Empire extends Species implements NamedObject {
     public void takeAbandonedSystem(StarSystem sys, Transport tr) {
 		if (tr.size() == 0)
 			return;
+		// BR: when landing on our own planet we also can be shot down by orbiting enemies
+		int lost = tr.takeDamagefromOrbitingEnemies();
+		if (lost > 0) {
+			log(concat(str(tr.launchSize()), " ", raceName(), " transports perished at ", name()));
+			if (isPlayerControlled()) 
+				TransportsKilledAlert.create(this, this, sys, lost);
+			if (tr.size() == 0)
+				return;
+		}
         sys.addEvent(new SystemColonizedEvent(id));
         newSystems.add(sys);
         addColonizedSystem(sys);

@@ -2,7 +2,11 @@
 
 ## What's New
 
-26-11-16 (BR)
+226-11-17 (BR)
+- Fixed troop being not attacked when landing on a protected abandoned system.
+- Fixed AI retreating from an abandoned system. AI will take the system.
+
+6-11-16 (BR)
 - Fixed cloaked fleet trespassing Incident: Not displayed on the map = no incident!
 
 26-11-13 (BR)

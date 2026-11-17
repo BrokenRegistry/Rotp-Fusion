@@ -1481,37 +1481,16 @@ public final class Colony implements Base, IMappedObject, Serializable {
 				dest.colony().governIfNeeded();
 		}
     }
-    private float fleetDamagePerRoundToArrivingTransports(int empId) {
-        float defenderDmg = 0;
-        List<ShipFleet> fleets = starSystem().orbitingFleets();
-        // add fire power for each allied ship in orbit
-            // modnar: use firepowerAntiShip to only count ship weapons that can hit ships
-            // to prevent ground bombs from being able to damage transports
-        for (ShipFleet fl : fleets) {
-            if (fl.empire().aggressiveWith(empId))
-                defenderDmg += fl.firepowerAntiShip(0);
-        }
-        return defenderDmg;
-    }
     public void acceptTransport(Transport t) {
         if (!t.empire().canColonize(starSystem())) {
             // no appropriate alert message for this transport loss. This is an edge case anyway
             // as it occurs only when the destination system has been rendered inhabitable by a
-            // random event while the transport was in transits
+            // random event while the transport was in transit
             t.size(0);
             return;
         }
         // Xilmi: when landing on our own planet we also can be shot down by orbiting enemies
-        float defenderDmg = fleetDamagePerRoundToArrivingTransports(t.empId());
-        int passed = 0;
-        int lost = 0;
-        int num = t.size();
-        // run the gauntlet
-        for (int j = 0; j < t.gauntletRounds(); j++)
-            lost += (int) (defenderDmg / t.hitPoints());
-        passed += max(0, (num - lost));
-        lost = min(lost, num);
-        t.size(passed);
+		int lost = t.takeDamagefromOrbitingEnemies();
         if (lost > 0) {
             log(concat(str(t.launchSize()), " ", t.empire().raceName(), " transports perished at ", name()));
             if (t.empire().isPlayerControlled()) 
@@ -1531,20 +1510,10 @@ public final class Colony implements Base, IMappedObject, Serializable {
                     str(tr.size()), " ", tr.empire().raceName(), " transports");
 
         // Xilmi: when landing on our own planet we also can be shot down by orbiting enemies
-        float defenderDmg = fleetDamagePerRoundToArrivingTransports(tr.empId());
-        int passed = 0;
-        int lost = 0;
-        int num = tr.size();
-        // run the gauntlet
-        for (int j = 0; j < tr.gauntletRounds(); j++)
-            lost += (int) (defenderDmg / tr.hitPoints());
-        passed += max(0, (num - lost));
-        lost = min(lost, num);
-
+		int lost = tr.takeDamagefromOrbitingEnemies();
         // BR: No more than allowed
         // Removed the limit for to avoid impossible take back 
         // passed = min(passed, (int)options().maxLandingTroops(starSystem()));
-        tr.size(passed);
         if (lost > 0) {
             log(concat(str(tr.launchSize()), " ", tr.empire().raceName(), " transports perished at ", name()));
             if (tr.empire().isPlayerControlled()) 
@@ -1639,10 +1608,10 @@ public final class Colony implements Base, IMappedObject, Serializable {
         // start with base missile damage
         float defenderDmg = defense().activeBases() * missileDmg;
 
-        // add firepower for each allied ship in orbit
+        // add fire power for each allied ship in orbit
             // modnar: use firepowerAntiShip to only count ship weapons that can hit ships
             // to prevent ground bombs from being able to damage transports
-	defenderDmg += fleetDamagePerRoundToArrivingTransports(tr.empId());
+		defenderDmg += tr.fleetDamagePerRoundToArrivingTransports(tr.empId());
 
         // run the gauntlet
         for (int j = 0; j < tr.gauntletRounds(); j++)

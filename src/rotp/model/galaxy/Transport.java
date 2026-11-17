@@ -18,6 +18,7 @@ package rotp.model.galaxy;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import rotp.model.colony.Colony;
 import rotp.model.empires.Empire;
@@ -299,6 +300,31 @@ public class Transport extends FleetBase {
         //Transport is gone. If selected on the map, de-select and replace with target system
         session().replaceVarValue(this, dest);
     }
+    public float fleetDamagePerRoundToArrivingTransports(int empId)	{
+		// BR: Moved here, as there is no colonies on abandoned planets
+		float defenderDmg = 0;
+		List<ShipFleet> fleets = destination().orbitingFleets();
+		// add fire power for each allied ship in orbit
+		// modnar: use firepowerAntiShip to only count ship weapons that can hit ships
+		// to prevent ground bombs from being able to damage transports
+		for (ShipFleet fl : fleets) {
+			if (fl.empire().aggressiveWith(empId))
+				defenderDmg += fl.firepowerAntiShip(0);
+		}
+		return defenderDmg;
+	}
+	public int takeDamagefromOrbitingEnemies()	{
+		float defenderDmg = fleetDamagePerRoundToArrivingTransports(empId());
+		int passed = 0;
+		int lost = 0;
+		// run the gauntlet
+		for (int j = 0; j < gauntletRounds(); j++)
+			lost += (int) (defenderDmg / hitPoints());
+		passed += max(0, (size() - lost));
+		lost = min(lost, size());
+		size(passed);
+		return lost;
+	}
     public String armorDesc()        { return troopArmor().shortName(); }
     public String battleSuitDesc()   { return troopBattleSuit().name(); }
     public String weaponDesc()       { return troopWeaponId == null ? ""  : troopWeapon().name(); }

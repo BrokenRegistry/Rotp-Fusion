@@ -559,6 +559,8 @@
 
 ### Fixes:
 
+- Fixed troop being not attacked when landing on a protected abandoned system.
+- Fixed AI retreating from an abandoned system. AI will take the system.
 - Fixed cloaked fleet trespassing Incident: Not displayed on the map = no incident!
 - Fixed rebellion issue during final war: The final war is triggered, involving only one rebel faction. Their emperor is deposed, and “poof!” the final war ends.
   - When a leader is overthrown during the final war, the empire does not become neutral anymore; instead, it shifts its allegiance.

@@ -814,12 +814,18 @@ public class AIFleetCommander implements Base, FleetCommander {
     {
         for(Transport trn : empire.transports())
         {
-            if(empire.enemies().contains(trn.destination().empire()))
+            Empire destEmpire = trn.destination().empire();
+            if(destEmpire == null)
+            { // Do not surrender on abandoned colonies; invade them!
+                if(trn.destination().abandoned() && trn.surrenderOnArrival())
+                    trn.toggleSurrenderOnArrival();
+            }
+            else if(empire.enemies().contains(destEmpire))
             {
                 if(trn.surrenderOnArrival())
                     trn.toggleSurrenderOnArrival();
             }
-            else if(trn.destination().empire() != empire)
+            else if(destEmpire != empire)
             {
                 if(!trn.surrenderOnArrival())
                     trn.toggleSurrenderOnArrival();
