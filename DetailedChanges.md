@@ -2,11 +2,14 @@
 
 ## What's New
 
-226-11-17 (BR)
+26-11-18 (BR)
+- Friendly transports are now grouped before landing, to give them more chance to pass through enemy orbiting fleets.
+
+26-11-17 (BR)
 - Fixed troop being not attacked when landing on a protected abandoned system.
 - Fixed AI retreating from an abandoned system. AI will take the system.
 
-6-11-16 (BR)
+26-11-16 (BR)
 - Fixed cloaked fleet trespassing Incident: Not displayed on the map = no incident!
 
 26-11-13 (BR)

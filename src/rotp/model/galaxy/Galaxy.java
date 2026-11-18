@@ -393,20 +393,13 @@ public final class Galaxy implements Base, Serializable {
         checkForPlanetaryBombardment();
 
         // land transports
-        Galaxy gal = galaxy();
         NoticeMessage.resetSubstatus(text("TURN_TRANSPORTS"));
-        for (int i=0; i<gal.numStarSystems(); i++)
-            gal.system(i).resolvePendingTransports();
+		for (StarSystem sys : starSystems)
+			sys.resolvePendingTransports();
 
         NoticeMessage.resetSubstatus(text("TURN_COLONIES"));
         // after bombardments, check for any possible colonizations
         checkForColonization();
-        
-        // BR: Removed refreshViews from addColonizedSystem and removeColonizedSystem
-        // the recalcDistances takes time and don't need to be called at each events
-        // Grouped here. Only Removed refreshViews will be executed.
-//        for (Empire e: empires)
-//            e.refreshViews(true);
 
         NoticeMessage.resetSubstatus(text("TURN_SPIES"));
         for (Empire e: empires)
@@ -603,26 +596,27 @@ public final class Galaxy implements Base, Serializable {
         List<Transport> arrivingTransports = new ArrayList<>();
         List<Transport> incoming = new ArrayList<>(transports);
         Collections.sort(incoming, Ship.ARRIVAL_TIME);
-        for (Transport sh: incoming) {
-	       	if (sh != null) {
-	            if (sh.arrivalTimeAdjusted() > currentTime)
-	                break;
-	            arrivingTransports.add(sh);
-	            sh.arrive();
-	       	}
-        }
+		for (Transport sh: incoming) if (sh != null) {
+			if (sh.arrivalTimeAdjusted() > currentTime)
+				break;
+			arrivingTransports.add(sh);
+			sh.arrive();
+		}
         transports.removeAll(arrivingTransports);
-        
+
+		// Now that the friendly transport are grouped,
+		// they can land (after going through any enemy orbiting fleets.
+		for (StarSystem sys : starSystems)
+			sys.resolveFriendlyTransports();
+
         //move fleets
         List<ShipFleet> incomingFleets = ships.inTransitFleets();
         Collections.sort(incomingFleets, Ship.ARRIVAL_TIME);
-        for (ShipFleet sh: incomingFleets) {
-        	if (sh != null) {
-	            if (sh.arrivalTimeAdjusted() > currentTime)
-	                break;
-	            ships.arriveFleet(sh);
-        	}
-        }
+		for (ShipFleet sh: incomingFleets) if (sh != null) {
+			if (sh.arrivalTimeAdjusted() > currentTime)
+				break;
+			ships.arriveFleet(sh);
+		}
     }
     public void clearSpaceMonsters()			{ spaceMonsters = null; }
     public List<SpaceMonster> spaceMonsters()	{

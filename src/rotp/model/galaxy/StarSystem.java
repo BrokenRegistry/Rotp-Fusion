@@ -519,16 +519,6 @@ public final class StarSystem implements Base, Sprite, IMappedObject, Serializab
         }
         return false;
     }
-//    public boolean isArmed(Empire emp) {
-//        // returns true if empire has an armed presence in this system
-//        if (isColonized()
-//        && (colony().empire() == emp)
-//        && colony().defense().isArmed())
-//            return true;
-//
-//        ShipFleet fl = this.orbitingFleetForEmpire(emp);
-//        return (fl != null) && fl.isArmed();
-//    }
     public List<Empire> empiresInConflict() {
         List<Empire> emps = new ArrayList<>();
         List<ShipFleet> fleets = orbitingFleetsNoMonster();
@@ -552,15 +542,29 @@ public final class StarSystem implements Base, Sprite, IMappedObject, Serializab
         orbitingFleets().add(fl);
         return fl;
     }
+	void resolveFriendlyTransports()	{
+		if (!hasOrbitingTransports())
+			return;
+		Empire sysEmp = empire();
+		if (sysEmp == null)
+			return;
+		// Now that the friendly transport are grouped,
+		// they can land (after going through any enemy orbiting fleets.
+		Transport friendlyTransport = getEmpireTransport(sysEmp);
+		if (friendlyTransport != null) {
+			friendlyTransport.land();
+			orbitingTransports.remove(friendlyTransport);
+		}
+	}
+	Transport getEmpireTransport(Empire emp)	{
+		for (Transport tr : orbitingTransports)
+			if (tr.empire() == emp)
+				return tr;
+		return null;
+	}
 	Transport acceptTransport(Transport tr)	{
-        // friendly transports always immediately land
-        Colony col = colony();
-        if ((col != null) && (col.empire() == tr.empire())) {
-            if (!colony().inRebellion()) {
-                colony().acceptTransport(tr);
-                return null;
-            }
-        }
+		// friendly transports are now also grouped before landing
+		// So they have more chance to pass through enemy fire
         for (Transport trans : orbitingTransports) {
             if (tr.empire() == trans.empire()) {
                 trans.joinWith(tr);

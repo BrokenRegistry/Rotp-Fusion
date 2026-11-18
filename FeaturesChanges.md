@@ -559,6 +559,7 @@
 
 ### Fixes:
 
+- Friendly transports are now grouped before landing, to give them more chance to pass through enemy orbiting fleets.
 - Fixed troop being not attacked when landing on a protected abandoned system.
 - Fixed AI retreating from an abandoned system. AI will take the system.
 - Fixed cloaked fleet trespassing Incident: Not displayed on the map = no incident!

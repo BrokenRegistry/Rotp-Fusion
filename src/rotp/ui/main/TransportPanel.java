@@ -480,7 +480,7 @@ public final class TransportPanel extends BasePanel {
             boolean hovering = (actionBox != null) && (actionBox == hoverBox);
             Color c0 = hovering ? SystemPanel.yellowText : SystemPanel.whiteText;
 
-            g.setFont(narrowFont(20));
+			scaledFont(g, label, w-s10, 20, 10);
             int sw = g.getFontMetrics().stringWidth(label);
             int x0 = x1+((w-sw)/2);
             drawShadowedString(g, label, 3, x0, y+h-s11, SystemPanel.textShadowC, c0);

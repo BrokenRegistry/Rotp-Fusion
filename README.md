@@ -44,6 +44,9 @@ java -jar target/rotp-<timestamp>-mini.jar
 
 ## What's New
 
+26-11-18 (BR)
+- Friendly transports are now grouped before landing, to give them more chance to pass through enemy orbiting fleets.
+
 26-11-17 (BR)
 - Fixed troop being not attacked when landing on a protected abandoned system.
 - Fixed AI retreating from an abandoned system. AI will take the system.
