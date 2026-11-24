@@ -19,8 +19,15 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import rotp.Rotp;
 import rotp.model.game.IBaseOptsTools;
@@ -50,8 +57,9 @@ public abstract class GalaxyShape implements Base, Serializable {
 	public static boolean generating = false;
 
 	private int maxEmpireTentative = 100;
-	private float[] x;
-	private float[] y;
+	private List<StarPt> systems = new ArrayList<>();
+	private List<StarPt> linkingSystems = new ArrayList<>();
+	private List<StarPt> routeSystems = new ArrayList<>();
 	private CompanionWorld[] companionWorlds; // BR:
 	private int numCompanions;
 	private ShapeRegion[][] regions;
@@ -67,13 +75,13 @@ public abstract class GalaxyShape implements Base, Serializable {
 	private boolean usingRegions = false;
 	private boolean fullyInit = false;
 	List<EmpireSystem> empSystems = new ArrayList<>();
-	private Point.Float orionXY;
+	private StarPt orionXY;
 	IGameOptions opts;
 
 	// BR: added for symmetric galaxy
 	private static float cx; // Width galaxy center
 	private static float cy; // Height galaxy center
-	private float sysBuffer = 1.9f;
+	protected float sysBuffer = 1.9f;
 	private float fillerBuffer = sysBuffer;
 	private float fillerBufferFactor = 1f;
 	private float maxPreviewFactor = 1f;
@@ -93,12 +101,17 @@ public abstract class GalaxyShape implements Base, Serializable {
 	private int loopValid		= 0;
 	private boolean isValid		= false;
 
-	protected int finalNumberStarSystems; // BR: Original value, Without the fillers
+	protected int nominalSystemNumber; // BR: Original value, Without the fillers
 	protected String finalOption1, finalOption2, finalOption3, finalOption4;
 	protected int option1, option2, option3, option4;
 	protected boolean[] randomizeShapeOptions;
 	private boolean isSymmetric;
 	private boolean looseLimits;
+	private float maxDistanceToConnectEmpires;
+	private boolean connectAllEmpires;
+	private boolean connectedOrionToEmpires;
+	private boolean connectAllStarts;
+	private boolean removeExcessLinks;
 
 	protected abstract String name();
 	protected abstract GalaxyShape get();
@@ -123,7 +136,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 		float fillerFactor	= opts.fillerSystemsFactor();
 		maxPreviewFactor	= 1f + fillerFactor;
 		fillerBufferFactor	= (float) (1.0/Math.sqrt(maxPreviewFactor));
-		finalNumberStarSystems	= opts.numberStarSystems(true);
+		nominalSystemNumber	= opts.numberStarSystems(true);
 		// Get the final value
 		numOpponents = max(0, opts.selectedNumberOpponents());
 		numEmpires	 = numOpponents + 1;
@@ -133,9 +146,16 @@ public abstract class GalaxyShape implements Base, Serializable {
 		initFinalOption3();
 		initFinalOption4();
 
-        isSymmetric = (finalOption1 != null && finalOption1.contains("SYMMETRIC"))
-        		|| (finalOption2 != null && finalOption2.contains("SYMMETRIC"));
-        homeStarNum = opts.secondRingSystemNumber()+1;
+		isSymmetric = (finalOption1 != null && finalOption1.contains("SYMMETRIC"))
+				|| (finalOption2 != null && finalOption2.contains("SYMMETRIC"));
+		homeStarNum = opts.secondRingSystemNumber()+1;
+
+		maxDistanceToConnectEmpires	= opts.maxEmpiresConnextionGap() -0.1f;
+		connectAllEmpires			= opts.areEmpiresConnectedToEmpires();
+		connectedOrionToEmpires		= opts.areEmpiresConnectedToOrion();
+		connectAllStarts			= opts.areEmpiresConnectedToAllSystems();
+		removeExcessLinks			= opts.removeNonRoutedConnections();
+
 	}
 	protected void initFinalOption1()	{
 		finalOption1 = getOption1();
@@ -161,13 +181,25 @@ public abstract class GalaxyShape implements Base, Serializable {
 	public int width()					{ return fullWidth; }
 	public int height()					{ return fullHeight; }
 	protected boolean fullyInit()		{ return fullyInit; }
-	protected double starDist(float x0, float y0, float x1, float y1)	{ return distance(x0-x1, y0-y1); }
+	protected double starDist(StarPt p0, StarPt p1)	{
+		final float dx = p1.x - p0.x;
+		final float dy = p1.y - p0.y;
+		return Math.sqrt(dx*dx + dy*dy);
+	}
 
 	// ========== Methods to query shape info ==========
 	void registerOptions(Map<String, ListShapeParam> shapesMap)	{
 		shapesMap.put(name(), new ListShapeParam(paramList()));
 	}
-	public int finalNumberStarSystems()	{ return finalNumberStarSystems; }
+	public int nominalSystemNumber()	{ return nominalSystemNumber; }
+	public int neighborhoodsSize()		{ return empSystems.size() * homeStarNum; }
+	public int finalSystemNumber()		{ return neighborhoodsSize() + systems.size(); }
+	public String numberOfStarSystem()	{
+		if (finalSystemNumber() == nominalSystemNumber())
+			return str(nominalSystemNumber());
+		else
+			return nominalSystemNumber() + "(" + finalSystemNumber() + ")";
+	}
 	public ListShapeParam paramList()	{
 		ListShapeParam list = new ListShapeParam();
 		// ListShapeParam ignore null entries
@@ -204,51 +236,57 @@ public abstract class GalaxyShape implements Base, Serializable {
 			return "";
 		return paramOption4().getCfgValue();
 	}
+	private float maxDistanceToConnectEmpires()	{ return maxDistanceToConnectEmpires; }
+	private boolean connectAllEmpires()			{ return connectAllEmpires; }
+	private boolean connectedOrionToEmpires()	{ return connectedOrionToEmpires; }
+	private boolean connectAllStarts()			{ return connectAllStarts; }
+	private boolean removeExcessLinks()			{ return removeExcessLinks; }
 
 	// ========== abstract and overridable methods ==========
 	protected abstract int galaxyWidthLY();
 	protected abstract int galaxyHeightLY();
 	protected abstract float sizeFactor(String size);
-	//	public boolean nebulaeHasStar(float x, float y, float buffer) {
-	//		return isTooNearExistingSystem(x, y, buffer);
-	//	}
-	private void getPointFromRandomStarSystem(Point.Float pt) {
+	private void getPointFromRandomStarSystem(StarPt pt) {
 		int numSysPerEmpire	 = empSystems.get(0).numSystems();
 		int numEmpireSystems = numEmpires * numSysPerEmpire;
-		if (guiOptions().neverNebulaHomeworld()) {
+		if (guiOptions().neverNebulaHomeworld())
 			numEmpireSystems = 0; // Don't even think to start over one!
-		}
-		int numUnsettledSys	 = numberStarSystems();
-		int totalSystems	 = numEmpireSystems + numUnsettledSys;
+
+		int numUnsettledSys	= numberStarSystems();
+		int totalSystems	= numEmpireSystems + numUnsettledSys;
 		int starId = rand.nextInt(totalSystems);
 		if (starId < numEmpireSystems) {
 			int empireId = starId/numSysPerEmpire;
 			int systemId = starId - empireId*numSysPerEmpire;
 			EmpireSystem empSys = empSystems.get(empireId);
-			pt.x = empSys.x(systemId);
-			pt.y = empSys.y(systemId);
+			pt.x = empSys.starPts[systemId].x;
+			pt.y = empSys.starPts[systemId].y;
 		}
 		else {
 			int systemId = starId - numEmpireSystems;
-			coords(systemId, pt);
+			StarPt p = coords(systemId);
+			pt.x = p.x;
+			pt.y = p.y;
 		}
 	}
 	protected int numEmpires()	{return numEmpires; }
-	protected void setRandom(Point.Float pt) {
-        pt.x = galaxyEdgeBuffer() + (fullWidth  - 2*galaxyEdgeBuffer()) * randX.nextFloat();
-        pt.y = galaxyEdgeBuffer() + (fullHeight - 2*galaxyEdgeBuffer()) * randY.nextFloat();
+	protected void setRandom(StarPt pt)	{
+		int edgeBuffer = galaxyEdgeBuffer();
+		pt.x = edgeBuffer + (fullWidth  - 2*edgeBuffer) * randX.nextFloat();
+		pt.y = edgeBuffer + (fullHeight - 2*edgeBuffer) * randY.nextFloat();
 	}
-	public boolean valid(float x, float y) {
-		if (x<0)          return false;
-		if (y<0)          return false;
-		if (x>fullWidth)  return false;
-		if (y>fullHeight) return false;
+	protected boolean valid(StarPt p)		{
+		if (p == null)
+			return false;
+		if (p.x < 0 || p.y < 0)	return false;
+		if (p.x > fullWidth)	return false;
+		if (p.y > fullHeight)	return false;
 		return true;
 	}
 	protected void clean() {} // To remove big temporary data;
 	protected float settingsFactor(float shapeFactor) {
 		// shapeFactor is not used yet
-	    float adjDensity = densitySizeFactor();
+		float adjDensity = densitySizeFactor();
 		float largeGal = 7f + 6f * (float) Math.log10(maxStars);
 		float smallGal = 1.8f * sqrt(maxStars);
 		float selected = max(4f, min(largeGal, smallGal));
@@ -269,7 +307,7 @@ public abstract class GalaxyShape implements Base, Serializable {
     } */
 	// modnar: add possibility for specific placement of homeworld/orion locations
 	// indexWorld variable will be used by setSpecific in each Map Shape for locations
-    protected abstract void setSpecific(Point.Float p);
+	protected void setSpecific(StarPt pt)	{ setRandom(pt); }
 	int indexWorld;
 
 	protected float   minEmpireFactor()        { return 3f; }
@@ -294,6 +332,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	//
 	public int numCompanionWorld()	{ return numCompanions; }
 	public int numberStarSystems()	{ return num; }
+//	public int number
 	int numberFillerSystems(){ return numFiller; }
 	// modnar: add option to start game with additional colonies
 	// modnar: these colonies are in addition to number of stars chosen in galaxy
@@ -304,10 +343,11 @@ public abstract class GalaxyShape implements Base, Serializable {
 	protected float adjustedSizeFactor()	{ // BR: to converge more quickly
 		float factor = sizeFactor(opts.selectedGalaxySize());
 		float adjFactor = factor * dynamicGrowth;
+		// System.out.println("adjustedSizeFactor: " + adjFactor);
 		return adjFactor;
 	}
 
-	protected float systemBuffer() { return opts.systemBuffer(opts.selectedStarDensityOption()); }
+	private float systemBuffer() { return opts.systemBuffer(opts.selectedStarDensityOption()); }
 /*	public static float systemBuffer(String StarDensityOption) {
 		switch (StarDensityOption) {
 			case IGameOptions.STAR_DENSITY_LOWEST:  return 2.5f;
@@ -319,7 +359,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 		}
 		return 1.9f;
 	} */
-	public Point.Float getCompanion(int empId, int compId) {
+	public StarPt getCompanion(int empId, int compId) {
 		return this.companionWorlds[empId].cW[compId].get();
 	}
 	// BR: ========== Very symmetry specific Methods ==========
@@ -341,9 +381,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 			return getOtherSymmetricSystems(src);
 		}
 	}
-    protected double galaxyRay() {
-    	return cx - galaxyEdgeBuffer();
-    }
+	protected double galaxyRay()	{ return cx - galaxyEdgeBuffer(); }
 	private boolean generateSymmetric(boolean full) {
 		int num1 = opts.firstRingSystemNumber();
 		int num2 = opts.secondRingSystemNumber();
@@ -365,13 +403,13 @@ public abstract class GalaxyShape implements Base, Serializable {
 			num = 0;
 			// ===== First Orion
 			// Center of the galaxy is the only reasonable symmetric option
-			orionXY = new Point.Float(cx, cy);
+			orionXY = new StarPt(cx, cy);
 			addSystem(orionXY);
 			indexWorld = 1;
 			// ===== Then the home world systems
 			CtrPoint ptCtr = getPlayerSymmetricHomeWorld();
-			Point.Float pt = ptCtr.get();
-			if (valid(pt) && !isTooNearExistingSystem(pt.x, pt.y, true)) {
+			StarPt pt = ptCtr.get();
+			if (valid(pt) && !isTooNearExistingSystem(pt, true)) {
 				EmpireSystem sys = new EmpireSystem(this, pt);
 				empSystems.add(sys);
 				homeStars++; // the nearby system will be set later
@@ -387,17 +425,17 @@ public abstract class GalaxyShape implements Base, Serializable {
 				EmpireSystem sys = new EmpireSystem(this, p.get());
 				empSystems.add(sys);
 				homeStars++; // the nearby system will be set later
-		   	}
+			}
 
 			// ===== Then the nearby systems
 			boolean valid = true;
 			EmpireSystem player = empSystems.get(0);
-			float buffer0 = systemBuffer();
+			float buffer0 = sysBuffer;
 			float radius1 = opts.firstRingRadius();
 			float buffer1 = min(buffer0, radius1/sqrt(max(1.4f, num1)));
 			float minRel1 = buffer1/radius1;
 			minRel1 *= minRel1;
-			for (int nbSys=1; nbSys<=num1; nbSys++) { // variable nearby systems
+			for (int sysId=1; sysId<=num1; sysId++) { // variable nearby systems
 				// get player nearby system
 				if (player.addNearbySystemsSym(this, null, radius1, buffer1, minRel1))
 					homeStars++;
@@ -407,12 +445,12 @@ public abstract class GalaxyShape implements Base, Serializable {
 				}
 				// ----- now the opponents
 				// get the stars
-				opp = getSymmetricSystems(new CtrPoint(player.x[nbSys], player.y[nbSys]));
+				opp = getSymmetricSystems(new CtrPoint(player.starPts[sysId]));
 				//  no test needed, they are valid by symmetry.
 				for (int k=0; k<numOpponents; k++) {
-			   		empSystems.get(k+1).addNearbySystemsSym(this, opp[k].get(), 0, 0, 0);
-			   		homeStars++;
-			   	}
+					empSystems.get(k+1).addNearbySystemsSym(this, opp[k].get(), 0, 0, 0);
+					homeStars++;
+				}
 			}
 
 			float radius2 = opts.secondRingRadius();
@@ -429,12 +467,12 @@ public abstract class GalaxyShape implements Base, Serializable {
 				}
 				// ----- now the opponents
 				// get the stars
-				opp = getSymmetricSystems(new CtrPoint(player.x[nbSys], player.y[nbSys]));
+				opp = getSymmetricSystems(new CtrPoint(player.starPts[nbSys]));
 				//  no test needed, they are valid by symmetry.
 				for (int k=0; k<numOpponents; k++) {
-			   		empSystems.get(k+1).addNearbySystemsSym(this, opp[k].get(), 0, 0, 0);
-			   		homeStars++;
-			   	}
+					empSystems.get(k+1).addNearbySystemsSym(this, opp[k].get(), 0, 0, 0);
+					homeStars++;
+				}
 			}
 			if (!valid)
 				continue; // something was wrong!
@@ -460,7 +498,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 		while ((num < nonEmpireStars) && (attempts++ < maxAttempts)) {
 			// Find a location
 			CtrPoint pt = getValidRandomSymmetric();
-			if (!isTooNearExistingSystem(pt.getX(), pt.getY(), false)) {
+			if (!isTooNearExistingSystem(pt.get(), false)) {
 				addSystem(pt.get());
 				// Then fill the symmetry
 				// get the stars
@@ -480,7 +518,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 			while ((num < limitStars) && (fillerAttempts++ < maxAttempts)) {
 				// Find a location
 				CtrPoint pt = getValidRandomSymmetric();
-				if (!isTooNearExistingSystem(pt.getX(), pt.getY(), fillerBuffer)) {
+				if (!isTooNearExistingSystem(pt.get(), fillerBuffer)) {
 					addSystem(pt.get());
 					// Then fill the symmetry
 					// get the stars
@@ -494,47 +532,20 @@ public abstract class GalaxyShape implements Base, Serializable {
 			}
 			numFiller *= empSystems.size();
 		}
-
 		return new int[] {attempts, fillerAttempts};
 	}
 	// \BR
-	private boolean valid(Point.Float p)	{ return valid(p.x, p.y); }
 	public float maxScaleAdj()				{ return 1.0f; }
-	public void coords(int n, Point.Float pt)	{ // TODO BR: Fix
-		if (n == 0) { // BR: Fixed Orion at the wrong place with regions
-			if (orionXY == null) // BR: I don't know why this happen!!!
-				return;
-			pt.x = orionXY.x;
-			pt.y = orionXY.y;
-			return;
-		}
-//		if (usingRegions) {
-//			int i = n-1; // BR: Fixed Orion at the wrong place with regions
-//			for (int a=0;a<regionScale;a++) {
-//				for (int b=0;b<regionScale;b++) {
-//					if (i >= regions[a][b].num)
-//						i -= regions[a][b].num;
-//					else {
-//						pt.x = regions[a][b].x[i];
-//						pt.y = regions[a][b].y[i];
-//						//log("system: "+n+"  is a:"+a+" b:"+b+"  i:"+i);
-//						return;
-//					}
-//				}
-//			}
-//			throw new RuntimeException("Invalid x index requested: "+i);
-//		}
-//		else {
-			pt.x = x[n];
-			pt.y = y[n];
-//		}
-	}
+	public StarPt coords(int n)				{ return systems.get(n); }
+	public List<StarPt> getSystems()		{ return systems; }
+	public List<StarPt> linkingSystems()	{ return linkingSystems; }
+	public List<StarPt> routeSystems()		{ return routeSystems; }
 	public boolean isValid()	{ return isValid; }
 	// BR: ========== Initialization Methods ==========
 	//
 	public float empireBuffer() { // BR: Made this parameter available for GUI
 		float sysBuffer			 = systemBuffer();
-		float minMaxEmpireBuffer = finalNumberStarSystems/(numEmpires*2);
+		float minMaxEmpireBuffer = nominalSystemNumber/(numEmpires*2);
 		float minEmpireBuffer    = sysBuffer * minEmpireFactor();
 		float maxMinEmpireBuffer = sysBuffer * maxMinEmpireFactor;
 		// the stars/empires ratio for the most "densely" populated galaxy is about 8:1
@@ -548,9 +559,9 @@ public abstract class GalaxyShape implements Base, Serializable {
 	}
 	protected void singleInit(boolean full) {
 		if (full)
-			maxStars = finalNumberStarSystems();
+			maxStars = nominalSystemNumber();
 		else
-			maxStars = min((int)(MaxPreviewSystems/maxPreviewFactor), finalNumberStarSystems);
+			maxStars = min((int)(MaxPreviewSystems/maxPreviewFactor), nominalSystemNumber);
 
 		// common symmetric and non symmetric initializer for generation
 		log("Galaxy shape: "+maxStars+ " stars"+ "  regionScale: "+regionScale+"   emps:"+numEmpires);
@@ -570,11 +581,11 @@ public abstract class GalaxyShape implements Base, Serializable {
 	}
 	private void fullInit() {
 		fullyInit = true;
-		init(finalNumberStarSystems);
+		init(nominalSystemNumber);
 	}
 	private void quickInit() {
 		fullyInit = false;
-		init(min((int)(MaxPreviewSystems/maxPreviewFactor), finalNumberStarSystems));
+		init(min((int)(MaxPreviewSystems/maxPreviewFactor), nominalSystemNumber));
 	}
 	protected void init(int numStars) {
 		// System.out.println("========== GalaxyShape.init(): genAttempt = " + genAttempt);
@@ -592,8 +603,9 @@ public abstract class GalaxyShape implements Base, Serializable {
 		usingRegions = (minSize > 100) && !isSymmetric();
 
 		// BR: The "No region" is now always built to be able to retrieve the placement sequence
-		x = new float[totalStars];
-		y = new float[totalStars];
+		systems.clear();
+		linkingSystems.clear();
+		routeSystems.clear();
 
 		// BR: The region are still used to speed up the distance validation
 		if (usingRegions) {
@@ -766,11 +778,12 @@ public abstract class GalaxyShape implements Base, Serializable {
 		}
 		return GALAXY_EDGE_BUFFER;
 	}
-	private Point.Float addOrion() {
-		Point.Float pt = new Point.Float();
+	private StarPt addOrion() {
 		indexWorld = 0; // modnar: explicitly set indexWorld=0 for orion
-		findSpecificValidLocation(pt); // modnar: specific placement for orion location
-		//findAnyValidLocation(pt);
+		StarPt pt = findSpecificValidLocation(); // modnar: specific placement for orion location
+		if (pt == null)
+			pt = new StarPt(cx, cy);
+		pt.setAsOrion();
 		addSystem(pt);
 		return pt;
 	}
@@ -787,20 +800,24 @@ public abstract class GalaxyShape implements Base, Serializable {
 		// total from the count of remaining stars to create ("too many stars" bug)
 		int nonEmpireStars = maxStars - (empSystems.size() * homeStarNum);
 		int attempts = 0;
-		Point.Float pt = new Point.Float();
 		while ((num < nonEmpireStars) && (attempts++ < maxAttempts)) {
-			findAnyValidLocation(pt);
-			if (!isTooNearExistingSystem(pt.x,pt.y,false))
+			StarPt pt = findAnyValidLocation();
+			if (!isTooNearExistingSystem(pt, false))
 				addSystem(pt);
 		}
+
+		if (connectAllEmpires())
+			new ConnectEmpire(maxDistanceToConnectEmpires()).connectEmpire();
+
 		// add filler systems
 		int fillerAttempts = 0;
 		if (fillerStars > 0) {
 			numFiller = 0;
 			int limitStars = totalStars - (empSystems.size() * homeStarNum);
 			while ((num < limitStars) && (fillerAttempts++ < maxAttempts)) {
-				findAnyValidLocation(pt);
-				if (!isTooNearExistingSystem(pt.x, pt.y, fillerBuffer)) {
+				StarPt pt = findAnyValidLocation();
+				if (!isTooNearExistingSystem(pt, fillerBuffer)) {
+					pt.setAsAsteroid();
 					addSystem(pt);
 					numFiller++;
 				}
@@ -810,104 +827,99 @@ public abstract class GalaxyShape implements Base, Serializable {
 		//                    + (float)attempts/maxStars);
 		return new int[] {attempts, fillerAttempts};
 	}
-	private Point.Float findAnyValidLocation(Point.Float p) {
+	private StarPt findAnyValidLocation() {
+		StarPt p = new StarPt();
 		setRandom(p);
 		while (!valid(p))
 			setRandom(p);
-
 		return p;
 	}
 	// modnar: add specific placement of orion/homeworld locations
-	private Point.Float findSpecificValidLocation(Point.Float p) {
-		setSpecific(p);
+	private StarPt findSpecificValidLocation() {
+		StarPt p = new StarPt();
+		boolean valid = false;
 		//indexWorld++; // modnar: increment indexWorld for subsequent homeworld locations
-		while (!valid(p) && indexWorld++<2000) {
+		while (!valid && indexWorld<2000) {
 			setSpecific(p);
+			valid = valid(p);
 			// modnar: incrementing indexWorld here to prevent accidental infinite loop of bad locations,
 			// but need setSpecific to have some form of repeating modulo cut-off
-			//indexWorld++;
+			indexWorld++;
 		}
-		if (!valid(p)) { // to avoid infinite loop
+		if (!valid) { // to avoid infinite loop
 			p.x = cx;
 			p.y = cy;
-			//System.err.println("Center point generated");
+			//System.err.println("Center point generated: num = " + num);
 			return null;
 		}
 		return p;
 	}
-	private void addSystem(Point.Float pt) { // BR: changed to protected
-		addSystem(pt.x, pt.y);
-	}
-	private void addSystem(float x0, float y0) { // TODO BR: Fix
+	private void addSystem(StarPt pt) { // BR: changed to protected
 		if (num == 0) { // Orion: already stored in orionXY!
-			if(!usingRegions) { // To be safe, but should not be needed!
-				x[num] = x0;
-				y[num] = y0;
-			}
+			systems.add(pt);
 			num++;
 			return;
 		}
-		// BR: The "No region" is now always built to be able to retrieve the placement sequence
-		x[num] = x0;
-		y[num] = y0;
-
 		// BR: The region are still used to speed up the distance validation
 		if (usingRegions) {
-			int xRgn = (int) (regionScale*x0/fullWidth);
-			int yRgn = (int) (regionScale*y0/fullHeight);
-			regions[xRgn][yRgn].addSystem(x0,y0);
+			int xRgn = bounds(0, (int)(regionScale * pt.x / fullWidth), regionScale-1);
+			int yRgn = bounds(0, (int) (regionScale * pt.y / fullHeight), regionScale-1);
+			regions[xRgn][yRgn].addSystem(pt);
 		}
+		// BR: The "No region" is now always built to be able to retrieve the placement sequence
+		systems.add(pt);
 		num++;
+		if (num != systems.size())
+			System.out.println("num != systems.size() " + num + " vs " + systems.size());
 	}
-	private boolean isTooNearExistingSystem(float x0, float y0, boolean isHomeworld) {
+	private boolean isTooNearExistingSystem(StarPt pt, boolean isHomeworld)	{
 		if (isHomeworld) {
-			if (starDist(x0,y0,orionXY.x,orionXY.y) <= orionBuffer)
+			if (starDist(pt, orionXY) <= orionBuffer)
 				return true;
 			for (EmpireSystem emp: empSystems) {
-				if (starDist(x0,y0,emp.colonyX(),emp.colonyY()) <= empireBuffer)
+				if (starDist(pt, emp.colony()) <= empireBuffer)
 					return true;
 			}
 		}
 		// float buffer = systemBuffer(); // BR: made global
 		// not too close to other systems in galaxy
-		return isTooNearExistingSystem(x0, y0, sysBuffer);
+		return isTooNearExistingSystem(pt, sysBuffer);
 	}
-	private boolean isTooNearExistingSystem(float x0, float y0, float buffer) {
-		// float buffer = systemBuffer(); // BR: made global
-		// not too close to other systems in galaxy
+	private boolean isTooNearExistingSystem(StarPt pt, float buffer)	{
 		if (usingRegions) {
-			if (isTooNearSystemsInNeighboringRegions(x0, y0, buffer))
+			if (isTooNearSystemsInNeighboringRegions(pt, buffer))
 				return true;
 		}
 		else {
-			if (isTooNearSystemsInEntireGalaxy(x0, y0, buffer)) // BR: global
+			if (isTooNearSystemsInEntireGalaxy(pt, buffer)) // BR: global
 				return true;
 		}
 		// not too close to other systems in any empire system
 		for (EmpireSystem emp: empSystems)
-			for (int i=0;i<emp.num;i++)
-				if (starDist(x0,y0,emp.x(i),emp.y(i)) <= buffer) // BR: global
+			for (int i=0; i<emp.num; i++)
+				if (starDist(pt, emp.nearby(i)) <= buffer) // BR: global
 					return true;
 		return false;
 	}
-	private boolean isTooNearSystemsInNeighboringRegions(float x0, float y0, float buffer) {
-		int xRgn = (int)(x0*regionScale/fullWidth);
-		int yRgn = (int)(y0*regionScale/fullHeight);
-		int yMin = max(0,yRgn-1);
-		int yMax = min(regionScale-1,yRgn+1);
-		int xMin = max(0,xRgn-1);
-		int xMax = min(regionScale-1,xRgn+1);
+	private boolean isTooNearSystemsInNeighboringRegions(StarPt pt, float buffer)	{
+		int xRgn = (int)(pt.x * regionScale / fullWidth);
+		int yRgn = (int)(pt.y * regionScale / fullHeight);
+		int yMin = max(0, yRgn-1);
+		int yMax = min(regionScale-1, yRgn+1);
+		int xMin = max(0, xRgn-1);
+		int xMax = min(regionScale-1, xRgn+1);
 
 		for (int x1=xMin; x1<=xMax; x1++)
 			for (int y1=yMin; y1<=yMax; y1++)
-				if (regions[x1][y1].isTooNearSystems(x0, y0, buffer))
+				if (regions[x1][y1].isTooNearSystems(pt, buffer))
 					return true;
 
-		return starDist(x0, y0, orionXY.x, orionXY.y) <= buffer;
+		return starDist(pt, orionXY) <= buffer;
 	}
-	private boolean isTooNearSystemsInEntireGalaxy(float x0, float y0, float buffer) {
-		for (int i=0;i<num;i++)
-			if (starDist(x0,y0,x[i],y[i]) <= buffer)
+
+	private boolean isTooNearSystemsInEntireGalaxy(StarPt pt, float buffer)	{
+		for (StarPt sys : systems)
+			if (starDist(pt, sys) <= buffer)
 				return true;
 		return false;
 	}
@@ -933,18 +945,18 @@ public abstract class GalaxyShape implements Base, Serializable {
 			}
 		}
 	}
-    // BR: may be used later for a preview
-    private boolean addNebula(float nebSize, List<Nebula> nebulas) {
-    	int numTentatives = opts.nebulaCallsBeforeShrink();
-    	for (int i=0; i<numTentatives; i++) {
-    		Nebula neb = tryAddNebula(nebSize, nebulas);
-    		if ( neb != null) {
-    			nebulas.add(neb);
-    			return true;    			
-    		}
-    	}
-    	return false;
-    }
+	// BR: may be used later for a preview
+	private boolean addNebula(float nebSize, List<Nebula> nebulas) {
+		int numTentatives = opts.nebulaCallsBeforeShrink();
+		for (int i=0; i<numTentatives; i++) {
+			Nebula neb = tryAddNebula(nebSize, nebulas);
+			if ( neb != null) {
+				nebulas.add(neb);
+				return true;
+			}
+		}
+		return false;
+	}
 	private Nebula tryAddNebula(float nebSize, List<Nebula> nebulas) {
         // each nebula creates a buffered image for display
         // after we have created 5 nebulae, start cloning
@@ -952,8 +964,8 @@ public abstract class GalaxyShape implements Base, Serializable {
         // new nebulae
         int MAX_UNIQUE_NEBULAS = 16;
         boolean looseNebula = guiOptions().looseNebula();
-        Point.Float pt	 = new Point.Float();
-        getPointFromRandomStarSystem(pt);
+        StarPt pt = new StarPt();
+        getPointFromRandomStarSystem(pt); // Safer, the point will be modified
 
         Nebula neb;
         if (nebulas.size() < MAX_UNIQUE_NEBULAS)
@@ -965,22 +977,20 @@ public abstract class GalaxyShape implements Base, Serializable {
         float h = neb.adjHeight();
         // BR: Needed by Bitmap Galaxies
         // Center the nebula on the star
-    	pt.x -= w/2;
-    	pt.y -= h/2;
-        if (!looseNebula && !valid(pt))
-        	return neb.cancel();
+		pt.x -= w/2;
+		pt.y -= h/2;
+		if (!looseNebula && !valid(pt))
+			return neb.cancel();
 
-        neb.setXY(pt.x, pt.y);
-        if (!looseNebula) {
-            float x = pt.x;
-            float y = pt.y;
-            if (!valid(x+w, y))
-            	return neb.cancel();
-            if (!valid(x+w, y+h))
-            	return neb.cancel();
-            if (!valid(x, y+h))
-            	return neb.cancel();
-        }
+		neb.setXY(pt.x, pt.y);
+		if (!looseNebula) {
+			if (!valid(new StarPt(pt.x+w, pt.y)))
+				return neb.cancel();
+			if (!valid(new StarPt(pt.x+w, pt.y+h)))
+				return neb.cancel();
+			if (!valid(new StarPt(pt.x, pt.y+h)))
+				return neb.cancel();
+		}
         if (guiOptions().neverNebulaHomeworld())
 	        for (EmpireSystem sys : empSystems)
 	            if (sys.inNebula(neb))
@@ -1004,43 +1014,494 @@ public abstract class GalaxyShape implements Base, Serializable {
 	// ========================================================================
 	// Nested Classes
 	//
-	@SuppressWarnings("serial")
-	private class ShapeRegion implements Serializable {
+	private final class ConnectEmpire	{
+		private final List<Star> stars;
+		private final List<CentralStar> centralStars;
+		private final List<CentralStar> routeCentralStars; // for empire and orion only
+		private final StarSet linkStars;
+		private final float maxDist, maxSquareDist;
+		private int id, firstLinkId;
+		private int minMissingEmpire;
+		private RouteFinder<Star> routeFinder;
+
+		ConnectEmpire(final float maxDistance)	{
+			stars = new ArrayList<>();
+			linkStars = new StarSet();
+			centralStars = new ArrayList<>();
+			routeCentralStars = new ArrayList<>();
+			maxDist = maxDistance;
+			maxSquareDist = maxDist * maxDist;
+			init();
+		}
+		private void init()	{ // Build Star List
+			id = 0;
+			minMissingEmpire = numEmpires;
+			// Empire Systems
+			for (EmpireSystem empSys: empireSystems()) {
+				CentralStar star = new CentralStar(empSys.colony(), id++);
+				centralStars.add(star);
+				routeCentralStars.add(star);
+				stars.add(star);
+				for (int i=1; i<empSys.num; i++)
+					stars.add(new Star(empSys.nearby(i), id++));
+			}
+
+			// Companions' worlds
+			if (companionWorlds != null)
+				for (int i=0; i<numEmpires; i++)
+					for (int j=0; j<numCompanions; j++)
+						stars.add(new Star(getCompanion(i, j), id++));
+
+			// Other systems
+			if (connectedOrionToEmpires()) {
+				CentralStar star = new CentralStar(systems.get(0), id++);
+				centralStars.add(star);
+				routeCentralStars.add(star);
+				stars.add(star);
+				if (connectAllStarts()) {
+					for (int i=1; i<systems.size(); i++) {
+						star = new CentralStar(systems.get(i), id++);
+						centralStars.add(star);
+						stars.add(star);
+					}
+				}
+				else
+					for (int i=1; i<systems.size(); i++)
+						stars.add(new Star(systems.get(i), id++));
+			}
+			else if (connectAllStarts()) {
+				for (StarPt sys : systems) {
+					CentralStar star = new CentralStar(sys, id++);
+					centralStars.add(star);
+					stars.add(star);
+				}
+			}
+			else
+				for (StarPt sys : systems)
+					stars.add(new Star(sys, id++));
+
+			firstLinkId = id;
+		}
+		private void connectEmpire() {
+			linkStars.clear();
+			linkingSystems().clear();
+			routeSystems.clear();
+			computeAllDistances(stars);
+			if (buildAllGroups(centralStars)) {
+				computeAllDistances(stars);
+				buildAllGroups(centralStars);
+				findRoutes(routeCentralStars);
+			}
+			else {
+				log("Failed to connect Empires: linking Systems size = " + linkingSystems().size());
+				System.out.println("Failed to connect Empires: linking Systems size = " + linkingSystems().size());
+			}
+			log("Connect Empires: linking Systems size = " + linkingSystems().size());
+			log("Connect Empires: route Systems size = " + routeSystems().size());
+			// System.out.println("linking Systems size = " + linkingSystems().size());
+			// System.out.println("route Systems size = " + routeSystems().size());
+
+			if (removeExcessLinks() && !connectAllStarts()) {
+				for (Iterator<StarPt> iPt = systems.iterator(); iPt.hasNext();) {
+					StarPt pt = iPt.next();
+					if (pt.isConnection() && !pt.isRoute())
+						iPt.remove();
+				}
+				num = systems.size();
+				for (Iterator<StarPt> iPt = linkingSystems.iterator(); iPt.hasNext();) {
+					StarPt pt = iPt.next();
+					if (pt.isConnection() && !pt.isRoute())
+						iPt.remove();
+				}
+				log("Remove Links: linking Systems size = " + linkingSystems().size());
+				log("Remove Link: route Systems size = " + routeSystems().size());
+				// System.out.println("linking Systems size = " + linkingSystems().size());
+				// System.out.println("route Systems size = " + routeSystems().size());
+			}
+		}
+		private void findRoutes(final List<CentralStar> centralStarList)	{
+			StarSet nodes = centralStarList.get(0).cluster;
+			Map<String, Set<String>> connections = new HashMap<>();
+			for (Star node : nodes)
+				connections.put(node.getId(), node.getIdSet());
+
+			Graph<Star> graph = new Graph<>(nodes, connections);
+			Scorer<Star> nextNodeScorer = new NextNodeScorer();
+			Scorer<Star> targetScorer = new TargetScorer();
+			routeFinder = new RouteFinder<>(graph, nextNodeScorer, targetScorer);
+
+			StarSet allPath = new StarSet();
+			for (int i=1; i<centralStarList.size(); i++) {
+				List<Star> path = routeFinder.findRoute(centralStarList.get(i-1), centralStarList.get(i));
+				float maxD = 0;
+				for (int s=1; s<path.size(); s++) {
+					Star s1 = path.get(s-1);
+					Star s2 = path.get(s);
+					float dx = s2.pt.x - s1.pt.x;
+					float dy = s2.pt.y - s1.pt.y;
+					float dist = sqrt(dx*dx+dy*dy);
+					if (dist > maxD)
+						maxD = dist;
+				}
+				// System.out.println("Path " + i + " Size = " + path.size() + " Max Distance = " + fmt(maxD, 1) + " (" + fmt(maxDist, 1) + ")");
+				allPath.addAll(path);
+			}
+			// System.out.println("AllPath Size = " + allPath.size());
+			routeSystems.clear();
+			for (Star star : allPath) {
+				star.pt.setAsRoute();
+				routeSystems.add(star.pt);
+			}
+		}
+		private void addConnectingStars(List<CentralStar> centralStars, double minStep, double maxStep)	{
+			List<NearestStarPair> nearestPairs = new ArrayList<>();
+			StarSet listedStars = new StarSet();
+			for (CentralStar centralStar : centralStars) {
+				NearestStarPair pair = new NearestStarPair(centralStar);
+				if (!listedStars.contains(pair.star1) &&  !listedStars.contains(pair.star2)) {
+					nearestPairs.add(pair);
+					linkStars.addAll(pair.getLinkingStarPts(minStep, maxStep));
+				}
+			}
+		}
+		private List<CentralStar> getClusters(final List<CentralStar> centralStarList)	{
+			StarSet missing = new StarSet(centralStarList);
+			List<CentralStar> clusterHomes = new ArrayList<>();
+			for (CentralStar centralStar : centralStarList)
+				if (missing.contains(centralStar)) {
+					clusterHomes.add(centralStar);
+					for (Iterator<Star> iStar = missing.iterator(); iStar.hasNext();) {
+						Star star = iStar.next();
+						if (centralStar.cluster.contains(star))
+							iStar.remove();
+					}
+				}
+			// System.out.println("number of isolated clusters: " + clusterHomes.size());
+			// log("number of isolated clusters: " + clusterHomes.size());
+			return clusterHomes;
+		}
+		private boolean buildAllGroups(final List<CentralStar> centralStarList)	{
+			// Build and check that all central systems are connected
+			// System.out.println();
+			// System.out.println("validateDistances()");
+
+			// Initialize and Check if they are already connected
+			for (CentralStar homeStar : centralStarList)
+				if (homeStar.buildAndValidateCentrals(centralStarList))
+					return true; // Connected to all required stars
+
+			double maxStep = maxDist;
+			double minStep = sysBuffer;
+			int maxLoop = max(2000, num);
+			int count = 0;
+			while (count < maxLoop) {
+			// System.out.println("validateDistances() " + count + "/" + maxLoop);
+				// Some systems are isolated
+				// System.out.println("Isolated Clusters detected");
+				//log("Isolated Clusters detected");
+				List<CentralStar> clusterHomes = getClusters(centralStars);
+	
+				// Get fixing stars
+				addConnectingStars(clusterHomes, minStep, maxStep);
+
+				for (CentralStar centralStar : clusterHomes)
+					if (centralStar.buildAndValidateCentrals(centralStarList))
+						return true; // Connected to all required stars
+
+				count++;
+			}
+			return count < maxLoop;
+		}
+		private void computeAllDistances(final List<Star> starList)	{
+			final int size = starList.size();
+			for (int i=0; i<size; i++) {
+				final Star star = starList.get(i);
+				for (int j=i+1; j<size; j++)
+					star.validateDistance(starList.get(j), maxSquareDist);
+			}
+		}
+		// A* Path finding based on Baeldung course
+		// https://www.baeldung.com/java-a-star-pathfinding
+		public interface GraphNode	{ String getId(); }
+		public interface Scorer<T extends GraphNode>	{ double computeCost(T from, T to); }
+		private class TargetScorer implements Scorer<Star>	{
+			@Override public double computeCost(Star from, Star to)	{
+				double dx = to.pt.x - from.pt.x;
+				double dy = to.pt.y - from.pt.y;
+				return Math.sqrt(dx*dx + dy*dy);
+			}
+		}
+		private class NextNodeScorer implements Scorer<Star>	{
+			@Override public double computeCost(Star from, Star to)	{
+				if (to instanceof CentralStar)
+					return 0;
+				if (to.isLink())
+					return 2;
+				return 4;
+			}
+		}
+		public class Graph<T extends GraphNode>	{
+			private final Set<T> nodes;
+			private final Map<String, Set<String>> connections;
+
+			Graph(Set<T> nodes, Map<String, Set<String>> connections)	{
+				this.nodes = nodes;
+				this.connections = connections;
+			}
+
+			public T getNode(String id) {
+				return nodes.stream()
+						.filter(node -> node.getId().equals(id))
+						.findFirst()
+						.orElseThrow(() -> new IllegalArgumentException("No node found with ID"));
+			}
+
+			public Set<T> getConnections(T node)	{
+				return connections.get(node.getId()).stream()
+						.map(this::getNode)
+						.collect(Collectors.toSet());
+			}
+		}
+		class RouteNode<T extends GraphNode> implements Comparable<RouteNode<T>> {
+			private final T current;
+			private T previous;
+			private double routeScore;
+			private double estimatedScore;
+
+			RouteNode(T current)	{
+				this(current, null, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+			}
+			RouteNode(T current, T previous, double routeScore, double estimatedScore)	{
+				this.current = current;
+				this.previous = previous;
+				this.routeScore = routeScore;
+				this.estimatedScore = estimatedScore;
+			}
+			@Override public int compareTo(RouteNode<T> other)	{
+				if (this.estimatedScore > other.estimatedScore)
+					return 1;
+				else if (this.estimatedScore < other.estimatedScore)
+					return -1;
+				else
+					return 0;
+			}
+			private T getCurrent()						{ return current; }
+			private T getPrevious()						{ return previous; }
+			private void setPrevious(T node)			{ previous = node; }
+			private double getRouteScore()				{ return routeScore; }
+			private void setRouteScore(double d)		{ routeScore = d; }
+			private void setEstimatedScore(double d)	{ estimatedScore = d; }
+		}
+		public class RouteFinder<T extends GraphNode> {
+			private final Graph<T> graph;
+			private final Scorer<T> nextNodeScorer;
+			private final Scorer<T> targetScorer;
+
+			RouteFinder(Graph<T> graph, Scorer<T> nextNodeScorer, Scorer<T> targetScorer)	{
+				this.graph = graph;
+				this.nextNodeScorer = nextNodeScorer;
+				this.targetScorer = targetScorer;
+			}
+			public List<T> findRoute(T from, T to) {
+				Queue<RouteNode<T>> openSet = new PriorityQueue<>();
+				Map<T, RouteNode<T>> allNodes = new HashMap<>();
+
+				RouteNode<T> start = new RouteNode<>(from, null, 0d, targetScorer.computeCost(from, to));
+				openSet.add(start);
+				allNodes.put(from, start);
+
+				while (!openSet.isEmpty()) {
+					RouteNode<T> next = openSet.poll();
+					if (next.getCurrent().equals(to)) {
+						List<T> route = new ArrayList<>();
+						RouteNode<T> current = next;
+						do {
+							route.add(0, current.getCurrent());
+							current = allNodes.get(current.getPrevious());
+						}
+						while (current != null);
+						return route;
+					}
+					graph.getConnections(next.getCurrent()).forEach(connection -> { 
+						RouteNode<T> nextNode = allNodes.getOrDefault(connection, new RouteNode<>(connection));
+						allNodes.put(connection, nextNode);
+
+						double newScore = next.getRouteScore() + nextNodeScorer.computeCost(next.getCurrent(), connection);
+						if (newScore < nextNode.getRouteScore()) {
+							nextNode.setPrevious(next.getCurrent());
+							nextNode.setRouteScore(newScore);
+							nextNode.setEstimatedScore(newScore + targetScorer.computeCost(connection, to));
+							openSet.add(nextNode);
+						}
+					});
+				}
+				throw new IllegalStateException("No route found");
+			}
+		}
+
+		private final class NearestStarPair {
+			CentralStar home;
+			Star star1, star2;
+			float minSquareDist;
+
+			NearestStarPair(CentralStar h1)	{
+				home = h1;
+				minSquareDist = Float.MAX_VALUE;
+				List<Star> otherStars = new ArrayList<>(stars);
+				otherStars.removeAll(h1.cluster);
+				for (Star s1 : h1.cluster)
+					for (Star s2 : otherStars) {
+						final float dx = s2.pt.x - s1.pt.x;
+						final float dy = s2.pt.y - s1.pt.y;
+						final float squareDist = dx*dx + dy*dy;
+						if (squareDist < minSquareDist) {
+							minSquareDist = squareDist;
+							star1 = s1;
+							star2 = s2;
+						}
+					}
+			}
+			private void tryNextStep(StarPt ps, StarPt pe, StarPt pt, double minStep, double maxStep)	{
+				final double maxDev = 2;
+				final double phi = Math.atan2(pe.y - ps.y, pe.x - ps.x) + maxDev * (randY.nextDouble()-0.5);
+				final double step = randY.nextDouble(minStep, maxStep);
+				pt.x = (float) (ps.x + step * Math.cos(phi));
+				pt.y = (float) (ps.y + step * Math.sin(phi));
+			}
+			private double getValidNextStep(StarPt ps, StarPt pe, StarPt pt, double minStep, double maxStep)	{
+				tryNextStep(ps, pe, pt, minStep, maxStep);
+				double dist = pt.distanceTo(pe);
+				int maxTry = 100;
+				while (dist < minStep || isTooNearExistingSystem(pt, false)) {
+					tryNextStep(ps, pe, pt, minStep, maxStep);
+					dist = pt.distanceTo(pe);
+					if (--maxTry < 0)
+						return -1;
+				}
+				return dist;
+			}
+			StarSet getLinkingStarPts(double minStep, double maxStep)	{
+				StarSet newStars = new StarSet();
+				Star star = star1;
+				double dist = Double.MAX_VALUE;
+				while (dist > maxStep) {
+					StarPt pt = new StarPt();
+					dist = getValidNextStep(star.pt, star2.pt, pt, minStep, maxStep);
+					if (dist < 0)
+						return newStars;
+					pt.setAsConnect();
+					addSystem(pt);
+					linkingSystems.add(pt);
+					Star link = new Star(pt, id++);
+					newStars.add(link);
+					link.inRangeStars.add(star);
+					star.inRangeStars.add(link);
+					home.cluster.add(link);
+					star = link;
+				}
+				star2.inRangeStars.add(star);
+				star.inRangeStars.add(star2);
+				return newStars;
+			}
+		}
+		private final class CentralStar extends Star {
+			final StarSet cluster = new StarSet();
+			final Set<CentralStar> missingCentral = new HashSet<>();
+
+			CentralStar(StarPt pt, int id)		{ super(pt, id); }
+
+			private StarSet buildGroup()	{
+				cluster.clear();;
+				cluster.add(this);
+				StarSet prevCluster = new StarSet();
+				StarSet addedStars = new StarSet(cluster);
+
+				while (!addedStars.isEmpty()) {
+					prevCluster.addAll(addedStars);
+					for (Star star : addedStars)
+						cluster.addAll(star.inRangeStars);
+					addedStars.addAll(cluster);
+					addedStars.removeAll(prevCluster);
+				}
+				return inRangeStars;
+			}
+			private boolean buildAndValidateCentrals(List<CentralStar> centralStars)	{
+				buildGroup();
+				missingCentral.clear();;
+				missingCentral.addAll(centralStars);
+				missingCentral.removeAll(cluster);
+				if (minMissingEmpire > missingCentral.size())
+					minMissingEmpire = missingCentral.size();
+				return missingCentral.isEmpty();
+			}
+		}
+		private final class StarSet extends HashSet<Star> {
+			// to simplify the use of list of set
+			private static final long serialVersionUID = 1L;
+			private StarSet()	{}
+			private StarSet(StarSet src)		{ addAll(src); }
+			private StarSet(Set<CentralStar> src)	{ addAll(src); }
+			private StarSet(List<CentralStar> src)	{ addAll(src); }
+		}
+		private class Star implements GraphNode {
+			final int id;
+			final String strId;
+			final StarPt pt;
+			final StarSet inRangeStars = new StarSet();
+
+			Star(StarPt pt, int id)	{
+				this.pt = pt;
+				this.id = id;
+				strId = Integer.toString(id);
+			}
+			private Set<String> getIdSet()	{
+				Set<String> idSet = new HashSet<>();
+				for (Star star: inRangeStars)
+					idSet.add(star.getId());
+				return idSet;
+			}
+			boolean isLink()	{return id >= firstLinkId; }
+			final void validateDistance(Star star, final float maxSquareDist)	{
+				final float dx = pt.x - star.pt.x;
+				final float dy = pt.y - star.pt.y;
+				if (maxSquareDist > (dx*dx + dy*dy)) {
+					inRangeStars.add(star);
+					star.inRangeStars.add(this);
+				}
+			}
+			@Override public boolean equals(Object o)	{ return o instanceof Star &&  id == ((Star)o).id; }
+			@Override public int hashCode()				{ return id; }
+			@Override public String getId()				{ return strId; }
+		}
+	}
+	private final class ShapeRegion {
 		int num = 0;
 		int size;
-		float[] x;
-		float[] y;
-		public ShapeRegion(int maxStars) {
+		StarPt[] pts;
+		public ShapeRegion(final int maxStars) {
 			size = maxStars;
-			x = new float[size];
-			y = new float[size];
+			pts = new StarPt[maxStars];
 		}
-		public boolean isTooNearSystems(float x0, float y0, float buffer) {
-			// float buffer = systemBuffer();
-			for (int i=0;i<num;i++) {
-				if (starDist(x0,y0,x[i],y[i]) <= buffer)
+		public boolean isTooNearSystems(StarPt pt, float buffer) {
+			for (int i=0; i<num; i++)
+				if (starDist(pt, pts[i]) <= buffer)
 					return true;
-			}
 			return false;
 		}
-		private void addSystem(float x0, float y0) {
+		private void addSystem(StarPt pt) {
 			if (num == size)
 				extendArray ();
-			x[num] = x0;
-			y[num] = y0;
+			pts[num] = pt;
 			num++;
 		}
 		private void extendArray () { // BR: To resolve overflow!
 			size *= 2;
 			// System.out.println("extendArray () size change: " + num + " ==> " + size);
-			x = Arrays.copyOf(x, size);
-			y = Arrays.copyOf(y, size);
+			pts = Arrays.copyOf(pts, size);
 		}
 	}
-	public final class EmpireSystem implements Serializable {
-		private static final long serialVersionUID = 1L;
-		private final float[] x = new float[homeStarNum];
-		private final float[] y = new float[homeStarNum];
+	public final class EmpireSystem {
+		private final StarPt[] starPts = new StarPt[homeStarNum];
 		private int num = 0;
 		private boolean valid = false;
 
@@ -1049,7 +1510,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 			// and variable valid nearby stars
 			valid = addNewHomeSystem(sp);
 
-			float buffer = systemBuffer();
+			float buffer = sysBuffer;
 
 			int num2 = opts.secondRingSystemNumber();
 			int num1 = opts.firstRingSystemNumber();
@@ -1059,9 +1520,9 @@ public abstract class GalaxyShape implements Base, Serializable {
 			minRel1 *= minRel1;
 			for (int nbSys=0; nbSys<num1; nbSys++)
 				if (looseLimits)
-					valid = valid && addNearbySystem(sp, colonyX(), colonyY(), radius1, buffer1, minRel1);
+					valid = valid && addNearbySystem(sp, colony(), radius1, buffer1, minRel1);
 				else
-					valid = valid && addNearbySystem(sp, colonyX(), colonyY(), radius1, buffer1);
+					valid = valid && addNearbySystem(sp, colony(), radius1, buffer1);
 
 			float radius2 = opts.secondRingRadius();
 			float buffer2 = min(buffer, radius2/sqrt(max(1.4f, num2)));
@@ -1069,117 +1530,101 @@ public abstract class GalaxyShape implements Base, Serializable {
 			minRel2 *= minRel2;
 			for (int nbSys=num1; nbSys<num2; nbSys++)
 				if (looseLimits)
-					valid = valid && addNearbySystem(sp, colonyX(), colonyY(), radius2, buffer2, minRel2);
+					valid = valid && addNearbySystem(sp, colony(), radius2, buffer2, minRel2);
 				else
-					valid = valid && addNearbySystem(sp, colonyX(), colonyY(), radius2, buffer2);
+					valid = valid && addNearbySystem(sp, colony(), radius2, buffer2);
 		}
 		// BR: for symmetric galaxy
-		private EmpireSystem(GalaxyShape sp, Point.Float pt) {
+		private EmpireSystem(GalaxyShape sp, StarPt homePt) {
 			// create first a valid home system (pt is already validated)
 			// then from a second call two valid nearby stars
-			addSystem(pt.x,pt.y);
+			addSystem(homePt);
 		 	valid = true;
 		}
 		// BR: for symmetric galaxy
-		private boolean addNearbySystemsSym(GalaxyShape sp, Point.Float pt
-							, float maxDistance, float buffer, float minRel) {
+		private boolean addNearbySystemsSym(GalaxyShape sp, StarPt pt, float maxDistance, float buffer, float minRel) {
 			// if pt = null then search for a nearby system
 			// else the system is already validated... add it
 			boolean valid = false;
 			if (pt == null) { // player world, search for one
 				if (looseLimits)
-					valid = addNearbySystem(sp, colonyX(), colonyY(), maxDistance, buffer, minRel);
+					valid = addNearbySystem(sp, colony(), maxDistance, buffer, minRel);
 				else
-					valid = addNearbySystem(sp, colonyX(), colonyY(), maxDistance, buffer);
+					valid = addNearbySystem(sp, colony(), maxDistance, buffer);
 				return valid;
 			}
-			addSystem(pt.x,pt.y); // Other empires
+			addSystem(pt); // Other empires
 			valid = true;
 			return valid;
 		}
 		public int numSystems()	{ return num; }
-		public float x(int i)	{ return x[i]; }
-		public float y(int i)	{ return y[i]; }
-		float colonyX()   { return x[0]; }
-		float colonyY()   { return y[0]; }
-
+		public StarPt nearby(int i)	{ return starPts[i]; }
+		public StarPt colony()		{ return starPts[0]; }
 		private boolean inNebula(Nebula neb)	{
-			for (int i=0;i<num;i++) {
-				if (neb.contains(x[i], y[i]))
+			for (int i=0; i<num; i++)
+				if (neb.contains(starPts[i]))
 					return true;
-			}
 			return false;
 		}
-
-		private boolean addNewHomeSystem(GalaxyShape sp) {
+		private boolean addNewHomeSystem(GalaxyShape sh) {
 			int attempts = 0;
-			Point.Float pt = new Point.Float();
 			while (attempts++ < 100) {
-				pt = findSpecificValidLocation(pt); // modnar: add specific placement of homeworld locations
-				//findAnyValidLocation(pt);
-				if (pt == null)
-					pt = new Point.Float();
-				else if (!sp.isTooNearExistingSystem(pt.x,pt.y,true)) {
-					addSystem(pt.x,pt.y);
+				StarPt homePt = findSpecificValidLocation(); // modnar: add specific placement of homeworld locations
+				if (homePt == null)
+					return false;
+				if (!sh.isTooNearExistingSystem(homePt, true)) {
+					homePt.setAsHomeworld();
+					addSystem(homePt);
 					return true;
 				}
 			}
 			return false;
 		}
-		private boolean addNearbySystem(GalaxyShape sh, float x0, float y0,
-										float maxDistance, float buffer) {
-			float x1 = x0-maxDistance;
-			float x2 = x0+maxDistance;
-			float y1 = y0-maxDistance;
-			float y2 = y0+maxDistance;
+		private boolean addNearbySystem(GalaxyShape sh, StarPt homePt, float maxDistance, float buffer) {
+			float x1 = homePt.x - maxDistance;
+			float x2 = homePt.x + maxDistance;
+			float y1 = homePt.y - maxDistance;
+			float y2 = homePt.y + maxDistance;
 			int attempts = 0;
-			Point.Float pt = new Point.Float();
+			StarPt ptNearby = new StarPt();
 			while (attempts < 100) {
 				attempts++;
-				pt.x = randX.nextFloat(x1, x2);
-				pt.y = randY.nextFloat(y1, y2);
-				if (sh.valid(pt)) {
-					boolean tooCloseToAny = isTooNearExistingSystem(sh,pt.x,pt.y, buffer);
-					boolean tooFarFromRef = starDist(x0, y0, pt.x,pt.y) >= maxDistance;
+				ptNearby.x = randX.nextFloat(x1, x2);
+				ptNearby.y = randY.nextFloat(y1, y2);
+				if (sh.valid(ptNearby)) {
+					boolean tooCloseToAny = isTooNearExistingSystem(sh, ptNearby, buffer);
+					boolean tooFarFromRef = starDist(homePt, ptNearby) >= maxDistance;
 					if (!tooCloseToAny && !tooFarFromRef) {
-						addSystem(pt.x,pt.y);
+						addSystem(ptNearby);
 						return true;
 					}
 				}
 			}
 			return false;
 		}
-		private boolean addNearbySystem(GalaxyShape sh, float x0, float y0,
-										float maxDistance, float buffer, float minRel) {
+		private boolean addNearbySystem(GalaxyShape sh, StarPt homePt, float maxDistance, float buffer, float minRel) {
 			int attempts = 0;
 			while (attempts < 100) {
 				attempts++;
 				double r = maxDistance * Math.sqrt(randX.nextDouble(minRel, 1));
 				double a = randX.nextDouble() * twoPI;
-				float x = x0 + (float) (r * Math.cos(a));
-				float y = y0 + (float) (r * Math.sin(a));
-				boolean tooCloseToAny = isTooNearExistingSystem(sh, x, y, buffer);
+				StarPt ptNearby = new StarPt(homePt.x + r * Math.cos(a), homePt.y + r * Math.sin(a));
+				boolean tooCloseToAny = isTooNearExistingSystem(sh, ptNearby, buffer);
 				if (!tooCloseToAny) {
-					addSystem(x, y);
+					addSystem(ptNearby);
 					return true;
 				}
 			}
 			return false;
 		}
-		private boolean isTooNearExistingSystem(GalaxyShape sh, float x0, float y0, float buffer) {
-			for (int i=0;i<num;i++) {
-				if (starDist(x0,y0,x[i],y[i]) <= buffer)
+		private boolean isTooNearExistingSystem(GalaxyShape sh, StarPt pt, float buffer) {
+			for (int i=0;i<num;i++)
+				if (starDist(pt, starPts[i]) <= buffer)
 					return true;
-			}
-			// float buffer = systemBuffer(); // BR: made global
-			// not too close to other systems in galaxy
-			return sh.isTooNearExistingSystem(x0, y0, buffer);
-
-			//return sh.isTooNearExistingSystem(x0,y0,false);
+			return sh.isTooNearExistingSystem(pt, buffer);
 		}
-		private void addSystem(float x0, float y0) {
-			x[num] = x0;
-			y[num] = y0;
+		private void addSystem(StarPt pt)	{
+			starPts[num] = pt;
 			num++;
 		}
 	}
@@ -1189,11 +1634,11 @@ public abstract class GalaxyShape implements Base, Serializable {
 	 *  to avoid to spread symmetry management everywhere
 	 *  Added some diversity in their angular placement
 	 */
-	private class CompanionWorld { // BR:
+	private final class CompanionWorld { // BR:
 
 		final double minRandom = twoPI / 6.0;
 		CtrPoint[] cW;
-		
+
 		// ========== constructors ==========
 		//
 		CompanionWorld(int numComp) {
@@ -1201,7 +1646,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 		}
 		CompanionWorld(EmpireSystem empire, int numComp) {
 			this(numComp);
-			CtrPoint home = new CtrPoint(empire.colonyX(), empire.colonyY());
+			CtrPoint home = new CtrPoint(empire.colony());
 			if (numComp == 0) { return; }
 			if (numComp > 0) {
 				double ctr   = twoPI / numComp;
@@ -1210,13 +1655,13 @@ public abstract class GalaxyShape implements Base, Serializable {
 				for (int i=0; i<numComp; i++) {
 					cW[i] = home.shift(unit(orientation + randX.sym(i * ctr, width)));
 				}
-			} else { // old way
+			}
+			else { // old way
 				numComp = -numComp;
 				double ctr = twoPI / 4;
 				double orientation = twoPI / 8 ; // Global orientation
-				for (int i=0; i<numComp; i++) {
+				for (int i=0; i<numComp; i++)
 					cW[i] = home.shift(unit(orientation - i * ctr));
-				}			
 			}
 		}
 	   	// ========== Getters ==========
@@ -1245,7 +1690,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	 * Quite similar to Point.Float for center referenced point
 	 * Not an extended Point class to prevent confusion
 	 */
-	class CtrPoint implements Cloneable { // BR:
+	final class CtrPoint implements Cloneable { // BR:
 
 		// double as all Math operation are performed in double!
 		// And this allow to differentiate centered points (double)
@@ -1255,31 +1700,35 @@ public abstract class GalaxyShape implements Base, Serializable {
 
 		// ========== constructors ==========
 		//
-	   	CtrPoint() {}
-	   	/**
-	   	 * @param x referenced to center; y=0
-	   	 */
-	   	CtrPoint(double x) { this.x = x; }
-	   	private /**
-	   	 * @param xc referenced to center
-	   	 * @param yc referenced to center
-	   	 */
-	   	CtrPoint(double xc, double yc) { x = xc; y = yc; }
-	   	private /**
-	   	 * @param xe referenced to the edge
-	   	 * @param ye referenced to the edge
-	   	 */
-	   	CtrPoint(float xe, float ye) { x = xe - cx; y = ye - cy; }
+		CtrPoint() {}
+		/**
+		 * @param x referenced to center; y=0
+		 */
+		CtrPoint(double x)	{ this.x = x; }
+		/**
+		 * @param xc referenced to center
+		 * @param yc referenced to center
+		 */
+		private CtrPoint(double xc, double yc)	{ x = xc; y = yc; }
+		/**
+		 * @param xe referenced to the edge
+		 * @param ye referenced to the edge
+		 */
+		private CtrPoint(float xe, float ye)	{ x = xe - cx; y = ye - cy; }
+		/**
+		 * @param ptE referenced to the edge
+		 */
+		private CtrPoint(StarPt ptE)	{ x = ptE.x - cx; y = ptE.y - cy; }
 		/**
 		 * @param pt referenced to center
 		 */
-		private CtrPoint(CtrPoint pt) { x = pt.x; y = pt.y; }
+		private CtrPoint(CtrPoint pt)	{ x = pt.x; y = pt.y; }
 
-	   	// ========== Getters ==========
-	   	//
-	   	private Point.Float get()   { return new Point.Float((float)x + cx, (float)y + cy); }   	
-	   	float getX()        { return (float) x + cx; }   	
-	   	float getY()        { return (float) y + cy; }   	
+		// ========== Getters ==========
+		//
+		StarPt get()	{ return new StarPt((float)x + cx, (float)y + cy); }
+		float getX()	{ return (float) x + cx; }
+		float getY()	{ return (float) y + cy; }
 		CtrPoint rotate(double angle) {
 			return new CtrPoint(Math.cos(angle) * x + Math.sin(angle) * y,
 								Math.cos(angle) * y - Math.sin(angle) * x);
@@ -1287,9 +1736,9 @@ public abstract class GalaxyShape implements Base, Serializable {
 		CtrPoint shift(CtrPoint shift) {
 			return new CtrPoint(x + shift.x, y + shift.y);
 		}
-		@Override protected CtrPoint clone() { return new CtrPoint(this); }
-	   	// ========== Other Methods ==========
-	   	//
+		@Override protected CtrPoint clone()	{ return new CtrPoint(this); }
+		// ========== Other Methods ==========
+		//
 		private CtrPoint[] rotate(double angle, int n) {
 			CtrPoint[] result = new CtrPoint[n];
 			CtrPoint pt = this;
@@ -1298,6 +1747,38 @@ public abstract class GalaxyShape implements Base, Serializable {
 				result[i] = pt;
 			}
 			return result;
+		}
+	}
+	public class StarPt extends Point.Float	{
+		private static final long serialVersionUID = 1L;
+		private static final int ORION		= 1;
+		private static final int HOMEWORLD	= ORION << 1;
+		private static final int CONNECTION	= HOMEWORLD << 1;
+		private static final int ROUTE		= CONNECTION << 1;
+		private static final int ASTEROID	= ROUTE << 1;
+
+		private int category;
+
+		private StarPt ()	{}
+		StarPt (float x, float y)	{ super(x, y); }
+		private StarPt (double x, double y)	{ super((float)x, (float)y); }
+
+		private StarPt setAsConnect()	{ category |= CONNECTION;	return this;}
+		private StarPt setAsRoute()		{ category |= ROUTE;		return this;}
+		private StarPt setAsAsteroid()	{ category |= ASTEROID;		return this;}
+		private StarPt setAsHomeworld()	{ category |= HOMEWORLD;	return this;}
+		private StarPt setAsOrion()		{ category |= ORION;		return this;}
+
+		public boolean isConnection()	{ return CONNECTION == (CONNECTION & category); }
+		public boolean isRoute()		{ return ROUTE == (ROUTE & category); }
+		public boolean isAsteroid()		{ return ASTEROID == (ASTEROID & category); }
+		public boolean isHomeworld()	{ return HOMEWORLD == (HOMEWORLD & category); }
+		public boolean isOrion()		{ return ORION == (ORION & category); }
+
+		protected double distanceTo(Point.Float pt)	{
+			final float dx = pt.x - x;
+			final float dy = pt.y - y;
+			return Math.sqrt(dx*dx + dy*dy);
 		}
 	}
 }

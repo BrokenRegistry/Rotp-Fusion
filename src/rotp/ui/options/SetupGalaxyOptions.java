@@ -18,8 +18,13 @@ final class SetupGalaxyOptions extends AbstractOptionsSubUI {
 				galaxyAge,
 				starDensity,
 				fillerSystemsPct,
+				looseNeighborhood,
 				empiresSpreadingFactor,
-				looseNeighborhood
+
+				HEADER_SPACER_50,
+				connectEmpires,
+				maxEmpiresConnextionGap,
+				removeNonRoutedConnections
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("GALAXY_SIZE"),
@@ -41,14 +46,19 @@ final class SetupGalaxyOptions extends AbstractOptionsSubUI {
 	@Override public SafeListParam majorList()	{
 		SafeListParam majorList = new SafeListParam(uiMajorKey(),
 				Arrays.asList(
+						minStarsPerEmpire,
+						prefStarsPerEmpire,
+						dynStarsPerEmpire,
 						galaxyAge,
 						starDensity,
 						fillerSystemsPct,
-						empiresSpreadingFactor,
 						looseNeighborhood,
-						minStarsPerEmpire,
-						prefStarsPerEmpire,
-						dynStarsPerEmpire
+
+						LINE_SPACER_25,
+						empiresSpreadingFactor,
+						connectEmpires,
+						maxEmpiresConnextionGap,
+						removeNonRoutedConnections
 						));
 		return majorList;
 	}

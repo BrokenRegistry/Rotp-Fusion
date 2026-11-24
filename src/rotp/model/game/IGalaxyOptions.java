@@ -497,6 +497,17 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 			}
 			return true;
 		}
+		@Override protected String[] getSelectionList()	{
+			IGameOptions opts = RulesetManager.current().currentOptions();
+			String[] array = new String[listSize()];
+			for (int i=0; i<array.length; i++) {
+				String label = getGuiValue(i);
+				String key = getMapValue(i);
+				int size = opts.numberStarSystems(key);
+				array[i] = label + " (" + size + ")";
+			}
+			return array;
+		}
 		private void postGalaxySizeSelection() {
 			if (allowRefresh)
 				RotPUI.setupGalaxyUI().postGalaxySizeSelection(false);

@@ -15,7 +15,6 @@
  */
 package rotp.model.galaxy;
 
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
@@ -200,28 +199,25 @@ final class GalaxyRectangularShape extends GalaxyShape {
     }
     @Override
     protected int galaxyWidthLY() { 
-        return (int) (Math.sqrt(adjust_density*rectangleRatio*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(adjust_density*rectangleRatio*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
     protected int galaxyHeightLY() { 
-        return (int) (Math.sqrt(adjust_density*(1/rectangleRatio)*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(adjust_density*(1/rectangleRatio)*nominalSystemNumber*adjustedSizeFactor()));
     }
-    @Override
-    public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
-        setRandom(pt);
-    }
-    @Override
-    public boolean valid(float x, float y) {
+	@Override protected boolean valid(StarPt p)	{
+		if (p == null)
+			return false;
         float buff = galaxyEdgeBuffer();
-        if (x > (fullWidth-buff))
+        if (p.x > (fullWidth-buff))
             return false;
-        if (x < buff)
+        if (p.x < buff)
             return false;
-        if (y > (fullHeight-buff))
+        if (p.y > (fullHeight-buff))
             return false;
-        if (y < buff)
+        if (p.y < buff)
             return false;
-        return totalArea.contains(x, y);
+        return totalArea.contains(p.x, p.y);
     }
     @Override protected float sizeFactor(String size) {
         float adj = densitySizeFactor();

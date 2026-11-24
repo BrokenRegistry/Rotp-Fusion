@@ -22,6 +22,7 @@ final class SettingMenuPreferences extends AbstractOptionsSubUI {
 				galaxyPreviewAI,
 				galaxyPreviewPlayer,
 				galaxyPreviewOrion,
+				galaxyPreviewRoutes,
 				noFogOnIcons,
 				showAlternateAnimation
 				)));

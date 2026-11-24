@@ -15,7 +15,6 @@
  */
 package rotp.model.galaxy;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -88,14 +87,14 @@ final class GalaxyLorenzShape extends GalaxyShape {
     }
     @Override
     protected int galaxyWidthLY() { 
-        return (int) (Math.sqrt(2.0*4.0/3.0*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(2.0*4.0/3.0*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
     protected int galaxyHeightLY() { 
-        return (int) (Math.sqrt(2.0*3.0/4.0*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(2.0*3.0/4.0*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
-    public void setRandom(Point.Float pt) {
+    public void setRandom(StarPt pt) {
         // choose lorenz function with option1
         switch(option1) {
             case 0: {
@@ -177,10 +176,6 @@ final class GalaxyLorenzShape extends GalaxyShape {
             }
         }
         initWidthHeight();
-    }
-    @Override
-    public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
-        setRandom(pt);
     }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }

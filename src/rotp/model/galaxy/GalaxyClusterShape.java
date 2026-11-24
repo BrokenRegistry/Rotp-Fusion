@@ -61,11 +61,11 @@ final class GalaxyClusterShape extends GalaxyShape {
 	@Override protected float minEmpireFactor()		{ return 4f; }
     @Override
     protected int galaxyWidthLY() { 
-        return (int) (Math.sqrt(1.7*4.0/3.0*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(1.7*4.0/3.0*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
     protected int galaxyHeightLY() { 
-        return (int) (Math.sqrt(1.7*3.0/4.0*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(1.7*3.0/4.0*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
     public void init(int n) {
@@ -149,33 +149,29 @@ final class GalaxyClusterShape extends GalaxyShape {
         // reset w/h vars since aspect ratio may have changed
         initWidthHeight();
     }
-    @Override
-    public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
-        setRandom(pt);
-    }
-    @Override
-    public boolean valid(float x, float y) {
-		// calculate the distances from the random point to ClusterCenters
-		float dcc1 = distance(x,y,cc1.x,cc1.y);
-		float dcc2 = distance(x,y,cc2.x,cc2.y);
-		float dcc3 = distance(x,y,cc3.x,cc3.y);
-		float dcc4 = distance(x,y,cc4.x,cc4.y);
-		float dcc5 = distance(x,y,cc5.x,cc5.y);
-		float dcc6 = distance(x,y,cc6.x,cc6.y);
-		float dcc7 = distance(x,y,cc7.x,cc7.y);
-		float dcc8 = distance(x,y,cc8.x,cc8.y);
-
+	@Override protected boolean valid(StarPt p)	{
+		double lim = rand.nextDouble();
 		// cRadius defines approx. cluster radius
 		// using two for variety
-		float cRadius1 = 0.22f*galaxyHeightLY();
-		float cRadius2 = 0.15f*galaxyHeightLY();
+		int galaxyHeightLY = galaxyHeightLY();
 
-		float min_dcc = min(dcc1/cRadius1, dcc2/cRadius1, dcc3/cRadius1, dcc4/cRadius1, dcc5/cRadius2, dcc6/cRadius2, dcc7/cRadius2, dcc8/cRadius2);
+		// calculate the distances from the random point to ClusterCenters
+		double cRadius1 = 0.22 * galaxyHeightLY;
+		double lim1 = lim * cRadius1;
+		if (lim1 >= p.distanceTo(cc1)) return true;
+		if (lim1 >= p.distanceTo(cc2)) return true;
+		if (lim1 >= p.distanceTo(cc3)) return true;
+		if (lim1 >= p.distanceTo(cc4)) return true;
 
-		// accept based on distance vs radius (not worth doing ?)
-		// more likely if closer to center, less likely further away		
-        return (rand.nextFloat() >= min_dcc);
-    }
+		double cRadius2 = 0.15 * galaxyHeightLY;
+		double lim2 = lim * cRadius2;
+		if (lim2 >= p.distanceTo(cc5)) return true;
+		if (lim2 >= p.distanceTo(cc6)) return true;
+		if (lim2 >= p.distanceTo(cc7)) return true;
+		if (lim2 >= p.distanceTo(cc8)) return true;
+
+		return false;
+	}
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }
 }

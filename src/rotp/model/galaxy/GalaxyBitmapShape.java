@@ -15,7 +15,6 @@
  */
 package rotp.model.galaxy;
 
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -276,7 +275,7 @@ final class GalaxyBitmapShape extends GalaxyShape {
 		if (isSharp)
 			normalizeToOne(sharpPD);
 	}
-	private void setRandom(float[][] cD, Point.Float pt) {
+	private void setRandom(float[][] cD, StarPt pt) {
 		float source = rand.nextFloat();
 		int col = xBM-1;
 		int row;
@@ -618,14 +617,14 @@ final class GalaxyBitmapShape extends GalaxyShape {
 		yMult  = (float) height/yBM;
 	}
 	@Override protected int galaxyWidthLY() { 
-		return (int) (Math.sqrt(finalNumberStarSystems*adjustDensity*adjustedSizeFactor()*aspectRatio));
+		return (int) (Math.sqrt(nominalSystemNumber*adjustDensity*adjustedSizeFactor()*aspectRatio));
 	}
 	@Override protected int galaxyHeightLY() { 
-		return (int) (Math.sqrt(finalNumberStarSystems*adjustDensity*adjustedSizeFactor()/aspectRatio));
+		return (int) (Math.sqrt(nominalSystemNumber*adjustDensity*adjustedSizeFactor()/aspectRatio));
 	}
-	@Override public void setRandom(Point.Float pt) { setRandom(starsCD, pt); }
+	@Override protected void setRandom(StarPt pt)	{ setRandom(starsCD, pt); }
 	// modnar: add possibility for specific placement of homeworld/orion locations
-	@Override public void setSpecific(Point.Float pt) {
+	@Override protected void setSpecific(StarPt pt)	{
 		if (indexWorld == 0) { // orion
 			setRandom(orionCD, pt);
 			return;
@@ -636,13 +635,6 @@ final class GalaxyBitmapShape extends GalaxyShape {
 		}
 		// Aliens homeworlds
 		setRandom(alienCD(empSystems.size()-1), pt);
-	}
-	@Override public boolean valid(float x, float y) {
-		if (x<0)		  return false;
-		if (y<0)		  return false;
-		if (x>fullWidth)  return false;
-		if (y>fullHeight) return false;
-		return true;
 	}
 	@Override protected float sizeFactor(String size) { return settingsFactor(0.8f); }
 }

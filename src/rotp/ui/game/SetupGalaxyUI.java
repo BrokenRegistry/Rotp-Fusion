@@ -96,12 +96,14 @@ import rotp.model.galaxy.AllShapes;
 import rotp.model.galaxy.GalaxyFactory.GalaxyCopy;
 import rotp.model.galaxy.GalaxyShape;
 import rotp.model.galaxy.GalaxyShape.EmpireSystem;
+import rotp.model.galaxy.GalaxyShape.StarPt;
 import rotp.model.galaxy.Nebula;
 import rotp.model.game.DynOptions;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGalaxyOptions.ListShapeParam;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.IInGameOptions;
+import rotp.model.game.IPreGameOptions;
 import rotp.model.game.RulesetManager;
 import rotp.model.game.SafeListParam;
 import rotp.ui.BasePanel;
@@ -1129,19 +1131,14 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		catch(NullPointerException | IndexOutOfBoundsException e) {
 			System.out.println("drawGalaxyShape failed");
 		}
+		GalaxyShape sh = opts.galaxyShape();
 
 		// draw info under galaxy map
 		g.setColor(Color.black);
 		g.setFont(narrowFont(16));
 		int galaxyBoxW = boxW-s40;
 		int y3 = galaxyY+galaxyH+s16;
-		int numSystem = opts.galaxyShape().finalNumberStarSystems();
-		String numStr = Integer.toString(numSystem);
-		float fillerFactor = opts.fillerSystemsFactor();
-		if (fillerFactor > 0) {
-			int fillers = numSystem + (int)(numSystem * fillerFactor);
-			numStr += " (" + fillers + ")";
-		}
+		String numStr = sh.numberOfStarSystem();
 		String systemsLbl = text("SETUP_GALAXY_NUMBER_SYSTEMS", numStr);
 		int sw3 = g.getFontMetrics().stringWidth(systemsLbl);
 		int x3 = rightBoxX+s20+((galaxyBoxW/2)-sw3)/2;
@@ -1589,9 +1586,9 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			}
 			if (showPlayer) {
 				// Neighbors circle around player home world
-				EmpireSystem player = sh.empireSystems().get(0);
-				int x0 = xOff + (int) (player.x(0)*factor);
-				int y0 = yOff + (int) (player.y(0)*factor);
+				StarPt player = sh.empireSystems().get(0).colony();
+				int x0 = xOff + (int) (player.x * factor);
+				int y0 = yOff + (int) (player.y * factor);
 				int r1 = Math.round(opts.firstRingRadius() * factor);
 				int d1 = r1+r1;
 				g.drawRoundRect(x0-r1, y0-r1, d1, d1, d1, d1);
@@ -1605,21 +1602,50 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			for (Nebula neb : nebulas())
 				neb.drawNebulaPreview(g, xOff, yOff, factor);
 		// Add with lone stars
-		Point.Float pt = new Point.Float();
-		for (int i=0; i<sh.numberStarSystems();i++) {
-			sh.coords(i, pt);
-			int x0 = xOff + (int) (pt.x*factor);
-			int y0 = yOff + (int) (pt.y*factor);
-			g.setColor(starColor(i));
-			if (colored)
-				g.fillRoundRect(x0-starShift, y0-starShift, starSize, starSize, starSize, starSize);
-			else
-				g.fillRect(x0, y0, starSize, starSize);
+		boolean showUncolonizedStars = true; // BR: for debug; default = true
+		if (showUncolonizedStars) {
+			int i = 0;
+			int lkSize = 2 * starSize / 3;
+			for (Point.Float pt : sh.getSystems()) {
+				int x0 = xOff + (int) (pt.x*factor);
+				int y0 = yOff + (int) (pt.y*factor);
+				g.setColor(starColor(i++));
+				if (colored)
+					g.fillRoundRect(x0-starShift, y0-starShift, lkSize, lkSize, lkSize, lkSize);
+				else
+					g.fillRect(x0, y0, lkSize, lkSize);
+			}
+		}
+		boolean showLinkingStars = false; // BR: for debug; default = false
+		if (showLinkingStars) {
+			g.setColor(Color.PINK);
+			int lkSize = 2 * starSize / 2;
+			for (Point.Float pt : sh.linkingSystems()) {
+				int x0 = xOff + (int) (pt.x*factor);
+				int y0 = yOff + (int) (pt.y*factor);
+				if (colored)
+					g.fillRoundRect(x0-starShift, y0-starShift, lkSize, lkSize, lkSize, lkSize);
+				else
+					g.fillRect(x0, y0, lkSize, lkSize);
+			}
+		}
+		boolean showRouteStars = IPreGameOptions.galaxyPreviewRoutes.get();
+		if (showRouteStars) {
+			g.setColor(Color.YELLOW);
+			int lkSize = 2 * starSize / 2;
+			for (Point.Float pt : sh.routeSystems()) {
+				int x0 = xOff + (int) (pt.x*factor);
+				int y0 = yOff + (int) (pt.y*factor);
+				if (colored)
+					g.fillRoundRect(x0-starShift, y0-starShift, lkSize, lkSize, lkSize, lkSize);
+				else
+					g.fillRect(x0, y0, lkSize, lkSize);
+			}
 		}
 		// Add Orion over the other stars
 		if (colored && showOrion) {
 			g.setColor(new Color(64, 64, 255)); // Start with Orion
-			sh.coords(0, pt);
+			Point.Float pt = sh.coords(0);
 			int x0 = xOff + (int) (pt.x*factor);
 			int y0 = yOff + (int) (pt.y*factor);
 			g.fillRoundRect(x0-worldsShift, y0-worldsShift, worldsSize, worldsSize, worldsSize, worldsSize);
@@ -1640,8 +1666,9 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 
 		for (EmpireSystem emp : sh.empireSystems()) {
 			// Home worlds
-			int x0 = xOff + (int) (emp.x(0)*factor);
-			int y0 = yOff + (int) (emp.y(0)*factor);
+			StarPt home = emp.colony();
+			int x0 = xOff + (int) (home.x * factor);
+			int y0 = yOff + (int) (home.y * factor);
 			if (showHomeworld)
 				g.fillRoundRect(x0-worldsShift, y0-worldsShift, worldsSize, worldsSize, worldsSize, worldsSize);
 			else {
@@ -1651,8 +1678,9 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			}
 			// Near Stars
 			for (int iSys=1; iSys<emp.numSystems();iSys++) {
-				x0 = xOff + (int) (emp.x(iSys)*factor);
-				y0 = yOff + (int) (emp.y(iSys)*factor);
+				StarPt nearby = emp.nearby(iSys);
+				x0 = xOff + (int) (nearby.x * factor);
+				y0 = yOff + (int) (nearby.y * factor);
 				if (showHomeworld)
 					g.fillRoundRect(x0-nearShift, y0-nearShift, nearSize, nearSize, nearSize, nearSize);
 				else {
@@ -1664,7 +1692,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			// Companions Worlds
 			if (numCompWorlds > 0) {
 				for (int iCW=0; iCW<numCompWorlds; iCW++) {
-					pt = sh.getCompanion(iEmp, iCW);
+					Point.Float pt = sh.getCompanion(iEmp, iCW);
 					x0 = xOff + (int) (pt.x*factor);
 					y0 = yOff + (int) (pt.y*factor);
 					if (showHomeworld)
@@ -2004,9 +2032,9 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		showGrid = true;
 		ParamSubUI subUI = new ParamSubUI( MOD_UI, ADVANCED_SYSTEMS_UI_KEY);
 		int x = scaled(20);
-		int y = scaled(50);
+		int y = scaled(15);
 		int w = scaled(660);
-		int h = scaled(530);
+		int h = scaled(550);
 		Rectangle rec = new Rectangle(x, y, w, h);
 		subUI.hovering(this, rec);
 	}

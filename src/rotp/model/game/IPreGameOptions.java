@@ -22,6 +22,67 @@ import rotp.ui.util.RandomAlienRaces;
 public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsOptions {
 
 	// ========================================================================
+	// Empire Connection options
+	String CONNECT_EMPIRES		= "CONNECT_EMPIRES";
+	String CONNECT_NOTHING		= "NONE";
+	String CONNECT_EMPIRES_ONLY	= "EMPIRES";
+	String CONNECT_ORION_TOO	= "ORION";
+	String CONNECT_ALL_SYSTEMS	= "ALL_SYSTEMS";
+	ParamList connectEmpires	= new ParamList( BASE_UI, CONNECT_EMPIRES, CONNECT_NOTHING)
+		.showFullGuide(true)
+		.put(CONNECT_NOTHING,		BASE_UI + CONNECT_EMPIRES + "_" + CONNECT_NOTHING)
+		.put(CONNECT_EMPIRES_ONLY,	BASE_UI + CONNECT_EMPIRES + "_" + CONNECT_EMPIRES_ONLY)
+		.put(CONNECT_ORION_TOO,		BASE_UI + CONNECT_EMPIRES + "_" + CONNECT_ORION_TOO)
+		.put(CONNECT_ALL_SYSTEMS,	BASE_UI + CONNECT_EMPIRES + "_" + CONNECT_ALL_SYSTEMS)
+		.forcedRefresh(true);
+	default String selectedConnectEmpires()	{ return connectEmpires.get(); }
+	default boolean areEmpiresConnectedToEmpires()	{
+		switch (connectEmpires.get()) {
+		case CONNECT_NOTHING		: return false;
+		case CONNECT_EMPIRES_ONLY	: return true;
+		case CONNECT_ORION_TOO		: return true;
+		case CONNECT_ALL_SYSTEMS	: return true;
+		default: return false;
+		}
+	}
+	default boolean areEmpiresConnectedToOrion()	{
+		switch (connectEmpires.get()) {
+		case CONNECT_NOTHING		: return false;
+		case CONNECT_EMPIRES_ONLY	: return false;
+		case CONNECT_ORION_TOO		: return true;
+		case CONNECT_ALL_SYSTEMS	: return true;
+		default: return false;
+		}
+	}
+	default boolean areEmpiresConnectedToAllSystems()	{
+		switch (connectEmpires.get()) {
+		case CONNECT_NOTHING		: return false;
+		case CONNECT_EMPIRES_ONLY	: return false;
+		case CONNECT_ORION_TOO		: return false;
+		case CONNECT_ALL_SYSTEMS	: return true;
+		default: return false;
+		}
+	}
+	private static boolean ConnectedToAllSystems()	{ return CONNECT_ALL_SYSTEMS.equals(connectEmpires.get()); }
+	private static boolean SomeConnections()		{ return CONNECT_NOTHING.equals(connectEmpires.get()); }
+
+	ParamBoolean removeNonRoutedConnections	= new ParamBoolean(BASE_UI, "REMOVE_NON_ROUTED_CONNECTIONS", false)
+			.addIsGhostMethod(IPreGameOptions::ConnectedToAllSystems);
+	default boolean removeNonRoutedConnections()	{ return removeNonRoutedConnections.get(); }
+
+	ParamInteger maxEmpiresConnextionGap	= new ParamInteger(BASE_UI, "MAX_EMPIRES_CONNECTION_GAP" , 10)
+			.setLimits(5, 100)
+			.setIncrements(1, 5, 10)
+			.pctValue(false)
+			.loop(false);
+	default int	maxEmpiresConnextionGap()	{ return maxEmpiresConnextionGap.get(); }
+
+	ParamBoolean galaxyPreviewRoutes	= new ParamBoolean(MOD_UI, "GALAXY_PREVIEW_ROUTES", true)
+			.addIsGhostMethod(IPreGameOptions::SomeConnections)
+			.isCfgFile(true);
+	default boolean galaxyPreviewRoutes()	{ return galaxyPreviewRoutes.get(); }
+
+	// ========================================================================
 	// Factory options
 	ParamAAN2 orionLikeHomeworld		= new ParamAAN2("HOME_ORION");
 	default ParamAAN2 selectedOrionLikeHomeworld()	{ return orionLikeHomeworld; }

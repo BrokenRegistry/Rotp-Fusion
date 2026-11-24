@@ -15,7 +15,6 @@
  */
 package rotp.model.galaxy;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -163,8 +162,8 @@ final class GalaxyRandomShape extends GalaxyShape {
 	@Override public String getOption2()		{ return super.getOption2(); }
 	@Override public String getOption3()		{ return super.getOption3(); }
 	@Override public String getOption4()		{ return super.getOption4(); }
-	@Override public boolean valid(float x, float y)	{ return finalShape.valid(x, y); }
-	@Override protected void clean()					{ finalShape.clean(); }
+	@Override protected boolean valid(StarPt p)	{ return finalShape.valid(p); }
+	@Override protected void clean()			{ finalShape.clean(); }
 	@Override protected float settingsFactor(float shF)	{ return finalShape.settingsFactor(shF); }
 	@Override protected float densitySizeFactor()		{ return finalShape.densitySizeFactor(); }
 	@Override protected float minEmpireFactor()			{ return finalShape.minEmpireFactor(); }
@@ -176,19 +175,22 @@ final class GalaxyRandomShape extends GalaxyShape {
 	@Override public CtrPoint getValidRandomSymmetric()		{ return finalShape.getValidRandomSymmetric(); }
 	@Override public int numCompanionWorld()			{ return finalShape.numCompanionWorld(); }
 	@Override public int numberStarSystems()			{ return finalShape.numberStarSystems(); }
-	@Override public int finalNumberStarSystems()		{ return finalShape.finalNumberStarSystems(); }
+	@Override public int nominalSystemNumber()			{ return finalShape.nominalSystemNumber(); }
 	@Override public int numEmpires()					{ return finalShape.numEmpires(); }
 	@Override int totalStarSystems()					{ return finalShape.totalStarSystems(); }
 	@Override public List<EmpireSystem> empireSystems()	{ return finalShape.empireSystems(); }
-	@Override public Point.Float getCompanion(int eId, int cId)	{ return finalShape.getCompanion(eId, cId); }
-	@Override public void coords(int n, Point.Float pt)	{ finalShape.coords(n, pt); }
+	@Override public StarPt getCompanion(int eId, int cId)	{ return finalShape.getCompanion(eId, cId); }
+	@Override public StarPt coords(int n)				{ return finalShape.coords(n); }
+	@Override public List<StarPt> getSystems()			{ return finalShape.getSystems(); }
+	@Override public List<StarPt> linkingSystems()		{ return finalShape.linkingSystems(); }
+	@Override public List<StarPt> routeSystems()		{ return finalShape.routeSystems(); }
 	@Override public float empireBuffer()				{ return finalShape.empireBuffer(); }
 	@Override public void createNebulas(List<Nebula> n)	{ finalShape.createNebulas(n); }
 	@Override protected int galaxyWidthLY()				{ return finalShape.galaxyWidthLY(); }
 	@Override protected int galaxyHeightLY()			{ return finalShape.galaxyHeightLY(); }
-	@Override public void setRandom(Point.Float pt)		{ finalShape.setRandom(pt); }
-	@Override protected void setSpecific(Point.Float p)	{ finalShape.setSpecific(p); }
+	@Override public void setRandom(StarPt pt)			{ finalShape.setRandom(pt); }
+	@Override protected void setSpecific(StarPt p)		{ finalShape.setSpecific(p); }
 	@Override protected float sizeFactor(String size)	{ return finalShape.sizeFactor(size); }
 	@Override public boolean isValid()					{ return finalShape.isValid(); }
-	@Override public double starDist(float x0, float y0, float x1, float y1)	{ return finalShape.starDist(x0, y0, x1, y1); }
+	@Override protected double starDist(StarPt p0, StarPt p1)	{ return finalShape.starDist(p0, p1); }
 }

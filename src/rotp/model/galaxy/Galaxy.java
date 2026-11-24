@@ -68,6 +68,7 @@ public final class Galaxy implements Base, Serializable {
 
     private Empire playerEmpire;
 	private Empire orionEmpire;
+	private Integer orionId;
     private final int widthLY;
     private final int heightLY;
     private float maxScaleAdj = 1.0f;
@@ -150,15 +151,18 @@ public final class Galaxy implements Base, Serializable {
     public int numStarSystems()              { return systemCount; }
     public StarSystem[] starSystems()        { return starSystems; }
     public List<StarSystem> abandonedSystems() { return abandonedSystems; }
-    public StarSystem orionSystem() 		 { return system(orionId()); }
-    public int orionId() 				     {
-    	IGameOptions opts = options();
-    	int numCompWorlds = opts.selectedCompanionWorlds();
-    	int numNearbySys  = opts.secondRingSystemNumber();
-    	int orionId = numEmpires() * (1 + numCompWorlds + numNearbySys);
-    	return orionId;
-    }
-    public void addStarSystem(StarSystem s)  {
+	public StarSystem orionSystem() 		{ return system(orionId()); }
+	public int orionId()					{
+		if (orionId == null) {
+			IGameOptions opts = options();
+			final int numCompWorlds = opts.selectedCompanionWorlds();
+			final int numNearbySys  = opts.secondRingSystemNumber();
+			orionId = numEmpires() * (1 + numCompWorlds + numNearbySys);
+		}
+		return orionId;
+	}
+	public void setOrionId(int id)			{ orionId = id; }
+	public void addStarSystem(StarSystem s)	{
         starSystems[systemCount] = s;
         // Init Orion Guardian, and maybe future little guardian monsters
         if (s.hasMonster())

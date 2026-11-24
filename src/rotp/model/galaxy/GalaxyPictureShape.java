@@ -16,7 +16,6 @@
 package rotp.model.galaxy;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -125,8 +124,8 @@ final class GalaxyPictureShape extends GalaxyShape {
 
 	@Override public float maxScaleAdj()			{ return 1.1f; }
 
-	@Override public double starDist(float x0, float y0, float x1, float y1)	{	// TODO BR: starDist
-		return super.starDist(x0, y0, x1, y1);
+	@Override public double starDist(StarPt p0, StarPt p1)	{	// TODO BR: starDist
+		return super.starDist(p0, p1);
 	}
 
 	@Override protected void singleInit(boolean full)	{	// TODO BR: VALIDATE
@@ -243,7 +242,7 @@ final class GalaxyPictureShape extends GalaxyShape {
 			y2l = (lastRow) / fullHeight;
 		}
 		//private QuadPixels getQuad(float x, float y)	{ return new QuadPixels(loc(x, y)); }
-		private Point.Float loc(float x, float y)	{ return new Point.Float(x * x2c, y * y2l); }
+		private StarPt loc(float x, float y)		{ return new StarPt(x * x2c, y * y2l); }
 		private boolean setNumPixels(int c, int r)	{
 			numCols	= c;
 			numRows	= r;
@@ -298,7 +297,7 @@ final class GalaxyPictureShape extends GalaxyShape {
 			return quad.setLoc(x, y).getGray() >= clamp;
 		}
 
-		private void setRandom(Point.Float pt, int zoneId)	{	// TODO BR: VALIDATE
+		private void setRandom(StarPt pt, int zoneId)	{	// TODO BR: VALIDATE
 			float source = rand.nextFloat() * cumulativeSums[zoneId];
 			int colId, rowId;
 			for (rowId=0; rowId<numRows; rowId++)
@@ -319,7 +318,7 @@ final class GalaxyPictureShape extends GalaxyShape {
 			pt.x = offset + x * xMult;
 			pt.y = offset + y * yMult;
 		}
-		private float distance(Point.Float p0, Point.Float p1)	{ // TODO BR:
+		private float distance(StarPt p0, StarPt p1)	{ // TODO BR:
 			float dx = p1.x - p0.x;
 			float dy = p1.y - p0.y;
 			double dp = Math.sqrt(dx*dx + dy*dy);
@@ -345,10 +344,10 @@ final class GalaxyPictureShape extends GalaxyShape {
 			float wL, wR, wU, wD;
 
 			private QuadPixels()	{}
-			//private QuadPixels(Point.Float pt)	{ setLoc(pt); }
+			//private QuadPixels(StarPt pt)	{ setLoc(pt); }
 
 			private QuadPixels setLoc(float x, float y)	{
-				Point.Float pt = loc(x, y);
+				StarPt pt = loc(x, y);
 				int c = (int) pt.x;
 				int r = (int) pt.y;
 
@@ -389,7 +388,7 @@ final class GalaxyPictureShape extends GalaxyShape {
 
 
 	private int getGrey(int red, int green, int blue)	{ return round(0.299 * red + 0.587 * green + 0.114 * blue); }	// TODO BR: VALIDATE
-	private void setRandom(float[][] cD, Point.Float pt)	{	// TODO BR: VALIDATE
+	private void setRandom(float[][] cD, StarPt pt)	{	// TODO BR: VALIDATE
 		float source = rand.nextFloat();
 		int col = xBM-1;
 		int row;
@@ -432,14 +431,14 @@ final class GalaxyPictureShape extends GalaxyShape {
 		yMult  = (float) height/yBM;
 	}
 	@Override protected int galaxyWidthLY()	{	// TODO BR: VALIDATE
-		return (int) (sqrt(finalNumberStarSystems*adjustDensity*adjustedSizeFactor()*aspectRatio));
+		return (int) (sqrt(nominalSystemNumber*adjustDensity*adjustedSizeFactor()*aspectRatio));
 	}
 	@Override protected int galaxyHeightLY()	{	// TODO BR: VALIDATE
-		return (int) (sqrt(finalNumberStarSystems*adjustDensity*adjustedSizeFactor()/aspectRatio));
+		return (int) (sqrt(nominalSystemNumber*adjustDensity*adjustedSizeFactor()/aspectRatio));
 	}
-	@Override public void setRandom(Point.Float pt)		{ setRandom(starsCD, pt); }	// TODO BR: VALIDATE
+	@Override public void setRandom(StarPt pt)		{ setRandom(starsCD, pt); }	// TODO BR: VALIDATE
 	// modnar: add possibility for specific placement of homeworld/orion locations
-	@Override public void setSpecific(Point.Float pt)	{	// TODO BR: VALIDATE
+	@Override public void setSpecific(StarPt pt)	{	// TODO BR: VALIDATE
 		if (indexWorld == 0) { // orion
 			setRandom(orionCD, pt);
 			return;
@@ -451,6 +450,6 @@ final class GalaxyPictureShape extends GalaxyShape {
 		// Aliens homeworlds
 		setRandom(alienCD(empSystems.size()-1), pt);
 	}
-	@Override public boolean valid(float x, float y)	{ return pixelsArray.validStar(x, y); }
+	@Override protected boolean valid(StarPt p)	{ return pixelsArray.validStar(p.x, p.y); }
 	@Override protected float sizeFactor(String size)	{ return settingsFactor(0.8f); }	// TODO BR: VALIDATE
 }

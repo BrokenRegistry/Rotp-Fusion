@@ -15,7 +15,6 @@
  */
 package rotp.model.galaxy;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -85,12 +84,12 @@ final class GalaxySpiralArmsShape extends GalaxyShape {
     	return new CtrPoint(radiusSelect).rotate(phi + randomOrientation).shift(arm);
     }
     @Override protected float minEmpireFactor() { return 4f; }
-    @Override public CtrPoint getValidRandomSymmetric() {
-    	CtrPoint pt = getRandomSymmetric();
-		while (!valid(pt.getX(), pt.getY()))
+	@Override public CtrPoint getValidRandomSymmetric() {
+		CtrPoint pt = getRandomSymmetric();
+		while (!valid(pt.get()))
 			pt = getRandomSymmetric();
-    	return pt;
-    }
+		return pt;
+	}
 	@Override public CtrPoint getPlayerSymmetricHomeWorld() { return getRandomSymmetric(); }
 	@Override public boolean isSymmetric()			{ return SYMMETRIC.equals(finalOption2); }
 	@Override public boolean isCircularSymmetric()	{ return isSymmetric(); }
@@ -147,7 +146,7 @@ final class GalaxySpiralArmsShape extends GalaxyShape {
         	randomOrientation = rand.nextDouble(twoPI);
         	// a void coming from symmetry depends on number of opponents
          	double minHomeRay = empireBuffer * numEmpires() / twoPI;
-        	double minRay = systemBuffer() * numEmpires() / twoPI;
+        	double minRay = sysBuffer * numEmpires() / twoPI;
         	double maxRay = (float) Math.sqrt(maxStars * adjustedSizeFactor())
         							/ 2 - galaxyEdgeBuffer();
         	float adjTmp = (float) (1.0 / (1.0 - minRay*minRay/maxRay/maxRay));
@@ -163,18 +162,18 @@ final class GalaxySpiralArmsShape extends GalaxyShape {
     }
     @Override // BR: added adjust_density for the void in symmetric galaxies
     protected int galaxyWidthLY() { 
-        return (int) (Math.sqrt(2.0*finalNumberStarSystems*adjust_density*adjustedSizeFactor()));
+        return (int) (Math.sqrt(2.0*nominalSystemNumber*adjust_density*adjustedSizeFactor()));
     }
     @Override // BR: added adjust_density for the void in symmetric galaxies
     protected int galaxyHeightLY() { 
-        return (int) (Math.sqrt(2.0*finalNumberStarSystems*adjust_density*adjustedSizeFactor()));
+        return (int) (Math.sqrt(2.0*nominalSystemNumber*adjust_density*adjustedSizeFactor()));
     }
     @Override
-    public void setRandom(Point.Float pt) {
+    public void setRandom(StarPt pt) {
 		float gW = galaxyWidthLY();
 
 		// scale up the number of spirals with size of map
-		int numSpirals = (int) Math.floor(Math.sqrt(Math.sqrt(finalNumberStarSystems)));
+		int numSpirals = (int) Math.floor(Math.sqrt(Math.sqrt(nominalSystemNumber)));
 		int numSteps = 50*numSpirals;
 
 		int armSelect  = randY.nextInt(numSpirals);
@@ -188,10 +187,6 @@ final class GalaxySpiralArmsShape extends GalaxyShape {
 
 		pt.x = (float) (radiusSelect * Math.cos(phi) + xArm);
         pt.y = (float) (radiusSelect * Math.sin(phi) + yArm);
-    }
-    @Override
-    public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
-        setRandom(pt);
     }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }

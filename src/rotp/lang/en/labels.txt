@@ -3490,6 +3490,26 @@ SETTINGS_MOD_PREF_STARS_PER_EMPIRE       | Favored Stars Number: %1
 SETTINGS_MOD_DYN_STARS_PER_EMPIRE_DESC   | Number of Stars per Empire for dynamic galaxy size.
 SETTINGS_MOD_DYN_STARS_PER_EMPIRE        | Stars per empire: %1
 
+SETUP_CONNECT_EMPIRES_HELP					| To prevent an empire from becoming overly isolated from others due to inadequate fuel cells, one can ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available.<br>The maximum distance can be defined using the "Maximum connection distance" option.<br>The galaxy will first be generated in the standard way, after which connecting stars will be added. Consequently, the final number of star systems will exceed the nominal value.<br>Be aware that this option can significantly increase the time required to generate the galaxy, especially when combined with large spacing between empires and very large galaxies.
+SETUP_CONNECT_EMPIRES_DESC					| Ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available
+SETUP_CONNECT_EMPIRES						| Connect the Empires: %1
+SETUP_CONNECT_EMPIRES_NONE_HELP				| Disable this feature.
+SETUP_CONNECT_EMPIRES_NONE					| No
+SETUP_CONNECT_EMPIRES_EMPIRES_HELP			| Orion and a few stellar systems might still be isolated.
+SETUP_CONNECT_EMPIRES_EMPIRES				| Empires only
+SETUP_CONNECT_EMPIRES_ORION_HELP			| Some star systems might still be inaccessible.
+SETUP_CONNECT_EMPIRES_ORION					| Empires and Orion
+SETUP_CONNECT_EMPIRES_ALL_SYSTEMS_HELP		| Stellar systems will not be spaced too far apart, but asteroids may still limit access to less significant stars.
+SETUP_CONNECT_EMPIRES_ALL_SYSTEMS			| All stars
+
+SETUP_REMOVE_NON_ROUTED_CONNECTIONS_HELP	| The connection procedure involves linking the nearest stars until all required connections have been established.<br>Not all of the new stellar systems generated in this process will be used to form the final, required links.<br>You may therefore choose to remove these "unnecessary" additions.<br>It is generally better to keep them, so that the paths are not too obvious.<br>It should be noted that this feature is not active if the option to link all stellar systems has been chosen.
+SETUP_REMOVE_NON_ROUTED_CONNECTIONS_DESC	| Add only those star systems that are truly useful for connecting empires.
+SETUP_REMOVE_NON_ROUTED_CONNECTIONS			| Minimize star additions: %1
+
+SETUP_MAX_EMPIRES_CONNECTION_GAP_HELP		| To prevent an empire from becoming overly isolated from others due to inadequate fuel cells, one can ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available.<br>Maximum distance between two stellar systems that creates a path, allowing two empires to be connected.
+SETUP_MAX_EMPIRES_CONNECTION_GAP_DESC		| Maximum distance between two stellar systems that creates a path, allowing two empires to be connected.
+SETUP_MAX_EMPIRES_CONNECTION_GAP			| Max connection gap: %1 ly
+
 SETTINGS_MOD_RANDOM_NUM_STARS_LIM1_DESC		| Limits on the number of star systems when "Limited random galaxy size" is selected.<br> Minimum and maximum values ​​can be swapped.
 SETTINGS_MOD_RANDOM_NUM_STARS_LIM1			| Random Size Min: %1
 SETTINGS_MOD_RANDOM_NUM_STARS_LIM2_DESC		| →SETTINGS_MOD_RANDOM_NUM_STARS_LIM1_DESC←
@@ -3863,7 +3883,7 @@ SETTINGS_MOD_SHOW_STARS_AND_RANGES_HELP    | Show ship access areas with starry 
 SETTINGS_MOD_SHOW_STARS_HELP               | Show the starry background, but hide the ship access areas.
 SETTINGS_MOD_SHOW_NO_STARS_AND_RANGES_HELP | Hide both the ship access areas and the starry background.
 
-SETTINGS_MOD_TRACK_UFOS_ACROSS_TURNS_HELP  | →SCANNER_2_NAME← or →SCANNER_3_NAME← can automatically determine ship destinations immediately. But even with the shorter ranges of →SCANNER_0_NAME← and →SCANNER_1_NAME←, often (slow) ships will be in range for two successive turns, so you can often determine ship trajectories anyway by squinting at a screenshot of last turn. This option just saves you the bother of squinting at last turn's screenshot. Two things to note. First, without →SCANNER_2_NAME←, the trajectories is displayed ending at the nearest star along the line. THIS IS NOT A GUARANTEE THAT THE SHIP WILL ACTUALLY STOP THERE (because you don't actually know that without →SCANNER_2_NAME←), only that the ship is moving in that direction. (Of course, for most galaxy shapes, close collinear stars are rare.) Second, while we want wonder whether scanners are "really" tracking ships continuously between turns, to allow this option to be enabled by default, this option will never give you any information you couldn't already have gotten by squinting at screenshots. That is, when there's a mess of ships of the same design close together such that you couldn't be completely sure which moved where by squinting at screenshots, no trajectories will be displayed. IN PROGRESS: Currently only for transports approaching your own colonies.<br>!!! May gives wrong destinations when stars are aligned !!!
+SETTINGS_MOD_TRACK_UFOS_ACROSS_TURNS_HELP  | →SCANNER_2_NAME← or →SCANNER_3_NAME← can automatically determine ship destinations immediately. But even with the shorter ranges of →SCANNER_0_NAME← and →SCANNER_1_NAME←, often (slow) ships will be in range for two successive turns, so you can often determine ship trajectories anyway by squinting at a screenshot of last turn. This option just saves you the bother of squinting at last turn's screenshot. Two things to note. First, without →SCANNER_2_NAME←, the trajectories is displayed ending at the nearest star along the line. THIS IS NOT A GUARANTEE THAT THE SHIP WILL ACTUALLY STOP THERE (because you don't actually know that without →SCANNER_2_NAME←), only that the ship is moving in that direction. (Of course, for most galaxy shapes, close collinear stars are rare.) Second, while one might wonder whether scanners are "really" tracking ships continuously between turns, to allow this option to be enabled by default, this option will never give you any information you couldn't already have gotten by squinting at screenshots. That is, when there's a mess of ships of the same design close together such that you couldn't be completely sure which moved where by squinting at screenshots, no trajectories will be displayed. IN PROGRESS: Currently only for transports approaching your own colonies.<br>!!! May gives wrong destinations when stars are aligned !!!
 SETTINGS_MOD_TRACK_UFOS_ACROSS_TURNS_DESC  | Have →SCANNER_0_NAME← and →SCANNER_1_NAME← automatically track ship trajectories when ships can be unambiguously identified across successive turns. !!! May gives wrong destinations when stars are aligned !!!
 SETTINGS_MOD_TRACK_UFOS_ACROSS_TURNS       | Track ships across turns: %1
 
@@ -4178,6 +4198,8 @@ SETTINGS_MOD_GALAXY_PREVIEW_PLAYER_DESC  | Galaxy preview will display Player's 
 SETTINGS_MOD_GALAXY_PREVIEW_PLAYER       | Show Player in Green: %1
 SETTINGS_MOD_GALAXY_PREVIEW_ORION_DESC   | Galaxy preview will display Orion's location in Blue.
 SETTINGS_MOD_GALAXY_PREVIEW_ORION        | Show Orion in Blue: %1
+SETTINGS_MOD_GALAXY_PREVIEW_ROUTES_DESC		| Galaxy preview will display warranted path in Yellow.
+SETTINGS_MOD_GALAXY_PREVIEW_ROUTES			| Show Path in Yellow: %1
 
 SETTINGS_MOD_ALLOW_WARNING_EXPANSION_DESC	| Use this option to prevent other empires from complaining that yours is getting too big.<br>This will not remove the negative impact of your expansion.
 SETTINGS_MOD_ALLOW_WARNING_EXPANSION		| Allow Expansion Warnings: %1

@@ -15,7 +15,6 @@
  */
 package rotp.model.galaxy;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,14 +74,14 @@ final class GalaxyGridShape extends GalaxyShape {
 		switch(option1) {
 	        case 2:
 	            // fine grid, no clusters
-	        	nGrid = Math.max(1,(int)(1.8f*Math.sqrt(Math.sqrt(finalNumberStarSystems))-1));
+	        	nGrid = Math.max(1,(int)(1.8f*Math.sqrt(Math.sqrt(nominalSystemNumber))-1));
 	        	maxClusters = (int) ((nGrid+1)*(nGrid+1));
 	            nClusters = 0;
 	            clusterR  = 0.1f;
 	            break;
 	        case 1:
 	            // rough grid, clusters at all intersections
-	        	nGrid = Math.max(1,(int)(Math.sqrt(Math.sqrt(finalNumberStarSystems))-1));
+	        	nGrid = Math.max(1,(int)(Math.sqrt(Math.sqrt(nominalSystemNumber))-1));
 	        	maxClusters = (int) ((nGrid+1)*(nGrid+1));
 	            nClusters = maxClusters;
 	            clusterR  = (nGrid + 5.0f) / 2.0f;
@@ -90,9 +89,9 @@ final class GalaxyGridShape extends GalaxyShape {
 	        case 0:
 	        default:
 	            // rough grid, some clusters at intersections
-	        	nGrid = Math.max(1,(int)(Math.sqrt(Math.sqrt(finalNumberStarSystems))-1));
+	        	nGrid = Math.max(1,(int)(Math.sqrt(Math.sqrt(nominalSystemNumber))-1));
 	        	maxClusters = (int) ((nGrid+1)*(nGrid+1));
-	            nClusters = min(maxClusters-1, (int)(Math.sqrt(finalNumberStarSystems)/1.7));
+	            nClusters = min(maxClusters-1, (int)(Math.sqrt(nominalSystemNumber)/1.7));
 	            clusterR = (nGrid + 5.0f) / 2.0f;
 	            break;
 		}
@@ -119,14 +118,14 @@ final class GalaxyGridShape extends GalaxyShape {
     }
     @Override
     protected int galaxyWidthLY() { 
-        return (int) (Math.sqrt(1.5*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(1.5*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
     protected int galaxyHeightLY() { 
-        return (int) (Math.sqrt(1.5*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(1.5*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
-    public void setRandom(Point.Float pt) {		
+    public void setRandom(StarPt pt) {		
 		// switch between populating the grid vs cluster
     	if (option1==2 || rand.nextBoolean()) {
 			int stepSelect = rand.nextInt(numSteps);
@@ -159,10 +158,6 @@ final class GalaxyGridShape extends GalaxyShape {
 				pt.y = (float) (radiusSelect * Math.sin(phiCluster) + yCluster);
         }
 		initWidthHeight();
-    }
-    @Override
-    public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
-        setRandom(pt);
     }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }

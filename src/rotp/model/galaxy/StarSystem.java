@@ -23,6 +23,7 @@ import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Stroke;
@@ -276,6 +277,10 @@ public final class StarSystem implements Base, Sprite, IMappedObject, Serializab
         x = x0;
         y = y0;
     }
+	void setXY(Point.Float pt)	{
+		x = pt.x;
+		y = pt.y;
+	}
     @Override
     public String toString()                    { return concat("Star System: ", name()); }
 

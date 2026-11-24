@@ -11,20 +11,17 @@ When updating, you can reuse the same folder.
 
 <b><ins>Very last changes:</ins></b>
 
-26-11-18 (BR)
-- Friendly transports are now grouped before landing, to give them more chance to pass through enemy orbiting fleets.
-
-26-11-17 (BR)
-- Fixed troop being not attacked when landing on a protected abandoned system.
-- Fixed AI retreating from an abandoned system. AI will take the system.
-
-26-11-16 (BR)
-- Fixed cloaked fleet trespassing Incident: Not displayed on the map = no incident!
-
-26-11-13 (BR)
-- Fixed rebellion issue during final war: The final war is triggered, involving only one rebel faction. Their emperor is deposed, and “poof!” the final war ends.
-  - When a leader is overthrown during the final war, the empire does not become neutral anymore; instead, it shifts its allegiance.
-  - The announcement on GNN will also mention the change of allegiance.
+26-11-24 (BR)
+- New galaxy option to prevent an empire from becoming overly isolated from others due to inadequate fuel cells, one can ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available. The maximum distance can be defined using the "Maximum connection distance" option.
+  - Connect empires only.
+  - Connects empires and Orion.
+  - Connect all star systems, but asteroids may still limit access to less significant stars.
+  - This feature is disabled by default.
+- New option to select the maximum distance between two stellar systems that creates a path, allowing two empires to be connected.
+- New option to minimize the number of added stars when connecting empires.
+  - The connection procedure involves linking the nearest stars until all required connections have been established. Not all of the new stellar systems generated in this process will be used to form the final, required links. You may therefore choose to remove these "unnecessary" additions. (It is generally better to keep them, so that the paths are not too obvious.)
+- New option to preview the warranted path in yellow. (In the galaxy preview of the setup panel only)
+- Fixed an issue that prevented the generation of the "Bulls Eye - Ring" galaxy when empire spreading exceeded 700%.
 
 
 #### [Features Historic](https://github.com/BrokenRegistry/Rotp-Fusion/blob/main/FeaturesChanges.md)

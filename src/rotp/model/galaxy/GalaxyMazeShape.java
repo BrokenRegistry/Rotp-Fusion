@@ -15,7 +15,6 @@
  */
 package rotp.model.galaxy;
 
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
@@ -93,8 +92,8 @@ final class GalaxyMazeShape extends GalaxyShape {
     		rand.nextDouble();
 
 		// determine maze size with numberStarSystems
-		int width = (int) Math.max(1, 4*Math.ceil(1.5*Math.log(finalNumberStarSystems)-5));
-		int height = (int) Math.max(1, 3*Math.ceil(1.5*Math.log(finalNumberStarSystems)-5));
+		int width = (int) Math.max(1, 4*Math.ceil(1.5*Math.log(nominalSystemNumber)-5));
+		int height = (int) Math.max(1, 3*Math.ceil(1.5*Math.log(nominalSystemNumber)-5));
 		float deltaW = gW/width;
 		float deltaH = gH/height;
 		boolean WALL = false;
@@ -149,20 +148,13 @@ final class GalaxyMazeShape extends GalaxyShape {
 
     @Override
     protected int galaxyWidthLY() { 
-        return (int) (Math.sqrt(0.75*4.0/3.0*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(0.75*4.0/3.0*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
     protected int galaxyHeightLY() { 
-        return (int) (Math.sqrt(0.75*3.0/4.0*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(0.75*3.0/4.0*nominalSystemNumber*adjustedSizeFactor()));
     }
-    @Override
-    public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
-        setRandom(pt);
-    }
-    @Override
-    public boolean valid(float x, float y) {
-        return totalArea.contains(x, y);
-    }
+	@Override protected boolean valid(StarPt p)	{ return totalArea.contains(p.x, p.y); }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }
 }

@@ -15,7 +15,6 @@
  */
 package rotp.model.galaxy;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,22 +64,22 @@ final class GalaxySwirlClustersShape extends GalaxyShape {
     }
     @Override
     protected int galaxyWidthLY() { 
-        return (int) (Math.sqrt(1.8*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(1.8*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
     protected int galaxyHeightLY() { 
-        return (int) (Math.sqrt(1.8*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(1.8*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
-    public void setRandom(Point.Float pt) {
+    public void setRandom(StarPt pt) {
 		float gW = galaxyWidthLY();
 
 		// modnar: choose swirl size, number of clusters, and cluster radii with options1
 		// scale up the swirl size with size of map
 		// scale up number of clusters with size of map
 		// scale cluster radius with ~numSwirls
-		float numSwirls = (float) Math.sqrt(Math.sqrt(finalNumberStarSystems)) - 1;
-		int numClusters = (int) Math.floor(Math.sqrt(finalNumberStarSystems)*Math.log(finalNumberStarSystems)/10);
+		float numSwirls = (float) Math.sqrt(Math.sqrt(nominalSystemNumber)) - 1;
+		int numClusters = (int) Math.floor(Math.sqrt(nominalSystemNumber)*Math.log(nominalSystemNumber)/10);
 		float clusterR = (numSwirls + 4.0f) / 1.5f;
 		float swirlWidth = 0.05f;
 		float clusterDelta = 0.0f; // distance to displace cluster
@@ -88,23 +87,23 @@ final class GalaxySwirlClustersShape extends GalaxyShape {
 		switch(option1) {
             case 0: {
                 // clusters distributed along spiral
-                numSwirls = (float) Math.sqrt(Math.sqrt(finalNumberStarSystems)) - 1;
-                numClusters = (int) Math.floor(Math.sqrt(finalNumberStarSystems)*Math.log(finalNumberStarSystems)/10);
+                numSwirls = (float) Math.sqrt(Math.sqrt(nominalSystemNumber)) - 1;
+                numClusters = (int) Math.floor(Math.sqrt(nominalSystemNumber)*Math.log(nominalSystemNumber)/10);
                 clusterR = (numSwirls + 4.0f) / 1.5f;
                 clusterDelta = 0.0f;
                 break;
             }
             case 1: {
                 // clusters spanning across tighter spirals
-                numSwirls = (float) Math.sqrt(Math.sqrt(finalNumberStarSystems))*1.5f - 1;
-                numClusters = (int) Math.floor(Math.sqrt(finalNumberStarSystems)*Math.log(finalNumberStarSystems)/10);
+                numSwirls = (float) Math.sqrt(Math.sqrt(nominalSystemNumber))*1.5f - 1;
+                numClusters = (int) Math.floor(Math.sqrt(nominalSystemNumber)*Math.log(nominalSystemNumber)/10);
                 clusterR = (numSwirls + 4.0f) / 1.5f;
                 clusterDelta = clusterR;
                 break;
             }
             case 2: {
                 // very tight spiral only, no visible clusters
-                numSwirls = (float) (Math.sqrt(finalNumberStarSystems))/3.0f;
+                numSwirls = (float) (Math.sqrt(nominalSystemNumber))/3.0f;
                 numClusters = 5;
                 clusterR = 0.1f;
                 clusterDelta = 0.0f;
@@ -159,14 +158,7 @@ final class GalaxySwirlClustersShape extends GalaxyShape {
         }
 
     }
-    @Override
-    public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
-        setRandom(pt);
-    }
-    @Override
-    public boolean valid(float x, float y) {
-        return true;
-    }
+	@Override protected boolean valid(StarPt p)	{ return true; }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }
 }

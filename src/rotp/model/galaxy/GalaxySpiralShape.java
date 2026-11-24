@@ -15,7 +15,6 @@
  */
 package rotp.model.galaxy;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -95,10 +94,10 @@ final class GalaxySpiralShape extends GalaxyShape {
 		return new CtrPoint(ray * galaxyRay()).rotate(angle + randomOrientation);
     }
     @Override public CtrPoint getValidRandomSymmetric() {
-    	CtrPoint pt = getRandomSymmetric(minRandRay);
-		while (!valid(pt.getX(), pt.getY()))
+		CtrPoint pt = getRandomSymmetric(minRandRay);
+		while (!valid(pt.get()))
 			pt = getRandomSymmetric(minRandRay);
-    	return pt;
+		return pt;
     }
 	@Override public CtrPoint getPlayerSymmetricHomeWorld()	{
 		double minHomeRay = Math.sqrt(empireBuffer * numEmpires() / twoPI / galaxyRay());
@@ -122,7 +121,7 @@ final class GalaxySpiralShape extends GalaxyShape {
         	randomOrientation = rand.nextDouble(twoPI);
         	// a void coming from symmetry depends on number of opponents
          	double minHomeRay = empireBuffer * numEmpires() / twoPI;
-        	double minRay = systemBuffer() * numEmpires() / twoPI;
+        	double minRay = sysBuffer * numEmpires() / twoPI;
         	double maxRay = (float) Math.sqrt(maxStars * adjustedSizeFactor())
         							/ 2 - galaxyEdgeBuffer();
         	float adjTmp = (float) (1.0 / (1.0 - minRay*minRay/maxRay/maxRay));
@@ -149,7 +148,7 @@ final class GalaxySpiralShape extends GalaxyShape {
         return (int) (Math.sqrt(adjust_density*maxStars*adjustedSizeFactor()));
     }
     @Override
-    public void setRandom(Point.Float pt) {
+    public void setRandom(StarPt pt) {
         float buff = galaxyEdgeBuffer();
         float adjW = fullWidth-buff-buff;
         float adjH = fullHeight-buff-buff;
@@ -169,10 +168,6 @@ final class GalaxySpiralShape extends GalaxyShape {
         float rY = (float)(Math.sin(angle)*dist);
         pt.x = buff+(adjW*(1+rX)/2);
         pt.y = buff+(adjH*(1+rY)/2);
-    }
-    @Override
-    public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
-        setRandom(pt);
     }
     private float dynSizeFactor(String size) {
 	    float adjDensity = densitySizeFactor();

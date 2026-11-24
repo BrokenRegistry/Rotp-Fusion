@@ -19,7 +19,6 @@ import static rotp.ui.UserPreferences.GALAXY_TEXT_FILE;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -259,8 +258,7 @@ final class GalaxyTextShape extends GalaxyShape {
 	@Override protected int galaxyHeightLY()			{
 		return (int) sqrt(1.4f / aspectRatio * maxStars * adjustedSizeFactor());
 	}
-	@Override public void setSpecific(Point.Float pt)	{ setRandom(pt); }
-	@Override public boolean valid(float x, float y)	{ return textShape.contains(x, y); }
+	@Override protected boolean valid(StarPt p)			{ return textShape.contains(p.x, p.y); }
 	@Override protected float sizeFactor(String size)	{ return settingsFactor(1.0f); }
 
 	private Font font()	{

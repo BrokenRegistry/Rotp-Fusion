@@ -290,11 +290,12 @@ public class ParamList extends AbstractParam<String> {
 		height = Math.min(350, height);
 		return  RotPUI.scaledSize(height);
 	}
+	protected String[] getSelectionList()	{ return valueLabelMap.guiTextList.toArray(new String[listSize()]); }
 	protected void setFromList(BasePanel frame)	{
 		String message	= "<html>" + getGuiDescription() + "</html>";
 		String title	= langLabel(getLangLabel(), "");
 		initGuiTexts();
-		String[] list= valueLabelMap.guiTextList.toArray(new String[listSize()]);
+		String[] list	= getSelectionList();
 		int height = 128 + (int)Math.ceil(18.5 * list.length);
 		height = Math.max(300, height);
 		height = Math.min(350, height);

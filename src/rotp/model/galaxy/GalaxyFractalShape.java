@@ -87,13 +87,13 @@ final class GalaxyFractalShape extends GalaxyShape {
     @Override
     protected int galaxyWidthLY() { 
 		return (int) (Math.sqrt(adjust_density
-				* Math.max(33, finalNumberStarSystems) 
+				* Math.max(33, nominalSystemNumber) 
 				* adjustedSizeFactor()));
     }
     @Override
     protected int galaxyHeightLY() { 
 		return (int) (Math.sqrt(adjust_density
-				* Math.max(33, finalNumberStarSystems)
+				* Math.max(33, nominalSystemNumber)
 				* adjustedSizeFactor()));
     }
 
@@ -108,7 +108,7 @@ final class GalaxyFractalShape extends GalaxyShape {
     }
 	
     @Override
-    public void setRandom(Point.Float pt) {
+    public void setRandom(StarPt pt) {
         // choose fractal type with options1
 		switch(option1) {
             case 0: {
@@ -400,10 +400,6 @@ final class GalaxyFractalShape extends GalaxyShape {
             }
 		}
         initWidthHeight();
-    }
-    @Override
-    public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
-        setRandom(pt);
     }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }

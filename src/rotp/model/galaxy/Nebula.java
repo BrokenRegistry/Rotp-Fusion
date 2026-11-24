@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
@@ -269,12 +270,18 @@ public class Nebula extends MapSprite implements IMappedObject, Serializable {
     	else
     		return (innerShape != null) && path.intersects(innerShape);
     }
-    boolean contains(float x, float y) {
-    	if (isRealNebula())
-    		return realNebulaArea.contains(x,y);
-    	else
-    		return (innerShape != null) && innerShape.contains(x, y);
-    }
+	boolean contains(float x, float y) {
+		if (isRealNebula())
+			return realNebulaArea.contains(x, y);
+		else
+			return (innerShape != null) && innerShape.contains(x, y);
+	}
+	boolean contains(Point.Float pt) {
+		if (isRealNebula())
+			return realNebulaArea.contains(pt);
+		else
+			return (innerShape != null) && innerShape.contains(pt);
+	}
     private BufferedImage image() {
     	//shapeQuality = 9;
         if (image == null || requestedQuality != currentQuality)

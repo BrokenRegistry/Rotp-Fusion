@@ -22,6 +22,16 @@
 
 ### Features:
 
+26-11-24 (BR)
+- New galaxy option to prevent an empire from becoming overly isolated from others due to inadequate fuel cells, one can ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available. The maximum distance can be defined using the "Maximum connection distance" option.
+  - Connect empires only.
+  - Connects empires and Orion.
+  - Connect all star systems, but asteroids may still limit access to less significant stars.
+  - This feature is disabled by default.
+- New option to select the maximum distance between two stellar systems that creates a path, allowing two empires to be connected.
+- New option to minimize the number of added stars when connecting empires.
+  - The connection procedure involves linking the nearest stars until all required connections have been established. Not all of the new stellar systems generated in this process will be used to form the final, required links. You may therefore choose to remove these "unnecessary" additions. (It is generally better to keep them, so that the paths are not too obvious.)
+- New option to preview the warranted path in yellow. (In the galaxy preview of the setup panel only)
 - New option that add "filler" asteroid star systems to makes the galaxy more "realistic"
 - New multiplayer feature (Hot-seat).
 - New option to restore the cost of weapons from MoO1.
@@ -335,6 +345,7 @@
 
 ### Miscellaneous:
 
+- Standardization of the star location  in the GalaxyShape class to allow empire connection.
 - In Progress: Centralization of the production estimate in the next turn, to calculate it only once for all categories. And offer the possibility to select "Old Way" or "New Way". (In the "Old Way", transport must be scanned only for ecological allocation, while in the "New Way" they must be scanned for each category... But by centralizing, once for all categories is enough!)
 - New ships display options:
   - No transports.
@@ -559,6 +570,7 @@
 
 ### Fixes:
 
+- Fixed an issue that prevented the generation of the "Bulls Eye - Ring" galaxy when empire spreading exceeded 700%.
 - Friendly transports are now grouped before landing, to give them more chance to pass through enemy orbiting fleets.
 - Fixed troop being not attacked when landing on a protected abandoned system.
 - Fixed AI retreating from an abandoned system. AI will take the system.

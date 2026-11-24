@@ -15,7 +15,6 @@
  */
 package rotp.model.galaxy;
 
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
@@ -83,7 +82,7 @@ final class GalaxyBullseyeShape extends GalaxyShape {
                 float gH = galaxyHeightLY();
 
                 // number of arc sections in the dart board
-                int nArcs = (int) Math.min(20, Math.ceil(Math.sqrt(finalNumberStarSystems)/4.0f));
+                int nArcs = (int) Math.min(20, Math.ceil(Math.sqrt(nominalSystemNumber)/4.0f));
 
                 // double ring
                 circle = new Ellipse2D.Float(gE,gE,gH,gH);
@@ -129,10 +128,10 @@ final class GalaxyBullseyeShape extends GalaxyShape {
                 float gH = galaxyHeightLY();
 
                 // number of rings/halos
-                int nRings = (int) Math.min(200, Math.floor(Math.sqrt(finalNumberStarSystems)/2.5f));
+                int nRings = (int) Math.min(200, Math.floor(Math.sqrt(nominalSystemNumber)/2.5f));
 
                 // width of each ring/halo, in ly
-                float rWidth = 4.0f;
+				float rWidth = max(4, gH/50);
 
                 // create each circular ring/halo
                 circle = new Ellipse2D.Float(gE,gE,gH,gH);
@@ -146,10 +145,15 @@ final class GalaxyBullseyeShape extends GalaxyShape {
                     float ringD = 1.0f-1.0f*i/nRings;
                     float ringPos = 0.5f*(1.0f-ringD);
 
-                    circle = new Ellipse2D.Float(gE+ringPos*gH, gE+ringPos*gH, ringD*gH, ringD*gH);
+					float cx = gE+ringPos*gH;
+					float cw = ringD*gH;
+					circle = new Ellipse2D.Float(cx, cx, cw, cw);
                     circleArea = new Area(circle);
                     totalArea.add(circleArea);
-                    circle = new Ellipse2D.Float(gE+ringPos*gH+rWidth/2, gE+ringPos*gH+rWidth/2, ringD*gH-rWidth, ringD*gH-rWidth);
+					cx += rWidth/2;
+					cw -= rWidth;
+					circle = new Ellipse2D.Float(cx, cx, cw, cw);
+//                    circle = new Ellipse2D.Float(gE+ringPos*gH+rWidth/2, gE+ringPos*gH+rWidth/2, ringD*gH-rWidth, ringD*gH-rWidth);
                     circleArea = new Area(circle);
                     totalArea.subtract(circleArea);
                 }
@@ -170,10 +174,10 @@ final class GalaxyBullseyeShape extends GalaxyShape {
                 float gH = galaxyHeightLY();
 
                 // number of rings/halos
-                int nRings = (int) Math.min(200, Math.floor(Math.sqrt(finalNumberStarSystems)/3));
+                int nRings = (int) Math.min(200, Math.floor(Math.sqrt(nominalSystemNumber)/3));
 
                 // width of each ring/halo, in ly
-                float rWidth = 3.0f;
+				float rWidth = max(3, gH/62);
 
                 // create each square ring/halo
                 square = new Rectangle2D.Float(gE,gE,gH,gH);
@@ -205,20 +209,13 @@ final class GalaxyBullseyeShape extends GalaxyShape {
     }
     @Override
     protected int galaxyWidthLY() { 
-        return (int) (Math.sqrt(adjust_density*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(adjust_density*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
     protected int galaxyHeightLY() { 
-        return (int) (Math.sqrt(adjust_density*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(adjust_density*nominalSystemNumber*adjustedSizeFactor()));
     }
-    @Override
-    public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
-        setRandom(pt);
-    }
-    @Override
-    public boolean valid(float x, float y) {
-        return totalArea.contains(x, y);
-    }
+	@Override protected boolean valid(StarPt p)	{ return totalArea.contains(p.x, p.y); }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }
 }

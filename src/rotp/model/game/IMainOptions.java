@@ -336,7 +336,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			.put("Yes",	MOD_UI + "COMPACT_OPTION_ONLY_YES")
 			.put("No",	MOD_UI + "COMPACT_OPTION_ONLY_NO");
 	default ParamList compactOptionOnly()	{ return compactOptionOnly; }
-	
+
 	ParamList gameOverTitles	= new ParamList( MOD_UI, "GAME_OVER_TITLE", "Original")
 			.isCfgFile(true)
 			.isDuplicate(false)

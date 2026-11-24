@@ -204,20 +204,13 @@ final class GalaxyShurikenShape extends GalaxyShape {
     }
     @Override
     protected int galaxyWidthLY() { 
-        return (int) (Math.sqrt(1.2*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(1.2*nominalSystemNumber*adjustedSizeFactor()));
     }
     @Override
     protected int galaxyHeightLY() { 
-        return (int) (Math.sqrt(1.2*finalNumberStarSystems*adjustedSizeFactor()));
+        return (int) (Math.sqrt(1.2*nominalSystemNumber*adjustedSizeFactor()));
     }
-    @Override
-    public void setSpecific(Point.Float pt) { // modnar: add possibility for specific placement of homeworld/orion locations
-        setRandom(pt);
-    }
-    @Override
-    public boolean valid(float x, float y) {
-        return totalArea.contains(x, y);
-    }
+	@Override protected boolean valid(StarPt p)	{ return totalArea.contains(p.x, p.y); }
     @Override
     protected float sizeFactor(String size) { return settingsFactor(1.0f); }
 }
