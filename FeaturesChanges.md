@@ -570,6 +570,7 @@
 
 ### Fixes:
 
+- Fix for a potential error related to concurrent access to the transport list during landing.
 - Fixed an issue that prevented the generation of the "Bulls Eye - Ring" galaxy when empire spreading exceeded 700%.
 - Friendly transports are now grouped before landing, to give them more chance to pass through enemy orbiting fleets.
 - Fixed troop being not attacked when landing on a protected abandoned system.

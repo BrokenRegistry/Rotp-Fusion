@@ -660,7 +660,8 @@ public final class Galaxy implements Base, Serializable {
         int pop = 0;
         Galaxy gal = galaxy();
 
-        for (Transport tr: gal.transports()) {
+		List<Transport> trList = new ArrayList<>(gal.transports());
+		for (Transport tr: trList) {
             if (tr != null && tr.empId() == sys.empire().id) {
                 if (tr.destSysId() == sys.id)
                     pop += tr.size();

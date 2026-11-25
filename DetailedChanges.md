@@ -2,6 +2,9 @@
 
 ## What's New
 
+26-11-25 (BR)
+- Fix for a potential error related to concurrent access to the transport list during landing.
+
 26-11-24 (BR)
 - New galaxy option to prevent an empire from becoming overly isolated from others due to inadequate fuel cells, one can ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available. The maximum distance can be defined using the "Maximum connection distance" option.
   - Connect empires only.
