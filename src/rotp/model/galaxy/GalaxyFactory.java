@@ -50,6 +50,7 @@ public final class GalaxyFactory implements Base {
 	private static final boolean showAI	 = false; // BR: for debug
 
 	private float selectedMinDistArtifactPlanet;
+	private int worstRouteHostility;
 
 	public Galaxy newGalaxy(GalaxyCopy src) {
 		GalaxyBaseData gc = src.galSrc;
@@ -84,8 +85,9 @@ public final class GalaxyFactory implements Base {
 	public Galaxy newGalaxy() {
 		Species.loadAllList();
 		IGameOptions opts = GameSession.instance().options();
+		worstRouteHostility = opts.worstRouteHostility();
 		selectedMinDistArtifactPlanet = opts.selectedMinDistArtifactPlanet();
-	
+
 		GalaxyShape sh = opts.galaxyShape();
 		sh.fullGenerate();
 
@@ -370,9 +372,12 @@ public final class GalaxyFactory implements Base {
 			boolean needHabitable2 = (need2>0) && (need2==num2);
 			needHabitable = needHabitable1 || needHabitable2;
 			StarSystem sys0 = sysFactory.newSystem(g);
-			if (needHabitable || pt.isRoute())
-				while ((sys0 == null) || !sys0.planet().isEnvironmentFriendly())
-					sys0 = sysFactory.newSystem(g);
+			if (pt.isRoute())
+				sys0 = getValidRouteStarSystem(g, sys0);
+			if (needHabitable)
+				sys0 = getHabitableStarSystem(g, sys0);
+//				while ((sys0 == null) || !sys0.planet().isEnvironmentFriendly())
+//					sys0 = sysFactory.newSystem(g);
 			sys0.setXY(pt);
 			validateArtefactDistance(sys);
 			g.addStarSystem(sys0);
@@ -491,9 +496,12 @@ public final class GalaxyFactory implements Base {
 					sys0 = sysFactory.copySystem(g, refStar);
 				}
 				else {
-					if (needHabitable || pt.isRoute())
-						while ((sys0 == null) || !sys0.planet().isEnvironmentFriendly())
-							sys0 = sysFactory.newSystem(g);
+					if (pt.isRoute())
+						sys0 = getValidRouteStarSystem(g, sys0);
+					if (needHabitable)
+						sys0 = getHabitableStarSystem(g, sys0);
+//						while ((sys0 == null) || !sys0.planet().isEnvironmentFriendly())
+//							sys0 = sysFactory.newSystem(g);
 				}
 				sys0.setXY(pt);
 				validateArtefactDistance(sys);
@@ -633,9 +641,10 @@ public final class GalaxyFactory implements Base {
 					g.addStarSystem(sys);
 				}
 				else if (pt.isRoute()) { // No asteroid, no monster
-					StarSystem sys = sysFactory.newSystem(g);
-					while ((sys == null) || !sys.planet().isEnvironmentFriendly())
-						sys = sysFactory.newSystem(g);
+					StarSystem sys = getValidRouteStarSystem(g, null);
+//					StarSystem sys = sysFactory.newSystem(g);
+//					while ((sys == null) || !sys.planet().isEnvironmentFriendly())
+//						sys = sysFactory.newSystem(g);
 					validateArtefactDistance(sys);
 					sys.setXY(pt);
 					g.addStarSystem(sys);
@@ -650,6 +659,16 @@ public final class GalaxyFactory implements Base {
 			}
 		}
 		log("total systems created: ", str(g.numStarSystems()));
+	}
+	private StarSystem getHabitableStarSystem(Galaxy g, StarSystem sys)	{
+		while (sys == null || !sys.planet().isEnvironmentFriendly())
+			sys = StarSystemFactory.current().newSystem(g);
+		return sys;
+	}
+	private StarSystem getValidRouteStarSystem(Galaxy g, StarSystem sys)	{
+		while (sys == null || worstRouteHostility < sys.planet().type().hostility())
+			sys = StarSystemFactory.current().newSystem(g);
+		return sys;
 	}
 	private void validateArtefactDistance(StarSystem sys)	{
 		if (sys.planet().isArtifact() && selectedMinDistArtifactPlanet > 0.0f

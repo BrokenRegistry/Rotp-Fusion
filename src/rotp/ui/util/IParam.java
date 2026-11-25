@@ -322,6 +322,8 @@ public interface IParam<T> extends InterfaceOptions{
 		String desc = realLangLabel(key+LABEL_DESCRIPTION);
 //		String desc = langLabel(key+LABEL_DESCRIPTION); // TODO BR: For debug... comment!
 		if (desc == null)
+			desc = realLangLabel(key);
+		if (desc == null)
 			return "";
 //		System.out.println("desc = " + desc);
 		return desc;

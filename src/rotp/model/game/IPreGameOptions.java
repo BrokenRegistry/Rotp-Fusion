@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import rotp.Rotp;
+import rotp.model.planet.PlanetType;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.util.LinkData;
@@ -35,6 +36,7 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 		.put(CONNECT_ORION_TOO,		BASE_UI + CONNECT_EMPIRES + "_" + CONNECT_ORION_TOO)
 		.put(CONNECT_ALL_SYSTEMS,	BASE_UI + CONNECT_EMPIRES + "_" + CONNECT_ALL_SYSTEMS)
 		.forcedRefresh(true);
+
 	default String selectedConnectEmpires()	{ return connectEmpires.get(); }
 	default boolean areEmpiresConnectedToEmpires()	{
 		switch (connectEmpires.get()) {
@@ -81,6 +83,11 @@ public interface IPreGameOptions extends IAdvOptions, IIronmanOptions, ISystemsO
 			.addIsGhostMethod(IPreGameOptions::SomeConnections)
 			.isCfgFile(true);
 	default boolean galaxyPreviewRoutes()	{ return galaxyPreviewRoutes.get(); }
+
+	ParamList worstConnectPlanetType	= new ParamList( BASE_UI, "CONNECT_WORST_HOSTILITY", PlanetType.planetTypes, PlanetType.MINIMAL)
+			.showFullGuide(true);
+	default String worstRoutePlanetType()	{ return worstConnectPlanetType.get(); }
+	default int worstRouteHostility()		{ return  PlanetType.keyed(worstRoutePlanetType()).hostility(); }
 
 	// ========================================================================
 	// Factory options

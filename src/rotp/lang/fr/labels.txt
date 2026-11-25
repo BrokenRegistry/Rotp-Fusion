@@ -99,6 +99,7 @@ PLANET_STEPPE                     | Steppe
 PLANET_TERRAN                     | Terrestre
 PLANET_TOXIC                      | Toxique
 PLANET_TUNDRA                     | Toundra
+PLANET_NONE_DESC				| Astéroïdes
 
 // Planet Types
 FLAG_COLOR_NONE                   | Aucune
@@ -3501,6 +3502,10 @@ SETUP_CONNECT_EMPIRES_ORION_HELP			| Certains systèmes stellaires pourraient en
 SETUP_CONNECT_EMPIRES_ORION					| Les empires et Orion
 SETUP_CONNECT_EMPIRES_ALL_SYSTEMS_HELP		| Les systèmes stellaires ne seront pas trop éloignés les uns des autres, mais des astéroïdes pourraient tout de même limiter l’accès à des étoiles moins importantes.
 SETUP_CONNECT_EMPIRES_ALL_SYSTEMS			| Toutes les étoiles
+
+SETUP_CONNECT_WORST_HOSTILITY_HELP			| Outre l’option « Connecter les empires », vous pouvez définir le niveau d’hostilité maximal des systèmes stellaires reliant les empires.<br>La génération aléatoire de la planète est définie par les paramètres des autres options (age de la galaxie, qualité des planètes, etc...). Toutefois, si le résultat ne répond pas aus requis de cette option, de nouvelles planètes seront générées jusqu’à ce qu’une planète valide soit obtenue.
+SETUP_CONNECT_WORST_HOSTILITY_DESC			| Niveau d’hostilité maximal des systèmes stellaires reliant les empires.
+SETUP_CONNECT_WORST_HOSTILITY				| Hostilité des liaisons : %1
 
 SETUP_REMOVE_NON_ROUTED_CONNECTIONS_HELP	| La procédure de connexion consiste à relier les étoiles les plus proches jusqu’à ce que toutes les liaisons requises soient établies.<br>Tous les nouveaux systèmes stellaires générés au cours de ce processus ne seront pas nécessairement utilisés pour former les liaisons finales exigées.<br>Vous pouvez donc choisir de supprimer ces ajouts « superflus ».<br>Il est généralement préférable de les conserver,afin que les chemins ne soient pas trop évidents.<br>Il convient de noter que cette fonctionnalité n’est pas active si l’option consistant à relier tous les systèmes stellaires a été choisie.
 SETUP_REMOVE_NON_ROUTED_CONNECTIONS_DESC	| Ajoutez uniquement les systèmes stellaires qui sont réellement utiles pour relier les empires.

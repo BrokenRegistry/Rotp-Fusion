@@ -12,6 +12,8 @@ When updating, you can reuse the same folder.
 <b><ins>Very last changes:</ins></b>
 
 26-11-25 (BR)
+- In addition to the "Connect the Empires" option, you can now set the maximum hostility level for the star systems that connect the empires.
+  - The random generation of a planet is determined by the parameters set in other options (galaxy age, planet quality, etc.). However, if the result does not meet the requirements of this option, new planets will be generated until a valid one is obtained.
 - Fix for a potential error related to concurrent access to the transport list during landing.
 
 26-11-24 (BR)

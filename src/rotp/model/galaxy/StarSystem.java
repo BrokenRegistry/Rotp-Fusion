@@ -789,20 +789,32 @@ public final class StarSystem implements Base, Sprite, IMappedObject, Serializab
         }
 
         // draw star name
+		if (map.hideSystemNames())
+			return;
         Rectangle box = nameBox();
         box.width = 0;
         box.height = 0;
-        if (map.hideSystemNames())
-            return;
 
- //       int fontSize = fontSize(map); // BR:
         int fontSize = fontSize(map) * fontPct / 100;
         int realFontSize = unscaled(fontSize);
         if (map.parent().showSystemData(this))
             fontSize = fontSize * 7 / 10;
 
 		if (realFontSize < minFont)
-            return;
+			return;
+
+//		boolean debug = true;
+//		if (debug) {
+//			String str = planet().type().name();
+//			Font prevFont = g2.getFont();
+//			g2.setFont(narrowFont(fontSize));
+//			g2.setColor(map.parent().systemLabelColor(this));
+//			int sw = g2.getFontMetrics().stringWidth(str);
+//			int yAdj = drawStar ? scaled(fontSize) + r0 : scaled(fontSize)/2;
+//			drawString(g2, str, x0-(sw/2), y0+yAdj);
+//			g2.setFont(prevFont);
+//			return;
+//		}
 
 		if (map.parent().showSystemName(this) || !colonized || (realFontSize < minFont2)) {
             String s1 = map.parent().systemLabel(this);

@@ -24,7 +24,8 @@ final class SetupGalaxyOptions extends AbstractOptionsSubUI {
 				HEADER_SPACER_50,
 				connectEmpires,
 				maxEmpiresConnextionGap,
-				removeNonRoutedConnections
+				removeNonRoutedConnections,
+				worstConnectPlanetType
 				)));
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle("GALAXY_SIZE"),
@@ -58,7 +59,8 @@ final class SetupGalaxyOptions extends AbstractOptionsSubUI {
 						empiresSpreadingFactor,
 						connectEmpires,
 						maxEmpiresConnextionGap,
-						removeNonRoutedConnections
+						removeNonRoutedConnections,
+						worstConnectPlanetType
 						));
 		return majorList;
 	}

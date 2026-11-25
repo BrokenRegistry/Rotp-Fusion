@@ -22,7 +22,8 @@
 
 ### Features:
 
-26-11-24 (BR)
+- In addition to the "Connect the Empires" option, you can now set the maximum hostility level for the star systems that connect the empires.
+  - The random generation of a planet is determined by the parameters set in other options (galaxy age, planet quality, etc.). However, if the result does not meet the requirements of this option, new planets will be generated until a valid one is obtained.
 - New galaxy option to prevent an empire from becoming overly isolated from others due to inadequate fuel cells, one can ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available. The maximum distance can be defined using the "Maximum connection distance" option.
   - Connect empires only.
   - Connects empires and Orion.
