@@ -3033,6 +3033,7 @@ SETTINGS_MOD_SYSTEMS_OPTIONS_UI      | - Options avancées de planète -
 SETTINGS_MOD_SYSTEMS_OPTIONS_UI_DESC | Ouvre un sous-menu contenant des paramètres Planétaires plus avancés.
 SETTINGS_MOD_SYSTEMS_OPTIONS_UI_HELP | Ouvre un sous-menu contenant des paramètres Planétaires plus avancés.<br>Ces paramètres sont définitifs.<br>Ces paramètres sont enregistrés avec le jeu.
 
+SETTINGS_MOD_ADVANCED_SYSTEMS_OPTIONS_CLOSE		| Fermez d’abord l’écran « →SETTINGS_MOD_ADVANCED_SYSTEMS_OPTIONS_TITLE← »
 SETTINGS_MOD_ADVANCED_SYSTEMS_OPTIONS_TITLE   | Configuration avancée de la Galaxie
 SETTINGS_MOD_ADVANCED_SYSTEMS_OPTIONS_UI      | Paramètres avancés Galaxie
 SETTINGS_MOD_ADVANCED_SYSTEMS_OPTIONS_UI_DESC | Ouvre un sous-menu contenant des paramètres avancés Galaxie.

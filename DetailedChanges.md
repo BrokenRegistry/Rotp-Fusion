@@ -2,6 +2,10 @@
 
 ## What's New
 
+26-11-26 (BR)
+- Galaxy setup: Cover over the start button when "Advanced Galaxy Configuration" is open.
+  - Clicking "start" without getting any result can be frustrating...
+
 26-11-25 (BR)
 - In addition to the "Connect the Empires" option, you can now set the maximum hostility level for the star systems that connect the empires.
   - The random generation of a planet is determined by the parameters set in other options (galaxy age, planet quality, etc.). However, if the result does not meet the requirements of this option, new planets will be generated until a valid one is obtained.

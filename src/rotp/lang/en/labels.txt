@@ -3033,6 +3033,7 @@ SETTINGS_MOD_SYSTEMS_OPTIONS_UI      | Advanced Planet Options
 SETTINGS_MOD_SYSTEMS_OPTIONS_UI_DESC | Opens a submenu containing more advanced Planetary settings.
 SETTINGS_MOD_SYSTEMS_OPTIONS_UI_HELP | Opens a submenu containing more advanced Planetary settings.<br>These settings are finals.<br>These settings are saved with the game.
 
+SETTINGS_MOD_ADVANCED_SYSTEMS_OPTIONS_CLOSE		| First, close “→SETTINGS_MOD_ADVANCED_SYSTEMS_OPTIONS_TITLE←” panel
 SETTINGS_MOD_ADVANCED_SYSTEMS_OPTIONS_TITLE   | Advanced Galaxy Configuration
 SETTINGS_MOD_ADVANCED_SYSTEMS_OPTIONS_UI      | Advanced Galaxy Options
 SETTINGS_MOD_ADVANCED_SYSTEMS_OPTIONS_UI_DESC | Opens a submenu containing advanced Galaxy settings.

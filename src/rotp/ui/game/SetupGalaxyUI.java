@@ -125,7 +125,6 @@ import rotp.util.ModifierKeysState;
 
 public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, MouseWheelListener {
 	private static final long serialVersionUID = 1L;
-    // public  static final String guiTitleID	= "SETUP_GALAXY";
 	private	static final String GUI_ID       = "START_GALAXY";
 	private static final String BACK_KEY	 = "SETUP_BUTTON_BACK";
 	private static final String RESTART_KEY	 = "SETUP_BUTTON_RESTART";
@@ -137,12 +136,12 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	private static final String SPECIFIC_AI  = "SETUP_SPECIFIC_AI";
 	private static final String GLOBAL_AI    = "SETUP_GLOBAL_AI";
 	private static final String OPPONENT_RANDOM	 = "SETUP_OPPONENT_RANDOM";
- 	private static final int    buttonFont		= 30;
+	private static final int    buttonFont		= 30;
 	private	static final Font   bigButtonFont	= FontManager.current().narrowFont(buttonFont);
 	public  static final int	MAX_DISPLAY_OPPS = 49;
 	private static String opponentRandom = "Randomized";
 	private static SetupGalaxyUI instance;
-    private final Color darkBrownC = new Color(112,85,68);
+	private final Color darkBrownC = new Color(112,85,68);
 	private final Color darkYellow = new Color(223, 223, 0);
 
 	@Override protected ParamButtonHelp newExitButton() {
@@ -163,7 +162,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 			defaultAI.aliensKey);
 	private final ParamListSpecificOpponent specificOpponent	= new ParamListSpecificOpponent( // For Guide
 			BASE_UI, "SPECIFIC_OPPONENT", guiOptions().allRaceKeyList(), opponentRandom);
-    public  final ParamListGlobalAbilities  globalAbilities		= new ParamListGlobalAbilities(  // For Guide
+	public  final ParamListGlobalAbilities  globalAbilities		= new ParamListGlobalAbilities(  // For Guide
 			BASE_UI, "GLOBAL_ABILITY", SpecificCROption.ORIGINAL_SPECIES.value);
 	private final ParamListSpecificAbilities specificAbilities	= new ParamListSpecificAbilities( // For Guide
 			BASE_UI, "SPECIFIC_ABILITY", SpecificCROption.defaultSpecificValue().value);
@@ -238,6 +237,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
     private int  galaxyGrid  = 10;
     private boolean showGrid = false;
     private boolean prevShowGrid = false;
+	private boolean isTuneGalaxy = false;
 
     private int wBigMug		= s76;
     private int hBigMug		= s82;
@@ -404,6 +404,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	}
 	@Override public void init() {
 		showGrid = prevShowGrid;
+		isTuneGalaxy = false;
 		opts = guiOptions();
 		isOnTop = true;
 		super.init();
@@ -1422,12 +1423,36 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		drawHelpButton(g);
 		showGuide(g);
 
+		if (isTuneGalaxy)
+			drawBottomMask(g);
+
 		if (starting) {
 			NoticeMessage.setStatus(text("SETUP_CREATING_GALAXY"));
 			drawNotice(g, 30);
 		}
 		if (showTiming)
 			System.out.println("Galaxy paintComponent() Time = " + (System.currentTimeMillis()-timeStart) + " ms");
+	}
+	private void drawBottomMask(Graphics2D g)	{
+		int x = backBox.x;
+		int y = backBox.y;
+		int w = exitBox.width + exitBox.x - x + s1;
+		int h = exitBox.height + exitBox.y - y + s1;
+		int fSizeMax = buttonFont;
+		int fSizeMin = buttonFont/2;
+
+		g.setPaint(GameUI.galaxySetupBackground());
+		if (retina)
+			g.fillRoundRect(retina(x), retina(y), retina(w), retina(h), cnrR, cnrR);
+		else
+			g.fillRoundRect(x, y, w, h, cnr, cnr);
+
+		String warning = text("SETTINGS_MOD_ADVANCED_SYSTEMS_OPTIONS_CLOSE");
+		int fSize	= scaledFont(g, warning, w-s30, fSizeMax, fSizeMin);
+		int sw = g.getFontMetrics().stringWidth(warning);
+		int sx = x + (w - sw)/2;
+		int sy = y + (h + scaled(fSize))/2 - s4;
+		drawShadowedString(g, warning, 2, sx, sy, GameUI.borderDarkColor(), GameUI.borderBrightColor());
 	}
 	private void drawHelpButton(Graphics2D g) {
 		helpBox.setBounds(s20,s20,s20,s25);
@@ -2029,6 +2054,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 	}
 	private void goToTuneGalaxyOptions() {
 		prevShowGrid = showGrid;
+		isTuneGalaxy = true;
 		showGrid = true;
 		ParamSubUI subUI = new ParamSubUI( MOD_UI, ADVANCED_SYSTEMS_UI_KEY);
 		int x = scaled(20);

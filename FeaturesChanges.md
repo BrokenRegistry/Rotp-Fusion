@@ -407,6 +407,8 @@
 
 ### User Interfaces:
 
+- Galaxy setup: Cover over the start button when "Advanced Galaxy Configuration" is open.
+  - Clicking "start" without getting any result can be frustrating...
 - Council UI: Fixed the animation of diplomats.
 - Empires UI: Fixed the animation of diplomats, which only moved when the mouse was constantly moving...
   - The same species will no longer be synchronized.
