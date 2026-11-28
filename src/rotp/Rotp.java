@@ -37,10 +37,10 @@ import javax.swing.JOptionPane;
 import rotp.model.game.GameSession;
 import rotp.model.game.MOO1GameOptions;
 import rotp.model.game.RulesetManager;
-import rotp.multiplayer.session.Phase1ConsoleHarness;
 import rotp.model.planet.PlanetFactory;
 import rotp.model.ships.ShipLibrary;
 import rotp.model.tech.TechLibrary;
+import rotp.multiplayer.session.Phase1ConsoleHarness;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.SwingExceptionHandler;
@@ -79,12 +79,9 @@ public final class Rotp {
     public static String releaseId = version;
     public static long startMs = System.currentTimeMillis();
     public static long maxHeapMemory = Runtime.getRuntime().maxMemory() / MB;
-    /*  BR: needs static access;
-     	BR: Adjusted the values for new options
-     	BR: Adjusted margin values because memory size grow as we play (events memorization)
-     	BR: Small memory seems to consumes less memory!
-     	BR: tested: 8GB => 75 stars/MB; 3.5GB => 100 stars/MB */
-    public static int maximumSystems = (maxHeapMemory > 4096 ?  75 : 100) * (int)(maxHeapMemory-600);
+	// public static int maximumSystems = (maxHeapMemory > 4096 ?  75 : 100) * (int)(maxHeapMemory-600);
+	// BR: limited to 50k as it's already unplayable at this amount....
+	public static int maximumSystems = Math.min(50000, 25 * (int)(maxHeapMemory-600));
     //public static long maxUsedMemory;
     //public static long maxAllocatedMemory;
     //public static long memoryReserve = -1;

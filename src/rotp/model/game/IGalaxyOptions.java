@@ -67,35 +67,36 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 						1 + (opts.selectedDynStarsPerEmpire() // +1 for Orion
 							* (opts.selectedNumberOpponents()+1))); // +1 for player);
 			}
-	    map.put(SIZE_MICRO,		24); // BR: added original moo small size
-	    map.put(SIZE_TINY,		33);
-	    if (DEF_VAL.isMoo1())
+		map.put(SIZE_MICRO,		24); // BR: added original moo small size
+		map.put(SIZE_TINY,		33);
+		if (DEF_VAL.isMoo1())
 		    map.put(SIZE_SMALL,	48);
-	    else
-	    	map.put(SIZE_SMALL,	50);
-	    map.put(SIZE_SMALL2,	70);
-	    if (DEF_VAL.isMoo1())
-	    	map.put(SIZE_MEDIUM, 108);
-	    else
-	    	map.put(SIZE_MEDIUM, 100);
-	    map.put(SIZE_MEDIUM2,	150);
-	    map.put(SIZE_LARGE,		225);
-	    map.put(SIZE_LARGE2,	333);
-	    map.put(SIZE_HUGE,		500);
-	    map.put(SIZE_HUGE2,		700);
-	    map.put(SIZE_MASSIVE,	1000);
-	    map.put(SIZE_MASSIVE2,	1500);
-	    map.put(SIZE_MASSIVE3,	2250);
-	    map.put(SIZE_MASSIVE4,	3333);
-	    map.put(SIZE_MASSIVE5,	5000);
-	    map.put(SIZE_INSANE,	10000);
-	    map.put(SIZE_LUDICROUS,	100000);
-	    map.put(SIZE_MAXIMUM,	Rotp.maximumSystems);
+		else
+			map.put(SIZE_SMALL,	50);
+		map.put(SIZE_SMALL2,	70);
+		if (DEF_VAL.isMoo1())
+			map.put(SIZE_MEDIUM, 108);
+		else
+			map.put(SIZE_MEDIUM, 100);
+		map.put(SIZE_MEDIUM2,	150);
+		map.put(SIZE_LARGE,		225);
+		map.put(SIZE_LARGE2,	333);
+		map.put(SIZE_HUGE,		500);
+		map.put(SIZE_HUGE2,		700);
+		map.put(SIZE_MASSIVE,	1000);
+		map.put(SIZE_MASSIVE2,	1500);
+		map.put(SIZE_MASSIVE3,	2250);
+		map.put(SIZE_MASSIVE4,	3333);
+		map.put(SIZE_MASSIVE5,	5000);
+		map.put(SIZE_INSANE,	10000);
+		map.put(SIZE_LUDICROUS,	50000);
+		if (!map.containsValue(Rotp.maximumSystems))
+			map.put(SIZE_MAXIMUM, Rotp.maximumSystems);
 		return map;
 	}
 	static List<String> getGalaxySizeOptions(int minSize)	{
 		LinkedHashMap<String, Integer> map = galaxySizeMap(true, null);
-		int max = map.get(SIZE_MAXIMUM);
+		int max = Rotp.maximumSystems;
 		List<String> list = new ArrayList<>();
 		for (Entry<String, Integer> entry : map.entrySet()) {
 			int size = entry.getValue();
@@ -398,6 +399,7 @@ public interface IGalaxyOptions extends IBaseOptsTools {
 			isDuplicate(true);
 			setDefaultValue(MOO1_DEFAULT, SIZE_MICRO);
 			showFullGuide(false);
+			loop(false);
 		}
 		@Override public void initDependencies(int level)	{
 			if (level == 0) {

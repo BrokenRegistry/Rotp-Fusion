@@ -3492,28 +3492,28 @@ SETTINGS_MOD_PREF_STARS_PER_EMPIRE       | Favored Stars Number: %1
 SETTINGS_MOD_DYN_STARS_PER_EMPIRE_DESC   | Number of Stars per Empire for dynamic galaxy size.
 SETTINGS_MOD_DYN_STARS_PER_EMPIRE        | Stars per empire: %1
 
-SETUP_CONNECT_EMPIRES_HELP					| To prevent an empire from becoming overly isolated from others due to inadequate fuel cells, one can ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available.<br>The maximum distance can be defined using the "Maximum connection distance" option.<br>The galaxy will first be generated in the standard way, after which connecting stars will be added. Consequently, the final number of star systems will exceed the nominal value.<br>Be aware that this option can significantly increase the time required to generate the galaxy, especially when combined with large spacing between empires and very large galaxies.
+SETUP_CONNECT_EMPIRES_HELP					| To prevent an empire from becoming overly isolated from others due to inadequate fuel cells, one can ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available.<br>The maximum distance can be defined using the "Maximum connection distance" option.<br>The galaxy will first be generated in the standard way, after which connecting stars will be added. Consequently, the final number of star systems will exceed the nominal value.<br>Be aware that this option can significantly increase the time required to generate the galaxy, especially when combined with large spacing between empires and very large galaxies.<br>The product of the number of star systems and the spread factor must not exceed 50,000.<br>For the connection of all star systems, their number must not exceed 5000.
 SETUP_CONNECT_EMPIRES_DESC					| Ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available
 SETUP_CONNECT_EMPIRES						| Connect the Empires: %1
 SETUP_CONNECT_EMPIRES_NONE_HELP				| Disable this feature.
 SETUP_CONNECT_EMPIRES_NONE					| No
-SETUP_CONNECT_EMPIRES_EMPIRES_HELP			| Orion and a few stellar systems might still be isolated.
+SETUP_CONNECT_EMPIRES_EMPIRES_HELP			| Orion and a few star systems might still be isolated.
 SETUP_CONNECT_EMPIRES_EMPIRES				| Empires only
 SETUP_CONNECT_EMPIRES_ORION_HELP			| Some star systems might still be inaccessible.
 SETUP_CONNECT_EMPIRES_ORION					| Empires and Orion
-SETUP_CONNECT_EMPIRES_ALL_SYSTEMS_HELP		| Stellar systems will not be spaced too far apart, but asteroids may still limit access to less significant stars.
+SETUP_CONNECT_EMPIRES_ALL_SYSTEMS_HELP		| Star systems will not be spaced too far apart, but asteroids may still limit access to less significant stars.<br>The number of star systems must not exceed 5000.
 SETUP_CONNECT_EMPIRES_ALL_SYSTEMS			| All stars
 
 SETUP_CONNECT_WORST_HOSTILITY_HELP			| In addition to the "Connect the Empires" option, you can set the maximum hostility level for the star systems that connect the empires.<br>The random generation of a planet is determined by the parameters set in other options (galaxy age, planet quality, etc.). However, if the result does not meet the requirements of this option, new planets will be generated until a valid one is obtained.
 SETUP_CONNECT_WORST_HOSTILITY_DESC			| Maximum hostility level for star systems connecting empires.
 SETUP_CONNECT_WORST_HOSTILITY				| Max path hostility: %1
 
-SETUP_REMOVE_NON_ROUTED_CONNECTIONS_HELP	| The connection procedure involves linking the nearest stars until all required connections have been established.<br>Not all of the new stellar systems generated in this process will be used to form the final, required links.<br>You may therefore choose to remove these "unnecessary" additions.<br>It is generally better to keep them, so that the paths are not too obvious.<br>It should be noted that this feature is not active if the option to link all stellar systems has been chosen.
+SETUP_REMOVE_NON_ROUTED_CONNECTIONS_HELP	| The connection procedure involves linking the nearest stars until all required connections have been established.<br>Not all of the new star systems generated in this process will be used to form the final, required links.<br>You may therefore choose to remove these "unnecessary" additions.<br>It is generally better to keep them, so that the paths are not too obvious.<br>It should be noted that this feature is not active if the option to link all star systems has been chosen.
 SETUP_REMOVE_NON_ROUTED_CONNECTIONS_DESC	| Add only those star systems that are truly useful for connecting empires.
 SETUP_REMOVE_NON_ROUTED_CONNECTIONS			| Minimize star additions: %1
 
-SETUP_MAX_EMPIRES_CONNECTION_GAP_HELP		| To prevent an empire from becoming overly isolated from others due to inadequate fuel cells, one can ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available.<br>Maximum distance between two stellar systems that creates a path, allowing two empires to be connected.
-SETUP_MAX_EMPIRES_CONNECTION_GAP_DESC		| Maximum distance between two stellar systems that creates a path, allowing two empires to be connected.
+SETUP_MAX_EMPIRES_CONNECTION_GAP_HELP		| To prevent an empire from becoming overly isolated from others due to inadequate fuel cells, one can ensure the existence of a path of colonizable star systems with spacing compatible with the fuel cells easily available.<br>Maximum distance between two star systems that creates a path, allowing two empires to be connected.
+SETUP_MAX_EMPIRES_CONNECTION_GAP_DESC		| Maximum distance between two star systems that creates a path, allowing two empires to be connected.
 SETUP_MAX_EMPIRES_CONNECTION_GAP			| Max connection gap: %1 ly
 
 SETTINGS_MOD_RANDOM_NUM_STARS_LIM1_DESC		| Limits on the number of star systems when "Limited random galaxy size" is selected.<br> Minimum and maximum values ​​can be swapped.

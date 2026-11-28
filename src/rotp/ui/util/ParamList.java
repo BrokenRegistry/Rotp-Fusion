@@ -37,6 +37,7 @@ public class ParamList extends AbstractParam<String> {
 
 	protected final IndexableMap valueLabelMap;
 	private boolean showFullGuide = false;
+	private boolean	loop = true;
 	protected int refreshLevel = 0;
 	protected int boxPosX = -1;
 	protected int boxPosY = -1;
@@ -87,6 +88,10 @@ public class ParamList extends AbstractParam<String> {
 	
 	// ===== Initializers =====
 	//
+	public ParamList loop(boolean loop)	{
+		this.loop = loop;
+		return this;
+	}
 	public ParamList showFullGuide(boolean show) { showFullGuide = show; return this; }
 	public ParamList refreshLevel(int level)	 { refreshLevel = level; return this; }
 	public void setPosition (int x, int y)		 { boxPosX = x; boxPosY = y; }
@@ -135,11 +140,11 @@ public class ParamList extends AbstractParam<String> {
 	@Override protected boolean isInvalidLocalMax(String value)	{ return isInvalidLocalValue(value); }
 	@Override protected boolean isInvalidLocalMin(String value)	{ return isInvalidLocalValue(value); }
 	@Override public boolean next()						{
-		set(valueLabelMap.getNextValueIgnoreCase(get()));
+		set(valueLabelMap.getNextValueIgnoreCase(get(), loop));
 		return false;
 	}
 	@Override public boolean prev()						{
-		set(valueLabelMap.getPrevValueIgnoreCase(get())); 
+		set(valueLabelMap.getPrevValueIgnoreCase(get(), loop)); 
 		return false;
 	}
 	@Override public boolean toggle(MouseWheelEvent e)	{
@@ -421,10 +426,13 @@ public class ParamList extends AbstractParam<String> {
 		 * @param value The value to search
 		 * @return the previous value, looping at the beginning, the last if string is not found
 		 */
-		String getPrevValueIgnoreCase(String value) {
+		String getPrevValueIgnoreCase(String value, boolean loop) {
 			int index = getValueIndexIgnoreCase(value)-1;
 			if (index < 0)
-				return cfgValueList.get(cfgValueList.size()-1);
+				if (loop)
+					return cfgValueList.get(cfgValueList.size()-1);
+				else
+					return cfgValueList.get(0);
 			return cfgValueList.get(index);
 		}
 		/**
@@ -432,10 +440,13 @@ public class ParamList extends AbstractParam<String> {
 		 * @param value The value to search
 		 * @return the next value, looping at the end, the first if string is not found
 		 */
-		String getNextValueIgnoreCase(String value) {
+		String getNextValueIgnoreCase(String value, boolean loop) {
 			int index = getValueIndexIgnoreCase(value) + 1;
 			if (index >= cfgValueList.size())
-				return cfgValueList.get(0);
+				if (loop)
+					return cfgValueList.get(0);
+				else
+					return cfgValueList.get(cfgValueList.size()-1);
 			return cfgValueList.get(index);
 		}
 		/**

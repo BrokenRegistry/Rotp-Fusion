@@ -56,7 +56,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 
 	public static boolean generating = false;
 
-	private int maxEmpireTentative = 100;
+	private int maxEmpireTentative = 500;
 	private List<StarPt> systems = new ArrayList<>();
 	private List<StarPt> linkingSystems = new ArrayList<>();
 	private List<StarPt> routeSystems = new ArrayList<>();
@@ -110,7 +110,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	private float maxDistanceToConnectEmpires;
 	private boolean connectAllEmpires;
 	private boolean connectedOrionToEmpires;
-	private boolean connectAllStarts;
+	private boolean connectAllStars;
 	private boolean removeExcessLinks;
 
 	protected abstract String name();
@@ -150,10 +150,11 @@ public abstract class GalaxyShape implements Base, Serializable {
 				|| (finalOption2 != null && finalOption2.contains("SYMMETRIC"));
 		homeStarNum = opts.secondRingSystemNumber()+1;
 
+		boolean allowConnection		= 50000 >= nominalSystemNumber * opts.selectedEmpireSpreadingFactor();
 		maxDistanceToConnectEmpires	= opts.maxEmpiresConnextionGap() -0.1f;
-		connectAllEmpires			= opts.areEmpiresConnectedToEmpires();
-		connectedOrionToEmpires		= opts.areEmpiresConnectedToOrion();
-		connectAllStarts			= opts.areEmpiresConnectedToAllSystems();
+		connectAllEmpires			= allowConnection && opts.areEmpiresConnectedToEmpires();
+		connectedOrionToEmpires		= allowConnection && opts.areEmpiresConnectedToOrion();
+		connectAllStars				= opts.areEmpiresConnectedToAllSystems() && nominalSystemNumber <= 5000;
 		removeExcessLinks			= opts.removeNonRoutedConnections();
 
 	}
@@ -239,7 +240,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 	private float maxDistanceToConnectEmpires()	{ return maxDistanceToConnectEmpires; }
 	private boolean connectAllEmpires()			{ return connectAllEmpires; }
 	private boolean connectedOrionToEmpires()	{ return connectedOrionToEmpires; }
-	private boolean connectAllStarts()			{ return connectAllStarts; }
+	private boolean isConnectAllStars()			{ return connectAllStars; }
 	private boolean removeExcessLinks()			{ return removeExcessLinks; }
 
 	// ========== abstract and overridable methods ==========
@@ -645,7 +646,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 		if (generating) {
 			System.err.println("setGalaxyShape() while generating");
 		}
-		maxEmpireTentative = 100;
+		maxEmpireTentative = 500;
 		generating = true;
 		loopValid = 0;
 		if (IGalaxyOptions.galaxyRandSource.get() == 0 || !allowExtendedPreview())
@@ -1058,23 +1059,8 @@ public abstract class GalaxyShape implements Base, Serializable {
 				centralStars.add(star);
 				routeCentralStars.add(star);
 				stars.add(star);
-				if (connectAllStarts()) {
-					for (int i=1; i<systems.size(); i++) {
-						star = new CentralStar(systems.get(i), id++);
-						centralStars.add(star);
-						stars.add(star);
-					}
-				}
-				else
-					for (int i=1; i<systems.size(); i++)
-						stars.add(new Star(systems.get(i), id++));
-			}
-			else if (connectAllStarts()) {
-				for (StarPt sys : systems) {
-					CentralStar star = new CentralStar(sys, id++);
-					centralStars.add(star);
-					stars.add(star);
-				}
+				for (int i=1; i<systems.size(); i++)
+					stars.add(new Star(systems.get(i), id++));
 			}
 			else
 				for (StarPt sys : systems)
@@ -1083,13 +1069,17 @@ public abstract class GalaxyShape implements Base, Serializable {
 			firstLinkId = id;
 		}
 		private void connectEmpire() {
+			final double maxStep = maxDist;
+			final double minStep = sysBuffer;
 			linkStars.clear();
 			linkingSystems().clear();
 			routeSystems.clear();
 			computeAllDistances(stars);
-			if (buildAllGroups(centralStars)) {
+			if (buildAllGroups(centralStars, minStep, maxStep)) {
+				if (isConnectAllStars())
+					connectAllStars(centralStars.get(0).cluster, minStep, maxStep);
 				computeAllDistances(stars);
-				buildAllGroups(centralStars);
+				buildAllGroups(centralStars, minStep, maxStep);
 				findRoutes(routeCentralStars);
 			}
 			else {
@@ -1101,7 +1091,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 			// System.out.println("linking Systems size = " + linkingSystems().size());
 			// System.out.println("route Systems size = " + routeSystems().size());
 
-			if (removeExcessLinks() && !connectAllStarts()) {
+			if (removeExcessLinks() && !isConnectAllStars()) {
 				for (Iterator<StarPt> iPt = systems.iterator(); iPt.hasNext();) {
 					StarPt pt = iPt.next();
 					if (pt.isConnection() && !pt.isRoute())
@@ -1157,11 +1147,19 @@ public abstract class GalaxyShape implements Base, Serializable {
 			List<NearestStarPair> nearestPairs = new ArrayList<>();
 			StarSet listedStars = new StarSet();
 			for (CentralStar centralStar : centralStars) {
-				NearestStarPair pair = new NearestStarPair(centralStar);
+				NearestStarPair pair = new NearestStarPair(centralStar.cluster);
 				if (!listedStars.contains(pair.star1) &&  !listedStars.contains(pair.star2)) {
 					nearestPairs.add(pair);
 					linkStars.addAll(pair.getLinkingStarPts(minStep, maxStep));
 				}
+			}
+		}
+		private void connectAllStars(StarSet cluster, double minStep, double maxStep)	{
+			int lastClusterSize = 0;
+			while (stars.size() > cluster.size() && lastClusterSize != cluster.size()) {
+				lastClusterSize = cluster.size();
+				NearestStarPair pair = new NearestStarPair(cluster);
+				linkStars.addAll(pair.getLinkingStarPts(minStep, maxStep));
 			}
 		}
 		private List<CentralStar> getClusters(final List<CentralStar> centralStarList)	{
@@ -1180,7 +1178,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 			// log("number of isolated clusters: " + clusterHomes.size());
 			return clusterHomes;
 		}
-		private boolean buildAllGroups(final List<CentralStar> centralStarList)	{
+		private boolean buildAllGroups(final List<CentralStar> centralStarList, double minStep, double maxStep)	{
 			// Build and check that all central systems are connected
 			// System.out.println();
 			// System.out.println("validateDistances()");
@@ -1190,8 +1188,6 @@ public abstract class GalaxyShape implements Base, Serializable {
 				if (homeStar.buildAndValidateCentrals(centralStarList))
 					return true; // Connected to all required stars
 
-			double maxStep = maxDist;
-			double minStep = sysBuffer;
 			int maxLoop = max(2000, num);
 			int count = 0;
 			while (count < maxLoop) {
@@ -1340,27 +1336,34 @@ public abstract class GalaxyShape implements Base, Serializable {
 		}
 
 		private final class NearestStarPair {
-			CentralStar home;
+			StarSet cluster;
 			Star star1, star2;
 			float minSquareDist;
 
-			NearestStarPair(CentralStar h1)	{
-				home = h1;
+			NearestStarPair(StarSet cluster)	{
+				this.cluster = cluster;
 				minSquareDist = Float.MAX_VALUE;
 				List<Star> otherStars = new ArrayList<>(stars);
-				otherStars.removeAll(h1.cluster);
-				for (Star s1 : h1.cluster)
+				otherStars.removeAll(cluster);
+				StarSet clusterCopy = new StarSet(cluster);
+				for (Star s1 : clusterCopy)
 					for (Star s2 : otherStars) {
 						final float dx = s2.pt.x - s1.pt.x;
 						final float dy = s2.pt.y - s1.pt.y;
 						final float squareDist = dx*dx + dy*dy;
-						if (squareDist < minSquareDist) {
+						if (squareDist <= maxSquareDist) {
+							s1.inRangeStars.add(s2);
+							s2.inRangeStars.add(s1);
+							cluster.add(s2);
+						}
+						else if (squareDist < minSquareDist) {
 							minSquareDist = squareDist;
 							star1 = s1;
 							star2 = s2;
 						}
-					}
+				}
 			}
+
 			private void tryNextStep(StarPt ps, StarPt pe, StarPt pt, double minStep, double maxStep)	{
 				final double maxDev = 2;
 				final double phi = Math.atan2(pe.y - ps.y, pe.x - ps.x) + maxDev * (randY.nextDouble()-0.5);
@@ -1396,7 +1399,8 @@ public abstract class GalaxyShape implements Base, Serializable {
 					newStars.add(link);
 					link.inRangeStars.add(star);
 					star.inRangeStars.add(link);
-					home.cluster.add(link);
+					stars.add(star);
+					cluster.add(link);
 					star = link;
 				}
 				star2.inRangeStars.add(star);
@@ -1408,7 +1412,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 			final StarSet cluster = new StarSet();
 			final Set<CentralStar> missingCentral = new HashSet<>();
 
-			CentralStar(StarPt pt, int id)		{ super(pt, id); }
+			CentralStar(StarPt pt, int id)	{ super(pt, id); }
 
 			private StarSet buildGroup()	{
 				cluster.clear();;
@@ -1427,7 +1431,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 			}
 			private boolean buildAndValidateCentrals(List<CentralStar> centralStars)	{
 				buildGroup();
-				missingCentral.clear();;
+				missingCentral.clear();
 				missingCentral.addAll(centralStars);
 				missingCentral.removeAll(cluster);
 				if (minMissingEmpire > missingCentral.size())
@@ -1439,7 +1443,7 @@ public abstract class GalaxyShape implements Base, Serializable {
 			// to simplify the use of list of set
 			private static final long serialVersionUID = 1L;
 			private StarSet()	{}
-			private StarSet(StarSet src)		{ addAll(src); }
+			private StarSet(StarSet src)	{ addAll(src); }
 			private StarSet(Set<CentralStar> src)	{ addAll(src); }
 			private StarSet(List<CentralStar> src)	{ addAll(src); }
 		}

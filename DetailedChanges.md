@@ -2,6 +2,13 @@
 
 ## What's New
 
+26-11-28 (BR)
+- The maximum number of star systems is now capped at 50,000, because even with sufficient memory, the time required for AI decision-making becomes unbearable in the late game... It is therefore pointless to offer false hope by suggesting even larger galaxies.
+- Connect Empires option:
+  - The product of the number of star systems and the spread factor is now capped at 50,000.
+  - The connection of all star systems, their number is now capped 5,000.
+- The galaxy size option does not cycle back to the beginning once the end of the list is reached (and vice versa), because transitioning from the minimum size to the maximum size could result in a significant generation time.
+
 26-11-26 (BR)
 - Galaxy setup: Cover over the start button when "Advanced Galaxy Configuration" is open.
   - Clicking "start" without getting any result can be frustrating...

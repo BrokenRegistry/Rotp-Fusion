@@ -346,6 +346,12 @@
 
 ### Miscellaneous:
 
+- The maximum number of star systems is now capped at 50,000, because even with sufficient memory, the time required for AI decision-making becomes unbearable in the late game... It is therefore pointless to offer false hope by suggesting even larger galaxies.
+- Connect Empires option:
+  - The product of the number of star systems and the spread factor is now capped at 50,000.
+  - The connection of all star systems, their number is now capped 5,000.
+- The galaxy size option does not cycle back to the beginning once the end of the list is reached (and vice versa), because transitioning from the minimum size to the maximum size could result in a significant generation time.
+- The maximum number of star systems is now capped at 50,000, because even with sufficient memory, the time required for AI decision-making becomes unbearable in the late game... It is therefore pointless to offer false hope by suggesting even larger galaxies.
 - Standardization of the star location  in the GalaxyShape class to allow empire connection.
 - In Progress: Centralization of the production estimate in the next turn, to calculate it only once for all categories. And offer the possibility to select "Old Way" or "New Way". (In the "Old Way", transport must be scanned only for ecological allocation, while in the "New Way" they must be scanned for each category... But by centralizing, once for all categories is enough!)
 - New ships display options:
